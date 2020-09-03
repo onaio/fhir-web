@@ -1,14 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { history } from '@onaio/connected-reducer-registry';
+import { ConnectedRouter } from 'connected-react-router';
+import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import store from './store';
+
+// tslint:disable-next-line: ordered-imports
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/css/index.css';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </Provider>,
+  document.getElementById('opensrp-root')
 );
 
 // If you want your app to work offline and load faster, you can change
