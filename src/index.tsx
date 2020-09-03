@@ -1,13 +1,21 @@
+import { history } from '@onaio/connected-reducer-registry';
+import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import store from './store';
+import { Provider } from 'react-redux';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 
