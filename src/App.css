@@ -1,38 +1,146 @@
-.App {
-  text-align: center;
+tr.definitions td:first-child {
+  padding-left: 0px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h2.page-title {
+  font-weight: 200;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.gatekeeper-cb,
+.gatekeeper-login {
+  margin-top: 3rem !important;
+  padding: 2%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.gatekeeper-btn {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+  color: #ffffff;
+  background-color: #28a745;
+  border-color: #28a745;
+  width: 100%;
+  display: inline-block;
+  max-width: 200px;
 }
 
-.App-link {
-  color: #61dafb;
+.gatekeeper-btn:hover,
+.gatekeeper-btn:focus,
+.gatekeeper-btn:active,
+.gatekeeper-btn.active,
+.open .dropdown-toggle.gatekeeper-btn {
+  color: #ffffff;
+  background-color: #169c34;
+  border-color: #28a745;
+  text-decoration: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.gatekeeper-btn:active,
+.gatekeeper-btn.active,
+.open .dropdown-toggle.gatekeeper-btn {
+  background-image: none;
+}
+
+.gatekeeper-btn.disabled,
+.gatekeeper-btn[disabled],
+fieldset[disabled] .gatekeeper-btn,
+.gatekeeper-btn.disabled:hover,
+.gatekeeper-btn[disabled]:hover,
+fieldset[disabled] .gatekeeper-btn:hover,
+.gatekeeper-btn.disabled:focus,
+.gatekeeper-btn[disabled]:focus,
+fieldset[disabled] .gatekeeper-btn:focus,
+.gatekeeper-btn.disabled:active,
+.gatekeeper-btn[disabled]:active,
+fieldset[disabled] .gatekeeper-btn:active,
+.gatekeeper-btn.disabled.active,
+.gatekeeper-btn[disabled].active,
+fieldset[disabled] .gatekeeper-btn.active {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.gatekeeper-btn .badge {
+  color: #28a745;
+  background-color: #ffffff;
+}
+
+/** toast progress-bar styles */
+.success-toast-progress {
+  background: #32573a !important;
+}
+
+.info-toast-progress {
+  background: #0c5460 !important;
+}
+
+.warning-toast-progress {
+  background: #c98304 !important;
+}
+
+.danger-toast-progress {
+  background: #7e1c3a !important;
+}
+
+.light-toast-progress {
+  background: #8481a1 !important;
+}
+
+/** styles for toast's close button */
+.alert-success .Toastify__close-button {
+  color: #32573a !important;
+}
+
+.alert-info .Toastify__close-button {
+  color: #0c5460 !important;
+}
+
+.alert-warning .Toastify__close-button {
+  color: #c98304 !important;
+}
+
+.alert-danger .Toastify__close-button {
+  color: #7e1c3a !important;
+}
+
+.alert-light .Toastify__close-button {
+  color: #8481a1 !important;
+}
+
+.alert-info {
+  margin-left: 0;
+}
+
+.Toastify__toast-body {
+  margin: auto 15px !important;
+}
+
+.Toastify__toast-container {
+  width: fit-content !important;
+}
+
+.ReactTable .rt-tbody {
+  border-bottom: 0.5px solid #cfcdcd42 !important;
+  min-height: 50px !important;
+}
+
+.rt-noData {
+  top: 82% !important;
+  padding: 5px !important;
+}
+
+.footer-row-container {
+  position: 'absolute';
+  bottom: '0';
+  line-height: 60px;
+  font-weight: bold;
+}
+
+.body-wrapper {
+  min-height: calc(100vh - 62px);
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

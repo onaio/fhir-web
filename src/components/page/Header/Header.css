@@ -1,0 +1,25 @@
+.navbar-brand img {
+  position: relative;
+  top: -8px;
+}
+
+.bg-light {
+  background-color: #f7f7f9 !important;
+}
+
+.reveal-breadcrumb {
+  margin-top: 15px;
+}
+
+.reveal-breadcrumb .breadcrumb {
+  background-color: #eceeef;
+}
+
+.reveal-breadcrumb.plans-breadcrumb > .breadcrumb {
+  background-color: #ffffff !important;
+  padding: 0.75rem 0 !important;
+}
+
+.header-logo-navbar {
+  padding-left: 0;
+}
