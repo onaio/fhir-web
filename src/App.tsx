@@ -1,4 +1,6 @@
 import React from 'react';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUser } from '@fortawesome/free-regular-svg-icons';
 import {
   AuthorizationGrantType,
   ConnectedLogout,
@@ -18,6 +20,8 @@ import { providers } from './configs/settings';
 import ConnectedHeader from './containers/ConnectedHeader';
 import './App.css';
 import Home from './containers/pages/Home/Home';
+
+library.add(faUser);
 
 /** Interface defining component props */
 interface AppProps {
