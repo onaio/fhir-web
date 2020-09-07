@@ -9,9 +9,9 @@ type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 /** get default HTTP headers for OpenSRP service */
 export function getDefaultHeaders(
-  accept: string = 'application/json',
-  authorizationType: string = 'Bearer',
-  contentType: string = 'application/json;charset=UTF-8'
+  accept = 'application/json',
+  authorizationType = 'Bearer',
+  contentType = 'application/json;charset=UTF-8'
 ): IncomingHttpHeaders {
   return {
     accept,
@@ -29,7 +29,7 @@ export interface URLParams {
  * @param {URLParams} obj - the object representing filter params
  * @returns {string} filter params as a string
  */
-export function getFilterParams(obj: URLParams | {}): string {
+export function getFilterParams(obj: URLParams): string {
   return Object.entries(obj)
     .map(([key, val]) => `${key}:${val}`)
     .join(',');
@@ -41,7 +41,7 @@ export function getFilterParams(obj: URLParams | {}): string {
  * @returns the payload
  */
 
-export function getPayloadOptions(_: AbortSignal, method: HTTPMethod) {
+export function getPayloadOptions(_: AbortSignal, method: HTTPMethod): { [key: string]: any } {
   return {
     headers: getDefaultHeaders() as HeadersInit,
     method,
@@ -75,7 +75,7 @@ export class OpenSRPService extends OpenSRPServiceWeb {
     id?: string | number,
     params: URLParams | null = null,
     method: HTTPMethod = 'GET'
-  ): Promise<{}> {
+  ): Promise<any> {
     const url = OpenSRPService.getURL(`${this.generalURL}/${id}`, params);
     const response = await fetch(url, this.getOptions(this.signal, method));
 

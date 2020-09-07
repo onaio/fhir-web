@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Col, Row } from 'reactstrap';
 import './Home.css';
 
-const Home = () => {
+const Home = (): JSX.Element => {
   return (
     <div className="text-center">
       <Helmet>
