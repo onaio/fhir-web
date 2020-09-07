@@ -1,3 +1,4 @@
+import { Providers } from '@onaio/gatekeeper';
 import {
   ENABLE_OPENSRP_OAUTH,
   OPENSRP_ACCESS_TOKEN_URL,
@@ -7,7 +8,6 @@ import {
   OPENSRP_OAUTH_STATE,
   OPENSRP_USER_URL,
 } from './env';
-import { Providers } from '@onaio/gatekeeper';
 
 /** Authentication Configs */
 const providers: Providers = {};

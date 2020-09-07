@@ -55,42 +55,42 @@ export class HeaderComponent extends React.Component<HeaderProps, State> {
     const path = this.props.location.pathname;
     return (
       <div>
-        <Navbar light={true} expand="md">
+        <Navbar light expand="md">
           <nav className="navbar navbar-expand-md navbar-light header-logo-navbar">
             {/* <Link to="/" className="navbar-brand">
               <img src={NAVBAR_BRAND_IMG_SRC} alt={WEBSITE_NAME} />
             </Link> */}
           </nav>
           <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar={true}>
-            <Nav className="mr-auto" navbar={true}>
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="mr-auto" navbar>
               <NavItem>
                 <NavLink
                   to="/"
                   className={path === '/' ? 'nav-link active' : 'nav-link'}
                   activeClassName="active"
                 >
-                  {'Home'}
+                  Home
                 </NavLink>
               </NavItem>
             </Nav>
-            <Nav className="ml-0" navbar={true}>
+            <Nav className="ml-0" navbar>
               {authenticated ? (
-                <UncontrolledDropdown nav={true} inNavbar={true}>
-                  <DropdownToggle nav={true} caret={true}>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
                     <FontAwesomeIcon icon={['far', 'user']} /> {user.username}
                   </DropdownToggle>
-                  <DropdownMenu right={true}>
+                  <DropdownMenu right>
                     <DropdownItem>
-                      <NavLink to={'/logout'} className="nav-link" activeClassName="active">
-                        {'Sign Out'}
+                      <NavLink to="/logout" className="nav-link" activeClassName="active">
+                        Sign Out
                       </NavLink>
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               ) : (
-                <NavLink to={'/login'} className="nav-link" activeClassName="active">
-                  {'Login'}
+                <NavLink to="/login" className="nav-link" activeClassName="active">
+                  Login
                 </NavLink>
               )}
             </Nav>

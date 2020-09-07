@@ -4,11 +4,11 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { AuthorizationGrantType, ConnectedOauthCallback, OauthLogin } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Col, Container, Row } from 'reactstrap';
+import { Helmet } from 'react-helmet';
+import { Switch, Route, Redirect } from 'react-router';
 import Loading from './components/page/Loading';
 import { CustomLogout } from './components/Logout';
-import { Helmet } from 'react-helmet';
 import { WEBSITE_NAME } from './configs/env';
-import { Switch, Route, Redirect } from 'react-router';
 import { LOGIN_PROMPT, REACT_CALLBACK_PATH } from './constants';
 import { oAuthUserInfoGetter } from './helpers/utils';
 import { providers } from './configs/settings';
@@ -22,31 +22,31 @@ const App = (props: any) => {
   const { IMPLICIT } = AuthorizationGrantType;
   return (
     <Container
-      fluid={true}
+      fluid
       style={{
         minHeight: '100vh',
         position: 'relative',
       }}
     >
-      <Helmet titleTemplate={`%s | ` + WEBSITE_NAME} defaultTitle="" />
+      <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
       <div className="body-wrapper">
         <ConnectedHeader />
-        <Container fluid={true}>
+        <Container fluid>
           <Row id="main-page-row">
             <Col>
               <Switch>
                 {/* tslint:disable jsx-no-lambda */}
                 {/* Home Page view */}
                 <ConnectedPrivateRoute
-                  redirectPath={'/login'}
+                  redirectPath="/login"
                   disableLoginProtection={false}
-                  exact={true}
+                  exact
                   path="/"
                   component={Home}
                 />
                 <Route
-                  exact={true}
-                  path={'/login'}
+                  exact
+                  path="/login"
                   render={(routeProps) => (
                     <OauthLogin
                       providers={providers}
@@ -57,13 +57,13 @@ const App = (props: any) => {
                   )}
                 />
                 <Route
-                  exact={true}
+                  exact
                   path={REACT_CALLBACK_PATH}
                   render={(routeProps) => {
                     return (
                       <ConnectedOauthCallback
                         SuccessfulLoginComponent={() => {
-                          return <Redirect to={'/'} />;
+                          return <Redirect to="/" />;
                         }}
                         LoadingComponent={Loading}
                         providers={providers}
@@ -75,10 +75,10 @@ const App = (props: any) => {
                 />
                 {/* tslint:enable jsx-no-lambda */}
                 <ConnectedPrivateRoute
-                  redirectPath={'/login'}
+                  redirectPath="/login"
                   disableLoginProtection={false}
-                  exact={true}
-                  path={'/logout'}
+                  exact
+                  path="/logout"
                   // tslint:disable-next-line: jsx-no-lambda
                   component={() => {
                     return <CustomLogout />;

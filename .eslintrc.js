@@ -1,10 +1,10 @@
 module.exports = {
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   env: {
     browser: true,
     'jest/globals': true,
   },
-  extends: ['airbnb', 'plugin:prettier/recommended'],
+  extends: ['plugin:prettier/recommended'],
   rules: {
     strict: 0,
   },
@@ -12,5 +12,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
+    project: './tsconfig.json'
   },
 };
