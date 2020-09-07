@@ -22,7 +22,7 @@ jobs:
           REACT_APP_OPENSRP_USER_URL: 'https://reveal-stage.smartregister.org/opensrp/user-details'
           REACT_APP_DISABLE_LOGIN_PROTECTION: 'false'
 
-    working_directory: ~/repo
+    working_directory: ~/web
 
     steps:
       - checkout
@@ -50,3 +50,7 @@ jobs:
       - run:
           name: Run tests
           command: yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles
+
+      - run:
+          name: Run coveralls
+          command: yarn coveralls

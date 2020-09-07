@@ -54,7 +54,8 @@
     "build": "react-scripts build",
     "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject",
-    "lint": "eslint 'src/**/*.{ts,tsx}'"
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
   },
   "tsd": {
     "directory": "src/test-d"
@@ -95,6 +96,22 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/index.tsx",
+      "!src/serviceWorker.ts",
+      "!**/tests/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 55,
+        "functions": 65,
+        "lines": 72,
+        "statements": 71
+      }
+    }
+  },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
@@ -102,6 +119,7 @@
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "babel-eslint": "^10.1.0",
+    "coveralls": "^3.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
     "enzyme-to-json": "^3.5.0",

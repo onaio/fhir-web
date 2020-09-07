@@ -1,12 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { history } from '@onaio/connected-reducer-registry';
 import ReactDOM from 'react-dom';
 import store from '../../store';
 import App from '../App';
-
-const history = createBrowserHistory();
 
 jest.mock('../../configs/env');
 
