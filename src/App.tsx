@@ -1,18 +1,13 @@
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import {
-  AuthorizationGrantType,
-  ConnectedLogout,
-  ConnectedOauthCallback,
-  OauthLogin,
-} from '@onaio/gatekeeper';
+import { AuthorizationGrantType, ConnectedOauthCallback, OauthLogin } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Col, Container, Row } from 'reactstrap';
 import Loading from './components/page/Loading';
-import { LogoutProps } from './components/Logout';
+import { CustomLogout } from './components/Logout';
 import { Helmet } from 'react-helmet';
-import { WEBSITE_NAME, OPENSRP_LOGOUT_URL } from './configs/env';
+import { WEBSITE_NAME } from './configs/env';
 import { Switch, Route, Redirect } from 'react-router';
 import { LOGIN_PROMPT, REACT_CALLBACK_PATH } from './constants';
 import { oAuthUserInfoGetter } from './helpers/utils';
@@ -22,11 +17,6 @@ import './App.css';
 import Home from './containers/pages/Home/Home';
 
 library.add(faUser);
-
-/** Interface defining component props */
-interface AppProps {
-  logoutComponent: (props: LogoutProps) => null;
-}
 
 const App = (props: any) => {
   const { IMPLICIT } = AuthorizationGrantType;
@@ -91,13 +81,7 @@ const App = (props: any) => {
                   path={'/logout'}
                   // tslint:disable-next-line: jsx-no-lambda
                   component={() => {
-                    return (
-                      <ConnectedLogout
-                        {...{
-                          logoutURL: OPENSRP_LOGOUT_URL,
-                        }}
-                      />
-                    );
+                    return <CustomLogout />;
                   }}
                 />
               </Switch>
