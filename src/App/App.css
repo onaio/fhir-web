@@ -1,7 +1,3 @@
-tr.definitions td:first-child {
-  padding-left: 0px;
-}
-
 h2.page-title {
   font-weight: 200;
 }
@@ -64,70 +60,6 @@ fieldset[disabled] .gatekeeper-btn.active {
 .gatekeeper-btn .badge {
   color: #28a745;
   background-color: #ffffff;
-}
-
-/** toast progress-bar styles */
-.success-toast-progress {
-  background: #32573a !important;
-}
-
-.info-toast-progress {
-  background: #0c5460 !important;
-}
-
-.warning-toast-progress {
-  background: #c98304 !important;
-}
-
-.danger-toast-progress {
-  background: #7e1c3a !important;
-}
-
-.light-toast-progress {
-  background: #8481a1 !important;
-}
-
-/** styles for toast's close button */
-.alert-success .Toastify__close-button {
-  color: #32573a !important;
-}
-
-.alert-info .Toastify__close-button {
-  color: #0c5460 !important;
-}
-
-.alert-warning .Toastify__close-button {
-  color: #c98304 !important;
-}
-
-.alert-danger .Toastify__close-button {
-  color: #7e1c3a !important;
-}
-
-.alert-light .Toastify__close-button {
-  color: #8481a1 !important;
-}
-
-.alert-info {
-  margin-left: 0;
-}
-
-.Toastify__toast-body {
-  margin: auto 15px !important;
-}
-
-.Toastify__toast-container {
-  width: fit-content !important;
-}
-
-.ReactTable .rt-tbody {
-  border-bottom: 0.5px solid #cfcdcd42 !important;
-  min-height: 50px !important;
-}
-
-.rt-noData {
-  top: 82% !important;
-  padding: 5px !important;
 }
 
 .footer-row-container {
