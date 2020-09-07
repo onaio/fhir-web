@@ -1,3 +1,22 @@
+# OpenSRP Web
+
+The goal of OpenSRP Web is to be the default frontend for the [OpenSRP Server](https://github.com/OpenSRP/opensrp-server-core) API, providing access to
+the data collected on the server, configuration options as well as any
+functionality provided by the API server.
+
+The initial priorities are to support:
+1. Authentication through Keycloak
+2. User management - pull some functionality, not all, that currently can be achieved by Keycloak.
+3. Team management
+4. Jurisdiction/Location management: user or team assignment,
+
+The hope is to build on the work done on other attempts so far.
+
+This repository intends to be a monorepo of all components that you will use
+to provide all the functionality for an OpenSRP frontend UI.
+
+# Code
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -27,18 +46,15 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Contributing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. Before creating a PR, create an issue.
+2. At least two approvals are required before merging a PR
+3. Ensure all status checks are passing, including tests before following up on reviews. A review is likely not going to review if there are failing status checks.
+4. Ensure your PR includes tests.
+5. Ensure all your commits are signed, [see](https://docs.github.com/en/github/authenticating-to-github/signing-commits).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Familiarity with [React](https://reactjs.org/) and [Ant](https://ant.design/docs/react/introduce)
+is necessary.
