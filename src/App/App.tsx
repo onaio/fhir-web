@@ -1,7 +1,12 @@
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { AuthorizationGrantType, ConnectedOauthCallback, OauthLogin } from '@onaio/gatekeeper';
+import {
+  AuthorizationGrantType,
+  ConnectedOauthCallback,
+  OauthLogin,
+  getOpenSRPUserInfo,
+} from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Col, Container, Row } from 'reactstrap';
 import { Helmet } from 'react-helmet';
@@ -10,7 +15,6 @@ import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
 import { WEBSITE_NAME } from '../configs/env';
 import { LOGIN_PROMPT, REACT_CALLBACK_PATH } from '../constants';
-import { oAuthUserInfoGetter } from '../helpers/utils';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import './App.css';
@@ -67,7 +71,7 @@ const App = () => {
                         }}
                         LoadingComponent={Loading}
                         providers={providers}
-                        oAuthUserInfoGetter={oAuthUserInfoGetter}
+                        oAuthUserInfoGetter={getOpenSRPUserInfo}
                         {...routeProps}
                       />
                     );

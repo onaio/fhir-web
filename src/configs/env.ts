@@ -13,9 +13,6 @@ export type OPENSRP_OAUTH_STATE = typeof OPENSRP_OAUTH_STATE;
 export const ENABLE_OPENSRP_OAUTH = process.env.REACT_APP_ENABLE_OPENSRP_OAUTH === 'true';
 export type ENABLE_OPENSRP_OAUTH = typeof ENABLE_OPENSRP_OAUTH;
 
-export const ONADATA_CLIENT_ID = process.env.REACT_APP_ONADATA_CLIENT_ID || '';
-export type ONADATA_CLIENT_ID = typeof ONADATA_CLIENT_ID;
-
 // notice the ending is NOT / here
 export const OPENSRP_ACCESS_TOKEN_URL =
   process.env.REACT_APP_OPENSRP_ACCESS_TOKEN_URL ||

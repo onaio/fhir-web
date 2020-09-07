@@ -1597,6 +1597,11 @@
     client-oauth2 "^4.3.3"
     query-string "^6.4.2"
 
+"@onaio/loaders@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@onaio/loaders/-/loaders-0.0.1.tgz#bccf621fd1e2842f962220a570d0898965765db9"
+  integrity sha512-EJZQ9dXnKI2dATXtRnEIe/zzAvrtXhT0DTIylLLT5ihq/kyM2PxjjFcNgrlsBHhxVs/7+OkKg2IoXfSUzfA4ng==
+
 "@onaio/redux-reducer-registry@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@onaio/redux-reducer-registry/-/redux-reducer-registry-0.0.9.tgz#513bac5c9838ca3bcf60f0963a6824a88b9694b7"
