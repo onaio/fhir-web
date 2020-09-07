@@ -13,7 +13,7 @@ export const CustomLogout = () => {
   const payload = getPayloadOptions(new AbortController().signal, 'GET');
   const redirectUri = DOMAIN_NAME;
   logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((error) => {
-    console.error(error);
+    console.error(error); // refactor to show growl error
     history.push('/');
   });
   return <Ripple />;

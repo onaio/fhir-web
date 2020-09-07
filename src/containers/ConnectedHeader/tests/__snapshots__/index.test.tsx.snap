@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/ConnectedHeader renders the ConnectedHeader component 1`] = `
+Object {
+  "children": Array [
+    <nav
+      className="navbar navbar-expand-md navbar-light header-logo-navbar"
+    />,
+    <NavbarToggler
+      onClick={[Function]}
+      tag="button"
+      type="button"
+    />,
+    <Collapse
+      appear={false}
+      enter={true}
+      exit={true}
+      in={false}
+      isOpen={false}
+      mountOnEnter={false}
+      navbar={true}
+      onEnter={[Function]}
+      onEntered={[Function]}
+      onEntering={[Function]}
+      onExit={[Function]}
+      onExited={[Function]}
+      onExiting={[Function]}
+      tag="div"
+      timeout={350}
+      unmountOnExit={false}
+    >
+      <Nav
+        className="mr-auto"
+        navbar={true}
+        tag="ul"
+        vertical={false}
+      >
+        <NavItem
+          tag="li"
+        >
+          <NavLink
+            activeClassName="active"
+            className="nav-link active"
+            to="/"
+          >
+            Home
+          </NavLink>
+        </NavItem>
+      </Nav>
+      <Nav
+        className="ml-0"
+        navbar={true}
+        tag="ul"
+        vertical={false}
+      >
+        <NavLink
+          activeClassName="active"
+          className="nav-link"
+          to="/login"
+        >
+          Login
+        </NavLink>
+      </Nav>
+    </Collapse>,
+  ],
+  "expand": "md",
+  "light": true,
+  "tag": "nav",
+}
+`;
+
+exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
+Object {
+  "children": Array [
+    <nav
+      className="navbar navbar-expand-md navbar-light header-logo-navbar"
+    />,
+    <NavbarToggler
+      onClick={[Function]}
+      tag="button"
+      type="button"
+    />,
+    <Collapse
+      appear={false}
+      enter={true}
+      exit={true}
+      in={false}
+      isOpen={false}
+      mountOnEnter={false}
+      navbar={true}
+      onEnter={[Function]}
+      onEntered={[Function]}
+      onEntering={[Function]}
+      onExit={[Function]}
+      onExited={[Function]}
+      onExiting={[Function]}
+      tag="div"
+      timeout={350}
+      unmountOnExit={false}
+    >
+      <Nav
+        className="mr-auto"
+        navbar={true}
+        tag="ul"
+        vertical={false}
+      >
+        <NavItem
+          tag="li"
+        >
+          <NavLink
+            activeClassName="active"
+            className="nav-link active"
+            to="/"
+          >
+            Home
+          </NavLink>
+        </NavItem>
+      </Nav>
+      <Nav
+        className="ml-0"
+        navbar={true}
+        tag="ul"
+        vertical={false}
+      >
+        <UncontrolledDropdown
+          inNavbar={true}
+          nav={true}
+        >
+          <DropdownToggle
+            aria-haspopup={true}
+            caret={true}
+            color="secondary"
+            nav={true}
+          >
+            <FontAwesomeIcon
+              border={false}
+              className=""
+              fixedWidth={false}
+              flip={null}
+              icon={
+                Array [
+                  "far",
+                  "user",
+                ]
+              }
+              inverse={false}
+              listItem={false}
+              mask={null}
+              pull={null}
+              pulse={false}
+              rotation={null}
+              size={null}
+              spin={false}
+              swapOpacity={false}
+              symbol={false}
+              title=""
+              transform={null}
+            />
+             
+            RobertBaratheon
+          </DropdownToggle>
+          <DropdownMenu
+            flip={true}
+            right={true}
+            tag="div"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              <NavLink
+                activeClassName="active"
+                className="nav-link"
+                to="/logout"
+              >
+                Sign Out
+              </NavLink>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </Nav>
+    </Collapse>,
+  ],
+  "expand": "md",
+  "light": true,
+  "tag": "nav",
+}
+`;

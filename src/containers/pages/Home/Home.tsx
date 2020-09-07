@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { Col, Row } from 'reactstrap';
+import './Home.css';
 
 const Home = () => {
   return (
-    <div>
+    <div className="text-center">
       <Helmet>
         <title>OpenSRP Web</title>
       </Helmet>
