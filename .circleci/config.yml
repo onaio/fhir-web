@@ -1,0 +1,52 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:v14.9.0
+
+        environment:
+          SKIP_PREFLIGHT_CHECK: 'true'
+          REACT_APP_WEBSITE_NAME: 'OpenSRP-web'
+          REACT_APP_DOMAIN_NAME: 'http://localhost:3000'
+          REACT_APP_OPENSRP_ACCESS_TOKEN_URL: 'https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/token'
+          REACT_APP_OPENSRP_AUTHORIZATION_URL: 'https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/auth'
+          REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE: 'opensrp'
+          REACT_APP_OPENSRP_CLIENT_ID: 'reveal-stage-server'
+          REACT_APP_ENABLE_OPENSRP_OAUTH: 'true'
+          REACT_APP_OPENSRP_API_BASE_URL: 'https://reveal-stage.smartregister.org/opensrp/rest/'
+          REACT_APP_OPENSRP_USER_URL: 'https://reveal-stage.smartregister.org/opensrp/user-details'
+          REACT_APP_DISABLE_LOGIN_PROTECTION: 'false'
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Install dependencies
+          command: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Run ts linter
+          command: yarn lint
+
+      - run:
+          name: Run tests
+          command: yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles
