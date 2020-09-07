@@ -8,7 +8,7 @@ import Ripple from '../page/Loading';
 /** HOC function that calls function that logs out the user from both opensrp
  * and keycloak
  */
-export const CustomLogout = () => {
+export const CustomLogout = (): JSX.Element => {
   const history = useHistory();
   const payload = getPayloadOptions(new AbortController().signal, 'GET');
   const redirectUri = DOMAIN_NAME;

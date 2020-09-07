@@ -50,7 +50,7 @@ export class HeaderComponent extends React.Component<HeaderProps, State> {
     };
   }
 
-  public render() {
+  public render(): JSX.Element {
     const { authenticated, user } = this.props;
     const path = this.props.location.pathname;
     return (

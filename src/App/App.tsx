@@ -22,7 +22,7 @@ import Home from '../containers/pages/Home/Home';
 
 library.add(faUser);
 
-const App = () => {
+const App = (): JSX.Element => {
   const { IMPLICIT } = AuthorizationGrantType;
   return (
     <Container
