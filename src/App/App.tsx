@@ -6,19 +6,19 @@ import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Col, Container, Row } from 'reactstrap';
 import { Helmet } from 'react-helmet';
 import { Switch, Route, Redirect } from 'react-router';
-import Loading from './components/page/Loading';
-import { CustomLogout } from './components/Logout';
-import { WEBSITE_NAME } from './configs/env';
-import { LOGIN_PROMPT, REACT_CALLBACK_PATH } from './constants';
-import { oAuthUserInfoGetter } from './helpers/utils';
-import { providers } from './configs/settings';
-import ConnectedHeader from './containers/ConnectedHeader';
+import Loading from '../components/page/Loading';
+import { CustomLogout } from '../components/Logout';
+import { WEBSITE_NAME } from '../configs/env';
+import { LOGIN_PROMPT, REACT_CALLBACK_PATH } from '../constants';
+import { oAuthUserInfoGetter } from '../helpers/utils';
+import { providers } from '../configs/settings';
+import ConnectedHeader from '../containers/ConnectedHeader';
 import './App.css';
-import Home from './containers/pages/Home/Home';
+import Home from '../containers/pages/Home/Home';
 
 library.add(faUser);
 
-const App = (props: any) => {
+const App = () => {
   const { IMPLICIT } = AuthorizationGrantType;
   return (
     <Container

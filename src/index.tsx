@@ -4,7 +4,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 import './index.css';
-import App from './App';
+import App from './App/App';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 
