@@ -15,6 +15,7 @@
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
     "@opensrp/server-logout": "^0.0.1",
+    "@opensrp/server-service": "^0.0.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -52,7 +53,7 @@
     "build": "react-scripts build",
     "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject",
-    "lint": "eslint 'src/**/*.{js,jsx}'"
+    "lint": "eslint 'src/**/*.{ts,tsx}'"
   },
   "tsd": {
     "directory": "src/test-d"
@@ -64,7 +65,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "tslint --fix -c tslint.json --project ./tsconfig.json",
+      "eslint --fix",
       "git add"
     ],
     "*.{js,jsx}": [
@@ -95,8 +96,12 @@
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "babel-eslint": "^10.1.0",
+    "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-typestrict": "^1.0.0",
+    "eslint-plugin-jest": "^24.0.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-sonarjs": "^0.5.0",
     "husky": "^4.2.5",
@@ -108,5 +113,8 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-plugin-prettier": "^2.3.0",
     "tslint-react": "^5.0.0"
+  },
+  "resolutions": {
+    "react-scripts/jest": "25.3.0"
   }
 }

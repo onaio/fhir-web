@@ -5,7 +5,7 @@ import { Store } from 'redux';
  * @param {Partial<Store>} state - the redux store
  */
 export function getApiToken(state: Partial<Store>): string {
-  const extraData = (state as any)[sessionReducerName].extraData;
+  const { extraData } = (state as any)[sessionReducerName];
   return extraData.api_token || null;
 }
 
@@ -13,7 +13,7 @@ export function getApiToken(state: Partial<Store>): string {
  * @param {Partial<Store>} state - the redux store
  */
 export function getAccessToken(state: Partial<Store>): string | null {
-  const extraData = (state as any)[sessionReducerName].extraData;
+  const { extraData } = (state as any)[sessionReducerName];
   if (extraData.oAuth2Data && extraData.oAuth2Data.access_token) {
     return extraData.oAuth2Data.access_token;
   }
@@ -24,7 +24,7 @@ export function getAccessToken(state: Partial<Store>): string | null {
  * @param {Partial<Store>} state - the redux store
  */
 export function getOauthProviderState(state: Partial<Store>): string | null {
-  const extraData = (state as any)[sessionReducerName].extraData;
+  const { extraData } = (state as any)[sessionReducerName];
   if (extraData.oAuth2Data && extraData.oAuth2Data.state) {
     return extraData.oAuth2Data.state;
   }

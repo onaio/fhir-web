@@ -44,3 +44,13 @@ export const NAVBAR_BRAND_IMG_SRC =
   process.env.REACT_APP_NAVBAR_BRAND_IMG_SRC ||
   'https://github.com/OpenSRP/opensrp-web/raw/master/clients/core/src/assets/images/logo.png';
 export type NAVBAR_BRAND_IMG_SRC = typeof NAVBAR_BRAND_IMG_SRC;
+
+export const KEYCLOAK_LOGOUT_URL =
+  process.env.REACT_APP_KEYCLOAK_LOGOUT_URL ||
+  'https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/logout';
+export type KEYCLOAK_LOGOUT_URL = typeof KEYCLOAK_LOGOUT_URL;
+
+export const OPENSRP_API_BASE_URL =
+  process.env.REACT_APP_OPENSRP_API_BASE_URL ||
+  'https://reveal-stage.smartregister.org/opensrp/rest/';
+export type OPENSRP_API_BASE_URL = typeof OPENSRP_API_BASE_URL;

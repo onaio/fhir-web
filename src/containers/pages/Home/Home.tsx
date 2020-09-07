@@ -6,11 +6,11 @@ const Home = () => {
   return (
     <div>
       <Helmet>
-        <title>{'OpenSRP Web'}</title>
+        <title>OpenSRP Web</title>
       </Helmet>
       <Row className="welcome-box">
         <Col>
-          <h3>{'Welcome to OpenSRP'}</h3>
+          <h3>Welcome to OpenSRP</h3>
         </Col>
       </Row>
     </div>
