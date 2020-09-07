@@ -5,18 +5,18 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 1`
   history={
     Object {
       "action": "POP",
-      "back": [Function],
       "block": [Function],
       "createHref": [Function],
-      "forward": [Function],
       "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 1,
       "listen": [Function],
       "location": Object {
         "hash": "",
-        "key": "default",
         "pathname": "/",
         "search": "",
-        "state": null,
+        "state": undefined,
       },
       "push": [Function],
       "replace": [Function],

@@ -1,12 +1,10 @@
 import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { createBrowserHistory } from 'history';
+import { history } from '@onaio/connected-reducer-registry';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Router } from 'react-router';
 import Home from '../Home';
-
-const history = createBrowserHistory();
 
 describe('containers/pages/Home', () => {
   beforeEach(() => {
