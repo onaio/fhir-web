@@ -1,21 +1,12 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { NavLink } from 'react-router-dom';
-import {
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Nav,
-  Navbar,
-  NavbarToggler,
-  NavItem,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Menu, Layout } from 'antd';
 import './Header.css';
+import { Link } from 'react-router-dom';
 
+const SubMenu = Menu.SubMenu;
 /** interface for Header state */
 interface State {
   isOpen: boolean;
@@ -55,47 +46,23 @@ export class HeaderComponent extends React.Component<HeaderProps, State> {
     const path = this.props.location.pathname;
     return (
       <div>
-        <Navbar light expand="md">
-          <nav className="navbar navbar-expand-md navbar-light header-logo-navbar">
-            {/* <Link to="/" className="navbar-brand">
-              <img src={NAVBAR_BRAND_IMG_SRC} alt={WEBSITE_NAME} />
-            </Link> */}
-          </nav>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="mr-auto" navbar>
-              <NavItem>
-                <NavLink
-                  to="/"
-                  className={path === '/' ? 'nav-link active' : 'nav-link'}
-                  activeClassName="active"
-                >
-                  Home
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <Nav className="ml-0" navbar>
-              {authenticated ? (
-                <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret>
-                    <FontAwesomeIcon icon={['far', 'user']} /> {user.username}
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem>
-                      <NavLink to="/logout" className="nav-link" activeClassName="active">
-                        Sign Out
-                      </NavLink>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              ) : (
-                <NavLink to="/login" className="nav-link" activeClassName="active">
-                  Login
-                </NavLink>
-              )}
-            </Nav>
-          </Collapse>
-        </Navbar>
+        <Layout.Header>
+          <div className="logo" />
+          <Menu mode="horizontal" selectedKeys={[path]}>
+            <Menu.Item key="/">Home</Menu.Item>
+            {authenticated ? (
+              <SubMenu title={`${user.username}`} style={{ float: 'right' }}>
+                <Menu.Item key="/logout">
+                  <Link to="/logout">Logout</Link>
+                </Menu.Item>
+              </SubMenu>
+            ) : (
+              <Menu.Item key="/login" style={{ float: 'right' }}>
+                <Link to="/login">Login</Link>
+              </Menu.Item>
+            )}
+          </Menu>
+        </Layout.Header>
       </div>
     );
   }

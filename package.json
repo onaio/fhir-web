@@ -17,6 +17,8 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.4",
+    "@types/antd": "^1.0.0",
+    "antd": "^4.6.3",
     "bootstrap": "^4.5.2",
     "client-oauth2": "^4.3.3",
     "connected-react-router": "^6.8.0",
