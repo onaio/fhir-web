@@ -17,7 +17,7 @@ describe('components/ConnectedHeader', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Navbar').props()).toMatchSnapshot();
+    expect(wrapper.find('Header').props()).toMatchSnapshot();
     wrapper.unmount();
   });
 
@@ -36,7 +36,7 @@ describe('components/ConnectedHeader', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Navbar').props()).toMatchSnapshot();
+    expect(wrapper.find('Header').props()).toMatchSnapshot();
     wrapper.unmount();
   });
 });
