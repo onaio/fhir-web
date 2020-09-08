@@ -1,5 +1,12 @@
+@import '~antd/dist/antd.css';
+
 h2.page-title {
   font-weight: 200;
+}
+
+.ant-layout,
+.ant-layout-header {
+  background: #fff;
 }
 
 .gatekeeper-cb,
