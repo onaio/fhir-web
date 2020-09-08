@@ -2,9 +2,10 @@
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Menu, Layout } from 'antd';
-import './Header.css';
+import { Menu, Layout, Image } from 'antd';
 import { Link } from 'react-router-dom';
+import Logo from '../../../assets/images/opensrp-logo-color.png';
+import './Header.css';
 
 const SubMenu = Menu.SubMenu;
 /** interface for Header state */
@@ -47,7 +48,9 @@ export class HeaderComponent extends React.Component<HeaderProps, State> {
     return (
       <div>
         <Layout.Header>
-          <div className="logo" />
+          <div className="logo">
+            <Image width={200} src={Logo} />
+          </div>
           <Menu mode="horizontal" selectedKeys={[path]}>
             <Menu.Item key="/">Home</Menu.Item>
             {authenticated ? (
