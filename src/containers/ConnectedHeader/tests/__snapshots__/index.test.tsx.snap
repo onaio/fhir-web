@@ -3,186 +3,82 @@
 exports[`components/ConnectedHeader renders the ConnectedHeader component 1`] = `
 Object {
   "children": Array [
-    <nav
-      className="navbar navbar-expand-md navbar-light header-logo-navbar"
-    />,
-    <NavbarToggler
-      onClick={[Function]}
-      tag="button"
-      type="button"
-    />,
-    <Collapse
-      appear={false}
-      enter={true}
-      exit={true}
-      in={false}
-      isOpen={false}
-      mountOnEnter={false}
-      navbar={true}
-      onEnter={[Function]}
-      onEntered={[Function]}
-      onEntering={[Function]}
-      onExit={[Function]}
-      onExited={[Function]}
-      onExiting={[Function]}
-      tag="div"
-      timeout={350}
-      unmountOnExit={false}
+    <div
+      className="logo"
     >
-      <Nav
-        className="mr-auto"
-        navbar={true}
-        tag="ul"
-        vertical={false}
+      <Image
+        src="opensrp-logo-color.png"
+        width={200}
+      />
+    </div>,
+    <Menu
+      mode="horizontal"
+      selectedKeys={
+        Array [
+          "/",
+        ]
+      }
+    >
+      <MenuItem>
+        Home
+      </MenuItem>
+      <MenuItem
+        style={
+          Object {
+            "float": "right",
+          }
+        }
       >
-        <NavItem
-          tag="li"
-        >
-          <NavLink
-            activeClassName="active"
-            className="nav-link active"
-            to="/"
-          >
-            Home
-          </NavLink>
-        </NavItem>
-      </Nav>
-      <Nav
-        className="ml-0"
-        navbar={true}
-        tag="ul"
-        vertical={false}
-      >
-        <NavLink
-          activeClassName="active"
-          className="nav-link"
+        <Link
           to="/login"
         >
           Login
-        </NavLink>
-      </Nav>
-    </Collapse>,
+        </Link>
+      </MenuItem>
+    </Menu>,
   ],
-  "expand": "md",
-  "light": true,
-  "tag": "nav",
 }
 `;
 
 exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
 Object {
   "children": Array [
-    <nav
-      className="navbar navbar-expand-md navbar-light header-logo-navbar"
-    />,
-    <NavbarToggler
-      onClick={[Function]}
-      tag="button"
-      type="button"
-    />,
-    <Collapse
-      appear={false}
-      enter={true}
-      exit={true}
-      in={false}
-      isOpen={false}
-      mountOnEnter={false}
-      navbar={true}
-      onEnter={[Function]}
-      onEntered={[Function]}
-      onEntering={[Function]}
-      onExit={[Function]}
-      onExited={[Function]}
-      onExiting={[Function]}
-      tag="div"
-      timeout={350}
-      unmountOnExit={false}
+    <div
+      className="logo"
     >
-      <Nav
-        className="mr-auto"
-        navbar={true}
-        tag="ul"
-        vertical={false}
+      <Image
+        src="opensrp-logo-color.png"
+        width={200}
+      />
+    </div>,
+    <Menu
+      mode="horizontal"
+      selectedKeys={
+        Array [
+          "/",
+        ]
+      }
+    >
+      <MenuItem>
+        Home
+      </MenuItem>
+      <SubMenu
+        style={
+          Object {
+            "float": "right",
+          }
+        }
+        title="RobertBaratheon"
       >
-        <NavItem
-          tag="li"
-        >
-          <NavLink
-            activeClassName="active"
-            className="nav-link active"
-            to="/"
+        <MenuItem>
+          <Link
+            to="/logout"
           >
-            Home
-          </NavLink>
-        </NavItem>
-      </Nav>
-      <Nav
-        className="ml-0"
-        navbar={true}
-        tag="ul"
-        vertical={false}
-      >
-        <UncontrolledDropdown
-          inNavbar={true}
-          nav={true}
-        >
-          <DropdownToggle
-            aria-haspopup={true}
-            caret={true}
-            color="secondary"
-            nav={true}
-          >
-            <FontAwesomeIcon
-              border={false}
-              className=""
-              fixedWidth={false}
-              flip={null}
-              icon={
-                Array [
-                  "far",
-                  "user",
-                ]
-              }
-              inverse={false}
-              listItem={false}
-              mask={null}
-              pull={null}
-              pulse={false}
-              rotation={null}
-              size={null}
-              spin={false}
-              swapOpacity={false}
-              symbol={false}
-              title=""
-              transform={null}
-            />
-             
-            RobertBaratheon
-          </DropdownToggle>
-          <DropdownMenu
-            flip={true}
-            right={true}
-            tag="div"
-          >
-            <DropdownItem
-              tag="button"
-              toggle={true}
-            >
-              <NavLink
-                activeClassName="active"
-                className="nav-link"
-                to="/logout"
-              >
-                Sign Out
-              </NavLink>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      </Nav>
-    </Collapse>,
+            Logout
+          </Link>
+        </MenuItem>
+      </SubMenu>
+    </Menu>,
   ],
-  "expand": "md",
-  "light": true,
-  "tag": "nav",
 }
 `;
