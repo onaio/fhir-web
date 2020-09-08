@@ -24,6 +24,11 @@
   padding-left: 0;
 }
 .ant-menu-horizontal > .ant-menu-item-selected a:hover,
-.ant-menu-horizontal > .ant-menu-item a:hover {
+.ant-menu-horizontal > .ant-menu-item a:hover,
+.ant-menu-item a:hover {
   text-decoration: none;
+}
+
+.ant-layout-header .logo {
+  float: left;
 }

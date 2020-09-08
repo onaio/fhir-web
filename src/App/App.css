@@ -12,7 +12,6 @@ h2.page-title {
 .gatekeeper-cb,
 .gatekeeper-login {
   margin-top: 3rem !important;
-  padding: 2%;
 }
 
 .gatekeeper-btn {
@@ -82,4 +81,8 @@ fieldset[disabled] .gatekeeper-btn.active {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.ant-layout-content {
+  padding: 0 50px;
 }
