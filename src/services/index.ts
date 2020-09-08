@@ -41,7 +41,7 @@ export function getFilterParams(obj: URLParams): string {
  * @returns the payload
  */
 
-export function getPayloadOptions(_: AbortSignal, method: HTTPMethod): { [key: string]: any } {
+export function getPayloadOptions(_: AbortSignal, method: HTTPMethod): any {
   return {
     headers: getDefaultHeaders() as HeadersInit,
     method,
