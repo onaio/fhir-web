@@ -20,6 +20,13 @@ export function getDefaultHeaders(
   };
 }
 
+/** Payload options interface */
+
+interface PayloadOptions {
+  headers: HeadersInit;
+  method: HTTPMethod;
+}
+
 /** interface to describe URL params object */
 export interface URLParams {
   [key: string]: string | number | boolean;
@@ -41,7 +48,7 @@ export function getFilterParams(obj: URLParams): string {
  * @returns the payload
  */
 
-export function getPayloadOptions(_: AbortSignal, method: HTTPMethod): any {
+export function getPayloadOptions(_: AbortSignal, method: HTTPMethod): PayloadOptions {
   return {
     headers: getDefaultHeaders() as HeadersInit,
     method,
@@ -75,7 +82,7 @@ export class OpenSRPService extends OpenSRPServiceWeb {
     id?: string | number,
     params: URLParams | null = null,
     method: HTTPMethod = 'GET'
-  ): Promise<any> {
+  ): Promise<Blob> {
     const url = OpenSRPService.getURL(`${this.generalURL}/${id}`, params);
     const response = await fetch(url, this.getOptions(this.signal, method));
 

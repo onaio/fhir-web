@@ -21,7 +21,7 @@ export const defaultProps: Partial<RippleProps> = {
 };
 
 /** Loading component that displays a nice ripple */
-const Ripple = (props: RippleProps) => {
+const Ripple = (props: RippleProps): JSX.Element => {
   const { borderColor, borderStyle, borderWidth, height, minHeight, width } = props;
 
   const innerDivStyle: React.CSSProperties = {
