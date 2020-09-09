@@ -7,10 +7,6 @@ import { Router } from 'react-router';
 import Home from '../Home';
 
 describe('containers/pages/Home', () => {
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
   it('renders without crashing', () => {
     shallow(
       <Router history={history}>
