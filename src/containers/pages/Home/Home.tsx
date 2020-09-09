@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { Col, Row } from 'reactstrap';
+import { Col, Row } from 'antd';
 import './Home.css';
 
 const Home = (): JSX.Element => {
@@ -10,7 +10,7 @@ const Home = (): JSX.Element => {
         <title>OpenSRP Web</title>
       </Helmet>
       <Row className="welcome-box">
-        <Col>
+        <Col span={12} offset={6}>
           <h3>Welcome to OpenSRP</h3>
         </Col>
       </Row>
