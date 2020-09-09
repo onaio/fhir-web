@@ -22,6 +22,7 @@
     "bootstrap": "^4.5.2",
     "client-oauth2": "^4.3.3",
     "connected-react-router": "^6.8.0",
+    "flush-promises": "^1.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",

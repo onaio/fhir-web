@@ -7,6 +7,10 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import enzyme from 'enzyme';
 import '@testing-library/jest-dom/extend-expect';
 import Adapter from 'enzyme-adapter-react-16';
+import fetchMock from 'jest-fetch-mock';
+
+fetchMock.enableMocks();
+
 enzyme.configure({ adapter: new Adapter() });
 library.add(faUser);
 Object.defineProperty(window, 'matchMedia', {
