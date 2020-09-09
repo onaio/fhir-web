@@ -86,3 +86,8 @@ fieldset[disabled] .gatekeeper-btn.active {
 .ant-layout-content {
   padding: 0 50px;
 }
+
+.ant-menu-horizontal > .ant-menu-item,
+.ant-menu-horizontal > .ant-menu-submenu {
+  padding: 0 20px !important;
+}
