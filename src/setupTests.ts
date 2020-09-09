@@ -22,3 +22,4 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
