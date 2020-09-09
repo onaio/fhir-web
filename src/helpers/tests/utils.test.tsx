@@ -18,5 +18,9 @@ describe('helpers/utils', () => {
     oAuthUserInfoGetter(resp);
     expect(mock).toHaveBeenCalledWith(resp);
     mock.mockRestore();
+    const resp1 = { foo: 'bar' };
+    oAuthUserInfoGetter(resp1);
+    expect(mock).not.toHaveBeenCalled();
+    mock.mockRestore();
   });
 });

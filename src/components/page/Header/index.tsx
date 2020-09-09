@@ -35,11 +35,6 @@ export class HeaderComponent extends React.Component<HeaderProps, State> {
 
   constructor(props: HeaderProps) {
     super(props);
-
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      isOpen: false,
-    };
   }
 
   public render(): JSX.Element {
@@ -68,10 +63,6 @@ export class HeaderComponent extends React.Component<HeaderProps, State> {
         </Layout.Header>
       </div>
     );
-  }
-
-  private toggle() {
-    this.setState({ isOpen: !this.state.isOpen });
   }
 }
 
