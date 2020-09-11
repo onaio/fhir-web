@@ -14,7 +14,7 @@ export const CustomLogout = (): JSX.Element => {
   const redirectUri = DOMAIN_NAME;
   logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((error) => {
     /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-    console.error(error); // refactor to show growl error
+    console.error(error);
     history.push('/');
   });
   return <Ripple />;

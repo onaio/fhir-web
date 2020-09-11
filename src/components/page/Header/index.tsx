@@ -33,10 +33,6 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 export class HeaderComponent extends React.Component<HeaderProps, State> {
   public static defaultProps = defaultHeaderProps;
 
-  constructor(props: HeaderProps) {
-    super(props);
-  }
-
   public render(): JSX.Element {
     const { authenticated, user } = this.props;
     const path = this.props.location.pathname;
