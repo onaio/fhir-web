@@ -1,10 +1,13 @@
 # OpenSRP Web
 
+[![Coverage Status](https://coveralls.io/repos/github/OpenSRP/web/badge.svg?branch=master)](https://coveralls.io/github/OpenSRP/web?branch=master)
+
 The goal of OpenSRP Web is to be the default frontend for the [OpenSRP Server](https://github.com/OpenSRP/opensrp-server-core) API, providing access to
 the data collected on the server, configuration options as well as any
 functionality provided by the API server.
 
 The initial priorities are to support:
+
 1. Authentication through Keycloak
 2. User management - pull some functionality, not all, that currently can be achieved by Keycloak.
 3. Team management
@@ -15,7 +18,7 @@ The hope is to build on the work done on other attempts so far.
 This repository intends to be a monorepo of all components that you will use
 to provide all the functionality for an OpenSRP frontend UI.
 
-# Code
+## Code
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -45,8 +48,6 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-
 
 ## Contributing
 
