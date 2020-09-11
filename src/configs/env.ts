@@ -6,7 +6,7 @@ export type BACKEND_ACTIVE = typeof BACKEND_ACTIVE;
 
 export const OPENSRP_LOGOUT_URL =
   process.env.REACT_APP_OPENSRP_LOGOUT_URL ||
-  'https://reveal-stage.smartregister.org/opensrp/logout.do';
+  'https://opensrp-stage.smartregister.org/opensrp/logout.do';
 export type OPENSRP_LOGOUT_URL = typeof OPENSRP_LOGOUT_URL;
 export const OPENSRP_OAUTH_STATE = process.env.REACT_APP_OPENSRP_OAUTH_STATE || 'opensrp';
 export type OPENSRP_OAUTH_STATE = typeof OPENSRP_OAUTH_STATE;
@@ -44,7 +44,7 @@ export type NAVBAR_BRAND_IMG_SRC = typeof NAVBAR_BRAND_IMG_SRC;
 
 export const KEYCLOAK_LOGOUT_URL =
   process.env.REACT_APP_KEYCLOAK_LOGOUT_URL ||
-  'https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/logout';
+  'https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout';
 export type KEYCLOAK_LOGOUT_URL = typeof KEYCLOAK_LOGOUT_URL;
 
 export const OPENSRP_API_BASE_URL =
