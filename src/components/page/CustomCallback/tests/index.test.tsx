@@ -14,10 +14,6 @@ const App = () => {
       {/* tslint:disable-next-line: jsx-no-lambda */}
       <Route path="/login" component={() => <div id="login" />} />
       {/* tslint:disable-next-line: jsx-no-lambda */}
-      <Route path="/teams" component={() => <div id="teams" />} />
-      {/* tslint:disable-next-line: jsx-no-lambda */}
-      <Route path="/plans/update/:id" component={() => <div id="plans" />} />
-      {/* tslint:disable-next-line: jsx-no-lambda */}
       <Route path="/" component={() => <div id="home" />} />
     </Switch>
   );

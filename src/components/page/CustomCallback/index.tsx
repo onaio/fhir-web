@@ -13,12 +13,10 @@ import Loading from '../Loading';
  * antd notification popup
  * @param user - user details object
  */
-const openNotification = (user: User) => {
-  const [api] = notification.useNotification();
-  const { info } = api;
-  info({
-    message: `Welcome Back`,
-    description: `${user.username}`,
+export const openNotification = (user: User): void => {
+  notification.success({
+    message: `Welcome back, ${user.username}`,
+    description: '',
   });
 };
 
