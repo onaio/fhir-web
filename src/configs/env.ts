@@ -1,9 +1,9 @@
-export const EXPRESS_OAUTH_LOGOUT_URL =
-  process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
-export type EXPRESS_OAUTH_LOGOUT_URL = typeof EXPRESS_OAUTH_LOGOUT_URL;
-
 export const WEBSITE_NAME = process.env.REACT_APP_WEBSITE_NAME || 'OpenSRP Web';
 export type WEBSITE_NAME = typeof WEBSITE_NAME;
+
+export const BACKEND_ACTIVE = process.env.REACT_APP_BACKEND_ACTIVE === 'true';
+export type BACKEND_ACTIVE = typeof BACKEND_ACTIVE;
+
 export const OPENSRP_LOGOUT_URL =
   process.env.REACT_APP_OPENSRP_LOGOUT_URL ||
   'https://reveal-stage.smartregister.org/opensrp/logout.do';
@@ -51,3 +51,13 @@ export const OPENSRP_API_BASE_URL =
   process.env.REACT_APP_OPENSRP_API_BASE_URL ||
   'https://reveal-stage.smartregister.org/opensrp/rest/';
 export type OPENSRP_API_BASE_URL = typeof OPENSRP_API_BASE_URL;
+
+/** Express server settings */
+
+export const EXPRESS_OAUTH_GET_STATE_URL =
+  process.env.REACT_APP_EXPRESS_OAUTH_GET_STATE_URL || 'http://localhost:3000/oauth/state';
+export type EXPRESS_OAUTH_GET_STATE_URL = typeof EXPRESS_OAUTH_GET_STATE_URL;
+
+export const EXPRESS_OAUTH_LOGOUT_URL =
+  process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
+export type EXPRESS_OAUTH_LOGOUT_URL = typeof EXPRESS_OAUTH_LOGOUT_URL;

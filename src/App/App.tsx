@@ -13,12 +13,18 @@ import { Layout } from 'antd';
 import { Switch, Route, Redirect } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
-import { WEBSITE_NAME } from '../configs/env';
-import { LOGIN_PROMPT, REACT_CALLBACK_PATH } from '../constants';
+import { WEBSITE_NAME, BACKEND_ACTIVE } from '../configs/env';
+import {
+  LOGIN_PROMPT,
+  REACT_CALLBACK_PATH,
+  BACKEND_CALLBACK_URL,
+  BACKEND_LOGIN_URL,
+  BACKEND_CALLBACK_PATH,
+} from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import Home from '../containers/pages/Home/Home';
-
+import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import './App.css';
 
 const { Content } = Layout;
@@ -26,7 +32,11 @@ const { Content } = Layout;
 library.add(faUser);
 
 const App = (): JSX.Element => {
-  const { IMPLICIT } = AuthorizationGrantType;
+  const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : '/login';
+  const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
+  const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
+  const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -37,7 +47,7 @@ const App = (): JSX.Element => {
             {/* tslint:disable jsx-no-lambda */}
             {/* Home Page view */}
             <ConnectedPrivateRoute
-              redirectPath="/login"
+              redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path="/"
@@ -45,11 +55,11 @@ const App = (): JSX.Element => {
             />
             <Route
               exact
-              path="/login"
+              path={APP_LOGIN_URL}
               render={(routeProps) => (
                 <OauthLogin
                   providers={providers}
-                  authorizationGrantType={IMPLICIT}
+                  authorizationGrantType={AuthGrantType}
                   OAuthLoginPromptMessage={LOGIN_PROMPT}
                   {...routeProps}
                 />
@@ -57,8 +67,11 @@ const App = (): JSX.Element => {
             />
             <Route
               exact
-              path={REACT_CALLBACK_PATH}
+              path={APP_CALLBACK_PATH}
               render={(routeProps) => {
+                if (BACKEND_ACTIVE) {
+                  return <CustomConnectedAPICallBack {...routeProps} />;
+                }
                 return (
                   <ConnectedOauthCallback
                     SuccessfulLoginComponent={() => {
@@ -74,7 +87,7 @@ const App = (): JSX.Element => {
             />
             {/* tslint:enable jsx-no-lambda */}
             <ConnectedPrivateRoute
-              redirectPath="/login"
+              redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path="/logout"
