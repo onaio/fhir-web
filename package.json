@@ -40,6 +40,7 @@
     "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
+    "lint-snap": "eslint 'src/**/*.snap'",
     "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
   },
   "tsd": {
@@ -52,11 +53,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix --max-warnings 0",
+      "eslint src/**/*.{ts,tsx} --fix --max-warnings 0",
       "git add"
     ],
     "*.{js,jsx}": [
-      "eslint --fix --max-warnings 0",
+      "eslint src/**/*.{ts,tsx} --fix --max-warnings 0",
       "git add"
     ],
     "*.{json,js,jsx,ts,tsx,css,scss,md}": [
