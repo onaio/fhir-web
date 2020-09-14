@@ -90,7 +90,8 @@
       "src/**/*.{ts,tsx}",
       "!src/index.tsx",
       "!src/serviceWorker.ts",
-      "!**/tests/**"
+      "!**/tests/**",
+      "!src/configs"
     ],
     "coverageThreshold": {
       "global": {
