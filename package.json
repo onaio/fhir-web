@@ -91,7 +91,7 @@
       "!src/index.tsx",
       "!src/serviceWorker.ts",
       "!**/tests/**",
-      "!src/configs"
+      "!src/configs/**"
     ],
     "coverageThreshold": {
       "global": {
