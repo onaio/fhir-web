@@ -57,5 +57,4 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 4. Ensure your PR includes tests.
 5. Ensure all your commits are signed, [see](https://docs.github.com/en/github/authenticating-to-github/signing-commits).
 
-Familiarity with [React](https://reactjs.org/) and [Ant](https://ant.design/docs/react/introduce)
-is necessary.
+Familiarity with [React](https://reactjs.org/) and [Ant](https://ant.design/docs/react/introduce) is necessary.
