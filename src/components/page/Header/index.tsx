@@ -10,10 +10,6 @@ import { BACKEND_ACTIVE } from '../../../configs/env';
 import { BACKEND_LOGIN_URL } from '../../../constants';
 
 const SubMenu = Menu.SubMenu;
-/** interface for Header state */
-interface State {
-  isOpen: boolean;
-}
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -32,38 +28,37 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 };
 
 /** The Header component */
-export class HeaderComponent extends React.Component<HeaderProps, State> {
-  public static defaultProps = defaultHeaderProps;
 
-  public render(): JSX.Element {
-    const { authenticated, user } = this.props;
-    const path = this.props.location.pathname;
-    const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
-    return (
-      <div>
-        <Layout.Header>
-          <div className="logo">
-            <Image width={200} src={Logo} />
-          </div>
-          <Menu mode="horizontal" selectedKeys={[path]}>
-            <Menu.Item key="/">Home</Menu.Item>
-            {authenticated ? (
-              <SubMenu title={`${user.username}`} style={{ float: 'right' }}>
-                <Menu.Item key="/logout">
-                  <Link to="/logout">Logout</Link>
-                </Menu.Item>
-              </SubMenu>
-            ) : (
-              <Menu.Item key={APP_LOGIN_URL} style={{ float: 'right' }}>
-                <Link to={APP_LOGIN_URL}>Login</Link>
+export const HeaderComponent = (props: HeaderProps): JSX.Element => {
+  const { authenticated, user } = props;
+  const path = props.location.pathname;
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
+  return (
+    <div>
+      <Layout.Header>
+        <div className="logo">
+          <Image width={200} src={Logo} />
+        </div>
+        <Menu mode="horizontal" selectedKeys={[path]}>
+          <Menu.Item key="/">Home</Menu.Item>
+          {authenticated ? (
+            <SubMenu title={`${user.username}`} style={{ float: 'right' }}>
+              <Menu.Item key="/logout">
+                <Link to="/logout">Logout</Link>
               </Menu.Item>
-            )}
-          </Menu>
-        </Layout.Header>
-      </div>
-    );
-  }
-}
+            </SubMenu>
+          ) : (
+            <Menu.Item key={APP_LOGIN_URL} style={{ float: 'right' }}>
+              <Link to={APP_LOGIN_URL}>Login</Link>
+            </Menu.Item>
+          )}
+        </Menu>
+      </Layout.Header>
+    </div>
+  );
+};
+
+HeaderComponent.defaultProps = defaultHeaderProps;
 
 const Header = withRouter(HeaderComponent);
 
