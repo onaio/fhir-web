@@ -6,6 +6,8 @@ import { Menu, Layout, Image } from 'antd';
 import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
+import { BACKEND_ACTIVE } from '../../../configs/env';
+import { BACKEND_LOGIN_URL } from '../../../constants';
 
 const SubMenu = Menu.SubMenu;
 /** interface for Header state */
@@ -36,6 +38,7 @@ export class HeaderComponent extends React.Component<HeaderProps, State> {
   public render(): JSX.Element {
     const { authenticated, user } = this.props;
     const path = this.props.location.pathname;
+    const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
     return (
       <div>
         <Layout.Header>
@@ -51,8 +54,8 @@ export class HeaderComponent extends React.Component<HeaderProps, State> {
                 </Menu.Item>
               </SubMenu>
             ) : (
-              <Menu.Item key="/login" style={{ float: 'right' }}>
-                <Link to="/login">Login</Link>
+              <Menu.Item key={APP_LOGIN_URL} style={{ float: 'right' }}>
+                <Link to={APP_LOGIN_URL}>Login</Link>
               </Menu.Item>
             )}
           </Menu>
