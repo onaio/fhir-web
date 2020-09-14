@@ -4,8 +4,8 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
-  OauthLogin,
   getOpenSRPUserInfo,
+  useOAuthLogin,
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
@@ -15,7 +15,6 @@ import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
 import { WEBSITE_NAME, BACKEND_ACTIVE } from '../configs/env';
 import {
-  LOGIN_PROMPT,
   REACT_CALLBACK_PATH,
   BACKEND_CALLBACK_URL,
   BACKEND_LOGIN_URL,
@@ -37,6 +36,7 @@ const App = (): JSX.Element => {
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
   const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
+  const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -56,14 +56,10 @@ const App = (): JSX.Element => {
             <Route
               exact
               path={APP_LOGIN_URL}
-              render={(routeProps) => (
-                <OauthLogin
-                  providers={providers}
-                  authorizationGrantType={AuthGrantType}
-                  OAuthLoginPromptMessage={LOGIN_PROMPT}
-                  {...routeProps}
-                />
-              )}
+              render={() => {
+                window.location.href = OpenSRP;
+                return <></>;
+              }}
             />
             <Route
               exact

@@ -4,11 +4,11 @@ import { FlushThunks } from 'redux-testkit';
 import store from '..';
 import messages, { selectAllMessages, sendMessage } from './ducks/messages';
 import random, { reducerName as randomReducer } from './ducks/random';
-reducerRegistry.register(randomReducer, random);
 
 describe('store', () => {
   beforeEach(() => {
     FlushThunks.createMiddleware();
+    reducerRegistry.register(randomReducer, random);
     jest.resetAllMocks();
   });
 
