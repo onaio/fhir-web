@@ -35,9 +35,9 @@ describe('components/Loading', () => {
       },
       method: 'GET',
     };
-    const logoutURL = 'https://reveal-stage.smartregister.org/opensrp/logout.do';
+    const logoutURL = 'https://opensrp-stage.smartregister.org/opensrp/logout.do';
     const keycloakURL =
-      'https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/logout';
+      'https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout';
     mount(
       <Provider store={store}>
         <Router history={history}>
