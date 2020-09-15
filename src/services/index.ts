@@ -1,8 +1,9 @@
 import { OpenSRPService as OpenSRPServiceWeb } from '@opensrp/server-service';
 import { IncomingHttpHeaders } from 'http';
-import { OPENSRP_API_BASE_URL } from '../configs/env';
+import { OPENSRP_API_BASE_URL, KEYCLOAK_API_BASE_URL } from '../configs/env';
 import store from '../store';
 import { getAccessToken } from '../store/selectors';
+import { KeycloakAPIService } from './keycloak';
 
 /** allowed http methods */
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -89,6 +90,32 @@ export class OpenSRPService extends OpenSRPServiceWeb {
     if (!response.ok) {
       throw new Error(
         `OpenSRPService read on ${this.endpoint} failed, HTTP status ${response.status}`
+      );
+    }
+    return await response.blob();
+  }
+}
+
+export class KeycloakService extends KeycloakAPIService {
+  constructor(
+    endpoint: string,
+    baseURL: string = KEYCLOAK_API_BASE_URL,
+    getPayload: typeof getPayloadOptions = getPayloadOptions
+  ) {
+    super(baseURL, endpoint, getPayload);
+  }
+
+  public async readFile(
+    id?: string | number,
+    params: URLParams | null = null,
+    method: HTTPMethod = 'GET'
+  ): Promise<Blob> {
+    const url = KeycloakService.getURL(`${this.generalURL}/${id}`, params);
+    const response = await fetch(url, this.getOptions(this.signal, method));
+
+    if (!response.ok) {
+      throw new Error(
+        `KeycloakService read on ${this.endpoint} failed, HTTP status ${response.status}`
       );
     }
     return await response.blob();
