@@ -25,6 +25,7 @@ import ConnectedHeader from '../containers/ConnectedHeader';
 import Home from '../containers/pages/Home/Home';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import './App.css';
+import Admin from '../containers/pages/Admin';
 
 const { Content } = Layout;
 
@@ -52,6 +53,13 @@ const App = (): JSX.Element => {
               exact
               path="/"
               component={Home}
+            />
+            <ConnectedPrivateRoute
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path="/admin"
+              component={Admin}
             />
             <Route
               exact

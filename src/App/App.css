@@ -92,5 +92,5 @@ fieldset[disabled] .gatekeeper-btn.active {
 .ant-menu-horizontal > .ant-menu-item,
 .ant-menu-horizontal > .ant-menu-submenu {
   padding: 0 20px !important;
-  margin: 0 !important;
+  margin: -1px 5px 0 !important;
 }
