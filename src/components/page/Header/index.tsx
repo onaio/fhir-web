@@ -40,11 +40,19 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Image width={200} src={Logo} />
         </div>
         <Menu mode="horizontal" selectedKeys={[path]}>
-          <Menu.Item key={HOME_URL}>Home</Menu.Item>
+          <Menu.Item key="/">
+            <Link to="/">Home</Link>
+          </Menu.Item>
+          <Menu.Item key="/admin">
+            <Link to="/admin">Admin</Link>
+          </Menu.Item>
           {authenticated ? (
             <SubMenu title={`${user.username}`} style={{ float: 'right' }}>
               <Menu.Item key={LOGOUT_URL}>
                 <Link to={LOGOUT_URL}>Logout</Link>
+              </Menu.Item>
+              <Menu.Item key="/manage-account">
+                <Link to="/manage-account">Manage account</Link>
               </Menu.Item>
             </SubMenu>
           ) : (

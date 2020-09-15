@@ -57,6 +57,7 @@ describe('App', () => {
     // expect(fetch.mock.calls).toEqual([['http://localhost:3000/oauth/state']]);
 
     // after resolving get oauth state request superset user is logged in
+    expect(fetch.mock).toEqual('');
     expect(wrapper.find('Router').props().history).toMatchObject({
       location: {
         pathname: '/login',
