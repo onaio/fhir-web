@@ -7,6 +7,10 @@ import { Router } from 'react-router';
 import Home from '../Home';
 
 describe('containers/pages/Home', () => {
+  const realLocation = window.location;
+  beforeEach(() => {
+    window.location = realLocation;
+  });
   it('renders without crashing', () => {
     shallow(
       <Router history={history}>

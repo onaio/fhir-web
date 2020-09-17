@@ -16,7 +16,6 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 1`
         "hash": "",
         "pathname": "/",
         "search": "",
-        "state": undefined,
       },
       "push": [Function],
       "replace": [Function],
