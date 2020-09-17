@@ -7,9 +7,7 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import enzyme from 'enzyme';
 import '@testing-library/jest-dom/extend-expect';
 import Adapter from 'enzyme-adapter-react-16';
-import fetchMock from 'jest-fetch-mock';
-
-fetchMock.enableMocks();
+global.fetch = require('jest-fetch-mock');
 
 enzyme.configure({ adapter: new Adapter() });
 library.add(faUser);
@@ -25,5 +23,11 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
+});
+Object.defineProperty(window, 'location', {
+  value: {
+    href: window.location.href,
+  },
+  writable: true,
 });
 window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
