@@ -28,6 +28,8 @@ import Home from '../containers/pages/Home/Home';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import './App.css';
 import Admin from '../containers/pages/Admin';
+import EditUsers from '../containers/pages/Admin/EditUser/Index';
+import ConnectedEdiUsersView from '../containers/pages/Admin/EditUser/Index';
 
 const { Content } = Layout;
 
@@ -62,6 +64,13 @@ const App: React.FC = () => {
               exact
               path="/admin"
               component={Admin}
+            />
+            <ConnectedPrivateRoute
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path="/user/edit/:userId"
+              component={ConnectedEdiUsersView}
             />
             <Route
               exact
