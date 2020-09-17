@@ -72,8 +72,6 @@ const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     return <Ripple />;
   }
 
-  console.log('edit user props??', props);
-
   return (
     <Col span={12}>
       <HeaderBreadCrumb />
@@ -83,7 +81,6 @@ const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
           // tslint:disable-next-line: jsx-no-lambda
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(true);
-            console.log(values);
           }}
         >
           {({ errors, isSubmitting }) => (

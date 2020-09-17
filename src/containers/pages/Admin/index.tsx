@@ -1,12 +1,13 @@
 import * as React from 'react';
 import ListView from '@onaio/list-view';
-import { Layout, Breadcrumb, notification } from 'antd';
+import { notification, Row, Col } from 'antd';
 import '../Home/Home.css';
 import { KeycloakService } from '../../../services';
 import { Link } from 'react-router-dom';
 import Ripple from '../../../components/page/Loading';
+import HeaderBreadCrumb from '../../../components/page/HeaderBreadCrumb';
 
-const { Content } = Layout;
+// const { Content } = Layout;
 
 // props interface to Admin component
 export interface Props {
@@ -68,7 +69,7 @@ export const Admin = (props: Props): JSX.Element => {
 
   const data = users.map((user: User, index: number) => {
     return [
-      <Link to={`/user/${user.id}`} key={`${index}-userid`}>
+      <Link to={`/user/edit/${user.id}`} key={`${index}-userid`}>
         {user.id}
       </Link>,
       <span key={`${index}-username`}>{user.username}</span>,
@@ -84,7 +85,7 @@ export const Admin = (props: Props): JSX.Element => {
   const tableClass = 'table table-bordered';
   const renderHeaders = () => {
     return (
-      <thead className="thead-plan-orgs">
+      <thead>
         <tr>
           {headerItems.map((item: string, index: number) => {
             return (
@@ -104,14 +105,10 @@ export const Admin = (props: Props): JSX.Element => {
     tableClass,
   };
   return (
-    <Content style={{ padding: '0 50px' }}>
-      <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
-        <Breadcrumb.Item>List</Breadcrumb.Item>
-        <Breadcrumb.Item>Users</Breadcrumb.Item>
-      </Breadcrumb>
+    <Col span={24}>
+      <HeaderBreadCrumb />
       <ListView {...listViewProps} />
-    </Content>
+    </Col>
     // <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
   );
 };
