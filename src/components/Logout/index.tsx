@@ -10,17 +10,20 @@ import {
 } from '../../configs/env';
 import { getPayloadOptions } from '../../services';
 import Ripple from '../page/Loading';
+import { notification } from 'antd';
 
 /** HOC function that calls function that logs out the user from both opensrp
  * and keycloak
  */
-export const CustomLogout = (): JSX.Element => {
+export const CustomLogout: React.FC = (): JSX.Element => {
   const history = useHistory();
   const payload = getPayloadOptions(new AbortController().signal, 'GET');
   const redirectUri = BACKEND_ACTIVE ? EXPRESS_OAUTH_LOGOUT_URL : DOMAIN_NAME;
   logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((error) => {
-    /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-    console.error(error);
+    notification.error({
+      message: error,
+      description: '',
+    });
     history.push('/');
   });
   return <Ripple />;

@@ -29,7 +29,7 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 
 /** The Header component */
 
-export const HeaderComponent = (props: HeaderProps): JSX.Element => {
+export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user } = props;
   const path = props.location.pathname;
   const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
