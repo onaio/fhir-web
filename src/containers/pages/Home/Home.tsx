@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Col, Row } from 'antd';
 import './Home.css';
 
-const Home = (): JSX.Element => {
+const Home: React.FC = (): JSX.Element => {
   return (
     <div className="text-center">
       <Helmet>

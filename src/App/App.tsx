@@ -30,7 +30,7 @@ const { Content } = Layout;
 
 library.add(faUser);
 
-const App = (): JSX.Element => {
+const App: React.FC = () => {
   const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : '/login';
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
