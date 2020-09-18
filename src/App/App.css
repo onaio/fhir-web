@@ -94,3 +94,7 @@ fieldset[disabled] .gatekeeper-btn.active {
   padding: 0 20px !important;
   margin: -1px 5px 0 !important;
 }
+
+.ant-layout-content {
+  margin-top: 20px;
+}

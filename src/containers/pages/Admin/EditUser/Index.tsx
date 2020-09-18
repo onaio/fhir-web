@@ -161,6 +161,7 @@ const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                 <Button
                   type="primary"
                   htmlType="submit"
+                  className="create-user"
                   disabled={isSubmitting || Object.keys(errors).length > 0}
                 >
                   {isSubmitting ? 'Saving' : 'Save User'}
