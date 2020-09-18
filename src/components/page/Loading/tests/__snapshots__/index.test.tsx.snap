@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Loading renders the Loading component 1`] = `
+<Ripple
+  borderColor="#ff5d00"
+  borderStyle="solid"
+  borderWidth="4px"
+  height="64px"
+  minHeight="80vh"
+  width="64px"
+>
+  <div
+    className="lds-ripple-parent"
+    style={
+      Object {
+        "minHeight": "80vh",
+      }
+    }
+  >
+    <div
+      className="lds-ripple"
+      style={
+        Object {
+          "height": "64px",
+          "width": "64px",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "borderColor": "#ff5d00",
+            "borderStyle": "solid",
+            "borderWidth": "4px",
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "borderColor": "#ff5d00",
+            "borderStyle": "solid",
+            "borderWidth": "4px",
+          }
+        }
+      />
+    </div>
+  </div>
+</Ripple>
+`;
+
+exports[`components/Loading renders the Loading component when props are given 1`] = `
+<Ripple
+  borderColor="#ff0000"
+  borderStyle="solid"
+  borderWidth="6px"
+  height="128px"
+  minHeight="70vh"
+  width="128px"
+>
+  <div
+    className="lds-ripple-parent"
+    style={
+      Object {
+        "minHeight": "70vh",
+      }
+    }
+  >
+    <div
+      className="lds-ripple"
+      style={
+        Object {
+          "height": "128px",
+          "width": "128px",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "borderColor": "#ff0000",
+            "borderStyle": "solid",
+            "borderWidth": "6px",
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "borderColor": "#ff0000",
+            "borderStyle": "solid",
+            "borderWidth": "6px",
+          }
+        }
+      />
+    </div>
+  </div>
+</Ripple>
+`;
+
+exports[`components/Loading renders the Loading component when props are given 2`] = `
+Object {
+  "borderColor": "#ff0000",
+  "borderStyle": "solid",
+  "borderWidth": "6px",
+  "height": "128px",
+  "minHeight": "70vh",
+  "width": "128px",
+}
+`;
