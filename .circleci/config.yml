@@ -48,6 +48,10 @@ jobs:
           command: yarn lint
 
       - run:
+          name: Run snap linter
+          command: yarn lint-snap
+
+      - run:
           name: Run tests
           command: yarn test --runInBand --verbose --forceExit --detectOpenHandles
 
