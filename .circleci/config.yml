@@ -52,9 +52,5 @@ jobs:
           command: yarn lint-snap
 
       - run:
-          name: Run tests
-          command: yarn test --runInBand --verbose --forceExit --detectOpenHandles
-
-      - run:
-          name: Run coveralls
+          name: Run Tests and Coveralls
           command: yarn coveralls
