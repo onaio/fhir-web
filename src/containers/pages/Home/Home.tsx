@@ -9,10 +9,8 @@ const Home: React.FC = (): JSX.Element => {
       <Helmet>
         <title>OpenSRP Web</title>
       </Helmet>
-      <Row className="welcome-box">
-        <Col span={12} offset={6}>
-          <h3>Welcome to OpenSRP</h3>
-        </Col>
+      <Row justify="center">
+        <Col span={4}>Welcome to OpenSRP</Col>
       </Row>
     </div>
   );

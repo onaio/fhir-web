@@ -29,6 +29,10 @@
   text-decoration: none;
 }
 
+.ant-layout-header {
+  height: auto !important;
+}
+
 .ant-layout-header .logo {
   float: left;
 }
