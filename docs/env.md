@@ -59,6 +59,6 @@ Below is a list of currently supported environment variables:
 
 10. **REACT_APP_EXPRESS_OAUTH_GET_STATE_URL**
 
-- Enable or disable OpenSRP as the oauth2 provider
+- URL to get oauth2 state value
 - **Required**
 - default: `https://web.opensrp-stage.smartregister.org/oauth/state`
