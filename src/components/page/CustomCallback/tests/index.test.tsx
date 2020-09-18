@@ -37,19 +37,6 @@ describe('src/components/page/CustomCallback.SuccessfulLogin', () => {
     expect(wrapper.find('#home')).toHaveLength(1);
   });
 
-  it('renders callback component correctly', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <CustomConnectedAPICallBack />
-        </Router>
-      </Provider>
-    );
-    expect(toJson(wrapper.find('CustomConnectedAPICallBack'))).toMatchSnapshot(
-      'custom api callback component'
-    );
-  });
-
   it('redirects if next page is provided; nominal', () => {
     const wrapper = mount(
       <MemoryRouter
