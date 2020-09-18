@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
-import { BACKEND_LOGIN_URL } from '../../../constants';
+import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
 
 const SubMenu = Menu.SubMenu;
 
@@ -32,7 +32,7 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user } = props;
   const path = props.location.pathname;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
   return (
     <div>
       <Layout.Header>
@@ -40,11 +40,11 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Image width={200} src={Logo} />
         </div>
         <Menu mode="horizontal" selectedKeys={[path]}>
-          <Menu.Item key="/">Home</Menu.Item>
+          <Menu.Item key={HOME_URL}>Home</Menu.Item>
           {authenticated ? (
             <SubMenu title={`${user.username}`} style={{ float: 'right' }}>
-              <Menu.Item key="/logout">
-                <Link to="/logout">Logout</Link>
+              <Menu.Item key={LOGOUT_URL}>
+                <Link to={LOGOUT_URL}>Logout</Link>
               </Menu.Item>
             </SubMenu>
           ) : (

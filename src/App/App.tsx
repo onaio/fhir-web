@@ -19,6 +19,8 @@ import {
   BACKEND_CALLBACK_URL,
   BACKEND_LOGIN_URL,
   BACKEND_CALLBACK_PATH,
+  REACT_LOGIN_URL,
+  LOGOUT_URL,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -31,10 +33,10 @@ const { Content } = Layout;
 library.add(faUser);
 
 const App: React.FC = () => {
-  const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : '/login';
+  const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : REACT_LOGIN_URL;
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   return (
@@ -86,7 +88,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path="/logout"
+              path={LOGOUT_URL}
               // tslint:disable-next-line: jsx-no-lambda
               component={() => {
                 return <CustomLogout />;
