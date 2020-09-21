@@ -26,8 +26,8 @@ import Home from '../containers/pages/Home/Home';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import './App.css';
 import Admin from '../containers/pages/Admin';
-import EditUsers from '../containers/pages/Admin/EditUser/Index';
 import ConnectedEdiUsersView from '../containers/pages/Admin/EditUser/Index';
+import NotFound from '../components/NotFound';
 
 const { Content } = Layout;
 
@@ -88,7 +88,7 @@ const App = (): JSX.Element => {
                 return (
                   <ConnectedOauthCallback
                     SuccessfulLoginComponent={() => {
-                      return <Redirect to="/" />;
+                      return <Redirect to="/admin" />;
                     }}
                     LoadingComponent={Loading}
                     providers={providers}
@@ -109,6 +109,7 @@ const App = (): JSX.Element => {
                 return <CustomLogout />;
               }}
             />
+            <Route exact component={NotFound} />
           </Switch>
         </Content>
       </div>
