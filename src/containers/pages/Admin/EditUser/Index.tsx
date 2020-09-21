@@ -2,8 +2,9 @@ import { ErrorMessage, Field, Formik } from 'formik';
 // import moment from 'moment';
 import React from 'react';
 // import { Redirect } from 'react-router';
-import { Button, Form, Col, notification } from 'antd';
+import { Button, Form, Col, notification, Card, Row } from 'antd';
 import { RouteComponentProps } from 'react-router';
+import { history } from '@onaio/connected-reducer-registry';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -74,103 +75,120 @@ const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
 
   return (
     <Col span={12}>
-      <HeaderBreadCrumb />
-      <div className="form-container">
-        <Formik
-          initialValues={keycloakUser as KeycloakUser}
-          // tslint:disable-next-line: jsx-no-lambda
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(true);
-          }}
-        >
-          {({ errors, isSubmitting }) => (
-            <Form {...layout}>
-              <Form.Item label={'User Id'}>
-                <Field
-                  readOnly={true}
-                  type="text"
-                  name="id"
-                  id="id"
-                  // disabled={disabledFields.includes('name')}
-                  className={errors.id ? `form-control is-invalid` : `form-control`}
-                />
-                <ErrorMessage
-                  name="id"
-                  component="small"
-                  className="form-text text-danger name-error"
-                />
-              </Form.Item>
-              <Form.Item label={'First Name'}>
-                <Field
-                  type="text"
-                  name="firstName"
-                  id="firstName"
-                  // disabled={disabledFields.includes('name')}
-                  className={errors.firstName ? `form-control is-invalid` : `form-control`}
-                />
-                <ErrorMessage
-                  name="firstName"
-                  component="small"
-                  className="form-text text-danger name-error"
-                />
-              </Form.Item>
-              <Form.Item label={'Last Name'}>
-                <Field
-                  type="text"
-                  name="lastName"
-                  id="lastName"
-                  // disabled={disabledFields.includes('name')}
-                  className={errors.lastName ? `form-control is-invalid` : `form-control`}
-                />
-                <ErrorMessage
-                  name="lastName"
-                  component="small"
-                  className="form-text text-danger name-error"
-                />
-              </Form.Item>
+      <Card title="User Details" bordered={false}>
+        <HeaderBreadCrumb />
+        <div className="form-container">
+          <Formik
+            initialValues={keycloakUser as KeycloakUser}
+            // tslint:disable-next-line: jsx-no-lambda
+            onSubmit={(values, { setSubmitting }) => {
+              setSubmitting(true);
+            }}
+          >
+            {({ errors, isSubmitting }) => (
+              <Form {...layout}>
+                <Form.Item label={'User Id'}>
+                  <Field
+                    readOnly={true}
+                    type="text"
+                    name="id"
+                    id="id"
+                    // disabled={disabledFields.includes('name')}
+                    className={errors.id ? `form-control is-invalid` : `form-control`}
+                  />
+                  <ErrorMessage
+                    name="id"
+                    component="small"
+                    className="form-text text-danger name-error"
+                  />
+                </Form.Item>
+                <Form.Item label={'First Name'}>
+                  <Field
+                    type="text"
+                    name="firstName"
+                    id="firstName"
+                    // disabled={disabledFields.includes('name')}
+                    className={errors.firstName ? `form-control is-invalid` : `form-control`}
+                  />
+                  <ErrorMessage
+                    name="firstName"
+                    component="small"
+                    className="form-text text-danger name-error"
+                  />
+                </Form.Item>
+                <Form.Item label={'Last Name'}>
+                  <Field
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    // disabled={disabledFields.includes('name')}
+                    className={errors.lastName ? `form-control is-invalid` : `form-control`}
+                  />
+                  <ErrorMessage
+                    name="lastName"
+                    component="small"
+                    className="form-text text-danger name-error"
+                  />
+                </Form.Item>
 
-              <Form.Item label={'Username'}>
-                <Field
-                  type="text"
-                  name="username"
-                  id="username"
-                  //   disabled={disabledFields.includes('username')}
-                  className={errors.username ? `form-control is-invalid` : `form-control`}
-                />
-                <ErrorMessage
-                  component="small"
-                  name="username"
-                  className="form-text text-danger username-error"
-                />
-              </Form.Item>
-              <Form.Item label={'Email'}>
-                <Field
-                  type="text"
-                  name="email"
-                  id="email"
-                  className={errors.email ? `form-control is-invalid` : `form-control`}
-                />
-                <ErrorMessage
-                  component="small"
-                  name="email"
-                  className="form-text text-danger username-error"
-                />
-              </Form.Item>
-              <hr className="mb-2" />
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="create-user"
-                  disabled={isSubmitting || Object.keys(errors).length > 0}
-                >
-                  {isSubmitting ? 'Saving' : 'Save User'}
-                </Button>
-              </Form.Item>
-            </Form>
-          )}
-        </Formik>
-      </div>
+                <Form.Item label={'Username'}>
+                  <Field
+                    type="text"
+                    name="username"
+                    id="username"
+                    //   disabled={disabledFields.includes('username')}
+                    className={errors.username ? `form-control is-invalid` : `form-control`}
+                  />
+                  <ErrorMessage
+                    component="small"
+                    name="username"
+                    className="form-text text-danger username-error"
+                  />
+                </Form.Item>
+                <Form.Item label={'Email'}>
+                  <Field
+                    type="text"
+                    name="email"
+                    id="email"
+                    className={errors.email ? `form-control is-invalid` : `form-control`}
+                  />
+                  <ErrorMessage
+                    component="small"
+                    name="email"
+                    className="form-text text-danger username-error"
+                  />
+                </Form.Item>
+                <hr className="mb-2" />
+                <Form.Item>
+                  <Row justify="start">
+                    <Col span={12}>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="create-user"
+                        disabled={isSubmitting || Object.keys(errors).length > 0}
+                      >
+                        {isSubmitting ? 'Saving' : 'Save User'}
+                      </Button>
+                    </Col>
+                    <Col span={12}>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        onClick={() => history.push('/')}
+                        className="cancel-user"
+                        disabled={isSubmitting || Object.keys(errors).length > 0}
+                      >
+                        Cancel
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form.Item>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </Card>
     </Col>
   );
 };

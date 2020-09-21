@@ -12,7 +12,7 @@ const Home: React.FC = (): JSX.Element => {
         <title>OpenSRP Web</title>
       </Helmet>
       <Row justify="center" className="weclome-box">
-        <Col span={4}>
+        <Col span={6}>
           <h3>Welcome to OpenSRP</h3>
         </Col>
       </Row>
