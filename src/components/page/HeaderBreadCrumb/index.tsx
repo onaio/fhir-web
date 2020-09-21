@@ -10,7 +10,6 @@ export const HeaderBreadCrumb = (): JSX.Element => {
       <TabPane tab="Roles" key="2"></TabPane>
       <TabPane tab="Groups" key="3"></TabPane>
     </Tabs>
-    // <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
   );
 };
 
