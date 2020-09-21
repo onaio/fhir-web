@@ -3,10 +3,6 @@
   top: 20px;
 }
 
-.form-container button {
-  width: 100%;
-}
-
 .ant-form-item-label {
   flex: 10% !important;
   flex-grow: 0 !important;
@@ -15,6 +11,10 @@
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
   margin-right: 10px;
   padding: 8px 50px;
+}
+
+.cancel-user {
+  float: right;
 }
 
 /* .ant-space {

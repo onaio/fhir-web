@@ -88,7 +88,7 @@ const App = (): JSX.Element => {
                 return (
                   <ConnectedOauthCallback
                     SuccessfulLoginComponent={() => {
-                      return <Redirect to="/admin" />;
+                      return <Redirect to="/" />;
                     }}
                     LoadingComponent={Loading}
                     providers={providers}
