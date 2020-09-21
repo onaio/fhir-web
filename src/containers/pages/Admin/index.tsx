@@ -1,5 +1,4 @@
 import * as React from 'react';
-import ListView from '@onaio/list-view';
 import { notification, Row, Col, Button, Space, Table, Divider } from 'antd';
 import '../Home/Home.css';
 import { KeycloakService } from '../../../services';
@@ -51,7 +50,6 @@ export const Admin = (props: Props): JSX.Element => {
   const { serviceClass } = props;
 
   const handleChange = (pagination: any, filters: any, sorter: any) => {
-    console.log('Various parameters', pagination, filters, sorter);
     setFilteredInfo(filters);
     setSortedInfo(sorter);
   };
@@ -90,11 +88,11 @@ export const Admin = (props: Props): JSX.Element => {
         key: headerItems[index].split(' ').join('').toLowerCase(),
         ellipsis: true,
         // eslint-disable-next-line react/display-name
-        render: (text: string) => (
-          <Link to={`/user/edit/${text}`} key={`${index}-userid`}>
-            {text}
-          </Link>
-        ),
+        // render: (text: string) => (
+        //   <Link to={`/user/edit/${text}`} key={`${index}-userid`}>
+        //     {text}
+        //   </Link>
+        // ),
       });
     } else if (headerItems[index] === 'Username') {
       dataElements.push({
