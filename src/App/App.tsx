@@ -90,7 +90,7 @@ const App: React.FC = () => {
                 return (
                   <ConnectedOauthCallback
                     SuccessfulLoginComponent={() => {
-                      return <Redirect to="/admin" />;
+                      return <Redirect to="/" />;
                     }}
                     LoadingComponent={Loading}
                     providers={providers}
