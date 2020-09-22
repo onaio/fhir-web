@@ -4,6 +4,7 @@ import React from 'react';
 // import { Redirect } from 'react-router';
 import { Button, Form, Col, notification, Card, Row } from 'antd';
 import { RouteComponentProps } from 'react-router';
+import * as Yup from 'yup';
 import { history } from '@onaio/connected-reducer-registry';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -68,6 +69,12 @@ export const defaultProps: Partial<PropsTypes> = {
   serviceClass: KeycloakService,
 };
 
+/** yup validations for practitioner data object from form */
+export const userSchema = Yup.object().shape({
+  lastName: Yup.string().required('Required'),
+  firstName: Yup.string().required('Required'),
+});
+
 const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const { serviceClass, fetchKeycloakUsersCreator, keycloakUser } = props;
@@ -112,6 +119,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
         <div className="form-container">
           <Formik
             initialValues={initialValues as KeycloakUser}
+            validationSchema={userSchema}
             // tslint:disable-next-line: jsx-no-lambda
             onSubmit={(values, { setSubmitting }) => {
               if (isEditMode) {
@@ -170,7 +178,12 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                     className="form-text text-danger name-error"
                   />
                 </Form.Item>
-                <Form.Item label={'First Name'}>
+                <Form.Item
+                  label={'First Name'}
+                  rules={[
+                    { required: true, message: 'Please input your First Name!', whitespace: true },
+                  ]}
+                >
                   <Field
                     type="text"
                     name="firstName"
@@ -184,7 +197,12 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                     className="form-text text-danger name-error"
                   />
                 </Form.Item>
-                <Form.Item label={'Last Name'}>
+                <Form.Item
+                  label={'Last Name'}
+                  rules={[
+                    { required: true, message: 'Please input your Last Name!', whitespace: true },
+                  ]}
+                >
                   <Field
                     type="text"
                     name="lastName"
