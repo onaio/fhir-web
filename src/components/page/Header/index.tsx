@@ -15,6 +15,7 @@ const SubMenu = Menu.SubMenu;
 export interface HeaderProps extends RouteComponentProps {
   authenticated: boolean;
   user: User;
+  extraData: { [key: string]: any };
 }
 
 /** default props for Header */
@@ -25,12 +26,15 @@ const defaultHeaderProps: Partial<HeaderProps> = {
     name: '',
     username: '',
   },
+  extraData: {},
 };
 
 /** The Header component */
 
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
-  const { authenticated, user } = props;
+  const { authenticated, user, extraData } = props;
+  const { user_id, roles } = extraData;
+  const isAdmin = roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS');
   const path = props.location.pathname;
   const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
   return (
@@ -43,16 +47,18 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Menu.Item key="/">
             <Link to="/">Home</Link>
           </Menu.Item>
-          <Menu.Item key="/admin">
-            <Link to="/admin">Admin</Link>
-          </Menu.Item>
+          {isAdmin && (
+            <Menu.Item key="/admin">
+              <Link to="/admin">Admin</Link>
+            </Menu.Item>
+          )}
           {authenticated ? (
             <SubMenu title={`${user.username}`} style={{ float: 'right' }}>
               <Menu.Item key={LOGOUT_URL}>
                 <Link to={LOGOUT_URL}>Logout</Link>
               </Menu.Item>
-              <Menu.Item key="/manage-account">
-                <Link to="/manage-account">Manage account</Link>
+              <Menu.Item key={`/user/edit/${user_id}`}>
+                <Link to={`/user/edit/${user_id}`}>Manage account</Link>
               </Menu.Item>
             </SubMenu>
           ) : (
