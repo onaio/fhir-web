@@ -26,10 +26,10 @@ import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import Home from '../containers/pages/Home/Home';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
-import ConnectedEdiUsersView from '../containers/pages/Admin/EditUser/Index';
 import NotFound from '../components/NotFound';
 import ConnectedAdminView from '../containers/pages/Admin';
 import './App.css';
+import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser/Index';
 
 const { Content } = Layout;
 
@@ -70,7 +70,14 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path="/user/edit/:userId"
-              component={ConnectedEdiUsersView}
+              component={ConnectedCreateEditUsers}
+            />
+            <ConnectedPrivateRoute
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path="/user/new"
+              component={ConnectedCreateEditUsers}
             />
             <Route
               exact

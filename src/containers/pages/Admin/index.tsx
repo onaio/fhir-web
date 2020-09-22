@@ -3,6 +3,7 @@ import { notification, Row, Col, Button, Space, Table, Divider } from 'antd';
 import '../Home/Home.css';
 import { KeycloakService } from '../../../services';
 import { Link } from 'react-router-dom';
+import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../../../components/page/Loading';
 import HeaderBreadCrumb from '../../../components/page/HeaderBreadCrumb';
 import {
@@ -11,7 +12,7 @@ import {
   getKeycloakUsersArray,
 } from '../../../store/ducks/keycloak';
 import { Store } from 'redux';
-import { PropsTypes } from './EditUser/Index';
+import { PropsTypes } from './CreateEditUser/Index';
 import { connect } from 'react-redux';
 
 // const { Content } = Layout;
@@ -33,6 +34,7 @@ export const defaultProps = {
 const Admin = (props: Props): JSX.Element => {
   const [filteredInfo, setFilteredInfo] = React.useState<any>(null);
   const [sortedInfo, setSortedInfo] = React.useState<any>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const { serviceClass, fetchKeycloakUsersCreator, keycloakUsers } = props;
 
   const handleChange = (pagination: any, filters: any, sorter: any) => {
@@ -41,24 +43,23 @@ const Admin = (props: Props): JSX.Element => {
   };
 
   React.useEffect(() => {
-    if (!keycloakUsers.length) {
-      const serve = new serviceClass('/users');
-      serve
-        .list()
-        .then((res: KeycloakUser[]) => {
-          if (res.length && !keycloakUsers.length) {
-            fetchKeycloakUsersCreator(res);
-          }
-        })
-        .catch((err) => {
-          notification.error({
-            message: `${err}`,
-            description: '',
-          });
+    const serve = new serviceClass('/users');
+    serve
+      .list()
+      .then((res: KeycloakUser[]) => {
+        if (isLoading) {
+          fetchKeycloakUsersCreator(res);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        notification.error({
+          message: `${err}`,
+          description: '',
         });
-    }
+      });
   });
-  if (!keycloakUsers.length) {
+  if (isLoading) {
     return <Ripple />;
   }
 
@@ -120,14 +121,18 @@ const Admin = (props: Props): JSX.Element => {
       <Row>
         <Col span={12}>
           <Space>
-            <HeaderBreadCrumb />
+            <HeaderBreadCrumb isAdmin={true} />
             <Divider />
           </Space>
         </Col>
         <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Space style={{ marginBottom: 16, justifyContent: 'flex-end' }}>
-            <Button type="primary" className="create-user">
-              Create User
+            <Button
+              type="primary"
+              className="create-user"
+              onClick={() => history.push('/user/new')}
+            >
+              Add User
             </Button>
           </Space>
         </Col>
