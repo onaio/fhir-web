@@ -5,49 +5,35 @@ import { KeycloakService } from '../../../services';
 import { Link } from 'react-router-dom';
 import Ripple from '../../../components/page/Loading';
 import HeaderBreadCrumb from '../../../components/page/HeaderBreadCrumb';
-import { KeycloakUser } from '../../../store/ducks/keycloak';
+import {
+  KeycloakUser,
+  fetchKeycloakUsers,
+  getKeycloakUsersArray,
+} from '../../../store/ducks/keycloak';
+import { Store } from 'redux';
+import { PropsTypes } from './EditUser/Index';
+import { connect } from 'react-redux';
 
 // const { Content } = Layout;
 
 // props interface to Admin component
 export interface Props {
   serviceClass: typeof KeycloakService;
+  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
+  keycloakUsers: KeycloakUser[];
 }
 
 /** default props for UserIdSelect component */
 export const defaultProps = {
   serviceClass: KeycloakService,
-  showPractitioners: false,
+  fetchKeycloakUsersCreator: fetchKeycloakUsers,
+  keycloakUsers: [],
 };
 
-/** interface describing a user */
-interface User {
-  access?: {
-    manageGroupMembership: boolean;
-    view: boolean;
-    mapRoles: boolean;
-    impersonate: boolean;
-    manage: boolean;
-  };
-  createdTimestamp?: number;
-  disableableCredentialTypes?: string[];
-  email: string;
-  emailVerified?: boolean;
-  enabled?: boolean;
-  firstName: string;
-  id: string;
-  lastName: string;
-  notBefore?: number;
-  requiredActions?: string[];
-  totp?: boolean;
-  username: string;
-}
-
-export const Admin = (props: Props): JSX.Element => {
-  const [users, setUsers] = React.useState<User[]>([]);
+const Admin = (props: Props): JSX.Element => {
   const [filteredInfo, setFilteredInfo] = React.useState<any>(null);
   const [sortedInfo, setSortedInfo] = React.useState<any>(null);
-  const { serviceClass } = props;
+  const { serviceClass, fetchKeycloakUsersCreator, keycloakUsers } = props;
 
   const handleChange = (pagination: any, filters: any, sorter: any) => {
     setFilteredInfo(filters);
@@ -55,13 +41,13 @@ export const Admin = (props: Props): JSX.Element => {
   };
 
   React.useEffect(() => {
-    if (!users.length) {
+    if (!keycloakUsers.length) {
       const serve = new serviceClass('/users');
       serve
         .list()
-        .then((res: User[]) => {
-          if (res.length && !users.length) {
-            setUsers(res);
+        .then((res: KeycloakUser[]) => {
+          if (res.length && !keycloakUsers.length) {
+            fetchKeycloakUsersCreator(res);
           }
         })
         .catch((err) => {
@@ -72,7 +58,7 @@ export const Admin = (props: Props): JSX.Element => {
         });
     }
   });
-  if (!users.length) {
+  if (!keycloakUsers.length) {
     return <Ripple />;
   }
 
@@ -88,18 +74,18 @@ export const Admin = (props: Props): JSX.Element => {
         key: headerItems[index].split(' ').join('').toLowerCase(),
         ellipsis: true,
         // eslint-disable-next-line react/display-name
-        // render: (text: string) => (
-        //   <Link to={`/user/edit/${text}`} key={`${index}-userid`}>
-        //     {text}
-        //   </Link>
-        // ),
+        render: (text: string) => (
+          <Link to={`/user/edit/${text}`} key={`${index}-userid`}>
+            {text}
+          </Link>
+        ),
       });
     } else if (headerItems[index] === 'Username') {
       dataElements.push({
         title: headerItems[index],
         dataIndex: headerItems[index].split(' ').join('').toLowerCase(),
         key: headerItems[index].split(' ').join('').toLowerCase(),
-        filters: users.map((filteredUser: any, idx: number) => {
+        filters: keycloakUsers.map((filteredUser: any, idx: number) => {
           return {
             text: (filteredUser as any)[fields[1]],
             value: (filteredUser as any)[fields[1]],
@@ -119,7 +105,7 @@ export const Admin = (props: Props): JSX.Element => {
       });
     }
   });
-  const tableData: any = users.map((user: Partial<KeycloakUser>, index: number) => {
+  const tableData: any = keycloakUsers.map((user: Partial<KeycloakUser>, index: number) => {
     return {
       key: `${index}`,
       id: user.id,
@@ -154,6 +140,26 @@ export const Admin = (props: Props): JSX.Element => {
     // <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
   );
 };
+
 Admin.defaultProps = defaultProps;
 
-export default Admin;
+export { Admin };
+
+/** Interface for connected state to props */
+interface DispatchedProps {
+  keycloakUsers: KeycloakUser[];
+}
+
+// connect to store
+const mapStateToProps = (state: Partial<Store>, _: PropsTypes): DispatchedProps => {
+  const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
+  return { keycloakUsers };
+};
+
+/** map props to action creators */
+const mapDispatchToProps = {
+  fetchKeycloakUsersCreator: fetchKeycloakUsers,
+};
+
+const ConnectedAdminView = connect(mapStateToProps, mapDispatchToProps)(Admin);
+export default ConnectedAdminView;
