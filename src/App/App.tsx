@@ -22,12 +22,12 @@ import {
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
-import Home from '../containers/pages/Home/Home';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
 import ConnectedAdminView from '../containers/pages/Admin';
-import './App.css';
 import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser/Index';
+import ConnectedHomeComponent from '../containers/pages/Home/Home';
+import './App.css';
 
 const { Content } = Layout;
 
@@ -54,7 +54,7 @@ const App = (): JSX.Element => {
               disableLoginProtection={false}
               exact
               path="/"
-              component={Home}
+              component={ConnectedHomeComponent}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
