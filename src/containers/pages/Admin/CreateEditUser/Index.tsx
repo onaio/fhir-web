@@ -16,7 +16,7 @@ import keycloakUsersReducer, {
   reducerName as keycloakUsersReducerName,
 } from '../../../../store/ducks/keycloak';
 import { KeycloakService } from '../../../../services';
-import './EditUser.css';
+import './CreateEditUser.css';
 import Ripple from '../../../../components/page/Loading';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -37,6 +37,30 @@ export interface Props {
 /** type intersection for all types that pertain to the props */
 export type PropsTypes = Props & RouteComponentProps<RouteParams>;
 
+/** default form initial values */
+
+export const defaultInitialValues: KeycloakUser = {
+  access: {
+    manageGroupMembership: false,
+    view: false,
+    mapRoles: false,
+    impersonate: false,
+    manage: false,
+  },
+  createdTimestamp: undefined,
+  disableableCredentialTypes: [],
+  email: '',
+  emailVerified: false,
+  enabled: true,
+  firstName: '',
+  id: '',
+  lastName: '',
+  notBefore: 0,
+  requiredActions: [],
+  totp: false,
+  username: '',
+};
+
 /** default props for editing user component */
 export const defaultProps: Partial<PropsTypes> = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
@@ -44,49 +68,93 @@ export const defaultProps: Partial<PropsTypes> = {
   serviceClass: KeycloakService,
 };
 
-const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
+const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const { serviceClass, fetchKeycloakUsersCreator, keycloakUser } = props;
   const userId = props.match.params.userId;
+  const isEditMode = !!userId;
+  const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
   React.useEffect(() => {
-    const serve = new serviceClass('/users');
-    serve
-      .read(userId)
-      .then((response: KeycloakUser) => {
-        if (response) {
-          fetchKeycloakUsersCreator([response]);
-        }
-      })
-      .catch((err: Error) => {
-        notification.error({
-          message: `${err}`,
-          description: '',
+    if (userId) {
+      const serve = new serviceClass('/users');
+      serve
+        .read(userId)
+        .then((response: KeycloakUser) => {
+          if (response) {
+            fetchKeycloakUsersCreator([response]);
+            setIsLoading(false);
+          }
+        })
+        .catch((err: Error) => {
+          notification.error({
+            message: `${err}`,
+            description: '',
+          });
         });
-      });
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   const layout = {
-    labelCol: { span: 8 },
+    labelCol: { span: 12 },
     wrapperCol: { span: 16 },
   };
 
-  if (!keycloakUser) {
+  if (isLoading) {
     return <Ripple />;
   }
 
   return (
     <Col span={12}>
-      <Card title="User Details" bordered={false}>
-        <HeaderBreadCrumb />
+      <Card title={`${isEditMode ? 'Edit User' : 'Create New User'}`} bordered={false}>
+        <HeaderBreadCrumb userId={userId} />
         <div className="form-container">
           <Formik
-            initialValues={keycloakUser as KeycloakUser}
+            initialValues={initialValues as KeycloakUser}
             // tslint:disable-next-line: jsx-no-lambda
             onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(true);
+              if (isEditMode) {
+                const serve = new serviceClass(`/users/${userId}`);
+                serve
+                  .update(values)
+                  .then(() => {
+                    setSubmitting(false);
+                    notification.success({
+                      message: 'User edited successfully',
+                      description: '',
+                    });
+                  })
+                  .catch((e: Error) => {
+                    notification.error({
+                      message: `${e}`,
+                      description: '',
+                    });
+                    setSubmitting(false);
+                  });
+              } else {
+                const serve = new serviceClass(`/users`);
+                serve
+                  .create(values)
+                  .then(() => {
+                    setSubmitting(false);
+                    notification.success({
+                      message: 'User created successfully',
+                      description: '',
+                    });
+                  })
+                  .catch((e: Error) => {
+                    notification.error({
+                      message: `${e}`,
+                      description: '',
+                    });
+                    setSubmitting(false);
+                  });
+              }
             }}
           >
-            {({ errors, isSubmitting }) => (
-              <Form {...layout}>
+            {({ errors, isSubmitting, handleSubmit }) => (
+              <Form {...layout} onSubmitCapture={handleSubmit}>
                 <Form.Item label={'User Id'}>
                   <Field
                     readOnly={true}
@@ -133,6 +201,7 @@ const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
 
                 <Form.Item label={'Username'}>
                   <Field
+                    readOnly={isEditMode}
                     type="text"
                     name="username"
                     id="username"
@@ -158,10 +227,9 @@ const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                     className="form-text text-danger username-error"
                   />
                 </Form.Item>
-                <hr className="mb-2" />
                 <Form.Item>
                   <Row justify="start">
-                    <Col span={12}>
+                    <Col span={4}>
                       <Button
                         type="primary"
                         htmlType="submit"
@@ -171,11 +239,10 @@ const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                         {isSubmitting ? 'Saving' : 'Save User'}
                       </Button>
                     </Col>
-                    <Col span={12}>
+                    <Col span={4}>
                       <Button
-                        type="primary"
                         htmlType="submit"
-                        onClick={() => history.push('/')}
+                        onClick={() => history.push('/admin')}
                         className="cancel-user"
                         disabled={isSubmitting || Object.keys(errors).length > 0}
                       >
@@ -193,9 +260,9 @@ const EditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   );
 };
 
-EditUsers.defaultProps = defaultProps;
+CreateEditUsers.defaultProps = defaultProps;
 
-export { EditUsers };
+export { CreateEditUsers };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
@@ -216,6 +283,6 @@ const mapDispatchToProps = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
 
-const ConnectedEdiUsersView = connect(mapStateToProps, mapDispatchToProps)(EditUsers);
+const ConnectedCreateEditUsers = connect(mapStateToProps, mapDispatchToProps)(CreateEditUsers);
 
-export default ConnectedEdiUsersView;
+export default ConnectedCreateEditUsers;
