@@ -4,8 +4,13 @@ import { Col, Row, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
 import './Home.css';
+import { getExtraData } from '@onaio/session-reducer';
+import { connect } from 'react-redux';
+import { Store } from 'redux';
 
-const Home: React.FC = (): JSX.Element => {
+const Home: React.FC = (props: any): JSX.Element => {
+  const { extraData } = props;
+  const { roles } = extraData;
   return (
     <div className="text-center">
       <Helmet>
@@ -17,13 +22,15 @@ const Home: React.FC = (): JSX.Element => {
         </Col>
       </Row>
       <Row gutter={16} className="links-box">
-        <Col className="gutter-row" span={12}>
-          <Link to="/admin" className="admin-link">
-            <Button color="outline" className="btn-links">
-              Admin
-            </Button>
-          </Link>
-        </Col>
+        {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
+          <Col className="gutter-row" span={12}>
+            <Link to="/admin" className="admin-link">
+              <Button color="outline" className="btn-links">
+                Admin
+              </Button>
+            </Link>
+          </Col>
+        )}
         <Col className="gutter-row" span={12}>
           <Link to="/teams" className="admin-link">
             <Button color="outline" className="btn-links">
@@ -36,4 +43,23 @@ const Home: React.FC = (): JSX.Element => {
   );
 };
 
-export default Home;
+export { Home };
+
+/** Connect the component to the store */
+
+/** map state to props */
+
+const mapStateToProps = (state: Partial<Store>) => {
+  const result = {
+    extraData: getExtraData(state),
+  };
+  return result;
+};
+
+/** create connected component */
+
+/** Connected Header component
+ */
+const ConnectedHomeComponent = connect(mapStateToProps)(Home);
+
+export default ConnectedHomeComponent;

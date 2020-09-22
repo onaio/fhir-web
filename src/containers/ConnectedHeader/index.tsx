@@ -1,4 +1,4 @@
-import { getUser, isAuthenticated, logOutUser } from '@onaio/session-reducer';
+import { getUser, isAuthenticated, logOutUser, getExtraData } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import Header from '../../components/page/Header';
@@ -10,6 +10,7 @@ const mapStateToProps = (state: Partial<Store>) => {
   const result = {
     authenticated: isAuthenticated(state),
     user: getUser(state),
+    extraData: getExtraData(state),
   };
   return result;
 };
