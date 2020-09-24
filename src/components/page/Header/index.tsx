@@ -6,7 +6,7 @@ import { Menu, Layout, Image, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
-import './Header.css';
+// import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
 import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
@@ -40,49 +40,35 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const path = props.location.pathname;
   const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
   return (
-    <div>
-      <Layout.Header>
-        <div className="logo">
-          <Image width={200} src={Logo} />
-        </div>
-        <Menu mode="horizontal" selectedKeys={[path]}>
-          <Menu.Item key={HOME_URL}>
-            <Link to={HOME_URL}>Home</Link>
+    <Layout.Header>
+      <div className="logo">
+        <Image width={200} src={Logo} />
+      </div>
+      <Menu mode="horizontal" selectedKeys={[path]}>
+        <Menu.Item key="/">
+          <Link to="/">Home</Link>
+        </Menu.Item>
+        {isAdmin && (
+          <Menu.Item key="/admin">
+            <Link to="/admin">Admin</Link>
           </Menu.Item>
-          {isAdmin && (
-            <Menu.Item key="/admin">
-              <Link to="/admin">Admin</Link>
+        )}
+        {authenticated ? (
+          <SubMenu icon={<UserOutlined />} title={user.username} style={{ float: 'right' }}>
+            <Menu.Item key="/logout">
+              <Link to="/logout">Logout</Link>
             </Menu.Item>
-          )}
-          {authenticated ? (
-            <SubMenu
-              title={
-                <div>
-                  <span>{user.username}</span>
-                  <span>&nbsp;</span>
-                  <Avatar shape="square" icon={<UserOutlined />} />
-                </div>
-              }
-              style={{ float: 'right' }}
-            >
-              <Menu.Item key={LOGOUT_URL}>
-                <Link to={LOGOUT_URL}>Logout</Link>
-              </Menu.Item>
-              <Menu.Item key={`/user/edit/${user_id}`}>
-                <Link to={`/user/edit/${user_id}`}>Manage account</Link>
-              </Menu.Item>
-              <Menu.Item key={`/user/edit/${user_id}`}>
-                <Link to={`/user/edit/${user_id}`}>Manage account</Link>
-              </Menu.Item>
-            </SubMenu>
-          ) : (
-            <Menu.Item key={APP_LOGIN_URL} style={{ float: 'right' }}>
-              <Link to={APP_LOGIN_URL}>Login</Link>
+            <Menu.Item key={`/user/edit/${user_id}`}>
+              <Link to={`/user/edit/${user_id}`}>Manage account</Link>
             </Menu.Item>
-          )}
-        </Menu>
-      </Layout.Header>
-    </div>
+          </SubMenu>
+        ) : (
+          <Menu.Item key={APP_LOGIN_URL} style={{ float: 'right' }}>
+            <Link to={APP_LOGIN_URL}>Login</Link>
+          </Menu.Item>
+        )}
+      </Menu>
+    </Layout.Header>
   );
 };
 
