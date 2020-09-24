@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { notification, Row, Col, Button, Space, Table, Divider } from 'antd';
+import { notification, Row, Col, Button, Space, Table, Divider, Popconfirm } from 'antd';
 import '../Home/Home.css';
 import { KeycloakService } from '../../../services';
 import { Link } from 'react-router-dom';
@@ -43,21 +43,23 @@ const Admin = (props: Props): JSX.Element => {
   };
 
   React.useEffect(() => {
-    const serve = new serviceClass('/users');
-    serve
-      .list()
-      .then((res: KeycloakUser[]) => {
-        if (isLoading) {
-          fetchKeycloakUsersCreator(res);
-          setIsLoading(false);
-        }
-      })
-      .catch((err) => {
-        notification.error({
-          message: `${err}`,
-          description: '',
+    if (isLoading) {
+      const serve = new serviceClass('/users');
+      serve
+        .list()
+        .then((res: KeycloakUser[]) => {
+          if (isLoading) {
+            fetchKeycloakUsersCreator(res);
+            setIsLoading(false);
+          }
+        })
+        .catch((err) => {
+          notification.error({
+            message: `${err}`,
+            description: '',
+          });
         });
-      });
+    }
   });
   if (isLoading) {
     return <Ripple />;
@@ -88,8 +90,8 @@ const Admin = (props: Props): JSX.Element => {
         key: headerItems[index].split(' ').join('').toLowerCase(),
         filters: keycloakUsers.map((filteredUser: any, idx: number) => {
           return {
-            text: (filteredUser as any)[fields[1]],
-            value: (filteredUser as any)[fields[1]],
+            text: (filteredUser as any)[fields[index]],
+            value: (filteredUser as any)[fields[index]],
           };
         }),
         filteredValue: (filteredInfo && filteredInfo.username) || null,
@@ -106,6 +108,35 @@ const Admin = (props: Props): JSX.Element => {
       });
     }
   });
+  dataElements.push({
+    title: 'Actions',
+    dataIndex: 'actions',
+    key: 'Actions',
+    // eslint-disable-next-line react/display-name
+    render: () => (
+      <>
+        <Link to="#" key="actions">
+          {'Edit'}
+        </Link>
+        <span>&nbsp;</span>
+        <span>&nbsp;</span>
+        <span>&nbsp;</span>
+        <span>&nbsp;</span>
+        <Popconfirm title="Are you sure delete this user?" okText="Yes" cancelText="No">
+          <Link
+            to="#"
+            key="actions"
+            onClick={(e) => {
+              debugger;
+              return;
+            }}
+          >
+            {'Delete'}
+          </Link>
+        </Popconfirm>
+      </>
+    ),
+  });
   const tableData: any = keycloakUsers.map((user: Partial<KeycloakUser>, index: number) => {
     return {
       key: `${index}`,
@@ -114,6 +145,7 @@ const Admin = (props: Props): JSX.Element => {
       email: user.email,
       firstname: user.firstName,
       lastname: user.lastName,
+      actions: 'Edit',
     };
   });
   return (
@@ -139,7 +171,13 @@ const Admin = (props: Props): JSX.Element => {
       </Row>
       <Row>
         {/* <ListView {...listViewProps} /> */}
-        <Table columns={dataElements} dataSource={tableData} onChange={handleChange} bordered />
+        <Table
+          columns={dataElements}
+          dataSource={tableData}
+          pagination={{ pageSize: 5 }}
+          onChange={handleChange}
+          bordered
+        />
       </Row>
     </React.Fragment>
     // <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
