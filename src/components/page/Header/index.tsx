@@ -2,7 +2,8 @@
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Menu, Layout, Image } from 'antd';
+import { Menu, Layout, Image, Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
@@ -53,7 +54,16 @@ export const HeaderComponent = (props: HeaderProps): JSX.Element => {
             </Menu.Item>
           )}
           {authenticated ? (
-            <SubMenu title={`${user.username}`} style={{ float: 'right' }}>
+            <SubMenu
+              title={
+                <div>
+                  <span>{user.username}</span>
+                  <span>&nbsp;</span>
+                  <Avatar shape="square" icon={<UserOutlined />} />
+                </div>
+              }
+              style={{ float: 'right' }}
+            >
               <Menu.Item key="/logout">
                 <Link to="/logout">Logout</Link>
               </Menu.Item>
