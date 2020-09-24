@@ -4,8 +4,9 @@
 }
 
 .ant-form-item-label {
-  flex: 10% !important;
+  flex: 0 0 50% !important;
   flex-grow: 0 !important;
+  display: flex;
 }
 
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {

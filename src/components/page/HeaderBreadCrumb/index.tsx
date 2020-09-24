@@ -5,17 +5,25 @@ import { history } from '@onaio/connected-reducer-registry';
 const { TabPane } = Tabs;
 
 export const HeaderBreadCrumb = (props: any): JSX.Element => {
-  const { isAdmin } = props;
+  const { userId } = props;
+  const [activeKey, setActiveKey] = React.useState<string>('');
   const handleTabLink = (key: string) => {
-    history.push(`/${key}`);
+    if (key === 'credentials') {
+      history.push(`/user/credentials/${userId}`);
+    } else if (key === 'details') {
+      history.push(`/user/edit/${userId}`);
+    } else {
+      history.push(`/${key}`);
+    }
+    setActiveKey(key);
   };
-  return isAdmin ? (
+  return !userId ? (
     <Tabs type="card" onChange={handleTabLink}>
       <TabPane tab="Users" key="admin"></TabPane>
     </Tabs>
   ) : (
-    <Tabs type="card" onChange={handleTabLink}>
-      <TabPane tab="Details" key="admin"></TabPane>
+    <Tabs type="card" onChange={handleTabLink} activeKey={`${activeKey}`}>
+      <TabPane tab="Details" key="details"></TabPane>
       <TabPane tab="Credentials" key="credentials"></TabPane>
       <TabPane tab="Groups" key="groups"></TabPane>
     </Tabs>
