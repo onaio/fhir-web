@@ -9,13 +9,6 @@ import {
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
-import {
-  UserOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  TeamOutlined,
-  FileOutlined,
-} from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { Switch, Route, Redirect } from 'react-router';
 import Loading from '../components/page/Loading';
@@ -39,9 +32,10 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedUserCredentials from '../containers/pages/Admin/Credentials';
 // import Sider from 'antd/lib/layout/Sider';
-import SubMenu from 'antd/lib/menu/SubMenu';
+import SideMenu from '../components/page/SideMenu';
+import { SiteFooter } from '../containers/pages/Footer';
 
-const { Content, Header, Footer, Sider } = Layout;
+const { Content, Header } = Layout;
 
 library.add(faUser);
 
@@ -57,32 +51,7 @@ const App: React.FC = () => {
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
       <ConnectedHeader />
       <Layout>
-        <Sider
-          style={{
-            overflow: 'auto',
-            left: 0,
-          }}
-        >
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" icon={<PieChartOutlined />}>
-              Option 1
-            </Menu.Item>
-            <Menu.Item key="2" icon={<DesktopOutlined />}>
-              Option 2
-            </Menu.Item>
-            <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="9" icon={<FileOutlined />} />
-          </Menu>
-        </Sider>
+        <SideMenu />
         <Layout className="site-layout">
           <Header className="site-layout-background" style={{ padding: 0 }} />
           <Content style={{ margin: '0 16px' }}>
@@ -168,7 +137,7 @@ const App: React.FC = () => {
               </Switch>
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+          <SiteFooter />
         </Layout>
       </Layout>
     </Layout>

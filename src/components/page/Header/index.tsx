@@ -2,11 +2,11 @@
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Menu, Layout, Image, Avatar } from 'antd';
+import { Menu, Layout, Image } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
-// import './Header.css';
+import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
 import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
