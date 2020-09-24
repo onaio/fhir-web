@@ -1,10 +1,8 @@
-import { ErrorMessage, Field, Formik } from 'formik';
+import { Formik } from 'formik';
 // import moment from 'moment';
 import React from 'react';
-// import { Redirect } from 'react-router';
-import { Button, Form, Col, notification, Card, Row, Input, Switch } from 'antd';
+import { Button, Form, Col, Card, Row, Input, Switch } from 'antd';
 import { RouteComponentProps } from 'react-router';
-import { history } from '@onaio/connected-reducer-registry';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -16,7 +14,7 @@ import keycloakUsersReducer, {
   reducerName as keycloakUsersReducerName,
 } from '../../../../store/ducks/keycloak';
 import { KeycloakService } from '../../../../services';
-import Ripple from '../../../../components/page/Loading';
+import '../CreateEditUser/CreateEditUser.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -36,30 +34,6 @@ export interface Props {
 /** type intersection for all types that pertain to the props */
 export type PropsTypes = Props & RouteComponentProps<RouteParams>;
 
-/** default form initial values */
-
-export const defaultInitialValues: KeycloakUser = {
-  access: {
-    manageGroupMembership: false,
-    view: false,
-    mapRoles: false,
-    impersonate: false,
-    manage: false,
-  },
-  createdTimestamp: undefined,
-  disableableCredentialTypes: [],
-  email: '',
-  emailVerified: false,
-  enabled: true,
-  firstName: '',
-  id: '',
-  lastName: '',
-  notBefore: 0,
-  requiredActions: [],
-  totp: false,
-  username: '',
-};
-
 /** default props for editing user component */
 export const defaultProps: Partial<PropsTypes> = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
@@ -68,32 +42,8 @@ export const defaultProps: Partial<PropsTypes> = {
 };
 
 const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const { serviceClass, fetchKeycloakUsersCreator, keycloakUser } = props;
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
-  const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
-  //   React.useEffect(() => {
-  //     if (userId) {
-  //       const serve = new serviceClass('/users');
-  //       serve
-  //         .read(userId)
-  //         .then((response: KeycloakUser) => {
-  //           if (response) {
-  //             fetchKeycloakUsersCreator([response]);
-  //             setIsLoading(false);
-  //           }
-  //         })
-  //         .catch((err: Error) => {
-  //           notification.error({
-  //             message: `${err}`,
-  //             description: '',
-  //           });
-  //         });
-  //     } else {
-  //       setIsLoading(false);
-  //     }
-  //   }, []);
 
   const layout = {
     labelCol: { span: 8 },
@@ -110,46 +60,10 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
         <HeaderBreadCrumb userId={userId} />
         <div className="form-container">
           <Formik
-            initialValues={initialValues as KeycloakUser}
+            initialValues={{}}
             // tslint:disable-next-line: jsx-no-lambda
             onSubmit={(values, { setSubmitting }) => {
-              if (isEditMode) {
-                const serve = new serviceClass(`/users/${userId}`);
-                serve
-                  .update(values)
-                  .then(() => {
-                    setSubmitting(false);
-                    notification.success({
-                      message: 'User edited successfully',
-                      description: '',
-                    });
-                  })
-                  .catch((e: Error) => {
-                    notification.error({
-                      message: `${e}`,
-                      description: '',
-                    });
-                    setSubmitting(false);
-                  });
-              } else {
-                const serve = new serviceClass(`/users`);
-                serve
-                  .create(values)
-                  .then(() => {
-                    setSubmitting(false);
-                    notification.success({
-                      message: 'User created successfully',
-                      description: '',
-                    });
-                  })
-                  .catch((e: Error) => {
-                    notification.error({
-                      message: `${e}`,
-                      description: '',
-                    });
-                    setSubmitting(false);
-                  });
-              }
+              setSubmitting(false);
             }}
           >
             {({ errors, isSubmitting, handleSubmit }) => (
