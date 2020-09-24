@@ -28,6 +28,7 @@ import ConnectedAdminView from '../containers/pages/Admin';
 import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser/Index';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
+import ConnectedUserCredentials from '../containers/pages/Admin/Credentials';
 
 const { Content } = Layout;
 
@@ -76,6 +77,13 @@ const App = (): JSX.Element => {
               exact
               path="/user/new"
               component={ConnectedCreateEditUsers}
+            />
+            <ConnectedPrivateRoute
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path="/user/credentials/:userId"
+              component={ConnectedUserCredentials}
             />
             <Route
               exact

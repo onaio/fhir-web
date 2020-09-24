@@ -128,6 +128,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                   .update(values)
                   .then(() => {
                     setSubmitting(false);
+                    history.push('/admin');
                     notification.success({
                       message: 'User edited successfully',
                       description: '',
@@ -146,6 +147,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                   .create(values)
                   .then(() => {
                     setSubmitting(false);
+                    history.push('/admin');
                     notification.success({
                       message: 'User created successfully',
                       description: '',
@@ -172,11 +174,6 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                     // disabled={disabledFields.includes('name')}
                     className={errors.id ? `form-control is-invalid` : `form-control`}
                   />
-                  <ErrorMessage
-                    name="id"
-                    component="small"
-                    className="form-text text-danger name-error"
-                  />
                 </Form.Item>
                 <Form.Item
                   label={'First Name'}
@@ -190,11 +187,6 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                     id="firstName"
                     // disabled={disabledFields.includes('name')}
                     className={errors.firstName ? `form-control is-invalid` : `form-control`}
-                  />
-                  <ErrorMessage
-                    name="firstName"
-                    component="small"
-                    className="form-text text-danger name-error"
                   />
                 </Form.Item>
                 <Form.Item
