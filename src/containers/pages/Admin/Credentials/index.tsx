@@ -1,11 +1,10 @@
-import { Formik } from 'formik';
-// import moment from 'moment';
 import React from 'react';
-import { Button, Form, Col, Card, Row, Input, Switch } from 'antd';
+import { Button, Form, Col, Card, Row, Input, Switch, notification } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { history } from '@onaio/connected-reducer-registry';
 import { HeaderBreadCrumb } from '../../../../components/page/HeaderBreadCrumb';
 import keycloakUsersReducer, {
   fetchKeycloakUsers,
@@ -31,6 +30,13 @@ export interface Props {
   serviceClass: typeof KeycloakService;
 }
 
+/** interface for data fields for team's form */
+export interface UserCredentialsFormFields {
+  password: string;
+  confirm: string;
+  temporary: boolean;
+}
+
 /** type intersection for all types that pertain to the props */
 export type PropsTypes = Props & RouteComponentProps<RouteParams>;
 
@@ -41,10 +47,36 @@ export const defaultProps: Partial<PropsTypes> = {
   serviceClass: KeycloakService,
 };
 
+/** Handle form submission */
+export const submitForm = (values: UserCredentialsFormFields, props: PropsTypes): void => {
+  const { serviceClass, match } = props;
+  const userId = match.params.userId;
+  const serve = new serviceClass(`/users/${userId}/reset-password`);
+  const { password, temporary } = values;
+  serve
+    .update({
+      temporary: temporary,
+      type: 'password',
+      value: password,
+    })
+    .then(() => {
+      history.push('/admin');
+      notification.success({
+        message: 'Credentials updated successfully',
+        description: '',
+      });
+    })
+    .catch((_: Error) => {
+      notification.error({
+        message: 'An error occurred',
+        description: '',
+      });
+    });
+};
+
 const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
-
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -59,70 +91,59 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
       <Card title={`${isEditMode ? 'Edit User' : 'Create New User'}`} bordered={false}>
         <HeaderBreadCrumb userId={userId} />
         <div className="form-container">
-          <Formik
-            initialValues={{}}
-            // tslint:disable-next-line: jsx-no-lambda
-            onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(false);
-            }}
+          <Form
+            {...layout}
+            onFinish={(values: UserCredentialsFormFields) => submitForm(values, props)}
           >
-            {({ errors, isSubmitting, handleSubmit }) => (
-              <Form {...layout} onSubmitCapture={handleSubmit}>
-                <Form.Item
-                  name="password"
-                  label="Password"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please input your password!',
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input.Password />
-                </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.Password />
+            </Form.Item>
 
-                <Form.Item
-                  name="confirm"
-                  label="Confirm Password"
-                  dependencies={['password']}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please confirm your password!',
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(rule, value) {
-                        if (!value || getFieldValue('password') === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject('The two passwords that you entered do not match!');
-                      },
-                    }),
-                  ]}
-                >
-                  <Input.Password />
-                </Form.Item>
-                <Form.Item name="switch" label="Temporary" valuePropName="checked">
-                  <Switch />
-                </Form.Item>
-                <Form.Item>
-                  <Row justify="start">
-                    <Col span={4}>
-                      <Button
-                        htmlType="submit"
-                        className="reset-password"
-                        disabled={isSubmitting || Object.keys(errors).length > 0}
-                      >
-                        Reset Password
-                      </Button>
-                    </Col>
-                  </Row>
-                </Form.Item>
-              </Form>
-            )}
-          </Formik>
+            <Form.Item
+              name="confirm"
+              label="Confirm Password"
+              dependencies={['password']}
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: 'Please confirm your password!',
+                },
+                ({ getFieldValue }) => ({
+                  validator(rule, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject('The two passwords that you entered do not match!');
+                  },
+                }),
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item name="temporary" label="Temporary" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+            <Form.Item>
+              <Row justify="start">
+                <Col span={4}>
+                  <Button htmlType="submit" className="reset-password">
+                    Reset Password
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
+          </Form>
         </div>
       </Card>
     </Col>
