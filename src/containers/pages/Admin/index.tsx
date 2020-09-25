@@ -10,6 +10,7 @@ import {
   KeycloakUser,
   fetchKeycloakUsers,
   getKeycloakUsersArray,
+  removeKeycloakUsers,
 } from '../../../store/ducks/keycloak';
 import { Store } from 'redux';
 import { PropsTypes } from './CreateEditUser/Index';
@@ -21,6 +22,7 @@ import { connect } from 'react-redux';
 export interface Props {
   serviceClass: typeof KeycloakService;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
+  removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakUsers: KeycloakUser[];
 }
 
@@ -28,14 +30,62 @@ export interface Props {
 export const defaultProps = {
   serviceClass: KeycloakService,
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
+  removeKeycloakUsersCreator: removeKeycloakUsers,
   keycloakUsers: [],
+};
+
+/**
+ * Handle user deletion
+ */
+export const deleteUser = (
+  serviceClass: typeof KeycloakService,
+  userId: string,
+  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers,
+  removeKeycloakUsersCreator: typeof removeKeycloakUsers
+): void => {
+  const serviceDelete = new serviceClass(`/users/${userId}`);
+  const serviceGet = new serviceClass('/users');
+
+  serviceDelete
+    .delete()
+    .then(() => {
+      notification.success({
+        message: 'User deleted successfully',
+        description: '',
+      });
+      serviceGet
+        .list()
+        .then((res: KeycloakUser[]) => {
+          // @todo Add action to handle removing one user from the store and
+          // remove this workaround that first removes then refetches users
+          removeKeycloakUsersCreator();
+          fetchKeycloakUsersCreator(res);
+        })
+        .catch((_: Error) => {
+          notification.error({
+            message: 'An error occurred',
+            description: '',
+          });
+        });
+    })
+    .catch((_: Error) => {
+      notification.error({
+        message: 'An error occurred',
+        description: '',
+      });
+    });
 };
 
 const Admin = (props: Props): JSX.Element => {
   const [filteredInfo, setFilteredInfo] = React.useState<any>(null);
   const [sortedInfo, setSortedInfo] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const { serviceClass, fetchKeycloakUsersCreator, keycloakUsers } = props;
+  const {
+    serviceClass,
+    fetchKeycloakUsersCreator,
+    keycloakUsers,
+    removeKeycloakUsersCreator,
+  } = props;
 
   const handleChange = (pagination: any, filters: any, sorter: any) => {
     setFilteredInfo(filters);
@@ -113,26 +163,29 @@ const Admin = (props: Props): JSX.Element => {
     dataIndex: 'actions',
     key: 'Actions',
     // eslint-disable-next-line react/display-name
-    render: () => (
+    render: (_: string, record: KeycloakUser) => (
       <>
-        <Link to="#" key="actions">
+        <Link to={`/user/edit/${record.id}`} key="actions">
           {'Edit'}
         </Link>
         <span>&nbsp;</span>
         <span>&nbsp;</span>
         <span>&nbsp;</span>
         <span>&nbsp;</span>
-        <Popconfirm title="Are you sure delete this user?" okText="Yes" cancelText="No">
-          <Link
-            to="#"
-            key="actions"
-            onClick={(e) => {
-              debugger;
-              return;
-            }}
-          >
-            {'Delete'}
-          </Link>
+        <Popconfirm
+          title="Are you sure delete this user?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={() =>
+            deleteUser(
+              serviceClass,
+              record.id,
+              fetchKeycloakUsersCreator,
+              removeKeycloakUsersCreator
+            )
+          }
+        >
+          <a href="#">{'Delete'}</a>
         </Popconfirm>
       </>
     ),
@@ -145,7 +198,7 @@ const Admin = (props: Props): JSX.Element => {
       email: user.email,
       firstname: user.firstName,
       lastname: user.lastName,
-      actions: 'Edit',
+      actions: 'Editssd',
     };
   });
   return (
@@ -202,6 +255,7 @@ const mapStateToProps = (state: Partial<Store>, _: PropsTypes): DispatchedProps 
 /** map props to action creators */
 const mapDispatchToProps = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
+  removeKeycloakUsersCreator: removeKeycloakUsers,
 };
 
 const ConnectedAdminView = connect(mapStateToProps, mapDispatchToProps)(Admin);

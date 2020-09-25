@@ -70,12 +70,12 @@ export const fetchKeycloakUsers = (usersList: KeycloakUser[] = []): FetchKeycloa
   };
 };
 
-// actions
-
-/** removeKeycloakUsersAction action */
-export const removeKeycloakUsersAction = {
-  usersById: {},
-  type: REMOVE_KEYCLOAK_USERS,
+/** Remove users action creator */
+export const removeKeycloakUsers = (): RemoveKeycloakUsersAction => {
+  return {
+    usersById: {},
+    type: REMOVE_KEYCLOAK_USERS,
+  };
 };
 
 // The reducer
