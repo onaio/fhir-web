@@ -9,6 +9,7 @@ import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
 import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
+import { Dictionary } from '@onaio/utils';
 
 const SubMenu = Menu.SubMenu;
 
@@ -16,7 +17,7 @@ const SubMenu = Menu.SubMenu;
 export interface HeaderProps extends RouteComponentProps {
   authenticated: boolean;
   user: User;
-  extraData: { [key: string]: any };
+  extraData: { [key: string]: Dictionary };
 }
 
 /** default props for Header */

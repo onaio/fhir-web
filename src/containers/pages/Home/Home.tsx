@@ -7,8 +7,13 @@ import './Home.css';
 import { getExtraData } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
+import { Dictionary } from '@onaio/utils';
 
-const Home: React.FC = (props: any): JSX.Element => {
+interface HomeProps {
+  extraData: Dictionary;
+}
+
+const Home: React.FC<HomeProps> = (props: HomeProps) => {
   const { extraData } = props;
   const { roles } = extraData;
   return (

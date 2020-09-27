@@ -92,6 +92,7 @@ export const keycloakUser = {
   emailVerified: false,
   firstName: 'Demo',
   lastName: 'kenya',
+  email: 'test@onatest.com',
   disableableCredentialTypes: [],
   requiredActions: [],
   notBefore: 0,
