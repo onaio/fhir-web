@@ -3,7 +3,7 @@ import { Dictionary } from '@onaio/utils/dist/types/types';
 import { keyBy, values } from 'lodash';
 import intersect from 'fast_array_intersect';
 import { AnyAction, Store } from 'redux';
-import { createSelector } from 'reselect';
+import { createSelector, OutputParametricSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
 
 /** The reducer name */
@@ -82,7 +82,7 @@ export const removeKeycloakUsers = (): RemoveKeycloakUsersAction => {
 
 /** interface for keycloak users state in redux store */
 export interface KeycloakUsersState {
-  usersById: Dictionary<KeycloakUser> | {};
+  usersById: Dictionary<KeycloakUser> | Dictionary;
 }
 
 /** Create an immutable keycloak users state */
@@ -143,7 +143,7 @@ export const getUsername = (_: Partial<Store>, props: KeycloakUsersFilters): str
  * @return { { [key: string] : KeycloakUser} } - users object as values, respective ids as keys
  */
 export function getKeycloakUsersById(state: Partial<Store>): { [key: string]: KeycloakUser } {
-  return (state as any)[reducerName].usersById;
+  return (state as Dictionary)[reducerName].usersById;
 }
 
 /** gets keycloak users as an array of user objects
@@ -159,7 +159,12 @@ export function getKeycloakUsersArray(state: Partial<Store>): KeycloakUser[] {
  * @param {Partial<Store>} state - the redux store
  * @param {PractitionerFilters} props - the practitioners filters object
  */
-export const getUsersByUsername = () =>
+export const getUsersByUsername = (): OutputParametricSelector<
+  Partial<Store>,
+  KeycloakUsersFilters,
+  KeycloakUser[],
+  (res1: KeycloakUser[], res2: string | undefined) => KeycloakUser[]
+> =>
   createSelector(getKeycloakUsersArray, getUsername, (usersArray, username) =>
     username
       ? usersArray.filter((user: KeycloakUser) =>
@@ -175,7 +180,18 @@ export const getUsersByUsername = () =>
  * @param {Partial<Store>} state - the redux store
  * @param {userFilters} props - the users filters object
  */
-export const getKeycloakUsersByIds = () =>
+export const getKeycloakUsersByIds = (): OutputParametricSelector<
+  Partial<Store>,
+  KeycloakUsersFilters,
+  KeycloakUser[],
+  (
+    res1: {
+      [key: string]: KeycloakUser;
+    },
+    res2: string[],
+    res3: KeycloakUser[]
+  ) => KeycloakUser[]
+> =>
   createSelector(
     getKeycloakUsersById,
     getUserIds,
@@ -196,7 +212,12 @@ export const getKeycloakUsersByIds = () =>
  * @param {Partial<Store>} state - the redux store
  * @param {PractitionerFilters} props - the practitioners filters object
  */
-export const makeKeycloakUsersSelector = () =>
+export const makeKeycloakUsersSelector = (): OutputParametricSelector<
+  Partial<Store>,
+  KeycloakUsersFilters,
+  KeycloakUser[],
+  (res1: KeycloakUser[], res2: KeycloakUser[]) => KeycloakUser[]
+> =>
   createSelector(getKeycloakUsersByIds(), getUsersByUsername(), (arr1, arr2) => {
     return intersect([arr1, arr2], JSON.stringify);
   });
