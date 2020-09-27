@@ -27,7 +27,7 @@ import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
 import ConnectedAdminView from '../containers/pages/Admin';
-import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser/Index';
+import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedUserCredentials from '../containers/pages/Admin/Credentials';

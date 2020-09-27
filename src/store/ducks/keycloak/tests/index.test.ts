@@ -1,6 +1,5 @@
 /** Test file for the practitioners ducks module */
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { keyBy, remove, values } from 'lodash';
 import reducer, {
   fetchKeycloakUsers,
   getKeycloakUsersArray,
@@ -8,7 +7,7 @@ import reducer, {
   makeKeycloakUsersSelector,
   KeycloakUser,
   reducerName,
-  removeKeycloakUsersAction,
+  removeKeycloakUsers,
 } from '..';
 import store from '../../../../store';
 import { keycloakUsersArray } from './fixtures';
@@ -19,7 +18,7 @@ const usersSelector = makeKeycloakUsersSelector();
 
 describe('reducers/keycloak.reducer- integration test', () => {
   beforeEach(() => {
-    store.dispatch(removeKeycloakUsersAction);
+    store.dispatch(removeKeycloakUsers({}));
   });
 
   it('fetchedPractitioners actions actually adds data to store', () => {
@@ -194,9 +193,9 @@ describe('reducers/keycloak.reducer- integration test', () => {
         username: 'opensrp',
       },
     ]);
-    expect(usersSelector(store.getState(), { id: [keycloakUsersArray[1].id] }).length).toEqual(1);
-    expect(usersSelector(store.getState(), { id: undefined }).length).toEqual(4);
-    expect(usersSelector(store.getState(), { id: [] }).length).toEqual(0);
+    expect(usersSelector(store.getState(), { id: [keycloakUsersArray[1].id] })).toHaveLength(1);
+    expect(usersSelector(store.getState(), { id: undefined })).toHaveLength(4);
+    expect(usersSelector(store.getState(), { id: [] })).toHaveLength(0);
   });
 
   it('removeKeycloakUsers action removes users from store', () => {
@@ -204,7 +203,7 @@ describe('reducers/keycloak.reducer- integration test', () => {
     let numberOfUsers = getKeycloakUsersArray(store.getState()).length;
     expect(numberOfUsers).toEqual(4);
 
-    store.dispatch(removeKeycloakUsersAction);
+    store.dispatch(removeKeycloakUsers({}));
     numberOfUsers = getKeycloakUsersArray(store.getState()).length;
     expect(numberOfUsers).toEqual(0);
   });

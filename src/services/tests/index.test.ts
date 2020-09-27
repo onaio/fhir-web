@@ -282,7 +282,7 @@ describe('services/OpenSRP', () => {
     );
     const result = await mockClass.readFile('');
     expect(result).toEqual(expect.any(Object));
-    mockReadFile.mockRejectedValue('fuck');
+    mockReadFile.mockRejectedValue('Error!');
     expect(result).toEqual(expect.any(Object));
   });
 });
