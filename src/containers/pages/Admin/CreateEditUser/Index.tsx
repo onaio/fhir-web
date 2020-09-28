@@ -1,8 +1,8 @@
 import { ErrorMessage, Field, Formik } from 'formik';
 // import moment from 'moment';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 // import { Redirect } from 'react-router';
-import { Button, Form, Col, notification, Card, Row } from 'antd';
+import { Button, Form, Col, notification, Card, Row, Select } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import * as Yup from 'yup';
 import { history } from '@onaio/connected-reducer-registry';
@@ -15,15 +15,22 @@ import keycloakUsersReducer, {
   KeycloakUser,
   makeKeycloakUsersSelector,
   reducerName as keycloakUsersReducerName,
+  UserAction,
 } from '../../../../store/ducks/keycloak';
 import { KeycloakService } from '../../../../services';
 import './CreateEditUser.css';
 import Ripple from '../../../../components/page/Loading';
+import {
+  LABEL_CONFIGURE_OTP,
+  LABEL_UPDATE_PASSWORD,
+  LABEL_VERIFY_EMAIL,
+  LABEL_UPDATE_USER_LOCALE,
+  LABEL_UPDATE_PROFILE,
+} from '../../../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 /** inteface for route params */
-
 export interface RouteParams {
   userId: string;
 }
@@ -65,7 +72,7 @@ export const defaultInitialValues: KeycloakUser = {
 /** default props for editing user component */
 export const defaultProps: Partial<PropsTypes> = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
-  keycloakUser: null,
+  keycloakUser: defaultInitialValues,
   serviceClass: KeycloakService,
 };
 
@@ -75,12 +82,22 @@ export const userSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
 });
 
+/** Handle required actions change */
+export const handleUserActionsChange = (
+  selected: UserAction[],
+  setRequiredActions: Dispatch<SetStateAction<UserAction[]>>
+): void => {
+  setRequiredActions(selected);
+};
+
 const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [requiredActions, setRequiredActions] = React.useState<UserAction[]>([]);
   const { serviceClass, fetchKeycloakUsersCreator, keycloakUser } = props;
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
-  const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
+  const { Option } = Select;
+
   React.useEffect(() => {
     if (userId) {
       const serve = new serviceClass('/users');
@@ -103,6 +120,12 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     }
   }, []);
 
+  React.useEffect(() => {
+    setRequiredActions(
+      keycloakUser && keycloakUser.requiredActions ? keycloakUser.requiredActions : []
+    );
+  }, [keycloakUser]);
+
   const layout = {
     labelCol: { span: 12 },
     wrapperCol: { span: 16 },
@@ -118,14 +141,17 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
         <HeaderBreadCrumb userId={userId} />
         <div className="form-container">
           <Formik
-            initialValues={initialValues as KeycloakUser}
+            initialValues={keycloakUser as KeycloakUser}
             validationSchema={userSchema}
             // tslint:disable-next-line: jsx-no-lambda
             onSubmit={(values, { setSubmitting }) => {
               if (isEditMode) {
                 const serve = new serviceClass(`/users/${userId}`);
                 serve
-                  .update(values)
+                  .update({
+                    ...values,
+                    requiredActions,
+                  })
                   .then(() => {
                     setSubmitting(false);
                     history.push('/admin');
@@ -236,6 +262,35 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
                     name="email"
                     className="form-text text-danger username-error"
                   />
+                </Form.Item>
+                <Form.Item label={'Required User Actions'}>
+                  <Select
+                    mode="multiple"
+                    allowClear
+                    placeholder="Please select"
+                    onChange={(selected) => handleUserActionsChange(selected, setRequiredActions)}
+                    style={{ width: '100%' }}
+                    defaultValue={requiredActions}
+                  >
+                    <Option key={UserAction.CONFIGURE_TOTP} value={UserAction.CONFIGURE_TOTP}>
+                      {LABEL_CONFIGURE_OTP}
+                    </Option>
+                    <Option key={UserAction.UPDATE_PASSWORD} value={UserAction.UPDATE_PASSWORD}>
+                      {LABEL_UPDATE_PASSWORD}
+                    </Option>
+                    <Option key={UserAction.UPDATE_PROFILE} value={UserAction.UPDATE_PROFILE}>
+                      {LABEL_UPDATE_PROFILE}
+                    </Option>
+                    <Option key={UserAction.VERIFY_EMAIL} value={UserAction.VERIFY_EMAIL}>
+                      {LABEL_VERIFY_EMAIL}
+                    </Option>
+                    <Option
+                      key={UserAction.UPDATE_USER_LOCALE}
+                      value={UserAction.UPDATE_USER_LOCALE}
+                    >
+                      {LABEL_UPDATE_USER_LOCALE}
+                    </Option>
+                  </Select>
                 </Form.Item>
                 <Form.Item>
                   <Row justify="start">
