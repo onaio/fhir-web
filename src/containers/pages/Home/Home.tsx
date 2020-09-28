@@ -2,14 +2,13 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { Col, Row, Button } from 'antd';
 import { Link } from 'react-router-dom';
-
-import './Home.css';
 import { getExtraData } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
+import './Home.css';
 
-interface HomeProps {
+export interface HomeProps {
   extraData: Dictionary;
 }
 
