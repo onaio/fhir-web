@@ -20,7 +20,7 @@ export interface KeycloakUser {
   };
   createdTimestamp?: number;
   disableableCredentialTypes?: string[];
-  email: string;
+  email?: string;
   emailVerified?: boolean;
   enabled?: boolean;
   firstName: string;

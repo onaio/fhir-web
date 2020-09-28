@@ -1,4 +1,6 @@
-export const keycloakUsersArray = [
+import { KeycloakUser } from '..';
+
+export const keycloakUsersArray: KeycloakUser[] = [
   {
     id: '97f36061-52fb-4474-88f2-fd286311ff1d',
     createdTimestamp: 1600843525533,
