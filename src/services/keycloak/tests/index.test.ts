@@ -5,8 +5,7 @@ import { getDefaultHeaders, getFetchOptions } from '../index';
 import fetch from 'jest-fetch-mock';
 import { KeycloakService } from '../..';
 import { OpenSRPAPIResponse } from '../../tests/fixtures/session';
-import { keycloakUser, keycloakUsersArray } from '../../../store/ducks/keycloak/tests/fixtures';
-import { throwHTTPError } from '@opensrp/server-service';
+import { keycloakUser } from '../../../store/ducks/keycloak/tests/fixtures';
 import { HTTPError } from '../errors';
 /* tslint:disable-next-line no-var-requires */
 // eslint-disable-next-line @typescript-eslint/no-var-requires

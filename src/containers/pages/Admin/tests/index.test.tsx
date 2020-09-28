@@ -4,7 +4,6 @@ import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
 import * as keycloakUserDucks from '../../../../store/ducks/keycloak';
 import * as fixtures from '../../../../store/ducks/keycloak/tests/fixtures';
-import { before } from 'lodash';
 import { mount, shallow } from 'enzyme';
 import ConnectedAdminView, { Admin, Props } from '..';
 import { Router } from 'react-router';

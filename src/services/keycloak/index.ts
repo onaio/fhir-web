@@ -199,6 +199,7 @@ export class KeycloakAPIService {
     data: T,
     params: paramsType = null,
     method: HTTPMethod = 'PUT'
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const payload = {
