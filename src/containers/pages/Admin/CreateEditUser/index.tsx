@@ -98,7 +98,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     } else {
       setIsLoading(false);
     }
-  }, []);
+  }, [userId]);
 
   const userFormProps: UserFormProps = {
     initialValues: initialValues as KeycloakUser,

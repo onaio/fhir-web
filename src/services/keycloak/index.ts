@@ -139,7 +139,8 @@ export class KeycloakAPIService {
     data: T,
     params: paramsType = null,
     method: HTTPMethod = 'POST'
-  ): Promise<Partial<Response> | undefined> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const payload = {
       ...this.getOptions(this.signal, method),
@@ -165,12 +166,14 @@ export class KeycloakAPIService {
    * @param {HTTPMethod} method - the HTTP method
    * @returns the object returned by API
    */
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
     id: string | number,
     params: paramsType = null,
     method: HTTPMethod = 'GET'
-  ): Promise<Partial<Response> | undefined> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any> {
     const url = KeycloakAPIService.getURL(`${this.generalURL}/${id}`, params);
     const response = await customFetch(url, this.getOptions(this.signal, method));
 
@@ -196,7 +199,7 @@ export class KeycloakAPIService {
     data: T,
     params: paramsType = null,
     method: HTTPMethod = 'PUT'
-  ): Promise<Partial<Response> | undefined> {
+  ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const payload = {
       ...this.getOptions(this.signal, method),
@@ -221,10 +224,7 @@ export class KeycloakAPIService {
    * @returns list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async list(
-    params: paramsType = null,
-    method: HTTPMethod = 'GET'
-  ): Promise<Partial<Response> | undefined> {
+  public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const response = await customFetch(url, this.getOptions(this.signal, method));
 
@@ -245,10 +245,7 @@ export class KeycloakAPIService {
    * @returns the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async delete(
-    params: paramsType = null,
-    method: HTTPMethod = 'DELETE'
-  ): Promise<Partial<Response> | undefined> {
+  public async delete(params: paramsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const response = await fetch(url, this.getOptions(this.signal, method));
 

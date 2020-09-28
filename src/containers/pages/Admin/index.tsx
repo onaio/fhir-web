@@ -13,8 +13,9 @@ import {
   removeKeycloakUsers,
 } from '../../../store/ducks/keycloak';
 import { Store } from 'redux';
-import { PropsTypes } from './CreateEditUser/Index';
+import { PropsTypes } from './CreateEditUser';
 import { connect } from 'react-redux';
+import { Dictionary } from '@onaio/utils/dist/types/types';
 
 // const { Content } = Layout;
 
@@ -34,6 +35,15 @@ export const defaultProps = {
   keycloakUsers: [],
 };
 
+interface TableData {
+  key: number | string;
+  id: string | undefined;
+  username: string | undefined;
+  email: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+}
+
 /**
  * Handle user deletion
  */
@@ -45,7 +55,6 @@ export const deleteUser = (
 ): void => {
   const serviceDelete = new serviceClass(`/users/${userId}`);
   const serviceGet = new serviceClass('/users');
-
   serviceDelete
     .delete()
     .then(() => {
@@ -77,8 +86,8 @@ export const deleteUser = (
 };
 
 const Admin = (props: Props): JSX.Element => {
-  const [filteredInfo, setFilteredInfo] = React.useState<any>(null);
-  const [sortedInfo, setSortedInfo] = React.useState<any>(null);
+  const [filteredInfo, setFilteredInfo] = React.useState<Dictionary>();
+  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const {
     serviceClass,
@@ -87,7 +96,7 @@ const Admin = (props: Props): JSX.Element => {
     removeKeycloakUsersCreator,
   } = props;
 
-  const handleChange = (pagination: any, filters: any, sorter: any) => {
+  const handleChange = (pagination: Dictionary, filters: Dictionary, sorter: Dictionary) => {
     setFilteredInfo(filters);
     setSortedInfo(sorter);
   };
@@ -115,49 +124,34 @@ const Admin = (props: Props): JSX.Element => {
     return <Ripple />;
   }
 
-  const headerItems: string[] = ['ID', 'Username', 'Email', 'Last Name', 'First Name', 'Actions'];
+  const headerItems: string[] = ['Username', 'Email', 'First Name', 'Last Name'];
 
-  const dataElements: any = [];
-  const fields = ['id', 'username', 'email', 'firstName', 'lastName'];
-  fields.forEach((user: any, index: number) => {
-    if (headerItems[index] === 'ID') {
-      dataElements.push({
-        title: headerItems[index],
-        dataIndex: headerItems[index].split(' ').join('').toLowerCase(),
-        key: headerItems[index].split(' ').join('').toLowerCase(),
-        ellipsis: true,
-        // eslint-disable-next-line react/display-name
-        render: (text: string) => (
-          <Link to={`/user/edit/${text}`} key={`${index}-userid`}>
-            {text}
-          </Link>
-        ),
-      });
-    } else if (headerItems[index] === 'Username') {
-      dataElements.push({
-        title: headerItems[index],
-        dataIndex: headerItems[index].split(' ').join('').toLowerCase(),
-        key: headerItems[index].split(' ').join('').toLowerCase(),
-        filters: keycloakUsers.map((filteredUser: any, idx: number) => {
-          return {
-            text: (filteredUser as any)[fields[index]],
-            value: (filteredUser as any)[fields[index]],
-          };
-        }),
-        filteredValue: (filteredInfo && filteredInfo.username) || null,
-        onFilter: (value: any, record: any) => record.username.includes(value),
-        sorter: (a: any, b: any) => a.username.length - b.username.length,
-        sortOrder: sortedInfo && sortedInfo.columnKey === 'username' && sortedInfo.order,
-        ellipsis: true,
-      });
-    } else {
-      dataElements.push({
-        title: headerItems[index],
-        dataIndex: headerItems[index].split(' ').join('').toLowerCase(),
-        key: headerItems[index].split(' ').join('').toLowerCase(),
-      });
-    }
+  const dataElements = [];
+  const fields: string[] = ['username', 'email', 'firstName', 'lastName'];
+  fields.forEach((field: string, index: number) => {
+    const dataFilters = keycloakUsers.map((filteredUser: KeycloakUser | Dictionary) => {
+      return {
+        text: (filteredUser as Dictionary)[field],
+        value: (filteredUser as Dictionary)[field],
+      };
+    });
+    dataElements.push({
+      title: headerItems[index],
+      dataIndex: fields[index],
+      key: fields[index],
+      filters: Array.from(new Set(dataFilters)),
+      filteredValue: (filteredInfo && filteredInfo[fields[index]]) || null,
+      onFilter: (value: string, record: Dictionary) => record[fields[index]].includes(value),
+      sorter: (a: Dictionary, b: Dictionary) => {
+        if (b[fields[index]]) {
+          return a[fields[index]].length - b[fields[index]].length;
+        }
+      },
+      sortOrder: sortedInfo && sortedInfo.columnKey === fields[index] && sortedInfo.order,
+      ellipsis: true,
+    });
   });
+  // append action column
   dataElements.push({
     title: 'Actions',
     dataIndex: 'actions',
@@ -185,20 +179,19 @@ const Admin = (props: Props): JSX.Element => {
             )
           }
         >
-          <a href="#">{'Delete'}</a>
+          <Link to="#">{'Delete'}</Link>
         </Popconfirm>
       </>
     ),
   });
-  const tableData: any = keycloakUsers.map((user: Partial<KeycloakUser>, index: number) => {
+  const tableData: TableData[] = keycloakUsers.map((user: KeycloakUser, index: number) => {
     return {
       key: `${index}`,
       id: user.id,
       username: user.username,
       email: user.email,
-      firstname: user.firstName,
-      lastname: user.lastName,
-      actions: 'Editssd',
+      firstName: user.firstName,
+      lastName: user.lastName,
     };
   });
   return (
@@ -223,17 +216,15 @@ const Admin = (props: Props): JSX.Element => {
         </Col>
       </Row>
       <Row>
-        {/* <ListView {...listViewProps} /> */}
         <Table
           columns={dataElements}
-          dataSource={tableData}
+          dataSource={tableData as KeycloakUser[]}
           pagination={{ pageSize: 5 }}
           onChange={handleChange}
           bordered
         />
       </Row>
     </React.Fragment>
-    // <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
   );
 };
 

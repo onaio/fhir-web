@@ -46,8 +46,8 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Image width={200} src={Logo} />
         </div>
         <Menu mode="horizontal" selectedKeys={[path]}>
-          <Menu.Item key="/">
-            <Link to="/">Home</Link>
+          <Menu.Item key={HOME_URL}>
+            <Link to={HOME_URL}>Home</Link>
           </Menu.Item>
           {isAdmin && (
             <Menu.Item key="/admin">
@@ -65,8 +65,8 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
               }
               style={{ float: 'right' }}
             >
-              <Menu.Item key="/logout">
-                <Link to="/logout">Logout</Link>
+              <Menu.Item key={LOGOUT_URL}>
+                <Link to={LOGOUT_URL}>Logout</Link>
               </Menu.Item>
               <Menu.Item key={`/user/edit/${user_id}`}>
                 <Link to={`/user/edit/${user_id}`}>Manage account</Link>
