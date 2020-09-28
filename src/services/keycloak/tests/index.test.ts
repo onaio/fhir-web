@@ -7,9 +7,6 @@ import { KeycloakService } from '../..';
 import { OpenSRPAPIResponse } from '../../tests/fixtures/session';
 import { keycloakUser } from '../../../store/ducks/keycloak/tests/fixtures';
 import { HTTPError } from '../errors';
-/* tslint:disable-next-line no-var-requires */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// const fetch = require('jest-fetch-mock');
 
 jest.mock('../../../configs/env');
 
