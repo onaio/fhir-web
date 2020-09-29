@@ -1,13 +1,12 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import NotFound from '..';
 
 const NotFoundLocation = 'pageurlwhichisnotavalible';
-const history = useHistory();
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Switch>
       {/* tslint:disable-next-line: jsx-no-lambda */}
@@ -20,7 +19,7 @@ const App = () => {
 
 describe('src/components/NotFound', () => {
   beforeEach(() => {
-    history.push(NotFoundLocation);
+    window.location.pathname = NotFoundLocation;
   });
 
   it('renders correctly', () => {
