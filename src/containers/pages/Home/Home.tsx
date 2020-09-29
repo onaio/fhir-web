@@ -7,9 +7,6 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
-import { getExtraData } from '@onaio/session-reducer';
-import { connect } from 'react-redux';
-import { Store } from 'redux';
 
 export interface HomeProps {
   extraData: Dictionary;
