@@ -11,7 +11,7 @@ const NotFound: React.FC = () => {
       title="404"
       subTitle="Sorry, the page you are trying to visit does not exist."
       extra={
-        <Button onClick={() => history.push('/')} type="primary">
+        <Button key="error" onClick={() => history.push('/')} type="primary">
           Back Home
         </Button>
       }
