@@ -17,6 +17,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.4",
+    "@sentry/react": "^5.24.2",
     "@types/antd": "^1.0.0",
     "@types/lodash": "^4.14.161",
     "antd": "^4.6.3",
