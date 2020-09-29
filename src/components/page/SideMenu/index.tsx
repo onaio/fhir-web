@@ -1,27 +1,21 @@
 import * as React from 'react';
 import { Layout, Menu } from 'antd';
-import {
-  UserOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  TeamOutlined,
-  FileOutlined,
-} from '@ant-design/icons';
+import { UserOutlined, TeamOutlined, HomeOutlined } from '@ant-design/icons';
 import SubMenu from 'antd/lib/menu/SubMenu';
 
 const { Sider } = Layout;
 
-const SideMenu = (props: any) => {
-  console.log('props', props);
+const SideMenu: React.FC = () => {
   return (
     <Sider
       style={{
         overflow: 'auto',
         left: 0,
       }}
+      width={250}
     >
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-        <Menu.Item key="1" icon={<PieChartOutlined />}>
+        <Menu.Item key="1" icon={<HomeOutlined />}>
           Home
         </Menu.Item>
         <SubMenu key="sub1" icon={<UserOutlined />} title="Admin">

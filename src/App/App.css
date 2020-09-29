@@ -103,3 +103,7 @@ fieldset[disabled] .gatekeeper-btn.active {
 .ant-menu-horizontal {
   width: 100%;
 }
+
+.ant-card-body {
+  padding: 24px 0;
+}

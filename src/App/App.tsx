@@ -9,7 +9,7 @@ import {
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
-import { Layout, Menu } from 'antd';
+import { Layout } from 'antd';
 import { Switch, Route, Redirect } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
@@ -31,7 +31,6 @@ import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedUserCredentials from '../containers/pages/Admin/Credentials';
-// import Sider from 'antd/lib/layout/Sider';
 import SideMenu from '../components/page/SideMenu';
 import { SiteFooter } from '../containers/pages/Footer';
 
@@ -127,7 +126,7 @@ const App: React.FC = () => {
                   redirectPath={APP_CALLBACK_URL}
                   disableLoginProtection={false}
                   exact
-                  path="/logout"
+                  path={LOGOUT_URL}
                   // tslint:disable-next-line: jsx-no-lambda
                   component={() => {
                     return <CustomLogout />;

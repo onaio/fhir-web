@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, Formik } from 'formik';
 import React, { Dispatch, SetStateAction } from 'react';
-import { Button, Form, Col, notification, Row, Select } from 'antd';
+import { Button, Form, notification, Select } from 'antd';
 import * as Yup from 'yup';
 import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser, UserAction } from '../../../store/ducks/keycloak';
@@ -245,28 +245,22 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               </Select>
             </Form.Item>
             <Form.Item {...tailLayout}>
-              <Row justify="start">
-                <Col span={4}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="create-user"
-                    disabled={isSubmitting || Object.keys(errors).length > 0}
-                  >
-                    {isSubmitting ? 'Saving' : 'Save User'}
-                  </Button>
-                </Col>
-                <Col span={4}>
-                  <Button
-                    htmlType="submit"
-                    onClick={() => history.push('/admin')}
-                    className="cancel-user"
-                    disabled={isSubmitting || Object.keys(errors).length > 0}
-                  >
-                    Cancel
-                  </Button>
-                </Col>
-              </Row>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="create-user"
+                disabled={isSubmitting || Object.keys(errors).length > 0}
+              >
+                {isSubmitting ? 'Saving' : 'Save User'}
+              </Button>
+              <Button
+                htmlType="submit"
+                onClick={() => history.push('/admin')}
+                className="cancel-user"
+                disabled={isSubmitting || Object.keys(errors).length > 0}
+              >
+                Cancel
+              </Button>
             </Form.Item>
           </Form>
         )}
