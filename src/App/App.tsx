@@ -27,6 +27,7 @@ import ConnectedHeader from '../containers/ConnectedHeader';
 import Home from '../containers/pages/Home/Home';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import './App.css';
+import NotFound from '../components/NotFound';
 
 const { Content } = Layout;
 
@@ -94,6 +95,7 @@ const App: React.FC = () => {
                 return <CustomLogout />;
               }}
             />
+            <Route exact component={NotFound} />
           </Switch>
         </Content>
       </div>
