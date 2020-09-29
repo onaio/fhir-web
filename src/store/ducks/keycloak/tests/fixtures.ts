@@ -1,4 +1,4 @@
-import { KeycloakUser, UserAction } from '..';
+import { KeycloakUser } from '..';
 
 export const keycloakUsersArray: KeycloakUser[] = [
   {
@@ -12,7 +12,7 @@ export const keycloakUsersArray: KeycloakUser[] = [
     lastName: 'Mwalimu',
     email: 'dubdabasoduba@gmail.com',
     disableableCredentialTypes: [],
-    requiredActions: [UserAction.UPDATE_PASSWORD],
+    requiredActions: ['UPDATE_PASSWORD'],
     notBefore: 0,
     access: {
       manageGroupMembership: true,
