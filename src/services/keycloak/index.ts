@@ -166,7 +166,6 @@ export class KeycloakAPIService {
    * @param {HTTPMethod} method - the HTTP method
    * @returns the object returned by API
    */
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
     id: string | number,
