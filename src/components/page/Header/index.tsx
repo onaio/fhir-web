@@ -71,6 +71,9 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
               <Menu.Item key={`/user/edit/${user_id}`}>
                 <Link to={`/user/edit/${user_id}`}>Manage account</Link>
               </Menu.Item>
+              <Menu.Item key={`/user/edit/${user_id}`}>
+                <Link to={`/user/edit/${user_id}`}>Manage account</Link>
+              </Menu.Item>
             </SubMenu>
           ) : (
             <Menu.Item key={APP_LOGIN_URL} style={{ float: 'right' }}>

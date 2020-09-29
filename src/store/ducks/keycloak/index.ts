@@ -9,6 +9,15 @@ import SeamlessImmutable from 'seamless-immutable';
 /** The reducer name */
 export const reducerName = 'keycloakUsers';
 
+/** Enum representing possible user actions */
+export enum UserAction {
+  CONFIGURE_TOTP = 'CONFIGURE_TOTP',
+  UPDATE_PASSWORD = 'UPDATE_PASSWORD',
+  VERIFY_EMAIL = 'VERIFY_EMAIL',
+  UPDATE_USER_LOCALE = 'update_user_locale',
+  UPDATE_PROFILE = 'UPDATE_PROFILE',
+}
+
 /** Interface for user json object */
 export interface KeycloakUser {
   access?: {
@@ -27,7 +36,7 @@ export interface KeycloakUser {
   id: string;
   lastName: string;
   notBefore?: number;
-  requiredActions?: string[];
+  requiredActions?: UserAction[];
   totp?: boolean;
   username: string;
 }
