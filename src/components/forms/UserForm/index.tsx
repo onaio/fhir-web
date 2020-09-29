@@ -73,8 +73,22 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const isEditMode = initialValues.id !== '';
   const layout = {
-    labelCol: { span: 12 },
-    wrapperCol: { span: 16 },
+    labelCol: {
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 2, span: 10 },
+      md: { offset: 0, span: 8 },
+      lg: { offset: 0, span: 6 },
+    },
+    wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
+  };
+
+  const tailLayout = {
+    wrapperCol: {
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 12, span: 24 },
+      md: { offset: 8, span: 16 },
+      lg: { offset: 6, span: 14 },
+    },
   };
   const { Option } = Select;
 
@@ -237,7 +251,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item>
+            <Form.Item {...tailLayout}>
               <Row justify="start">
                 <Col span={4}>
                   <Button

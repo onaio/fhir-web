@@ -3,17 +3,10 @@
   top: 20px;
 }
 
-.ant-form-item-label {
-  flex: 0 0 50% !important;
-  flex-grow: 0 !important;
-  display: flex;
-}
-
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
   margin-right: 10px;
   padding: 8px 50px;
 }
-
-.cancel-user {
-  float: right;
+.ant-btn {
+  margin-right: 8px;
 }
