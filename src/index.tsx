@@ -3,13 +3,19 @@ import ReactDOM from 'react-dom';
 import { history } from '@onaio/connected-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
+import * as Sentry from '@sentry/react';
 import './index.css';
 import App from './App/App';
+import { SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
+
+if (SENTRY_DSN && SENTRY_DSN !== '') {
+  Sentry.init({ dsn: SENTRY_DSN });
+}
 
 ReactDOM.render(
   <Provider store={store}>
