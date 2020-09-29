@@ -9,6 +9,7 @@ import App from './App/App';
 import { SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
+import Fallback from './components/Fallback';
 
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
@@ -19,9 +20,11 @@ if (SENTRY_DSN && SENTRY_DSN !== '') {
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
+    <Sentry.ErrorBoundary fallback={Fallback}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </Sentry.ErrorBoundary>
   </Provider>,
   document.getElementById('opensrp-root')
 );
