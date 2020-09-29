@@ -19,13 +19,15 @@ import {
   BACKEND_CALLBACK_URL,
   BACKEND_LOGIN_URL,
   BACKEND_CALLBACK_PATH,
+  REACT_LOGIN_URL,
+  LOGOUT_URL,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
 import ConnectedAdminView from '../containers/pages/Admin';
-import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser/Index';
+import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedUserCredentials from '../containers/pages/Admin/Credentials';
@@ -34,11 +36,11 @@ const { Content } = Layout;
 
 library.add(faUser);
 
-const App = (): JSX.Element => {
-  const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : '/login';
+const App: React.FC = () => {
+  const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : REACT_LOGIN_URL;
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   return (
@@ -118,7 +120,7 @@ const App = (): JSX.Element => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path="/logout"
+              path={LOGOUT_URL}
               // tslint:disable-next-line: jsx-no-lambda
               component={() => {
                 return <CustomLogout />;

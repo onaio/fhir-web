@@ -3,12 +3,12 @@ import './style.css';
 
 /** interface for Ripple props */
 export interface RippleProps {
-  borderColor: string;
-  borderStyle: string;
-  borderWidth: string;
-  height: string;
-  minHeight: string;
-  width: string;
+  borderColor?: string;
+  borderStyle?: string;
+  borderWidth?: string;
+  height?: string;
+  minHeight?: string;
+  width?: string;
 }
 
 export const defaultProps: Partial<RippleProps> = {
@@ -21,7 +21,7 @@ export const defaultProps: Partial<RippleProps> = {
 };
 
 /** Loading component that displays a nice ripple */
-const Ripple = (props: RippleProps): JSX.Element => {
+const Ripple: React.FC<RippleProps> = (props: RippleProps) => {
   const { borderColor, borderStyle, borderWidth, height, minHeight, width } = props;
 
   const innerDivStyle: React.CSSProperties = {

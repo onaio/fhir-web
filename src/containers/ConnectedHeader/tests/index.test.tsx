@@ -23,11 +23,19 @@ describe('components/ConnectedHeader', () => {
 
   it('renders the ConnectedHeader when logged in', () => {
     store.dispatch(
-      authenticateUser(true, {
-        email: 'bob@example.com',
-        name: 'Bobbie',
-        username: 'RobertBaratheon',
-      })
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        {
+          roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
+          username: 'superset-user',
+          user_id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        }
+      )
     );
     const wrapper = mount(
       <Provider store={store}>

@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import store from '../../../store';
 
-describe('components/Loading', () => {
+describe('components/Logout', () => {
   it('renders without crashing', () => {
     shallow(<CustomLogout />);
   });

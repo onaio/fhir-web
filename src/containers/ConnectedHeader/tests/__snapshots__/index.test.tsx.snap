@@ -20,7 +20,11 @@ Object {
       }
     >
       <MenuItem>
-        Home
+        <Link
+          to="/"
+        >
+          Home
+        </Link>
       </MenuItem>
       <MenuItem
         style={
@@ -60,7 +64,18 @@ Object {
       }
     >
       <MenuItem>
-        Home
+        <Link
+          to="/"
+        >
+          Home
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          to="/admin"
+        >
+          Admin
+        </Link>
       </MenuItem>
       <SubMenu
         style={
@@ -68,13 +83,34 @@ Object {
             "float": "right",
           }
         }
-        title="RobertBaratheon"
+        title={
+          <div>
+            <span>
+              RobertBaratheon
+            </span>
+            <span>
+               
+            </span>
+            <Avatar
+              icon={<ForwardRef(UserOutlined) />}
+              shape="square"
+              size="default"
+            />
+          </div>
+        }
       >
         <MenuItem>
           <Link
             to="/logout"
           >
             Logout
+          </Link>
+        </MenuItem>
+        <MenuItem>
+          <Link
+            to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+          >
+            Manage account
           </Link>
         </MenuItem>
       </SubMenu>

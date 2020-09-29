@@ -78,7 +78,7 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
   const layout = {
-    labelCol: { span: 8 },
+    labelCol: { span: 4 },
     wrapperCol: { span: 16 },
   };
 
