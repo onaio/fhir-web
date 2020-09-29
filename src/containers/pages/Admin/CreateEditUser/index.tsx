@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, notification, Card } from 'antd';
+import { Col, notification, Row } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import * as Yup from 'yup';
 import { Store } from 'redux';
@@ -110,12 +110,12 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   }
 
   return (
-    <Col span={12}>
-      <Card title={`${isEditMode ? 'Edit User' : 'Create New User'}`} bordered={false}>
+    <Row>
+      <Col xs={24} sm={20} md={18} lg={15} xl={12}>
         <HeaderBreadCrumb userId={userId} />
         <UserForm {...userFormProps} />
-      </Card>
-    </Col>
+      </Col>
+    </Row>
   );
 };
 

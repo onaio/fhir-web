@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, Formik } from 'formik';
 import React from 'react';
-import { Button, Form, Col, notification, Row } from 'antd';
+import { Button, Form, notification } from 'antd';
 import * as Yup from 'yup';
 import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '../../../store/ducks/keycloak';
@@ -53,8 +53,22 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const isEditMode = initialValues.id !== '';
 
   const layout = {
-    labelCol: { span: 12 },
-    wrapperCol: { span: 16 },
+    labelCol: {
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 2, span: 10 },
+      md: { offset: 0, span: 8 },
+      lg: { offset: 0, span: 6 },
+    },
+    wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
+  };
+
+  const tailLayout = {
+    wrapperCol: {
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 12, span: 24 },
+      md: { offset: 8, span: 16 },
+      lg: { offset: 6, span: 14 },
+    },
   };
 
   return (
@@ -179,29 +193,23 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 className="form-text text-danger username-error"
               />
             </Form.Item>
-            <Form.Item>
-              <Row justify="start">
-                <Col span={4}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="create-user"
-                    disabled={isSubmitting || Object.keys(errors).length > 0}
-                  >
-                    {isSubmitting ? 'Saving' : 'Save User'}
-                  </Button>
-                </Col>
-                <Col span={4}>
-                  <Button
-                    htmlType="submit"
-                    onClick={() => history.push('/admin')}
-                    className="cancel-user"
-                    disabled={isSubmitting || Object.keys(errors).length > 0}
-                  >
-                    Cancel
-                  </Button>
-                </Col>
-              </Row>
+            <Form.Item {...tailLayout}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="create-user"
+                disabled={isSubmitting || Object.keys(errors).length > 0}
+              >
+                {isSubmitting ? 'Saving' : 'Save User'}
+              </Button>
+              <Button
+                htmlType="submit"
+                onClick={() => history.push('/admin')}
+                className="cancel-user"
+                disabled={isSubmitting || Object.keys(errors).length > 0}
+              >
+                Cancel
+              </Button>
             </Form.Item>
           </Form>
         )}
