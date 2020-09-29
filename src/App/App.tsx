@@ -27,6 +27,7 @@ import ConnectedHeader from '../containers/ConnectedHeader';
 import Home from '../containers/pages/Home/Home';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import './App.css';
+import Fallback from '../components/Fallback';
 
 const { Content } = Layout;
 
@@ -55,6 +56,7 @@ const App: React.FC = () => {
               path="/"
               component={Home}
             />
+            <Route exact path="/fallback" component={Fallback} />
             <Route
               exact
               path={APP_LOGIN_URL}
