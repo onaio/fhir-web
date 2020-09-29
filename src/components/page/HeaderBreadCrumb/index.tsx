@@ -4,7 +4,12 @@ import { history } from '@onaio/connected-reducer-registry';
 
 const { TabPane } = Tabs;
 
-export const HeaderBreadCrumb = (props: any): JSX.Element => {
+interface HeaderBreadCrumbProps {
+  isAdmin?: boolean;
+  userId?: string;
+}
+
+export const HeaderBreadCrumb: React.FC<HeaderBreadCrumbProps> = (props: HeaderBreadCrumbProps) => {
   const { userId } = props;
   const [activeKey, setActiveKey] = React.useState<string>('');
   const handleTabLink = (key: string) => {

@@ -11,13 +11,14 @@ import App from '../App';
 import { expressAPIResponse } from './fixtures';
 
 jest.mock('../../configs/env');
+const realLocation = window.location;
 
 // tslint:disable-next-line: no-var-requires
 
 describe('App', () => {
   beforeEach(() => {
+    window.location = realLocation;
     fetch.mockResponse(JSON.stringify(expressAPIResponse));
-    jest.resetAllMocks();
     fetch.resetMocks();
     // Reset history
     history.push('/');

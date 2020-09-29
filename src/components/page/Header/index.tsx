@@ -8,7 +8,8 @@ import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
-import { BACKEND_LOGIN_URL } from '../../../constants';
+import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
+import { Dictionary } from '@onaio/utils';
 
 const SubMenu = Menu.SubMenu;
 
@@ -16,7 +17,7 @@ const SubMenu = Menu.SubMenu;
 export interface HeaderProps extends RouteComponentProps {
   authenticated: boolean;
   user: User;
-  extraData: { [key: string]: any };
+  extraData: { [key: string]: Dictionary };
 }
 
 /** default props for Header */
@@ -32,12 +33,12 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 
 /** The Header component */
 
-export const HeaderComponent = (props: HeaderProps): JSX.Element => {
+export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id, roles } = extraData;
   const isAdmin = roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS');
   const path = props.location.pathname;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : '/login';
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
   return (
     <div>
       <Layout.Header>
@@ -45,8 +46,8 @@ export const HeaderComponent = (props: HeaderProps): JSX.Element => {
           <Image width={200} src={Logo} />
         </div>
         <Menu mode="horizontal" selectedKeys={[path]}>
-          <Menu.Item key="/">
-            <Link to="/">Home</Link>
+          <Menu.Item key={HOME_URL}>
+            <Link to={HOME_URL}>Home</Link>
           </Menu.Item>
           {isAdmin && (
             <Menu.Item key="/admin">
@@ -64,8 +65,11 @@ export const HeaderComponent = (props: HeaderProps): JSX.Element => {
               }
               style={{ float: 'right' }}
             >
-              <Menu.Item key="/logout">
-                <Link to="/logout">Logout</Link>
+              <Menu.Item key={LOGOUT_URL}>
+                <Link to={LOGOUT_URL}>Logout</Link>
+              </Menu.Item>
+              <Menu.Item key={`/user/edit/${user_id}`}>
+                <Link to={`/user/edit/${user_id}`}>Manage account</Link>
               </Menu.Item>
               <Menu.Item key={`/user/edit/${user_id}`}>
                 <Link to={`/user/edit/${user_id}`}>Manage account</Link>

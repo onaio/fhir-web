@@ -1,13 +1,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import { history } from '@onaio/connected-reducer-registry';
-import { MemoryRouter, Router } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
-import CustomConnectedAPICallBack, { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
+import { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
 import { EXPRESS_LOGIN_URL } from '../../../../constants';
-import toJson from 'enzyme-to-json';
-import { Provider } from 'react-redux';
-import store from '../../../../store';
 
 const App = () => {
   return (
@@ -26,7 +22,11 @@ const App = () => {
     </Switch>
   );
 };
+const realLocation = window.location;
 describe('src/components/page/CustomCallback.SuccessfulLogin', () => {
+  afterEach(() => {
+    window.location = realLocation;
+  });
   it('renders correctly', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: `/callback`, search: '', hash: '', state: {} }]}>

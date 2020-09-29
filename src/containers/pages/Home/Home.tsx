@@ -2,13 +2,20 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { Col, Row, Button } from 'antd';
 import { Link } from 'react-router-dom';
-
+import { getExtraData } from '@onaio/session-reducer';
+import { connect } from 'react-redux';
+import { Store } from 'redux';
+import { Dictionary } from '@onaio/utils';
 import './Home.css';
 import { getExtraData } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 
-const Home = (props: any): JSX.Element => {
+export interface HomeProps {
+  extraData: Dictionary;
+}
+
+const Home: React.FC<HomeProps> = (props: HomeProps) => {
   const { extraData } = props;
   const { roles } = extraData;
   return (

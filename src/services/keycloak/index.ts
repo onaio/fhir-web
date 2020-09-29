@@ -139,6 +139,7 @@ export class KeycloakAPIService {
     data: T,
     params: paramsType = null,
     method: HTTPMethod = 'POST'
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const payload = {
@@ -170,6 +171,7 @@ export class KeycloakAPIService {
     id: string | number,
     params: paramsType = null,
     method: HTTPMethod = 'GET'
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(`${this.generalURL}/${id}`, params);
     const response = await customFetch(url, this.getOptions(this.signal, method));
@@ -196,6 +198,7 @@ export class KeycloakAPIService {
     data: T,
     params: paramsType = null,
     method: HTTPMethod = 'PUT'
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const payload = {
