@@ -20,7 +20,11 @@ export const defaultProps: Partial<RippleProps> = {
   width: '64px',
 };
 
-/** Loading component that displays a nice ripple */
+/** Loading component that displays a nice ripple
+ *
+ * @param {RippleProps} props should contain the UI styles.
+ * @returns {Ripple}.
+ */
 const Ripple: React.FC<RippleProps> = (props: RippleProps) => {
   const { borderColor, borderStyle, borderWidth, height, minHeight, width } = props;
 
