@@ -16,5 +16,13 @@
     "noEmit": true,
     "jsx": "preserve"
   },
-  "include": ["packages", "client", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "packages",
+    "client",
+    "**/*.ts",
+    "**/*.tsx",
+    "jest.config.js",
+    "babel.config.js",
+    "setupTests.js"
+  ]
 }
