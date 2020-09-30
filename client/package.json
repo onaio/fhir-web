@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -46,7 +46,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "cd ../ && TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen && cd client",
+    "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
     "lint": "eslint './**/*.{ts,tsx}' --max-warnings 0",
     "lint-snap": "eslint 'src/**/*.snap'",
     "eject": "react-scripts eject",
