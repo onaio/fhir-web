@@ -3,25 +3,48 @@ import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
-import { UserForm } from '..';
+import { UserForm, defaultInitialValues } from '..';
 import * as fixtures from '../../../../store/ducks/keycloak/tests/fixtures';
 import { act } from 'react-dom/test-utils';
+import { KeycloakService } from '../../../../services';
 
 jest.mock('../../../../configs/env');
+/*jest.mock('antd', () => {
+  const antd = jest.requireActual('antd');
 
-describe('src/components/PractitionerForm', () => {
+  const Select = ({ children, onChange }) => {
+    return <select onChange={(e) => onChange(e.target.value)}>{children}</select>;
+  };
+
+  const Option = ({ children, ...otherProps }) => {
+    return <option {...otherProps}>{children}</option>;
+  };
+
+  Select.Option = Option;
+
+  return {
+    __esModule: true,
+    ...antd,
+    Select,
+  };
+});*/
+
+describe('src/components/UserForm', () => {
+  const props = {
+    initialValues: defaultInitialValues,
+    serviceClass: KeycloakService,
+  };
   beforeEach(() => {
+    fetch.once(JSON.stringify([fixtures.userActions]));
     fetch.resetMocks();
   });
   it('renders without crashing', () => {
-    fetch.once(JSON.stringify([fixtures.keycloakUser]));
-    shallow(<UserForm />);
+    shallow(<UserForm {...props} />);
   });
 
   it('renders correctly', () => {
-    fetch.once(JSON.stringify([fixtures.keycloakUser]));
     // looking for each fields
-    const wrapper = mount(<UserForm />);
+    const wrapper = mount(<UserForm {...props} />);
 
     // user's first name
     const userInput = wrapper.find('input#firstName');
@@ -31,8 +54,7 @@ describe('src/components/PractitionerForm', () => {
   });
 
   it('creates object to send correctly for creating new user', async () => {
-    fetch.once(JSON.stringify([]));
-    const wrapper = mount(<UserForm />);
+    const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
       await flushPromises();
@@ -54,6 +76,16 @@ describe('src/components/PractitionerForm', () => {
     // set user email
     const emailInput = wrapper.find('input#email');
     emailInput.simulate('change', { target: { name: 'email', value: 'testone@gmail.com' } });
+
+    /*const actionSelect = wrapper.find('select');
+    actionSelect.simulate('change', {
+      target: { value: ['UPDATE_PASSWORD'] },
+    });*/
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     wrapper.find('form').simulate('submit');
     await act(async () => {
@@ -84,7 +116,7 @@ describe('src/components/PractitionerForm', () => {
       username: 'TestOne',
     };
 
-    expect(fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[1]).toEqual([
       'https://keycloak-test.smartregister.org/auth/realms//users',
       {
         'Cache-Control': 'no-cache',
@@ -102,11 +134,11 @@ describe('src/components/PractitionerForm', () => {
   });
 
   it('creates object to send correctly for editing user', async () => {
-    fetch.once(JSON.stringify([fixtures.keycloakUser]));
-    const props = {
+    const propEdit = {
+      ...props,
       initialValues: fixtures.keycloakUser,
     };
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(<UserForm {...propEdit} />);
 
     await act(async () => {
       await flushPromises();
@@ -149,7 +181,7 @@ describe('src/components/PractitionerForm', () => {
       },
     };
 
-    expect(fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[1]).toEqual([
       'https://keycloak-test.smartregister.org/auth/realms//users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       {
         'Cache-Control': 'no-cache',
@@ -167,7 +199,7 @@ describe('src/components/PractitionerForm', () => {
   });
   it('user is not created if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const wrapper = mount(<UserForm />);
+    const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
       await flushPromises();

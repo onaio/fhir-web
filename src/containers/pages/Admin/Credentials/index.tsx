@@ -7,7 +7,6 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { history } from '@onaio/connected-reducer-registry';
 import { HeaderBreadCrumb } from '../../../../components/page/HeaderBreadCrumb';
 import keycloakUsersReducer, {
-  fetchKeycloakUsers,
   KeycloakUser,
   makeKeycloakUsersSelector,
   reducerName as keycloakUsersReducerName,
@@ -18,14 +17,12 @@ import '../CreateEditUser/CreateEditUser.css';
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 /** inteface for route params */
-
 export interface RouteParams {
   userId: string;
 }
 
 /** props for editing a user view */
 export interface Props {
-  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
 }
@@ -42,7 +39,6 @@ export type PropsTypes = Props & RouteComponentProps<RouteParams>;
 
 /** default props for editing user component */
 export const defaultProps: Partial<PropsTypes> = {
-  fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
 };
@@ -168,11 +164,6 @@ const mapStateToProps = (state: Partial<Store>, ownProps: PropsTypes): Dispatche
   return { keycloakUser };
 };
 
-/** map props to action creators */
-const mapDispatchToProps = {
-  fetchKeycloakUsersCreator: fetchKeycloakUsers,
-};
-
-const ConnectedUserCredentials = connect(mapStateToProps, mapDispatchToProps)(UserCredentials);
+const ConnectedUserCredentials = connect(mapStateToProps)(UserCredentials);
 
 export default ConnectedUserCredentials;

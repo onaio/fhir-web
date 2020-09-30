@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`src/components/PractitionerForm creates object to send correctly for editing user: readonly username edit 1`] = `
+exports[`src/components/UserForm creates object to send correctly for editing user: readonly username edit 1`] = `
 <input
   className="form-control"
   id="username"
@@ -13,7 +13,7 @@ exports[`src/components/PractitionerForm creates object to send correctly for ed
 />
 `;
 
-exports[`src/components/PractitionerForm renders correctly: first name input 1`] = `
+exports[`src/components/UserForm renders correctly: first name input 1`] = `
 <input
   className="form-control"
   id="firstName"
