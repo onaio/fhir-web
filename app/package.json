@@ -45,8 +45,8 @@
   },
   "scripts": {
     "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
-    "lint": "eslint '{packages,app}/**/*.{js,jsx,ts,tsx}' --max-warnings 0",
-    "lint-snap": "eslint '{packages,app}/**/*.snap'",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
+    "lint-snap": "eslint 'src/**/*.snap'",
     "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
   },
   "husky": {
@@ -56,11 +56,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint '{packages,app}/**/*.{ts,tsx}' --fix --max-warnings 0",
+      "eslint src/**/*.{ts,tsx} --fix --max-warnings 0",
       "git add"
     ],
     "*.{js,jsx}": [
-      "eslint '{packages,app}/**/*.{ts,tsx}' --fix --max-warnings 0",
+      "eslint src/**/*.{ts,tsx} --fix --max-warnings 0",
       "git add"
     ],
     "*.{json,js,jsx,ts,tsx,css,scss,md}": [
