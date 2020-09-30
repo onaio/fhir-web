@@ -10,8 +10,9 @@ import { EXPRESS_LOGIN_URL, HOME_URL, LOGOUT_URL } from '../../../constants';
 import store from '../../../store';
 import Loading from '../Loading';
 /**
- * antd notification popup
- * @param user - user details object
+ * antd notification popup.
+ *
+ * @param {user} user details object
  */
 export const openNotification = (user: User): void => {
   notification.success({
@@ -21,7 +22,9 @@ export const openNotification = (user: User): void => {
 };
 
 /** checks if the value of next in searchParam is blacklisted
+ *
  * @param {RouteComponentProps} props - the props should contain the routing state.
+ * @returns {boolean} return the response
  */
 export const nextIsValid = (props: RouteComponentProps): boolean => {
   let response = true;

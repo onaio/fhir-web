@@ -13,7 +13,9 @@ import Ripple from '../page/Loading';
 import { notification } from 'antd';
 
 /** HOC function that calls function that logs out the user from both opensrp
- * and keycloak
+ * and keycloak.
+ *
+ * @returns {Function} returns Ripple component
  */
 export const CustomLogout: React.FC = (): JSX.Element => {
   const history = useHistory();

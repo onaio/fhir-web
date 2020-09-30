@@ -7,7 +7,13 @@ import { getAccessToken } from '../store/selectors';
 /** allowed http methods */
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-/** get default HTTP headers for OpenSRP service */
+/** get default HTTP headers for OpenSRP service
+ *
+ * @param {accept} accept initialize with default value
+ * @param {authorizationType} authorizationType initialize with default value
+ * @param {contentType} contentType initialize with default value
+ * @returns {object} headers
+ */
 export function getDefaultHeaders(
   accept = 'application/json',
   authorizationType = 'Bearer',
@@ -33,6 +39,7 @@ export interface URLParams {
 }
 
 /** converts filter params object to string
+ *
  * @param {URLParams} obj - the object representing filter params
  * @returns {string} filter params as a string
  */
@@ -43,11 +50,11 @@ export function getFilterParams(obj: URLParams): string {
 }
 
 /** get payload for fetch
- * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
+ *
+ * @param {AbortSignal} _ - signal object that allows you to communicate with a DOM request
  * @param {HTTPMethod} method - the HTTP method
- * @returns the payload
+ * @returns {object} the payload
  */
-
 export function getPayloadOptions(_: AbortSignal, method: HTTPMethod): PayloadOptions {
   return {
     headers: getDefaultHeaders() as HeadersInit,
