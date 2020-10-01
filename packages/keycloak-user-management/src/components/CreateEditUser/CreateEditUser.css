@@ -1,0 +1,12 @@
+.form-container {
+  position: relative;
+  top: 20px;
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  margin-right: 10px;
+  padding: 8px 50px;
+}
+.ant-btn {
+  margin-right: 8px;
+}
