@@ -23,6 +23,7 @@
     "**/*.tsx",
     "jest.config.js",
     "babel.config.js",
-    "setupTests.js"
+    "setupTests.js",
+    "__mocks__/"
   ]
 }
