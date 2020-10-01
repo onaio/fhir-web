@@ -153,9 +153,11 @@ describe('src/containers/pages/Admin/Credentials/', () => {
       wrapper.update();
     });
     const formContainer = wrapper.find('div.form-container');
-    expect(formContainer.find('Row').at(0).prop('className')).toMatchSnapshot('password row class');
-    expect(formContainer.find('Row').at(0).find('div').at(0).prop('className')).toMatchSnapshot(
-      'password div class'
+    expect(formContainer.find('Row').at(0).prop('className')).toEqual(
+      'ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
+    );
+    expect(formContainer.find('Row').at(0).find('div').at(0).prop('className')).toEqual(
+      'ant-row ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
     );
     expect(formContainer.find('Row').at(0).find('FormItemInput').prop('errors')).toEqual([
       'Please input your password!',
@@ -163,9 +165,11 @@ describe('src/containers/pages/Admin/Credentials/', () => {
     expect(
       formContainer.find('Row').at(0).find('FormItemInput').find('span.ant-form-item-children-icon')
     ).toBeTruthy();
-    expect(formContainer.find('Row').at(1).prop('className')).toMatchSnapshot('confirm row class');
-    expect(formContainer.find('Row').at(1).find('div').at(0).prop('className')).toMatchSnapshot(
-      'confirm row div'
+    expect(formContainer.find('Row').at(1).prop('className')).toEqual(
+      'ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
+    );
+    expect(formContainer.find('Row').at(1).find('div').at(0).prop('className')).toEqual(
+      'ant-row ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
     );
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
       'Please confirm your password!',
@@ -196,9 +200,11 @@ describe('src/containers/pages/Admin/Credentials/', () => {
       wrapper.update();
     });
     const formContainer = wrapper.find('div.form-container');
-    expect(formContainer.find('Row').at(1).prop('className')).toMatchSnapshot('confirm row class');
-    expect(formContainer.find('Row').at(1).find('div').at(0).prop('className')).toMatchSnapshot(
-      'confirm row div'
+    expect(formContainer.find('Row').at(1).prop('className')).toEqual(
+      'ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
+    );
+    expect(formContainer.find('Row').at(1).find('div').at(0).prop('className')).toEqual(
+      'ant-row ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
     );
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
       'The two passwords that you entered do not match!',
