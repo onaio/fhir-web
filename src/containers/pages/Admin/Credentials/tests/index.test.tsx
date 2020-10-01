@@ -132,6 +132,49 @@ describe('src/containers/pages/Admin/Credentials/', () => {
     wrapper.unmount();
   });
 
+  it('shows validation error if required fields are empty', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedUserCredentials {...props} />
+        </Router>
+      </Provider>
+    );
+    const password = wrapper.find('input#password');
+    password.simulate('change', { target: { value: '' } });
+
+    const confirm = wrapper.find('input#confirm');
+    confirm.simulate('change', { target: { value: '' } });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    const formContainer = wrapper.find('div.form-container');
+    expect(formContainer.find('Row').at(0).prop('className')).toMatchSnapshot('password row class');
+    expect(formContainer.find('Row').at(0).find('div').at(0).prop('className')).toMatchSnapshot(
+      'password div class'
+    );
+    expect(formContainer.find('Row').at(0).find('FormItemInput').prop('errors')).toEqual([
+      'Please input your password!',
+    ]);
+    expect(
+      formContainer.find('Row').at(0).find('FormItemInput').find('span.ant-form-item-children-icon')
+    ).toBeTruthy();
+    expect(formContainer.find('Row').at(1).prop('className')).toMatchSnapshot('confirm row class');
+    expect(formContainer.find('Row').at(1).find('div').at(0).prop('className')).toMatchSnapshot(
+      'confirm row div'
+    );
+    expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
+      'Please confirm your password!',
+    ]);
+    expect(
+      formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')
+    ).toBeTruthy();
+  });
+
   it('it handles errors correctly if API response is not 200', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
 

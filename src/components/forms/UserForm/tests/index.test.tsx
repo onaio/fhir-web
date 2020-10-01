@@ -199,6 +199,7 @@ describe('src/components/UserForm', () => {
     ]);
     wrapper.unmount();
   });
+
   it('user is not created if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const wrapper = mount(<UserForm {...props} />);

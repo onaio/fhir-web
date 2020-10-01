@@ -72,7 +72,6 @@ export const submitForm = (values: UserCredentialsFormFields, props: PropsTypes)
 
 const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
   const userId = props.match.params.userId;
-  const isEditMode = !!userId;
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 16 },
@@ -83,13 +82,9 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
     temporary: false,
   };
 
-  //   if (isLoading) {
-  //     return <Ripple />;
-  //   }
-
   return (
     <Col span={12}>
-      <Card title={`${isEditMode ? 'Edit User' : 'Create New User'}`} bordered={false}>
+      <Card title="Edit User" bordered={false}>
         <HeaderBreadCrumb userId={userId} />
         <div className="form-container">
           <Form
