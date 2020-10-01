@@ -1,11 +1,11 @@
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { authenticateUser } from '@onaio/session-reducer';
-import store from '../../../store';
+import store from '../../../../../../client/src/store';
 import { getDefaultHeaders, getFetchOptions } from '../index';
 import fetch from 'jest-fetch-mock';
 import { KeycloakService } from '../..';
 import { OpenSRPAPIResponse } from '../../tests/fixtures/session';
-import { keycloakUser } from '../../../store/ducks/keycloak/tests/fixtures';
+import { keycloakUser } from '../../../ducks/tests/fixtures';
 import { HTTPError } from '../errors';
 
 jest.mock('../../../configs/env');

@@ -5,16 +5,16 @@ import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import store from '../../../../../store';
+import store from '../../../../../../client/src/store';
 import fetch from 'jest-fetch-mock';
-import * as keycloakUserDucks from '../../../../../store/ducks/keycloak';
-import * as fixtures from '../../../../../store/ducks/keycloak/tests/fixtures';
+import * as keycloakUserDucks from '../../../ducks';
+import * as fixtures from '../../../ducks/tests/fixtures';
 import ConnectedCreateEditUsers, { CreateEditUsers, Props } from '..';
 import flushPromises from 'flush-promises';
 
 reducerRegistry.register(keycloakUserDucks.reducerName, keycloakUserDucks.default);
 
-jest.mock('../../../../../configs/env');
+jest.mock('../../../../../../client/src/configs/env');
 
 describe('src/containers/Admin/pages/CreateEditUser', () => {
   beforeEach(() => {

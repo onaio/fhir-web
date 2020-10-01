@@ -2,21 +2,21 @@ import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
-import * as keycloakUserDucks from '../../../../store/ducks/keycloak';
-import * as fixtures from '../../../../store/ducks/keycloak/tests/fixtures';
+import * as keycloakUserDucks from '../../ducks';
+import * as fixtures from '../../ducks/tests/fixtures';
 import { mount, shallow } from 'enzyme';
 import ConnectedAdminView, { Admin, Props } from '..';
 import { Router } from 'react-router';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import store from '../../../../store';
+import store from '../../../../../client/src/store';
 import { Provider } from 'react-redux';
-import { KeycloakService } from '../../../../services';
+import { KeycloakService } from '../../services';
 
 reducerRegistry.register(keycloakUserDucks.reducerName, keycloakUserDucks.default);
 
-jest.mock('../../../../configs/env');
+jest.mock('../../../../../client/src/configs/env');
 
 describe('src/containers/pages/Admin', () => {
   beforeEach(() => {

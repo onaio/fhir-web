@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { notification, Row, Col, Button, Space, Table, Divider, Popconfirm } from 'antd';
 import '../Home/Home.css';
-import { KeycloakService } from '../../../services';
+import { KeycloakService } from '../services';
 import { Link } from 'react-router-dom';
 import { history } from '@onaio/connected-reducer-registry';
-import Ripple from '../../../components/page/Loading';
-import HeaderBreadCrumb from '../../../components/page/HeaderBreadCrumb';
+import Ripple from '../../../../client/src/components/page/Loading';
+import HeaderBreadCrumb from '../../../../client/src/components/page/HeaderBreadCrumb';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
   getKeycloakUsersArray,
   removeKeycloakUsers,
-} from '../../../store/ducks/keycloak';
+} from '../ducks';
 import { Store } from 'redux';
 import { PropsTypes } from './CreateEditUser';
 import { connect } from 'react-redux';

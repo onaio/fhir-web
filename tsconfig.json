@@ -1,20 +1,26 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "sourceMap": false,
+    "lib": ["dom", "dom.iterable", "esnext", "es6"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "isolatedModules": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "baseUrl": "packages",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve"
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "noEmitOnError": true,
+    "jsx": "preserve",
+    "baseUrl": "packages",
+    "declaration": true,
+    "declarationMap": false,
+    "listEmittedFiles": true
   },
   "include": [
     "packages",
@@ -25,5 +31,6 @@
     "babel.config.js",
     "setupTests.js",
     "__mocks__/"
-  ]
+  ],
+  "exclude": ["**/node_modules", "**/coverage", "**/tests", "**/dist", "**/*.spec.ts"]
 }
