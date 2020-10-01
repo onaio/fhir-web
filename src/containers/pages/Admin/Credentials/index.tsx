@@ -77,6 +77,11 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
     labelCol: { span: 4 },
     wrapperCol: { span: 16 },
   };
+  const initialValues: UserCredentialsFormFields = {
+    password: '',
+    confirm: '',
+    temporary: false,
+  };
 
   //   if (isLoading) {
   //     return <Ripple />;
@@ -89,6 +94,7 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
         <div className="form-container">
           <Form
             {...layout}
+            initialValues={initialValues}
             onFinish={(values: UserCredentialsFormFields) => submitForm(values, props)}
           >
             <Form.Item

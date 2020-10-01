@@ -9,9 +9,10 @@ import { act } from 'react-dom/test-utils';
 import { KeycloakService } from '../../../../services';
 
 jest.mock('../../../../configs/env');
-/*jest.mock('antd', () => {
+jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
 
+  /* eslint-disable react/prop-types */
   const Select = ({ children, onChange }) => {
     return <select onChange={(e) => onChange(e.target.value)}>{children}</select>;
   };
@@ -19,6 +20,7 @@ jest.mock('../../../../configs/env');
   const Option = ({ children, ...otherProps }) => {
     return <option {...otherProps}>{children}</option>;
   };
+  /* eslint-disable react/prop-types */
 
   Select.Option = Option;
 
@@ -27,7 +29,7 @@ jest.mock('../../../../configs/env');
     ...antd,
     Select,
   };
-});*/
+});
 
 describe('src/components/UserForm', () => {
   const props = {
@@ -77,10 +79,10 @@ describe('src/components/UserForm', () => {
     const emailInput = wrapper.find('input#email');
     emailInput.simulate('change', { target: { name: 'email', value: 'testone@gmail.com' } });
 
-    /*const actionSelect = wrapper.find('select');
+    const actionSelect = wrapper.find('select');
     actionSelect.simulate('change', {
       target: { value: ['UPDATE_PASSWORD'] },
-    });*/
+    });
 
     await act(async () => {
       await flushPromises();
