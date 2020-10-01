@@ -28,9 +28,9 @@ import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
 import ConnectedAdminView from '../containers/pages/Admin';
 import ConnectedCreateEditUsers from '../containers/pages/Admin/CreateEditUser';
+import ConnectedUserCredentials from '../containers/pages/Admin/Credentials';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import ConnectedUserCredentials from '../containers/pages/Admin/Credentials';
 
 const { Content } = Layout;
 

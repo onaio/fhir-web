@@ -1,12 +1,16 @@
 import { OpenSRPService as OpenSRPServiceWeb } from '@opensrp/server-service';
 import { IncomingHttpHeaders } from 'http';
-import { OPENSRP_API_BASE_URL, KEYCLOAK_API_BASE_URL } from '../configs/env';
-import store from '../store';
-import { getAccessToken } from '../store/selectors';
+import store from '../../../../client/src/store';
+import { getAccessToken } from '../../../../client/src/store/selectors';
 import { KeycloakAPIService } from './keycloak';
 
 /** allowed http methods */
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+/** defaults */
+export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+export const KEYCLOAK_API_BASE_URL =
+  'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
 
 /** get default HTTP headers for OpenSRP service */
 export function getDefaultHeaders(

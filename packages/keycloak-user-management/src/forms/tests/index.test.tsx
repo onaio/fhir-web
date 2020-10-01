@@ -7,7 +7,7 @@ import { UserForm } from '..';
 import * as fixtures from '../../ducks/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 
-describe('src/components/PractitionerForm', () => {
+describe('src/components/UserForm', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });

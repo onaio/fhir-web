@@ -5,16 +5,16 @@ import * as Yup from 'yup';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { HeaderBreadCrumb } from '../../../../components/page/HeaderBreadCrumb';
+// import { HeaderBreadCrumb } from '../../../../../client/src/components/page/HeaderBreadCrumb';
 import keycloakUsersReducer, {
   fetchKeycloakUsers,
   KeycloakUser,
   makeKeycloakUsersSelector,
   reducerName as keycloakUsersReducerName,
-} from '../../../../store/ducks/keycloak';
-import { KeycloakService } from '../../../../services';
-import Ripple from '../../../../components/page/Loading';
-import { UserForm, UserFormProps } from '../../../../components/forms/UserForm';
+} from '../../ducks/';
+import { KeycloakService } from '../../services';
+// import Ripple from '../../../../../client/src/components/page/Loading';
+import { UserForm, UserFormProps } from '../../forms';
 import './CreateEditUser.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -105,14 +105,14 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     serviceClass: KeycloakService,
   };
 
-  if (isLoading) {
-    return <Ripple />;
-  }
+  // if (isLoading) {
+  //   return <Ripple />;
+  // }
 
   return (
     <Row>
       <Col xs={24} sm={20} md={18} lg={15} xl={12}>
-        <HeaderBreadCrumb userId={userId} />
+        {/* <HeaderBreadCrumb userId={userId} /> */}
         <UserForm {...userFormProps} />
       </Col>
     </Row>

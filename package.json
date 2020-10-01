@@ -18,6 +18,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.4",
+    "@opensrp/user-management": "file:/home/kip/src/ona/web/packages/keycloak-user-management",
     "@types/antd": "^1.0.0",
     "@types/lodash": "^4.14.161",
     "@types/yup": "^0.29.7",

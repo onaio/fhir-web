@@ -1,6 +1,6 @@
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { authenticateUser } from '@onaio/session-reducer';
-import store from '../../store';
+import store from '../../../../../client/src/store';
 import { getDefaultHeaders, getFilterParams, getPayloadOptions, OpenSRPService } from '../index';
 import { createPlan, plansListResponse } from './fixtures/plans';
 import { OpenSRPAPIResponse } from './fixtures/session';
