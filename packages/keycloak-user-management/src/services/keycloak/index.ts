@@ -21,6 +21,7 @@ export function getDefaultHeaders(
   authorizationType = 'Bearer',
   contentType = 'application/json;charset=UTF-8'
 ): IncomingHttpHeaders {
+  debugger;
   return {
     accept,
     authorization: `${authorizationType} ${accessToken}`,

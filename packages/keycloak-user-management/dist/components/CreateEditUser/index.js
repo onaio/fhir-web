@@ -21,13 +21,17 @@ var _reactRedux = require("react-redux");
 
 var _reduxReducerRegistry = _interopRequireDefault(require("@onaio/redux-reducer-registry"));
 
+var _HeaderBreadCrumb = require("../HeaderBreadCrumb");
+
 var _ducks = _interopRequireWildcard(require("../../ducks/"));
 
 var _services = require("../../services");
 
+var _Loading = _interopRequireDefault(require("../Loading"));
+
 var _forms = require("../../forms");
 
-require("./CreateEditUser.css");
+require("../../index.css");
 
 _reduxReducerRegistry.default.register(_ducks.reducerName, _ducks.default);
 
@@ -80,7 +84,7 @@ var CreateEditUsers = function CreateEditUsers(props) {
 
   _react.default.useEffect(function () {
     if (userId) {
-      var serve = new serviceClass('/users');
+      var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', '/users');
       serve.read(userId).then(function (response) {
         if (response) {
           fetchKeycloakUsersCreator([response]);
@@ -101,13 +105,20 @@ var CreateEditUsers = function CreateEditUsers(props) {
     initialValues: initialValues,
     serviceClass: _services.KeycloakService
   };
+
+  if (isLoading) {
+    return _react.default.createElement(_Loading.default, null);
+  }
+
   return _react.default.createElement(_antd.Row, null, _react.default.createElement(_antd.Col, {
     xs: 24,
     sm: 20,
     md: 18,
     lg: 15,
     xl: 12
-  }, _react.default.createElement(_forms.UserForm, userFormProps)));
+  }, _react.default.createElement(_HeaderBreadCrumb.HeaderBreadCrumb, {
+    userId: userId
+  }), _react.default.createElement(_forms.UserForm, userFormProps)));
 };
 
 exports.CreateEditUsers = CreateEditUsers;

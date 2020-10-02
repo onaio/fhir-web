@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-// import { HeaderBreadCrumb } from '../../../../../client/src/components/page/HeaderBreadCrumb';
+import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import keycloakUsersReducer, {
   fetchKeycloakUsers,
   KeycloakUser,
@@ -13,9 +13,9 @@ import keycloakUsersReducer, {
   reducerName as keycloakUsersReducerName,
 } from '../../ducks/';
 import { KeycloakService } from '../../services';
-// import Ripple from '../../../../../client/src/components/page/Loading';
+import Ripple from '../Loading';
 import { UserForm, UserFormProps } from '../../forms';
-import './CreateEditUser.css';
+import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -80,7 +80,10 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
   React.useEffect(() => {
     if (userId) {
-      const serve = new serviceClass('/users');
+      const serve = new serviceClass(
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+        '/users'
+      );
       serve
         .read(userId)
         .then((response: KeycloakUser) => {
@@ -105,14 +108,14 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     serviceClass: KeycloakService,
   };
 
-  // if (isLoading) {
-  //   return <Ripple />;
-  // }
+  if (isLoading) {
+    return <Ripple />;
+  }
 
   return (
     <Row>
       <Col xs={24} sm={20} md={18} lg={15} xl={12}>
-        {/* <HeaderBreadCrumb userId={userId} /> */}
+        <HeaderBreadCrumb userId={userId} />
         <UserForm {...userFormProps} />
       </Col>
     </Row>

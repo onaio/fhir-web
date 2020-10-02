@@ -142,7 +142,7 @@ var UserForm = function UserForm(props) {
   var Option = _antd.Select.Option;
 
   _react.default.useEffect(function () {
-    var serve = new serviceClass("/authentication/required-actions/");
+    var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/authentication/required-actions/");
     serve.list().then(function (response) {
       setUserActionOptions(response.filter(function (action) {
         return action.alias !== 'terms_and_conditions';
@@ -164,7 +164,7 @@ var UserForm = function UserForm(props) {
       var setSubmitting = _ref.setSubmitting;
 
       if (isEditMode) {
-        var serve = new serviceClass("/users/".concat(initialValues.id));
+        var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users/".concat(initialValues.id));
         serve.update(_objectSpread(_objectSpread({}, values), {}, {
           requiredActions: requiredActions
         })).then(function () {
@@ -185,7 +185,7 @@ var UserForm = function UserForm(props) {
           setSubmitting(false);
         });
       } else {
-        var _serve = new serviceClass("/users");
+        var _serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users");
 
         _serve.create(values).then(function () {
           setSubmitting(false);

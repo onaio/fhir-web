@@ -15,17 +15,15 @@ var React = _interopRequireWildcard(require("react"));
 
 var _antd = require("antd");
 
-require("../Home/Home.css");
-
 var _services = require("../services");
 
 var _reactRouterDom = require("react-router-dom");
 
 var _connectedReducerRegistry = require("@onaio/connected-reducer-registry");
 
-var _Loading = _interopRequireDefault(require("../../../../client/src/components/page/Loading"));
+var _Loading = _interopRequireDefault(require("../components/Loading"));
 
-var _HeaderBreadCrumb = _interopRequireDefault(require("../../../../client/src/components/page/HeaderBreadCrumb"));
+var _HeaderBreadCrumb = _interopRequireDefault(require("./HeaderBreadCrumb"));
 
 var _ducks = require("../ducks");
 
@@ -40,8 +38,8 @@ var defaultProps = {
 exports.defaultProps = defaultProps;
 
 var deleteUser = function deleteUser(serviceClass, userId, fetchKeycloakUsersCreator, removeKeycloakUsersCreator) {
-  var serviceDelete = new serviceClass("/users/".concat(userId));
-  var serviceGet = new serviceClass('/users');
+  var serviceDelete = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users/".concat(userId));
+  var serviceGet = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', '/users');
   serviceDelete.delete().then(function () {
     _antd.notification.success({
       message: 'User deleted successfully',
@@ -95,7 +93,7 @@ var Admin = function Admin(props) {
 
   React.useEffect(function () {
     if (isLoading) {
-      var serve = new serviceClass('/users');
+      var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', '/users');
       serve.list().then(function (res) {
         if (isLoading) {
           fetchKeycloakUsersCreator(res);

@@ -93,7 +93,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { Option } = Select;
 
   React.useEffect(() => {
-    const serve = new serviceClass(`/authentication/required-actions/`);
+    const serve = new serviceClass(
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      `/authentication/required-actions/`
+    );
     serve
       .list()
       .then((response: UserAction[]) => {
@@ -117,7 +120,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
         // tslint:disable-next-line: jsx-no-lambda
         onSubmit={(values, { setSubmitting }) => {
           if (isEditMode) {
-            const serve = new serviceClass(`/users/${initialValues.id}`);
+            const serve = new serviceClass(
+              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+              `/users/${initialValues.id}`
+            );
             serve
               .update({
                 ...values,
@@ -139,7 +145,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 setSubmitting(false);
               });
           } else {
-            const serve = new serviceClass(`/users`);
+            const serve = new serviceClass(
+              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+              `/users`
+            );
             serve
               .create(values)
               .then(() => {
