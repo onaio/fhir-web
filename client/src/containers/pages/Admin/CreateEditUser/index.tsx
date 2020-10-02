@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { HeaderBreadCrumb } from '../../../../components/page/HeaderBreadCrumb';
 import keycloakUsersReducer, {
   fetchKeycloakUsers,
   KeycloakUser,
@@ -112,7 +111,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   return (
     <Row>
       <Col xs={24} sm={20} md={18} lg={15} xl={12}>
-        <HeaderBreadCrumb userId={userId} />
+        {/* <HeaderBreadCrumb userId={userId} /> */}
         <UserForm {...userFormProps} />
       </Col>
     </Row>

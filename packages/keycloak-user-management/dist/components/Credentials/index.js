@@ -21,11 +21,13 @@ var _reduxReducerRegistry = _interopRequireDefault(require("@onaio/redux-reducer
 
 var _connectedReducerRegistry = require("@onaio/connected-reducer-registry");
 
+var _HeaderBreadCrumb = require("../HeaderBreadCrumb");
+
 var _ducks = _interopRequireWildcard(require("../../ducks"));
 
 var _services = require("../../services");
 
-require("../CreateEditUser/CreateEditUser.css");
+require("../../index.css");
 
 _reduxReducerRegistry.default.register(_ducks.reducerName, _ducks.default);
 
@@ -40,7 +42,7 @@ var submitForm = function submitForm(values, props) {
   var serviceClass = props.serviceClass,
       match = props.match;
   var userId = match.params.userId;
-  var serve = new serviceClass("/users/".concat(userId, "/reset-password"));
+  var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users/".concat(userId, "/reset-password"));
   var password = values.password,
       temporary = values.temporary;
   serve.update({
@@ -80,7 +82,9 @@ var UserCredentials = function UserCredentials(props) {
   }, _react.default.createElement(_antd.Card, {
     title: "".concat(isEditMode ? 'Edit User' : 'Create New User'),
     bordered: false
-  }, _react.default.createElement("div", {
+  }, _react.default.createElement(_HeaderBreadCrumb.HeaderBreadCrumb, {
+    userId: userId
+  }), _react.default.createElement("div", {
     className: "form-container"
   }, _react.default.createElement(_antd.Form, (0, _extends2.default)({}, layout, {
     onFinish: function onFinish(values) {

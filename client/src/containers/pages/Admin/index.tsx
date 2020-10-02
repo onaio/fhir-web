@@ -5,7 +5,6 @@ import { KeycloakService } from '../../../services';
 import { Link } from 'react-router-dom';
 import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../../../components/page/Loading';
-import HeaderBreadCrumb from '../../../components/page/HeaderBreadCrumb';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -199,7 +198,7 @@ const Admin = (props: Props): JSX.Element => {
       <Row>
         <Col span={12}>
           <Space>
-            <HeaderBreadCrumb isAdmin={true} />
+            {/* <HeaderBreadCrumb isAdmin={true} /> */}
             <Divider />
           </Space>
         </Col>

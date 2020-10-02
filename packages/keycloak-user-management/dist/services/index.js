@@ -28,10 +28,6 @@ var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/sli
 
 var _serverService = require("@opensrp/server-service");
 
-var _store = _interopRequireDefault(require("../../../../client/src/store"));
-
-var _selectors = require("../../../../client/src/store/selectors");
-
 var _keycloak = require("./keycloak");
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
@@ -44,12 +40,13 @@ var KEYCLOAK_API_BASE_URL = 'https://keycloak-stage.smartregister.org/auth/admin
 exports.KEYCLOAK_API_BASE_URL = KEYCLOAK_API_BASE_URL;
 
 function getDefaultHeaders() {
-  var accept = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'application/json';
-  var authorizationType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Bearer';
-  var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'application/json;charset=UTF-8';
+  var accessToken = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'hunter2';
+  var accept = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'application/json';
+  var authorizationType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Bearer';
+  var contentType = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'application/json;charset=UTF-8';
   return {
     accept: accept,
-    authorization: "".concat(authorizationType, " ").concat((0, _selectors.getAccessToken)(_store.default.getState())),
+    authorization: "".concat(authorizationType, " ").concat(accessToken),
     'content-type': contentType
   };
 }
@@ -76,8 +73,9 @@ var OpenSRPService = function (_OpenSRPServiceWeb) {
 
   var _super = _createSuper(OpenSRPService);
 
-  function OpenSRPService(endpoint) {
-    var baseURL = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : OPENSRP_API_BASE_URL;
+  function OpenSRPService() {
+    var baseURL = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : OPENSRP_API_BASE_URL;
+    var endpoint = arguments.length > 1 ? arguments[1] : undefined;
     var getPayload = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : getPayloadOptions;
     (0, _classCallCheck2.default)(this, OpenSRPService);
     return _super.call(this, baseURL, endpoint, getPayload);
@@ -144,8 +142,9 @@ var KeycloakService = function (_KeycloakAPIService) {
 
   var _super2 = _createSuper(KeycloakService);
 
-  function KeycloakService(endpoint) {
-    var baseURL = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : KEYCLOAK_API_BASE_URL;
+  function KeycloakService() {
+    var baseURL = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : KEYCLOAK_API_BASE_URL;
+    var endpoint = arguments.length > 1 ? arguments[1] : undefined;
     var getPayload = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : getPayloadOptions;
     (0, _classCallCheck2.default)(this, KeycloakService);
     return _super2.call(this, baseURL, endpoint, getPayload);

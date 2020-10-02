@@ -1,7 +1,5 @@
 import { OpenSRPService as OpenSRPServiceWeb } from '@opensrp/server-service';
 import { IncomingHttpHeaders } from 'http';
-import store from '../../../../client/src/store';
-import { getAccessToken } from '../../../../client/src/store/selectors';
 import { KeycloakAPIService } from './keycloak';
 
 /** allowed http methods */
@@ -14,13 +12,14 @@ export const KEYCLOAK_API_BASE_URL =
 
 /** get default HTTP headers for OpenSRP service */
 export function getDefaultHeaders(
+  accessToken = 'hunter2',
   accept = 'application/json',
   authorizationType = 'Bearer',
   contentType = 'application/json;charset=UTF-8'
 ): IncomingHttpHeaders {
   return {
     accept,
-    authorization: `${authorizationType} ${getAccessToken(store.getState())}`,
+    authorization: `${authorizationType} ${accessToken}`,
     'content-type': contentType,
   };
 }
@@ -76,8 +75,8 @@ export function getPayloadOptions(_: AbortSignal, method: HTTPMethod): PayloadOp
  */
 export class OpenSRPService extends OpenSRPServiceWeb {
   constructor(
-    endpoint: string,
     baseURL: string = OPENSRP_API_BASE_URL,
+    endpoint: string,
     getPayload: typeof getPayloadOptions = getPayloadOptions
   ) {
     super(baseURL, endpoint, getPayload);
@@ -102,8 +101,8 @@ export class OpenSRPService extends OpenSRPServiceWeb {
 
 export class KeycloakService extends KeycloakAPIService {
   constructor(
-    endpoint: string,
     baseURL: string = KEYCLOAK_API_BASE_URL,
+    endpoint: string,
     getPayload: typeof getPayloadOptions = getPayloadOptions
   ) {
     super(baseURL, endpoint, getPayload);

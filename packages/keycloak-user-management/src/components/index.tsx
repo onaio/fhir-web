@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { notification, Row, Col, Button, Space, Table, Divider, Popconfirm } from 'antd';
-import '../Home/Home.css';
 import { KeycloakService } from '../services';
 import { Link } from 'react-router-dom';
 import { history } from '@onaio/connected-reducer-registry';
-import Ripple from '../../../../client/src/components/page/Loading';
-import HeaderBreadCrumb from '../../../../client/src/components/page/HeaderBreadCrumb';
+import Ripple from '../components/Loading';
+import HeaderBreadCrumb from './HeaderBreadCrumb';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -53,8 +52,14 @@ export const deleteUser = (
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers,
   removeKeycloakUsersCreator: typeof removeKeycloakUsers
 ): void => {
-  const serviceDelete = new serviceClass(`/users/${userId}`);
-  const serviceGet = new serviceClass('/users');
+  const serviceDelete = new serviceClass(
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    `/users/${userId}`
+  );
+  const serviceGet = new serviceClass(
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    '/users'
+  );
   serviceDelete
     .delete()
     .then(() => {
@@ -103,7 +108,10 @@ const Admin = (props: Props): JSX.Element => {
 
   React.useEffect(() => {
     if (isLoading) {
-      const serve = new serviceClass('/users');
+      const serve = new serviceClass(
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+        '/users'
+      );
       serve
         .list()
         .then((res: KeycloakUser[]) => {

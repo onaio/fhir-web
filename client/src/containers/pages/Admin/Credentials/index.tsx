@@ -5,7 +5,6 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { history } from '@onaio/connected-reducer-registry';
-import { HeaderBreadCrumb } from '../../../../components/page/HeaderBreadCrumb';
 import keycloakUsersReducer, {
   fetchKeycloakUsers,
   KeycloakUser,
@@ -89,7 +88,7 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
   return (
     <Col span={12}>
       <Card title={`${isEditMode ? 'Edit User' : 'Create New User'}`} bordered={false}>
-        <HeaderBreadCrumb userId={userId} />
+        {/* <HeaderBreadCrumb userId={userId} /> */}
         <div className="form-container">
           <Form
             {...layout}

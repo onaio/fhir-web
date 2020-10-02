@@ -37,6 +37,7 @@ function getDefaultHeaders() {
   var accept = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'application/json';
   var authorizationType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Bearer';
   var contentType = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'application/json;charset=UTF-8';
+  debugger;
   return {
     accept: accept,
     authorization: "".concat(authorizationType, " ").concat(accessToken),

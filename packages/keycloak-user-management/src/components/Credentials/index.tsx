@@ -5,7 +5,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { history } from '@onaio/connected-reducer-registry';
-// import { HeaderBreadCrumb } from '../../../../../client/src/components/page/HeaderBreadCrumb';
+import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import keycloakUsersReducer, {
   fetchKeycloakUsers,
   KeycloakUser,
@@ -13,7 +13,7 @@ import keycloakUsersReducer, {
   reducerName as keycloakUsersReducerName,
 } from '../../ducks';
 import { KeycloakService } from '../../services';
-import '../CreateEditUser/CreateEditUser.css';
+import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -51,7 +51,10 @@ export const defaultProps: Partial<PropsTypes> = {
 export const submitForm = (values: UserCredentialsFormFields, props: PropsTypes): void => {
   const { serviceClass, match } = props;
   const userId = match.params.userId;
-  const serve = new serviceClass(`/users/${userId}/reset-password`);
+  const serve = new serviceClass(
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    `/users/${userId}/reset-password`
+  );
   const { password, temporary } = values;
   serve
     .update({
@@ -89,7 +92,7 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
   return (
     <Col span={12}>
       <Card title={`${isEditMode ? 'Edit User' : 'Create New User'}`} bordered={false}>
-        {/* <HeaderBreadCrumb userId={userId} /> */}
+        <HeaderBreadCrumb userId={userId} />
         <div className="form-container">
           <Form
             {...layout}
