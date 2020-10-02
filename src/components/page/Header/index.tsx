@@ -8,8 +8,6 @@ import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
 import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
-import i18next from 'i18next';
-import languages from '../../../languages';
 
 const SubMenu = Menu.SubMenu;
 
@@ -43,14 +41,6 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         </div>
         <Menu mode="horizontal" selectedKeys={[path]}>
           <Menu.Item key={HOME_URL}>Home</Menu.Item>
-
-          <SubMenu title="Language" style={{ float: 'right' }}>
-            {Object.keys(languages).map((language) => (
-              <Menu.Item onClick={() => i18next.changeLanguage(language)} key={language}>
-                {language}
-              </Menu.Item>
-            ))}
-          </SubMenu>
 
           {authenticated ? (
             <SubMenu title={`${user.username}`} style={{ float: 'right' }}>
