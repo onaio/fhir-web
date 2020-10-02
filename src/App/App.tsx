@@ -13,7 +13,7 @@ import { Layout } from 'antd';
 import { Switch, Route, Redirect } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
-import { WEBSITE_NAME, BACKEND_ACTIVE } from '../configs/env';
+import { WEBSITE_NAME, BACKEND_ACTIVE, DEFAULT_LANGUAGE } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
   BACKEND_CALLBACK_URL,
@@ -28,11 +28,22 @@ import Home from '../containers/pages/Home/Home';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import './App.css';
 
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import Language from '../languages';
+
 const { Content } = Layout;
 
 library.add(faUser);
 
 const App: React.FC = () => {
+  void i18n.use(initReactI18next).init({
+    resources: Language,
+    lng: DEFAULT_LANGUAGE,
+    fallbackLng: 'English',
+    interpolation: { escapeValue: false },
+  });
+
   const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : REACT_LOGIN_URL;
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
