@@ -7,7 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.CreateEditUsers = exports.userSchema = exports.defaultProps = exports.defaultInitialValues = void 0;
+exports.ConnectedCreateEditUsers = exports.CreateEditUsers = exports.userSchema = exports.defaultProps = exports.defaultInitialValues = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
@@ -23,9 +23,9 @@ var _reduxReducerRegistry = _interopRequireDefault(require("@onaio/redux-reducer
 
 var _HeaderBreadCrumb = require("../HeaderBreadCrumb");
 
-var _ducks = _interopRequireWildcard(require("../../ducks/"));
+var _store = require("@opensrp/store");
 
-var _services = require("../../services");
+var _keycloakService = require("@opensrp/keycloak-service");
 
 var _Loading = _interopRequireDefault(require("../Loading"));
 
@@ -33,7 +33,7 @@ var _forms = require("../../forms");
 
 require("../../index.css");
 
-_reduxReducerRegistry.default.register(_ducks.reducerName, _ducks.default);
+_reduxReducerRegistry.default.register(_store.reducerName, _store.reducer);
 
 var defaultInitialValues = {
   access: {
@@ -58,9 +58,10 @@ var defaultInitialValues = {
 };
 exports.defaultInitialValues = defaultInitialValues;
 var defaultProps = {
-  fetchKeycloakUsersCreator: _ducks.fetchKeycloakUsers,
+  accessToken: 'hunter 2',
+  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
   keycloakUser: null,
-  serviceClass: _services.KeycloakService
+  serviceClass: _keycloakService.KeycloakService
 };
 exports.defaultProps = defaultProps;
 var userSchema = Yup.object().shape({
@@ -77,14 +78,15 @@ var CreateEditUsers = function CreateEditUsers(props) {
 
   var serviceClass = props.serviceClass,
       fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
-      keycloakUser = props.keycloakUser;
+      keycloakUser = props.keycloakUser,
+      accessToken = props.accessToken;
   var userId = props.match.params.userId;
   var isEditMode = !!userId;
   var initialValues = isEditMode ? keycloakUser : defaultInitialValues;
 
   _react.default.useEffect(function () {
     if (userId) {
-      var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', '/users');
+      var serve = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
       serve.read(userId).then(function (response) {
         if (response) {
           fetchKeycloakUsersCreator([response]);
@@ -102,8 +104,9 @@ var CreateEditUsers = function CreateEditUsers(props) {
   }, [userId]);
 
   var userFormProps = {
+    accessToken: accessToken,
     initialValues: initialValues,
-    serviceClass: _services.KeycloakService
+    serviceClass: _keycloakService.KeycloakService
   };
 
   if (isLoading) {
@@ -126,19 +129,20 @@ CreateEditUsers.defaultProps = defaultProps;
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   var userId = ownProps.match.params.userId;
-  var keycloakUsersSelector = (0, _ducks.makeKeycloakUsersSelector)();
+  var keycloakUsersSelector = (0, _store.makeKeycloakUsersSelector)();
   var keycloakUsers = keycloakUsersSelector(state, {
     id: [userId]
   });
   var keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  var accessToken = (0, _store.getAccessToken)(state);
   return {
-    keycloakUser: keycloakUser
+    keycloakUser: keycloakUser,
+    accessToken: accessToken
   };
 };
 
 var mapDispatchToProps = {
-  fetchKeycloakUsersCreator: _ducks.fetchKeycloakUsers
+  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers
 };
 var ConnectedCreateEditUsers = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CreateEditUsers);
-var _default = ConnectedCreateEditUsers;
-exports.default = _default;
+exports.ConnectedCreateEditUsers = ConnectedCreateEditUsers;

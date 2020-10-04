@@ -7,7 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.Admin = exports.deleteUser = exports.defaultProps = void 0;
+exports.ConnectedAdminView = exports.Admin = exports.deleteUser = exports.defaultProps = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
@@ -15,7 +15,7 @@ var React = _interopRequireWildcard(require("react"));
 
 var _antd = require("antd");
 
-var _services = require("../services");
+var _keycloakService = require("@opensrp/keycloak-service");
 
 var _reactRouterDom = require("react-router-dom");
 
@@ -25,21 +25,30 @@ var _Loading = _interopRequireDefault(require("../components/Loading"));
 
 var _HeaderBreadCrumb = _interopRequireDefault(require("./HeaderBreadCrumb"));
 
-var _ducks = require("../ducks");
+var _store = require("@opensrp/store");
 
 var _reactRedux = require("react-redux");
 
+var _reduxReducerRegistry = _interopRequireDefault(require("@onaio/redux-reducer-registry"));
+
+_reduxReducerRegistry.default.register(_store.reducerName, _store.reducer);
+
 var defaultProps = {
-  serviceClass: _services.KeycloakService,
-  fetchKeycloakUsersCreator: _ducks.fetchKeycloakUsers,
-  removeKeycloakUsersCreator: _ducks.removeKeycloakUsers,
+  accessToken: 'hunter 2',
+  serviceClass: _keycloakService.KeycloakService,
+  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
+  removeKeycloakUsersCreator: _store.removeKeycloakUsers,
   keycloakUsers: []
 };
 exports.defaultProps = defaultProps;
 
-var deleteUser = function deleteUser(serviceClass, userId, fetchKeycloakUsersCreator, removeKeycloakUsersCreator) {
-  var serviceDelete = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users/".concat(userId));
-  var serviceGet = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', '/users');
+var deleteUser = function deleteUser(props, userId) {
+  var serviceClass = props.serviceClass,
+      fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
+      removeKeycloakUsersCreator = props.removeKeycloakUsersCreator,
+      accessToken = props.accessToken;
+  var serviceDelete = new serviceClass(accessToken, "/users/".concat(userId), 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
+  var serviceGet = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
   serviceDelete.delete().then(function () {
     _antd.notification.success({
       message: 'User deleted successfully',
@@ -84,7 +93,7 @@ var Admin = function Admin(props) {
   var serviceClass = props.serviceClass,
       fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
       keycloakUsers = props.keycloakUsers,
-      removeKeycloakUsersCreator = props.removeKeycloakUsersCreator;
+      accessToken = props.accessToken;
 
   var handleChange = function handleChange(pagination, filters, sorter) {
     setFilteredInfo(filters);
@@ -93,7 +102,7 @@ var Admin = function Admin(props) {
 
   React.useEffect(function () {
     if (isLoading) {
-      var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', '/users');
+      var serve = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
       serve.list().then(function (res) {
         if (isLoading) {
           fetchKeycloakUsersCreator(res);
@@ -153,7 +162,7 @@ var Admin = function Admin(props) {
         okText: "Yes",
         cancelText: "No",
         onConfirm: function onConfirm() {
-          return deleteUser(serviceClass, record.id, fetchKeycloakUsersCreator, removeKeycloakUsersCreator);
+          return deleteUser(props, record.id);
         }
       }, React.createElement(_reactRouterDom.Link, {
         to: "#"
@@ -206,16 +215,17 @@ exports.Admin = Admin;
 Admin.defaultProps = defaultProps;
 
 var mapStateToProps = function mapStateToProps(state, _) {
-  var keycloakUsers = (0, _ducks.getKeycloakUsersArray)(state);
+  var keycloakUsers = (0, _store.getKeycloakUsersArray)(state);
+  var accessToken = (0, _store.getAccessToken)(state);
   return {
-    keycloakUsers: keycloakUsers
+    keycloakUsers: keycloakUsers,
+    accessToken: accessToken
   };
 };
 
 var mapDispatchToProps = {
-  fetchKeycloakUsersCreator: _ducks.fetchKeycloakUsers,
-  removeKeycloakUsersCreator: _ducks.removeKeycloakUsers
+  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
+  removeKeycloakUsersCreator: _store.removeKeycloakUsers
 };
 var ConnectedAdminView = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Admin);
-var _default = ConnectedAdminView;
-exports.default = _default;
+exports.ConnectedAdminView = ConnectedAdminView;

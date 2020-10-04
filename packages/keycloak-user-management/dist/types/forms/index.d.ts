@@ -1,10 +1,11 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { KeycloakUser } from '../ducks';
-import { KeycloakService } from '../services';
+import { KeycloakService } from '@opensrp/keycloak-service';
 import { Dictionary } from '@onaio/utils/dist/types/types';
 /** props for editing a user view */
 export interface UserFormProps {
+    accessToken: string;
     initialValues: KeycloakUser;
     serviceClass: typeof KeycloakService;
 }

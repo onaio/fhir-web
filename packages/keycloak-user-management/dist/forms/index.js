@@ -25,7 +25,7 @@ var Yup = _interopRequireWildcard(require("yup"));
 
 var _connectedReducerRegistry = require("@onaio/connected-reducer-registry");
 
-var _services = require("../services");
+var _keycloakService = require("@opensrp/keycloak-service");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -54,8 +54,9 @@ var defaultInitialValues = {
 };
 exports.defaultInitialValues = defaultInitialValues;
 var defaultProps = {
+  accessToken: 'hunter 2',
   initialValues: defaultInitialValues,
-  serviceClass: _services.KeycloakService
+  serviceClass: _keycloakService.KeycloakService
 };
 exports.defaultProps = defaultProps;
 var userSchema = Yup.object().shape({
@@ -72,7 +73,8 @@ exports.handleUserActionsChange = handleUserActionsChange;
 
 var UserForm = function UserForm(props) {
   var initialValues = props.initialValues,
-      serviceClass = props.serviceClass;
+      serviceClass = props.serviceClass,
+      accessToken = props.accessToken;
 
   var _React$useState = _react.default.useState([]),
       _React$useState2 = (0, _slicedToArray2.default)(_React$useState, 2),
@@ -142,7 +144,7 @@ var UserForm = function UserForm(props) {
   var Option = _antd.Select.Option;
 
   _react.default.useEffect(function () {
-    var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/authentication/required-actions/");
+    var serve = new serviceClass(accessToken, "/authentication/required-actions/", 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
     serve.list().then(function (response) {
       setUserActionOptions(response.filter(function (action) {
         return action.alias !== 'terms_and_conditions';
@@ -164,7 +166,7 @@ var UserForm = function UserForm(props) {
       var setSubmitting = _ref.setSubmitting;
 
       if (isEditMode) {
-        var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users/".concat(initialValues.id));
+        var serve = new serviceClass(accessToken, "/users/".concat(initialValues.id), 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
         serve.update(_objectSpread(_objectSpread({}, values), {}, {
           requiredActions: requiredActions
         })).then(function () {
@@ -185,7 +187,7 @@ var UserForm = function UserForm(props) {
           setSubmitting(false);
         });
       } else {
-        var _serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users");
+        var _serve = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
 
         _serve.create(values).then(function () {
           setSubmitting(false);

@@ -1,8 +1,8 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as Yup from 'yup';
-import { fetchKeycloakUsers, KeycloakUser } from '../../ducks/';
-import { KeycloakService } from '../../services';
+import { fetchKeycloakUsers, KeycloakUser } from '@opensrp/store';
+import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
 /** inteface for route params */
 export interface RouteParams {
@@ -10,6 +10,7 @@ export interface RouteParams {
 }
 /** props for editing a user view */
 export interface Props {
+    accessToken: string;
     fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
     keycloakUser: KeycloakUser | null;
     serviceClass: typeof KeycloakService;
@@ -27,5 +28,4 @@ export declare const userSchema: Yup.ObjectSchema<Yup.Shape<object | undefined, 
 }>, object>;
 declare const CreateEditUsers: React.FC<PropsTypes>;
 export { CreateEditUsers };
-declare const ConnectedCreateEditUsers: import("react-redux").ConnectedComponent<React.FC<PropsTypes>, Pick<PropsTypes, "location" | "match" | "serviceClass" | "history" | "staticContext"> & Props & RouteComponentProps<RouteParams, import("react-router").StaticContext, import("history").History.UnknownFacade>>;
-export default ConnectedCreateEditUsers;
+export declare const ConnectedCreateEditUsers: import("react-redux").ConnectedComponent<React.FC<PropsTypes>, Pick<PropsTypes, "location" | "match" | "serviceClass" | "history" | "staticContext"> & Props & RouteComponentProps<RouteParams, import("react-router").StaticContext, import("history").History.UnknownFacade>>;

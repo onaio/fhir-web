@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { fetchKeycloakUsers, KeycloakUser } from '../../ducks';
-import { KeycloakService } from '../../services';
+import { fetchKeycloakUsers, KeycloakUser } from '@opensrp/store';
+import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
 /** inteface for route params */
 export interface RouteParams {
@@ -9,6 +9,7 @@ export interface RouteParams {
 }
 /** props for editing a user view */
 export interface Props {
+    accessToken: string;
     fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
     keycloakUser: KeycloakUser | null;
     serviceClass: typeof KeycloakService;
@@ -27,5 +28,4 @@ export declare const defaultProps: Partial<PropsTypes>;
 export declare const submitForm: (values: UserCredentialsFormFields, props: PropsTypes) => void;
 declare const UserCredentials: React.FC<PropsTypes>;
 export { UserCredentials };
-declare const ConnectedUserCredentials: import("react-redux").ConnectedComponent<React.FC<PropsTypes>, Pick<PropsTypes, "location" | "match" | "serviceClass" | "history" | "staticContext"> & Props & RouteComponentProps<RouteParams, import("react-router").StaticContext, import("history").History.UnknownFacade>>;
-export default ConnectedUserCredentials;
+export declare const ConnectedUserCredentials: import("react-redux").ConnectedComponent<React.FC<PropsTypes>, Pick<PropsTypes, "location" | "match" | "serviceClass" | "history" | "staticContext"> & Props & RouteComponentProps<RouteParams, import("react-router").StaticContext, import("history").History.UnknownFacade>>;
