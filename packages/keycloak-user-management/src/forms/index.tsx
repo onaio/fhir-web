@@ -4,11 +4,12 @@ import { Button, Form, Col, notification, Row, Select } from 'antd';
 import * as Yup from 'yup';
 import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '../ducks';
-import { KeycloakService } from '../services';
+import { KeycloakService } from '@opensrp/keycloak-service';
 import { Dictionary } from '@onaio/utils/dist/types/types';
 
 /** props for editing a user view */
 export interface UserFormProps {
+  accessToken: string;
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
 }
@@ -49,6 +50,7 @@ export const defaultInitialValues: KeycloakUser = {
 
 /** default props for editing user component */
 export const defaultProps: Partial<UserFormProps> = {
+  accessToken: 'hunter 2',
   initialValues: defaultInitialValues,
   serviceClass: KeycloakService,
 };
@@ -68,7 +70,7 @@ export const handleUserActionsChange = (
 };
 
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
-  const { initialValues, serviceClass } = props;
+  const { initialValues, serviceClass, accessToken } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const isEditMode = initialValues.id !== '';
@@ -94,8 +96,9 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
 
   React.useEffect(() => {
     const serve = new serviceClass(
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-      `/authentication/required-actions/`
+      accessToken,
+      `/authentication/required-actions/`,
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
     );
     serve
       .list()
@@ -121,8 +124,9 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
         onSubmit={(values, { setSubmitting }) => {
           if (isEditMode) {
             const serve = new serviceClass(
-              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-              `/users/${initialValues.id}`
+              accessToken,
+              `/users/${initialValues.id}`,
+              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
             );
             serve
               .update({
@@ -146,8 +150,9 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               });
           } else {
             const serve = new serviceClass(
-              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-              `/users`
+              accessToken,
+              '/users',
+              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
             );
             serve
               .create(values)

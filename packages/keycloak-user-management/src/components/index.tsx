@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { notification, Row, Col, Button, Space, Table, Divider, Popconfirm } from 'antd';
-import { KeycloakService } from '../services';
+import { KeycloakService } from '@opensrp/keycloak-service';
 import { Link } from 'react-router-dom';
 import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../components/Loading';
@@ -10,11 +10,17 @@ import {
   fetchKeycloakUsers,
   getKeycloakUsersArray,
   removeKeycloakUsers,
-} from '../ducks';
+  reducerName as keycloakUsersReducerName,
+  reducer as keycloakUsersReducer,
+  getAccessToken,
+} from '@opensrp/store';
 import { Store } from 'redux';
 import { PropsTypes } from './CreateEditUser';
 import { connect } from 'react-redux';
-import { Dictionary } from '@onaio/utils/dist/types/types';
+import { Dictionary } from '@onaio/utils';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+
+reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 // const { Content } = Layout;
 
@@ -24,10 +30,12 @@ export interface Props {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakUsers: KeycloakUser[];
+  accessToken: string;
 }
 
 /** default props for UserIdSelect component */
 export const defaultProps = {
+  accessToken: 'hunter 2',
   serviceClass: KeycloakService,
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   removeKeycloakUsersCreator: removeKeycloakUsers,
@@ -46,19 +54,22 @@ interface TableData {
 /**
  * Handle user deletion
  */
-export const deleteUser = (
-  serviceClass: typeof KeycloakService,
-  userId: string,
-  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers,
-  removeKeycloakUsersCreator: typeof removeKeycloakUsers
-): void => {
+export const deleteUser = (props: Props, userId: string): void => {
+  const {
+    serviceClass,
+    fetchKeycloakUsersCreator,
+    removeKeycloakUsersCreator,
+    accessToken,
+  } = props;
   const serviceDelete = new serviceClass(
-    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    `/users/${userId}`
+    accessToken,
+    `/users/${userId}`,
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
   );
   const serviceGet = new serviceClass(
-    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    '/users'
+    accessToken,
+    '/users',
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
   );
   serviceDelete
     .delete()
@@ -94,12 +105,7 @@ const Admin = (props: Props): JSX.Element => {
   const [filteredInfo, setFilteredInfo] = React.useState<Dictionary>();
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const {
-    serviceClass,
-    fetchKeycloakUsersCreator,
-    keycloakUsers,
-    removeKeycloakUsersCreator,
-  } = props;
+  const { serviceClass, fetchKeycloakUsersCreator, keycloakUsers, accessToken } = props;
 
   const handleChange = (pagination: Dictionary, filters: Dictionary, sorter: Dictionary) => {
     setFilteredInfo(filters);
@@ -109,8 +115,9 @@ const Admin = (props: Props): JSX.Element => {
   React.useEffect(() => {
     if (isLoading) {
       const serve = new serviceClass(
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-        '/users'
+        accessToken,
+        '/users',
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
       );
       serve
         .list()
@@ -178,14 +185,7 @@ const Admin = (props: Props): JSX.Element => {
           title="Are you sure delete this user?"
           okText="Yes"
           cancelText="No"
-          onConfirm={() =>
-            deleteUser(
-              serviceClass,
-              record.id,
-              fetchKeycloakUsersCreator,
-              removeKeycloakUsersCreator
-            )
-          }
+          onConfirm={() => deleteUser(props, record.id)}
         >
           <Link to="#">{'Delete'}</Link>
         </Popconfirm>
@@ -237,18 +237,19 @@ const Admin = (props: Props): JSX.Element => {
 };
 
 Admin.defaultProps = defaultProps;
-
 export { Admin };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
+  accessToken: string;
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>, _: PropsTypes): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
-  return { keycloakUsers };
+  const accessToken = getAccessToken(state) as string;
+  return { keycloakUsers, accessToken };
 };
 
 /** map props to action creators */
@@ -257,5 +258,4 @@ const mapDispatchToProps = {
   removeKeycloakUsersCreator: removeKeycloakUsers,
 };
 
-const ConnectedAdminView = connect(mapStateToProps, mapDispatchToProps)(Admin);
-export default ConnectedAdminView;
+export const ConnectedAdminView = connect(mapStateToProps, mapDispatchToProps)(Admin);

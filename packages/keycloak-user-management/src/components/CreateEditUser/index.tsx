@@ -6,13 +6,15 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
-import keycloakUsersReducer, {
+import {
   fetchKeycloakUsers,
   KeycloakUser,
   makeKeycloakUsersSelector,
+  reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
-} from '../../ducks/';
-import { KeycloakService } from '../../services';
+  getAccessToken,
+} from '@opensrp/store';
+import { KeycloakService } from '@opensrp/keycloak-service';
 import Ripple from '../Loading';
 import { UserForm, UserFormProps } from '../../forms';
 import '../../index.css';
@@ -27,6 +29,7 @@ export interface RouteParams {
 
 /** props for editing a user view */
 export interface Props {
+  accessToken: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
@@ -61,6 +64,7 @@ export const defaultInitialValues: KeycloakUser = {
 
 /** default props for editing user component */
 export const defaultProps: Partial<PropsTypes> = {
+  accessToken: 'hunter 2',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
@@ -74,15 +78,16 @@ export const userSchema = Yup.object().shape({
 
 const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const { serviceClass, fetchKeycloakUsersCreator, keycloakUser } = props;
+  const { serviceClass, fetchKeycloakUsersCreator, keycloakUser, accessToken } = props;
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
   const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
   React.useEffect(() => {
     if (userId) {
       const serve = new serviceClass(
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-        '/users'
+        accessToken,
+        '/users',
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
       );
       serve
         .read(userId)
@@ -104,6 +109,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   }, [userId]);
 
   const userFormProps: UserFormProps = {
+    accessToken,
     initialValues: initialValues as KeycloakUser,
     serviceClass: KeycloakService,
   };
@@ -129,6 +135,7 @@ export { CreateEditUsers };
 /** Interface for connected state to props */
 interface DispatchedProps {
   keycloakUser: KeycloakUser | null;
+  accessToken: string;
 }
 
 // connect to store
@@ -137,7 +144,8 @@ const mapStateToProps = (state: Partial<Store>, ownProps: PropsTypes): Dispatche
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
   const keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
-  return { keycloakUser };
+  const accessToken = getAccessToken(state) as string;
+  return { keycloakUser, accessToken };
 };
 
 /** map props to action creators */
@@ -145,6 +153,7 @@ const mapDispatchToProps = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
 
-const ConnectedCreateEditUsers = connect(mapStateToProps, mapDispatchToProps)(CreateEditUsers);
-
-export default ConnectedCreateEditUsers;
+export const ConnectedCreateEditUsers = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateEditUsers);

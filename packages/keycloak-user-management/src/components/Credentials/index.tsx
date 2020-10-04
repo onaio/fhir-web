@@ -6,13 +6,15 @@ import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { history } from '@onaio/connected-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
-import keycloakUsersReducer, {
+import {
   fetchKeycloakUsers,
+  getAccessToken,
   KeycloakUser,
   makeKeycloakUsersSelector,
+  reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
-} from '../../ducks';
-import { KeycloakService } from '../../services';
+} from '@opensrp/store';
+import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -25,6 +27,7 @@ export interface RouteParams {
 
 /** props for editing a user view */
 export interface Props {
+  accessToken: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
@@ -42,6 +45,7 @@ export type PropsTypes = Props & RouteComponentProps<RouteParams>;
 
 /** default props for editing user component */
 export const defaultProps: Partial<PropsTypes> = {
+  accessToken: 'hunter 2',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
@@ -49,9 +53,10 @@ export const defaultProps: Partial<PropsTypes> = {
 
 /** Handle form submission */
 export const submitForm = (values: UserCredentialsFormFields, props: PropsTypes): void => {
-  const { serviceClass, match } = props;
+  const { serviceClass, match, accessToken } = props;
   const userId = match.params.userId;
   const serve = new serviceClass(
+    accessToken,
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     `/users/${userId}/reset-password`
   );
@@ -160,6 +165,7 @@ export { UserCredentials };
 /** Interface for connected state to props */
 interface DispatchedProps {
   keycloakUser: KeycloakUser | null;
+  accessToken: string;
 }
 
 // connect to store
@@ -168,7 +174,8 @@ const mapStateToProps = (state: Partial<Store>, ownProps: PropsTypes): Dispatche
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
   const keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
-  return { keycloakUser };
+  const accessToken = getAccessToken(state) as string;
+  return { keycloakUser, accessToken };
 };
 
 /** map props to action creators */
@@ -176,6 +183,7 @@ const mapDispatchToProps = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
 
-const ConnectedUserCredentials = connect(mapStateToProps, mapDispatchToProps)(UserCredentials);
-
-export default ConnectedUserCredentials;
+export const ConnectedUserCredentials = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserCredentials);

@@ -1,13 +1,11 @@
 "use strict";
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
-
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.UserCredentials = exports.submitForm = exports.defaultProps = void 0;
+exports.ConnectedUserCredentials = exports.UserCredentials = exports.submitForm = exports.defaultProps = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
@@ -23,26 +21,28 @@ var _connectedReducerRegistry = require("@onaio/connected-reducer-registry");
 
 var _HeaderBreadCrumb = require("../HeaderBreadCrumb");
 
-var _ducks = _interopRequireWildcard(require("../../ducks"));
+var _store = require("@opensrp/store");
 
-var _services = require("../../services");
+var _keycloakService = require("@opensrp/keycloak-service");
 
 require("../../index.css");
 
-_reduxReducerRegistry.default.register(_ducks.reducerName, _ducks.default);
+_reduxReducerRegistry.default.register(_store.reducerName, _store.reducer);
 
 var defaultProps = {
-  fetchKeycloakUsersCreator: _ducks.fetchKeycloakUsers,
+  accessToken: 'hunter 2',
+  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
   keycloakUser: null,
-  serviceClass: _services.KeycloakService
+  serviceClass: _keycloakService.KeycloakService
 };
 exports.defaultProps = defaultProps;
 
 var submitForm = function submitForm(values, props) {
   var serviceClass = props.serviceClass,
-      match = props.match;
+      match = props.match,
+      accessToken = props.accessToken;
   var userId = match.params.userId;
-  var serve = new serviceClass('https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users/".concat(userId, "/reset-password"));
+  var serve = new serviceClass(accessToken, 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users/".concat(userId, "/reset-password"));
   var password = values.password,
       temporary = values.temporary;
   serve.update({
@@ -137,19 +137,20 @@ UserCredentials.defaultProps = defaultProps;
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   var userId = ownProps.match.params.userId;
-  var keycloakUsersSelector = (0, _ducks.makeKeycloakUsersSelector)();
+  var keycloakUsersSelector = (0, _store.makeKeycloakUsersSelector)();
   var keycloakUsers = keycloakUsersSelector(state, {
     id: [userId]
   });
   var keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  var accessToken = (0, _store.getAccessToken)(state);
   return {
-    keycloakUser: keycloakUser
+    keycloakUser: keycloakUser,
+    accessToken: accessToken
   };
 };
 
 var mapDispatchToProps = {
-  fetchKeycloakUsersCreator: _ducks.fetchKeycloakUsers
+  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers
 };
 var ConnectedUserCredentials = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserCredentials);
-var _default = ConnectedUserCredentials;
-exports.default = _default;
+exports.ConnectedUserCredentials = ConnectedUserCredentials;
