@@ -1,4 +1,4 @@
 declare module '@onaio/loaders' {
-  declare let Ripple: unknown;
+  declare let Ripple;
   export { Ripple };
 }
