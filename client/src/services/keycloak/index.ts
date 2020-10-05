@@ -67,7 +67,7 @@ type paramsType = URLParams | null;
  *
  * Sample usage:
  * -------------
- * const service = new KeycloakAPIService('the-endpoint');
+ * const service = new KeycloakService('the-endpoint');
  *
  * **To list all objects**: service.list()
  *

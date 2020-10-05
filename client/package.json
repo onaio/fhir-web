@@ -18,7 +18,6 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.4",
-    "@opensrp/user-management": "file:/home/kip/src/ona/web/packages/keycloak-user-management",
     "@types/antd": "^1.0.0",
     "@types/lodash": "^4.14.161",
     "@types/yup": "^0.29.7",
@@ -47,7 +46,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test": "cd ../ && jest test client --verbose --collectCoverage=true && cd client",
+    "test:watch": "cd ../ && jest test  client --verbose --watch && cd client",
     "lint": "eslint './**/*.{ts,tsx}' --max-warnings 0",
     "lint-snap": "eslint './**/*.snap'",
     "eject": "react-scripts eject",
@@ -153,9 +153,5 @@
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"
-  },
-  "workspaces": [
-    "app/*",
-    "packages/*"
-  ]
+  }
 }

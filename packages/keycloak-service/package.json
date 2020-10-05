@@ -31,9 +31,6 @@
     "author": "Ona Engineering",
     "license": "Apache-2.0",
     "private": false,
-    "dependencies": {
-        "@opensrp/store": "file:/home/kip/src/ona/web/packages/opensrp-store"
-    },
     "peerDependencies": {
         "react": "^16.13.1"
     }

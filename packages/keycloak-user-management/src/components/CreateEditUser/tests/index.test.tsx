@@ -7,14 +7,12 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import store from '../../../../../../client/src/store';
 import fetch from 'jest-fetch-mock';
-import * as keycloakUserDucks from '../../../ducks';
-import * as fixtures from '../../../ducks/tests/fixtures';
-import ConnectedCreateEditUsers, { CreateEditUsers, Props } from '..';
+import * as keycloakUserDucks from '@opensrp/store';
+import * as fixtures from '../../../forms/tests/fixtures';
+import { CreateEditUsers, Props, ConnectedCreateEditUsers } from '..';
 import flushPromises from 'flush-promises';
 
-reducerRegistry.register(keycloakUserDucks.reducerName, keycloakUserDucks.default);
-
-jest.mock('../../../../../../client/src/configs/env');
+reducerRegistry.register(keycloakUserDucks.reducerName, keycloakUserDucks.reducer);
 
 describe('src/containers/Admin/pages/CreateEditUser', () => {
   beforeEach(() => {
