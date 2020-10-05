@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0"
+    "lint": "cd client/ && eslint './**/*.{ts,tsx}' --max-warnings 0 && cd ../ && eslint 'packages/**/*.{ts,tsx}' --max-warnings 0"
   },
   "jest": {
     "setupFiles": [

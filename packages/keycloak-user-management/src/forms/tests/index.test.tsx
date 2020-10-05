@@ -3,23 +3,49 @@ import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
-import { UserForm } from '..';
+import { UserForm, defaultInitialValues } from '..';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
+import { KeycloakService } from '@opensrp/keycloak-service';
+
+jest.mock('antd', () => {
+  const antd = jest.requireActual('antd');
+
+  /* eslint-disable react/prop-types */
+  const Select = ({ children, onChange }) => {
+    return <select onChange={(e) => onChange(e.target.value)}>{children}</select>;
+  };
+
+  const Option = ({ children, ...otherProps }) => {
+    return <option {...otherProps}>{children}</option>;
+  };
+  /* eslint-disable react/prop-types */
+
+  Select.Option = Option;
+
+  return {
+    __esModule: true,
+    ...antd,
+    Select,
+  };
+});
 
 describe('src/components/UserForm', () => {
+  const props = {
+    initialValues: defaultInitialValues,
+    serviceClass: KeycloakService,
+  };
   beforeEach(() => {
+    fetch.once(JSON.stringify([fixtures.userActions]));
     fetch.resetMocks();
   });
   it('renders without crashing', () => {
-    fetch.once(JSON.stringify([fixtures.keycloakUser]));
-    shallow(<UserForm />);
+    shallow(<UserForm {...props} />);
   });
 
   it('renders correctly', () => {
-    fetch.once(JSON.stringify([fixtures.keycloakUser]));
     // looking for each fields
-    const wrapper = mount(<UserForm />);
+    const wrapper = mount(<UserForm {...props} />);
 
     // user's first name
     const userInput = wrapper.find('input#firstName');
@@ -29,8 +55,7 @@ describe('src/components/UserForm', () => {
   });
 
   it('creates object to send correctly for creating new user', async () => {
-    fetch.once(JSON.stringify([]));
-    const wrapper = mount(<UserForm />);
+    const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
       await flushPromises();
@@ -53,6 +78,16 @@ describe('src/components/UserForm', () => {
     const emailInput = wrapper.find('input#email');
     emailInput.simulate('change', { target: { name: 'email', value: 'testone@gmail.com' } });
 
+    const actionSelect = wrapper.find('select');
+    actionSelect.simulate('change', {
+      target: { value: ['UPDATE_PASSWORD'] },
+    });
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
     wrapper.find('form').simulate('submit');
     await act(async () => {
       wrapper.update();
@@ -61,57 +96,33 @@ describe('src/components/UserForm', () => {
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
 
-    const payload = {
-      access: {
-        manageGroupMembership: false,
-        view: false,
-        mapRoles: false,
-        impersonate: false,
-        manage: false,
-      },
-      disableableCredentialTypes: [],
-      email: 'testone@gmail.com',
-      emailVerified: false,
-      enabled: true,
-      firstName: 'Test',
-      id: '',
-      lastName: 'One',
-      notBefore: 0,
-      requiredActions: [],
-      totp: false,
-      username: 'TestOne',
-    };
-
     expect(fetch.mock.calls[0]).toEqual([
-      'https://keycloak-test.smartregister.org/auth/realms//users',
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
       {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: JSON.stringify(payload),
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer hunter 2',
           'content-type': 'application/json;charset=UTF-8',
         },
-        method: 'POST',
+        method: 'GET',
       },
     ]);
     wrapper.unmount();
   });
 
   it('creates object to send correctly for editing user', async () => {
-    fetch.once(JSON.stringify([fixtures.keycloakUser]));
-    const props = {
+    const propEdit = {
+      ...props,
       initialValues: fixtures.keycloakUser,
     };
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(<UserForm {...propEdit} />);
 
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
 
-    // practitioner's name
+    // user's name
     const nameInput = wrapper.find('input#firstName');
     nameInput.simulate('change', { target: { name: 'firstName', value: 'Test2' } });
 
@@ -148,14 +159,26 @@ describe('src/components/UserForm', () => {
     };
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://keycloak-test.smartregister.org/auth/realms//users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter 2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
         body: JSON.stringify(payload),
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer hunter 2',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'PUT',
@@ -163,9 +186,10 @@ describe('src/components/UserForm', () => {
     ]);
     wrapper.unmount();
   });
+
   it('user is not created if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const wrapper = mount(<UserForm />);
+    const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
       await flushPromises();

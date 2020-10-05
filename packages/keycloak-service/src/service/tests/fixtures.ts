@@ -107,59 +107,14 @@ export const keycloakUser = {
   },
 };
 
-export const userActions = [
-  {
-    alias: 'CONFIGURE_TOTP',
-    name: 'Configure OTP',
-    providerId: 'CONFIGURE_TOTP',
-    enabled: true,
-    defaultAction: false,
-    priority: 10,
-    config: {},
+export const OpenSRPAPIResponse = {
+  oAuth2Data: {
+    access_token: 'hunter2',
+    expires_in: '3599',
+    state: 'opensrp',
+    token_type: 'bearer',
   },
-  {
-    alias: 'terms_and_conditions',
-    name: 'Terms and Conditions',
-    providerId: 'terms_and_conditions',
-    enabled: false,
-    defaultAction: false,
-    priority: 20,
-    config: {},
-  },
-  {
-    alias: 'UPDATE_PASSWORD',
-    name: 'Update Password',
-    providerId: 'UPDATE_PASSWORD',
-    enabled: true,
-    defaultAction: false,
-    priority: 30,
-    config: {},
-  },
-  {
-    alias: 'UPDATE_PROFILE',
-    name: 'Update Profile',
-    providerId: 'UPDATE_PROFILE',
-    enabled: true,
-    defaultAction: false,
-    priority: 40,
-    config: {},
-  },
-  {
-    alias: 'VERIFY_EMAIL',
-    name: 'Verify Email',
-    providerId: 'VERIFY_EMAIL',
-    enabled: true,
-    defaultAction: false,
-    priority: 50,
-    config: {},
-  },
-  {
-    alias: 'update_user_locale',
-    name: 'Update User Locale',
-    providerId: 'update_user_locale',
-    enabled: true,
-    defaultAction: false,
-    priority: 1000,
-    config: {},
-  },
-];
+  preferredName: 'Superset User',
+  roles: ['Provider'],
+  username: 'superset-user',
+};
