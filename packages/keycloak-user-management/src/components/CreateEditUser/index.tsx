@@ -106,7 +106,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     } else {
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId]);
 
   const userFormProps: UserFormProps = {
     accessToken,

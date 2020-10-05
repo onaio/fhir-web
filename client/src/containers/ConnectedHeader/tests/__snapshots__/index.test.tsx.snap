@@ -7,7 +7,7 @@ Object {
       className="logo"
     >
       <Image
-        src="opensrp-logo-color.png"
+        src="test-file-stub"
         width={200}
       />
     </div>,
@@ -51,7 +51,7 @@ Object {
       className="logo"
     >
       <Image
-        src="opensrp-logo-color.png"
+        src="test-file-stub"
         width={200}
       />
     </div>,

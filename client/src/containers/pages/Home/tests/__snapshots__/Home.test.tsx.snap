@@ -113,7 +113,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                           loading={false}
                           prefixCls="ant-btn"
                         >
-                          <ForwardRef
+                          <CSSMotion
                             motionName="ant-btn-loading-icon-motion"
                             onAppearActive={[Function]}
                             onAppearStart={[Function]}
@@ -124,22 +124,8 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                             removeOnLeave={true}
                             visible={false}
                           >
-                            <CSSMotion
-                              internalRef={null}
-                              motionAppear={true}
-                              motionEnter={true}
-                              motionLeave={true}
-                              motionName="ant-btn-loading-icon-motion"
-                              onAppearActive={[Function]}
-                              onAppearStart={[Function]}
-                              onEnterActive={[Function]}
-                              onEnterStart={[Function]}
-                              onLeaveActive={[Function]}
-                              onLeaveStart={[Function]}
-                              removeOnLeave={true}
-                              visible={false}
-                            />
-                          </ForwardRef>
+                            <DomWrapper />
+                          </CSSMotion>
                         </LoadingIcon>
                         <span
                           key=".0"
@@ -201,7 +187,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                           loading={false}
                           prefixCls="ant-btn"
                         >
-                          <ForwardRef
+                          <CSSMotion
                             motionName="ant-btn-loading-icon-motion"
                             onAppearActive={[Function]}
                             onAppearStart={[Function]}
@@ -212,22 +198,8 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                             removeOnLeave={true}
                             visible={false}
                           >
-                            <CSSMotion
-                              internalRef={null}
-                              motionAppear={true}
-                              motionEnter={true}
-                              motionLeave={true}
-                              motionName="ant-btn-loading-icon-motion"
-                              onAppearActive={[Function]}
-                              onAppearStart={[Function]}
-                              onEnterActive={[Function]}
-                              onEnterStart={[Function]}
-                              onLeaveActive={[Function]}
-                              onLeaveStart={[Function]}
-                              removeOnLeave={true}
-                              visible={false}
-                            />
-                          </ForwardRef>
+                            <DomWrapper />
+                          </CSSMotion>
                         </LoadingIcon>
                         <span
                           key=".0"

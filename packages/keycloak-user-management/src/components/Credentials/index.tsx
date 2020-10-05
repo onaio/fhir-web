@@ -57,8 +57,8 @@ export const submitForm = (values: UserCredentialsFormFields, props: PropsTypes)
   const userId = match.params.userId;
   const serve = new serviceClass(
     accessToken,
-    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    `/users/${userId}/reset-password`
+    `/users/${userId}/reset-password`,
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
   );
   const { password, temporary } = values;
   serve
