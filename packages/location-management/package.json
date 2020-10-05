@@ -1,0 +1,31 @@
+{
+  "name": "@opensrp/location-management",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
+    "eject": "react-scripts eject",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
+    "lint-snap": "eslint 'src/**/*.snap'",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx'  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "tsc": "tsc",
+    "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
+  },
+  "files": [
+    "dist"
+  ],
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
+  }
+}
