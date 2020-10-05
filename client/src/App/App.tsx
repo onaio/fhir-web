@@ -26,6 +26,7 @@ import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
+import '@opensrp/user-management/dist/index.css';
 import {
   ConnectedAdminView,
   ConnectedCreateEditUsers,
@@ -33,6 +34,8 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
+// import reducerRegistry from '@onaio/redux-reducer-registry';
+// import ConnectedAdminView from '../containers/pages/Admin';
 
 const { Content } = Layout;
 

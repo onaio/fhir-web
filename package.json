@@ -47,29 +47,18 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint '{client,packages}/**/*.{ts,tsx}' --max-warnings 0",
-    "lint-snap": "eslint '{client,packages}/**/*.snap'",
-    "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
+    "test:watch": "jest --config=jest.config.js --watch",
+    "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0"
+  },
+  "jest": {
+    "setupFiles": [
+      "./setupTests.js"
+    ]
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -100,8 +89,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/bootstrap": "^4.5.0",
-    "@types/enzyme": "^3.10.5",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/enzyme": "^3.10.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/enzyme-to-json": "^1.5.3",
     "@types/jest": "^26.0.13",
     "@types/node": "^14.6.4",
@@ -118,8 +107,8 @@
     "@typescript-eslint/parser": "^4.1.0",
     "babel-eslint": "^10.1.0",
     "coveralls": "^3.1.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.4",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.5.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -134,6 +123,8 @@
     "husky": "^4.2.5",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "jest-fetch-mock": "^3.0.3",
+    "jest-haste-map": "^26.3.0",
+    "jest-resolve": "^26.4.0",
     "lerna": "^3.22.1",
     "lint-staged": "^10.3.0",
     "prettier": "^2.1.1",

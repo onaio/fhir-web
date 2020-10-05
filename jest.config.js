@@ -1,8 +1,8 @@
 module.exports = {
   coverageReporters: ['lcov', 'json', 'html'],
   collectCoverageFrom: [
-    'client/src/**/*.{js,jsx,ts,tsx}',
-    'packages/**/*.{js,jsx,ts,tsx}',
+    'client/src/**/*.{ts,tsx}',
+    'packages/**/*.{ts,tsx}',
     '!client/src/index.tsx',
     '!client/src/serviceWorker.ts',
     '!**/node_modules/**',
@@ -10,8 +10,8 @@ module.exports = {
     '!**/dist/**',
     '!**/{tests,__tests__}/**',
   ],
-  setupFiles: ['./setupTests.js'],
-  roots: ['packages', 'client'],
+  setupFiles: ['./setupTests'],
+  roots: ['packages/', 'client'],
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/__mocks__/fileMock.js',
@@ -22,4 +22,4 @@ module.exports = {
 // import dotenv from 'dotenv';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dotenv = require('dotenv');
-dotenv.config({ path: './.env' });
+dotenv.config({ path: './client/.env' });
