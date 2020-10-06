@@ -2,14 +2,19 @@
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Menu, Layout, Image, Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Menu, Layout, Image, Avatar, Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
 import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
+import {
+  SearchOutlined,
+  QuestionCircleOutlined,
+  BellOutlined,
+  GlobalOutlined,
+} from '@ant-design/icons';
 
 const SubMenu = Menu.SubMenu;
 
@@ -40,43 +45,64 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const path = props.location.pathname;
   const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
   return (
-    <div>
-      <Layout.Header>
-        <Menu mode="horizontal" selectedKeys={[path]}>
-          <Menu.Item key={HOME_URL}>
-            <Link to={HOME_URL}>Home</Link>
-          </Menu.Item>
-          {isAdmin && (
-            <Menu.Item key="/admin">
-              <Link to="/admin">Admin</Link>
-            </Menu.Item>
-          )}
-          {authenticated ? (
-            <SubMenu
-              title={
-                <div>
-                  <span>{user.username}</span>
-                  <span>&nbsp;</span>
-                  <Avatar shape="square" icon={<UserOutlined />} />
-                </div>
-              }
-              style={{ float: 'right' }}
-            >
+    <Layout.Header className="txt-white align-items-center justify-content-end px-1">
+      <Button
+        shape="circle"
+        icon={<SearchOutlined />}
+        className="bg-transparent border-0"
+        type="primary"
+      />
+      <Button
+        shape="circle"
+        icon={<QuestionCircleOutlined />}
+        className="bg-transparent border-0"
+        type="primary"
+      />
+      <Button
+        shape="circle"
+        icon={<BellOutlined />}
+        className="bg-transparent border-0"
+        type="primary"
+      />
+      {authenticated ? (
+        <Dropdown
+          overlay={
+            <Menu>
               <Menu.Item key={LOGOUT_URL}>
                 <Link to={LOGOUT_URL}>Logout</Link>
               </Menu.Item>
               <Menu.Item key={`/user/edit/${user_id}`}>
                 <Link to={`/user/edit/${user_id}`}>Manage account</Link>
               </Menu.Item>
-            </SubMenu>
-          ) : (
-            <Menu.Item key={APP_LOGIN_URL} style={{ float: 'right' }}>
-              <Link to={APP_LOGIN_URL}>Login</Link>
-            </Menu.Item>
-          )}
-        </Menu>
-      </Layout.Header>
-    </div>
+            </Menu>
+          }
+          placement="bottomRight"
+        >
+          <Button
+            shape="circle"
+            icon={
+              <Avatar className="mr-1 bg-white" src={user.gravatar}>
+                {user.username}
+              </Avatar>
+            }
+            className="h-auto d-flex align-items-center bg-transparent border-0"
+            type="primary"
+          >
+            {user.username}
+          </Button>
+        </Dropdown>
+      ) : (
+        <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
+          <Link to={APP_LOGIN_URL}>Login</Link>
+        </Button>
+      )}
+      <Button
+        shape="circle"
+        icon={<GlobalOutlined />}
+        className="bg-transparent border-0"
+        type="primary"
+      />
+    </Layout.Header>
   );
 };
 
