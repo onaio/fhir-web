@@ -49,7 +49,7 @@ export type KEYCLOAK_LOGOUT_URL = typeof KEYCLOAK_LOGOUT_URL;
 
 export const OPENSRP_API_BASE_URL =
   process.env.REACT_APP_OPENSRP_API_BASE_URL ||
-  'https://reveal-stage.smartregister.org/opensrp/rest/';
+  'https://opensrp-stage.smartregister.org/opensrp/rest/';
 export type OPENSRP_API_BASE_URL = typeof OPENSRP_API_BASE_URL;
 
 export const KEYCLOAK_API_BASE_URL =
