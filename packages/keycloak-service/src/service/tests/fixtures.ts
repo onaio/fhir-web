@@ -1,4 +1,4 @@
-import { KeycloakUser } from '..';
+import { KeycloakUser } from '@opensrp/store';
 
 export const keycloakUsersArray: KeycloakUser[] = [
   {
@@ -105,4 +105,16 @@ export const keycloakUser = {
     impersonate: false,
     manage: true,
   },
+};
+
+export const OpenSRPAPIResponse = {
+  oAuth2Data: {
+    access_token: 'hunter2',
+    expires_in: '3599',
+    state: 'opensrp',
+    token_type: 'bearer',
+  },
+  preferredName: 'Superset User',
+  roles: ['Provider'],
+  username: 'superset-user',
 };

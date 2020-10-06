@@ -1,6 +1,6 @@
 import { authenticateUser, logOutUser } from '@onaio/session-reducer';
 import { FlushThunks } from 'redux-testkit';
-import store from '..';
+import { store } from '@opensrp/store';
 import { getAccessToken, getApiToken, getOauthProviderState } from '../selectors';
 
 describe('store/selectors', () => {

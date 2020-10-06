@@ -49,8 +49,4 @@ describe('store', () => {
     // retrieving data should work
     expect(selectAllMessages(store.getState())).toEqual([{ message: 'hello', user: 'bob' }]);
   });
-
-  it('should work with preloaded state', () => {
-    expect(store.getState().random).toEqual('Preloaded state, baby!');
-  });
 });
