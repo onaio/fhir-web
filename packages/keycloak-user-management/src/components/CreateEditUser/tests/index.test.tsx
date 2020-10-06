@@ -123,7 +123,11 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     });
 
     expect(serviceMock).toHaveBeenCalled();
-    expect(serviceMock).toHaveBeenCalledWith('/users');
+    expect(serviceMock).toHaveBeenCalledWith(
+      'hunter 2',
+      '/users',
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+    );
   });
 
   it('works correctly with the store', async () => {

@@ -1,6 +1,6 @@
 /** Test file for the practitioners ducks module */
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, {
+import {
   fetchKeycloakUsers,
   getKeycloakUsersArray,
   getKeycloakUsersById,
@@ -8,11 +8,12 @@ import reducer, {
   KeycloakUser,
   reducerName,
   removeKeycloakUsers,
-} from '..';
-import store from '../../../../store';
+  reducer as keycloakReducer,
+} from '@opensrp/store';
+import { store } from '@opensrp/store';
 import { keycloakUsersArray } from './fixtures';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(reducerName, keycloakReducer);
 
 const usersSelector = makeKeycloakUsersSelector();
 
