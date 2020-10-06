@@ -25,3 +25,6 @@ yarn-error.log*
 
 # ignore environment variables
 cypress.env.json
+
+# ignore videos file
+cypress/videos/

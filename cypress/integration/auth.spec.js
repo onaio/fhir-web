@@ -1,10 +1,4 @@
 describe('Authentication', () => {
-  before(() => {
-    cy.fixture('auth').then(function (data) {
-        this.data = data 
-    })
-})
-
     it('log in with invalid credentials', () => {
       cy.visit('/')
       cy.get('input[name="username"]').type('invalid')
@@ -22,4 +16,4 @@ describe('Authentication', () => {
       cy.get('input[name="password"]').type(password, { log: false })
       cy.get('#kc-login').click()     
     })
-  })
+})
