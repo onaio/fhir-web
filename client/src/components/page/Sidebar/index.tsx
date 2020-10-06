@@ -16,6 +16,8 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
+import { Link } from 'react-router-dom';
+import { HOME_URL } from '../../../constants';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -36,7 +38,9 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   return (
     <Layout.Sider width="275px" collapsed={collapsed} onCollapse={() => setCollapsed(!collapsed)}>
       <div className="logo">
-        <img src={Logo} className="img-fluid" alt="" />
+        <Link to={HOME_URL}>
+          <img src={Logo} className="img-fluid" alt="" />
+        </Link>
       </div>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title="Admin">
