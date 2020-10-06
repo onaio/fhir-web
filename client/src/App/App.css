@@ -112,3 +112,7 @@ fieldset[disabled] .gatekeeper-btn.active {
 .ant-card-body {
   padding: 24px 0;
 }
+
+svg {
+  vertical-align: baseline !important;
+}
