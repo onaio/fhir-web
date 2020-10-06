@@ -22,7 +22,7 @@ export const defaultRippleProps: Partial<RippleProps> = {
 };
 
 /** Loading component that displays a nice ripple */
-const Ripple = (props: RippleProps) => {
+const Ripple: React.FC<RippleProps> = (props: RippleProps) => {
   const { borderColor, borderStyle, borderWidth, height, minHeight, width } = props;
 
   const innerDivStyle: React.CSSProperties = {
