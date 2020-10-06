@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/Loading renders the Loading component 1`] = `
-<Ripple
+<Loader
   borderColor="#ff5d00"
   borderStyle="solid"
   borderWidth="4px"
@@ -9,48 +9,57 @@ exports[`components/Loading renders the Loading component 1`] = `
   minHeight="80vh"
   width="64px"
 >
-  <div
-    className="lds-ripple-parent"
-    style={
-      Object {
-        "minHeight": "80vh",
-      }
-    }
+  <Ripple
+    borderColor="#ff5d00"
+    borderStyle="solid"
+    borderWidth="4px"
+    height="64px"
+    minHeight="80vh"
+    width="64px"
   >
     <div
-      className="lds-ripple"
+      className="lds-ripple-parent"
       style={
         Object {
-          "height": "64px",
-          "width": "64px",
+          "minHeight": "80vh",
         }
       }
     >
       <div
+        className="lds-ripple"
         style={
           Object {
-            "borderColor": "#ff5d00",
-            "borderStyle": "solid",
-            "borderWidth": "4px",
+            "height": "64px",
+            "width": "64px",
           }
         }
-      />
-      <div
-        style={
-          Object {
-            "borderColor": "#ff5d00",
-            "borderStyle": "solid",
-            "borderWidth": "4px",
+      >
+        <div
+          style={
+            Object {
+              "borderColor": "#ff5d00",
+              "borderStyle": "solid",
+              "borderWidth": "4px",
+            }
           }
-        }
-      />
+        />
+        <div
+          style={
+            Object {
+              "borderColor": "#ff5d00",
+              "borderStyle": "solid",
+              "borderWidth": "4px",
+            }
+          }
+        />
+      </div>
     </div>
-  </div>
-</Ripple>
+  </Ripple>
+</Loader>
 `;
 
 exports[`components/Loading renders the Loading component when props are given 1`] = `
-<Ripple
+<Loader
   borderColor="#ff0000"
   borderStyle="solid"
   borderWidth="6px"
@@ -58,44 +67,53 @@ exports[`components/Loading renders the Loading component when props are given 1
   minHeight="70vh"
   width="128px"
 >
-  <div
-    className="lds-ripple-parent"
-    style={
-      Object {
-        "minHeight": "70vh",
-      }
-    }
+  <Ripple
+    borderColor="#ff0000"
+    borderStyle="solid"
+    borderWidth="6px"
+    height="128px"
+    minHeight="70vh"
+    width="128px"
   >
     <div
-      className="lds-ripple"
+      className="lds-ripple-parent"
       style={
         Object {
-          "height": "128px",
-          "width": "128px",
+          "minHeight": "70vh",
         }
       }
     >
       <div
+        className="lds-ripple"
         style={
           Object {
-            "borderColor": "#ff0000",
-            "borderStyle": "solid",
-            "borderWidth": "6px",
+            "height": "128px",
+            "width": "128px",
           }
         }
-      />
-      <div
-        style={
-          Object {
-            "borderColor": "#ff0000",
-            "borderStyle": "solid",
-            "borderWidth": "6px",
+      >
+        <div
+          style={
+            Object {
+              "borderColor": "#ff0000",
+              "borderStyle": "solid",
+              "borderWidth": "6px",
+            }
           }
-        }
-      />
+        />
+        <div
+          style={
+            Object {
+              "borderColor": "#ff0000",
+              "borderStyle": "solid",
+              "borderWidth": "6px",
+            }
+          }
+        />
+      </div>
     </div>
-  </div>
-</Ripple>
+  </Ripple>
+</Loader>
 `;
 
 exports[`components/Loading renders the Loading component when props are given 2`] = `

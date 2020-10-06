@@ -1,8 +1,9 @@
 import React from 'react';
+import { Ripple } from '@onaio/loaders';
 import './style.css';
 
 /** interface for Ripple props */
-export interface RippleProps {
+export interface LoaderProps {
   borderColor?: string;
   borderStyle?: string;
   borderWidth?: string;
@@ -11,7 +12,7 @@ export interface RippleProps {
   width?: string;
 }
 
-export const defaultProps: Partial<RippleProps> = {
+export const defaultProps: Partial<LoaderProps> = {
   borderColor: '#ff5d00',
   borderStyle: 'solid',
   borderWidth: '4px',
@@ -21,24 +22,10 @@ export const defaultProps: Partial<RippleProps> = {
 };
 
 /** Loading component that displays a nice ripple */
-const Ripple: React.FC<RippleProps> = (props: RippleProps) => {
-  const { borderColor, borderStyle, borderWidth, height, minHeight, width } = props;
-
-  const innerDivStyle: React.CSSProperties = {
-    borderColor,
-    borderStyle,
-    borderWidth,
-  };
-  return (
-    <div className="lds-ripple-parent" style={{ minHeight }}>
-      <div className="lds-ripple" style={{ height, width }}>
-        <div style={innerDivStyle} />
-        <div style={innerDivStyle} />
-      </div>
-    </div>
-  );
+const Loader: React.FC<LoaderProps> = (props: LoaderProps) => {
+  return <Ripple {...props} />;
 };
 
-Ripple.defaultProps = defaultProps;
+Loader.defaultProps = defaultProps;
 
-export default Ripple;
+export default Loader;
