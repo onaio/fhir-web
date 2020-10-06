@@ -1,4 +1,10 @@
 describe('Authentication', () => {
+  before(() => {
+    cy.fixture('auth').then(function (data) {
+        this.data = data 
+    })
+})
+
     it('log in with invalid credentials', () => {
       cy.visit('/')
       cy.get('input[name="username"]').type('invalid')
@@ -9,10 +15,12 @@ describe('Authentication', () => {
 
     it('log in with valid credentials', () => {
       cy.visit('/')
-      cy.get('input[name="username"]').clear()
-          .type('ona-admin')
-      cy.get('input[name="password"]').type('Amani123')
-      cy.get('#kc-login').click()
-
+      cy.fixture('auth').should((data) => {
+        cy.get('input[name="username"]').clear()
+          .type(data.username)
+        cy.get('input[name="password"]').type(data.password)
+        cy.get('#kc-login').click()
+      })
+      
     })
   })
