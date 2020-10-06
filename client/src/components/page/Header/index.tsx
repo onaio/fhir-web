@@ -42,9 +42,6 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   return (
     <div>
       <Layout.Header>
-        <div className="logo">
-          <Image width={200} src={Logo} />
-        </div>
         <Menu mode="horizontal" selectedKeys={[path]}>
           <Menu.Item key={HOME_URL}>
             <Link to={HOME_URL}>Home</Link>

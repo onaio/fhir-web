@@ -76,7 +76,8 @@ fieldset[disabled] .gatekeeper-btn.active {
 }
 
 .body-wrapper {
-  min-height: calc(100vh - 62px);
+  flex-grow: 1;
+  min-height: 100vh;
 }
 
 .cursor-pointer {
@@ -97,4 +98,17 @@ fieldset[disabled] .gatekeeper-btn.active {
 
 .ant-layout-content {
   margin-top: 20px;
+}
+
+.ant-layout-header {
+  display: flex;
+  flex: 0;
+}
+
+.ant-menu-horizontal {
+  width: 100%;
+}
+
+.ant-card-body {
+  padding: 24px 0;
 }
