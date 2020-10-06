@@ -149,7 +149,7 @@
   "resolutions": {
     "react-scripts/jest": "25.3.0"
   },
-  "description": "[![Coverage Status](https://coveralls.io/repos/github/OpenSRP/web/badge.svg?branch=master)](https://coveralls.io/github/OpenSRP/web?branch=master)",
+  "description": "OpenSRP web integration tests with cypress",
   "main": ".eslintrc.js",
   "directories": {
     "doc": "docs"
@@ -161,8 +161,8 @@
   "keywords": [
     "[]"
   ],
-  "author": "\"\"",
-  "license": "ISC",
+  "author": "OpenSRP",
+  "license": "Apache-2",
   "bugs": {
     "url": "https://github.com/OpenSRP/web/issues"
   },
