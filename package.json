@@ -1,6 +1,6 @@
 {
   "name": "web",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
@@ -125,6 +125,7 @@
     "@typescript-eslint/parser": "^4.1.0",
     "babel-eslint": "^10.1.0",
     "coveralls": "^3.1.0",
+    "cypress": "^5.3.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
     "enzyme-to-json": "^3.5.0",
@@ -147,5 +148,23 @@
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"
-  }
+  },
+  "description": "[![Coverage Status](https://coveralls.io/repos/github/OpenSRP/web/badge.svg?branch=master)](https://coveralls.io/github/OpenSRP/web?branch=master)",
+  "main": ".eslintrc.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenSRP/web.git"
+  },
+  "keywords": [
+    "[]"
+  ],
+  "author": "\"\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OpenSRP/web/issues"
+  },
+  "homepage": "https://github.com/OpenSRP/web#readme"
 }
