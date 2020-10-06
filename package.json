@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "cd client/ && eslint './**/*.{ts,tsx}' --max-warnings 0 && cd ../ && eslint 'packages/**/*.{ts,tsx}' --max-warnings 0"
+    "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0"
   },
   "jest": {
     "setupFiles": [
@@ -102,7 +102,7 @@
     "react-scripts/jest": "25.3.0"
   },
   "workspaces": [
-    "/*",
+    "client/*",
     "packages/*"
   ]
 }
