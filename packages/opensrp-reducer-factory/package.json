@@ -1,0 +1,39 @@
+{
+    "name": "@opensrp/reducer-factory",
+    "version": "0.0.3",
+    "description": "Abstraction for creating other dux modules",
+    "main": "dist/index.js",
+    "types": "dist/types",
+    "files": [
+        "dist"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": "https://github.com/opensrp/opensrp-web",
+    "scripts": {
+        "jest": "jest --coverage --verbose --color",
+        "test": "cd ../../ && jest test  packages/opensrp-reducer-factory --verbose --collectCoverage=true && cd packages/opensrp-reducer-factory",
+        "test:watch": "cd ../../ && jest test  packages/opensrp-reducer-factory --verbose --watch && cd packages/opensrp-reducer-factory",
+        "tsc": "tsc",
+        "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+        "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    },
+    "jest": {
+        "automock": false,
+        "setupFiles": [
+            "../../setupTests"
+        ]
+    },
+    "bugs": {
+        "url": "https://github.com/opensrp/opensrp-web/issues"
+    },
+    "author": "Ona Engineering",
+    "license": "Apache-2.0",
+    "private": false,
+    "dependencies": {
+        "lodash": "^4.17.15",
+        "redux": "^4.0.5",
+        "seamless-immutable": "^7.1.4"
+    }
+}
