@@ -5,7 +5,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "cd client/ && eslint './**/*.{ts,tsx}' --max-warnings 0 && cd ../ && eslint 'packages/**/*.{ts,tsx}' --max-warnings 0"
+    "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
+    "lint-snap": "eslint '{packages,client}/**/*.snap'"
   },
   "jest": {
     "setupFiles": [
@@ -42,6 +43,9 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@onaio/connected-private-route": "^0.0.11",
+    "@onaio/connected-reducer-registry": "^0.0.3",
+    "@opensrp/server-logout": "^0.0.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -102,7 +106,7 @@
     "react-scripts/jest": "25.3.0"
   },
   "workspaces": [
-    "/*",
+    "client/*",
     "packages/*"
   ]
 }

@@ -1,6 +1,4 @@
 import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUser } from '@fortawesome/free-regular-svg-icons';
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
@@ -39,8 +37,6 @@ import ConnectedSidebar from '../containers/ConnectedSidebar';
 // import ConnectedAdminView from '../containers/pages/Admin';
 
 const { Content } = Layout;
-
-library.add(faUser);
 
 const App: React.FC = () => {
   const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : REACT_LOGIN_URL;
