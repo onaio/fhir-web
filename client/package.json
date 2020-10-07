@@ -12,7 +12,7 @@
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/gatekeeper": "^0.1.0",
     "@onaio/list-view": "^0.0.3",
-    "@onaio/loaders": "^0.0.1",
+    "@onaio/loaders": "file:../packages/loaders",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",

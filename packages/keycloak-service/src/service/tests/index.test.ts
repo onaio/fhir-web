@@ -3,7 +3,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { getDefaultHeaders, getFetchOptions } from '../../index';
 import fetch from 'jest-fetch-mock';
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { KeycloakService } from '../serviceClass';
 import { keycloakUser, OpenSRPAPIResponse } from './fixtures';
 import { HTTPError } from '../errors';
 
