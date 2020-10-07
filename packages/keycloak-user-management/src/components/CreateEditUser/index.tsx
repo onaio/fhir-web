@@ -63,7 +63,7 @@ export const defaultInitialValues: KeycloakUser = {
 };
 
 /** default props for editing user component */
-export const defaultEditUserProps: Partial<PropsTypes> = {
+export const defaultEditUserProps: EditUserProps = {
   accessToken: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,

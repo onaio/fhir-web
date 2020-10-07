@@ -3,7 +3,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { getDefaultHeaders, getFetchOptions } from '../../index';
 import fetch from 'jest-fetch-mock';
-import { KeycloakService } from '../serviceClass';
+import { getFilterParams, KeycloakService } from '../serviceClass';
 import { keycloakUser, OpenSRPAPIResponse } from './fixtures';
 import { HTTPError, throwHTTPError, throwNetworkError } from '../errors';
 
@@ -34,6 +34,13 @@ describe('services/keycloak', () => {
     };
     const signal = new AbortController().signal;
     expect(getFetchOptions(signal, 'hunter2', 'POST')).toEqual({ ...output });
+  });
+
+  it('getFilterParams works', async () => {
+    expect(getFilterParams({})).toEqual('');
+    expect(getFilterParams({ foo: 'bar', this: 1337, it: 'test' })).toEqual(
+      'foo:bar,this:1337,it:test'
+    );
   });
 
   it('KeycloakService constructor works', async () => {
