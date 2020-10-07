@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Table, Input, InputNumber, Popconfirm, Form, Row, Col } from 'antd';
+import {
+  Table,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Form,
+  Row,
+  Col,
+  Menu,
+  Dropdown,
+  Button,
+} from 'antd';
+import { MoreOutlined } from '@ant-design/icons';
 // import { Link } from 'react-router-dom';
 import { getExtraData } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 // import { Dictionary } from '@onaio/utils';
-
+import '../Location.css';
 interface Item {
   key: string;
   name: string;
@@ -107,11 +119,26 @@ const LocationUnitGroup = () => {
     }
   };
 
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <Popconfirm
+          title="Sure to Delete?"
+          onConfirm={() => {
+            console.log('');
+          }}
+        >
+          Delete
+        </Popconfirm>
+      </Menu.Item>
+    </Menu>
+  );
+
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
-      width: '80%',
+      width: '90%',
       editable: true,
     },
     {
@@ -129,7 +156,14 @@ const LocationUnitGroup = () => {
             </Popconfirm>
           </span>
         ) : (
-          <p onClick={() => edit(record)}>Edit</p>
+          <span className="location-table-action">
+            <p className="edit" onClick={() => edit(record)}>
+              Edit
+            </p>
+            <Dropdown overlay={menu} placement="bottomLeft" arrow trigger={['click']}>
+              <MoreOutlined className="more-options" />
+            </Dropdown>
+          </span>
         );
       },
     },
@@ -161,21 +195,24 @@ const LocationUnitGroup = () => {
           <h5>Location Unit Group Management</h5>
         </Col>
       </Row>
-      <Form form={form} component={false}>
-        <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          dataSource={data}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          pagination={{
-            onChange: cancel,
-          }}
-        />
-      </Form>
+      <div className="table-container">
+        <div className="table-container-header"></div>
+        <Form form={form} component={false}>
+          <Table
+            components={{
+              body: {
+                cell: EditableCell,
+              },
+            }}
+            dataSource={data}
+            columns={mergedColumns}
+            rowClassName="editable-row"
+            pagination={{
+              onChange: cancel,
+            }}
+          />
+        </Form>
+      </div>
     </>
   );
 };

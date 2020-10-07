@@ -20,6 +20,7 @@ import {
   REACT_LOGIN_URL,
   LOGOUT_URL,
   LOCATION_UNIT_GROUP,
+  HOME_URL
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -57,13 +58,13 @@ const App: React.FC = () => {
           <Switch>
             {/* tslint:disable jsx-no-lambda */}
             {/* Home Page view */}
-            <ConnectedPrivateRoute
+            {/* <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path="/"
+              path={HOME_URL}
               component={ConnectedHomeComponent}
-            />
+            /> */}
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
@@ -96,7 +97,8 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={LOCATION_UNIT_GROUP}
+              // path={LOCATION_UNIT_GROUP}
+              path={'/'}
               component={ConnectedLocationUnitGroupComponent}
             />
             <Route
@@ -117,7 +119,7 @@ const App: React.FC = () => {
                 return (
                   <ConnectedOauthCallback
                     SuccessfulLoginComponent={() => {
-                      return <Redirect to="/" />;
+                      return <Redirect to={HOME_URL} />;
                     }}
                     LoadingComponent={Loading}
                     providers={providers}
