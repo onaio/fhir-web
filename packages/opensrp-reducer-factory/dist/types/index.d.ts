@@ -26,7 +26,7 @@ export interface FetchAction<ObjectType> extends AnyAction {
 }
 /** Interface for removeAction */
 export interface RemoveAction extends AnyAction {
-    objectsById: {};
+    objectsById: Record<string, unknown>;
     type: typeof REMOVE;
     reducerName: string;
 }
