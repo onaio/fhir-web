@@ -33,10 +33,8 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 /** The Sidebar component */
 
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-
   return (
-    <Layout.Sider width="275px" collapsed={collapsed} onCollapse={() => setCollapsed(!collapsed)}>
+    <Layout.Sider width="275px">
       <div className="logo">
         <Link to={HOME_URL}>
           <img src={Logo} className="img-fluid" alt="" />
