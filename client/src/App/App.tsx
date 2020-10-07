@@ -18,7 +18,8 @@ import {
   BACKEND_LOGIN_URL,
   BACKEND_CALLBACK_PATH,
   REACT_LOGIN_URL,
-  LOGOUT_URL,, HOME_URL
+  LOGOUT_URL,
+  HOME_URL,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
