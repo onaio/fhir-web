@@ -2,12 +2,11 @@
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Menu, Layout, Image, Avatar, Button, Dropdown } from 'antd';
+import { Menu, Layout, Avatar, Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
-import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
-import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
+import { BACKEND_LOGIN_URL, LOGOUT_URL, REACT_LOGIN_URL } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import {
   SearchOutlined,
@@ -15,8 +14,6 @@ import {
   BellOutlined,
   GlobalOutlined,
 } from '@ant-design/icons';
-
-const SubMenu = Menu.SubMenu;
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -40,9 +37,7 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
-  const { user_id, roles } = extraData;
-  const isAdmin = roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS');
-  const path = props.location.pathname;
+  const { user_id } = extraData;
   const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
   return (
     <Layout.Header className="txt-white align-items-center justify-content-end px-1">

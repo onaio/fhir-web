@@ -1,18 +1,8 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { User } from '@onaio/session-reducer';
-import React, { useState } from 'react';
+import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
-import {
-  UserOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  TeamOutlined,
-  FileOutlined,
-  InsertRowAboveOutlined,
-  DashboardOutlined,
-  FormOutlined,
-} from '@ant-design/icons';
+import { InsertRowAboveOutlined, DashboardOutlined, FormOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
@@ -58,7 +48,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Link>
           </Menu.Item>
           <Menu.SubMenu key="admin-locations" title="Locations">
-            <Menu.Item key="3">Locations unit</Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/locations-unit" className="admin-link">
+                Locations unit
+              </Link>
+            </Menu.Item>
             <Menu.Item key="4">Locations unit group</Menu.Item>
             <Menu.Item key="5">Locations unit group set</Menu.Item>
           </Menu.SubMenu>
