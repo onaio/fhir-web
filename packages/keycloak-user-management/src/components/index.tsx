@@ -19,7 +19,13 @@ import { PropsTypes } from './CreateEditUser';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { DELETE, ERROR_OCCURED, USER_DELETED_SUCCESSFULLY, USER_EDIT_URL } from '../constants';
+import {
+  CREATE_NEW_USER,
+  DELETE,
+  ERROR_OCCURED,
+  USER_DELETED_SUCCESSFULLY,
+  USER_EDIT_URL,
+} from '../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -218,7 +224,7 @@ const Admin = (props: Props): JSX.Element => {
             <Button
               type="primary"
               className="create-user"
-              onClick={() => history.push('/user/new')}
+              onClick={() => history.push(CREATE_NEW_USER)}
             >
               Add User
             </Button>

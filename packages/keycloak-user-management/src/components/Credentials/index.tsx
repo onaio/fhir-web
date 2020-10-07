@@ -175,7 +175,7 @@ const mapStateToProps = (
   const userId = ownProps.match.params.userId;
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
-  const keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
   const accessToken = getAccessToken(state) as string;
   return { keycloakUser, accessToken };
 };

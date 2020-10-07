@@ -187,7 +187,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 type="text"
                 name="firstName"
                 id="firstName"
-                // disabled={disabledFields.includes('name')}
                 className={errors.firstName ? `form-control is-invalid` : `form-control`}
               />
             </Form.Item>
@@ -247,8 +246,8 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 }
                 style={{ width: '100%' }}
               >
-                {userActionOptions.map((option: UserAction) => (
-                  <Option key={option.alias} value={option.alias}>
+                {userActionOptions.map((option: UserAction, index: number) => (
+                  <Option key={`${index}`} value={option.alias}>
                     {option.name}
                   </Option>
                 ))}

@@ -49,7 +49,6 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
     const mock = jest.fn();
     const props = {
-      // fetchKeycloakUsersCreator: fetchKeycloakUsers,
       history,
       keycloakUser: fixtures.keycloakUser,
       location: mock,
@@ -100,6 +99,7 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
     const mock = jest.fn();
     const props = {
+      accessToken: 'hunter 2',
       history,
       location: mock,
       match: {
