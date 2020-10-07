@@ -8,7 +8,14 @@ import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
-import { BACKEND_LOGIN_URL, LOGOUT_URL, HOME_URL, REACT_LOGIN_URL } from '../../../constants';
+import {
+  BACKEND_LOGIN_URL,
+  LOGOUT_URL,
+  HOME_URL,
+  REACT_LOGIN_URL,
+  ADMIN_URL,
+  USER_EDIT_URL,
+} from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 
 const SubMenu = Menu.SubMenu;
@@ -50,8 +57,8 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
             <Link to={HOME_URL}>Home</Link>
           </Menu.Item>
           {isAdmin && (
-            <Menu.Item key="/admin">
-              <Link to="/admin">Admin</Link>
+            <Menu.Item key={ADMIN_URL}>
+              <Link to={ADMIN_URL}>Admin</Link>
             </Menu.Item>
           )}
           {authenticated ? (
@@ -68,8 +75,8 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
               <Menu.Item key={LOGOUT_URL}>
                 <Link to={LOGOUT_URL}>Logout</Link>
               </Menu.Item>
-              <Menu.Item key={`/user/edit/${user_id}`}>
-                <Link to={`/user/edit/${user_id}`}>Manage account</Link>
+              <Menu.Item key={`${USER_EDIT_URL}/${user_id}`}>
+                <Link to={`${USER_EDIT_URL}/${user_id}`}>Manage account</Link>
               </Menu.Item>
             </SubMenu>
           ) : (
