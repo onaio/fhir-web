@@ -29,7 +29,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var OPENSRP_API_BASE_URL = 'https://test.smartregister.org/opensrp/rest/';
+var OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 exports.OPENSRP_API_BASE_URL = OPENSRP_API_BASE_URL;
 
 function getDefaultHeaders() {
@@ -122,7 +122,7 @@ var OpenSRPService = function () {
                 params = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : null;
                 method = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : 'POST';
                 url = OpenSRPService.getURL(this.generalURL, params);
-                payload = _objectSpread({}, this.getOptions(this.signal, method), {
+                payload = _objectSpread(_objectSpread({}, this.getOptions(this.signal, method)), {}, {
                   'Cache-Control': 'no-cache',
                   Pragma: 'no-cache',
                   body: JSON.stringify(data)
@@ -151,6 +151,9 @@ var OpenSRPService = function () {
                 return (0, _errors.throwHTTPError)(response, defaultMessage);
 
               case 13:
+                return _context2.abrupt("return", {});
+
+              case 14:
               case "end":
                 return _context2.stop();
             }
@@ -240,7 +243,7 @@ var OpenSRPService = function () {
                 params = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : null;
                 method = _args4.length > 2 && _args4[2] !== undefined ? _args4[2] : 'PUT';
                 url = OpenSRPService.getURL(this.generalURL, params);
-                payload = _objectSpread({}, this.getOptions(this.signal, method), {
+                payload = _objectSpread(_objectSpread({}, this.getOptions(this.signal, method)), {}, {
                   'Cache-Control': 'no-cache',
                   Pragma: 'no-cache',
                   body: JSON.stringify(data)
@@ -269,6 +272,9 @@ var OpenSRPService = function () {
                 return (0, _errors.throwHTTPError)(response, defaultMessage);
 
               case 13:
+                return _context4.abrupt("return", {});
+
+              case 14:
               case "end":
                 return _context4.stop();
             }
@@ -381,6 +387,9 @@ var OpenSRPService = function () {
                 return (0, _errors.throwHTTPError)(response, defaultMessage);
 
               case 12:
+                return _context6.abrupt("return", {});
+
+              case 13:
               case "end":
                 return _context6.stop();
             }

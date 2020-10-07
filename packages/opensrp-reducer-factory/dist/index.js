@@ -78,17 +78,17 @@ var reducerFactory = function reducerFactory(reducerName) {
 
     switch (action.type) {
       case FETCHED:
-        return (0, _seamlessImmutable["default"])(_objectSpread({}, state, {
-          objectsById: _objectSpread({}, state.objectsById, {}, action.objectsById)
+        return (0, _seamlessImmutable["default"])(_objectSpread(_objectSpread({}, state), {}, {
+          objectsById: _objectSpread(_objectSpread({}, state.objectsById), action.objectsById)
         }));
 
       case REMOVE:
-        return (0, _seamlessImmutable["default"])(_objectSpread({}, state, {
+        return (0, _seamlessImmutable["default"])(_objectSpread(_objectSpread({}, state), {}, {
           objectsById: action.objectsById
         }));
 
       case SET_TOTAL_RECORDS:
-        return (0, _seamlessImmutable["default"])(_objectSpread({}, state, {
+        return (0, _seamlessImmutable["default"])(_objectSpread(_objectSpread({}, state), {}, {
           totalRecords: action.totalRecords
         }));
 

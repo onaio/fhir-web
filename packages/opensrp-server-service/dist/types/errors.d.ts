@@ -15,7 +15,6 @@ export declare class HTTPError extends BaseError {
 }
 /** Used to return an error arising from a failed network request */
 export declare class NetworkError extends BaseError {
-    constructor();
 }
 /** helper function that reads a non-200 response and creates
  * our custom HTTPError object from it.
@@ -25,5 +24,5 @@ export declare const throwHTTPError: (response: Response, customMessage?: string
  * only error.name is standardized across browsers when a network error
  * happens
  */
-export declare const throwNetworkError: (err: Error) => never;
+export declare const throwNetworkError: (err: Error) => void;
 export {};

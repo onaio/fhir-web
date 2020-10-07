@@ -120,7 +120,7 @@ export class OpenSRPService {
    * @param {URLParams} obj - the object representing filter params
    * @returns {string} filter params as a string
    */
-  public static getFilterParams(obj: URLParams | {}): string {
+  public static getFilterParams(obj: URLParams | Record<string, unknown>): string {
     return Object.entries(obj)
       .map(([key, val]) => `${key}:${val}`)
       .join(',');
@@ -134,7 +134,11 @@ export class OpenSRPService {
    * @param {HTTPMethod} method - the HTTP method
    * @returns the object returned by API
    */
-  public async create<T>(data: T, params: paramsType = null, method: HTTPMethod = 'POST') {
+  public async create<T>(
+    data: T,
+    params: paramsType = null,
+    method: HTTPMethod = 'POST'
+  ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
       ...this.getOptions(this.signal, method),
@@ -151,6 +155,8 @@ export class OpenSRPService {
       const defaultMessage = `OpenSRPService create on ${this.endpoint} failed, HTTP status ${response?.status}`;
       await throwHTTPError(response, defaultMessage);
     }
+
+    return {};
   }
 
   /** read method
@@ -165,6 +171,7 @@ export class OpenSRPService {
     id: string | number,
     params: paramsType = null,
     method: HTTPMethod = 'GET'
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = OpenSRPService.getURL(`${this.generalURL}/${id}`, params);
     const response = await customFetch(url, this.getOptions(this.signal, method));
@@ -186,7 +193,11 @@ export class OpenSRPService {
    * @param {HTTPMethod} method - the HTTP method
    * @returns the object returned by API
    */
-  public async update<T>(data: T, params: paramsType = null, method: HTTPMethod = 'PUT') {
+  public async update<T>(
+    data: T,
+    params: paramsType = null,
+    method: HTTPMethod = 'PUT'
+  ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
       ...this.getOptions(this.signal, method),
@@ -202,6 +213,8 @@ export class OpenSRPService {
       const defaultMessage = `OpenSRPService update on ${this.endpoint} failed, HTTP status ${response.status}`;
       await throwHTTPError(response, defaultMessage);
     }
+
+    return {};
   }
 
   /** list method
@@ -231,7 +244,11 @@ export class OpenSRPService {
    * @param {HTTPMethod} method - the HTTP method
    * @returns the object returned by API
    */
-  public async delete<T>(params: paramsType = null, method: HTTPMethod = 'DELETE') {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async delete<T>(
+    params: paramsType = null,
+    method: HTTPMethod = 'DELETE'
+  ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const response = await fetch(url, this.getOptions(this.signal, method));
 
@@ -242,5 +259,7 @@ export class OpenSRPService {
       const defaultMessage = `OpenSRPService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
       await throwHTTPError(response, defaultMessage);
     }
+
+    return {};
   }
 }

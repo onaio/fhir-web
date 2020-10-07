@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { IncomingHttpHeaders } from 'http';
 /** defaults */
-export declare const OPENSRP_API_BASE_URL = "https://test.smartregister.org/opensrp/rest/";
+export declare const OPENSRP_API_BASE_URL = "https://opensrp-stage.smartregister.org/opensrp/rest/";
 /** allowed http methods */
 declare type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 /** get default HTTP headers for OpenSRP service
@@ -69,7 +69,7 @@ export declare class OpenSRPService {
      * @param {URLParams} obj - the object representing filter params
      * @returns {string} filter params as a string
      */
-    static getFilterParams(obj: URLParams | {}): string;
+    static getFilterParams(obj: URLParams | Record<string, unknown>): string;
     /** create method
      * Send a POST request to the general endpoint containing the new object data
      * Successful requests will result in a HTTP status 201 response with no body
@@ -78,7 +78,7 @@ export declare class OpenSRPService {
      * @param {HTTPMethod} method - the HTTP method
      * @returns the object returned by API
      */
-    create<T>(data: T, params?: paramsType, method?: HTTPMethod): Promise<{} | undefined>;
+    create<T>(data: T, params?: paramsType, method?: HTTPMethod): Promise<Record<string, unknown>>;
     /** read method
      * Send a GET request to the url for the specific object
      * @param {string|number} id - the identifier of the object
@@ -95,7 +95,7 @@ export declare class OpenSRPService {
      * @param {HTTPMethod} method - the HTTP method
      * @returns the object returned by API
      */
-    update<T>(data: T, params?: paramsType, method?: HTTPMethod): Promise<{} | undefined>;
+    update<T>(data: T, params?: paramsType, method?: HTTPMethod): Promise<Record<string, unknown>>;
     /** list method
      * Send a GET request to the general API endpoint
      * @param {params} params - the url params object
@@ -110,6 +110,6 @@ export declare class OpenSRPService {
      * @param {HTTPMethod} method - the HTTP method
      * @returns the object returned by API
      */
-    delete<T>(params?: paramsType, method?: HTTPMethod): Promise<{} | undefined>;
+    delete<T>(params?: paramsType, method?: HTTPMethod): Promise<Record<string, unknown>>;
 }
 export {};
