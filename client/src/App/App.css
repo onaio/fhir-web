@@ -78,6 +78,7 @@ fieldset[disabled] .gatekeeper-btn.active {
 .body-wrapper {
   flex-grow: 1;
   min-height: 100vh;
+  background-color: #f4f4f4;
 }
 
 .cursor-pointer {

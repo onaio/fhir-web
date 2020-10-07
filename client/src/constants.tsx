@@ -8,3 +8,4 @@ export const EXPRESS_LOGIN_URL = '/login';
 export const REACT_LOGIN_URL = '/login';
 export const LOGOUT_URL = '/logout';
 export const HOME_URL = '/';
+export const LOCATION_UNIT_GROUP = '/location-unit-group';

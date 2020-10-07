@@ -19,6 +19,7 @@ import {
   BACKEND_CALLBACK_PATH,
   REACT_LOGIN_URL,
   LOGOUT_URL,
+  LOCATION_UNIT_GROUP,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -33,6 +34,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
+import ConnectedLocationUnitGroupComponent from '../containers/pages/locations/LocationUnitGroup';
 // import reducerRegistry from '@onaio/redux-reducer-registry';
 // import ConnectedAdminView from '../containers/pages/Admin';
 
@@ -89,6 +91,13 @@ const App: React.FC = () => {
               exact
               path="/user/credentials/:userId"
               component={ConnectedUserCredentials}
+            />
+            <ConnectedPrivateRoute
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={LOCATION_UNIT_GROUP}
+              component={ConnectedLocationUnitGroupComponent}
             />
             <Route
               exact
