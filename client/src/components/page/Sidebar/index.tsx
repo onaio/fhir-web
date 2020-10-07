@@ -33,6 +33,9 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 /** The Sidebar component */
 
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
+  const { extraData } = props;
+  const { roles } = extraData;
+
   return (
     <Layout.Sider width="275px">
       <div className="logo">
@@ -42,8 +45,18 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       </div>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title="Admin">
-          <Menu.Item key="1">Users</Menu.Item>
-          <Menu.Item key="2">Teams</Menu.Item>
+          {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
+            <Menu.Item key="1">
+              <Link to="/admin" className="admin-link">
+                Users
+              </Link>
+            </Menu.Item>
+          )}
+          <Menu.Item key="2">
+            <Link to="/teams" className="admin-link">
+              Teams
+            </Link>
+          </Menu.Item>
           <Menu.SubMenu key="admin-locations" title="Locations">
             <Menu.Item key="3">Locations unit</Menu.Item>
             <Menu.Item key="4">Locations unit group</Menu.Item>
