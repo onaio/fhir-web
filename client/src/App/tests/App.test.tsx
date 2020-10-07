@@ -19,7 +19,6 @@ describe('App', () => {
   beforeEach(() => {
     window.location = realLocation;
     fetch.mockResponse(JSON.stringify(expressAPIResponse));
-    fetch.resetMocks();
     // Reset history
     history.push('/');
   });

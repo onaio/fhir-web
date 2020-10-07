@@ -64,7 +64,7 @@ export const defaultInitialValues: KeycloakUser = {
 
 /** default props for editing user component */
 export const defaultEditUserProps: Partial<PropsTypes> = {
-  accessToken: 'hunter 2',
+  accessToken: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
@@ -75,6 +75,11 @@ export const userSchema = Yup.object().shape({
   lastName: Yup.string().required('Required'),
   firstName: Yup.string().required('Required'),
 });
+
+/**
+ *
+ * @param props - CreateEditUser component props
+ */
 
 const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);

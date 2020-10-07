@@ -45,7 +45,7 @@ export type CredentialsPropsTypes = CredentialsProps & RouteComponentProps<Crede
 
 /** default props for editing user component */
 export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
-  accessToken: 'hunter 2',
+  accessToken: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
@@ -92,10 +92,6 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
     labelCol: { span: 4 },
     wrapperCol: { span: 16 },
   };
-
-  //   if (isLoading) {
-  //     return <Ripple />;
-  //   }
 
   return (
     <Col span={12}>
