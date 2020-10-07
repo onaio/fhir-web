@@ -29,7 +29,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'jest'],
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: 'module',
     project: './tsconfig.json',
   },
