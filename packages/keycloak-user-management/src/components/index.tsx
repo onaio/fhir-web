@@ -19,6 +19,7 @@ import { PropsTypes } from './CreateEditUser';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { DELETE, ERROR_OCCURED, USER_DELETED_SUCCESSFULLY, USER_EDIT_URL } from '../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -35,7 +36,7 @@ export interface Props {
 
 /** default props for UserIdSelect component */
 export const defaultProps = {
-  accessToken: 'hunter 2',
+  accessToken: '',
   serviceClass: KeycloakService,
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   removeKeycloakUsersCreator: removeKeycloakUsers,
@@ -75,7 +76,7 @@ export const deleteUser = (props: Props, userId: string): void => {
     .delete()
     .then(() => {
       notification.success({
-        message: 'User deleted successfully',
+        message: `${USER_DELETED_SUCCESSFULLY}`,
         description: '',
       });
       serviceGet
@@ -88,14 +89,14 @@ export const deleteUser = (props: Props, userId: string): void => {
         })
         .catch((_: Error) => {
           notification.error({
-            message: 'An error occurred',
+            message: `${ERROR_OCCURED}`,
             description: '',
           });
         });
     })
     .catch((_: Error) => {
       notification.error({
-        message: 'An error occurred',
+        message: `${ERROR_OCCURED}`,
         description: '',
       });
     });
@@ -175,7 +176,7 @@ const Admin = (props: Props): JSX.Element => {
     // eslint-disable-next-line react/display-name
     render: (_: string, record: KeycloakUser) => (
       <>
-        <Link to={`/user/edit/${record.id}`} key="actions">
+        <Link to={`${USER_EDIT_URL}/${record.id}`} key="actions">
           {'Edit'}
         </Link>
         <span>&nbsp;</span>
@@ -188,7 +189,7 @@ const Admin = (props: Props): JSX.Element => {
           cancelText="No"
           onConfirm={() => deleteUser(props, record.id)}
         >
-          <Link to="#">{'Delete'}</Link>
+          <Link to="#">{DELETE}</Link>
         </Popconfirm>
       </>
     ),
