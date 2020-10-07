@@ -28,7 +28,7 @@ export interface RouteParams {
 }
 
 /** props for editing a user view */
-export interface Props {
+export interface EditUserProps {
   accessToken: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
@@ -36,7 +36,7 @@ export interface Props {
 }
 
 /** type intersection for all types that pertain to the props */
-export type PropsTypes = Props & RouteComponentProps<RouteParams>;
+export type PropsTypes = EditUserProps & RouteComponentProps<RouteParams>;
 
 /** default form initial values */
 
@@ -63,7 +63,7 @@ export const defaultInitialValues: KeycloakUser = {
 };
 
 /** default props for editing user component */
-export const defaultProps: Partial<PropsTypes> = {
+export const defaultEditUserProps: Partial<PropsTypes> = {
   accessToken: 'hunter 2',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
@@ -128,7 +128,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   );
 };
 
-CreateEditUsers.defaultProps = defaultProps;
+CreateEditUsers.defaultProps = defaultEditUserProps;
 
 export { CreateEditUsers };
 
