@@ -3,6 +3,7 @@ import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
+import { history } from '@onaio/connected-reducer-registry';
 import { UserForm, defaultInitialValues } from '..';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
@@ -36,16 +37,20 @@ describe('src/components/UserForm', () => {
     serviceClass: KeycloakService,
   };
   beforeEach(() => {
-    fetch.once(JSON.stringify([fixtures.userActions]));
     fetch.resetMocks();
   });
   it('renders without crashing', () => {
     shallow(<UserForm {...props} />);
   });
 
-  it('renders correctly', () => {
+  it('renders correctly', async () => {
     // looking for each fields
+    fetch.once(JSON.stringify(fixtures.userActions));
     const wrapper = mount(<UserForm {...props} />);
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     // user's first name
     const userInput = wrapper.find('input#firstName');
@@ -53,8 +58,17 @@ describe('src/components/UserForm', () => {
     expect(toJson(userInput)).toMatchSnapshot('first name input');
     wrapper.unmount();
   });
+  it('form validation works', async () => {
+    const wrapper = mount(<UserForm {...props} />);
+    wrapper.find('form').simulate('submit');
+    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    wrapper.update();
+
+    expect(wrapper.find('small.name-error').text()).toEqual('Required');
+  });
 
   it('creates object to send correctly for creating new user', async () => {
+    fetch.once(JSON.stringify(fixtures.userActions));
     const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
@@ -111,6 +125,8 @@ describe('src/components/UserForm', () => {
   });
 
   it('creates object to send correctly for editing user', async () => {
+    // fetch.once(JSON.stringify(fixtures.userActions));
+    fetch.once(JSON.stringify([fixtures.keycloakUser]));
     const propEdit = {
       ...props,
       initialValues: fixtures.keycloakUser,
@@ -157,7 +173,7 @@ describe('src/components/UserForm', () => {
         manage: true,
       },
     };
-
+    // expect(fetch.mock.calls).toEqual('');
     expect(fetch.mock.calls[0]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
       {
@@ -170,7 +186,7 @@ describe('src/components/UserForm', () => {
       },
     ]);
 
-    expect(fetch.mock.calls[1]).toEqual([
+    expect(fetch.mock.calls[2]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       {
         'Cache-Control': 'no-cache',
@@ -220,6 +236,50 @@ describe('src/components/UserForm', () => {
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
+    wrapper.unmount();
+  });
+  it('user is not edited if api is down', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const propEdit = {
+      ...props,
+      initialValues: fixtures.keycloakUser,
+    };
+    const wrapper = mount(<UserForm {...propEdit} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // user's name
+    const nameInput = wrapper.find('input#firstName');
+    nameInput.simulate('change', { target: { name: 'firstName', value: 'Test22' } });
+
+    expect(toJson(wrapper.find('input#username'))).toMatchSnapshot('readonly username edit');
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      wrapper.update();
+    });
+    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    wrapper.update();
+    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
+    wrapper.unmount();
+  });
+  it('cancel button returns user to admin page', async () => {
+    const wrapper = mount(<UserForm {...props} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    wrapper.update();
+    const button = wrapper.find('button.cancel-user');
+    button.simulate('click');
+    expect(history.location.pathname).toEqual('/admin');
     wrapper.unmount();
   });
 });

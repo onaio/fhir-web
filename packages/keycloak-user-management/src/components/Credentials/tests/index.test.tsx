@@ -213,6 +213,7 @@ describe('src/containers/pages/Admin/Credentials/', () => {
     expect(
       formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')
     ).toBeTruthy();
+    wrapper.unmount();
   });
 
   it('it handles errors correctly if API response is not 200', async () => {
