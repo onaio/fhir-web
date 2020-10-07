@@ -4,20 +4,17 @@ import { trimStart } from 'lodash';
 import querystring from 'querystring';
 import React from 'react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
-import { notification } from 'antd';
 import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
 import { EXPRESS_LOGIN_URL, HOME_URL, LOGOUT_URL } from '../../../constants';
 import { store } from '@opensrp/store';
 import Loading from '../Loading';
+import { sendSuccessNotification } from '../../../utils/Notification';
 /**
  * antd notification popup
  * @param user - user details object
  */
 export const openNotification = (user: User): void => {
-  notification.success({
-    message: `Welcome back, ${user.username}`,
-    description: '',
-  });
+  sendSuccessNotification(`Welcome back, ${user.username}`);
 };
 
 /** checks if the value of next in searchParam is blacklisted
