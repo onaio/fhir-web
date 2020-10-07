@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
+import { ADMIN_URL, TEAMS_URL } from '../../../constants';
 
 export interface HomeProps {
   extraData: Dictionary;
@@ -28,7 +29,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
       <Row gutter={16} className="links-box">
         {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
           <Col className="gutter-row" span={12}>
-            <Link to="/admin" className="admin-link">
+            <Link to={ADMIN_URL} className="admin-link">
               <Button color="outline" className="btn-links">
                 Admin
               </Button>
@@ -36,7 +37,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           </Col>
         )}
         <Col className="gutter-row" span={12}>
-          <Link to="/teams" className="admin-link">
+          <Link to={TEAMS_URL} className="admin-link">
             <Button color="outline" className="btn-links">
               Teams
             </Button>
