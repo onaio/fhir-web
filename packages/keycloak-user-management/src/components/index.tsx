@@ -123,8 +123,8 @@ const Admin = (props: Props): JSX.Element => {
         .list()
         .then((res: KeycloakUser[]) => {
           if (isLoading) {
-            fetchKeycloakUsersCreator(res);
             setIsLoading(false);
+            fetchKeycloakUsersCreator(res);
           }
         })
         .catch((err) => {
@@ -135,6 +135,7 @@ const Admin = (props: Props): JSX.Element => {
         });
     }
   });
+
   if (isLoading) {
     return <Ripple />;
   }
