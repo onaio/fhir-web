@@ -17,6 +17,7 @@ import {
 import { KeycloakService } from '@opensrp/keycloak-service';
 import Ripple from '../Loading';
 import { UserForm, UserFormProps } from '../../forms';
+import { URL_USERS } from '../../constants';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -97,7 +98,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
   React.useEffect(() => {
     if (userId) {
-      const serve = new serviceClass(accessToken, '/users', keycloakBaseURL);
+      const serve = new serviceClass(accessToken, URL_USERS, keycloakBaseURL);
       serve
         .read(userId)
         .then((response: KeycloakUser) => {
