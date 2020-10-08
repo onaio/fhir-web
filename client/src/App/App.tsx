@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
@@ -11,7 +12,7 @@ import { Layout } from 'antd';
 import { Switch, Route, Redirect } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
-import { WEBSITE_NAME, BACKEND_ACTIVE } from '../configs/env';
+import { WEBSITE_NAME, BACKEND_ACTIVE, KEYCLOAK_API_BASE_URL } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
   URL_BACKEND_CALLBACK,
@@ -70,21 +71,27 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path="/user/edit/:userId"
-              component={ConnectedCreateEditUsers}
+              render={(props: any) => (
+                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+              )}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path="/user/new"
-              component={ConnectedCreateEditUsers}
+              render={(props: any) => (
+                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+              )}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path="/user/credentials/:userId"
-              component={ConnectedUserCredentials}
+              render={(props: any) => (
+                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+              )}
             />
             <Route
               exact

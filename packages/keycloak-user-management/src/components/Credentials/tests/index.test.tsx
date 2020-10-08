@@ -38,7 +38,11 @@ jest.mock('antd', () => {
 
 const history = createBrowserHistory();
 
-describe('src/containers/pages/Admin/Credentials/', () => {
+describe('components/Credentials', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   beforeEach(() => {
     store.dispatch(fetchKeycloakUsers(fixtures.keycloakUsersArray as KeycloakUser[]));
   });
@@ -62,6 +66,7 @@ describe('src/containers/pages/Admin/Credentials/', () => {
       path: '/user/credentials/:userId',
       url: `/user/credentials/${fixtures.keycloakUser.id}`,
     },
+    keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
   };
 
@@ -155,24 +160,14 @@ describe('src/containers/pages/Admin/Credentials/', () => {
       wrapper.update();
     });
     const formContainer = wrapper.find('div.form-container');
-    expect(formContainer.find('Row').at(0).prop('className')).toEqual(
-      'ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
-    );
-    expect(formContainer.find('Row').at(0).find('div').at(0).prop('className')).toEqual(
-      'ant-row ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
-    );
+
     expect(formContainer.find('Row').at(0).find('FormItemInput').prop('errors')).toEqual([
       'Please input your password!',
     ]);
     expect(
       formContainer.find('Row').at(0).find('FormItemInput').find('span.ant-form-item-children-icon')
     ).toBeTruthy();
-    expect(formContainer.find('Row').at(1).prop('className')).toEqual(
-      'ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
-    );
-    expect(formContainer.find('Row').at(1).find('div').at(0).prop('className')).toEqual(
-      'ant-row ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
-    );
+
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
       'Please confirm your password!',
     ]);
@@ -202,12 +197,7 @@ describe('src/containers/pages/Admin/Credentials/', () => {
       wrapper.update();
     });
     const formContainer = wrapper.find('div.form-container');
-    expect(formContainer.find('Row').at(1).prop('className')).toEqual(
-      'ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
-    );
-    expect(formContainer.find('Row').at(1).find('div').at(0).prop('className')).toEqual(
-      'ant-row ant-form-item ant-form-item-has-feedback ant-form-item-has-error'
-    );
+
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
       'The two passwords that you entered do not match!',
     ]);
