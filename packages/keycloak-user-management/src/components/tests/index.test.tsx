@@ -11,7 +11,7 @@ import { Router } from 'react-router';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import store from '../../../../../client/src/store';
+import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { fetchKeycloakUsers, removeKeycloakUsers } from '@opensrp/store';
