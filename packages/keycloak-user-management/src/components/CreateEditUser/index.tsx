@@ -17,6 +17,7 @@ import {
 import { KeycloakService } from '@opensrp/keycloak-service';
 import Ripple from '../Loading';
 import { UserForm, UserFormProps } from '../../forms';
+import { URL_USERS } from '../../constants';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -33,6 +34,7 @@ export interface EditUserProps {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
+  keycloakBaseURL: string;
 }
 
 /** type intersection for all types that pertain to the props */
@@ -68,6 +70,7 @@ export const defaultEditUserProps: EditUserProps = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
+  keycloakBaseURL: '',
 };
 
 /** yup validations for practitioner data object from form */
@@ -83,17 +86,19 @@ export const userSchema = Yup.object().shape({
 
 const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const { serviceClass, fetchKeycloakUsersCreator, keycloakUser, accessToken } = props;
+  const {
+    serviceClass,
+    fetchKeycloakUsersCreator,
+    keycloakUser,
+    accessToken,
+    keycloakBaseURL,
+  } = props;
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
   const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
   React.useEffect(() => {
     if (userId) {
-      const serve = new serviceClass(
-        accessToken,
-        '/users',
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
-      );
+      const serve = new serviceClass(accessToken, URL_USERS, keycloakBaseURL);
       serve
         .read(userId)
         .then((response: KeycloakUser) => {
@@ -111,12 +116,13 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     } else {
       setIsLoading(false);
     }
-  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId]);
+  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL]);
 
   const userFormProps: UserFormProps = {
     accessToken,
     initialValues: initialValues as KeycloakUser,
     serviceClass: KeycloakService,
+    keycloakBaseURL,
   };
 
   if (isLoading) {
