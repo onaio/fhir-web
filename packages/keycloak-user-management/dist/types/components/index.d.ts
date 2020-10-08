@@ -40,4 +40,4 @@ export declare const ConnectedAdminView: import("react-redux").ConnectedComponen
         removeKeycloakUsersCreator: () => import("@opensrp/store/dist/types").RemoveKeycloakUsersAction;
         keycloakUsers: never[];
     };
-}, Pick<Props, "serviceClass"> & import("./CreateEditUser").Props & import("react-router").RouteComponentProps<import("./CreateEditUser").RouteParams, import("react-router").StaticContext, import("history").History.UnknownFacade>>;
+}, Pick<Props, "serviceClass"> & import("./CreateEditUser").EditUserProps & import("react-router").RouteComponentProps<import("./CreateEditUser").RouteParams, import("react-router").StaticContext, unknown>>;
