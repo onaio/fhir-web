@@ -20,11 +20,11 @@ import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
-  CREATE_NEW_USER,
+  URL_USER_CREATE,
   DELETE,
   ERROR_OCCURED,
   USER_DELETED_SUCCESSFULLY,
-  USER_EDIT_URL,
+  URL_USER_EDIT,
 } from '../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -182,7 +182,7 @@ const Admin = (props: Props): JSX.Element => {
     // eslint-disable-next-line react/display-name
     render: (_: string, record: KeycloakUser) => (
       <>
-        <Link to={`${USER_EDIT_URL}/${record.id}`} key="actions">
+        <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
           {'Edit'}
         </Link>
         <span>&nbsp;</span>
@@ -224,7 +224,7 @@ const Admin = (props: Props): JSX.Element => {
             <Button
               type="primary"
               className="create-user"
-              onClick={() => history.push(CREATE_NEW_USER)}
+              onClick={() => history.push(URL_USER_CREATE)}
             >
               Add User
             </Button>

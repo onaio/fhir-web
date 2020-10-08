@@ -6,7 +6,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Dictionary } from '@onaio/utils/dist/types/types';
-import { ADMIN_URL } from '../constants';
+import { URL_ADMIN, URL_USERS, URL_REQUIRED_USER_ACTIONS } from '../constants';
 
 /** props for editing a user view */
 export interface UserFormProps {
@@ -97,11 +97,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { Option } = Select;
 
   React.useEffect(() => {
-    const serve = new serviceClass(
-      accessToken,
-      `/authentication/required-actions/`,
-      keycloakBaseURL
-    );
+    const serve = new serviceClass(accessToken, URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
     serve
       .list()
       .then((response: UserAction[]) => {
@@ -127,7 +123,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           if (isEditMode) {
             const serve = new serviceClass(
               accessToken,
-              `/users/${initialValues.id}`,
+              `${URL_USERS}/${initialValues.id}`,
               keycloakBaseURL
             );
             serve
@@ -253,7 +249,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             <Form.Item {...tailLayout}>
               <Button
                 htmlType="submit"
-                onClick={() => history.push(ADMIN_URL)}
+                onClick={() => history.push(URL_ADMIN)}
                 className="cancel-user"
                 disabled={isSubmitting || Object.keys(errors).length > 0}
               >
