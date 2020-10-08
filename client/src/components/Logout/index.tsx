@@ -12,7 +12,7 @@ import { getFetchOptions } from '@opensrp/keycloak-service';
 import Ripple from '../page/Loading';
 import { getAccessToken } from '@onaio/session-reducer';
 import store from '../../store';
-import { sendErrorNotification } from '../../utils/Notification';
+import { sendErrorNotification } from '../../utils/Notification/Notifications';
 
 /** HOC function that calls function that logs out the user from both opensrp
  * and keycloak
