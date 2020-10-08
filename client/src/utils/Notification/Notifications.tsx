@@ -5,12 +5,12 @@ import { notification } from 'antd';
  * @param message - title for popup notification
  * @param description - Description for popup notification
  */
-export const sendSuccessNotification = (message?: string, description?: string): void => {
+export function sendSuccessNotification(message?: string, description?: string) {
   notification.success({
     message: message,
     description: description,
   });
-};
+}
 
 /**
  * antd notification info popup
