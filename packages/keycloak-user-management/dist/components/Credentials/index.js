@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ConnectedUserCredentials = exports.UserCredentials = exports.submitForm = exports.defaultProps = void 0;
+exports.ConnectedUserCredentials = exports.UserCredentials = exports.submitForm = exports.defaultCredentialsProps = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
@@ -27,22 +27,22 @@ var _keycloakService = require("@opensrp/keycloak-service");
 
 require("../../index.css");
 
-_reduxReducerRegistry.default.register(_store.reducerName, _store.reducer);
+_reduxReducerRegistry["default"].register(_store.reducerName, _store.reducer);
 
-var defaultProps = {
-  accessToken: 'hunter 2',
+var defaultCredentialsProps = {
+  accessToken: '',
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: _keycloakService.KeycloakService
 };
-exports.defaultProps = defaultProps;
+exports.defaultCredentialsProps = defaultCredentialsProps;
 
 var submitForm = function submitForm(values, props) {
   var serviceClass = props.serviceClass,
       match = props.match,
       accessToken = props.accessToken;
   var userId = match.params.userId;
-  var serve = new serviceClass(accessToken, 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage', "/users/".concat(userId, "/reset-password"));
+  var serve = new serviceClass(accessToken, "/users/".concat(userId, "/reset-password"), 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
   var password = values.password,
       temporary = values.temporary;
   serve.update({
@@ -56,7 +56,7 @@ var submitForm = function submitForm(values, props) {
       message: 'Credentials updated successfully',
       description: ''
     });
-  }).catch(function (_) {
+  })["catch"](function (_) {
     _antd.notification.error({
       message: 'An error occurred',
       description: ''
@@ -77,20 +77,20 @@ var UserCredentials = function UserCredentials(props) {
       span: 16
     }
   };
-  return _react.default.createElement(_antd.Col, {
+  return _react["default"].createElement(_antd.Col, {
     span: 12
-  }, _react.default.createElement(_antd.Card, {
+  }, _react["default"].createElement(_antd.Card, {
     title: "".concat(isEditMode ? 'Edit User' : 'Create New User'),
     bordered: false
-  }, _react.default.createElement(_HeaderBreadCrumb.HeaderBreadCrumb, {
+  }, _react["default"].createElement(_HeaderBreadCrumb.HeaderBreadCrumb, {
     userId: userId
-  }), _react.default.createElement("div", {
+  }), _react["default"].createElement("div", {
     className: "form-container"
-  }, _react.default.createElement(_antd.Form, (0, _extends2.default)({}, layout, {
+  }, _react["default"].createElement(_antd.Form, (0, _extends2["default"])({}, layout, {
     onFinish: function onFinish(values) {
       return submitForm(values, props);
     }
-  }), _react.default.createElement(_antd.Form.Item, {
+  }), _react["default"].createElement(_antd.Form.Item, {
     name: "password",
     label: "Password",
     rules: [{
@@ -98,7 +98,7 @@ var UserCredentials = function UserCredentials(props) {
       message: 'Please input your password!'
     }],
     hasFeedback: true
-  }, _react.default.createElement(_antd.Input.Password, null)), _react.default.createElement(_antd.Form.Item, {
+  }, _react["default"].createElement(_antd.Input.Password, null)), _react["default"].createElement(_antd.Form.Item, {
     name: "confirm",
     label: "Confirm Password",
     dependencies: ['password'],
@@ -118,22 +118,22 @@ var UserCredentials = function UserCredentials(props) {
         }
       };
     }]
-  }, _react.default.createElement(_antd.Input.Password, null)), _react.default.createElement(_antd.Form.Item, {
+  }, _react["default"].createElement(_antd.Input.Password, null)), _react["default"].createElement(_antd.Form.Item, {
     name: "temporary",
     label: "Temporary",
     valuePropName: "checked"
-  }, _react.default.createElement(_antd.Switch, null)), _react.default.createElement(_antd.Form.Item, null, _react.default.createElement(_antd.Row, {
+  }, _react["default"].createElement(_antd.Switch, null)), _react["default"].createElement(_antd.Form.Item, null, _react["default"].createElement(_antd.Row, {
     justify: "start"
-  }, _react.default.createElement(_antd.Col, {
+  }, _react["default"].createElement(_antd.Col, {
     span: 4
-  }, _react.default.createElement(_antd.Button, {
+  }, _react["default"].createElement(_antd.Button, {
     htmlType: "submit",
     className: "reset-password"
   }, "Reset Password"))))))));
 };
 
 exports.UserCredentials = UserCredentials;
-UserCredentials.defaultProps = defaultProps;
+UserCredentials.defaultProps = defaultCredentialsProps;
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   var userId = ownProps.match.params.userId;
@@ -141,7 +141,7 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   var keycloakUsers = keycloakUsersSelector(state, {
     id: [userId]
   });
-  var keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  var keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
   var accessToken = (0, _store.getAccessToken)(state);
   return {
     keycloakUser: keycloakUser,

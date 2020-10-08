@@ -27,9 +27,11 @@ var _connectedReducerRegistry = require("@onaio/connected-reducer-registry");
 
 var _keycloakService = require("@opensrp/keycloak-service");
 
+var _constants = require("../constants");
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var defaultInitialValues = {
   access: {
@@ -76,13 +78,13 @@ var UserForm = function UserForm(props) {
       serviceClass = props.serviceClass,
       accessToken = props.accessToken;
 
-  var _React$useState = _react.default.useState([]),
-      _React$useState2 = (0, _slicedToArray2.default)(_React$useState, 2),
+  var _React$useState = _react["default"].useState([]),
+      _React$useState2 = (0, _slicedToArray2["default"])(_React$useState, 2),
       requiredActions = _React$useState2[0],
       setRequiredActions = _React$useState2[1];
 
-  var _React$useState3 = _react.default.useState([]),
-      _React$useState4 = (0, _slicedToArray2.default)(_React$useState3, 2),
+  var _React$useState3 = _react["default"].useState([]),
+      _React$useState4 = (0, _slicedToArray2["default"])(_React$useState3, 2),
       userActionOptions = _React$useState4[0],
       setUserActionOptions = _React$useState4[1];
 
@@ -143,13 +145,13 @@ var UserForm = function UserForm(props) {
   };
   var Option = _antd.Select.Option;
 
-  _react.default.useEffect(function () {
+  _react["default"].useEffect(function () {
     var serve = new serviceClass(accessToken, "/authentication/required-actions/", 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
     serve.list().then(function (response) {
       setUserActionOptions(response.filter(function (action) {
         return action.alias !== 'terms_and_conditions';
       }));
-    }).catch(function (err) {
+    })["catch"](function (err) {
       _antd.notification.error({
         message: "".concat(err),
         description: ''
@@ -157,9 +159,9 @@ var UserForm = function UserForm(props) {
     });
   });
 
-  return _react.default.createElement("div", {
+  return _react["default"].createElement("div", {
     className: "form-container"
-  }, _react.default.createElement(_formik.Formik, {
+  }, _react["default"].createElement(_formik.Formik, {
     initialValues: initialValues,
     validationSchema: userSchema,
     onSubmit: function onSubmit(values, _ref) {
@@ -178,7 +180,7 @@ var UserForm = function UserForm(props) {
             message: 'User edited successfully',
             description: ''
           });
-        }).catch(function (e) {
+        })["catch"](function (e) {
           _antd.notification.error({
             message: "".concat(e),
             description: ''
@@ -198,7 +200,7 @@ var UserForm = function UserForm(props) {
             message: 'User created successfully',
             description: ''
           });
-        }).catch(function (e) {
+        })["catch"](function (e) {
           _antd.notification.error({
             message: "".concat(e),
             description: ''
@@ -212,73 +214,65 @@ var UserForm = function UserForm(props) {
     var errors = _ref2.errors,
         isSubmitting = _ref2.isSubmitting,
         handleSubmit = _ref2.handleSubmit;
-    return _react.default.createElement(_antd.Form, (0, _extends2.default)({
+    return _react["default"].createElement(_antd.Form, (0, _extends2["default"])({
       initialValues: initialValues
     }, layout, {
       onSubmitCapture: handleSubmit
-    }), _react.default.createElement(_antd.Form.Item, {
-      label: 'User Id'
-    }, _react.default.createElement(_formik.Field, {
-      readOnly: true,
-      type: "text",
-      name: "id",
-      id: "id",
-      className: errors.id ? "form-control is-invalid" : "form-control"
-    })), _react.default.createElement(_antd.Form.Item, {
+    }), _react["default"].createElement(_antd.Form.Item, {
       label: 'First Name',
       rules: [{
         required: true,
         message: 'Please input your First Name!',
         whitespace: true
       }]
-    }, _react.default.createElement(_formik.Field, {
+    }, _react["default"].createElement(_formik.Field, {
       type: "text",
       name: "firstName",
       id: "firstName",
       className: errors.firstName ? "form-control is-invalid" : "form-control"
-    })), _react.default.createElement(_antd.Form.Item, {
+    })), _react["default"].createElement(_antd.Form.Item, {
       label: 'Last Name',
       rules: [{
         required: true,
         message: 'Please input your Last Name!',
         whitespace: true
       }]
-    }, _react.default.createElement(_formik.Field, {
+    }, _react["default"].createElement(_formik.Field, {
       type: "text",
       name: "lastName",
       id: "lastName",
       className: errors.lastName ? "form-control is-invalid" : "form-control"
-    }), _react.default.createElement(_formik.ErrorMessage, {
+    }), _react["default"].createElement(_formik.ErrorMessage, {
       name: "lastName",
       component: "small",
       className: "form-text text-danger name-error"
-    })), _react.default.createElement(_antd.Form.Item, {
+    })), _react["default"].createElement(_antd.Form.Item, {
       label: 'Username'
-    }, _react.default.createElement(_formik.Field, {
+    }, _react["default"].createElement(_formik.Field, {
       readOnly: isEditMode,
       type: "text",
       name: "username",
       id: "username",
       className: errors.username ? "form-control is-invalid" : "form-control"
-    }), _react.default.createElement(_formik.ErrorMessage, {
+    }), _react["default"].createElement(_formik.ErrorMessage, {
       component: "small",
       name: "username",
       className: "form-text text-danger username-error"
-    })), _react.default.createElement(_antd.Form.Item, {
+    })), _react["default"].createElement(_antd.Form.Item, {
       label: 'Email'
-    }, _react.default.createElement(_formik.Field, {
+    }, _react["default"].createElement(_formik.Field, {
       type: "text",
       name: "email",
       id: "email",
       className: errors.email ? "form-control is-invalid" : "form-control"
-    }), _react.default.createElement(_formik.ErrorMessage, {
+    }), _react["default"].createElement(_formik.ErrorMessage, {
       component: "small",
       name: "email",
       className: "form-text text-danger username-error"
-    })), _react.default.createElement(_antd.Form.Item, {
+    })), _react["default"].createElement(_antd.Form.Item, {
       name: "requiredActions",
       label: 'Required User Actions'
-    }, _react.default.createElement(_antd.Select, {
+    }, _react["default"].createElement(_antd.Select, {
       mode: "multiple",
       allowClear: true,
       placeholder: "Please select",
@@ -288,30 +282,24 @@ var UserForm = function UserForm(props) {
       style: {
         width: '100%'
       }
-    }, userActionOptions.map(function (option) {
-      return _react.default.createElement(Option, {
-        key: option.alias,
+    }, userActionOptions.map(function (option, index) {
+      return _react["default"].createElement(Option, {
+        key: "".concat(index),
         value: option.alias
       }, option.name);
-    }))), _react.default.createElement(_antd.Form.Item, tailLayout, _react.default.createElement(_antd.Row, {
-      justify: "start"
-    }, _react.default.createElement(_antd.Col, {
-      span: 4
-    }, _react.default.createElement(_antd.Button, {
+    }))), _react["default"].createElement(_antd.Form.Item, tailLayout, _react["default"].createElement(_antd.Button, {
+      htmlType: "submit",
+      onClick: function onClick() {
+        return _connectedReducerRegistry.history.push(_constants.ADMIN_URL);
+      },
+      className: "cancel-user",
+      disabled: isSubmitting || Object.keys(errors).length > 0
+    }, "Cancel"), _react["default"].createElement(_antd.Button, {
       type: "primary",
       htmlType: "submit",
       className: "create-user",
       disabled: isSubmitting || Object.keys(errors).length > 0
-    }, isSubmitting ? 'Saving' : 'Save User')), _react.default.createElement(_antd.Col, {
-      span: 4
-    }, _react.default.createElement(_antd.Button, {
-      htmlType: "submit",
-      onClick: function onClick() {
-        return _connectedReducerRegistry.history.push('/admin');
-      },
-      className: "cancel-user",
-      disabled: isSubmitting || Object.keys(errors).length > 0
-    }, "Cancel")))));
+    }, isSubmitting ? 'Saving' : 'Save User')));
   }));
 };
 
