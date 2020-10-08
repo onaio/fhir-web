@@ -66,7 +66,7 @@ describe('components/Credentials', () => {
       path: '/user/credentials/:userId',
       url: `/user/credentials/${fixtures.keycloakUser.id}`,
     },
-    keyCloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
   };
 

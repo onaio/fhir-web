@@ -31,7 +31,7 @@ export interface CredentialsProps {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
-  keyCloakBaseURL: string;
+  keycloakBaseURL: string;
 }
 
 /** interface for data fields for team's form */
@@ -57,9 +57,9 @@ export const submitForm = (
   values: UserCredentialsFormFields,
   props: CredentialsPropsTypes
 ): void => {
-  const { serviceClass, match, accessToken, keyCloakBaseURL } = props;
+  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
   const userId = match.params.userId;
-  const serve = new serviceClass(accessToken, `/users/${userId}/reset-password`, keyCloakBaseURL);
+  const serve = new serviceClass(accessToken, `/users/${userId}/reset-password`, keycloakBaseURL);
   const { password, temporary } = values;
   serve
     .update({

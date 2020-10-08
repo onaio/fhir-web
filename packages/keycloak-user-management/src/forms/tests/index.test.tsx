@@ -35,7 +35,7 @@ describe('src/components/UserForm', () => {
   const props = {
     initialValues: defaultInitialValues,
     serviceClass: KeycloakService,
-    keyCloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     accessToken: 'access token',
   };
   beforeEach(() => {

@@ -13,7 +13,7 @@ export interface UserFormProps {
   accessToken: string;
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
-  keyCloakBaseURL: string;
+  keycloakBaseURL: string;
 }
 
 /** interface user action */
@@ -72,7 +72,7 @@ export const handleUserActionsChange = (
 };
 
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
-  const { initialValues, serviceClass, accessToken, keyCloakBaseURL } = props;
+  const { initialValues, serviceClass, accessToken, keycloakBaseURL } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const isEditMode = initialValues.id !== '';
@@ -100,7 +100,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     const serve = new serviceClass(
       accessToken,
       `/authentication/required-actions/`,
-      keyCloakBaseURL
+      keycloakBaseURL
     );
     serve
       .list()
@@ -128,7 +128,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             const serve = new serviceClass(
               accessToken,
               `/users/${initialValues.id}`,
-              keyCloakBaseURL
+              keycloakBaseURL
             );
             serve
               .update({
@@ -151,7 +151,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 setSubmitting(false);
               });
           } else {
-            const serve = new serviceClass(accessToken, '/users', keyCloakBaseURL);
+            const serve = new serviceClass(accessToken, '/users', keycloakBaseURL);
             serve
               .create(values)
               .then(() => {
