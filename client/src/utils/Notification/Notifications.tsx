@@ -5,7 +5,7 @@ import { notification } from 'antd';
  * @param message - title for popup notification
  * @param description - Description for popup notification
  */
-export function sendSuccessNotification(message?: string, description?: string) {
+export function sendSuccessNotification(message: string, description?: string) {
   notification.success({
     message: message,
     description: description,
@@ -17,7 +17,7 @@ export function sendSuccessNotification(message?: string, description?: string) 
  * @param message - title for popup notification
  * @param description - Description for popup notification
  */
-export const sendInfoNotification = (message?: string, description?: string): void => {
+export const sendInfoNotification = (message: string, description?: string): void => {
   notification.info({
     message: message,
     description: description,
@@ -29,7 +29,7 @@ export const sendInfoNotification = (message?: string, description?: string): vo
  * @param message - title for popup notification
  * @param description - Description for popup notification
  */
-export const sendWarningNotification = (message?: string, description?: string): void => {
+export const sendWarningNotification = (message: string, description?: string): void => {
   notification.warning({
     message: message,
     description: description,
@@ -41,7 +41,7 @@ export const sendWarningNotification = (message?: string, description?: string):
  * @param message - title for popup notification
  * @param description - Description for popup notification
  */
-export const sendErrorNotification = (message?: string, description?: string): void => {
+export const sendErrorNotification = (message: string, description?: string): void => {
   notification.error({
     message: message,
     description: description,
