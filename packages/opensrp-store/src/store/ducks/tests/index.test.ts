@@ -9,8 +9,8 @@ import {
   reducerName,
   removeKeycloakUsers,
   reducer as keycloakReducer,
-} from '@opensrp/store';
-import { store } from '@opensrp/store';
+} from '..';
+import { store } from '../../store';
 import { keycloakUsersArray } from './fixtures';
 
 reducerRegistry.register(reducerName, keycloakReducer);

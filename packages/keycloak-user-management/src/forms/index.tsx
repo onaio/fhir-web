@@ -6,6 +6,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Dictionary } from '@onaio/utils/dist/types/types';
+import { ADMIN_URL } from '../constants';
 
 /** props for editing a user view */
 export interface UserFormProps {
@@ -176,16 +177,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       >
         {({ errors, isSubmitting, handleSubmit }) => (
           <Form initialValues={initialValues} {...layout} onSubmitCapture={handleSubmit}>
-            <Form.Item label={'User Id'}>
-              <Field
-                readOnly={true}
-                type="text"
-                name="id"
-                id="id"
-                // disabled={disabledFields.includes('name')}
-                className={errors.id ? `form-control is-invalid` : `form-control`}
-              />
-            </Form.Item>
             <Form.Item
               label={'First Name'}
               rules={[
@@ -196,7 +187,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 type="text"
                 name="firstName"
                 id="firstName"
-                // disabled={disabledFields.includes('name')}
                 className={errors.firstName ? `form-control is-invalid` : `form-control`}
               />
             </Form.Item>
@@ -210,7 +200,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 type="text"
                 name="lastName"
                 id="lastName"
-                // disabled={disabledFields.includes('name')}
                 className={errors.lastName ? `form-control is-invalid` : `form-control`}
               />
               <ErrorMessage
@@ -226,7 +215,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 type="text"
                 name="username"
                 id="username"
-                //   disabled={disabledFields.includes('username')}
                 className={errors.username ? `form-control is-invalid` : `form-control`}
               />
               <ErrorMessage
@@ -258,8 +246,8 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 }
                 style={{ width: '100%' }}
               >
-                {userActionOptions.map((option: UserAction) => (
-                  <Option key={option.alias} value={option.alias}>
+                {userActionOptions.map((option: UserAction, index: number) => (
+                  <Option key={`${index}`} value={option.alias}>
                     {option.name}
                   </Option>
                 ))}
@@ -268,7 +256,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             <Form.Item {...tailLayout}>
               <Button
                 htmlType="submit"
-                onClick={() => history.push('/admin')}
+                onClick={() => history.push(ADMIN_URL)}
                 className="cancel-user"
                 disabled={isSubmitting || Object.keys(errors).length > 0}
               >

@@ -28,6 +28,16 @@ export function getDefaultHeaders(
   };
 }
 
+/** converts filter params object to string
+ * @param {URLParams} obj - the object representing filter params
+ * @returns {string} filter params as a string
+ */
+export function getFilterParams(obj: URLParams): string {
+  return Object.entries(obj)
+    .map(([key, val]) => `${key}:${val}`)
+    .join(',');
+}
+
 /** get payload for fetch
  * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
  * @param {HTTPMethod} method - the HTTP method
@@ -118,16 +128,6 @@ export class KeycloakAPIService {
       return `${generalUrl}?${queryString.stringify(params)}`;
     }
     return generalUrl;
-  }
-
-  /** converts filter params object to string
-   * @param {URLParams} obj - the object representing filter params
-   * @returns {string} filter params as a string
-   */
-  public static getFilterParams(obj: URLParams): string {
-    return Object.entries(obj)
-      .map(([key, val]) => `${key}:${val}`)
-      .join(',');
   }
 
   /** create method
