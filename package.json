@@ -1,11 +1,12 @@
 {
-  "name": "root",
+  "name": "opensrp-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "cd client/ && eslint './**/*.{ts,tsx}' --max-warnings 0 && cd ../ && eslint 'packages/**/*.{ts,tsx}' --max-warnings 0"
+    "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
+    "lint-snap": "eslint '{packages,client}/**/*.snap'"
   },
   "jest": {
     "setupFiles": [
@@ -42,8 +43,11 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@onaio/connected-private-route": "^0.0.11",
+    "@onaio/connected-reducer-registry": "^0.0.3",
+    "@opensrp/server-logout": "^0.0.1",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^9.3.2",
+    "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^7.1.2",
     "@types/bootstrap": "^4.5.0",
     "@types/enzyme": "^3.10.3",
@@ -93,16 +97,16 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
+    "redux-thunk": "^2.3.0",
     "typescript": "~3.7.2"
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"
   },
   "workspaces": [
-    "/*",
+    "client/*",
     "packages/*"
   ]
 }

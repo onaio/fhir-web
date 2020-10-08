@@ -5,11 +5,11 @@ import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import store from '../../../../../../client/src/store';
+import { store } from '@opensrp/store';
 import fetch from 'jest-fetch-mock';
 import * as keycloakUserDucks from '@opensrp/store';
 import * as fixtures from '../../../forms/tests/fixtures';
-import { CreateEditUsers, Props, ConnectedCreateEditUsers } from '..';
+import { CreateEditUsers, EditUserProps, ConnectedCreateEditUsers } from '..';
 import flushPromises from 'flush-promises';
 
 reducerRegistry.register(keycloakUserDucks.reducerName, keycloakUserDucks.reducer);
@@ -49,7 +49,6 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
     const mock = jest.fn();
     const props = {
-      // fetchKeycloakUsersCreator: fetchKeycloakUsers,
       history,
       keycloakUser: fixtures.keycloakUser,
       location: mock,
@@ -100,6 +99,7 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
     const mock = jest.fn();
     const props = {
+      accessToken: 'hunter 2',
       history,
       location: mock,
       match: {
@@ -160,7 +160,7 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     });
 
     const connectedProps = wrapper.find('CreateEditUsers').props();
-    expect((connectedProps as Partial<Props>).keycloakUser).toEqual(fixtures.keycloakUser);
+    expect((connectedProps as Partial<EditUserProps>).keycloakUser).toEqual(fixtures.keycloakUser);
   });
 });
 

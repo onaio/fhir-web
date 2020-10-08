@@ -24,3 +24,16 @@ exports[`src/components/UserForm renders correctly: first name input 1`] = `
   value=""
 />
 `;
+
+exports[`src/components/UserForm user is not edited if api is down: readonly username edit 1`] = `
+<input
+  className="form-control"
+  id="username"
+  name="username"
+  onBlur={[Function]}
+  onChange={[Function]}
+  readOnly={true}
+  type="text"
+  value="opensrp"
+/>
+`;

@@ -19,7 +19,6 @@ describe('App', () => {
   beforeEach(() => {
     window.location = realLocation;
     fetch.mockResponse(JSON.stringify(expressAPIResponse));
-    fetch.resetMocks();
     // Reset history
     history.push('/');
   });
@@ -52,8 +51,6 @@ describe('App', () => {
       await new Promise<unknown>((resolve) => setImmediate(resolve));
       wrapper.update();
     });
-
-    // expect(fetch.mock.calls).toEqual([['http://localhost:3000/oauth/state']]);
 
     // after resolving get oauth state request superset user is logged in
     expect(wrapper.find('Router').props().history).toMatchObject({

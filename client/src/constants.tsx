@@ -8,3 +8,6 @@ export const EXPRESS_LOGIN_URL = '/login';
 export const REACT_LOGIN_URL = '/login';
 export const LOGOUT_URL = '/logout';
 export const HOME_URL = '/';
+export const ADMIN_URL = '/admin';
+export const USER_EDIT_URL = '/user/edit';
+export const TEAMS_URL = '/teams';
