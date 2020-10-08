@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { Router } from 'react-router';
 import ConnectedHomeComponent, { Home, HomeProps } from '../Home';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
-import store from '../../../../store';
+import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
 

@@ -8,7 +8,7 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import fetch from 'jest-fetch-mock';
 import * as keycloakUserDucks from '@opensrp/store';
-import * as fixtures from '../../../forms/tests/fixtures';
+import * as fixtures from './fixtures';
 import { CreateEditUsers, EditUserProps, ConnectedCreateEditUsers } from '..';
 import flushPromises from 'flush-promises';
 import { KeycloakService } from '@opensrp/keycloak-service';

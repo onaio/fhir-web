@@ -9,12 +9,12 @@ import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
 import {
-  BACKEND_LOGIN_URL,
-  LOGOUT_URL,
-  HOME_URL,
-  REACT_LOGIN_URL,
-  ADMIN_URL,
-  USER_EDIT_URL,
+  URL_BACKEND_LOGIN,
+  URL_LOGOUT,
+  URL_HOME,
+  URL_REACT_LOGIN,
+  URL_ADMIN,
+  URL_USER_EDIT,
 } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 
@@ -45,7 +45,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { user_id, roles } = extraData;
   const isAdmin = roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS');
   const path = props.location.pathname;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
   return (
     <div>
       <Layout.Header>
@@ -53,12 +53,12 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Image width={200} src={Logo} />
         </div>
         <Menu mode="horizontal" selectedKeys={[path]}>
-          <Menu.Item key={HOME_URL}>
-            <Link to={HOME_URL}>Home</Link>
+          <Menu.Item key={URL_HOME}>
+            <Link to={URL_HOME}>Home</Link>
           </Menu.Item>
           {isAdmin && (
-            <Menu.Item key={ADMIN_URL}>
-              <Link to={ADMIN_URL}>Admin</Link>
+            <Menu.Item key={URL_ADMIN}>
+              <Link to={URL_ADMIN}>Admin</Link>
             </Menu.Item>
           )}
           {authenticated ? (
@@ -72,11 +72,11 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
               }
               style={{ float: 'right' }}
             >
-              <Menu.Item key={LOGOUT_URL}>
-                <Link to={LOGOUT_URL}>Logout</Link>
+              <Menu.Item key={URL_LOGOUT}>
+                <Link to={URL_LOGOUT}>Logout</Link>
               </Menu.Item>
-              <Menu.Item key={`${USER_EDIT_URL}/${user_id}`}>
-                <Link to={`${USER_EDIT_URL}/${user_id}`}>Manage account</Link>
+              <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
+                <Link to={`${URL_USER_EDIT}/${user_id}`}>Manage account</Link>
               </Menu.Item>
             </SubMenu>
           ) : (

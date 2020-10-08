@@ -54,10 +54,26 @@ describe('src/components/UserForm', () => {
       wrapper.update();
     });
 
-    // user's first name
-    const userInput = wrapper.find('input#firstName');
-    expect(userInput).toHaveLength(1);
-    expect(toJson(userInput)).toMatchSnapshot('first name input');
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter 2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    const form = wrapper.find('div.form-container');
+    expect(form.find('Formik').prop('initialValues')).toMatchSnapshot('Initial Values');
+    expect(form.find('Formik').prop('validationSchema')).toMatchSnapshot('Validation Schema');
+    expect(form.find('FormItem').at(0).props()).toMatchSnapshot('First Name');
+    expect(form.find('FormItem').at(1).props()).toMatchSnapshot('Last Name');
+    expect(form.find('FormItem').at(2).props()).toMatchSnapshot('Username');
+    expect(form.find('FormItem').at(3).props()).toMatchSnapshot('Email');
+    expect(form.find('FormItem').at(4).props()).toMatchSnapshot('User Actions');
+    expect(form.find('FormItem').at(5).props()).toMatchSnapshot('Submit');
     wrapper.unmount();
   });
   it('form validation works', async () => {
@@ -187,7 +203,7 @@ describe('src/components/UserForm', () => {
       },
     ]);
 
-    expect(fetch.mock.calls[2]).toEqual([
+    expect(fetch.mock.calls[1]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       {
         'Cache-Control': 'no-cache',

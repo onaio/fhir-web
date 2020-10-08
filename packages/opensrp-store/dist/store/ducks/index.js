@@ -22,7 +22,7 @@ var _seamlessImmutable = _interopRequireDefault(require("seamless-immutable"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var reducerName = 'keycloakUsers';
 exports.reducerName = reducerName;
@@ -51,7 +51,7 @@ var removeKeycloakUsers = function removeKeycloakUsers() {
 };
 
 exports.removeKeycloakUsers = removeKeycloakUsers;
-var initialState = (0, _seamlessImmutable.default)({
+var initialState = (0, _seamlessImmutable["default"])({
   usersById: {}
 });
 exports.initialState = initialState;
@@ -62,12 +62,12 @@ function reducer() {
 
   switch (action.type) {
     case KEYCLOAK_USERS_FETCHED:
-      return (0, _seamlessImmutable.default)(_objectSpread(_objectSpread({}, state), {}, {
+      return (0, _seamlessImmutable["default"])(_objectSpread(_objectSpread({}, state), {}, {
         usersById: _objectSpread(_objectSpread({}, state.usersById), action.usersById)
       }));
 
     case REMOVE_KEYCLOAK_USERS:
-      return (0, _seamlessImmutable.default)(_objectSpread(_objectSpread({}, state), {}, {
+      return (0, _seamlessImmutable["default"])(_objectSpread(_objectSpread({}, state), {}, {
         usersById: action.usersById
       }));
 
@@ -126,7 +126,7 @@ exports.getKeycloakUsersByIds = getKeycloakUsersByIds;
 
 var makeKeycloakUsersSelector = function makeKeycloakUsersSelector() {
   return (0, _reselect.createSelector)(getKeycloakUsersByIds(), getUsersByUsername(), function (arr1, arr2) {
-    return (0, _fast_array_intersect.default)([arr1, arr2], JSON.stringify);
+    return (0, _fast_array_intersect["default"])([arr1, arr2], JSON.stringify);
   });
 };
 
