@@ -114,7 +114,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           description: '',
         });
       });
-  });
+  }, [accessToken, serviceClass]);
 
   return (
     <div className="form-container">
