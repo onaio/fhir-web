@@ -53,7 +53,7 @@ describe('App', () => {
     });
 
     // after resolving get oauth state request superset user is logged in
-    expect(wrapper.find('Router').props().history).toMatchObject({
+    expect(wrapper.find('Router').prop('history')).toMatchObject({
       location: {
         pathname: '/login',
       },
