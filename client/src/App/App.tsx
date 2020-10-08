@@ -72,7 +72,7 @@ const App: React.FC = () => {
               exact
               path="/user/edit/:userId"
               render={(props: any) => (
-                <ConnectedUserCredentials {...props} keyCloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute
@@ -81,7 +81,7 @@ const App: React.FC = () => {
               exact
               path="/user/new"
               render={(props: any) => (
-                <ConnectedCreateEditUsers {...props} keyCloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute
@@ -90,7 +90,7 @@ const App: React.FC = () => {
               exact
               path="/user/credentials/:userId"
               render={(props: any) => (
-                <ConnectedUserCredentials {...props} keyCloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <Route

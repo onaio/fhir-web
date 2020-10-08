@@ -33,7 +33,7 @@ export interface EditUserProps {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
-  keyCloakBaseURL: string;
+  keycloakBaseURL: string;
 }
 
 /** type intersection for all types that pertain to the props */
@@ -69,7 +69,7 @@ export const defaultEditUserProps: EditUserProps = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
-  keyCloakBaseURL: '',
+  keycloakBaseURL: '',
 };
 
 /** yup validations for practitioner data object from form */
@@ -90,14 +90,14 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     fetchKeycloakUsersCreator,
     keycloakUser,
     accessToken,
-    keyCloakBaseURL,
+    keycloakBaseURL,
   } = props;
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
   const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
   React.useEffect(() => {
     if (userId) {
-      const serve = new serviceClass(accessToken, '/users', keyCloakBaseURL);
+      const serve = new serviceClass(accessToken, '/users', keycloakBaseURL);
       serve
         .read(userId)
         .then((response: KeycloakUser) => {
@@ -115,13 +115,13 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     } else {
       setIsLoading(false);
     }
-  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keyCloakBaseURL]);
+  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL]);
 
   const userFormProps: UserFormProps = {
     accessToken,
     initialValues: initialValues as KeycloakUser,
     serviceClass: KeycloakService,
-    keyCloakBaseURL,
+    keycloakBaseURL,
   };
 
   if (isLoading) {

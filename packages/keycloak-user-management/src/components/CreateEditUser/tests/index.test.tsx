@@ -20,7 +20,7 @@ describe('components/CreateEditUser', () => {
   const props = {
     history,
     keycloakUser: fixtures.keycloakUser,
-    keyCloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     serviceClass: KeycloakService,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
     accessToken: 'access token',
