@@ -29,5 +29,5 @@
     "setupTests.js",
     "__mocks__/"
   ],
-  "exclude": ["**/node_modules", "**/coverage", "**/dist", "**/*.spec.ts", "**/*tests"]
+  "exclude": ["**/node_modules", "**/coverage", "**/dist", "**/*.spec.ts"]
 }
