@@ -13,6 +13,7 @@ export interface UserFormProps {
   accessToken: string;
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
+  keyCloakBaseURL: string;
 }
 
 /** interface user action */
@@ -71,7 +72,7 @@ export const handleUserActionsChange = (
 };
 
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
-  const { initialValues, serviceClass, accessToken } = props;
+  const { initialValues, serviceClass, accessToken, keyCloakBaseURL } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const isEditMode = initialValues.id !== '';
@@ -99,7 +100,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     const serve = new serviceClass(
       accessToken,
       `/authentication/required-actions/`,
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+      keyCloakBaseURL
     );
     serve
       .list()
@@ -127,7 +128,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             const serve = new serviceClass(
               accessToken,
               `/users/${initialValues.id}`,
-              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+              keyCloakBaseURL
             );
             serve
               .update({
@@ -150,11 +151,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 setSubmitting(false);
               });
           } else {
-            const serve = new serviceClass(
-              accessToken,
-              '/users',
-              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
-            );
+            const serve = new serviceClass(accessToken, '/users', keyCloakBaseURL);
             serve
               .create(values)
               .then(() => {

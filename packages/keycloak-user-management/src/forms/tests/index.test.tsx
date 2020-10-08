@@ -35,6 +35,8 @@ describe('src/components/UserForm', () => {
   const props = {
     initialValues: defaultInitialValues,
     serviceClass: KeycloakService,
+    keyCloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    accessToken: 'access token',
   };
   beforeEach(() => {
     fetch.resetMocks();
@@ -112,7 +114,7 @@ describe('src/components/UserForm', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter 2',
+          authorization: 'Bearer access token',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -178,7 +180,7 @@ describe('src/components/UserForm', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter 2',
+          authorization: 'Bearer access token',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -193,7 +195,7 @@ describe('src/components/UserForm', () => {
         body: JSON.stringify(payload),
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter 2',
+          authorization: 'Bearer access token',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'PUT',
