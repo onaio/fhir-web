@@ -8,13 +8,13 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import fetch from 'jest-fetch-mock';
 import * as keycloakUserDucks from '@opensrp/store';
-import * as fixtures from '../../../forms/tests/fixtures';
+import * as fixtures from './fixtures';
 import { CreateEditUsers, EditUserProps, ConnectedCreateEditUsers } from '..';
 import flushPromises from 'flush-promises';
 
 reducerRegistry.register(keycloakUserDucks.reducerName, keycloakUserDucks.reducer);
 
-describe('src/containers/Admin/pages/CreateEditUser', () => {
+describe('components/CreateEditUser', () => {
   beforeEach(() => {
     fetch.resetMocks();
     store.dispatch(keycloakUserDucks.removeKeycloakUsers());
