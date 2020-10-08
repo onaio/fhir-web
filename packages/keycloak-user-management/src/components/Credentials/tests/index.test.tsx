@@ -62,6 +62,7 @@ describe('src/containers/pages/Admin/Credentials/', () => {
       path: '/user/credentials/:userId',
       url: `/user/credentials/${fixtures.keycloakUser.id}`,
     },
+    fetchKeycloakUsersCreator: fetchKeycloakUsers,
   };
 
   it('does not crash', () => {
