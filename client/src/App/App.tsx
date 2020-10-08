@@ -58,13 +58,13 @@ const App: React.FC = () => {
           <Switch>
             {/* tslint:disable jsx-no-lambda */}
             {/* Home Page view */}
-            {/* <ConnectedPrivateRoute
+            <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path={HOME_URL}
               component={ConnectedHomeComponent}
-            /> */}
+            />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
@@ -97,8 +97,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              // path={LOCATION_UNIT_GROUP}
-              path={'/'}
+              path={LOCATION_UNIT_GROUP}
               component={ConnectedLocationUnitGroupComponent}
             />
             <Route
