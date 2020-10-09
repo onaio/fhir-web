@@ -40,8 +40,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "cd ../ && jest test client --verbose --collectCoverage=true && cd client",
-    "test:watch": "cd ../ && jest test  client --verbose --watch && cd client",
+    "test": "cd ../ && jest test app --verbose --collectCoverage=true && cd app",
+    "test:watch": "cd ../ && jest test  app --verbose --watch && cd app",
     "lint": "eslint './**/*.{ts,tsx}' --max-warnings 0",
     "lint-snap": "eslint './**/*.snap'",
     "eject": "react-scripts eject",

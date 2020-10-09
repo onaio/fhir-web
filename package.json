@@ -5,8 +5,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
-    "lint-snap": "eslint '{packages,client}/**/*.snap'"
+    "lint": "eslint '{packages,app}/**/*.{ts,tsx}' --max-warnings 0",
+    "lint-snap": "eslint '{packages,app}/**/*.snap'"
   },
   "jest": {
     "setupFiles": [
@@ -106,7 +106,7 @@
     "react-scripts/jest": "25.3.0"
   },
   "workspaces": [
-    "client/*",
+    "app/*",
     "packages/*"
   ]
 }
