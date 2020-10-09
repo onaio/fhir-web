@@ -1,7 +1,15 @@
+.loc-detail-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
 .loc-title {
   color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
   line-height: 22px;
+  text-align: left;
+  margin: 0px;
 }
 
 .loc-desc {

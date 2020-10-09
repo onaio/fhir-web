@@ -1,7 +1,25 @@
 import * as React from 'react';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import './LocationDetail.css';
 
-const LocationDetail = ({ locationData }: any) => {
+interface props {
+  key: string;
+  name: string;
+  status: 'Alive' | 'Not Active';
+  type: string;
+  created: string;
+  lastupdated: string;
+  externalid: string;
+  openmrsid: string;
+  username: string;
+  version: string;
+  syncstatus: 'Synced' | 'Not Synced';
+  level: number;
+  onClose?: Function;
+}
+
+const LocationDetail = (props: props) => {
   const {
     name,
     lastupdated,
@@ -13,10 +31,19 @@ const LocationDetail = ({ locationData }: any) => {
     username,
     version,
     syncstatus,
-  } = locationData;
+  } = props;
 
   return (
     <div className="p-4 bg-white">
+      <Button
+        shape="circle"
+        onClick={() => {
+          if (props.onClose) props.onClose();
+        }}
+        className="float-right"
+        type="text"
+        icon={<CloseOutlined />}
+      />
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold loc-title">Name</p>
         <p className="mb-0 loc-desc">{name}</p>

@@ -256,7 +256,7 @@ const LocationUnitGroup = () => {
         </Col>
         {selectedLocation !== null ? (
           <Col className="pl-3 border-left" span={8}>
-            <LocationDetail locationData={selectedLocation} />
+            <LocationDetail onClose={() => setSelectedLocation(null)} {...selectedLocation} />
           </Col>
         ) : null}
       </Row>
