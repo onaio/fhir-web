@@ -1,18 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import {
-  Table,
-  Input,
-  Popconfirm,
-  Form,
-  Row,
-  Col,
-  Menu,
-  Dropdown,
-  Button,
-  Tree,
-  Divider,
-} from 'antd';
+import { Table, Input, Popconfirm, Form, Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined, SearchOutlined, SettingOutlined, PlusOutlined } from '@ant-design/icons';
 // import { Link } from 'react-router-dom';
 import { getExtraData } from '@onaio/session-reducer';
@@ -20,6 +8,7 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 // import { Dictionary } from '@onaio/utils';
 import '../Location.css';
+import LocationDetail from '../../../../components/locations/LocationDetail';
 
 interface Item {
   key: string;
@@ -98,6 +87,8 @@ const LocationUnitGroup = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState(tableData);
   const [editingKey, setEditingKey] = useState('');
+  const [value, setValue] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   const isEditing = (record: Item) => record.key === editingKey;
 
@@ -128,9 +119,9 @@ const LocationUnitGroup = () => {
     }
   };
 
-  const AdditionalMenu = (
+  const AdditionalMenu = (e: any) => (
     <Menu>
-      <Menu.Item onClick={() => console.log('')}>View Details</Menu.Item>
+      <Menu.Item onClick={() => {setSelectedLocation(e)}}>View Details</Menu.Item>
       <Menu.Item>
         <Popconfirm title="Sure to Delete?" onConfirm={() => console.log('')}>
           Delete
@@ -166,7 +157,12 @@ const LocationUnitGroup = () => {
             <p className="edit" onClick={() => edit(record)}>
               Edit
             </p>
-            <Dropdown overlay={AdditionalMenu} placement="bottomLeft" arrow trigger={['click']}>
+            <Dropdown
+              overlay={() => AdditionalMenu(record)}
+              placement="bottomLeft"
+              arrow
+              trigger={['click']}
+            >
               <MoreOutlined className="more-options" />
             </Dropdown>
           </span>
@@ -190,66 +186,14 @@ const LocationUnitGroup = () => {
     };
   });
 
-  const [expandedKeys, setExpandedKeys] = useState<any>([]);
-  const [searchValue, setSearchValue] = useState('');
-  const [autoExpandParent, setAutoExpandParent] = useState(true);
-
-  const onExpand = (expandedKeys: any) => {
-    setExpandedKeys(expandedKeys);
-    setAutoExpandParent(false);
-  };
-
-  interface tree {
-    title: string;
-    key: string;
-    children?: tree[];
-  }
-
-  const treedata: tree[] = [
-    {
-      title: 'Sierra Leone',
-      key: 'Sierra Leone',
-      children: [
-        { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-        { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-        {
-          title: 'Bonthe',
-          key: 'Bonthe',
-          children: [
-            {
-              title: 'Kissi Ten',
-              key: 'Kissi Ten',
-              children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
-  const getParentKey = (key: any, tree: string | any[]): any => {
-    let parentKey;
-    for (let i = 0; i < tree.length; i++) {
-      const node = tree[i];
-      if (node.children) {
-        if (node.children.some((item: { key: any }) => item.key === key)) parentKey = node.key;
-        else if (getParentKey(key, node.children)) parentKey = getParentKey(key, node.children);
-      }
-    }
-    return parentKey;
-  };
-
   const onChange = (e: { target: { value: any } }) => {
-    const expandedKeys = treedata
-      .map((item: { title: string | any[]; key: any }) => {
-        if (item.title.indexOf(e.target.value) > -1) return getParentKey(item.key, treedata);
-        return null;
-      })
-      .filter((item: any, i: any, self: string | any[]) => item && self.indexOf(item) === i);
-
-    setExpandedKeys(expandedKeys);
-    setSearchValue(e.target.value);
-    setAutoExpandParent(true);
+    console.log('target :: ', e.target.value);
+    const currentValue = e.target.value;
+    setValue(currentValue);
+    const filteredData = tableData.filter((entry) =>
+      entry.name.toLowerCase().includes(currentValue.toLowerCase())
+    );
+    setData(filteredData);
   };
 
   return (
@@ -262,47 +206,61 @@ const LocationUnitGroup = () => {
           <h5>Location Unit Group Management</h5>
         </Col>
       </Row>
-      <Row className="bg-white">
-        <Col span={24}>
-          <div className="mb-3 mt-3 mr-1 ml-3 d-flex justify-content-between">
-            <h5>
-              <Input
-                placeholder="Search"
-                size="large"
-                prefix={<SearchOutlined />}
-                onChange={onChange}
-              />
-            </h5>
-            <div>
-              <Button type="primary">
-                <PlusOutlined />
-                Add location unit group
-              </Button>
-              <Divider type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key={'1'}>Logout</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-              >
-                <Button shape="circle" icon={<SettingOutlined />} type="text" />
-              </Dropdown>
-            </div>
-          </div>
-          <div className="table-container">
-            <Form form={form} component={false}>
-              <Table
-                components={{ body: { cell: EditableCell } }}
-                dataSource={data}
-                columns={mergedColumns}
-                rowClassName="editable-row"
-                pagination={{ onChange: cancel, showQuickJumper: true }}
-              />
-            </Form>
-          </div>
+      <Row>
+        <Col span={selectedLocation !== null ? 16 : 24}>
+          <Row className="bg-white">
+            <Col span={24}>
+              <div className="mb-3 mt-3 mr-1 ml-3 d-flex justify-content-between">
+                <h5>
+                  <Input
+                    placeholder="Search"
+                    size="large"
+                    value={value}
+                    prefix={<SearchOutlined />}
+                    onChange={onChange}
+                  />
+                </h5>
+                <div>
+                  <Button type="primary">
+                    <PlusOutlined />
+                    Add location unit group
+                  </Button>
+                  <Divider type="vertical" />
+                  <Dropdown
+                    overlay={
+                      <Menu>
+                        <Menu.Item key={'1'}>Logout</Menu.Item>
+                      </Menu>
+                    }
+                    placement="bottomRight"
+                  >
+                    <Button shape="circle" icon={<SettingOutlined />} type="text" />
+                  </Dropdown>
+                </div>
+              </div>
+              <div className="table-container">
+                <Form form={form} component={false}>
+                  <Table
+                    components={{ body: { cell: EditableCell } }}
+                    dataSource={data}
+                    columns={mergedColumns}
+                    rowClassName="editable-row"
+                    pagination={{ onChange: cancel, showQuickJumper: true }}
+                  />
+                </Form>
+              </div>
+            </Col>
+          </Row>
         </Col>
+        {selectedLocation !== null ? (
+          <Col span={8}>
+            <Row>
+              <Col span={24}>
+                <LocationDetail locationData={selectedLocation} />
+              </Col>
+            </Row>
+          </Col>
+        ) : null}
       </Row>
     </section>
   );
