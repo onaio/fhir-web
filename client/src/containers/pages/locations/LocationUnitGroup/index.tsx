@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet';
 import { Table, Input, Popconfirm, Form, Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined, SearchOutlined, SettingOutlined, PlusOutlined } from '@ant-design/icons';
 // import { Link } from 'react-router-dom';
-import { getExtraData } from '@onaio/session-reducer';
+// import { getExtraData } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
-import { Store } from 'redux';
+// import { Store } from 'redux';
 // import { Dictionary } from '@onaio/utils';
 import '../Location.css';
 import LocationDetail from '../../../../components/locations/LocationDetail';
@@ -35,9 +35,9 @@ for (let i = 0; i < 100; i++) {
     status: 'Alive',
     type: 'Feautire',
     created: `2016-10-${i}`,
-    externalid: `asdkjh123${i}`,
-    openmrsid: `asdasdasdkjh123${i}`,
-    username: `edward ${i}`,
+    externalid: `externalid ${i}`,
+    openmrsid: `openmrsid ${i}`,
+    username: `edward${i}`,
     version: `${i}`,
     syncstatus: 'Synced',
   });
@@ -63,8 +63,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
   children,
   ...restProps
 }) => {
-  // const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-
   return (
     <td {...restProps}>
       {editing ? (
@@ -73,7 +71,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
           style={{ margin: 0 }}
           rules={[{ required: true, message: `Please Input ${title}!` }]}
         >
-          {/* {inputNode} */}
           <Input />
         </Form.Item>
       ) : (
@@ -121,7 +118,13 @@ const LocationUnitGroup = () => {
 
   const AdditionalMenu = (e: any) => (
     <Menu>
-      <Menu.Item onClick={() => {setSelectedLocation(e)}}>View Details</Menu.Item>
+      <Menu.Item
+        onClick={() => {
+          setSelectedLocation(e);
+        }}
+      >
+        View Details
+      </Menu.Item>
       <Menu.Item>
         <Popconfirm title="Sure to Delete?" onConfirm={() => console.log('')}>
           Delete
@@ -187,7 +190,6 @@ const LocationUnitGroup = () => {
   });
 
   const onChange = (e: { target: { value: any } }) => {
-    console.log('target :: ', e.target.value);
     const currentValue = e.target.value;
     setValue(currentValue);
     const filteredData = tableData.filter((entry) =>
@@ -253,12 +255,8 @@ const LocationUnitGroup = () => {
           </Row>
         </Col>
         {selectedLocation !== null ? (
-          <Col span={8}>
-            <Row>
-              <Col span={24}>
-                <LocationDetail locationData={selectedLocation} />
-              </Col>
-            </Row>
+          <Col className="pl-3 border-left" span={8}>
+            <LocationDetail locationData={selectedLocation} />
           </Col>
         ) : null}
       </Row>
@@ -272,17 +270,17 @@ export { LocationUnitGroup };
 
 /** map state to props */
 
-const mapStateToProps = (state: Partial<Store>) => {
-  const result = {
-    extraData: getExtraData(state),
-  };
-  return result;
-};
+// const mapStateToProps = (state: Partial<Store>) => {
+//   const result = {
+//     extraData: getExtraData(state),
+//   };
+//   return result;
+// };
 
 /** create connected component */
 
 /** Connected Header component
  */
-const ConnectedLocationUnitGroupComponent = connect(mapStateToProps)(LocationUnitGroup);
+const ConnectedLocationUnitGroupComponent = connect(null, null)(LocationUnitGroup);
 
 export default ConnectedLocationUnitGroupComponent;

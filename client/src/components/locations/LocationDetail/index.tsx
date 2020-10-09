@@ -16,60 +16,60 @@ const LocationDetail = ({ locationData }: any) => {
   } = locationData;
 
   return (
-    <div className="mr-1 ml-3 loc-detail-container bg-white">
-      <div className="loc-detail-item">
-        <p className="loc-title">Name</p>
-        <p className="loc-desc">{name}</p>
+    <div className="p-4 bg-white">
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Name</p>
+        <p className="mb-0 loc-desc">{name}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">Status</p>
-        <p className="loc-desc">{status}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Status</p>
+        <p className="mb-0 loc-desc">{status}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">Type</p>
-        <p className="loc-desc">{type}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Type</p>
+        <p className="mb-0 loc-desc">{type}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">Created</p>
-        <p className="loc-desc">{created}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Created</p>
+        <p className="mb-0 loc-desc">{created}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">Last updated</p>
-        <p className="loc-desc">{lastupdated}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Last updated</p>
+        <p className="mb-0 loc-desc">{lastupdated}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">External Id</p>
-        <p className="loc-desc">{externalid}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">External Id</p>
+        <p className="mb-0 loc-desc">{externalid}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">OpenMRS Id</p>
-        <p className="loc-desc">{openmrsid}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">OpenMRS Id</p>
+        <p className="mb-0 loc-desc">{openmrsid}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">Username</p>
-        <p className="loc-desc">{username}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Username</p>
+        <p className="mb-0 loc-desc">{username}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">Username</p>
-        <p className="loc-desc">{username}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Username</p>
+        <p className="mb-0 loc-desc">{username}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">Version</p>
-        <p className="loc-desc">{version}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Version</p>
+        <p className="mb-0 loc-desc">{version}</p>
       </div>
 
-      <div className="loc-detail-item">
-        <p className="loc-title">Sync status</p>
-        <p className="loc-desc">{syncstatus}</p>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold loc-title">Sync status</p>
+        <p className="mb-0 loc-desc">{syncstatus}</p>
       </div>
     </div>
   );
