@@ -16,6 +16,7 @@ import {
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
+import { URL_USERS, URL_RESET_PASSWORD } from '../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -31,6 +32,7 @@ export interface CredentialsProps {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
+  keycloakBaseURL: string;
 }
 
 /** interface for data fields for team's form */
@@ -56,12 +58,12 @@ export const submitForm = (
   values: UserCredentialsFormFields,
   props: CredentialsPropsTypes
 ): void => {
-  const { serviceClass, match, accessToken } = props;
+  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
   const userId = match.params.userId;
   const serve = new serviceClass(
     accessToken,
-    `/users/${userId}/reset-password`,
-    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+    `${URL_USERS}/${userId}${URL_RESET_PASSWORD}`,
+    keycloakBaseURL
   );
   const { password, temporary } = values;
   serve

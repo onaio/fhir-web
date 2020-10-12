@@ -6,7 +6,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
-import store from '../../store';
+import { store } from '@opensrp/store';
 import App from '../App';
 import { expressAPIResponse } from './fixtures';
 
@@ -53,7 +53,7 @@ describe('App', () => {
     });
 
     // after resolving get oauth state request superset user is logged in
-    expect(wrapper.find('Router').props().history).toMatchObject({
+    expect(wrapper.find('Router').prop('history')).toMatchObject({
       location: {
         pathname: '/login',
       },
