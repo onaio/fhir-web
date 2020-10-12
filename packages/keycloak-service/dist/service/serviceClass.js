@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getDefaultHeaders = getDefaultHeaders;
+exports.getFilterParams = getFilterParams;
 exports.getFetchOptions = getFetchOptions;
 exports.KeycloakService = exports.KeycloakAPIService = exports.customFetch = exports.KEYCLOAK_API_BASE_URL = void 0;
 
@@ -14,8 +15,6 @@ var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
-var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -27,17 +26,19 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
 var _querystring = _interopRequireDefault(require("querystring"));
 
 var _errors = require("./errors");
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var KEYCLOAK_API_BASE_URL = 'https://keycloak-test.smartregister.org/auth/realms/';
 exports.KEYCLOAK_API_BASE_URL = KEYCLOAK_API_BASE_URL;
@@ -53,6 +54,16 @@ function getDefaultHeaders(accessToken) {
   };
 }
 
+function getFilterParams(obj) {
+  return Object.entries(obj).map(function (_ref) {
+    var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
+        key = _ref2[0],
+        val = _ref2[1];
+
+    return "".concat(key, ":").concat(val);
+  }).join(',');
+}
+
 function getFetchOptions(_, accessToken, method) {
   return {
     headers: getDefaultHeaders(accessToken),
@@ -61,9 +72,9 @@ function getFetchOptions(_, accessToken, method) {
 }
 
 var customFetch = function () {
-  var _ref = (0, _asyncToGenerator2.default)(_regenerator.default.mark(function _callee() {
+  var _ref3 = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee() {
     var _args = arguments;
-    return _regenerator.default.wrap(function _callee$(_context) {
+    return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -88,7 +99,7 @@ var customFetch = function () {
   }));
 
   return function customFetch() {
-    return _ref.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 }();
 
@@ -100,13 +111,13 @@ var KeycloakAPIService = function () {
     var endpoint = arguments.length > 2 ? arguments[2] : undefined;
     var getPayload = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : getFetchOptions;
     var signal = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new AbortController().signal;
-    (0, _classCallCheck2.default)(this, KeycloakAPIService);
-    (0, _defineProperty2.default)(this, "accessToken", void 0);
-    (0, _defineProperty2.default)(this, "baseURL", void 0);
-    (0, _defineProperty2.default)(this, "endpoint", void 0);
-    (0, _defineProperty2.default)(this, "generalURL", void 0);
-    (0, _defineProperty2.default)(this, "getOptions", void 0);
-    (0, _defineProperty2.default)(this, "signal", void 0);
+    (0, _classCallCheck2["default"])(this, KeycloakAPIService);
+    (0, _defineProperty2["default"])(this, "accessToken", void 0);
+    (0, _defineProperty2["default"])(this, "baseURL", void 0);
+    (0, _defineProperty2["default"])(this, "endpoint", void 0);
+    (0, _defineProperty2["default"])(this, "generalURL", void 0);
+    (0, _defineProperty2["default"])(this, "getOptions", void 0);
+    (0, _defineProperty2["default"])(this, "signal", void 0);
     this.accessToken = accessToken;
     this.endpoint = endpoint;
     this.getOptions = getPayload;
@@ -115,10 +126,10 @@ var KeycloakAPIService = function () {
     this.generalURL = "".concat(this.baseURL).concat(this.endpoint);
   }
 
-  (0, _createClass2.default)(KeycloakAPIService, [{
+  (0, _createClass2["default"])(KeycloakAPIService, [{
     key: "create",
     value: function () {
-      var _create = (0, _asyncToGenerator2.default)(_regenerator.default.mark(function _callee2(data) {
+      var _create = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee2(data) {
         var params,
             method,
             url,
@@ -126,7 +137,7 @@ var KeycloakAPIService = function () {
             response,
             defaultMessage,
             _args2 = arguments;
-        return _regenerator.default.wrap(function _callee2$(_context2) {
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
@@ -178,14 +189,14 @@ var KeycloakAPIService = function () {
   }, {
     key: "read",
     value: function () {
-      var _read = (0, _asyncToGenerator2.default)(_regenerator.default.mark(function _callee3(id) {
+      var _read = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee3(id) {
         var params,
             method,
             url,
             response,
             defaultMessage,
             _args3 = arguments;
-        return _regenerator.default.wrap(function _callee3$(_context3) {
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
@@ -236,7 +247,7 @@ var KeycloakAPIService = function () {
   }, {
     key: "update",
     value: function () {
-      var _update = (0, _asyncToGenerator2.default)(_regenerator.default.mark(function _callee4(data) {
+      var _update = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee4(data) {
         var params,
             method,
             url,
@@ -244,7 +255,7 @@ var KeycloakAPIService = function () {
             response,
             defaultMessage,
             _args4 = arguments;
-        return _regenerator.default.wrap(function _callee4$(_context4) {
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
@@ -296,14 +307,14 @@ var KeycloakAPIService = function () {
   }, {
     key: "list",
     value: function () {
-      var _list = (0, _asyncToGenerator2.default)(_regenerator.default.mark(function _callee5() {
+      var _list = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee5() {
         var params,
             method,
             url,
             response,
             defaultMessage,
             _args5 = arguments;
-        return _regenerator.default.wrap(function _callee5$(_context5) {
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
@@ -354,14 +365,14 @@ var KeycloakAPIService = function () {
   }, {
     key: "delete",
     value: function () {
-      var _delete2 = (0, _asyncToGenerator2.default)(_regenerator.default.mark(function _callee6() {
+      var _delete2 = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee6() {
         var params,
             method,
             url,
             response,
             defaultMessage,
             _args6 = arguments;
-        return _regenerator.default.wrap(function _callee6$(_context6) {
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
@@ -409,21 +420,10 @@ var KeycloakAPIService = function () {
     key: "getURL",
     value: function getURL(generalUrl, params) {
       if (params) {
-        return "".concat(generalUrl, "?").concat(_querystring.default.stringify(params));
+        return "".concat(generalUrl, "?").concat(_querystring["default"].stringify(params));
       }
 
       return generalUrl;
-    }
-  }, {
-    key: "getFilterParams",
-    value: function getFilterParams(obj) {
-      return Object.entries(obj).map(function (_ref2) {
-        var _ref3 = (0, _slicedToArray2.default)(_ref2, 2),
-            key = _ref3[0],
-            val = _ref3[1];
-
-        return "".concat(key, ":").concat(val);
-      }).join(',');
     }
   }]);
   return KeycloakAPIService;
@@ -432,27 +432,27 @@ var KeycloakAPIService = function () {
 exports.KeycloakAPIService = KeycloakAPIService;
 
 var KeycloakService = function (_KeycloakAPIService) {
-  (0, _inherits2.default)(KeycloakService, _KeycloakAPIService);
+  (0, _inherits2["default"])(KeycloakService, _KeycloakAPIService);
 
   var _super = _createSuper(KeycloakService);
 
   function KeycloakService(accessToken, endpoint) {
     var baseURL = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : KEYCLOAK_API_BASE_URL;
     var getPayload = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : getFetchOptions;
-    (0, _classCallCheck2.default)(this, KeycloakService);
+    (0, _classCallCheck2["default"])(this, KeycloakService);
     return _super.call(this, accessToken, baseURL, endpoint, getPayload);
   }
 
-  (0, _createClass2.default)(KeycloakService, [{
+  (0, _createClass2["default"])(KeycloakService, [{
     key: "readFile",
     value: function () {
-      var _readFile = (0, _asyncToGenerator2.default)(_regenerator.default.mark(function _callee7(id) {
+      var _readFile = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee7(id) {
         var params,
             method,
             url,
             response,
             _args7 = arguments;
-        return _regenerator.default.wrap(function _callee7$(_context7) {
+        return _regenerator["default"].wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:

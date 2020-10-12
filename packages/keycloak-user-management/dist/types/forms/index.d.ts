@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { KeycloakUser } from '../ducks';
+import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Dictionary } from '@onaio/utils/dist/types/types';
 /** props for editing a user view */

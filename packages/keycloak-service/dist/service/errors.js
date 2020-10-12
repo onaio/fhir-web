@@ -25,41 +25,41 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _wrapNativeSuper2 = _interopRequireDefault(require("@babel/runtime/helpers/wrapNativeSuper"));
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 var BaseError = function (_Error) {
-  (0, _inherits2.default)(BaseError, _Error);
+  (0, _inherits2["default"])(BaseError, _Error);
 
   var _super = _createSuper(BaseError);
 
   function BaseError() {
     var _this;
 
-    (0, _classCallCheck2.default)(this, BaseError);
+    (0, _classCallCheck2["default"])(this, BaseError);
     _this = _super.call(this);
     _this.name = _this.constructor.name;
     return _this;
   }
 
   return BaseError;
-}((0, _wrapNativeSuper2.default)(Error));
+}((0, _wrapNativeSuper2["default"])(Error));
 
 var HTTPError = function (_BaseError) {
-  (0, _inherits2.default)(HTTPError, _BaseError);
+  (0, _inherits2["default"])(HTTPError, _BaseError);
 
   var _super2 = _createSuper(HTTPError);
 
   function HTTPError(response, object, serviceDescription) {
     var _this2;
 
-    (0, _classCallCheck2.default)(this, HTTPError);
+    (0, _classCallCheck2["default"])(this, HTTPError);
     _this2 = _super2.call(this);
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this2), "statusCode", void 0);
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this2), "statusText", void 0);
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this2), "url", void 0);
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this2), "description", void 0);
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this2), "statusCode", void 0);
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this2), "statusText", void 0);
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this2), "url", void 0);
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this2), "description", void 0);
     _this2.statusCode = response.status;
     _this2.statusText = response.statusText;
     _this2.description = object;
@@ -78,14 +78,14 @@ var HTTPError = function (_BaseError) {
 exports.HTTPError = HTTPError;
 
 var NetworkError = function (_BaseError2) {
-  (0, _inherits2.default)(NetworkError, _BaseError2);
+  (0, _inherits2["default"])(NetworkError, _BaseError2);
 
   var _super3 = _createSuper(NetworkError);
 
   function NetworkError() {
     var _this3;
 
-    (0, _classCallCheck2.default)(this, NetworkError);
+    (0, _classCallCheck2["default"])(this, NetworkError);
     _this3 = _super3.call(this);
     _this3.name = _this3.constructor.name;
     return _this3;
@@ -97,9 +97,9 @@ var NetworkError = function (_BaseError2) {
 exports.NetworkError = NetworkError;
 
 var throwHTTPError = function () {
-  var _ref = (0, _asyncToGenerator2.default)(_regenerator.default.mark(function _callee(response, customMessage) {
+  var _ref = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee(response, customMessage) {
     var responseClone1;
-    return _regenerator.default.wrap(function _callee$(_context) {
+    return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:

@@ -7,7 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ConnectedCreateEditUsers = exports.CreateEditUsers = exports.userSchema = exports.defaultProps = exports.defaultInitialValues = void 0;
+exports.ConnectedCreateEditUsers = exports.CreateEditUsers = exports.userSchema = exports.defaultEditUserProps = exports.defaultInitialValues = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
@@ -33,7 +33,7 @@ var _forms = require("../../forms");
 
 require("../../index.css");
 
-_reduxReducerRegistry.default.register(_store.reducerName, _store.reducer);
+_reduxReducerRegistry["default"].register(_store.reducerName, _store.reducer);
 
 var defaultInitialValues = {
   access: {
@@ -57,13 +57,13 @@ var defaultInitialValues = {
   username: ''
 };
 exports.defaultInitialValues = defaultInitialValues;
-var defaultProps = {
-  accessToken: 'hunter 2',
+var defaultEditUserProps = {
+  accessToken: '',
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: _keycloakService.KeycloakService
 };
-exports.defaultProps = defaultProps;
+exports.defaultEditUserProps = defaultEditUserProps;
 var userSchema = Yup.object().shape({
   lastName: Yup.string().required('Required'),
   firstName: Yup.string().required('Required')
@@ -71,8 +71,8 @@ var userSchema = Yup.object().shape({
 exports.userSchema = userSchema;
 
 var CreateEditUsers = function CreateEditUsers(props) {
-  var _React$useState = _react.default.useState(true),
-      _React$useState2 = (0, _slicedToArray2.default)(_React$useState, 2),
+  var _React$useState = _react["default"].useState(true),
+      _React$useState2 = (0, _slicedToArray2["default"])(_React$useState, 2),
       isLoading = _React$useState2[0],
       setIsLoading = _React$useState2[1];
 
@@ -84,7 +84,7 @@ var CreateEditUsers = function CreateEditUsers(props) {
   var isEditMode = !!userId;
   var initialValues = isEditMode ? keycloakUser : defaultInitialValues;
 
-  _react.default.useEffect(function () {
+  _react["default"].useEffect(function () {
     if (userId) {
       var serve = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
       serve.read(userId).then(function (response) {
@@ -92,7 +92,7 @@ var CreateEditUsers = function CreateEditUsers(props) {
           fetchKeycloakUsersCreator([response]);
           setIsLoading(false);
         }
-      }).catch(function (err) {
+      })["catch"](function (err) {
         _antd.notification.error({
           message: "".concat(err),
           description: ''
@@ -101,7 +101,7 @@ var CreateEditUsers = function CreateEditUsers(props) {
     } else {
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId]);
 
   var userFormProps = {
     accessToken: accessToken,
@@ -110,22 +110,22 @@ var CreateEditUsers = function CreateEditUsers(props) {
   };
 
   if (isLoading) {
-    return _react.default.createElement(_Loading.default, null);
+    return _react["default"].createElement(_Loading["default"], null);
   }
 
-  return _react.default.createElement(_antd.Row, null, _react.default.createElement(_antd.Col, {
+  return _react["default"].createElement(_antd.Row, null, _react["default"].createElement(_antd.Col, {
     xs: 24,
     sm: 20,
     md: 18,
     lg: 15,
     xl: 12
-  }, _react.default.createElement(_HeaderBreadCrumb.HeaderBreadCrumb, {
+  }, _react["default"].createElement(_HeaderBreadCrumb.HeaderBreadCrumb, {
     userId: userId
-  }), _react.default.createElement(_forms.UserForm, userFormProps)));
+  }), _react["default"].createElement(_forms.UserForm, userFormProps)));
 };
 
 exports.CreateEditUsers = CreateEditUsers;
-CreateEditUsers.defaultProps = defaultProps;
+CreateEditUsers.defaultProps = defaultEditUserProps;
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   var userId = ownProps.match.params.userId;

@@ -1,6 +1,5 @@
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { waitFor } from '@testing-library/react';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
 import * as keycloakUserDucks from '@opensrp/store';
@@ -11,7 +10,7 @@ import { Router } from 'react-router';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import store from '../../../../../client/src/store';
+import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { fetchKeycloakUsers, removeKeycloakUsers } from '@opensrp/store';
@@ -89,7 +88,9 @@ describe('src/components/Admin', () => {
       accessToken: 'hunter2',
     };
     deleteUser(props, fixtures.keycloakUser.id);
-    await waitFor(() => {
+
+    await act(async () => {
+      await flushPromises();
       expect(mockedKeycloakservice).toHaveBeenCalled();
     });
     fetch.mockClear();

@@ -7,7 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.HeaderBreadCrumb = void 0;
+exports["default"] = exports.HeaderBreadCrumb = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
@@ -23,7 +23,7 @@ var HeaderBreadCrumb = function HeaderBreadCrumb(props) {
   var userId = props.userId;
 
   var _React$useState = React.useState(''),
-      _React$useState2 = (0, _slicedToArray2.default)(_React$useState, 2),
+      _React$useState2 = (0, _slicedToArray2["default"])(_React$useState, 2),
       activeKey = _React$useState2[0],
       setActiveKey = _React$useState2[1];
 
@@ -63,4 +63,4 @@ var HeaderBreadCrumb = function HeaderBreadCrumb(props) {
 
 exports.HeaderBreadCrumb = HeaderBreadCrumb;
 var _default = HeaderBreadCrumb;
-exports.default = _default;
+exports["default"] = _default;
