@@ -19,6 +19,13 @@ import { PropsTypes } from './CreateEditUser';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import {
+  URL_USER_CREATE,
+  DELETE,
+  ERROR_OCCURED,
+  USER_DELETED_SUCCESSFULLY,
+  URL_USER_EDIT,
+} from '../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -35,7 +42,7 @@ export interface Props {
 
 /** default props for UserIdSelect component */
 export const defaultProps = {
-  accessToken: 'hunter 2',
+  accessToken: '',
   serviceClass: KeycloakService,
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   removeKeycloakUsersCreator: removeKeycloakUsers,
@@ -75,7 +82,7 @@ export const deleteUser = (props: Props, userId: string): void => {
     .delete()
     .then(() => {
       notification.success({
-        message: 'User deleted successfully',
+        message: `${USER_DELETED_SUCCESSFULLY}`,
         description: '',
       });
       serviceGet
@@ -88,14 +95,14 @@ export const deleteUser = (props: Props, userId: string): void => {
         })
         .catch((_: Error) => {
           notification.error({
-            message: 'An error occurred',
+            message: `${ERROR_OCCURED}`,
             description: '',
           });
         });
     })
     .catch((_: Error) => {
       notification.error({
-        message: 'An error occurred',
+        message: `${ERROR_OCCURED}`,
         description: '',
       });
     });
@@ -123,8 +130,8 @@ const Admin = (props: Props): JSX.Element => {
         .list()
         .then((res: KeycloakUser[]) => {
           if (isLoading) {
-            fetchKeycloakUsersCreator(res);
             setIsLoading(false);
+            fetchKeycloakUsersCreator(res);
           }
         })
         .catch((err) => {
@@ -135,6 +142,7 @@ const Admin = (props: Props): JSX.Element => {
         });
     }
   });
+
   if (isLoading) {
     return <Ripple />;
   }
@@ -174,7 +182,7 @@ const Admin = (props: Props): JSX.Element => {
     // eslint-disable-next-line react/display-name
     render: (_: string, record: KeycloakUser) => (
       <>
-        <Link to={`/user/edit/${record.id}`} key="actions">
+        <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
           {'Edit'}
         </Link>
         <span>&nbsp;</span>
@@ -187,7 +195,7 @@ const Admin = (props: Props): JSX.Element => {
           cancelText="No"
           onConfirm={() => deleteUser(props, record.id)}
         >
-          <Link to="#">{'Delete'}</Link>
+          <Link to="#">{DELETE}</Link>
         </Popconfirm>
       </>
     ),
@@ -216,7 +224,7 @@ const Admin = (props: Props): JSX.Element => {
             <Button
               type="primary"
               className="create-user"
-              onClick={() => history.push('/user/new')}
+              onClick={() => history.push(URL_USER_CREATE)}
             >
               Add User
             </Button>

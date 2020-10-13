@@ -13,14 +13,308 @@ exports[`src/components/UserForm creates object to send correctly for editing us
 />
 `;
 
-exports[`src/components/UserForm renders correctly: first name input 1`] = `
+exports[`src/components/UserForm renders correctly: Email 1`] = `
+Object {
+  "children": Array [
+    <Field
+      className="form-control"
+      id="email"
+      name="email"
+      type="text"
+    />,
+    <FormikConnect(ErrorMessageImpl)
+      className="form-text text-danger username-error"
+      component="small"
+      name="email"
+    />,
+  ],
+  "label": "Email",
+}
+`;
+
+exports[`src/components/UserForm renders correctly: First Name 1`] = `
+Object {
+  "children": <Field
+    className="form-control"
+    id="firstName"
+    name="firstName"
+    type="text"
+  />,
+  "label": "First Name",
+  "rules": Array [
+    Object {
+      "message": "Please input your First Name!",
+      "required": true,
+      "whitespace": true,
+    },
+  ],
+}
+`;
+
+exports[`src/components/UserForm renders correctly: Initial Values 1`] = `
+Object {
+  "access": Object {
+    "impersonate": false,
+    "manage": false,
+    "manageGroupMembership": false,
+    "mapRoles": false,
+    "view": false,
+  },
+  "createdTimestamp": undefined,
+  "disableableCredentialTypes": Array [],
+  "email": "",
+  "emailVerified": false,
+  "enabled": true,
+  "firstName": "",
+  "id": "",
+  "lastName": "",
+  "notBefore": 0,
+  "requiredActions": Array [],
+  "totp": false,
+  "username": "",
+}
+`;
+
+exports[`src/components/UserForm renders correctly: Last Name 1`] = `
+Object {
+  "children": Array [
+    <Field
+      className="form-control"
+      id="lastName"
+      name="lastName"
+      type="text"
+    />,
+    <FormikConnect(ErrorMessageImpl)
+      className="form-text text-danger name-error"
+      component="small"
+      name="lastName"
+    />,
+  ],
+  "label": "Last Name",
+  "rules": Array [
+    Object {
+      "message": "Please input your Last Name!",
+      "required": true,
+      "whitespace": true,
+    },
+  ],
+}
+`;
+
+exports[`src/components/UserForm renders correctly: Submit 1`] = `
+Object {
+  "children": Array [
+    <Button
+      block={false}
+      className="cancel-user"
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      onClick={[Function]}
+    >
+      Cancel
+    </Button>,
+    <Button
+      block={false}
+      className="create-user"
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Save User
+    </Button>,
+  ],
+  "wrapperCol": Object {
+    "lg": Object {
+      "offset": 6,
+      "span": 14,
+    },
+    "md": Object {
+      "offset": 8,
+      "span": 16,
+    },
+    "sm": Object {
+      "offset": 12,
+      "span": 24,
+    },
+    "xs": Object {
+      "offset": 0,
+      "span": 16,
+    },
+  },
+}
+`;
+
+exports[`src/components/UserForm renders correctly: User Actions 1`] = `
+Object {
+  "children": <Select
+    allowClear={true}
+    mode="multiple"
+    onChange={[Function]}
+    placeholder="Please select"
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+  >
+    <Option
+      value="CONFIGURE_TOTP"
+    >
+      Configure OTP
+    </Option>
+    <Option
+      value="UPDATE_PASSWORD"
+    >
+      Update Password
+    </Option>
+    <Option
+      value="UPDATE_PROFILE"
+    >
+      Update Profile
+    </Option>
+    <Option
+      value="VERIFY_EMAIL"
+    >
+      Verify Email
+    </Option>
+    <Option
+      value="update_user_locale"
+    >
+      Update User Locale
+    </Option>
+  </Select>,
+  "label": "Required User Actions",
+  "name": "requiredActions",
+}
+`;
+
+exports[`src/components/UserForm renders correctly: Username 1`] = `
+Object {
+  "children": Array [
+    <Field
+      className="form-control"
+      id="username"
+      name="username"
+      readOnly={false}
+      type="text"
+    />,
+    <FormikConnect(ErrorMessageImpl)
+      className="form-text text-danger username-error"
+      component="small"
+      name="username"
+    />,
+  ],
+  "label": "Username",
+}
+`;
+
+exports[`src/components/UserForm renders correctly: Validation Schema 1`] = `
+ObjectSchema {
+  "_blacklist": RefSet {
+    "list": Set {},
+    "refs": Map {},
+  },
+  "_conditions": Array [],
+  "_defaultDefault": [Function],
+  "_deps": Array [],
+  "_excludedEdges": Array [],
+  "_exclusive": Object {},
+  "_mutate": undefined,
+  "_nodes": Array [
+    "firstName",
+    "lastName",
+  ],
+  "_options": Object {
+    "abortEarly": true,
+    "recursive": true,
+  },
+  "_type": "object",
+  "_typeError": [Function],
+  "_whitelist": RefSet {
+    "list": Set {},
+    "refs": Map {},
+  },
+  "fields": Object {
+    "firstName": StringSchema {
+      "_blacklist": RefSet {
+        "list": Set {},
+        "refs": Map {},
+      },
+      "_conditions": Array [],
+      "_deps": Array [],
+      "_exclusive": Object {
+        "required": true,
+      },
+      "_mutate": undefined,
+      "_options": Object {
+        "abortEarly": true,
+        "recursive": true,
+      },
+      "_type": "string",
+      "_typeError": [Function],
+      "_whitelist": RefSet {
+        "list": Set {},
+        "refs": Map {},
+      },
+      "tests": Array [
+        [Function],
+      ],
+      "transforms": Array [
+        [Function],
+      ],
+      "type": "string",
+    },
+    "lastName": StringSchema {
+      "_blacklist": RefSet {
+        "list": Set {},
+        "refs": Map {},
+      },
+      "_conditions": Array [],
+      "_deps": Array [],
+      "_exclusive": Object {
+        "required": true,
+      },
+      "_mutate": undefined,
+      "_options": Object {
+        "abortEarly": true,
+        "recursive": true,
+      },
+      "_type": "string",
+      "_typeError": [Function],
+      "_whitelist": RefSet {
+        "list": Set {},
+        "refs": Map {},
+      },
+      "tests": Array [
+        [Function],
+      ],
+      "transforms": Array [
+        [Function],
+      ],
+      "type": "string",
+    },
+  },
+  "tests": Array [],
+  "transforms": Array [
+    [Function],
+  ],
+  "type": "object",
+}
+`;
+
+exports[`src/components/UserForm user is not edited if api is down: readonly username edit 1`] = `
 <input
   className="form-control"
-  id="firstName"
-  name="firstName"
+  id="username"
+  name="username"
   onBlur={[Function]}
   onChange={[Function]}
+  readOnly={true}
   type="text"
-  value=""
+  value="opensrp"
 />
 `;

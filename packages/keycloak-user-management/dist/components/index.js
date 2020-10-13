@@ -31,10 +31,12 @@ var _reactRedux = require("react-redux");
 
 var _reduxReducerRegistry = _interopRequireDefault(require("@onaio/redux-reducer-registry"));
 
-_reduxReducerRegistry.default.register(_store.reducerName, _store.reducer);
+var _constants = require("../constants");
+
+_reduxReducerRegistry["default"].register(_store.reducerName, _store.reducer);
 
 var defaultProps = {
-  accessToken: 'hunter 2',
+  accessToken: '',
   serviceClass: _keycloakService.KeycloakService,
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
   removeKeycloakUsersCreator: _store.removeKeycloakUsers,
@@ -49,24 +51,24 @@ var deleteUser = function deleteUser(props, userId) {
       accessToken = props.accessToken;
   var serviceDelete = new serviceClass(accessToken, "/users/".concat(userId), 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
   var serviceGet = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
-  serviceDelete.delete().then(function () {
+  serviceDelete["delete"]().then(function () {
     _antd.notification.success({
-      message: 'User deleted successfully',
+      message: "".concat(_constants.USER_DELETED_SUCCESSFULLY),
       description: ''
     });
 
     serviceGet.list().then(function (res) {
       removeKeycloakUsersCreator();
       fetchKeycloakUsersCreator(res);
-    }).catch(function (_) {
+    })["catch"](function (_) {
       _antd.notification.error({
-        message: 'An error occurred',
+        message: "".concat(_constants.ERROR_OCCURED),
         description: ''
       });
     });
-  }).catch(function (_) {
+  })["catch"](function (_) {
     _antd.notification.error({
-      message: 'An error occurred',
+      message: "".concat(_constants.ERROR_OCCURED),
       description: ''
     });
   });
@@ -76,17 +78,17 @@ exports.deleteUser = deleteUser;
 
 var Admin = function Admin(props) {
   var _React$useState = React.useState(),
-      _React$useState2 = (0, _slicedToArray2.default)(_React$useState, 2),
+      _React$useState2 = (0, _slicedToArray2["default"])(_React$useState, 2),
       filteredInfo = _React$useState2[0],
       setFilteredInfo = _React$useState2[1];
 
   var _React$useState3 = React.useState(),
-      _React$useState4 = (0, _slicedToArray2.default)(_React$useState3, 2),
+      _React$useState4 = (0, _slicedToArray2["default"])(_React$useState3, 2),
       sortedInfo = _React$useState4[0],
       setSortedInfo = _React$useState4[1];
 
   var _React$useState5 = React.useState(true),
-      _React$useState6 = (0, _slicedToArray2.default)(_React$useState5, 2),
+      _React$useState6 = (0, _slicedToArray2["default"])(_React$useState5, 2),
       isLoading = _React$useState6[0],
       setIsLoading = _React$useState6[1];
 
@@ -105,10 +107,10 @@ var Admin = function Admin(props) {
       var serve = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
       serve.list().then(function (res) {
         if (isLoading) {
-          fetchKeycloakUsersCreator(res);
           setIsLoading(false);
+          fetchKeycloakUsersCreator(res);
         }
-      }).catch(function (err) {
+      })["catch"](function (err) {
         _antd.notification.error({
           message: "".concat(err),
           description: ''
@@ -118,7 +120,7 @@ var Admin = function Admin(props) {
   });
 
   if (isLoading) {
-    return React.createElement(_Loading.default, null);
+    return React.createElement(_Loading["default"], null);
   }
 
   var headerItems = ['Username', 'Email', 'First Name', 'Last Name'];
@@ -155,7 +157,7 @@ var Admin = function Admin(props) {
     key: 'Actions',
     render: function render(_, record) {
       return React.createElement(React.Fragment, null, React.createElement(_reactRouterDom.Link, {
-        to: "/user/edit/".concat(record.id),
+        to: "".concat(_constants.USER_EDIT_URL, "/").concat(record.id),
         key: "actions"
       }, 'Edit'), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement(_antd.Popconfirm, {
         title: "Are you sure delete this user?",
@@ -166,7 +168,7 @@ var Admin = function Admin(props) {
         }
       }, React.createElement(_reactRouterDom.Link, {
         to: "#"
-      }, 'Delete')));
+      }, _constants.DELETE)));
     }
   });
   var tableData = keycloakUsers.map(function (user, index) {
@@ -181,7 +183,7 @@ var Admin = function Admin(props) {
   });
   return React.createElement(React.Fragment, null, React.createElement(_antd.Row, null, React.createElement(_antd.Col, {
     span: 12
-  }, React.createElement(_antd.Space, null, React.createElement(_HeaderBreadCrumb.default, {
+  }, React.createElement(_antd.Space, null, React.createElement(_HeaderBreadCrumb["default"], {
     isAdmin: true
   }), React.createElement(_antd.Divider, null))), React.createElement(_antd.Col, {
     span: 12,
@@ -198,7 +200,7 @@ var Admin = function Admin(props) {
     type: "primary",
     className: "create-user",
     onClick: function onClick() {
-      return _connectedReducerRegistry.history.push('/user/new');
+      return _connectedReducerRegistry.history.push(_constants.CREATE_NEW_USER);
     }
   }, "Add User")))), React.createElement(_antd.Row, null, React.createElement(_antd.Table, {
     columns: dataElements,

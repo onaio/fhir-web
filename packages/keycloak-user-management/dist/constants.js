@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 exports.CREATE_NEW_USER = exports.ADMIN_URL = exports.DELETE = exports.USER_EDIT_URL = exports.USER_DELETED_SUCCESSFULLY = exports.ERROR_OCCURED = void 0;
 var ERROR_OCCURED = 'An error occurred';
