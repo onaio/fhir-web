@@ -20,6 +20,7 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
+  URL_LOCATIONS_UNIT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -33,6 +34,7 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
+import LocationUnit from '../containers/pages/Location/LocationUnit';
 
 const { Content } = Layout;
 
@@ -92,6 +94,13 @@ const App: React.FC = () => {
               render={(props: any) => (
                 <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
+            />
+            <ConnectedPrivateRoute
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_LOCATIONS_UNIT}
+              component={LocationUnit}
             />
             <Route
               exact
