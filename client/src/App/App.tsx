@@ -24,7 +24,6 @@ import {
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
-import NotFound from '../components/NotFound';
 import '@opensrp/user-management/dist/index.css';
 import {
   ConnectedAdminView,
