@@ -5,6 +5,7 @@ module.exports = {
       'jest/globals': true,
     },
     extends: [
+      'react-app',
       'eslint:recommended',
       'plugin:jsdoc/recommended',
       'plugin:react/recommended',
