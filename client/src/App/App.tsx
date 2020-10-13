@@ -12,13 +12,13 @@ import { Layout } from 'antd';
 import { Switch, Route, Redirect } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
-import { WEBSITE_NAME, BACKEND_ACTIVE, DEFAULT_LANGUAGE, KEYCLOAK_API_BASE_URL } from '../configs/env';
 import {
-  REACT_CALLBACK_PATH,
-  URL_BACKEND_LOGIN,
-  URL_REACT_LOGIN,
-  URL_LOGOUT,
-} from '../constants';
+  WEBSITE_NAME,
+  BACKEND_ACTIVE,
+  DEFAULT_LANGUAGE,
+  KEYCLOAK_API_BASE_URL,
+} from '../configs/env';
+import { REACT_CALLBACK_PATH, URL_BACKEND_LOGIN, URL_REACT_LOGIN, URL_LOGOUT } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';

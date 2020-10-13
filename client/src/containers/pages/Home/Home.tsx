@@ -8,12 +8,14 @@ import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
 import { URL_ADMIN, URL_TEAMS } from '../../../constants';
+import { useTranslation } from 'react-i18next';
 
 export interface HomeProps {
   extraData: Dictionary;
 }
 
 const Home: React.FC<HomeProps> = (props: HomeProps) => {
+  const { t } = useTranslation();
   const { extraData } = props;
   const { roles } = extraData;
   return (
@@ -23,7 +25,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
       </Helmet>
       <Row justify="center" className="weclome-box">
         <Col span={6}>
-          <h3>Welcome to OpenSRP</h3>
+          <h3>{t('Welcome to OpenSRP')}</h3>
         </Col>
       </Row>
       <Row gutter={16} className="links-box">

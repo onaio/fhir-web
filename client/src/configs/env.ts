@@ -1,5 +1,4 @@
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'English';
-export type DEFAULT_LANGUAGE = typeof DEFAULT_LANGUAGE;
 
 export const WEBSITE_NAME = process.env.REACT_APP_WEBSITE_NAME || 'OpenSRP Web';
 
