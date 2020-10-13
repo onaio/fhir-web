@@ -50,8 +50,6 @@ export const EXPRESS_OAUTH_GET_STATE_URL =
 
 export const EXPRESS_OAUTH_LOGOUT_URL =
   process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
-export type EXPRESS_OAUTH_LOGOUT_URL = typeof EXPRESS_OAUTH_LOGOUT_URL;
 
 /** Sentry */
 export const SENTRY_DSN = process.env.REACT_APP_SENTRY_DSN || '';
-export type SENTRY_DSN = typeof SENTRY_DSN;
