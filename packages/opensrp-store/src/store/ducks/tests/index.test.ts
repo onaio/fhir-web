@@ -9,8 +9,8 @@ import {
   reducerName,
   removeKeycloakUsers,
   reducer as keycloakReducer,
-} from '@opensrp/store';
-import { store } from '@opensrp/store';
+} from '..';
+import { store } from '../../store';
 import { keycloakUsersArray } from './fixtures';
 
 reducerRegistry.register(reducerName, keycloakReducer);
@@ -19,7 +19,7 @@ const usersSelector = makeKeycloakUsersSelector();
 
 describe('reducers/keycloak.reducer- integration test', () => {
   beforeEach(() => {
-    store.dispatch(removeKeycloakUsers({}));
+    store.dispatch(removeKeycloakUsers());
   });
 
   it('fetchedPractitioners actions actually adds data to store', () => {
@@ -195,7 +195,6 @@ describe('reducers/keycloak.reducer- integration test', () => {
       },
     ]);
     expect(usersSelector(store.getState(), { id: [keycloakUsersArray[1].id] })).toHaveLength(1);
-    expect(usersSelector(store.getState(), { id: undefined })).toHaveLength(4);
     expect(usersSelector(store.getState(), { id: [] })).toHaveLength(0);
   });
 
@@ -204,7 +203,7 @@ describe('reducers/keycloak.reducer- integration test', () => {
     let numberOfUsers = getKeycloakUsersArray(store.getState()).length;
     expect(numberOfUsers).toEqual(4);
 
-    store.dispatch(removeKeycloakUsers({}));
+    store.dispatch(removeKeycloakUsers());
     numberOfUsers = getKeycloakUsersArray(store.getState()).length;
     expect(numberOfUsers).toEqual(0);
   });

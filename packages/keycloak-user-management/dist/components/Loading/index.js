@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.defaultProps = void 0;
+exports["default"] = exports.defaultProps = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -33,24 +33,24 @@ var Ripple = function Ripple(props) {
     borderStyle: borderStyle,
     borderWidth: borderWidth
   };
-  return _react.default.createElement("div", {
+  return _react["default"].createElement("div", {
     className: "lds-ripple-parent",
     style: {
       minHeight: minHeight
     }
-  }, _react.default.createElement("div", {
+  }, _react["default"].createElement("div", {
     className: "lds-ripple",
     style: {
       height: height,
       width: width
     }
-  }, _react.default.createElement("div", {
+  }, _react["default"].createElement("div", {
     style: innerDivStyle
-  }), _react.default.createElement("div", {
+  }), _react["default"].createElement("div", {
     style: innerDivStyle
   })));
 };
 
 Ripple.defaultProps = defaultProps;
 var _default = Ripple;
-exports.default = _default;
+exports["default"] = _default;
