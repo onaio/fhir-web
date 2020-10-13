@@ -13,3 +13,4 @@ export const URL_USER_EDIT = '/user/edit';
 export const URL_TEAMS = '/teams';
 export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';
+export const URL_LOCATIONS_UNIT = '/locations-unit';
