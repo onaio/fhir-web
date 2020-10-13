@@ -6,14 +6,7 @@ import { Menu, Layout, Avatar, Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
-import {
-  URL_BACKEND_LOGIN,
-  URL_LOGOUT,
-  URL_HOME,
-  URL_REACT_LOGIN,
-  URL_ADMIN,
-  URL_USER_EDIT,
-} from '../../../constants';
+import { URL_BACKEND_LOGIN, URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import {
   SearchOutlined,

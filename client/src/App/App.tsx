@@ -20,6 +20,7 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
+  URL_HOME,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -60,7 +61,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={HOME_URL}
+              path={URL_HOME}
               component={ConnectedHomeComponent}
             />
             <ConnectedPrivateRoute
@@ -115,7 +116,7 @@ const App: React.FC = () => {
                 return (
                   <ConnectedOauthCallback
                     SuccessfulLoginComponent={() => {
-                      return <Redirect to={HOME_URL} />;
+                      return <Redirect to={URL_HOME} />;
                     }}
                     LoadingComponent={Loading}
                     providers={providers}
