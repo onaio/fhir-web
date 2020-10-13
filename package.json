@@ -1,54 +1,17 @@
 {
-  "name": "web",
+  "name": "opensrp-web",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.30",
-    "@fortawesome/free-brands-svg-icons": "^5.14.0",
-    "@fortawesome/free-regular-svg-icons": "^5.14.0",
-    "@fortawesome/free-solid-svg-icons": "^5.14.0",
-    "@fortawesome/react-fontawesome": "^0.1.11",
-    "@onaio/connected-private-route": "^0.0.11",
-    "@onaio/connected-reducer-registry": "^0.0.3",
-    "@onaio/gatekeeper": "^0.1.0",
-    "@onaio/loaders": "^0.0.1",
-    "@onaio/redux-reducer-registry": "^0.0.9",
-    "@onaio/session-reducer": "^0.0.11",
-    "@onaio/utils": "^0.0.1",
-    "@opensrp/server-logout": "^0.0.1",
-    "@opensrp/server-service": "^0.0.4",
-    "@types/antd": "^1.0.0",
-    "@types/lodash": "^4.14.161",
-    "antd": "^4.6.3",
-    "bootstrap": "^4.5.2",
-    "client-oauth2": "^4.3.3",
-    "connected-react-router": "^6.8.0",
-    "flush-promises": "^1.0.2",
-    "i18next": "^19.7.0",
-    "lodash": "^4.17.20",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-helmet": "^6.1.0",
-    "react-i18next": "^11.7.3",
-    "react-redux": "^7.2.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
-    "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "seamless-immutable": "^7.1.4"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
-    "eject": "react-scripts eject",
-    "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
-    "lint-snap": "eslint 'src/**/*.snap'",
-    "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
+    "lint-snap": "eslint '{packages,client}/**/*.snap'"
   },
-  "tsd": {
-    "directory": "src/test-d"
+  "jest": {
+    "setupFiles": [
+      "./setupTests.js"
+    ]
   },
   "husky": {
     "hooks": {
@@ -57,11 +20,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint src/**/*.{ts,tsx} --fix --max-warnings 0",
+      "eslint --fix --max-warnings 0",
       "git add"
     ],
     "*.{js,jsx}": [
-      "eslint src/**/*.{ts,tsx} --fix --max-warnings 0",
+      "eslint --fix --max-warnings 0",
       "git add"
     ],
     "*.{json,js,jsx,ts,tsx,css,scss,md}": [
@@ -72,45 +35,23 @@
       "eslint"
     ]
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}",
-      "!src/index.tsx",
-      "!src/serviceWorker.ts",
-      "!**/tests/**",
-      "!src/configs/**"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 75,
-        "functions": 75,
-        "lines": 75,
-        "statements": 75
-      }
-    }
-  },
   "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@onaio/connected-private-route": "^0.0.11",
+    "@onaio/connected-reducer-registry": "^0.0.3",
+    "@opensrp/server-logout": "^0.0.1",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^9.3.2",
+    "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^7.1.2",
     "@types/bootstrap": "^4.5.0",
-    "@types/enzyme": "^3.10.5",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/enzyme": "^3.10.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/enzyme-to-json": "^1.5.3",
     "@types/jest": "^26.0.13",
     "@types/node": "^14.6.4",
@@ -127,13 +68,15 @@
     "@typescript-eslint/parser": "^4.1.0",
     "babel-eslint": "^10.1.0",
     "coveralls": "^3.1.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.4",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.5.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-react": "^1.1.7",
+    "eslint-config-react-app": "^5.2.1",
     "eslint-config-typestrict": "^1.0.0",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.0.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
@@ -141,13 +84,29 @@
     "husky": "^4.2.5",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "jest-fetch-mock": "^3.0.3",
+    "jest-haste-map": "^26.3.0",
+    "jest-resolve": "^26.4.0",
+    "lerna": "^3.22.1",
     "lint-staged": "^10.3.0",
     "prettier": "^2.1.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-helmet": "^6.1.0",
+    "react-redux": "^7.2.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "redux": "^4.0.5",
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
+    "redux-thunk": "^2.3.0",
     "typescript": "~3.7.2"
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"
-  }
+  },
+  "workspaces": [
+    "client/*",
+    "packages/*"
+  ]
 }
