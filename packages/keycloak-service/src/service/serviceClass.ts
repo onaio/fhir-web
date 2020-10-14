@@ -147,7 +147,7 @@ export class KeycloakAPIService {
    * @param {Promise} data - the data to be posted
    * @param {params} params - the url params object
    * @param {HTTPMethod} method - the HTTP method
-   * @returns {any} the object returned by API
+   * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async create<T>(
@@ -180,7 +180,7 @@ export class KeycloakAPIService {
    * @param {string|number} id - the identifier of the object
    * @param {params} params - the url params object
    * @param {HTTPMethod} method - the HTTP method
-   * @returns {any} the object returned by API
+   * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
@@ -208,7 +208,7 @@ export class KeycloakAPIService {
    * @param {Promise} data - the data to be posted
    * @param {params} params - the url params object
    * @param {HTTPMethod} method - the HTTP method
-   * @returns {any} the object returned by API
+   * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async update<T>(
@@ -261,7 +261,7 @@ export class KeycloakAPIService {
    *
    * @param {params} params - the url params object
    * @param {HTTPMethod} method - the HTTP method
-   * @returns {any} the object returned by API
+   * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async delete(params: paramsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {
