@@ -239,7 +239,7 @@ export class KeycloakAPIService {
    *
    * @param {params} params - the url params object
    * @param {HTTPMethod} method - the HTTP method
-   * @returns {any} list of objects returned by API
+   * @returns {Promise<any>} list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
