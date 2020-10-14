@@ -1,4 +1,5 @@
 import { KeycloakUser } from '@opensrp/store';
+/* eslint-disable @typescript-eslint/camelcase */
 
 export const keycloakUsersArray: KeycloakUser[] = [
   {
