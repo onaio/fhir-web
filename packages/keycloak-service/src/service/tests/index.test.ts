@@ -3,11 +3,11 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { getDefaultHeaders, getFetchOptions } from '../../index';
 import fetch from 'jest-fetch-mock';
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { getFilterParams, KeycloakService } from '../serviceClass';
 import { keycloakUser, OpenSRPAPIResponse } from './fixtures';
-import { HTTPError } from '../errors';
+import { HTTPError, throwHTTPError, throwNetworkError } from '../errors';
 
-describe('services/ducks/keycloak', () => {
+describe('services/keycloak', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     fetch.resetMocks();
@@ -34,6 +34,13 @@ describe('services/ducks/keycloak', () => {
     };
     const signal = new AbortController().signal;
     expect(getFetchOptions(signal, 'hunter2', 'POST')).toEqual({ ...output });
+  });
+
+  it('getFilterParams works', async () => {
+    expect(getFilterParams({})).toEqual('');
+    expect(getFilterParams({ foo: 'bar', this: 1337, it: 'test' })).toEqual(
+      'foo:bar,this:1337,it:test'
+    );
   });
 
   it('KeycloakService constructor works', async () => {
@@ -303,5 +310,39 @@ describe('services/ducks/keycloak', () => {
     expect(result).toEqual(expect.any(Object));
     mockReadFile.mockRejectedValue('Error!');
     expect(result).toEqual(expect.any(Object));
+  });
+});
+
+describe('src/errors', () => {
+  it('does not create a network error', () => {
+    /// increase test coverage.
+    try {
+      const error = new SyntaxError();
+      throwNetworkError(error);
+    } catch (err) {
+      expect(err.name).toEqual('SyntaxError');
+    }
+  });
+
+  it('creates a network error', () => {
+    /// increase test coverage.
+    try {
+      const error = new TypeError();
+      throwNetworkError(error);
+    } catch (err) {
+      expect(err.name).toEqual('NetworkError');
+    }
+  });
+
+  it('throws HTTPErrors', async () => {
+    try {
+      const sampleResponse = new Response(JSON.stringify({}), {
+        status: 500,
+        statusText: 'Nothing',
+      });
+      await throwHTTPError(sampleResponse);
+    } catch (err) {
+      expect(err.name).toEqual('HTTPError');
+    }
   });
 });

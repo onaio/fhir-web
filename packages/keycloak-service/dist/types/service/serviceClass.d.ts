@@ -12,6 +12,11 @@ declare type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
  * @return {IncomingHttpHeaders} - the headers
  */
 export declare function getDefaultHeaders(accessToken: string, accept?: string, authorizationType?: string, contentType?: string): IncomingHttpHeaders;
+/** converts filter params object to string
+ * @param {URLParams} obj - the object representing filter params
+ * @returns {string} filter params as a string
+ */
+export declare function getFilterParams(obj: URLParams): string;
 /** get payload for fetch
  * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
  * @param {HTTPMethod} method - the HTTP method
@@ -66,11 +71,6 @@ export declare class KeycloakAPIService {
      * @returns {string} the final url
      */
     static getURL(generalUrl: string, params: paramsType): string;
-    /** converts filter params object to string
-     * @param {URLParams} obj - the object representing filter params
-     * @returns {string} filter params as a string
-     */
-    static getFilterParams(obj: URLParams): string;
     /** create method
      * Send a POST request to the general endpoint containing the new object data
      * Successful requests will result in a HTTP status 201 response with no body

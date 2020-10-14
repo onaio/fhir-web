@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
@@ -11,16 +12,16 @@ import { Layout } from 'antd';
 import { Switch, Route, Redirect } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
-import { WEBSITE_NAME, BACKEND_ACTIVE } from '../configs/env';
+import { WEBSITE_NAME, BACKEND_ACTIVE, KEYCLOAK_API_BASE_URL } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
-  BACKEND_CALLBACK_URL,
-  BACKEND_LOGIN_URL,
+  URL_BACKEND_CALLBACK,
+  URL_BACKEND_LOGIN,
   BACKEND_CALLBACK_PATH,
-  REACT_LOGIN_URL,
-  LOGOUT_URL,
+  URL_REACT_LOGIN,
+  URL_LOGOUT,
+  URL_HOME,
   LOCATION_UNIT_GROUP,
-  HOME_URL
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -42,10 +43,10 @@ import ConnectedLocationUnitGroupComponent from '../containers/pages/locations/L
 const { Content } = Layout;
 
 const App: React.FC = () => {
-  const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : REACT_LOGIN_URL;
+  const APP_CALLBACK_URL = BACKEND_ACTIVE ? URL_BACKEND_CALLBACK : URL_REACT_LOGIN;
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   return (
@@ -62,7 +63,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={HOME_URL}
+              path={URL_HOME}
               component={ConnectedHomeComponent}
             />
             <ConnectedPrivateRoute
@@ -77,21 +78,27 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path="/user/edit/:userId"
-              component={ConnectedCreateEditUsers}
+              render={(props: any) => (
+                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+              )}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path="/user/new"
-              component={ConnectedCreateEditUsers}
+              render={(props: any) => (
+                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+              )}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path="/user/credentials/:userId"
-              component={ConnectedUserCredentials}
+              render={(props: any) => (
+                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+              )}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
@@ -118,7 +125,7 @@ const App: React.FC = () => {
                 return (
                   <ConnectedOauthCallback
                     SuccessfulLoginComponent={() => {
-                      return <Redirect to={HOME_URL} />;
+                      return <Redirect to={URL_HOME} />;
                     }}
                     LoadingComponent={Loading}
                     providers={providers}
@@ -133,7 +140,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={LOGOUT_URL}
+              path={URL_LOGOUT}
               // tslint:disable-next-line: jsx-no-lambda
               component={() => {
                 return <CustomLogout />;

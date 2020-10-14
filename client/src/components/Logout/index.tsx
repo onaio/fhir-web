@@ -1,6 +1,6 @@
 import { logout } from '@opensrp/server-logout';
 import React from 'react';
-import { useHistory } from 'react-router';
+import { history } from '@onaio/connected-reducer-registry';
 import {
   DOMAIN_NAME,
   KEYCLOAK_LOGOUT_URL,
@@ -12,13 +12,12 @@ import { getFetchOptions } from '@opensrp/keycloak-service';
 import Ripple from '../page/Loading';
 import { notification } from 'antd';
 import { getAccessToken } from '@onaio/session-reducer';
-import store from '../../store';
+import { store } from '@opensrp/store';
 
 /** HOC function that calls function that logs out the user from both opensrp
  * and keycloak
  */
 export const CustomLogout: React.FC = (): JSX.Element => {
-  const history = useHistory();
   const payload = getFetchOptions(
     new AbortController().signal,
     getAccessToken(store.getState()) as string,

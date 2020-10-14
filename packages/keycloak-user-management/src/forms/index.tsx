@@ -6,12 +6,14 @@ import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Dictionary } from '@onaio/utils/dist/types/types';
+import { URL_ADMIN, URL_USERS, URL_REQUIRED_USER_ACTIONS } from '../constants';
 
 /** props for editing a user view */
 export interface UserFormProps {
   accessToken: string;
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
+  keycloakBaseURL: string;
 }
 
 /** interface user action */
@@ -70,7 +72,7 @@ export const handleUserActionsChange = (
 };
 
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
-  const { initialValues, serviceClass, accessToken } = props;
+  const { initialValues, serviceClass, accessToken, keycloakBaseURL } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const isEditMode = initialValues.id !== '';
@@ -95,11 +97,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { Option } = Select;
 
   React.useEffect(() => {
-    const serve = new serviceClass(
-      accessToken,
-      `/authentication/required-actions/`,
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
-    );
+    const serve = new serviceClass(accessToken, URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
     serve
       .list()
       .then((response: UserAction[]) => {
@@ -113,7 +111,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           description: '',
         });
       });
-  });
+  }, [accessToken, keycloakBaseURL, serviceClass]);
 
   return (
     <div className="form-container">
@@ -125,8 +123,8 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           if (isEditMode) {
             const serve = new serviceClass(
               accessToken,
-              `/users/${initialValues.id}`,
-              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+              `${URL_USERS}/${initialValues.id}`,
+              keycloakBaseURL
             );
             serve
               .update({
@@ -149,11 +147,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 setSubmitting(false);
               });
           } else {
-            const serve = new serviceClass(
-              accessToken,
-              '/users',
-              'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
-            );
+            const serve = new serviceClass(accessToken, '/users', keycloakBaseURL);
             serve
               .create(values)
               .then(() => {
@@ -176,16 +170,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       >
         {({ errors, isSubmitting, handleSubmit }) => (
           <Form initialValues={initialValues} {...layout} onSubmitCapture={handleSubmit}>
-            <Form.Item label={'User Id'}>
-              <Field
-                readOnly={true}
-                type="text"
-                name="id"
-                id="id"
-                // disabled={disabledFields.includes('name')}
-                className={errors.id ? `form-control is-invalid` : `form-control`}
-              />
-            </Form.Item>
             <Form.Item
               label={'First Name'}
               rules={[
@@ -196,7 +180,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 type="text"
                 name="firstName"
                 id="firstName"
-                // disabled={disabledFields.includes('name')}
                 className={errors.firstName ? `form-control is-invalid` : `form-control`}
               />
             </Form.Item>
@@ -210,7 +193,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 type="text"
                 name="lastName"
                 id="lastName"
-                // disabled={disabledFields.includes('name')}
                 className={errors.lastName ? `form-control is-invalid` : `form-control`}
               />
               <ErrorMessage
@@ -226,7 +208,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 type="text"
                 name="username"
                 id="username"
-                //   disabled={disabledFields.includes('username')}
                 className={errors.username ? `form-control is-invalid` : `form-control`}
               />
               <ErrorMessage
@@ -258,8 +239,8 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 }
                 style={{ width: '100%' }}
               >
-                {userActionOptions.map((option: UserAction) => (
-                  <Option key={option.alias} value={option.alias}>
+                {userActionOptions.map((option: UserAction, index: number) => (
+                  <Option key={`${index}`} value={option.alias}>
                     {option.name}
                   </Option>
                 ))}
@@ -268,7 +249,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             <Form.Item {...tailLayout}>
               <Button
                 htmlType="submit"
-                onClick={() => history.push('/admin')}
+                onClick={() => history.push(URL_ADMIN)}
                 className="cancel-user"
                 disabled={isSubmitting || Object.keys(errors).length > 0}
               >

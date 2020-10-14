@@ -8,7 +8,7 @@ import React from 'react';
 import { CustomLogout } from '..';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import store from '../../../store';
+import { store } from '@opensrp/store';
 
 describe('components/Logout', () => {
   it('renders without crashing', () => {

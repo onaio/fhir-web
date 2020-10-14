@@ -6,7 +6,7 @@ import { Menu, Layout, Avatar, Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import './Header.css';
 import { BACKEND_ACTIVE } from '../../../configs/env';
-import { BACKEND_LOGIN_URL, LOGOUT_URL, REACT_LOGIN_URL } from '../../../constants';
+import { URL_BACKEND_LOGIN, URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import {
   SearchOutlined,
@@ -38,7 +38,7 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id } = extraData;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
+  const URL_APP_LOGIN = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
   return (
     <Layout.Header className="txt-white align-items-center justify-content-end px-1">
       <Button
@@ -63,11 +63,11 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         <Dropdown
           overlay={
             <Menu>
-              <Menu.Item key={LOGOUT_URL}>
-                <Link to={LOGOUT_URL}>Logout</Link>
+              <Menu.Item key={URL_LOGOUT}>
+                <Link to={URL_LOGOUT}>Logout</Link>
               </Menu.Item>
-              <Menu.Item key={`/user/edit/${user_id}`}>
-                <Link to={`/user/edit/${user_id}`}>Manage account</Link>
+              <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
+                <Link to={`${URL_USER_EDIT}/${user_id}`}>Manage account</Link>
               </Menu.Item>
             </Menu>
           }
@@ -88,7 +88,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         </Dropdown>
       ) : (
         <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
-          <Link to={APP_LOGIN_URL}>Login</Link>
+          <Link to={URL_APP_LOGIN}>Login</Link>
         </Button>
       )}
       <Button
