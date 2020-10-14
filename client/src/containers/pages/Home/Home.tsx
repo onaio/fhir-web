@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
-import { URL_ADMIN, URL_TEAMS } from '../../../constants';
+import { URL_ADMIN, URL_LOCATION_GROUP_ADD, URL_TEAMS } from '../../../constants';
 
 export interface HomeProps {
   extraData: Dictionary;
@@ -40,6 +40,13 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           <Link to={URL_TEAMS} className="admin-link">
             <Button color="outline" className="btn-links">
               Teams
+            </Button>
+          </Link>
+        </Col>
+        <Col className="gutter-row" span={12}>
+          <Link to={URL_LOCATION_GROUP_ADD} className="admin-link">
+            <Button color="outline" className="btn-links">
+              Location Groups Addition Page
             </Button>
           </Link>
         </Col>

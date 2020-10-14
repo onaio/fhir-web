@@ -20,6 +20,7 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
+  URL_LOCATION_GROUP_ADD,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -33,6 +34,7 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
+import LocationUnitGroupAdd from '../containers/pages/locations/LocationGroupAddition';
 
 const { Content } = Layout;
 
@@ -65,6 +67,13 @@ const App: React.FC = () => {
               exact
               path="/admin"
               component={ConnectedAdminView}
+            />
+            <ConnectedPrivateRoute
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_LOCATION_GROUP_ADD}
+              component={LocationUnitGroupAdd}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}

@@ -1,4 +1,5 @@
 @import '~antd/dist/antd.css';
+@import '~bootstrap/dist/css/bootstrap.css';
 
 h2.page-title {
   font-weight: 200;
@@ -96,5 +97,6 @@ fieldset[disabled] .gatekeeper-btn.active {
 }
 
 .ant-layout-content {
-  margin-top: 20px;
+  background-color: #f8f9fa;
+  padding-top: 20px;
 }
