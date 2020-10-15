@@ -15,7 +15,9 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 
 /** HOC function that calls function that logs out the user from both opensrp
- * and keycloak
+ * and keycloak.
+ *
+ * @returns {Function} returns Ripple component
  */
 export const CustomLogout: React.FC = (): JSX.Element => {
   const payload = getFetchOptions(
