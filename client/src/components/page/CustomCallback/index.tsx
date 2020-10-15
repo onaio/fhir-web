@@ -10,8 +10,9 @@ import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
 import Loading from '../Loading';
 /**
- * antd notification popup
- * @param user - user details object
+ * antd notification popup.
+ *
+ * @param {user} user details object
  */
 export const openNotification = (user: User): void => {
   notification.success({
@@ -21,7 +22,9 @@ export const openNotification = (user: User): void => {
 };
 
 /** checks if the value of next in searchParam is blacklisted
+ *
  * @param {RouteComponentProps} props - the props should contain the routing state.
+ * @returns {boolean} return the response
  */
 export const nextIsValid = (props: RouteComponentProps): boolean => {
   let response = true;
