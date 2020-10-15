@@ -10,12 +10,14 @@ import {
 } from '../../configs/env';
 import { getFetchOptions } from '@opensrp/keycloak-service';
 import Ripple from '../page/Loading';
-import { notification } from 'antd';
 import { getAccessToken } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
+import { sendErrorNotification } from '../../utils/Notification/Notifications';
 
 /** HOC function that calls function that logs out the user from both opensrp
- * and keycloak
+ * and keycloak.
+ *
+ * @returns {Function} returns Ripple component
  */
 export const CustomLogout: React.FC = (): JSX.Element => {
   const payload = getFetchOptions(
@@ -25,10 +27,7 @@ export const CustomLogout: React.FC = (): JSX.Element => {
   );
   const redirectUri = BACKEND_ACTIVE ? EXPRESS_OAUTH_LOGOUT_URL : DOMAIN_NAME;
   logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((error) => {
-    notification.error({
-      message: error,
-      description: '',
-    });
+    sendErrorNotification(error);
     history.push('/');
   });
   return <Ripple />;

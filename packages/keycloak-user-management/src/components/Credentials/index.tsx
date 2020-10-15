@@ -53,7 +53,12 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
   serviceClass: KeycloakService,
 };
 
-/** Handle form submission */
+/**
+ * Handle form submission
+ *
+ * @param {object} values the form fields
+ * @param {object} props the headers
+ */
 export const submitForm = (
   values: UserCredentialsFormFields,
   props: CredentialsPropsTypes
