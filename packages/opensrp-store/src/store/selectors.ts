@@ -4,7 +4,7 @@ import { Dictionary } from '@onaio/utils';
 
 /** get API Token from the Redux store
  *
- * @param {Partial<Store>} state - the redux store
+ * @param {any} state - the redux store
  */
 interface StoreState {
   session: {
@@ -12,7 +12,7 @@ interface StoreState {
   };
 }
 /**
- * @param {Partial<Store>} state - the redux store
+ * @param {any} state - the redux store
  * @returns {Object} - the states
  */
 export function getApiToken(state: Partial<Store>): string {
@@ -22,7 +22,7 @@ export function getApiToken(state: Partial<Store>): string {
 
 /** get Access Token from the Redux store
  *
- * @param {Partial<Store>} state - the redux store
+ * @param {any} state - the redux store
  * @returns {Object} - the states
  */
 export function getAccessToken(state: Partial<Store>): string | null {
@@ -35,7 +35,7 @@ export function getAccessToken(state: Partial<Store>): string | null {
 
 /** get the oAuth2 provider state parameter from the Redux store
  *
- * @param {Partial<Store>} state - the redux store
+ * @param {any} state - the redux store
  * @returns {Object} - the states
  */
 export function getOauthProviderState(state: Partial<Store>): string | null {

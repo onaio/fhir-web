@@ -62,7 +62,7 @@ export type KeycloakUsersActionTypes =
 /**
  * Fetch users action creator
  *
- * @param {KeycloakUser} usersList - keycloak users
+ * @param {Array} usersList - keycloak users
  * @returns {object} - the dispatcher to remove the user
  */
 export const fetchKeycloakUsers = (usersList: KeycloakUser[] = []): FetchKeycloakUsersAction => {
@@ -102,8 +102,8 @@ export const initialState: ImmutableKeycloakUsersState = SeamlessImmutable({
 /**
  * the users reducer function
  *
- * @param {ImmutableKeycloakUsersState} state - keycloak users states
- * @param {KeycloakUsersActionTypes} action - keycloak users actions
+ * @param {object} state - keycloak users states
+ * @param {object} action - keycloak users actions
  * @returns {object} - the updated states
  */
 export function reducer(
@@ -139,8 +139,8 @@ export interface KeycloakUsersFilters {
 /**
  * Gets id from KeycloakUsersFilters
  *
- * @param {Partial<Store>} _ - the redux store
- * @param {KeycloakUsersFilters} props - the keycloak users filters object
+ * @param {any} _ - the redux store
+ * @param {Array} props - the keycloak users filters object
  * @returns {string} - the keycloak user id
  */
 export const getUserIds = (_: Partial<Store>, props: KeycloakUsersFilters): string[] => props.id;
@@ -148,8 +148,8 @@ export const getUserIds = (_: Partial<Store>, props: KeycloakUsersFilters): stri
 /**
  * Gets name from KeycloakUsersFilters
  *
- * @param {Partial<Store>} _ - the redux store
- * @param {KeycloakUsersFilters} props - the users filters object
+ * @param {any} _ - the redux store
+ * @param {object} props - the users filters object
  * @returns {string} - the keycloak user name
  */
 export const getUsername = (_: Partial<Store>, props: KeycloakUsersFilters): string | undefined =>
@@ -157,7 +157,7 @@ export const getUsername = (_: Partial<Store>, props: KeycloakUsersFilters): str
 
 /** returns all users in the store as values whose keys are their respective ids
  *
- * @param {Partial<Store>} state - the redux store
+ * @param {any} state - the redux store
  * @returns {object} - users object as values, respective ids as keys
  */
 export function getKeycloakUsersById(state: Partial<Store>): { [key: string]: KeycloakUser } {
@@ -166,7 +166,7 @@ export function getKeycloakUsersById(state: Partial<Store>): { [key: string]: Ke
 
 /** gets keycloak users as an array of user objects
  *
- * @param {Partial<Store>} state - the redux store
+ * @param {any} state - the redux store
  * @returns {Array} - an array of users objs
  */
 export function getKeycloakUsersArray(state: Partial<Store>): KeycloakUser[] {
