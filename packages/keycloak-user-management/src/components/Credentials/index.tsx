@@ -56,8 +56,8 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
 /**
  * Handle form submission
  *
- * @param {UserCredentialsFormFields} values the form fields
- * @param {CredentialsPropsTypes} props the headers
+ * @param {object} values the form fields
+ * @param {object} props the headers
  */
 export const submitForm = (
   values: UserCredentialsFormFields,

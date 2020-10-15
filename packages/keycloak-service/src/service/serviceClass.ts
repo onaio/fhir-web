@@ -32,7 +32,7 @@ export function getDefaultHeaders(
 
 /** converts filter params object to string
  *
- * @param {URLParams} obj - the object representing filter params
+ * @param {object} obj - the object representing filter params
  * @returns {string} filter params as a string
  */
 export function getFilterParams(obj: URLParams): string {
@@ -44,9 +44,9 @@ export function getFilterParams(obj: URLParams): string {
 /**
  * get payload for fetch
  *
- * @param {AbortSignal} _ - signal object that allows you to communicate with a DOM request
+ * @param {object} _ - signal object that allows you to communicate with a DOM request
  * @param {string} accessToken - the access token
- * @param {HTTPMethod} method - the HTTP method
+ * @param {string} method - the HTTP method
  * @returns {Object} the payload
  */
 export function getFetchOptions(
@@ -108,7 +108,7 @@ export class KeycloakAPIService {
    * @param {string} accessToken - the access token
    * @param {string} baseURL - the base Keycloak API URL
    * @param {string} endpoint - the Keycloak endpoint
-   * @param {getFetchOptions} getPayload - a function to get the payload
+   * @param {object} getPayload - a function to get the payload
    * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
    */
   constructor(
@@ -130,7 +130,7 @@ export class KeycloakAPIService {
    * appends any query params to the url as a querystring
    *
    * @param {string} generalUrl - the url
-   * @param {paramsType} params - the url params object
+   * @param {object} params - the url params object
    * @returns {string} the final url
    */
   public static getURL(generalUrl: string, params: paramsType): string {
@@ -145,8 +145,8 @@ export class KeycloakAPIService {
    * Successful requests will result in a HTTP status 201 response with no body
    *
    * @param {Promise} data - the data to be posted
-   * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
+   * @param {object} params - the url params object
+   * @param {string} method - the HTTP method
    * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -179,7 +179,7 @@ export class KeycloakAPIService {
    *
    * @param {string|number} id - the identifier of the object
    * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
+   * @param {string} method - the HTTP method
    * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -206,8 +206,8 @@ export class KeycloakAPIService {
    * Successful requests will result in a HTTP status 200/201 response with no body
    *
    * @param {Promise} data - the data to be posted
-   * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
+   * @param {object} params - the url params object
+   * @param {string} method - the HTTP method
    * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -237,8 +237,8 @@ export class KeycloakAPIService {
   /** list method
    * Send a GET request to the general API endpoint
    *
-   * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
+   * @param {object} params - the url params object
+   * @param {string} method - the HTTP method
    * @returns {Promise<any>} list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -259,8 +259,8 @@ export class KeycloakAPIService {
    * Send a DELETE request to the general endpoint
    * Successful requests will result in a HTTP status 204
    *
-   * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
+   * @param {object} params - the url params object
+   * @param {string} method - the HTTP method
    * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

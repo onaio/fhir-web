@@ -32,8 +32,8 @@ const initialState: MessageState = {
 
 /**
  *
- * @param {initialState} state The initial value
- * @param {MessageActionTypes} action - should have type or payload
+ * @param {object} state The initial value
+ * @param {object} action - should have type or payload
  * @returns {Object} object be used to initialize a Redux store
  */
 export default function reducer(state = initialState, action: MessageActionTypes): MessageState {
@@ -71,7 +71,7 @@ export const removeMessagesAction: ActionCreator<RemoveMessagesAction> = () => {
 
 /** select all messages
  *
- * @param {Partial<Store>} state -
+ * @param {any} state -
  * @returns {Object} to dispatch the action
  */
 export function selectAllMessages(state: Partial<Store>): Message[] {
@@ -80,7 +80,7 @@ export function selectAllMessages(state: Partial<Store>): Message[] {
 
 /** select one message
  *
- * @param {Partial<Store>} state -
+ * @param {any} state -
  * @returns {Object} to dispatch the action
  */
 export function selectOneMessage(state: Partial<Store>): Message | null {

@@ -23,7 +23,7 @@ export const defaultProps: Partial<RippleProps> = {
 /**
  * Loading component that displays a nice ripple
  *
- * @param {RippleProps} props - the ripple styles
+ * @param {object} props - the ripple styles
  * @returns {Element} - display the loader
  */
 const Ripple: React.FC<RippleProps> = (props: RippleProps) => {
