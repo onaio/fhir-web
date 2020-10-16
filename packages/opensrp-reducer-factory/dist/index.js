@@ -1,50 +1,23 @@
-'use strict';
+"use strict";
 
-var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 exports.fetchActionCreatorFactory = fetchActionCreatorFactory;
 exports.setTotalRecordsFactory = setTotalRecordsFactory;
 exports.getTotalRecordsFactory = exports.getItemByIdFactory = exports.getItemsArrayFactory = exports.getItemsByIdFactory = exports.reducerFactory = exports.removeActionCreatorFactory = exports.SET_TOTAL_RECORDS = exports.REMOVE = exports.FETCHED = void 0;
 
-var _defineProperty2 = _interopRequireDefault(require('@babel/runtime/helpers/defineProperty'));
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _lodash = require('lodash');
+var _lodash = require("lodash");
 
-var _seamlessImmutable = _interopRequireDefault(require('seamless-immutable'));
+var _seamlessImmutable = _interopRequireDefault(require("seamless-immutable"));
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly)
-      symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-    keys.push.apply(keys, symbols);
-  }
-  return keys;
-}
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        (0, _defineProperty2['default'])(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-  return target;
-}
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var FETCHED = 'opensrp/reducer/objects/FETCHED';
 exports.FETCHED = FETCHED;
@@ -61,7 +34,7 @@ function fetchActionCreatorFactory(reducerName, idField) {
         return object[idField];
       }),
       type: FETCHED,
-      reducerName: reducerName,
+      reducerName: reducerName
     };
   };
 }
@@ -71,7 +44,7 @@ var removeActionCreatorFactory = function removeActionCreatorFactory(reducerName
     return {
       objectsById: {},
       type: REMOVE,
-      reducerName: reducerName,
+      reducerName: reducerName
     };
   };
 };
@@ -83,17 +56,20 @@ function setTotalRecordsFactory(reducerName) {
     return {
       totalRecords: totalCount,
       type: SET_TOTAL_RECORDS,
-      reducerName: reducerName,
+      reducerName: reducerName
     };
   };
 }
 
-var initialState = (0, _seamlessImmutable['default'])({
+var initialState = (0, _seamlessImmutable["default"])({
   objectsById: {},
-  totalRecords: 0,
+  totalRecords: 0
 });
 
 var reducerFactory = function reducerFactory(reducerName) {
+  var fetchedActionType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : FETCHED;
+  var removeActionType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : REMOVE;
+  var setTotalRecordsActionType = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : SET_TOTAL_RECORDS;
   return function reducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
     var action = arguments.length > 1 ? arguments[1] : undefined;
@@ -103,39 +79,25 @@ var reducerFactory = function reducerFactory(reducerName) {
       return state;
     }
 
+    exports.FETCHED = FETCHED = fetchedActionType;
+    exports.REMOVE = REMOVE = removeActionType;
+    exports.SET_TOTAL_RECORDS = SET_TOTAL_RECORDS = setTotalRecordsActionType;
+
     switch (action.type) {
       case FETCHED:
-        return (0, _seamlessImmutable['default'])(
-          _objectSpread(
-            _objectSpread({}, state),
-            {},
-            {
-              objectsById: _objectSpread(_objectSpread({}, state.objectsById), action.objectsById),
-            }
-          )
-        );
+        return (0, _seamlessImmutable["default"])(_objectSpread(_objectSpread({}, state), {}, {
+          objectsById: _objectSpread(_objectSpread({}, state.objectsById), action.objectsById)
+        }));
 
       case REMOVE:
-        return (0, _seamlessImmutable['default'])(
-          _objectSpread(
-            _objectSpread({}, state),
-            {},
-            {
-              objectsById: action.objectsById,
-            }
-          )
-        );
+        return (0, _seamlessImmutable["default"])(_objectSpread(_objectSpread({}, state), {}, {
+          objectsById: action.objectsById
+        }));
 
       case SET_TOTAL_RECORDS:
-        return (0, _seamlessImmutable['default'])(
-          _objectSpread(
-            _objectSpread({}, state),
-            {},
-            {
-              totalRecords: action.totalRecords,
-            }
-          )
-        );
+        return (0, _seamlessImmutable["default"])(_objectSpread(_objectSpread({}, state), {}, {
+          totalRecords: action.totalRecords
+        }));
 
       default:
         return state;
