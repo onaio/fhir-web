@@ -7,7 +7,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
-import { BACKEND_ACTIVE } from '../../../configs/env';
+import { BACKEND_ACTIVE, REACT_APP_LANGUAGE_SWITCHER } from '../../../configs/env';
 import {
   URL_BACKEND_LOGIN,
   URL_LOGOUT,
@@ -17,6 +17,8 @@ import {
   URL_USER_EDIT,
 } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
+import languages from '../../../languages';
+import i18next from 'i18next';
 
 const SubMenu = Menu.SubMenu;
 
@@ -56,6 +58,15 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Menu.Item key={URL_HOME}>
             <Link to={URL_HOME}>Home</Link>
           </Menu.Item>
+          {REACT_APP_LANGUAGE_SWITCHER && (
+            <SubMenu title="Language" style={{ float: 'right' }}>
+              {Object.keys(languages).map((language) => (
+                <Menu.Item onClick={() => i18next.changeLanguage(language)} key={language}>
+                  {language}
+                </Menu.Item>
+              ))}
+            </SubMenu>
+          )}
           {isAdmin && (
             <Menu.Item key={URL_ADMIN}>
               <Link to={URL_ADMIN}>Admin</Link>
