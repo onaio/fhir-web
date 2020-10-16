@@ -6,15 +6,12 @@
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "TZ=UTC react-scripts test --env=jest-environment-jsdom-sixteen",
-    "eject": "react-scripts eject",
-    "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
-    "lint-snap": "eslint 'src/**/*.snap'",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx'  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "jest": "jest --coverage --verbose --color",
+    "test": "cd ../../ && jest test  packages/keycloak-user-management --verbose --collectCoverage=true && cd packages/keycloak-user-management",
+    "test:watch": "cd ../../ && jest test  packages/keycloak-user-management --verbose --watch && cd packages/keycloak-user-management",
     "tsc": "tsc",
-    "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "files": [
     "dist"
