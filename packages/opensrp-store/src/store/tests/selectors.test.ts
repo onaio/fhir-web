@@ -1,7 +1,9 @@
 import { authenticateUser, logOutUser } from '@onaio/session-reducer';
 import { FlushThunks } from 'redux-testkit';
-import { store } from '@opensrp/store';
+import { store } from '../store';
 import { getAccessToken, getApiToken, getOauthProviderState } from '../selectors';
+
+/* eslint-disable @typescript-eslint/camelcase */
 
 describe('store/selectors', () => {
   beforeEach(() => {

@@ -4,28 +4,28 @@ import { trimStart } from 'lodash';
 import querystring from 'querystring';
 import React from 'react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
-import { notification } from 'antd';
 import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
-import { EXPRESS_LOGIN_URL, HOME_URL, LOGOUT_URL } from '../../../constants';
+import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
 import Loading from '../Loading';
+import { sendSuccessNotification } from '../../../utils/Notification/Notifications';
 /**
- * antd notification popup
- * @param user - user details object
+ * antd notification popup.
+ *
+ * @param {user} user details object
  */
 export const openNotification = (user: User): void => {
-  notification.success({
-    message: `Welcome back, ${user.username}`,
-    description: '',
-  });
+  sendSuccessNotification(`Welcome back, ${user.username}`);
 };
 
 /** checks if the value of next in searchParam is blacklisted
+ *
  * @param {RouteComponentProps} props - the props should contain the routing state.
+ * @returns {boolean} return the response
  */
 export const nextIsValid = (props: RouteComponentProps): boolean => {
   let response = true;
-  const indirectionURLs = [LOGOUT_URL];
+  const indirectionURLs = [URL_LOGOUT];
   /** we should probably sieve some routes from being passed on.
    * For instance we don't need to redirect to logout since we are already in
    * the Unsuccessful Login component, meaning we are already logged out.
@@ -43,7 +43,7 @@ export const nextIsValid = (props: RouteComponentProps): boolean => {
 export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
   props: RouteComponentProps
 ) => {
-  let pathToRedirectTo = HOME_URL;
+  let pathToRedirectTo = URL_HOME;
 
   if (nextIsValid(props)) {
     const searchString = trimStart(props.location.search, '?');
@@ -63,9 +63,9 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
 export const SuccessfulLoginComponent = withRouter(BaseSuccessfulLoginComponent);
 
 const BaseUnsuccessfulLogin: React.FC<RouteComponentProps> = (props: RouteComponentProps) => {
-  let redirectTo = `${EXPRESS_LOGIN_URL}${props.location.search}`;
+  let redirectTo = `${URL_EXPRESS_LOGIN}${props.location.search}`;
   if (!nextIsValid(props)) {
-    redirectTo = EXPRESS_LOGIN_URL;
+    redirectTo = URL_EXPRESS_LOGIN;
   }
 
   window.location.href = redirectTo;

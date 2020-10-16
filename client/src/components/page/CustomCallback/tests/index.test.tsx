@@ -3,7 +3,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
-import { EXPRESS_LOGIN_URL } from '../../../../constants';
+import { URL_EXPRESS_LOGIN } from '../../../../constants';
 
 const App = () => {
   return (
@@ -111,7 +111,7 @@ describe('src/components/page/CustomCallback.UnsuccessfulLogin', () => {
         <App />
       </MemoryRouter>
     );
-    expect(hrefMock).toBeCalledWith(EXPRESS_LOGIN_URL);
+    expect(hrefMock).toBeCalledWith(URL_EXPRESS_LOGIN);
   });
 
   it('Appends correct path when searchParams is given', () => {
@@ -126,7 +126,7 @@ describe('src/components/page/CustomCallback.UnsuccessfulLogin', () => {
         <App />
       </MemoryRouter>
     );
-    expect(hrefMock).toBeCalledWith(`${EXPRESS_LOGIN_URL}?next=%2Fteams`);
+    expect(hrefMock).toBeCalledWith(`${URL_EXPRESS_LOGIN}?next=%2Fteams`);
   });
 
   it('Redirects only to login if searchParam url is not allowable', () => {
@@ -146,6 +146,6 @@ describe('src/components/page/CustomCallback.UnsuccessfulLogin', () => {
         <App />
       </MemoryRouter>
     );
-    expect(hrefMock).toBeCalledWith(EXPRESS_LOGIN_URL);
+    expect(hrefMock).toBeCalledWith(URL_EXPRESS_LOGIN);
   });
 });
