@@ -37,8 +37,7 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
-  const { user_id } = extraData;
-  const URL_APP_LOGIN = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
+  const { user_id, roles } = extraData;
   return (
     <Layout.Header className="txt-white align-items-center justify-content-end px-1">
       <Button
@@ -88,7 +87,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         </Dropdown>
       ) : (
         <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
-          <Link to={URL_APP_LOGIN}>Login</Link>
+          <Link to={URL_REACT_LOGIN}>Login</Link>
         </Button>
       )}
       <Button

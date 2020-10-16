@@ -3,118 +3,154 @@
 exports[`components/ConnectedHeader renders the ConnectedHeader component 1`] = `
 Object {
   "children": Array [
-    <div
-      className="logo"
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(SearchOutlined) />}
+      loading={false}
+      shape="circle"
+      type="primary"
+    />,
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(QuestionCircleOutlined) />}
+      loading={false}
+      shape="circle"
+      type="primary"
+    />,
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(BellOutlined) />}
+      loading={false}
+      shape="circle"
+      type="primary"
+    />,
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(BellOutlined) />}
+      loading={false}
+      type="primary"
     >
-      <Image
-        src="test-file-stub"
-        width={200}
-      />
-    </div>,
-    <Menu
-      mode="horizontal"
-      selectedKeys={
-        Array [
-          "/",
-        ]
-      }
-    >
-      <MenuItem>
-        <Link
-          to="/"
-        >
-          Home
-        </Link>
-      </MenuItem>
-      <MenuItem
-        style={
-          Object {
-            "float": "right",
-          }
-        }
+      <Link
+        to="/login"
       >
-        <Link
-          to="/login"
-        >
-          Login
-        </Link>
-      </MenuItem>
-    </Menu>,
+        Login
+      </Link>
+    </Button>,
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(GlobalOutlined) />}
+      loading={false}
+      shape="circle"
+      type="primary"
+    />,
   ],
+  "className": "txt-white align-items-center justify-content-end px-1",
 }
 `;
 
 exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
 Object {
   "children": Array [
-    <div
-      className="logo"
-    >
-      <Image
-        src="test-file-stub"
-        width={200}
-      />
-    </div>,
-    <Menu
-      mode="horizontal"
-      selectedKeys={
-        Array [
-          "/",
-        ]
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(SearchOutlined) />}
+      loading={false}
+      shape="circle"
+      type="primary"
+    />,
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(QuestionCircleOutlined) />}
+      loading={false}
+      shape="circle"
+      type="primary"
+    />,
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(BellOutlined) />}
+      loading={false}
+      shape="circle"
+      type="primary"
+    />,
+    <Dropdown
+      mouseEnterDelay={0.15}
+      mouseLeaveDelay={0.1}
+      overlay={
+        <Menu>
+          <MenuItem>
+            <Link
+              to="/logout"
+            >
+              Logout
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link
+              to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+            >
+              Manage account
+            </Link>
+          </MenuItem>
+        </Menu>
       }
+      placement="bottomRight"
     >
-      <MenuItem>
-        <Link
-          to="/"
-        >
-          Home
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          to="/admin"
-        >
-          Admin
-        </Link>
-      </MenuItem>
-      <SubMenu
-        style={
-          Object {
-            "float": "right",
-          }
+      <Button
+        block={false}
+        className="h-auto d-flex align-items-center bg-transparent border-0"
+        ghost={false}
+        htmlType="button"
+        icon={
+          <Avatar
+            className="mr-1 bg-white"
+            shape="circle"
+            size="default"
+          >
+            RobertBaratheon
+          </Avatar>
         }
-        title={
-          <div>
-            <span>
-              RobertBaratheon
-            </span>
-            <span>
-               
-            </span>
-            <Avatar
-              icon={<ForwardRef(UserOutlined) />}
-              shape="square"
-              size="default"
-            />
-          </div>
-        }
+        loading={false}
+        shape="circle"
+        type="primary"
       >
-        <MenuItem>
-          <Link
-            to="/logout"
-          >
-            Logout
-          </Link>
-        </MenuItem>
-        <MenuItem>
-          <Link
-            to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-          >
-            Manage account
-          </Link>
-        </MenuItem>
-      </SubMenu>
-    </Menu>,
+        RobertBaratheon
+      </Button>
+    </Dropdown>,
+    <Button
+      block={false}
+      className="bg-transparent border-0"
+      ghost={false}
+      htmlType="button"
+      icon={<ForwardRef(GlobalOutlined) />}
+      loading={false}
+      shape="circle"
+      type="primary"
+    />,
   ],
+  "className": "txt-white align-items-center justify-content-end px-1",
 }
 `;
