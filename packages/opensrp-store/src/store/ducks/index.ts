@@ -59,9 +59,11 @@ export type KeycloakUsersActionTypes =
 
 // action Creators
 
-/** Fetch users action creator
- * @param {user []} usersList - users array to add to store
- * @return {FetchKeycloakUsersAction} - an action to add users to redux store
+/**
+ * Fetch users action creator
+ *
+ * @param {Array} usersList - keycloak users
+ * @returns {object} - the dispatcher to remove the user
  */
 export const fetchKeycloakUsers = (usersList: KeycloakUser[] = []): FetchKeycloakUsersAction => {
   return {
@@ -70,7 +72,10 @@ export const fetchKeycloakUsers = (usersList: KeycloakUser[] = []): FetchKeycloa
   };
 };
 
-/** Remove users action creator */
+/** Remove users action creator
+ *
+ * @returns {object} - the dispatcher to remove the user
+ */
 export const removeKeycloakUsers = (): RemoveKeycloakUsersAction => {
   return {
     usersById: {},
@@ -94,7 +99,13 @@ export const initialState: ImmutableKeycloakUsersState = SeamlessImmutable({
   usersById: {},
 });
 
-/** the users reducer function */
+/**
+ * the users reducer function
+ *
+ * @param {object} state - keycloak users states
+ * @param {object} action - keycloak users actions
+ * @returns {object} - the updated states
+ */
 export function reducer(
   state: ImmutableKeycloakUsersState = initialState,
   action: KeycloakUsersActionTypes
@@ -127,28 +138,36 @@ export interface KeycloakUsersFilters {
 
 /**
  * Gets id from KeycloakUsersFilters
- * @param {Partial<Store>} state - the redux store
- * @param {KeycloakUsersFilters} props - the keycloak users filters object
+ *
+ * @param {any} _ - the redux store
+ * @param {Array} props - the keycloak users filters object
+ * @returns {string} - the keycloak user id
  */
 export const getUserIds = (_: Partial<Store>, props: KeycloakUsersFilters): string[] => props.id;
+
 /**
  * Gets name from KeycloakUsersFilters
- * @param {Partial<Store>} state - the redux store
- * @param {KeycloakUsersFilters} props - the users filters object
+ *
+ * @param {any} _ - the redux store
+ * @param {object} props - the users filters object
+ * @returns {string} - the keycloak user name
  */
 export const getUsername = (_: Partial<Store>, props: KeycloakUsersFilters): string | undefined =>
   props.username;
+
 /** returns all users in the store as values whose keys are their respective ids
- * @param {Partial<Store>} state - the redux store
- * @return { { [key: string] : KeycloakUser} } - users object as values, respective ids as keys
+ *
+ * @param {any} state - the redux store
+ * @returns {object} - users object as values, respective ids as keys
  */
 export function getKeycloakUsersById(state: Partial<Store>): { [key: string]: KeycloakUser } {
   return (state as Dictionary)[reducerName].usersById;
 }
 
 /** gets keycloak users as an array of user objects
- * @param {Partial<Store>} state - the redux store
- * @return {KeycloakUser[]} - an array of users objs
+ *
+ * @param {any} state - the redux store
+ * @returns {Array} - an array of users objs
  */
 export function getKeycloakUsersArray(state: Partial<Store>): KeycloakUser[] {
   return values(getKeycloakUsersById(state));
@@ -156,8 +175,8 @@ export function getKeycloakUsersArray(state: Partial<Store>): KeycloakUser[] {
 
 /**
  * Gets all practitioners whose name includes phrase given in name filter prop
- * @param {Partial<Store>} state - the redux store
- * @param {PractitionerFilters} props - the practitioners filters object
+ *
+ * @returns {Array} - practitioners whose name includes phrase given in name filter prop
  */
 export const getUsersByUsername = (): OutputParametricSelector<
   Partial<Store>,
@@ -177,8 +196,8 @@ export const getUsersByUsername = (): OutputParametricSelector<
 
 /**
  * Gets all users whose identifiers appear in ids filter prop value
- * @param {Partial<Store>} state - the redux store
- * @param {userFilters} props - the users filters object
+ *
+ * @returns {Array} - users whose identifiers appear in ids filter prop value
  */
 export const getKeycloakUsersByIds = (): OutputParametricSelector<
   Partial<Store>,
@@ -209,8 +228,8 @@ export const getKeycloakUsersByIds = (): OutputParametricSelector<
 
 /** practitioner array selector factory
  * aggregates response from all applied filters and returns results
- * @param {Partial<Store>} state - the redux store
- * @param {PractitionerFilters} props - the practitioners filters object
+ *
+ * @returns {Array} - aggregates response from all applied filters and returns results
  */
 export const makeKeycloakUsersSelector = (): OutputParametricSelector<
   Partial<Store>,

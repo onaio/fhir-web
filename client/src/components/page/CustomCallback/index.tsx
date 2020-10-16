@@ -4,24 +4,24 @@ import { trimStart } from 'lodash';
 import querystring from 'querystring';
 import React from 'react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
-import { notification } from 'antd';
 import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
 import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
 import Loading from '../Loading';
+import { sendSuccessNotification } from '../../../utils/Notification/Notifications';
 /**
- * antd notification popup
- * @param user - user details object
+ * antd notification popup.
+ *
+ * @param {user} user details object
  */
 export const openNotification = (user: User): void => {
-  notification.success({
-    message: `Welcome back, ${user.username}`,
-    description: '',
-  });
+  sendSuccessNotification(`Welcome back, ${user.username}`);
 };
 
 /** checks if the value of next in searchParam is blacklisted
+ *
  * @param {RouteComponentProps} props - the props should contain the routing state.
+ * @returns {boolean} return the response
  */
 export const nextIsValid = (props: RouteComponentProps): boolean => {
   let response = true;
