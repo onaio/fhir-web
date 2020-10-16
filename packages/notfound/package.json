@@ -1,0 +1,51 @@
+{
+  "version": "0.1.0",
+  "scripts": {
+    "jest": "jest --coverage --verbose --color",
+    "test": "cd ../../ && yarn test  packages/keycloak-service --verbose --collectCoverage=true && cd packages/keycloak-service",
+    "test:watch": "cd ../../ && yarn test  packages/keycloak-service --verbose --watch && cd packages/keycloak-service",
+    "tsc": "tsc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "transpile:test": "babel ./src -d ./dist"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "This package is used to handle http 404 errors i.e when user tries to access a page that is not available",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/opensrp/web",
+  "yarn": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-helmet": "^6.1.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
+  },
+  "dependencies": {
+    "@onaio/utils": "^0.0.1",
+    "@types/antd": "^1.0.0",
+    "@types/yup": "^0.29.7",
+    "antd": "^4.6.3",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "bootstrap": "^4.5.2",
+    "connected-react-router": "^6.8.0",
+    "fast_array_intersect": "^1.1.0",
+    "flush-promises": "^1.0.2",
+    "yup": "^0.29.3"
+  }
+}
