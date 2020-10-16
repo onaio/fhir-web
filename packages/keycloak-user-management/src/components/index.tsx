@@ -60,6 +60,9 @@ interface TableData {
 
 /**
  * Handle user deletion
+ *
+ * @param {object} props - the headers
+ * @param {string} userId - the user id
  */
 export const deleteUser = (props: Props, userId: string): void => {
   const {
