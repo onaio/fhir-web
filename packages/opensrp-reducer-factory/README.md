@@ -50,6 +50,30 @@ export const getTotalItemRecords = getTotalRecordsFactory(reducerName);
 export default reducer;
 ```
 
+The default action types are
+
+```ts
+FETCHED = 'opensrp/reducer/objects/FETCHED';
+REMOVE = 'opensrp/reducer/objects/REMOVE';
+SET_TOTAL_RECORDS = 'opensrp/reducer/objects/SET_TOTAL_RECORDS';
+```
+
+If you would like to override the default values for the action types, pass the values as arguments when
+creating the reducer
+
+```ts
+const customfetchedActionType = 'locations/location-units/LOCATION_UNITS_FETCHED';
+const customRemoveActionType = 'locations/location-units/REMOVE_LOCATION_UNITS';
+const customSetTotalRecordsActionType = 'locations/location-units/SET_TOTAL_LOCATION_UNITS';
+
+const reducer = reducerFactory<DataType>(
+  reducerName,
+  customfetchedActionType,
+  customRemoveActionType,
+  customSetTotalRecordsActionType
+);
+```
+
 ## What am i provisioning
 
 Glad you asked; The above example should have given you some clue, but am all to happy to summarize this for you here:
