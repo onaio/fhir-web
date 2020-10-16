@@ -43,21 +43,28 @@ export declare type ItemsActionTypes<ObjectType> =
   | AnyAction;
 /** creates the action creator
  * ObjectType - generic type - object type being handled by this function
+ *
  * @param {string} reducerName - generic name of reducer
- * @param {ItemsIdFieldType<>} idField - key value whose value is more like an id for the objects,
+ * @param {object} idField - key value whose value is more like an id for the objects,
  * this needs to be unique
- * @returns {(objectsList: ObjectType[] = []): FetchAction<ObjectType>} - the action creator
+ * @returns {function()} - the action creator
  */
 export declare function fetchActionCreatorFactory<ObjectType>(
   reducerName: string,
   idField: ItemsIdFieldType<ObjectType>
 ): (objectsList?: ObjectType[]) => FetchAction<ObjectType>;
 /** removeAction action ; action creator factory
+ *
  * @param {string} reducerName - name of reducer
- * @returns {(): RemoveAction} - the action creator
+ * @returns {function()} - the action creator
  */
 export declare const removeActionCreatorFactory: (reducerName: string) => () => RemoveAction;
-/** creates actions to set total records */
+/**
+ * creates actions to set total records
+ *
+ * @param {string} reducerName - generic name of the reducer
+ * @returns {function()} - the action creator
+ */
 export declare function setTotalRecordsFactory(
   reducerName: string
 ): (totalCount: number) => SetTotalRecordsAction;
@@ -75,8 +82,14 @@ interface ObjectState<ObjectType> {
  */
 export declare type ImmutableObjectState<ObjectType> = ObjectState<ObjectType> &
   SeamlessImmutable.ImmutableObject<ObjectState<ObjectType>>;
-/** factory function to create reducer
+/**
  * ObjectType - generic type - object type being handled by this function
+ */
+/**
+ * factory function to create reducer
+ *
+ * @param {string} reducerName - generic reducer name
+ * @returns {object} - the state
  */
 export declare const reducerFactory: <ObjectType>(
   reducerName: string
@@ -85,33 +98,34 @@ export declare const reducerFactory: <ObjectType>(
   action: ItemsActionTypes<ObjectType>
 ) => ImmutableObjectState<ObjectType>;
 /** factory function that creates selector
- * ObjectType - generic type - object type being handled by this function
+ *  ObjectType - generic type - object type being handled by this function
+ *
  *  @param {string} reducerName - the reducerName
- *  @returns {((state: Partial<Store>) => Dictionary<ObjectType>)}
+ *  @returns {function()} - function that returns the state
  */
 export declare const getItemsByIdFactory: <ObjectType>(
   reducerName: string
 ) => (state: Partial<Store<any, AnyAction>>) => Dictionary<ObjectType>;
 /** factory function that creates selector
- * ObjectType - generic type - object type being handled by this function
+ *
  * @param {string} reducerName - name of the reducer
- * @returns {(state: Partial<Store>): ObjectType[]}
+ * @returns {function()} - an array of object type being handled by this function
  */
 export declare const getItemsArrayFactory: <ObjectType>(
   reducerName: string
 ) => (state: Partial<Store<any, AnyAction>>) => ObjectType[];
 /** factory function that creates selector
- * ObjectType - generic type - object type being handled by this function
- * @param {string} - reducerName -  name of reducer
- * @returns {(state: Partial<Store>, id: string): ObjectType | null}
+ *
+ * @param {string} reducerName -  name of reducer
+ * @returns {function()} - object type being handled by this function
  */
 export declare const getItemByIdFactory: <ObjectType>(
   reducerName: string
 ) => (state: Partial<Store<any, AnyAction>>, id: string) => ObjectType | null;
 /** factory function that creates selector
- * ObjectType - generic type - object type being handled by this function
+ *
  * @param {string} reducerName -  name of reducer
- * @returns {(state: Partial<Store<any, AnyAction>>) => number}
+ * @returns {function()} - function that returns the total number of records
  */
 export declare const getTotalRecordsFactory: (
   reducerName: string
