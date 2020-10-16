@@ -12,11 +12,11 @@ export type ItemsIdFieldType<T> = KeysWhoseValuesAreType<T, string | number>;
 // actions
 
 /** FETCHED action type */
-export const FETCHED = 'opensrp/reducer/objects/FETCHED';
+export let FETCHED = 'opensrp/reducer/objects/FETCHED';
 /** REMOVE action type */
-export const REMOVE = 'opensrp/reducer/objects/REMOVE';
+export let REMOVE = 'opensrp/reducer/objects/REMOVE';
 /** SET_TOTAL_RECORDS action type */
-export const SET_TOTAL_RECORDS = 'opensrp/reducer/objects/SET_TOTAL_RECORDS';
+export let SET_TOTAL_RECORDS = 'opensrp/reducer/objects/SET_TOTAL_RECORDS';
 
 /** interface for authorize action
  *  generic type - object type being handled by this function
@@ -135,9 +135,17 @@ const initialState: ImmutableObjectState<any> = SeamlessImmutable({
  * factory function to create reducer
  *
  * @param {string} reducerName - generic reducer name
+ * @param {string} fetchedActionType - custom value for action type FETCHED
+ * @param {string} removeActionType - custom value for action type REMOVE
+ * @param {string} setTotalRecordsActionType - custom value for action type SET_TOTAL_RECORDS
  * @returns {object} - the state
  */
-export const reducerFactory = <ObjectType>(reducerName: string) =>
+export const reducerFactory = <ObjectType>(
+  reducerName: string,
+  fetchedActionType: string = FETCHED,
+  removeActionType: string = REMOVE,
+  setTotalRecordsActionType: string = SET_TOTAL_RECORDS
+) =>
   /** the objects reducer function */
   function reducer(
     state: ImmutableObjectState<ObjectType> = initialState,
@@ -147,6 +155,10 @@ export const reducerFactory = <ObjectType>(reducerName: string) =>
     if (reducerName !== actionReducerName) {
       return state;
     }
+    FETCHED = fetchedActionType;
+    REMOVE = removeActionType;
+    SET_TOTAL_RECORDS = setTotalRecordsActionType;
+
     switch (action.type) {
       case FETCHED:
         return SeamlessImmutable({
