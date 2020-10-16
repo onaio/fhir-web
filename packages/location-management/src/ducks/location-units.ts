@@ -62,7 +62,7 @@ export interface LocationUnitPayload {
 }
 
 /** reducer name for the Item module */
-export const reducerName = 'locations-unit';
+export const reducerName = 'location-units';
 
 /** Item Reducer */
 const reducer = reducerFactory<LocationUnit>(reducerName);
