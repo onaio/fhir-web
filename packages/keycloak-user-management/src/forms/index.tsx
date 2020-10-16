@@ -63,7 +63,12 @@ export const userSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
 });
 
-/** Handle required actions change */
+/**
+ * Handle required actions change
+ *
+ * @param {string} selected - selected action
+ * @param {Dispatch<SetStateAction<string[]>>} setRequiredActions - selected action dispatcher
+ */
 export const handleUserActionsChange = (
   selected: string[],
   setRequiredActions: Dispatch<SetStateAction<string[]>>
