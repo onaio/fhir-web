@@ -26,12 +26,13 @@
     ]
   },
   "bugs": {
-    "url": "https://github.com/opensrp/opensrp-web/issues"
+    "url": "https://github.com/OpenSRP/web/issues"
   },
   "author": "Ona Engineering",
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
+    "@onaio/utils": "^0.0.1",
     "lodash": "^4.17.15",
     "redux": "^4.0.5",
     "seamless-immutable": "^7.1.4"
