@@ -9,6 +9,10 @@ import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import Language from '../../../../languages';
+import { act } from 'react-dom/test-utils';
 
 describe('containers/pages/Home', () => {
   it('renders without crashing', () => {
@@ -37,6 +41,7 @@ describe('containers/pages/Home', () => {
     expect(toJson(wrapper.find('Home'))).toMatchSnapshot('Home page rendered');
     wrapper.unmount();
   });
+
   it('works correctly with store', () => {
     const { authenticated, user, extraData } = getOpenSRPUserInfo({
       oAuth2Data: {
@@ -69,5 +74,39 @@ describe('containers/pages/Home', () => {
       roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
       username: 'superset-user',
     });
+  });
+
+  it('Check if translation is working or not', () => {
+    const { authenticated, user, extraData } = getOpenSRPUserInfo({
+      oAuth2Data: {
+        access_token: 'hunter2',
+        expires_in: '3599',
+        state: 'opensrp',
+        token_type: 'bearer',
+      },
+      preferredName: 'Superset User',
+      roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
+      username: 'superset-user',
+    });
+    store.dispatch(authenticateUser(authenticated, user, extraData));
+
+    act(() => {
+      void i18n.use(initReactI18next).init({
+        resources: Language,
+        lng: 'French',
+        fallbackLng: 'English',
+        interpolation: { escapeValue: false },
+      });
+    });
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedHomeComponent />
+        </Router>
+      </Provider>
+    );
+
+    expect(wrapper.find('h3').text()).not.toEqual('Welcome to OpenSRP');
   });
 });
