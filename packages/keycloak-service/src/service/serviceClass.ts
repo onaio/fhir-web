@@ -8,12 +8,14 @@ export const KEYCLOAK_API_BASE_URL = 'https://keycloak-test.smartregister.org/au
 /** allowed http methods */
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-/** get default HTTP headers for Keycloak service
+/**
+ * get default HTTP headers for Keycloak service
+ *
  * @param {string} accessToken - the access token
  * @param {string} accept - the MIME type to accept
  * @param {string} authorizationType - the authorization type
- * @param {string} contentType - the content type
- * @return {IncomingHttpHeaders} - the headers
+ * @param {string} contentType - the headers
+ * @returns {IncomingHttpHeaders} - the headers
  */
 export function getDefaultHeaders(
   accessToken: string,
@@ -28,10 +30,24 @@ export function getDefaultHeaders(
   };
 }
 
-/** get payload for fetch
- * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
- * @param {HTTPMethod} method - the HTTP method
- * @returns the payload
+/** converts filter params object to string
+ *
+ * @param {object} obj - the object representing filter params
+ * @returns {string} filter params as a string
+ */
+export function getFilterParams(obj: URLParams): string {
+  return Object.entries(obj)
+    .map(([key, val]) => `${key}:${val}`)
+    .join(',');
+}
+
+/**
+ * get payload for fetch
+ *
+ * @param {object} _ - signal object that allows you to communicate with a DOM request
+ * @param {string} accessToken - the access token
+ * @param {string} method - the HTTP method
+ * @returns {Object} the payload
  */
 export function getFetchOptions(
   _: AbortSignal,
@@ -88,10 +104,12 @@ export class KeycloakAPIService {
 
   /**
    * Constructor method
-   * @param endpoint - the Keycloak endpoint
-   * @param baseURL - the base Keycloak API URL
-   * @param getURL - a function to get the URL
-   * @param getPayload - a function to get the payload
+   *
+   * @param {string} accessToken - the access token
+   * @param {string} baseURL - the base Keycloak API URL
+   * @param {string} endpoint - the Keycloak endpoint
+   * @param {object} getPayload - a function to get the payload
+   * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
    */
   constructor(
     accessToken: string,
@@ -108,9 +126,11 @@ export class KeycloakAPIService {
     this.generalURL = `${this.baseURL}${this.endpoint}`;
   }
 
-  /** appends any query params to the url as a querystring
-   * @param {string} url - the url
-   * @param {paramsType} params - the url params object
+  /**
+   * appends any query params to the url as a querystring
+   *
+   * @param {string} generalUrl - the url
+   * @param {object} params - the url params object
    * @returns {string} the final url
    */
   public static getURL(generalUrl: string, params: paramsType): string {
@@ -120,23 +140,14 @@ export class KeycloakAPIService {
     return generalUrl;
   }
 
-  /** converts filter params object to string
-   * @param {URLParams} obj - the object representing filter params
-   * @returns {string} filter params as a string
-   */
-  public static getFilterParams(obj: URLParams): string {
-    return Object.entries(obj)
-      .map(([key, val]) => `${key}:${val}`)
-      .join(',');
-  }
-
   /** create method
    * Send a POST request to the general endpoint containing the new object data
    * Successful requests will result in a HTTP status 201 response with no body
-   * @param {T} data - the data to be POSTed
-   * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns the object returned by API
+   *
+   * @param {Promise} data - the data to be posted
+   * @param {object} params - the url params object
+   * @param {string} method - the HTTP method
+   * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async create<T>(
@@ -165,10 +176,11 @@ export class KeycloakAPIService {
 
   /** read method
    * Send a GET request to the url for the specific object
+   *
    * @param {string|number} id - the identifier of the object
    * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns the object returned by API
+   * @param {string} method - the HTTP method
+   * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
@@ -192,10 +204,11 @@ export class KeycloakAPIService {
   /** update method
    * Simply send the updated object as PUT request to the general endpoint URL
    * Successful requests will result in a HTTP status 200/201 response with no body
-   * @param {T} data - the data to be POSTed
-   * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns the object returned by API
+   *
+   * @param {Promise} data - the data to be posted
+   * @param {object} params - the url params object
+   * @param {string} method - the HTTP method
+   * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async update<T>(
@@ -223,9 +236,10 @@ export class KeycloakAPIService {
 
   /** list method
    * Send a GET request to the general API endpoint
-   * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns list of objects returned by API
+   *
+   * @param {object} params - the url params object
+   * @param {string} method - the HTTP method
+   * @returns {Promise<any>} list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
@@ -244,9 +258,10 @@ export class KeycloakAPIService {
   /** delete method
    * Send a DELETE request to the general endpoint
    * Successful requests will result in a HTTP status 204
-   * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns the object returned by API
+   *
+   * @param {object} params - the url params object
+   * @param {string} method - the HTTP method
+   * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async delete(params: paramsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {

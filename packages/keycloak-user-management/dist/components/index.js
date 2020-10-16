@@ -1,99 +1,114 @@
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
 exports.ConnectedAdminView = exports.Admin = exports.deleteUser = exports.defaultProps = void 0;
 
-var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+var _slicedToArray2 = _interopRequireDefault(require('@babel/runtime/helpers/slicedToArray'));
 
-var React = _interopRequireWildcard(require("react"));
+var React = _interopRequireWildcard(require('react'));
 
-var _antd = require("antd");
+var _antd = require('antd');
 
-var _keycloakService = require("@opensrp/keycloak-service");
+var _keycloakService = require('@opensrp/keycloak-service');
 
-var _reactRouterDom = require("react-router-dom");
+var _reactRouterDom = require('react-router-dom');
 
-var _connectedReducerRegistry = require("@onaio/connected-reducer-registry");
+var _connectedReducerRegistry = require('@onaio/connected-reducer-registry');
 
-var _Loading = _interopRequireDefault(require("../components/Loading"));
+var _Loading = _interopRequireDefault(require('../components/Loading'));
 
-var _HeaderBreadCrumb = _interopRequireDefault(require("./HeaderBreadCrumb"));
+var _HeaderBreadCrumb = _interopRequireDefault(require('./HeaderBreadCrumb'));
 
-var _store = require("@opensrp/store");
+var _store = require('@opensrp/store');
 
-var _reactRedux = require("react-redux");
+var _reactRedux = require('react-redux');
 
-var _reduxReducerRegistry = _interopRequireDefault(require("@onaio/redux-reducer-registry"));
+var _reduxReducerRegistry = _interopRequireDefault(require('@onaio/redux-reducer-registry'));
 
-_reduxReducerRegistry.default.register(_store.reducerName, _store.reducer);
+var _constants = require('../constants');
+
+_reduxReducerRegistry['default'].register(_store.reducerName, _store.reducer);
 
 var defaultProps = {
-  accessToken: 'hunter 2',
+  accessToken: '',
   serviceClass: _keycloakService.KeycloakService,
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
   removeKeycloakUsersCreator: _store.removeKeycloakUsers,
-  keycloakUsers: []
+  keycloakUsers: [],
 };
 exports.defaultProps = defaultProps;
 
 var deleteUser = function deleteUser(props, userId) {
   var serviceClass = props.serviceClass,
-      fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
-      removeKeycloakUsersCreator = props.removeKeycloakUsersCreator,
-      accessToken = props.accessToken;
-  var serviceDelete = new serviceClass(accessToken, "/users/".concat(userId), 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
-  var serviceGet = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
-  serviceDelete.delete().then(function () {
-    _antd.notification.success({
-      message: 'User deleted successfully',
-      description: ''
-    });
+    fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
+    removeKeycloakUsersCreator = props.removeKeycloakUsersCreator,
+    accessToken = props.accessToken;
+  var serviceDelete = new serviceClass(
+    accessToken,
+    '/users/'.concat(userId),
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+  );
+  var serviceGet = new serviceClass(
+    accessToken,
+    '/users',
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+  );
+  serviceDelete['delete']()
+    .then(function () {
+      _antd.notification.success({
+        message: ''.concat(_constants.USER_DELETED_SUCCESSFULLY),
+        description: '',
+      });
 
-    serviceGet.list().then(function (res) {
-      removeKeycloakUsersCreator();
-      fetchKeycloakUsersCreator(res);
-    }).catch(function (_) {
+      serviceGet
+        .list()
+        .then(function (res) {
+          removeKeycloakUsersCreator();
+          fetchKeycloakUsersCreator(res);
+        })
+        ['catch'](function (_) {
+          _antd.notification.error({
+            message: ''.concat(_constants.ERROR_OCCURED),
+            description: '',
+          });
+        });
+    })
+    ['catch'](function (_) {
       _antd.notification.error({
-        message: 'An error occurred',
-        description: ''
+        message: ''.concat(_constants.ERROR_OCCURED),
+        description: '',
       });
     });
-  }).catch(function (_) {
-    _antd.notification.error({
-      message: 'An error occurred',
-      description: ''
-    });
-  });
 };
 
 exports.deleteUser = deleteUser;
 
 var Admin = function Admin(props) {
   var _React$useState = React.useState(),
-      _React$useState2 = (0, _slicedToArray2.default)(_React$useState, 2),
-      filteredInfo = _React$useState2[0],
-      setFilteredInfo = _React$useState2[1];
+    _React$useState2 = (0, _slicedToArray2['default'])(_React$useState, 2),
+    filteredInfo = _React$useState2[0],
+    setFilteredInfo = _React$useState2[1];
 
   var _React$useState3 = React.useState(),
-      _React$useState4 = (0, _slicedToArray2.default)(_React$useState3, 2),
-      sortedInfo = _React$useState4[0],
-      setSortedInfo = _React$useState4[1];
+    _React$useState4 = (0, _slicedToArray2['default'])(_React$useState3, 2),
+    sortedInfo = _React$useState4[0],
+    setSortedInfo = _React$useState4[1];
 
   var _React$useState5 = React.useState(true),
-      _React$useState6 = (0, _slicedToArray2.default)(_React$useState5, 2),
-      isLoading = _React$useState6[0],
-      setIsLoading = _React$useState6[1];
+    _React$useState6 = (0, _slicedToArray2['default'])(_React$useState5, 2),
+    isLoading = _React$useState6[0],
+    setIsLoading = _React$useState6[1];
 
   var serviceClass = props.serviceClass,
-      fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
-      keycloakUsers = props.keycloakUsers,
-      accessToken = props.accessToken;
+    fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
+    keycloakUsers = props.keycloakUsers,
+    accessToken = props.accessToken;
 
   var handleChange = function handleChange(pagination, filters, sorter) {
     setFilteredInfo(filters);
@@ -102,23 +117,30 @@ var Admin = function Admin(props) {
 
   React.useEffect(function () {
     if (isLoading) {
-      var serve = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
-      serve.list().then(function (res) {
-        if (isLoading) {
-          fetchKeycloakUsersCreator(res);
-          setIsLoading(false);
-        }
-      }).catch(function (err) {
-        _antd.notification.error({
-          message: "".concat(err),
-          description: ''
+      var serve = new serviceClass(
+        accessToken,
+        '/users',
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+      );
+      serve
+        .list()
+        .then(function (res) {
+          if (isLoading) {
+            setIsLoading(false);
+            fetchKeycloakUsersCreator(res);
+          }
+        })
+        ['catch'](function (err) {
+          _antd.notification.error({
+            message: ''.concat(err),
+            description: '',
+          });
         });
-      });
     }
   });
 
   if (isLoading) {
-    return React.createElement(_Loading.default, null);
+    return React.createElement(_Loading['default'], null);
   }
 
   var headerItems = ['Username', 'Email', 'First Name', 'Last Name'];
@@ -128,7 +150,7 @@ var Admin = function Admin(props) {
     var dataFilters = keycloakUsers.map(function (filteredUser) {
       return {
         text: filteredUser[field],
-        value: filteredUser[field]
+        value: filteredUser[field],
       };
     });
     dataElements.push({
@@ -136,7 +158,7 @@ var Admin = function Admin(props) {
       dataIndex: fields[index],
       key: fields[index],
       filters: Array.from(new Set(dataFilters)),
-      filteredValue: filteredInfo && filteredInfo[fields[index]] || null,
+      filteredValue: (filteredInfo && filteredInfo[fields[index]]) || null,
       onFilter: function onFilter(value, record) {
         return record[fields[index]].includes(value);
       },
@@ -146,7 +168,7 @@ var Admin = function Admin(props) {
         }
       },
       sortOrder: sortedInfo && sortedInfo.columnKey === fields[index] && sortedInfo.order,
-      ellipsis: true
+      ellipsis: true,
     });
   });
   dataElements.push({
@@ -154,61 +176,117 @@ var Admin = function Admin(props) {
     dataIndex: 'actions',
     key: 'Actions',
     render: function render(_, record) {
-      return React.createElement(React.Fragment, null, React.createElement(_reactRouterDom.Link, {
-        to: "/user/edit/".concat(record.id),
-        key: "actions"
-      }, 'Edit'), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement(_antd.Popconfirm, {
-        title: "Are you sure delete this user?",
-        okText: "Yes",
-        cancelText: "No",
-        onConfirm: function onConfirm() {
-          return deleteUser(props, record.id);
-        }
-      }, React.createElement(_reactRouterDom.Link, {
-        to: "#"
-      }, 'Delete')));
-    }
+      return React.createElement(
+        React.Fragment,
+        null,
+        React.createElement(
+          _reactRouterDom.Link,
+          {
+            to: ''.concat(_constants.URL_USER_EDIT, '/').concat(record.id),
+            key: 'actions',
+          },
+          'Edit'
+        ),
+        React.createElement('span', null, '\xA0'),
+        React.createElement('span', null, '\xA0'),
+        React.createElement('span', null, '\xA0'),
+        React.createElement('span', null, '\xA0'),
+        React.createElement(
+          _antd.Popconfirm,
+          {
+            title: 'Are you sure delete this user?',
+            okText: 'Yes',
+            cancelText: 'No',
+            onConfirm: function onConfirm() {
+              return deleteUser(props, record.id);
+            },
+          },
+          React.createElement(
+            _reactRouterDom.Link,
+            {
+              to: '#',
+            },
+            _constants.DELETE
+          )
+        )
+      );
+    },
   });
   var tableData = keycloakUsers.map(function (user, index) {
     return {
-      key: "".concat(index),
+      key: ''.concat(index),
       id: user.id,
       username: user.username,
       email: user.email,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
     };
   });
-  return React.createElement(React.Fragment, null, React.createElement(_antd.Row, null, React.createElement(_antd.Col, {
-    span: 12
-  }, React.createElement(_antd.Space, null, React.createElement(_HeaderBreadCrumb.default, {
-    isAdmin: true
-  }), React.createElement(_antd.Divider, null))), React.createElement(_antd.Col, {
-    span: 12,
-    style: {
-      display: 'flex',
-      justifyContent: 'flex-end'
-    }
-  }, React.createElement(_antd.Space, {
-    style: {
-      marginBottom: 16,
-      justifyContent: 'flex-end'
-    }
-  }, React.createElement(_antd.Button, {
-    type: "primary",
-    className: "create-user",
-    onClick: function onClick() {
-      return _connectedReducerRegistry.history.push('/user/new');
-    }
-  }, "Add User")))), React.createElement(_antd.Row, null, React.createElement(_antd.Table, {
-    columns: dataElements,
-    dataSource: tableData,
-    pagination: {
-      pageSize: 5
-    },
-    onChange: handleChange,
-    bordered: true
-  })));
+  return React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+      _antd.Row,
+      null,
+      React.createElement(
+        _antd.Col,
+        {
+          span: 12,
+        },
+        React.createElement(
+          _antd.Space,
+          null,
+          React.createElement(_HeaderBreadCrumb['default'], {
+            isAdmin: true,
+          }),
+          React.createElement(_antd.Divider, null)
+        )
+      ),
+      React.createElement(
+        _antd.Col,
+        {
+          span: 12,
+          style: {
+            display: 'flex',
+            justifyContent: 'flex-end',
+          },
+        },
+        React.createElement(
+          _antd.Space,
+          {
+            style: {
+              marginBottom: 16,
+              justifyContent: 'flex-end',
+            },
+          },
+          React.createElement(
+            _antd.Button,
+            {
+              type: 'primary',
+              className: 'create-user',
+              onClick: function onClick() {
+                return _connectedReducerRegistry.history.push(_constants.URL_USER_CREATE);
+              },
+            },
+            'Add User'
+          )
+        )
+      )
+    ),
+    React.createElement(
+      _antd.Row,
+      null,
+      React.createElement(_antd.Table, {
+        columns: dataElements,
+        dataSource: tableData,
+        pagination: {
+          pageSize: 5,
+        },
+        onChange: handleChange,
+        bordered: true,
+      })
+    )
+  );
 };
 
 exports.Admin = Admin;
@@ -219,13 +297,13 @@ var mapStateToProps = function mapStateToProps(state, _) {
   var accessToken = (0, _store.getAccessToken)(state);
   return {
     keycloakUsers: keycloakUsers,
-    accessToken: accessToken
+    accessToken: accessToken,
   };
 };
 
 var mapDispatchToProps = {
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
-  removeKeycloakUsersCreator: _store.removeKeycloakUsers
+  removeKeycloakUsersCreator: _store.removeKeycloakUsers,
 };
 var ConnectedAdminView = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Admin);
 exports.ConnectedAdminView = ConnectedAdminView;

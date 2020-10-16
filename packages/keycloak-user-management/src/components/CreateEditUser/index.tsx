@@ -17,6 +17,7 @@ import {
 import { KeycloakService } from '@opensrp/keycloak-service';
 import Ripple from '../Loading';
 import { UserForm, UserFormProps } from '../../forms';
+import { URL_USERS } from '../../constants';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -28,15 +29,16 @@ export interface RouteParams {
 }
 
 /** props for editing a user view */
-export interface Props {
+export interface EditUserProps {
   accessToken: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
+  keycloakBaseURL: string;
 }
 
 /** type intersection for all types that pertain to the props */
-export type PropsTypes = Props & RouteComponentProps<RouteParams>;
+export type PropsTypes = EditUserProps & RouteComponentProps<RouteParams>;
 
 /** default form initial values */
 
@@ -63,11 +65,12 @@ export const defaultInitialValues: KeycloakUser = {
 };
 
 /** default props for editing user component */
-export const defaultProps: Partial<PropsTypes> = {
-  accessToken: 'hunter 2',
+export const defaultEditUserProps: EditUserProps = {
+  accessToken: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
+  keycloakBaseURL: '',
 };
 
 /** yup validations for practitioner data object from form */
@@ -76,19 +79,26 @@ export const userSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
 });
 
+/**
+ *
+ * @param props - CreateEditUser component props
+ */
+
 const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const { serviceClass, fetchKeycloakUsersCreator, keycloakUser, accessToken } = props;
+  const {
+    serviceClass,
+    fetchKeycloakUsersCreator,
+    keycloakUser,
+    accessToken,
+    keycloakBaseURL,
+  } = props;
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
   const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
   React.useEffect(() => {
     if (userId) {
-      const serve = new serviceClass(
-        accessToken,
-        '/users',
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
-      );
+      const serve = new serviceClass(accessToken, URL_USERS, keycloakBaseURL);
       serve
         .read(userId)
         .then((response: KeycloakUser) => {
@@ -106,12 +116,13 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     } else {
       setIsLoading(false);
     }
-  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId]);
+  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL]);
 
   const userFormProps: UserFormProps = {
     accessToken,
     initialValues: initialValues as KeycloakUser,
     serviceClass: KeycloakService,
+    keycloakBaseURL,
   };
 
   if (isLoading) {
@@ -128,7 +139,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   );
 };
 
-CreateEditUsers.defaultProps = defaultProps;
+CreateEditUsers.defaultProps = defaultEditUserProps;
 
 export { CreateEditUsers };
 

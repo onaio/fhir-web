@@ -30,8 +30,12 @@ export class HTTPError extends BaseError {
 /** Used to return an error arising from a failed network request */
 export class NetworkError extends BaseError {}
 
-/** helper function that reads a non-200 response and creates
- * our custom HTTPError object from it.
+/**
+ * helper function that reads a non-200 response and creates
+ * our custom HTTPError object from it
+ *
+ * @param {Response} response - the response returned
+ * @param {string} customMessage - custom error message
  */
 export const throwHTTPError = async (response: Response, customMessage?: string): Promise<void> => {
   const responseClone1 = response.clone();
@@ -41,9 +45,11 @@ export const throwHTTPError = async (response: Response, customMessage?: string)
   });
 };
 
-/** a helper to create NetworkError objects, logic is a bit fuzzy since
- * only error.name is standardized across browsers when a network error
- * happens
+/**
+ * a helper to create NetworkError objects, logic is a bit fuzzy since
+ * only error.name is standardized across browsers when a network error happens
+ *
+ * @param {Error} err - error object
  */
 export const throwNetworkError = (err: Error): void => {
   if (err.name === 'TypeError') {

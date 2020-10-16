@@ -7,6 +7,7 @@ module.exports = {
   extends: [
     'react-app',
     'eslint:recommended',
+    'plugin:jsdoc/recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -27,9 +28,9 @@ module.exports = {
     'jest/valid-expect': 'error',
     'jest/no-large-snapshots': ['warn', { maxSize: 50, inlineMaxSize: 6 }],
   },
-  plugins: ['react', '@typescript-eslint', 'prettier', 'jest'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'jest', 'jsdoc'],
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: 'module',
     project: './tsconfig.json',
   },

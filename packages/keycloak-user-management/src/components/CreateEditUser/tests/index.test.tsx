@@ -5,16 +5,39 @@ import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import store from '../../../../../../client/src/store';
+import { store } from '@opensrp/store';
 import fetch from 'jest-fetch-mock';
 import * as keycloakUserDucks from '@opensrp/store';
-import * as fixtures from '../../../forms/tests/fixtures';
-import { CreateEditUsers, Props, ConnectedCreateEditUsers } from '..';
+import * as fixtures from './fixtures';
+import { CreateEditUsers, EditUserProps, ConnectedCreateEditUsers } from '..';
 import flushPromises from 'flush-promises';
+import { KeycloakService } from '@opensrp/keycloak-service';
+import { fetchKeycloakUsers } from '@opensrp/store';
 
 reducerRegistry.register(keycloakUserDucks.reducerName, keycloakUserDucks.reducer);
 
-describe('src/containers/Admin/pages/CreateEditUser', () => {
+describe('components/CreateEditUser', () => {
+  const props = {
+    history,
+    keycloakUser: fixtures.keycloakUser,
+    keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    serviceClass: KeycloakService,
+    fetchKeycloakUsersCreator: fetchKeycloakUsers,
+    accessToken: 'access token',
+    location: {
+      hash: '',
+      pathname: '/somewhere',
+      search: '',
+      state: '',
+    },
+    match: {
+      isExact: true,
+      params: { userId: fixtures.keycloakUser.id },
+      path: `/users/edit/:id`,
+      url: `/users/edit/${fixtures.keycloakUser.id}`,
+    },
+  };
+
   beforeEach(() => {
     fetch.resetMocks();
     store.dispatch(keycloakUserDucks.removeKeycloakUsers());
@@ -22,18 +45,6 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
 
   it('renders CreateEditUsersView without crashing', () => {
     fetch.once(JSON.stringify([]));
-    const mock: jest.Mock = jest.fn();
-    const props = {
-      history,
-      keycloakUser: fixtures.keycloakUser,
-      location: mock,
-      match: {
-        isExact: true,
-        params: { userId: fixtures.keycloakUser.id },
-        path: `/users/edit/:id`,
-        url: `/users/edit/${fixtures.keycloakUser.id}`,
-      },
-    };
 
     act(() => {
       shallow(
@@ -47,20 +58,6 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
   it('renders CreateEditUser view correctly', async () => {
     fetch.once(JSON.stringify([]));
     store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
-    const mock = jest.fn();
-    const props = {
-      // fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      history,
-      keycloakUser: fixtures.keycloakUser,
-      location: mock,
-      match: {
-        isExact: true,
-        params: { userId: fixtures.keycloakUser.id },
-        path: `/user/edit/:id`,
-        url: `/user/edit/${fixtures.keycloakUser.id}`,
-      },
-      // serviceClass: KeycloakService,
-    };
 
     const wrapper = mount(
       <Router history={history}>
@@ -99,7 +96,9 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     // loads a single user,
     store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
     const mock = jest.fn();
-    const props = {
+    const customProps = {
+      ...props,
+      accessToken: 'hunter 2',
       history,
       location: mock,
       match: {
@@ -113,7 +112,7 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     };
     const wrapper = mount(
       <Router history={history}>
-        <CreateEditUsers {...props} />
+        <CreateEditUsers {...customProps} />
       </Router>
     );
 
@@ -160,7 +159,7 @@ describe('src/containers/Admin/pages/CreateEditUser', () => {
     });
 
     const connectedProps = wrapper.find('CreateEditUsers').props();
-    expect((connectedProps as Partial<Props>).keycloakUser).toEqual(fixtures.keycloakUser);
+    expect((connectedProps as Partial<EditUserProps>).keycloakUser).toEqual(fixtures.keycloakUser);
   });
 });
 

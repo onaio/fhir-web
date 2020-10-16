@@ -16,21 +16,23 @@ import {
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
+import { URL_USERS, URL_RESET_PASSWORD } from '../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 /** inteface for route params */
 
-export interface RouteParams {
+export interface CredentialsRouteParams {
   userId: string;
 }
 
 /** props for editing a user view */
-export interface Props {
+export interface CredentialsProps {
   accessToken: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
+  keycloakBaseURL: string;
 }
 
 /** interface for data fields for team's form */
@@ -41,24 +43,32 @@ export interface UserCredentialsFormFields {
 }
 
 /** type intersection for all types that pertain to the props */
-export type PropsTypes = Props & RouteComponentProps<RouteParams>;
+export type CredentialsPropsTypes = CredentialsProps & RouteComponentProps<CredentialsRouteParams>;
 
 /** default props for editing user component */
-export const defaultProps: Partial<PropsTypes> = {
-  accessToken: 'hunter 2',
+export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
+  accessToken: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
 };
 
-/** Handle form submission */
-export const submitForm = (values: UserCredentialsFormFields, props: PropsTypes): void => {
-  const { serviceClass, match, accessToken } = props;
+/**
+ * Handle form submission
+ *
+ * @param {object} values the form fields
+ * @param {object} props the headers
+ */
+export const submitForm = (
+  values: UserCredentialsFormFields,
+  props: CredentialsPropsTypes
+): void => {
+  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
   const userId = match.params.userId;
   const serve = new serviceClass(
     accessToken,
-    `/users/${userId}/reset-password`,
-    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
+    `${URL_USERS}/${userId}${URL_RESET_PASSWORD}`,
+    keycloakBaseURL
   );
   const { password, temporary } = values;
   serve
@@ -82,17 +92,13 @@ export const submitForm = (values: UserCredentialsFormFields, props: PropsTypes)
     });
 };
 
-const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
+const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
   const userId = props.match.params.userId;
   const isEditMode = !!userId;
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 16 },
   };
-
-  //   if (isLoading) {
-  //     return <Ripple />;
-  //   }
 
   return (
     <Col span={12}>
@@ -158,7 +164,7 @@ const UserCredentials: React.FC<PropsTypes> = (props: PropsTypes) => {
   );
 };
 
-UserCredentials.defaultProps = defaultProps;
+UserCredentials.defaultProps = defaultCredentialsProps;
 
 export { UserCredentials };
 
@@ -169,11 +175,14 @@ interface DispatchedProps {
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>, ownProps: PropsTypes): DispatchedProps => {
+const mapStateToProps = (
+  state: Partial<Store>,
+  ownProps: CredentialsPropsTypes
+): DispatchedProps => {
   const userId = ownProps.match.params.userId;
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
-  const keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
   const accessToken = getAccessToken(state) as string;
   return { keycloakUser, accessToken };
 };

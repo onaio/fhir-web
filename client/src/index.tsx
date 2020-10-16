@@ -6,10 +6,7 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App/App';
 import * as serviceWorker from './serviceWorker';
-import store from './store';
-
-// tslint:disable-next-line: ordered-imports
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { store } from '@opensrp/store';
 import './styles/css/index.css';
 
 ReactDOM.render(

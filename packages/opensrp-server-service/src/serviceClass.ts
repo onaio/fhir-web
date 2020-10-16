@@ -9,11 +9,12 @@ export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/ope
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 /** get default HTTP headers for OpenSRP service
+ *
  * @param {string} accessToken - the access token
  * @param {string} accept - the MIME type to accept
  * @param {string} authorizationType - the authorization type
  * @param {string} contentType - the content type
- * @return {IncomingHttpHeaders} - the headers
+ * @returns {IncomingHttpHeaders} - the headers
  */
 export function getDefaultHeaders(
   accessToken = 'hunter2',
@@ -29,9 +30,10 @@ export function getDefaultHeaders(
 }
 
 /** get payload for fetch
+ *
  * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
- * @param {HTTPMethod} method - the HTTP method
- * @returns the payload
+ * @param {string} method - the HTTP method
+ * @returns {object} - the payload
  */
 export function getFetchOptions(
   signal: AbortSignal,
@@ -86,10 +88,11 @@ export class OpenSRPService {
 
   /**
    * Constructor method
-   * @param endpoint - the OpenSRP endpoint
-   * @param baseURL - the base OpenSRP API URL
-   * @param getURL - a function to get the URL
-   * @param getPayload - a function to get the payload
+   *
+   * @param {string} baseURL - the base OpenSRP API URL
+   * @param {string} endpoint - the OpenSRP endpoint
+   * @param {function()} getPayload - a function to get the payload
+   * @param {AbortController} signal - abort signal
    */
   constructor(
     baseURL: string = OPENSRP_API_BASE_URL,
@@ -105,8 +108,9 @@ export class OpenSRPService {
   }
 
   /** appends any query params to the url as a querystring
-   * @param {string} url - the url
-   * @param {paramsType} params - the url params object
+   *
+   * @param {string} generalUrl - the url
+   * @param {object} params - the url params object
    * @returns {string} the final url
    */
   public static getURL(generalUrl: string, params: paramsType): string {
@@ -117,7 +121,8 @@ export class OpenSRPService {
   }
 
   /** converts filter params object to string
-   * @param {URLParams} obj - the object representing filter params
+   *
+   * @param {object} obj - the object representing filter params
    * @returns {string} filter params as a string
    */
   public static getFilterParams(obj: URLParams | Record<string, unknown>): string {
@@ -129,10 +134,11 @@ export class OpenSRPService {
   /** create method
    * Send a POST request to the general endpoint containing the new object data
    * Successful requests will result in a HTTP status 201 response with no body
-   * @param {T} data - the data to be POSTed
+   *
+   * @param {object} data - the data to be POSTed
    * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns the object returned by API
+   * @param {string} method - the HTTP method
+   * @returns {object} the object returned by API
    */
   public async create<T>(
     data: T,
@@ -161,10 +167,11 @@ export class OpenSRPService {
 
   /** read method
    * Send a GET request to the url for the specific object
+   *
    * @param {string|number} id - the identifier of the object
    * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns the object returned by API
+   * @param {string} method - the HTTP method
+   * @returns {object} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
@@ -188,10 +195,11 @@ export class OpenSRPService {
   /** update method
    * Simply send the updated object as PUT request to the general endpoint URL
    * Successful requests will result in a HTTP status 200/201 response with no body
-   * @param {T} data - the data to be POSTed
+   *
+   * @param {object} data - the data to be POSTed
    * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns the object returned by API
+   * @param {string} method - the HTTP method
+   * @returns {object} the object returned by API
    */
   public async update<T>(
     data: T,
@@ -219,9 +227,10 @@ export class OpenSRPService {
 
   /** list method
    * Send a GET request to the general API endpoint
+   *
    * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns list of objects returned by API
+   * @param {string} method - the HTTP method
+   * @returns {object} list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
@@ -240,9 +249,10 @@ export class OpenSRPService {
   /** delete method
    * Send a DELETE request to the general endpoint
    * Successful requests will result in a HTTP status 204
+   *
    * @param {params} params - the url params object
-   * @param {HTTPMethod} method - the HTTP method
-   * @returns the object returned by API
+   * @param {string} method - the HTTP method
+   * @returns {object} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async delete<T>(
