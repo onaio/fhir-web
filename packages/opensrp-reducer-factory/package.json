@@ -10,7 +10,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/opensrp/opensrp-web",
+  "repository": "https://github.com/OpenSRP/web/",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
     "test": "cd ../../ && jest test  packages/opensrp-reducer-factory --verbose --collectCoverage=true && cd packages/opensrp-reducer-factory",
