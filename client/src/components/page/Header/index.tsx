@@ -5,8 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Menu, Layout, Avatar, Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import './Header.css';
-import { BACKEND_ACTIVE } from '../../../configs/env';
-import { URL_BACKEND_LOGIN, URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
+import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import {
   SearchOutlined,
@@ -37,7 +36,7 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
-  const { user_id, roles } = extraData;
+  const { user_id } = extraData;
   return (
     <Layout.Header className="txt-white align-items-center justify-content-end px-1">
       <Button

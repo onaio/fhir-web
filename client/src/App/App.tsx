@@ -35,8 +35,6 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
-// import reducerRegistry from '@onaio/redux-reducer-registry';
-// import ConnectedAdminView from '../containers/pages/Admin';
 
 const { Content } = Layout;
 

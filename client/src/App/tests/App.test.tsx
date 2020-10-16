@@ -45,7 +45,7 @@ describe('App', () => {
       </Provider>
     );
     // before resolving get oauth state request, the user is logged out
-    expect(wrapper.text()).toMatchInlineSnapshot(`"···Home···Login···"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"AdminMenu ItemMenu ItemLogin"`);
 
     await act(async () => {
       await new Promise<unknown>((resolve) => setImmediate(resolve));

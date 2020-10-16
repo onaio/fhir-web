@@ -1,120 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/ConnectedHeader renders the ConnectedHeader component 1`] = `
+exports[`components/ConnectedSidebar renders the ConnectedSidebar component 1`] = `
 Object {
   "children": Array [
     <div
-      className="logo"
+      className="ant-layout-sider-children"
     >
-      <Image
-        src="test-file-stub"
-        width={200}
-      />
-    </div>,
-    <Menu
-      mode="horizontal"
-      selectedKeys={
-        Array [
-          "/",
-        ]
-      }
-    >
-      <MenuItem>
+      <div
+        className="logo"
+      >
         <Link
           to="/"
         >
-          Home
+          <img
+            alt=""
+            className="img-fluid"
+            src="test-file-stub"
+          />
         </Link>
-      </MenuItem>
-      <MenuItem
-        style={
-          Object {
-            "float": "right",
-          }
+      </div>
+      <Menu
+        defaultSelectedKeys={
+          Array [
+            "1",
+          ]
         }
+        mode="inline"
+        theme="dark"
       >
-        <Link
-          to="/login"
+        <SubMenu
+          icon={<ForwardRef(DashboardOutlined) />}
+          title="Admin"
         >
-          Login
-        </Link>
-      </MenuItem>
-    </Menu>,
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/teams"
+            >
+              Teams
+            </Link>
+          </MenuItem>
+          <SubMenu
+            title="Locations"
+          >
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/locations-unit"
+              >
+                Locations unit
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              Locations unit group
+            </MenuItem>
+            <MenuItem>
+              Locations unit group set
+            </MenuItem>
+          </SubMenu>
+        </SubMenu>
+        <SubMenu
+          icon={<ForwardRef(FormOutlined) />}
+          title="Menu Item"
+        >
+          <MenuItem>
+            Menu 1
+          </MenuItem>
+          <MenuItem>
+            Menu 2
+          </MenuItem>
+        </SubMenu>
+        <SubMenu
+          icon={<ForwardRef(InsertRowAboveOutlined) />}
+          title="Menu Item"
+        >
+          <MenuItem>
+            Menu 3
+          </MenuItem>
+          <MenuItem>
+            Menu 4
+          </MenuItem>
+        </SubMenu>
+      </Menu>
+    </div>,
+    null,
   ],
+  "className": "ant-layout-sider ant-layout-sider-dark",
+  "style": Object {
+    "flex": "0 0 275px",
+    "maxWidth": "275px",
+    "minWidth": "275px",
+    "width": "275px",
+  },
 }
 `;
 
-exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
-Object {
-  "children": Array [
-    <div
-      className="logo"
-    >
-      <Image
-        src="test-file-stub"
-        width={200}
-      />
-    </div>,
-    <Menu
-      mode="horizontal"
-      selectedKeys={
-        Array [
-          "/",
-        ]
-      }
-    >
-      <MenuItem>
-        <Link
-          to="/"
-        >
-          Home
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          to="/admin"
-        >
-          Admin
-        </Link>
-      </MenuItem>
-      <SubMenu
-        style={
-          Object {
-            "float": "right",
-          }
-        }
-        title={
-          <div>
-            <span>
-              RobertBaratheon
-            </span>
-            <span>
-               
-            </span>
-            <Avatar
-              icon={<ForwardRef(UserOutlined) />}
-              shape="square"
-              size="default"
-            />
-          </div>
-        }
-      >
-        <MenuItem>
-          <Link
-            to="/logout"
-          >
-            Logout
-          </Link>
-        </MenuItem>
-        <MenuItem>
-          <Link
-            to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-          >
-            Manage account
-          </Link>
-        </MenuItem>
-      </SubMenu>
-    </Menu>,
-  ],
-}
-`;
+exports[`components/ConnectedSidebar renders the ConnectedSidebar when logged in 1`] = `ReactWrapper {}`;
