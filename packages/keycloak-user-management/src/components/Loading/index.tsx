@@ -20,7 +20,12 @@ export const defaultProps: Partial<RippleProps> = {
   width: '64px',
 };
 
-/** Loading component that displays a nice ripple */
+/**
+ * Loading component that displays a nice ripple
+ *
+ * @param {object} props - the ripple styles
+ * @returns {Element} - display the loader
+ */
 const Ripple: React.FC<RippleProps> = (props: RippleProps) => {
   const { borderColor, borderStyle, borderWidth, height, minHeight, width } = props;
 

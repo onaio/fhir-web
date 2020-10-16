@@ -30,6 +30,12 @@ const initialState: MessageState = {
   messages: [],
 };
 
+/**
+ *
+ * @param {object} state The initial value
+ * @param {object} action - should have type or payload
+ * @returns {Object} object be used to initialize a Redux store
+ */
 export default function reducer(state = initialState, action: MessageActionTypes): MessageState {
   switch (action.type) {
     case SEND_MESSAGE:
@@ -53,18 +59,30 @@ export const sendMessage: ActionCreator<SendMessageAction> = (newMessage: Messag
   type: SEND_MESSAGE,
 });
 
-/** Action to remove all Messages from store */
+/** Action to remove all Messages from store
+ *
+ * @returns {Object} to dispatch the action
+ */
 export const removeMessagesAction: ActionCreator<RemoveMessagesAction> = () => {
   return {
     type: REMOVE_MESSAGES,
   };
 };
 
-// selectors
+/** select all messages
+ *
+ * @param {any} state -
+ * @returns {Object} to dispatch the action
+ */
 export function selectAllMessages(state: Partial<Store>): Message[] {
   return (state as { [key: string]: MessageState })[reducerName].messages;
 }
 
+/** select one message
+ *
+ * @param {any} state -
+ * @returns {Object} to dispatch the action
+ */
 export function selectOneMessage(state: Partial<Store>): Message | null {
   return (state as { [key: string]: MessageState })[reducerName].messages[0] || null;
 }
