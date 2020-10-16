@@ -15,10 +15,17 @@ import { CustomLogout } from '../components/Logout';
 import {
   WEBSITE_NAME,
   BACKEND_ACTIVE,
-  DEFAULT_LANGUAGE,
   KEYCLOAK_API_BASE_URL,
+  DEFAULT_LANGUAGE,
 } from '../configs/env';
-import { REACT_CALLBACK_PATH, URL_BACKEND_LOGIN, URL_REACT_LOGIN, URL_LOGOUT } from '../constants';
+import {
+  REACT_CALLBACK_PATH,
+  URL_BACKEND_CALLBACK,
+  URL_BACKEND_LOGIN,
+  BACKEND_CALLBACK_PATH,
+  URL_REACT_LOGIN,
+  URL_LOGOUT,
+} from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
@@ -46,13 +53,12 @@ const App: React.FC = () => {
     interpolation: { escapeValue: false },
   });
 
+  const APP_CALLBACK_URL = BACKEND_ACTIVE ? URL_BACKEND_CALLBACK : URL_REACT_LOGIN;
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
   const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
-  const APP_CALLBACK_URL = BACKEND_ACTIVE ? REACT_CALLBACK_PATH : APP_LOGIN_URL;
-  const APP_CALLBACK_PATH = BACKEND_ACTIVE ? REACT_CALLBACK_PATH : REACT_CALLBACK_PATH;
+  const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
-
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
