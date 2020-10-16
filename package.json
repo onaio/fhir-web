@@ -20,11 +20,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix --max-warnings 0",
+      "eslint --fix",
       "git add"
     ],
     "*.{js,jsx}": [
-      "eslint --fix --max-warnings 0",
+      "eslint --fix",
       "git add"
     ],
     "*.{json,js,jsx,ts,tsx,css,scss,md}": [
