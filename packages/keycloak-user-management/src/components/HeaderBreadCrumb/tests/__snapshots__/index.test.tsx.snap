@@ -152,8 +152,6 @@ exports[`components/HeaderBreadCrumb renders the HeadeBreadCrumb component 1`] =
                 className="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
               >
                 <ForwardRef(Dropdown)
-                  mouseEnterDelay={0.1}
-                  mouseLeaveDelay={0.1}
                   onVisibleChange={[Function]}
                   overlay={
                     <Menu
@@ -328,7 +326,7 @@ exports[`components/HeaderBreadCrumb renders the HeadeBreadCrumb component 1`] =
                     hideAction={Array []}
                     mask={false}
                     maskClosable={true}
-                    mouseEnterDelay={0.1}
+                    mouseEnterDelay={0}
                     mouseLeaveDelay={0.1}
                     onPopupAlign={[Function]}
                     onPopupVisibleChange={[Function]}
@@ -831,8 +829,6 @@ exports[`components/HeaderBreadCrumb renders the users breadcrumb when userId is
                 className="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
               >
                 <ForwardRef(Dropdown)
-                  mouseEnterDelay={0.1}
-                  mouseLeaveDelay={0.1}
                   onVisibleChange={[Function]}
                   overlay={
                     <Menu
@@ -1007,7 +1003,7 @@ exports[`components/HeaderBreadCrumb renders the users breadcrumb when userId is
                     hideAction={Array []}
                     mask={false}
                     maskClosable={true}
-                    mouseEnterDelay={0.1}
+                    mouseEnterDelay={0}
                     mouseLeaveDelay={0.1}
                     onPopupAlign={[Function]}
                     onPopupVisibleChange={[Function]}
