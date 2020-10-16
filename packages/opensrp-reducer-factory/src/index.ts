@@ -1,4 +1,5 @@
-import { get, keyBy, values, Dictionary } from 'lodash';
+import { get, keyBy, values } from 'lodash';
+import { Dictionary } from '@onaio/utils';
 import { AnyAction, Store } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
 
@@ -16,12 +17,6 @@ export const FETCHED = 'opensrp/reducer/objects/FETCHED';
 export const REMOVE = 'opensrp/reducer/objects/REMOVE';
 /** SET_TOTAL_RECORDS action type */
 export const SET_TOTAL_RECORDS = 'opensrp/reducer/objects/SET_TOTAL_RECORDS';
-
-/** Interface for an object that is allowed to have any property */
-export interface FlexObject {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
 
 /** interface for authorize action
  *  generic type - object type being handled by this function
@@ -238,5 +233,5 @@ export const getTotalRecordsFactory = (reducerName: string) =>
    * @returns { number } - total records value from the store
    */
   function (state: Partial<Store>): number {
-    return (state as FlexObject)[reducerName].totalRecords;
+    return (state as Dictionary)[reducerName].totalRecords;
   };
