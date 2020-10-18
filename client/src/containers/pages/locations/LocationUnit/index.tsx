@@ -59,28 +59,6 @@ interface tree {
   children?: tree[];
 }
 
-// const gData: tree[] = [
-//   {
-//     title: 'Sierra Leone',
-//     key: 'Sierra Leone',
-//     children: [
-//       { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-//       { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-//       {
-//         title: 'Bonthe',
-//         key: 'Bonthe',
-//         children: [
-//           {
-//             title: 'Kissi Ten',
-//             key: 'Kissi Ten',
-//             children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-//           },
-//         ],
-//       },
-//     ],
-//   },
-// ];
-
 function getParentKey(key: any, tree: string | any[]): any {
   let parentKey;
   for (let i = 0; i < tree.length; i++) {
@@ -117,8 +95,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
     <td {...restProps}>
       {editing ? (
         <Form.Item
+          className="mb-0"
           name={dataIndex}
-          style={{ margin: 0 }}
           rules={[{ required: true, message: `Please Input ${title}!` }]}
         >
           <Input />
@@ -143,8 +121,9 @@ const LocationUnit = () => {
   const y = 2;
   const z = 1;
   const gData: tree[] = [];
+  const dataList: tree[] = [];
 
-  const generateData = (_level: any, _preKey?: any, _tns?: any) => {
+  function generateData(_level: any, _preKey?: any, _tns?: any) {
     const preKey = _preKey || '0';
     const tns = _tns || gData;
 
@@ -164,100 +143,22 @@ const LocationUnit = () => {
       tns[index].children = [];
       return generateData(level, key, tns[index].children);
     });
-  };
+  }
 
-  generateData(z);
+  function isEditing(record: Item) {
+    return record.key === editingKey;
+  }
 
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      editable: true,
-      sorter: (a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name),
-    },
-    {
-      title: 'Level',
-      dataIndex: 'level',
-      editable: true,
-      sorter: (a: { level: number }, b: { level: number }) => a.level - b.level,
-    },
-    {
-      title: 'Last Updated',
-      dataIndex: 'lastupdated',
-      render: (_: any, record: Item) => record.lastupdated.toLocaleDateString('en-US'),
-      editable: true,
-      sorter: (a: { lastupdated: Date }, b: { lastupdated: Date }) =>
-        a.lastupdated.toLocaleString('en-US').localeCompare(b.lastupdated.toLocaleString('en-US')),
-    },
-    {
-      title: 'Actions',
-      dataIndex: 'operation',
-      width: '10%',
-      render: (_: any, record: Item) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <p onClick={() => save(record.key)} style={{ marginRight: 8 }}>
-              Save
-            </p>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <p>Cancel</p>
-            </Popconfirm>
-          </span>
-        ) : (
-          <span className="d-flex justify-content-around align-items-center">
-            <p
-              className="mb-0 cursor-pointer text-center ant-picker-today-btn"
-              onClick={() => edit(record)}
-            >
-              Edit
-            </p>
-            <Divider type="vertical" />
-            <Dropdown
-              overlay={
-                <Menu>
-                  <Menu.Item onClick={() => setDetail(record)}>View Details</Menu.Item>
-                </Menu>
-              }
-              placement="bottomLeft"
-              arrow
-              trigger={['click']}
-            >
-              <MoreOutlined className="more-options" />
-            </Dropdown>
-          </span>
-        );
-      },
-    },
-  ];
-
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) return col;
-
-    return {
-      ...col,
-      onCell: (record: Item) => ({
-        record,
-        lastupdated: record.created.toLocaleDateString('en-US'),
-        created: record.created.toLocaleDateString('en-US'),
-        inputType: col.dataIndex === 'level' ? 'number' : 'text',
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
-
-  const isEditing = (record: Item) => record.key === editingKey;
-
-  const edit = (record: Item) => {
+  function edit(record: Item) {
     form.setFieldsValue({ ...record });
     setEditingKey(record.key);
-  };
+  }
 
-  const cancel = () => setEditingKey('');
+  function cancel() {
+    return setEditingKey('');
+  }
 
-  const save = async (key: React.Key) => {
+  async function save(key: React.Key) {
     try {
       const row = (await form.validateFields()) as Item;
       const newData = [...data];
@@ -275,19 +176,16 @@ const LocationUnit = () => {
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
-  };
+  }
 
-  const dataList: tree[] = [];
-  const generateList = (data: tree[]): any => {
+  function generateList(data: tree[]): any {
     for (let i = 0; i < data.length; i++) {
       const node = data[i];
       const { key } = node;
       dataList.push({ key, title: key });
       if (node.children) generateList(node.children);
     }
-  };
-
-  generateList(dataList);
+  }
 
   function onExpand(expandedKeys: any) {
     setExpandedKeys(expandedKeys);
@@ -328,6 +226,93 @@ const LocationUnit = () => {
     });
   }
 
+  generateData(z);
+
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      editable: true,
+      sorter: (a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name),
+    },
+    {
+      title: 'Level',
+      dataIndex: 'level',
+      editable: true,
+      sorter: (a: { level: number }, b: { level: number }) => a.level - b.level,
+    },
+    {
+      title: 'Last Updated',
+      dataIndex: 'lastupdated',
+      render: (_: any, record: Item) => record.lastupdated.toLocaleDateString('en-US'),
+      editable: true,
+      sorter: (a: { lastupdated: Date }, b: { lastupdated: Date }) =>
+        a.lastupdated.toLocaleString('en-US').localeCompare(b.lastupdated.toLocaleString('en-US')),
+    },
+    {
+      title: 'Actions',
+      dataIndex: 'operation',
+      width: '10%',
+      render: (_: any, record: Item) => {
+        const editable = isEditing(record);
+        return (
+          <span className="d-flex justify-content-around align-items-center">
+            {editable ? (
+              <>
+                <Button type="text" onClick={() => save(record.key)}>
+                  Save
+                </Button>
+                <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+                  <Button type="text" onClick={() => save(record.key)}>
+                    Cancel
+                  </Button>
+                </Popconfirm>
+              </>
+            ) : (
+              <>
+                <Button type="text" onClick={() => edit(record)}>
+                  Edit
+                </Button>
+                <Divider type="vertical" />
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item onClick={() => setDetail(record)}>View Details</Menu.Item>
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  arrow
+                  trigger={['click']}
+                >
+                  <MoreOutlined className="more-options" />
+                </Dropdown>
+              </>
+            )}
+          </span>
+        );
+      },
+    },
+  ];
+
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) return col;
+
+    return {
+      ...col,
+      onCell: (record: Item) => ({
+        record,
+        lastupdated: record.created.toLocaleDateString('en-US'),
+        created: record.created.toLocaleDateString('en-US'),
+        inputType: col.dataIndex === 'level' ? 'number' : 'text',
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
+
+  generateList(dataList);
+
   return (
     <section>
       <Helmet>
@@ -352,7 +337,7 @@ const LocationUnit = () => {
             />
           </div>
         </Col>
-        <Col className="bg-white p-3 border-left" span={detail ? 12 : 18}>
+        <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between">
             <h5 className="mt-4">Bombali</h5>
             <div>
@@ -386,7 +371,7 @@ const LocationUnit = () => {
         </Col>
 
         {detail && (
-          <Col className="pl-3" span={6}>
+          <Col className="pl-3" span={5}>
             <LocationDetail onClose={() => setDetail(null)} {...detail} />
           </Col>
         )}
