@@ -34,7 +34,7 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import LocationUnit from '../containers/pages/Location/LocationUnit';
+import ConnectedLocationUnitComponent from '../containers/pages/locations/LocationUnit';
 
 const { Content } = Layout;
 
@@ -100,7 +100,7 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path={URL_LOCATIONS_UNIT}
-              component={LocationUnit}
+              component={ConnectedLocationUnitComponent}
             />
             <Route
               exact
