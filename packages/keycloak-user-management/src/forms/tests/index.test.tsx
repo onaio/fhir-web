@@ -59,7 +59,7 @@ describe('src/components/UserForm', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter 2',
+          authorization: 'Bearer access token',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
