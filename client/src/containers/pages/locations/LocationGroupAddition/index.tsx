@@ -6,6 +6,8 @@ interface Props {}
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 8 } };
+
+/* eslint-disable no-template-curly-in-string */
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -16,6 +18,7 @@ const validateMessages = {
     range: '${label} must be between ${min} and ${max}',
   },
 };
+/* eslint-enable no-template-curly-in-string */
 
 const location = [
   { name: 'Option 1', value: 'Option1' },
