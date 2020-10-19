@@ -32,6 +32,10 @@ jobs:
           command: yarn install
 
       - run:
+          name: Install Client dependencies
+          command: cd client && yarn install
+
+      - run:
           name: Run ts linter
           command: yarn lint
 
