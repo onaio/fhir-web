@@ -1,5 +1,4 @@
 import { mount, shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 import Fallback from '..';
 
@@ -10,7 +9,6 @@ describe('/components/Fallback', () => {
 
   it('render correctly', () => {
     const wrapper = mount(<Fallback />);
-    expect(toJson(wrapper)).toMatchSnapshot();
     expect(wrapper.find('Result')).toHaveLength(1);
     expect(wrapper.find('Result').prop('status')).toBe('error');
     expect(wrapper.find('Result').prop('title')).toBe('An Error Occurred');
