@@ -104,7 +104,7 @@
     "typescript": "~3.7.2"
   },
   "resolutions": {
-    "react-scripts/jest": "25.3.0"
+    "react-scripts/jest": "24.9.0"
   },
   "workspaces": [
     "client/*",
