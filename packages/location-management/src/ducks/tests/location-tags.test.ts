@@ -46,9 +46,9 @@ describe('src/ducks/location-tags', () => {
 
   it('removes location tags correctly', () => {
     store.dispatch(fetchLocationTags([locationTag1, locationTag2] as LocationTag[]));
-    expect(getLocationTagsArray(store.getState()).length).toEqual(2);
+    expect(getLocationTagsArray(store.getState()).length).toHaveLength(2);
 
     store.dispatch(removeLocationTags());
-    expect(getLocationTagsArray(store.getState()).length).toEqual(0);
+    expect(getLocationTagsArray(store.getState()).length).toHaveLength(0);
   });
 });
