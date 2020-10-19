@@ -110,6 +110,6 @@
     "react-router-dom": "^5.2.0"
   },
   "resolutions": {
-    "react-scripts/jest": "25.3.0"
+    "react-scripts/jest": "24.9.0"
   }
 }
