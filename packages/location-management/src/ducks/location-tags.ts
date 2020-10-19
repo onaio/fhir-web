@@ -20,19 +20,29 @@ export interface LocationTag {
 /** reducer name for the Item module */
 export const reducerName = 'location-tags';
 
+/** Action types */
+const customfetchedActionType = 'location-tags/LOCATION_TAGS_FETCHED';
+const customRemoveActionType = 'location-tags/REMOVE_LOCATION_TAGS';
+const customSetTotalRecordsActionType = 'location-tags/SET_TOTAL_LOCATION_TAGS';
+
 /** Item Reducer */
-const reducer = reducerFactory<LocationTag>(reducerName);
+const reducer = reducerFactory<LocationTag>(
+  reducerName,
+  customfetchedActionType,
+  customRemoveActionType,
+  customSetTotalRecordsActionType
+);
 
 // action
 /** actionCreator returns action to to add Item records to store */
-export const fetchItem = fetchActionCreatorFactory<LocationTag>(reducerName, 'id');
-export const removeItemAction = removeActionCreatorFactory(reducerName);
-export const setTotalItemRecords = setTotalRecordsFactory(reducerName);
+export const fetchLocationTags = fetchActionCreatorFactory<LocationTag>(reducerName, 'id');
+export const removeLocationTags = removeActionCreatorFactory(reducerName);
+export const setTotalLocationtags = setTotalRecordsFactory(reducerName);
 
 // selectors
-export const getAllItemById = getItemsByIdFactory<LocationTag>(reducerName);
-export const getItemById = getItemByIdFactory<LocationTag>(reducerName);
-export const getAllItemArray = getItemsArrayFactory<LocationTag>(reducerName);
-export const getTotalItemRecords = getTotalRecordsFactory(reducerName);
+export const getLocationTagsById = getItemsByIdFactory<LocationTag>(reducerName);
+export const getLocationTagById = getItemByIdFactory<LocationTag>(reducerName);
+export const getLocationTagsArray = getItemsArrayFactory<LocationTag>(reducerName);
+export const getTotalLocationTags = getTotalRecordsFactory(reducerName);
 
 export default reducer;

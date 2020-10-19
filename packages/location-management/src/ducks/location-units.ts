@@ -64,19 +64,29 @@ export interface LocationUnitPayload {
 /** reducer name for the Item module */
 export const reducerName = 'location-units';
 
+/** Action types */
+const customfetchedActionType = 'location-units/LOCATION_UNITS_FETCHED';
+const customRemoveActionType = 'location-units/REMOVE_LOCATION_UNITS';
+const customSetTotalRecordsActionType = 'location-units/SET_TOTAL_LOCATION_UNITS';
+
 /** Item Reducer */
-const reducer = reducerFactory<LocationUnit>(reducerName);
+const reducer = reducerFactory<LocationUnit>(
+  reducerName,
+  customfetchedActionType,
+  customRemoveActionType,
+  customSetTotalRecordsActionType
+);
 
 // action
 /** actionCreator returns action to to add Item records to store */
-export const fetchItem = fetchActionCreatorFactory<LocationUnit>(reducerName, 'id');
-export const removeItemAction = removeActionCreatorFactory(reducerName);
-export const setTotalItemRecords = setTotalRecordsFactory(reducerName);
+export const fetchLocationUnits = fetchActionCreatorFactory<LocationUnit>(reducerName, 'id');
+export const removeLocationUnits = removeActionCreatorFactory(reducerName);
+export const setTotalLocationUnits = setTotalRecordsFactory(reducerName);
 
 // selectors
-export const getAllItemById = getItemsByIdFactory<LocationUnit>(reducerName);
-export const getItemById = getItemByIdFactory<LocationUnit>(reducerName);
-export const getAllItemArray = getItemsArrayFactory<LocationUnit>(reducerName);
-export const getTotalItemRecords = getTotalRecordsFactory(reducerName);
+export const getLocationsUnitsById = getItemsByIdFactory<LocationUnit>(reducerName);
+export const getLocationUnitById = getItemByIdFactory<LocationUnit>(reducerName);
+export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerName);
+export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
 
 export default reducer;
