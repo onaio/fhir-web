@@ -46,9 +46,9 @@ describe('src/ducks/location-units', () => {
 
   it('removes location units correctly', () => {
     store.dispatch(fetchLocationUnits([locationUnit1, locationUnit2] as LocationUnit[]));
-    expect(getLocationUnitsArray(store.getState()).length).toHaveLength(2);
+    expect(getLocationUnitsArray(store.getState())).toHaveLength(2);
 
     store.dispatch(removeLocationUnits());
-    expect(getLocationUnitsArray(store.getState()).length).toHaveLength(0);
+    expect(getLocationUnitsArray(store.getState())).toHaveLength(0);
   });
 });
