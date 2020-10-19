@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.getTotalLocationUnits = exports.getLocationUnitsArray = exports.getLocationUnitById = exports.getLocationsUnitsById = exports.setTotalLocationUnits = exports.removeLocationUnits = exports.fetchLocationUnits = exports.reducerName = exports.LocationUnitStatus = void 0;
+exports["default"] = exports.getTotalLocationUnits = exports.getLocationUnitsArray = exports.getLocationUnitById = exports.getLocationUnitsById = exports.setTotalLocationUnits = exports.removeLocationUnits = exports.fetchLocationUnits = exports.reducerName = exports.LocationUnitStatus = void 0;
 
 var _reducerFactory = require("@opensrp/reducer-factory");
 
@@ -27,8 +27,8 @@ var removeLocationUnits = (0, _reducerFactory.removeActionCreatorFactory)(reduce
 exports.removeLocationUnits = removeLocationUnits;
 var setTotalLocationUnits = (0, _reducerFactory.setTotalRecordsFactory)(reducerName);
 exports.setTotalLocationUnits = setTotalLocationUnits;
-var getLocationsUnitsById = (0, _reducerFactory.getItemsByIdFactory)(reducerName);
-exports.getLocationsUnitsById = getLocationsUnitsById;
+var getLocationUnitsById = (0, _reducerFactory.getItemsByIdFactory)(reducerName);
+exports.getLocationUnitsById = getLocationUnitsById;
 var getLocationUnitById = (0, _reducerFactory.getItemByIdFactory)(reducerName);
 exports.getLocationUnitById = getLocationUnitById;
 var getLocationUnitsArray = (0, _reducerFactory.getItemsArrayFactory)(reducerName);

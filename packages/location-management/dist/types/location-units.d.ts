@@ -17,7 +17,7 @@ export interface Properties {
 }
 /** location tag interface */
 export interface LocationTag {
-    id: string;
+    id: string | number;
     name: string;
 }
 /** geometry interface */
@@ -27,7 +27,7 @@ export interface Geometry {
 }
 /** location interface */
 export interface LocationUnit {
-    id: string;
+    id: string | number;
     properties: Properties;
     syncStatus: string;
     type: string;
@@ -52,7 +52,7 @@ declare const reducer: (state: import("@opensrp/reducer-factory/dist/types").Imm
 export declare const fetchLocationUnits: (objectsList?: LocationUnit[] | undefined) => import("@opensrp/reducer-factory/dist/types").FetchAction<LocationUnit>;
 export declare const removeLocationUnits: () => import("@opensrp/reducer-factory/dist/types").RemoveAction;
 export declare const setTotalLocationUnits: (totalCount: number) => import("@opensrp/reducer-factory/dist/types").SetTotalRecordsAction;
-export declare const getLocationsUnitsById: (state: Partial<import("redux").Store<any, import("redux").AnyAction>>) => import("@onaio/utils/dist/types/types").Dictionary<LocationUnit>;
+export declare const getLocationUnitsById: (state: Partial<import("redux").Store<any, import("redux").AnyAction>>) => import("@onaio/utils/dist/types/types").Dictionary<LocationUnit>;
 export declare const getLocationUnitById: (state: Partial<import("redux").Store<any, import("redux").AnyAction>>, id: string) => LocationUnit | null;
 export declare const getLocationUnitsArray: (state: Partial<import("redux").Store<any, import("redux").AnyAction>>) => LocationUnit[];
 export declare const getTotalLocationUnits: (state: Partial<import("redux").Store<any, import("redux").AnyAction>>) => number;
