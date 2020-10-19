@@ -30,7 +30,7 @@ export interface Properties {
 
 /** location tag interface */
 export interface LocationTag {
-  id: string;
+  id: string | number;
   name: string;
 }
 
@@ -42,7 +42,7 @@ export interface Geometry {
 
 /** location interface */
 export interface LocationUnit {
-  id: string;
+  id: string | number;
   properties: Properties;
   syncStatus: string;
   type: string;
@@ -84,7 +84,7 @@ export const removeLocationUnits = removeActionCreatorFactory(reducerName);
 export const setTotalLocationUnits = setTotalRecordsFactory(reducerName);
 
 // selectors
-export const getLocationsUnitsById = getItemsByIdFactory<LocationUnit>(reducerName);
+export const getLocationUnitsById = getItemsByIdFactory<LocationUnit>(reducerName);
 export const getLocationUnitById = getItemByIdFactory<LocationUnit>(reducerName);
 export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerName);
 export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
