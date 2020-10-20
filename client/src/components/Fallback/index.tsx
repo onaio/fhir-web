@@ -11,11 +11,11 @@ const Fallback: React.FC = () => {
       title="An Error Occurred"
       subTitle="There has been an error. It’s been reported to the site administrators via email and
       should be fixed shortly. Thanks for your patience."
-      extra={[
-        <Button key="error" onClick={() => history.push('/')} type="primary">
+      extra={
+        <Button id="backHome" key="error" onClick={() => history.push('/')} type="primary">
           Back Home
-        </Button>,
-      ]}
+        </Button>
+      }
     />
   );
 };
