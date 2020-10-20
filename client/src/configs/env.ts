@@ -1,6 +1,6 @@
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'English';
 
-export const REACT_APP_LANGUAGE_SWITCHER = process.env.REACT_APP_LANGUAGE_SWITCHER || false;
+export const REACT_APP_LANGUAGE_SWITCHER = process.env.REACT_APP_LANGUAGE_SWITCHER === 'true';
 
 export const WEBSITE_NAME = process.env.REACT_APP_WEBSITE_NAME || 'OpenSRP Web';
 

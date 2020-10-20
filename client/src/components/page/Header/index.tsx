@@ -48,6 +48,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const isAdmin = roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS');
   const path = props.location.pathname;
   const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
+
   return (
     <div>
       <Layout.Header>
@@ -58,7 +59,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Menu.Item key={URL_HOME}>
             <Link to={URL_HOME}>Home</Link>
           </Menu.Item>
-          {REACT_APP_LANGUAGE_SWITCHER && (
+          {(process.env.REACT_APP_LANGUAGE_SWITCHER === 'true' || REACT_APP_LANGUAGE_SWITCHER) && (
             <SubMenu title="Language" style={{ float: 'right' }}>
               {Object.keys(languages).map((language) => (
                 <Menu.Item onClick={() => i18next.changeLanguage(language)} key={language}>
