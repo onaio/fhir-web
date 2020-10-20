@@ -43,7 +43,9 @@ export const LocationUnitGroupAdd: React.FC<Props> = () => {
       <Helmet>
         <title>Add Location Unit Group</title>
       </Helmet>
+
       <h5 className="mb-3">Add Location Unit Group</h5>
+
       <div className="bg-white p-5">
         <Form
           {...layout}
@@ -60,7 +62,9 @@ export const LocationUnitGroupAdd: React.FC<Props> = () => {
               filterOption={filter}
             >
               {location.map((e) => (
-                <Select.Option value={e.value}>{e.name}</Select.Option>
+                <Select.Option chec key={e.value} value={e.value}>
+                  {e.name}
+                </Select.Option>
               ))}
             </Select>
           </Form.Item>
@@ -71,7 +75,13 @@ export const LocationUnitGroupAdd: React.FC<Props> = () => {
             valuePropName="checked"
             rules={[{ required: true }]}
           >
-            <Radio.Group options={status} defaultValue={initialvalue.status} />
+            <Radio.Group defaultValue={initialvalue.status}>
+              {status.map((e) => (
+                <Radio key={e.value} value={e.value}>
+                  {e.label}
+                </Radio>
+              ))}
+            </Radio.Group>
           </Form.Item>
 
           <Form.Item name="type" label="Type" rules={[{ required: true }]}>
