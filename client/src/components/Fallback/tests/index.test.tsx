@@ -1,9 +1,10 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import Fallback from '..';
+const mockHistoryPush = jest.fn();
 jest.mock('react-router', () => ({
   useHistory: () => ({
-    push: jest.fn(),
+    push: mockHistoryPush,
   }),
 }));
 
@@ -23,11 +24,9 @@ describe('/components/Fallback', () => {
   });
 
   it('correctly redirects to home', () => {
-    beforeEach(() => jest.resetModules());
-    const mockCallBack = jest.fn();
     const wrapper = mount(<Fallback />);
-    expect(wrapper.find('#backHome')).toHaveLength(1);
-    wrapper.find('#backHome').simulate('click');
-    expect(mockCallBack.mock.calls.length).toEqual(1);
+    expect(wrapper.find('button')).toHaveLength(1);
+    wrapper.find('button').simulate('click');
+    expect(mockHistoryPush).toHaveBeenCalledWith('/');
   });
 });
