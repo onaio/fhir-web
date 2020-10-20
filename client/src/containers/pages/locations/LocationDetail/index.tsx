@@ -2,7 +2,7 @@ import { Button } from 'antd';
 import * as React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
-interface Props {
+export interface Props {
   key: string;
   name: string;
   status: 'Alive' | 'Not Active';
@@ -23,9 +23,7 @@ const LocationDetail: React.FC<Props> = (props: Props) => {
     <div className="p-4 bg-white">
       <Button
         shape="circle"
-        onClick={() => {
-          return props.onClose ? props.onClose() : null;
-        }}
+        onClick={() => (props.onClose ? props.onClose() : '')}
         className="float-right"
         type="text"
         icon={<CloseOutlined />}
