@@ -11,7 +11,7 @@ import {
   Button,
   Tree,
   Divider,
-  Popconfirm,
+  InputNumber,
 } from 'antd';
 import { MoreOutlined, SearchOutlined, SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import { getExtraData } from '@onaio/session-reducer';
@@ -75,7 +75,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
-  inputType: 'number' | 'text';
+  inputType: 'number' | 'text' | 'date';
   record: Item;
   index: number;
   children: React.ReactNode;
@@ -94,12 +94,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
   return (
     <td {...restProps}>
       {editing ? (
-        <Form.Item
-          className="mb-0"
-          name={dataIndex}
-          rules={[{ required: true, message: `Please Input ${title}!` }]}
-        >
-          <Input />
+        <Form.Item className="mb-0" name={dataIndex}>
+          {inputType === 'date' ? <Input /> : inputType === 'number' ? <InputNumber /> : <Input />}
         </Form.Item>
       ) : (
         children
@@ -256,21 +252,19 @@ const LocationUnit = () => {
       render: (_: any, record: Item) => {
         const editable = isEditing(record);
         return (
-          <span className="d-flex justify-content-around align-items-center">
+          <span className="d-flex justify-content-end align-items-center">
             {editable ? (
               <>
-                <Button type="text" onClick={() => save(record.key)}>
+                <Button type="link" className="p-1" onClick={() => save(record.key)}>
                   Save
                 </Button>
-                <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                  <Button type="text" onClick={() => save(record.key)}>
-                    Cancel
-                  </Button>
-                </Popconfirm>
+                <Button type="link" className="m-0 p-1" danger onClick={() => cancel()}>
+                  Cancel
+                </Button>
               </>
             ) : (
               <>
-                <Button type="text" onClick={() => edit(record)}>
+                <Button type="link" className="m-0 p-1" onClick={() => edit(record)}>
                   Edit
                 </Button>
                 <Divider type="vertical" />
@@ -301,9 +295,8 @@ const LocationUnit = () => {
       ...col,
       onCell: (record: Item) => ({
         record,
-        lastupdated: record.created.toLocaleDateString('en-US'),
-        created: record.created.toLocaleDateString('en-US'),
-        inputType: col.dataIndex === 'level' ? 'number' : 'text',
+        inputType:
+          col.dataIndex === 'level' ? 'number' : col.dataIndex === 'lastupdated' ? 'date' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
