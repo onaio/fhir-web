@@ -23,7 +23,7 @@
       "eslint --fix --max-warnings 0",
       "git add"
     ],
-    "*.{js,jsx}": [
+    "**/*src/*.{js,jsx}": [
       "eslint --fix --max-warnings 0",
       "git add"
     ],
