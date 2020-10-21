@@ -1,24 +1,36 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { MemoryRouter, Route, Switch } from 'react-router-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
 import NotFound from '..';
 import toJson from 'enzyme-to-json';
+import { History } from 'history';
 
 const NotFoundLocation = 'pageurlwhichisnotavalible';
 
-const App = () => {
-  return <NotFound pathtoredirectto="./home" />;
-};
-
 describe('src/components/NotFound', () => {
   it('renders correctly', () => {
-    const wrapper = mount(
+    const wrapper = mount(<NotFound pathtoredirectto="./" />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('redirects to home on button click', () => {
+    let his: History<unknown>;
+    let wrapper = mount(
       <MemoryRouter
-        initialEntries={[{ pathname: NotFoundLocation, search: '', hash: '', state: {} }]}
+        initialEntries={[{ pathname: NotFoundLocation, search: '?next=%2F', hash: '', state: {} }]}
       >
-        <App />
+        <Route
+          render={({ history }) => {
+            his = history;
+            return <NotFound pathtoredirectto="./home" />;
+          }}
+        />
       </MemoryRouter>
     );
-    expect(toJson(wrapper)).toMatchSnapshot();
+
+    // assert about url
+    expect(his.location.pathname).toBe('pageurlwhichisnotavalible');
+    wrapper.find('button').simulate('click');
+    expect(his.location.pathname).toBe('home');
   });
 });

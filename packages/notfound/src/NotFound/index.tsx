@@ -22,12 +22,9 @@ function NotFound(props: Props) {
       title={props.title}
       subTitle={props.subTitle}
       extra={
-        <>
-          asdsadaS
-          <Button key="home" onClick={() => history.push(props.pathtoredirectto)} type="primary">
-            Back Home
-          </Button>
-        </>
+        <Button key="home" onClick={() => history.push(props.pathtoredirectto)} type="primary">
+          Back Home
+        </Button>
       }
     />
   );
