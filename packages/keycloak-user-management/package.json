@@ -1,12 +1,6 @@
 {
   "name": "@opensrp/user-management",
   "version": "0.1.0",
-  "description": "Keycloak user management UI",
-  "main": "dist/index.js",
-  "types": "dist/types",
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
@@ -30,23 +24,20 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "scripts": {
-    "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/keycloak-user-management --verbose --collectCoverage=true && cd packages/keycloak-user-management",
-    "test:watch": "cd ../../ && jest test  packages/keycloak-user-management --verbose --watch && cd packages/keycloak-user-management",
-    "tsc": "tsc",
-    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
-  },
-  "jest": {
-    "automock": false,
-    "setupFiles": [
-      "../../setupTests"
-    ]
+    "test": "jest --coverage --verbose --color",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx'  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "tsc": "tsc"
   },
   "license": "Apache-2.0",
   "publishConfig": {
     "access": "public"
   },
+  "description": "Keycloak user management UI",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
