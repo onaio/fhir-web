@@ -19,7 +19,11 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "!(*d).ts": [
+      "eslint --fix --max-warnings 0",
+      "git add"
+    ],
+    "*.tsx": [
       "eslint --fix --max-warnings 0",
       "git add"
     ],
@@ -64,9 +68,9 @@
     "@types/redux-mock-store": "^1.0.2",
     "@types/redux-testkit": "^1.0.5",
     "@types/seamless-immutable": "^7.1.13",
-    "@typescript-eslint/eslint-plugin": "^4.1.0",
-    "@typescript-eslint/parser": "^4.1.0",
-    "babel-eslint": "^10.1.0",
+    "@typescript-eslint/eslint-plugin": "^2.9.0",
+    "@typescript-eslint/parser": "^2.9.0",
+    "babel-eslint": "^10.0.2",
     "coveralls": "^3.1.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
@@ -78,6 +82,7 @@
     "eslint-config-typestrict": "^1.0.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.0.0",
+    "eslint-plugin-jsdoc": "^30.6.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-sonarjs": "^0.5.0",
