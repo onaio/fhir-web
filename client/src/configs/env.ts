@@ -52,4 +52,3 @@ export const EXPRESS_OAUTH_LOGOUT_URL =
 
 /** Do you want to disable login protection? */
 export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROTECTION === 'true';
-export type DISABLE_LOGIN_PROTECTION = typeof DISABLE_LOGIN_PROTECTION;
