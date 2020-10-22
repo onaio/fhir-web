@@ -1,13 +1,13 @@
 import React from 'react';
-interface Props {
+export interface NotFoundProps {
   pathtoredirectto: string;
   title?: string;
   subTitle?: string;
 }
-/** Loading component that displays a nice ripple
+/** Component to show when a page is not found in routes
  *
- * @param {Props} props to contain functionality of NotsFound Component.
- * @returns {Notfound}.
+ * @param {NotFoundProps} props to contain functionality of NotsFound Component.
+ * @returns {NotFound} returns Notfound component
  */
-declare const NotFound: React.FC<Props>;
+declare const NotFound: React.FC<NotFoundProps>;
 export default NotFound;
