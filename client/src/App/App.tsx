@@ -21,7 +21,7 @@ import {
   URL_REACT_LOGIN,
   URL_LOGOUT,
   URL_HOME,
-  LOCATION_UNIT_GROUP,
+  URL_LOCATION_UNIT_GROUP,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -104,7 +104,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={LOCATION_UNIT_GROUP}
+              path={URL_LOCATION_UNIT_GROUP}
               component={ConnectedLocationUnitGroupComponent}
             />
             <Route

@@ -15,8 +15,8 @@ interface Item {
   name: string;
   status: 'Alive' | 'Not Active';
   type: string;
-  created: string;
-  lastupdated: string;
+  created: Date;
+  lastupdated: Date;
   externalid: string;
   openmrsid: string;
   username: string;
@@ -31,10 +31,10 @@ for (let i = 0; i < 100; i++) {
     key: i.toString(),
     name: `Edrward ${i}`,
     level: 2,
-    lastupdated: `2017-10-${i}`,
+    lastupdated: new Date(),
     status: 'Alive',
     type: 'Feautire',
-    created: `2016-10-${i}`,
+    created: new Date(),
     externalid: `externalid ${i}`,
     openmrsid: `openmrsid ${i}`,
     username: `edward${i}`,
