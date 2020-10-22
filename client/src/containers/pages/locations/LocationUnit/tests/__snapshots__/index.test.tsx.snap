@@ -21,166 +21,54 @@ Object {
         className="bg-white p-3"
         span={6}
       >
-        <div>
-          <Search
-            className="mb-3"
-            enterButton={false}
-            onChange={[Function]}
-            placeholder="Search"
-            prefix={<ForwardRef(SearchOutlined) />}
-            size="large"
-          />
-          <ForwardRef
-            autoExpandParent={true}
-            blockNode={false}
-            checkable={false}
-            expandedKeys={Array []}
-            motion={
+        <Tree
+          data={
+            Array [
               Object {
-                "motionAppear": false,
-                "motionDeadline": 500,
-                "motionName": "ant-motion-collapse",
-                "onAppearActive": [Function],
-                "onAppearEnd": [Function],
-                "onAppearStart": [Function],
-                "onEnterActive": [Function],
-                "onEnterEnd": [Function],
-                "onEnterStart": [Function],
-                "onLeaveActive": [Function],
-                "onLeaveEnd": [Function],
-                "onLeaveStart": [Function],
-              }
-            }
-            onExpand={[Function]}
-            showIcon={false}
-            treeData={
-              Array [
-                Object {
-                  "children": Array [
-                    Object {
-                      "children": Array [
-                        Object {
-                          "key": "1",
-                          "title": <span>
-                            <React.Fragment>
-                              
-                              <span
-                                className="site-tree-search-value"
-                              >
-                                
-                              </span>
-                              1
-                            </React.Fragment>
-                          </span>,
-                        },
-                      ],
-                      "key": "Bo",
-                      "title": <span>
-                        <React.Fragment>
-                          
-                          <span
-                            className="site-tree-search-value"
-                          >
-                            
-                          </span>
-                          Bo
-                        </React.Fragment>
-                      </span>,
-                    },
-                    Object {
-                      "children": Array [
-                        Object {
-                          "key": "2",
-                          "title": <span>
-                            <React.Fragment>
-                              
-                              <span
-                                className="site-tree-search-value"
-                              >
-                                
-                              </span>
-                              2
-                            </React.Fragment>
-                          </span>,
-                        },
-                      ],
-                      "key": "Bombali",
-                      "title": <span>
-                        <React.Fragment>
-                          
-                          <span
-                            className="site-tree-search-value"
-                          >
-                            
-                          </span>
-                          Bombali
-                        </React.Fragment>
-                      </span>,
-                    },
-                    Object {
-                      "children": Array [
-                        Object {
-                          "children": Array [
-                            Object {
-                              "key": "Bayama CHP",
-                              "title": <span>
-                                <React.Fragment>
-                                  
-                                  <span
-                                    className="site-tree-search-value"
-                                  >
-                                    
-                                  </span>
-                                  Bayama CHP
-                                </React.Fragment>
-                              </span>,
-                            },
-                          ],
-                          "key": "Kissi Ten",
-                          "title": <span>
-                            <React.Fragment>
-                              
-                              <span
-                                className="site-tree-search-value"
-                              >
-                                
-                              </span>
-                              Kissi Ten
-                            </React.Fragment>
-                          </span>,
-                        },
-                      ],
-                      "key": "Bonthe",
-                      "title": <span>
-                        <React.Fragment>
-                          
-                          <span
-                            className="site-tree-search-value"
-                          >
-                            
-                          </span>
-                          Bonthe
-                        </React.Fragment>
-                      </span>,
-                    },
-                  ],
-                  "key": "Sierra Leone",
-                  "title": <span>
-                    <React.Fragment>
-                      
-                      <span
-                        className="site-tree-search-value"
-                      >
-                        
-                      </span>
-                      Sierra Leone
-                    </React.Fragment>
-                  </span>,
-                },
-              ]
-            }
-          />
-        </div>
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "key": "1",
+                        "title": "1",
+                      },
+                    ],
+                    "key": "Bo",
+                    "title": "Bo",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "key": "2",
+                        "title": "2",
+                      },
+                    ],
+                    "key": "Bombali",
+                    "title": "Bombali",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [
+                          Object {
+                            "key": "Bayama CHP",
+                            "title": "Bayama CHP",
+                          },
+                        ],
+                        "key": "Kissi Ten",
+                        "title": "Kissi Ten",
+                      },
+                    ],
+                    "key": "Bonthe",
+                    "title": "Bonthe",
+                  },
+                ],
+                "key": "Sierra Leone",
+                "title": "Sierra Leone",
+              },
+            ]
+          }
+        />
       </Col>
       <Col
         className="bg-white p-3 border-left"
