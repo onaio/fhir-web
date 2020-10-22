@@ -47,7 +47,10 @@ var submitForm = function submitForm(values, props) {
   var userId = match.params.userId;
   var serve = new serviceClass(
     accessToken,
-    ''.concat(_constants.URL_USERS, '/').concat(userId).concat(_constants.URL_RESET_PASSWORD),
+    ''
+      .concat(_constants.KEYCLOAK_URL_USERS, '/')
+      .concat(userId)
+      .concat(_constants.KEYCLOAK_URL_RESET_PASSWORD),
     keycloakBaseURL
   );
   var password = values.password,

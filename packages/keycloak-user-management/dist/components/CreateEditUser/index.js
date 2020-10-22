@@ -91,7 +91,7 @@ var CreateEditUsers = function CreateEditUsers(props) {
   _react['default'].useEffect(
     function () {
       if (userId) {
-        var serve = new serviceClass(accessToken, _constants.URL_USERS, keycloakBaseURL);
+        var serve = new serviceClass(accessToken, _constants.KEYCLOAK_URL_USERS, keycloakBaseURL);
         serve
           .read(userId)
           .then(function (response) {

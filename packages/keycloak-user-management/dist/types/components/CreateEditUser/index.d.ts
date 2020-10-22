@@ -43,7 +43,7 @@ export declare const ConnectedCreateEditUsers: import('react-redux').ConnectedCo
   React.FC<PropsTypes>,
   Pick<
     PropsTypes,
-    'location' | 'serviceClass' | 'keycloakBaseURL' | 'history' | 'match' | 'staticContext'
+    'location' | 'keycloakBaseURL' | 'serviceClass' | 'history' | 'match' | 'staticContext'
   > &
     EditUserProps &
     RouteComponentProps<RouteParams, import('react-router').StaticContext, unknown>

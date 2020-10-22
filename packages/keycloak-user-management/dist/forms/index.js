@@ -177,7 +177,7 @@ var UserForm = function UserForm(props) {
     function () {
       var serve = new serviceClass(
         accessToken,
-        _constants.URL_REQUIRED_USER_ACTIONS,
+        _constants.KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
         keycloakBaseURL
       );
       serve
@@ -215,7 +215,7 @@ var UserForm = function UserForm(props) {
           if (isEditMode) {
             var serve = new serviceClass(
               accessToken,
-              ''.concat(_constants.URL_USERS, '/').concat(initialValues.id),
+              ''.concat(_constants.KEYCLOAK_URL_USERS, '/').concat(initialValues.id),
               keycloakBaseURL
             );
             serve

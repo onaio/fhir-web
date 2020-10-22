@@ -16,7 +16,7 @@ import {
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
-import { URL_USERS, URL_RESET_PASSWORD } from '../../constants';
+import { KEYCLOAK_URL_USERS, KEYCLOAK_URL_RESET_PASSWORD } from '../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -67,7 +67,7 @@ export const submitForm = (
   const userId = match.params.userId;
   const serve = new serviceClass(
     accessToken,
-    `${URL_USERS}/${userId}${URL_RESET_PASSWORD}`,
+    `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
     keycloakBaseURL
   );
   const { password, temporary } = values;

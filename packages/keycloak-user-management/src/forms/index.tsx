@@ -6,7 +6,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Dictionary } from '@onaio/utils/dist/types/types';
-import { URL_ADMIN, URL_USERS, URL_REQUIRED_USER_ACTIONS } from '../constants';
+import { URL_ADMIN, KEYCLOAK_URL_USERS, KEYCLOAK_URL_REQUIRED_USER_ACTIONS } from '../constants';
 
 /** props for editing a user view */
 export interface UserFormProps {
@@ -102,7 +102,11 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { Option } = Select;
 
   React.useEffect(() => {
-    const serve = new serviceClass(accessToken, URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
+    const serve = new serviceClass(
+      accessToken,
+      KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
+      keycloakBaseURL
+    );
     serve
       .list()
       .then((response: UserAction[]) => {
@@ -128,7 +132,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           if (isEditMode) {
             const serve = new serviceClass(
               accessToken,
-              `${URL_USERS}/${initialValues.id}`,
+              `${KEYCLOAK_URL_USERS}/${initialValues.id}`,
               keycloakBaseURL
             );
             serve

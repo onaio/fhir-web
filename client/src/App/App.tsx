@@ -12,7 +12,12 @@ import { Layout } from 'antd';
 import { Switch, Route, Redirect } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
-import { WEBSITE_NAME, BACKEND_ACTIVE, KEYCLOAK_API_BASE_URL } from '../configs/env';
+import {
+  WEBSITE_NAME,
+  BACKEND_ACTIVE,
+  KEYCLOAK_API_BASE_URL,
+  DISABLE_LOGIN_PROTECTION,
+} from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
   URL_BACKEND_CALLBACK,
@@ -27,9 +32,14 @@ import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
 import '@opensrp/user-management/dist/index.css';
 import {
-  ConnectedAdminView,
+  ConnectedUserListView,
   ConnectedCreateEditUsers,
   ConnectedUserCredentials,
+  URL_ADMIN,
+  URL_USER_EDIT,
+  ROUTE_PARAM_USER_ID,
+  URL_USER_CREATE,
+  URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
@@ -54,42 +64,44 @@ const App: React.FC = () => {
             {/* Home Page view */}
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path="/"
               component={ConnectedHomeComponent}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/admin"
-              component={ConnectedAdminView}
-            />
-            <ConnectedPrivateRoute
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
-              exact
-              path="/user/edit/:userId"
-              render={(props: any) => (
-                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+              path={URL_ADMIN}
+              component={(props: any) => (
+                <ConnectedUserListView {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/user/new"
-              render={(props: any) => (
+              path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
+              component={(props: any) => (
                 <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/user/credentials/:userId"
-              render={(props: any) => (
+              path={URL_USER_CREATE}
+              component={(props: any) => (
+                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+              )}
+            />
+            <ConnectedPrivateRoute
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
+              component={(props: any) => (
                 <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
@@ -124,7 +136,7 @@ const App: React.FC = () => {
             {/* tslint:enable jsx-no-lambda */}
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOGOUT}
               // tslint:disable-next-line: jsx-no-lambda
