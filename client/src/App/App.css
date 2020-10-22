@@ -104,3 +104,7 @@ fieldset[disabled] .gatekeeper-btn.active {
 svg {
   vertical-align: unset;
 }
+
+.site-tree-search-value {
+  color: #40a9ff;
+}
