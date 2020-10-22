@@ -1,9 +1,10 @@
 {
+  "name": "@opensrp/notfound",
   "version": "0.1.0",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && yarn test  packages/keycloak-service --verbose --collectCoverage=true && cd packages/keycloak-service",
-    "test:watch": "cd ../../ && yarn test  packages/keycloak-service --verbose --watch && cd packages/keycloak-service",
+    "test": "cd ../../ && yarn test  packages/notfound --verbose --collectCoverage=true && cd packages/notfound",
+    "test:watch": "cd ../../ && yarn test  packages/notfound --verbose --watch && cd packages/notfound",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
@@ -47,5 +48,13 @@
     "fast_array_intersect": "^1.1.0",
     "flush-promises": "^1.0.2",
     "yup": "^0.29.3"
-  }
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "author": "Ona Engineering",
+  "private": false
 }

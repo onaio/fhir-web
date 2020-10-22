@@ -32,7 +32,7 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import NotFound from '../components/NotFound';
+import NotFound from '@opensrp/notfound';
 
 const { Content } = Layout;
 
@@ -132,7 +132,7 @@ const App: React.FC = () => {
                 return <CustomLogout />;
               }}
             />
-            <Route exact component={NotFound} />
+            {/* <Route exact render={() => <NotFound />} /> */}
           </Switch>
         </Content>
       </div>

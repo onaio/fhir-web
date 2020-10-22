@@ -2,18 +2,23 @@ import { Result, Button } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router';
 
-interface Props {
+export interface NotFoundProps {
   pathtoredirectto: string;
   title?: string;
   subTitle?: string;
 }
 
+const defaultProps: Partial<NotFoundProps> = {
+  title: '404',
+  subTitle: 'Sorry, the page you are trying to visit does not exist.',
+};
+
 /** Component to show when a page is not found in routes
  *
- * @param {props} props to contain functionality of NotsFound Component.
- * @returns {Function} returns Notfound component
+ * @param {NotFoundProps} props to contain functionality of NotsFound Component.
+ * @returns {NotFound} returns Notfound component
  */
-const NotFound: React.FC<Props> = (props: Props): JSX.Element => {
+const NotFound: React.FC<NotFoundProps> = (props: NotFoundProps): JSX.Element => {
   const history = useHistory();
 
   return (
@@ -30,9 +35,6 @@ const NotFound: React.FC<Props> = (props: Props): JSX.Element => {
   );
 };
 
-NotFound.defaultProps = {
-  title: '404',
-  subTitle: 'Sorry, the page you are trying to visit does not exist.',
-};
+NotFound.defaultProps = defaultProps;
 
 export default NotFound;

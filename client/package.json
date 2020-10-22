@@ -19,6 +19,7 @@
     "@opensrp/keycloak-service": "file:../packages/keycloak-service",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.4",
+    "@opensrp/notfound": "file:../packages/notfound",
     "@opensrp/store": "file:../packages/opensrp-store",
     "@opensrp/user-management": "file:../packages/keycloak-user-management",
     "antd": "^4.6.3",
