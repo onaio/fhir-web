@@ -3,25 +3,25 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
-import ConnectedHeader from '..';
-import store from '../../../store';
+import ConnectedSidebar from '..';
+import { store } from '@opensrp/store';
 
 jest.mock('../../../configs/env');
 
-describe('components/ConnectedHeader', () => {
-  it('renders the ConnectedHeader component', () => {
+describe('components/ConnectedSidebar', () => {
+  it('renders the ConnectedSidebar component', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <ConnectedHeader />
+          <ConnectedSidebar />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Header').props()).toMatchSnapshot();
+    expect(wrapper.find('aside').props()).toMatchSnapshot();
     wrapper.unmount();
   });
 
-  it('renders the ConnectedHeader when logged in', () => {
+  it('renders the ConnectedSidebar when logged in', () => {
     store.dispatch(
       authenticateUser(
         true,
@@ -40,11 +40,11 @@ describe('components/ConnectedHeader', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <ConnectedHeader />
+          <ConnectedSidebar />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Header').props()).toMatchSnapshot();
+    expect(wrapper.find('aside')).toMatchSnapshot();
     wrapper.unmount();
   });
 });
