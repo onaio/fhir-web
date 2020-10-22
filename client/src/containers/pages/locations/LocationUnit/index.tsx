@@ -1,24 +1,10 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import {
-  Table,
-  Input,
-  Form,
-  Row,
-  Col,
-  Menu,
-  Dropdown,
-  Button,
-  Tree,
-  Divider,
-  InputNumber,
-} from 'antd';
-import { MoreOutlined, SearchOutlined, SettingOutlined, PlusOutlined } from '@ant-design/icons';
-import { getExtraData } from '@onaio/session-reducer';
-import { connect } from 'react-redux';
-import { Store } from 'redux';
+import { Table, Input, Form, Row, Col, Menu, Dropdown, Button, Divider, InputNumber } from 'antd';
+import { MoreOutlined, SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import './LocationUnit.css';
 import LocationDetail from '../LocationDetail';
+import Tree, { TREE } from '../../../../utils/Tree';
 
 interface Item {
   key: string;
@@ -33,12 +19,6 @@ interface Item {
   version: string;
   syncstatus: 'Synced' | 'Not Synced';
   level: number;
-}
-
-interface Tree {
-  title: string;
-  key: string;
-  children?: Tree[];
 }
 
 const tableData: Item[] = [];
@@ -59,7 +39,7 @@ for (let i = 0; i < 100; i++) {
   });
 }
 
-const treeData: Tree[] = [
+const tree: TREE[] = [
   {
     title: 'Sierra Leone',
     key: 'Sierra Leone',
@@ -114,26 +94,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
-const LocationUnit = () => {
+const LocationUnit: React.FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState(tableData);
   const [editingKey, setEditingKey] = useState('');
-  const [expandedKeys, setExpandedKeys] = useState<any>([]);
-  const [searchValue, setSearchValue] = useState('');
-  const [autoExpandParent, setAutoExpandParent] = useState(true);
   const [detail, setDetail] = useState<Item | null>(null);
-
-  function getParentKey(key: any, tree: string | any[]): any {
-    let parentKey;
-    for (let i = 0; i < tree.length; i++) {
-      const node = tree[i];
-      if (node.children) {
-        if (node.children.some((item: { key: any }) => item.key === key)) parentKey = node.key;
-        else if (getParentKey(key, node.children)) parentKey = getParentKey(key, node.children);
-      }
-    }
-    return parentKey;
-  }
 
   function edit(record: Item) {
     form.setFieldsValue({ ...record });
@@ -160,44 +125,6 @@ const LocationUnit = () => {
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
-  }
-
-  function onExpand(expandedKeys: any) {
-    setExpandedKeys(expandedKeys);
-    setAutoExpandParent(true);
-  }
-
-  function onChange(e: { target: { value: any } }) {
-    const { value } = e.target;
-    const expandedKeys = treefilterlist
-      .map((item) => (item.title.indexOf(value) > -1 ? getParentKey(item.key, treeData) : null))
-      .filter((item, i, self) => item && self.indexOf(item) === i);
-    setExpandedKeys(expandedKeys);
-    setSearchValue(value);
-    setAutoExpandParent(true);
-  }
-
-  function loop(data: any[]): any {
-    return data.map((item) => {
-      const index = item.title.indexOf(searchValue);
-      const beforeStr = item.title.substr(0, index);
-      const afterStr = item.title.substr(index + searchValue.length);
-      const title = (
-        <span>
-          {index > -1 ? (
-            <>
-              {beforeStr}
-              <span className="site-tree-search-value">{searchValue}</span>
-              {afterStr}
-            </>
-          ) : (
-            item.title
-          )}
-        </span>
-      );
-      if (item.children) return { title, key: item.key, children: loop(item.children) };
-      return { title, key: item.key };
-    });
   }
 
   const columns = [
@@ -280,17 +207,6 @@ const LocationUnit = () => {
     };
   });
 
-  let treefilterlist: Tree[] = [];
-  const generateList = (data: string | any[]) => {
-    for (let i = 0; i < data.length; i++) {
-      const node = data[i];
-      const { key } = node;
-      treefilterlist.push({ key, title: key });
-      if (node.children) generateList(node.children);
-    }
-  };
-  generateList(treeData);
-
   return (
     <section>
       <Helmet>
@@ -299,21 +215,7 @@ const LocationUnit = () => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <div>
-            <Input.Search
-              className="mb-3"
-              placeholder="Search"
-              size="large"
-              prefix={<SearchOutlined />}
-              onChange={onChange}
-            />
-            <Tree
-              onExpand={onExpand}
-              expandedKeys={expandedKeys}
-              autoExpandParent={autoExpandParent}
-              treeData={loop(treeData)}
-            />
-          </div>
+          <Tree data={tree} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between">
@@ -358,23 +260,4 @@ const LocationUnit = () => {
   );
 };
 
-export { LocationUnit };
-
-/** Connect the component to the store */
-
-/** map state to props */
-
-const mapStateToProps = (state: Partial<Store>) => {
-  const result = {
-    extraData: getExtraData(state),
-  };
-  return result;
-};
-
-/** create connected component */
-
-/** Connected Header component
- */
-const ConnectedLocationUnitComponent = connect(mapStateToProps)(LocationUnit);
-
-export default ConnectedLocationUnitComponent;
+export default LocationUnit;
