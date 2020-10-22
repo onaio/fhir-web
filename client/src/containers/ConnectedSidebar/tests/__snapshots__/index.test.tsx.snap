@@ -52,7 +52,12 @@ Object {
               </Link>
             </MenuItem>
             <MenuItem>
-              Locations unit group
+              <Link
+                className="admin-link"
+                to="/location-unit-group"
+              >
+                Locations unit group
+              </Link>
             </MenuItem>
             <MenuItem>
               Locations unit group set
