@@ -68,7 +68,7 @@ describe('containers/pages/locations/locationunit', () => {
     });
   });
 
-  it('Test canale functionality', async () => {
+  it('Test cancel functionality', async () => {
     const wrapper = mount(<LocationUnit />);
 
     // click edit button

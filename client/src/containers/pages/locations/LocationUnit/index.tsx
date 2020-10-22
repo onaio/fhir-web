@@ -35,16 +35,22 @@ interface Item {
   level: number;
 }
 
+interface Tree {
+  title: string;
+  key: string;
+  children?: Tree[];
+}
+
 const tableData: Item[] = [];
 for (let i = 0; i < 100; i++) {
   tableData.push({
     key: i.toString(),
     name: `Edrward ${i}`,
     level: 2,
-    lastupdated: new Date(),
+    lastupdated: new Date('Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)'),
     status: 'Alive',
     type: 'Feautire',
-    created: new Date(),
+    created: new Date('Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)'),
     externalid: `asdkjh123${i}`,
     openmrsid: `asdasdasdkjh123${i}`,
     username: `edward ${i}`,
@@ -53,23 +59,27 @@ for (let i = 0; i < 100; i++) {
   });
 }
 
-interface tree {
-  title: string;
-  key: string;
-  children?: tree[];
-}
-
-function getParentKey(key: any, tree: string | any[]): any {
-  let parentKey;
-  for (let i = 0; i < tree.length; i++) {
-    const node = tree[i];
-    if (node.children) {
-      if (node.children.some((item: { key: any }) => item.key === key)) parentKey = node.key;
-      else if (getParentKey(key, node.children)) parentKey = getParentKey(key, node.children);
-    }
-  }
-  return parentKey;
-}
+const treeData: Tree[] = [
+  {
+    title: 'Sierra Leone',
+    key: 'Sierra Leone',
+    children: [
+      { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
+      { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
+      {
+        title: 'Bonthe',
+        key: 'Bonthe',
+        children: [
+          {
+            title: 'Kissi Ten',
+            key: 'Kissi Ten',
+            children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
+          },
+        ],
+      },
+    ],
+  },
+];
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -113,36 +123,16 @@ const LocationUnit = () => {
   const [autoExpandParent, setAutoExpandParent] = useState(true);
   const [detail, setDetail] = useState<Item | null>(null);
 
-  const x = 3;
-  const y = 2;
-  const z = 1;
-  const gData: tree[] = [];
-  const dataList: tree[] = [];
-
-  function generateData(_level: any, _preKey?: any, _tns?: any) {
-    const preKey = _preKey || '0';
-    const tns = _tns || gData;
-
-    const children = [];
-    for (let i = 0; i < x; i++) {
-      const key = `${preKey}-${i}`;
-      tns.push({ title: key, key });
-      if (i < y) {
-        children.push(key);
+  function getParentKey(key: any, tree: string | any[]): any {
+    let parentKey;
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
+      if (node.children) {
+        if (node.children.some((item: { key: any }) => item.key === key)) parentKey = node.key;
+        else if (getParentKey(key, node.children)) parentKey = getParentKey(key, node.children);
       }
     }
-    if (_level < 0) {
-      return tns;
-    }
-    const level = _level - 1;
-    children.forEach((key, index) => {
-      tns[index].children = [];
-      return generateData(level, key, tns[index].children);
-    });
-  }
-
-  function isEditing(record: Item) {
-    return record.key === editingKey;
+    return parentKey;
   }
 
   function edit(record: Item) {
@@ -162,67 +152,53 @@ const LocationUnit = () => {
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
-        setEditingKey('');
       } else {
         newData.push(row);
-        setData(newData);
-        setEditingKey('');
       }
+      setData(newData);
+      setEditingKey('');
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
   }
 
-  function generateList(data: tree[]): any {
-    for (let i = 0; i < data.length; i++) {
-      const node = data[i];
-      const { key } = node;
-      dataList.push({ key, title: key });
-      if (node.children) generateList(node.children);
-    }
-  }
-
   function onExpand(expandedKeys: any) {
     setExpandedKeys(expandedKeys);
-    setAutoExpandParent(false);
-  }
-
-  function onChange(e: { target: { value: any } }) {
-    const expandedKeys = dataList
-      .map((item: { title: string | any[]; key: any }) => {
-        if (item.title.indexOf(e.target.value) > -1) return getParentKey(item.key, gData);
-        return null;
-      })
-      .filter((item: any, i: any, self: string | any[]) => item && self.indexOf(item) === i);
-
-    setExpandedKeys(expandedKeys);
-    setSearchValue(e.target.value);
     setAutoExpandParent(true);
   }
 
-  function loop(data: tree[]): any {
-    return data.map((item: tree) => {
+  function onChange(e: { target: { value: any } }) {
+    const { value } = e.target;
+    const expandedKeys = treefilterlist
+      .map((item) => (item.title.indexOf(value) > -1 ? getParentKey(item.key, treeData) : null))
+      .filter((item, i, self) => item && self.indexOf(item) === i);
+    setExpandedKeys(expandedKeys);
+    setSearchValue(value);
+    setAutoExpandParent(true);
+  }
+
+  function loop(data: any[]): any {
+    return data.map((item) => {
       const index = item.title.indexOf(searchValue);
       const beforeStr = item.title.substr(0, index);
       const afterStr = item.title.substr(index + searchValue.length);
-      const title =
-        index > -1 ? (
-          <span>
-            {beforeStr}
-            <span className="site-tree-search-value">{searchValue}</span>
-            {afterStr}
-          </span>
-        ) : (
-          <span>{item.title}</span>
-        );
+      const title = (
+        <span>
+          {index > -1 ? (
+            <>
+              {beforeStr}
+              <span className="site-tree-search-value">{searchValue}</span>
+              {afterStr}
+            </>
+          ) : (
+            item.title
+          )}
+        </span>
+      );
       if (item.children) return { title, key: item.key, children: loop(item.children) };
-
       return { title, key: item.key };
     });
   }
-
-  generateData(z);
 
   const columns = [
     {
@@ -250,7 +226,7 @@ const LocationUnit = () => {
       dataIndex: 'operation',
       width: '10%',
       render: (_: any, record: Item) => {
-        const editable = isEditing(record);
+        const editable = record.key === editingKey;
         return (
           <span className="d-flex justify-content-end align-items-center">
             {editable ? (
@@ -299,12 +275,21 @@ const LocationUnit = () => {
           col.dataIndex === 'level' ? 'number' : col.dataIndex === 'lastupdated' ? 'date' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
-        editing: isEditing(record),
+        editing: record.key === editingKey,
       }),
     };
   });
 
-  generateList(dataList);
+  let treefilterlist: Tree[] = [];
+  const generateList = (data: string | any[]) => {
+    for (let i = 0; i < data.length; i++) {
+      const node = data[i];
+      const { key } = node;
+      treefilterlist.push({ key, title: key });
+      if (node.children) generateList(node.children);
+    }
+  };
+  generateList(treeData);
 
   return (
     <section>
@@ -326,7 +311,7 @@ const LocationUnit = () => {
               onExpand={onExpand}
               expandedKeys={expandedKeys}
               autoExpandParent={autoExpandParent}
-              treeData={loop(gData)}
+              treeData={loop(treeData)}
             />
           </div>
         </Col>
