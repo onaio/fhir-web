@@ -47,21 +47,10 @@ describe('components/ConnectedHeader', () => {
     wrapper.unmount();
   });
 
-  const env = process.env;
-  beforeEach(() => {
-    jest.resetModules(); // most important - it clears the cache
-  });
-
-  afterEach(() => {
-    process.env = { ...env }; // make a copy
-  });
-
   it('renders the Language switcher', () => {
+    const env = process.env;
+    jest.resetModules();
     process.env.REACT_APP_LANGUAGE_SWITCHER = 'true';
-    console.warn(
-      process.env.REACT_APP_LANGUAGE_SWITCHER,
-      process.env.REACT_APP_LANGUAGE_SWITCHER === 'true'
-    );
 
     const wrapper = mount(
       <Provider store={store}>
@@ -72,5 +61,6 @@ describe('components/ConnectedHeader', () => {
     );
 
     expect(wrapper.find('Header').props()).toMatchSnapshot();
+    process.env = { ...env }; // reset env to default state
   });
 });
