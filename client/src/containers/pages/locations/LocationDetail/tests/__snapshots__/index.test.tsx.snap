@@ -2,9 +2,9 @@
 
 exports[`containers/pages/Home removes it self on close 1`] = `
 <LocationDetail
-  created={2020-10-22T10:00:50.109Z}
+  created={2020-10-22T10:02:21.269Z}
   externalid="asdkjh1230"
-  lastupdated={2020-10-22T10:00:50.109Z}
+  lastupdated={2020-10-22T10:02:21.269Z}
   level={2}
   name="Edrward 0"
   onClose={[Function]}
@@ -269,9 +269,9 @@ exports[`containers/pages/Home removes it self on close 1`] = `
 
 exports[`containers/pages/Home renders without crashing 1`] = `
 <LocationDetail
-  created={2020-10-22T10:00:49.724Z}
+  created={2020-10-22T10:02:20.903Z}
   externalid="asdkjh1230"
-  lastupdated={2020-10-22T10:00:49.724Z}
+  lastupdated={2020-10-22T10:02:20.903Z}
   level={2}
   name="Edrward 0"
   openmrsid="asdasdasdkjh1230"
