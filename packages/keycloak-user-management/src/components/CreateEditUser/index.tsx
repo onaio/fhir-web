@@ -17,7 +17,7 @@ import {
 import { KeycloakService } from '@opensrp/keycloak-service';
 import Ripple from '../Loading';
 import { UserForm, UserFormProps } from '../../forms';
-import { KEYCLOAK_URL_USERS } from '../../constants';
+import { KEYCLOAK_URL_USERS, ROUTE_PARAM_USER_ID } from '../../constants';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -93,7 +93,7 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
     accessToken,
     keycloakBaseURL,
   } = props;
-  const userId = props.match.params.userId;
+  const userId = props.match.params[ROUTE_PARAM_USER_ID];
   const isEditMode = !!userId;
   const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
   React.useEffect(() => {
@@ -151,7 +151,7 @@ interface DispatchedProps {
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>, ownProps: PropsTypes): DispatchedProps => {
-  const userId = ownProps.match.params.userId;
+  const userId = ownProps.match.params[ROUTE_PARAM_USER_ID];
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
   const keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;

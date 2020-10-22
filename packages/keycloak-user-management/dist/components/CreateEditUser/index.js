@@ -84,7 +84,7 @@ var CreateEditUsers = function CreateEditUsers(props) {
     keycloakUser = props.keycloakUser,
     accessToken = props.accessToken,
     keycloakBaseURL = props.keycloakBaseURL;
-  var userId = props.match.params.userId;
+  var userId = props.match.params[_constants.ROUTE_PARAM_USER_ID];
   var isEditMode = !!userId;
   var initialValues = isEditMode ? keycloakUser : defaultInitialValues;
 
@@ -148,7 +148,7 @@ exports.CreateEditUsers = CreateEditUsers;
 CreateEditUsers.defaultProps = defaultEditUserProps;
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
-  var userId = ownProps.match.params.userId;
+  var userId = ownProps.match.params[_constants.ROUTE_PARAM_USER_ID];
   var keycloakUsersSelector = (0, _store.makeKeycloakUsersSelector)();
   var keycloakUsers = keycloakUsersSelector(state, {
     id: [userId],

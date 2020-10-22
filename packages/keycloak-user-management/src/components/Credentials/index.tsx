@@ -16,7 +16,11 @@ import {
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
-import { KEYCLOAK_URL_USERS, KEYCLOAK_URL_RESET_PASSWORD } from '../../constants';
+import {
+  KEYCLOAK_URL_USERS,
+  KEYCLOAK_URL_RESET_PASSWORD,
+  ROUTE_PARAM_USER_ID,
+} from '../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -64,7 +68,7 @@ export const submitForm = (
   props: CredentialsPropsTypes
 ): void => {
   const { serviceClass, match, accessToken, keycloakBaseURL } = props;
-  const userId = match.params.userId;
+  const userId = match.params[ROUTE_PARAM_USER_ID];
   const serve = new serviceClass(
     accessToken,
     `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
@@ -93,7 +97,7 @@ export const submitForm = (
 };
 
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const userId = props.match.params.userId;
+  const userId = props.match.params[ROUTE_PARAM_USER_ID];
   const isEditMode = !!userId;
   const layout = {
     labelCol: { span: 4 },
@@ -179,7 +183,7 @@ const mapStateToProps = (
   state: Partial<Store>,
   ownProps: CredentialsPropsTypes
 ): DispatchedProps => {
-  const userId = ownProps.match.params.userId;
+  const userId = ownProps.match.params[ROUTE_PARAM_USER_ID];
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
   const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
