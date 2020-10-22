@@ -15,7 +15,7 @@ describe('src/components/NotFound', () => {
 
   it('redirects to home on button click', () => {
     let his: History<unknown>;
-    let wrapper = mount(
+    const wrapper = mount(
       <MemoryRouter
         initialEntries={[{ pathname: NotFoundLocation, search: '?next=%2F', hash: '', state: {} }]}
       >
