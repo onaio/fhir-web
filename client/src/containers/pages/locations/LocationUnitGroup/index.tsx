@@ -85,7 +85,7 @@ const LocationUnitGroup = () => {
   const [data, setData] = useState(tableData);
   const [editingKey, setEditingKey] = useState('');
   const [value, setValue] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState<Item | null>(null);
 
   const isEditing = (record: Item) => record.key === editingKey;
 
@@ -116,23 +116,6 @@ const LocationUnitGroup = () => {
     }
   };
 
-  const AdditionalMenu = (e: any) => (
-    <Menu>
-      <Menu.Item
-        onClick={() => {
-          setSelectedLocation(e);
-        }}
-      >
-        View Details
-      </Menu.Item>
-      <Menu.Item>
-        <Popconfirm title="Sure to Delete?" onConfirm={() => console.log('')}>
-          Delete
-        </Popconfirm>
-      </Menu.Item>
-    </Menu>
-  );
-
   const columns = [
     {
       title: 'Name',
@@ -147,21 +130,36 @@ const LocationUnitGroup = () => {
       render: (_: any, record: Item) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
-            <p onClick={() => save(record.key)} style={{ marginRight: 8 }}>
+          <>
+            <Button type="link" className="p-1" onClick={() => save(record.key)}>
               Save
-            </p>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <p>Cancel</p>
-            </Popconfirm>
-          </span>
+            </Button>
+            <Button type="link" className="p-1" onClick={() => cancel()}>
+              Cancel
+            </Button>
+          </>
         ) : (
           <span className="location-table-action">
             <p className="edit" onClick={() => edit(record)}>
               Edit
             </p>
             <Dropdown
-              overlay={() => AdditionalMenu(record)}
+              overlay={
+                <Menu>
+                  <Menu.Item
+                    onClick={() => {
+                      setSelectedLocation(record);
+                    }}
+                  >
+                    View Details
+                  </Menu.Item>
+                  <Menu.Item>
+                    <Popconfirm title="Sure to Delete?" onConfirm={() => console.log('')}>
+                      Delete
+                    </Popconfirm>
+                  </Menu.Item>
+                </Menu>
+              }
               placement="bottomLeft"
               arrow
               trigger={['click']}
