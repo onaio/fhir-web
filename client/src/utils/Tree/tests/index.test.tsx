@@ -27,7 +27,7 @@ describe('containers/pages/locations/locationunit', () => {
 
   it('renders without crashing', () => {
     const wrapper = mount(<Tree data={tree} />);
-    expect(wrapper.find('.ant-tree').props()).toMatchSnapshot();
+    expect(wrapper.find('.ant-tree').length).toBe(1);
   });
 
   it('tree search functionality', async () => {
