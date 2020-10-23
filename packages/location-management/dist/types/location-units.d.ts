@@ -1,4 +1,4 @@
-import { Geometry } from '@turf/turf';
+import { Geometry } from 'geojson';
 /** Enum representing the possible location unit status types */
 export declare enum LocationUnitStatus {
   ACTIVE = 'Active',

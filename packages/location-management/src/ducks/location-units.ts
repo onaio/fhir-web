@@ -8,7 +8,7 @@ import {
   getItemByIdFactory,
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
-import { Geometry } from '@turf/turf';
+import { Geometry } from 'geojson';
 
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
