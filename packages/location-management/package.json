@@ -33,8 +33,10 @@
   "private": false,
   "dependencies": {
     "@opensrp/reducer-factory": "^0.0.3",
-    "@opensrp/server-service": "^0.0.4",
-    "@turf/turf": "^5.1.6"
+    "@opensrp/server-service": "^0.0.4"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.7"
   },
   "peerDependencies": {
     "react": "^16.13.1"
