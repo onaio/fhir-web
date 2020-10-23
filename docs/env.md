@@ -62,3 +62,8 @@ Below is a list of currently supported environment variables:
 - URL to get oauth2 state value
 - **Required**
 - default: `https://web.opensrp-stage.smartregister.org/oauth/state`
+
+11. **REACT_APP_SENTRY_DSN**
+
+- URL to send crash reports
+- **Required**

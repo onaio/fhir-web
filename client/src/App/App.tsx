@@ -33,7 +33,7 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import Fallback from '../components/Fallback';
+import Fallback from '@opensrp/error-boundry-fallback';
 
 const { Content } = Layout;
 
