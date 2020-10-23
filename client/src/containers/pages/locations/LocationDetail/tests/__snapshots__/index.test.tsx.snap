@@ -2,9 +2,9 @@
 
 exports[`containers/pages/Home removes it self on close 1`] = `
 <LocationDetail
-  created={2020-10-22T10:02:21.269Z}
+  created={2020-10-22T23:59:43.968Z}
   externalid="asdkjh1230"
-  lastupdated={2020-10-22T10:02:21.269Z}
+  lastupdated={2020-10-22T23:59:43.968Z}
   level={2}
   name="Edrward 0"
   onClose={[Function]}
@@ -162,7 +162,7 @@ exports[`containers/pages/Home removes it self on close 1`] = `
       <p
         className="mb-0 loc-desc"
       >
-        10/22/2020
+        10/23/2020
       </p>
     </div>
     <div
@@ -176,7 +176,7 @@ exports[`containers/pages/Home removes it self on close 1`] = `
       <p
         className="mb-0 loc-desc"
       >
-        10/22/2020
+        10/23/2020
       </p>
     </div>
     <div
@@ -269,9 +269,9 @@ exports[`containers/pages/Home removes it self on close 1`] = `
 
 exports[`containers/pages/Home renders without crashing 1`] = `
 <LocationDetail
-  created={2020-10-22T10:02:20.903Z}
+  created={2020-10-22T23:59:43.857Z}
   externalid="asdkjh1230"
-  lastupdated={2020-10-22T10:02:20.903Z}
+  lastupdated={2020-10-22T23:59:43.857Z}
   level={2}
   name="Edrward 0"
   openmrsid="asdasdasdkjh1230"
@@ -428,7 +428,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       <p
         className="mb-0 loc-desc"
       >
-        10/22/2020
+        10/23/2020
       </p>
     </div>
     <div
@@ -442,7 +442,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       <p
         className="mb-0 loc-desc"
       >
-        10/22/2020
+        10/23/2020
       </p>
     </div>
     <div

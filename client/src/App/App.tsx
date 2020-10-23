@@ -34,7 +34,8 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import ConnectedLocationUnitComponent from '../containers/pages/locations/LocationUnit';
+import LocationUnit, { data } from '../containers/pages/locations/LocationUnit';
+import { TREE } from '../utils/Tree';
 
 const { Content } = Layout;
 
@@ -95,12 +96,58 @@ const App: React.FC = () => {
                 <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
-            <ConnectedPrivateRoute
+            <Route
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path={URL_LOCATIONS_UNIT}
-              component={ConnectedLocationUnitComponent}
+              render={(props: any) => {
+                const tableData: data[] = [];
+                for (let i = 1; i < 5; i++) {
+                  tableData.push({
+                    key: i.toString(),
+                    name: `Edrward ${i}`,
+                    level: i,
+                    lastupdated: new Date(
+                      `Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`
+                    ),
+                    status: 'Alive',
+                    type: 'Feautire',
+                    created: new Date(
+                      `Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`
+                    ),
+                    externalid: `asdkjh123${i}`,
+                    openmrsid: `asdasdasdkjh123${i}`,
+                    username: `edward ${i}`,
+                    version: `${i}`,
+                    syncstatus: 'Synced',
+                  });
+                }
+
+                const tree: TREE[] = [
+                  {
+                    title: 'Sierra Leone',
+                    key: 'Sierra Leone',
+                    children: [
+                      { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
+                      { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
+                      {
+                        title: 'Bonthe',
+                        key: 'Bonthe',
+                        children: [
+                          {
+                            title: 'Kissi Ten',
+                            key: 'Kissi Ten',
+                            children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ];
+
+                return <LocationUnit {...props} tableData={tableData} tree={tree} />;
+              }}
             />
             <Route
               exact

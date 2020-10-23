@@ -6,7 +6,7 @@ import './LocationUnit.css';
 import LocationDetail from '../LocationDetail';
 import Tree, { TREE } from '../../../../utils/Tree';
 
-interface Item {
+export interface data {
   key: string;
   name: string;
   status: 'Alive' | 'Not Active';
@@ -21,52 +21,12 @@ interface Item {
   level: number;
 }
 
-const tableData: Item[] = [];
-for (let i = 0; i < 100; i++) {
-  tableData.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    level: 2,
-    lastupdated: new Date('Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)'),
-    status: 'Alive',
-    type: 'Feautire',
-    created: new Date('Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)'),
-    externalid: `asdkjh123${i}`,
-    openmrsid: `asdasdasdkjh123${i}`,
-    username: `edward ${i}`,
-    version: `${i}`,
-    syncstatus: 'Synced',
-  });
-}
-
-const tree: TREE[] = [
-  {
-    title: 'Sierra Leone',
-    key: 'Sierra Leone',
-    children: [
-      { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-      { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-      {
-        title: 'Bonthe',
-        key: 'Bonthe',
-        children: [
-          {
-            title: 'Kissi Ten',
-            key: 'Kissi Ten',
-            children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-          },
-        ],
-      },
-    ],
-  },
-];
-
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
   inputType: 'number' | 'text' | 'date';
-  record: Item;
+  record: data;
   index: number;
   children: React.ReactNode;
 }
@@ -94,13 +54,18 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
-const LocationUnit: React.FC = () => {
-  const [form] = Form.useForm();
-  const [data, setData] = useState(tableData);
-  const [editingKey, setEditingKey] = useState('');
-  const [detail, setDetail] = useState<Item | null>(null);
+export interface Props {
+  tableData: data[];
+  tree: TREE[];
+}
 
-  function edit(record: Item) {
+const LocationUnit: React.FC<Props> = (props: Props) => {
+  const [form] = Form.useForm();
+  const [data, setData] = useState<data[]>(props.tableData);
+  const [editingKey, setEditingKey] = useState('');
+  const [detail, setDetail] = useState<data | null>(null);
+
+  function edit(record: data) {
     form.setFieldsValue({ ...record });
     setEditingKey(record.key);
   }
@@ -111,7 +76,7 @@ const LocationUnit: React.FC = () => {
 
   async function save(key: React.Key) {
     try {
-      const row = (await form.validateFields()) as Item;
+      const row = (await form.validateFields()) as data;
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
@@ -143,7 +108,7 @@ const LocationUnit: React.FC = () => {
     {
       title: 'Last Updated',
       dataIndex: 'lastupdated',
-      render: (_: any, record: Item) => record.lastupdated.toLocaleDateString('en-US'),
+      render: (_: any, record: data) => record.lastupdated.toLocaleDateString('en-US'),
       editable: true,
       sorter: (a: { lastupdated: Date }, b: { lastupdated: Date }) =>
         a.lastupdated.toLocaleString('en-US').localeCompare(b.lastupdated.toLocaleString('en-US')),
@@ -152,7 +117,7 @@ const LocationUnit: React.FC = () => {
       title: 'Actions',
       dataIndex: 'operation',
       width: '10%',
-      render: (_: any, record: Item) => {
+      render: (_: any, record: data) => {
         const editable = record.key === editingKey;
         return (
           <span className="d-flex justify-content-end align-items-center">
@@ -196,7 +161,7 @@ const LocationUnit: React.FC = () => {
 
     return {
       ...col,
-      onCell: (record: Item) => ({
+      onCell: (record: data) => ({
         record,
         inputType:
           col.dataIndex === 'level' ? 'number' : col.dataIndex === 'lastupdated' ? 'date' : 'text',
@@ -215,7 +180,7 @@ const LocationUnit: React.FC = () => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={tree} />
+          <Tree data={props.tree} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between">
