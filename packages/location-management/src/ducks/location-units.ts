@@ -29,8 +29,8 @@ export interface Properties {
   OpenMRS_Id: string;
 }
 
-/** location tag interface */
-export interface LocationTag {
+/** location unit tag interface */
+export interface LocationUnitTag {
   id: number;
   name: string;
 }
@@ -41,7 +41,7 @@ export interface LocationUnit {
   properties: Properties;
   syncStatus: string;
   type: string;
-  locationTags: LocationTag[];
+  locationTags: LocationUnitTag[];
   geometry: Geometry;
 }
 
@@ -52,7 +52,7 @@ export interface LocationUnitPayloadPUT {
   syncStatus: string;
   serverVersion: string;
   properties: Properties;
-  locationTags: LocationTag[];
+  locationTags: LocationUnitTag[];
   geometry: Geometry;
 }
 
@@ -61,7 +61,7 @@ export interface LocationUnitPayloadPOST {
   type: string;
   syncStatus: string;
   properties: Properties;
-  locationTags: LocationTag[];
+  locationTags: LocationUnitTag[];
   geometry: Geometry;
 }
 
