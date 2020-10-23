@@ -18,7 +18,7 @@ export interface Properties {
 }
 /** location tag interface */
 export interface LocationTag {
-  id: string | number;
+  id: number;
   name: string;
 }
 /** location interface */

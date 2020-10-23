@@ -11,7 +11,7 @@ import {
 
 /** interface for location group **/
 export interface LocationTag {
-  id: string | number;
+  id: number;
   active: boolean;
   name: string;
   description: string;
