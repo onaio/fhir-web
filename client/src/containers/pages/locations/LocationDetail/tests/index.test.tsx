@@ -9,10 +9,10 @@ describe('containers/pages/Home', () => {
       key: '0',
       name: 'Edrward 0',
       level: 2,
-      lastupdated: new Date(),
+      lastupdated: new Date(`Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       status: 'Alive',
       type: 'Feautire',
-      created: new Date(),
+      created: new Date(`Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       externalid: 'asdkjh1230',
       openmrsid: 'asdasdasdkjh1230',
       username: 'edward 0',
@@ -29,10 +29,10 @@ describe('containers/pages/Home', () => {
       key: '0',
       name: 'Edrward 0',
       level: 2,
-      lastupdated: new Date(),
+      lastupdated: new Date(`Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       status: 'Alive',
       type: 'Feautire',
-      created: new Date(),
+      created: new Date(`Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       externalid: 'asdkjh1230',
       openmrsid: 'asdasdasdkjh1230',
       username: 'edward 0',
@@ -41,7 +41,6 @@ describe('containers/pages/Home', () => {
       onClose: () => wrapper.unmount(),
     };
     let wrapper = mount(<LocationDetail {...props} />);
-    expect(toJson(wrapper)).toMatchSnapshot();
     expect(wrapper.children().length).toBe(1);
     wrapper.find('button').simulate('click');
     expect(wrapper.length).toBe(0);
