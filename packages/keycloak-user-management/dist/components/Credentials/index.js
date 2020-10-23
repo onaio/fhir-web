@@ -84,7 +84,7 @@ var UserCredentials = function UserCredentials(props) {
   var isEditMode = !!userId;
   var layout = {
     labelCol: {
-      span: 4,
+      span: 8,
     },
     wrapperCol: {
       span: 16,

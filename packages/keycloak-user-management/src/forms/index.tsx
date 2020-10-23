@@ -1,12 +1,11 @@
-import { ErrorMessage, Field, Formik } from 'formik';
 import React, { Dispatch, SetStateAction } from 'react';
-import { Button, Form, notification, Select } from 'antd';
-import * as Yup from 'yup';
+import { Button, Form, Select, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Dictionary } from '@onaio/utils/dist/types/types';
-import { URL_ADMIN, KEYCLOAK_URL_USERS, KEYCLOAK_URL_REQUIRED_USER_ACTIONS } from '../constants';
+import { URL_ADMIN } from '../constants';
+import { submitForm, fetchRequiredActions } from './utils';
 
 /** props for editing a user view */
 export interface UserFormProps {
@@ -52,16 +51,10 @@ export const defaultInitialValues: KeycloakUser = {
 
 /** default props for editing user component */
 export const defaultProps: Partial<UserFormProps> = {
-  accessToken: 'hunter 2',
+  accessToken: '',
   initialValues: defaultInitialValues,
   serviceClass: KeycloakService,
 };
-
-/** yup validations for practitioner data object from form */
-export const userSchema = Yup.object().shape({
-  lastName: Yup.string().required('Required'),
-  firstName: Yup.string().required('Required'),
-});
 
 /**
  * Handle required actions change
@@ -80,7 +73,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { initialValues, serviceClass, accessToken, keycloakBaseURL } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
-  const isEditMode = initialValues.id !== '';
+  const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -102,180 +95,89 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { Option } = Select;
 
   React.useEffect(() => {
-    const serve = new serviceClass(
-      accessToken,
-      KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
-      keycloakBaseURL
-    );
-    serve
-      .list()
-      .then((response: UserAction[]) => {
-        setUserActionOptions(
-          response.filter((action: UserAction) => action.alias !== 'terms_and_conditions')
-        );
-      })
-      .catch((err: Error) => {
-        notification.error({
-          message: `${err}`,
-          description: '',
-        });
-      });
+    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, serviceClass);
   }, [accessToken, keycloakBaseURL, serviceClass]);
+
+  React.useEffect(() => {
+    setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
+  }, [initialValues.requiredActions]);
 
   return (
     <div className="form-container">
-      <Formik
-        initialValues={initialValues as KeycloakUser}
-        validationSchema={userSchema}
-        // tslint:disable-next-line: jsx-no-lambda
-        onSubmit={(values, { setSubmitting }) => {
-          if (isEditMode) {
-            const serve = new serviceClass(
-              accessToken,
-              `${KEYCLOAK_URL_USERS}/${initialValues.id}`,
-              keycloakBaseURL
-            );
-            serve
-              .update({
-                ...values,
-                requiredActions,
-              })
-              .then(() => {
-                setSubmitting(false);
-                history.push('/admin');
-                notification.success({
-                  message: 'User edited successfully',
-                  description: '',
-                });
-              })
-              .catch((e: Error) => {
-                notification.error({
-                  message: `${e}`,
-                  description: '',
-                });
-                setSubmitting(false);
-              });
-          } else {
-            const serve = new serviceClass(accessToken, '/users', keycloakBaseURL);
-            serve
-              .create(values)
-              .then(() => {
-                setSubmitting(false);
-                history.push('/admin');
-                notification.success({
-                  message: 'User created successfully',
-                  description: '',
-                });
-              })
-              .catch((e: Error) => {
-                notification.error({
-                  message: `${e}`,
-                  description: '',
-                });
-                setSubmitting(false);
-              });
-          }
+      <Form
+        initialValues={initialValues}
+        {...layout}
+        onFinish={(values: Partial<KeycloakUser>) => {
+          submitForm(
+            {
+              ...values,
+              requiredActions,
+            },
+            accessToken,
+            keycloakBaseURL,
+            serviceClass,
+            setIsSubmitting,
+            initialValues.id
+          );
         }}
       >
-        {({ errors, isSubmitting, handleSubmit }) => (
-          <Form initialValues={initialValues} {...layout} onSubmitCapture={handleSubmit}>
-            <Form.Item
-              label={'First Name'}
-              rules={[
-                { required: true, message: 'Please input your First Name!', whitespace: true },
-              ]}
-            >
-              <Field
-                type="text"
-                name="firstName"
-                id="firstName"
-                className={errors.firstName ? `form-control is-invalid` : `form-control`}
-              />
-            </Form.Item>
-            <Form.Item
-              label={'Last Name'}
-              rules={[
-                { required: true, message: 'Please input your Last Name!', whitespace: true },
-              ]}
-            >
-              <Field
-                type="text"
-                name="lastName"
-                id="lastName"
-                className={errors.lastName ? `form-control is-invalid` : `form-control`}
-              />
-              <ErrorMessage
-                name="lastName"
-                component="small"
-                className="form-text text-danger name-error"
-              />
-            </Form.Item>
+        <Form.Item
+          label={'First Name'}
+          name="firstName"
+          hasFeedback
+          rules={[{ required: true, message: 'First Name required', whitespace: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={'Last Name'}
+          name="lastName"
+          hasFeedback
+          rules={[{ required: true, message: 'Last Name required', whitespace: true }]}
+        >
+          <Input />
+        </Form.Item>
 
-            <Form.Item label={'Username'}>
-              <Field
-                readOnly={isEditMode}
-                type="text"
-                name="username"
-                id="username"
-                className={errors.username ? `form-control is-invalid` : `form-control`}
-              />
-              <ErrorMessage
-                component="small"
-                name="username"
-                className="form-text text-danger username-error"
-              />
-            </Form.Item>
-            <Form.Item label={'Email'}>
-              <Field
-                type="text"
-                name="email"
-                id="email"
-                className={errors.email ? `form-control is-invalid` : `form-control`}
-              />
-              <ErrorMessage
-                component="small"
-                name="email"
-                className="form-text text-danger username-error"
-              />
-            </Form.Item>
-            <Form.Item name="requiredActions" label={'Required User Actions'}>
-              <Select
-                mode="multiple"
-                allowClear
-                placeholder="Please select"
-                onChange={(selected: string[]) =>
-                  handleUserActionsChange(selected, setRequiredActions)
-                }
-                style={{ width: '100%' }}
-              >
-                {userActionOptions.map((option: UserAction, index: number) => (
-                  <Option key={`${index}`} value={option.alias}>
-                    {option.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item {...tailLayout}>
-              <Button
-                htmlType="submit"
-                onClick={() => history.push(URL_ADMIN)}
-                className="cancel-user"
-                disabled={isSubmitting || Object.keys(errors).length > 0}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="create-user"
-                disabled={isSubmitting || Object.keys(errors).length > 0}
-              >
-                {isSubmitting ? 'Saving' : 'Save User'}
-              </Button>
-            </Form.Item>
-          </Form>
-        )}
-      </Formik>
+        <Form.Item
+          label={'Username'}
+          name="username"
+          hasFeedback
+          rules={[{ required: true, message: 'Username required', whitespace: true }]}
+        >
+          <Input disabled={initialValues.id ? true : false} />
+        </Form.Item>
+        <Form.Item
+          label={'Email'}
+          name="email"
+          hasFeedback
+          rules={[{ required: true, message: 'Email required', whitespace: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item name="requiredActions" label={'Required User Actions'}>
+          <Select
+            mode="multiple"
+            allowClear
+            placeholder="Please select"
+            onChange={(selected: string[]) => handleUserActionsChange(selected, setRequiredActions)}
+            style={{ width: '100%' }}
+          >
+            {userActionOptions.map((option: UserAction, index: number) => (
+              <Option key={`${index}`} value={option.alias}>
+                {option.name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit" className="create-user">
+            {isSubmitting ? 'Saving' : 'Save'}
+          </Button>
+          <Button htmlType="submit" onClick={() => history.push(URL_ADMIN)} className="cancel-user">
+            Cancel
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

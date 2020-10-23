@@ -100,7 +100,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
   const isEditMode = !!userId;
   const layout = {
-    labelCol: { span: 4 },
+    labelCol: { span: 8 },
     wrapperCol: { span: 16 },
   };
 
