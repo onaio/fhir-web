@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 import Tree, { TREE } from '..';
 
@@ -28,7 +27,7 @@ describe('containers/pages/locations/locationunit', () => {
 
   it('renders without crashing', () => {
     const wrapper = mount(<Tree data={tree} />);
-    expect(toJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.find('.ant-tree').props()).toMatchSnapshot();
   });
 
   it('tree search functionality', async () => {
