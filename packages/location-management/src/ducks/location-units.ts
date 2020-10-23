@@ -50,12 +50,21 @@ export interface LocationUnit {
   geometry: Geometry;
 }
 
-/** interface for the payload used when creating/updating a location unit */
-export interface LocationUnitPayload {
-  id?: string;
+/** interface for the PUT payload */
+export interface LocationUnitPayloadPUT {
+  id: string;
   type: string;
   syncStatus: string;
   serverVersion: string;
+  properties: Properties;
+  locationTags: LocationTag[];
+  geometry: Geometry;
+}
+
+/** interface for POST payload */
+export interface LocationUnitPayloadPOST {
+  type: string;
+  syncStatus: string;
   properties: Properties;
   locationTags: LocationTag[];
   geometry: Geometry;
