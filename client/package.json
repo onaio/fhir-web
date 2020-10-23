@@ -30,6 +30,7 @@
     "@opensrp/server-service": "^0.0.4",
     "@opensrp/store": "file:../packages/opensrp-store",
     "@opensrp/user-management": "file:../packages/keycloak-user-management",
+    "@opensrp/error-boundry-fallback": "file:../packages/error-boundry-fallback",
     "antd": "^4.6.3",
     "bootstrap": "^4.5.2",
     "client-oauth2": "^4.3.3",
