@@ -8,6 +8,7 @@ import {
   getItemByIdFactory,
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
+import { Geometry } from '@turf/turf';
 
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
@@ -32,12 +33,6 @@ export interface Properties {
 export interface LocationTag {
   id: string | number;
   name: string;
-}
-
-/** geometry interface */
-export interface Geometry {
-  type: string;
-  coordinates: Array<Array<Array<Array<number>>>>;
 }
 
 /** location interface */

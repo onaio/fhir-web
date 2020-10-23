@@ -1,3 +1,4 @@
+import { Geometry } from '@turf/turf';
 /** Enum representing the possible location unit status types */
 export declare enum LocationUnitStatus {
   ACTIVE = 'Active',
@@ -19,11 +20,6 @@ export interface Properties {
 export interface LocationTag {
   id: string | number;
   name: string;
-}
-/** geometry interface */
-export interface Geometry {
-  type: string;
-  coordinates: Array<Array<Array<Array<number>>>>;
 }
 /** location interface */
 export interface LocationUnit {
