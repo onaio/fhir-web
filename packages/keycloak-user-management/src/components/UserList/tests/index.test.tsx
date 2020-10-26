@@ -2,7 +2,7 @@ import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
-import * as fixtures from '../../../forms/tests/fixtures';
+import * as fixtures from '../../../forms/UserForm/tests/fixtures';
 import { mount, shallow } from 'enzyme';
 import { ConnectedUserListView, UserList } from '..';
 import { Router } from 'react-router';
@@ -12,7 +12,7 @@ import { act } from 'react-dom/test-utils';
 import * as opensrpStore from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { keycloakUsersArray } from '../../../forms/tests/fixtures';
+import { keycloakUsersArray } from '../../../forms/UserForm/tests/fixtures';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,

@@ -4,7 +4,12 @@ import { KeycloakUser } from '@opensrp/store';
 import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { KEYCLOAK_URL_USERS, URL_ADMIN, KEYCLOAK_URL_REQUIRED_USER_ACTIONS } from '../../constants';
+import {
+  KEYCLOAK_URL_USERS,
+  URL_ADMIN,
+  KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
+  ERROR_OCCURED,
+} from '../../constants';
 
 /**
  * Handle form submission
@@ -42,10 +47,10 @@ export const submitForm = (
           description: '',
         });
       })
-      .catch((e: Error) => {
+      .catch((_: Error) => {
         setSubmitting(false);
         notification.error({
-          message: `${e}`,
+          message: ERROR_OCCURED,
           description: '',
         });
       });
@@ -61,10 +66,10 @@ export const submitForm = (
           description: '',
         });
       })
-      .catch((e: Error) => {
+      .catch((_: Error) => {
         setSubmitting(false);
         notification.error({
-          message: `${e}`,
+          message: ERROR_OCCURED,
           description: '',
         });
       });

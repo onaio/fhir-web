@@ -1,6 +1,6 @@
 import fetch from 'jest-fetch-mock';
 import { deleteUser } from '../utils';
-import * as fixtures from '../../../../forms/tests/fixtures';
+import * as fixtures from '../../../../forms/UserForm/tests/fixtures';
 import { KEYCLOAK_URL_USERS } from '../../../../constants';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
