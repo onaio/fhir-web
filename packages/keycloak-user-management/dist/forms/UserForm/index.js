@@ -1,11 +1,13 @@
 'use strict';
 
+var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
+
 var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
 
 Object.defineProperty(exports, '__esModule', {
   value: true,
 });
-exports.UserForm = exports.handleUserActionsChange = exports.defaultProps = exports.defaultInitialValues = void 0;
+exports.UserForm = exports.handleUserActionsChange = exports.userSchema = exports.defaultProps = exports.defaultInitialValues = void 0;
 
 var _extends2 = _interopRequireDefault(require('@babel/runtime/helpers/extends'));
 
@@ -17,13 +19,21 @@ var _react = _interopRequireDefault(require('react'));
 
 var _antd = require('antd');
 
+var _formikAntd = require('formik-antd');
+
 var _connectedReducerRegistry = require('@onaio/connected-reducer-registry');
 
 var _keycloakService = require('@opensrp/keycloak-service');
 
-var _constants = require('../constants');
+var _formik = require('formik');
+
+var Yup = _interopRequireWildcard(require('yup'));
+
+var _constants = require('../../constants');
 
 var _utils = require('./utils');
+
+require('../../index.css');
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -84,6 +94,13 @@ var defaultProps = {
   serviceClass: _keycloakService.KeycloakService,
 };
 exports.defaultProps = defaultProps;
+var userSchema = Yup.object().shape({
+  lastName: Yup.string().required('Required'),
+  firstName: Yup.string().required('Required'),
+  email: Yup.string().required('Required'),
+  username: Yup.string().required('Required'),
+});
+exports.userSchema = userSchema;
 
 var handleUserActionsChange = function handleUserActionsChange(selected, setRequiredActions) {
   setRequiredActions(selected);
@@ -106,11 +123,6 @@ var UserForm = function UserForm(props) {
     _React$useState4 = (0, _slicedToArray2['default'])(_React$useState3, 2),
     userActionOptions = _React$useState4[0],
     setUserActionOptions = _React$useState4[1];
-
-  var _React$useState5 = _react['default'].useState(false),
-    _React$useState6 = (0, _slicedToArray2['default'])(_React$useState5, 2),
-    isSubmitting = _React$useState6[0],
-    setIsSubmitting = _React$useState6[1];
 
   var layout = {
     labelCol: {
@@ -166,7 +178,7 @@ var UserForm = function UserForm(props) {
       },
     },
   };
-  var Option = _antd.Select.Option;
+  var Option = _formikAntd.Select.Option;
 
   _react['default'].useEffect(
     function () {
@@ -193,152 +205,138 @@ var UserForm = function UserForm(props) {
       className: 'form-container',
     },
     _react['default'].createElement(
-      _antd.Form,
-      (0, _extends2['default'])(
-        {
-          initialValues: initialValues,
-        },
-        layout,
-        {
-          onFinish: function onFinish(values) {
-            (0, _utils.submitForm)(
-              _objectSpread(
-                _objectSpread({}, values),
-                {},
-                {
-                  requiredActions: requiredActions,
-                }
-              ),
-              accessToken,
-              keycloakBaseURL,
-              serviceClass,
-              setIsSubmitting,
-              initialValues.id
-            );
-          },
-        }
-      ),
-      _react['default'].createElement(
-        _antd.Form.Item,
-        {
-          label: 'First Name',
-          name: 'firstName',
-          hasFeedback: true,
-          rules: [
-            {
-              required: true,
-              message: 'First Name required',
-              whitespace: true,
-            },
-          ],
-        },
-        _react['default'].createElement(_antd.Input, null)
-      ),
-      _react['default'].createElement(
-        _antd.Form.Item,
-        {
-          label: 'Last Name',
-          name: 'lastName',
-          hasFeedback: true,
-          rules: [
-            {
-              required: true,
-              message: 'Last Name required',
-              whitespace: true,
-            },
-          ],
-        },
-        _react['default'].createElement(_antd.Input, null)
-      ),
-      _react['default'].createElement(
-        _antd.Form.Item,
-        {
-          label: 'Username',
-          name: 'username',
-          hasFeedback: true,
-          rules: [
-            {
-              required: true,
-              message: 'Username required',
-              whitespace: true,
-            },
-          ],
-        },
-        _react['default'].createElement(_antd.Input, {
-          disabled: initialValues.id ? true : false,
-        })
-      ),
-      _react['default'].createElement(
-        _antd.Form.Item,
-        {
-          label: 'Email',
-          name: 'email',
-          hasFeedback: true,
-          rules: [
-            {
-              required: true,
-              message: 'Email required',
-              whitespace: true,
-            },
-          ],
-        },
-        _react['default'].createElement(_antd.Input, null)
-      ),
-      _react['default'].createElement(
-        _antd.Form.Item,
-        {
-          name: 'requiredActions',
-          label: 'Required User Actions',
-        },
-        _react['default'].createElement(
-          _antd.Select,
-          {
-            mode: 'multiple',
-            allowClear: true,
-            placeholder: 'Please select',
-            onChange: function onChange(selected) {
-              return handleUserActionsChange(selected, setRequiredActions);
-            },
-            style: {
-              width: '100%',
-            },
-          },
-          userActionOptions.map(function (option, index) {
-            return _react['default'].createElement(
-              Option,
+      _formik.Formik,
+      {
+        initialValues: initialValues,
+        validationSchema: userSchema,
+        onSubmit: function onSubmit(values, _ref) {
+          var setSubmitting = _ref.setSubmitting;
+          return (0, _utils.submitForm)(
+            _objectSpread(
+              _objectSpread({}, values),
+              {},
               {
-                key: ''.concat(index),
-                value: option.alias,
-              },
-              option.name
-            );
-          })
-        )
-      ),
-      _react['default'].createElement(
-        _antd.Form.Item,
-        tailLayout,
-        _react['default'].createElement(
-          _antd.Button,
-          {
-            type: 'primary',
-            htmlType: 'submit',
-            className: 'create-user',
-          },
-          isSubmitting ? 'Saving' : 'Save'
-        ),
-        _react['default'].createElement(
-          _antd.Button,
-          {
-            htmlType: 'submit',
-            onClick: function onClick() {
-              return _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
+                requiredActions: requiredActions,
+              }
+            ),
+            accessToken,
+            keycloakBaseURL,
+            serviceClass,
+            setSubmitting,
+            initialValues.id
+          );
+        },
+      },
+      function (_ref2) {
+        var isSubmitting = _ref2.isSubmitting;
+        return _react['default'].createElement(
+          _formikAntd.Form,
+          layout,
+          _react['default'].createElement(
+            _formikAntd.Form.Item,
+            {
+              name: 'firstName',
+              label: 'First Name',
             },
-            className: 'cancel-user',
-          },
-          'Cancel'
-        )
-      )
+            _react['default'].createElement(_formikAntd.Input, {
+              id: 'firstName',
+              name: 'firstName',
+            })
+          ),
+          _react['default'].createElement(
+            _formikAntd.Form.Item,
+            {
+              name: 'lastName',
+              label: 'Last Name',
+            },
+            _react['default'].createElement(_formikAntd.Input, {
+              id: 'lastName',
+              name: 'lastName',
+            })
+          ),
+          _react['default'].createElement(
+            _formikAntd.Form.Item,
+            {
+              name: 'email',
+              label: 'Email',
+            },
+            _react['default'].createElement(_formikAntd.Input, {
+              id: 'email',
+              name: 'email',
+            })
+          ),
+          _react['default'].createElement(
+            _formikAntd.Form.Item,
+            {
+              name: 'username',
+              label: 'Username',
+            },
+            _react['default'].createElement(_formikAntd.Input, {
+              id: 'username',
+              name: 'username',
+              disabled: initialValues.id ? true : false,
+            })
+          ),
+          _react['default'].createElement(
+            _formikAntd.Form.Item,
+            {
+              name: 'requiredActions',
+              label: 'Required Actions',
+            },
+            _react['default'].createElement(
+              _formikAntd.Select,
+              {
+                id: 'requiredActions',
+                name: 'requiredActions',
+                mode: 'multiple',
+                allowClear: true,
+                placeholder: 'Please select',
+                onChange: function onChange(selected) {
+                  return handleUserActionsChange(selected, setRequiredActions);
+                },
+                style: {
+                  width: '100%',
+                },
+              },
+              userActionOptions.map(function (option, index) {
+                return _react['default'].createElement(
+                  Option,
+                  {
+                    key: ''.concat(index),
+                    value: option.alias,
+                  },
+                  option.name
+                );
+              })
+            )
+          ),
+          _react['default'].createElement(
+            _formikAntd.Form.Item,
+            (0, _extends2['default'])({}, tailLayout, {
+              name: 'tail',
+            }),
+            _react['default'].createElement(
+              _antd.Button,
+              {
+                type: 'primary',
+                htmlType: 'submit',
+                className: 'create-user',
+              },
+              isSubmitting ? 'Saving' : 'Save'
+            ),
+            _react['default'].createElement(
+              _antd.Button,
+              {
+                onClick: function onClick() {
+                  return _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
+                },
+                className: 'cancel-user',
+              },
+              'Cancel'
+            )
+          )
+        );
+      }
     )
   );
 };

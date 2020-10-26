@@ -9,17 +9,17 @@ var _antd = require('antd');
 
 var _connectedReducerRegistry = require('@onaio/connected-reducer-registry');
 
-var _constants = require('../constants');
+var _constants = require('../../constants');
 
 var submitForm = function submitForm(
   values,
   accessToken,
   keycloakBaseURL,
   keycloakServiceClass,
-  setIsSubmitting,
+  setSubmitting,
   userId
 ) {
-  setIsSubmitting(true);
+  setSubmitting(true);
 
   if (userId) {
     var serve = new keycloakServiceClass(
@@ -30,7 +30,7 @@ var submitForm = function submitForm(
     serve
       .update(values)
       .then(function () {
-        setIsSubmitting(false);
+        setSubmitting(false);
 
         _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
 
@@ -40,7 +40,7 @@ var submitForm = function submitForm(
         });
       })
       ['catch'](function (e) {
-        setIsSubmitting(false);
+        setSubmitting(false);
 
         _antd.notification.error({
           message: ''.concat(e),
@@ -57,7 +57,7 @@ var submitForm = function submitForm(
     _serve
       .create(values)
       .then(function () {
-        setIsSubmitting(false);
+        setSubmitting(false);
 
         _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
 
@@ -67,7 +67,7 @@ var submitForm = function submitForm(
         });
       })
       ['catch'](function (e) {
-        setIsSubmitting(false);
+        setSubmitting(false);
 
         _antd.notification.error({
           message: ''.concat(e),

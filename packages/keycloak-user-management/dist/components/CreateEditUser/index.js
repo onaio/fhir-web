@@ -29,7 +29,7 @@ var _keycloakService = require('@opensrp/keycloak-service');
 
 var _Loading = _interopRequireDefault(require('../Loading'));
 
-var _forms = require('../../forms');
+var _UserForm = require('../../forms/UserForm');
 
 var _constants = require('../../constants');
 
@@ -139,7 +139,7 @@ var CreateEditUsers = function CreateEditUsers(props) {
       _react['default'].createElement(_HeaderBreadCrumb.HeaderBreadCrumb, {
         userId: userId,
       }),
-      _react['default'].createElement(_forms.UserForm, userFormProps)
+      _react['default'].createElement(_UserForm.UserForm, userFormProps)
     )
   );
 };

@@ -1,11 +1,15 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Button, Form, Select, Input } from 'antd';
+import { Button } from 'antd';
+import { Form, Select, Input } from 'formik-antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { Dictionary } from '@onaio/utils/dist/types/types';
-import { URL_ADMIN } from '../constants';
+import { Dictionary } from '@onaio/utils';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { URL_ADMIN } from '../../constants';
 import { submitForm, fetchRequiredActions } from './utils';
+import '../../index.css';
 
 /** props for editing a user view */
 export interface UserFormProps {
@@ -56,6 +60,13 @@ export const defaultProps: Partial<UserFormProps> = {
   serviceClass: KeycloakService,
 };
 
+export const userSchema = Yup.object().shape({
+  lastName: Yup.string().required('Required'),
+  firstName: Yup.string().required('Required'),
+  email: Yup.string().required('Required'),
+  username: Yup.string().required('Required'),
+});
+
 /**
  * Handle required actions change
  *
@@ -73,7 +84,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { initialValues, serviceClass, accessToken, keycloakBaseURL } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
-  const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
+
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -104,10 +115,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
 
   return (
     <div className="form-container">
-      <Form
+      <Formik
         initialValues={initialValues}
-        {...layout}
-        onFinish={(values: Partial<KeycloakUser>) => {
+        validationSchema={userSchema}
+        onSubmit={(values, { setSubmitting }) =>
           submitForm(
             {
               ...values,
@@ -116,68 +127,60 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             accessToken,
             keycloakBaseURL,
             serviceClass,
-            setIsSubmitting,
+            setSubmitting,
             initialValues.id
-          );
-        }}
+          )
+        }
       >
-        <Form.Item
-          label={'First Name'}
-          name="firstName"
-          hasFeedback
-          rules={[{ required: true, message: 'First Name required', whitespace: true }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={'Last Name'}
-          name="lastName"
-          hasFeedback
-          rules={[{ required: true, message: 'Last Name required', whitespace: true }]}
-        >
-          <Input />
-        </Form.Item>
+        {({ isSubmitting }) => (
+          <Form {...layout}>
+            <Form.Item name="firstName" label="First Name">
+              <Input id="firstName" name="firstName" />
+            </Form.Item>
 
-        <Form.Item
-          label={'Username'}
-          name="username"
-          hasFeedback
-          rules={[{ required: true, message: 'Username required', whitespace: true }]}
-        >
-          <Input disabled={initialValues.id ? true : false} />
-        </Form.Item>
-        <Form.Item
-          label={'Email'}
-          name="email"
-          hasFeedback
-          rules={[{ required: true, message: 'Email required', whitespace: true }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item name="requiredActions" label={'Required User Actions'}>
-          <Select
-            mode="multiple"
-            allowClear
-            placeholder="Please select"
-            onChange={(selected: string[]) => handleUserActionsChange(selected, setRequiredActions)}
-            style={{ width: '100%' }}
-          >
-            {userActionOptions.map((option: UserAction, index: number) => (
-              <Option key={`${index}`} value={option.alias}>
-                {option.name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit" className="create-user">
-            {isSubmitting ? 'Saving' : 'Save'}
-          </Button>
-          <Button htmlType="submit" onClick={() => history.push(URL_ADMIN)} className="cancel-user">
-            Cancel
-          </Button>
-        </Form.Item>
-      </Form>
+            <Form.Item name="lastName" label="Last Name">
+              <Input id="lastName" name="lastName" />
+            </Form.Item>
+
+            <Form.Item name="email" label="Email">
+              <Input id="email" name="email" />
+            </Form.Item>
+
+            <Form.Item name="username" label="Username">
+              <Input id="username" name="username" disabled={initialValues.id ? true : false} />
+            </Form.Item>
+
+            <Form.Item name="requiredActions" label="Required Actions">
+              <Select
+                id="requiredActions"
+                name="requiredActions"
+                mode="multiple"
+                allowClear
+                placeholder="Please select"
+                onChange={(selected: string[]) =>
+                  handleUserActionsChange(selected, setRequiredActions)
+                }
+                style={{ width: '100%' }}
+              >
+                {userActionOptions.map((option: UserAction, index: number) => (
+                  <Option key={`${index}`} value={option.alias}>
+                    {option.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            <Form.Item {...tailLayout} name="tail">
+              <Button type="primary" htmlType="submit" className="create-user">
+                {isSubmitting ? 'Saving' : 'Save'}
+              </Button>
+              <Button onClick={() => history.push(URL_ADMIN)} className="cancel-user">
+                Cancel
+              </Button>
+            </Form.Item>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

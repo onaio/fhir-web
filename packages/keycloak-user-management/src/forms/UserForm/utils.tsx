@@ -4,17 +4,27 @@ import { KeycloakUser } from '@opensrp/store';
 import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { KEYCLOAK_URL_USERS, URL_ADMIN, KEYCLOAK_URL_REQUIRED_USER_ACTIONS } from '../constants';
+import { KEYCLOAK_URL_USERS, URL_ADMIN, KEYCLOAK_URL_REQUIRED_USER_ACTIONS } from '../../constants';
 
+/**
+ * Handle form submission
+ *
+ * @param {Dictionary} values - form values
+ * @param {string} accessToken - keycloak API access token
+ * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {KeycloakService} keycloakServiceClass - keycloak API service class
+ * @param {Function} setSubmitting - method to set submission status
+ * @param {string} userId - keycloak user id, required when editing a user
+ */
 export const submitForm = (
   values: Partial<KeycloakUser>,
   accessToken: string,
   keycloakBaseURL: string,
   keycloakServiceClass: typeof KeycloakService,
-  setIsSubmitting: Dispatch<SetStateAction<boolean>>,
+  setSubmitting: (isSubmitting: boolean) => void,
   userId?: string
 ): void => {
-  setIsSubmitting(true);
+  setSubmitting(true);
 
   if (userId) {
     const serve = new keycloakServiceClass(
@@ -25,7 +35,7 @@ export const submitForm = (
     serve
       .update(values)
       .then(() => {
-        setIsSubmitting(false);
+        setSubmitting(false);
         history.push(URL_ADMIN);
         notification.success({
           message: 'User edited successfully',
@@ -33,7 +43,7 @@ export const submitForm = (
         });
       })
       .catch((e: Error) => {
-        setIsSubmitting(false);
+        setSubmitting(false);
         notification.error({
           message: `${e}`,
           description: '',
@@ -44,7 +54,7 @@ export const submitForm = (
     serve
       .create(values)
       .then(() => {
-        setIsSubmitting(false);
+        setSubmitting(false);
         history.push(URL_ADMIN);
         notification.success({
           message: 'User created successfully',
@@ -52,7 +62,7 @@ export const submitForm = (
         });
       })
       .catch((e: Error) => {
-        setIsSubmitting(false);
+        setSubmitting(false);
         notification.error({
           message: `${e}`,
           description: '',
@@ -72,6 +82,14 @@ export interface UserAction {
   config: Dictionary;
 }
 
+/**
+ * Fetch keycloak user action options
+ *
+ * @param {string} accessToken - keycloak API access token
+ * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {Function} setUserActionOptions - method to set state for selected actions
+ * @param {KeycloakService} keycloakServiceClass - keycloak API service class
+ */
 export const fetchRequiredActions = (
   accessToken: string,
   keycloakBaseURL: string,
