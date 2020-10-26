@@ -39,11 +39,11 @@ var submitForm = function submitForm(
           description: '',
         });
       })
-      ['catch'](function (e) {
+      ['catch'](function (_) {
         setSubmitting(false);
 
         _antd.notification.error({
-          message: ''.concat(e),
+          message: _constants.ERROR_OCCURED,
           description: '',
         });
       });
@@ -66,11 +66,11 @@ var submitForm = function submitForm(
           description: '',
         });
       })
-      ['catch'](function (e) {
+      ['catch'](function (_) {
         setSubmitting(false);
 
         _antd.notification.error({
-          message: ''.concat(e),
+          message: _constants.ERROR_OCCURED,
           description: '',
         });
       });
@@ -99,9 +99,9 @@ var fetchRequiredActions = function fetchRequiredActions(
         })
       );
     })
-    ['catch'](function (err) {
+    ['catch'](function (_) {
       _antd.notification.error({
-        message: ''.concat(err),
+        message: _constants.ERROR_OCCURED,
         description: '',
       });
     });

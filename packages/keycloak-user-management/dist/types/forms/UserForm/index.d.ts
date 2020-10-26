@@ -1,7 +1,6 @@
 import React from 'react';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { Dictionary } from '@onaio/utils';
 import * as Yup from 'yup';
 import '../../index.css';
 /** props for editing a user view */
@@ -10,16 +9,6 @@ export interface UserFormProps {
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
-}
-/** interface user action */
-export interface UserAction {
-  alias: string;
-  name: string;
-  providerId: string;
-  enabled: boolean;
-  defaultAction: boolean;
-  priority: number;
-  config: Dictionary;
 }
 /** default form initial values */
 export declare const defaultInitialValues: KeycloakUser;

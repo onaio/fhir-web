@@ -1,4 +1,4 @@
-import { submitForm } from '../utils';
+import { submitForm, fetchRequiredActions } from '../utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
@@ -6,11 +6,75 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import { ERROR_OCCURED } from '../../../constants';
+import * as fixtures from './fixtures';
+
+describe('forms/utils/fetchRequiredActions', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.resetModules();
+  });
+
+  const keycloakBaseURL =
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const accessToken = 'token';
+  const serviceClass = KeycloakService;
+  const setUserActionOptionsMock = jest.fn();
+
+  it('fetches required actions', async () => {
+    fetch.once(JSON.stringify(fixtures.userActions));
+
+    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptionsMock, serviceClass);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+
+    expect(setUserActionOptionsMock).toHaveBeenCalledWith([
+      fixtures.userAction1,
+      fixtures.userAction3,
+      fixtures.userAction4,
+      fixtures.userAction5,
+      fixtures.userAction6,
+    ]);
+  });
+
+  it('handles error if fetching fails', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const notificationErrorMock = jest.spyOn(notification, 'error');
+
+    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptionsMock, serviceClass);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(setUserActionOptionsMock).not.toHaveBeenCalled();
+
+    expect(notificationErrorMock).toHaveBeenCalledWith({
+      message: ERROR_OCCURED,
+      description: '',
+    });
+  });
+});
 
 describe('forms/utils/submitForm', () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetAllMocks();
+    jest.resetModules();
   });
 
   const values = {

@@ -4,11 +4,10 @@ import { Form, Select, Input } from 'formik-antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { Dictionary } from '@onaio/utils';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { URL_ADMIN } from '../../constants';
-import { submitForm, fetchRequiredActions } from './utils';
+import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../index.css';
 
 /** props for editing a user view */
@@ -17,17 +16,6 @@ export interface UserFormProps {
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
-}
-
-/** interface user action */
-export interface UserAction {
-  alias: string;
-  name: string;
-  providerId: string;
-  enabled: boolean;
-  defaultAction: boolean;
-  priority: number;
-  config: Dictionary;
 }
 
 /** default form initial values */

@@ -107,59 +107,71 @@ export const keycloakUser = {
   },
 };
 
+export const userAction1 = {
+  alias: 'CONFIGURE_TOTP',
+  name: 'Configure OTP',
+  providerId: 'CONFIGURE_TOTP',
+  enabled: true,
+  defaultAction: false,
+  priority: 10,
+  config: {},
+};
+
+export const userAction2 = {
+  alias: 'terms_and_conditions',
+  name: 'Terms and Conditions',
+  providerId: 'terms_and_conditions',
+  enabled: false,
+  defaultAction: false,
+  priority: 20,
+  config: {},
+};
+
+export const userAction3 = {
+  alias: 'UPDATE_PASSWORD',
+  name: 'Update Password',
+  providerId: 'UPDATE_PASSWORD',
+  enabled: true,
+  defaultAction: false,
+  priority: 30,
+  config: {},
+};
+
+export const userAction4 = {
+  alias: 'UPDATE_PROFILE',
+  name: 'Update Profile',
+  providerId: 'UPDATE_PROFILE',
+  enabled: true,
+  defaultAction: false,
+  priority: 40,
+  config: {},
+};
+
+export const userAction5 = {
+  alias: 'VERIFY_EMAIL',
+  name: 'Verify Email',
+  providerId: 'VERIFY_EMAIL',
+  enabled: true,
+  defaultAction: false,
+  priority: 50,
+  config: {},
+};
+
+export const userAction6 = {
+  alias: 'update_user_locale',
+  name: 'Update User Locale',
+  providerId: 'update_user_locale',
+  enabled: true,
+  defaultAction: false,
+  priority: 1000,
+  config: {},
+};
+
 export const userActions = [
-  {
-    alias: 'CONFIGURE_TOTP',
-    name: 'Configure OTP',
-    providerId: 'CONFIGURE_TOTP',
-    enabled: true,
-    defaultAction: false,
-    priority: 10,
-    config: {},
-  },
-  {
-    alias: 'terms_and_conditions',
-    name: 'Terms and Conditions',
-    providerId: 'terms_and_conditions',
-    enabled: false,
-    defaultAction: false,
-    priority: 20,
-    config: {},
-  },
-  {
-    alias: 'UPDATE_PASSWORD',
-    name: 'Update Password',
-    providerId: 'UPDATE_PASSWORD',
-    enabled: true,
-    defaultAction: false,
-    priority: 30,
-    config: {},
-  },
-  {
-    alias: 'UPDATE_PROFILE',
-    name: 'Update Profile',
-    providerId: 'UPDATE_PROFILE',
-    enabled: true,
-    defaultAction: false,
-    priority: 40,
-    config: {},
-  },
-  {
-    alias: 'VERIFY_EMAIL',
-    name: 'Verify Email',
-    providerId: 'VERIFY_EMAIL',
-    enabled: true,
-    defaultAction: false,
-    priority: 50,
-    config: {},
-  },
-  {
-    alias: 'update_user_locale',
-    name: 'Update User Locale',
-    providerId: 'update_user_locale',
-    enabled: true,
-    defaultAction: false,
-    priority: 1000,
-    config: {},
-  },
+  userAction1,
+  userAction2,
+  userAction3,
+  userAction4,
+  userAction5,
+  userAction6,
 ];

@@ -106,6 +106,7 @@ export const fetchRequiredActions = (
     KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
     keycloakBaseURL
   );
+
   keycloakService
     .list()
     .then((response: UserAction[]) => {
@@ -113,9 +114,9 @@ export const fetchRequiredActions = (
         response.filter((action: UserAction) => action.alias !== 'terms_and_conditions')
       );
     })
-    .catch((err: Error) => {
+    .catch((_: Error) => {
       notification.error({
-        message: `${err}`,
+        message: ERROR_OCCURED,
         description: '',
       });
     });
