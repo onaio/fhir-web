@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "cd ./client && react-scripts start",
+    "build": "cd ./client && react-scripts build",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
@@ -27,7 +29,7 @@
       "eslint --fix --max-warnings 0",
       "git add"
     ],
-    "*.{js,jsx}": [
+    "!(**/*dist/**/*).{js,jsx}": [
       "eslint --fix --max-warnings 0",
       "git add"
     ],
