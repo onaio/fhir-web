@@ -157,7 +157,7 @@ var Admin = function Admin(props) {
     key: 'Actions',
     render: function render(_, record) {
       return React.createElement(React.Fragment, null, React.createElement(_reactRouterDom.Link, {
-        to: "".concat(_constants.USER_EDIT_URL, "/").concat(record.id),
+        to: "".concat(_constants.URL_USER_EDIT, "/").concat(record.id),
         key: "actions"
       }, 'Edit'), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement("span", null, "\xA0"), React.createElement(_antd.Popconfirm, {
         title: "Are you sure delete this user?",
@@ -200,7 +200,7 @@ var Admin = function Admin(props) {
     type: "primary",
     className: "create-user",
     onClick: function onClick() {
-      return _connectedReducerRegistry.history.push(_constants.CREATE_NEW_USER);
+      return _connectedReducerRegistry.history.push(_constants.URL_USER_CREATE);
     }
   }, "Add User")))), React.createElement(_antd.Row, null, React.createElement(_antd.Table, {
     columns: dataElements,

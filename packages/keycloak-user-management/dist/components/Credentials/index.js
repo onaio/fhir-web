@@ -27,6 +27,8 @@ var _keycloakService = require("@opensrp/keycloak-service");
 
 require("../../index.css");
 
+var _constants = require("../../constants");
+
 _reduxReducerRegistry["default"].register(_store.reducerName, _store.reducer);
 
 var defaultCredentialsProps = {
@@ -40,9 +42,10 @@ exports.defaultCredentialsProps = defaultCredentialsProps;
 var submitForm = function submitForm(values, props) {
   var serviceClass = props.serviceClass,
       match = props.match,
-      accessToken = props.accessToken;
+      accessToken = props.accessToken,
+      keycloakBaseURL = props.keycloakBaseURL;
   var userId = match.params.userId;
-  var serve = new serviceClass(accessToken, "/users/".concat(userId, "/reset-password"), 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
+  var serve = new serviceClass(accessToken, "".concat(_constants.URL_USERS, "/").concat(userId).concat(_constants.URL_RESET_PASSWORD), keycloakBaseURL);
   var password = values.password,
       temporary = values.temporary;
   serve.update({

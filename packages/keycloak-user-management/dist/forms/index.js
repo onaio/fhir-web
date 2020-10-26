@@ -76,7 +76,8 @@ exports.handleUserActionsChange = handleUserActionsChange;
 var UserForm = function UserForm(props) {
   var initialValues = props.initialValues,
       serviceClass = props.serviceClass,
-      accessToken = props.accessToken;
+      accessToken = props.accessToken,
+      keycloakBaseURL = props.keycloakBaseURL;
 
   var _React$useState = _react["default"].useState([]),
       _React$useState2 = (0, _slicedToArray2["default"])(_React$useState, 2),
@@ -146,7 +147,7 @@ var UserForm = function UserForm(props) {
   var Option = _antd.Select.Option;
 
   _react["default"].useEffect(function () {
-    var serve = new serviceClass(accessToken, "/authentication/required-actions/", 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
+    var serve = new serviceClass(accessToken, _constants.URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
     serve.list().then(function (response) {
       setUserActionOptions(response.filter(function (action) {
         return action.alias !== 'terms_and_conditions';
@@ -157,7 +158,7 @@ var UserForm = function UserForm(props) {
         description: ''
       });
     });
-  });
+  }, [accessToken, keycloakBaseURL, serviceClass]);
 
   return _react["default"].createElement("div", {
     className: "form-container"
@@ -168,7 +169,7 @@ var UserForm = function UserForm(props) {
       var setSubmitting = _ref.setSubmitting;
 
       if (isEditMode) {
-        var serve = new serviceClass(accessToken, "/users/".concat(initialValues.id), 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
+        var serve = new serviceClass(accessToken, "".concat(_constants.URL_USERS, "/").concat(initialValues.id), keycloakBaseURL);
         serve.update(_objectSpread(_objectSpread({}, values), {}, {
           requiredActions: requiredActions
         })).then(function () {
@@ -189,7 +190,7 @@ var UserForm = function UserForm(props) {
           setSubmitting(false);
         });
       } else {
-        var _serve = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
+        var _serve = new serviceClass(accessToken, '/users', keycloakBaseURL);
 
         _serve.create(values).then(function () {
           setSubmitting(false);
@@ -290,7 +291,7 @@ var UserForm = function UserForm(props) {
     }))), _react["default"].createElement(_antd.Form.Item, tailLayout, _react["default"].createElement(_antd.Button, {
       htmlType: "submit",
       onClick: function onClick() {
-        return _connectedReducerRegistry.history.push(_constants.ADMIN_URL);
+        return _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
       },
       className: "cancel-user",
       disabled: isSubmitting || Object.keys(errors).length > 0

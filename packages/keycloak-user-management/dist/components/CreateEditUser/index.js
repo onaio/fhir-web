@@ -31,6 +31,8 @@ var _Loading = _interopRequireDefault(require("../Loading"));
 
 var _forms = require("../../forms");
 
+var _constants = require("../../constants");
+
 require("../../index.css");
 
 _reduxReducerRegistry["default"].register(_store.reducerName, _store.reducer);
@@ -61,7 +63,8 @@ var defaultEditUserProps = {
   accessToken: '',
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
   keycloakUser: null,
-  serviceClass: _keycloakService.KeycloakService
+  serviceClass: _keycloakService.KeycloakService,
+  keycloakBaseURL: ''
 };
 exports.defaultEditUserProps = defaultEditUserProps;
 var userSchema = Yup.object().shape({
@@ -79,14 +82,15 @@ var CreateEditUsers = function CreateEditUsers(props) {
   var serviceClass = props.serviceClass,
       fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
       keycloakUser = props.keycloakUser,
-      accessToken = props.accessToken;
+      accessToken = props.accessToken,
+      keycloakBaseURL = props.keycloakBaseURL;
   var userId = props.match.params.userId;
   var isEditMode = !!userId;
   var initialValues = isEditMode ? keycloakUser : defaultInitialValues;
 
   _react["default"].useEffect(function () {
     if (userId) {
-      var serve = new serviceClass(accessToken, '/users', 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage');
+      var serve = new serviceClass(accessToken, _constants.URL_USERS, keycloakBaseURL);
       serve.read(userId).then(function (response) {
         if (response) {
           fetchKeycloakUsersCreator([response]);
@@ -101,12 +105,13 @@ var CreateEditUsers = function CreateEditUsers(props) {
     } else {
       setIsLoading(false);
     }
-  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId]);
+  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL]);
 
   var userFormProps = {
     accessToken: accessToken,
     initialValues: initialValues,
-    serviceClass: _keycloakService.KeycloakService
+    serviceClass: _keycloakService.KeycloakService,
+    keycloakBaseURL: keycloakBaseURL
   };
 
   if (isLoading) {
