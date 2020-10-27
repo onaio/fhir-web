@@ -1,17 +1,13 @@
 "use strict";
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
-
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.Form = exports.userSchema = void 0;
+exports["default"] = exports.Form = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
-
-var Yup = _interopRequireWildcard(require("yup"));
 
 var _formik = require("formik");
 
@@ -37,12 +33,49 @@ var offsetLayout = {
 };
 var validateMessages = {
   required: '${label} is required!',
-  types: {
-    email: '${label} is not validate email!',
-    number: '${label} is not a validate number!'
-  },
   number: {
+    len: 'lenth should be ${label}',
+    min: 'should be greater than ${label}',
+    max: 'should be lesser than ${label}',
     range: '${label} must be between ${min} and ${max}'
+  },
+  "default": '${label} defauslt',
+  "enum": '${label} enum',
+  whitespace: '${label} whitespace',
+  date: {
+    format: '${label} format',
+    parse: '${label} parse',
+    invalid: '${label} invalid'
+  },
+  types: {
+    string: '${label} is not a valid string',
+    method: '${label} is not a valid method',
+    array: '${label} is not a valid array',
+    object: '${label} is not a valid object',
+    number: '${label} is not a valid number',
+    date: '${label} is not a valid date',
+    "boolean": '${label} is not a valid boolean',
+    integer: '${label} is not a valid integer',
+    "float": '${label} is not a valid float',
+    regexp: '${label} is not a valid regexp',
+    email: '${label} is not a valid email',
+    url: '${label} is not a valid url',
+    hex: '${label} is not a valid hex'
+  },
+  string: {
+    len: '${label} len',
+    min: '${label} min',
+    max: '${label} max',
+    range: '${label} range'
+  },
+  array: {
+    len: '${label} len',
+    min: '${label} min',
+    max: '${label} max',
+    range: '${label} range'
+  },
+  pattern: {
+    mismatch: '${label} mismatch'
   }
 };
 var location = [{
@@ -62,12 +95,6 @@ var status = [{
   label: 'Inactive',
   value: 'inactive'
 }];
-var userSchema = Yup.object().shape({
-  name: Yup.string().required('Required'),
-  status: Yup.string().required('Required'),
-  type: Yup.string().required('Required')
-});
-exports.userSchema = userSchema;
 var initialValue = {
   name: null,
   type: null,
@@ -81,16 +108,17 @@ var Form = function Form() {
 
   return _react["default"].createElement(_formik.Formik, {
     initialValues: initialValue,
-    validationSchema: userSchema,
     onSubmit: function onSubmit(values, _ref) {
       var setSubmitting = _ref.setSubmitting;
-      console.log('asd');
+      console.log('asd', values);
       setSubmitting(false);
     }
   }, function (_ref2) {
     var errors = _ref2.errors,
         isSubmitting = _ref2.isSubmitting,
         handleSubmit = _ref2.handleSubmit;
+    console.log('errors :', errors);
+    console.log('isSubmitting :', isSubmitting);
     return _react["default"].createElement(_antd.Form, (0, _extends2["default"])({
       validateMessages: validateMessages,
       requiredMark: false,
@@ -141,8 +169,9 @@ var Form = function Form() {
     })), _react["default"].createElement(_antd.Form.Item, offsetLayout, _react["default"].createElement(_antd.Button, {
       type: "primary",
       htmlType: "submit",
-      disabled: isSubmitting || Object.keys(errors).length > 0
-    }, isSubmitting ? 'Saving' : 'Save User'), _react["default"].createElement(_antd.Button, {
+      loading: isSubmitting,
+      disabled: Object.keys(errors).length > 0
+    }, isSubmitting ? 'Saving' : 'Save'), _react["default"].createElement(_antd.Button, {
       htmlType: "submit",
       onClick: function onClick() {
         return _connectedReducerRegistry.history.goBack();
