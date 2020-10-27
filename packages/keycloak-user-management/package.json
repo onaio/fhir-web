@@ -26,7 +26,8 @@
   "scripts": {
     "test": "jest --coverage --verbose --color",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx'  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "build": "yarn tsc && yarn transpile"
   },
   "license": "Apache-2.0",
   "publishConfig": {
