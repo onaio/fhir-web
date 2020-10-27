@@ -4,7 +4,7 @@ import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
 import * as fixtures from '../../../forms/UserForm/tests/fixtures';
 import { mount, shallow } from 'enzyme';
-import { ConnectedUserListView, UserList } from '..';
+import { ConnectedUserList, UserList } from '..';
 import { Router } from 'react-router';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
@@ -75,7 +75,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <Router history={history}>
-          <ConnectedUserListView {...props} />
+          <ConnectedUserList {...props} />
         </Router>
       </Provider>
     );

@@ -35,7 +35,7 @@ declare const UserList: {
   };
 };
 export { UserList };
-export declare const ConnectedUserListView: import('react-redux').ConnectedComponent<
+export declare const ConnectedUserList: import('react-redux').ConnectedComponent<
   {
     (props: Props): JSX.Element;
     defaultProps: {

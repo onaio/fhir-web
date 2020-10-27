@@ -165,4 +165,4 @@ const mapDispatchToProps = {
   removeKeycloakUsersCreator: removeKeycloakUsers,
 };
 
-export const ConnectedUserListView = connect(mapStateToProps, mapDispatchToProps)(UserList);
+export const ConnectedUserList = connect(mapStateToProps, mapDispatchToProps)(UserList);

@@ -32,7 +32,7 @@ import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
 import '@opensrp/user-management/dist/index.css';
 import {
-  ConnectedUserListView,
+  ConnectedUserList,
   ConnectedCreateEditUsers,
   ConnectedUserCredentials,
   URL_ADMIN,
@@ -75,7 +75,7 @@ const App: React.FC = () => {
               exact
               path={URL_ADMIN}
               component={(props: any) => (
-                <ConnectedUserListView {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <ConnectedUserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute

@@ -7,7 +7,7 @@ var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, '__esModule', {
   value: true,
 });
-exports.ConnectedUserListView = exports.UserList = exports.defaultProps = void 0;
+exports.ConnectedUserList = exports.UserList = exports.defaultProps = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(require('@babel/runtime/helpers/slicedToArray'));
 
@@ -195,5 +195,5 @@ var mapDispatchToProps = {
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
   removeKeycloakUsersCreator: _store.removeKeycloakUsers,
 };
-var ConnectedUserListView = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserList);
-exports.ConnectedUserListView = ConnectedUserListView;
+var ConnectedUserList = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserList);
+exports.ConnectedUserList = ConnectedUserList;
