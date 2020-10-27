@@ -33,7 +33,7 @@ var _constants = require('../../../constants');
 
 var _utils = require('./utils');
 
-require('../../index.css');
+require('../../../index.css');
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);

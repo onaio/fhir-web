@@ -2,7 +2,7 @@ import React from 'react';
 import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import * as Yup from 'yup';
-import '../../index.css';
+import '../../../index.css';
 /** props for editing a user view */
 export interface UserFormProps {
   accessToken: string;

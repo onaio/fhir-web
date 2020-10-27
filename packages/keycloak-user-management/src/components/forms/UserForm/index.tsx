@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { URL_ADMIN } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
-import '../../index.css';
+import '../../../index.css';
 
 /** props for editing a user view */
 export interface UserFormProps {

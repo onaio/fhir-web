@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, notification, Row } from 'antd';
+import { Col, Row } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import * as Yup from 'yup';
 import { Store } from 'redux';
@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import {
-  fetchKeycloakUsers,
   KeycloakUser,
   makeKeycloakUsersSelector,
   reducer as keycloakUsersReducer,
@@ -15,9 +14,8 @@ import {
   getAccessToken,
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import Ripple from '../Loading';
 import { UserForm, UserFormProps } from '../forms/UserForm';
-import { KEYCLOAK_URL_USERS, ROUTE_PARAM_USER_ID } from '../../constants';
+import { ROUTE_PARAM_USER_ID } from '../../constants';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -31,7 +29,6 @@ export interface RouteParams {
 /** props for editing a user view */
 export interface EditUserProps {
   accessToken: string;
-  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
@@ -67,7 +64,6 @@ export const defaultInitialValues: KeycloakUser = {
 /** default props for editing user component */
 export const defaultEditUserProps: EditUserProps = {
   accessToken: '',
-  fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
   keycloakBaseURL: '',
@@ -85,38 +81,10 @@ export const userSchema = Yup.object().shape({
  */
 
 const CreateEditUser: React.FC<PropsTypes> = (props: PropsTypes) => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const {
-    serviceClass,
-    fetchKeycloakUsersCreator,
-    keycloakUser,
-    accessToken,
-    keycloakBaseURL,
-  } = props;
+  const { keycloakUser, accessToken, keycloakBaseURL } = props;
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
   const isEditMode = !!userId;
   const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
-  React.useEffect(() => {
-    if (userId) {
-      const serve = new serviceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
-      serve
-        .read(userId)
-        .then((response: KeycloakUser) => {
-          if (response) {
-            fetchKeycloakUsersCreator([response]);
-            setIsLoading(false);
-          }
-        })
-        .catch((err: Error) => {
-          notification.error({
-            message: `${err}`,
-            description: '',
-          });
-        });
-    } else {
-      setIsLoading(false);
-    }
-  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL]);
 
   const userFormProps: UserFormProps = {
     accessToken,
@@ -124,10 +92,6 @@ const CreateEditUser: React.FC<PropsTypes> = (props: PropsTypes) => {
     serviceClass: KeycloakService,
     keycloakBaseURL,
   };
-
-  if (isLoading) {
-    return <Ripple />;
-  }
 
   return (
     <Row>
@@ -159,9 +123,4 @@ const mapStateToProps = (state: Partial<Store>, ownProps: PropsTypes): Dispatche
   return { keycloakUser, accessToken };
 };
 
-/** map props to action creators */
-const mapDispatchToProps = {
-  fetchKeycloakUsersCreator: fetchKeycloakUsers,
-};
-
-export const ConnectedCreateEditUser = connect(mapStateToProps, mapDispatchToProps)(CreateEditUser);
+export const ConnectedCreateEditUser = connect(mapStateToProps)(CreateEditUser);

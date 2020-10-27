@@ -6,15 +6,19 @@ import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
-import fetch from 'jest-fetch-mock';
-import * as keycloakUserDucks from '@opensrp/store';
+import * as opensrpStore from '@opensrp/store';
 import * as fixtures from './fixtures';
-import { CreateEditUser, EditUserProps, ConnectedCreateEditUser } from '..';
+import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { fetchKeycloakUsers } from '@opensrp/store';
+import { defaultInitialValues } from '../../forms/UserForm';
 
-reducerRegistry.register(keycloakUserDucks.reducerName, keycloakUserDucks.reducer);
+jest.mock('@opensrp/store', () => ({
+  __esModule: true,
+  ...jest.requireActual('@opensrp/store'),
+}));
+
+reducerRegistry.register(opensrpStore.reducerName, opensrpStore.reducer);
 
 describe('components/CreateEditUser', () => {
   const props = {
@@ -22,11 +26,10 @@ describe('components/CreateEditUser', () => {
     keycloakUser: fixtures.keycloakUser,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     serviceClass: KeycloakService,
-    fetchKeycloakUsersCreator: fetchKeycloakUsers,
     accessToken: 'access token',
     location: {
       hash: '',
-      pathname: '/somewhere',
+      pathname: '/users/edit',
       search: '',
       state: '',
     },
@@ -39,13 +42,11 @@ describe('components/CreateEditUser', () => {
   };
 
   beforeEach(() => {
-    fetch.resetMocks();
-    store.dispatch(keycloakUserDucks.removeKeycloakUsers());
+    store.dispatch(opensrpStore.removeKeycloakUsers());
+    jest.clearAllMocks();
   });
 
-  it('renders CreateEditUsersView without crashing', () => {
-    fetch.once(JSON.stringify([]));
-
+  it('renders without crashing', () => {
     act(() => {
       shallow(
         <Router history={history}>
@@ -55,9 +56,8 @@ describe('components/CreateEditUser', () => {
     });
   });
 
-  it('renders CreateEditUser view correctly', async () => {
-    fetch.once(JSON.stringify([]));
-    store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
+  it('renders correctly', () => {
+    store.dispatch(opensrpStore.fetchKeycloakUsers([fixtures.keycloakUser]));
 
     const wrapper = mount(
       <Router history={history}>
@@ -65,86 +65,54 @@ describe('components/CreateEditUser', () => {
       </Router>
     );
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    const row = wrapper.find('Row').at(0);
 
-    // look for crucial components or pages that should be displayed
-
-    // expect a form
-    expect(wrapper.find('form')).toHaveLength(1);
-
-    // breadcrumb
-    const breadcrumbWrapper = wrapper.find('HeaderBreadCrumb');
-    expect(breadcrumbWrapper).toHaveLength(1);
-
-    // and the form?
-    const form = wrapper.find('UserForm');
-    expect(form).toHaveLength(1);
+    expect(row.props()).toMatchSnapshot();
 
     wrapper.unmount();
   });
 
-  it('Calls the correct endpoints', async () => {
-    const mockRead = jest.fn().mockImplementation(async () => fixtures.keycloakUser);
-    const serviceMock = jest.fn().mockImplementation(() => {
-      return {
-        read: mockRead,
-      };
-    });
-    // loads a single user,
-    store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
-    const mock = jest.fn();
-    const customProps = {
-      ...props,
-      accessToken: 'hunter 2',
+  it('renders correctly for create user', () => {
+    const propsCreate = {
       history,
-      location: mock,
+      keycloakUser: null,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      serviceClass: KeycloakService,
+      accessToken: 'access token',
+      location: {
+        hash: '',
+        pathname: '/users/new',
+        search: '',
+        state: '',
+      },
       match: {
         isExact: true,
-        params: { userId: fixtures.keycloakUser.id },
-        path: `/user/edit/:id`,
-        url: `/user/edit/${fixtures.keycloakUser.id}`,
+        params: { userId: null },
+        path: `/users/new/`,
+        url: `/users/new/`,
       },
-      keycloakUser: fixtures.keycloakUser,
-      serviceClass: serviceMock,
     };
+
     const wrapper = mount(
       <Router history={history}>
-        <CreateEditUser {...customProps} />
+        <CreateEditUser {...propsCreate} />
       </Router>
     );
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    const row = wrapper.find('Row').at(0);
 
-    expect(serviceMock).toHaveBeenCalled();
-    expect(serviceMock).toHaveBeenCalledWith(
-      'hunter 2',
-      '/users',
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
-    );
+    expect(row.find('UserForm').prop('initialValues')).toEqual(defaultInitialValues);
+
+    wrapper.unmount();
   });
 
   it('works correctly with the store', async () => {
-    // check after connection if props are as they should be
-    fetch.once(JSON.stringify([]));
-    store.dispatch(keycloakUserDucks.fetchKeycloakUsers([fixtures.keycloakUser]));
-    const mock = jest.fn();
-    const props = {
-      history,
-      location: mock,
-      match: {
-        isExact: true,
-        params: { userId: fixtures.keycloakUser.id },
-        path: `/user/edit/:id`,
-        url: `/user/edit/${fixtures.keycloakUser.id}`,
-      },
-      keycloakUser: fixtures.keycloakUser,
-    };
+    store.dispatch(opensrpStore.fetchKeycloakUsers([fixtures.keycloakUser]));
+    const getAccessTokenMock = jest
+      .spyOn(opensrpStore, 'getAccessToken')
+      .mockReturnValue('bamboocha');
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -158,51 +126,8 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
-    const connectedProps = wrapper.find('CreateEditUser').props();
-    expect((connectedProps as Partial<EditUserProps>).keycloakUser).toEqual(fixtures.keycloakUser);
-  });
-});
-
-describe('src/containers/Admin/createEditview.createUserView', () => {
-  it('renders page correctly on create new user view', async () => {
-    // see it renders form when user is null
-    const mock = jest.fn();
-    const props = {
-      history,
-      location: mock,
-      match: {
-        isExact: true,
-        params: {},
-        path: `/user/new`,
-        url: `/user/new`,
-      },
-    };
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <ConnectedCreateEditUser {...props} />
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // look for crucial components or pages that should be displayed
-
-    // expect a form
-    expect(wrapper.find('form')).toHaveLength(1);
-
-    // breadcrumb
-    const breadcrumbWrapper = wrapper.find('HeaderBreadCrumb');
-    expect(breadcrumbWrapper).toHaveLength(1);
-
-    // and the form?
-    const form = wrapper.find('UserForm');
-    expect(form).toHaveLength(1);
-
-    wrapper.unmount();
+    expect(wrapper.find('CreateEditUser').prop('keycloakUser')).toEqual(fixtures.keycloakUser);
+    expect(wrapper.find('CreateEditUser').prop('accessToken')).toEqual('bamboocha');
+    expect(getAccessTokenMock).toHaveBeenCalledWith(store.getState());
   });
 });

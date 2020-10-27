@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as Yup from 'yup';
-import { fetchKeycloakUsers, KeycloakUser } from '@opensrp/store';
+import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
 /** inteface for route params */
@@ -11,7 +11,6 @@ export interface RouteParams {
 /** props for editing a user view */
 export interface EditUserProps {
   accessToken: string;
-  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
