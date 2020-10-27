@@ -5,6 +5,7 @@
   "scripts": {
     "start": "cd ./client && react-scripts start",
     "build": "cd ./client && react-scripts build",
+    "prepublish": "lerna run build",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
