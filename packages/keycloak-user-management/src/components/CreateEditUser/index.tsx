@@ -116,10 +116,16 @@ interface DispatchedProps {
 // connect to store
 const mapStateToProps = (state: Partial<Store>, ownProps: PropsTypes): DispatchedProps => {
   const userId = ownProps.match.params[ROUTE_PARAM_USER_ID];
-  const keycloakUsersSelector = makeKeycloakUsersSelector();
-  const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
-  const keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  let keycloakUser = null;
+
+  if (userId) {
+    const keycloakUsersSelector = makeKeycloakUsersSelector();
+    const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
+    keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  }
+
   const accessToken = getAccessToken(state) as string;
+
   return { keycloakUser, accessToken };
 };
 

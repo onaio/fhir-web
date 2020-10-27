@@ -106,11 +106,16 @@ CreateEditUser.defaultProps = defaultEditUserProps;
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   var userId = ownProps.match.params[_constants.ROUTE_PARAM_USER_ID];
-  var keycloakUsersSelector = (0, _store.makeKeycloakUsersSelector)();
-  var keycloakUsers = keycloakUsersSelector(state, {
-    id: [userId],
-  });
-  var keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  var keycloakUser = null;
+
+  if (userId) {
+    var keycloakUsersSelector = (0, _store.makeKeycloakUsersSelector)();
+    var keycloakUsers = keycloakUsersSelector(state, {
+      id: [userId],
+    });
+    keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
+  }
+
   var accessToken = (0, _store.getAccessToken)(state);
   return {
     keycloakUser: keycloakUser,
