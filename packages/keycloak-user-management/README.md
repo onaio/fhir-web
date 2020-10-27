@@ -17,7 +17,7 @@ yarn add @opensrp/keycloak-user-management
 ```JSX
 import {
   ConnectedUserList,
-  ConnectedCreateEditUsers,
+  ConnectedCreateEditUser,
   ConnectedUserCredentials,
   URL_ADMIN,
   URL_USER_EDIT,
@@ -46,7 +46,7 @@ const App = () => {
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               component={(props: any) => (
-                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <ConnectedCreateEditUser {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute
@@ -55,7 +55,7 @@ const App = () => {
               exact
               path={URL_USER_CREATE}
               component={(props: any) => (
-                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <ConnectedCreateEditUser {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute

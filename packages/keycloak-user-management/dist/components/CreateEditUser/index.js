@@ -7,7 +7,7 @@ var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, '__esModule', {
   value: true,
 });
-exports.ConnectedCreateEditUsers = exports.CreateEditUsers = exports.userSchema = exports.defaultEditUserProps = exports.defaultInitialValues = void 0;
+exports.ConnectedCreateEditUser = exports.CreateEditUser = exports.userSchema = exports.defaultEditUserProps = exports.defaultInitialValues = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(require('@babel/runtime/helpers/slicedToArray'));
 
@@ -73,7 +73,7 @@ var userSchema = Yup.object().shape({
 });
 exports.userSchema = userSchema;
 
-var CreateEditUsers = function CreateEditUsers(props) {
+var CreateEditUser = function CreateEditUser(props) {
   var _React$useState = _react['default'].useState(true),
     _React$useState2 = (0, _slicedToArray2['default'])(_React$useState, 2),
     isLoading = _React$useState2[0],
@@ -144,8 +144,8 @@ var CreateEditUsers = function CreateEditUsers(props) {
   );
 };
 
-exports.CreateEditUsers = CreateEditUsers;
-CreateEditUsers.defaultProps = defaultEditUserProps;
+exports.CreateEditUser = CreateEditUser;
+CreateEditUser.defaultProps = defaultEditUserProps;
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   var userId = ownProps.match.params[_constants.ROUTE_PARAM_USER_ID];
@@ -164,8 +164,8 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 var mapDispatchToProps = {
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
 };
-var ConnectedCreateEditUsers = (0, _reactRedux.connect)(
+var ConnectedCreateEditUser = (0, _reactRedux.connect)(
   mapStateToProps,
   mapDispatchToProps
-)(CreateEditUsers);
-exports.ConnectedCreateEditUsers = ConnectedCreateEditUsers;
+)(CreateEditUser);
+exports.ConnectedCreateEditUser = ConnectedCreateEditUser;

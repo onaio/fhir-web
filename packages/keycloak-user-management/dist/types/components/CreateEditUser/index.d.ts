@@ -37,9 +37,9 @@ export declare const userSchema: Yup.ObjectSchema<
  *
  * @param props - CreateEditUser component props
  */
-declare const CreateEditUsers: React.FC<PropsTypes>;
-export { CreateEditUsers };
-export declare const ConnectedCreateEditUsers: import('react-redux').ConnectedComponent<
+declare const CreateEditUser: React.FC<PropsTypes>;
+export { CreateEditUser };
+export declare const ConnectedCreateEditUser: import('react-redux').ConnectedComponent<
   React.FC<PropsTypes>,
   Pick<
     PropsTypes,

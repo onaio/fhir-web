@@ -33,7 +33,7 @@ import NotFound from '../components/NotFound';
 import '@opensrp/user-management/dist/index.css';
 import {
   ConnectedUserList,
-  ConnectedCreateEditUsers,
+  ConnectedCreateEditUser,
   ConnectedUserCredentials,
   URL_ADMIN,
   URL_USER_EDIT,
@@ -84,7 +84,7 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               component={(props: any) => (
-                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <ConnectedCreateEditUser {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute
@@ -93,7 +93,7 @@ const App: React.FC = () => {
               exact
               path={URL_USER_CREATE}
               component={(props: any) => (
-                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <ConnectedCreateEditUser {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
             <ConnectedPrivateRoute

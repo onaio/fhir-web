@@ -84,7 +84,7 @@ export const userSchema = Yup.object().shape({
  * @param props - CreateEditUser component props
  */
 
-const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
+const CreateEditUser: React.FC<PropsTypes> = (props: PropsTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const {
     serviceClass,
@@ -139,9 +139,9 @@ const CreateEditUsers: React.FC<PropsTypes> = (props: PropsTypes) => {
   );
 };
 
-CreateEditUsers.defaultProps = defaultEditUserProps;
+CreateEditUser.defaultProps = defaultEditUserProps;
 
-export { CreateEditUsers };
+export { CreateEditUser };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
@@ -164,7 +164,4 @@ const mapDispatchToProps = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
 
-export const ConnectedCreateEditUsers = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateEditUsers);
+export const ConnectedCreateEditUser = connect(mapStateToProps, mapDispatchToProps)(CreateEditUser);

@@ -9,7 +9,7 @@ import { store } from '@opensrp/store';
 import fetch from 'jest-fetch-mock';
 import * as keycloakUserDucks from '@opensrp/store';
 import * as fixtures from './fixtures';
-import { CreateEditUsers, EditUserProps, ConnectedCreateEditUsers } from '..';
+import { CreateEditUser, EditUserProps, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { fetchKeycloakUsers } from '@opensrp/store';
@@ -49,7 +49,7 @@ describe('components/CreateEditUser', () => {
     act(() => {
       shallow(
         <Router history={history}>
-          <CreateEditUsers {...props} />
+          <CreateEditUser {...props} />
         </Router>
       );
     });
@@ -61,7 +61,7 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Router history={history}>
-        <CreateEditUsers {...props} />
+        <CreateEditUser {...props} />
       </Router>
     );
 
@@ -112,7 +112,7 @@ describe('components/CreateEditUser', () => {
     };
     const wrapper = mount(
       <Router history={history}>
-        <CreateEditUsers {...customProps} />
+        <CreateEditUser {...customProps} />
       </Router>
     );
 
@@ -148,7 +148,7 @@ describe('components/CreateEditUser', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedCreateEditUsers {...props} />
+          <ConnectedCreateEditUser {...props} />
         </Router>
       </Provider>
     );
@@ -158,7 +158,7 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
-    const connectedProps = wrapper.find('CreateEditUsers').props();
+    const connectedProps = wrapper.find('CreateEditUser').props();
     expect((connectedProps as Partial<EditUserProps>).keycloakUser).toEqual(fixtures.keycloakUser);
   });
 });
@@ -180,7 +180,7 @@ describe('src/containers/Admin/createEditview.createUserView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedCreateEditUsers {...props} />
+          <ConnectedCreateEditUser {...props} />
         </Router>
       </Provider>
     );
