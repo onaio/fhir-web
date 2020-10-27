@@ -16,7 +16,7 @@ import {
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import Ripple from '../Loading';
-import { UserForm, UserFormProps } from '../../forms/UserForm';
+import { UserForm, UserFormProps } from '../forms/UserForm';
 import { KEYCLOAK_URL_USERS, ROUTE_PARAM_USER_ID } from '../../constants';
 import '../../index.css';
 

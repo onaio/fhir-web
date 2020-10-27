@@ -29,7 +29,7 @@ var _keycloakService = require('@opensrp/keycloak-service');
 
 var _Loading = _interopRequireDefault(require('../Loading'));
 
-var _UserForm = require('../../forms/UserForm');
+var _UserForm = require('../forms/UserForm');
 
 var _constants = require('../../constants');
 

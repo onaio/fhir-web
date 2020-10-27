@@ -6,7 +6,7 @@ import { KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { URL_ADMIN } from '../../constants';
+import { URL_ADMIN } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../index.css';
 

@@ -1,4 +1,4 @@
-import * as fixtures from '../../../forms/UserForm/tests/fixtures';
+import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { getDataFilters, getTableColumns } from '../utils';
 
 describe('components/UserList/utils/getDataFilters', () => {

@@ -9,7 +9,7 @@ var _antd = require('antd');
 
 var _connectedReducerRegistry = require('@onaio/connected-reducer-registry');
 
-var _constants = require('../../constants');
+var _constants = require('../../../constants');
 
 var submitForm = function submitForm(
   values,

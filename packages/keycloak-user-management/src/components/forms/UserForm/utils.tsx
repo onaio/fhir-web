@@ -9,7 +9,7 @@ import {
   URL_ADMIN,
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   ERROR_OCCURED,
-} from '../../constants';
+} from '../../../constants';
 
 /**
  * Handle form submission

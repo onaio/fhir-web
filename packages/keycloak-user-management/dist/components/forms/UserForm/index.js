@@ -29,7 +29,7 @@ var _formik = require('formik');
 
 var Yup = _interopRequireWildcard(require('yup'));
 
-var _constants = require('../../constants');
+var _constants = require('../../../constants');
 
 var _utils = require('./utils');
 

@@ -5,7 +5,7 @@ import { notification } from 'antd';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
-import { ERROR_OCCURED } from '../../../constants';
+import { ERROR_OCCURED } from '../../../../constants';
 import * as fixtures from './fixtures';
 
 describe('forms/utils/fetchRequiredActions', () => {
