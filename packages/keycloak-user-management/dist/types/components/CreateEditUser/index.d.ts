@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as Yup from 'yup';
-import { KeycloakUser } from '@opensrp/store';
+import { KeycloakUser, fetchKeycloakUsers } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
 /** inteface for route params */
@@ -14,6 +14,7 @@ export interface EditUserProps {
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
+  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
 }
 /** type intersection for all types that pertain to the props */
 export declare type PropsTypes = EditUserProps & RouteComponentProps<RouteParams>;
@@ -42,7 +43,13 @@ export declare const ConnectedCreateEditUser: import('react-redux').ConnectedCom
   React.FC<PropsTypes>,
   Pick<
     PropsTypes,
-    'location' | 'keycloakBaseURL' | 'serviceClass' | 'history' | 'match' | 'staticContext'
+    | 'location'
+    | 'fetchKeycloakUsersCreator'
+    | 'keycloakBaseURL'
+    | 'serviceClass'
+    | 'history'
+    | 'match'
+    | 'staticContext'
   > &
     EditUserProps &
     RouteComponentProps<RouteParams, import('react-router').StaticContext, unknown>

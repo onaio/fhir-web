@@ -9,6 +9,8 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.ConnectedCreateEditUser = exports.CreateEditUser = exports.userSchema = exports.defaultEditUserProps = exports.defaultInitialValues = void 0;
 
+var _slicedToArray2 = _interopRequireDefault(require('@babel/runtime/helpers/slicedToArray'));
+
 var _react = _interopRequireDefault(require('react'));
 
 var _antd = require('antd');
@@ -28,6 +30,8 @@ var _keycloakService = require('@opensrp/keycloak-service');
 var _UserForm = require('../forms/UserForm');
 
 var _constants = require('../../constants');
+
+var _Loading = _interopRequireDefault(require('../Loading'));
 
 require('../../index.css');
 
@@ -60,6 +64,7 @@ var defaultEditUserProps = {
   keycloakUser: null,
   serviceClass: _keycloakService.KeycloakService,
   keycloakBaseURL: '',
+  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
 };
 exports.defaultEditUserProps = defaultEditUserProps;
 var userSchema = Yup.object().shape({
@@ -69,16 +74,53 @@ var userSchema = Yup.object().shape({
 exports.userSchema = userSchema;
 
 var CreateEditUser = function CreateEditUser(props) {
+  var _React$useState = _react['default'].useState(false),
+    _React$useState2 = (0, _slicedToArray2['default'])(_React$useState, 2),
+    isLoading = _React$useState2[0],
+    setIsLoading = _React$useState2[1];
+
   var keycloakUser = props.keycloakUser,
     accessToken = props.accessToken,
-    keycloakBaseURL = props.keycloakBaseURL;
+    keycloakBaseURL = props.keycloakBaseURL,
+    serviceClass = props.serviceClass,
+    fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator;
   var userId = props.match.params[_constants.ROUTE_PARAM_USER_ID];
-  var isEditMode = !!userId;
-  var initialValues = isEditMode ? keycloakUser : defaultInitialValues;
+  var initialValues = keycloakUser ? keycloakUser : defaultInitialValues;
+
+  _react['default'].useEffect(
+    function () {
+      if (userId && !keycloakUser) {
+        var serve = new serviceClass(accessToken, _constants.KEYCLOAK_URL_USERS, keycloakBaseURL);
+        setIsLoading(true);
+        serve
+          .read(userId)
+          .then(function (response) {
+            if (response) {
+              setIsLoading(false);
+              fetchKeycloakUsersCreator([response]);
+            }
+          })
+          ['catch'](function (_) {
+            setIsLoading(false);
+
+            _antd.notification.error({
+              message: _constants.ERROR_OCCURED,
+              description: '',
+            });
+          });
+      }
+    },
+    [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]
+  );
+
+  if (isLoading) {
+    return _react['default'].createElement(_Loading['default'], null);
+  }
+
   var userFormProps = {
     accessToken: accessToken,
     initialValues: initialValues,
-    serviceClass: _keycloakService.KeycloakService,
+    serviceClass: serviceClass,
     keycloakBaseURL: keycloakBaseURL,
   };
   return _react['default'].createElement(

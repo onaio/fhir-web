@@ -11,7 +11,10 @@ import * as fixtures from './fixtures';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { fetchKeycloakUsers } from '@opensrp/store';
+import fetch from 'jest-fetch-mock';
 import { defaultInitialValues } from '../../forms/UserForm';
+import toJson from 'enzyme-to-json';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -26,6 +29,7 @@ describe('components/CreateEditUser', () => {
     keycloakUser: fixtures.keycloakUser,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     serviceClass: KeycloakService,
+    fetchKeycloakUsersCreator: fetchKeycloakUsers,
     accessToken: 'access token',
     location: {
       hash: '',
@@ -79,6 +83,7 @@ describe('components/CreateEditUser', () => {
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       serviceClass: KeycloakService,
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
       accessToken: 'access token',
       location: {
         hash: '',
@@ -103,6 +108,47 @@ describe('components/CreateEditUser', () => {
     const row = wrapper.find('Row').at(0);
 
     expect(row.find('UserForm').prop('initialValues')).toEqual(defaultInitialValues);
+
+    wrapper.unmount();
+  });
+
+  it('fetches user if page is refreshed', async () => {
+    fetch.once(JSON.stringify(fixtures.keycloakUser));
+
+    jest.spyOn(opensrpStore, 'getAccessToken').mockReturnValue('bamboocha');
+
+    const propsPageRefreshed = {
+      ...props,
+      keycloakUser: null,
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedCreateEditUser {...propsPageRefreshed} />
+        </Router>
+      </Provider>
+    );
+
+    // Loader should be displayed
+    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(fetch.mock.calls[1]).toEqual([
+      `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${fixtures.keycloakUser.id}`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer bamboocha',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
 
     wrapper.unmount();
   });

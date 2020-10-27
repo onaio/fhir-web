@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'antd';
+import { Col, Row, notification } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import * as Yup from 'yup';
 import { Store } from 'redux';
@@ -12,10 +12,12 @@ import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
   getAccessToken,
+  fetchKeycloakUsers,
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { UserForm, UserFormProps } from '../forms/UserForm';
-import { ROUTE_PARAM_USER_ID } from '../../constants';
+import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
+import Ripple from '../Loading';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -32,6 +34,7 @@ export interface EditUserProps {
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
+  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
 }
 
 /** type intersection for all types that pertain to the props */
@@ -67,6 +70,7 @@ export const defaultEditUserProps: EditUserProps = {
   keycloakUser: null,
   serviceClass: KeycloakService,
   keycloakBaseURL: '',
+  fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
 
 /** yup validations for practitioner data object from form */
@@ -81,15 +85,50 @@ export const userSchema = Yup.object().shape({
  */
 
 const CreateEditUser: React.FC<PropsTypes> = (props: PropsTypes) => {
-  const { keycloakUser, accessToken, keycloakBaseURL } = props;
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const {
+    keycloakUser,
+    accessToken,
+    keycloakBaseURL,
+    serviceClass,
+    fetchKeycloakUsersCreator,
+  } = props;
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
-  const isEditMode = !!userId;
-  const initialValues = isEditMode ? keycloakUser : defaultInitialValues;
+  const initialValues = keycloakUser ? keycloakUser : defaultInitialValues;
+
+  /**
+   * Fetch user incase the user is not available e.g when page is refreshed
+   */
+  React.useEffect(() => {
+    if (userId && !keycloakUser) {
+      const serve = new serviceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
+      setIsLoading(true);
+      serve
+        .read(userId)
+        .then((response: KeycloakUser) => {
+          if (response) {
+            setIsLoading(false);
+            fetchKeycloakUsersCreator([response]);
+          }
+        })
+        .catch((_: Error) => {
+          setIsLoading(false);
+          notification.error({
+            message: ERROR_OCCURED,
+            description: '',
+          });
+        });
+    }
+  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);
+
+  if (isLoading) {
+    return <Ripple />;
+  }
 
   const userFormProps: UserFormProps = {
     accessToken,
     initialValues: initialValues as KeycloakUser,
-    serviceClass: KeycloakService,
+    serviceClass,
     keycloakBaseURL,
   };
 
