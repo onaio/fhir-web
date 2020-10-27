@@ -34,7 +34,7 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import LocationUnitGroupAdd from '../containers/pages/locations/LocationGroupAddition';
+import { ConnectedLocationUnitGroupAdd } from '../containers/pages/locations/LocationGroupAddition';
 
 const { Content } = Layout;
 
@@ -73,7 +73,7 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_GROUP_ADD}
-              component={LocationUnitGroupAdd}
+              component={ConnectedLocationUnitGroupAdd}
             />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
