@@ -1,9 +1,0 @@
-export declare const DELETE = 'Delete';
-export declare const ERROR_OCCURED = 'An error occurred';
-export declare const USER_DELETED_SUCCESSFULLY = 'User deleted successfully';
-export declare const URL_USERS = '/users';
-export declare const URL_RESET_PASSWORD = '/reset-password';
-export declare const URL_REQUIRED_USER_ACTIONS = '/authentication/required-actions/';
-export declare const URL_USER_EDIT = '/user/edit';
-export declare const URL_ADMIN = '/admin';
-export declare const URL_USER_CREATE = '/user/new';
