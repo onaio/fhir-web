@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cd ./client && react-scripts start",
     "build": "cd ./client && react-scripts build",
-    "prepublish": "lerna run build",
+    "lerna:prepublish": "lerna run build",
     "lerna:version": "lerna version --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
     "test": "jest",
     "test:watch": "jest --watch",
