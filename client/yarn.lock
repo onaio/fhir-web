@@ -1638,6 +1638,21 @@
 "@opensrp/keycloak-service@file:../packages/keycloak-service":
   version "0.1.0"
 
+"@opensrp/location-management@file:../packages/location-management":
+  version "0.0.0"
+  dependencies:
+    "@opensrp/reducer-factory" "^0.0.3"
+    "@opensrp/server-service" "^0.0.4"
+
+"@opensrp/reducer-factory@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.3.tgz#87bd0d42f5206c7d41d48c55f041cb6ba6b9b948"
+  integrity sha512-+rGCCuYfRr1Ze6NpFGuxtR7fxwA491J9MWxzNS1D4UhKt4s6WRyER97ggtgrUCbxF26vaTpL8hHjiZysD0NPhQ==
+  dependencies:
+    lodash "^4.17.15"
+    redux "^4.0.5"
+    seamless-immutable "^7.1.4"
+
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"

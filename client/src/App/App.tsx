@@ -34,7 +34,7 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import { ConnectedLocationUnitGroupAdd } from '../containers/pages/locations/LocationGroupAddition';
+import { ConnectedLocationUnitGroupAdd } from '@opensrp/location-management';
 
 const { Content } = Layout;
 
