@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "prepublish": "lerna run build",
+    "lerna:version": "lerna version --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
