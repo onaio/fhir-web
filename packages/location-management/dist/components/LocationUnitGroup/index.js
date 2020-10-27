@@ -7,9 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.LocationUnitGroup = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+exports.ConnectedLocationUnitGroupAdd = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -22,6 +20,8 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
 var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -61,14 +61,15 @@ for (var i = 0; i < 100; i++) {
 }
 
 var EditableCell = function EditableCell(_ref) {
-  var editing = _ref.editing,
-      dataIndex = _ref.dataIndex,
-      title = _ref.title,
-      inputType = _ref.inputType,
-      record = _ref.record,
-      index = _ref.index,
-      children = _ref.children,
-      restProps = (0, _objectWithoutProperties2["default"])(_ref, ["editing", "dataIndex", "title", "inputType", "record", "index", "children"]);
+  var props = (0, _extends2["default"])({}, _ref);
+  var editing = props.editing,
+      dataIndex = props.dataIndex,
+      title = props.title,
+      inputType = props.inputType,
+      record = props.record,
+      index = props.index,
+      children = props.children,
+      restProps = (0, _objectWithoutProperties2["default"])(props, ["editing", "dataIndex", "title", "inputType", "record", "index", "children"]);
   return _react["default"].createElement("td", restProps, editing ? _react["default"].createElement(_antd.Form.Item, {
     name: dataIndex,
     style: {
@@ -148,15 +149,14 @@ var LocationUnitGroup = function LocationUnitGroup() {
                 setEditingKey('');
               }
 
-              _context.next = 12;
+              _context.next = 11;
               break;
 
             case 9:
               _context.prev = 9;
               _context.t0 = _context["catch"](0);
-              console.log('Validate Failed:', _context.t0);
 
-            case 12:
+            case 11:
             case "end":
               return _context.stop();
           }
@@ -304,7 +304,5 @@ var LocationUnitGroup = function LocationUnitGroup() {
   }, selectedLocation))) : null));
 };
 
-exports.LocationUnitGroup = LocationUnitGroup;
-var ConnectedLocationUnitGroupComponent = (0, _reactRedux.connect)(null, null)(LocationUnitGroup);
-var _default = ConnectedLocationUnitGroupComponent;
-exports["default"] = _default;
+var ConnectedLocationUnitGroupAdd = (0, _reactRedux.connect)(null, null)(LocationUnitGroup);
+exports.ConnectedLocationUnitGroupAdd = ConnectedLocationUnitGroupAdd;

@@ -15,3 +15,15 @@ Object.keys(_LocationUnitGroup).forEach(function (key) {
     }
   });
 });
+
+var _LocationDetail = require("./components/LocationDetail");
+
+Object.keys(_LocationDetail).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _LocationDetail[key];
+    }
+  });
+});

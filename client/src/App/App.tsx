@@ -36,8 +36,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
-import ConnectedLocationUnitGroupComp from '../containers/pages/locations/LocationUnitGroup';
-import {LocationUnitGroup} from '@opensrp/location-management';
+import { ConnectedLocationUnitGroupAdd } from '@opensrp/location-management';
 // import reducerRegistry from '@onaio/redux-reducer-registry';
 // import ConnectedAdminView from '../containers/pages/Admin';
 
@@ -51,8 +50,6 @@ const App: React.FC = () => {
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
 
-  console.log("LocationUnitGroup :: ", LocationUnitGroup, ConnectedLocationUnitGroupComp);
-  
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -63,13 +60,13 @@ const App: React.FC = () => {
           <Switch>
             {/* tslint:disable jsx-no-lambda */}
             {/* Home Page view */}
-            {/* <ConnectedPrivateRoute
+            <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path={URL_HOME}
               component={ConnectedHomeComponent}
-            /> */}
+            />
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
@@ -109,8 +106,7 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_UNIT_GROUP}
-              // render={(props: any) => <LocationUnitGroup {...props} />}
-              component={LocationUnitGroup}
+              component={ConnectedLocationUnitGroupAdd}
             />
             <Route
               exact

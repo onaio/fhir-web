@@ -1,2 +1,2 @@
 export * from './components/LocationUnitGroup';
-// export * from './components/LocationDetail';
+export * from './components/LocationDetail';

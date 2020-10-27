@@ -1,21 +1,31 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import { LocationUnitGroup } from '..';
+import { ConnectedLocationUnitGroupAdd } from '..';
 
-describe('containers/pages/locations/locationunitgroup', () => {
+describe('packages/components/locationunitgroup', () => {
   it('renders without crashing', () => {
-    shallow(<LocationUnitGroup />);
+    mount(
+      <Provider store={store}>
+        <ConnectedLocationUnitGroupAdd />
+      </Provider>
+    );
   });
 
   it('should open and close locations detail', () => {
-    const wrapper = mount(<LocationUnitGroup />);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedLocationUnitGroupAdd />
+      </Provider>
+    );
 
     // click on view detail
-    const first_action = wrapper.find('.location-table-action').first();
+    const firstAction = wrapper.find('.location-table-action').first();
 
-    first_action.children().last().simulate('click');
+    firstAction.children().last().simulate('click');
     wrapper
       .find('.ant-dropdown-menu-item.ant-dropdown-menu-item-only-child')
       .first()
@@ -30,20 +40,24 @@ describe('containers/pages/locations/locationunitgroup', () => {
   });
 
   it('should save location detail on edit', async () => {
-    const wrapper = mount(<LocationUnitGroup />);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedLocationUnitGroupAdd />
+      </Provider>
+    );
 
     // click edit button
-    let first_row = wrapper.find('tr[data-row-key="0"]');
-    first_row.find('.ant-table-cell').last().find('.edit').simulate('click');
+    let firstRow = wrapper.find('tr[data-row-key="0"]');
+    firstRow.find('.ant-table-cell').last().find('.edit').simulate('click');
 
-    first_row = wrapper.find('tr[data-row-key="0"]');
-    first_row
+    firstRow = wrapper.find('tr[data-row-key="0"]');
+    firstRow
       .children()
       .first()
       .find('input')
       .simulate('change', { target: { value: 'Testing 1' } });
 
-    first_row.find('button').first().simulate('click');
+    firstRow.find('button').first().simulate('click');
 
     await act(async () => {
       await flushPromises();
@@ -52,20 +66,24 @@ describe('containers/pages/locations/locationunitgroup', () => {
   });
 
   it('should cancel location detail on edit', async () => {
-    const wrapper = mount(<LocationUnitGroup />);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedLocationUnitGroupAdd />
+      </Provider>
+    );
 
     // click edit button
-    let first_row = wrapper.find('tr[data-row-key="0"]');
-    first_row.find('.ant-table-cell').last().find('.edit').simulate('click');
+    let firstRow = wrapper.find('tr[data-row-key="0"]');
+    firstRow.find('.ant-table-cell').last().find('.edit').simulate('click');
 
-    first_row = wrapper.find('tr[data-row-key="0"]');
-    first_row
+    firstRow = wrapper.find('tr[data-row-key="0"]');
+    firstRow
       .children()
       .first()
       .find('input')
       .simulate('change', { target: { value: 'Testing 1' } });
 
-    first_row.find('button').last().simulate('click');
+    firstRow.find('button').last().simulate('click');
 
     await act(async () => {
       await flushPromises();
@@ -74,8 +92,12 @@ describe('containers/pages/locations/locationunitgroup', () => {
   });
 
   it('renders onchange without crashing', () => {
-    const wrapper = mount(<LocationUnitGroup />);
-    let first_row = wrapper.find('.ant-input.ant-input-lg');
-    first_row.find('input').simulate('change', { target: { value: 'Testing 1' } });
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedLocationUnitGroupAdd />
+      </Provider>
+    );
+    const firstRow = wrapper.find('.ant-input.ant-input-lg');
+    firstRow.find('input').simulate('change', { target: { value: 'Testing 1' } });
   });
 });

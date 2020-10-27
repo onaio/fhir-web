@@ -46,23 +46,15 @@ for (let i = 0; i < 100; i++) {
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
-  title: any;
+  title: string;
   inputType: 'number' | 'text';
   record: Item;
   index: number;
   children: React.ReactNode;
 }
 
-const EditableCell: React.FC<EditableCellProps> = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
+const EditableCell: React.FC<EditableCellProps> = ({ ...props }) => {
+  const { editing, dataIndex, title, inputType, record, index, children, ...restProps } = props;
   return (
     <td {...restProps}>
       {editing ? (
@@ -112,7 +104,7 @@ const LocationUnitGroup = () => {
         setEditingKey('');
       }
     } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+      // console.log('Validate Failed:', errInfo);
     }
   };
 
@@ -128,7 +120,7 @@ const LocationUnitGroup = () => {
       dataIndex: 'operation',
       width: '10%',
       // eslint-disable-next-line react/display-name
-      render: (_: any, record: Item) => {
+      render: (_: unknown, record: Item) => {
         const editable = isEditing(record);
         return editable ? (
           <>
@@ -263,8 +255,6 @@ const LocationUnitGroup = () => {
   );
 };
 
-export { LocationUnitGroup };
-
 /** Connect the component to the store */
 
 /** map state to props */
@@ -280,6 +270,5 @@ export { LocationUnitGroup };
 
 /** Connected Header component
  */
-const ConnectedLocationUnitGroupComponent = connect(null, null)(LocationUnitGroup);
 
-export default ConnectedLocationUnitGroupComponent;
+export const ConnectedLocationUnitGroupAdd = connect(null, null)(LocationUnitGroup);
