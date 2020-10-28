@@ -21,10 +21,11 @@ interface APIFilters {
 
 /** Fetch access token from store if access_token filter val is true
  *
- * @param _ redux store
- * @param props api filters object
- * @returns {Boolean}
+ * @param _ - redux store
+ * @param props - api filters object
+ * @returns {boolean}
  */
+
 export const fetchAccessToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
   props.accessToken || null;
 
@@ -32,7 +33,7 @@ export const fetchAccessToken = (_: Partial<Store>, props: APIFilters): boolean 
  *
  * @param _ redux store
  * @param props api filters object
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 export const fetchApiToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
@@ -42,13 +43,14 @@ export const fetchApiToken = (_: Partial<Store>, props: APIFilters): boolean | n
  *
  * @param _ redux store
  * @param props api filters object
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 export const fetchOauthProviderState = (_: Partial<Store>, props: APIFilters): boolean | null =>
   props.providerState || null;
 
 /** Gets extra data object from store
+ *
  * @param state - redux store
  */
 
