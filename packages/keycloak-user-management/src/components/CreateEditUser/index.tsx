@@ -1,7 +1,6 @@
 import React from 'react';
 import { Col, Row, notification } from 'antd';
 import { RouteComponentProps } from 'react-router';
-import * as Yup from 'yup';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -48,12 +47,6 @@ export const defaultEditUserProps: EditUserProps = {
   keycloakBaseURL: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
-
-/** yup validations for practitioner data object from form */
-export const userSchema = Yup.object().shape({
-  lastName: Yup.string().required('Required'),
-  firstName: Yup.string().required('Required'),
-});
 
 /**
  *

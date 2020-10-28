@@ -1,21 +1,17 @@
 'use strict';
 
-var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
-
 var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault');
 
 Object.defineProperty(exports, '__esModule', {
   value: true,
 });
-exports.ConnectedCreateEditUser = exports.CreateEditUser = exports.userSchema = exports.defaultEditUserProps = void 0;
+exports.ConnectedCreateEditUser = exports.CreateEditUser = exports.defaultEditUserProps = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(require('@babel/runtime/helpers/slicedToArray'));
 
 var _react = _interopRequireDefault(require('react'));
 
 var _antd = require('antd');
-
-var Yup = _interopRequireWildcard(require('yup'));
 
 var _reactRedux = require('react-redux');
 
@@ -45,11 +41,6 @@ var defaultEditUserProps = {
   fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
 };
 exports.defaultEditUserProps = defaultEditUserProps;
-var userSchema = Yup.object().shape({
-  lastName: Yup.string().required('Required'),
-  firstName: Yup.string().required('Required'),
-});
-exports.userSchema = userSchema;
 
 var CreateEditUser = function CreateEditUser(props) {
   var _React$useState = _react['default'].useState(false),

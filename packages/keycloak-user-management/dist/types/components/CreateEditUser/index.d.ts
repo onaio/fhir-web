@@ -1,6 +1,5 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import * as Yup from 'yup';
 import { KeycloakUser, fetchKeycloakUsers } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
@@ -20,17 +19,6 @@ export interface EditUserProps {
 export declare type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParams>;
 /** default props for editing user component */
 export declare const defaultEditUserProps: EditUserProps;
-/** yup validations for practitioner data object from form */
-export declare const userSchema: Yup.ObjectSchema<
-  Yup.Shape<
-    object | undefined,
-    {
-      lastName: string;
-      firstName: string;
-    }
-  >,
-  object
->;
 /**
  *
  * @param props - CreateEditUser component props
