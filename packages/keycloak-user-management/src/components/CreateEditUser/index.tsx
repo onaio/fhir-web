@@ -15,7 +15,7 @@ import {
   fetchKeycloakUsers,
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { UserForm, UserFormProps } from '../forms/UserForm';
+import { UserForm, UserFormProps, defaultInitialValues } from '../forms/UserForm';
 import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
 import Ripple from '../Loading';
 import '../../index.css';
@@ -39,30 +39,6 @@ export interface EditUserProps {
 
 /** type intersection for all types that pertain to the props */
 export type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParams>;
-
-/** default form initial values */
-
-export const defaultInitialValues: KeycloakUser = {
-  access: {
-    manageGroupMembership: false,
-    view: false,
-    mapRoles: false,
-    impersonate: false,
-    manage: false,
-  },
-  createdTimestamp: undefined,
-  disableableCredentialTypes: [],
-  email: '',
-  emailVerified: false,
-  enabled: true,
-  firstName: '',
-  id: '',
-  lastName: '',
-  notBefore: 0,
-  requiredActions: [],
-  totp: false,
-  username: '',
-};
 
 /** default props for editing user component */
 export const defaultEditUserProps: EditUserProps = {

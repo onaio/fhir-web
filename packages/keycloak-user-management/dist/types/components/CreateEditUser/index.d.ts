@@ -18,8 +18,6 @@ export interface EditUserProps {
 }
 /** type intersection for all types that pertain to the props */
 export declare type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParams>;
-/** default form initial values */
-export declare const defaultInitialValues: KeycloakUser;
 /** default props for editing user component */
 export declare const defaultEditUserProps: EditUserProps;
 /** yup validations for practitioner data object from form */

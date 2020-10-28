@@ -7,7 +7,7 @@ var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, '__esModule', {
   value: true,
 });
-exports.ConnectedCreateEditUser = exports.CreateEditUser = exports.userSchema = exports.defaultEditUserProps = exports.defaultInitialValues = void 0;
+exports.ConnectedCreateEditUser = exports.CreateEditUser = exports.userSchema = exports.defaultEditUserProps = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(require('@babel/runtime/helpers/slicedToArray'));
 
@@ -37,28 +37,6 @@ require('../../index.css');
 
 _reduxReducerRegistry['default'].register(_store.reducerName, _store.reducer);
 
-var defaultInitialValues = {
-  access: {
-    manageGroupMembership: false,
-    view: false,
-    mapRoles: false,
-    impersonate: false,
-    manage: false,
-  },
-  createdTimestamp: undefined,
-  disableableCredentialTypes: [],
-  email: '',
-  emailVerified: false,
-  enabled: true,
-  firstName: '',
-  id: '',
-  lastName: '',
-  notBefore: 0,
-  requiredActions: [],
-  totp: false,
-  username: '',
-};
-exports.defaultInitialValues = defaultInitialValues;
 var defaultEditUserProps = {
   accessToken: '',
   keycloakUser: null,
@@ -85,7 +63,7 @@ var CreateEditUser = function CreateEditUser(props) {
     serviceClass = props.serviceClass,
     fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator;
   var userId = props.match.params[_constants.ROUTE_PARAM_USER_ID];
-  var initialValues = keycloakUser ? keycloakUser : defaultInitialValues;
+  var initialValues = keycloakUser ? keycloakUser : _UserForm.defaultInitialValues;
 
   _react['default'].useEffect(
     function () {
