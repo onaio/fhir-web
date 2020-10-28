@@ -33,7 +33,7 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/reducer-factory": "^0.0.3",
+    "@opensrp/reducer-factory": "^0.0.5",
     "@opensrp/server-service": "^0.0.4"
   },
   "devDependencies": {
