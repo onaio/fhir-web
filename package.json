@@ -1,7 +1,6 @@
 {
   "name": "opensrp-web",
   "version": "0.1.0",
-  "homepage": ".",
   "private": true,
   "scripts": {
     "start": "cd ./client && react-scripts start",
