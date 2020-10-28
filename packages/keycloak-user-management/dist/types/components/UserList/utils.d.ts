@@ -12,22 +12,20 @@ export declare const getDataFilters: (users: KeycloakUser[], field: string) => D
  * Get table columns for user list
  *
  * @param {KeycloakUser[]} users - array of keyloak users
- * @param {Function} fetchKeycloakUsersCreator - fetch users action creator
  * @param {Function} removeKeycloakUsersCreator - remove users action creator
  * @param {string} accessToken - API access token
  * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {Function} isLoadingCallback - callback function that sets loading state
  * @param {Dictionary} filteredInfo - applied filters
  * @param {Dictionary} sortedInfo - applied sort
  * @returns {Dictionary[]} - an array of table columns
  */
 export declare const getTableColumns: (
   users: KeycloakUser[],
-  fetchKeycloakUsersCreator: (
-    usersList?: KeycloakUser[]
-  ) => import('../../ducks/user').FetchKeycloakUsersAction,
   removeKeycloakUsersCreator: () => import('../../ducks/user').RemoveKeycloakUsersAction,
   accessToken: string,
   keycloakBaseURL: string,
+  isLoadingCallback: (loading: boolean) => void,
   filteredInfo?: Dictionary<any> | undefined,
   sortedInfo?: Dictionary<any> | undefined
 ) => Dictionary<any>[];

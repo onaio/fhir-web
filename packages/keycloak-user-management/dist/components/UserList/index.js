@@ -69,6 +69,11 @@ var UserList = function UserList(props) {
     keycloakUsers = props.keycloakUsers,
     accessToken = props.accessToken,
     keycloakBaseURL = props.keycloakBaseURL;
+
+  var isLoadingCallback = function isLoadingCallback(isLoading) {
+    setIsLoading(isLoading);
+  };
+
   React.useEffect(function () {
     if (isLoading) {
       var serve = new serviceClass(accessToken, _constants.KEYCLOAK_URL_USERS, keycloakBaseURL);
@@ -160,10 +165,10 @@ var UserList = function UserList(props) {
       React.createElement(_antd.Table, {
         columns: (0, _utils.getTableColumns)(
           keycloakUsers,
-          fetchKeycloakUsersCreator,
           removeKeycloakUsersCreator,
           accessToken,
           keycloakBaseURL,
+          isLoadingCallback,
           filteredInfo,
           sortedInfo
         ),

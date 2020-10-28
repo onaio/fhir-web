@@ -24,10 +24,10 @@ exports.getDataFilters = getDataFilters;
 
 var getTableColumns = function getTableColumns(
   users,
-  fetchKeycloakUsersCreator,
   removeKeycloakUsersCreator,
   accessToken,
   keycloakBaseURL,
+  isLoadingCallback,
   filteredInfo,
   sortedInfo
 ) {
@@ -65,10 +65,10 @@ var getTableColumns = function getTableColumns(
     key: 'Actions',
     render: function render(_, record) {
       var tableActionsProps = {
-        fetchKeycloakUsersCreator: fetchKeycloakUsersCreator,
         removeKeycloakUsersCreator: removeKeycloakUsersCreator,
         accessToken: accessToken,
         keycloakBaseURL: keycloakBaseURL,
+        isLoadingCallback: isLoadingCallback,
         record: record,
       };
       return React.createElement(_TableActions.TableActions, tableActionsProps);

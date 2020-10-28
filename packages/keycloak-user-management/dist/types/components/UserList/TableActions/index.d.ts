@@ -1,12 +1,12 @@
 /// <reference types="react" />
-import { removeKeycloakUsers, fetchKeycloakUsers, KeycloakUser } from '../../../ducks/user';
+import { removeKeycloakUsers, KeycloakUser } from '../../../ducks/user';
 /** interface for component props */
 export interface Props {
-  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   accessToken: string;
   keycloakBaseURL: string;
   record: KeycloakUser;
+  isLoadingCallback: (loading: boolean) => void;
 }
 /**
  * Component TableActions

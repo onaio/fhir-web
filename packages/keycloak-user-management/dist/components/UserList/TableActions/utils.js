@@ -12,11 +12,11 @@ var _keycloakService = require('@opensrp/keycloak-service');
 var _constants = require('../../../constants');
 
 var deleteUser = function deleteUser(
-  fetchKeycloakUsersCreator,
   removeKeycloakUsersCreator,
   accessToken,
   keycloakBaseURL,
-  userId
+  userId,
+  isLoadingCallback
 ) {
   var serviceDelete = new _keycloakService.KeycloakService(
     accessToken,
@@ -25,28 +25,13 @@ var deleteUser = function deleteUser(
   );
   serviceDelete['delete']()
     .then(function () {
+      removeKeycloakUsersCreator();
+      isLoadingCallback(true);
+
       _antd.notification.success({
         message: ''.concat(_constants.USER_DELETED_SUCCESSFULLY),
         description: '',
       });
-
-      var serviceGet = new _keycloakService.KeycloakService(
-        accessToken,
-        _constants.KEYCLOAK_URL_USERS,
-        keycloakBaseURL
-      );
-      serviceGet
-        .list()
-        .then(function (res) {
-          removeKeycloakUsersCreator();
-          fetchKeycloakUsersCreator(res);
-        })
-        ['catch'](function (_) {
-          _antd.notification.error({
-            message: ''.concat(_constants.ERROR_OCCURED),
-            description: '',
-          });
-        });
     })
     ['catch'](function (_) {
       _antd.notification.error({
