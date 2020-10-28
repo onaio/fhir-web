@@ -19,10 +19,10 @@ var _constants = require('../../../constants');
 
 var TableActions = function TableActions(props) {
   var record = props.record,
-    fetchKeycloakUsersCreator = props.fetchKeycloakUsersCreator,
     removeKeycloakUsersCreator = props.removeKeycloakUsersCreator,
     accessToken = props.accessToken,
-    keycloakBaseURL = props.keycloakBaseURL;
+    keycloakBaseURL = props.keycloakBaseURL,
+    isLoadingCallback = props.isLoadingCallback;
   return React.createElement(
     React.Fragment,
     null,
@@ -47,11 +47,11 @@ var TableActions = function TableActions(props) {
           cancelText: 'No',
           onConfirm: function onConfirm() {
             return (0, _utils.deleteUser)(
-              fetchKeycloakUsersCreator,
               removeKeycloakUsersCreator,
               accessToken,
               keycloakBaseURL,
-              record.id
+              record.id,
+              isLoadingCallback
             );
           },
         },

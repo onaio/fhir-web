@@ -1,12 +1,12 @@
 /// <reference types="react" />
-import { fetchKeycloakUsers, KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
+import { KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
 /** interface for component props */
 export interface Props {
-  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   accessToken: string;
   keycloakBaseURL: string;
   record: KeycloakUser;
+  isLoadingCallback: (loading: boolean) => void;
 }
 /**
  * Component TableActions

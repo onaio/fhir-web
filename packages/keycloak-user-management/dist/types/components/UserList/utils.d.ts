@@ -16,18 +16,17 @@ export declare const getDataFilters: (users: KeycloakUser[], field: string) => D
  * @param {Function} removeKeycloakUsersCreator - remove users action creator
  * @param {string} accessToken - API access token
  * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {Function} isLoadingCallback - callback function that sets loading state
  * @param {Dictionary} filteredInfo - applied filters
  * @param {Dictionary} sortedInfo - applied sort
  * @returns {Dictionary[]} - an array of table columns
  */
 export declare const getTableColumns: (
   users: KeycloakUser[],
-  fetchKeycloakUsersCreator: (
-    usersList?: KeycloakUser[] | undefined
-  ) => import('@opensrp/store/dist/types').FetchKeycloakUsersAction,
   removeKeycloakUsersCreator: () => import('@opensrp/store/dist/types').RemoveKeycloakUsersAction,
   accessToken: string,
   keycloakBaseURL: string,
+  isLoadingCallback: (loading: boolean) => void,
   filteredInfo?: Dictionary<any> | undefined,
   sortedInfo?: Dictionary<any> | undefined
 ) => Dictionary<any>[];

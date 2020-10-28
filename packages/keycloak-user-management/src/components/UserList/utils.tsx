@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fetchKeycloakUsers, KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
+import { KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
 import { Dictionary } from '@onaio/utils';
 import { TableActions } from './TableActions';
 
@@ -22,20 +22,20 @@ export const getDataFilters = (users: KeycloakUser[], field: string): Dictionary
  * Get table columns for user list
  *
  * @param {KeycloakUser[]} users - array of keyloak users
- * @param {Function} fetchKeycloakUsersCreator - fetch users action creator
  * @param {Function} removeKeycloakUsersCreator - remove users action creator
  * @param {string} accessToken - API access token
  * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {Function} isLoadingCallback - callback function that sets loading state
  * @param {Dictionary} filteredInfo - applied filters
  * @param {Dictionary} sortedInfo - applied sort
  * @returns {Dictionary[]} - an array of table columns
  */
 export const getTableColumns = (
   users: KeycloakUser[],
-  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers,
   removeKeycloakUsersCreator: typeof removeKeycloakUsers,
   accessToken: string,
   keycloakBaseURL: string,
+  isLoadingCallback: (loading: boolean) => void,
   filteredInfo?: Dictionary,
   sortedInfo?: Dictionary
 ): Dictionary[] => {
@@ -74,10 +74,10 @@ export const getTableColumns = (
     // eslint-disable-next-line react/display-name
     render: (_: string, record: KeycloakUser) => {
       const tableActionsProps = {
-        fetchKeycloakUsersCreator,
         removeKeycloakUsersCreator,
         accessToken,
         keycloakBaseURL,
+        isLoadingCallback,
         record,
       };
       return <TableActions {...tableActionsProps} />;

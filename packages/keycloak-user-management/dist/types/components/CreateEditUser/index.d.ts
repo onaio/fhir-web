@@ -30,8 +30,8 @@ export declare const ConnectedCreateEditUser: import('react-redux').ConnectedCom
   Pick<
     CreateEditPropTypes,
     | 'location'
-    | 'fetchKeycloakUsersCreator'
     | 'keycloakBaseURL'
+    | 'fetchKeycloakUsersCreator'
     | 'serviceClass'
     | 'history'
     | 'match'

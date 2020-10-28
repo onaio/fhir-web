@@ -64,6 +64,10 @@ const UserList = (props: Props): JSX.Element => {
     keycloakBaseURL,
   } = props;
 
+  const isLoadingCallback = (isLoading: boolean) => {
+    setIsLoading(isLoading);
+  };
+
   React.useEffect(() => {
     if (isLoading) {
       const serve = new serviceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
@@ -123,10 +127,10 @@ const UserList = (props: Props): JSX.Element => {
         <Table
           columns={getTableColumns(
             keycloakUsers,
-            fetchKeycloakUsersCreator,
             removeKeycloakUsersCreator,
             accessToken,
             keycloakBaseURL,
+            isLoadingCallback,
             filteredInfo,
             sortedInfo
           )}
