@@ -5,7 +5,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
-import { getAccessToken } from '@opensrp/store';
+import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { UserForm, UserFormProps, defaultInitialValues } from '../forms/UserForm';
 import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
@@ -132,7 +132,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: CreateEditPropTypes): 
     keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
   }
 
-  const accessToken = getAccessToken(state) as string;
+  const accessToken = makeAPIStateSelector()(state, { accessToken: true });
 
   return { keycloakUser, accessToken };
 };
