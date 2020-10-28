@@ -7,7 +7,7 @@
     "build": "cd ./client && react-scripts build",
     "lerna:prepublish": "lerna run build",
     "lerna:version": "lerna version --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
-    "lerna:publish": "lerna publish from-package",
+    "lerna:publish": "lerna publish from-git --ignore-prepublish --ignore-scripts",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
