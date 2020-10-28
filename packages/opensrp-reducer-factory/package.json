@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/reducer-factory",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Abstraction for creating other dux modules",
   "main": "dist/index.js",
   "types": "dist/types",

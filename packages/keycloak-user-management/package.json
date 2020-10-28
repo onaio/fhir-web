@@ -1,12 +1,12 @@
 {
   "name": "@opensrp/user-management",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "dependencies": {
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/server-service": "^0.0.6",
+    "@opensrp/server-service": "^0.0.7",
     "@types/antd": "^1.0.0",
     "@types/lodash": "^4.14.161",
     "@types/yup": "^0.29.7",
