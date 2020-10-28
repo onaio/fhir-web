@@ -7,14 +7,20 @@
 
 ## Steps
 
-- run `lerna:prepublish` script.
+1. run `lerna:version` script
+
+   - this will find the changed packages, update the package.json files, create tags, create releases for those tags.
+   - you will need to set the `GH_TOKEN`  env variable for this step.
+
+2. run `lerna:publish`
+
+- One needs to be already logged into npm for this step.
+- This will call the prepublish lifecycle script and then push the versioned packages to npm
+
+### Other added scripts
+
+- run `prepublish` script.
   - This runs build script in each of the package, generating the dist folder.
   - One can target a specific package by passing in `--scope` flag e.g. `--scope @opensrp/opensrp-store`
-- run `lerna:version` script
-  - this will find the changed packages, update the package.json files, create tags, create releases for those tags.
-  - you will need to set the `GH_TOKEN`  env variable for this step.
-- run `lerna:publish`
-  - One needs to be already logged into npm for this step.
-  - This will just push the versioned packages to npm
 
 ## Possible Problems
