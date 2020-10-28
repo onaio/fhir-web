@@ -11,17 +11,22 @@ import * as fixtures from './fixtures';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { fetchKeycloakUsers } from '@opensrp/store';
 import fetch from 'jest-fetch-mock';
 import { defaultInitialValues } from '../../forms/UserForm';
 import toJson from 'enzyme-to-json';
+import {
+  reducer as keycloakUsersReducer,
+  reducerName as keycloakUsersReducerName,
+  fetchKeycloakUsers,
+  removeKeycloakUsers,
+} from '../../../ducks/user';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
   ...jest.requireActual('@opensrp/store'),
 }));
 
-reducerRegistry.register(opensrpStore.reducerName, opensrpStore.reducer);
+reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 describe('components/CreateEditUser', () => {
   const props = {
@@ -46,7 +51,7 @@ describe('components/CreateEditUser', () => {
   };
 
   beforeEach(() => {
-    store.dispatch(opensrpStore.removeKeycloakUsers());
+    store.dispatch(removeKeycloakUsers());
     jest.clearAllMocks();
   });
 
@@ -61,7 +66,7 @@ describe('components/CreateEditUser', () => {
   });
 
   it('renders correctly', () => {
-    store.dispatch(opensrpStore.fetchKeycloakUsers([fixtures.keycloakUser]));
+    store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
 
     const wrapper = mount(
       <Router history={history}>
@@ -154,7 +159,7 @@ describe('components/CreateEditUser', () => {
   });
 
   it('works correctly with the store', async () => {
-    store.dispatch(opensrpStore.fetchKeycloakUsers([fixtures.keycloakUser]));
+    store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
     const getAccessTokenMock = jest
       .spyOn(opensrpStore, 'getAccessToken')
       .mockReturnValue('bamboocha');

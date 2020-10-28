@@ -1,4 +1,4 @@
-import { KeycloakUser } from '@opensrp/store';
+import { KeycloakUser } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 /**
  * Get data for the filter menu
@@ -23,9 +23,9 @@ export declare const getDataFilters: (users: KeycloakUser[], field: string) => D
 export declare const getTableColumns: (
   users: KeycloakUser[],
   fetchKeycloakUsersCreator: (
-    usersList?: KeycloakUser[] | undefined
-  ) => import('@opensrp/store/dist/types').FetchKeycloakUsersAction,
-  removeKeycloakUsersCreator: () => import('@opensrp/store/dist/types').RemoveKeycloakUsersAction,
+    usersList?: KeycloakUser[]
+  ) => import('../../ducks/user').FetchKeycloakUsersAction,
+  removeKeycloakUsersCreator: () => import('../../ducks/user').RemoveKeycloakUsersAction,
   accessToken: string,
   keycloakBaseURL: string,
   filteredInfo?: Dictionary<any> | undefined,

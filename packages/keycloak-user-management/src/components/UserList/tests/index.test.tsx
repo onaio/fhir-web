@@ -12,6 +12,10 @@ import { act } from 'react-dom/test-utils';
 import * as opensrpStore from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import {
+  reducerName as keycloakUsersReducerName,
+  reducer as keycloakUsersReducer,
+} from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 
 jest.mock('@opensrp/store', () => ({
@@ -19,7 +23,7 @@ jest.mock('@opensrp/store', () => ({
   ...jest.requireActual('@opensrp/store'),
 }));
 
-reducerRegistry.register(opensrpStore.reducerName, opensrpStore.reducer);
+reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 describe('components/UserList', () => {
   beforeEach(() => {

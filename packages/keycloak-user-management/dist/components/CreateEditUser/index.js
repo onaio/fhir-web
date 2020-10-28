@@ -27,18 +27,20 @@ var _UserForm = require('../forms/UserForm');
 
 var _constants = require('../../constants');
 
+var _user = require('../../ducks/user');
+
 var _Loading = _interopRequireDefault(require('../Loading'));
 
 require('../../index.css');
 
-_reduxReducerRegistry['default'].register(_store.reducerName, _store.reducer);
+_reduxReducerRegistry['default'].register(_user.reducerName, _user.reducer);
 
 var defaultEditUserProps = {
   accessToken: '',
   keycloakUser: null,
   serviceClass: _keycloakService.KeycloakService,
   keycloakBaseURL: '',
-  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
+  fetchKeycloakUsersCreator: _user.fetchKeycloakUsers,
 };
 exports.defaultEditUserProps = defaultEditUserProps;
 
@@ -120,7 +122,7 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   var keycloakUser = null;
 
   if (userId) {
-    var keycloakUsersSelector = (0, _store.makeKeycloakUsersSelector)();
+    var keycloakUsersSelector = (0, _user.makeKeycloakUsersSelector)();
     var keycloakUsers = keycloakUsersSelector(state, {
       id: [userId],
     });

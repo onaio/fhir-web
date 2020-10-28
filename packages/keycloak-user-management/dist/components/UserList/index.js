@@ -29,17 +29,19 @@ var _reactRedux = require('react-redux');
 
 var _reduxReducerRegistry = _interopRequireDefault(require('@onaio/redux-reducer-registry'));
 
+var _user = require('../../ducks/user');
+
 var _constants = require('../../constants');
 
 var _utils = require('./utils');
 
-_reduxReducerRegistry['default'].register(_store.reducerName, _store.reducer);
+_reduxReducerRegistry['default'].register(_user.reducerName, _user.reducer);
 
 var defaultProps = {
   accessToken: '',
   serviceClass: _keycloakService.KeycloakService,
-  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
-  removeKeycloakUsersCreator: _store.removeKeycloakUsers,
+  fetchKeycloakUsersCreator: _user.fetchKeycloakUsers,
+  removeKeycloakUsersCreator: _user.removeKeycloakUsers,
   keycloakUsers: [],
   keycloakBaseURL: '',
 };
@@ -183,7 +185,7 @@ exports.UserList = UserList;
 UserList.defaultProps = defaultProps;
 
 var mapStateToProps = function mapStateToProps(state, _) {
-  var keycloakUsers = (0, _store.getKeycloakUsersArray)(state);
+  var keycloakUsers = (0, _user.getKeycloakUsersArray)(state);
   var accessToken = (0, _store.getAccessToken)(state);
   return {
     keycloakUsers: keycloakUsers,
@@ -192,8 +194,8 @@ var mapStateToProps = function mapStateToProps(state, _) {
 };
 
 var mapDispatchToProps = {
-  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
-  removeKeycloakUsersCreator: _store.removeKeycloakUsers,
+  fetchKeycloakUsersCreator: _user.fetchKeycloakUsers,
+  removeKeycloakUsersCreator: _user.removeKeycloakUsers,
 };
 var ConnectedUserList = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserList);
 exports.ConnectedUserList = ConnectedUserList;

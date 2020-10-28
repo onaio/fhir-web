@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { KeycloakUser, fetchKeycloakUsers, removeKeycloakUsers } from '@opensrp/store';
+import { KeycloakUser, fetchKeycloakUsers, removeKeycloakUsers } from '../../ducks/user';
 /** interface for component props */
 export interface Props {
   serviceClass: typeof KeycloakService;
@@ -15,9 +15,9 @@ export declare const defaultProps: {
   accessToken: string;
   serviceClass: typeof KeycloakService;
   fetchKeycloakUsersCreator: (
-    usersList?: KeycloakUser[] | undefined
-  ) => import('@opensrp/store/dist/types').FetchKeycloakUsersAction;
-  removeKeycloakUsersCreator: () => import('@opensrp/store/dist/types').RemoveKeycloakUsersAction;
+    usersList?: KeycloakUser[]
+  ) => import('../../ducks/user').FetchKeycloakUsersAction;
+  removeKeycloakUsersCreator: () => import('../../ducks/user').RemoveKeycloakUsersAction;
   keycloakUsers: never[];
   keycloakBaseURL: string;
 };
@@ -27,9 +27,9 @@ declare const UserList: {
     accessToken: string;
     serviceClass: typeof KeycloakService;
     fetchKeycloakUsersCreator: (
-      usersList?: KeycloakUser[] | undefined
-    ) => import('@opensrp/store/dist/types').FetchKeycloakUsersAction;
-    removeKeycloakUsersCreator: () => import('@opensrp/store/dist/types').RemoveKeycloakUsersAction;
+      usersList?: KeycloakUser[]
+    ) => import('../../ducks/user').FetchKeycloakUsersAction;
+    removeKeycloakUsersCreator: () => import('../../ducks/user').RemoveKeycloakUsersAction;
     keycloakUsers: never[];
     keycloakBaseURL: string;
   };
@@ -42,9 +42,9 @@ export declare const ConnectedUserList: import('react-redux').ConnectedComponent
       accessToken: string;
       serviceClass: typeof KeycloakService;
       fetchKeycloakUsersCreator: (
-        usersList?: KeycloakUser[] | undefined
-      ) => import('@opensrp/store/dist/types').FetchKeycloakUsersAction;
-      removeKeycloakUsersCreator: () => import('@opensrp/store/dist/types').RemoveKeycloakUsersAction;
+        usersList?: KeycloakUser[]
+      ) => import('../../ducks/user').FetchKeycloakUsersAction;
+      removeKeycloakUsersCreator: () => import('../../ducks/user').RemoveKeycloakUsersAction;
       keycloakUsers: never[];
       keycloakBaseURL: string;
     };

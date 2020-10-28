@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { KeycloakUser, fetchKeycloakUsers } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { fetchKeycloakUsers, KeycloakUser } from '../../ducks/user';
 import '../../index.css';
 /** inteface for route params */
 export interface RouteParams {
@@ -30,11 +30,11 @@ export declare const ConnectedCreateEditUser: import('react-redux').ConnectedCom
   Pick<
     CreateEditPropTypes,
     | 'location'
+    | 'match'
     | 'fetchKeycloakUsersCreator'
     | 'keycloakBaseURL'
     | 'serviceClass'
     | 'history'
-    | 'match'
     | 'staticContext'
   > &
     EditUserProps &

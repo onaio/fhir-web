@@ -1,4 +1,4 @@
-import { KeycloakUser } from '@opensrp/store';
+import { KeycloakUser } from '../../../ducks/user';
 /**
  * Delete keycloak user
  *
@@ -11,9 +11,9 @@ import { KeycloakUser } from '@opensrp/store';
  */
 export declare const deleteUser: (
   fetchKeycloakUsersCreator: (
-    usersList?: KeycloakUser[] | undefined
-  ) => import('@opensrp/store/dist/types').FetchKeycloakUsersAction,
-  removeKeycloakUsersCreator: () => import('@opensrp/store/dist/types').RemoveKeycloakUsersAction,
+    usersList?: KeycloakUser[]
+  ) => import('../../../ducks/user').FetchKeycloakUsersAction,
+  removeKeycloakUsersCreator: () => import('../../../ducks/user').RemoveKeycloakUsersAction,
   accessToken: string,
   keycloakBaseURL: string,
   userId: string

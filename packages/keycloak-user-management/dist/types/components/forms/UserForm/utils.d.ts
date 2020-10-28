@@ -1,7 +1,7 @@
-import { KeycloakUser } from '@opensrp/store';
 import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { KeycloakUser } from '../../../ducks/user';
 /**
  * Handle form submission
  *

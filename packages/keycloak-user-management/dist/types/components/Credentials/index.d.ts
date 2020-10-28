@@ -1,8 +1,8 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { fetchKeycloakUsers, KeycloakUser } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
+import { fetchKeycloakUsers, KeycloakUser } from '../../ducks/user';
 /** inteface for route params */
 export interface CredentialsRouteParams {
   userId: string;
@@ -42,7 +42,7 @@ export declare const ConnectedUserCredentials: import('react-redux').ConnectedCo
   React.FC<CredentialsPropsTypes>,
   Pick<
     CredentialsPropsTypes,
-    'location' | 'keycloakBaseURL' | 'serviceClass' | 'history' | 'match' | 'staticContext'
+    'location' | 'match' | 'keycloakBaseURL' | 'serviceClass' | 'history' | 'staticContext'
   > &
     CredentialsProps &
     RouteComponentProps<CredentialsRouteParams, import('react-router').StaticContext, unknown>

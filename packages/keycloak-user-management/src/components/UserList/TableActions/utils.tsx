@@ -1,6 +1,6 @@
 import { notification } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { fetchKeycloakUsers, KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
+import { fetchKeycloakUsers, KeycloakUser, removeKeycloakUsers } from '../../../ducks/user';
 import { KEYCLOAK_URL_USERS, USER_DELETED_SUCCESSFULLY, ERROR_OCCURED } from '../../../constants';
 
 /**

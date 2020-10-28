@@ -29,11 +29,13 @@ require('../../index.css');
 
 var _constants = require('../../constants');
 
-_reduxReducerRegistry['default'].register(_store.reducerName, _store.reducer);
+var _user = require('../../ducks/user');
+
+_reduxReducerRegistry['default'].register(_user.reducerName, _user.reducer);
 
 var defaultCredentialsProps = {
   accessToken: '',
-  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
+  fetchKeycloakUsersCreator: _user.fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: _keycloakService.KeycloakService,
 };
@@ -203,7 +205,7 @@ UserCredentials.defaultProps = defaultCredentialsProps;
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   var userId = ownProps.match.params[_constants.ROUTE_PARAM_USER_ID];
-  var keycloakUsersSelector = (0, _store.makeKeycloakUsersSelector)();
+  var keycloakUsersSelector = (0, _user.makeKeycloakUsersSelector)();
   var keycloakUsers = keycloakUsersSelector(state, {
     id: [userId],
   });
@@ -216,7 +218,7 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 };
 
 var mapDispatchToProps = {
-  fetchKeycloakUsersCreator: _store.fetchKeycloakUsers,
+  fetchKeycloakUsersCreator: _user.fetchKeycloakUsers,
 };
 var ConnectedUserCredentials = (0, _reactRedux.connect)(
   mapStateToProps,

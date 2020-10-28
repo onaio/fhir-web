@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { fetchKeycloakUsers, KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
+import { removeKeycloakUsers, fetchKeycloakUsers, KeycloakUser } from '../../../ducks/user';
 /** interface for component props */
 export interface Props {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
