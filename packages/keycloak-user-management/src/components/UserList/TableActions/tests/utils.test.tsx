@@ -7,8 +7,8 @@ import { act } from 'react-dom/test-utils';
 import { notification } from 'antd';
 
 describe('components/UserList/uti/deleteUser', () => {
-  const fetchUsersMock = jest.fn();
   const removeUsersMock = jest.fn();
+  const isLoadingCallback = jest.fn();
   const accessToken = 'sometoken';
   const keycloakBaseURL =
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
@@ -24,7 +24,7 @@ describe('components/UserList/uti/deleteUser', () => {
     const notificationSuccessMock = jest.spyOn(notification, 'success');
     fetch.mockResponse(JSON.stringify([fixtures.keycloakUser]));
 
-    deleteUser(fetchUsersMock, removeUsersMock, accessToken, keycloakBaseURL, userId);
+    deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
 
     await act(async () => {
       await flushPromises();
@@ -39,7 +39,7 @@ describe('components/UserList/uti/deleteUser', () => {
       method: 'DELETE',
     });
     expect(removeUsersMock).toHaveBeenCalled();
-    expect(fetchUsersMock).toHaveBeenCalledWith([fixtures.keycloakUser]);
+    expect(isLoadingCallback).toHaveBeenCalled();
     expect(notificationSuccessMock).toHaveBeenCalledWith({
       message: 'User deleted successfully',
       description: '',
@@ -49,7 +49,7 @@ describe('components/UserList/uti/deleteUser', () => {
   it('handles API error when calling the deletion endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject('API is down'));
-    deleteUser(fetchUsersMock, removeUsersMock, accessToken, keycloakBaseURL, userId);
+    deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
 
     await act(async () => {
       await flushPromises();
@@ -64,7 +64,7 @@ describe('components/UserList/uti/deleteUser', () => {
   it('handles API error when calling the fetch endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.once(JSON.stringify([])).mockRejectOnce(() => Promise.reject('API is down'));
-    deleteUser(fetchUsersMock, removeUsersMock, accessToken, keycloakBaseURL, userId);
+    deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
 
     await act(async () => {
       await flushPromises();
@@ -79,7 +79,6 @@ describe('components/UserList/uti/deleteUser', () => {
       method: 'DELETE',
     });
     expect(removeUsersMock).not.toHaveBeenCalled();
-    expect(fetchUsersMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith({
       message: 'An error occurred',
       description: '',
