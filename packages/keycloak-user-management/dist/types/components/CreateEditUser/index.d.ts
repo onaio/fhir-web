@@ -17,7 +17,7 @@ export interface EditUserProps {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
 }
 /** type intersection for all types that pertain to the props */
-export declare type PropsTypes = EditUserProps & RouteComponentProps<RouteParams>;
+export declare type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParams>;
 /** default form initial values */
 export declare const defaultInitialValues: KeycloakUser;
 /** default props for editing user component */
@@ -37,12 +37,12 @@ export declare const userSchema: Yup.ObjectSchema<
  *
  * @param props - CreateEditUser component props
  */
-declare const CreateEditUser: React.FC<PropsTypes>;
+declare const CreateEditUser: React.FC<CreateEditPropTypes>;
 export { CreateEditUser };
 export declare const ConnectedCreateEditUser: import('react-redux').ConnectedComponent<
-  React.FC<PropsTypes>,
+  React.FC<CreateEditPropTypes>,
   Pick<
-    PropsTypes,
+    CreateEditPropTypes,
     | 'location'
     | 'fetchKeycloakUsersCreator'
     | 'keycloakBaseURL'

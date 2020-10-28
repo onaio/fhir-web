@@ -38,7 +38,7 @@ export interface EditUserProps {
 }
 
 /** type intersection for all types that pertain to the props */
-export type PropsTypes = EditUserProps & RouteComponentProps<RouteParams>;
+export type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParams>;
 
 /** default form initial values */
 
@@ -84,7 +84,7 @@ export const userSchema = Yup.object().shape({
  * @param props - CreateEditUser component props
  */
 
-const CreateEditUser: React.FC<PropsTypes> = (props: PropsTypes) => {
+const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const {
     keycloakUser,
@@ -153,7 +153,7 @@ interface DispatchedProps {
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>, ownProps: PropsTypes): DispatchedProps => {
+const mapStateToProps = (state: Partial<Store>, ownProps: CreateEditPropTypes): DispatchedProps => {
   const userId = ownProps.match.params[ROUTE_PARAM_USER_ID];
   let keycloakUser = null;
 
