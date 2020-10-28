@@ -5,9 +5,9 @@
   "scripts": {
     "start": "cd ./client && react-scripts start",
     "build": "cd ./client && react-scripts build",
-    "lerna:prepublish": "lerna run build",
+    "prepublish": "lerna run build",
     "lerna:version": "lerna version --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
-    "lerna:publish": "lerna publish from-git --ignore-prepublish --ignore-scripts",
+    "lerna:publish": "lerna publish from-git",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
