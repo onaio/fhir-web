@@ -34,7 +34,8 @@
   "private": false,
   "dependencies": {
     "@opensrp/reducer-factory": "^0.0.3",
-    "@opensrp/server-service": "^0.0.4"
+    "@opensrp/server-service": "^0.0.4",
+    "formik-antd": "^2.0.1"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7"

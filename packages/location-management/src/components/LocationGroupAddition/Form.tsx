@@ -1,10 +1,13 @@
-import * as Yup from 'yup';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import React from 'react';
-import { Button, Form as AntForm, Input, Radio, Select } from 'antd';
+import { SubmitButton, Form as AntForm, Input, Radio, Select, ResetButton } from 'formik-antd';
+import { Button, notification } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 
 import { KeycloakUser } from '@opensrp/store';
+import { OpenSRPService } from '@opensrp/server-service';
+import { LocationTagPayloadPOST } from 'location-management/src/ducks/location-tags';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 8 } };
@@ -76,6 +79,19 @@ const initialValue = {
   status: 'active',
 };
 
+/** yup validations for practitioner data object from form */
+export const userSchema = Yup.object().shape({
+  name: Yup.string()
+    .typeError('Name must be a String')
+    .required('Name is Required'),
+  status: Yup.string()
+    .typeError('Status must be a String')
+    .required('Status is Required'),
+  type: Yup.string()
+    .typeError('Type must be a String')
+    .required('Type is Required'),
+});
+
 interface Props {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
@@ -89,30 +105,43 @@ export const Form: React.FC<Props> = () => {
   return (
     <Formik
       initialValues={initialValue}
-      // tslint:disable-next-line: jsx-no-lambda
+      validationSchema={userSchema}
       onSubmit={(values, { setSubmitting }) => {
-        console.log('asd', values);
-        setSubmitting(false);
+        console.log(values);
+
+        const serve = new OpenSRPService(
+          'https://opensrp-stage.smartregister.org/opensrp/rest',
+          '/location'
+        );
+
+        const payload: LocationTagPayloadPOST = { ...values } as any;
+
+        serve
+          .create(payload)
+          .then(() => {
+            notification.success({ message: 'User created successfully', description: '' });
+            setSubmitting(false);
+            history.goBack();
+          })
+          .catch((e: Error) => {
+            notification.error({ message: `${e}`, description: '' });
+            setSubmitting(false);
+          });
       }}
     >
       {({ errors, isSubmitting, handleSubmit }) => {
         console.log('errors :', errors);
-        console.log('isSubmitting :', isSubmitting);
 
         return (
           <AntForm
             validateMessages={validateMessages}
             requiredMark={false}
-            initialValues={initialValue}
             {...layout}
             onSubmitCapture={handleSubmit}
           >
-            <AntForm.Item
-              label="Location Name"
-              name="name"
-              rules={[{ required: true, whitespace: true }]}
-            >
+            <AntForm.Item label="Location Name" name="name">
               <Select
+                name="name"
                 showSearch
                 placeholder="Enter a location group name"
                 optionFilterProp="children"
@@ -131,11 +160,10 @@ export const Form: React.FC<Props> = () => {
               name="status"
               valuePropName="checked"
               // className={errors.status ? `form-control is-invalid` : `form-control`}
-              rules={[{ required: true }]}
             >
-              <Radio.Group defaultValue={initialValue.status}>
+              <Radio.Group name="status" defaultValue={initialValue.status}>
                 {status.map((e) => (
-                  <Radio key={e.value} value={e.value}>
+                  <Radio name="status" key={e.value} value={e.value}>
                     {e.label}
                   </Radio>
                 ))}
@@ -146,23 +174,13 @@ export const Form: React.FC<Props> = () => {
               // className={errors.type ? `form-control is-invalid` : `form-control`}
               name="type"
               label="Type"
-              rules={[{ required: true, whitespace: true }]}
             >
-              <Input.TextArea rows={4} placeholder="Description" />
+              <Input.TextArea name="type" rows={4} placeholder="Description" />
             </AntForm.Item>
 
-            <AntForm.Item {...offsetLayout}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={isSubmitting}
-                disabled={Object.keys(errors).length > 0}
-              >
-                {isSubmitting ? 'Saving' : 'Save'}
-              </Button>
-              <Button htmlType="submit" onClick={() => history.goBack()}>
-                Cancel
-              </Button>
+            <AntForm.Item name={'buttons'} {...offsetLayout}>
+              <SubmitButton>{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
+              <ResetButton onClick={() => history.goBack()}>Cancel</ResetButton>
             </AntForm.Item>
           </AntForm>
         );

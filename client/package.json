@@ -46,7 +46,8 @@
     "lint": "eslint './**/*.{ts,tsx}' --max-warnings 0",
     "lint-snap": "eslint './**/*.snap'",
     "eject": "react-scripts eject",
-    "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
+    "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls",
+    "add-location-mangement": "yarn add file:../packages/location-management"
   },
   "eslintConfig": {
     "extends": "react-app"
