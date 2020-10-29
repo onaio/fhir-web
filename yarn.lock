@@ -2539,6 +2539,23 @@
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
 
+"@opensrp/store@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.2.tgz#fc26ebb7c48c4acfdeb79d7decb1df5346fded4e"
+  integrity sha512-5CRlFxWTjyi3rIs1WcerE19BG1HApSi5Lv3rEDdbaD2cnMkwysebtx5SGuoWCB94eRx07uzK+YVBBmXpKt+ygg==
+  dependencies:
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.0"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/session-reducer" "^0.0.11"
+    "@onaio/utils" "^0.0.1"
+    connected-react-router "^6.8.0"
+    fast_array_intersect "^1.1.0"
+    lodash "^4.17.20"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
+    seamless-immutable "^7.1.4"
+
 "@servie/events@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@servie/events/-/events-1.0.0.tgz#8258684b52d418ab7b86533e861186638ecc5dc1"
@@ -2693,13 +2710,6 @@
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-7.2.1.tgz#2ad4e844175a3738cb9e7064be5ea070b8863a1c"
   integrity sha512-oZ0Ib5I4Z2pUEcoo95cT1cr6slco9WY7yiPpG+RGNkj8YcYgJnM7pXmYmorNOReh8MIGcKSqXyeGjxnr8YiZbA==
-
-"@types/antd@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/antd/-/antd-1.0.0.tgz#f04e2a84efd9ea937366cd3dfbada5d3c949471d"
-  integrity sha1-8E4qhO/Z6pNzZs09+62l08lJRx0=
-  dependencies:
-    antd "*"
 
 "@types/aria-query@^4.2.0":
   version "4.2.0"
@@ -2871,6 +2881,11 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.162.tgz#65d78c397e0d883f44afbf1f7ba9867022411470"
   integrity sha512-alvcho1kRUnnD1Gcl4J+hK0eencvzq9rmzvFPRmP5rPHx9VVsJj6bKLTATPVf9ktgv4ujzh7T+XWKp+jhuODig==
 
+"@types/lodash@^4.14.163":
+  version "4.14.163"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.163.tgz#6026f73c8267a0b7d41c7c8aadacfa2a5255774f"
+  integrity sha512-BeZM/FZaV53emqyHxn9L39Oz6XbHMBRLA1b1quROku48J/1kYYxPmVOJ/qSQheb81on4BI7H6QDo6bkUuRaDNQ==
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -3021,10 +3036,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@types/yup@^0.29.7":
-  version "0.29.8"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.29.8.tgz#83db15735987db9fe5a38772a0fb9500e3c5bf39"
-  integrity sha512-MBSp62AjB1KrSOI3gX9GekddXU5YYQAVA93+aSl78biBqoSzxg876aQY2KJK5Gnfbpqq7O2cadVX5kPAtBqIXw==
+"@types/yup@^0.29.9":
+  version "0.29.9"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.29.9.tgz#e2015187ae5739fd3b791b3b7ab9094f2aa5a474"
+  integrity sha512-ZtjjlrHuHTYctHDz3c8XgInjj0v+Hahe32N/4cDa2banibf9w6aAgxwx0jZtBjKKzmGIU4NXhofEsBW1BbqrNg==
 
 "@typescript-eslint/eslint-plugin@^2.10.0", "@typescript-eslint/eslint-plugin@^2.9.0":
   version "2.34.0"
@@ -3506,7 +3521,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-antd@*, antd@^4.6.3:
+antd@^4.6.3:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.7.0.tgz#84527b3306b91af1784c37d5e0e311960f92f3ba"
   integrity sha512-qXXgclUmx6InkNce5BsIie9GR/39FGsVikwTMObofnVVALv+uOLH4D14reX7K50QldDXHZ7jIPU1JTkcNgtBoA==
