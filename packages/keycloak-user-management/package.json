@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/user-management",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "dependencies": {
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
