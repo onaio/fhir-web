@@ -2,7 +2,7 @@
 
 ## Pre-requisites
 
-- npm credentials, Ona engineers should have access to this on bitwarden under the opensrp-web collection. This are only used in the publish step.
+- npm credentials
 - GH_TOKEN: this should be set as an environement variable that can be obtained by following this [guide](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token). This is required in the versioning step, so that lerna can be able to push tags to github and create-releases with the generated tags.
 
 ## Steps
@@ -22,5 +22,3 @@
 - run `prepublish` script.
   - This runs build script in each of the package, generating the dist folder.
   - One can target a specific package by passing in `--scope` flag e.g. `--scope @opensrp/opensrp-store`
-
-## Possible Problems
