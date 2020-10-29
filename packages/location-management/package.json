@@ -35,9 +35,9 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/reducer-factory": "^0.0.5",
-    "@opensrp/server-service": "^0.0.4",
-    "@opensrp/store": "^0.0.2"
+    "@opensrp/reducer-factory": "^0.0.7",
+    "@opensrp/server-service": "^0.0.8",
+    "@opensrp/store": "^0.0.3"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7"

@@ -8,7 +8,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/keycloak-service": "^0.0.4",
     "@opensrp/server-service": "^0.0.8",
-    "@opensrp/store": "^0.0.2",
+    "@opensrp/store": "^0.0.3",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",
