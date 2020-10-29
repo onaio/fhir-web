@@ -31,11 +31,19 @@ var _antd = require("antd");
 
 var _icons = require("@ant-design/icons");
 
+var _serverService = require("@opensrp/server-service");
+
+var _store = require("@opensrp/store");
+
+var _loaders = require("@onaio/loaders");
+
 var _reactRedux = require("react-redux");
 
 require("../Location.css");
 
 var _LocationDetail = _interopRequireDefault(require("../LocationDetail"));
+
+var _constants = require("../../constants");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -82,7 +90,9 @@ var EditableCell = function EditableCell(_ref) {
   }, _react["default"].createElement(_antd.Input, null)) : children);
 };
 
-var LocationUnitGroup = function LocationUnitGroup() {
+var LocationUnitGroup = function LocationUnitGroup(props) {
+  var accessToken = props.accessToken;
+
   var _Form$useForm = _antd.Form.useForm(),
       _Form$useForm2 = (0, _slicedToArray2["default"])(_Form$useForm, 1),
       form = _Form$useForm2[0];
@@ -107,9 +117,31 @@ var LocationUnitGroup = function LocationUnitGroup() {
       selectedLocation = _useState8[0],
       setSelectedLocation = _useState8[1];
 
+  var _React$useState = _react["default"].useState(true),
+      _React$useState2 = (0, _slicedToArray2["default"])(_React$useState, 2),
+      isLoading = _React$useState2[0],
+      setIsLoading = _React$useState2[1];
+
   var isEditing = function isEditing(record) {
     return record.key === editingKey;
   };
+
+  (0, _react.useEffect)(function () {
+    setIsLoading(true);
+    var clientService = new _serverService.OpenSRPService(_constants.KEYCLOAK_API_BASE_URL, _constants.URL_ALL_LOCATION_TAGS);
+    clientService.list().then(function (res) {
+      console.log('res :: ', res);
+      setIsLoading(false);
+    })["catch"](function (err) {
+      setIsLoading(false);
+      console.log('err :: ', err);
+
+      _antd.notification.error({
+        message: "".concat(err),
+        description: ''
+      });
+    });
+  }, []);
 
   var edit = function edit(record) {
     form.setFieldsValue(_objectSpread({}, record));
@@ -244,6 +276,10 @@ var LocationUnitGroup = function LocationUnitGroup() {
     setData(filteredData);
   };
 
+  if (isLoading) {
+    return _react["default"].createElement(_loaders.Ripple, null);
+  }
+
   return _react["default"].createElement("section", null, _react["default"].createElement(_reactHelmet.Helmet, null, _react["default"].createElement("title", null, "Locations Unit")), _react["default"].createElement(_antd.Row, {
     justify: "start",
     className: "weclome-box"
@@ -304,5 +340,12 @@ var LocationUnitGroup = function LocationUnitGroup() {
   }, selectedLocation))) : null));
 };
 
-var ConnectedLocationUnitGroupAdd = (0, _reactRedux.connect)(null, null)(LocationUnitGroup);
+var mapStateToProps = function mapStateToProps(state) {
+  var accessToken = (0, _store.getAccessToken)(state);
+  return {
+    accessToken: accessToken
+  };
+};
+
+var ConnectedLocationUnitGroupAdd = (0, _reactRedux.connect)(mapStateToProps, null)(LocationUnitGroup);
 exports.ConnectedLocationUnitGroupAdd = ConnectedLocationUnitGroupAdd;

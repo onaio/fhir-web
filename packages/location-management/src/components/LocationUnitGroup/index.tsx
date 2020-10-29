@@ -1,15 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Table, Input, Popconfirm, Form, Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
+import { RouteComponentProps } from 'react-router';
+import {
+  Table,
+  Input,
+  Popconfirm,
+  Form,
+  Row,
+  Col,
+  Menu,
+  Dropdown,
+  Button,
+  Divider,
+  notification,
+} from 'antd';
 import { MoreOutlined, SearchOutlined, SettingOutlined, PlusOutlined } from '@ant-design/icons';
-// import { Link } from 'react-router-dom';
-// import { getExtraData } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/server-service';
+import { Store } from 'redux';
+import { getAccessToken } from '@opensrp/store';
+import { Ripple } from '@onaio/loaders';
 import { connect } from 'react-redux';
-// import { Store } from 'redux';
-// import { Dictionary } from '@onaio/utils';
 import '../Location.css';
 import LocationDetail from '../LocationDetail';
+import { URL_ALL_LOCATION_TAGS, KEYCLOAK_API_BASE_URL } from '../../constants';
 
+export interface GetLocationProps {
+  accessToken: string;
+}
+
+export interface RouteParams {
+  userId: string;
+}
+
+/** type intersection for all types that pertain to the props */
+export type PropsTypes = GetLocationProps & RouteComponentProps<RouteParams>;
 interface Item {
   key: string;
   name: string;
@@ -72,14 +96,33 @@ const EditableCell: React.FC<EditableCellProps> = ({ ...props }) => {
   );
 };
 
-const LocationUnitGroup = () => {
+const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
+  const { accessToken } = props;
   const [form] = Form.useForm();
   const [data, setData] = useState(tableData);
   const [editingKey, setEditingKey] = useState('');
   const [value, setValue] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<Item | null>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const isEditing = (record: Item) => record.key === editingKey;
+
+  useEffect(() => {
+    setIsLoading(true);
+    const clientService = new OpenSRPService(KEYCLOAK_API_BASE_URL, URL_ALL_LOCATION_TAGS);
+    clientService
+      .list()
+      .then((res) => {
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        notification.error({
+          message: `${err}`,
+          description: '',
+        });
+      });
+  }, []);
 
   const edit = (record: Item) => {
     form.setFieldsValue({ ...record });
@@ -189,6 +232,10 @@ const LocationUnitGroup = () => {
     setData(filteredData);
   };
 
+  if (isLoading) {
+    return <Ripple />;
+  }
+
   return (
     <section>
       <Helmet>
@@ -255,20 +302,12 @@ const LocationUnitGroup = () => {
   );
 };
 
-/** Connect the component to the store */
+interface DispatchedProps {
+  accessToken: string;
+}
+const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
+  const accessToken = getAccessToken(state) as string;
+  return { accessToken };
+};
 
-/** map state to props */
-
-// const mapStateToProps = (state: Partial<Store>) => {
-//   const result = {
-//     extraData: getExtraData(state),
-//   };
-//   return result;
-// };
-
-/** create connected component */
-
-/** Connected Header component
- */
-
-export const ConnectedLocationUnitGroupAdd = connect(null, null)(LocationUnitGroup);
+export const ConnectedLocationUnitGroupAdd = connect(mapStateToProps, null)(LocationUnitGroup);
