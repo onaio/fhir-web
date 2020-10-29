@@ -17,7 +17,7 @@ type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
  * @returns {IncomingHttpHeaders} - the headers
  */
 export function getDefaultHeaders(
-  accessToken = 'hunter2',
+  accessToken: string,
   accept = 'application/json',
   authorizationType = 'Bearer',
   contentType = 'application/json;charset=UTF-8'
@@ -29,18 +29,21 @@ export function getDefaultHeaders(
   };
 }
 
-/** get payload for fetch
+/**
+ * get payload for fetch
  *
- * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
+ * @param {object} _ - signal object that allows you to communicate with a DOM request
+ * @param {string} accessToken - the access token
  * @param {string} method - the HTTP method
- * @returns {object} - the payload
+ * @returns {Object} the payload
  */
 export function getFetchOptions(
-  signal: AbortSignal,
+  _: AbortSignal,
+  accessToken: string,
   method: HTTPMethod
 ): { headers: HeadersInit; method: HTTPMethod } {
   return {
-    headers: getDefaultHeaders() as HeadersInit,
+    headers: getDefaultHeaders(accessToken) as HeadersInit,
     method,
   };
 }
@@ -80,6 +83,7 @@ type paramsType = URLParams | null;
  * **To update an object**: service.update(theObject)
  */
 export class OpenSRPService {
+  public accessToken: string;
   public baseURL: string;
   public endpoint: string;
   public generalURL: string;
@@ -89,12 +93,14 @@ export class OpenSRPService {
   /**
    * Constructor method
    *
+   * @param {string} accessToken - the access token
    * @param {string} baseURL - the base OpenSRP API URL
    * @param {string} endpoint - the OpenSRP endpoint
    * @param {function()} getPayload - a function to get the payload
    * @param {AbortController} signal - abort signal
    */
   constructor(
+    accessToken: string,
     baseURL: string = OPENSRP_API_BASE_URL,
     endpoint: string,
     getPayload: typeof getFetchOptions = getFetchOptions,
@@ -105,6 +111,7 @@ export class OpenSRPService {
     this.signal = signal;
     this.baseURL = baseURL;
     this.generalURL = `${this.baseURL}${this.endpoint}`;
+    this.accessToken = accessToken;
   }
 
   /** appends any query params to the url as a querystring
@@ -147,7 +154,7 @@ export class OpenSRPService {
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
-      ...this.getOptions(this.signal, method),
+      ...this.getOptions(this.signal, this.accessToken, method),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
       body: JSON.stringify(data),
@@ -181,7 +188,7 @@ export class OpenSRPService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = OpenSRPService.getURL(`${this.generalURL}/${id}`, params);
-    const response = await customFetch(url, this.getOptions(this.signal, method));
+    const response = await customFetch(url, this.getOptions(this.signal, this.accessToken, method));
 
     if (response) {
       if (response.ok) {
@@ -208,7 +215,7 @@ export class OpenSRPService {
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
-      ...this.getOptions(this.signal, method),
+      ...this.getOptions(this.signal, this.accessToken, method),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
       body: JSON.stringify(data),
@@ -235,7 +242,7 @@ export class OpenSRPService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = OpenSRPService.getURL(this.generalURL, params);
-    const response = await customFetch(url, this.getOptions(this.signal, method));
+    const response = await customFetch(url, this.getOptions(this.signal, this.accessToken, method));
 
     if (response) {
       if (response.ok) {
@@ -260,7 +267,7 @@ export class OpenSRPService {
     method: HTTPMethod = 'DELETE'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
-    const response = await fetch(url, this.getOptions(this.signal, method));
+    const response = await fetch(url, this.getOptions(this.signal, this.accessToken, method));
 
     if (response) {
       if (response.ok || response.status === 204 || response.status === 200) {
