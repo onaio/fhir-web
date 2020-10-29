@@ -36,7 +36,8 @@
   "private": false,
   "dependencies": {
     "@opensrp/reducer-factory": "^0.0.5",
-    "@opensrp/server-service": "^0.0.4"
+    "@opensrp/server-service": "^0.0.4",
+    "@opensrp/store": "^0.0.2"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7"
