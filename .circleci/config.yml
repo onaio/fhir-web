@@ -41,7 +41,7 @@ jobs:
       # TODO - why does the test fail without this.
       - run:
           name: build packages
-          command: yarn lerna run transpile
+          command: yarn lerna:prepublish
 
       - save_cache:
           paths:
