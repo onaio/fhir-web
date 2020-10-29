@@ -38,6 +38,11 @@ jobs:
           name: Install dependencies
           command: yarn install
 
+      # TODO - why does the test fail without this.
+      - run:
+          name: build packages
+          command: yarn lerna run transpile
+
       - save_cache:
           paths:
             - node_modules
