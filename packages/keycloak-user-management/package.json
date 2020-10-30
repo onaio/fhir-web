@@ -1,21 +1,19 @@
 {
   "name": "@opensrp/user-management",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "dependencies": {
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/server-service": "^0.0.4",
-    "@types/antd": "^1.0.0",
-    "@types/lodash": "^4.14.161",
-    "@types/yup": "^0.29.7",
+    "@opensrp/keycloak-service": "^0.0.4",
+    "@opensrp/server-service": "^0.0.8",
+    "@opensrp/store": "^0.0.3",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",
     "connected-react-router": "^6.8.0",
     "fast_array_intersect": "^1.1.0",
-    "flush-promises": "^1.0.2",
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",
     "lodash": "^4.17.20",
@@ -27,7 +25,9 @@
   "scripts": {
     "test": "jest --coverage --verbose --color",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx'  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy"
   },
   "license": "Apache-2.0",
   "publishConfig": {
