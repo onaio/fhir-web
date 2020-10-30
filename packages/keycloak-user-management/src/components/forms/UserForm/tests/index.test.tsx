@@ -31,23 +31,27 @@ jest.mock('antd', () => {
   };
 });
 
-describe('src/components/UserForm', () => {
+describe('forms/UserForm', () => {
   const props = {
     initialValues: defaultInitialValues,
     serviceClass: KeycloakService,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     accessToken: 'access token',
   };
+
   beforeEach(() => {
+    fetch.once(JSON.stringify(fixtures.userActions));
+  });
+
+  afterEach(() => {
     fetch.resetMocks();
   });
+
   it('renders without crashing', () => {
     shallow(<UserForm {...props} />);
   });
 
   it('renders correctly', async () => {
-    // looking for each fields
-    fetch.once(JSON.stringify(fixtures.userActions));
     const wrapper = mount(<UserForm {...props} />);
     await act(async () => {
       await flushPromises();
@@ -66,8 +70,7 @@ describe('src/components/UserForm', () => {
       },
     ]);
     const form = wrapper.find('div.form-container');
-    expect(form.find('Formik').prop('initialValues')).toMatchSnapshot('Initial Values');
-    expect(form.find('Formik').prop('validationSchema')).toMatchSnapshot('Validation Schema');
+    expect(form.find('Formik').props()).toMatchSnapshot('formik props');
     expect(form.find('FormItem').at(0).props()).toMatchSnapshot('First Name');
     expect(form.find('FormItem').at(1).props()).toMatchSnapshot('Last Name');
     expect(form.find('FormItem').at(2).props()).toMatchSnapshot('Username');
@@ -76,7 +79,8 @@ describe('src/components/UserForm', () => {
     expect(form.find('FormItem').at(5).props()).toMatchSnapshot('Submit');
     wrapper.unmount();
   });
-  it('form validation works', async () => {
+
+  it('form validation works for required fields', async () => {
     const wrapper = mount(<UserForm {...props} />);
     await act(async () => {
       wrapper.find('form').simulate('submit');
@@ -84,11 +88,20 @@ describe('src/components/UserForm', () => {
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
 
-    expect(wrapper.find('small.name-error').text()).toEqual('Required');
+    expect(wrapper.find('FormItem').at(0).prop('validateStatus')).toEqual('error');
+    expect(wrapper.find('FormItem').at(0).prop('help')).toMatchSnapshot('first name errors');
+    expect(wrapper.find('FormItem').at(1).prop('validateStatus')).toEqual('error');
+    expect(wrapper.find('FormItem').at(1).prop('help')).toMatchSnapshot('last name errors');
+    expect(wrapper.find('FormItem').at(2).prop('validateStatus')).toEqual('error');
+    expect(wrapper.find('FormItem').at(2).prop('help')).toMatchSnapshot('username errors');
+    expect(wrapper.find('FormItem').at(3).prop('validateStatus')).toEqual('error');
+    expect(wrapper.find('FormItem').at(3).prop('help')).toMatchSnapshot('email errors');
+    // User actions is not required, should not throw error
+    expect(wrapper.find('FormItem').at(4).prop('validateStatus')).toEqual(undefined);
+    expect(wrapper.find('FormItem').at(4).prop('help')).toEqual(false);
   });
 
   it('creates object to send correctly for creating new user', async () => {
-    fetch.once(JSON.stringify(fixtures.userActions));
     const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
@@ -96,34 +109,32 @@ describe('src/components/UserForm', () => {
       wrapper.update();
     });
 
-    // set users's first name
+    const nameInput = wrapper.find('input#firstName');
+    nameInput.simulate('change', { target: { name: 'firstName', value: 'Test' } });
+
+    // set users last name
+    const lastNameInput = wrapper.find('input#lastName');
+    lastNameInput.simulate('change', { target: { name: 'lastName', value: 'One' } });
+
+    // set username
+    const usernameInput = wrapper.find('input#username');
+    usernameInput.simulate('change', { target: { name: 'username', value: 'TestOne' } });
+
+    // set user email
+    const emailInput = wrapper.find('input#email');
+    emailInput.simulate('change', { target: { name: 'email', value: 'testone@gmail.com' } });
+
+    const actionSelect = wrapper.find('select');
+    actionSelect.simulate('change', {
+      target: { value: ['UPDATE_PASSWORD'] },
+    });
+    wrapper.find('form').simulate('submit');
+    wrapper.update();
 
     await act(async () => {
-      const nameInput = wrapper.find('input#firstName');
-      nameInput.simulate('change', { target: { name: 'firstName', value: 'Test' } });
-
-      // set users last name
-      const lastNameInput = wrapper.find('input#lastName');
-      lastNameInput.simulate('change', { target: { name: 'lastName', value: 'One' } });
-
-      // set username
-      const usernameInput = wrapper.find('input#username');
-      usernameInput.simulate('change', { target: { name: 'username', value: 'TestOne' } });
-
-      // set user email
-      const emailInput = wrapper.find('input#email');
-      emailInput.simulate('change', { target: { name: 'email', value: 'testone@gmail.com' } });
-
-      const actionSelect = wrapper.find('select');
-      actionSelect.simulate('change', {
-        target: { value: ['UPDATE_PASSWORD'] },
-      });
-      wrapper.find('form').simulate('submit');
+      await flushPromises();
       wrapper.update();
     });
-
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
-    wrapper.update();
 
     expect(fetch.mock.calls[0]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
@@ -140,8 +151,6 @@ describe('src/components/UserForm', () => {
   });
 
   it('creates object to send correctly for editing user', async () => {
-    // fetch.once(JSON.stringify(fixtures.userActions));
-    fetch.once(JSON.stringify([fixtures.keycloakUser]));
     const propEdit = {
       ...props,
       initialValues: fixtures.keycloakUser,
@@ -190,7 +199,7 @@ describe('src/components/UserForm', () => {
         manage: true,
       },
     };
-    // expect(fetch.mock.calls).toEqual('');
+
     expect(fetch.mock.calls[0]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
       {
@@ -255,6 +264,7 @@ describe('src/components/UserForm', () => {
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
   });
+
   it('user is not edited if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const propEdit = {
@@ -284,6 +294,7 @@ describe('src/components/UserForm', () => {
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
   });
+
   it('cancel button returns user to admin page', async () => {
     const wrapper = mount(<UserForm {...props} />);
 

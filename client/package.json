@@ -28,6 +28,7 @@
     "fast_array_intersect": "^1.1.0",
     "flush-promises": "^1.0.2",
     "formik": "^2.1.5",
+    "formik-antd": "^2.0.1",
     "jsdom-global": "^3.0.2",
     "lodash": "^4.17.20",
     "react-scripts": "3.4.3",
