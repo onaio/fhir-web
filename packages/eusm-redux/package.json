@@ -1,7 +1,7 @@
 {
   "name": "@opensrp/eusm-redux",
   "version": "0.0.0",
-  "description": "",
+  "description": "Contains product catalogue redux module",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
