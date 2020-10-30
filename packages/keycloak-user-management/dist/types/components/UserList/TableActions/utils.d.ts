@@ -8,10 +8,4 @@
  * @param {Function} isLoadingCallback - callback function that sets loading state
  * @returns {void}
  */
-export declare const deleteUser: (
-  removeKeycloakUsersCreator: () => import('../../../ducks/user').RemoveKeycloakUsersAction,
-  accessToken: string,
-  keycloakBaseURL: string,
-  userId: string,
-  isLoadingCallback: (loading: boolean) => void
-) => void;
+export declare const deleteUser: (removeKeycloakUsersCreator: () => import("../../../ducks/user").RemoveKeycloakUsersAction, accessToken: string, keycloakBaseURL: string, userId: string, isLoadingCallback: (loading: boolean) => void) => void;

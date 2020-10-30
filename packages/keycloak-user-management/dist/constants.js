@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 exports.USER_DELETED_SUCCESSFULLY = exports.ERROR_OCCURED = exports.KEYCLOAK_URL_REQUIRED_USER_ACTIONS = exports.KEYCLOAK_URL_RESET_PASSWORD = exports.KEYCLOAK_URL_USERS = exports.ROUTE_PARAM_USER_ID = exports.URL_USER_CREDENTIALS = exports.URL_USER_CREATE = exports.URL_ADMIN = exports.URL_USER_EDIT = void 0;
 var URL_USER_EDIT = '/user/edit';

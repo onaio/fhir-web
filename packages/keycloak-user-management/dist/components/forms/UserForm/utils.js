@@ -1,110 +1,75 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 exports.fetchRequiredActions = exports.submitForm = void 0;
 
-var _antd = require('antd');
+var _antd = require("antd");
 
-var _connectedReducerRegistry = require('@onaio/connected-reducer-registry');
+var _connectedReducerRegistry = require("@onaio/connected-reducer-registry");
 
-var _constants = require('../../../constants');
+var _constants = require("../../../constants");
 
-var submitForm = function submitForm(
-  values,
-  accessToken,
-  keycloakBaseURL,
-  keycloakServiceClass,
-  setSubmitting,
-  userId
-) {
+var submitForm = function submitForm(values, accessToken, keycloakBaseURL, keycloakServiceClass, setSubmitting, userId) {
   setSubmitting(true);
 
   if (userId) {
-    var serve = new keycloakServiceClass(
-      accessToken,
-      ''.concat(_constants.KEYCLOAK_URL_USERS, '/').concat(userId),
-      keycloakBaseURL
-    );
-    serve
-      .update(values)
-      .then(function () {
-        setSubmitting(false);
+    var serve = new keycloakServiceClass(accessToken, "".concat(_constants.KEYCLOAK_URL_USERS, "/").concat(userId), keycloakBaseURL);
+    serve.update(values).then(function () {
+      setSubmitting(false);
 
-        _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
+      _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
 
-        _antd.notification.success({
-          message: 'User edited successfully',
-          description: '',
-        });
-      })
-      ['catch'](function (_) {
-        setSubmitting(false);
-
-        _antd.notification.error({
-          message: _constants.ERROR_OCCURED,
-          description: '',
-        });
+      _antd.notification.success({
+        message: 'User edited successfully',
+        description: ''
       });
+    })["catch"](function (_) {
+      setSubmitting(false);
+
+      _antd.notification.error({
+        message: _constants.ERROR_OCCURED,
+        description: ''
+      });
+    });
   } else {
-    var _serve = new keycloakServiceClass(
-      accessToken,
-      _constants.KEYCLOAK_URL_USERS,
-      keycloakBaseURL
-    );
+    var _serve = new keycloakServiceClass(accessToken, _constants.KEYCLOAK_URL_USERS, keycloakBaseURL);
 
-    _serve
-      .create(values)
-      .then(function () {
-        setSubmitting(false);
+    _serve.create(values).then(function () {
+      setSubmitting(false);
 
-        _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
+      _connectedReducerRegistry.history.push(_constants.URL_ADMIN);
 
-        _antd.notification.success({
-          message: 'User created successfully',
-          description: '',
-        });
-      })
-      ['catch'](function (_) {
-        setSubmitting(false);
-
-        _antd.notification.error({
-          message: _constants.ERROR_OCCURED,
-          description: '',
-        });
+      _antd.notification.success({
+        message: 'User created successfully',
+        description: ''
       });
+    })["catch"](function (_) {
+      setSubmitting(false);
+
+      _antd.notification.error({
+        message: _constants.ERROR_OCCURED,
+        description: ''
+      });
+    });
   }
 };
 
 exports.submitForm = submitForm;
 
-var fetchRequiredActions = function fetchRequiredActions(
-  accessToken,
-  keycloakBaseURL,
-  setUserActionOptions,
-  keycloakServiceClass
-) {
-  var keycloakService = new keycloakServiceClass(
-    accessToken,
-    _constants.KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
-    keycloakBaseURL
-  );
-  keycloakService
-    .list()
-    .then(function (response) {
-      setUserActionOptions(
-        response.filter(function (action) {
-          return action.alias !== 'terms_and_conditions';
-        })
-      );
-    })
-    ['catch'](function (_) {
-      _antd.notification.error({
-        message: _constants.ERROR_OCCURED,
-        description: '',
-      });
+var fetchRequiredActions = function fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, keycloakServiceClass) {
+  var keycloakService = new keycloakServiceClass(accessToken, _constants.KEYCLOAK_URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
+  keycloakService.list().then(function (response) {
+    setUserActionOptions(response.filter(function (action) {
+      return action.alias !== 'terms_and_conditions';
+    }));
+  })["catch"](function (_) {
+    _antd.notification.error({
+      message: _constants.ERROR_OCCURED,
+      description: ''
     });
+  });
 };
 
 exports.fetchRequiredActions = fetchRequiredActions;

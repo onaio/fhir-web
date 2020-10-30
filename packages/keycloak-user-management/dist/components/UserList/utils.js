@@ -1,36 +1,28 @@
-'use strict';
+"use strict";
 
-var _interopRequireWildcard = require('@babel/runtime/helpers/interopRequireWildcard');
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 exports.getTableColumns = exports.getDataFilters = void 0;
 
-var React = _interopRequireWildcard(require('react'));
+var React = _interopRequireWildcard(require("react"));
 
-var _TableActions = require('./TableActions');
+var _TableActions = require("./TableActions");
 
 var getDataFilters = function getDataFilters(users, field) {
   return users.map(function (filteredUser) {
     return {
       text: filteredUser[field],
-      value: filteredUser[field],
+      value: filteredUser[field]
     };
   });
 };
 
 exports.getDataFilters = getDataFilters;
 
-var getTableColumns = function getTableColumns(
-  users,
-  removeKeycloakUsersCreator,
-  accessToken,
-  keycloakBaseURL,
-  isLoadingCallback,
-  filteredInfo,
-  sortedInfo
-) {
+var getTableColumns = function getTableColumns(users, removeKeycloakUsersCreator, accessToken, keycloakBaseURL, isLoadingCallback, filteredInfo, sortedInfo) {
   var headerItems = ['Username', 'Email', 'First Name', 'Last Name'];
   var dataElements = [];
   var fields = ['username', 'email', 'firstName', 'lastName'];
@@ -38,7 +30,7 @@ var getTableColumns = function getTableColumns(
     var dataFilters = users.map(function (filteredUser) {
       return {
         text: filteredUser[field],
-        value: filteredUser[field],
+        value: filteredUser[field]
       };
     });
     dataElements.push({
@@ -46,7 +38,7 @@ var getTableColumns = function getTableColumns(
       dataIndex: fields[index],
       key: fields[index],
       filters: Array.from(new Set(dataFilters)),
-      filteredValue: (filteredInfo && filteredInfo[fields[index]]) || null,
+      filteredValue: filteredInfo && filteredInfo[fields[index]] || null,
       onFilter: function onFilter(value, record) {
         return record[fields[index]].includes(value);
       },
@@ -56,7 +48,7 @@ var getTableColumns = function getTableColumns(
         }
       },
       sortOrder: sortedInfo && sortedInfo.columnKey === fields[index] && sortedInfo.order,
-      ellipsis: true,
+      ellipsis: true
     });
   });
   dataElements.push({
@@ -69,10 +61,10 @@ var getTableColumns = function getTableColumns(
         accessToken: accessToken,
         keycloakBaseURL: keycloakBaseURL,
         isLoadingCallback: isLoadingCallback,
-        record: record,
+        record: record
       };
       return React.createElement(_TableActions.TableActions, tableActionsProps);
-    },
+    }
   });
   return dataElements;
 };

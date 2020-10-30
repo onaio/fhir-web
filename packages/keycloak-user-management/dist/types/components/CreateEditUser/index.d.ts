@@ -5,15 +5,15 @@ import { fetchKeycloakUsers, KeycloakUser } from '../../ducks/user';
 import '../../index.css';
 /** inteface for route params */
 export interface RouteParams {
-  userId: string;
+    userId: string;
 }
 /** props for editing a user view */
 export interface EditUserProps {
-  accessToken: string;
-  keycloakUser: KeycloakUser | null;
-  serviceClass: typeof KeycloakService;
-  keycloakBaseURL: string;
-  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
+    accessToken: string;
+    keycloakUser: KeycloakUser | null;
+    serviceClass: typeof KeycloakService;
+    keycloakBaseURL: string;
+    fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
 }
 /** type intersection for all types that pertain to the props */
 export declare type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParams>;
@@ -25,18 +25,4 @@ export declare const defaultEditUserProps: EditUserProps;
  */
 declare const CreateEditUser: React.FC<CreateEditPropTypes>;
 export { CreateEditUser };
-export declare const ConnectedCreateEditUser: import('react-redux').ConnectedComponent<
-  React.FC<CreateEditPropTypes>,
-  Pick<
-    CreateEditPropTypes,
-    | 'location'
-    | 'match'
-    | 'keycloakBaseURL'
-    | 'fetchKeycloakUsersCreator'
-    | 'serviceClass'
-    | 'history'
-    | 'staticContext'
-  > &
-    EditUserProps &
-    RouteComponentProps<RouteParams, import('react-router').StaticContext, unknown>
->;
+export declare const ConnectedCreateEditUser: import("react-redux").ConnectedComponent<React.FC<CreateEditPropTypes>, Pick<CreateEditPropTypes, "location" | "match" | "keycloakBaseURL" | "fetchKeycloakUsersCreator" | "serviceClass" | "history" | "staticContext"> & EditUserProps & RouteComponentProps<RouteParams, import("react-router").StaticContext, unknown>>;

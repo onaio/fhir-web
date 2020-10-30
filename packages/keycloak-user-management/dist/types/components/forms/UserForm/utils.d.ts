@@ -12,23 +12,16 @@ import { KeycloakUser } from '../../../ducks/user';
  * @param {Function} setSubmitting - method to set submission status
  * @param {string} userId - keycloak user id, required when editing a user
  */
-export declare const submitForm: (
-  values: Partial<KeycloakUser>,
-  accessToken: string,
-  keycloakBaseURL: string,
-  keycloakServiceClass: typeof KeycloakService,
-  setSubmitting: (isSubmitting: boolean) => void,
-  userId?: string | undefined
-) => void;
+export declare const submitForm: (values: Partial<KeycloakUser>, accessToken: string, keycloakBaseURL: string, keycloakServiceClass: typeof KeycloakService, setSubmitting: (isSubmitting: boolean) => void, userId?: string | undefined) => void;
 /** interface user action */
 export interface UserAction {
-  alias: string;
-  name: string;
-  providerId: string;
-  enabled: boolean;
-  defaultAction: boolean;
-  priority: number;
-  config: Dictionary;
+    alias: string;
+    name: string;
+    providerId: string;
+    enabled: boolean;
+    defaultAction: boolean;
+    priority: number;
+    config: Dictionary;
 }
 /**
  * Fetch keycloak user action options
@@ -38,9 +31,4 @@ export interface UserAction {
  * @param {Function} setUserActionOptions - method to set state for selected actions
  * @param {KeycloakService} keycloakServiceClass - keycloak API service class
  */
-export declare const fetchRequiredActions: (
-  accessToken: string,
-  keycloakBaseURL: string,
-  setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>,
-  keycloakServiceClass: typeof KeycloakService
-) => void;
+export declare const fetchRequiredActions: (accessToken: string, keycloakBaseURL: string, setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>, keycloakServiceClass: typeof KeycloakService) => void;

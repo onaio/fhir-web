@@ -2,12 +2,12 @@ import React from 'react';
 import '../../index.css';
 /** interface for Ripple props */
 export interface RippleProps {
-  borderColor?: string;
-  borderStyle?: string;
-  borderWidth?: string;
-  height?: string;
-  minHeight?: string;
-  width?: string;
+    borderColor?: string;
+    borderStyle?: string;
+    borderWidth?: string;
+    height?: string;
+    minHeight?: string;
+    width?: string;
 }
 export declare const defaultProps: Partial<RippleProps>;
 /**

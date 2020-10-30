@@ -20,12 +20,4 @@ export declare const getDataFilters: (users: KeycloakUser[], field: string) => D
  * @param {Dictionary} sortedInfo - applied sort
  * @returns {Dictionary[]} - an array of table columns
  */
-export declare const getTableColumns: (
-  users: KeycloakUser[],
-  removeKeycloakUsersCreator: () => import('../../ducks/user').RemoveKeycloakUsersAction,
-  accessToken: string,
-  keycloakBaseURL: string,
-  isLoadingCallback: (loading: boolean) => void,
-  filteredInfo?: Dictionary<any> | undefined,
-  sortedInfo?: Dictionary<any> | undefined
-) => Dictionary<any>[];
+export declare const getTableColumns: (users: KeycloakUser[], removeKeycloakUsersCreator: () => import("../../ducks/user").RemoveKeycloakUsersAction, accessToken: string, keycloakBaseURL: string, isLoadingCallback: (loading: boolean) => void, filteredInfo?: Dictionary<any> | undefined, sortedInfo?: Dictionary<any> | undefined) => Dictionary<any>[];

@@ -15,6 +15,8 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
+  fetchKeycloakUsers,
+  removeKeycloakUsers,
 } from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 
@@ -70,8 +72,8 @@ describe('components/UserList', () => {
       .mockReturnValue('simple-token');
 
     const props = {
-      fetchKeycloakUsersCreator: opensrpStore.fetchKeycloakUsers,
-      removeKeycloakUsersCreator: opensrpStore.removeKeycloakUsers,
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
       serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
