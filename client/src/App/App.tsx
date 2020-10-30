@@ -54,6 +54,12 @@ interface ComponentProps extends Partial<RouteProps> {
   path: string;
 }
 
+/** Util wrapper around ConnectedPrivateRoute to render components
+ *  that use private routes/ require authentication
+ *
+ * @param props - Component props object
+ */
+
 export const PrivateComponent = ({ component: Component, ...rest }: ComponentProps) => {
   return (
     <ConnectedPrivateRoute
@@ -65,9 +71,20 @@ export const PrivateComponent = ({ component: Component, ...rest }: ComponentPro
   );
 };
 
+/** Util wrapper around Route for rendering components
+ *  that use public routes/ dont require authentication
+ *
+ * @param props - Component props object
+ */
+
 export const PublicComponent = ({ component: Component, ...rest}: Partial<ComponentProps>) => {
   return (<Route {...rest} component={(props: RouteComponentProps) => <Component {...props}/> }/>);
 };
+
+/** Util function that renders Oauth2 callback components
+ *
+ * @param routeProps - Component route props object
+ */
 
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
