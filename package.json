@@ -114,7 +114,11 @@
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
     "redux-thunk": "^2.3.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "tslint-react": "^3.6.0"
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"
