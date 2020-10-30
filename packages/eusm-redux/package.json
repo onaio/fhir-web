@@ -1,0 +1,41 @@
+{
+  "name": "@opensrp/eusm-redux",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/opensrp/web",
+  "config": {
+    "folderName": "eusm-redux"
+  },
+  "scripts": {
+    "test": " cd ../../ && pwd && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
+    "tsc": "tsc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^16.18.1"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false
+}
