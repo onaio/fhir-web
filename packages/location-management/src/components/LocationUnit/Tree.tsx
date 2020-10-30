@@ -3,20 +3,20 @@ import { Input, Tree as AnyTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 interface TreeProp {
-  data: TREE[];
+  data: tree[];
 }
 
-export interface TREE {
+export interface tree {
   title: string;
   key: string;
-  children?: TREE[];
+  children?: tree[];
 }
 
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [expandedKeys, setExpandedKeys] = useState<any>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-  let filterData: TREE[] = [];
+  let filterData: tree[] = [];
 
   function getParentKey(key: any, tree: string | any[]): any {
     let parentKey;

@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { Table, Input, Form, Row, Col, Menu, Dropdown, Button, Divider, InputNumber } from 'antd';
-import { MoreOutlined, SettingOutlined, PlusOutlined } from '@ant-design/icons';
-import './LocationUnit.css';
-import LocationDetail from '../LocationDetail';
-import Tree, { TREE } from '../../../../utils/Tree';
+import React, { useEffect, useState } from 'react';
+import { Table as AntTable, Input, Form, Menu, Dropdown, Button, Divider, InputNumber } from 'antd';
+import { MoreOutlined } from '@ant-design/icons';
+import { OpenSRPService } from '@opensrp/server-service';
+import {
+  KeycloakUser,
+  fetchKeycloakUsers,
+  getKeycloakUsersArray,
+  removeKeycloakUsers,
+  reducerName as keycloakUsersReducerName,
+  reducer as keycloakUsersReducer,
+  getAccessToken,
+  store,
+} from '@opensrp/store';
+import { useDispatch, useSelector } from 'react-redux';
 
 export interface data {
   key: string;
@@ -55,15 +63,29 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 export interface Props {
-  tableData: data[];
-  tree: TREE[];
+  data: data[];
+  onViewDetails?: Function;
+  accessToken: string;
 }
 
-const LocationUnit: React.FC<Props> = (props: Props) => {
+const Table: React.FC<Props> = (props: Props) => {
   const [form] = Form.useForm();
-  const [data, setData] = useState<data[]>(props.tableData);
+  const [data, setData] = useState<data[]>(props.data);
   const [editingKey, setEditingKey] = useState('');
-  const [detail, setDetail] = useState<data | null>(null);
+
+  useEffect(() => {
+    console.log(props.accessToken);
+
+    const service = new OpenSRPService(
+      props.accessToken as string,
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location',
+      '/sync'
+    );
+
+    service.create({}).then((e) => {
+      console.log(e);
+    });
+  });
 
   function edit(record: data) {
     form.setFieldsValue({ ...record });
@@ -139,7 +161,11 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
                 <Dropdown
                   overlay={
                     <Menu>
-                      <Menu.Item onClick={() => setDetail(record)}>View Details</Menu.Item>
+                      <Menu.Item
+                        onClick={(e) => (props.onViewDetails ? props.onViewDetails(e) : null)}
+                      >
+                        View Details
+                      </Menu.Item>
                     </Menu>
                   }
                   placement="bottomLeft"
@@ -173,56 +199,13 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
   });
 
   return (
-    <section>
-      <Helmet>
-        <title>Locations Unit</title>
-      </Helmet>
-      <h5 className="mb-3">Location Unit Management</h5>
-      <Row>
-        <Col className="bg-white p-3" span={6}>
-          <Tree data={props.tree} />
-        </Col>
-        <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
-          <div className="mb-3 d-flex justify-content-between">
-            <h5 className="mt-4">Bombali</h5>
-            <div>
-              <Button type="primary">
-                <PlusOutlined />
-                Add location unit
-              </Button>
-              <Divider type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="1">Logout</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-              >
-                <Button shape="circle" icon={<SettingOutlined />} type="text" />
-              </Dropdown>
-            </div>
-          </div>
-          <div className="bg-white p-4">
-            <Form form={form} component={false}>
-              <Table
-                components={{ body: { cell: EditableCell } }}
-                rowClassName="editable-row"
-                dataSource={data}
-                columns={mergedColumns}
-              />
-            </Form>
-          </div>
-        </Col>
-
-        {detail && (
-          <Col className="pl-3" span={5}>
-            <LocationDetail onClose={() => setDetail(null)} {...detail} />
-          </Col>
-        )}
-      </Row>
-    </section>
+    <AntTable
+      components={{ body: { cell: EditableCell } }}
+      rowClassName="editable-row"
+      dataSource={data}
+      columns={mergedColumns}
+    />
   );
 };
 
-export default LocationUnit;
+export default Table;

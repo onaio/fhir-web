@@ -21,6 +21,7 @@
     "@opensrp/server-service": "^0.0.4",
     "@opensrp/store": "^0.0.2",
     "@opensrp/user-management": "^0.1.4",
+    "@opensrp/location-management": "file:../packages/location-management",
     "antd": "^4.6.3",
     "bootstrap": "^4.5.2",
     "client-oauth2": "^4.3.3",
