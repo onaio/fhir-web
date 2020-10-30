@@ -68,7 +68,7 @@ describe('components/UserList', () => {
   it('works correctly with store', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
     const getAccessTokenMock = jest
-      .spyOn(opensrpStore, 'getAccessToken')
+      .spyOn(opensrpStore, 'makeAPIStateSelector')
       .mockReturnValue('simple-token');
 
     const props = {

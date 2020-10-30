@@ -120,7 +120,7 @@ describe('components/CreateEditUser', () => {
   it('fetches user if page is refreshed', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUser));
 
-    jest.spyOn(opensrpStore, 'getAccessToken').mockReturnValue('bamboocha');
+    jest.spyOn(opensrpStore, 'makeAPIStateSelector').mockReturnValue('bamboocha');
 
     const propsPageRefreshed = {
       ...props,
@@ -161,7 +161,7 @@ describe('components/CreateEditUser', () => {
   it('works correctly with the store', async () => {
     store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
     const getAccessTokenMock = jest
-      .spyOn(opensrpStore, 'getAccessToken')
+      .spyOn(opensrpStore, 'makeAPIStateSelector')
       .mockReturnValue('bamboocha');
 
     const wrapper = mount(

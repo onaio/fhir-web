@@ -4,7 +4,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../Loading';
 import HeaderBreadCrumb from '../HeaderBreadCrumb';
-import { getAccessToken } from '@opensrp/store';
+import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
@@ -159,7 +159,7 @@ interface DispatchedProps {
 // connect to store
 const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
-  const accessToken = getAccessToken(state) as string;
+  const accessToken = makeAPIStateSelector()(state, { accessToken: true });
   return { keycloakUsers, accessToken };
 };
 

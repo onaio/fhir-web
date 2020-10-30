@@ -133,7 +133,6 @@ const mapStateToProps = (state: Partial<Store>, ownProps: CreateEditPropTypes): 
   }
 
   const accessToken = makeAPIStateSelector()(state, { accessToken: true });
-
   return { keycloakUser, accessToken };
 };
 
