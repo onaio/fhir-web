@@ -12,7 +12,6 @@ import { expressAPIResponse } from './fixtures';
 import { UserList } from '@opensrp/user-management';
 import { KEYCLOAK_API_BASE_URL } from '../../configs/env';
 import NotFound from '../../components/NotFound';
-import { RouteParams } from '@onaio/gatekeeper/dist/types';
 
 jest.mock('../../configs/env');
 
@@ -102,7 +101,7 @@ describe('App', () => {
   });
 
   it('Callback component Renders correctly', async () => {
-    const routeProps: RouteComponentProps<RouteParams> = {
+    const routeProps: RouteComponentProps<{ id: string }> = {
       history,
       location: {
         hash: '',
