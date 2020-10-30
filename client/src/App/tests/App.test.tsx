@@ -4,14 +4,15 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Router } from 'react-router';
+import { MemoryRouter, RouteComponentProps, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 import App, { PrivateComponent, PublicComponent, CallbackComponent } from '../App';
 import { expressAPIResponse } from './fixtures';
-import { ConnectedAdminView } from '@opensrp/user-management';
+import { UserList } from '@opensrp/user-management';
 import { KEYCLOAK_API_BASE_URL } from '../../configs/env';
 import NotFound from '../../components/NotFound';
+import { RouteParams } from '@onaio/gatekeeper/dist/types';
 
 jest.mock('../../configs/env');
 
@@ -67,7 +68,7 @@ describe('App', () => {
 
   it('PrivateComponent Renders correctly', async () => {
     const MockComponent = (props: any) => {
-      return <ConnectedAdminView {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL}/>
+      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL}/>
     };
     const props = { exact: true, redirectPath: '/login', disableLoginProtection: false, path: '/admin', authenticated: true }
     const wrapper = mount(
@@ -101,7 +102,7 @@ describe('App', () => {
   });
 
   it('Callback component Renders correctly', async () => {
-    const locationProps = {
+    const routeProps: RouteComponentProps<RouteParams> = {
       history,
       location: {
         hash: '',
@@ -116,7 +117,7 @@ describe('App', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/` }]}>
-          <CallbackComponent {...locationProps} />
+          <CallbackComponent {...routeProps} />
         </MemoryRouter>
       </Provider>
     );

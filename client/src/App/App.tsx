@@ -109,7 +109,7 @@ const App: React.FC = () => {
               path="/"
               component={ConnectedHomeComponent}
             />
-            <ConnectedPrivateRoute
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
