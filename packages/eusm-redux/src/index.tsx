@@ -1,1 +1,1 @@
-export {};
+export * from './store/productCatalogue';
