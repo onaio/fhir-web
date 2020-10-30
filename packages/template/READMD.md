@@ -5,7 +5,7 @@
 ## Installation
 
 ```sh
-yarn add @pensrp/template
+yarn add @opensrp/template
 ```
 
 <!-- 
