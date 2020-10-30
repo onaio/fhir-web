@@ -4,12 +4,13 @@ import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
   getOpenSRPUserInfo,
+  RouteParams,
   useOAuthLogin,
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
-import { Switch, Route, Redirect, RouteProps, RouteComponentProps, } from 'react-router';
+import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
 import {
@@ -54,17 +55,21 @@ interface ComponentProps extends Partial<RouteProps> {
 }
 
 export const PrivateComponent = ({ component: Component, ...rest }: ComponentProps) => {
-  return (<ConnectedPrivateRoute
-            {...rest} 
-            component={(props: any) => <Component {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL}/>} />
-    );
+  return (
+    <ConnectedPrivateRoute
+      {...rest}
+      component={(props: RouteComponentProps) => (
+        <Component {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL}/>
+      )}
+    />
+  );
 };
 
 export const PublicComponent = ({ component: Component, ...rest}: Partial<ComponentProps>) => {
-  return (<Route {...rest} component={(props: any) => <Component {...props}/> }/>)
-}
+  return (<Route {...rest} component={(props: RouteComponentProps) => <Component {...props}/> }/>);
+};
 
-export const CallbackComponent = (routeProps: any) => {
+export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
     return <CustomConnectedAPICallBack {...routeProps} />;
   }
@@ -79,7 +84,7 @@ export const CallbackComponent = (routeProps: any) => {
       {...routeProps}
     />
   );
-}
+};
 
 const App: React.FC = () => {
   const APP_CALLBACK_URL = BACKEND_ACTIVE ? URL_BACKEND_CALLBACK : URL_REACT_LOGIN;
