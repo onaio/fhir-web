@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/UserList/TableActions renders correctly: space props 1`] = `
+Object {
+  "children": Array [
+    <Link
+      to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+    >
+      Edit
+    </Link>,
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[Function]}
+      placement="top"
+      title="Are you sure delete this user?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Link
+        to="#"
+      >
+        Delete
+      </Link>
+    </ForwardRef>,
+  ],
+  "size": "middle",
+}
+`;

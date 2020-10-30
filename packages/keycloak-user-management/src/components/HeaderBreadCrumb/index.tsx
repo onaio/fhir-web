@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Tabs } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
+import { URL_USER_CREDENTIALS, URL_USER_EDIT } from '../../constants';
 
 const { TabPane } = Tabs;
 
@@ -14,9 +15,9 @@ export const HeaderBreadCrumb: React.FC<HeaderBreadCrumbProps> = (props: HeaderB
   const [activeKey, setActiveKey] = React.useState<string>('');
   const handleTabLink = (key: string) => {
     if (key === 'credentials') {
-      history.push(`/user/credentials/${userId}`);
+      history.push(`${URL_USER_CREDENTIALS}/${userId}`);
     } else if (key === 'details') {
-      history.push(`/user/edit/${userId}`);
+      history.push(`${URL_USER_EDIT}/${userId}`);
     } else {
       history.push(`/${key}`);
     }

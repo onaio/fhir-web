@@ -42,7 +42,7 @@ export declare const ConnectedUserCredentials: import('react-redux').ConnectedCo
   React.FC<CredentialsPropsTypes>,
   Pick<
     CredentialsPropsTypes,
-    'location' | 'serviceClass' | 'keycloakBaseURL' | 'history' | 'match' | 'staticContext'
+    'location' | 'keycloakBaseURL' | 'serviceClass' | 'history' | 'match' | 'staticContext'
   > &
     CredentialsProps &
     RouteComponentProps<CredentialsRouteParams, import('react-router').StaticContext, unknown>
