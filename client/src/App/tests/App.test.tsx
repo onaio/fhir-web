@@ -67,9 +67,15 @@ describe('App', () => {
 
   it('PrivateComponent Renders correctly', async () => {
     const MockComponent = (props: any) => {
-      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL}/>
+      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;
     };
-    const props = { exact: true, redirectPath: '/login', disableLoginProtection: false, path: '/admin', authenticated: true }
+    const props = {
+      exact: true,
+      redirectPath: '/login',
+      disableLoginProtection: false,
+      path: '/admin',
+      authenticated: true,
+    };
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
@@ -78,7 +84,7 @@ describe('App', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise(resolve => setImmediate(resolve));
+      await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
     expect(wrapper.exists(MockComponent)).toBeTruthy();
@@ -87,15 +93,15 @@ describe('App', () => {
 
   it('PublicComponent Renders correctly', () => {
     const MockComponent = () => {
-      return <NotFound />
+      return <NotFound />;
     };
-    const props = { exact: true, path: '/unknown', authenticated: false }
+    const props = { exact: true, path: '/unknown', authenticated: false };
     const wrapper = mount(
-        <MemoryRouter initialEntries={[{ pathname: `/unknown`, hash: '', search: '', state: {} }]}>
-          <PublicComponent {...props} component={MockComponent} />
-        </MemoryRouter>
+      <MemoryRouter initialEntries={[{ pathname: `/unknown`, hash: '', search: '', state: {} }]}>
+        <PublicComponent {...props} component={MockComponent} />
+      </MemoryRouter>
     );
-    
+
     expect(wrapper.exists(MockComponent)).toBeTruthy();
     wrapper.unmount();
   });
@@ -107,12 +113,12 @@ describe('App', () => {
         hash: '',
         pathname: '/',
         search: '?next=%2F',
-        state: {}
+        state: {},
       },
       match: {
-        params: { id: "OpenSRP"}
-      }
-    }
+        params: { id: 'OpenSRP' },
+      },
+    };
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/` }]}>

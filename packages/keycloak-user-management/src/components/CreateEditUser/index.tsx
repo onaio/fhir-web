@@ -5,17 +5,17 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
-import {
-  KeycloakUser,
-  makeKeycloakUsersSelector,
-  reducer as keycloakUsersReducer,
-  reducerName as keycloakUsersReducerName,
-  getAccessToken,
-  fetchKeycloakUsers,
-} from '@opensrp/store';
+import { getAccessToken } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { UserForm, UserFormProps, defaultInitialValues } from '../forms/UserForm';
 import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
+import {
+  reducer as keycloakUsersReducer,
+  reducerName as keycloakUsersReducerName,
+  fetchKeycloakUsers,
+  makeKeycloakUsersSelector,
+  KeycloakUser,
+} from '../../ducks/user';
 import Ripple from '../Loading';
 import '../../index.css';
 

@@ -6,14 +6,7 @@ import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { history } from '@onaio/connected-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
-import {
-  fetchKeycloakUsers,
-  getAccessToken,
-  KeycloakUser,
-  makeKeycloakUsersSelector,
-  reducer as keycloakUsersReducer,
-  reducerName as keycloakUsersReducerName,
-} from '@opensrp/store';
+import { getAccessToken } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
 import {
@@ -21,6 +14,13 @@ import {
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
 } from '../../constants';
+import {
+  reducer as keycloakUsersReducer,
+  reducerName as keycloakUsersReducerName,
+  fetchKeycloakUsers,
+  makeKeycloakUsersSelector,
+  KeycloakUser,
+} from '../../ducks/user';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
