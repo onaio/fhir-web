@@ -13,7 +13,7 @@ import {
   reducer as keycloakUsersReducer,
 } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import * as fixtures from '../../../forms/tests/fixtures';
+import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';

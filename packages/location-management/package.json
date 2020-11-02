@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -18,6 +18,8 @@
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
     "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
@@ -33,9 +35,10 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/reducer-factory": "^0.0.3",
-    "@opensrp/server-service": "^0.0.4",
-    "formik-antd": "^2.0.1"
+    "formik-antd": "^2.0.1",
+    "@opensrp/reducer-factory": "^0.0.9",
+    "@opensrp/server-service": "^0.0.10",
+    "@opensrp/store": "^0.0.5"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7"
