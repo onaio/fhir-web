@@ -4,12 +4,13 @@ import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
   getOpenSRPUserInfo,
+  RouteParams,
   useOAuthLogin,
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
-import { Switch, Route, Redirect } from 'react-router';
+import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router';
 import Loading from '../components/page/Loading';
 import { CustomLogout } from '../components/Logout';
 import {
@@ -17,6 +18,7 @@ import {
   BACKEND_ACTIVE,
   KEYCLOAK_API_BASE_URL,
   DEFAULT_LANGUAGE,
+  DISABLE_LOGIN_PROTECTION,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -32,9 +34,14 @@ import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
 import '@opensrp/user-management/dist/index.css';
 import {
-  ConnectedAdminView,
-  ConnectedCreateEditUsers,
+  ConnectedUserList,
+  ConnectedCreateEditUser,
   ConnectedUserCredentials,
+  URL_ADMIN,
+  URL_USER_EDIT,
+  ROUTE_PARAM_USER_ID,
+  URL_USER_CREATE,
+  URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
@@ -44,6 +51,62 @@ import { initReactI18next } from 'react-i18next';
 import Language from '../languages';
 
 const { Content } = Layout;
+
+interface ComponentProps extends Partial<RouteProps> {
+  component: any;
+  redirectPath: string;
+  disableLoginProtection: boolean;
+  path: string;
+}
+
+/** Util wrapper around ConnectedPrivateRoute to render components
+ *  that use private routes/ require authentication
+ *
+ * @param props - Component props object
+ */
+
+export const PrivateComponent = ({ component: Component, ...rest }: ComponentProps) => {
+  return (
+    <ConnectedPrivateRoute
+      {...rest}
+      component={(props: RouteComponentProps) => (
+        <Component {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL}/>
+      )}
+    />
+  );
+};
+
+/** Util wrapper around Route for rendering components
+ *  that use public routes/ dont require authentication
+ *
+ * @param props - Component props object
+ */
+
+export const PublicComponent = ({ component: Component, ...rest}: Partial<ComponentProps>) => {
+  return (<Route {...rest} component={(props: RouteComponentProps) => <Component {...props}/> }/>);
+};
+
+/** Util function that renders Oauth2 callback components
+ *
+ * @param routeProps - Component route props object
+ */
+
+export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
+  if (BACKEND_ACTIVE) {
+    return <CustomConnectedAPICallBack {...routeProps} />;
+  }
+  return (
+    <ConnectedOauthCallback
+      SuccessfulLoginComponent={() => {
+        return <Redirect to="/" />;
+      }}
+      LoadingComponent={Loading}
+      providers={providers}
+      oAuthUserInfoGetter={getOpenSRPUserInfo}
+      {...routeProps}
+    />
+  );
+};
 
 const App: React.FC = () => {
   void i18n.use(initReactI18next).init({
@@ -70,44 +133,38 @@ const App: React.FC = () => {
             {/* Home Page view */}
             <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path="/"
               component={ConnectedHomeComponent}
             />
-            <ConnectedPrivateRoute
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/admin"
-              component={ConnectedAdminView}
+              path={URL_ADMIN}
+              component={ConnectedUserList}
             />
-            <ConnectedPrivateRoute
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/user/edit/:userId"
-              render={(props: any) => (
-                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
-              )}
+              path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
+              component={ConnectedCreateEditUser}
             />
-            <ConnectedPrivateRoute
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/user/new"
-              render={(props: any) => (
-                <ConnectedCreateEditUsers {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
-              )}
+              path={URL_USER_CREATE}
+              component={ConnectedCreateEditUser}
             />
-            <ConnectedPrivateRoute
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/user/credentials/:userId"
-              render={(props: any) => (
-                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
-              )}
+              path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
+              component={ConnectedUserCredentials}
             />
             <Route
               exact
@@ -117,36 +174,19 @@ const App: React.FC = () => {
                 return <></>;
               }}
             />
-            <Route
+            <PublicComponent
               exact
               path={APP_CALLBACK_PATH}
-              render={(routeProps) => {
-                if (BACKEND_ACTIVE) {
-                  return <CustomConnectedAPICallBack {...routeProps} />;
-                }
-                return (
-                  <ConnectedOauthCallback
-                    SuccessfulLoginComponent={() => {
-                      return <Redirect to="/" />;
-                    }}
-                    LoadingComponent={Loading}
-                    providers={providers}
-                    oAuthUserInfoGetter={getOpenSRPUserInfo}
-                    {...routeProps}
-                  />
-                );
-              }}
+              component={CallbackComponent}
             />
             {/* tslint:enable jsx-no-lambda */}
-            <ConnectedPrivateRoute
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOGOUT}
               // tslint:disable-next-line: jsx-no-lambda
-              component={() => {
-                return <CustomLogout />;
-              }}
+              component={CustomLogout}
             />
             <Route exact component={NotFound} />
           </Switch>
