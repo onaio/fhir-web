@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -35,9 +35,9 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/reducer-factory": "^0.0.8",
-    "@opensrp/server-service": "^0.0.9",
-    "@opensrp/store": "^0.0.4"
+    "@opensrp/reducer-factory": "^0.0.9",
+    "@opensrp/server-service": "^0.0.10",
+    "@opensrp/store": "^0.0.5"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7"
