@@ -4,6 +4,11 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../Loading';
 import HeaderBreadCrumb from '../HeaderBreadCrumb';
+import { getAccessToken } from '@opensrp/store';
+import { Store } from 'redux';
+import { connect } from 'react-redux';
+import { Dictionary } from '@onaio/utils';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -11,12 +16,7 @@ import {
   removeKeycloakUsers,
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
-  getAccessToken,
-} from '@opensrp/store';
-import { Store } from 'redux';
-import { connect } from 'react-redux';
-import { Dictionary } from '@onaio/utils';
-import reducerRegistry from '@onaio/redux-reducer-registry';
+} from '../../ducks/user';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '../../constants';
 import { getTableColumns } from './utils';
 

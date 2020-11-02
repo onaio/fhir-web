@@ -12,6 +12,12 @@ import { act } from 'react-dom/test-utils';
 import * as opensrpStore from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import {
+  reducerName as keycloakUsersReducerName,
+  reducer as keycloakUsersReducer,
+  fetchKeycloakUsers,
+  removeKeycloakUsers,
+} from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 
 jest.mock('@opensrp/store', () => ({
@@ -19,7 +25,7 @@ jest.mock('@opensrp/store', () => ({
   ...jest.requireActual('@opensrp/store'),
 }));
 
-reducerRegistry.register(opensrpStore.reducerName, opensrpStore.reducer);
+reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 describe('components/UserList', () => {
   beforeEach(() => {
@@ -66,8 +72,8 @@ describe('components/UserList', () => {
       .mockReturnValue('simple-token');
 
     const props = {
-      fetchKeycloakUsersCreator: opensrpStore.fetchKeycloakUsers,
-      removeKeycloakUsersCreator: opensrpStore.removeKeycloakUsers,
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
       serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',

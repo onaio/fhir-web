@@ -7,15 +7,13 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import App from '../App';
 
-
 jest.mock('../../configs/env', () => ({
-    BACKEND_ACTIVE: true
+  BACKEND_ACTIVE: true,
 }));
 
 // tslint:disable-next-line: no-var-requires
 
 describe('App with active backend', () => {
-
   it('renders App correctly', async () => {
     const wrapper = mount(
       <Provider store={store}>
