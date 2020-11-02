@@ -59,7 +59,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Menu.Item key={URL_HOME}>
             <Link to={URL_HOME}>Home</Link>
           </Menu.Item>
-          {(process.env.REACT_APP_LANGUAGE_SWITCHER === 'true' || REACT_APP_LANGUAGE_SWITCHER) && (
+          {REACT_APP_LANGUAGE_SWITCHER && (
             <SubMenu title="Language" style={{ float: 'right' }}>
               {Object.keys(languages).map((language) => (
                 <Menu.Item onClick={() => i18next.changeLanguage(language)} key={language}>

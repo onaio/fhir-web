@@ -6,8 +6,7 @@ import { MemoryRouter } from 'react-router';
 import ConnectedHeader from '..';
 import { store } from '@opensrp/store';
 
-jest.mock('../../../configs/env');
-
+jest.mock('../../../../.env');
 describe('components/ConnectedHeader', () => {
   it('renders the ConnectedHeader component', () => {
     const wrapper = mount(
@@ -48,10 +47,6 @@ describe('components/ConnectedHeader', () => {
   });
 
   it('renders the Language switcher', () => {
-    const env = process.env;
-    jest.resetModules();
-    process.env.REACT_APP_LANGUAGE_SWITCHER = 'true';
-
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
@@ -60,7 +55,6 @@ describe('components/ConnectedHeader', () => {
       </Provider>
     );
 
-    expect(wrapper.find('Header').props()).toMatchSnapshot();
-    process.env = { ...env }; // reset env to default state
+    expect(wrapper.find('[title="Language"]').length).toBeGreaterThan(1);
   });
 });

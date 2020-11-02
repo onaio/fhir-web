@@ -26,6 +26,25 @@ Object {
           Home
         </Link>
       </MenuItem>
+      <SubMenu
+        style={
+          Object {
+            "float": "right",
+          }
+        }
+        title="Language"
+      >
+        <MenuItem
+          onClick={[Function]}
+        >
+          English
+        </MenuItem>
+        <MenuItem
+          onClick={[Function]}
+        >
+          French
+        </MenuItem>
+      </SubMenu>
       <MenuItem
         style={
           Object {
@@ -45,81 +64,6 @@ Object {
 `;
 
 exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
-Object {
-  "children": Array [
-    <div
-      className="logo"
-    >
-      <Image
-        src="test-file-stub"
-        width={200}
-      />
-    </div>,
-    <Menu
-      mode="horizontal"
-      selectedKeys={
-        Array [
-          "/",
-        ]
-      }
-    >
-      <MenuItem>
-        <Link
-          to="/"
-        >
-          Home
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          to="/admin"
-        >
-          Admin
-        </Link>
-      </MenuItem>
-      <SubMenu
-        style={
-          Object {
-            "float": "right",
-          }
-        }
-        title={
-          <div>
-            <span>
-              RobertBaratheon
-            </span>
-            <span>
-               
-            </span>
-            <Avatar
-              icon={<ForwardRef(UserOutlined) />}
-              shape="square"
-              size="default"
-            />
-          </div>
-        }
-      >
-        <MenuItem>
-          <Link
-            to="/logout"
-          >
-            Logout
-          </Link>
-        </MenuItem>
-        <MenuItem>
-          <Link
-            to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-          >
-            Manage account
-          </Link>
-        </MenuItem>
-      </SubMenu>
-    </Menu>,
-  ],
-}
-`;
-
-exports[`components/ConnectedHeader renders the Language switcher 1`] = `
 Object {
   "children": Array [
     <div
