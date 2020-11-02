@@ -31,10 +31,19 @@ jobs:
           name: Install dependencies
           command: yarn install
 
+      - run:
+          name: Install Client dependencies
+          command: cd client && yarn install
+
       # TODO - why does the test fail without this.
       - run:
           name: build packages
           command: yarn lerna:prepublish
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
           name: Run ts linter
