@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/CreateEditUser renders correctly 1`] = `
+Object {
+  "children": <Col
+    lg={15}
+    md={18}
+    sm={20}
+    xl={12}
+    xs={24}
+  >
+    <HeaderBreadCrumb
+      userId="cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+    />
+    <UserForm
+      accessToken="access token"
+      initialValues={
+        Object {
+          "access": Object {
+            "impersonate": false,
+            "manage": true,
+            "manageGroupMembership": true,
+            "mapRoles": true,
+            "view": true,
+          },
+          "createdTimestamp": 1600156317992,
+          "disableableCredentialTypes": Array [],
+          "email": "test@onatest.com",
+          "emailVerified": false,
+          "enabled": true,
+          "firstName": "Demo",
+          "id": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+          "lastName": "kenya",
+          "notBefore": 0,
+          "requiredActions": Array [],
+          "totp": false,
+          "username": "opensrp",
+        }
+      }
+      keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
+      serviceClass={[Function]}
+    />
+  </Col>,
+}
+`;

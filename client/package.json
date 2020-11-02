@@ -16,12 +16,12 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/keycloak-service": "file:../packages/keycloak-service",
+    "@opensrp/keycloak-service": "^0.0.4",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.4",
-    "@opensrp/store": "file:../packages/opensrp-store",
-    "@opensrp/user-management": "file:../packages/keycloak-user-management",
+    "@opensrp/user-management": "^0.1.4",
     "@opensrp/location-management": "file:../packages/location-management",
+    "@opensrp/store": "^0.0.2",
     "antd": "^4.6.3",
     "bootstrap": "^4.5.2",
     "client-oauth2": "^4.3.3",
@@ -29,6 +29,7 @@
     "fast_array_intersect": "^1.1.0",
     "flush-promises": "^1.0.2",
     "formik": "^2.1.5",
+    "formik-antd": "^2.0.1",
     "jsdom-global": "^3.0.2",
     "lodash": "^4.17.20",
     "react-scripts": "3.4.3",
@@ -73,10 +74,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 75,
-        "functions": 75,
-        "lines": 75,
-        "statements": 75
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
       }
     }
   },
