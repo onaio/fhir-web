@@ -36,11 +36,6 @@ jobs:
           name: build packages
           command: yarn lerna:prepublish
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
       - run:
           name: Run ts linter
           command: yarn lint
