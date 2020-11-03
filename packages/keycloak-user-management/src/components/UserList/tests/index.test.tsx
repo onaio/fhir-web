@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
@@ -15,6 +16,8 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
+  fetchKeycloakUsers,
+  removeKeycloakUsers,
 } from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -84,8 +87,11 @@ describe('components/UserList', () => {
       accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
         accessToken: true,
       }),
-      fetchKeycloakUsersCreator: opensrpStore.fetchKeycloakUsers,
-      removeKeycloakUsersCreator: opensrpStore.removeKeycloakUsers,
+      extraData: {
+        user_id: fixtures.keycloakUser.id,
+      },
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
       serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
