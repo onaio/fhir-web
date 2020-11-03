@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
@@ -26,6 +25,7 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
+  FALL_BACK as FALL_BACK_URL
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -44,7 +44,8 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import Fallback from '@opensrp/error-boundry-fallback';
+import Fallback from '@opensrp/error-boundary-fallback';
+
 
 const { Content } = Layout;
 
@@ -155,7 +156,7 @@ const App: React.FC = () => {
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
             />
-            <Route exact path="/fallback" component={Fallback} />
+            <Route exact path={FALL_BACK_URL} component={Fallback} />
             <Route
               exact
               path={APP_LOGIN_URL}

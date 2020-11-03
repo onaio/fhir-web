@@ -9,7 +9,7 @@ import App from './App/App';
 import { SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
-import Fallback from '@opensrp/error-boundry-fallback';
+import Fallback from '@opensrp/error-boundary-fallback';
 
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
