@@ -1,11 +1,11 @@
 # Errorboundary Fallback
 
-This package provides a fallback component which you can use as an error boundry fallback.
+This package provides a fallback component which you can use as an error boundary fallback.
 
 ## Installation
 
 ```node
-yarn add @opensrp/error-boundry-fallback
+yarn add @opensrp/error-boundary-fallback
 ```
 
 #### Code example
@@ -13,7 +13,7 @@ yarn add @opensrp/error-boundry-fallback
 ```javascript
 import * as Sentry from '@sentry/react';
 import App from '..';
-import Fallback from '@opensrp/error-boundry-fallback';
+import Fallback from '@opensrp/error-boundary-fallback';
 
 ReactDOM.render(
   <Sentry.ErrorBoundary fallback={Fallback}>

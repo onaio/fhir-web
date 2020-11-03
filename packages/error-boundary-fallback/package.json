@@ -1,0 +1,42 @@
+{
+  "name": "@opensrp/error-boundary-fallback",
+  "version": "0.0.0",
+  "types": " dist/types",
+  "description": "Error boundary fallback component",
+  "main": "dist/index.js",
+  "repository": "https://github.com/opensrp/web",
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "scripts": {
+    "jest": "jest --coverage --verbose --color",
+    "test": "cd ../../ && jest test packages/location-management --verbose --collectCoverage=true && cd packages/location-management",
+    "test:watch": "cd ../../ && jest test packages/location-management --verbose --watch && cd packages/location-management",
+    "tsc": "tsc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest": {
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "antd": "^4.6.3"
+  },
+  "devDependencies": {
+    "@types/antd": "^1.0.0"
+  }
+}

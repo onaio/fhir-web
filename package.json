@@ -73,8 +73,6 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/redux-mock-store": "^1.0.2",
     "@types/redux-testkit": "^1.0.5",
-    "@types/antd": "^1.0.0",
-    "@types/lodash": "^4.14.161",
     "@types/seamless-immutable": "^7.1.13",
     "@types/yup": "^0.29.9",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
@@ -115,6 +113,8 @@
     "redux": "^4.0.5",
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
+    "@types/antd": "^1.0.0",
+    "@types/lodash": "^4.14.161",
     "redux-thunk": "^2.3.0",
     "typescript": "~3.7.2"
   },

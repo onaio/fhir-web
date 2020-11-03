@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Result, Button } from 'antd';
 import { useHistory } from 'react-router';
 
-const Fallback: React.FC = () => {
+const ErrorBoundary: React.FC = () => {
   const history = useHistory();
 
   return (
@@ -20,4 +20,6 @@ const Fallback: React.FC = () => {
   );
 };
 
-export default Fallback;
+export default ErrorBoundary;
+export {ErrorBoundary}
+
