@@ -40,6 +40,6 @@ provided.
  * @param {user} user details object
  */
 export const openNotification = (user: User): void => {
-  sendSuccessNotification(`Welcome back, ${user.username}`);
+  sendSuccessNotification(`Welcome back, ${user.username}`, 'You have 8 new messages');
 };
 ```
