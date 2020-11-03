@@ -13,6 +13,8 @@ import { UserList } from '@opensrp/user-management';
 import { KEYCLOAK_API_BASE_URL } from '../../configs/env';
 import NotFound from '../../components/NotFound';
 
+jest.mock('../../configs/env');
+
 const realLocation = window.location;
 
 // tslint:disable-next-line: no-var-requires
