@@ -24,6 +24,9 @@ import {
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
+// Define selector instance
+const getAccessToken = makeAPIStateSelector();
+
 /** inteface for route params */
 
 export interface CredentialsRouteParams {
@@ -187,7 +190,7 @@ const mapStateToProps = (
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
   const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
-  const accessToken = makeAPIStateSelector()(state, { accessToken: true });
+  const accessToken = getAccessToken(state, { accessToken: true });
   return { keycloakUser, accessToken };
 };
 

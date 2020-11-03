@@ -178,7 +178,7 @@ describe('components/CreateEditUser', () => {
   });
 
   it('works correctly with the store', async () => {
-    store.dispatch(opensrpStore.fetchKeycloakUsers([fixtures.keycloakUser]));
+    store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
     const mockSelector = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
     opensrpStore.store.dispatch(
       authenticateUser(

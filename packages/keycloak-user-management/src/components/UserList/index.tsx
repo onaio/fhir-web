@@ -22,6 +22,9 @@ import { getTableColumns } from './utils';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
+// Define selector instance
+const getAccessToken = makeAPIStateSelector();
+
 /** interface for component props */
 export interface Props {
   serviceClass: typeof KeycloakService;
@@ -159,7 +162,7 @@ interface DispatchedProps {
 // connect to store
 const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
-  const accessToken = makeAPIStateSelector()(state, { accessToken: true });
+  const accessToken = getAccessToken(state, { accessToken: true });
   return { keycloakUsers, accessToken };
 };
 

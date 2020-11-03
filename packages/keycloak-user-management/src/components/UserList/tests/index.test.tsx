@@ -15,8 +15,6 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
-  fetchKeycloakUsers,
-  removeKeycloakUsers,
 } from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';

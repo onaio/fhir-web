@@ -21,47 +21,44 @@ interface APIFilters {
 
 /** Fetch access token from store if access_token filter val is true
  *
- * @param _ - redux store
- * @param props - api filters object
- * @returns {boolean}
+ * @param {object} _ - redux store
+ * @param {object} props - api filters object
+ * @returns {boolean} returns boolean value
  */
-
 export const fetchAccessToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
   props.accessToken || null;
 
 /** Fetch api token from store if api_token filter val is true
  *
- * @param _ redux store
- * @param props api filters object
- * @returns {boolean}
+ * @param {object} _ redux store
+ * @param {object} props api filters object
+ * @returns {boolean} returns boolean value
  */
-
 export const fetchApiToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
   props.apiToken || null;
 
 /** Fetch oauth provider state from store if providerState filter val is true
  *
- * @param _ redux store
- * @param props api filters object
- * @returns {boolean}
+ * @param {Object} _ redux store
+ * @param {Object} props api filters object
+ * @returns {boolean} returns boolean value
  */
-
 export const fetchOauthProviderState = (_: Partial<Store>, props: APIFilters): boolean | null =>
   props.providerState || null;
 
 /** Gets extra data object from store
  *
- * @param state - redux store
+ * @param {object} state - redux store
+ * @returns {Object}
  */
 
 export const getExtraData = (state: Partial<Store>): Dictionary =>
   (state as StoreState)[sessionReducerName].extraData;
 
-/**
- * @param {any} state - the redux store
+/** API state selector
+ *
  * @returns {Object} - the states
  */
-
 export const makeAPIStateSelector = () =>
   createSelector(
     [fetchAccessToken, fetchApiToken, fetchOauthProviderState, getExtraData],
