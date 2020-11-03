@@ -44,6 +44,8 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
+
+
 import ErrorBoundary from '@opensrp/error-boundary-fallback';
 
 const { Content } = Layout;
