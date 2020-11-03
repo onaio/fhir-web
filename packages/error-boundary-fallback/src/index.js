@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 exports.__esModule = true;
-var errorboundary = require("./index");
-exports.ErrorBoundary = errorboundary["default"];
+var errorboundary = require('./ErrorBoundary');
+exports.ErrorBoundary = errorboundary['default'];

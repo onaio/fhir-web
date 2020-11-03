@@ -9,7 +9,8 @@ import App from './App/App';
 import { SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
-import Fallback from '@opensrp/error-boundary-fallback';
+import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
+
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
 
@@ -19,7 +20,7 @@ if (SENTRY_DSN && SENTRY_DSN !== '') {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Sentry.ErrorBoundary fallback={Fallback}>
+    <Sentry.ErrorBoundary fallback={ErrorBoundary}>
       <ConnectedRouter history={history}>
         <App />
       </ConnectedRouter>
