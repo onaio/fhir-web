@@ -10,7 +10,7 @@ yarn add @opensrp/notifications
 
 ## Usage
 
-The following available functions support different types of notifications.
+The following available functions support different types of notifications:
 
 `sendSuccessNotification`: Used to display a success popup
 
