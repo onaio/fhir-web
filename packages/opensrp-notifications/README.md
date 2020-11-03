@@ -1,46 +1,45 @@
 # Package
 
-<!-- package description -->
+The package contains utility functions for displaying notifications
 
 ## Installation
 
 ```sh
-yarn add @opensrp/template
+yarn add @opensrp/notifications
 ```
-
-<!--
-Include further installation instructions, for instance if the package requires for the user
-to manually add css.
--->
 
 ## Usage
 
-<!--
+The following available functions support different types of notifications.
 
-### Props/ Configuration
+`sendSuccessNotification`: Used to display a success popup
 
-#### linkerField
+`sendInfoNotification`: Used to display an information popup
 
-_Optional_(`string` | `undefined` = `undefined`)
+`sendWarningNotification`: Used to display a warning popup
 
-When the table is rendered, you can click anywhere on a row to drill down to the next level of the hierarchy. However, you may want to display some kind of indication that it is possible to drill down on a row of data. The `linkerField` prop allows you to define which field should have this indicator. By default this is set to the `id` field.
+`sendErrorNotification`: Used to display an error popup
 
--->
+Each of these methods accepts the following arguments:
+
+1. `message`: **string**
+
+This is the notification title and is required
+
+2. `description`: **string**
+
+This is the content of the notification. It's optional. A blank body will be displayed if it's not
+provided.
 
 ### Code examples
 
-<!--
-
-A single simple, minimal, working snippet for each use-case that the package supports
-
-```tsx
-import { DrillDownTable, columnsFromObjects } from '@onaio/drill-down-table/';
-
-const props = {
-  columns: columnsFromObjects(data),
-  data
+```ts
+/**
+ * antd notification popup.
+ *
+ * @param {user} user details object
+ */
+export const openNotification = (user: User): void => {
+  sendSuccessNotification(`Welcome back, ${user.username}`);
 };
-<DrillDownTable {...props} />;
 ```
-
--->
