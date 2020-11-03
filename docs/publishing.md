@@ -10,7 +10,7 @@
 1. run `lerna:version` script
 
    - this will find the changed packages, update the package.json files, create tags, create releases for those tags.
-   - you will need to set the `GH_TOKEN`  env variable for this step.
+   - you will need to set the `GH_TOKEN` env variable for this step.
 
 2. run `lerna:publish`
 

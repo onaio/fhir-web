@@ -71,7 +71,7 @@ export const PrivateComponent = ({ component: Component, ...rest }: ComponentPro
     <ConnectedPrivateRoute
       {...rest}
       component={(props: RouteComponentProps) => (
-        <Component {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL}/>
+        <Component {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
       )}
     />
   );
@@ -83,8 +83,8 @@ export const PrivateComponent = ({ component: Component, ...rest }: ComponentPro
  * @param props - Component props object
  */
 
-export const PublicComponent = ({ component: Component, ...rest}: Partial<ComponentProps>) => {
-  return (<Route {...rest} component={(props: RouteComponentProps) => <Component {...props}/> }/>);
+export const PublicComponent = ({ component: Component, ...rest }: Partial<ComponentProps>) => {
+  return <Route {...rest} component={(props: RouteComponentProps) => <Component {...props} />} />;
 };
 
 /** Util function that renders Oauth2 callback components
@@ -177,11 +177,7 @@ const App: React.FC = () => {
                 return <></>;
               }}
             />
-            <PublicComponent
-              exact
-              path={APP_CALLBACK_PATH}
-              component={CallbackComponent}
-            />
+            <PublicComponent exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
             {/* tslint:enable jsx-no-lambda */}
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

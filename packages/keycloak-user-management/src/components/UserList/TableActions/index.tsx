@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Popconfirm, Space } from 'antd';
-import { KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
 import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
+import { removeKeycloakUsers, KeycloakUser } from '../../../ducks/user';
 import { URL_USER_EDIT } from '../../../constants';
 
 /** interface for component props */
