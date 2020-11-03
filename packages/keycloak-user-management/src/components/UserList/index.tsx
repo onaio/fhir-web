@@ -19,6 +19,7 @@ import {
 } from '../../ducks/user';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '../../constants';
 import { getTableColumns } from './utils';
+import { getExtraData } from '@onaio/session-reducer';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -33,6 +34,7 @@ export interface Props {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
   keycloakBaseURL: string;
+  extraData: Dictionary;
 }
 
 /** default component props */
@@ -43,6 +45,7 @@ export const defaultProps = {
   removeKeycloakUsersCreator: removeKeycloakUsers,
   keycloakUsers: [],
   keycloakBaseURL: '',
+  extraData: {},
 };
 
 interface TableData {
@@ -65,6 +68,7 @@ const UserList = (props: Props): JSX.Element => {
     keycloakUsers,
     accessToken,
     keycloakBaseURL,
+    extraData,
   } = props;
 
   const isLoadingCallback = (isLoading: boolean) => {
@@ -134,6 +138,7 @@ const UserList = (props: Props): JSX.Element => {
             accessToken,
             keycloakBaseURL,
             isLoadingCallback,
+            extraData,
             filteredInfo,
             sortedInfo
           )}
@@ -157,13 +162,15 @@ export { UserList };
 interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
+  extraData: Dictionary;
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
   const accessToken = getAccessToken(state, { accessToken: true });
-  return { keycloakUsers, accessToken };
+  const extraData = getExtraData(state);
+  return { keycloakUsers, accessToken, extraData };
 };
 
 /** map props to action creators */
