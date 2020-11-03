@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router';
 import ConnectedHeader from '..';
 import { store } from '@opensrp/store';
 
-jest.mock('../../../../../configs/env');
+jest.mock('../../../configs/env');
 describe('components/ConnectedHeader', () => {
   it('renders the ConnectedHeader component', () => {
     const wrapper = mount(
