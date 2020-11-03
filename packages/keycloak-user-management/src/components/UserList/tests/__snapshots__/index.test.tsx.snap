@@ -109,6 +109,7 @@ Object {
 exports[`components/UserList renders user list correctly: user list props 1`] = `
 Object {
   "accessToken": "",
+  "extraData": Object {},
   "fetchKeycloakUsersCreator": [Function],
   "keycloakBaseURL": "",
   "keycloakUsers": Array [],
@@ -120,6 +121,13 @@ Object {
 exports[`components/UserList works correctly with store: user list props 1`] = `
 Object {
   "accessToken": "simple-token",
+  "extraData": Object {
+    "api_token": "hunter2",
+    "oAuth2Data": Object {
+      "access_token": "simple-token",
+      "state": "abcde",
+    },
+  },
   "fetchKeycloakUsersCreator": [Function],
   "keycloakBaseURL": "https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage",
   "keycloakUsers": Array [

@@ -5,7 +5,7 @@ import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
 import { removeKeycloakUsers, KeycloakUser } from '../../../ducks/user';
 import { URL_USER_EDIT } from '../../../constants';
-import { Dictionary } from '@onaio/utils/dist/types/types';
+import { Dictionary } from '@onaio/utils';
 
 /** interface for component props */
 export interface Props {
