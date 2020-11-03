@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { history } from '@onaio/connected-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
-import { getAccessToken } from '@opensrp/store';
+import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
 import {
@@ -23,6 +23,9 @@ import {
 } from '../../ducks/user';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
+
+// Define selector instance
+const getAccessToken = makeAPIStateSelector();
 
 /** inteface for route params */
 
@@ -187,7 +190,7 @@ const mapStateToProps = (
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
   const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
-  const accessToken = getAccessToken(state) as string;
+  const accessToken = getAccessToken(state, { accessToken: true });
   return { keycloakUser, accessToken };
 };
 
