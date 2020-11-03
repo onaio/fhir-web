@@ -1680,6 +1680,7 @@
     fast_array_intersect "^1.1.0"
     flush-promises "^1.0.2"
     formik "^2.1.5"
+    formik-antd "^2.0.1"
     lodash "^4.17.20"
     yup "^0.29.3"
 
@@ -5372,6 +5373,11 @@ form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
+
+formik-antd@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/formik-antd/-/formik-antd-2.0.1.tgz#0f50ee1141c299187132fd7641e3467a2261e58d"
+  integrity sha512-KyDRqzPUchYvKLLku5/yphzIDkAFDT8ViKo6+9wXYJf0duwcuCmsNZlgQiEdlCrm1IWN3XMLUCPV/MUm0iLKww==
 
 formik@^2.1.5:
   version "2.2.0"

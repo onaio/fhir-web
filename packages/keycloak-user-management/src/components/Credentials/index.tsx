@@ -6,17 +6,21 @@ import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { history } from '@onaio/connected-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
-import {
-  fetchKeycloakUsers,
-  getAccessToken,
-  KeycloakUser,
-  makeKeycloakUsersSelector,
-  reducer as keycloakUsersReducer,
-  reducerName as keycloakUsersReducerName,
-} from '@opensrp/store';
+import { getAccessToken } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
-import { URL_USERS, URL_RESET_PASSWORD } from '../../constants';
+import {
+  KEYCLOAK_URL_USERS,
+  KEYCLOAK_URL_RESET_PASSWORD,
+  ROUTE_PARAM_USER_ID,
+} from '../../constants';
+import {
+  reducer as keycloakUsersReducer,
+  reducerName as keycloakUsersReducerName,
+  fetchKeycloakUsers,
+  makeKeycloakUsersSelector,
+  KeycloakUser,
+} from '../../ducks/user';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -64,10 +68,10 @@ export const submitForm = (
   props: CredentialsPropsTypes
 ): void => {
   const { serviceClass, match, accessToken, keycloakBaseURL } = props;
-  const userId = match.params.userId;
+  const userId = match.params[ROUTE_PARAM_USER_ID];
   const serve = new serviceClass(
     accessToken,
-    `${URL_USERS}/${userId}${URL_RESET_PASSWORD}`,
+    `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
     keycloakBaseURL
   );
   const { password, temporary } = values;
@@ -93,10 +97,10 @@ export const submitForm = (
 };
 
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const userId = props.match.params.userId;
+  const userId = props.match.params[ROUTE_PARAM_USER_ID];
   const isEditMode = !!userId;
   const layout = {
-    labelCol: { span: 4 },
+    labelCol: { span: 8 },
     wrapperCol: { span: 16 },
   };
 
@@ -179,7 +183,7 @@ const mapStateToProps = (
   state: Partial<Store>,
   ownProps: CredentialsPropsTypes
 ): DispatchedProps => {
-  const userId = ownProps.match.params.userId;
+  const userId = ownProps.match.params[ROUTE_PARAM_USER_ID];
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
   const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
