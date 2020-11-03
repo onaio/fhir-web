@@ -1,4 +1,4 @@
-# Package
+# Notifications
 
 The package contains utility functions for displaying notifications
 
