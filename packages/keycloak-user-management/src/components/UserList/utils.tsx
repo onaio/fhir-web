@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
+import { KeycloakUser, removeKeycloakUsers } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { TableActions } from './TableActions';
 
