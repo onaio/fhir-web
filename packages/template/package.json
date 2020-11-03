@@ -1,7 +1,7 @@
 {
-  "name": "@opensrp/keycloak-service",
-  "version": "0.0.6",
-  "description": "Keycloak Admin API service",
+  "name": "@opensrp/template",
+  "version": "0.0.2",
+  "description": "",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
@@ -11,15 +11,14 @@
     "access": "public"
   },
   "repository": "https://github.com/opensrp/web",
+  "config": {
+    "folderName": "template"
+  },
   "scripts": {
-    "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/keycloak-service --verbose --collectCoverage=true && cd packages/keycloak-service",
-    "test:watch": "cd ../../ && jest test  packages/keycloak-service --verbose --watch && cd packages/keycloak-service",
+    "test": " cd ../../ && pwd && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy",
     "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
@@ -31,13 +30,10 @@
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
-  "author": "Ona Engineering",
-  "license": "Apache-2.0",
-  "private": false,
-  "dependencies": {
-    "@opensrp/store": "^0.0.5"
-  },
   "peerDependencies": {
-    "react": "^16.13.1"
-  }
+    "react": "^16.18.1"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false
 }
