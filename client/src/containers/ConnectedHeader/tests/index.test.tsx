@@ -47,6 +47,7 @@ describe('components/ConnectedHeader', () => {
   });
 
   it('renders the Language switcher', () => {
+    jest.mock('../../../configs/env');
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
