@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import React from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio, Select, ResetButton } from 'formik-antd';
-import { Button, notification } from 'antd';
+import { notification } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 
 import { KeycloakUser } from '@opensrp/store';
@@ -69,35 +69,32 @@ const location = [
 ];
 
 const status = [
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' },
+  { label: 'Active', value: true },
+  { label: 'Inactive', value: false },
 ];
 
 const initialValue = {
-  name: null,
-  type: null,
-  status: 'active',
+  name: '',
+  description: '',
+  active: 'active',
 };
 
 /** yup validations for practitioner data object from form */
 export const userSchema = Yup.object().shape({
-  name: Yup.string()
-    .typeError('Name must be a String')
-    .required('Name is Required'),
-  status: Yup.string()
-    .typeError('Status must be a String')
-    .required('Status is Required'),
-  type: Yup.string()
-    .typeError('Type must be a String')
-    .required('Type is Required'),
+  name: Yup.string().typeError('Name must be a String').required('Name is Required'),
+  active: Yup.boolean().typeError('Status must be a Boolean').required('Status is Required'),
+  description: Yup.string()
+    .typeError('Description must be a String')
+    .required('Description is Required'),
 });
 
 interface Props {
+  id?: any;
   keycloakUsers: KeycloakUser[];
   accessToken: string;
 }
 
-export const Form: React.FC<Props> = () => {
+export const Form: React.FC<Props> = (props: Props) => {
   function filter(input: string, option: any) {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
@@ -107,15 +104,15 @@ export const Form: React.FC<Props> = () => {
       initialValues={initialValue}
       validationSchema={userSchema}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
+        console.log('values :', JSON.stringify(values));
 
         const serve = new OpenSRPService(
-          'https://opensrp-stage.smartregister.org/opensrp/rest',
-          '/location'
+          props.accessToken,
+          'https://opensrp-stage.smartregister.org/opensrp/rest/',
+          'location-tag'
         );
 
-        const payload: LocationTagPayloadPOST = { ...values } as any;
-
+        const payload: LocationTagPayloadPOST = { ...values, active: values.active === 'active' };
         serve
           .create(payload)
           .then(() => {
@@ -157,13 +154,13 @@ export const Form: React.FC<Props> = () => {
 
             <AntForm.Item
               label="Status"
-              name="status"
+              name="active"
               valuePropName="checked"
-              // className={errors.status ? `form-control is-invalid` : `form-control`}
+              // className={errors.active ? `form-control is-invalid` : `form-control`}
             >
-              <Radio.Group name="status" defaultValue={initialValue.status}>
+              <Radio.Group name="active" defaultValue={initialValue.active}>
                 {status.map((e) => (
-                  <Radio name="status" key={e.value} value={e.value}>
+                  <Radio name="active" key={e.label} value={e.value}>
                     {e.label}
                   </Radio>
                 ))}
@@ -172,10 +169,10 @@ export const Form: React.FC<Props> = () => {
 
             <AntForm.Item
               // className={errors.type ? `form-control is-invalid` : `form-control`}
-              name="type"
+              name="description"
               label="Type"
             >
-              <Input.TextArea name="type" rows={4} placeholder="Description" />
+              <Input.TextArea name="description" rows={4} placeholder="Description" />
             </AntForm.Item>
 
             <AntForm.Item name={'buttons'} {...offsetLayout}>

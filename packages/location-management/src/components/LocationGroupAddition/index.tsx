@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { KeycloakUser, getKeycloakUsersArray, getAccessToken } from '@opensrp/store';
-import { PropsTypes } from '@opensrp/user-management/dist/types';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import Form from './Form';
@@ -34,7 +33,7 @@ interface DispatchedProps {
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>, _: PropsTypes): DispatchedProps => {
+const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
   const accessToken = getAccessToken(state) as string;
   return { keycloakUsers, accessToken };
