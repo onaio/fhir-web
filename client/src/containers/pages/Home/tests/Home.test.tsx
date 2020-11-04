@@ -107,6 +107,6 @@ describe('containers/pages/Home', () => {
       </Provider>
     );
 
-    expect(wrapper.find('h3').text()).not.toEqual('Welcome to OpenSRP');
+    expect(wrapper.find('h3').text()).toEqual('Bienvenue sur OpenSRP');
   });
 });
