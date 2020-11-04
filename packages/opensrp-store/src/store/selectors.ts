@@ -1,6 +1,7 @@
 import { reducerName as sessionReducerName } from '@onaio/session-reducer';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
+import { createSelector } from 'reselect';
 
 /** get API Token from the Redux store
  *
@@ -11,37 +12,63 @@ interface StoreState {
     [key: string]: Dictionary;
   };
 }
-/**
- * @param {any} state - the redux store
- * @returns {Object} - the states
- */
-export function getApiToken(state: Partial<Store>): string {
-  const { extraData } = (state as StoreState)[sessionReducerName];
-  return extraData.api_token || null;
+
+interface APIFilters {
+  accessToken?: boolean;
+  apiToken?: boolean;
+  providerState?: boolean;
 }
 
-/** get Access Token from the Redux store
+/** Fetch access token from store if access_token filter val is true
  *
- * @param {any} state - the redux store
- * @returns {Object} - the states
+ * @param {object} _ - redux store
+ * @param {object} props - api filters object
+ * @returns {boolean} returns boolean value
  */
-export function getAccessToken(state: Partial<Store>): string | null {
-  const { extraData } = (state as StoreState)[sessionReducerName];
-  if (extraData.oAuth2Data && extraData.oAuth2Data.access_token) {
-    return extraData.oAuth2Data.access_token;
-  }
-  return null;
-}
+export const fetchAccessToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
+  props.accessToken || null;
 
-/** get the oAuth2 provider state parameter from the Redux store
+/** Fetch api token from store if api_token filter val is true
  *
- * @param {any} state - the redux store
+ * @param {object} _ redux store
+ * @param {object} props api filters object
+ * @returns {boolean} returns boolean value
+ */
+export const fetchApiToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
+  props.apiToken || null;
+
+/** Fetch oauth provider state from store if providerState filter val is true
+ *
+ * @param {Object} _ redux store
+ * @param {Object} props api filters object
+ * @returns {boolean} returns boolean value
+ */
+export const fetchOauthProviderState = (_: Partial<Store>, props: APIFilters): boolean | null =>
+  props.providerState || null;
+
+/** Gets extra data object from store
+ *
+ * @param {object} state - redux store
+ * @returns {Object}
+ */
+
+export const getExtraData = (state: Partial<Store>): Dictionary =>
+  (state as StoreState)[sessionReducerName].extraData;
+
+/** API state selector
+ *
  * @returns {Object} - the states
  */
-export function getOauthProviderState(state: Partial<Store>): string | null {
-  const { extraData } = (state as StoreState)[sessionReducerName];
-  if (extraData.oAuth2Data && extraData.oAuth2Data.state) {
-    return extraData.oAuth2Data.state;
-  }
-  return null;
-}
+export const makeAPIStateSelector = () =>
+  createSelector(
+    [fetchAccessToken, fetchApiToken, fetchOauthProviderState, getExtraData],
+    (accessToken, apiToken, oauthState, extraData) => {
+      if (accessToken) {
+        return (extraData.oAuth2Data && extraData.oAuth2Data.access_token) || null;
+      } else if (apiToken) {
+        return extraData.api_token || null;
+      } else if (oauthState) {
+        return (extraData.oAuth2Data && extraData.oAuth2Data.state) || null;
+      }
+    }
+  );

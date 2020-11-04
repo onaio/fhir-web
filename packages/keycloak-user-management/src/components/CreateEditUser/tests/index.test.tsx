@@ -20,6 +20,7 @@ import {
   fetchKeycloakUsers,
   removeKeycloakUsers,
 } from '../../../ducks/user';
+import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -120,10 +121,26 @@ describe('components/CreateEditUser', () => {
   it('fetches user if page is refreshed', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUser));
 
-    jest.spyOn(opensrpStore, 'getAccessToken').mockReturnValue('bamboocha');
+    const mockSelector = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
+
+    opensrpStore.store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
+      )
+    );
 
     const propsPageRefreshed = {
       ...props,
+      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
+        accessToken: true,
+      }),
       keycloakUser: null,
     };
 
@@ -143,6 +160,8 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
+    expect(mockSelector).toHaveBeenCalled();
+
     expect(fetch.mock.calls[1]).toEqual([
       `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${fixtures.keycloakUser.id}`,
       {
@@ -160,14 +179,29 @@ describe('components/CreateEditUser', () => {
 
   it('works correctly with the store', async () => {
     store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
-    const getAccessTokenMock = jest
-      .spyOn(opensrpStore, 'getAccessToken')
-      .mockReturnValue('bamboocha');
+    const mockSelector = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
+    opensrpStore.store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
+      )
+    );
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedCreateEditUser {...props} />
+          <ConnectedCreateEditUser
+            {...props}
+            accessToken={opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
+              accessToken: true,
+            })}
+          />
         </Router>
       </Provider>
     );
@@ -179,6 +213,7 @@ describe('components/CreateEditUser', () => {
 
     expect(wrapper.find('CreateEditUser').prop('keycloakUser')).toEqual(fixtures.keycloakUser);
     expect(wrapper.find('CreateEditUser').prop('accessToken')).toEqual('bamboocha');
-    expect(getAccessTokenMock).toHaveBeenCalledWith(store.getState());
+    expect(mockSelector).toHaveBeenCalled();
+    wrapper.unmount();
   });
 });
