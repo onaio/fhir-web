@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Form, Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
@@ -7,24 +8,37 @@ import Tree, { TreeData } from './Tree';
 import Table, { TableData } from './Table';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import { OpenSRPService } from '@opensrp/server-service';
-import {
-  KeycloakUser,
-  getKeycloakUsersArray,
-  fetchKeycloakUsers,
-  removeKeycloakUsers,
-} from '@opensrp/store';
+import { KeycloakUser, getKeycloakUsersArray } from '@opensrp/store';
 import { getAccessToken } from '@onaio/session-reducer';
+import reducer, {
+  fetchLocationUnits,
+  getLocationUnitsArray,
+  LocationUnit as LocationUnitObj,
+  LocationUnitsArray,
+  reducerName,
+} from '../../ducks/location-units';
+
+reducerRegistry.register(reducerName, reducer);
 
 export interface Props {
-  // data: data[];
-  // tree: tree[];
   accessToken: string;
+  fetchLocationUnitsCreator: typeof fetchLocationUnits;
+  locationsArray: LocationUnitObj[];
 }
 
+const defaultProps: Props = {
+  accessToken: '',
+  fetchLocationUnitsCreator: fetchLocationUnits,
+  locationsArray: [],
+};
+
 const LocationUnit: React.FC<Props> = (props: Props) => {
+  const { fetchLocationUnitsCreator, locationsArray } = props;
   const [form] = Form.useForm();
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData[] | null>(null);
   const [treeData, setTreeData] = useState<TreeData[] | null>(null);
 
@@ -93,18 +107,11 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
     setTreeData(tree);
   }, []);
 
-  useEffect(() => {
-    const serve = new OpenSRPService(
-      props.accessToken,
-      'https://opensrp-stage.smartregister.org/opensrp/rest/',
-      'location/sync'
-    );
+  console.log('data from store>>', props);
 
-    serve
-      .create({ is_jurisdiction: true })
-      .then((res) => console.log(res))
-      .catch((e) => console.log(e));
-  }, []);
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <section>
@@ -160,29 +167,33 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
   );
 };
 
+LocationUnit.defaultProps = defaultProps;
+
 export { LocationUnit };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
+  locationsArray: LocationUnitObj[];
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
+const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
   const accessToken = getAccessToken(state) as string;
+  const locationsArray = getLocationUnitsArray(state);
 
   return {
     keycloakUsers,
     accessToken,
+    locationsArray,
   };
 };
 
 /** map props to action creators */
 const mapDispatchToProps = {
-  fetchKeycloakUsersCreator: fetchKeycloakUsers,
-  removeKeycloakUsersCreator: removeKeycloakUsers,
+  fetchLocationUnitsCreator: fetchLocationUnits,
 };
 
 const ConnectedLocationUnit = connect(mapStateToProps, mapDispatchToProps)(LocationUnit);
