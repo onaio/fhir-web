@@ -137,6 +137,27 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
       });
   }
 
+  const onViewDetail = (record: any) =>{
+  
+    const clientService = new OpenSRPService(accessToken,  'https://opensrp-stage.smartregister.org/opensrp/rest/location', `/${record.id}` );
+    clientService
+      .list()
+      .then((res) => { 
+        setIsLoading(false);
+        console.log(res)
+        setSelectedLocation(res);
+       
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        notification.error({
+          message: `${err}`,
+          description: '',
+        });
+      });
+  }
+
+
   const cancel = () =>{};
 
   const columns = [
@@ -161,9 +182,9 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
               overlay={
                 <Menu>
                   <Menu.Item
-                    onClick={() => {
-                      setSelectedLocation(record);
-                    }}
+                     onClick={() => {
+                      onViewDetail(record);
+                     }}
                   >
                     View Details
                   </Menu.Item>
@@ -212,9 +233,6 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   if (isLoading) {
     return <Ripple />;
   }
-
-
-
 
   return (
     <section>

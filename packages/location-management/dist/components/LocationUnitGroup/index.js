@@ -139,6 +139,22 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
     });
   };
 
+  var onViewDetail = function onViewDetail(record) {
+    var clientService = new _serverService.OpenSRPService(accessToken, 'https://opensrp-stage.smartregister.org/opensrp/rest/location', "/".concat(record.id));
+    clientService.list().then(function (res) {
+      setIsLoading(false);
+      console.log(res);
+      setSelectedLocation(res);
+    })["catch"](function (err) {
+      setIsLoading(false);
+
+      _antd.notification.error({
+        message: "".concat(err),
+        description: ''
+      });
+    });
+  };
+
   var cancel = function cancel() {};
 
   var columns = [{
@@ -163,7 +179,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
       }, "Edit"), _react["default"].createElement(_antd.Dropdown, {
         overlay: _react["default"].createElement(_antd.Menu, null, _react["default"].createElement(_antd.Menu.Item, {
           onClick: function onClick() {
-            setSelectedLocation(record);
+            onViewDetail(record);
           }
         }, "View Details"), _react["default"].createElement(_antd.Menu.Item, null, _react["default"].createElement(_antd.Popconfirm, {
           title: "Sure to Delete?",
