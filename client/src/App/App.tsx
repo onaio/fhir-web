@@ -156,14 +156,12 @@ const App: React.FC = () => {
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
             />
-            <Route
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path={URL_LOCATIONS_UNIT}
-              render={(props: any) => {
-                return <ConnectedLocationUnit {...props} />;
-              }}
+              component={ConnectedLocationUnit}
             />
             <Route
               exact

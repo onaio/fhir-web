@@ -25,18 +25,6 @@ export interface Props {
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  useEffect(() => {
-    console.log(props.accessToken);
-
-    const service = new OpenSRPService(
-      props.accessToken as string,
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location',
-      '/sync'
-    );
-
-    service.create({}).then((e) => console.log(e));
-  });
-
   function edit(record: TableData) {
     console.log('editting : ', record);
   }
@@ -66,6 +54,7 @@ const Table: React.FC<Props> = (props: Props) => {
       title: 'Actions',
       dataIndex: 'operation',
       width: '10%',
+      // eslint-disable-next-line react/display-name
       render: (_: any, record: TableData) => {
         return (
           <span className="d-flex justify-content-end align-items-center">
