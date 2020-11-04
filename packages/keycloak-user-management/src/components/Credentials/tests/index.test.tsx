@@ -6,19 +6,19 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { ConnectedUserCredentials, UserCredentials } from '..';
+import {
+  fetchKeycloakUsers,
+  reducerName,
+  KeycloakUser,
+  reducer as keycloakUsersReducer,
+} from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import {
-  reducer as keycloakUsersReducer,
-  reducerName as keycloakUsersReducerName,
-  fetchKeycloakUsers,
-  KeycloakUser,
-} from '../../../ducks/user';
 
-reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
+reducerRegistry.register(reducerName, keycloakUsersReducer);
 
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
