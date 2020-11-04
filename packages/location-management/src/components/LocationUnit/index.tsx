@@ -29,7 +29,23 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
   const [treeData, setTreeData] = useState<TreeData[] | null>(null);
 
   useEffect(() => {
-    let tableData: TableData[] = [];
+    const serve = new OpenSRPService(
+      props.accessToken,
+      'https://opensrp-stage.smartregister.org/opensrp/rest/',
+      'location/sync'
+    );
+
+    serve
+      .list({ is_jurisdiction: true, serverVersion: 0 })
+      .then((response: LocationUnitObj[]) => {
+        fetchLocationUnitsCreator(response);
+        setIsLoading(false);
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
+  useEffect(() => {
+    const tableData: TableData[] = [];
 
     for (let i = 1; i < 5; i++) {
       tableData.push({
