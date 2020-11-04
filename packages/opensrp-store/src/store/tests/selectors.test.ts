@@ -1,7 +1,7 @@
 import { authenticateUser, logOutUser } from '@onaio/session-reducer';
 import { FlushThunks } from 'redux-testkit';
 import { store } from '../store';
-import { makeAPIStateSelector } from '../selectors';
+import { getAccessToken, getApiToken, getOauthProviderState } from '../selectors';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -13,7 +13,7 @@ describe('store/selectors', () => {
   });
 
   it('should be able to get the access token', () => {
-    expect(makeAPIStateSelector()(store.getState(), { accessToken: true })).toEqual(null);
+    expect(getAccessToken(store.getState())).toEqual(null);
     store.dispatch(
       authenticateUser(
         true,
@@ -25,11 +25,11 @@ describe('store/selectors', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'iLoveOov', state: 'abcde' } }
       )
     );
-    expect(makeAPIStateSelector()(store.getState(), { accessToken: true })).toEqual('iLoveOov');
+    expect(getAccessToken(store.getState())).toEqual('iLoveOov');
   });
 
   it('should be able to get the API token', () => {
-    expect(makeAPIStateSelector()(store.getState(), { apiToken: true })).toEqual(null);
+    expect(getApiToken(store.getState())).toEqual(null);
     store.dispatch(
       authenticateUser(
         true,
@@ -41,11 +41,11 @@ describe('store/selectors', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'iLoveOov', state: 'abcde' } }
       )
     );
-    expect(makeAPIStateSelector()(store.getState(), { apiToken: true })).toEqual('hunter2');
+    expect(getApiToken(store.getState())).toEqual('hunter2');
   });
 
   it('should be able to get the oAuth2 state parameter', () => {
-    expect(makeAPIStateSelector()(store.getState(), { providerState: true })).toEqual(null);
+    expect(getOauthProviderState(store.getState())).toEqual(null);
     store.dispatch(
       authenticateUser(
         true,
@@ -57,6 +57,6 @@ describe('store/selectors', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'iLoveOov', state: 'abcde' } }
       )
     );
-    expect(makeAPIStateSelector()(store.getState(), { providerState: true })).toEqual('abcde');
+    expect(getOauthProviderState(store.getState())).toEqual('abcde');
   });
 });

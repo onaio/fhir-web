@@ -11,23 +11,17 @@ import * as fixtures from './fixtures';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { fetchKeycloakUsers } from '@opensrp/store';
 import fetch from 'jest-fetch-mock';
 import { defaultInitialValues } from '../../forms/UserForm';
 import toJson from 'enzyme-to-json';
-import {
-  reducer as keycloakUsersReducer,
-  reducerName as keycloakUsersReducerName,
-  fetchKeycloakUsers,
-  removeKeycloakUsers,
-} from '../../../ducks/user';
-import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
   ...jest.requireActual('@opensrp/store'),
 }));
 
-reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
+reducerRegistry.register(opensrpStore.reducerName, opensrpStore.reducer);
 
 describe('components/CreateEditUser', () => {
   const props = {
@@ -52,7 +46,7 @@ describe('components/CreateEditUser', () => {
   };
 
   beforeEach(() => {
-    store.dispatch(removeKeycloakUsers());
+    store.dispatch(opensrpStore.removeKeycloakUsers());
     jest.clearAllMocks();
   });
 
@@ -67,7 +61,7 @@ describe('components/CreateEditUser', () => {
   });
 
   it('renders correctly', () => {
-    store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
+    store.dispatch(opensrpStore.fetchKeycloakUsers([fixtures.keycloakUser]));
 
     const wrapper = mount(
       <Router history={history}>
@@ -121,26 +115,10 @@ describe('components/CreateEditUser', () => {
   it('fetches user if page is refreshed', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUser));
 
-    const mockSelector = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
-
-    opensrpStore.store.dispatch(
-      authenticateUser(
-        true,
-        {
-          email: 'bob@example.com',
-          name: 'Bobbie',
-          username: 'RobertBaratheon',
-        },
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
-      )
-    );
+    jest.spyOn(opensrpStore, 'getAccessToken').mockReturnValue('bamboocha');
 
     const propsPageRefreshed = {
       ...props,
-      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
-        accessToken: true,
-      }),
       keycloakUser: null,
     };
 
@@ -160,8 +138,6 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
-    expect(mockSelector).toHaveBeenCalled();
-
     expect(fetch.mock.calls[1]).toEqual([
       `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${fixtures.keycloakUser.id}`,
       {
@@ -178,30 +154,15 @@ describe('components/CreateEditUser', () => {
   });
 
   it('works correctly with the store', async () => {
-    store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
-    const mockSelector = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
-    opensrpStore.store.dispatch(
-      authenticateUser(
-        true,
-        {
-          email: 'bob@example.com',
-          name: 'Bobbie',
-          username: 'RobertBaratheon',
-        },
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
-      )
-    );
+    store.dispatch(opensrpStore.fetchKeycloakUsers([fixtures.keycloakUser]));
+    const getAccessTokenMock = jest
+      .spyOn(opensrpStore, 'getAccessToken')
+      .mockReturnValue('bamboocha');
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedCreateEditUser
-            {...props}
-            accessToken={opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
-              accessToken: true,
-            })}
-          />
+          <ConnectedCreateEditUser {...props} />
         </Router>
       </Provider>
     );
@@ -213,7 +174,6 @@ describe('components/CreateEditUser', () => {
 
     expect(wrapper.find('CreateEditUser').prop('keycloakUser')).toEqual(fixtures.keycloakUser);
     expect(wrapper.find('CreateEditUser').prop('accessToken')).toEqual('bamboocha');
-    expect(mockSelector).toHaveBeenCalled();
-    wrapper.unmount();
+    expect(getAccessTokenMock).toHaveBeenCalledWith(store.getState());
   });
 });

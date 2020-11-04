@@ -4,11 +4,6 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../Loading';
 import HeaderBreadCrumb from '../HeaderBreadCrumb';
-import { makeAPIStateSelector } from '@opensrp/store';
-import { Store } from 'redux';
-import { connect } from 'react-redux';
-import { Dictionary } from '@onaio/utils';
-import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -16,14 +11,16 @@ import {
   removeKeycloakUsers,
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
-} from '../../ducks/user';
+  getAccessToken,
+} from '@opensrp/store';
+import { Store } from 'redux';
+import { connect } from 'react-redux';
+import { Dictionary } from '@onaio/utils';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '../../constants';
 import { getTableColumns } from './utils';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
-
-// Define selector instance
-const getAccessToken = makeAPIStateSelector();
 
 /** interface for component props */
 export interface Props {
@@ -162,7 +159,7 @@ interface DispatchedProps {
 // connect to store
 const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
-  const accessToken = getAccessToken(state, { accessToken: true });
+  const accessToken = getAccessToken(state) as string;
   return { keycloakUsers, accessToken };
 };
 
