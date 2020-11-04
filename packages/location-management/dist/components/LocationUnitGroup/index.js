@@ -9,12 +9,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ConnectedLocationUnitGroupAdd = void 0;
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
@@ -78,16 +72,7 @@ var EditableCell = function EditableCell(_ref) {
       index = props.index,
       children = props.children,
       restProps = (0, _objectWithoutProperties2["default"])(props, ["editing", "dataIndex", "title", "inputType", "record", "index", "children"]);
-  return _react["default"].createElement("td", restProps, editing ? _react["default"].createElement(_antd.Form.Item, {
-    name: dataIndex,
-    style: {
-      margin: 0
-    },
-    rules: [{
-      required: true,
-      message: "Please Input ".concat(title, "!")
-    }]
-  }, _react["default"].createElement(_antd.Input, null)) : children);
+  return _react["default"].createElement("td", restProps, children);
 };
 
 var LocationUnitGroup = function LocationUnitGroup(props) {
@@ -104,27 +89,18 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
 
   var _useState3 = (0, _react.useState)(''),
       _useState4 = (0, _slicedToArray2["default"])(_useState3, 2),
-      editingKey = _useState4[0],
-      setEditingKey = _useState4[1];
+      value = _useState4[0],
+      setValue = _useState4[1];
 
-  var _useState5 = (0, _react.useState)(''),
+  var _useState5 = (0, _react.useState)(null),
       _useState6 = (0, _slicedToArray2["default"])(_useState5, 2),
-      value = _useState6[0],
-      setValue = _useState6[1];
-
-  var _useState7 = (0, _react.useState)(null),
-      _useState8 = (0, _slicedToArray2["default"])(_useState7, 2),
-      selectedLocation = _useState8[0],
-      setSelectedLocation = _useState8[1];
+      selectedLocation = _useState6[0],
+      setSelectedLocation = _useState6[1];
 
   var _React$useState = _react["default"].useState(true),
       _React$useState2 = (0, _slicedToArray2["default"])(_React$useState, 2),
       isLoading = _React$useState2[0],
       setIsLoading = _React$useState2[1];
-
-  var isEditing = function isEditing(record) {
-    return record.key === editingKey;
-  };
 
   (0, _react.useEffect)(function () {
     setIsLoading(true);
@@ -142,10 +118,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
     });
   }, []);
 
-  var edit = function edit(record) {
-    form.setFieldsValue(_objectSpread({}, record));
-    setEditingKey(record.key);
-  };
+  var edit = function edit() {};
 
   var onRemoveHandler = function onRemoveHandler(record) {
     var clientService = new _serverService.OpenSRPService(accessToken, _constants.KEYCLOAK_API_BASE_URL, _constants.URL_DELETE_LOCATION_TAGS + "/".concat(record.id));
@@ -153,7 +126,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
       setIsLoading(false);
 
       _antd.notification.success({
-        message: "".concat(res),
+        message: 'Successfully Deleted!',
         description: ''
       });
     })["catch"](function (err) {
@@ -166,58 +139,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
     });
   };
 
-  var cancel = function cancel() {
-    return setEditingKey('');
-  };
-
-  var save = function () {
-    var _ref2 = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark(function _callee(key) {
-      var row, newData, index, item;
-      return _regenerator["default"].wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return form.validateFields();
-
-            case 3:
-              row = _context.sent;
-              newData = (0, _toConsumableArray2["default"])(data);
-              index = newData.findIndex(function (item) {
-                return key === item.key;
-              });
-
-              if (index > -1) {
-                item = newData[index];
-                newData.splice(index, 1, _objectSpread(_objectSpread({}, item), row));
-                setData(newData);
-                setEditingKey('');
-              } else {
-                newData.push(row);
-                setData(newData);
-                setEditingKey('');
-              }
-
-              _context.next = 11;
-              break;
-
-            case 9:
-              _context.prev = 9;
-              _context.t0 = _context["catch"](0);
-
-            case 11:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[0, 9]]);
-    }));
-
-    return function save(_x) {
-      return _ref2.apply(this, arguments);
-    };
-  }();
+  var cancel = function cancel() {};
 
   var columns = [{
     title: 'Name',
@@ -231,25 +153,12 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
     dataIndex: 'operation',
     width: '10%',
     render: function render(_, record) {
-      var editable = isEditing(record);
-      return editable ? _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(_antd.Button, {
-        type: "link",
-        className: "p-1",
-        onClick: function onClick() {
-          return save(record.key);
-        }
-      }, "Save"), _react["default"].createElement(_antd.Button, {
-        type: "link",
-        className: "p-1",
-        onClick: function onClick() {
-          return cancel();
-        }
-      }, "Cancel")) : _react["default"].createElement("span", {
+      return _react["default"].createElement("span", {
         className: "location-table-action"
       }, _react["default"].createElement("p", {
         className: "edit",
         onClick: function onClick() {
-          return edit(record);
+          return edit();
         }
       }, "Edit"), _react["default"].createElement(_antd.Dropdown, {
         overlay: _react["default"].createElement(_antd.Menu, null, _react["default"].createElement(_antd.Menu.Item, {
@@ -278,8 +187,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
           record: record,
           inputType: col.dataIndex === 'level' ? 'number' : 'text',
           dataIndex: col.dataIndex,
-          title: col.title,
-          editing: isEditing(record)
+          title: col.title
         };
       }
     });

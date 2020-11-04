@@ -81,17 +81,7 @@ const EditableCell: React.FC<EditableCellProps> = ({ ...props }) => {
   const { editing, dataIndex, title, inputType, record, index, children, ...restProps } = props;
   return (
     <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{ margin: 0 }}
-          rules={[{ required: true, message: `Please Input ${title}!` }]}
-        >
-          <Input />
-        </Form.Item>
-      ) : (
-        children
-      )}
+      {children}
     </td>
   );
 };
@@ -100,13 +90,9 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   const { accessToken } = props;
   const [form] = Form.useForm();
   const [data, setData] = useState(tableData);
-  const [editingKey, setEditingKey] = useState('');
-  // const [allData, setAllData] = useState();
   const [value, setValue] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<Item | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-
-  const isEditing = (record: Item) => record.key === editingKey;
 
   useEffect(() => {
     setIsLoading(true);
@@ -126,9 +112,8 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
       });
   }, []);
 
-  const edit = (record: Item) => {
-    form.setFieldsValue({ ...record });
-    setEditingKey(record.key);
+  const edit = () => {
+   
   };
 
   const onRemoveHandler = (record: any) =>{
@@ -152,27 +137,7 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
       });
   }
 
-  const cancel = () => setEditingKey('');
-
-  const save = async (key: React.Key) => {
-    try {
-      const row = (await form.validateFields()) as Item;
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
-        setEditingKey('');
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
-      }
-    } catch (errInfo) {
-      // console.log('Validate Failed:', errInfo);
-    }
-  };
+  const cancel = () =>{};
 
   const columns = [
     {
@@ -186,20 +151,10 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
       dataIndex: 'operation',
       width: '10%',
       // eslint-disable-next-line react/display-name
-      render: (_: unknown, record: Item) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <>
-            <Button type="link" className="p-1" onClick={() => save(record.key)}>
-              Save
-            </Button>
-            <Button type="link" className="p-1" onClick={() => cancel()}>
-              Cancel
-            </Button>
-          </>
-        ) : (
+      render: (_: unknown, record: Item) => 
+       
           <span className="location-table-action">
-            <p className="edit" onClick={() => edit(record)}>
+            <p className="edit" onClick={() => edit()}>
               Edit
             </p>
             <Dropdown
@@ -226,8 +181,7 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
               <MoreOutlined className="more-options" />
             </Dropdown>
           </span>
-        );
-      },
+      
     },
   ];
 
@@ -241,7 +195,7 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
         inputType: col.dataIndex === 'level' ? 'number' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
-        editing: isEditing(record),
+        // editing: isEditing(),
       }),
     };
   });
@@ -258,6 +212,9 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   if (isLoading) {
     return <Ripple />;
   }
+
+
+
 
   return (
     <section>
