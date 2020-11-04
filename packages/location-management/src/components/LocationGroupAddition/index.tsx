@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { KeycloakUser, getKeycloakUsersArray, getAccessToken } from '@opensrp/store';
+import { KeycloakUser, getKeycloakUsersArray } from '@opensrp/store';
+import { getAccessToken } from '@onaio/session-reducer';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import Form from './Form';
