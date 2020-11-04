@@ -26,6 +26,7 @@ export const getDataFilters = (users: KeycloakUser[], field: string): Dictionary
  * @param {string} accessToken - API access token
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {Function} isLoadingCallback - callback function that sets loading state
+ * @param {Dictionary} extraData - user profile extra data
  * @param {Dictionary} filteredInfo - applied filters
  * @param {Dictionary} sortedInfo - applied sort
  * @returns {Dictionary[]} - an array of table columns
@@ -36,6 +37,7 @@ export const getTableColumns = (
   accessToken: string,
   keycloakBaseURL: string,
   isLoadingCallback: (loading: boolean) => void,
+  extraData: Dictionary,
   filteredInfo?: Dictionary,
   sortedInfo?: Dictionary
 ): Dictionary[] => {
@@ -79,6 +81,7 @@ export const getTableColumns = (
         keycloakBaseURL,
         isLoadingCallback,
         record,
+        extraData,
       };
       return <TableActions {...tableActionsProps} />;
     },
