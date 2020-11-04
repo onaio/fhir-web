@@ -1,6 +1,6 @@
 {
   "name": "opensrp-web",
-  "version": "0.1.0",
+  "version": "0.0.10",
   "private": true,
   "scripts": {
     "start": "cd ./client && react-scripts start",
@@ -114,10 +114,10 @@
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
     "redux-thunk": "^2.3.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.8.3"
   },
   "resolutions": {
-    "react-scripts/jest": "25.3.0"
+    "react-scripts/jest": "24.9.0"
   },
   "workspaces": [
     "client/*",

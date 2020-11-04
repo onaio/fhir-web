@@ -17,12 +17,12 @@ import {
 import { MoreOutlined, SearchOutlined, SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/server-service';
 import { Store } from 'redux';
-import { getAccessToken } from '@opensrp/store';
+import { getAccessToken } from '@onaio/session-reducer';
 import { Ripple } from '@onaio/loaders';
 import { connect } from 'react-redux';
 import '../Location.css';
 import LocationDetail from '../LocationDetail';
-import { URL_ALL_LOCATION_TAGS, KEYCLOAK_API_BASE_URL } from '../../constants';
+import { URL_ALL_LOCATION_TAGS, KEYCLOAK_API_BASE_URL,URL_DELETE_LOCATION_TAGS } from '../../constants';
 
 export interface GetLocationProps {
   accessToken: string;
@@ -101,6 +101,7 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   const [form] = Form.useForm();
   const [data, setData] = useState(tableData);
   const [editingKey, setEditingKey] = useState('');
+  // const [allData, setAllData] = useState();
   const [value, setValue] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<Item | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -109,10 +110,11 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
 
   useEffect(() => {
     setIsLoading(true);
-    const clientService = new OpenSRPService(KEYCLOAK_API_BASE_URL, URL_ALL_LOCATION_TAGS);
+    const clientService = new OpenSRPService(accessToken, KEYCLOAK_API_BASE_URL, URL_ALL_LOCATION_TAGS);
     clientService
       .list()
       .then((res) => {
+        setData(res)
         setIsLoading(false);
       })
       .catch((err) => {
@@ -128,6 +130,27 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
     form.setFieldsValue({ ...record });
     setEditingKey(record.key);
   };
+
+  const onRemoveHandler = (record: any) =>{
+  
+    const clientService = new OpenSRPService(accessToken, KEYCLOAK_API_BASE_URL, URL_DELETE_LOCATION_TAGS + `/${record.id}` );
+    clientService
+      .delete()
+      .then((res) => { 
+        setIsLoading(false);
+        notification.success({
+          message: 'Successfully Deleted!',
+          description: '',
+        });
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        notification.error({
+          message: `${err}`,
+          description: '',
+        });
+      });
+  }
 
   const cancel = () => setEditingKey('');
 
@@ -190,7 +213,7 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
                     View Details
                   </Menu.Item>
                   <Menu.Item>
-                    <Popconfirm title="Sure to Delete?" onConfirm={() => console.log('')}>
+                    <Popconfirm title="Sure to Delete?" onConfirm={() => onRemoveHandler(record)}>
                       Delete
                     </Popconfirm>
                   </Menu.Item>

@@ -1,8 +1,12 @@
-/// <reference types="react" />
+import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import '../Location.css';
-/** Connect the component to the store */
-/** map state to props */
-/** create connected component */
-/** Connected Header component
- */
-export declare const ConnectedLocationUnitGroupAdd: import("react-redux").ConnectedComponent<() => JSX.Element, Pick<unknown, never>>;
+export interface GetLocationProps {
+    accessToken: string;
+}
+export interface RouteParams {
+    userId: string;
+}
+/** type intersection for all types that pertain to the props */
+export declare type PropsTypes = GetLocationProps & RouteComponentProps<RouteParams>;
+export declare const ConnectedLocationUnitGroupAdd: import("react-redux").ConnectedComponent<React.FC<PropsTypes>, Pick<PropsTypes, "location" | "accessToken" | "history" | "match" | "staticContext">>;

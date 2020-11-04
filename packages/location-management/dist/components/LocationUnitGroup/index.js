@@ -33,7 +33,7 @@ var _icons = require("@ant-design/icons");
 
 var _serverService = require("@opensrp/server-service");
 
-var _store = require("@opensrp/store");
+var _sessionReducer = require("@onaio/session-reducer");
 
 var _loaders = require("@onaio/loaders");
 
@@ -128,13 +128,12 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
 
   (0, _react.useEffect)(function () {
     setIsLoading(true);
-    var clientService = new _serverService.OpenSRPService(_constants.KEYCLOAK_API_BASE_URL, _constants.URL_ALL_LOCATION_TAGS);
+    var clientService = new _serverService.OpenSRPService(accessToken, _constants.KEYCLOAK_API_BASE_URL, _constants.URL_ALL_LOCATION_TAGS);
     clientService.list().then(function (res) {
-      console.log('res :: ', res);
+      setData(res);
       setIsLoading(false);
     })["catch"](function (err) {
       setIsLoading(false);
-      console.log('err :: ', err);
 
       _antd.notification.error({
         message: "".concat(err),
@@ -146,6 +145,25 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
   var edit = function edit(record) {
     form.setFieldsValue(_objectSpread({}, record));
     setEditingKey(record.key);
+  };
+
+  var onRemoveHandler = function onRemoveHandler(record) {
+    var clientService = new _serverService.OpenSRPService(accessToken, _constants.KEYCLOAK_API_BASE_URL, _constants.URL_DELETE_LOCATION_TAGS + "/".concat(record.id));
+    clientService["delete"]().then(function (res) {
+      setIsLoading(false);
+
+      _antd.notification.success({
+        message: "".concat(res),
+        description: ''
+      });
+    })["catch"](function (err) {
+      setIsLoading(false);
+
+      _antd.notification.error({
+        message: "".concat(err),
+        description: ''
+      });
+    });
   };
 
   var cancel = function cancel() {
@@ -241,7 +259,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
         }, "View Details"), _react["default"].createElement(_antd.Menu.Item, null, _react["default"].createElement(_antd.Popconfirm, {
           title: "Sure to Delete?",
           onConfirm: function onConfirm() {
-            return console.log('');
+            return onRemoveHandler(record);
           }
         }, "Delete"))),
         placement: "bottomLeft",
@@ -341,7 +359,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
 };
 
 var mapStateToProps = function mapStateToProps(state) {
-  var accessToken = (0, _store.getAccessToken)(state);
+  var accessToken = (0, _sessionReducer.getAccessToken)(state);
   return {
     accessToken: accessToken
   };
