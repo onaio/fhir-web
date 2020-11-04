@@ -1,30 +1,94 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Form, Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
-import LocationDetail from '../LocationDetail';
-import Tree, { tree } from './Tree';
-import Table, { data } from './Table';
+import LocationDetail, { Props as LocationDetailData } from '../LocationDetail';
+import Tree, { TreeData } from './Tree';
+import Table, { TableData } from './Table';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-
+import { OpenSRPService } from '@opensrp/server-service';
 import {
   KeycloakUser,
   getKeycloakUsersArray,
-  getAccessToken,
   fetchKeycloakUsers,
   removeKeycloakUsers,
 } from '@opensrp/store';
+import { getAccessToken } from '@onaio/session-reducer';
 
 export interface Props {
-  data: data[];
-  tree: tree[];
+  // data: data[];
+  // tree: tree[];
   accessToken: string;
 }
 
 const LocationUnit: React.FC<Props> = (props: Props) => {
   const [form] = Form.useForm();
-  const [detail, setDetail] = useState<data | null>(null);
+  const [detail, setDetail] = useState<LocationDetailData | null>(null);
+  const [tableData, setTableData] = useState<TableData[] | null>(null);
+  const [treeData, setTreeData] = useState<TreeData[] | null>(null);
+
+  useEffect(() => {
+    let tableData: TableData[] = [];
+
+    for (let i = 1; i < 5; i++) {
+      tableData.push({
+        key: i.toString(),
+        name: `Edrward ${i}`,
+        level: i,
+        lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
+        status: 'Active',
+        type: 'Feautire',
+        created: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
+        externalid: `asdkjh123${i}`,
+        openmrsid: `asdasdasdkjh123${i}`,
+        username: `edward ${i}`,
+        version: `${i}`,
+        syncstatus: 'Synced',
+      });
+    }
+
+    setTableData(tableData);
+  }, []);
+
+  useEffect(() => {
+    const tree: TreeData[] = [
+      {
+        title: 'Sierra Leone',
+        key: 'Sierra Leone',
+        children: [
+          { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
+          { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
+          {
+            title: 'Bonthe',
+            key: 'Bonthe',
+            children: [
+              {
+                title: 'Kissi Ten',
+                key: 'Kissi Ten',
+                children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    setTreeData(tree);
+  }, []);
+
+  useEffect(() => {
+    const serve = new OpenSRPService(
+      props.accessToken,
+      'https://opensrp-stage.smartregister.org/opensrp/rest/',
+      'location/sync'
+    );
+
+    serve
+      .create({ is_jurisdiction: true })
+      .then((res) => console.log(res))
+      .catch((e) => console.log(e));
+  }, []);
 
   return (
     <section>
@@ -34,7 +98,7 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={props.tree} />
+          {treeData && <Tree data={treeData} />}
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between">
@@ -58,9 +122,15 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           <div className="bg-white p-4">
-            <Form form={form} component={false}>
-              <Table data={props.data} accessToken={props.accessToken} />
-            </Form>
+            {tableData && (
+              <Form form={form} component={false}>
+                <Table
+                  data={tableData}
+                  onViewDetails={(e: LocationDetailData) => setDetail(e)}
+                  accessToken={props.accessToken}
+                />
+              </Form>
+            )}
           </div>
         </Col>
 
@@ -80,58 +150,16 @@ export { LocationUnit };
 interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
-  tableData: data[];
-  tree: tree[];
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
   const accessToken = getAccessToken(state) as string;
-  const tableData: data[] = [];
-  for (let i = 1; i < 5; i++) {
-    tableData.push({
-      key: i.toString(),
-      name: `Edrward ${i}`,
-      level: i,
-      lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-      status: 'Alive',
-      type: 'Feautire',
-      created: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-      externalid: `asdkjh123${i}`,
-      openmrsid: `asdasdasdkjh123${i}`,
-      username: `edward ${i}`,
-      version: `${i}`,
-      syncstatus: 'Synced',
-    });
-  }
 
-  const tree: tree[] = [
-    {
-      title: 'Sierra Leone',
-      key: 'Sierra Leone',
-      children: [
-        { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-        { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-        {
-          title: 'Bonthe',
-          key: 'Bonthe',
-          children: [
-            {
-              title: 'Kissi Ten',
-              key: 'Kissi Ten',
-              children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-            },
-          ],
-        },
-      ],
-    },
-  ];
   return {
     keycloakUsers,
     accessToken,
-    tableData,
-    tree,
   };
 };
 
