@@ -32,7 +32,7 @@
       "eslint --fix --max-warnings 0",
       "git add"
     ],
-    "!(**/*dist/**/*).{js,jsx}": [
+    "!(eslintrc.js) && !(**/*dist/**/*).{js,jsx}": [
       "eslint --fix --max-warnings 0",
       "git add"
     ],
@@ -88,6 +88,7 @@
     "eslint-config-react": "^1.1.7",
     "eslint-config-react-app": "^5.2.1",
     "eslint-config-typestrict": "^1.0.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.0.0",
     "eslint-plugin-jsdoc": "^30.6.2",
