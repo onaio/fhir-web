@@ -1635,8 +1635,19 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
-"@opensrp/keycloak-service@file:../packages/keycloak-service":
-  version "0.1.0"
+"@opensrp/keycloak-service@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.4.tgz#4f857052c68120af01eea8f8a6a8919fa5876b2e"
+  integrity sha512-sUcdBwdsLLVfblOMHwwe2OCmxcLPVRqvThlKIxgwzCYPy7SazrGuKYXGUV04ARQk5ZgF5ffB95Kna5nR6FeUdA==
+  dependencies:
+    "@opensrp/store" "^0.0.2"
+
+"@opensrp/keycloak-service@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.6.tgz#1c234b0e47b9e6e2905b643a3dd52d01bdd42ab6"
+  integrity sha512-I0OHjpI9TTBp1F/qJjPXPqk0S9+QTpyBf+PoTXZ/olOAnBSpC1/wHDCUwPfwwLlgXCDjXXgCY7JG5iO7AJDVWQ==
+  dependencies:
+    "@opensrp/store" "^0.0.5"
 
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
@@ -1645,13 +1656,20 @@
   dependencies:
     "@opensrp/server-service" "^0.0.4"
 
+"@opensrp/server-service@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.10.tgz#89f7f3ada0c6f21ca1928dec58827b995f624607"
+  integrity sha512-KXTJG39DRxd2lC/21uA/hERhnFDQ0bazwpmfIATPZyUDL1WhOyNfDzwq6f/6+yeSdqeNsx20sBSk3RwLVUItAQ==
+
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
 
-"@opensrp/store@file:../packages/opensrp-store":
-  version "0.1.0"
+"@opensrp/store@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.2.tgz#fc26ebb7c48c4acfdeb79d7decb1df5346fded4e"
+  integrity sha512-5CRlFxWTjyi3rIs1WcerE19BG1HApSi5Lv3rEDdbaD2cnMkwysebtx5SGuoWCB94eRx07uzK+YVBBmXpKt+ygg==
   dependencies:
     "@onaio/connected-reducer-registry" "^0.0.3"
     "@onaio/gatekeeper" "^0.1.0"
@@ -1665,23 +1683,40 @@
     reselect "^4.0.0"
     seamless-immutable "^7.1.4"
 
-"@opensrp/user-management@file:../packages/keycloak-user-management":
-  version "0.1.0"
+"@opensrp/store@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.5.tgz#fe27aa5f6dd0b4e8e75b27924ca4da9cc528c026"
+  integrity sha512-TIq7BGxekFOz56Fug/2muVGRATKTEDCP6hoSHkwPoDXy5z+BWPD7y2Ec/GahxHw/XBG9sIp920+YMc6hj9fqJg==
+  dependencies:
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.0"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/session-reducer" "^0.0.11"
+    "@onaio/utils" "^0.0.1"
+    connected-react-router "^6.8.0"
+    fast_array_intersect "^1.1.0"
+    lodash "^4.17.20"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
+    seamless-immutable "^7.1.4"
+
+"@opensrp/user-management@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@opensrp/user-management/-/user-management-0.1.7.tgz#d6cf86f0ed46cad5a50f761315211d6d165f7926"
+  integrity sha512-6tb050lgL8xvZse0MrVuntmcMVaEJJwBlojJY8HdJMtkjwIuoIbDZzlY/dCnxa6eDdmbO5/i0twCP1f2puwdvQ==
   dependencies:
     "@onaio/loaders" "^0.0.1"
     "@onaio/redux-reducer-registry" "^0.0.9"
     "@onaio/session-reducer" "^0.0.11"
     "@onaio/utils" "^0.0.1"
-    "@opensrp/server-service" "^0.0.4"
-    "@types/antd" "^1.0.0"
-    "@types/lodash" "^4.14.161"
-    "@types/yup" "^0.29.7"
+    "@opensrp/keycloak-service" "^0.0.6"
+    "@opensrp/server-service" "^0.0.10"
+    "@opensrp/store" "^0.0.5"
     antd "^4.6.3"
     babel-plugin-transform-es2015-modules-commonjs "^6.26.2"
     bootstrap "^4.5.2"
     connected-react-router "^6.8.0"
     fast_array_intersect "^1.1.0"
-    flush-promises "^1.0.2"
     formik "^2.1.5"
     formik-antd "^2.0.1"
     lodash "^4.17.20"
@@ -1802,13 +1837,6 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
-"@types/antd@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/antd/-/antd-1.0.0.tgz#f04e2a84efd9ea937366cd3dfbada5d3c949471d"
-  integrity sha1-8E4qhO/Z6pNzZs09+62l08lJRx0=
-  dependencies:
-    antd "*"
-
 "@types/babel__core@^7.1.0", "@types/babel__core@^7.1.7":
   version "7.1.10"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.10.tgz#ca58fc195dd9734e77e57c6f2df565623636ab40"
@@ -1892,11 +1920,6 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.6.tgz#f4c7ec43e81b319a9815115031709f26987891f0"
   integrity sha512-3c+yGKvVP5Y9TYBEibGNR+kLtijnj7mYrXRg+WpFb2X9xm04g/DXYkfg4hmzJQosc9snFNUPkbYIhu+KAm6jJw==
 
-"@types/lodash@^4.14.161":
-  version "4.14.161"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.161.tgz#a21ca0777dabc6e4f44f3d07f37b765f54188b18"
-  integrity sha512-EP6O3Jkr7bXvZZSZYlsgt5DIjiGr0dXP1/jVEwVLTFgg0d+3lWVQkRavYVQszV7dYUwvg0B8R0MBDpcmXg7XIA==
-
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -1955,11 +1978,6 @@
   integrity sha512-Gf4u3EjaPNcC9cTu4/j2oN14nSVhr8PQ+BvBcBQHAhDZfl0bVIiLgvnRXv/dn58XhTm9UXvBpvJpDlwV65QxOA==
   dependencies:
     "@types/yargs-parser" "*"
-
-"@types/yup@^0.29.7":
-  version "0.29.7"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.29.7.tgz#80c5e427a3b152e583ac2859767ccf59db0d3a16"
-  integrity sha512-x3Zeh8/qLZ6fG4S1EztI1S1mLj6N1pSUV1PAj/9finZba48d3Maxtyz4WYNUY0NE76u1KSukfNLkjcRlb+O00g==
 
 "@typescript-eslint/eslint-plugin@^2.10.0":
   version "2.34.0"
@@ -2319,7 +2337,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
 
-antd@*, antd@^4.6.3:
+antd@^4.6.3:
   version "4.6.6"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.6.6.tgz#79b3e22ba6ddefaa2948d00d86d2c6130b3562fb"
   integrity sha512-ruqzFFyohjEEp+Qg5VzBzFgDjqdj0FoPt3V/bGtLjeuQXPqFrPs+y4WWWmqi3ydGmN4VPIGBwd3CybQDrZAN3g==
