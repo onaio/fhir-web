@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
@@ -12,14 +13,21 @@ import { act } from 'react-dom/test-utils';
 import * as opensrpStore from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import {
+  reducerName as keycloakUsersReducerName,
+  reducer as keycloakUsersReducer,
+  fetchKeycloakUsers,
+  removeKeycloakUsers,
+} from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
+import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
   ...jest.requireActual('@opensrp/store'),
 }));
 
-reducerRegistry.register(opensrpStore.reducerName, opensrpStore.reducer);
+reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 describe('components/UserList', () => {
   beforeEach(() => {
@@ -61,13 +69,29 @@ describe('components/UserList', () => {
 
   it('works correctly with store', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
-    const getAccessTokenMock = jest
-      .spyOn(opensrpStore, 'getAccessToken')
-      .mockReturnValue('simple-token');
+    const getAccessTokenMock = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
+    opensrpStore.store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'simple-token', state: 'abcde' } }
+      )
+    );
 
     const props = {
-      fetchKeycloakUsersCreator: opensrpStore.fetchKeycloakUsers,
-      removeKeycloakUsersCreator: opensrpStore.removeKeycloakUsers,
+      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
+        accessToken: true,
+      }),
+      extraData: {
+        user_id: fixtures.keycloakUser.id,
+      },
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
       serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
@@ -86,7 +110,7 @@ describe('components/UserList', () => {
     });
 
     expect(wrapper.find('Table')).toBeTruthy();
-    expect(getAccessTokenMock).toHaveBeenCalledWith(opensrpStore.store.getState());
+    expect(getAccessTokenMock).toHaveBeenCalled();
     expect(wrapper.find('UserList').props()).toMatchSnapshot('user list props');
     wrapper.unmount();
   });
