@@ -1,1 +1,1 @@
-export * from './store/productCatalogue';
+export * from './ducks/productCatalogue';
