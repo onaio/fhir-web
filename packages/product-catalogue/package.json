@@ -1,7 +1,7 @@
 {
-  "name": "@opensrp/catalogue-dux",
+  "name": "@opensrp/product-catalogue",
   "version": "0.0.0",
-  "description": "Contains product catalogue redux module",
+  "description": "Contains product catalogue Page",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
@@ -12,7 +12,7 @@
   },
   "repository": "https://github.com/opensrp/web",
   "config": {
-    "folderName": "catalogue-dux"
+    "folderName": "product-catalogue"
   },
   "scripts": {
     "test": " cd ../../ && pwd && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
@@ -31,7 +31,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "devDependencies": {
-    "@opensrp/store" : "^0.0.3"
+    "@opensrp/store": "^0.0.3"
   },
   "dependencies": {
     "@opensrp/reducer-factory": "^0.0.7"
