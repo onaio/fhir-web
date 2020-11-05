@@ -10,107 +10,71 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { OpenSRPService } from '@opensrp/server-service';
-import { KeycloakUser, getKeycloakUsersArray } from '@opensrp/store';
-import { getAccessToken } from '@onaio/session-reducer';
+import { makeAPIStateSelector } from '@opensrp/store';
 import reducer, {
   fetchLocationUnits,
   getLocationUnitsArray,
   LocationUnit as LocationUnitObj,
-  LocationUnitsArray,
   reducerName,
 } from '../../ducks/location-units';
 
 reducerRegistry.register(reducerName, reducer);
 
+const getAccessToken = makeAPIStateSelector();
+
 export interface Props {
   accessToken: string;
   fetchLocationUnitsCreator: typeof fetchLocationUnits;
   locationsArray: LocationUnitObj[];
+  serviceClass: typeof OpenSRPService;
 }
 
 const defaultProps: Props = {
   accessToken: '',
   fetchLocationUnitsCreator: fetchLocationUnits,
   locationsArray: [],
+  serviceClass: OpenSRPService,
 };
 
 const LocationUnit: React.FC<Props> = (props: Props) => {
-  const { fetchLocationUnitsCreator, locationsArray } = props;
+  const { fetchLocationUnitsCreator, locationsArray, serviceClass } = props;
   const [form] = Form.useForm();
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [tableData, setTableData] = useState<TableData[] | null>(null);
+  // const [tableData, setTableData] = useState<TableData[] | null>(null);
   const [treeData, setTreeData] = useState<TreeData[] | null>(null);
 
   useEffect(() => {
-    const serve = new OpenSRPService(
-      props.accessToken,
-      'https://opensrp-stage.smartregister.org/opensrp/rest/',
-      'location/sync'
-    );
+    if (isLoading) {
+      const serve = new serviceClass(
+        props.accessToken,
+        'https://opensrp-stage.smartregister.org/opensrp/rest/',
+        'location/sync'
+      );
 
-    serve
-      .list({ is_jurisdiction: true, serverVersion: 0 })
-      .then((response: LocationUnitObj[]) => {
-        fetchLocationUnitsCreator(response);
-        setIsLoading(false);
-      })
-      .catch((e) => console.log(e));
-  }, []);
-
-  useEffect(() => {
-    const tableData: TableData[] = [];
-
-    for (let i = 1; i < 5; i++) {
-      tableData.push({
-        key: i.toString(),
-        name: `Edrward ${i}`,
-        level: i,
-        lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-        status: 'Active',
-        type: 'Feautire',
-        created: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-        externalid: `asdkjh123${i}`,
-        openmrsid: `asdasdasdkjh123${i}`,
-        username: `edward ${i}`,
-        version: `${i}`,
-        syncstatus: 'Synced',
-      });
+      serve
+        .list({ is_jurisdiction: true, serverVersion: 0 })
+        .then((response: LocationUnitObj[]) => {
+          fetchLocationUnitsCreator(response);
+          setIsLoading(false);
+        })
+        .catch((e) => console.log(e));
     }
-
-    setTableData(tableData);
-  }, []);
-
-  useEffect(() => {
-    const tree: TreeData[] = [
-      {
-        title: 'Sierra Leone',
-        key: 'Sierra Leone',
-        children: [
-          { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-          { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-          {
-            title: 'Bonthe',
-            key: 'Bonthe',
-            children: [
-              {
-                title: 'Kissi Ten',
-                key: 'Kissi Ten',
-                children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-              },
-            ],
-          },
-        ],
-      },
-    ];
-
-    setTreeData(tree);
-  }, []);
+  });
 
   console.log('data from store>>', props);
 
-  if (isLoading) {
-    return null;
+  const tableData: any = [];
+
+  if (locationsArray.length) {
+    locationsArray.forEach((location: LocationUnitObj, i: number) => {
+      tableData.push({
+        key: i.toString(),
+        name: location.properties.name,
+        level: location.properties.geographicLevel,
+        lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
+      });
+    });
   }
 
   return (
@@ -121,7 +85,31 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          {treeData && <Tree data={treeData} />}
+          {
+            <Tree
+              data={[
+                {
+                  title: 'Sierra Leone',
+                  key: 'Sierra Leone',
+                  children: [
+                    { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
+                    { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
+                    {
+                      title: 'Bonthe',
+                      key: 'Bonthe',
+                      children: [
+                        {
+                          title: 'Kissi Ten',
+                          key: 'Kissi Ten',
+                          children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ]}
+            />
+          }
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between">
@@ -145,15 +133,11 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           <div className="bg-white p-4">
-            {tableData && (
-              <Form form={form} component={false}>
-                <Table
-                  data={tableData}
-                  onViewDetails={(e: LocationDetailData) => setDetail(e)}
-                  accessToken={props.accessToken}
-                />
-              </Form>
-            )}
+            <Table
+              data={tableData}
+              onViewDetails={(e: LocationDetailData) => setDetail(e)}
+              accessToken={props.accessToken}
+            />
           </div>
         </Col>
 
@@ -173,19 +157,16 @@ export { LocationUnit };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
-  keycloakUsers: KeycloakUser[];
   accessToken: string;
   locationsArray: LocationUnitObj[];
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
-  const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
-  const accessToken = getAccessToken(state) as string;
+  const accessToken = getAccessToken(state, { accessToken: true });
   const locationsArray = getLocationUnitsArray(state);
 
   return {
-    keycloakUsers,
     accessToken,
     locationsArray,
   };
