@@ -37,7 +37,7 @@ export type PropsTypes = GetLocationProps & RouteComponentProps<RouteParams>;
 interface Item {
   key: string;
   name: string;
-  status: 'Alive' | 'Not Active';
+  active: any;
   type: string;
   created: Date;
   lastupdated: Date;
@@ -47,25 +47,10 @@ interface Item {
   version: string;
   syncstatus: 'Synced' | 'Not Synced';
   level: number;
+  description : string
 }
 
 const tableData: Item[] = [];
-for (let i = 0; i < 100; i++) {
-  tableData.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    level: 2,
-    lastupdated: new Date(),
-    status: 'Alive',
-    type: 'Feautire',
-    created: new Date(),
-    externalid: `externalid ${i}`,
-    openmrsid: `openmrsid ${i}`,
-    username: `edward${i}`,
-    version: `${i}`,
-    syncstatus: 'Synced',
-  });
-}
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -90,6 +75,8 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   const { accessToken } = props;
   const [form] = Form.useForm();
   const [data, setData] = useState(tableData);
+  const [filter, setfilterData] = useState(tableData);
+ 
   const [value, setValue] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<Item | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -101,6 +88,7 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
       .list()
       .then((res) => {
         setData(res)
+        setfilterData(res)
         setIsLoading(false);
       })
       .catch((err) => {
@@ -139,7 +127,7 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
 
   const onViewDetail = (record: any) =>{
   
-    const clientService = new OpenSRPService(accessToken,  'https://opensrp-stage.smartregister.org/opensrp/rest/location', `/${record.id}` );
+    const clientService = new OpenSRPService(accessToken,  KEYCLOAK_API_BASE_URL, URL_ALL_LOCATION_TAGS + `/${record.id}` );
     clientService
       .list()
       .then((res) => { 
@@ -158,6 +146,9 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   }
 
 
+
+
+  
   const cancel = () =>{};
 
   const columns = [
@@ -188,11 +179,11 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
                   >
                     View Details
                   </Menu.Item>
-                  <Menu.Item>
+                  {/* <Menu.Item>
                     <Popconfirm title="Sure to Delete?" onConfirm={() => onRemoveHandler(record)}>
                       Delete
                     </Popconfirm>
-                  </Menu.Item>
+                  </Menu.Item> */}
                 </Menu>
               }
               placement="bottomLeft"
@@ -222,13 +213,19 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   });
 
   const onChange = (e: { target: { value: any } }) => {
-    const currentValue = e.target.value;
+
+    const currentValue = e.target.value;    
     setValue(currentValue);
-    const filteredData = tableData.filter((entry) =>
+    
+    console.log('currentValue', currentValue,length)
+    console.log('setData', data)
+    const filteredData = data.filter((entry) =>
       entry.name.toLowerCase().includes(currentValue.toLowerCase())
     );
-    setData(filteredData);
+     setfilterData(filteredData);
+  
   };
+
 
   if (isLoading) {
     return <Ripple />;
@@ -280,7 +277,7 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
                 <Form form={form} component={false}>
                   <Table
                     components={{ body: { cell: EditableCell } }}
-                    dataSource={data}
+                    dataSource={ value.length < 1 ? data : filter}
                     columns={mergedColumns}
                     rowClassName="editable-row"
                     pagination={{ onChange: cancel, showQuickJumper: true }}

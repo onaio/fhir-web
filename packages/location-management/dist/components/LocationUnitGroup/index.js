@@ -45,23 +45,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var tableData = [];
 
-for (var i = 0; i < 100; i++) {
-  tableData.push({
-    key: i.toString(),
-    name: "Edrward ".concat(i),
-    level: 2,
-    lastupdated: new Date(),
-    status: 'Alive',
-    type: 'Feautire',
-    created: new Date(),
-    externalid: "externalid ".concat(i),
-    openmrsid: "openmrsid ".concat(i),
-    username: "edward".concat(i),
-    version: "".concat(i),
-    syncstatus: 'Synced'
-  });
-}
-
 var EditableCell = function EditableCell(_ref) {
   var props = (0, _extends2["default"])({}, _ref);
   var editing = props.editing,
@@ -87,15 +70,20 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
       data = _useState2[0],
       setData = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(''),
+  var _useState3 = (0, _react.useState)(tableData),
       _useState4 = (0, _slicedToArray2["default"])(_useState3, 2),
-      value = _useState4[0],
-      setValue = _useState4[1];
+      filter = _useState4[0],
+      setfilterData = _useState4[1];
 
-  var _useState5 = (0, _react.useState)(null),
+  var _useState5 = (0, _react.useState)(''),
       _useState6 = (0, _slicedToArray2["default"])(_useState5, 2),
-      selectedLocation = _useState6[0],
-      setSelectedLocation = _useState6[1];
+      value = _useState6[0],
+      setValue = _useState6[1];
+
+  var _useState7 = (0, _react.useState)(null),
+      _useState8 = (0, _slicedToArray2["default"])(_useState7, 2),
+      selectedLocation = _useState8[0],
+      setSelectedLocation = _useState8[1];
 
   var _React$useState = _react["default"].useState(true),
       _React$useState2 = (0, _slicedToArray2["default"])(_React$useState, 2),
@@ -107,6 +95,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
     var clientService = new _serverService.OpenSRPService(accessToken, _constants.KEYCLOAK_API_BASE_URL, _constants.URL_ALL_LOCATION_TAGS);
     clientService.list().then(function (res) {
       setData(res);
+      setfilterData(res);
       setIsLoading(false);
     })["catch"](function (err) {
       setIsLoading(false);
@@ -140,7 +129,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
   };
 
   var onViewDetail = function onViewDetail(record) {
-    var clientService = new _serverService.OpenSRPService(accessToken, 'https://opensrp-stage.smartregister.org/opensrp/rest/location', "/".concat(record.id));
+    var clientService = new _serverService.OpenSRPService(accessToken, _constants.KEYCLOAK_API_BASE_URL, _constants.URL_ALL_LOCATION_TAGS + "/".concat(record.id));
     clientService.list().then(function (res) {
       setIsLoading(false);
       console.log(res);
@@ -181,12 +170,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
           onClick: function onClick() {
             onViewDetail(record);
           }
-        }, "View Details"), _react["default"].createElement(_antd.Menu.Item, null, _react["default"].createElement(_antd.Popconfirm, {
-          title: "Sure to Delete?",
-          onConfirm: function onConfirm() {
-            return onRemoveHandler(record);
-          }
-        }, "Delete"))),
+        }, "View Details")),
         placement: "bottomLeft",
         arrow: true,
         trigger: ['click']
@@ -212,10 +196,12 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
   var onChange = function onChange(e) {
     var currentValue = e.target.value;
     setValue(currentValue);
-    var filteredData = tableData.filter(function (entry) {
+    console.log('currentValue', currentValue, length);
+    console.log('setData', data);
+    var filteredData = data.filter(function (entry) {
       return entry.name.toLowerCase().includes(currentValue.toLowerCase());
     });
-    setData(filteredData);
+    setfilterData(filteredData);
   };
 
   if (isLoading) {
@@ -265,7 +251,7 @@ var LocationUnitGroup = function LocationUnitGroup(props) {
         cell: EditableCell
       }
     },
-    dataSource: data,
+    dataSource: value.length < 1 ? data : filter,
     columns: mergedColumns,
     rowClassName: "editable-row",
     pagination: {
