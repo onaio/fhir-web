@@ -5,7 +5,6 @@ import { SubmitButton, Form as AntForm, Input, Radio, Select, ResetButton } from
 import { notification } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 
-import { KeycloakUser } from '@opensrp/store';
 import { OpenSRPService } from '@opensrp/server-service';
 import { LocationTagPayloadPOST } from 'location-management/src/ducks/location-tags';
 
@@ -90,7 +89,6 @@ export const userSchema = Yup.object().shape({
 
 interface Props {
   id?: any;
-  keycloakUsers: KeycloakUser[];
   accessToken: string;
 }
 
