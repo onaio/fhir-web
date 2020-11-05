@@ -77,6 +77,7 @@ fieldset[disabled] .gatekeeper-btn.active {
 }
 
 .body-wrapper {
+  background: #f5f5f5;
   flex-grow: 1;
   min-height: 100vh;
 }
