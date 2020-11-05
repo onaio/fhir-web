@@ -10,7 +10,6 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { OpenSRPService } from '@opensrp/server-service';
-import { makeAPIStateSelector } from '@opensrp/store';
 import reducer, {
   fetchLocationUnits,
   getLocationUnitsArray,
@@ -20,7 +19,7 @@ import reducer, {
 
 reducerRegistry.register(reducerName, reducer);
 
-const getAccessToken = makeAPIStateSelector();
+import { getAccessToken } from '@onaio/session-reducer';
 
 export interface Props {
   accessToken: string;
@@ -162,14 +161,10 @@ interface DispatchedProps {
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
-  const accessToken = getAccessToken(state, { accessToken: true });
+const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
+  const accessToken = getAccessToken(state) as string;
   const locationsArray = getLocationUnitsArray(state);
-
-  return {
-    accessToken,
-    locationsArray,
-  };
+  return { accessToken, locationsArray };
 };
 
 /** map props to action creators */
