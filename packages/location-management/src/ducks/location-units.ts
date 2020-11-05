@@ -47,7 +47,7 @@ export interface LocationUnit {
   geometry: Geometry;
 }
 
-/** interface for POST payload */
+/** interface for the POST payload */
 export interface LocationUnitPayloadPOST {
   type: string;
   syncStatus: string;
