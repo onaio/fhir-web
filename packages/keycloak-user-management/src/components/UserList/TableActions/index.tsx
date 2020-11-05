@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react';
 import { Popconfirm, Space } from 'antd';
-import { KeycloakUser, removeKeycloakUsers } from '@opensrp/store';
 import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
+import { removeKeycloakUsers, KeycloakUser } from '../../../ducks/user';
 import { URL_USER_EDIT } from '../../../constants';
+import { Dictionary } from '@onaio/utils';
 
 /** interface for component props */
 export interface Props {
@@ -12,6 +14,7 @@ export interface Props {
   keycloakBaseURL: string;
   record: KeycloakUser;
   isLoadingCallback: (loading: boolean) => void;
+  extraData: Dictionary;
 }
 
 /**
@@ -27,7 +30,9 @@ const TableActions = (props: Props): JSX.Element => {
     accessToken,
     keycloakBaseURL,
     isLoadingCallback,
+    extraData,
   } = props;
+  const { user_id } = extraData;
   return (
     <>
       <Space size="middle">
@@ -49,7 +54,7 @@ const TableActions = (props: Props): JSX.Element => {
             )
           }
         >
-          <Link to="#">Delete</Link>
+          {user_id && record.id !== user_id && <Link to="#">Delete</Link>}
         </Popconfirm>
       </Space>
     </>

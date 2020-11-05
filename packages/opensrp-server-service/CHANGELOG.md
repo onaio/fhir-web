@@ -7,33 +7,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @opensrp/server-service
 
-
-
-
-
 ## 0.0.9 (2020-11-02)
 
 **Note:** Version bump only for package @opensrp/server-service
-
-
-
-
 
 ## [0.0.8](https://github.com/OpenSRP/web/compare/@opensrp/server-service@0.0.7...@opensrp/server-service@0.0.8) (2020-10-29)
 
 **Note:** Version bump only for package @opensrp/server-service
 
-
-
-
-
 ## 0.0.7 (2020-10-28)
 
 **Note:** Version bump only for package @opensrp/server-service
-
-
-
-
 
 ## 0.0.6 (2020-10-27)
 
