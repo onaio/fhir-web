@@ -121,7 +121,7 @@ Object {
     >
       <Button
         block={false}
-        className="h-auto d-flex align-items-center bg-transparent border-0"
+        className="h-auto d-flex align-items-center bg-transparent border-0 rounded-0"
         ghost={false}
         htmlType="button"
         icon={
