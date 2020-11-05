@@ -7,6 +7,7 @@
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
     "@opensrp/keycloak-service": "^0.0.6",
+    "@opensrp/notifications": "^0.0.1",
     "@opensrp/server-service": "^0.0.10",
     "@opensrp/store": "^0.0.5",
     "antd": "^4.6.3",

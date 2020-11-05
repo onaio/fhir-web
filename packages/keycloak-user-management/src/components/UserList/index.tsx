@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { notification, Row, Col, Button, Space, Table, Divider } from 'antd';
+import { Row, Col, Button, Space, Table, Divider } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../Loading';
@@ -9,6 +9,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { sendErrorNotification } from '@opensrp/notifications';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -17,7 +18,7 @@ import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
 } from '../../ducks/user';
-import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '../../constants';
+import { URL_USER_CREATE, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 
@@ -86,11 +87,8 @@ const UserList = (props: Props): JSX.Element => {
             fetchKeycloakUsersCreator(res);
           }
         })
-        .catch((err) => {
-          notification.error({
-            message: `${err}`,
-            description: '',
-          });
+        .catch((_: Error) => {
+          sendErrorNotification(ERROR_OCCURED);
         });
     }
   });

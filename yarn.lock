@@ -2517,6 +2517,11 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
+"@opensrp/notifications@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
+  integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
+
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"

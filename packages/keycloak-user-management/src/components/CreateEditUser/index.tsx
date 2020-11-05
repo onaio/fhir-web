@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, notification } from 'antd';
+import { Col, Row } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -7,6 +7,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { sendErrorNotification } from '@opensrp/notifications';
 import { UserForm, UserFormProps, defaultInitialValues } from '../forms/UserForm';
 import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
 import {
@@ -85,10 +86,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         })
         .catch((_: Error) => {
           setIsLoading(false);
-          notification.error({
-            message: ERROR_OCCURED,
-            description: '',
-          });
+          sendErrorNotification(ERROR_OCCURED);
         });
     }
   }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);

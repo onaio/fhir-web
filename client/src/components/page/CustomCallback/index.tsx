@@ -8,7 +8,7 @@ import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
 import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
 import Loading from '../Loading';
-import { sendSuccessNotification } from '../../../utils/Notification/Notifications';
+import { sendSuccessNotification } from '@opensrp/notifications';
 /**
  * antd notification popup.
  *

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, Form, Col, Card, Row, Input, Switch, notification } from 'antd';
+import { Button, Form, Col, Card, Row, Input, Switch } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { history } from '@onaio/connected-reducer-registry';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
@@ -13,6 +14,7 @@ import {
   KEYCLOAK_URL_USERS,
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
+  ERROR_OCCURED,
 } from '../../constants';
 import {
   reducer as keycloakUsersReducer,
@@ -86,16 +88,10 @@ export const submitForm = (
     })
     .then(() => {
       history.push('/admin');
-      notification.success({
-        message: 'Credentials updated successfully',
-        description: '',
-      });
+      sendSuccessNotification('Credentials updated successfully');
     })
     .catch((_: Error) => {
-      notification.error({
-        message: 'An error occurred',
-        description: '',
-      });
+      sendErrorNotification(ERROR_OCCURED);
     });
 };
 

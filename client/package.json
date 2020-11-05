@@ -16,6 +16,7 @@
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
     "@opensrp/keycloak-service": "^0.0.4",
+    "@opensrp/notifications": "^0.0.1",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/store": "^0.0.5",
     "@opensrp/user-management": "^0.1.7",
