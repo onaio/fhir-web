@@ -4,6 +4,11 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../Loading';
 import HeaderBreadCrumb from '../HeaderBreadCrumb';
+import { makeAPIStateSelector } from '@opensrp/store';
+import { Store } from 'redux';
+import { connect } from 'react-redux';
+import { Dictionary } from '@onaio/utils';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -11,16 +16,15 @@ import {
   removeKeycloakUsers,
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
-  getAccessToken,
-} from '@opensrp/store';
-import { Store } from 'redux';
-import { connect } from 'react-redux';
-import { Dictionary } from '@onaio/utils';
-import reducerRegistry from '@onaio/redux-reducer-registry';
+} from '../../ducks/user';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '../../constants';
 import { getTableColumns } from './utils';
+import { getExtraData } from '@onaio/session-reducer';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
+
+// Define selector instance
+const getAccessToken = makeAPIStateSelector();
 
 /** interface for component props */
 export interface Props {
@@ -30,6 +34,7 @@ export interface Props {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
   keycloakBaseURL: string;
+  extraData: Dictionary;
 }
 
 /** default component props */
@@ -40,6 +45,7 @@ export const defaultProps = {
   removeKeycloakUsersCreator: removeKeycloakUsers,
   keycloakUsers: [],
   keycloakBaseURL: '',
+  extraData: {},
 };
 
 interface TableData {
@@ -62,6 +68,7 @@ const UserList = (props: Props): JSX.Element => {
     keycloakUsers,
     accessToken,
     keycloakBaseURL,
+    extraData,
   } = props;
 
   const isLoadingCallback = (isLoading: boolean) => {
@@ -131,6 +138,7 @@ const UserList = (props: Props): JSX.Element => {
             accessToken,
             keycloakBaseURL,
             isLoadingCallback,
+            extraData,
             filteredInfo,
             sortedInfo
           )}
@@ -154,13 +162,15 @@ export { UserList };
 interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
+  extraData: Dictionary;
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
-  const accessToken = getAccessToken(state) as string;
-  return { keycloakUsers, accessToken };
+  const accessToken = getAccessToken(state, { accessToken: true });
+  const extraData = getExtraData(state);
+  return { keycloakUsers, accessToken, extraData };
 };
 
 /** map props to action creators */
