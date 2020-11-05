@@ -2,7 +2,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
-import { InsertRowAboveOutlined, DashboardOutlined, FormOutlined } from '@ant-design/icons';
+import { DashboardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
@@ -56,14 +56,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.Item key="4">Locations unit group</Menu.Item>
             <Menu.Item key="5">Locations unit group set</Menu.Item>
           </Menu.SubMenu>
-        </Menu.SubMenu>
-        <Menu.SubMenu key="menu" icon={<FormOutlined />} title="Menu Item">
-          <Menu.Item key="6">Menu 1</Menu.Item>
-          <Menu.Item key="7">Menu 2</Menu.Item>
-        </Menu.SubMenu>
-        <Menu.SubMenu key="menu-2" icon={<InsertRowAboveOutlined />} title="Menu Item">
-          <Menu.Item key="8">Menu 3</Menu.Item>
-          <Menu.Item key="9">Menu 4</Menu.Item>
         </Menu.SubMenu>
       </Menu>
     </Layout.Sider>
