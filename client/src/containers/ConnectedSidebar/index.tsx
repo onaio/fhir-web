@@ -1,4 +1,4 @@
-import { getUser, isAuthenticated, logOutUser, getExtraData } from '@onaio/session-reducer';
+import { getUser, isAuthenticated, getExtraData } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import Sidebar from '../../components/page/Sidebar';
