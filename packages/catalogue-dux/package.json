@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/eusm-redux",
+  "name": "@opensrp/catalogue-dux",
   "version": "0.0.0",
   "description": "Contains product catalogue redux module",
   "main": "dist/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": "https://github.com/opensrp/web",
   "config": {
-    "folderName": "eusm-redux"
+    "folderName": "catalogue-dux"
   },
   "scripts": {
     "test": " cd ../../ && pwd && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
