@@ -44,7 +44,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('aside').props()).toMatchSnapshot();
+    expect(wrapper.find('aside').length).toBe(1);
     wrapper.unmount();
   });
 });
