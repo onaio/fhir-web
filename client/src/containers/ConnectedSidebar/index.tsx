@@ -15,7 +15,7 @@ const mapStateToProps = (state: Partial<Store>) => {
   return result;
 };
 
-const mapDispatchToProps = { logOutUser };
+const mapDispatchToProps = {};
 
 /** create connected component */
 

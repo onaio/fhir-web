@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
 import { store } from '@opensrp/store';
+import toJson from 'enzyme-to-json';
 
 jest.mock('../../../configs/env');
 
@@ -44,7 +45,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('aside')).toMatchSnapshot();
+    expect(toJson(wrapper.find('aside'))).toMatchSnapshot();
     wrapper.unmount();
   });
 });
