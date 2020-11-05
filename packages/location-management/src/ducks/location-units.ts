@@ -47,17 +47,6 @@ export interface LocationUnit {
   geometry: Geometry;
 }
 
-/** interface for the PUT payload */
-export interface LocationUnitPayloadPUT {
-  id: string;
-  type: string;
-  syncStatus: string;
-  serverVersion: string;
-  properties: Properties;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
-}
-
 /** interface for POST payload */
 export interface LocationUnitPayloadPOST {
   type: string;
@@ -65,6 +54,11 @@ export interface LocationUnitPayloadPOST {
   properties: Properties;
   locationTags: LocationUnitTag[];
   geometry: Geometry;
+}
+
+/** interface for the PUT payload */
+export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
+  id: string | number;
 }
 
 /** reducer name for the Item module */
