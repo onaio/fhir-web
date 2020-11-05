@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
 import { store } from '@opensrp/store';
-import toJson from 'enzyme-to-json';
 
 jest.mock('../../../configs/env');
 
