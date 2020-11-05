@@ -23,15 +23,12 @@ import { connect } from 'react-redux';
 import '../Location.css';
 import LocationDetail from '../LocationDetail';
 import { URL_ALL_LOCATION_TAGS, KEYCLOAK_API_BASE_URL,URL_DELETE_LOCATION_TAGS } from '../../constants';
-
 export interface GetLocationProps {
   accessToken: string;
 }
-
 export interface RouteParams {
   userId: string;
 }
-
 /** type intersection for all types that pertain to the props */
 export type PropsTypes = GetLocationProps & RouteComponentProps<RouteParams>;
 interface Item {
@@ -49,9 +46,7 @@ interface Item {
   level: number;
   description : string
 }
-
 const tableData: Item[] = [];
-
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
@@ -61,7 +56,6 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   index: number;
   children: React.ReactNode;
 }
-
 const EditableCell: React.FC<EditableCellProps> = ({ ...props }) => {
   const { editing, dataIndex, title, inputType, record, index, children, ...restProps } = props;
   return (
@@ -70,13 +64,11 @@ const EditableCell: React.FC<EditableCellProps> = ({ ...props }) => {
     </td>
   );
 };
-
 const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   const { accessToken } = props;
   const [form] = Form.useForm();
   const [data, setData] = useState(tableData);
   const [filter, setfilterData] = useState(tableData);
- 
   const [value, setValue] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<Item | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -101,7 +93,6 @@ const LocationUnitGroup: React.FC<PropsTypes> = (props: PropsTypes) => {
   }, []);
 
   const edit = () => {
-   
   };
 
   const onRemoveHandler = (record: any) =>{
