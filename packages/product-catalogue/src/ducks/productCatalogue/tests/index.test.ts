@@ -15,7 +15,7 @@ import { product1, product2 } from './fixtures';
 
 reducerRegistry.register(reducerName, ProductCatalogueReducer);
 
-describe('src/ducks/location-tags', () => {
+describe('src/ducks/product-catalogue', () => {
   beforeEach(() => {
     store.dispatch(removeProducts());
   });
@@ -44,7 +44,7 @@ describe('src/ducks/location-tags', () => {
     expect(getProductArray(store.getState())).toEqual([product1, product2]);
   });
 
-  it('removes location tags correctly', () => {
+  it('removes products correctly', () => {
     store.dispatch(fetchProducts([product1, product2]));
     expect(getProductArray(store.getState())).toHaveLength(2);
 
