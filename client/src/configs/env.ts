@@ -37,16 +37,19 @@ export const KEYCLOAK_LOGOUT_URL =
 
 export const OPENSRP_API_BASE_URL =
   process.env.REACT_APP_OPENSRP_API_BASE_URL ||
-  'https://reveal-stage.smartregister.org/opensrp/rest/';
+  'https://opensrp-stage.smartregister.org/opensrp/rest/';
+export type OPENSRP_API_BASE_URL = typeof OPENSRP_API_BASE_URL;
 
 export const KEYCLOAK_API_BASE_URL =
   process.env.REACT_APP_KEYCLOAK_API_BASE_URL ||
   'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
 
 /** Express server settings */
-
 export const EXPRESS_OAUTH_GET_STATE_URL =
   process.env.REACT_APP_EXPRESS_OAUTH_GET_STATE_URL || 'http://localhost:3000/oauth/state';
 
 export const EXPRESS_OAUTH_LOGOUT_URL =
   process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
+
+/** Do you want to disable login protection? */
+export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROTECTION === 'true';
