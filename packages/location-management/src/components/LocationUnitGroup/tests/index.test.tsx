@@ -3,10 +3,6 @@ import React from 'react';
 import { TableData } from '../Table';
 import { ConnectedLocationUnitGroup } from '..';
 
-
-
-
-
 describe('containers/pages/locations/ConnectedLocationUnitGroup', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
@@ -15,6 +11,7 @@ describe('containers/pages/locations/ConnectedLocationUnitGroup', () => {
       key: i.toString(),
       active: true,
       name: 'Asda',
+
       description: 'this is the description',
     });
   }

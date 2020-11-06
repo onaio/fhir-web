@@ -61,17 +61,19 @@ const LocationUnitGroup: React.FC<LocationUnitGroupProps> = (props: LocationUnit
     }
   }, [accessToken, fetchLocationTags, isLoading]);
 
-  if (locationsArray.length) {
-    locationsArray.forEach((location: LocationTag, i: number) => {
-      tableData.push({
-        key: i.toString(),
-        id: location.id,
-        name: location.name,
-        active: location.active,
-        description: location.description,
+  useEffect(() => {
+    if (locationsArray.length) {
+      locationsArray.forEach((location: LocationTag, i: number) => {
+        tableData.push({
+          key: i.toString(),
+          id: location.id,
+          name: location.name,
+          active: location.active,
+          description: location.description,
+        });
       });
-    });
-  }
+    }
+  }, [locationsArray, tableData]);
 
   const onChange = (e: { target: { value: string } }) => {
     const currentValue = e.target.value;
