@@ -1,20 +1,9 @@
 import { Button } from 'antd';
 import * as React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
+import { TableData } from '../LocationUnit/Table';
 
-export interface Props {
-  key: string;
-  name: string;
-  status: 'Alive' | 'Not Active';
-  type: string;
-  created: Date;
-  lastupdated: Date;
-  externalid: string;
-  openmrsid: string;
-  username: string;
-  version: string;
-  syncstatus: 'Synced' | 'Not Synced';
-  level: number;
+export interface Props extends TableData {
   onClose?: Function;
 }
 
@@ -55,12 +44,12 @@ const LocationDetail: React.FC<Props> = (props: Props) => {
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">External Id</p>
-        <p className="mb-0 loc-desc">{props.externalid}</p>
+        <p className="mb-0 loc-desc">{props.externalId}</p>
       </div>
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">OpenMRS Id</p>
-        <p className="mb-0 loc-desc">{props.openmrsid}</p>
+        <p className="mb-0 loc-desc">{props.OpenMRS_Id}</p>
       </div>
 
       <div className="mb-4 small">
@@ -80,7 +69,7 @@ const LocationDetail: React.FC<Props> = (props: Props) => {
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Level</p>
-        <p className="mb-0 loc-desc">{props.level}</p>
+        <p className="mb-0 loc-desc">{props.geographicLevel}</p>
       </div>
     </div>
   );
