@@ -1,23 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UserList renders user list correctly: breadcrumb col props 1`] = `
-Object {
-  "children": <Space>
-    <HeaderBreadCrumb
-      isAdmin={true}
-    />
-    <Divider />
-  </Space>,
-  "span": 12,
-}
-`;
-
 exports[`components/UserList renders user list correctly: header actions col props 1`] = `
 Object {
   "children": <Space
     style={
       Object {
-        "justifyContent": "flex-end",
+        "float": "right",
         "marginBottom": 16,
       }
     }
@@ -34,12 +22,12 @@ Object {
       <ForwardRef(PlusOutlined) />
       Add User
     </Button>
+    <Divider
+      type="vertical"
+    />
+    <ForwardRef(SettingOutlined) />
   </Space>,
-  "span": 12,
-  "style": Object {
-    "display": "flex",
-    "justifyContent": "flex-end",
-  },
+  "span": 24,
 }
 `;
 
@@ -50,10 +38,7 @@ Object {
     Object {
       "dataIndex": "username",
       "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
       "key": "username",
-      "onFilter": [Function],
       "sortOrder": undefined,
       "sorter": [Function],
       "title": "Username",
@@ -61,10 +46,7 @@ Object {
     Object {
       "dataIndex": "email",
       "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
       "key": "email",
-      "onFilter": [Function],
       "sortOrder": undefined,
       "sorter": [Function],
       "title": "Email",
@@ -72,10 +54,7 @@ Object {
     Object {
       "dataIndex": "firstName",
       "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
       "key": "firstName",
-      "onFilter": [Function],
       "sortOrder": undefined,
       "sorter": [Function],
       "title": "First Name",
@@ -83,10 +62,7 @@ Object {
     Object {
       "dataIndex": "lastName",
       "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
       "key": "lastName",
-      "onFilter": [Function],
       "sortOrder": undefined,
       "sorter": [Function],
       "title": "Last Name",
