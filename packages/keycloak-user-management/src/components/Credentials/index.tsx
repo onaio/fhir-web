@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Form, Col, Card, Row, Input, Switch, notification } from 'antd';
-import { RouteComponentProps } from 'react-router';
+import { Button, Form, Col, Row, Input, Switch, notification } from 'antd';
+import { History } from 'history';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { history } from '@onaio/connected-reducer-registry';
 import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
@@ -13,6 +13,7 @@ import {
   KEYCLOAK_URL_USERS,
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
+  URL_ADMIN,
 } from '../../constants';
 import {
   reducer as keycloakUsersReducer,
@@ -21,6 +22,7 @@ import {
   makeKeycloakUsersSelector,
   KeycloakUser,
 } from '../../ducks/user';
+import { Dictionary } from '@onaio/utils';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -63,15 +65,21 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
 /**
  * Handle form submission
  *
- * @param {object} values the form fields
- * @param {object} props the headers
+ * @param {Dictionary} values - submitted values
+ * @param {string} userId - user id
+ * @param {string} serviceClass - KeycloakService
+ * @param {string} accessToken - Keycloak API access token
+ * @param {string} keycloakBaseURL - Keycloak API base URL
+ * @param {History} history - router history object
  */
 export const submitForm = (
   values: UserCredentialsFormFields,
-  props: CredentialsPropsTypes
+  userId: string,
+  serviceClass: typeof KeycloakService,
+  accessToken: string,
+  keycloakBaseURL: string,
+  history: History
 ): void => {
-  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
-  const userId = match.params[ROUTE_PARAM_USER_ID];
   const serve = new serviceClass(
     accessToken,
     `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
@@ -85,7 +93,7 @@ export const submitForm = (
       value: password,
     })
     .then(() => {
-      history.push('/admin');
+      history.push(URL_ADMIN);
       notification.success({
         message: 'Credentials updated successfully',
         description: '',
@@ -100,21 +108,37 @@ export const submitForm = (
 };
 
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const userId = props.match.params[ROUTE_PARAM_USER_ID];
-  const isEditMode = !!userId;
+  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
+  const userId = match.params[ROUTE_PARAM_USER_ID];
   const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    labelCol: {
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 2, span: 10 },
+      md: { offset: 0, span: 12 },
+      lg: { offset: 0, span: 8 },
+    },
+    wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
   };
+  const tailLayout = {
+    wrapperCol: {
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 12, span: 24 },
+      md: { offset: 10, span: 16 },
+      lg: { offset: 8, span: 14 },
+    },
+  };
+  const history = useHistory();
 
   return (
-    <Col span={12}>
-      <Card title={`${isEditMode ? 'Edit User' : 'Create New User'}`} bordered={false}>
+    <Row>
+      <Col xs={24} sm={20} md={18} lg={15} xl={12}>
         <HeaderBreadCrumb userId={userId} />
         <div className="form-container">
           <Form
             {...layout}
-            onFinish={(values: UserCredentialsFormFields) => submitForm(values, props)}
+            onFinish={(values: UserCredentialsFormFields) =>
+              submitForm(values, userId, serviceClass, accessToken, keycloakBaseURL, history)
+            }
           >
             <Form.Item
               name="password"
@@ -155,19 +179,18 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
             <Form.Item name="temporary" label="Temporary" valuePropName="checked">
               <Switch />
             </Form.Item>
-            <Form.Item>
-              <Row justify="start">
-                <Col span={4}>
-                  <Button htmlType="submit" className="reset-password">
-                    Reset Password
-                  </Button>
-                </Col>
-              </Row>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit" className="reset-password">
+                Reset Password
+              </Button>
+              <Button onClick={() => history.push(URL_ADMIN)} className="cancel-user">
+                Cancel
+              </Button>
             </Form.Item>
           </Form>
         </div>
-      </Card>
-    </Col>
+      </Col>
+    </Row>
   );
 };
 

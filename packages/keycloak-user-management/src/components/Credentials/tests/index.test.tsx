@@ -82,12 +82,7 @@ describe('components/Credentials', () => {
         </Router>
       </Provider>
     );
-    expect(wrapper.find('Col').at(0).prop('span')).toEqual(12);
-    expect(wrapper.find('Card').prop('title')).toEqual('Edit User');
-    expect(wrapper.find('Card').prop('bordered')).toEqual(false);
-    expect(wrapper.find('HeaderBreadCrumb').prop('userId')).toEqual(fixtures.keycloakUser.id);
-    const formContainer = wrapper.find('div.form-container');
-    expect(formContainer.props()).toMatchSnapshot();
+    expect(wrapper.find('Row').at(0).props()).toMatchSnapshot('row props');
   });
 
   it('adds user credentials correctly', async () => {
