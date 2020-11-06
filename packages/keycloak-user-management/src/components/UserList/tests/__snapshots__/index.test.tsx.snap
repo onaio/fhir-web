@@ -31,6 +31,7 @@ Object {
       onClick={[Function]}
       type="primary"
     >
+      <ForwardRef(PlusOutlined) />
       Add User
     </Button>
   </Space>,
@@ -100,7 +101,16 @@ Object {
   "dataSource": Array [],
   "onChange": [Function],
   "pagination": Object {
-    "pageSize": 5,
+    "defaultPageSize": 5,
+    "pageSizeOptions": Array [
+      "5",
+      "10",
+      "20",
+      "50",
+      "100",
+    ],
+    "showQuickJumper": true,
+    "showSizeChanger": true,
   },
   "rowKey": "key",
 }
