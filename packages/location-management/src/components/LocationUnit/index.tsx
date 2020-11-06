@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Form, Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationDetail, { Props as LocationDetailData } from '../LocationDetail';
-import Tree, { TreeData } from './Tree';
+import Tree from './Tree';
 import Table, { TableData } from './Table';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -13,18 +13,20 @@ import { OpenSRPService } from '@opensrp/server-service';
 import reducer, {
   fetchLocationUnits,
   getLocationUnitsArray,
-  LocationUnit as LocationUnitObj,
+  LocationUnit,
+  LocationUnitStatus,
+  LocationUnitSyncStatus,
   reducerName,
 } from '../../ducks/location-units';
+import { getAccessToken } from '@onaio/session-reducer';
+import { API_BASE_URL, LOCATION_UNIT_ALL_URL } from '../../constants';
 
 reducerRegistry.register(reducerName, reducer);
-
-import { getAccessToken } from '@onaio/session-reducer';
 
 export interface Props {
   accessToken: string;
   fetchLocationUnitsCreator: typeof fetchLocationUnits;
-  locationsArray: LocationUnitObj[];
+  locationsArray: LocationUnit[];
   serviceClass: typeof OpenSRPService;
 }
 
@@ -35,25 +37,17 @@ const defaultProps: Props = {
   serviceClass: OpenSRPService,
 };
 
-const LocationUnit: React.FC<Props> = (props: Props) => {
+const LocationUnitComponent: React.FC<Props> = (props: Props) => {
   const { fetchLocationUnitsCreator, locationsArray, serviceClass } = props;
-  const [form] = Form.useForm();
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const [tableData, setTableData] = useState<TableData[] | null>(null);
-  const [treeData, setTreeData] = useState<TreeData[] | null>(null);
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new serviceClass(
-        props.accessToken,
-        'https://opensrp-stage.smartregister.org/opensrp/rest/',
-        'location/sync'
-      );
-
+      let serve = new serviceClass(props.accessToken, API_BASE_URL, LOCATION_UNIT_ALL_URL);
       serve
         .list({ is_jurisdiction: true, serverVersion: 0 })
-        .then((response: LocationUnitObj[]) => {
+        .then((response: LocationUnit[]) => {
           fetchLocationUnitsCreator(response);
           setIsLoading(false);
         })
@@ -61,19 +55,32 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
     }
   });
 
-  console.log('data from store>>', props);
+  console.log('data from store : ', props);
 
-  const tableData: any = [];
+  const tableData: TableData[] = [];
 
   if (locationsArray.length) {
-    locationsArray.forEach((location: LocationUnitObj, i: number) => {
+    locationsArray.forEach((location: LocationUnit, i: number) =>
       tableData.push({
         key: i.toString(),
-        name: location.properties.name,
-        level: location.properties.geographicLevel,
+        created: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
         lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-      });
-    });
+        parentId: location.properties?.parentId ? location.properties.parentId : '-',
+        externalId: location.properties?.externalId ? location.properties.externalId : '-',
+        OpenMRS_Id: location.properties?.OpenMRS_Id ? location.properties.OpenMRS_Id : '-',
+        status: location.properties?.status
+          ? location.properties.status
+          : LocationUnitStatus.INACTIVE,
+        syncstatus: location.syncStatus ? location.syncStatus : LocationUnitSyncStatus.NOTSYNCED,
+        type: location.type ? location.type : '-',
+        username: location.properties?.username ? location.properties.username : '-',
+        version: location.properties?.version ? location.properties.version : 0,
+        name: location.properties?.name ? location.properties.name : '-',
+        geographicLevel: location.properties?.geographicLevel
+          ? location.properties.geographicLevel
+          : 0,
+      })
+    );
   }
 
   return (
@@ -84,31 +91,29 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          {
-            <Tree
-              data={[
-                {
-                  title: 'Sierra Leone',
-                  key: 'Sierra Leone',
-                  children: [
-                    { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-                    { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-                    {
-                      title: 'Bonthe',
-                      key: 'Bonthe',
-                      children: [
-                        {
-                          title: 'Kissi Ten',
-                          key: 'Kissi Ten',
-                          children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ]}
-            />
-          }
+          <Tree
+            data={[
+              {
+                title: 'Sierra Leone',
+                key: 'Sierra Leone',
+                children: [
+                  { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
+                  { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
+                  {
+                    title: 'Bonthe',
+                    key: 'Bonthe',
+                    children: [
+                      {
+                        title: 'Kissi Ten',
+                        key: 'Kissi Ten',
+                        children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ]}
+          />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between">
@@ -150,14 +155,14 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
   );
 };
 
-LocationUnit.defaultProps = defaultProps;
+LocationUnitComponent.defaultProps = defaultProps;
 
-export { LocationUnit };
+export { LocationUnitComponent as LocationUnit };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
   accessToken: string;
-  locationsArray: LocationUnitObj[];
+  locationsArray: LocationUnit[];
 }
 
 // connect to store
@@ -172,5 +177,5 @@ const mapDispatchToProps = {
   fetchLocationUnitsCreator: fetchLocationUnits,
 };
 
-const ConnectedLocationUnit = connect(mapStateToProps, mapDispatchToProps)(LocationUnit);
+const ConnectedLocationUnit = connect(mapStateToProps, mapDispatchToProps)(LocationUnitComponent);
 export default ConnectedLocationUnit;
