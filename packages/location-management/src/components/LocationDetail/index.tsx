@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import * as React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { TableData } from '../LocationUnit/Table';
+import { TableData } from '../LocationUnitView/Table';
 
 export interface Props extends TableData {
   onClose?: Function;
