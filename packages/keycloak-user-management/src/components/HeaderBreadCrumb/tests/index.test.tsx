@@ -35,7 +35,7 @@ describe('components/HeaderBreadCrumb', () => {
     const props = {
       userId: '97f36061-52fb-4474-88f2-fd286311ff1d',
     };
-    const wrapper = shallow(<HeaderBreadCrumb {...props} />);
+    const wrapper = mount(<HeaderBreadCrumb {...props} />);
     const tab = wrapper.find('Tabs');
     tab.simulate('change', 'credentials');
     wrapper.update();

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { notification, Row, Col, Button, Space, Table, Divider } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../Loading';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
@@ -20,6 +19,7 @@ import {
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '../../constants';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
+import { useHistory } from 'react-router';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -73,6 +73,7 @@ const UserList = (props: Props): JSX.Element => {
   const isLoadingCallback = (isLoading: boolean) => {
     setIsLoading(isLoading);
   };
+  const history = useHistory();
 
   React.useEffect(() => {
     if (isLoading) {
