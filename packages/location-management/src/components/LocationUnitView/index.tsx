@@ -4,7 +4,10 @@ import { Helmet } from 'react-helmet';
 import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationDetail, { Props as LocationDetailData } from '../LocationDetail';
+import Tree from './Tree';
+import Table, { TableData } from './Table';
 import { Store } from 'redux';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -18,8 +21,6 @@ import reducer, {
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import { API_BASE_URL, LOCATION_UNIT_ALL_URL } from '../../constants';
-import Table, { TableData } from '../LocationUnitView/Table';
-import Tree from '../LocationUnitView/Tree';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -37,7 +38,7 @@ const defaultProps: Props = {
   serviceClass: OpenSRPService,
 };
 
-const LocationUnitComponent: React.FC<Props> = (props: Props) => {
+const LocationUnitView: React.FC<Props> = (props: Props) => {
   const { fetchLocationUnitsCreator, locationsArray, serviceClass } = props;
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -60,27 +61,28 @@ const LocationUnitComponent: React.FC<Props> = (props: Props) => {
   const tableData: TableData[] = [];
 
   if (locationsArray.length) {
-    locationsArray.forEach((location: LocationUnit, i: number) =>
+    locationsArray.forEach((location: LocationUnit, i: number) => {
+      const date = (i + 1) % 28;
       tableData.push({
         key: i.toString(),
-        created: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-        lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-        parentId: location.properties?.parentId ? location.properties.parentId : '-',
-        externalId: location.properties?.externalId ? location.properties.externalId : '-',
-        OpenMRS_Id: location.properties?.OpenMRS_Id ? location.properties.OpenMRS_Id : '-',
-        status: location.properties?.status
+        created: new Date(`Thu Oct ${date} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
+        lastupdated: new Date(`Thu Oct ${date} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
+        parentId: location.properties.parentId ? location.properties.parentId : '-',
+        externalId: location.properties.externalId ? location.properties.externalId : '-',
+        OpenMRS_Id: location.properties.OpenMRS_Id ? location.properties.OpenMRS_Id : '-',
+        status: location.properties.status
           ? location.properties.status
           : LocationUnitStatus.INACTIVE,
         syncstatus: location.syncStatus ? location.syncStatus : LocationUnitSyncStatus.NOTSYNCED,
         type: location.type ? location.type : '-',
-        username: location.properties?.username ? location.properties.username : '-',
-        version: location.properties?.version ? location.properties.version : 0,
-        name: location.properties?.name ? location.properties.name : '-',
-        geographicLevel: location.properties?.geographicLevel
+        username: location.properties.username ? location.properties.username : '-',
+        version: location.properties.version ? location.properties.version : 0,
+        name: location.properties.name ? location.properties.name : '-',
+        geographicLevel: location.properties.geographicLevel
           ? location.properties.geographicLevel
           : 0,
-      })
-    );
+      });
+    });
   }
 
   return (
@@ -155,9 +157,9 @@ const LocationUnitComponent: React.FC<Props> = (props: Props) => {
   );
 };
 
-LocationUnitComponent.defaultProps = defaultProps;
+LocationUnitView.defaultProps = defaultProps;
 
-export { LocationUnitComponent as LocationUnit };
+export { LocationUnitView };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
@@ -177,5 +179,5 @@ const mapDispatchToProps = {
   fetchLocationUnitsCreator: fetchLocationUnits,
 };
 
-const ConnectedLocationUnit = connect(mapStateToProps, mapDispatchToProps)(LocationUnitComponent);
-export default ConnectedLocationUnit;
+const ConnectedLocationUnitView = connect(mapStateToProps, mapDispatchToProps)(LocationUnitView);
+export default ConnectedLocationUnitView;
