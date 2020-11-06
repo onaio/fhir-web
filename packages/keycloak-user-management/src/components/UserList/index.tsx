@@ -9,6 +9,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { PlusOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -125,6 +126,7 @@ const UserList = (props: Props): JSX.Element => {
               className="create-user"
               onClick={() => history.push(URL_USER_CREATE)}
             >
+              <PlusOutlined />
               Add User
             </Button>
           </Space>
@@ -143,7 +145,12 @@ const UserList = (props: Props): JSX.Element => {
             sortedInfo
           )}
           dataSource={tableData as KeycloakUser[]}
-          pagination={{ pageSize: 5 }}
+          pagination={{
+            showQuickJumper: true,
+            showSizeChanger: true,
+            defaultPageSize: 5,
+            pageSizeOptions: ['5', '10', '20', '50', '100'],
+          }}
           onChange={(_: Dictionary, filters: Dictionary, sorter: Dictionary) => {
             setFilteredInfo(filters);
             setSortedInfo(sorter);
