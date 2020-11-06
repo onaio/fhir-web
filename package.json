@@ -32,7 +32,7 @@
       "eslint --fix --max-warnings 0",
       "git add"
     ],
-    "!(eslintrc.js) && !(**/*dist/**/*).{js,jsx}": [
+    "{js,jsx}": [
       "eslint --fix --max-warnings 0",
       "git add"
     ],
