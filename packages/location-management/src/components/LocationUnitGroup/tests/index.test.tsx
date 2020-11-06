@@ -3,6 +3,10 @@ import React from 'react';
 import { TableData } from '../Table';
 import { ConnectedLocationUnitGroup } from '..';
 
+
+
+
+
 describe('containers/pages/locations/ConnectedLocationUnitGroup', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
