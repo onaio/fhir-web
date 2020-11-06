@@ -2,17 +2,23 @@
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Menu, Layout, Avatar, Button, Dropdown } from 'antd';
+import { Menu, Layout, Image, Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import Logo from '../../../assets/images/opensrp-logo-color.png';
 import './Header.css';
-import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
-import { Dictionary } from '@onaio/utils';
+import { BACKEND_ACTIVE } from '../../../configs/env';
 import {
-  SearchOutlined,
-  QuestionCircleOutlined,
-  BellOutlined,
-  GlobalOutlined,
-} from '@ant-design/icons';
+  URL_BACKEND_LOGIN,
+  URL_LOGOUT,
+  URL_HOME,
+  URL_REACT_LOGIN,
+  URL_ADMIN,
+  URL_USER_EDIT,
+} from '../../../constants';
+import { Dictionary } from '@onaio/utils';
+
+const SubMenu = Menu.SubMenu;
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -36,66 +42,51 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
-  const { user_id } = extraData;
+  const { user_id, roles } = extraData;
+  const isAdmin = roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS');
+  const path = props.location.pathname;
+  const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
   return (
-    <Layout.Header className="txt-white align-items-center justify-content-end px-1">
-      <Button
-        shape="circle"
-        icon={<SearchOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
-      <Button
-        shape="circle"
-        icon={<QuestionCircleOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
-      <Button
-        shape="circle"
-        icon={<BellOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
-      {authenticated ? (
-        <Dropdown
-          overlay={
-            <Menu>
+    <div>
+      <Layout.Header>
+        <div className="logo">
+          <Image width={200} src={Logo} />
+        </div>
+        <Menu mode="horizontal" selectedKeys={[path]}>
+          <Menu.Item key={URL_HOME}>
+            <Link to={URL_HOME}>Home</Link>
+          </Menu.Item>
+          {isAdmin && (
+            <Menu.Item key={URL_ADMIN}>
+              <Link to={URL_ADMIN}>Admin</Link>
+            </Menu.Item>
+          )}
+          {authenticated ? (
+            <SubMenu
+              title={
+                <div>
+                  <span>{user.username}</span>
+                  <span>&nbsp;</span>
+                  <Avatar shape="square" icon={<UserOutlined />} />
+                </div>
+              }
+              style={{ float: 'right' }}
+            >
               <Menu.Item key={URL_LOGOUT}>
                 <Link to={URL_LOGOUT}>Logout</Link>
               </Menu.Item>
               <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
                 <Link to={`${URL_USER_EDIT}/${user_id}`}>Manage account</Link>
               </Menu.Item>
-            </Menu>
-          }
-          placement="bottomRight"
-        >
-          <Button
-            shape="circle"
-            icon={
-              <Avatar className="mr-1 bg-white" src={user.gravatar}>
-                {user.username}
-              </Avatar>
-            }
-            className="h-auto d-flex align-items-center bg-transparent border-0"
-            type="primary"
-          >
-            {user.username}
-          </Button>
-        </Dropdown>
-      ) : (
-        <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
-          <Link to={URL_REACT_LOGIN}>Login</Link>
-        </Button>
-      )}
-      <Button
-        shape="circle"
-        icon={<GlobalOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
-    </Layout.Header>
+            </SubMenu>
+          ) : (
+            <Menu.Item key={APP_LOGIN_URL} style={{ float: 'right' }}>
+              <Link to={APP_LOGIN_URL}>Login</Link>
+            </Menu.Item>
+          )}
+        </Menu>
+      </Layout.Header>
+    </div>
   );
 };
 

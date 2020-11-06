@@ -3,7 +3,7 @@
 exports[`components/ConnectedHeader renders the ConnectedHeader component 1`] = `
 Object {
   "children": Array [
-    <Button
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}
@@ -13,7 +13,7 @@ Object {
       shape="circle"
       type="primary"
     />,
-    <Button
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}
@@ -23,7 +23,7 @@ Object {
       shape="circle"
       type="primary"
     />,
-    <Button
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}
@@ -33,7 +33,7 @@ Object {
       shape="circle"
       type="primary"
     />,
-    <Button
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}
@@ -42,13 +42,13 @@ Object {
       loading={false}
       type="primary"
     >
-      <Link
+      <ForwardRef
         to="/login"
       >
         Login
-      </Link>
-    </Button>,
-    <Button
+      </ForwardRef>
+    </ForwardRef(InternalButton)>,
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}
@@ -66,7 +66,7 @@ Object {
 exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
 Object {
   "children": Array [
-    <Button
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}
@@ -76,7 +76,7 @@ Object {
       shape="circle"
       type="primary"
     />,
-    <Button
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}
@@ -86,7 +86,7 @@ Object {
       shape="circle"
       type="primary"
     />,
-    <Button
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}
@@ -102,45 +102,45 @@ Object {
       overlay={
         <Menu>
           <MenuItem>
-            <Link
+            <ForwardRef
               to="/logout"
             >
               Logout
-            </Link>
+            </ForwardRef>
           </MenuItem>
           <MenuItem>
-            <Link
+            <ForwardRef
               to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
             >
               Manage account
-            </Link>
+            </ForwardRef>
           </MenuItem>
         </Menu>
       }
       placement="bottomRight"
     >
-      <Button
+      <ForwardRef(InternalButton)
         block={false}
         className="h-auto d-flex align-items-center bg-transparent border-0"
         ghost={false}
         htmlType="button"
         icon={
-          <Avatar
+          <ForwardRef(InternalAvatar)
             className="mr-1 bg-white"
             shape="circle"
             size="default"
           >
             RobertBaratheon
-          </Avatar>
+          </ForwardRef(InternalAvatar)>
         }
         loading={false}
         shape="circle"
         type="primary"
       >
         RobertBaratheon
-      </Button>
+      </ForwardRef(InternalButton)>
     </Dropdown>,
-    <Button
+    <ForwardRef(InternalButton)
       block={false}
       className="bg-transparent border-0"
       ghost={false}

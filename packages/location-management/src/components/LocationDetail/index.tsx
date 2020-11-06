@@ -2,24 +2,14 @@ import * as React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import './LocationDetail.css';
+import { LocationTag } from '../../ducks/location-tags';
 
-export interface Props {
-  
-  name: string;
-  active: any;
-  description: string;
- 
+export interface LocationDetailProps extends LocationTag {
   onClose?: Function;
 }
 
-const LocationDetail = (props: Props) => {
-  const {
-    name,
-    active,
-    description
-   
-  } = props;
-  console.log('res', props.active )
+const LocationDetail = (props: LocationDetailProps) => {
+  const { name, active, description } = props;
   return (
     <div className="p-4 bg-white">
       <Button
@@ -43,9 +33,6 @@ const LocationDetail = (props: Props) => {
         <p className="mb-0 font-weight-bold">Description</p>
         <p className="mb-0 loc-desc">{description}</p>
       </div>
-
-     
-
     </div>
   );
 };

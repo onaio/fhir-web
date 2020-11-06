@@ -23,7 +23,7 @@ describe('App with active backend', () => {
       </Provider>
     );
     // before resolving get oauth state request, the user is logged out
-    expect(wrapper.text()).toMatchInlineSnapshot(`"···Home···Login···"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"Login"`);
 
     await act(async () => {
       await new Promise<unknown>((resolve) => setImmediate(resolve));

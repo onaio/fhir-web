@@ -1,103 +1,120 @@
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
-import { Provider } from 'react-redux';
-import { store } from '@opensrp/store';
-import { act } from 'react-dom/test-utils';
-import flushPromises from 'flush-promises';
-import { ConnectedLocationUnitGroupAdd } from '..';
+import { TableData } from '../Table';
+import { ConnectedLocationUnitGroup } from '..';
 
-describe('packages/components/locationunitgroup', () => {
+describe('containers/pages/locations/ConnectedLocationUnitGroup', () => {
+  const tableData: TableData[] = [];
+  for (let i = 1; i < 5; i++) {
+    tableData.push({
+      id: i,
+      key: i.toString(),
+      active: true,
+      name: 'Asda',
+      description: 'this is the description',
+    });
+  }
+
+  // const props = {
+  //   accessToken: 'hunter 2',
+  //   keycloakUser: null,
+  //   serviceClass: KeycloakService,
+  //   history,
+  //   location: {
+  //     hash: '',
+  //     pathname: `/user/credentials/${fixtures.keycloakUser.id}`,
+  //     search: '',
+  //     state: undefined,
+  //   },
+  //   match: {
+  //     isExact: true,
+  //     params: {
+  //       userId: fixtures.keycloakUser.id,
+  //     },
+  //     path: '/user/credentials/:userId',
+  //     url: `/user/credentials/${fixtures.keycloakUser.id}`,
+  //   },
+  //   keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+  //   fetchKeycloakUsersCreator: fetchKeycloakUsers,
+  // };
+
   it('renders without crashing', () => {
-    mount(
-      <Provider store={store}>
-        <ConnectedLocationUnitGroupAdd />
-      </Provider>
-    );
+    const wrapper = shallow(<ConnectedLocationUnitGroup />);
+    expect(wrapper.props()).toMatchSnapshot();
   });
 
-  it('should open and close locations detail', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <ConnectedLocationUnitGroupAdd />
-      </Provider>
-    );
+  // it('Render view details', () => {
+  //   const wrapper = mount(<ConnectedLocationUnitGroup tableData={tableData} tree={tree} />);
 
-    // click on view detail
-    const firstAction = wrapper.find('.location-table-action').first();
+  //   // click on view detail
+  //   const first_action = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
+  //   first_action.children().last().simulate('click');
+  //   wrapper.find('.ant-dropdown-menu-item.ant-dropdown-menu-item-only-child').simulate('click');
 
-    firstAction.children().last().simulate('click');
-    wrapper
-      .find('.ant-dropdown-menu-item.ant-dropdown-menu-item-only-child')
-      .first()
-      .simulate('click');
+  //   // find view details component
+  //   let viewdetail = wrapper.find('.ant-col.ant-col-5.pl-3');
+  //   expect(viewdetail.length).toBe(1);
 
-    let viewDetail = wrapper.find('.ant-col.ant-col-8.pl-3.border-left');
-    expect(viewDetail.length).toBe(1);
+  //   // Close View Details
+  //   viewdetail.find('button').simulate('click');
+  //   viewdetail = wrapper.find('.ant-col.ant-col-5.pl-3');
+  //   expect(viewdetail.length).toBe(0);
+  // });
 
-    viewDetail.find('button').simulate('click');
-    viewDetail = wrapper.find('.ant-col.ant-col-8.pl-3.border-left');
-    expect(viewDetail.length).toBe(0);
-  });
+  // it('Test view details close', () => {
+  //   const wrapper = mount(<ConnectedLocationUnitGroup tableData={tableData} tree={tree} />);
 
-  it('should save location detail on edit', async () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <ConnectedLocationUnitGroupAdd />
-      </Provider>
-    );
+  //   // click on view detail
+  //   const first_row = wrapper.find('tr[data-row-key="1"]');
+  //   first_row.find('span.ant-dropdown-trigger').simulate('click'); // click on dropdown icon
+  //   wrapper.find('.ant-dropdown-menu-item.ant-dropdown-menu-item-only-child').simulate('click'); // click on viewdetails
 
-    // click edit button
-    let firstRow = wrapper.find('tr[data-row-key="0"]');
-    firstRow.find('.ant-table-cell').last().find('.edit').simulate('click');
+  //   // find view details component
+  //   let viewdetail = wrapper.find('.ant-col.ant-col-5.pl-3');
+  //   expect(viewdetail.length).toBe(1);
 
-    firstRow = wrapper.find('tr[data-row-key="0"]');
-    firstRow
-      .children()
-      .first()
-      .find('input')
-      .simulate('change', { target: { value: 'Testing 1' } });
+  //   // Close View Details
+  //   viewdetail.find('button').simulate('click');
+  //   viewdetail = wrapper.find('.ant-col.ant-col-5.pl-3');
+  //   expect(viewdetail.length).toBe(0);
+  // });
 
-    firstRow.find('button').first().simulate('click');
+  // it('Test Name Sorting functionality', () => {
+  //   const wrapper = mount(<ConnectedLocationUnitGroup tableData={tableData} tree={tree} />);
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-  });
+  //   let heading = wrapper.find('thead');
+  //   expect(heading.find('th').length).toBe(4);
+  //   heading.find('th').at(0).children().simulate('click');
+  //   heading.find('th').at(0).children().simulate('click');
 
-  it('should cancel location detail on edit', async () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <ConnectedLocationUnitGroupAdd />
-      </Provider>
-    );
+  //   let body = wrapper.find('tbody');
+  //   expect(body.children().first().prop('rowKey')).toBe('4');
+  //   expect(body.children().last().prop('rowKey')).toBe('1');
+  // });
 
-    // click edit button
-    let firstRow = wrapper.find('tr[data-row-key="0"]');
-    firstRow.find('.ant-table-cell').last().find('.edit').simulate('click');
+  // it('Test Level Sorting functionality', () => {
+  //   const wrapper = mount(<ConnectedLocationUnitGroup tableData={tableData} tree={tree} />);
 
-    firstRow = wrapper.find('tr[data-row-key="0"]');
-    firstRow
-      .children()
-      .first()
-      .find('input')
-      .simulate('change', { target: { value: 'Testing 1' } });
+  //   let heading = wrapper.find('thead');
+  //   expect(heading.find('th').length).toBe(4);
+  //   heading.find('th').at(1).children().simulate('click');
+  //   heading.find('th').at(1).children().simulate('click');
 
-    firstRow.find('button').last().simulate('click');
+  //   let body = wrapper.find('tbody');
+  //   expect(body.children().first().prop('rowKey')).toBe('4');
+  //   expect(body.children().last().prop('rowKey')).toBe('1');
+  // });
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-  });
+  // it('Test Last Updated Sorting functionality', () => {
+  //   const wrapper = mount(<ConnectedLocationUnitGroup tableData={tableData} tree={tree} />);
 
-  it('renders onchange without crashing', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <ConnectedLocationUnitGroupAdd />
-      </Provider>
-    );
-    const firstRow = wrapper.find('.ant-input.ant-input-lg');
-    firstRow.find('input').simulate('change', { target: { value: 'Testing 1' } });
-  });
+  //   let heading = wrapper.find('thead');
+  //   expect(heading.find('th').length).toBe(4);
+  //   heading.find('th').at(2).children().simulate('click');
+  //   heading.find('th').at(2).children().simulate('click');
+
+  //   let body = wrapper.find('tbody');
+  //   expect(body.children().first().prop('rowKey')).toBe('4');
+  //   expect(body.children().last().prop('rowKey')).toBe('1');
+  // });
 });
