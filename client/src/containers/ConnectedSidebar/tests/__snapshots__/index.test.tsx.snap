@@ -44,12 +44,7 @@ Object {
             title="Locations"
           >
             <MenuItem>
-              <Link
-                className="admin-link"
-                to="/locations-unit"
-              >
-                Locations unit
-              </Link>
+              Locations unit
             </MenuItem>
             <MenuItem>
               Locations unit group
