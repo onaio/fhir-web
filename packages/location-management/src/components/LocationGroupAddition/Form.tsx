@@ -6,7 +6,9 @@ import { notification } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 
 import { OpenSRPService } from '@opensrp/server-service';
-import { LocationTagPayloadPOST } from 'location-management/src/ducks/location-tags';
+import { LocationTagPayloadPOST } from '../../ducks/location-tags';
+import { useSelector } from 'react-redux';
+import { getAccessToken } from '@onaio/session-reducer';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 8 } };
@@ -89,10 +91,10 @@ export const userSchema = Yup.object().shape({
 
 interface Props {
   id?: any;
-  accessToken: string;
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
+  const accessToken = useSelector((state) => getAccessToken(state) as string);
   function filter(input: string, option: any) {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
@@ -105,7 +107,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         console.log('values :', JSON.stringify(values));
 
         const serve = new OpenSRPService(
-          props.accessToken,
+          accessToken,
           'https://opensrp-stage.smartregister.org/opensrp/rest/',
           'location-tag'
         );
