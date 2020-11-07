@@ -21,6 +21,7 @@ import { API_BASE_URL, LOCATION_UNIT_ALL, URL_ADD_LOCATIONS_UNIT } from '../../c
 import Tree from './Tree';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
+import { Ripple } from '@onaio/loaders';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -71,6 +72,7 @@ const LocationUnitView: React.FC = () => {
       });
     });
   }
+  if (isLoading) return <Ripple />;
 
   return (
     <section>
