@@ -148,10 +148,10 @@ export const Form: React.FC<Props> = (props: Props) => {
               <Input name="name" placeholder="Enter a location name" />
             </AntForm.Item>
 
-            <AntForm.Item label="Status" name="active" valuePropName="checked" required>
-              <Radio.Group name="active" defaultValue={initialValue.status}>
+            <AntForm.Item label="Status" name="status" valuePropName="checked" required>
+              <Radio.Group name="status" defaultValue={initialValue.status}>
                 {status.map((e) => (
-                  <Radio name="active" key={e.label} value={e.value}>
+                  <Radio name="status" key={e.label} value={e.value}>
                     {e.label}
                   </Radio>
                 ))}
@@ -166,8 +166,8 @@ export const Form: React.FC<Props> = (props: Props) => {
               <Input name="externalId" placeholder="Select status" />
             </AntForm.Item>
 
-            <AntForm.Item name="type" label="geometry">
-              <Input.TextArea name="type" rows={4} placeholder="</> JSON" />
+            <AntForm.Item name="geometry" label="geometry">
+              <Input.TextArea name="geometry" rows={4} placeholder="</> JSON" />
             </AntForm.Item>
 
             <AntForm.Item label="Unit Group" name="locationTags">
