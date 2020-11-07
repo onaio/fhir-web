@@ -61,6 +61,7 @@ export interface LocationUnitPayloadPOST {
   type: string;
   locationTags?: LocationUnitTag[];
   geometry?: Geometry;
+  textEntry?: string[];
 }
 
 /** interface for the PUT payload */

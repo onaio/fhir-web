@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio, Select, ResetButton } from 'formik-antd';
 import { notification, Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -7,120 +7,168 @@ import { history } from '@onaio/connected-reducer-registry';
 import { getUser } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Formik, FieldArray } from 'formik';
-
+import { Ripple } from '@onaio/loaders';
 import {
   LocationUnitPayloadPOST,
+  LocationUnitPayloadPUT,
   LocationUnitStatus,
   LocationUnitSyncStatus,
 } from '../../ducks/location-units';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
+import { API_BASE_URL, LOCATION_TAG_ALL } from '../../constants';
+import reducer, {
+  reducerName,
+  fetchLocationTags,
+  getLocationTagsArray,
+  LocationTag,
+} from '../../ducks/location-tags';
+import { resolve } from 'path';
+
+reducerRegistry.register(reducerName, reducer);
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 
-const locationtag = [
-  { name: 'Option 1', value: 1 },
-  { name: 'Option 2', value: 2 },
-  { name: 'Option 3', value: 3 },
-];
-
 const status = [
-  { label: 'Active', value: true },
-  { label: 'Inactive', value: false },
+  { label: 'Active', value: LocationUnitStatus.ACTIVE },
+  { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
 ];
 
-const initialValue = {
+const parentId = [{ name: 'Bombali', value: '1123' }];
+
+interface formfield {
+  parentId: string;
+  name: string;
+  status: LocationUnitStatus;
+  Type: string;
+  externalId?: string;
+  locationTags?: LocationTag[];
+  geometry?: Geometry;
+  textEntry?: string[];
+}
+
+const initialValue: formfield = {
   parentId: '',
   name: '',
   status: LocationUnitStatus.ACTIVE,
   Type: '',
-  externalId: '',
-  locationTags: [],
-  geometry: {
-    coordinates: [],
-    type: 'MultiPolygon',
-  },
-  textEntry: [],
 };
 
 /** yup validations for practitioner data object from form */
 export const userSchema = Yup.object().shape({
   parentId: Yup.number().typeError('Parentid must be a Number').required('Parentid is Required'),
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
-  status: Yup.boolean().typeError('Status must be a Boolean').required('Status is Required'),
-  Type: Yup.string().typeError('Status must be a String').required('Status is Required'),
+  status: Yup.string().required('Status is Required'),
+  Type: Yup.string().typeError('Type must be a String').required('Type is Required'),
   externalId: Yup.string().typeError('External id must be a String'),
   locationTags: Yup.array().typeError('location Tags must be an Array'),
-  geometry: Yup.object().typeError('location Tags must be a An Object'),
+  geometry: Yup.string().typeError('location Tags must be a An String'),
   textEntry: Yup.array().typeError('Text Entry must be an Array'),
 });
 
 interface Props {
-  id?: any;
+  id?: string;
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
+  // const loactiontag = useSelector((state) => getLocationTagsArray(state));
+  const [loactiontag, setLoactiontag] = useState<LocationTag[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoading) {
+      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+      serve
+        .list()
+        .then((response: LocationTag[]) => {
+          dispatch(fetchLocationTags(response));
+          setIsLoading(false);
+          setLoactiontag(response);
+          console.log(loactiontag);
+        })
+        .catch((e) => console.log(e));
+    }
+  }, []);
 
   function filter(input: string, option: any) {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
+
+  if (isLoading) return <Ripple />;
 
   return (
     <Formik
       initialValues={initialValue}
       validationSchema={userSchema}
       onSubmit={(values, { setSubmitting }) => {
-        console.log('values :', JSON.stringify(values));
-
         const serve = new OpenSRPService(
           accessToken,
           'https://opensrp-stage.smartregister.org/opensrp/rest/',
           'location-tag'
         );
 
-        const payload: LocationUnitPayloadPOST = {
+        let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
           properties: {
+            // created: new Date(),
+            // lastUpdated: new Date(),
             username: user.username,
             version: 0,
             externalId: values.externalId,
             OpenMRS_Id: props.id,
             parentId: values.parentId,
             name: values.name,
-            status: values.status ? LocationUnitStatus.ACTIVE : LocationUnitStatus.INACTIVE,
+            name_en: values.name,
+            status: values.status,
           },
+          id: props.id,
           syncStatus: LocationUnitSyncStatus.SYNCED,
           type: values.Type,
           locationTags: values.locationTags,
           geometry: values.geometry as Geometry,
+          textEntry: values.textEntry,
         };
 
-        props.id
-          ? serve
-              .create(payload)
-              .then(() => {
-                notification.success({ message: 'User created successfully', description: '' });
-                setSubmitting(false);
-                history.goBack();
-              })
-              .catch((e: Error) => {
-                notification.error({ message: `${e}`, description: '' });
-                setSubmitting(false);
-              })
-          : serve
-              .update(payload)
-              .then(() => {
-                notification.success({ message: 'User Updated successfully', description: '' });
-                setSubmitting(false);
-                history.goBack();
-              })
-              .catch((e: Error) => {
-                notification.error({ message: `${e}`, description: '' });
-                setSubmitting(false);
-              });
+        function removeEmptykeys(obj: any) {
+          Object.keys(obj).forEach(function (key) {
+            if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
+            else if (obj[key] == null) delete obj[key];
+          });
+        }
+        removeEmptykeys(payload);
+
+        console.log('payload :', payload);
+
+        if (props.id) {
+          serve
+            .create(payload)
+            .then(() => {
+              notification.success({ message: 'User created successfully', description: '' });
+              setSubmitting(false);
+              history.goBack();
+            })
+            .catch((e: Error) => {
+              notification.error({ message: `${e}`, description: '' });
+              setSubmitting(false);
+            });
+        } else {
+          serve
+            .update(payload)
+            .then(() => {
+              notification.success({ message: 'User Updated successfully', description: '' });
+              setSubmitting(false);
+              history.goBack();
+            })
+            .catch((e: Error) => {
+              notification.error({ message: `${e}`, description: '' });
+              setSubmitting(false);
+            });
+        }
       }}
     >
       {({ values, errors, isSubmitting, handleSubmit }) => {
@@ -132,11 +180,11 @@ export const Form: React.FC<Props> = (props: Props) => {
               <Select
                 name="parentId"
                 showSearch
-                placeholder="Enter a location group name"
+                placeholder="Select a Parent Id"
                 optionFilterProp="children"
                 filterOption={filter}
               >
-                {locationtag.map((e) => (
+                {parentId.map((e) => (
                   <Select.Option key={e.value} value={e.value}>
                     {e.name}
                   </Select.Option>
@@ -180,11 +228,12 @@ export const Form: React.FC<Props> = (props: Props) => {
                 optionFilterProp="children"
                 filterOption={filter}
               >
-                {locationtag.map((e) => (
-                  <Select.Option key={e.value} value={e.value}>
-                    {e.name}
-                  </Select.Option>
-                ))}
+                {loactiontag &&
+                  loactiontag.map((e) => (
+                    <Select.Option key={e.id} value={e.id}>
+                      {e.name}
+                    </Select.Option>
+                  ))}
               </Select>
             </AntForm.Item>
 
@@ -205,7 +254,7 @@ export const Form: React.FC<Props> = (props: Props) => {
                           label={index === 0 ? 'Text entry' : ''}
                           key={key}
                         >
-                          <AntForm.Item {...field} noStyle>
+                          <AntForm.Item name={key} noStyle>
                             <Input name={key} placeholder="Enter text" style={{ width: '69%' }} />
                           </AntForm.Item>
                           <MinusCircleOutlined
@@ -231,7 +280,9 @@ export const Form: React.FC<Props> = (props: Props) => {
             />
             <AntForm.Item name="buttons" {...offsetLayout}>
               <SubmitButton>{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
-              <ResetButton onClick={() => history.goBack()}>Cancel</ResetButton>
+              <Button onClick={() => history.goBack()} type="dashed">
+                Cancel
+              </Button>
             </AntForm.Item>
           </AntForm>
         );
