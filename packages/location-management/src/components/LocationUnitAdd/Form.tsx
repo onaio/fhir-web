@@ -17,8 +17,8 @@ import {
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 
-const layout = { labelCol: { span: 8 }, wrapperCol: { span: 8 } };
-const offsetLayout = { wrapperCol: { offset: 8, span: 8 } };
+const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
+const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 
 const locationtag = [
   { name: 'Option 1', value: 1 },
@@ -206,7 +206,7 @@ export const Form: React.FC<Props> = (props: Props) => {
                           key={key}
                         >
                           <AntForm.Item {...field} noStyle>
-                            <Input name={key} placeholder="Enter text" style={{ width: '50%' }} />
+                            <Input name={key} placeholder="Enter text" style={{ width: '69%' }} />
                           </AntForm.Item>
                           <MinusCircleOutlined
                             className="dynamic-delete-button"
