@@ -35,21 +35,20 @@ const Table: React.FC<Props> = (props: Props) => {
       title: 'Name',
       dataIndex: 'name',
       editable: false,
-      sorter: (a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name),
+      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
       title: 'Level',
       dataIndex: 'geographicLevel',
       editable: false,
-      sorter: (a: { geographicLevel: number }, b: { geographicLevel: number }) =>
-        a.geographicLevel - b.geographicLevel,
+      sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
     },
     {
       title: 'Last Updated',
       dataIndex: 'lastupdated',
       render: (_: any, record: TableData) => record.lastupdated.toLocaleDateString('en-US'),
       editable: false,
-      sorter: (a: { lastupdated: Date }, b: { lastupdated: Date }) =>
+      sorter: (a: TableData, b: TableData) =>
         a.lastupdated.toLocaleString('en-US').localeCompare(b.lastupdated.toLocaleString('en-US')),
     },
     {
@@ -84,8 +83,7 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  const mergedColumns = columns.map((col) => col);
-  return <AntTable dataSource={props.data} columns={mergedColumns} />;
+  return <AntTable dataSource={props.data} columns={columns} />;
 };
 
 export default Table;
