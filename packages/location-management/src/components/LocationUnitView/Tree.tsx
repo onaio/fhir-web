@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Tree as AnyTree } from 'antd';
+import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 interface TreeProp {
@@ -91,7 +91,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         prefix={<SearchOutlined />}
         onChange={onChange}
       />
-      <AnyTree
+      <AntTree
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
