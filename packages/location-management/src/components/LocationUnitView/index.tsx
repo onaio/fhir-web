@@ -20,6 +20,7 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { API_BASE_URL, LOCATION_UNIT_ALL_URL, URL_ADD_LOCATIONS_UNIT } from '../../constants';
 import Tree from './Tree';
 import Table, { TableData } from './Table';
+import './LocationUnitView.css';
 
 reducerRegistry.register(reducerName, reducer);
 
