@@ -1,3 +1,8 @@
+.table-container {
+  background-color: #ffffff;
+  margin: 20px;
+}
+
 .location-table-action {
   width: 86px;
 }
