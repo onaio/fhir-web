@@ -17,7 +17,7 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, LOCATION_UNIT_ALL_URL, URL_ADD_LOCATIONS_UNIT } from '../../constants';
+import { API_BASE_URL, LOCATION_UNIT_ALL, URL_ADD_LOCATIONS_UNIT } from '../../constants';
 import Tree from './Tree';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
@@ -34,7 +34,7 @@ const LocationUnitView: React.FC = () => {
 
   useEffect(() => {
     if (isLoading) {
-      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_ALL_URL);
+      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_ALL);
       serve
         .list({ is_jurisdiction: true, serverVersion: 0 })
         .then((response: LocationUnit[]) => {
