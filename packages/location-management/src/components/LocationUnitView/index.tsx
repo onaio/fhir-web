@@ -4,13 +4,10 @@ import { Helmet } from 'react-helmet';
 import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationDetail, { Props as LocationDetailData } from '../LocationDetail';
-import Tree from './Tree';
-import Table, { TableData } from './Table';
-import { Store } from 'redux';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import reducerRegistry from '@onaio/redux-reducer-registry';
+import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, {
   fetchLocationUnits,
   getLocationUnitsArray,
@@ -20,43 +17,32 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, LOCATION_UNIT_ALL_URL } from '../../constants';
+import { API_BASE_URL, LOCATION_UNIT_ALL_URL, URL_ADD_LOCATIONS_UNIT } from '../../constants';
+import Tree from './Tree';
+import Table, { TableData } from './Table';
 
 reducerRegistry.register(reducerName, reducer);
 
-export interface Props {
-  accessToken: string;
-  fetchLocationUnitsCreator: typeof fetchLocationUnits;
-  locationsArray: LocationUnit[];
-  serviceClass: typeof OpenSRPService;
-}
+const LocationUnitView: React.FC = () => {
+  const accessToken = useSelector((state) => getAccessToken(state) as string);
+  const locationsArray = useSelector((state) => getLocationUnitsArray(state));
+  const dispatch = useDispatch();
 
-const defaultProps: Props = {
-  accessToken: '',
-  fetchLocationUnitsCreator: fetchLocationUnits,
-  locationsArray: [],
-  serviceClass: OpenSRPService,
-};
-
-const LocationUnitView: React.FC<Props> = (props: Props) => {
-  const { fetchLocationUnitsCreator, locationsArray, serviceClass } = props;
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (isLoading) {
-      let serve = new serviceClass(props.accessToken, API_BASE_URL, LOCATION_UNIT_ALL_URL);
+      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_ALL_URL);
       serve
         .list({ is_jurisdiction: true, serverVersion: 0 })
         .then((response: LocationUnit[]) => {
-          fetchLocationUnitsCreator(response);
+          dispatch(fetchLocationUnits(response));
           setIsLoading(false);
         })
         .catch((e) => console.log(e));
     }
   });
-
-  console.log('data from store : ', props);
 
   const tableData: TableData[] = [];
 
@@ -121,10 +107,12 @@ const LocationUnitView: React.FC<Props> = (props: Props) => {
           <div className="mb-3 d-flex justify-content-between">
             <h5 className="mt-4">Bombali</h5>
             <div>
-              <Button type="primary">
-                <PlusOutlined />
-                Add location unit
-              </Button>
+              <Link to={window.location.pathname + URL_ADD_LOCATIONS_UNIT}>
+                <Button type="primary">
+                  <PlusOutlined />
+                  Add location unit
+                </Button>
+              </Link>
               <Divider type="vertical" />
               <Dropdown
                 overlay={
@@ -142,7 +130,7 @@ const LocationUnitView: React.FC<Props> = (props: Props) => {
             <Table
               data={tableData}
               onViewDetails={(e: LocationDetailData) => setDetail(e)}
-              accessToken={props.accessToken}
+              accessToken={accessToken}
             />
           </div>
         </Col>
@@ -157,27 +145,4 @@ const LocationUnitView: React.FC<Props> = (props: Props) => {
   );
 };
 
-LocationUnitView.defaultProps = defaultProps;
-
-export { LocationUnitView };
-
-/** Interface for connected state to props */
-interface DispatchedProps {
-  accessToken: string;
-  locationsArray: LocationUnit[];
-}
-
-// connect to store
-const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
-  const accessToken = getAccessToken(state) as string;
-  const locationsArray = getLocationUnitsArray(state);
-  return { accessToken, locationsArray };
-};
-
-/** map props to action creators */
-const mapDispatchToProps = {
-  fetchLocationUnitsCreator: fetchLocationUnits,
-};
-
-const ConnectedLocationUnitView = connect(mapStateToProps, mapDispatchToProps)(LocationUnitView);
-export default ConnectedLocationUnitView;
+export default LocationUnitView;
