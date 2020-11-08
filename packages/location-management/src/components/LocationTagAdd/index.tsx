@@ -1,8 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+import reducer, { reducerName } from '../../ducks/location-units';
 import Form from './Form';
 
-export const LocationUnitGroupAdd: React.FC = () => {
+reducerRegistry.register(reducerName, reducer);
+
+export const LocationTagAdd: React.FC = () => {
   return (
     <section>
       <Helmet>
@@ -17,3 +21,5 @@ export const LocationUnitGroupAdd: React.FC = () => {
     </section>
   );
 };
+
+export default LocationTagAdd;

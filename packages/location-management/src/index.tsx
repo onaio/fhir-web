@@ -1,1 +1,2 @@
-export * from './components/LocationGroupAddition';
+import LocationTagModule from './LocationTagModule';
+export { LocationTagModule };

@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import LocationUnitGroupAdd from '..';
 
-describe('containers/pages/locations/LocationGroupAddition', () => {
+describe('containers/pages/locations/LocationTagAddition', () => {
   it('renders without crashing', () => {
     const wrapper = mount(<LocationUnitGroupAdd />);
     expect(wrapper.find('section').props()).toMatchSnapshot();
