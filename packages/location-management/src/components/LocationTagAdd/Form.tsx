@@ -96,8 +96,8 @@ export const Form: React.FC<Props> = (props: Props) => {
       validationSchema={userSchema}
       onSubmit={(
         values: FormField,
-        { setsubmitting }: { setsubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, setsubmitting)}
+        { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+      ) => onSubmit(values, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
         return (
