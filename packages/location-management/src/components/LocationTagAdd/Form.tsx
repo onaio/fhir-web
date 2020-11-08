@@ -53,8 +53,9 @@ export const Form: React.FC<Props> = (props: Props) => {
   /**
    * Handle form submission
    *
-   * @param {Object} values the form fields
-   * @param {Object} setSubmitting.setSubmitting method to set submission status
+   * @param values
+   * @param object
+   * @param object.setSubmitting
    */
   function onSubmit(
     values: FormField,
