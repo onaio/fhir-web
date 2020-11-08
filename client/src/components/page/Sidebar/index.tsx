@@ -51,7 +51,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.Item key="locations-unit">Locations unit</Menu.Item>
             <Menu.Item key="locations-unit-group">
               <Link to={URL_LOCATION_GROUP} className="admin-link">
-                locations unit group
+                Locations unit group
               </Link>
             </Menu.Item>
             <Menu.Item key="locations-unit-group-set">Locations unit group set</Menu.Item>
