@@ -9,8 +9,9 @@ import LocationTagAdd from './components/LocationTagAdd';
 /**
  * Location Tag Module
  *
+ * @returns {Element} - Location Tag Module
  */
-export default function LocationTagModule() {
+export const LocationTagModule: React.FC = () => {
   const modulebaseurl = '/location/group';
 
   return (
@@ -29,4 +30,6 @@ export default function LocationTagModule() {
       </Switch>
     </BrowserRouter>
   );
-}
+};
+
+export default LocationTagModule;
