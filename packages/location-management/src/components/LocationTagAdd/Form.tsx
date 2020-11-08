@@ -56,7 +56,6 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Object} values the form fields
    * @param {Function} setSubmitting method to set submission status
    */
-
   function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
 
