@@ -53,14 +53,11 @@ export const Form: React.FC<Props> = (props: Props) => {
   /**
    * Handle form submission
    *
-   * @param values
-   * @param object
-   * @param object.setSubmitting
+   * @param {Object} values the form fields
+   * @param {Function} setSubmitting method to set submission status
    */
-  function onSubmit(
-    values: FormField,
-    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-  ) {
+
+  function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
 
     const payload: LocationTagPayloadPOST | LocationTagPayloadPUT = values;
@@ -94,7 +91,14 @@ export const Form: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <Formik initialValues={initialValue} validationSchema={userSchema} onSubmit={onSubmit}>
+    <Formik
+      initialValues={initialValue}
+      validationSchema={userSchema}
+      onSubmit={(
+        values: FormField,
+        { setsubmitting }: { setsubmitting: (isSubmitting: boolean) => void }
+      ) => onSubmit(values, setsubmitting)}
+    >
       {({ isSubmitting, handleSubmit }) => {
         return (
           <AntForm requiredMark={false} {...layout} onSubmitCapture={handleSubmit}>
