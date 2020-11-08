@@ -18,13 +18,13 @@ const status = [
   { label: 'Inactive', value: false },
 ];
 
-interface formfield {
+interface FormField {
   name: string;
   description: string;
   active: boolean;
 }
 
-const initialValue: formfield = {
+const initialValue: FormField = {
   name: '',
   description: '',
   active: true,
@@ -50,8 +50,14 @@ export const Form: React.FC<Props> = (props: Props) => {
   //   return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   // }
 
+  /**
+   * Handle form submission
+   *
+   * @param {FormField} values the form fields
+   * @param {object} setSubmitting method to set submission status
+   */
   function onSubmit(
-    values: formfield,
+    values: FormField,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) {
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
@@ -88,7 +94,7 @@ export const Form: React.FC<Props> = (props: Props) => {
 
   return (
     <Formik initialValues={initialValue} validationSchema={userSchema} onSubmit={onSubmit}>
-      {({ values, errors, isSubmitting, handleSubmit }) => {
+      {({ isSubmitting, handleSubmit }) => {
         return (
           <AntForm requiredMark={false} {...layout} onSubmitCapture={handleSubmit}>
             <AntForm.Item label="Location Name" name="name">

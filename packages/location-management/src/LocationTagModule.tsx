@@ -6,8 +6,12 @@ import { Link } from 'react-router-dom';
 
 import LocationTagAdd from './components/LocationTagAdd';
 
+/**
+ * Location Tag Module
+ *
+ */
 export default function LocationTagModule() {
-  let modulebaseurl = '/location/group';
+  const modulebaseurl = '/location/group';
 
   return (
     <BrowserRouter>
