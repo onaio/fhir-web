@@ -14,7 +14,7 @@ export default function LocationTagModule() {
       <Switch>
         <Route path={modulebaseurl + URL_ADD_LOCATIONS_TAG} component={LocationTagAdd} />
         <Route
-          render={(props) => (
+          render={() => (
             <div>
               <Link to={modulebaseurl + URL_ADD_LOCATIONS_TAG} className="admin-link">
                 locations unit group

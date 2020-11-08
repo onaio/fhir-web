@@ -40,7 +40,7 @@ export const userSchema = Yup.object().shape({
 });
 
 interface Props {
-  id?: any;
+  id?: string;
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
@@ -54,18 +54,16 @@ export const Form: React.FC<Props> = (props: Props) => {
     values: formfield,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) {
-    console.log('values :', values);
-
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
 
     const payload: LocationTagPayloadPOST | LocationTagPayloadPUT = values;
 
     if (props.id) {
-      console.log('payload :', payload);
+      (payload as LocationTagPayloadPUT).id = props.id;
       serve
-        .create(payload)
+        .update(payload)
         .then(() => {
-          notification.success({ message: 'User created successfully', description: '' });
+          notification.success({ message: 'User updated successfully', description: '' });
           setSubmitting(false);
           history.goBack();
         })
@@ -74,12 +72,10 @@ export const Form: React.FC<Props> = (props: Props) => {
           setSubmitting(false);
         });
     } else {
-      (payload as LocationTagPayloadPUT).id = props.id;
-      console.log('payload :', payload);
       serve
-        .update(payload)
+        .create(payload)
         .then(() => {
-          notification.success({ message: 'User updated successfully', description: '' });
+          notification.success({ message: 'User created successfully', description: '' });
           setSubmitting(false);
           history.goBack();
         })
@@ -93,8 +89,6 @@ export const Form: React.FC<Props> = (props: Props) => {
   return (
     <Formik initialValues={initialValue} validationSchema={userSchema} onSubmit={onSubmit}>
       {({ values, errors, isSubmitting, handleSubmit }) => {
-        console.log('values :', values, ' errors :', errors);
-
         return (
           <AntForm requiredMark={false} {...layout} onSubmitCapture={handleSubmit}>
             <AntForm.Item label="Location Name" name="name">
