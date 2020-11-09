@@ -11,11 +11,8 @@ export interface TableData {
   username: string;
   version: number;
   externalId: string;
-  OpenMRS_Id: string;
   key: string;
   type: string;
-  created: Date;
-  lastupdated: Date;
   syncstatus: LocationUnitSyncStatus;
 }
 
@@ -41,14 +38,6 @@ const Table: React.FC<Props> = (props: Props) => {
       dataIndex: 'geographicLevel',
       editable: false,
       sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
-    },
-    {
-      title: 'Last Updated',
-      dataIndex: 'lastupdated',
-      render: (_: any, record: TableData) => record.lastupdated.toLocaleDateString('en-US'),
-      editable: false,
-      sorter: (a: TableData, b: TableData) =>
-        a.lastupdated.toLocaleString('en-US').localeCompare(b.lastupdated.toLocaleString('en-US')),
     },
     {
       title: 'Actions',

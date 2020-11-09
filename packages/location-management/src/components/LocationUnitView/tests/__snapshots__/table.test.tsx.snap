@@ -4,12 +4,9 @@ exports[`containers/pages/locations/locationunit Test Table Edit 1`] = `
 Object {
   "data": Array [
     Object {
-      "OpenMRS_Id": "asdasdasdkjh1231",
-      "created": 2020-10-01T09:15:56.000Z,
       "externalId": "asdkjh1231",
       "geographicLevel": 1,
       "key": "1",
-      "lastupdated": 2020-10-01T09:15:56.000Z,
       "name": "Edrward 1",
       "parentId": "1",
       "status": "Active",
@@ -19,12 +16,9 @@ Object {
       "version": 1,
     },
     Object {
-      "OpenMRS_Id": "asdasdasdkjh1232",
-      "created": 2020-10-02T09:15:56.000Z,
       "externalId": "asdkjh1232",
       "geographicLevel": 2,
       "key": "2",
-      "lastupdated": 2020-10-02T09:15:56.000Z,
       "name": "Edrward 2",
       "parentId": "2",
       "status": "Active",
@@ -34,12 +28,9 @@ Object {
       "version": 2,
     },
     Object {
-      "OpenMRS_Id": "asdasdasdkjh1233",
-      "created": 2020-10-03T09:15:56.000Z,
       "externalId": "asdkjh1233",
       "geographicLevel": 3,
       "key": "3",
-      "lastupdated": 2020-10-03T09:15:56.000Z,
       "name": "Edrward 3",
       "parentId": "3",
       "status": "Active",
@@ -49,12 +40,9 @@ Object {
       "version": 3,
     },
     Object {
-      "OpenMRS_Id": "asdasdasdkjh1234",
-      "created": 2020-10-04T09:15:56.000Z,
       "externalId": "asdkjh1234",
       "geographicLevel": 4,
       "key": "4",
-      "lastupdated": 2020-10-04T09:15:56.000Z,
       "name": "Edrward 4",
       "parentId": "4",
       "status": "Active",
@@ -71,12 +59,9 @@ exports[`containers/pages/locations/locationunit renders without crashing 1`] = 
 Object {
   "data": Array [
     Object {
-      "OpenMRS_Id": "asdasdasdkjh1231",
-      "created": 2020-10-01T09:15:56.000Z,
       "externalId": "asdkjh1231",
       "geographicLevel": 1,
       "key": "1",
-      "lastupdated": 2020-10-01T09:15:56.000Z,
       "name": "Edrward 1",
       "parentId": "1",
       "status": "Active",
@@ -86,12 +71,9 @@ Object {
       "version": 1,
     },
     Object {
-      "OpenMRS_Id": "asdasdasdkjh1232",
-      "created": 2020-10-02T09:15:56.000Z,
       "externalId": "asdkjh1232",
       "geographicLevel": 2,
       "key": "2",
-      "lastupdated": 2020-10-02T09:15:56.000Z,
       "name": "Edrward 2",
       "parentId": "2",
       "status": "Active",
@@ -101,12 +83,9 @@ Object {
       "version": 2,
     },
     Object {
-      "OpenMRS_Id": "asdasdasdkjh1233",
-      "created": 2020-10-03T09:15:56.000Z,
       "externalId": "asdkjh1233",
       "geographicLevel": 3,
       "key": "3",
-      "lastupdated": 2020-10-03T09:15:56.000Z,
       "name": "Edrward 3",
       "parentId": "3",
       "status": "Active",
@@ -116,12 +95,9 @@ Object {
       "version": 3,
     },
     Object {
-      "OpenMRS_Id": "asdasdasdkjh1234",
-      "created": 2020-10-04T09:15:56.000Z,
       "externalId": "asdkjh1234",
       "geographicLevel": 4,
       "key": "4",
-      "lastupdated": 2020-10-04T09:15:56.000Z,
       "name": "Edrward 4",
       "parentId": "4",
       "status": "Active",

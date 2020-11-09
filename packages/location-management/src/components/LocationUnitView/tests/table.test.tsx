@@ -11,12 +11,9 @@ describe('containers/pages/locations/locationunit', () => {
       key: i.toString(),
       name: `Edrward ${i}`,
       geographicLevel: i,
-      lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       status: LocationUnitStatus.ACTIVE,
       type: 'Feautire',
-      created: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       externalId: `asdkjh123${i}`,
-      OpenMRS_Id: `asdasdasdkjh123${i}`,
       username: `edward ${i}`,
       version: i,
       syncstatus: LocationUnitSyncStatus.SYNCED,
@@ -55,7 +52,7 @@ describe('containers/pages/locations/locationunit', () => {
     const wrapper = mount(<Table data={tableData} />);
 
     let heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(4);
+    expect(heading.find('th')).toHaveLength(3);
     heading.find('th').at(0).children().simulate('click');
     heading.find('th').at(0).children().simulate('click');
 
@@ -71,19 +68,6 @@ describe('containers/pages/locations/locationunit', () => {
     expect(heading.find('th')).toHaveLength(4);
     heading.find('th').at(1).children().simulate('click');
     heading.find('th').at(1).children().simulate('click');
-
-    let body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe('4');
-    expect(body.children().last().prop('rowKey')).toBe('1');
-  });
-
-  it('Test Last Updated Sorting functionality', () => {
-    const wrapper = mount(<Table data={tableData} />);
-
-    let heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(4);
-    heading.find('th').at(2).children().simulate('click');
-    heading.find('th').at(2).children().simulate('click');
 
     let body = wrapper.find('tbody');
     expect(body.children().first().prop('rowKey')).toBe('4');
