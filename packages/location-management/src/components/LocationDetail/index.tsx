@@ -22,12 +22,10 @@ const LocationDetail = (props: LocationDetailProps) => {
         <p className="mb-0 font-weight-bold">Name</p>
         <p className="mb-0 loc-desc">{name}</p>
       </div>
-
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Status</p>
         <p className="mb-0 loc-desc">{`${active}`}</p>
       </div>
-
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Description</p>
         <p className="mb-0 loc-desc">{description}</p>

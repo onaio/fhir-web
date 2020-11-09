@@ -26,7 +26,6 @@ const LocationTagView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const locationsArray = useSelector((state) => getLocationTagsArray(state));
   const dispatch = useDispatch();
-
   const [detail, setDetail] = useState<LocationDetailProps | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -58,7 +57,6 @@ const LocationTagView: React.FC = () => {
     });
   }
   if (isLoading) return <Ripple />;
-
   return (
     <section>
       <Helmet>
@@ -93,7 +91,6 @@ const LocationTagView: React.FC = () => {
             <Table data={tableData} onViewDetails={(e: LocationDetailProps) => setDetail(e)} />
           </div>
         </Col>
-
         {detail && (
           <Col className="pl-3" span={5}>
             <LocationDetail onClose={() => setDetail(null)} {...detail} />
