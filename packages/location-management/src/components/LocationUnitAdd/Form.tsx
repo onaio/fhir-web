@@ -128,8 +128,6 @@ export const Form: React.FC<Props> = (props: Props) => {
     }
     removeEmptykeys(payload);
 
-    console.log('payload :', payload);
-
     if (props.id) {
       serve
         .update(payload)
@@ -168,9 +166,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) => onSubmit(values, setSubmitting)}
     >
-      {({ values, errors, isSubmitting, handleSubmit }) => {
-        console.log('values :', values, ' errors :', errors);
-
+      {({ values, isSubmitting, handleSubmit }) => {
         return (
           <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
             <AntForm.Item label="Parent" name="parentId" required>
