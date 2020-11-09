@@ -15,12 +15,12 @@ import {
   LocationUnitStatus,
   LocationUnitSyncStatus,
 } from '../../ducks/location-units';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { uuid } from 'uuidv4';
 import './LocationUnitAdd.css';
-import { fetchLocationTags, getLocationTagsArray, LocationTag } from '../../ducks/location-tags';
+import { LocationTag } from '../../ducks/location-tags';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, { reducerName } from '../../ducks/location-units';
 
@@ -74,10 +74,8 @@ interface Props {
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  // const locationtag = useSelector((state) => getLocationTagsArray(state));
   const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoading) {
