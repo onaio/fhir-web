@@ -61,8 +61,7 @@ describe('containers/pages/locations/LocationTagAddition', () => {
 
   it('tests Update Payload', async () => {
     const wrapper = mount(
-      <MemoryRouter initialEntries={[`/admin`]}>
-        route
+      <MemoryRouter initialEntries={[`/testingid`]}>
         <Provider store={store}>
           <Route path={'/:id'} component={LocationUnitGroupAdd} />
         </Provider>
