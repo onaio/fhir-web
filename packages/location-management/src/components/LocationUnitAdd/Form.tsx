@@ -18,11 +18,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
-import {
-  fetchLocationTags,
-  // getLocationTagsArray,
-  LocationTag,
-} from '../../ducks/location-tags';
+import { fetchLocationTags, getLocationTagsArray, LocationTag } from '../../ducks/location-tags';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, { reducerName } from '../../ducks/location-units';
 
@@ -76,8 +72,7 @@ interface Props {
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  // const loactiontag = useSelector((state) => getLocationTagsArray(state));
-  const [loactiontag, setLoactiontag] = useState<LocationTag[] | null>(null);
+  const loactiontag = useSelector((state) => getLocationTagsArray(state));
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
 
@@ -89,8 +84,6 @@ export const Form: React.FC<Props> = (props: Props) => {
         .then((response: LocationTag[]) => {
           dispatch(fetchLocationTags(response));
           setIsLoading(false);
-          setLoactiontag(response);
-          console.log(loactiontag);
         })
         .catch((e) => console.log(e));
     }
