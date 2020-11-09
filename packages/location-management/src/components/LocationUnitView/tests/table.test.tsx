@@ -22,13 +22,6 @@ describe('containers/pages/locations/locationunit', () => {
 
   it('renders without crashing', () => {
     const wrapper = mount(<Table data={tableData} />);
-
-    expect(wrapper.props()).toMatchSnapshot();
-  });
-
-  it('Test Table Edit', () => {
-    const wrapper = mount(<Table data={tableData} />);
-
     expect(wrapper.props()).toMatchSnapshot();
   });
 
@@ -43,7 +36,6 @@ describe('containers/pages/locations/locationunit', () => {
 
   it('Test Table Edit', () => {
     const wrapper = mount(<Table data={tableData} />);
-
     const first_action = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
     first_action.find('button').simulate('click');
   });
@@ -65,7 +57,7 @@ describe('containers/pages/locations/locationunit', () => {
     const wrapper = mount(<Table data={tableData} />);
 
     let heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(4);
+    expect(heading.find('th')).toHaveLength(3);
     heading.find('th').at(1).children().simulate('click');
     heading.find('th').at(1).children().simulate('click');
 
