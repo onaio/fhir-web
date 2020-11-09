@@ -26,7 +26,7 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
-  URL_LOCATION_UNIT_GROUP,
+  URL_HOME,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -45,7 +45,7 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import { ConnectedLocationUnitGroup } from '@opensrp/location-management';
+import ConnectedSidebar from '../containers/ConnectedSidebar';
 
 const { Content } = Layout;
 
@@ -112,10 +112,10 @@ const App: React.FC = () => {
   const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
-
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
+      <ConnectedSidebar />
       <div className="body-wrapper">
         <ConnectedHeader />
         <Content>
@@ -126,7 +126,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={'/'}
+              path={URL_HOME}
               component={ConnectedHomeComponent}
             />
             <PrivateComponent
@@ -156,13 +156,6 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
-            />
-            <ConnectedPrivateRoute
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
-              exact
-              path={URL_LOCATION_UNIT_GROUP}
-              component={ConnectedLocationUnitGroup}
             />
             <Route
               exact
