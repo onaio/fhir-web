@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`containers/pages/locations/LocationTagAddition renders without crashing 1`] = `
+Object {
+  "children": <Provider
+    store={
+      Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      }
+    }
+  >
+    <LocationTagModule />
+  </Provider>,
+  "initialEntries": Array [
+    "/location/group",
+  ],
+}
+`;
