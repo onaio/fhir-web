@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { Form, Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationDetail, { Props as LocationDetailData } from '../LocationDetail';
-import Tree, { TreeData } from './Tree';
+import ConnectedTree, { TreeData } from '../LocationTree';
 import Table, { TableData } from './Table';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -17,12 +17,15 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-units';
 
-reducerRegistry.register(reducerName, reducer);
-
 import { getAccessToken } from '@onaio/session-reducer';
+import { getFilterParams, TreeNode } from '../LocationTree/utils';
+import { getCurrentChildren } from '../../ducks/location-hierarchy';
+
+reducerRegistry.register(reducerName, reducer);
 
 export interface Props {
   accessToken: string;
+  currentParentChildren: any;
   fetchLocationUnitsCreator: typeof fetchLocationUnits;
   locationsArray: LocationUnitObj[];
   serviceClass: typeof OpenSRPService;
@@ -30,47 +33,54 @@ export interface Props {
 
 const defaultProps: Props = {
   accessToken: '',
+  currentParentChildren: [],
   fetchLocationUnitsCreator: fetchLocationUnits,
   locationsArray: [],
   serviceClass: OpenSRPService,
 };
 
 const LocationUnit: React.FC<Props> = (props: Props) => {
-  const { fetchLocationUnitsCreator, locationsArray, serviceClass } = props;
+  const { fetchLocationUnitsCreator, serviceClass, currentParentChildren } = props;
   const [form] = Form.useForm();
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
+  const [rootIds, setRootIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const [tableData, setTableData] = useState<TableData[] | null>(null);
-  const [treeData, setTreeData] = useState<TreeData[] | null>(null);
 
   useEffect(() => {
+    const params = {
+      is_jurisdiction: true,
+      return_geometry: false,
+      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+    };
     if (isLoading) {
       const serve = new serviceClass(
         props.accessToken,
-        'https://opensrp-stage.smartregister.org/opensrp/rest/',
-        'location/sync'
+        'https://opensrp-stage.smartregister.org/opensrp/rest',
+        '/location/findByProperties'
       );
-
       serve
-        .list({ is_jurisdiction: true, serverVersion: 0 })
-        .then((response: LocationUnitObj[]) => {
-          fetchLocationUnitsCreator(response);
+        .list(params)
+        .then((response: any) => {
           setIsLoading(false);
+          fetchLocationUnitsCreator(response);
+          setRootIds(response.map((rootLocObj: any) => rootLocObj.id));
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+        });
     }
   });
 
-  console.log('data from store>>', props);
-
   const tableData: any = [];
 
-  if (locationsArray.length) {
-    locationsArray.forEach((location: LocationUnitObj, i: number) => {
+  console.log('current chuodren????', currentParentChildren);
+
+  if (currentParentChildren.length) {
+    currentParentChildren.forEach((child: TreeNode, i: number) => {
       tableData.push({
         key: i.toString(),
-        name: location.properties.name,
-        level: location.properties.geographicLevel,
+        name: child.label,
+        level: child.node.attributes.geographicLevel,
         lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       });
     });
@@ -85,28 +95,11 @@ const LocationUnit: React.FC<Props> = (props: Props) => {
       <Row>
         <Col className="bg-white p-3" span={6}>
           {
-            <Tree
-              data={[
-                {
-                  title: 'Sierra Leone',
-                  key: 'Sierra Leone',
-                  children: [
-                    { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-                    { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-                    {
-                      title: 'Bonthe',
-                      key: 'Bonthe',
-                      children: [
-                        {
-                          title: 'Kissi Ten',
-                          key: 'Kissi Ten',
-                          children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ]}
+            <ConnectedTree
+              accessToken={props.accessToken}
+              serviceClass={OpenSRPService}
+              rootIds={rootIds}
+              data={[]}
             />
           }
         </Col>
@@ -157,6 +150,7 @@ export { LocationUnit };
 /** Interface for connected state to props */
 interface DispatchedProps {
   accessToken: string;
+  currentParentChildren: any;
   locationsArray: LocationUnitObj[];
 }
 
@@ -164,7 +158,8 @@ interface DispatchedProps {
 const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
   const accessToken = getAccessToken(state) as string;
   const locationsArray = getLocationUnitsArray(state);
-  return { accessToken, locationsArray };
+  const currentParentChildren = getCurrentChildren(state);
+  return { accessToken, locationsArray, currentParentChildren };
 };
 
 /** map props to action creators */
