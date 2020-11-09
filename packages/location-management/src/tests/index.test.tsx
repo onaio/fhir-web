@@ -5,7 +5,6 @@ import { MemoryRouter } from 'react-router';
 import { store } from '@opensrp/store';
 
 import { LocationTagModule } from '../LocationTagModule';
-import { URL_ADD_LOCATIONS_TAG } from '../constants';
 
 describe('containers/pages/locations/LocationTagAddition', () => {
   it('renders without crashing', () => {
