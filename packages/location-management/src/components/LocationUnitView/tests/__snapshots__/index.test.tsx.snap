@@ -2,260 +2,31 @@
 
 exports[`containers/pages/locations/locationunit renders without crashing 1`] = `
 Object {
-  "children": Array [
-    <HelmetWrapper
-      defer={true}
-      encodeSpecialCharacters={true}
-    >
-      <title>
-        Locations Unit
-      </title>
-    </HelmetWrapper>,
-    <h5
-      className="mb-3"
-    >
-      Location Unit Management
-    </h5>,
-    <Row>
-      <Col
-        className="bg-white p-3"
-        span={6}
-      >
-        <Tree
-          data={
-            Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "children": Array [
-                      Object {
-                        "key": "1",
-                        "title": "1",
-                      },
-                    ],
-                    "key": "Bo",
-                    "title": "Bo",
-                  },
-                  Object {
-                    "children": Array [
-                      Object {
-                        "key": "2",
-                        "title": "2",
-                      },
-                    ],
-                    "key": "Bombali",
-                    "title": "Bombali",
-                  },
-                  Object {
-                    "children": Array [
-                      Object {
-                        "children": Array [
-                          Object {
-                            "key": "Bayama CHP",
-                            "title": "Bayama CHP",
-                          },
-                        ],
-                        "key": "Kissi Ten",
-                        "title": "Kissi Ten",
-                      },
-                    ],
-                    "key": "Bonthe",
-                    "title": "Bonthe",
-                  },
-                ],
-                "key": "Sierra Leone",
-                "title": "Sierra Leone",
-              },
-            ]
-          }
-        />
-      </Col>
-      <Col
-        className="bg-white p-3 border-left"
-        span={18}
-      >
-        <div
-          className="mb-3 d-flex justify-content-between"
-        >
-          <h5
-            className="mt-4"
-          >
-            Bombali
-          </h5>
-          <div>
-            <Button
-              block={false}
-              ghost={false}
-              htmlType="button"
-              loading={false}
-              type="primary"
-            >
-              <ForwardRef(PlusOutlined) />
-              Add location unit
-            </Button>
-            <Divider
-              type="vertical"
-            />
-            <Dropdown
-              mouseEnterDelay={0.15}
-              mouseLeaveDelay={0.1}
-              overlay={
-                <Menu>
-                  <MenuItem>
-                    Logout
-                  </MenuItem>
-                </Menu>
-              }
-              placement="bottomRight"
-            >
-              <Button
-                block={false}
-                ghost={false}
-                htmlType="button"
-                icon={<ForwardRef(SettingOutlined) />}
-                loading={false}
-                shape="circle"
-                type="text"
-              />
-            </Dropdown>
-          </div>
-        </div>
-        <div
-          className="bg-white p-4"
-        >
-          <ForwardRef(InternalForm)
-            component={false}
-            form={
-              Object {
-                "__INTERNAL__": Object {
-                  "itemRef": [Function],
-                },
-                "getFieldError": [Function],
-                "getFieldInstance": [Function],
-                "getFieldValue": [Function],
-                "getFieldsError": [Function],
-                "getFieldsValue": [Function],
-                "getInternalHooks": [Function],
-                "isFieldTouched": [Function],
-                "isFieldValidating": [Function],
-                "isFieldsTouched": [Function],
-                "isFieldsValidating": [Function],
-                "resetFields": [Function],
-                "scrollToField": [Function],
-                "setFields": [Function],
-                "setFieldsValue": [Function],
-                "submit": [Function],
-                "validateFields": [Function],
-              }
-            }
-          >
-            <Table
-              columns={
-                Array [
-                  Object {
-                    "dataIndex": "name",
-                    "editable": true,
-                    "onCell": [Function],
-                    "sorter": [Function],
-                    "title": "Name",
-                  },
-                  Object {
-                    "dataIndex": "level",
-                    "editable": true,
-                    "onCell": [Function],
-                    "sorter": [Function],
-                    "title": "Level",
-                  },
-                  Object {
-                    "dataIndex": "lastupdated",
-                    "editable": true,
-                    "onCell": [Function],
-                    "render": [Function],
-                    "sorter": [Function],
-                    "title": "Last Updated",
-                  },
-                  Object {
-                    "dataIndex": "operation",
-                    "render": [Function],
-                    "title": "Actions",
-                    "width": "10%",
-                  },
-                ]
-              }
-              components={
-                Object {
-                  "body": Object {
-                    "cell": [Function],
-                  },
-                }
-              }
-              dataSource={
-                Array [
-                  Object {
-                    "created": 2020-10-01T09:15:56.000Z,
-                    "externalid": "asdkjh1231",
-                    "key": "1",
-                    "lastupdated": 2020-10-01T09:15:56.000Z,
-                    "level": 1,
-                    "name": "Edrward 1",
-                    "openmrsid": "asdasdasdkjh1231",
-                    "status": "Alive",
-                    "syncstatus": "Synced",
-                    "type": "Feautire",
-                    "username": "edward 1",
-                    "version": "1",
-                  },
-                  Object {
-                    "created": 2020-10-02T09:15:56.000Z,
-                    "externalid": "asdkjh1232",
-                    "key": "2",
-                    "lastupdated": 2020-10-02T09:15:56.000Z,
-                    "level": 2,
-                    "name": "Edrward 2",
-                    "openmrsid": "asdasdasdkjh1232",
-                    "status": "Alive",
-                    "syncstatus": "Synced",
-                    "type": "Feautire",
-                    "username": "edward 2",
-                    "version": "2",
-                  },
-                  Object {
-                    "created": 2020-10-03T09:15:56.000Z,
-                    "externalid": "asdkjh1233",
-                    "key": "3",
-                    "lastupdated": 2020-10-03T09:15:56.000Z,
-                    "level": 3,
-                    "name": "Edrward 3",
-                    "openmrsid": "asdasdasdkjh1233",
-                    "status": "Alive",
-                    "syncstatus": "Synced",
-                    "type": "Feautire",
-                    "username": "edward 3",
-                    "version": "3",
-                  },
-                  Object {
-                    "created": 2020-10-04T09:15:56.000Z,
-                    "externalid": "asdkjh1234",
-                    "key": "4",
-                    "lastupdated": 2020-10-04T09:15:56.000Z,
-                    "level": 4,
-                    "name": "Edrward 4",
-                    "openmrsid": "asdasdasdkjh1234",
-                    "status": "Alive",
-                    "syncstatus": "Synced",
-                    "type": "Feautire",
-                    "username": "edward 4",
-                    "version": "4",
-                  },
-                ]
-              }
-              rowClassName="editable-row"
-              rowKey="key"
-            />
-          </ForwardRef(InternalForm)>
-        </div>
-      </Col>
-    </Row>,
-  ],
+  "children": <LocationUnitView />,
+  "value": Object {
+    "store": Object {
+      "dispatch": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+      Symbol(observable): [Function],
+    },
+    "subscription": Subscription {
+      "handleChangeWrapper": [Function],
+      "listeners": Object {
+        "notify": [Function],
+      },
+      "onStateChange": [Function],
+      "parentSub": undefined,
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "unsubscribe": null,
+    },
+  },
 }
 `;

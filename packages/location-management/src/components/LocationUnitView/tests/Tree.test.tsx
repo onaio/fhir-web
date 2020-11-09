@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import Tree, { TREE } from '..';
+import Tree, { TreeData } from '../Tree';
 
 describe('containers/pages/locations/locationunit', () => {
-  const tree: TREE[] = [
+  const tree: TreeData[] = [
     {
       title: 'Sierra Leone',
       key: 'Sierra Leone',

@@ -188,9 +188,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       </p>
       <p
         className="mb-0 loc-desc"
-      >
-        asdkjh1230
-      </p>
+      />
     </div>
     <div
       className="mb-4 small"
@@ -202,9 +200,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       </p>
       <p
         className="mb-0 loc-desc"
-      >
-        asdasdasdkjh1230
-      </p>
+      />
     </div>
     <div
       className="mb-4 small"
@@ -258,9 +254,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       </p>
       <p
         className="mb-0 loc-desc"
-      >
-        2
-      </p>
+      />
     </div>
   </div>
 </LocationDetail>
