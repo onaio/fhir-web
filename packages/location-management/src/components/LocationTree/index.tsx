@@ -124,7 +124,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           onClick={(e) => {
             if (item.children) {
               // e.stopPropagation();
-              fetchCurrentChildrenCreator(item.children);
+              fetchCurrentChildrenCreator(item.children, item.title);
               setExpandedKeys([...expandedKeys, item.title]);
             }
           }}

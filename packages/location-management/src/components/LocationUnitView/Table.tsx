@@ -16,6 +16,7 @@ export interface TableData {
   type: string;
   created: Date;
   lastupdated: Date;
+  parent: string;
   syncstatus: LocationUnitSyncStatus;
 }
 
@@ -43,12 +44,10 @@ const Table: React.FC<Props> = (props: Props) => {
       sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
     },
     {
-      title: 'Last Updated',
-      dataIndex: 'lastupdated',
-      render: (_: any, record: TableData) => record.lastupdated.toLocaleDateString('en-US'),
+      title: 'Parent',
+      dataIndex: 'parent',
       editable: false,
-      sorter: (a: TableData, b: TableData) =>
-        a.lastupdated.toLocaleString('en-US').localeCompare(b.lastupdated.toLocaleString('en-US')),
+      sorter: (a: TableData, b: TableData) => a.parent.localeCompare(b.name),
     },
     {
       title: 'Actions',
