@@ -132,9 +132,9 @@ export const Form: React.FC<Props> = (props: Props) => {
 
     if (props.id) {
       serve
-        .create(payload)
+        .update(payload)
         .then(() => {
-          notification.success({ message: 'User created successfully', description: '' });
+          notification.success({ message: 'User Updated successfully', description: '' });
           setSubmitting(false);
           history.goBack();
         })
@@ -144,9 +144,9 @@ export const Form: React.FC<Props> = (props: Props) => {
         });
     } else {
       serve
-        .update(payload)
+        .create(payload)
         .then(() => {
-          notification.success({ message: 'User Updated successfully', description: '' });
+          notification.success({ message: 'User Created successfully', description: '' });
           setSubmitting(false);
           history.goBack();
         })
