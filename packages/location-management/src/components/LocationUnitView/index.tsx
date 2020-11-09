@@ -49,15 +49,11 @@ const LocationUnitView: React.FC = () => {
   const tableData: TableData[] = [];
 
   if (locationsArray.length) {
-    locationsArray.forEach((location: LocationUnit, i: number) => {
-      const date = (i + 1) % 28;
+    locationsArray.forEach((location: LocationUnit, i: number) =>
       tableData.push({
         key: i.toString(),
-        created: new Date(`Thu Oct ${date} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-        lastupdated: new Date(`Thu Oct ${date} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
         parentId: location.properties.parentId ? location.properties.parentId : '-',
         externalId: location.properties.externalId ? location.properties.externalId : '-',
-        OpenMRS_Id: location.properties.OpenMRS_Id ? location.properties.OpenMRS_Id : '-',
         status: location.properties.status
           ? location.properties.status
           : LocationUnitStatus.INACTIVE,
@@ -69,8 +65,8 @@ const LocationUnitView: React.FC = () => {
         geographicLevel: location.properties.geographicLevel
           ? location.properties.geographicLevel
           : 0,
-      });
-    });
+      })
+    );
   }
   if (isLoading) return <Ripple />;
 

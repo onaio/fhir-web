@@ -104,12 +104,9 @@ export const Form: React.FC<Props> = (props: Props) => {
 
     let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
       properties: {
-        // created: new Date(),
-        // lastUpdated: new Date(),
         username: user.username,
         version: 0,
         externalId: values.externalId,
-        OpenMRS_Id: props.id,
         parentId: values.parentId,
         name: values.name,
         name_en: values.name,

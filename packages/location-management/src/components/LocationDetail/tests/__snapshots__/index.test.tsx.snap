@@ -2,17 +2,15 @@
 
 exports[`containers/pages/Home renders without crashing 1`] = `
 <LocationDetail
-  created={2020-10-22T09:15:56.000Z}
-  externalid="asdkjh1230"
-  lastupdated={2020-10-22T09:15:56.000Z}
-  level={2}
+  externalId="asdkjh1230"
+  geographicLevel={2}
   name="Edrward 0"
-  openmrsid="asdasdasdkjh1230"
-  status="Alive"
+  parentId="2"
+  status="Active"
   syncstatus="Synced"
   type="Feautire"
   username="edward 0"
-  version="0"
+  version={0}
 >
   <div
     className="p-4 bg-white"
@@ -133,7 +131,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       <p
         className="mb-0 loc-desc"
       >
-        Alive
+        Active
       </p>
     </div>
     <div
@@ -156,51 +154,13 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       <p
         className="mb-0 font-weight-bold"
       >
-        Created
-      </p>
-      <p
-        className="mb-0 loc-desc"
-      >
-        10/22/2020
-      </p>
-    </div>
-    <div
-      className="mb-4 small"
-    >
-      <p
-        className="mb-0 font-weight-bold"
-      >
-        Last updated
-      </p>
-      <p
-        className="mb-0 loc-desc"
-      >
-        10/22/2020
-      </p>
-    </div>
-    <div
-      className="mb-4 small"
-    >
-      <p
-        className="mb-0 font-weight-bold"
-      >
         External Id
       </p>
       <p
         className="mb-0 loc-desc"
-      />
-    </div>
-    <div
-      className="mb-4 small"
-    >
-      <p
-        className="mb-0 font-weight-bold"
       >
-        OpenMRS Id
+        asdkjh1230
       </p>
-      <p
-        className="mb-0 loc-desc"
-      />
     </div>
     <div
       className="mb-4 small"
@@ -241,7 +201,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       <p
         className="mb-0 loc-desc"
       >
-        Alive
+        Active
       </p>
     </div>
     <div
@@ -254,7 +214,9 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       </p>
       <p
         className="mb-0 loc-desc"
-      />
+      >
+        2
+      </p>
     </div>
   </div>
 </LocationDetail>

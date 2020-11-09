@@ -33,23 +33,8 @@ const LocationDetail: React.FC<Props> = (props: Props) => {
       </div>
 
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">Created</p>
-        <p className="mb-0 loc-desc">{props.created.toLocaleDateString('en-US')}</p>
-      </div>
-
-      <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">Last updated</p>
-        <p className="mb-0 loc-desc">{props.lastupdated.toLocaleDateString('en-US')}</p>
-      </div>
-
-      <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">External Id</p>
         <p className="mb-0 loc-desc">{props.externalId}</p>
-      </div>
-
-      <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">OpenMRS Id</p>
-        <p className="mb-0 loc-desc">{props.OpenMRS_Id}</p>
       </div>
 
       <div className="mb-4 small">
