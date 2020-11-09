@@ -115,7 +115,7 @@
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
     "redux-thunk": "^2.3.0",
-    "typescript": "~3.7.2"
+    "typescript": "^3.8.3"
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"
