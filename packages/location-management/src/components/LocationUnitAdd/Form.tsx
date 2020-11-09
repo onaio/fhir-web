@@ -74,7 +74,8 @@ interface Props {
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const loactiontag = useSelector((state) => getLocationTagsArray(state));
+  // const locationtag = useSelector((state) => getLocationTagsArray(state));
+  const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
 
@@ -84,7 +85,8 @@ export const Form: React.FC<Props> = (props: Props) => {
       serve
         .list()
         .then((response: LocationTag[]) => {
-          dispatch(fetchLocationTags(response));
+          setLocationtag(response);
+          // dispatch(fetchLocationTags(response));
           setIsLoading(false);
         })
         .catch((e) => console.log(e));
@@ -223,8 +225,8 @@ export const Form: React.FC<Props> = (props: Props) => {
                 optionFilterProp="children"
                 filterOption={filter}
               >
-                {loactiontag &&
-                  loactiontag.map((e) => (
+                {locationtag &&
+                  locationtag.map((e) => (
                     <Select.Option key={e.id} value={e.id}>
                       {e.name}
                     </Select.Option>
