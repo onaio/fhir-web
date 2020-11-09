@@ -1,3 +1,2 @@
-import ConnectedLocationUnit from './components/LocationUnit';
-export { ConnectedLocationUnit };
-export default ConnectedLocationUnit;
+import LocationUnitModule from './LocationUnitModule';
+export { LocationUnitModule };

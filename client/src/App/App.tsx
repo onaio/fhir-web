@@ -26,7 +26,8 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
-  URL_LOCATIONS_UNIT,
+  URL_LOCATION,
+  URL_HOME,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -45,7 +46,8 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import ConnectedLocationUnit from '@opensrp/location-management';
+import ConnectedSidebar from '../containers/ConnectedSidebar';
+import { LocationUnitModule } from '@opensrp/location-management';
 
 const { Content } = Layout;
 
@@ -115,6 +117,7 @@ const App: React.FC = () => {
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
+      <ConnectedSidebar />
       <div className="body-wrapper">
         <ConnectedHeader />
         <Content>
@@ -125,7 +128,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/"
+              path={URL_HOME}
               component={ConnectedHomeComponent}
             />
             <PrivateComponent
@@ -160,8 +163,8 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATIONS_UNIT}
-              component={ConnectedLocationUnit}
+              path={URL_LOCATION}
+              component={LocationUnitModule}
             />
             <Route
               exact

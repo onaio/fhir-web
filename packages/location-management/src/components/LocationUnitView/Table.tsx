@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
-import { OpenSRPService } from '@opensrp/server-service';
+import { LocationUnitStatus, LocationUnitSyncStatus } from '../../ducks/location-units';
 
 export interface TableData {
-  key: string;
   name: string;
-  status: 'Active' | 'Not Active';
+  parentId: string;
+  status: LocationUnitStatus;
+  geographicLevel: number;
+  username: string;
+  version: number;
+  externalId: string;
+  OpenMRS_Id: string;
+  key: string;
   type: string;
   created: Date;
   lastupdated: Date;
-  externalid: string;
-  openmrsid: string;
-  username: string;
-  version: string;
-  syncstatus: 'Synced' | 'Not Synced';
-  level: number;
+  syncstatus: LocationUnitSyncStatus;
 }
 
 export interface Props {
   data: TableData[];
   onViewDetails?: Function;
-  accessToken: string;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
@@ -33,21 +33,21 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       title: 'Name',
       dataIndex: 'name',
-      editable: true,
-      sorter: (a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name),
+      editable: false,
+      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
       title: 'Level',
-      dataIndex: 'level',
-      editable: true,
-      sorter: (a: { level: number }, b: { level: number }) => a.level - b.level,
+      dataIndex: 'geographicLevel',
+      editable: false,
+      sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
     },
     {
       title: 'Last Updated',
       dataIndex: 'lastupdated',
       render: (_: any, record: TableData) => record.lastupdated.toLocaleDateString('en-US'),
-      editable: true,
-      sorter: (a: { lastupdated: Date }, b: { lastupdated: Date }) =>
+      editable: false,
+      sorter: (a: TableData, b: TableData) =>
         a.lastupdated.toLocaleString('en-US').localeCompare(b.lastupdated.toLocaleString('en-US')),
     },
     {
@@ -64,8 +64,11 @@ const Table: React.FC<Props> = (props: Props) => {
             <Divider type="vertical" />
             <Dropdown
               overlay={
-                <Menu>
-                  <Menu.Item onClick={() => props.onViewDetails && props.onViewDetails(record)}>
+                <Menu className="menu">
+                  <Menu.Item
+                    className="viewdetails"
+                    onClick={() => props.onViewDetails && props.onViewDetails(record)}
+                  >
                     View Details
                   </Menu.Item>
                 </Menu>
@@ -82,8 +85,7 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  const mergedColumns = columns.map((col) => col);
-  return <AntTable dataSource={props.data} columns={mergedColumns} />;
+  return <AntTable dataSource={props.data} columns={columns} />;
 };
 
 export default Table;
