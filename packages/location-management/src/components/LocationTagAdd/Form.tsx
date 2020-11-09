@@ -133,8 +133,8 @@ export const Form: React.FC<Props> = (props: Props) => {
             </AntForm.Item>
 
             <AntForm.Item name={'buttons'} {...offsetLayout}>
-              <SubmitButton>{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
-              <Button onClick={() => history.goBack()} type="dashed">
+              <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
+              <Button id="cancel" onClick={() => history.goBack()} type="dashed">
                 Cancel
               </Button>
             </AntForm.Item>

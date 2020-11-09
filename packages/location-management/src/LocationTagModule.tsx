@@ -17,7 +17,7 @@ export const LocationTagModule: React.FC = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path={modulebaseurl + URL_ADD_LOCATIONS_TAG} component={LocationTagAdd} />
+        <Route path={modulebaseurl + URL_ADD_LOCATIONS_TAG + '/:id'} component={LocationTagAdd} />
         <Route
           render={() => (
             <div>

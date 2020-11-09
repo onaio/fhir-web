@@ -19,151 +19,114 @@ Object {
     <div
       className="bg-white p-5"
     >
-      <ForwardRef(InternalForm)
-        initialValues={
-          Object {
-            "status": "active",
-          }
-        }
-        labelCol={
-          Object {
-            "span": 8,
-          }
-        }
-        name="location-add"
-        requiredMark="optional"
-        validateMessages={
-          Object {
-            "number": Object {
-              "range": "\${label} must be between \${min} and \${max}",
-            },
-            "required": "\${label} is required!",
-            "types": Object {
-              "email": "\${label} is not validate email!",
-              "number": "\${label} is not a validate number!",
-            },
-          }
-        }
-        wrapperCol={
-          Object {
-            "span": 8,
-          }
-        }
-      >
-        <FormItem
-          label="Location Name"
-          name="name"
-          rules={
-            Array [
-              Object {
-                "required": true,
-              },
-            ]
-          }
-        >
-          <Select
-            bordered={true}
-            choiceTransitionName=""
-            filterOption={[Function]}
-            optionFilterProp="children"
-            placeholder="Enter a location group name"
-            showSearch={true}
-            transitionName="slide-up"
-          >
-            <Option
-              chec={true}
-              value="Option1"
-            >
-              Option 1
-            </Option>
-            <Option
-              chec={true}
-              value="Option2"
-            >
-              Option 2
-            </Option>
-            <Option
-              chec={true}
-              value="Option3"
-            >
-              Option 3
-            </Option>
-          </Select>
-        </FormItem>
-        <FormItem
-          label="Status"
-          name="status"
-          rules={
-            Array [
-              Object {
-                "required": true,
-              },
-            ]
-          }
-          valuePropName="checked"
-        >
-          <Memo
-            defaultValue="active"
-          >
-            <Radio
-              type="radio"
-              value="active"
-            >
-              Active
-            </Radio>
-            <Radio
-              type="radio"
-              value="inactive"
-            >
-              Inactive
-            </Radio>
-          </Memo>
-        </FormItem>
-        <FormItem
-          label="Type"
-          name="type"
-          rules={
-            Array [
-              Object {
-                "required": true,
-              },
-            ]
-          }
-        >
-          <TextArea
-            placeholder="Description"
-            rows={4}
-          />
-        </FormItem>
-        <FormItem
-          wrapperCol={
-            Object {
-              "offset": 8,
-              "span": 8,
-            }
-          }
-        >
-          <Button
-            block={false}
-            ghost={false}
-            htmlType="submit"
-            loading={false}
-            type="primary"
-          >
-            Submit
-          </Button>
-          <Button
-            block={false}
-            ghost={false}
-            htmlType="reset"
-            loading={false}
-            type="default"
-          >
-            Cancel
-          </Button>
-        </FormItem>
-      </ForwardRef(InternalForm)>
+      <Form />
     </div>,
   ],
+}
+`;
+
+exports[`containers/pages/locations/LocationTagAddition renders without crashing 2`] = `
+Object {
+  "children": <Context.Provider
+    value={
+      Object {
+        "__INTERNAL__": Object {
+          "itemRef": [Function],
+          "name": undefined,
+        },
+        "getFieldError": [Function],
+        "getFieldInstance": [Function],
+        "getFieldValue": [Function],
+        "getFieldsError": [Function],
+        "getFieldsValue": [Function],
+        "getInternalHooks": [Function],
+        "isFieldTouched": [Function],
+        "isFieldValidating": [Function],
+        "isFieldsTouched": [Function],
+        "isFieldsValidating": [Function],
+        "resetFields": [Function],
+        "scrollToField": [Function],
+        "setFields": [Function],
+        "setFieldsValue": [Function],
+        "submit": [Function],
+        "validateFields": [Function],
+        "validateTrigger": "onChange",
+      }
+    }
+  >
+    <Unknown
+      label="Location Name"
+      name="name"
+    >
+      <ForwardRef
+        name="name"
+        placeholder="Enter a location group name"
+      />
+    </Unknown>
+    <Unknown
+      label="Status"
+      name="active"
+      valuePropName="checked"
+    >
+      <Unknown
+        defaultValue={true}
+        name="active"
+      >
+        <Unknown
+          name="active"
+          value={true}
+        >
+          Active
+        </Unknown>
+        <Unknown
+          name="active"
+          value={false}
+        >
+          Inactive
+        </Unknown>
+      </Unknown>
+    </Unknown>
+    <Unknown
+      label="Type"
+      name="description"
+    >
+      <ForwardRef
+        name="description"
+        placeholder="Description"
+        rows={4}
+      />
+    </Unknown>
+    <Unknown
+      name="buttons"
+      wrapperCol={
+        Object {
+          "offset": 8,
+          "span": 11,
+        }
+      }
+    >
+      <Unknown
+        id="submit"
+      >
+        Save
+      </Unknown>
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        id="cancel"
+        loading={false}
+        onClick={[Function]}
+        type="dashed"
+      >
+        Cancel
+      </Button>
+    </Unknown>
+  </Context.Provider>,
+  "className": "ant-form ant-form-horizontal ant-form-hide-required-mark",
+  "id": undefined,
+  "onReset": [Function],
+  "onSubmit": [Function],
+  "onSubmitCapture": [Function],
 }
 `;
