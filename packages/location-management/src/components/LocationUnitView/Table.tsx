@@ -22,7 +22,6 @@ export interface TableData {
 export interface Props {
   data: TableData[];
   onViewDetails?: Function;
-  accessToken: string;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
@@ -65,8 +64,11 @@ const Table: React.FC<Props> = (props: Props) => {
             <Divider type="vertical" />
             <Dropdown
               overlay={
-                <Menu>
-                  <Menu.Item onClick={() => props.onViewDetails && props.onViewDetails(record)}>
+                <Menu className="menu">
+                  <Menu.Item
+                    className="viewdetails"
+                    onClick={() => props.onViewDetails && props.onViewDetails(record)}
+                  >
                     View Details
                   </Menu.Item>
                 </Menu>

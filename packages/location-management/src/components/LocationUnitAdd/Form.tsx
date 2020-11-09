@@ -1,13 +1,12 @@
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
-import { SubmitButton, Form as AntForm, Input, Radio, Select, ResetButton } from 'formik-antd';
+import { SubmitButton, Form as AntForm, Input, Radio, Select } from 'formik-antd';
 import { notification, Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { history } from '@onaio/connected-reducer-registry';
 import { getUser } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
-import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Formik, FieldArray } from 'formik';
 import { Ripple } from '@onaio/loaders';
 import {
@@ -18,16 +17,12 @@ import {
 } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { API_BASE_URL, LOCATION_TAG_ALL } from '../../constants';
-import reducer, {
-  reducerName,
+import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
+import {
   fetchLocationTags,
-  getLocationTagsArray,
+  // getLocationTagsArray,
   LocationTag,
 } from '../../ducks/location-tags';
-import { resolve } from 'path';
-
-reducerRegistry.register(reducerName, reducer);
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -37,9 +32,10 @@ const status = [
   { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
 ];
 
+// TODO : need to resolve this data from server
 const parentId = [{ name: 'Bombali', value: '1123' }];
 
-interface formfield {
+interface FormField {
   parentId: string;
   name: string;
   status: LocationUnitStatus;
@@ -50,7 +46,7 @@ interface formfield {
   textEntry?: string[];
 }
 
-const initialValue: formfield = {
+const initialValue: FormField = {
   parentId: '',
   name: '',
   status: LocationUnitStatus.ACTIVE,
@@ -100,76 +96,83 @@ export const Form: React.FC<Props> = (props: Props) => {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
+  /**
+   * Handle form submission
+   *
+   * @param {Object} values the form fields
+   * @param {Function} setSubmitting method to set submission status
+   */
+  function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
+
+    let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
+      properties: {
+        // created: new Date(),
+        // lastUpdated: new Date(),
+        username: user.username,
+        version: 0,
+        externalId: values.externalId,
+        OpenMRS_Id: props.id,
+        parentId: values.parentId,
+        name: values.name,
+        name_en: values.name,
+        status: values.status,
+      },
+      id: props.id,
+      syncStatus: LocationUnitSyncStatus.SYNCED,
+      type: values.Type,
+      locationTags: values.locationTags,
+      geometry: values.geometry as Geometry,
+      textEntry: values.textEntry,
+    };
+
+    function removeEmptykeys(obj: any) {
+      Object.keys(obj).forEach(function (key) {
+        if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
+        else if (obj[key] == null) delete obj[key];
+      });
+    }
+    removeEmptykeys(payload);
+
+    console.log('payload :', payload);
+
+    if (props.id) {
+      serve
+        .create(payload)
+        .then(() => {
+          notification.success({ message: 'User created successfully', description: '' });
+          setSubmitting(false);
+          history.goBack();
+        })
+        .catch((e: Error) => {
+          notification.error({ message: `${e}`, description: '' });
+          setSubmitting(false);
+        });
+    } else {
+      serve
+        .update(payload)
+        .then(() => {
+          notification.success({ message: 'User Updated successfully', description: '' });
+          setSubmitting(false);
+          history.goBack();
+        })
+        .catch((e: Error) => {
+          notification.error({ message: `${e}`, description: '' });
+          setSubmitting(false);
+        });
+    }
+  }
+
   if (isLoading) return <Ripple />;
 
   return (
     <Formik
       initialValues={initialValue}
       validationSchema={userSchema}
-      onSubmit={(values, { setSubmitting }) => {
-        const serve = new OpenSRPService(
-          accessToken,
-          'https://opensrp-stage.smartregister.org/opensrp/rest/',
-          'location-tag'
-        );
-
-        let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
-          properties: {
-            // created: new Date(),
-            // lastUpdated: new Date(),
-            username: user.username,
-            version: 0,
-            externalId: values.externalId,
-            OpenMRS_Id: props.id,
-            parentId: values.parentId,
-            name: values.name,
-            name_en: values.name,
-            status: values.status,
-          },
-          id: props.id,
-          syncStatus: LocationUnitSyncStatus.SYNCED,
-          type: values.Type,
-          locationTags: values.locationTags,
-          geometry: values.geometry as Geometry,
-          textEntry: values.textEntry,
-        };
-
-        function removeEmptykeys(obj: any) {
-          Object.keys(obj).forEach(function (key) {
-            if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
-            else if (obj[key] == null) delete obj[key];
-          });
-        }
-        removeEmptykeys(payload);
-
-        console.log('payload :', payload);
-
-        if (props.id) {
-          serve
-            .create(payload)
-            .then(() => {
-              notification.success({ message: 'User created successfully', description: '' });
-              setSubmitting(false);
-              history.goBack();
-            })
-            .catch((e: Error) => {
-              notification.error({ message: `${e}`, description: '' });
-              setSubmitting(false);
-            });
-        } else {
-          serve
-            .update(payload)
-            .then(() => {
-              notification.success({ message: 'User Updated successfully', description: '' });
-              setSubmitting(false);
-              history.goBack();
-            })
-            .catch((e: Error) => {
-              notification.error({ message: `${e}`, description: '' });
-              setSubmitting(false);
-            });
-        }
-      }}
+      onSubmit={(
+        values: FormField,
+        { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+      ) => onSubmit(values, setSubmitting)}
     >
       {({ values, errors, isSubmitting, handleSubmit }) => {
         console.log('values :', values, ' errors :', errors);
@@ -279,8 +282,8 @@ export const Form: React.FC<Props> = (props: Props) => {
               )}
             />
             <AntForm.Item name="buttons" {...offsetLayout}>
-              <SubmitButton>{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
-              <Button onClick={() => history.goBack()} type="dashed">
+              <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
+              <Button id="cancel" onClick={() => history.goBack()} type="dashed">
                 Cancel
               </Button>
             </AntForm.Item>
