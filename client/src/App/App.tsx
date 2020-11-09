@@ -27,6 +27,7 @@ import {
   URL_REACT_LOGIN,
   URL_LOGOUT,
   URL_HOME,
+  URL_LOCATION_GROUP,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -46,6 +47,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
+import { LocationTagModule } from '@opensrp/location-management';
 
 const { Content } = Layout;
 
@@ -156,6 +158,13 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_LOCATION_GROUP}
+              component={LocationTagModule}
             />
             <Route
               exact

@@ -47,7 +47,12 @@ Object {
               Locations unit
             </MenuItem>
             <MenuItem>
-              Locations unit group
+              <Link
+                className="admin-link"
+                to="/teams"
+              >
+                Locations unit group
+              </Link>
             </MenuItem>
             <MenuItem>
               Locations unit group set

@@ -9,9 +9,15 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 
-/** interface for location group **/
+/** interface for location Tag **/
 export interface LocationTag {
   id: number;
+  active: boolean;
+  name: string;
+  description: string;
+}
+
+export interface LocationTagPayloadPOST {
   active: boolean;
   name: string;
   description: string;

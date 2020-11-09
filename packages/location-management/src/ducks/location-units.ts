@@ -9,6 +9,8 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 import { Geometry } from 'geojson';
+import { values } from 'lodash';
+import { Store } from 'redux';
 
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
@@ -16,17 +18,24 @@ export enum LocationUnitStatus {
   INACTIVE = 'InActive',
 }
 
+export enum LocationUnitSyncStatus {
+  SYNCED = 'Synced',
+  NOTSYNCED = 'NotSynced',
+}
+
 /** interface for LocationUnit.properties */
 export interface Properties {
-  geographicLevel: number;
   name: string;
   parentId: string;
   status: LocationUnitStatus;
-  username: string;
-  version: number;
-  name_en: string;
-  externalId: string;
-  OpenMRS_Id: string;
+  geographicLevel?: number;
+  username?: string;
+  version?: number;
+  name_en?: string;
+  externalId?: string;
+  OpenMRS_Id?: string;
+  created?: Date;
+  lastUpdated?: Date;
 }
 
 /** location unit tag interface */
@@ -39,30 +48,26 @@ export interface LocationUnitTag {
 export interface LocationUnit {
   id: string | number;
   properties: Properties;
-  syncStatus: string;
+  syncStatus: LocationUnitSyncStatus;
   type: string;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
+  locationTags?: LocationUnitTag[];
+  geometry?: Geometry;
+}
+
+/** interface for the POST payload */
+export interface LocationUnitPayloadPOST {
+  properties?: Properties;
+  syncStatus?: LocationUnitSyncStatus;
+  type: string;
+  locationTags?: LocationUnitTag[];
+  geometry?: Geometry;
+  textEntry?: string[];
 }
 
 /** interface for the PUT payload */
-export interface LocationUnitPayloadPUT {
+export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
   id: string;
-  type: string;
-  syncStatus: string;
-  serverVersion: string;
-  properties: Properties;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
-}
-
-/** interface for POST payload */
-export interface LocationUnitPayloadPOST {
-  type: string;
-  syncStatus: string;
-  properties: Properties;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
+  serverVersion: number;
 }
 
 /** reducer name for the Item module */
@@ -92,5 +97,8 @@ export const getLocationUnitsById = getItemsByIdFactory<LocationUnit>(reducerNam
 export const getLocationUnitById = getItemByIdFactory<LocationUnit>(reducerName);
 export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerName);
 export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
+
+export const LocationUnitsArray = (state: Partial<Store>): LocationUnit[] =>
+  values(getLocationUnitsById(state) || {});
 
 export default reducer;

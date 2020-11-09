@@ -38,7 +38,7 @@ export const locationUnit1: LocationUnit = {
     geographicLevel: 5,
     name: 'Thailand test site BVBD 2',
     parentId: '45042d61-2305-4b67-87f4-a451339f79c7',
-    status: 'Active' as LocationUnitStatus,
+    status: LocationUnitStatus.ACTIVE,
     username: 'bvbd_test',
     version: 0,
     name_en: 'Thailand test site BVBD 2',
@@ -49,7 +49,7 @@ export const locationUnit1: LocationUnit = {
   type: 'Feature',
 };
 
-export const locationUnit2 = {
+export const locationUnit2: LocationUnit = {
   geometry: {
     coordinates: [
       [
@@ -71,7 +71,7 @@ export const locationUnit2 = {
     geographicLevel: 5,
     name: 'Thailand test site BVBD 2',
     parentId: '45042d61-2305-4b67-87f4-a451339f79c7',
-    status: 'Active',
+    status: LocationUnitStatus.ACTIVE,
     username: 'bvbd_test',
     version: 0,
     name_en: 'Thailand test site BVBD 2',
