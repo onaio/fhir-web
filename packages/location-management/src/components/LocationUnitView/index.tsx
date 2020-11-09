@@ -130,11 +130,7 @@ const LocationUnitView: React.FC = () => {
             </div>
           </div>
           <div className="bg-white p-4">
-            <Table
-              data={tableData}
-              onViewDetails={(e: LocationDetailData) => setDetail(e)}
-              accessToken={accessToken}
-            />
+            <Table data={tableData} onViewDetails={(e: LocationDetailData) => setDetail(e)} />
           </div>
         </Col>
 

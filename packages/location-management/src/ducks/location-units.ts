@@ -66,7 +66,8 @@ export interface LocationUnitPayloadPOST {
 
 /** interface for the PUT payload */
 export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
-  id: string | number;
+  id: string;
+  serverVersion: number;
 }
 
 /** reducer name for the Item module */
