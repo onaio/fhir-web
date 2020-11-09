@@ -26,7 +26,7 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
-  URL_LOCATION,
+  URL_LOCATION_UNIT,
   URL_HOME,
 } from '../constants';
 import { providers } from '../configs/settings';
@@ -163,7 +163,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION}
+              path={URL_LOCATION_UNIT}
               component={LocationUnitModule}
             />
             <Route
