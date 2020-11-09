@@ -17,7 +17,7 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, LOCATION_UNIT_ALL, URL_ADD_LOCATIONS_UNIT } from '../../constants';
+import { API_BASE_URL, LOCATION_UNIT_ALL, URL_LOCATION_UNIT_ADD } from '../../constants';
 import Tree from './Tree';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
@@ -51,6 +51,7 @@ const LocationUnitView: React.FC = () => {
   if (locationsArray.length) {
     locationsArray.forEach((location: LocationUnit, i: number) =>
       tableData.push({
+        id: location.id,
         key: i.toString(),
         parentId: location.properties.parentId ? location.properties.parentId : '-',
         externalId: location.properties.externalId ? location.properties.externalId : '-',
@@ -106,7 +107,7 @@ const LocationUnitView: React.FC = () => {
           <div className="mb-3 d-flex justify-content-between">
             <h5 className="mt-4">Bombali</h5>
             <div>
-              <Link to={window.location.pathname + URL_ADD_LOCATIONS_UNIT}>
+              <Link to={URL_LOCATION_UNIT_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
                   Add location unit
