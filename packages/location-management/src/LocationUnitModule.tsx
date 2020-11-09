@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { URL_ADD_LOCATIONS_UNIT } from './constants';
 
-import LocationUnitView from './components/LocationUnitView';
+import ConnectedLocationUnitView from './components/LocationUnitView';
 import LocationUnitAdd from './components/LocationUnitAdd';
 
 /**
@@ -18,7 +18,7 @@ export const LocationUnitModule: React.FC = () => {
     <BrowserRouter>
       <Switch>
         <Route path={baseurl + URL_ADD_LOCATIONS_UNIT} component={LocationUnitAdd} />
-        <Route exact component={LocationUnitView} />
+        <Route exact component={ConnectedLocationUnitView} />
       </Switch>
     </BrowserRouter>
   );

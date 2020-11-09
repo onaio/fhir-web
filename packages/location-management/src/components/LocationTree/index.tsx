@@ -3,7 +3,6 @@ import { Input, Tree as AnyTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { TableData } from '../LocationUnit/Table';
 import { generateJurisdictionTree, RawOpenSRPHierarchy, TreeNode } from './utils';
 import reducer, {
   fetchAllHierarchies,
@@ -59,7 +58,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const filterData: any = [];
 
   React.useEffect(() => {
-    if (rootIds.length && isLoading) {
+    if (rootIds.length && isLoading && !hierarchiesArray.length) {
       rootIds.forEach((id: string) => {
         const serve = new serviceClass(
           accessToken,
@@ -78,6 +77,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
             console.log(e);
           });
       });
+      setIsLoading(false);
     }
   }, [rootIds]);
 
@@ -125,6 +125,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
             if (item.children) {
               // e.stopPropagation();
               fetchCurrentChildrenCreator(item.children);
+              setExpandedKeys([...expandedKeys, item.title]);
             }
           }}
         >

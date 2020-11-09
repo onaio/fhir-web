@@ -5,7 +5,7 @@ import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationDetail, { Props as LocationDetailData } from '../LocationDetail';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, {
@@ -22,53 +22,73 @@ import Tree from './Tree';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
+import ConnectedTree from '../LocationTree';
+import { getCurrentChildren } from '../../ducks/location-hierarchy';
+import { Store } from 'redux';
+import { getFilterParams, TreeNode } from '../LocationTree/utils';
 
 reducerRegistry.register(reducerName, reducer);
 
-const LocationUnitView: React.FC = () => {
+export interface Props {
+  accessToken: string;
+  currentParentChildren: any;
+  fetchLocationUnitsCreator: typeof fetchLocationUnits;
+  locationsArray: LocationUnit[];
+  serviceClass: typeof OpenSRPService;
+}
+
+const defaultProps: Props = {
+  accessToken: '',
+  currentParentChildren: [],
+  fetchLocationUnitsCreator: fetchLocationUnits,
+  locationsArray: [],
+  serviceClass: OpenSRPService,
+};
+
+const LocationUnitView: React.FC<Props> = (props: Props) => {
+  const { serviceClass, fetchLocationUnitsCreator, currentParentChildren } = props;
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const locationsArray = useSelector((state) => getLocationUnitsArray(state));
   const dispatch = useDispatch();
 
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
+  const [rootIds, setRootIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const params = {
+      is_jurisdiction: true,
+      return_geometry: false,
+      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+    };
     if (isLoading) {
-      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_ALL);
+      const serve = new serviceClass(
+        props.accessToken,
+        'https://opensrp-stage.smartregister.org/opensrp/rest',
+        '/location/findByProperties'
+      );
       serve
-        .list({ is_jurisdiction: true, serverVersion: 0 })
-        .then((response: LocationUnit[]) => {
-          dispatch(fetchLocationUnits(response));
+        .list(params)
+        .then((response: any) => {
           setIsLoading(false);
+          fetchLocationUnitsCreator(response);
+          setRootIds(response.map((rootLocObj: any) => rootLocObj.id));
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+        });
     }
   });
 
-  const tableData: TableData[] = [];
+  const tableData: any = [];
 
-  if (locationsArray.length) {
-    locationsArray.forEach((location: LocationUnit, i: number) => {
-      const date = (i + 1) % 28;
+  if (currentParentChildren.length) {
+    currentParentChildren.forEach((child: TreeNode, i: number) => {
       tableData.push({
         key: i.toString(),
-        created: new Date(`Thu Oct ${date} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-        lastupdated: new Date(`Thu Oct ${date} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-        parentId: location.properties.parentId ? location.properties.parentId : '-',
-        externalId: location.properties.externalId ? location.properties.externalId : '-',
-        OpenMRS_Id: location.properties.OpenMRS_Id ? location.properties.OpenMRS_Id : '-',
-        status: location.properties.status
-          ? location.properties.status
-          : LocationUnitStatus.INACTIVE,
-        syncstatus: location.syncStatus ? location.syncStatus : LocationUnitSyncStatus.NOTSYNCED,
-        type: location.type ? location.type : '-',
-        username: location.properties.username ? location.properties.username : '-',
-        version: location.properties.version ? location.properties.version : 0,
-        name: location.properties.name ? location.properties.name : '-',
-        geographicLevel: location.properties.geographicLevel
-          ? location.properties.geographicLevel
-          : 0,
+        name: child.label,
+        level: child.node.attributes.geographicLevel,
+        lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       });
     });
   }
@@ -82,35 +102,18 @@ const LocationUnitView: React.FC = () => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree
-            data={[
-              {
-                title: 'Sierra Leone',
-                key: 'Sierra Leone',
-                children: [
-                  { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-                  { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-                  {
-                    title: 'Bonthe',
-                    key: 'Bonthe',
-                    children: [
-                      {
-                        title: 'Kissi Ten',
-                        key: 'Kissi Ten',
-                        children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ]}
+          <ConnectedTree
+            accessToken={accessToken}
+            rootIds={rootIds}
+            serviceClass={serviceClass}
+            data={[]}
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between">
             <h5 className="mt-4">Bombali</h5>
             <div>
-              <Link to={window.location.pathname + URL_ADD_LOCATIONS_UNIT}>
+              <Link to={`location/unit${URL_ADD_LOCATIONS_UNIT}`}>
                 <Button type="primary">
                   <PlusOutlined />
                   Add location unit
@@ -144,4 +147,29 @@ const LocationUnitView: React.FC = () => {
   );
 };
 
-export default LocationUnitView;
+LocationUnitView.defaultProps = defaultProps;
+
+export { LocationUnitView };
+
+/** Interface for connected state to props */
+interface DispatchedProps {
+  accessToken: string;
+  currentParentChildren: any;
+  locationsArray: LocationUnit[];
+}
+
+// connect to store
+const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
+  const accessToken = getAccessToken(state) as string;
+  const locationsArray = getLocationUnitsArray(state);
+  const currentParentChildren = getCurrentChildren(state);
+  return { accessToken, locationsArray, currentParentChildren };
+};
+
+/** map props to action creators */
+const mapDispatchToProps = {
+  fetchLocationUnitsCreator: fetchLocationUnits,
+};
+
+const ConnectedLocationUnitView = connect(mapStateToProps, mapDispatchToProps)(LocationUnitView);
+export default ConnectedLocationUnitView;
