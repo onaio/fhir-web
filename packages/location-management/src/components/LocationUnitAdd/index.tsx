@@ -1,11 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, { reducerName } from '../../ducks/location-units';
 import Form from './Form';
 import { useParams } from 'react-router';
-
-reducerRegistry.register(reducerName, reducer);
 
 export const LocationUnitAdd: React.FC = () => {
   const params: { id: string } = useParams();

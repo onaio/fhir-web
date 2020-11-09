@@ -23,6 +23,10 @@ import {
   // getLocationTagsArray,
   LocationTag,
 } from '../../ducks/location-tags';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+import reducer, { reducerName } from '../../ducks/location-units';
+
+reducerRegistry.register(reducerName, reducer);
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
