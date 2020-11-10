@@ -77,7 +77,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       setIsLoading(true);
       serve
         .read(userId)
-        .then((response: KeycloakUser) => {
+        .then((response: KeycloakUser | null | undefined) => {
           if (response) {
             setIsLoading(false);
             fetchKeycloakUsersCreator([response]);
