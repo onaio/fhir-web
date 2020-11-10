@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`containers/pages/Home renders without crashing 1`] = `
-<LocationDetail
+<LocationUnitDetail
   externalId="asdkjh1230"
   geographicLevel={2}
   name="Edrward 0"
@@ -219,5 +219,5 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       </p>
     </div>
   </div>
-</LocationDetail>
+</LocationUnitDetail>
 `;

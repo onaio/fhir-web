@@ -7,7 +7,7 @@ export interface Props extends TableData {
   onClose?: Function;
 }
 
-const LocationDetail: React.FC<Props> = (props: Props) => {
+const LocationUnitDetail: React.FC<Props> = (props: Props) => {
   return (
     <div className="p-4 bg-white">
       <Button
@@ -60,4 +60,4 @@ const LocationDetail: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default LocationDetail;
+export default LocationUnitDetail;
