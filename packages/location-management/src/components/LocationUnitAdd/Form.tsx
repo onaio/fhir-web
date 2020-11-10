@@ -2,18 +2,19 @@ import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio, Select } from 'formik-antd';
 import { notification, Button } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { history } from '@onaio/connected-reducer-registry';
 import { getUser } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
-import { Formik, FieldArray } from 'formik';
+import { Formik } from 'formik';
 import { Ripple } from '@onaio/loaders';
 import {
+  LocationUnit,
   LocationUnitPayloadPOST,
   LocationUnitPayloadPUT,
   LocationUnitStatus,
   LocationUnitSyncStatus,
+  LocationUnitTag,
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
@@ -36,25 +37,18 @@ interface FormField {
   parentId: string;
   name: string;
   status: LocationUnitStatus;
-  Type: string;
+  type: string;
   externalId?: string;
-  locationTags?: LocationTag[];
-  geometry?: Geometry;
+  locationTags?: string[];
+  geometry?: string;
 }
-
-const initialValue: FormField = {
-  parentId: '',
-  name: '',
-  status: LocationUnitStatus.ACTIVE,
-  Type: '',
-};
 
 /** yup validations for practitioner data object from form */
 export const userSchema = Yup.object().shape({
   parentId: Yup.number().typeError('Parentid must be a Number').required('Parentid is Required'),
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   status: Yup.string().required('Status is Required'),
-  Type: Yup.string().typeError('Type must be a String').required('Type is Required'),
+  type: Yup.string().typeError('Type must be a String').required('Type is Required'),
   externalId: Yup.string().typeError('External id must be a String'),
   locationTags: Yup.array().typeError('location Tags must be an Array'),
   geometry: Yup.string().typeError('location Tags must be a An String'),
@@ -69,18 +63,57 @@ export const Form: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [initialValue, setInitialValue] = useState<FormField>({
+    parentId: '',
+    name: '',
+    status: LocationUnitStatus.ACTIVE,
+    type: '',
+  });
 
   useEffect(() => {
     if (isLoading) {
-      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
-      serve
-        .list()
-        .then((response: LocationTag[]) => {
-          setLocationtag(response);
-          // dispatch(fetchLocationTags(response));
-          setIsLoading(false);
-        })
-        .catch((e) => console.log(e));
+      let locationstagfetched = false;
+      let detailfetched = false;
+      if (!locationtag) {
+        let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+        serve
+          .list()
+          .then((response: LocationTag[]) => {
+            locationstagfetched = true;
+            setLocationtag(response);
+            console.log('LocationTag : ', response);
+            if (!props.id || detailfetched) setIsLoading(false);
+          })
+          .catch((e) => console.log(e));
+      }
+
+      if (props.id) {
+        let serve = new OpenSRPService(
+          accessToken,
+          API_BASE_URL,
+          `location/${props.id}?is_jurisdiction=true`
+        );
+        serve
+          .list()
+          .then((response: LocationUnit) => {
+            detailfetched = true;
+            setInitialValue({
+              name: response.properties.name,
+              // need to set parent id in treeselect
+              parentId: response.properties.parentId,
+              status: response.properties.status,
+              externalId: response.properties.externalId,
+              locationTags: response.locationTags?.map((e) =>
+                JSON.stringify({ id: e.id, name: e.name })
+              ),
+              geometry: JSON.stringify(response.geometry),
+              type: response.type,
+            });
+            console.log('LocationUnit : ', response);
+            if (locationstagfetched) setIsLoading(false);
+          })
+          .catch((e) => console.log(e));
+      }
     }
   }, []);
 
@@ -96,6 +129,9 @@ export const Form: React.FC<Props> = (props: Props) => {
    */
   function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
+    const locationtag: LocationUnitTag[] | undefined = values.locationTags?.map((e) =>
+      JSON.parse(e)
+    );
 
     let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
       properties: {
@@ -109,18 +145,20 @@ export const Form: React.FC<Props> = (props: Props) => {
       },
       id: props.id ? props.id : uuid(),
       syncStatus: LocationUnitSyncStatus.SYNCED,
-      type: values.Type,
-      locationTags: values.locationTags,
-      geometry: values.geometry as Geometry,
+      type: values.type,
+      locationTags: locationtag,
+      geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
     };
 
     function removeEmptykeys(obj: any) {
       Object.keys(obj).forEach(function (key) {
         if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
-        else if (obj[key] == null) delete obj[key];
+        else if (obj[key] == null || obj[key] == [] || obj[key] == {} || obj[key] == undefined)
+          delete obj[key];
       });
     }
     removeEmptykeys(payload);
+    console.log('payload : ', payload);
 
     if (props.id) {
       serve
@@ -161,6 +199,8 @@ export const Form: React.FC<Props> = (props: Props) => {
       ) => onSubmit(values, setSubmitting)}
     >
       {({ values, isSubmitting, handleSubmit }) => {
+        console.log('values : ', values);
+
         return (
           <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
             <AntForm.Item label="Parent" name="parentId" required>
@@ -193,8 +233,8 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Radio.Group>
             </AntForm.Item>
 
-            <AntForm.Item name="Type" label="Type" required>
-              <Input name="Type" placeholder="Select type" />
+            <AntForm.Item name="type" label="Type" required>
+              <Input name="type" placeholder="Select type" />
             </AntForm.Item>
 
             <AntForm.Item name="externalId" label="External ID">
@@ -216,11 +256,14 @@ export const Form: React.FC<Props> = (props: Props) => {
                 filterOption={filter}
               >
                 {locationtag &&
-                  locationtag.map((e) => (
-                    <Select.Option key={e.id} value={e.id}>
-                      {e.name}
-                    </Select.Option>
-                  ))}
+                  locationtag.map((e) => {
+                    const value: LocationUnitTag = { id: e.id, name: e.name };
+                    return (
+                      <Select.Option key={e.id} value={JSON.stringify(value)}>
+                        {e.name}
+                      </Select.Option>
+                    );
+                  })}
               </Select>
             </AntForm.Item>
 
