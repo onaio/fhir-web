@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
-import LocationDetail, { Props as LocationDetailData } from '../LocationDetail';
+import LocationUnitDetail, { Props as LocationUnitDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -30,7 +30,7 @@ const LocationUnitView: React.FC = () => {
   const locationsArray = useSelector((state) => getLocationUnitsArray(state));
   const dispatch = useDispatch();
 
-  const [detail, setDetail] = useState<LocationDetailData | null>(null);
+  const [detail, setDetail] = useState<LocationUnitDetailData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -127,13 +127,13 @@ const LocationUnitView: React.FC = () => {
             </div>
           </div>
           <div className="bg-white p-4">
-            <Table data={tableData} onViewDetails={(e: LocationDetailData) => setDetail(e)} />
+            <Table data={tableData} onViewDetails={(e: LocationUnitDetailData) => setDetail(e)} />
           </div>
         </Col>
 
         {detail && (
           <Col className="pl-3" span={5}>
-            <LocationDetail onClose={() => setDetail(null)} {...detail} />
+            <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
           </Col>
         )}
       </Row>
