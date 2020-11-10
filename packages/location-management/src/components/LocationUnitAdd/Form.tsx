@@ -40,7 +40,6 @@ interface FormField {
   externalId?: string;
   locationTags?: LocationTag[];
   geometry?: Geometry;
-  textEntry?: string[];
 }
 
 const initialValue: FormField = {
@@ -59,7 +58,6 @@ export const userSchema = Yup.object().shape({
   externalId: Yup.string().typeError('External id must be a String'),
   locationTags: Yup.array().typeError('location Tags must be an Array'),
   geometry: Yup.string().typeError('location Tags must be a An String'),
-  textEntry: Yup.array().typeError('Text Entry must be an Array'),
 });
 
 interface Props {
@@ -114,7 +112,6 @@ export const Form: React.FC<Props> = (props: Props) => {
       type: values.Type,
       locationTags: values.locationTags,
       geometry: values.geometry as Geometry,
-      textEntry: values.textEntry,
     };
 
     function removeEmptykeys(obj: any) {
@@ -227,47 +224,6 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Select>
             </AntForm.Item>
 
-            <FieldArray
-              name="textEntry"
-              render={(arrayHelpers) => (
-                <>
-                  {values.textEntry &&
-                    values.textEntry.length > 0 &&
-                    values.textEntry.map((field, index) => {
-                      const key = `textEntry.${index}`;
-                      return (
-                        <AntForm.Item
-                          name={key}
-                          {...(index === 0
-                            ? { labelCol: { span: 8 }, wrapperCol: { span: 16 } }
-                            : { wrapperCol: { offset: 8, span: 16 } })}
-                          label={index === 0 ? 'Text entry' : ''}
-                          key={key}
-                        >
-                          <AntForm.Item name={key} noStyle>
-                            <Input name={key} placeholder="Enter text" style={{ width: '69%' }} />
-                          </AntForm.Item>
-                          <MinusCircleOutlined
-                            className="dynamic-delete-button"
-                            onClick={() => arrayHelpers.remove(index)}
-                          />
-                        </AntForm.Item>
-                      );
-                    })}
-
-                  <AntForm.Item name="textEntryButton" {...offsetLayout}>
-                    <Button
-                      type="dashed"
-                      onClick={() => arrayHelpers.push('')}
-                      style={{ width: '100%' }}
-                      icon={<PlusOutlined />}
-                    >
-                      Add Text Entry field
-                    </Button>
-                  </AntForm.Item>
-                </>
-              )}
-            />
             <AntForm.Item name="buttons" {...offsetLayout}>
               <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
               <Button id="cancel" onClick={() => history.goBack()} type="dashed">
