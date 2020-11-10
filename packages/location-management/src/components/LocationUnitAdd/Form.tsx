@@ -15,14 +15,11 @@ import {
   LocationUnitStatus,
   LocationUnitSyncStatus,
 } from '../../ducks/location-units';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
-import {
-  fetchLocationTags,
-  // getLocationTagsArray,
-  LocationTag,
-} from '../../ducks/location-tags';
+import { uuid } from 'uuidv4';
+import { LocationTag } from '../../ducks/location-tags';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -72,10 +69,8 @@ interface Props {
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  // const loactiontag = useSelector((state) => getLocationTagsArray(state));
-  const [loactiontag, setLoactiontag] = useState<LocationTag[] | null>(null);
+  const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoading) {
@@ -83,10 +78,9 @@ export const Form: React.FC<Props> = (props: Props) => {
       serve
         .list()
         .then((response: LocationTag[]) => {
-          dispatch(fetchLocationTags(response));
+          setLocationtag(response);
+          // dispatch(fetchLocationTags(response));
           setIsLoading(false);
-          setLoactiontag(response);
-          console.log(loactiontag);
         })
         .catch((e) => console.log(e));
     }
@@ -107,18 +101,15 @@ export const Form: React.FC<Props> = (props: Props) => {
 
     let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
       properties: {
-        // created: new Date(),
-        // lastUpdated: new Date(),
         username: user.username,
         version: 0,
         externalId: values.externalId,
-        OpenMRS_Id: props.id,
         parentId: values.parentId,
         name: values.name,
         name_en: values.name,
         status: values.status,
       },
-      id: props.id,
+      id: props.id ? props.id : uuid(),
       syncStatus: LocationUnitSyncStatus.SYNCED,
       type: values.Type,
       locationTags: values.locationTags,
@@ -134,13 +125,11 @@ export const Form: React.FC<Props> = (props: Props) => {
     }
     removeEmptykeys(payload);
 
-    console.log('payload :', payload);
-
     if (props.id) {
       serve
-        .create(payload)
+        .update(payload)
         .then(() => {
-          notification.success({ message: 'User created successfully', description: '' });
+          notification.success({ message: 'User Updated successfully', description: '' });
           setSubmitting(false);
           history.goBack();
         })
@@ -150,9 +139,9 @@ export const Form: React.FC<Props> = (props: Props) => {
         });
     } else {
       serve
-        .update(payload)
+        .create(payload)
         .then(() => {
-          notification.success({ message: 'User Updated successfully', description: '' });
+          notification.success({ message: 'User Created successfully', description: '' });
           setSubmitting(false);
           history.goBack();
         })
@@ -174,9 +163,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) => onSubmit(values, setSubmitting)}
     >
-      {({ values, errors, isSubmitting, handleSubmit }) => {
-        console.log('values :', values, ' errors :', errors);
-
+      {({ values, isSubmitting, handleSubmit }) => {
         return (
           <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
             <AntForm.Item label="Parent" name="parentId" required>
@@ -231,8 +218,8 @@ export const Form: React.FC<Props> = (props: Props) => {
                 optionFilterProp="children"
                 filterOption={filter}
               >
-                {loactiontag &&
-                  loactiontag.map((e) => (
+                {locationtag &&
+                  locationtag.map((e) => (
                     <Select.Option key={e.id} value={e.id}>
                       {e.name}
                     </Select.Option>

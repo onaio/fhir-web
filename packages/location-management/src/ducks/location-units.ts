@@ -33,9 +33,6 @@ export interface Properties {
   version?: number;
   name_en?: string;
   externalId?: string;
-  OpenMRS_Id?: string;
-  created?: Date;
-  lastUpdated?: Date;
 }
 
 /** location unit tag interface */
@@ -62,6 +59,7 @@ export interface LocationUnitPayloadPOST {
   locationTags?: LocationUnitTag[];
   geometry?: Geometry;
   textEntry?: string[];
+  id: string;
 }
 
 /** interface for the PUT payload */

@@ -2,21 +2,20 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import LocationDetail, { Props } from '..';
+import { LocationUnitStatus, LocationUnitSyncStatus } from '../../../ducks/location-units';
 
 describe('containers/pages/Home', () => {
   const props: Props = {
+    parentId: '2',
     key: '0',
     name: 'Edrward 0',
-    level: 2,
-    lastupdated: new Date(`Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-    status: 'Alive',
+    geographicLevel: 2,
+    status: LocationUnitStatus.ACTIVE,
     type: 'Feautire',
-    created: new Date(`Thu Oct 22 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
-    externalid: 'asdkjh1230',
-    openmrsid: 'asdasdasdkjh1230',
+    externalId: 'asdkjh1230',
     username: 'edward 0',
-    version: '0',
-    syncstatus: 'Synced',
+    version: 0,
+    syncstatus: LocationUnitSyncStatus.SYNCED,
   };
 
   it('renders without crashing', () => {

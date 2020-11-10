@@ -2,8 +2,11 @@ import React from 'react';
 import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitStatus, LocationUnitSyncStatus } from '../../ducks/location-units';
+import { Link } from 'react-router-dom';
+import { URL_LOCATION_UNIT_ADD } from '../../constants';
 
 export interface TableData {
+  id?: string | number;
   name: string;
   parentId: string;
   status: LocationUnitStatus;
@@ -11,7 +14,6 @@ export interface TableData {
   username: string;
   version: number;
   externalId: string;
-  OpenMRS_Id: string;
   key: string;
   type: string;
   created: Date;
@@ -26,10 +28,6 @@ export interface Props {
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  function edit(record: TableData) {
-    console.log('editting : ', record);
-  }
-
   const columns = [
     {
       title: 'Name',
@@ -44,12 +42,6 @@ const Table: React.FC<Props> = (props: Props) => {
       sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
     },
     {
-      title: 'Parent',
-      dataIndex: 'parent',
-      editable: false,
-      sorter: (a: TableData, b: TableData) => a.parent.localeCompare(b.name),
-    },
-    {
       title: 'Actions',
       dataIndex: 'operation',
       width: '10%',
@@ -57,9 +49,11 @@ const Table: React.FC<Props> = (props: Props) => {
       render: (_: any, record: TableData) => {
         return (
           <span className="d-flex justify-content-end align-items-center">
-            <Button type="link" className="m-0 p-1" onClick={() => edit(record)}>
-              Edit
-            </Button>
+            <Link to={URL_LOCATION_UNIT_ADD + '/' + record.id}>
+              <Button type="link" className="m-0 p-1">
+                Edit
+              </Button>
+            </Link>
             <Divider type="vertical" />
             <Dropdown
               overlay={

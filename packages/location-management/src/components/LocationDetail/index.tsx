@@ -38,11 +38,6 @@ const LocationDetail: React.FC<Props> = (props: Props) => {
       </div>
 
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">OpenMRS Id</p>
-        <p className="mb-0 loc-desc">{props.OpenMRS_Id}</p>
-      </div>
-
-      <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Username</p>
         <p className="mb-0 loc-desc">{props.username}</p>
       </div>
