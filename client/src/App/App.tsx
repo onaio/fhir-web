@@ -174,6 +174,13 @@ const App: React.FC = () => {
               path={URL_ADD_LOCATIONS_UNIT}
               component={LocationUnitAdd}
             />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={`${URL_ADD_LOCATIONS_UNIT}/:id`}
+              component={LocationUnitAdd}
+            />
             <Route
               exact
               path={APP_LOGIN_URL}
