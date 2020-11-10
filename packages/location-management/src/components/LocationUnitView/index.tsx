@@ -21,9 +21,14 @@ import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
 import ConnectedTree from '../LocationTree';
-import { getAllHierarchiesArray, getCurrentChildren } from '../../ducks/location-hierarchy';
+import {
+  fetchSingleLocation,
+  getAllHierarchiesArray,
+  getCurrentChildren,
+} from '../../ducks/location-hierarchy';
 import { Store } from 'redux';
 import { getFilterParams, TreeNode } from '../LocationTree/utils';
+import { set } from 'lodash';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -31,6 +36,7 @@ export interface Props {
   accessToken: string;
   currentParentChildren: any;
   fetchLocationUnitsCreator: typeof fetchLocationUnits;
+  fetchSingleLocationCreator: typeof fetchSingleLocation;
   locationsArray: LocationUnit[];
   serviceClass: typeof OpenSRPService;
 }
@@ -39,12 +45,19 @@ const defaultProps: Props = {
   accessToken: '',
   currentParentChildren: [],
   fetchLocationUnitsCreator: fetchLocationUnits,
+  fetchSingleLocationCreator: fetchSingleLocation,
   locationsArray: [],
   serviceClass: OpenSRPService,
 };
 
 const LocationUnitView: React.FC<Props> = (props: Props) => {
-  const { serviceClass, fetchLocationUnitsCreator, currentParentChildren, locationsArray } = props;
+  const {
+    serviceClass,
+    fetchLocationUnitsCreator,
+    currentParentChildren,
+    locationsArray,
+    fetchSingleLocationCreator,
+  } = props;
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const dispatch = useDispatch();
 
@@ -82,6 +95,7 @@ const LocationUnitView: React.FC<Props> = (props: Props) => {
   if (currentParentChildren && currentParentChildren.length) {
     currentParentChildren.forEach((child: TreeNode, i: number) => {
       tableData.push({
+        id: child.id,
         key: i.toString(),
         name: child.label,
         geographicLevel: child.node.attributes.geographicLevel,
@@ -141,7 +155,13 @@ const LocationUnitView: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           <div className="bg-white p-4">
-            <Table data={tableData} onViewDetails={(e: LocationDetailData) => setDetail(e)} />
+            <Table
+              accessToken={accessToken}
+              data={tableData}
+              serviceClass={serviceClass}
+              onViewDetails={setDetail}
+              loadSingleLocationAction={fetchSingleLocationCreator}
+            />
           </div>
         </Col>
 
@@ -177,6 +197,7 @@ const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
 /** map props to action creators */
 const mapDispatchToProps = {
   fetchLocationUnitsCreator: fetchLocationUnits,
+  fetchSingleLocationCreator: fetchSingleLocation,
 };
 
 const ConnectedLocationUnitView = connect(mapStateToProps, mapDispatchToProps)(LocationUnitView);

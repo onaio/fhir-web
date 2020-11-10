@@ -1,12 +1,15 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/camelcase */
+import React, { useState } from 'react';
 import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitStatus, LocationUnitSyncStatus } from '../../ducks/location-units';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_ADD } from '../../constants';
+import { OpenSRPService } from '@opensrp/server-service/dist/types';
+import { fetchSingleLocation } from 'location-management/src/ducks/location-hierarchy';
 
 export interface TableData {
-  id?: string | number;
+  id: string | number;
   name: string;
   parentId: string;
   status: LocationUnitStatus;
@@ -23,11 +26,34 @@ export interface TableData {
 }
 
 export interface Props {
+  accessToken: string;
   data: TableData[];
-  onViewDetails?: Function;
+  onViewDetails: (locObj: any) => void;
+  serviceClass: typeof OpenSRPService;
+  loadSingleLocationAction: typeof fetchSingleLocation;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
+  const { serviceClass, accessToken } = props;
+  const [detail, setDetail] = useState(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const loadSingleLocation = async (id: string | number) => {
+    setIsLoading(true);
+    const serve = new serviceClass(
+      accessToken,
+      'https://opensrp-stage.smartregister.org/opensrp/rest',
+      '/location'
+    );
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    serve
+      .read(id, { is_jurisdiction: true })
+      .then((res: any) => {
+        setDetail(res);
+        setIsLoading(false);
+        props.onViewDetails(res);
+      })
+      .catch((e) => console.log(e));
+  };
   const columns = [
     {
       title: 'Name',
@@ -60,7 +86,9 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Menu className="menu">
                   <Menu.Item
                     className="viewdetails"
-                    onClick={() => props.onViewDetails && props.onViewDetails(record)}
+                    onClick={async () => {
+                      await loadSingleLocation(record.id);
+                    }}
                   >
                     View Details
                   </Menu.Item>
