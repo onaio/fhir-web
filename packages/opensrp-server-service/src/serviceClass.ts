@@ -168,7 +168,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
         return {};
       }
 
-      const defaultMessage = `OpenSRPService create on ${this.endpoint} failed, HTTP status ${response?.status}`;
+      const defaultMessage = `OpenSRPService create on ${this.endpoint} failed, HTTP status ${response.status}`;
       await throwHTTPError(response, defaultMessage);
     }
 
@@ -270,14 +270,11 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const response = await fetch(url, this.getOptions(this.signal, this.accessToken, method));
-
-    if (response) {
-      if (response.ok || response.status === 204 || response.status === 200) {
-        return {};
-      }
-      const defaultMessage = `OpenSRPService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
-      await throwHTTPError(response, defaultMessage);
+    if (response.ok || response.status === 204 || response.status === 200) {
+      return {};
     }
+    const defaultMessage = `OpenSRPService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
+    await throwHTTPError(response, defaultMessage);
 
     return {};
   }

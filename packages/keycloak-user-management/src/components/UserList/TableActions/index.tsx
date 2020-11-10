@@ -8,7 +8,6 @@ import { removeKeycloakUsers, KeycloakUser } from '../../../ducks/user';
 import { URL_USER_CREDENTIALS, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 
-/** interface for component props */
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   accessToken: string;
@@ -51,11 +50,7 @@ const TableActions = (props: Props): JSX.Element => {
             )
           }
         >
-          {user_id && record.id !== user_id && (
-            <Button danger type="link" style={{ color: '#' }}>
-              Delete
-            </Button>
-          )}
+          {user_id && (record.id === user_id ? null : <Link to="#">Delete</Link>)}
         </Popconfirm>
       </Menu.Item>
       <Menu.Item>

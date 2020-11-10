@@ -84,5 +84,7 @@ export function selectAllMessages(state: Partial<Store>): Message[] {
  * @returns {Object} to dispatch the action
  */
 export function selectOneMessage(state: Partial<Store>): Message | null {
-  return (state as { [key: string]: MessageState })[reducerName].messages[0] || null;
+  return (state as { [key: string]: MessageState })[reducerName].messages[0]
+    ? (state as { [key: string]: MessageState })[reducerName].messages[0]
+    : null;
 }

@@ -31,6 +31,10 @@ export const getTableColumns = (
       title: headerItems[index],
       dataIndex: fields[index],
       key: fields[index],
+      filters: Array.from(new Set(dataFilters)),
+      filteredValue:
+        filteredInfo && filteredInfo[fields[index]] ? filteredInfo[fields[index]] : null,
+      onFilter: (value: string, record: Dictionary) => record[fields[index]].includes(value),
       sorter: (a: Dictionary, b: Dictionary) => {
         if (b[fields[index]]) {
           return a[fields[index]].length - b[fields[index]].length;

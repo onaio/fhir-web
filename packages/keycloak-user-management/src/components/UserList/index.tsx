@@ -82,10 +82,8 @@ const UserList = (props: Props): JSX.Element => {
       serve
         .list()
         .then((res: KeycloakUser[]) => {
-          if (isLoading) {
-            setIsLoading(false);
-            fetchKeycloakUsersCreator(res);
-          }
+          setIsLoading(false);
+          fetchKeycloakUsersCreator(res);
         })
         .catch((_: Error) => {
           sendErrorNotification(ERROR_OCCURED);
