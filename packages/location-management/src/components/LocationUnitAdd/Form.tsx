@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
-import { SubmitButton, Form as AntForm, Input, Radio, Select } from 'formik-antd';
-import { notification, Button } from 'antd';
+import { SubmitButton, Form as FormikAntForm, Input, Radio, Select } from 'formik-antd';
+import { notification, Button, Input as AntInput } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { history } from '@onaio/connected-reducer-registry';
 import { getUser } from '@onaio/session-reducer';
@@ -9,17 +9,17 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik, FieldArray } from 'formik';
 import { Ripple } from '@onaio/loaders';
+import { useDispatch, useSelector } from 'react-redux';
+import { Geometry } from 'geojson';
+import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { uuid } from 'uuidv4';
 import {
   LocationUnitPayloadPOST,
   LocationUnitPayloadPUT,
   LocationUnitStatus,
   LocationUnitSyncStatus,
 } from '../../ducks/location-units';
-import { useSelector } from 'react-redux';
-import { Geometry } from 'geojson';
-import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
-import { uuid } from 'uuidv4';
-import { LocationTag } from '../../ducks/location-tags';
+import { fetchLocationTags, getLocationTagsArray, LocationTag } from '../../ducks/location-tags';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -40,7 +40,8 @@ interface FormField {
   externalId?: string;
   locationTags?: LocationTag[];
   geometry?: Geometry;
-  textEntry?: string[];
+  textEntryKey?: string[];
+  textEntryValue?: string[];
 }
 
 const initialValue: FormField = {
@@ -59,7 +60,8 @@ export const userSchema = Yup.object().shape({
   externalId: Yup.string().typeError('External id must be a String'),
   locationTags: Yup.array().typeError('location Tags must be an Array'),
   geometry: Yup.string().typeError('location Tags must be a An String'),
-  textEntry: Yup.array().typeError('Text Entry must be an Array'),
+  textEntryKey: Yup.array().typeError('Text Entry Key must be an Array'),
+  textEntryValue: Yup.array().typeError('Text Entry Value must be an Array'),
 });
 
 interface Props {
@@ -72,6 +74,8 @@ export const Form: React.FC<Props> = (props: Props) => {
   const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (isLoading) {
       let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
@@ -79,8 +83,8 @@ export const Form: React.FC<Props> = (props: Props) => {
         .list()
         .then((response: LocationTag[]) => {
           setLocationtag(response);
-          // dispatch(fetchLocationTags(response));
           setIsLoading(false);
+          console.log(response);
         })
         .catch((e) => console.log(e));
     }
@@ -114,7 +118,6 @@ export const Form: React.FC<Props> = (props: Props) => {
       type: values.Type,
       locationTags: values.locationTags,
       geometry: values.geometry as Geometry,
-      textEntry: values.textEntry,
     };
 
     function removeEmptykeys(obj: any) {
@@ -164,9 +167,11 @@ export const Form: React.FC<Props> = (props: Props) => {
       ) => onSubmit(values, setSubmitting)}
     >
       {({ values, isSubmitting, handleSubmit }) => {
+        console.log('values : ', values);
+
         return (
-          <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
-            <AntForm.Item label="Parent" name="parentId" required>
+          <FormikAntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
+            <FormikAntForm.Item label="Parent" name="parentId" required>
               <Select
                 name="parentId"
                 showSearch
@@ -180,13 +185,13 @@ export const Form: React.FC<Props> = (props: Props) => {
                   </Select.Option>
                 ))}
               </Select>
-            </AntForm.Item>
+            </FormikAntForm.Item>
 
-            <AntForm.Item name="name" label="Name" required>
+            <FormikAntForm.Item name="name" label="Name" required>
               <Input name="name" placeholder="Enter a location name" />
-            </AntForm.Item>
+            </FormikAntForm.Item>
 
-            <AntForm.Item label="Status" name="status" valuePropName="checked" required>
+            <FormikAntForm.Item label="Status" name="status" valuePropName="checked" required>
               <Radio.Group name="status" defaultValue={initialValue.status}>
                 {status.map((e) => (
                   <Radio name="status" key={e.label} value={e.value}>
@@ -194,21 +199,21 @@ export const Form: React.FC<Props> = (props: Props) => {
                   </Radio>
                 ))}
               </Radio.Group>
-            </AntForm.Item>
+            </FormikAntForm.Item>
 
-            <AntForm.Item name="Type" label="Type" required>
+            <FormikAntForm.Item name="Type" label="Type" required>
               <Input name="Type" placeholder="Select type" />
-            </AntForm.Item>
+            </FormikAntForm.Item>
 
-            <AntForm.Item name="externalId" label="External ID">
+            <FormikAntForm.Item name="externalId" label="External ID">
               <Input name="externalId" placeholder="Select status" />
-            </AntForm.Item>
+            </FormikAntForm.Item>
 
-            <AntForm.Item name="geometry" label="geometry">
+            <FormikAntForm.Item name="geometry" label="geometry">
               <Input.TextArea name="geometry" rows={4} placeholder="</> JSON" />
-            </AntForm.Item>
+            </FormikAntForm.Item>
 
-            <AntForm.Item label="Unit Group" name="locationTags">
+            <FormikAntForm.Item label="Unit Group" name="locationTags">
               <Select
                 name="locationTags"
                 mode="multiple"
@@ -225,18 +230,19 @@ export const Form: React.FC<Props> = (props: Props) => {
                     </Select.Option>
                   ))}
               </Select>
-            </AntForm.Item>
+            </FormikAntForm.Item>
 
             <FieldArray
               name="textEntry"
               render={(arrayHelpers) => (
                 <>
-                  {values.textEntry &&
-                    values.textEntry.length > 0 &&
-                    values.textEntry.map((field, index) => {
-                      const key = `textEntry.${index}`;
+                  {values.textEntryKey &&
+                    values.textEntryKey.length > 0 &&
+                    values.textEntryKey.map((field, index) => {
+                      const key = `textEntryKey.${index}`;
+                      const value = `textEntryValue.${index}`;
                       return (
-                        <AntForm.Item
+                        <FormikAntForm.Item
                           name={key}
                           {...(index === 0
                             ? { labelCol: { span: 8 }, wrapperCol: { span: 16 } }
@@ -244,18 +250,24 @@ export const Form: React.FC<Props> = (props: Props) => {
                           label={index === 0 ? 'Text entry' : ''}
                           key={key}
                         >
-                          <AntForm.Item name={key} noStyle>
-                            <Input name={key} placeholder="Enter text" style={{ width: '69%' }} />
-                          </AntForm.Item>
+                          <AntInput.Group compact style={{ width: '69%' }}>
+                            <FormikAntForm.Item name={key} noStyle>
+                              <AntInput style={{ width: '50%' }} placeholder="key" />
+                            </FormikAntForm.Item>
+                            <FormikAntForm.Item name={value} noStyle>
+                              <AntInput style={{ width: '50%' }} placeholder="value" />
+                            </FormikAntForm.Item>
+                          </AntInput.Group>
+                          {/* <Input name={key} placeholder="Enter text" /> */}
                           <MinusCircleOutlined
                             className="dynamic-delete-button"
                             onClick={() => arrayHelpers.remove(index)}
                           />
-                        </AntForm.Item>
+                        </FormikAntForm.Item>
                       );
                     })}
 
-                  <AntForm.Item name="textEntryButton" {...offsetLayout}>
+                  <FormikAntForm.Item name="textEntryButton" {...offsetLayout}>
                     <Button
                       type="dashed"
                       onClick={() => arrayHelpers.push('')}
@@ -264,17 +276,17 @@ export const Form: React.FC<Props> = (props: Props) => {
                     >
                       Add Text Entry field
                     </Button>
-                  </AntForm.Item>
+                  </FormikAntForm.Item>
                 </>
               )}
             />
-            <AntForm.Item name="buttons" {...offsetLayout}>
+            <FormikAntForm.Item name="buttons" {...offsetLayout}>
               <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
               <Button id="cancel" onClick={() => history.goBack()} type="dashed">
                 Cancel
               </Button>
-            </AntForm.Item>
-          </AntForm>
+            </FormikAntForm.Item>
+          </FormikAntForm>
         );
       }}
     </Formik>
