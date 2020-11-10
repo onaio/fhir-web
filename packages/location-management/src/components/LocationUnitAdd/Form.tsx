@@ -19,7 +19,6 @@ import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { uuid } from 'uuidv4';
-import './LocationUnitAdd.css';
 import { LocationTag } from '../../ducks/location-tags';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, { reducerName } from '../../ducks/location-units';
