@@ -21,7 +21,7 @@ import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
 import ConnectedTree from '../LocationTree';
-import { getCurrentChildren } from '../../ducks/location-hierarchy';
+import { getAllHierarchiesArray, getCurrentChildren } from '../../ducks/location-hierarchy';
 import { Store } from 'redux';
 import { getFilterParams, TreeNode } from '../LocationTree/utils';
 
@@ -44,9 +44,8 @@ const defaultProps: Props = {
 };
 
 const LocationUnitView: React.FC<Props> = (props: Props) => {
-  const { serviceClass, fetchLocationUnitsCreator, currentParentChildren } = props;
+  const { serviceClass, fetchLocationUnitsCreator, currentParentChildren, locationsArray } = props;
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const locationsArray = useSelector((state) => getLocationUnitsArray(state));
   const dispatch = useDispatch();
 
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
@@ -86,6 +85,15 @@ const LocationUnitView: React.FC<Props> = (props: Props) => {
         key: i.toString(),
         name: child.label,
         geographicLevel: child.node.attributes.geographicLevel,
+        lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
+      });
+    });
+  } else if (locationsArray && locationsArray.length && !currentParentChildren.length) {
+    locationsArray.forEach((location: any, i: number) => {
+      tableData.push({
+        key: i.toString(),
+        name: location.label,
+        geographicLevel: location.node.attributes.geographicLevel,
         lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       });
     });
@@ -154,13 +162,13 @@ export { LocationUnitView };
 interface DispatchedProps {
   accessToken: string;
   currentParentChildren: any;
-  locationsArray: LocationUnit[];
+  locationsArray: any;
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
   const accessToken = getAccessToken(state) as string;
-  const locationsArray = getLocationUnitsArray(state);
+  const locationsArray = getAllHierarchiesArray(state);
   const currentParentChildren = getCurrentChildren(state);
   return { accessToken, locationsArray, currentParentChildren };
 };
