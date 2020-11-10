@@ -28,6 +28,7 @@ import {
   URL_LOGOUT,
   URL_LOCATION_UNIT,
   URL_HOME,
+  URL_ADD_LOCATION_UNIT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -47,7 +48,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
-import { LocationUnitModule } from '@opensrp/location-management';
+import { LocationUnitAdd, LocationUnitView } from '@opensrp/location-management';
 
 const { Content } = Layout;
 
@@ -164,7 +165,21 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_UNIT}
-              component={LocationUnitModule}
+              component={LocationUnitView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_ADD_LOCATION_UNIT}
+              component={LocationUnitAdd}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_ADD_LOCATION_UNIT + '/:id'}
+              component={LocationUnitAdd}
             />
             <Route
               exact
