@@ -12,8 +12,6 @@ import reducer, {
   fetchLocationUnits,
   getLocationUnitsArray,
   LocationUnit,
-  LocationUnitStatus,
-  LocationUnitSyncStatus,
   reducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
@@ -82,17 +80,12 @@ const LocationUnitView: React.FC<Props> = (props: Props) => {
 
   const tableData: any = [];
 
-  if (
-    currentParentChildren &&
-    currentParentChildren.children &&
-    currentParentChildren.children.length
-  ) {
-    currentParentChildren.children.forEach((child: TreeNode, i: number) => {
+  if (currentParentChildren && currentParentChildren.length) {
+    currentParentChildren.forEach((child: TreeNode, i: number) => {
       tableData.push({
         key: i.toString(),
         name: child.label,
-        level: child.node.attributes.geographicLevel,
-        parent: currentParentChildren.parent,
+        geographicLevel: child.node.attributes.geographicLevel,
         lastupdated: new Date(`Thu Oct ${i} 2020 14:15:56 GMT+0500 (Pakistan Standard Time)`),
       });
     });

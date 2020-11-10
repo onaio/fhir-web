@@ -49,18 +49,15 @@ export function fetchAllHierarchies(hierarchy: TreeNode): FetchedTreeAction {
   };
 }
 
-/** action creator when adding a tree to store
+/**
+ * action creator when adding a tree to store
  *
- * @param {TreeModel} children - the raw hierarchy as received from opensrp
+ * @param {TreeNode} children - the raw hierarchy as received from opensrp
  * @returns {object} - action object
  */
-export function fetchCurrentChildren(
-  children: TreeNode[],
-  parent: string
-): FetchedParentChildrenAction {
+export function fetchCurrentChildren(children: TreeNode[]): FetchedParentChildrenAction {
   return {
     currentParentChildren: children,
-    parent,
     type: FETCH_CURRENT_CHILDREN,
   };
 }
@@ -81,7 +78,7 @@ export type ImmutableTreeState = TreeState & SeamlessImmutable.ImmutableObject<T
 /** starting state */
 export const initialState: ImmutableTreeState = SeamlessImmutable({
   hierarchyArray: [],
-  currentParentChildren: {},
+  currentParentChildren: [],
 });
 
 // the reducer function
@@ -101,10 +98,7 @@ export default function reducer(state: ImmutableTreeState = initialState, action
     case FETCH_CURRENT_CHILDREN:
       return {
         ...state,
-        currentParentChildren: {
-          parent: action.parent,
-          children: action.currentParentChildren,
-        },
+        currentParentChildren: action.currentParentChildren,
       };
 
     default:

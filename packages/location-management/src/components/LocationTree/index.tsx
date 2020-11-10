@@ -121,11 +121,18 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       const afterStr = item.title.substr(index + searchValue.length);
       const title = (
         <span
-          onClick={(e) => {
+          onClick={(e: any) => {
             if (item.children) {
               // e.stopPropagation();
-              fetchCurrentChildrenCreator(item.children, item.title);
-              setExpandedKeys([...expandedKeys, item.title]);
+              // build out parent from here
+              const children = [item, ...item.children];
+              fetchCurrentChildrenCreator(children);
+              const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
+              setExpandedKeys(allExpandedKeys);
+              if (expandedKeys.includes(e.target.innerText)) {
+                allExpandedKeys.splice(allExpandedKeys.indexOf(e.target.innerText), 1);
+                setExpandedKeys(allExpandedKeys);
+              }
             }
           }}
         >
