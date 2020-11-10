@@ -19,7 +19,6 @@ export const LocationUnitModule: React.FC = () => {
       <Switch>
         <Route exact path={baseurl + URL_ADD_LOCATIONS_UNIT} component={LocationUnitAdd} />
         <Route exact component={ConnectedLocationUnitView} />
-        <Route exact component={() => <div>NotFoud</div>} />
       </Switch>
     </BrowserRouter>
   );

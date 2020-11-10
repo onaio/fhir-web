@@ -1,2 +1,5 @@
 import LocationUnitModule from './LocationUnitModule';
-export { LocationUnitModule };
+import ConnectedLocationUnitView from './components/LocationUnitView';
+import LocationUnitAdd from './components/LocationUnitAdd';
+
+export { LocationUnitModule, ConnectedLocationUnitView, LocationUnitAdd };
