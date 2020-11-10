@@ -20,10 +20,6 @@ import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { uuid } from 'uuidv4';
 import { LocationTag } from '../../ducks/location-tags';
-import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, { reducerName } from '../../ducks/location-units';
-
-reducerRegistry.register(reducerName, reducer);
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
