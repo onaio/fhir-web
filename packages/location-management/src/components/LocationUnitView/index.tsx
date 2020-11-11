@@ -17,9 +17,9 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, LOCATION_UNIT_ALL, URL_LOCATION_UNIT_EDIT } from '../../constants';
 import Tree from './Tree';
 import Table, { TableData } from './Table';
+import { API_BASE_URL, LOCATION_UNIT_ALL, URL_LOCATION_UNIT_ADD } from '../../constants';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
 
@@ -107,7 +107,7 @@ const LocationUnitView: React.FC = () => {
           <div className="mb-3 d-flex justify-content-between">
             <h5 className="mt-4">Bombali</h5>
             <div>
-              <Link to={URL_LOCATION_UNIT_EDIT}>
+              <Link to={URL_LOCATION_UNIT_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
                   Add location unit
