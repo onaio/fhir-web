@@ -31,6 +31,8 @@ import {
   URL_ADD_LOCATION_UNIT,
   URL_LOCATION_TAG,
   URL_ADD_LOCATION_TAG,
+  URL_EDIT_LOCATION_TAG,
+  URL_EDIT_LOCATION_UNIT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -185,7 +187,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_ADD_LOCATION_UNIT + '/:id'}
+              path={URL_EDIT_LOCATION_UNIT + '/:id'}
               component={LocationUnitAdd}
             />
             <PrivateComponent
@@ -206,7 +208,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_ADD_LOCATION_TAG + '/:id'}
+              path={URL_EDIT_LOCATION_TAG + '/:id'}
               component={LocationTagAdd}
             />
             <Route
