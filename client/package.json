@@ -36,6 +36,8 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "seamless-immutable": "^7.1.4",
+    "tree-model": "^1.0.7",
+    "uuidv4": "^6.2.5",
     "yup": "^0.29.3"
   },
   "scripts": {
