@@ -15,10 +15,11 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-tags';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, LOCATION_TAG_ALL } from '../../constants';
+import { API_BASE_URL, LOCATION_TAG_ALL, URL_LOCATION_TAG_ADD } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationTagView.css';
 import { Ripple } from '@onaio/loaders';
+import { Link } from 'react-router-dom';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -88,10 +89,13 @@ const LocationTagView: React.FC = () => {
               />
             </h5>
             <div>
-              <Button type="primary">
-                <PlusOutlined />
-                Add location unit group
-              </Button>
+              '
+              <Link to={URL_LOCATION_TAG_ADD}>
+                <Button type="primary">
+                  <PlusOutlined />
+                  Add location unit group
+                </Button>
+              </Link>
               <Divider type="vertical" />
               <Dropdown
                 overlay={

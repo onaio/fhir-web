@@ -23,6 +23,10 @@ export interface LocationTagPayloadPOST {
   description: string;
 }
 
+export interface LocationTagPayloadPUT extends LocationTagPayloadPOST {
+  id: string;
+}
+
 /** reducer name for the Item module */
 export const reducerName = 'location-tags';
 

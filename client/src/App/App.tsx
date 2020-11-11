@@ -30,6 +30,7 @@ import {
   URL_HOME,
   URL_ADD_LOCATION_UNIT,
   URL_LOCATION_TAG,
+  URL_ADD_LOCATION_TAG,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -49,7 +50,12 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
-import { LocationUnitAdd, LocationUnitView, LocationTagView } from '@opensrp/location-management';
+import {
+  LocationUnitAdd,
+  LocationUnitView,
+  LocationTagAdd,
+  LocationTagView,
+} from '@opensrp/location-management';
 
 const { Content } = Layout;
 
@@ -188,6 +194,20 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_TAG}
               component={LocationTagView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_ADD_LOCATION_TAG}
+              component={LocationTagAdd}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_ADD_LOCATION_TAG + '/:id'}
+              component={LocationTagAdd}
             />
             <Route
               exact
