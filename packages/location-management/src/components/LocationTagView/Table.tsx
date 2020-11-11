@@ -5,7 +5,7 @@ import { LocationTag } from '../../ducks/location-tags';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import { API_BASE_URL, LOCATION_TAG_DELETE, URL_LOCATION_TAG_ADD } from '../../constants';
+import { API_BASE_URL, LOCATION_TAG_DELETE, URL_LOCATION_TAG_EDIT } from '../../constants';
 import { Link } from 'react-router-dom';
 
 export interface TableData extends LocationTag {
@@ -51,7 +51,7 @@ const Table: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_LOCATION_TAG_ADD + '/' + record.id}>
+          <Link to={URL_LOCATION_TAG_EDIT + '/' + record.id}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
