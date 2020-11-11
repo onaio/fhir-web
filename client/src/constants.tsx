@@ -15,5 +15,7 @@ export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';
 export const URL_LOCATION_UNIT = '/location/unit';
 export const URL_ADD_LOCATION_UNIT = '/location/unit/add';
+export const URL_EDIT_LOCATION_UNIT = '/location/unit/edit';
 export const URL_LOCATION_TAG = '/location/group';
 export const URL_ADD_LOCATION_TAG = '/location/group/add';
+export const URL_EDIT_LOCATION_TAG = '/location/group/edit';

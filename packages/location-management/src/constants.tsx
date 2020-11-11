@@ -8,6 +8,7 @@ export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
 // Url
 export const URL_LOCATION_UNIT = '/location/unit';
 export const URL_LOCATION_UNIT_ADD = URL_LOCATION_UNIT + '/add';
+export const URL_LOCATION_UNIT_EDIT = URL_LOCATION_UNIT + '/edit';
 
 //
 // Locatoin Tag
@@ -17,3 +18,4 @@ export const LOCATION_UNIT_GET = 'location-tag/';
 // Url
 export const URL_LOCATION_TAG = '/location/group';
 export const URL_LOCATION_TAG_ADD = URL_LOCATION_TAG + '/add';
+export const URL_LOCATION_TAG_EDIT = URL_LOCATION_TAG + '/edit';
