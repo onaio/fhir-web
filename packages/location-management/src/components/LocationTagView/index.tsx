@@ -15,7 +15,7 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-tags';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, LOCATION_TAG_ALL, URL_LOCATION_TAG_EDIT } from '../../constants';
+import { API_BASE_URL, LOCATION_TAG_ALL, URL_LOCATION_TAG_ADD } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationTagView.css';
 import { Ripple } from '@onaio/loaders';
@@ -90,7 +90,7 @@ const LocationTagView: React.FC = () => {
             </h5>
             <div>
               '
-              <Link to={URL_LOCATION_TAG_EDIT}>
+              <Link to={URL_LOCATION_TAG_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
                   Add location unit group
