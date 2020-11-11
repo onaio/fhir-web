@@ -4,6 +4,7 @@ export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/res
 // Locatoin Unit
 //
 export const LOCATION_UNIT_ALL = 'location/sync';
+export const LOCATION_UNIT_GET = 'location';
 export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
 // Url
 export const URL_LOCATION_UNIT = '/location/unit';
