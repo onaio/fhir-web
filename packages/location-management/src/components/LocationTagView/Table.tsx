@@ -5,7 +5,7 @@ import { LocationTag } from '../../ducks/location-tags';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import { API_BASE_URL, URL_LOCATION_TAG_ADD } from '../../constants';
+import { API_BASE_URL, LOCATION_TAG_DELETE, URL_LOCATION_TAG_ADD } from '../../constants';
 import { Link } from 'react-router-dom';
 
 export interface TableData extends LocationTag {
@@ -28,7 +28,7 @@ const Table: React.FC<Props> = (props: Props) => {
     const clientService = new OpenSRPService(
       accessToken,
       API_BASE_URL,
-      `location-tag/delete/${record.id}`
+      LOCATION_TAG_DELETE + record.id
     );
     clientService
       .delete()
