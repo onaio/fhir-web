@@ -59,13 +59,12 @@ export interface LocationUnitPayloadPOST {
   locationTags?: LocationUnitTag[];
   geometry?: Geometry;
   textEntry?: string[];
-  id: string;
+  id: string | number;
 }
 
 /** interface for the PUT payload */
 export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
-  id: string;
-  serverVersion: number;
+  id: string | number;
 }
 
 /** reducer name for the Item module */

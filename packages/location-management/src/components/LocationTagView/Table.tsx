@@ -5,7 +5,8 @@ import { LocationTag } from '../../ducks/location-tags';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import { API_BASE_URL } from '../../constants';
+import { API_BASE_URL, URL_LOCATION_TAG_ADD } from '../../constants';
+import { Link } from 'react-router-dom';
 
 export interface TableData extends LocationTag {
   key: string;
@@ -17,13 +18,13 @@ export interface Props {
 }
 
 const Table: React.FC<Props> = (props: Props) => {
+  const accessToken = useSelector((state) => getAccessToken(state) as string);
   /**
    * fucntion to delete the record
    *
    * @param {object} record - The record to delete
    */
   function onDelete(record: LocationTag) {
-    const accessToken = useSelector((state) => getAccessToken(state) as string);
     const clientService = new OpenSRPService(
       accessToken,
       API_BASE_URL,
@@ -50,9 +51,11 @@ const Table: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Button type="link" className="m-0 p-1">
-            Edit
-          </Button>
+          <Link to={URL_LOCATION_TAG_ADD + '/' + record.id}>
+            <Button type="link" className="m-0 p-1">
+              Edit
+            </Button>
+          </Link>
           <Divider type="vertical" />
           <Dropdown
             overlay={

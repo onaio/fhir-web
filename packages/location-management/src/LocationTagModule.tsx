@@ -1,7 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+
+import { URL_LOCATION_TAG_ADD } from './constants';
 import LocationTagView from './components/LocationTagView';
+import LocationTagAdd from './components/LocationTagAdd';
 
 /**
  * Location Tag Module
@@ -9,11 +12,10 @@ import LocationTagView from './components/LocationTagView';
  * @returns {Element} - Location Tag Module
  */
 export const LocationTagModule: React.FC = () => {
-  const baseurl = '/location/group';
-
   return (
     <BrowserRouter>
       <Switch>
+        <Route path={URL_LOCATION_TAG_ADD} component={LocationTagAdd} />
         <Route component={LocationTagView} />
       </Switch>
     </BrowserRouter>
