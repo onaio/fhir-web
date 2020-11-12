@@ -2,7 +2,11 @@ import React from 'react';
 import { Divider, Spin, Alert } from 'antd';
 import { ProductCatalogue } from '../../ducks/productCatalogue';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import { CATALOGUE_EDIT_VIEW_URL, CATALOGUE_LIST_VIEW_URL } from '../../constants';
+import {
+  CATALOGUE_EDIT_VIEW_URL,
+  CATALOGUE_LIST_VIEW_URL,
+  TableColumnsNamespace,
+} from '../../constants';
 import { Link } from 'react-router-dom';
 
 /** component rendered in the action column of the table */
@@ -17,9 +21,6 @@ export const ActionsColumnCustomRender: ColumnType<ProductCatalogue>['render'] =
   );
 };
 
-/** namespace for the keys attached to the columns */
-const TableColumnsNamespace = 'product-catalogue';
-
 /** product Catalogue table columns */
 export const columns: ColumnsType<ProductCatalogue> = [
   {
@@ -28,9 +29,9 @@ export const columns: ColumnsType<ProductCatalogue> = [
     key: `${TableColumnsNamespace}-productName`,
     defaultSortOrder: 'descend',
     sorter: (rec1, rec2) => {
-      if (rec1 < rec2) {
+      if (rec1.productName > rec2.productName) {
         return -1;
-      } else if (rec2 < rec1) {
+      } else if (rec1.productName < rec2.productName) {
         return 1;
       } else {
         return 0;
@@ -46,6 +47,7 @@ export const columns: ColumnsType<ProductCatalogue> = [
     title: 'Actions',
     key: `${TableColumnsNamespace}-actions`,
     render: ActionsColumnCustomRender,
+    width: '15%',
   },
 ];
 

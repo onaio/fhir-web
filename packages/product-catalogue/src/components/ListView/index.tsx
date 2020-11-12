@@ -20,7 +20,7 @@ import {
 } from '../../ducks/productCatalogue';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { CATALOGUE_CREATE_VIEW_URL, RouteParams } from '../../constants';
+import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 
 /** make sure product catalogue reducer is registered */
@@ -71,6 +71,14 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   }
 
   const pageTitle = `Product Catalogue (${data.length})`;
+  // add a key prop to the array data to be consumed by the table
+  const dataSource = data.map((singleObject) => {
+    const prodWithKey = {
+      ...singleObject,
+      key: `${TableColumnsNamespace}-${singleObject.uniqueId}`,
+    };
+    return prodWithKey;
+  });
 
   return (
     <div className="content-section">
@@ -87,7 +95,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
               </Button>
             </Link>
           </div>
-          <Table dataSource={data} columns={columns}></Table>
+          <Table dataSource={dataSource} columns={columns}></Table>
         </Col>
         <ViewDetails {...{ object: productUnderView, objectId: productId }} />
       </Row>
