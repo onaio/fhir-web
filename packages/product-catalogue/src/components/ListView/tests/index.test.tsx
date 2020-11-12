@@ -4,21 +4,25 @@ import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { product1 } from '../../../ducks/productCatalogue/tests/fixtures';
+import { products } from '../../../ducks/productCatalogue/tests/fixtures';
 import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
+import { removeProducts } from '../../../ducks/productCatalogue';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
 const history = createBrowserHistory();
 
-describe('CreateEditProduct Page', () => {
+describe('List view Page', () => {
   afterEach(() => {
     fetch.resetMocks();
+  });
+
+  beforeEach(() => {
+    store.dispatch(removeProducts());
   });
 
   it('renders correctly', async () => {
@@ -74,7 +78,7 @@ describe('CreateEditProduct Page', () => {
   });
 
   it('renders correctly with detailView', async () => {
-    fetch.mockResponse(JSON.stringify([product1]));
+    fetch.mockResponse(JSON.stringify(products));
     const props = {
       history,
       location: {
@@ -108,10 +112,15 @@ describe('CreateEditProduct Page', () => {
       wrapper.update();
     });
 
-    // details view is not displayed
-    expect(wrapper.find('.view-details-content')).toHaveLength(0);
+    // find ant table
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`table rows ${index}`);
+    });
 
-    expect(toJson(wrapper.find('view-details-content'))).toMatchSnapshot('View details');
+    // details view is displayed
+    expect(wrapper.find('.view-details-content')).toHaveLength(2);
+
+    expect(wrapper.find('div.view-details-content').text()).toMatchSnapshot('View details');
   });
 
   it('shows broken page', async () => {

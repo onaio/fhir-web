@@ -32,14 +32,14 @@ interface Props<T = ProductCatalogue> {
   productUnderView: T | null;
   columns: ColumnsType<T>;
   service: typeof OpenSRPService;
-  fetchProducts: typeof fetchProducts;
+  fetchProductsCreator: typeof fetchProducts;
 }
 
 const defaultProps = {
   data: [],
   productUnderView: null,
   columns: columns,
-  fetchProducts: fetchProducts,
+  fetchProductsCreator: fetchProducts,
   service: OpenSRPService,
 };
 
@@ -48,7 +48,7 @@ export type ProductCatalogueListTypes = Props<ProductCatalogue> & RouteComponent
 /** component that renders product catalogue */
 
 const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
-  const { service, data, columns, productUnderView } = props;
+  const { service, data, columns, productUnderView, fetchProductsCreator } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
 
@@ -56,11 +56,11 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   const productId = props.match.params.productId ?? '';
 
   useEffect(() => {
-    loadProductCatalogue(service)
+    loadProductCatalogue(service, fetchProductsCreator)
       .catch((err: Error) => handleBrokenPage(err))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productId]);
+  }, []);
 
   if (loading) {
     return <CatalogueLoading />;
@@ -108,7 +108,7 @@ ProductCatalogueList.defaultProps = defaultProps;
 export { ProductCatalogueList };
 
 export type MapStateToProps = Pick<ProductCatalogueListTypes, 'data' | 'productUnderView'>;
-export type MapDispatchToProps = Pick<ProductCatalogueListTypes, 'fetchProducts'>;
+export type MapDispatchToProps = Pick<ProductCatalogueListTypes, 'fetchProductsCreator'>;
 
 export const mapStateToProps = (
   state: Partial<Store>,
@@ -120,12 +120,12 @@ export const mapStateToProps = (
   return { data, productUnderView };
 };
 
-export const MapDispatchToProps = {
-  fetchProducts: fetchProducts,
+export const mapDispatchToProps: MapDispatchToProps = {
+  fetchProductsCreator: fetchProducts,
 };
 
 const ConnectedProductCatalogueList = connect(
   mapStateToProps,
-  MapDispatchToProps
+  mapDispatchToProps
 )(ProductCatalogueList);
 export { ConnectedProductCatalogueList };
