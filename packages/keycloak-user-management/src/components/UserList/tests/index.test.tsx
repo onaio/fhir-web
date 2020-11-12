@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
@@ -19,6 +20,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
+import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -67,11 +69,27 @@ describe('components/UserList', () => {
 
   it('works correctly with store', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
-    const getAccessTokenMock = jest
-      .spyOn(opensrpStore, 'getAccessToken')
-      .mockReturnValue('simple-token');
+    const getAccessTokenMock = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
+    opensrpStore.store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'simple-token', state: 'abcde' } }
+      )
+    );
 
     const props = {
+      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
+        accessToken: true,
+      }),
+      extraData: {
+        user_id: fixtures.keycloakUser.id,
+      },
       fetchKeycloakUsersCreator: fetchKeycloakUsers,
       removeKeycloakUsersCreator: removeKeycloakUsers,
       serviceClass: KeycloakService,
@@ -92,7 +110,7 @@ describe('components/UserList', () => {
     });
 
     expect(wrapper.find('Table')).toBeTruthy();
-    expect(getAccessTokenMock).toHaveBeenCalledWith(opensrpStore.store.getState());
+    expect(getAccessTokenMock).toHaveBeenCalled();
     expect(wrapper.find('UserList').props()).toMatchSnapshot('user list props');
     wrapper.unmount();
   });

@@ -26,6 +26,7 @@ import {
   URL_REACT_LOGIN,
   URL_LOGOUT,
   URL_FALL_BACK,
+  URL_HOME,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -45,8 +46,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
-
-
+import ConnectedSidebar from '../containers/ConnectedSidebar';
 
 const { Content } = Layout;
 
@@ -116,6 +116,7 @@ const App: React.FC = () => {
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
+      <ConnectedSidebar />
       <div className="body-wrapper">
         <ConnectedHeader />
         <Content>
@@ -126,7 +127,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path="/"
+              path={URL_HOME}
               component={ConnectedHomeComponent}
             />
             <PrivateComponent
