@@ -2,7 +2,7 @@ import React from 'react';
 import { Divider, Spin, Alert } from 'antd';
 import { ProductCatalogue } from '../../ducks/productCatalogue';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import { CATALOGUE_CREATE_EDIT_VIEW_URL, CATALOGUE_LIST_VIEW_URL } from '../../constants';
+import { CATALOGUE_EDIT_VIEW_URL, CATALOGUE_LIST_VIEW_URL } from '../../constants';
 import { Link } from 'react-router-dom';
 
 /** component rendered in the action column of the table */
@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 export const ActionsColumnCustomRender: ColumnType<ProductCatalogue>['render'] = (record) => {
   return (
     <>
-      <Link to={`${CATALOGUE_CREATE_EDIT_VIEW_URL}/${record.uniqueId}`}>Edit</Link>
+      <Link to={`${CATALOGUE_EDIT_VIEW_URL}/${record.uniqueId}`}>Edit</Link>
       <Divider type="vertical" />
       <Link to={`${CATALOGUE_LIST_VIEW_URL}/${record.uniqueId}`}>View details</Link>
     </>
