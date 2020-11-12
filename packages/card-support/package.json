@@ -39,6 +39,8 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@onaio/utils": "^0.0.1",
+    "@onaio/redux-reducer-registry": "^0.0.9",
+    "@opensrp/reducer-factory": "^0.0.9",
     "@opensrp/server-service": "^0.0.10",
     "@opensrp/store": "^0.0.5",
     "formik": "^2.1.5",

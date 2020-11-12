@@ -1,6 +1,7 @@
+import { notification } from 'antd';
 import { OpenSRPService } from '@opensrp/server-service';
 import { DownloadClientDataFormFields } from '../DownloadClientData';
-import { OPENSRP_URL_USER_ASSIGNMENT } from '../../constants';
+import { ERROR_OCCURRED, OPENSRP_URL_USER_ASSIGNMENT } from '../../constants';
 
 /** interface for user assignment response */
 export interface UserAssignment {
@@ -38,6 +39,10 @@ export const submitForm = (
       })
       .catch((_: Error) => {
         setSubmitting(false);
+        notification.error({
+          message: ERROR_OCCURRED,
+          description: '',
+        });
       });
   }
 };
