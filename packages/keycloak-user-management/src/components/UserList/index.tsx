@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { notification, Row, Col, Button, Space, Table, Divider } from 'antd';
+import { notification, Row, Col, Button, Space, Table, Divider, Input } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import Ripple from '../Loading';
 import { makeAPIStateSelector } from '@opensrp/store';
@@ -7,7 +7,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -110,9 +110,15 @@ const UserList = (props: Props): JSX.Element => {
     };
   });
   return (
-    <>
+    <section>
+      <h5 className="mb-3">User Management</h5>
       <Row>
-        <Col span={24}>
+        <Col className="bg-white p-3" span={24}>
+          <Space style={{ marginBottom: 16, float: 'left' }}>
+            <h5>
+              <Input placeholder="Search" size="large" prefix={<SearchOutlined />} />
+            </h5>
+          </Space>
           <Space style={{ marginBottom: 16, float: 'right' }}>
             <Button
               type="primary"
@@ -125,32 +131,31 @@ const UserList = (props: Props): JSX.Element => {
             <Divider type="vertical" />
             <SettingOutlined />
           </Space>
+          <Space>
+            <Table
+              columns={getTableColumns(
+                removeKeycloakUsersCreator,
+                accessToken,
+                keycloakBaseURL,
+                isLoadingCallback,
+                extraData,
+                sortedInfo
+              )}
+              dataSource={tableData as KeycloakUser[]}
+              pagination={{
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultPageSize: 5,
+                pageSizeOptions: ['5', '10', '20', '50', '100'],
+              }}
+              onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
+                setSortedInfo(sorter);
+              }}
+            />
+          </Space>
         </Col>
       </Row>
-      <Row>
-        <Table
-          columns={getTableColumns(
-            removeKeycloakUsersCreator,
-            accessToken,
-            keycloakBaseURL,
-            isLoadingCallback,
-            extraData,
-            sortedInfo
-          )}
-          dataSource={tableData as KeycloakUser[]}
-          pagination={{
-            showQuickJumper: true,
-            showSizeChanger: true,
-            defaultPageSize: 5,
-            pageSizeOptions: ['5', '10', '20', '50', '100'],
-          }}
-          onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
-            setSortedInfo(sorter);
-          }}
-          bordered
-        />
-      </Row>
-    </>
+    </section>
   );
 };
 
