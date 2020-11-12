@@ -5,7 +5,6 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
@@ -127,12 +126,13 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
       lg: { offset: 8, span: 14 },
     },
   };
-  const history = useHistory();
+  // todo: replace any with appropriate type
+  const history: any = useHistory();
 
   return (
     <Row>
-      <Col xs={24} sm={20} md={18} lg={15} xl={12}>
-        <HeaderBreadCrumb userId={userId} />
+      <h5 className="mb-3">Credentials</h5>
+      <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form
             {...layout}

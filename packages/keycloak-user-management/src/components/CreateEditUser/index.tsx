@@ -4,7 +4,6 @@ import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { UserForm, UserFormProps, defaultInitialValues } from '../forms/UserForm';
@@ -107,7 +106,6 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   return (
     <Row>
       <Col xs={24} sm={20} md={18} lg={15} xl={12}>
-        <HeaderBreadCrumb userId={userId} />
         <UserForm {...userFormProps} />
       </Col>
     </Row>
