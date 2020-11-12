@@ -9,7 +9,7 @@ export interface UtilPageExtraProps {
   homeUrl: string;
 }
 
-export const defaultProps = {
+export const extraLinksDefault = {
   homeUrl: HOME_URL,
 };
 
@@ -38,6 +38,6 @@ const ExtraLinks = (props: UtilPageExtraProps) => {
   );
 };
 
-ExtraLinks.defaultProps = defaultProps;
+ExtraLinks.defaultProps = extraLinksDefault;
 
 export { ExtraLinks };

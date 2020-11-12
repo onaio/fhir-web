@@ -4,11 +4,7 @@
 import React, { useState } from 'react';
 import { Result } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
-import {
-  ExtraLinks,
-  UtilPageExtraProps,
-  defaultProps as extraDefaultProps,
-} from '../UtilPageExtra';
+import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
 
 /** props for the broken page component */
 export interface BrokenPageProps extends UtilPageExtraProps {
@@ -17,7 +13,7 @@ export interface BrokenPageProps extends UtilPageExtraProps {
 }
 
 export const defaultProps = {
-  ...extraDefaultProps,
+  ...extraLinksDefault,
   errorMessage: 'Something went wrong',
   title: 'Error',
 };

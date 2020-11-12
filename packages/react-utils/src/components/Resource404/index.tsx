@@ -1,10 +1,6 @@
 import React from 'react';
 import { Result } from 'antd';
-import {
-  ExtraLinks,
-  UtilPageExtraProps,
-  defaultProps as extraDefaultProps,
-} from '../UtilPageExtra';
+import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
 
 /** typings for the resource404 component */
 interface Resource404Props extends UtilPageExtraProps {
@@ -13,7 +9,7 @@ interface Resource404Props extends UtilPageExtraProps {
 }
 
 const defaultProps = {
-  ...extraDefaultProps,
+  ...extraLinksDefault,
   title: '404',
   errorMessage: 'Sorry, the resource you requested for, does not exist',
 };
