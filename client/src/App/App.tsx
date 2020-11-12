@@ -18,6 +18,7 @@ import {
   BACKEND_ACTIVE,
   KEYCLOAK_API_BASE_URL,
   DISABLE_LOGIN_PROTECTION,
+  OPENSRP_API_BASE_URL,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -27,6 +28,7 @@ import {
   URL_REACT_LOGIN,
   URL_LOGOUT,
   URL_HOME,
+  URL_DOWNLOAD_CLIENT_DATA,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -43,6 +45,7 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
+import { ConnectedDownloadClientData } from '@opensrp/card-support';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
@@ -67,7 +70,11 @@ export const PrivateComponent = ({ component: Component, ...rest }: ComponentPro
     <ConnectedPrivateRoute
       {...rest}
       component={(props: RouteComponentProps) => (
-        <Component {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+        <Component
+          {...props}
+          keycloakBaseURL={KEYCLOAK_API_BASE_URL}
+          opensrpBaseURL={OPENSRP_API_BASE_URL}
+        />
       )}
     />
   );
@@ -118,7 +125,7 @@ const App: React.FC = () => {
       <ConnectedSidebar />
       <div className="body-wrapper">
         <ConnectedHeader />
-        <Content>
+        <Content style={{ padding: '20px' }}>
           <Switch>
             {/* tslint:disable jsx-no-lambda */}
             {/* Home Page view */}
@@ -156,6 +163,13 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_DOWNLOAD_CLIENT_DATA}
+              component={ConnectedDownloadClientData}
             />
             <Route
               exact

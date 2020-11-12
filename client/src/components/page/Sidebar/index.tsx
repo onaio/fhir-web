@@ -7,7 +7,7 @@ import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import { Link } from 'react-router-dom';
-import { URL_ADMIN, URL_HOME, URL_TEAMS } from '../../../constants';
+import { URL_ADMIN, URL_DOWNLOAD_CLIENT_DATA, URL_HOME, URL_TEAMS } from '../../../constants';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -42,6 +42,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Link>
             </Menu.Item>
           )}
+          <Menu.Item key="card-support">
+            <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
+              Download Client Data
+            </Link>
+          </Menu.Item>
           <Menu.Item key="teams">
             <Link to={URL_TEAMS} className="admin-link">
               Teams
