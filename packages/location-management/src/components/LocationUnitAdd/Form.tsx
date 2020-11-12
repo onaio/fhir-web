@@ -60,7 +60,7 @@ const status = [
 
 // TODO : need to resolve this data from server
 
-interface FormField {
+export interface FormField {
   parentId: string;
   name: string;
   status: LocationUnitStatus;
@@ -81,27 +81,26 @@ export const userSchema = Yup.object().shape({
   geometry: Yup.string().typeError('location Tags must be a An String'),
 });
 
-interface Props {
+export interface Props {
   id?: string;
+  initialValue?: FormField;
 }
+
+export const defaultProps: Required<Props> = {
+  id: uuid(),
+  initialValue: { parentId: '', name: '', status: LocationUnitStatus.ACTIVE, type: '' },
+};
 
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [initialValue, setInitialValue] = useState<FormField>({
-    parentId: '',
-    name: '',
-    status: LocationUnitStatus.ACTIVE,
-    type: '',
-  });
 
   const dispatch = useDispatch();
 
   let Treefetched = false;
   let locationstagfetched = false;
-  let detailfetched = false;
 
   useEffect(() => {
     if (isLoading) {
@@ -112,34 +111,6 @@ export const Form: React.FC<Props> = (props: Props) => {
           .then((response: LocationTag[]) => {
             locationstagfetched = true;
             setLocationtag(response);
-            if (!props.id || detailfetched || Treefetched) setIsLoading(false);
-          })
-          .catch((e) => console.log(e));
-      }
-
-      if (props.id) {
-        let serve = new OpenSRPService(
-          accessToken,
-          API_BASE_URL,
-          `location/${props.id}?is_jurisdiction=true`
-        );
-        serve
-          .list()
-          .then((response: LocationUnit) => {
-            detailfetched = true;
-            setInitialValue({
-              name: response.properties.name,
-              // need to set parent id in treeselect
-              parentId: response.properties.parentId,
-              status: response.properties.status,
-              externalId: response.properties.externalId,
-              locationTags: response.locationTags?.map((e) =>
-                JSON.stringify({ id: e.id, name: e.name })
-              ),
-              geometry: JSON.stringify(response.geometry),
-              type: response.type,
-            });
-            console.log('Location Unit Detail : ', response);
             if (locationstagfetched || Treefetched) setIsLoading(false);
           })
           .catch((e) => console.log(e));
@@ -209,7 +180,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         name_en: values.name,
         status: values.status,
       },
-      id: props.id ? props.id : uuid(),
+      id: props.id ? props.id : defaultProps.id,
       syncStatus: LocationUnitSyncStatus.SYNCED,
       type: values.type,
       locationTags: locationtag,
@@ -257,7 +228,7 @@ export const Form: React.FC<Props> = (props: Props) => {
 
   return (
     <Formik
-      initialValues={initialValue}
+      initialValues={props.initialValue ? props.initialValue : defaultProps.initialValue}
       validationSchema={userSchema}
       onSubmit={(
         values: FormField,
@@ -293,7 +264,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             </AntForm.Item>
 
             <AntForm.Item label="Status" name="status" valuePropName="checked" required>
-              <Radio.Group name="status" defaultValue={initialValue.status}>
+              <Radio.Group name="status" defaultValue={props.initialValue?.status}>
                 {status.map((e) => (
                   <Radio name="status" key={e.label} value={e.value}>
                     {e.label}
