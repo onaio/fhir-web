@@ -59,7 +59,8 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
     loadProductCatalogue(service)
       .catch((err: Error) => handleBrokenPage(err))
       .finally(() => setLoading(false));
-  }, [handleBrokenPage, service, productId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId]);
 
   if (loading) {
     return <CatalogueLoading />;
