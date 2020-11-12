@@ -10,7 +10,6 @@ import { Formik } from 'formik';
 import { Ripple } from '@onaio/loaders';
 import {
   fetchLocationUnits,
-  LocationUnit,
   LocationUnitPayloadPOST,
   LocationUnitPayloadPUT,
   LocationUnitStatus,
@@ -20,7 +19,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
@@ -87,7 +86,7 @@ export interface Props {
 }
 
 export const defaultProps: Required<Props> = {
-  id: uuid(),
+  id: v4(),
   initialValue: { parentId: '', name: '', status: LocationUnitStatus.ACTIVE, type: '' },
 };
 
