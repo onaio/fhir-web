@@ -25,7 +25,7 @@ describe('broken page', () => {
 
     expect(mockBack).toHaveBeenCalled();
 
-    // click go back
+    // click go home
     expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Back Home"`);
     wrapper.find('button').last().simulate('click');
 
