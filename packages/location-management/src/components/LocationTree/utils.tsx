@@ -94,7 +94,7 @@ const parseChildren = (rawSingleNode: RawHierarchySingleNode) => {
  */
 const parseParent = (map: RawHierarchySingleNodeMap) => {
   const parentJurisdiction = Object.entries(map).map(([_, value]) => value)[0];
-  parentJurisdiction.key = parentJurisdiction.label;
+  parentJurisdiction.key = parentJurisdiction.id;
   parentJurisdiction.title = parentJurisdiction.label;
   return parentJurisdiction;
 };

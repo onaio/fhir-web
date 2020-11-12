@@ -7,7 +7,6 @@ import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnit
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationUnitsReducer, {
   fetchLocationUnits,
   LocationUnit,
@@ -19,6 +18,8 @@ import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
 import Tree from '../LocationTree';
+
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
   getAllHierarchiesArray,
   getCurrentChildren,

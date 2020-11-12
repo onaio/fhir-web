@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
-import { SubmitButton, Form as AntForm, Input, Radio, Select } from 'formik-antd';
+import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
 import { notification, Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { getUser } from '@onaio/session-reducer';
@@ -9,6 +9,7 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { Ripple } from '@onaio/loaders';
 import {
+  fetchLocationUnits,
   LocationUnit,
   LocationUnitPayloadPOST,
   LocationUnitPayloadPUT,
@@ -16,14 +17,41 @@ import {
   LocationUnitSyncStatus,
   LocationUnitTag,
 } from '../../ducks/location-units';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { uuid } from 'uuidv4';
 import { LocationTag } from '../../ducks/location-tags';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+import locationHierarchyReducer, {
+  getAllHierarchiesArray,
+  fetchAllHierarchies,
+  reducerName as locationHierarchyReducerName,
+} from '../../ducks/location-hierarchy';
+import {
+  RawOpenSRPHierarchy,
+  generateJurisdictionTree,
+  getFilterParams,
+} from '../LocationTree/utils';
+reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
+
+interface TreeData {
+  id: string;
+  label: string;
+  key: string;
+  title: string;
+  parent?: string;
+  node: {
+    locationId: string;
+    name: string;
+    attributes: { geographicLevel: number };
+    voided: boolean;
+  };
+  children?: TreeData[];
+}
 
 const status = [
   { label: 'Active', value: LocationUnitStatus.ACTIVE },
@@ -31,7 +59,6 @@ const status = [
 ];
 
 // TODO : need to resolve this data from server
-const parentId = [{ name: 'Bombali', value: '1123' }];
 
 interface FormField {
   parentId: string;
@@ -70,10 +97,14 @@ export const Form: React.FC<Props> = (props: Props) => {
     type: '',
   });
 
+  const dispatch = useDispatch();
+
+  let Treefetched = false;
+  let locationstagfetched = false;
+  let detailfetched = false;
+
   useEffect(() => {
     if (isLoading) {
-      let locationstagfetched = false;
-      let detailfetched = false;
       if (!locationtag) {
         let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
         serve
@@ -81,8 +112,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           .then((response: LocationTag[]) => {
             locationstagfetched = true;
             setLocationtag(response);
-            console.log('LocationTag : ', response);
-            if (!props.id || detailfetched) setIsLoading(false);
+            if (!props.id || detailfetched || Treefetched) setIsLoading(false);
           })
           .catch((e) => console.log(e));
       }
@@ -109,13 +139,49 @@ export const Form: React.FC<Props> = (props: Props) => {
               geometry: JSON.stringify(response.geometry),
               type: response.type,
             });
-            console.log('LocationUnit : ', response);
-            if (locationstagfetched) setIsLoading(false);
+            console.log('Location Unit Detail : ', response);
+            if (locationstagfetched || Treefetched) setIsLoading(false);
           })
           .catch((e) => console.log(e));
       }
+
+      const params = {
+        is_jurisdiction: true,
+        return_geometry: false,
+        properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+      };
+
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
+      serve
+        .list(params)
+        .then((response: any) => {
+          console.log('LocationUnits Properties:', response);
+          dispatch(fetchLocationUnits(response));
+          setRootIds(response.map((rootLocObj: any) => rootLocObj.id));
+        })
+        .catch((e) => console.log(e));
     }
   }, []);
+
+  const [rootIds, setRootIds] = useState<string[]>([]);
+  const Treedata = useSelector((state) => (getAllHierarchiesArray(state) as unknown) as TreeData[]);
+
+  React.useEffect(() => {
+    if (rootIds.length && !Treedata.length) {
+      rootIds.forEach((id: string) => {
+        const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
+        serve
+          .read(id)
+          .then((res: RawOpenSRPHierarchy) => {
+            const hierarchy = generateJurisdictionTree(res);
+            if (hierarchy.model && hierarchy.model.children)
+              dispatch(fetchAllHierarchies(hierarchy.model));
+            setIsLoading(false);
+          })
+          .catch((e) => console.log(e));
+      });
+    }
+  }, [rootIds]);
 
   function filter(input: string, option: any) {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -198,25 +264,28 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) => onSubmit(values, setSubmitting)}
     >
-      {({ values, isSubmitting, handleSubmit }) => {
-        console.log('values : ', values);
+      {({ isSubmitting, handleSubmit }) => {
+        function parseTreeData(Treedata: TreeData[]): any {
+          return Treedata.map((node) => (
+            <TreeSelect.TreeNode
+              value={node.parent ? node.parent : ''}
+              title={node.title}
+              children={node.children && parseTreeData(node.children)}
+            />
+          ));
+        }
 
         return (
           <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
             <AntForm.Item label="Parent" name="parentId" required>
-              <Select
+              <TreeSelect
                 name="parentId"
-                showSearch
-                placeholder="Select a Parent Id"
-                optionFilterProp="children"
-                filterOption={filter}
+                style={{ width: '100%' }}
+                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                placeholder="Please select"
               >
-                {parentId.map((e) => (
-                  <Select.Option key={e.value} value={e.value}>
-                    {e.name}
-                  </Select.Option>
-                ))}
-              </Select>
+                {Treedata && parseTreeData(Treedata)}
+              </TreeSelect>
             </AntForm.Item>
 
             <AntForm.Item name="name" label="Name" required>
