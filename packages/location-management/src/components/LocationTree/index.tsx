@@ -1,64 +1,28 @@
 import React, { useState } from 'react';
 import { Input, Tree as AnyTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { OpenSRPService } from '@opensrp/server-service';
-import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { generateJurisdictionTree, RawOpenSRPHierarchy, TreeNode } from './utils';
-import reducer, {
-  fetchAllHierarchies,
-  fetchCurrentChildren,
-  getAllHierarchiesArray,
-  reducerName,
-} from '../../ducks/location-hierarchy';
-import { useDispatch, useSelector } from 'react-redux';
-import { API_BASE_URL } from '../../constants';
+import { TreeNode } from './utils';
+import reducer, { reducerName } from '../../ducks/location-hierarchy';
 
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
-  data: TreeData[];
-  rootIds: string[];
-}
-
-export interface TreeData {
-  title: string;
-  key: string;
-  children?: TreeData[];
+  data: TreeNode[];
+  OnItemClick?: (item: any, [expandedKeys, setExpandedKeys]: any) => void;
 }
 
 const defaultProps: TreeProp = {
   data: [],
-  rootIds: [],
 };
 
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const data = useSelector((state) => (getAllHierarchiesArray(state) as unknown) as TreeNode[]);
-  const dispatch = useDispatch();
+  const { data, OnItemClick } = props;
 
   const [expandedKeys, setExpandedKeys] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: any = [];
-
-  React.useEffect(() => {
-    if (props.rootIds.length && isLoading && !data.length) {
-      props.rootIds.forEach((id: string) => {
-        const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
-        serve
-          .read(id)
-          .then((res: RawOpenSRPHierarchy) => {
-            const hierarchy = generateJurisdictionTree(res);
-            if (hierarchy.model && hierarchy.model.children)
-              dispatch(fetchAllHierarchies(hierarchy.model));
-          })
-          .catch((e) => console.log(e));
-      });
-      setIsLoading(false);
-    }
-  }, [props.rootIds]);
 
   function getParentKey(key: any, tree: string | any[]): any {
     let parentKey;
@@ -96,17 +60,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       const beforeStr = item.title.substr(0, index);
       const afterStr = item.title.substr(index + searchValue.length);
       const title = (
-        <span
-          onClick={() => {
-            if (item.children) {
-              // build out parent row info from here
-              const children = [item, ...item.children];
-              dispatch(fetchCurrentChildren(children));
-              const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
-              setExpandedKeys(allExpandedKeys);
-            }
-          }}
-        >
+        <span onClick={() => OnItemClick && OnItemClick(item, [expandedKeys, setExpandedKeys])}>
           {index > -1 ? (
             <>
               {beforeStr}

@@ -8,17 +8,33 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, { fetchLocationUnits, LocationUnit, reducerName } from '../../ducks/location-units';
+import locationUnitsReducer, {
+  fetchLocationUnits,
+  LocationUnit,
+  reducerName as locationUnitsReducerName,
+} from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import { API_BASE_URL, LOCATION_UNIT_GET, URL_LOCATION_UNIT_ADD } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
-import ConnectedTree from '../LocationTree';
-import { getAllHierarchiesArray, getCurrentChildren } from '../../ducks/location-hierarchy';
-import { getFilterParams, TreeNode } from '../LocationTree/utils';
+import Tree from '../LocationTree';
+import locationHierarchyReducer, {
+  getAllHierarchiesArray,
+  getCurrentChildren,
+  fetchAllHierarchies,
+  fetchCurrentChildren,
+  reducerName as locationHierarchyReducerName,
+} from '../../ducks/location-hierarchy';
+import {
+  generateJurisdictionTree,
+  RawOpenSRPHierarchy,
+  getFilterParams,
+  TreeNode,
+} from '../LocationTree/utils';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
+reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 export interface Props {}
 
@@ -26,6 +42,7 @@ const defaultProps: Props = {};
 
 const LocationUnitView: React.FC<Props> = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
+  const Treedata = useSelector((state) => (getAllHierarchiesArray(state) as unknown) as TreeNode[]);
   const locationsArray = (useSelector((state) =>
     getAllHierarchiesArray(state)
   ) as unknown) as TreeNode[];
@@ -36,20 +53,9 @@ const LocationUnitView: React.FC<Props> = () => {
 
   const [detail, setDetail] = useState<LocationDetailData | null>(null);
   const [rootIds, setRootIds] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<'Component' | 'Detail' | false>('Component');
-
-  function loadSingleLocation(row: TableData) {
-    setIsLoading('Detail');
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    serve
-      .read(row.id, { is_jurisdiction: true })
-      .then((res: LocationUnit) => {
-        setDetail(res);
-        setIsLoading(false);
-      })
-      .catch((e) => console.log(e));
-  }
+  const [isLoading, setIsLoading] = useState<'Component' | 'Hierarchy' | 'Detail' | false>(
+    'Component'
+  );
 
   useEffect(() => {
     const params = {
@@ -63,15 +69,43 @@ const LocationUnitView: React.FC<Props> = () => {
       serve
         .list(params)
         .then((response: any) => {
-          setIsLoading(false);
+          setIsLoading('Hierarchy');
           dispatch(fetchLocationUnits(response));
           setRootIds(response.map((rootLocObj: any) => rootLocObj.id));
         })
-        .catch((e) => {
-          console.log(e);
-        });
+        .catch((e) => console.log(e));
     }
   });
+
+  React.useEffect(() => {
+    if (rootIds.length && isLoading === 'Hierarchy' && !Treedata.length) {
+      rootIds.forEach((id: string) => {
+        const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
+        serve
+          .read(id)
+          .then((res: RawOpenSRPHierarchy) => {
+            const hierarchy = generateJurisdictionTree(res);
+            if (hierarchy.model && hierarchy.model.children)
+              dispatch(fetchAllHierarchies(hierarchy.model));
+            setIsLoading(false);
+          })
+          .catch((e) => console.log(e));
+      });
+    }
+  }, [rootIds, isLoading]);
+
+  function loadSingleLocation(row: TableData) {
+    setIsLoading('Detail');
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    serve
+      .read(row.id, { is_jurisdiction: true })
+      .then((res: LocationUnit) => {
+        setDetail(res);
+        setIsLoading(false);
+      })
+      .catch((e) => console.log(e));
+  }
 
   const tableData: any = [];
 
@@ -105,7 +139,18 @@ const LocationUnitView: React.FC<Props> = () => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <ConnectedTree rootIds={rootIds} data={[]} />
+          <Tree
+            OnItemClick={(item, [expandedKeys, setExpandedKeys]) => {
+              if (item.children) {
+                // build out parent row info from here
+                const children = [item, ...item.children];
+                dispatch(fetchCurrentChildren(children));
+                const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
+                setExpandedKeys(allExpandedKeys);
+              }
+            }}
+            data={Treedata}
+          />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between">
