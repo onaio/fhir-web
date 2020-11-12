@@ -1,7 +1,7 @@
 import { ProductCatalogue } from '../../ducks/productCatalogue';
 import React from 'react';
 import { Col, Typography, Space } from 'antd';
-import { Resource404 } from '../Resource404';
+import { Resource404 } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
 
 const { Text } = Typography;
