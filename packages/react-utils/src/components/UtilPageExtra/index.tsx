@@ -3,13 +3,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import { HOME_URL } from '../constants';
 
 export interface UtilPageExtraProps {
   homeUrl: string;
 }
 
 export const defaultProps = {
-  homeUrl: '/',
+  homeUrl: HOME_URL,
 };
 
 /** util component that is used in several other util-views that serve

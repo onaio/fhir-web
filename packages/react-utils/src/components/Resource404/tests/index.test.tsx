@@ -16,6 +16,8 @@ describe('broken page', () => {
       </Router>
     );
 
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
+    );
   });
 });

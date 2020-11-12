@@ -48,7 +48,7 @@ but where one or more resources to be shown on that page are deemed missing.
 
 ##### title
 
-_Optional_(`string` | defaults `Something went wrong`)
+_Optional_(`string` | defaults `Sorry, the resource you requested for, does not exist`)
 
 Error title
 
