@@ -18,32 +18,30 @@ export const LocationUnitAdd: React.FC = () => {
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
 
   useEffect(() => {
-    if (IsLoading) {
-      if (params.id) {
-        let serve = new OpenSRPService(
-          accessToken,
-          API_BASE_URL,
-          `location/${params.id}?is_jurisdiction=true`
-        );
-        serve
-          .list()
-          .then((response: LocationUnit) => {
-            setLocationUnitDetail({
-              name: response.properties.name,
-              parentId: response.properties.parentId,
-              status: response.properties.status,
-              externalId: response.properties.externalId,
-              locationTags: response.locationTags?.map((e) =>
-                JSON.stringify({ id: e.id, name: e.name })
-              ),
-              geometry: JSON.stringify(response.geometry),
-              type: response.type,
-            });
-            console.log('Location Unit Detail : ', response);
-            setIsLoading(false);
-          })
-          .catch((e) => console.log(e));
-      }
+    if (params.id) {
+      let serve = new OpenSRPService(
+        accessToken,
+        API_BASE_URL,
+        `location/${params.id}?is_jurisdiction=true`
+      );
+      serve
+        .list()
+        .then((response: LocationUnit) => {
+          setLocationUnitDetail({
+            name: response.properties.name,
+            parentId: response.properties.parentId,
+            status: response.properties.status,
+            externalId: response.properties.externalId,
+            locationTags: response.locationTags?.map((e) =>
+              JSON.stringify({ id: e.id, name: e.name })
+            ),
+            geometry: JSON.stringify(response.geometry),
+            type: response.type,
+          });
+          console.log('Location Unit Detail : ', response);
+          setIsLoading(false);
+        })
+        .catch((e) => console.log(e));
     }
   }, []);
 

@@ -103,35 +103,33 @@ export const Form: React.FC<Props> = (props: Props) => {
   let locationstagfetched = false;
 
   useEffect(() => {
-    if (isLoading) {
-      if (!locationtag) {
-        let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
-        serve
-          .list()
-          .then((response: LocationTag[]) => {
-            locationstagfetched = true;
-            setLocationtag(response);
-            if (locationstagfetched || Treefetched) setIsLoading(false);
-          })
-          .catch((e) => console.log(e));
-      }
-
-      const params = {
-        is_jurisdiction: true,
-        return_geometry: false,
-        properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-      };
-
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
+    if (!locationtag) {
+      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
       serve
-        .list(params)
-        .then((response: any) => {
-          console.log('LocationUnits Properties:', response);
-          dispatch(fetchLocationUnits(response));
-          setRootIds(response.map((rootLocObj: any) => rootLocObj.id));
+        .list()
+        .then((response: LocationTag[]) => {
+          locationstagfetched = true;
+          setLocationtag(response);
+          if (locationstagfetched || Treefetched) setIsLoading(false);
         })
         .catch((e) => console.log(e));
     }
+
+    const params = {
+      is_jurisdiction: true,
+      return_geometry: false,
+      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+    };
+
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
+    serve
+      .list(params)
+      .then((response: any) => {
+        console.log('LocationUnits Properties:', response);
+        dispatch(fetchLocationUnits(response));
+        setRootIds(response.map((rootLocObj: any) => rootLocObj.id));
+      })
+      .catch((e) => console.log(e));
   }, []);
 
   const [rootIds, setRootIds] = useState<string[]>([]);
