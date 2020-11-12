@@ -129,7 +129,7 @@ const LocationUnitView: React.FC<Props> = () => {
     });
   }
 
-  if (isLoading === 'Component') return <Ripple />;
+  if (isLoading && isLoading != 'Detail') return <Ripple />;
 
   return (
     <section>
@@ -180,15 +180,13 @@ const LocationUnitView: React.FC<Props> = () => {
           </div>
         </Col>
 
-        {isLoading === 'Detail' && (
+        {(isLoading === 'Detail' || detail) && (
           <Col className="pl-3" span={5}>
-            <Ripple />
-          </Col>
-        )}
-
-        {detail && (
-          <Col className="pl-3" span={5}>
-            <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
+            {isLoading === 'Detail' ? (
+              <Ripple />
+            ) : (
+              detail && <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
+            )}
           </Col>
         )}
       </Row>
