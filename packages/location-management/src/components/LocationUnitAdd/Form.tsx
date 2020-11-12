@@ -96,13 +96,12 @@ export const Form: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [rootIds, setRootIds] = useState<string[]>([]);
   const Treedata = useSelector((state) => (getAllHierarchiesArray(state) as unknown) as TreeData[]);
 
   const dispatch = useDispatch();
 
-  let Treefetched = false;
-  let tablefetched = false;
+  let treeready = false;
+  let tableready = false;
 
   useEffect(() => {
     if (!locationtag) {
@@ -110,50 +109,47 @@ export const Form: React.FC<Props> = (props: Props) => {
       serve
         .list()
         .then((response: LocationTag[]) => {
-          tablefetched = true;
+          tableready = true;
           setLocationtag(response);
-          if (tablefetched && Treefetched) setIsLoading(false);
+          if (tableready && treeready) setIsLoading(false);
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
 
-    const params = {
-      is_jurisdiction: true,
-      return_geometry: false,
-      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-    };
-
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
-    serve
-      .list(params)
-      .then((response: any) => {
-        console.log('LocationUnits Properties:', response);
-        dispatch(fetchLocationUnits(response));
-        setRootIds(response.map((rootLocObj: any) => rootLocObj.id));
-      })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
-  }, []);
-
-  React.useEffect(() => {
-    if (rootIds.length && !Treedata.length) {
-      rootIds.forEach((id: string) => {
-        const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
-        serve
-          .read(id)
-          .then((res: RawOpenSRPHierarchy) => {
-            tablefetched = true;
-            const hierarchy = generateJurisdictionTree(res);
-            if (hierarchy.model && hierarchy.model.children)
-              dispatch(fetchAllHierarchies(hierarchy.model));
-            if (tablefetched && Treefetched) setIsLoading(false);
-          })
-          .catch((e) => notification.error({ message: `${e}`, description: '' }));
-      });
-    } else {
-      tablefetched = true;
-      if (tablefetched && Treefetched) setIsLoading(false);
+    if (!Treedata.length) {
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
+      serve
+        .list({
+          is_jurisdiction: true,
+          return_geometry: false,
+          properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+        })
+        .then((response: any) => {
+          console.log('LocationUnits Properties:', response);
+          dispatch(fetchLocationUnits(response));
+          const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
+          if (rootIds.length) {
+            rootIds.forEach((id: string) => {
+              const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
+              serve
+                .read(id)
+                .then((res: RawOpenSRPHierarchy) => {
+                  const hierarchy = generateJurisdictionTree(res);
+                  if (hierarchy.model && hierarchy.model.children)
+                    dispatch(fetchAllHierarchies(hierarchy.model));
+                  tableready = true;
+                  if (tableready && treeready) setIsLoading(false);
+                })
+                .catch((e) => notification.error({ message: `${e}`, description: '' }));
+            });
+          } else {
+            tableready = true;
+            if (tableready && treeready) setIsLoading(false);
+          }
+        })
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
-  }, [rootIds]);
+  }, []);
 
   function filter(input: string, option: any) {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
