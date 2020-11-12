@@ -1,14 +1,18 @@
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
+import { Router } from 'react-router';
 import { ViewDetails } from '..';
 import { product1 } from '../../../ducks/productCatalogue/tests/fixtures';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 describe('View Details', () => {
   it('works correctly', () => {
     const props = { objectId: '1', object: product1 };
     const wrapper = mount(<ViewDetails {...props} />);
-    expect(toJson(wrapper)).toMatchSnapshot('nominal display');
+    expect(wrapper.text()).toMatchSnapshot('nominal display');
   });
 
   it('case without objectId', () => {
@@ -19,7 +23,13 @@ describe('View Details', () => {
 
   it('works when objectId is but Object isnt', () => {
     const props = { objectId: '1', object: null };
-    const wrapper = mount(<ViewDetails {...props} />);
-    expect(wrapper.text()).toMatchInlineSnapshot();
+    const wrapper = mount(
+      <Router history={history}>
+        <ViewDetails {...props} />
+      </Router>
+    );
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
+    );
   });
 });
