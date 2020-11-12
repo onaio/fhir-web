@@ -3,13 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## 0.0.6 (2020-11-05)
+## 0.0.7 (2020-11-12)
 
 **Note:** Version bump only for package @opensrp/location-management
 
+## 0.0.6 (2020-11-05)
 
-
-
+**Note:** Version bump only for package @opensrp/location-management
 
 ## 0.0.5 (2020-11-02)
 

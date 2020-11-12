@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/store",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "App Store initializer for OpennSRP web",
   "main": "dist/index.js",
   "types": "dist/types",
