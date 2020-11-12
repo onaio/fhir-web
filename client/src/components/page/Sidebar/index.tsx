@@ -36,11 +36,18 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title="Admin">
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.Item key="users">
-              <Link to={URL_ADMIN} className="admin-link">
-                Users
-              </Link>
-            </Menu.Item>
+            <Menu.SubMenu key="users" title="Users">
+              <Menu.Item key="users">
+                <Link to={URL_ADMIN} className="admin-link">
+                  User Management
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="credentials">
+                <Link to={URL_ADMIN} className="admin-link">
+                  Credentials
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
           )}
           <Menu.Item key="teams">
             <Link to={URL_TEAMS} className="admin-link">
