@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Loaders/Ripple renders the Loader component 1`] = `
+Object {
+  "borderColor": "#ff5d00",
+  "borderStyle": "solid",
+  "borderWidth": "4px",
+  "height": "64px",
+  "minHeight": "80vh",
+  "width": "64px",
+}
+`;
+
+exports[`components/Loaders/Ripple renders the Loader component when props are given 1`] = `
+Object {
+  "borderColor": "#ff0000",
+  "borderStyle": "solid",
+  "borderWidth": "6px",
+  "height": "128px",
+  "minHeight": "70vh",
+  "width": "128px",
+}
+`;
