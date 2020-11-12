@@ -55,10 +55,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
         <Space direction="vertical">
           {extractViewDetails(object as ProductCatalogue).map(([key, val]) => {
             return (
-              <>
+              <span key={`${key}-${val}`}>
                 <Text strong={true}>{key}</Text>
                 <Text>{val}</Text>
-              </>
+              </span>
             );
           })}
         </Space>
