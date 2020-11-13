@@ -127,7 +127,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
     },
   };
   // todo: replace any with appropriate type
-  const history: any = useHistory();
+  const history = useHistory();
 
   return (
     <Row>
