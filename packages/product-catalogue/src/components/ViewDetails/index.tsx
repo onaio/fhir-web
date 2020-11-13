@@ -3,6 +3,7 @@ import React from 'react';
 import { Col, Typography, Space } from 'antd';
 import { Resource404 } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
+import { PRODUCT_NAME, UNIQUE_ID, MATERIAL_NUMBER, SERVER_VERSION } from '../../constants';
 
 const { Text } = Typography;
 
@@ -15,12 +16,10 @@ const { Text } = Typography;
  */
 export const defaultExtractViewDetails = (product: ProductCatalogue) => {
   const mapping: Dictionary = {};
-  mapping['Product name'] = product.productName;
-  mapping['Unique ID'] = product.uniqueId;
-  mapping['Material number'] = product.materialNumber;
-  mapping['Created'] = 'n/a';
-  mapping['Last updated'] = 'n/a';
-  mapping['Server version'] = product.serverVersion;
+  mapping[PRODUCT_NAME] = product.productName;
+  mapping[UNIQUE_ID] = product.uniqueId;
+  mapping[MATERIAL_NUMBER] = product.materialNumber;
+  mapping[SERVER_VERSION] = product.serverVersion;
   return Object.entries(mapping);
 };
 
