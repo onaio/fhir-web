@@ -9,9 +9,6 @@ Object {
     xl={12}
     xs={24}
   >
-    <HeaderBreadCrumb
-      userId="cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-    />
     <UserForm
       accessToken="access token"
       initialValues={
