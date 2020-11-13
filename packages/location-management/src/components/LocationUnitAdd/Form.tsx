@@ -71,7 +71,7 @@ export interface FormField {
 
 /** yup validations for practitioner data object from form */
 export const userSchema = Yup.object().shape({
-  parentId: Yup.number().typeError('Parentid must be a Number').required('Parentid is Required'),
+  parentId: Yup.string().typeError('Parentid must be a Number').required('Parentid is Required'),
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   status: Yup.string().required('Status is Required'),
   type: Yup.string().typeError('Type must be a String').required('Type is Required'),
@@ -99,8 +99,8 @@ export const Form: React.FC<Props> = (props: Props) => {
 
   const dispatch = useDispatch();
 
-  let treeready = false;
-  let tableready = false;
+  let treeready = locationtag || false;
+  let tableready = Treedata.length || false;
 
   useEffect(() => {
     if (!locationtag) {
@@ -113,6 +113,8 @@ export const Form: React.FC<Props> = (props: Props) => {
           if (tableready && treeready) setIsLoading(false);
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    } else {
+      setIsLoading(false);
     }
 
     if (!Treedata.length) {
@@ -147,6 +149,8 @@ export const Form: React.FC<Props> = (props: Props) => {
           }
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
@@ -165,13 +169,14 @@ export const Form: React.FC<Props> = (props: Props) => {
     const locationtag: LocationUnitTag[] | undefined = values.locationTags?.map((e) =>
       JSON.parse(e)
     );
+    const parentid: string = JSON.parse(values.parentId).parent;
 
     let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
       properties: {
         username: user.username,
         version: 0,
         externalId: values.externalId,
-        parentId: values.parentId,
+        parentId: parentid,
         name: values.name,
         name_en: values.name,
         status: values.status,
@@ -231,11 +236,15 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) => onSubmit(values, setSubmitting)}
     >
-      {({ isSubmitting, handleSubmit }) => {
+      {({ values, isSubmitting, handleSubmit }) => {
+        console.log('values : ', values, 'parentId : ', values.parentId);
+
         function parseTreeData(Treedata: TreeData[]): any {
           return Treedata.map((node) => (
             <TreeSelect.TreeNode
-              value={node.parent ? node.parent : ''}
+              value={JSON.stringify(
+                node.parent ? { title: node.title, parent: node.parent } : { parent: node.label }
+              )}
               title={node.title}
               children={node.children && parseTreeData(node.children)}
             />
