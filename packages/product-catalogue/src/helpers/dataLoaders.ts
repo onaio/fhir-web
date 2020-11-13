@@ -33,7 +33,7 @@ export async function loadProductCatalogue(
   return serve
     .list()
     .then((response: ProductCatalogue[] | null) => {
-      if (response === null) {
+      if (response === null || response.length === 0) {
         return Promise.reject(new Error('No products found in the catalogue'));
       }
       actionCreator(response);
