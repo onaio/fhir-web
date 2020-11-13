@@ -32,9 +32,7 @@ export const LocationUnitAdd: React.FC = () => {
             parentId: response.properties.parentId,
             status: response.properties.status,
             externalId: response.properties.externalId,
-            locationTags: response.locationTags?.map((e) =>
-              JSON.stringify({ id: e.id, name: e.name })
-            ),
+            locationTags: response.locationTags?.map((e) => e.id),
             geometry: JSON.stringify(response.geometry),
             type: response.type,
           });
