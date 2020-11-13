@@ -38,15 +38,13 @@
     "@opensrp/react-utils": "^0.0.1",
     "@opensrp/reducer-factory": "^0.0.7",
     "@opensrp/server-service": "^0.0.11",
-    "@opensrp/store": "^0.0.6",
-    "antd": "^4.8.2",
-    "formik-antd": "2.0.1",
-    "yup": "^0.29.3"
+    "@opensrp/store": "^0.0.6"
   },
   "peerDependencies": {
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "yup": "^0.29.3"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
