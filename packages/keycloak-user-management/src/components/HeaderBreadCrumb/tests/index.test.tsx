@@ -1,7 +1,7 @@
 // test ExportModal
 import { mount, shallow } from 'enzyme';
 import React from 'react';
-import HeaderBreadCrumb from '..';
+import HeaderBreadCrumb, { handleTabLink } from '..';
 
 describe('components/HeaderBreadCrumb', () => {
   it('renders without crashing', () => {
@@ -20,5 +20,14 @@ describe('components/HeaderBreadCrumb', () => {
     const wrapper = mount(<HeaderBreadCrumb {...props} />);
     expect(wrapper.find('Tabs').props()).toMatchSnapshot('Tabs');
     wrapper.unmount();
+  });
+  it('handles tab links appropriately', () => {
+    const mockUseHistory = {
+      push: jest.fn(),
+    };
+    const setActiveKeyStateMethodMock = jest.fn();
+    handleTabLink('credentials', setActiveKeyStateMethodMock, '123', mockUseHistory);
+    expect(setActiveKeyStateMethodMock).toBeCalled();
+    expect(mockUseHistory.push).toBeCalled();
   });
 });
