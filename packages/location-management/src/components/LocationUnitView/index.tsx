@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, notification } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -72,7 +72,6 @@ const LocationUnitView: React.FC<Props> = () => {
         dispatch(fetchLocationUnits(response));
         const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
         if (rootIds.length && !Treedata.length) {
-          console.log('here inside');
           rootIds.forEach((id: string) => {
             const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
             serve
@@ -84,15 +83,14 @@ const LocationUnitView: React.FC<Props> = () => {
                 treeready = true;
                 if (treeready && tableready) setIsLoading(false);
               })
-              .catch((e) => console.log(e));
+              .catch((e) => notification.error({ message: `${e}`, description: '' }));
           });
         } else {
-          console.log('here false');
           treeready = true;
           if (treeready && tableready) setIsLoading(false);
         }
       })
-      .catch((e) => console.log(e));
+      .catch((e) => notification.error({ message: `${e}`, description: '' }));
   });
 
   const tableData: any = [];
@@ -130,7 +128,7 @@ const LocationUnitView: React.FC<Props> = () => {
       .then((res: LocationUnit) => {
         setDetail(res);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => notification.error({ message: `${e}`, description: '' }));
   }
 
   if (isLoading) return <Ripple />;
