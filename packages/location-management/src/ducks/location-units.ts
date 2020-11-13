@@ -59,7 +59,8 @@ export interface LocationUnitPayloadPOST {
   locationTags?: LocationUnitTag[];
   geometry?: Geometry;
   textEntry?: string[];
-  id: string | number;
+  // we will remove this id as it should be auto generated on server
+  id?: string | number;
 }
 
 /** interface for the PUT payload */

@@ -65,7 +65,7 @@ export interface FormField {
   status: LocationUnitStatus;
   type: string;
   externalId?: string;
-  locationTags?: string[];
+  locationTags?: number[];
   geometry?: string;
 }
 
@@ -87,13 +87,21 @@ export interface Props {
 
 export const defaultProps: Required<Props> = {
   id: v4(),
-  initialValue: { parentId: '', name: '', status: LocationUnitStatus.ACTIVE, type: '' },
+  initialValue: {
+    parentId: '',
+    name: '',
+    status: LocationUnitStatus.ACTIVE,
+    type: '',
+    externalId: '',
+    locationTags: [],
+    geometry: '',
+  },
 };
 
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
+  const [locationtag, setLocationtag] = useState<LocationTag[] | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const Treedata = useSelector((state) => (getAllHierarchiesArray(state) as unknown) as TreeData[]);
 
@@ -126,7 +134,6 @@ export const Form: React.FC<Props> = (props: Props) => {
           properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
         })
         .then((response: any) => {
-          console.log('LocationUnits Properties:', response);
           dispatch(fetchLocationUnits(response));
           const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
           if (rootIds.length) {
@@ -165,26 +172,25 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Function} setSubmitting method to set submission status
    */
   function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
-    const locationtag: LocationUnitTag[] | undefined = values.locationTags?.map((e) =>
-      JSON.parse(e)
+    const location_tag_filer = locationtag?.filter((e) => values.locationTags?.includes(e.id));
+    const location_tag = location_tag_filer?.map(
+      (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
     );
-    const parentid: string = JSON.parse(values.parentId).parent;
 
     let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
       properties: {
         username: user.username,
         version: 0,
         externalId: values.externalId,
-        parentId: parentid,
+        parentId: values.parentId,
         name: values.name,
         name_en: values.name,
         status: values.status,
       },
-      id: props.id ? props.id : defaultProps.id,
+      id: props.id,
       syncStatus: LocationUnitSyncStatus.SYNCED,
       type: values.type,
-      locationTags: locationtag,
+      locationTags: location_tag,
       geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
     };
 
@@ -198,6 +204,7 @@ export const Form: React.FC<Props> = (props: Props) => {
     removeEmptykeys(payload);
     console.log('payload : ', payload);
 
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
     if (props.id) {
       serve
         .update(payload)
@@ -237,7 +244,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       ) => onSubmit(values, setSubmitting)}
     >
       {({ values, isSubmitting, handleSubmit }) => {
-        console.log('values : ', values, 'parentId : ', values.parentId);
+        console.log('values : ', values);
 
         function parseTreeData(Treedata: TreeData[]): any {
           return Treedata.map((node) => (
@@ -299,14 +306,11 @@ export const Form: React.FC<Props> = (props: Props) => {
                 filterOption={filter}
               >
                 {locationtag &&
-                  locationtag.map((e) => {
-                    const value: LocationUnitTag = { id: e.id, name: e.name };
-                    return (
-                      <Select.Option key={e.id} value={JSON.stringify(value)}>
-                        {e.name}
-                      </Select.Option>
-                    );
-                  })}
+                  locationtag.map((e) => (
+                    <Select.Option key={e.id} value={e.id}>
+                      {e.name}
+                    </Select.Option>
+                  ))}
               </Select>
             </AntForm.Item>
 
@@ -322,5 +326,7 @@ export const Form: React.FC<Props> = (props: Props) => {
     </Formik>
   );
 };
+
+Form.defaultProps = defaultProps;
 
 export default Form;
