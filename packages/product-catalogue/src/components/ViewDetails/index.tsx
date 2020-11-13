@@ -56,8 +56,12 @@ const ViewDetails = (props: ViewDetailsProps) => {
           {extractViewDetails(object as ProductCatalogue).map(([key, val]) => {
             return (
               <span key={`${key}-${val}`}>
-                <Text strong={true}>{key}</Text>
-                <Text>{val}</Text>
+                <Text strong={true} className="display-block">
+                  {key}
+                </Text>
+                <Text type="secondary" className="display-block">
+                  {val}
+                </Text>
               </span>
             );
           })}
