@@ -4,7 +4,7 @@ import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { products } from '../../../ducks/productCatalogue/tests/fixtures';
+import { product1, products } from '../../../ducks/productCatalogue/tests/fixtures';
 import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
@@ -75,6 +75,56 @@ describe('List view Page', () => {
 
     // details view is not displayed
     expect(wrapper.find('.view-details-content')).toHaveLength(0);
+  });
+
+  it('sort works', async () => {
+    const product3 = { ...product1, productName: 'Scale', uniqueId: '3' };
+    fetch.mockResponse(JSON.stringify([...products, product3]));
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${CATALOGUE_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${CATALOGUE_LIST_VIEW_URL}`,
+        url: `${CATALOGUE_LIST_VIEW_URL}`,
+      },
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedProductCatalogueList {...props}></ConnectedProductCatalogueList>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // find ant table
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`table rows ${index}`);
+    });
+
+    // click on sort twice to change the order
+    wrapper.find('thead tr th').first().simulate('click');
+    wrapper.update();
+
+    // click on sort twice to change the order
+    wrapper.find('thead tr th').first().simulate('click');
+    wrapper.update();
+
+    // check new sort order
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`sorted table rows ${index}`);
+    });
   });
 
   it('renders correctly with detailView', async () => {
