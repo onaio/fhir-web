@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Form, Col, Row, Input, Switch, notification } from 'antd';
-import { History } from 'history';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -69,15 +68,13 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
  * @param {string} serviceClass - KeycloakService
  * @param {string} accessToken - Keycloak API access token
  * @param {string} keycloakBaseURL - Keycloak API base URL
- * @param {History} history - router history object
  */
 export const submitForm = (
   values: UserCredentialsFormFields,
   userId: string,
   serviceClass: typeof KeycloakService,
   accessToken: string,
-  keycloakBaseURL: string,
-  history: History
+  keycloakBaseURL: string
 ): void => {
   const serve = new serviceClass(
     accessToken,
@@ -92,7 +89,7 @@ export const submitForm = (
       value: password,
     })
     .then(() => {
-      history.push(URL_ADMIN);
+      useHistory().push(URL_ADMIN);
       notification.success({
         message: 'Credentials updated successfully',
         description: '',
@@ -128,7 +125,6 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   };
   // todo: replace any with appropriate type
   const history = useHistory();
-
   return (
     <Row>
       <h5 className="mb-3">Credentials</h5>
@@ -137,7 +133,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
           <Form
             {...layout}
             onFinish={(values: UserCredentialsFormFields) =>
-              submitForm(values, userId, serviceClass, accessToken, keycloakBaseURL, history)
+              submitForm(values, userId, serviceClass, accessToken, keycloakBaseURL)
             }
           >
             <Form.Item
