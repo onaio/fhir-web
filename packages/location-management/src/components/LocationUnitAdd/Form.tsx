@@ -242,9 +242,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         function parseTreeData(Treedata: TreeData[]): any {
           return Treedata.map((node) => (
             <TreeSelect.TreeNode
-              value={JSON.stringify(
-                node.parent ? { title: node.title, parent: node.parent } : { parent: node.label }
-              )}
+              value={node.id}
               title={node.title}
               children={node.children && parseTreeData(node.children)}
             />
