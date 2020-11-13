@@ -61,17 +61,8 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Product Catalogue (0) + Product CatalogueProduct NameIDActionsNo Data"`
+      `"ErrorNo products found in the catalogueGo BackBack Home"`
     );
-
-    // find ant table
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`table rows ${index}`);
-    });
-
-    // check if page title is correct
-    const helmet = Helmet.peek();
-    expect(helmet.title).toEqual('Product Catalogue (0)');
 
     // details view is not displayed
     expect(wrapper.find('.view-details-content')).toHaveLength(0);
@@ -107,6 +98,13 @@ describe('List view Page', () => {
       await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
+
+    // check if page title is correct
+    const helmet = Helmet.peek();
+    expect(helmet.title).toEqual('Product Catalogue (3)');
+
+    // details view is not displayed
+    expect(wrapper.find('.view-details-content')).toHaveLength(0);
 
     // find ant table
     wrapper.find('tr').forEach((tr, index) => {
