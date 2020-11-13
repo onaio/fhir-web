@@ -5,7 +5,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
 import { removeKeycloakUsers, KeycloakUser } from '../../../ducks/user';
-import { URL_USER_EDIT } from '../../../constants';
+import { URL_USER_CREDENTIALS, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 
 /** interface for component props */
@@ -51,8 +51,19 @@ const TableActions = (props: Props): JSX.Element => {
             )
           }
         >
-          {user_id && record.id !== user_id && <Button type="link">Delete</Button>}
+          {user_id && record.id !== user_id && (
+            <Button danger type="link" style={{ color: '#' }}>
+              Delete
+            </Button>
+          )}
         </Popconfirm>
+      </Menu.Item>
+      <Menu.Item>
+        {
+          <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
+            <Button type="link">Credentials</Button>
+          </Link>
+        }
       </Menu.Item>
     </Menu>
   );

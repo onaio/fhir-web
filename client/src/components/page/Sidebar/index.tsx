@@ -42,11 +42,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                   User Management
                 </Link>
               </Menu.Item>
-              <Menu.Item key="credentials">
-                <Link to={URL_ADMIN} className="admin-link">
-                  Credentials
-                </Link>
-              </Menu.Item>
             </Menu.SubMenu>
           )}
           <Menu.Item key="teams">
