@@ -42,6 +42,8 @@ export const LocationUnitAdd: React.FC = () => {
           setIsLoading(false);
         })
         .catch((e) => console.log(e));
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
