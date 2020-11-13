@@ -47,7 +47,7 @@ export const columns: ColumnsType<ProductCatalogue> = [
     title: 'Actions',
     key: `${TableColumnsNamespace}-actions`,
     render: ActionsColumnCustomRender,
-    width: '15%',
+    width: '20%',
   },
 ];
 
