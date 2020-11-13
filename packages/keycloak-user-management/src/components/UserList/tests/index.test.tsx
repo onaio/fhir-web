@@ -59,10 +59,10 @@ describe('components/UserList', () => {
     expect(userList.props()).toMatchSnapshot('user list props');
 
     const headerRow = userList.find('Row').at(0);
-    const tableRow = userList.find('Row').at(1);
+    // const tableRow = userList.find('Row').at(1);
 
     expect(headerRow.find('Col').at(0).props()).toMatchSnapshot('header actions col props');
-    expect(tableRow.find('Table').at(0).props()).toMatchSnapshot('table props');
+    expect(headerRow.find('Table').at(0).props()).toMatchSnapshot('table props');
     wrapper.unmount();
   });
 
