@@ -76,7 +76,6 @@ export async function loadSingleProduct(
 export async function postProduct(payload: Dictionary) {
   const data = new FormData();
   Object.entries(payload).forEach(([key, value]) => {
-    // TODO -> if value is of instance File, include filename
     if (value instanceof File) {
       data.append(key, value, value.name);
       return;
@@ -104,7 +103,6 @@ export async function postProduct(payload: Dictionary) {
 export async function putProduct(payload: Dictionary) {
   const data = new FormData();
   Object.entries(payload).forEach(([key, value]) => {
-    // TODO -> if value is of instance File, include filename
     if (value instanceof File) {
       data.append(key, value, value.name);
       return;
