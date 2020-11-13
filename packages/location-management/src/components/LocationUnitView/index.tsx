@@ -52,11 +52,11 @@ const LocationUnitView: React.FC<Props> = () => {
   ) as unknown) as TreeNode[];
   const dispatch = useDispatch();
 
-  const [detail, setDetail] = useState<LocationDetailData | null>(null);
-  const [rootIds, setRootIds] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<'Component' | 'Hierarchy' | 'Detail' | false>(
-    'Component'
-  );
+  const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  let tableready = false;
+  let treeready = false;
 
   useEffect(() => {
     const params = {
@@ -65,48 +65,35 @@ const LocationUnitView: React.FC<Props> = () => {
       properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
     };
 
-    if (isLoading === 'Component') {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
-      serve
-        .list(params)
-        .then((response: any) => {
-          setIsLoading('Hierarchy');
-          dispatch(fetchLocationUnits(response));
-          setRootIds(response.map((rootLocObj: any) => rootLocObj.id));
-        })
-        .catch((e) => console.log(e));
-    }
-  });
-
-  React.useEffect(() => {
-    if (rootIds.length && isLoading === 'Hierarchy' && !Treedata.length) {
-      rootIds.forEach((id: string) => {
-        const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
-        serve
-          .read(id)
-          .then((res: RawOpenSRPHierarchy) => {
-            const hierarchy = generateJurisdictionTree(res);
-            if (hierarchy.model && hierarchy.model.children)
-              dispatch(fetchAllHierarchies(hierarchy.model));
-            setIsLoading(false);
-          })
-          .catch((e) => console.log(e));
-      });
-    }
-  }, [rootIds, isLoading]);
-
-  function loadSingleLocation(row: TableData) {
-    setIsLoading('Detail');
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
     serve
-      .read(row.id, { is_jurisdiction: true })
-      .then((res: LocationUnit) => {
-        setDetail(res);
-        setIsLoading(false);
+      .list(params)
+      .then((response: any) => {
+        dispatch(fetchLocationUnits(response));
+        const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
+        if (rootIds.length && !Treedata.length) {
+          console.log('here inside');
+          rootIds.forEach((id: string) => {
+            const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
+            serve
+              .read(id)
+              .then((res: RawOpenSRPHierarchy) => {
+                const hierarchy = generateJurisdictionTree(res);
+                if (hierarchy.model && hierarchy.model.children)
+                  dispatch(fetchAllHierarchies(hierarchy.model));
+                treeready = true;
+                if (treeready && tableready) setIsLoading(false);
+              })
+              .catch((e) => console.log(e));
+          });
+        } else {
+          console.log('here false');
+          treeready = true;
+          if (treeready && tableready) setIsLoading(false);
+        }
       })
       .catch((e) => console.log(e));
-  }
+  });
 
   const tableData: any = [];
 
@@ -118,6 +105,8 @@ const LocationUnitView: React.FC<Props> = () => {
         name: child.label,
         geographicLevel: child.node.attributes.geographicLevel,
       });
+      tableready = true;
+      if (treeready && tableready) setIsLoading(false);
     });
   } else if (locationsArray && locationsArray.length && !currentParentChildren.length) {
     locationsArray.forEach((location: any, i: number) => {
@@ -128,9 +117,23 @@ const LocationUnitView: React.FC<Props> = () => {
         geographicLevel: location.node.attributes.geographicLevel,
       });
     });
+    tableready = true;
+    if (treeready && tableready) setIsLoading(false);
   }
 
-  if (isLoading && isLoading != 'Detail') return <Ripple />;
+  function loadSingleLocation(row: TableData) {
+    setDetail('loading');
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    serve
+      .read(row.id, { is_jurisdiction: true })
+      .then((res: LocationUnit) => {
+        setDetail(res);
+      })
+      .catch((e) => console.log(e));
+  }
+
+  if (isLoading) return <Ripple />;
 
   return (
     <section>
@@ -181,12 +184,12 @@ const LocationUnitView: React.FC<Props> = () => {
           </div>
         </Col>
 
-        {(isLoading === 'Detail' || detail) && (
+        {detail && (
           <Col className="pl-3" span={5}>
-            {isLoading === 'Detail' ? (
+            {detail === 'loading' ? (
               <Ripple />
             ) : (
-              detail && <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
+              <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}
           </Col>
         )}

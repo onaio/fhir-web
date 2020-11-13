@@ -99,8 +99,8 @@ export const Form: React.FC<Props> = (props: Props) => {
 
   const dispatch = useDispatch();
 
-  let treeready = locationtag || false;
-  let tableready = Treedata.length || false;
+  let locationunitReady = locationtag || false;
+  let treeselectReady = Treedata.length || false;
 
   useEffect(() => {
     if (!locationtag) {
@@ -108,9 +108,9 @@ export const Form: React.FC<Props> = (props: Props) => {
       serve
         .list()
         .then((response: LocationTag[]) => {
-          tableready = true;
+          treeselectReady = true;
           setLocationtag(response);
-          if (tableready && treeready) setIsLoading(false);
+          if (treeselectReady && locationunitReady) setIsLoading(false);
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     } else {
@@ -138,14 +138,14 @@ export const Form: React.FC<Props> = (props: Props) => {
                   const hierarchy = generateJurisdictionTree(res);
                   if (hierarchy.model && hierarchy.model.children)
                     dispatch(fetchAllHierarchies(hierarchy.model));
-                  tableready = true;
-                  if (tableready && treeready) setIsLoading(false);
+                  treeselectReady = true;
+                  if (treeselectReady && locationunitReady) setIsLoading(false);
                 })
                 .catch((e) => notification.error({ message: `${e}`, description: '' }));
             });
           } else {
-            tableready = true;
-            if (tableready && treeready) setIsLoading(false);
+            treeselectReady = true;
+            if (treeselectReady && locationunitReady) setIsLoading(false);
           }
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
