@@ -16,6 +16,21 @@ exports[`components/UserList/TableActions hides delete element if entry is logge
       trigger="click"
     />
   </MenuItem>
+  <MenuItem>
+    <Link
+      to="/user/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="link"
+      >
+        Credentials
+      </Button>
+    </Link>
+  </MenuItem>
 </Menu>
 `;
 
@@ -69,14 +84,35 @@ Object {
       >
         <Button
           block={false}
+          danger={true}
           ghost={false}
           htmlType="button"
           loading={false}
+          style={
+            Object {
+              "color": "#",
+            }
+          }
           type="link"
         >
           Delete
         </Button>
       </ForwardRef>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        to="/user/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+      >
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          type="link"
+        >
+          Credentials
+        </Button>
+      </Link>
     </MenuItem>
   </Menu>,
 }
@@ -106,14 +142,35 @@ exports[`components/UserList/TableActions shows delete element if entry is not l
     >
       <Button
         block={false}
+        danger={true}
         ghost={false}
         htmlType="button"
         loading={false}
+        style={
+          Object {
+            "color": "#",
+          }
+        }
         type="link"
       >
         Delete
       </Button>
     </ForwardRef>
+  </MenuItem>
+  <MenuItem>
+    <Link
+      to="/user/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="link"
+      >
+        Credentials
+      </Button>
+    </Link>
   </MenuItem>
 </Menu>
 `;

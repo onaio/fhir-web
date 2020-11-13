@@ -3,11 +3,7 @@
 exports[`components/CreateEditUser renders correctly 1`] = `
 Object {
   "children": <Col
-    lg={15}
-    md={18}
-    sm={20}
-    xl={12}
-    xs={24}
+    span={24}
   >
     <UserForm
       accessToken="access token"
