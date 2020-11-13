@@ -105,7 +105,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
 
   return (
     <Row>
-      <Col xs={24} sm={20} md={18} lg={15} xl={12}>
+      <Col span={24}>
         <UserForm {...userFormProps} />
       </Col>
     </Row>
