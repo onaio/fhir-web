@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Button } from 'antd';
+import { Button, Col, Row } from 'antd';
 import { Form, Select, Input } from 'formik-antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakService } from '@opensrp/keycloak-service';
@@ -101,10 +101,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   }, [initialValues.requiredActions]);
 
   return (
-    <section>
+    <Row>
       {/** If email is provided render edit user otherwise add user */}
       <h5 className="mb-3">{props.initialValues.email ? 'Edit User' : 'Add User'}</h5>
-      <div className=" bg-white p-3 form-container">
+      <Col className="bg-white p-3" span={24}>
         <Formik
           initialValues={initialValues}
           validationSchema={userSchema}
@@ -171,8 +171,8 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             </Form>
           )}
         </Formik>
-      </div>
-    </section>
+      </Col>
+    </Row>
   );
 };
 
