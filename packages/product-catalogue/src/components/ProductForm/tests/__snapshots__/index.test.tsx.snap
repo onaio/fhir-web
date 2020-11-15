@@ -32,7 +32,7 @@ exports[`productForm edit form submission: appropriateUsage 1`] = `
   onBlur={[Function]}
   onChange={[Function]}
   onKeyDown={[Function]}
-  placeholder="Input.TextArea"
+  placeholder="Describe the product's intended use at the service point"
   style={Object {}}
   value="staff is trained to use it appropriately"
 />
@@ -45,7 +45,7 @@ exports[`productForm edit form submission: availability 1`] = `
   onBlur={[Function]}
   onChange={[Function]}
   onKeyDown={[Function]}
-  placeholder="Input.TextArea"
+  placeholder="Describe where a supply monitor can locate this product at the service point."
   style={Object {}}
   value="available"
 />
@@ -58,7 +58,7 @@ exports[`productForm edit form submission: condition 1`] = `
   onBlur={[Function]}
   onChange={[Function]}
   onKeyDown={[Function]}
-  placeholder="Input.TextArea"
+  placeholder="Describe how a supply monitor would assess whether the product is in good condition"
   style={Object {}}
   value="good condition"
 />
@@ -109,7 +109,7 @@ exports[`productForm edit form submission: productName 1`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
-  placeholder="Enter the product name"
+  placeholder="Enter the product's name e.g Midwifery Kit"
   type="text"
   value="Scale"
 />
