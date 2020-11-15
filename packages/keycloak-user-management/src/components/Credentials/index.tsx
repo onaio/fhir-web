@@ -40,6 +40,7 @@ export interface CredentialsProps {
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
+  cancelUserHandler: (genericHistory: Dictionary) => void;
 }
 
 /** interface for data fields for team's form */
@@ -51,6 +52,15 @@ export interface UserCredentialsFormFields {
 
 /** type intersection for all types that pertain to the props */
 export type CredentialsPropsTypes = CredentialsProps & RouteComponentProps<CredentialsRouteParams>;
+/**
+ * redirect to /admin view
+ * find appropriate type for history from usehistory hook
+ *
+ * @param {Dictionary} genericHistory react-rouet usehistory hook
+ */
+export const cancelUserHandler = (genericHistory: Dictionary): void => {
+  genericHistory.push(URL_ADMIN);
+};
 
 /** default props for editing user component */
 export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
@@ -58,8 +68,8 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
+  cancelUserHandler: cancelUserHandler,
 };
-
 /**
  * Handle form submission
  *
@@ -179,7 +189,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
               <Button type="primary" htmlType="submit" className="reset-password">
                 Reset Password
               </Button>
-              <Button onClick={() => history.push(URL_ADMIN)} className="cancel-user">
+              <Button onClick={() => props.cancelUserHandler(history)} className="cancel-user">
                 Cancel
               </Button>
             </Form.Item>
