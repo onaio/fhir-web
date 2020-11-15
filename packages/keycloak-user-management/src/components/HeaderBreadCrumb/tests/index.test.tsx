@@ -2,6 +2,7 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import HeaderBreadCrumb, { handleTabLink } from '..';
+import { URL_USER_CREDENTIALS } from '../../../constants';
 
 describe('components/HeaderBreadCrumb', () => {
   it('renders without crashing', () => {
@@ -28,6 +29,6 @@ describe('components/HeaderBreadCrumb', () => {
     const setActiveKeyStateMethodMock = jest.fn();
     handleTabLink('credentials', setActiveKeyStateMethodMock, '123', mockUseHistory);
     expect(setActiveKeyStateMethodMock).toBeCalled();
-    expect(mockUseHistory.push).toBeCalled();
+    expect(mockUseHistory.push).toBeCalledWith(`${URL_USER_CREDENTIALS}/123`);
   });
 });
