@@ -5,7 +5,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
-import { ConnectedUserCredentials, UserCredentials } from '..';
+import { cancelUserHandler, ConnectedUserCredentials, UserCredentials } from '..';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { store } from '@opensrp/store';
@@ -17,6 +17,7 @@ import {
   fetchKeycloakUsers,
   KeycloakUser,
 } from '../../../ducks/user';
+import { URL_ADMIN } from '../../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -131,6 +132,7 @@ describe('components/Credentials', () => {
         method: 'PUT',
       },
     ]);
+    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
   });
 
@@ -232,5 +234,28 @@ describe('components/Credentials', () => {
     });
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
+  });
+  it('returns to user list on cancel user credentials', async () => {
+    const cancelUserHandlerMock = jest.fn();
+    const props2 = {
+      ...props,
+      cancelUserHandler: cancelUserHandlerMock,
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedUserCredentials {...props2} />
+        </Router>
+      </Provider>
+    );
+    wrapper.find('button.cancel-user').simulate('click');
+    expect(cancelUserHandlerMock).toBeCalled();
+  });
+  it('cancelUserHandler pushes to history', () => {
+    const mockUseHistory = {
+      push: jest.fn(),
+    };
+    cancelUserHandler(mockUseHistory);
+    expect(mockUseHistory.push).toBeCalledWith(URL_ADMIN);
   });
 });
