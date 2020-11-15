@@ -10,6 +10,7 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import * as Yup from 'yup';
 import { CATALOGUE_LIST_VIEW_URL, HOME_URL } from '../../constants';
 import { Redirect, useHistory } from 'react-router';
+import { CommonProps, defaultCommonProps } from '../../helpers/common';
 
 /** type describing the fields in the product catalogue form */
 type ProductFormFields = Omit<ProductCatalogue, 'serverVersion' | 'productPhoto'> & {
@@ -29,12 +30,13 @@ const defaultInitialValues: Partial<ProductFormFields> = {
 };
 
 /** props for the product Catalogue form */
-interface ProductFormProps {
+interface ProductFormProps extends CommonProps {
   initialValues: ProductFormFields;
   redirectAfterAction: string;
 }
 
 const defaultProps = {
+  ...defaultCommonProps,
   initialValues: defaultInitialValues,
   redirectAfterAction: CATALOGUE_LIST_VIEW_URL,
 };
@@ -75,7 +77,7 @@ const formItemLayout = {
 /** form component to add/edit products in the catalogue */
 
 const ProductForm = (props: ProductFormProps) => {
-  const { initialValues, redirectAfterAction } = props;
+  const { initialValues, redirectAfterAction, baseURL } = props;
   const isEditMode = !!initialValues.uniqueId;
   const defaultImageUrl = (isEditMode ? props.initialValues.productPhoto : '') ?? '';
   const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>(defaultImageUrl as string);
@@ -145,7 +147,7 @@ const ProductForm = (props: ProductFormProps) => {
         onSubmit={(values) => {
           const payload = { ...values };
           if (isEditMode) {
-            putProduct(payload)
+            putProduct(baseURL, payload)
               .then(() => {
                 sendSuccessNotification('Successfully Updated');
                 setAreWeDoneHere(true);
@@ -154,7 +156,7 @@ const ProductForm = (props: ProductFormProps) => {
                 sendErrorNotification(err.name, err.message);
               });
           } else {
-            postProduct(payload)
+            postProduct(baseURL, payload)
               .then(() => {
                 sendSuccessNotification('Successfully Added');
               })
