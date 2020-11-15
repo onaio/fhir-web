@@ -2,9 +2,14 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import HeaderBreadCrumb, { handleTabLink } from '..';
-import { URL_USER_CREDENTIALS } from '../../../constants';
+import { URL_USER_CREDENTIALS, URL_USER_EDIT } from '../../../constants';
 
 describe('components/HeaderBreadCrumb', () => {
+  const mockUseHistory = {
+    push: jest.fn(),
+  };
+  const setActiveKeyStateMethodMock = jest.fn();
+
   it('renders without crashing', () => {
     shallow(<HeaderBreadCrumb />);
   });
@@ -22,13 +27,19 @@ describe('components/HeaderBreadCrumb', () => {
     expect(wrapper.find('Tabs').props()).toMatchSnapshot('Tabs');
     wrapper.unmount();
   });
-  it('handles tab links appropriately', () => {
-    const mockUseHistory = {
-      push: jest.fn(),
-    };
-    const setActiveKeyStateMethodMock = jest.fn();
+  it('handles credential tab link appropriately', () => {
     handleTabLink('credentials', setActiveKeyStateMethodMock, '123', mockUseHistory);
     expect(setActiveKeyStateMethodMock).toBeCalled();
     expect(mockUseHistory.push).toBeCalledWith(`${URL_USER_CREDENTIALS}/123`);
+  });
+  it('handles details tab link appropriately', () => {
+    handleTabLink('details', setActiveKeyStateMethodMock, '123', mockUseHistory);
+    expect(setActiveKeyStateMethodMock).toBeCalled();
+    expect(mockUseHistory.push).toBeCalledWith(`${URL_USER_EDIT}/123`);
+  });
+  it('handles group tab link appropriately', () => {
+    handleTabLink('groups', setActiveKeyStateMethodMock, '123', mockUseHistory);
+    expect(setActiveKeyStateMethodMock).toBeCalled();
+    expect(mockUseHistory.push).toBeCalledWith('groups');
   });
 });
