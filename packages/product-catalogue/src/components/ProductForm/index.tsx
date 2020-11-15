@@ -170,13 +170,8 @@ const ProductForm = (props: ProductFormProps) => {
         {({ setFieldValue }) => {
           return (
             <>
-              <Form {...formItemLayout}>
-                <Form.Item
-                  id="productName"
-                  name="productName"
-                  label="Product name:"
-                  required={true}
-                >
+              <Form {...formItemLayout} colon={true}>
+                <Form.Item id="productName" name="productName" label="Product name" required={true}>
                   <Input
                     name="productName"
                     placeholder="Enter the product's name e.g Midwifery Kit"
@@ -190,7 +185,7 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="materialNumber"
                   name="materialNumber"
-                  label="Material number:"
+                  label="Material number"
                   required={true}
                 >
                   <Input name="materialNumber" />
