@@ -40,6 +40,6 @@ describe('components/HeaderBreadCrumb', () => {
   it('handles group tab link appropriately', () => {
     handleTabLink('groups', setActiveKeyStateMethodMock, '123', mockUseHistory);
     expect(setActiveKeyStateMethodMock).toBeCalled();
-    expect(mockUseHistory.push).toBeCalledWith('groups');
+    expect(mockUseHistory.push).toBeCalledWith('/groups');
   });
 });
