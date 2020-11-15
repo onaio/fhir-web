@@ -1,5 +1,6 @@
 // opensrp api strings
-export const OPENSRP_PRODUCT_CATALOGUE = 'rest/product-catalogue';
+export const OPENSRP_API_BASE_URL = 'https://reveal-stage.smartregister.org/opensrp/rest/';
+export const OPENSRP_PRODUCT_CATALOGUE = 'product-catalogue';
 
 // router routes
 export const CATALOGUE_LIST_VIEW_URL = '/product-catalogue';

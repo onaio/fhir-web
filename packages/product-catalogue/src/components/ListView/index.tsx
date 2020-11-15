@@ -22,12 +22,13 @@ import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
+import { CommonProps, defaultCommonProps } from 'product-catalogue/src/helpers/common';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
 
 /** props for the productCatalogueList view */
-interface Props<T = ProductCatalogue> {
+interface Props<T = ProductCatalogue> extends CommonProps {
   data: T[];
   productUnderView: T | null;
   columns: ColumnsType<T>;
@@ -36,6 +37,7 @@ interface Props<T = ProductCatalogue> {
 }
 
 const defaultProps = {
+  ...defaultCommonProps,
   data: [],
   productUnderView: null,
   columns: columns,
@@ -48,7 +50,7 @@ export type ProductCatalogueListTypes = Props<ProductCatalogue> & RouteComponent
 /** component that renders product catalogue */
 
 const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
-  const { service, data, columns, productUnderView, fetchProductsCreator } = props;
+  const { service, data, columns, productUnderView, fetchProductsCreator, baseURL } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
 
@@ -56,7 +58,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   const productId = props.match.params.productId ?? '';
 
   useEffect(() => {
-    loadProductCatalogue(service, fetchProductsCreator)
+    loadProductCatalogue(baseURL, service, fetchProductsCreator)
       .catch((err: Error) => handleBrokenPage(err))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
