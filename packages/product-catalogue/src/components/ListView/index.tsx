@@ -22,7 +22,7 @@ import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
-import { CommonProps, defaultCommonProps } from 'product-catalogue/src/helpers/common';
+import { CommonProps, defaultCommonProps } from '../../helpers/common';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
