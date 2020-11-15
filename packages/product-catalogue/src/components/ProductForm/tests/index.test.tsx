@@ -70,9 +70,6 @@ describe('productForm', () => {
       wrapper.update();
     });
 
-    // check if we have errors
-    expect(toJson(wrapper.find('form'))).toMatchSnapshot('full form');
-
     expect((wrapper.find('FormItem#productName').props() as any).validateStatus).toEqual('error');
     expect(toJson((wrapper.find('FormItem#productName').props() as any).help)).toMatchSnapshot(
       `"Product name"`
@@ -166,9 +163,6 @@ describe('productForm', () => {
       wrapper.update();
     });
     // check again for errors
-
-    // check if we have errors
-    expect(toJson(wrapper.find('form'))).toMatchSnapshot('full form');
 
     expect((wrapper.find('FormItem#productName').props() as any).validateStatus).toEqual(undefined);
 
@@ -317,7 +311,7 @@ describe('productForm', () => {
       'staff is trained to use it appropriately'
     );
 
-    expect(toJson(wrapper.find('input[type="file"]'))).toMatchSnapshot('upload button');
+    expect(wrapper.find('input[type="file"]')).toHaveLength(1);
     expect(wrapper.find('.upload-button').text()).toMatchSnapshot('Upload button');
 
     // change a few fields

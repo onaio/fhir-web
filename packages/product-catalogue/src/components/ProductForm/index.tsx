@@ -8,7 +8,7 @@ import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { postProduct, putProduct } from '../..//helpers/dataLoaders';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import * as Yup from 'yup';
-import { CATALOGUE_LIST_VIEW_URL, HOME_URL } from '../../constants';
+import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 
@@ -57,20 +57,20 @@ const ProductFormValidationSchema = Yup.object().shape({
 /** responsive layout for the form labels and columns */
 const formItemLayout = {
   labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 5,
-    },
+    xs: { offset: 0, span: 16 },
+    sm: { offset: 2, span: 10 },
+    md: { offset: 0, span: 8 },
+    lg: { offset: 0, span: 6 },
   },
+  wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
+};
+
+const tailLayout = {
   wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 12,
-    },
+    xs: { offset: 0, span: 16 },
+    sm: { offset: 12, span: 24 },
+    md: { offset: 8, span: 16 },
+    lg: { offset: 6, span: 14 },
   },
 };
 
@@ -177,7 +177,10 @@ const ProductForm = (props: ProductFormProps) => {
                   label="Product name:"
                   required={true}
                 >
-                  <Input name="productName" placeholder="Enter the product name" />
+                  <Input
+                    name="productName"
+                    placeholder="Enter the product's name e.g Midwifery Kit"
+                  />
                 </Form.Item>
 
                 <Form.Item id="uniqueId" name="uniqueId" hidden={true} required={true}>
@@ -208,17 +211,26 @@ const ProductForm = (props: ProductFormProps) => {
                   label="Is it there?"
                   required={true}
                 >
-                  <Input.TextArea name="availability" placeholder="Input.TextArea" />
+                  <Input.TextArea
+                    name="availability"
+                    placeholder="Describe where a supply monitor can locate this product at the service point."
+                  />
                 </FormItem>
                 <FormItem id="condition" name="condition" label="Is it in good condition?">
-                  <Input.TextArea name="condition" placeholder="Input.TextArea" />
+                  <Input.TextArea
+                    name="condition"
+                    placeholder="Describe how a supply monitor would assess whether the product is in good condition"
+                  />
                 </FormItem>
                 <FormItem
                   id="appropriateUsage"
                   name="appropriateUsage"
                   label="Is it being used appropriately?"
                 >
-                  <Input.TextArea name="appropriateUsage" placeholder="Input.TextArea" />
+                  <Input.TextArea
+                    name="appropriateUsage"
+                    placeholder="Describe the product's intended use at the service point"
+                  />
                 </FormItem>
                 <FormItem
                   id="accountabilityPeriod"
@@ -248,18 +260,21 @@ const ProductForm = (props: ProductFormProps) => {
                     )}
                   </Upload>
                 </FormItem>
-                <Space>
-                  <SubmitButton id="submit">Submit</SubmitButton>
 
-                  <Button
-                    id="cancel"
-                    onClick={() => {
-                      history.push(HOME_URL);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </Space>
+                <FormItem {...tailLayout} name="submitCancel">
+                  <Space>
+                    <SubmitButton id="submit">Submit</SubmitButton>
+
+                    <Button
+                      id="cancel"
+                      onClick={() => {
+                        history.push(CATALOGUE_LIST_VIEW_URL);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </Space>
+                </FormItem>
               </Form>
             </>
           );
