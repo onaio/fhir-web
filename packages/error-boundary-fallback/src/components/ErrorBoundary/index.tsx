@@ -1,3 +1,4 @@
+import React from 'react';
 import { Result, Button } from 'antd';
 import { useHistory } from 'react-router';
 
@@ -19,5 +20,4 @@ const ErrorBoundary: React.FC = () => {
   );
 };
 
-export default ErrorBoundary;
 export { ErrorBoundary };

@@ -1,6 +1,6 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
-import Fallback from '..';
+import { ErrorBoundary } from '..';
 const mockHistoryPush = jest.fn();
 jest.mock('react-router', () => ({
   useHistory: () => ({
@@ -10,11 +10,11 @@ jest.mock('react-router', () => ({
 
 describe('/components/Fallback', () => {
   it('renders without crasshing', () => {
-    shallow(<Fallback />);
+    shallow(<ErrorBoundary />);
   });
 
   it('render correctly', () => {
-    const wrapper = shallow(<Fallback />);
+    const wrapper = shallow(<ErrorBoundary />);
     expect(wrapper.find('Result')).toHaveLength(1);
     expect(wrapper.find('Result').prop('status')).toBe('error');
     expect(wrapper.find('Result').prop('title')).toBe('An Error Occurred');
@@ -24,7 +24,7 @@ describe('/components/Fallback', () => {
   });
 
   it('correctly redirects to home', () => {
-    const wrapper = mount(<Fallback />);
+    const wrapper = mount(<ErrorBoundary />);
     expect(wrapper.find('button')).toHaveLength(1);
     wrapper.find('button').simulate('click');
     expect(mockHistoryPush).toHaveBeenCalledWith('/');

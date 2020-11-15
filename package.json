@@ -114,7 +114,6 @@
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
     "@types/antd": "^1.0.0",
-    "@types/lodash": "^4.14.161",
     "redux-thunk": "^2.3.0",
     "typescript": "~3.7.2"
   },

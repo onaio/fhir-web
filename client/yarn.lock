@@ -1629,24 +1629,22 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
-<<<<<<< HEAD
 "@opensrp/error-boundary-fallback@file:../packages/error-boundary-fallback":
   version "0.0.0"
-=======
-"@opensrp/keycloak-service@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.4.tgz#4f857052c68120af01eea8f8a6a8919fa5876b2e"
-  integrity sha512-sUcdBwdsLLVfblOMHwwe2OCmxcLPVRqvThlKIxgwzCYPy7SazrGuKYXGUV04ARQk5ZgF5ffB95Kna5nR6FeUdA==
-  dependencies:
-    "@opensrp/store" "^0.0.2"
->>>>>>> 0d24002454d7c1f104539bf6b3017e3b1bfc02af
 
-"@opensrp/keycloak-service@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.6.tgz#1c234b0e47b9e6e2905b643a3dd52d01bdd42ab6"
-  integrity sha512-I0OHjpI9TTBp1F/qJjPXPqk0S9+QTpyBf+PoTXZ/olOAnBSpC1/wHDCUwPfwwLlgXCDjXXgCY7JG5iO7AJDVWQ==
+"@opensrp/keycloak-service@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.7.tgz#be652d2dc26751fd865dc495c115437f9f7f2488"
+  integrity sha512-K+2cOadLaM/7e9QmENfXJ49HX67DDucd7DYJB2WNtKi+D4SQNvc3SX97oFB5645f73zB/pm0ZLyK3N7Hj/f9XA==
   dependencies:
-    "@opensrp/store" "^0.0.5"
+    "@opensrp/store" "^0.0.6"
+
+"@opensrp/keycloak-service@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.8.tgz#f856672a3666131e8c0b04567949483c636db9a9"
+  integrity sha512-tIfrSKOTfLJ72FupNroC3ubN1B3tXrl4iye3IVDOgeUJxNDpbVWapiCtPo6Cc4Yz7wF1zOlGHRUcxNQwYxRLvQ==
+  dependencies:
+    "@opensrp/store" "^0.0.7"
 
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
@@ -1655,27 +1653,25 @@
   dependencies:
     "@opensrp/server-service" "^0.0.4"
 
-"@opensrp/server-service@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.10.tgz#89f7f3ada0c6f21ca1928dec58827b995f624607"
-  integrity sha512-KXTJG39DRxd2lC/21uA/hERhnFDQ0bazwpmfIATPZyUDL1WhOyNfDzwq6f/6+yeSdqeNsx20sBSk3RwLVUItAQ==
+"@opensrp/server-service@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
+  integrity sha512-WymZntvFba3/0FKM6f2L+YT7BF+t/HFlr6A16UIBFz83+nYTIoI93MS/ocO/7MDTL9F7yzTBpjA0D1CkogFnfg==
+
+"@opensrp/server-service@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.12.tgz#3a887269384797c1b217f4e242453c1fae1805d1"
+  integrity sha512-n3bmvLRyGNG+NZXWT4NMPC2kelJL3lcWGFRYo8qX/9j5hTm6HBNJWUvnPgvg57xnC9YBfXUY/SkVOkALN0iNJw==
 
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
 
-<<<<<<< HEAD
-"@opensrp/store@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.5.tgz#fe27aa5f6dd0b4e8e75b27924ca4da9cc528c026"
-  integrity sha512-TIq7BGxekFOz56Fug/2muVGRATKTEDCP6hoSHkwPoDXy5z+BWPD7y2Ec/GahxHw/XBG9sIp920+YMc6hj9fqJg==
-=======
-"@opensrp/store@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.2.tgz#fc26ebb7c48c4acfdeb79d7decb1df5346fded4e"
-  integrity sha512-5CRlFxWTjyi3rIs1WcerE19BG1HApSi5Lv3rEDdbaD2cnMkwysebtx5SGuoWCB94eRx07uzK+YVBBmXpKt+ygg==
->>>>>>> 0d24002454d7c1f104539bf6b3017e3b1bfc02af
+"@opensrp/store@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.6.tgz#074d18e98414190a2cd79aa53399dcf7e80b4a1e"
+  integrity sha512-qwfl99FxfRX9Iol0nG4YgCiiD9hdhNu7rqANb+vahAY9hGgFK1L3NnG92Zw8WbEd7JHT50b/1bGYLOAZYjipiA==
   dependencies:
     "@onaio/connected-reducer-registry" "^0.0.3"
     "@onaio/gatekeeper" "^0.1.0"
@@ -1689,12 +1685,10 @@
     reselect "^4.0.0"
     seamless-immutable "^7.1.4"
 
-<<<<<<< HEAD
-=======
-"@opensrp/store@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.5.tgz#fe27aa5f6dd0b4e8e75b27924ca4da9cc528c026"
-  integrity sha512-TIq7BGxekFOz56Fug/2muVGRATKTEDCP6hoSHkwPoDXy5z+BWPD7y2Ec/GahxHw/XBG9sIp920+YMc6hj9fqJg==
+"@opensrp/store@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.7.tgz#e5d6a49f2a2124f87f13e3ba72bd796e50ce9d0f"
+  integrity sha512-Jp4I0qGLCU//e+lb+7B9MDaK4q6sTWzVEQmYSOTdxIsoXlXrkDRKtWmbg28QdS2lqJO00V0OaVDyVRtqVMjgxw==
   dependencies:
     "@onaio/connected-reducer-registry" "^0.0.3"
     "@onaio/gatekeeper" "^0.1.0"
@@ -1708,19 +1702,18 @@
     reselect "^4.0.0"
     seamless-immutable "^7.1.4"
 
->>>>>>> 0d24002454d7c1f104539bf6b3017e3b1bfc02af
-"@opensrp/user-management@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@opensrp/user-management/-/user-management-0.1.7.tgz#d6cf86f0ed46cad5a50f761315211d6d165f7926"
-  integrity sha512-6tb050lgL8xvZse0MrVuntmcMVaEJJwBlojJY8HdJMtkjwIuoIbDZzlY/dCnxa6eDdmbO5/i0twCP1f2puwdvQ==
+"@opensrp/user-management@^0.1.8":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@opensrp/user-management/-/user-management-0.1.9.tgz#5520670566894932c83795601681e148ec0cab77"
+  integrity sha512-GrMyFGAOMxS6UhE5xlCCozfNRB2cBdy5uSbgJgdVmEfKzD6haPd4/4cMSf8IXZju9LPhPA4MsZhu4dmpx0+fWQ==
   dependencies:
     "@onaio/loaders" "^0.0.1"
     "@onaio/redux-reducer-registry" "^0.0.9"
     "@onaio/session-reducer" "^0.0.11"
     "@onaio/utils" "^0.0.1"
-    "@opensrp/keycloak-service" "^0.0.6"
-    "@opensrp/server-service" "^0.0.10"
-    "@opensrp/store" "^0.0.5"
+    "@opensrp/keycloak-service" "^0.0.8"
+    "@opensrp/server-service" "^0.0.12"
+    "@opensrp/store" "^0.0.7"
     antd "^4.6.3"
     babel-plugin-transform-es2015-modules-commonjs "^6.26.2"
     bootstrap "^4.5.2"
@@ -2404,17 +2397,62 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-<<<<<<< HEAD
-antd@^4.6.3, antd@^4.7.3:
+antd@^4.6.3:
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-4.8.2.tgz#8cad882ddb5b18bafacd009cb0096f5b20c8a2f3"
+  integrity sha512-qxagKsiPVO+2rcAdX8WA3TPqiv5TS4FDGoaETVgCCln3x7ap1nqHkBC+Fr3CSNg8MxwQ+6m5BSBLcs5uDQg0Qw==
+  dependencies:
+    "@ant-design/colors" "^4.0.5"
+    "@ant-design/css-animation" "^1.7.2"
+    "@ant-design/icons" "^4.2.1"
+    "@ant-design/react-slick" "~0.27.0"
+    "@babel/runtime" "^7.11.2"
+    array-tree-filter "^2.1.0"
+    classnames "^2.2.6"
+    copy-to-clipboard "^3.2.0"
+    lodash "^4.17.20"
+    moment "^2.25.3"
+    omit.js "^2.0.2"
+    raf "^3.4.1"
+    rc-animate "~3.1.0"
+    rc-cascader "~1.4.0"
+    rc-checkbox "~2.3.0"
+    rc-collapse "~2.0.0"
+    rc-dialog "~8.4.0"
+    rc-drawer "~4.1.0"
+    rc-dropdown "~3.2.0"
+    rc-field-form "~1.13.0"
+    rc-image "~4.0.0"
+    rc-input-number "~6.1.0"
+    rc-mentions "~1.5.0"
+    rc-menu "~8.8.2"
+    rc-motion "^2.2.0"
+    rc-notification "~4.5.2"
+    rc-pagination "~3.1.0"
+    rc-picker "~2.3.0"
+    rc-progress "~3.1.0"
+    rc-rate "~2.9.0"
+    rc-resize-observer "^0.2.3"
+    rc-select "~11.4.0"
+    rc-slider "~9.6.1"
+    rc-steps "~4.1.0"
+    rc-switch "~3.2.0"
+    rc-table "~7.11.0"
+    rc-tabs "~11.7.0"
+    rc-textarea "~0.3.0"
+    rc-tooltip "~5.0.0"
+    rc-tree "~3.11.0"
+    rc-tree-select "~4.1.1"
+    rc-trigger "~5.0.3"
+    rc-upload "~3.3.1"
+    rc-util "^5.1.0"
+    scroll-into-view-if-needed "^2.2.25"
+    warning "^4.0.3"
+
+antd@^4.7.3:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.8.0.tgz#198dc19028e7ae6e04d0714f6461d86c4812ff8c"
   integrity sha512-oqwcdCb9qBqLwcaKq03fOTIbX7fFHjLNoEKKOrHFYdlbxUdbhys1OBljZRyNiYb3V/7YdVKiS0UNvFjm+gil5w==
-=======
-antd@^4.6.3:
-  version "4.6.6"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-4.6.6.tgz#79b3e22ba6ddefaa2948d00d86d2c6130b3562fb"
-  integrity sha512-ruqzFFyohjEEp+Qg5VzBzFgDjqdj0FoPt3V/bGtLjeuQXPqFrPs+y4WWWmqi3ydGmN4VPIGBwd3CybQDrZAN3g==
->>>>>>> 0d24002454d7c1f104539bf6b3017e3b1bfc02af
   dependencies:
     "@ant-design/colors" "^4.0.5"
     "@ant-design/css-animation" "^1.7.2"
