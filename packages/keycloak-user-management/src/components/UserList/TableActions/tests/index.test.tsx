@@ -30,10 +30,12 @@ describe('components/UserList/TableActions', () => {
     );
     const tableActions = wrapper.find('TableActions');
     expect(tableActions.props()).toEqual(props);
-    expect(tableActions.find('Space').props()).toMatchSnapshot('space props');
+    expect(tableActions.find('Link').props()).toMatchSnapshot('edit');
+    expect(tableActions.find('Divider').props()).toMatchSnapshot('divider');
+    expect(tableActions.find('Dropdown').props()).toMatchSnapshot('dots menu');
   });
 
-  it('shows delete element if extry is not logged in user', () => {
+  it('shows delete element if entry is not logged in user', () => {
     props.extraData = {
       user_id: 'e8b07278-c75b-4dc7-b1f4-bcbf01b7d353',
     };
@@ -43,7 +45,7 @@ describe('components/UserList/TableActions', () => {
       </BrowserRouter>
     );
     const tableActions = wrapper.find('TableActions');
-    expect(tableActions.find('Link').at(1).text()).toEqual('Delete');
+    expect(tableActions.find('Dropdown').prop('overlay')).toMatchSnapshot('dots menu');
   });
 
   it('hides delete element if entry is logged in user', () => {
@@ -56,6 +58,6 @@ describe('components/UserList/TableActions', () => {
       </BrowserRouter>
     );
     const tableActions = wrapper.find('TableActions');
-    expect(tableActions.find('Link').at(1).exists()).toBeFalsy();
+    expect(tableActions.find('Dropdown').prop('overlay')).toMatchSnapshot('dots menu');
   });
 });
