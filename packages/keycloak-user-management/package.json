@@ -17,7 +17,6 @@
     "fast_array_intersect": "^1.1.0",
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",
-    "history": "^5.0.0",
     "lodash": "^4.17.20",
     "yup": "^0.29.3"
   },
