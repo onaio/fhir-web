@@ -30,7 +30,7 @@ interface FormField {
 }
 
 /** yup validations for practitioner data object from form */
-export const userSchema = Yup.object().shape({
+const userSchema = Yup.object().shape({
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   active: Yup.boolean().typeError('Status must be a Boolean').required('Status is Required'),
   description: Yup.string()
