@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
 import { notification, Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
@@ -7,18 +7,16 @@ import { getUser } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
-import { Ripple } from '@onaio/loaders';
 import {
-  fetchLocationUnits,
   LocationUnitPayloadPOST,
   LocationUnitPayloadPUT,
   LocationUnitStatus,
   LocationUnitSyncStatus,
   LocationUnitTag,
 } from '../../ducks/location-units';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { API_BASE_URL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
 import { ParsedHierarchySingleNode } from '../LocationTree/utils';
