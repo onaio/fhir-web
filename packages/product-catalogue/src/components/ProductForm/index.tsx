@@ -170,7 +170,7 @@ const ProductForm = (props: ProductFormProps) => {
         {({ setFieldValue }) => {
           return (
             <>
-              <Form {...formItemLayout} colon={true}>
+              <Form {...formItemLayout} colon={true} requiredMark={'optional'}>
                 <Form.Item id="productName" name="productName" label="Product name" required={true}>
                   <Input
                     name="productName"
