@@ -83,6 +83,18 @@ describe('dataLoading', () => {
     ]);
   });
 
+  it('load loadSingleProduct behaves when error', async () => {
+    fetch.once(JSON.stringify({}));
+    const creatorSpy = jest.spyOn(catalogueDux, 'fetchProducts');
+    loadSingleProduct(mockBaseURL, '1').catch((e) => {
+      expect(e.message).toEqual('No products found in the catalogue');
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+
+    expect(creatorSpy).not.toHaveBeenCalled();
+    creatorSpy.mockRestore();
+  });
+
   it('postProduct works correctly', async () => {
     fetch.once(JSON.stringify({}));
     const sampleFile = new File(['dummy'], 'dummy.txt');
