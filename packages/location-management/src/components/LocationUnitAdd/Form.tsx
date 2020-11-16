@@ -20,42 +20,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
-import { LocationTag } from '../../ducks/location-tags';
-import reducerRegistry from '@onaio/redux-reducer-registry';
-import locationHierarchyReducer, {
-  getAllHierarchiesArray,
-  fetchAllHierarchies,
-  reducerName as locationHierarchyReducerName,
-} from '../../ducks/location-hierarchy';
-import {
-  RawOpenSRPHierarchy,
-  generateJurisdictionTree,
-  getFilterParams,
-} from '../LocationTree/utils';
-reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
-
-const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
-const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
-
-interface TreeData {
-  id: string;
-  label: string;
-  key: string;
-  title: string;
-  parent?: string;
-  node: {
-    locationId: string;
-    name: string;
-    attributes: { geographicLevel: number };
-    voided: boolean;
-  };
-  children?: TreeData[];
-}
-
-const status = [
-  { label: 'Active', value: LocationUnitStatus.ACTIVE },
-  { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
-];
+import { LocationTag } from 'location-management/src/ducks/location-tags';
+import { TreeNode } from '../LocationTree/utils';
 
 // TODO : need to resolve this data from server
 
@@ -69,6 +35,13 @@ export interface FormField {
   geometry?: string;
 }
 
+export interface Props {
+  id?: string;
+  initialValue?: FormField;
+  locationtag: LocationTag[];
+  treedata: TreeNode[];
+}
+
 /** yup validations for practitioner data object from form */
 const userSchema = Yup.object().shape({
   parentId: Yup.string().typeError('Parentid must be a Number').required('Parentid is Required'),
@@ -79,14 +52,16 @@ const userSchema = Yup.object().shape({
   locationTags: Yup.array().typeError('location Tags must be an Array'),
   geometry: Yup.string().typeError('location Tags must be a An String'),
 });
-
-export interface Props {
-  id?: string;
-  initialValue?: FormField;
-}
-
+const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
+const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
+const status = [
+  { label: 'Active', value: LocationUnitStatus.ACTIVE },
+  { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
+];
 export const defaultProps: Required<Props> = {
   id: v4(),
+  locationtag: [{ id: 0, active: false, name: '', description: '' }],
+  treedata: [],
   initialValue: {
     parentId: '',
     name: '',
@@ -101,65 +76,6 @@ export const defaultProps: Required<Props> = {
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const [locationtag, setLocationtag] = useState<LocationTag[] | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const Treedata = useSelector((state) => (getAllHierarchiesArray(state) as unknown) as TreeData[]);
-
-  const dispatch = useDispatch();
-
-  let locationunitReady = locationtag || false;
-  let treeselectReady = Treedata.length || false;
-
-  useEffect(() => {
-    if (!locationtag) {
-      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
-      serve
-        .list()
-        .then((response: LocationTag[]) => {
-          treeselectReady = true;
-          setLocationtag(response);
-          if (treeselectReady && locationunitReady) setIsLoading(false);
-        })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
-    } else {
-      setIsLoading(false);
-    }
-
-    if (!Treedata.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
-      serve
-        .list({
-          is_jurisdiction: true,
-          return_geometry: false,
-          properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-        })
-        .then((response: any) => {
-          dispatch(fetchLocationUnits(response));
-          const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
-          if (rootIds.length) {
-            rootIds.forEach((id: string) => {
-              const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
-              serve
-                .read(id)
-                .then((res: RawOpenSRPHierarchy) => {
-                  const hierarchy = generateJurisdictionTree(res);
-                  if (hierarchy.model && hierarchy.model.children)
-                    dispatch(fetchAllHierarchies(hierarchy.model));
-                  treeselectReady = true;
-                  if (treeselectReady && locationunitReady) setIsLoading(false);
-                })
-                .catch((e) => notification.error({ message: `${e}`, description: '' }));
-            });
-          } else {
-            treeselectReady = true;
-            if (treeselectReady && locationunitReady) setIsLoading(false);
-          }
-        })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
 
   function filter(input: string, option: any) {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -232,8 +148,6 @@ export const Form: React.FC<Props> = (props: Props) => {
     }
   }
 
-  if (isLoading) return <Ripple />;
-
   return (
     <Formik
       initialValues={props.initialValue ? props.initialValue : defaultProps.initialValue}
@@ -246,12 +160,12 @@ export const Form: React.FC<Props> = (props: Props) => {
       {({ values, isSubmitting, handleSubmit }) => {
         console.log('values : ', values);
 
-        function parseTreeData(Treedata: TreeData[]): any {
-          return Treedata.map((node) => (
+        function parseTreeNode(TreeNode: TreeNode[]): JSX.Element[] {
+          return TreeNode.map((node) => (
             <TreeSelect.TreeNode
               value={node.id}
               title={node.title}
-              children={node.children && parseTreeData(node.children)}
+              children={node.children && parseTreeNode(node.children)}
             />
           ));
         }
@@ -265,7 +179,7 @@ export const Form: React.FC<Props> = (props: Props) => {
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 placeholder="Please select"
               >
-                {Treedata && parseTreeData(Treedata)}
+                {parseTreeNode(props.treedata)}
               </TreeSelect>
             </AntForm.Item>
 
@@ -305,12 +219,11 @@ export const Form: React.FC<Props> = (props: Props) => {
                 optionFilterProp="children"
                 filterOption={filter}
               >
-                {locationtag &&
-                  locationtag.map((e) => (
-                    <Select.Option key={e.id} value={e.id}>
-                      {e.name}
-                    </Select.Option>
-                  ))}
+                {props.locationtag.map((e) => (
+                  <Select.Option key={e.id} value={e.id}>
+                    {e.name}
+                  </Select.Option>
+                ))}
               </Select>
             </AntForm.Item>
 
