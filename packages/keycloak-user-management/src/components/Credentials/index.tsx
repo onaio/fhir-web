@@ -12,6 +12,13 @@ import {
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
   URL_ADMIN,
+  CREDENTIALS,
+  PASSWORD_MATCH_FAILURE,
+  RESET_PASSWORD,
+  CANCEL,
+  INPUT_PASSWORD,
+  CONFIRM_PASSWORD,
+  CREDENTIALS_UPDATED_SUCCESSFULLY,
 } from '../../constants';
 import {
   reducer as keycloakUsersReducer,
@@ -101,7 +108,7 @@ export const submitForm = (
     .then(() => {
       useHistory().push(URL_ADMIN);
       notification.success({
-        message: 'Credentials updated successfully',
+        message: CREDENTIALS_UPDATED_SUCCESSFULLY,
         description: '',
       });
     })
@@ -137,7 +144,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   const history = useHistory();
   return (
     <Row>
-      <h5 className="mb-3">Credentials</h5>
+      <h5 className="mb-3">{CREDENTIALS}</h5>
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form
@@ -152,7 +159,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
               rules={[
                 {
                   required: true,
-                  message: 'Please input your password!',
+                  message: INPUT_PASSWORD,
                 },
               ]}
               hasFeedback
@@ -168,14 +175,14 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
               rules={[
                 {
                   required: true,
-                  message: 'Please confirm your password!',
+                  message: CONFIRM_PASSWORD,
                 },
                 ({ getFieldValue }) => ({
                   validator(rule, value) {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject('The two passwords that you entered do not match!');
+                    return Promise.reject(PASSWORD_MATCH_FAILURE);
                   },
                 }),
               ]}
@@ -187,10 +194,10 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
             </Form.Item>
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" className="reset-password">
-                Reset Password
+                {RESET_PASSWORD}
               </Button>
               <Button onClick={() => props.cancelUserHandler(history)} className="cancel-user">
-                Cancel
+                {CANCEL}
               </Button>
             </Form.Item>
           </Form>
