@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConnectedEditOrgView } from '..';
+import { ConnectedEditProductView } from '..';
 import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
@@ -45,7 +45,7 @@ describe('CreateEditProduct Page', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedEditOrgView {...props}></ConnectedEditOrgView>
+          <ConnectedEditProductView {...props}></ConnectedEditProductView>
         </Router>
       </Provider>
     );
@@ -94,7 +94,7 @@ describe('CreateEditProduct Page', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedEditOrgView {...props}></ConnectedEditOrgView>
+          <ConnectedEditProductView {...props}></ConnectedEditProductView>
         </Router>
       </Provider>
     );
@@ -133,7 +133,7 @@ describe('CreateEditProduct Page', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedEditOrgView {...props}></ConnectedEditOrgView>
+          <ConnectedEditProductView {...props}></ConnectedEditProductView>
         </Router>
       </Provider>
     );

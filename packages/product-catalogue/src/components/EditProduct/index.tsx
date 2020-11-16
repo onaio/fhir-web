@@ -20,7 +20,7 @@ import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { CatalogueLoading } from '../ListView/utils';
 import Helmet from 'react-helmet';
-import { BrokenPage, useHandleBrokenPage } from '../../../../react-utils/src/components/BrokenPage';
+import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Resource404 } from '@opensrp/react-utils';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 
@@ -99,7 +99,7 @@ const EditProductView = (props: EditProductViewTypes) => {
 
 EditProductView.defaultProps = defaultProps;
 
-export { EditProductView as CreateEditProductView };
+export { EditProductView };
 
 /** Interface for connected state to props */
 interface MapStateToProps {
@@ -122,6 +122,6 @@ const mapDispatchToProps = {
 };
 
 /** product catalogue view that is connected to store */
-const ConnectedEditOrgView = connect(mapStateToProps, mapDispatchToProps)(EditProductView);
+const ConnectedEditProductView = connect(mapStateToProps, mapDispatchToProps)(EditProductView);
 
-export { ConnectedEditOrgView };
+export { ConnectedEditProductView };
