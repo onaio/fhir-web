@@ -10,7 +10,7 @@ import {
 } from '@opensrp/reducer-factory';
 
 /** interface for location group **/
-export interface LocationTag {
+export interface LocationGroup {
   id: number;
   active: boolean;
   name: string;
@@ -26,7 +26,7 @@ const customRemoveActionType = 'location-tags/REMOVE_LOCATION_TAGS';
 const customSetTotalRecordsActionType = 'location-tags/SET_TOTAL_LOCATION_TAGS';
 
 /** Item Reducer */
-const reducer = reducerFactory<LocationTag>(
+const reducer = reducerFactory<LocationGroup>(
   reducerName,
   customfetchedActionType,
   customRemoveActionType,
@@ -35,14 +35,14 @@ const reducer = reducerFactory<LocationTag>(
 
 // action
 /** actionCreator returns action to to add Item records to store */
-export const fetchLocationTags = fetchActionCreatorFactory<LocationTag>(reducerName, 'id');
-export const removeLocationTags = removeActionCreatorFactory(reducerName);
-export const setTotalLocationtags = setTotalRecordsFactory(reducerName);
+export const fetchLocationGroups = fetchActionCreatorFactory<LocationGroup>(reducerName, 'id');
+export const removeLocationGroups = removeActionCreatorFactory(reducerName);
+export const setTotalLocationGroups = setTotalRecordsFactory(reducerName);
 
 // selectors
-export const getLocationTagsById = getItemsByIdFactory<LocationTag>(reducerName);
-export const getLocationTagById = getItemByIdFactory<LocationTag>(reducerName);
-export const getLocationTagsArray = getItemsArrayFactory<LocationTag>(reducerName);
-export const getTotalLocationTags = getTotalRecordsFactory(reducerName);
+export const getLocationGroupsById = getItemsByIdFactory<LocationGroup>(reducerName);
+export const getLocationGroupById = getItemByIdFactory<LocationGroup>(reducerName);
+export const getLocationGroupsArray = getItemsArrayFactory<LocationGroup>(reducerName);
+export const getTotalLocationGroups = getTotalRecordsFactory(reducerName);
 
 export default reducer;

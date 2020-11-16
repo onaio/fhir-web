@@ -1,15 +1,15 @@
-import { LocationTag } from '../location-tags';
+import { LocationGroup } from '../location-groups';
 import { LocationUnit, LocationUnitStatus } from '../location-units';
 /* eslint-disable @typescript-eslint/camelcase */
 
-export const locationTag1: LocationTag = {
+export const LocationGroup1: LocationGroup = {
   id: 1,
   active: true,
   name: 'Sample',
   description: 'Sample description',
 };
 
-export const locationTag2: LocationTag = {
+export const LocationGroup2: LocationGroup = {
   id: 2,
   active: true,
   name: 'Sample 2',
@@ -33,7 +33,7 @@ export const locationUnit1: LocationUnit = {
     ],
     type: 'MultiPolygon',
   },
-  locationTags: [{ id: 2, name: 'Operational Area' }],
+  locationGroups: [{ id: 2, name: 'Operational Area' }],
   properties: {
     geographicLevel: 5,
     name: 'Thailand test site BVBD 2',
@@ -66,7 +66,7 @@ export const locationUnit2 = {
     type: 'MultiPolygon',
   },
   id: 'a7baf57d-ad31-46d2-8d28-0c81dd306b08',
-  locationTags: [{ id: 2, name: 'Operational Area' }],
+  locationGroups: [{ id: 2, name: 'Operational Area' }],
   properties: {
     geographicLevel: 5,
     name: 'Thailand test site BVBD 2',
