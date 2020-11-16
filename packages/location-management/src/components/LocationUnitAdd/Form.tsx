@@ -84,7 +84,9 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Function} setSubmitting method to set submission status
    */
   function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
-    const location_tag_filer = locationtag?.filter((e) => values.locationTags?.includes(e.id));
+    const location_tag_filer = props.locationtag?.filter((e) =>
+      values.locationTags?.includes(e.id)
+    );
     const location_tag = location_tag_filer?.map(
       (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
     );
