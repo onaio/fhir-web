@@ -87,10 +87,12 @@ export const Form: React.FC<Props> = (props: Props) => {
       (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
     );
 
-    const payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
+    const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
+      is_jurisdiction: true;
+    } = {
+      is_jurisdiction: true,
       properties: {
         username: user.username,
-        version: 0,
         externalId: values.externalId,
         parentId: values.parentId,
         name: values.name,
@@ -105,6 +107,10 @@ export const Form: React.FC<Props> = (props: Props) => {
       geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
     };
 
+    /** removes empty undefined and null objects before they payload is sent to server
+     *
+     * @param obj
+     */
     function removeEmptykeys(obj: any) {
       Object.keys(obj).forEach(function (key) {
         if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
@@ -154,6 +160,10 @@ export const Form: React.FC<Props> = (props: Props) => {
       ) => onSubmit(values, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
+        /** Function to parse the hierarchy tree into treeselect node format
+         *
+         * @param hierarchyNode
+         */
         function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
           return hierarchyNode.map((node) => (
             <TreeSelect.TreeNode
