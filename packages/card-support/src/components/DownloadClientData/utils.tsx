@@ -3,6 +3,7 @@ import Papaparse from 'papaparse';
 import { OpenSRPService } from '@opensrp/server-service';
 import { DownloadClientDataFormFields } from '../DownloadClientData';
 import { Dispatch, SetStateAction } from 'react';
+import { locationHierachyDucks, TreeNode } from '@opensrp/location-management';
 import {
   ERROR_OCCURRED,
   OPENSRP_URL_CLIENT_SEARCH,
@@ -45,7 +46,8 @@ export const submitForm = (
   accessToken: string,
   opensrpBaseURL: string,
   serviceClass: typeof OpenSRPService,
-  setSubmitting: (isSubmitting: boolean) => void
+  setSubmitting: (isSubmitting: boolean) => void,
+  locations: TreeNode[]
 ): void => {
   setSubmitting(true);
   const { clientLocation, cardStatus, cardOrderDate } = values;
@@ -69,6 +71,7 @@ export const submitForm = (
           startDate,
           endDate,
           setSubmitting,
+          locations,
           cardStatus
         );
       })
@@ -88,6 +91,7 @@ export const submitForm = (
       startDate,
       endDate,
       setSubmitting,
+      locations,
       cardStatus
     );
   }
@@ -139,6 +143,7 @@ export const getClientData = (
   startDate: string,
   endDate: string,
   setSubmitting: (isSubmitting: boolean) => void,
+  locations: TreeNode[],
   cardStatus?: string
 ): void => {
   let endpoint = `${OPENSRP_URL_CLIENT_SEARCH}?&registration_location=${locationId}&startDate=${startDate}&endDate=${endDate}`;
@@ -152,6 +157,8 @@ export const getClientData = (
   serve
     .list()
     .then((clients: Client[]) => {
+      const locationDetails = getLocationDetails(locations, locationId);
+      const facilityOfRegistration = locationDetails ? locationDetails.title : '';
       const entries: ClientCSVEntry[] = clients.map((client: Client) => {
         return {
           idNumber: client._id,
@@ -159,9 +166,11 @@ export const getClientData = (
           firstName: client.firstName,
           lastName: client.lastName,
           gender: client.gender,
+          facilityOfRegistration: facilityOfRegistration,
         };
       });
-      createCsv(entries, buildCSVFileName('nairobi', startDate, endDate));
+
+      createCsv(entries, buildCSVFileName(facilityOfRegistration, startDate, endDate));
       setSubmitting(false);
     })
     .catch((_: Error) => {
@@ -215,4 +224,31 @@ const createCsv = (entries: ClientCSVEntry[], fileName: string): void => {
   });
   // Export csv file
   downloadFile(csv, fileName, TEXT_CSV);
+};
+
+const getLocationDetails = (locations: TreeNode[], locationId: string): TreeNode | null => {
+  let found = false;
+  let i = 0;
+  let location = null;
+
+  while (!found && i < locations.length) {
+    const node = locations[i];
+
+    if (node.id) {
+      if (node.id === locationId) {
+        found = true;
+        location = node;
+      }
+    } else {
+      location = getLocationDetails(node.children, locationId);
+
+      if (location) {
+        found = true;
+      }
+    }
+
+    i += 1;
+  }
+
+  return location;
 };

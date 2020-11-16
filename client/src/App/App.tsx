@@ -51,7 +51,7 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
-import { ConnectedDownloadClientData } from '@opensrp/card-support';
+import { DownloadClientData } from '@opensrp/card-support';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
@@ -181,7 +181,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_DOWNLOAD_CLIENT_DATA}
-              component={ConnectedDownloadClientData}
+              component={DownloadClientData}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

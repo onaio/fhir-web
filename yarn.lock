@@ -2639,6 +2639,16 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
+"@opensrp/location-management@file:packages/location-management":
+  version "0.0.0"
+  dependencies:
+    "@opensrp/reducer-factory" "^0.0.10"
+    "@opensrp/server-service" "^0.0.11"
+    "@opensrp/store" "^0.0.6"
+    formik-antd "^2.0.1"
+    tree-model "^1.0.7"
+    uuidv4 "^6.2.5"
+
 "@opensrp/reducer-factory@^0.0.10":
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.10.tgz#151e3bb55b7833958b20f8c0b3c163b8a7b0c594"

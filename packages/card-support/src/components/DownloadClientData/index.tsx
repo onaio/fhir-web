@@ -1,18 +1,42 @@
 import React from 'react';
-import { Store } from 'redux';
-import { connect } from 'react-redux';
-import { Button, Card, Typography, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  Button,
+  Card,
+  Typography,
+  Form,
+  Select,
+  TreeSelect,
+  DatePicker,
+  Tooltip,
+  notification,
+} from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/server-service';
-import { makeAPIStateSelector } from '@opensrp/store';
+import { getAccessToken } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
-import { submitForm, handleCardOrderDateChange } from './utils';
+import {
+  locationHierachyDucks,
+  RawOpenSRPHierarchy,
+  generateJurisdictionTree,
+  TreeNode,
+} from '@opensrp/location-management';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+import { submitForm, handleCardOrderDateChange, UserAssignment } from './utils';
+import {
+  ERROR_OCCURRED,
+  OPENSRP_URL_LOCATION_HIERARCHY,
+  OPENSRP_URL_USER_ASSIGNMENT,
+} from '../../constants';
+
+reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.default);
 
 /** interface for component props */
 export interface DownloadClientDataProps {
   accessToken: string;
   opensrpBaseURL: string;
   opensrpServiceClass: typeof OpenSRPService;
+  fetchAllHierarchiesActionCreator: typeof locationHierachyDucks.fetchAllHierarchies;
 }
 /** interface for form fields */
 export interface DownloadClientDataFormFields {
@@ -30,6 +54,7 @@ export const defaultProps: DownloadClientDataProps = {
   accessToken: '',
   opensrpBaseURL: '',
   opensrpServiceClass: OpenSRPService,
+  fetchAllHierarchiesActionCreator: locationHierachyDucks.fetchAllHierarchies,
 };
 /** default initial form values */
 export const initialFormValues: Partial<DownloadClientDataFormFields> = {
@@ -45,10 +70,14 @@ export const initialFormValues: Partial<DownloadClientDataFormFields> = {
  * @returns {Function} - DownloadClientData component
  */
 const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadClientDataProps) => {
-  const { accessToken, opensrpBaseURL, opensrpServiceClass } = props;
+  const { opensrpBaseURL, opensrpServiceClass, fetchAllHierarchiesActionCreator } = props;
   const [cardOrderDate, setCardOrderDate] = React.useState<[string, string]>(['', '']);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const { TreeNode } = TreeSelect;
+  const locationHierarchies = useSelector(
+    (state) => (locationHierachyDucks.getAllHierarchiesArray(state) as unknown) as TreeNode[]
+  );
+  const accessToken = useSelector((state) => getAccessToken(state) as string);
+  const dispatch = useDispatch();
   const { Option } = Select;
   const { RangePicker } = DatePicker;
   const { Title } = Typography;
@@ -69,6 +98,47 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
       lg: { offset: 6, span: 14 },
     },
   };
+
+  React.useEffect(() => {
+    const serve = new opensrpServiceClass(accessToken, opensrpBaseURL, OPENSRP_URL_USER_ASSIGNMENT);
+    serve
+      .list()
+      .then((assignment: UserAssignment) => {
+        const { jurisdictions } = assignment;
+        const defaultLocationId = jurisdictions[0];
+        const serve = new opensrpServiceClass(
+          accessToken,
+          opensrpBaseURL,
+          OPENSRP_URL_LOCATION_HIERARCHY
+        );
+        serve
+          .read(defaultLocationId, { is_jurisdiction: true })
+          .then((res: RawOpenSRPHierarchy) => {
+            const hierarchy = generateJurisdictionTree(res);
+            dispatch(fetchAllHierarchiesActionCreator(hierarchy.model));
+          })
+          .catch((e) => notification.error({ message: `${e}`, description: '' }));
+      })
+      .catch((_: Error) => {
+        setSubmitting(false);
+        notification.error({
+          message: ERROR_OCCURRED,
+          description: '',
+        });
+      });
+  }, []);
+
+  function parseTreeNode(TreeNode: TreeNode[]): JSX.Element[] {
+    return TreeNode.map((node) => (
+      <TreeSelect.TreeNode
+        key={node.id}
+        value={node.id}
+        title={node.title}
+        children={node.children && parseTreeNode(node.children)}
+      />
+    ));
+  }
+
   return (
     <>
       <Title level={3}>Download Client Data</Title>
@@ -85,28 +155,19 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               accessToken,
               opensrpBaseURL,
               opensrpServiceClass,
-              setSubmitting
+              setSubmitting,
+              locationHierarchies
             );
           }}
         >
           <Form.Item name="clientLocation" label="Client Location">
             <TreeSelect
-              showSearch
+              style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder="Please select"
-              allowClear
-              treeDefaultExpandAll
             >
-              <TreeNode value="" title="All locations"></TreeNode>
-              <TreeNode value="parent 1" title="parent 1">
-                <TreeNode value="parent 1-0" title="parent 1-0">
-                  <TreeNode value="leaf1" title="my leaf" />
-                  <TreeNode value="leaf2" title="your leaf" />
-                </TreeNode>
-                <TreeNode value="parent 1-1" title="parent 1-1">
-                  <TreeNode value="sss" title={<b style={{ color: '#08c' }}>sss</b>} />
-                </TreeNode>
-              </TreeNode>
+              <TreeSelect.TreeNode value="" title="All locations"></TreeSelect.TreeNode>
+              {parseTreeNode(locationHierarchies)}
             </TreeSelect>
           </Form.Item>
           <Form.Item name="cardStatus" label="Card Status">
@@ -130,7 +191,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               }
             />
           </Form.Item>
-          <Form.Item {...tailLayout} name="tail">
+          <Form.Item {...tailLayout}>
             <Tooltip
               placement="bottom"
               title={!!cardOrderDate[0] || !!cardOrderDate[1] ? '' : 'Select Card Order Date'}
@@ -151,19 +212,5 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
   );
 };
 DownloadClientData.defaultProps = defaultProps;
+
 export { DownloadClientData };
-/** Interface for connected state to props */
-interface DispatchedProps {
-  accessToken: string;
-}
-/**
- * Map state to props
- *
- * @param {Store} state - the app state
- * @returns {Dictionary} - dispatched props
- */
-const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
-  const accessToken = makeAPIStateSelector()(state, { accessToken: true });
-  return { accessToken };
-};
-export const ConnectedDownloadClientData = connect(mapStateToProps)(DownloadClientData);
