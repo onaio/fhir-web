@@ -11,7 +11,7 @@ import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
   LOCATIONS_UNIT_GROUP_SET,
-  TEAM,
+  TEAMS,
   URL_ADMIN,
   URL_HOME,
   URL_TEAMS,
@@ -55,7 +55,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           )}
           <Menu.Item key="teams">
             <Link to={URL_TEAMS} className="admin-link">
-              {TEAM}
+              {TEAMS}
             </Link>
           </Menu.Item>
           <Menu.SubMenu key="admin-locations" title="Locations">
