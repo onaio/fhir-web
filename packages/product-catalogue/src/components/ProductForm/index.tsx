@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Form, SubmitButton, FormItem, Radio, Input, InputNumber } from 'formik-antd';
 import { Formik } from 'formik';
-import { ProductCatalogue } from '../../ducks/productCatalogue';
 import { PlusOutlined } from '@ant-design/icons';
 import { Upload, Space, Button } from 'antd';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
@@ -13,11 +12,19 @@ import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 
 /** type describing the fields in the product catalogue form */
-type ProductFormFields = Omit<ProductCatalogue, 'serverVersion' | 'productPhoto'> & {
+export interface ProductFormFields {
+  uniqueId?: string;
+  productName: string;
+  materialNumber: string;
+  isAttractiveItem?: boolean;
+  condition: string;
+  appropriateUsage: string;
+  accountabilityPeriod?: number;
+  availability: string;
   productPhoto: string | File;
-};
+}
 
-const defaultInitialValues: Partial<ProductFormFields> = {
+export const defaultInitialValues: ProductFormFields = {
   uniqueId: undefined,
   productName: '',
   materialNumber: '',
@@ -98,8 +105,8 @@ const ProductForm = (props: ProductFormProps) => {
     </div>
   );
 
-  /** returns a string that we can use at the source of the staged image
-   * once one is uploaded.
+  /** returns a string that we can use as the source of the staged image
+   * once one is uploaded but before getting submitted.
    *
    * @param {UploadFile} file - the uploaded File
    */
