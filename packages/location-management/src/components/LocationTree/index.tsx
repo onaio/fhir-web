@@ -24,21 +24,17 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchySingleNode[] = [];
 
-  let parentKey;
-  for (let i = 0; i < tree.length; i++) {
-    const node = tree[i];
-    /**
-     * @param key
-     * @param tree
-     */
-    function getParentKey(key: any, tree: ParsedHierarchySingleNode[]): any {
+  /** Return the the parent key in a tree for the supplied key
+   *
+   * @param key the key to find parent of
+   * @param tree the orignal tree
+   */ function getParentKey(key: any, tree: ParsedHierarchySingleNode[]): any {
+    tree.forEach((node) => {
       if (node.children) {
-        if (node.children.some((item: { key: any }) => item.key === key)) parentKey = node.key;
-        else if (getParentKey(key, node.children)) parentKey = getParentKey(key, node.children);
+        if (node.children.some((item: { key: any }) => item.key === key)) return node.key;
+        else if (getParentKey(key, node.children)) return getParentKey(key, node.children);
       }
-    }
-
-    return parentKey;
+    });
   }
 
   /**
@@ -92,11 +88,11 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     });
   }
 
-  const generateFilterData = (data: string | any[]) => {
+  const generateFilterData = (data: ParsedHierarchySingleNode[]) => {
     for (let i = 0; i < data.length; i++) {
       const node = data[i];
       const { key } = node;
-      filterData.push({ key, title: key });
+      filterData.push({ ...node, title: key });
       if (node.children) generateFilterData(node.children);
     }
   };

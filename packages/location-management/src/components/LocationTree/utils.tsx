@@ -69,11 +69,13 @@ export type TreeNode = TreeModel.Node<ParsedHierarchySingleNode>;
 export type AutoSelectCallback = (node: TreeNode) => boolean;
 
 /** mutates the structure of the children property in a single node
+ *
  * @param {RawHierarchySingleNode} rawSingleNode - single node i.e. part of rawOpensrp hierarchy
  */
 const parseChildren = (rawSingleNode: RawHierarchySingleNode) => {
   // explicitly dictating the types since we are mutating the object to a diff structure.
   const typedRawSingleNode = (rawSingleNode as unknown) as ParsedHierarchySingleNode;
+
   if (typedRawSingleNode.children) {
     typedRawSingleNode.children = Object.entries(typedRawSingleNode.children).map(
       ([_, value]) => value
@@ -117,6 +119,7 @@ const parseHierarchy = (rawOpenSRPHierarchy: RawOpenSRPHierarchy) => {
 };
 
 /** takes the raw opensrp hierarchy response and creates a tree model structure
+ *
  * @param {RawOpenSRPHierarchy} apiResponse - the response we get from opensrp
  * @returns {TreeNode} - returns root node
  */
