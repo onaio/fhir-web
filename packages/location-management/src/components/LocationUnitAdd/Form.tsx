@@ -21,7 +21,7 @@ import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
-import { TreeNode } from '../LocationTree/utils';
+import { ParsedHierarchySingleNode } from '../LocationTree/utils';
 
 // TODO : need to resolve this data from server
 
@@ -39,7 +39,7 @@ export interface Props {
   id?: string;
   initialValue?: FormField;
   locationtag: LocationTag[];
-  treedata: TreeNode[];
+  treedata: ParsedHierarchySingleNode[];
 }
 
 /** yup validations for practitioner data object from form */
@@ -158,12 +158,12 @@ export const Form: React.FC<Props> = (props: Props) => {
       {({ values, isSubmitting, handleSubmit }) => {
         console.log('values : ', values);
 
-        function parseTreeNode(TreeNode: TreeNode[]): JSX.Element[] {
-          return TreeNode.map((node) => (
+        function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
+          return hierarchyNode.map((node) => (
             <TreeSelect.TreeNode
               value={node.id}
               title={node.title}
-              children={node.children && parseTreeNode(node.children)}
+              children={node.children && parseHierarchyNode(node.children)}
             />
           ));
         }
@@ -177,7 +177,7 @@ export const Form: React.FC<Props> = (props: Props) => {
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 placeholder="Please select"
               >
-                {parseTreeNode(props.treedata)}
+                {parseHierarchyNode(props.treedata)}
               </TreeSelect>
             </AntForm.Item>
 
