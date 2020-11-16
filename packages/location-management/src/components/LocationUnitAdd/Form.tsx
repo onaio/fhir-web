@@ -91,7 +91,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
     );
 
-    let payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
+    const payload: LocationUnitPayloadPOST | LocationUnitPayloadPUT = {
       properties: {
         username: user.username,
         version: 0,

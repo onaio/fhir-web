@@ -16,7 +16,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [expandedKeys, setExpandedKeys] = useState<any>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-  let filterData: TreeData[] = [];
+  const filterData: TreeData[] = [];
 
   function getParentKey(key: any, tree: string | any[]): any {
     let parentKey;

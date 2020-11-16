@@ -34,7 +34,7 @@ const LocationTagView: React.FC = () => {
 
   useEffect(() => {
     if (isLoading) {
-      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
       serve
         .list({ is_jurisdiction: true, serverVersion: 0 })
         .then((response: LocationTag[]) => {

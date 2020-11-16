@@ -19,15 +19,15 @@ describe('containers/pages/Home', () => {
   };
 
   it('renders without crashing', () => {
-    let wrapper = mount(<LocationUnitDetail {...props} />);
+    const wrapper = mount(<LocationUnitDetail {...props} />);
 
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('removes it self on close', () => {
-    let wrapper = mount(<LocationUnitDetail {...props} onClose={() => wrapper.unmount()} />);
-    expect(wrapper.children().length).toBe(1);
+    const wrapper = mount(<LocationUnitDetail {...props} onClose={() => wrapper.unmount()} />);
+    expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
-    expect(wrapper.length).toBe(0);
+    expect(wrapper).toHaveLength(0);
   });
 });
