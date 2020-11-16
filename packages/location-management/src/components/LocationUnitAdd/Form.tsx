@@ -77,10 +77,6 @@ export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
 
-  function filter(input: string, option: any) {
-    return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-  }
-
   /**
    * Handle form submission
    *
@@ -217,7 +213,9 @@ export const Form: React.FC<Props> = (props: Props) => {
                 showSearch
                 placeholder="Enter a location group name"
                 optionFilterProp="children"
-                filterOption={filter}
+                filterOption={(input: string, option: any) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
               >
                 {props.locationtag.map((e) => (
                   <Select.Option key={e.id} value={e.id}>
