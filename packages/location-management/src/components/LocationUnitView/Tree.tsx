@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { ParsedHierarchySingleNode } from '../LocationTree/utils';
 
 interface TreeProp {
-  data: TreeData[];
-}
-
-export interface TreeData {
-  title: string;
-  key: string;
-  children?: TreeData[];
+  data: ParsedHierarchySingleNode[];
 }
 
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [expandedKeys, setExpandedKeys] = useState<any>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-  const filterData: TreeData[] = [];
+  const filterData: ParsedHierarchySingleNode[] = [];
 
-  function getParentKey(key: any, tree: string | any[]): any {
+  /** function to get the parent key of the supplied key from tree
+   *
+   * @param key
+   * @param tree
+   */
+  function getParentKey(key: any, tree: ParsedHierarchySingleNode[]): any {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
       const node = tree[i];
@@ -32,13 +32,21 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     return parentKey;
   }
 
+  /** Function to handle event when a tree is expanded
+   *
+   * @param expandedKeys
+   */
   function onExpand(expandedKeys: any) {
     setExpandedKeys(expandedKeys);
     setAutoExpandParent(true);
   }
 
-  function onChange(e: { target: { value: any } }) {
-    const { value } = e.target;
+  /** Function to handle event when tree serach input changes value
+   *
+   * @param event
+   */
+  function onChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
     const expandedKeys = filterData
       .map((item) => (item.title.indexOf(value) > -1 ? getParentKey(item.key, props.data) : null))
       .filter((item, i, self) => item && self.indexOf(item) === i);
@@ -47,6 +55,10 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     setAutoExpandParent(true);
   }
 
+  /** process the data before it could be displayed in tree
+   *
+   * @param data
+   */
   function loop(data: any[]): any {
     return data.map((item) => {
       const index = item.title.indexOf(searchValue);
@@ -70,12 +82,11 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     });
   }
 
-  const generateFilterData = (data: string | any[]) => {
+  const generateFilterData = (data: ParsedHierarchySingleNode[]) => {
     for (let i = 0; i < data.length; i++) {
       const node = data[i];
       const { key } = node;
-
-      filterData.push({ key, title: key });
+      filterData.push({ ...node, title: key });
       if (node.children) generateFilterData(node.children);
     }
   };
