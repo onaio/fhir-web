@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { TreeNode } from './utils';
+import { ParsedHierarchySingleNode } from './utils';
 import reducer, { reducerName } from '../../ducks/location-hierarchy';
 
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
-  data: TreeNode[];
+  data: ParsedHierarchySingleNode[];
   OnItemClick?: (item: any, [expandedKeys, setExpandedKeys]: any) => void;
 }
 
@@ -22,12 +22,12 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [expandedKeys, setExpandedKeys] = useState<any>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-  const filterData: any = [];
+  const filterData: ParsedHierarchySingleNode[] = [];
 
-  function getParentKey(key: any, tree: string | any[]): any {
-    let parentKey;
-    for (let i = 0; i < tree.length; i++) {
-      const node = tree[i];
+  let parentKey;
+  for (let i = 0; i < tree.length; i++) {
+    const node = tree[i];
+    function getParentKey(key: any, tree: ParsedHierarchySingleNode[]): any {
       if (node.children) {
         if (node.children.some((item: { key: any }) => item.key === key)) parentKey = node.key;
         else if (getParentKey(key, node.children)) parentKey = getParentKey(key, node.children);

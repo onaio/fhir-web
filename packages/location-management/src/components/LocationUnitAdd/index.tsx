@@ -26,7 +26,7 @@ import {
   RawOpenSRPHierarchy,
   generateJurisdictionTree,
   getFilterParams,
-  TreeNode,
+  ParsedHierarchySingleNode,
 } from '../LocationTree/utils';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -38,7 +38,9 @@ export const LocationUnitAdd: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [IsLoading, setIsLoading] = useState<boolean>(false);
   const [locationtag, setLocationtag] = useState<LocationTag[] | undefined>(undefined);
-  const Treedata = useSelector((state) => (getAllHierarchiesArray(state) as unknown) as TreeNode[]);
+  const Treedata = useSelector(
+    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
+  );
 
   const dispatch = useDispatch();
 
