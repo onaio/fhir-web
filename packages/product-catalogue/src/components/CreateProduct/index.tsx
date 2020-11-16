@@ -5,6 +5,13 @@ import React from 'react';
 import { ProductForm } from '../ProductForm';
 import { Layout, PageHeader } from 'antd';
 import Helmet from 'react-helmet';
+import { CommonProps, defaultCommonProps } from '../../helpers/common';
+
+type CreateProductViewProps = CommonProps;
+
+const defaultProps = {
+  ...defaultCommonProps,
+};
 
 /**
  * CreateProductView component
@@ -12,7 +19,8 @@ import Helmet from 'react-helmet';
  *  props - component props
  */
 
-export const CreateProductView = () => {
+const CreateProductView = (props: CreateProductViewProps) => {
+  const { baseURL } = props;
   const pageTitle = 'Add Product to Catalogue';
 
   return (
@@ -22,7 +30,11 @@ export const CreateProductView = () => {
       </Helmet>
       <PageHeader title={pageTitle} className="pageHeader"></PageHeader>
 
-      <ProductForm />
+      <ProductForm baseURL={baseURL} />
     </Layout>
   );
 };
+
+CreateProductView.defaultProps = defaultProps;
+
+export { CreateProductView };

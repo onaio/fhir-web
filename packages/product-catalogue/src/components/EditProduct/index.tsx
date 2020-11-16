@@ -21,19 +21,21 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { CatalogueLoading } from '../ListView/utils';
 import Helmet from 'react-helmet';
 import { BrokenPage, useHandleBrokenPage } from '../../../../react-utils/src/components/BrokenPage';
-import { Resource404 } from '../Resource404';
+import { Resource404 } from '@opensrp/react-utils';
+import { CommonProps, defaultCommonProps } from '../../helpers/common';
 
 /** register catalogue reducer */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
 
 /** props for createEditProduct view */
-export interface EditProductViewProps {
+export interface EditProductViewProps extends CommonProps {
   product: ProductCatalogue | null;
   fetchProducts: typeof fetchProducts;
   serviceClass: typeof OpenSRPService;
 }
 
 const defaultProps = {
+  ...defaultCommonProps,
   product: null,
   fetchProducts: fetchProducts,
   serviceClass: OpenSRPService,
@@ -49,7 +51,7 @@ export type EditProductViewTypes = EditProductViewProps & RouteComponentProps<Ro
  */
 
 const EditProductView = (props: EditProductViewTypes) => {
-  const { product, fetchProducts, serviceClass } = props;
+  const { product, fetchProducts, serviceClass, baseURL } = props;
   const { productId } = props.match.params;
   const [loading, setLoading] = useState<boolean>(!product);
 
@@ -57,7 +59,7 @@ const EditProductView = (props: EditProductViewTypes) => {
 
   useEffect(() => {
     const idOfProduct = productId as string | number;
-    loadSingleProduct(idOfProduct, serviceClass, fetchProducts)
+    loadSingleProduct(baseURL, idOfProduct, serviceClass, fetchProducts)
       .finally(() => setLoading(false))
       .catch((err) => handleBrokenPage(err));
 
@@ -77,6 +79,7 @@ const EditProductView = (props: EditProductViewTypes) => {
   }
 
   const productFormProps = {
+    baseURL,
     initialValues: { ...(product as ProductCatalogue) },
   };
 
