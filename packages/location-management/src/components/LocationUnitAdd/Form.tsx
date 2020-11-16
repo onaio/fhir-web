@@ -70,7 +70,7 @@ export interface FormField {
 }
 
 /** yup validations for practitioner data object from form */
-export const userSchema = Yup.object().shape({
+const userSchema = Yup.object().shape({
   parentId: Yup.string().typeError('Parentid must be a Number').required('Parentid is Required'),
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   status: Yup.string().required('Status is Required'),
