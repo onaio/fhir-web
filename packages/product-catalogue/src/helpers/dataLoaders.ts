@@ -3,14 +3,12 @@
 
 import { store, makeAPIStateSelector } from '@opensrp/store';
 import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
-import { OPENSRP_PRODUCT_CATALOGUE } from '../constants';
+import { OPENSRP_API_BASE_URL, OPENSRP_PRODUCT_CATALOGUE } from '../constants';
 import { fetchProducts, ProductCatalogue } from '../ducks/productCatalogue';
 import { Dictionary } from '@onaio/utils';
 
 const sessionSelector = makeAPIStateSelector();
-const OPENSRP_API_BASE_URL = '';
 const accessToken = sessionSelector(store.getState(), { accessToken: true });
-const PRODUCT_CATALOGUE_ENDPOINT = 'rest/product-catalogue';
 
 /** OpenSRP service */
 export class OpenSRPService extends GenericOpenSRPService {
@@ -20,16 +18,18 @@ export class OpenSRPService extends GenericOpenSRPService {
 }
 
 /**
+ * @param {string} baseURL -  base url of api
  * @param {OpenSRPService} service - the opensrp service
  * @param {fetchProducts}actionCreator - Action creator; creates actions thad adds products to the store
  *
  * @returns {Promise<void>}
  */
 export async function loadProductCatalogue(
+  baseURL: string,
   service: typeof OpenSRPService = OpenSRPService,
   actionCreator: typeof fetchProducts = fetchProducts
 ) {
-  const serve = new service(OPENSRP_PRODUCT_CATALOGUE);
+  const serve = new service(OPENSRP_PRODUCT_CATALOGUE, baseURL);
   return serve
     .list()
     .then((response: ProductCatalogue[] | null) => {
@@ -44,6 +44,7 @@ export async function loadProductCatalogue(
 }
 
 /**
+ * @param {string} baseURL -  base url of api
  * @param {number | string} id - id of the product to be fetched
  * @param {OpenSRPService} service - the opensrp service
  * @param {fetchProducts}actionCreator - Action creator; creates actions thad adds products to the store
@@ -51,11 +52,12 @@ export async function loadProductCatalogue(
  * @returns {Promise<void>}
  */
 export async function loadSingleProduct(
+  baseURL: string,
   id: number | string,
   service: typeof OpenSRPService = OpenSRPService,
   actionCreator: typeof fetchProducts = fetchProducts
 ) {
-  const serve = new service(OPENSRP_PRODUCT_CATALOGUE);
+  const serve = new service(OPENSRP_PRODUCT_CATALOGUE, baseURL);
   return serve
     .read(id)
     .then((response: ProductCatalogue | {}) => {
@@ -70,10 +72,11 @@ export async function loadSingleProduct(
 }
 
 /**
+ * @param {string} baseURL - base url of the api
  * @param {Dictionary} payload - the payload
  * @returns {Promise<void>}
  */
-export async function postProduct(payload: Dictionary) {
+export async function postProduct(baseURL: string, payload: Dictionary) {
   const data = new FormData();
   Object.entries(payload).forEach(([key, value]) => {
     if (value instanceof File) {
@@ -86,21 +89,20 @@ export async function postProduct(payload: Dictionary) {
     data.append(key, value);
   });
   const bearer = `Bearer ${accessToken}`;
-  const promise = fetch(`${OPENSRP_API_BASE_URL}${PRODUCT_CATALOGUE_ENDPOINT}`, {
+  const promise = fetch(`${baseURL}${OPENSRP_PRODUCT_CATALOGUE}`, {
     body: data,
-    headers: {
-      Authorization: bearer,
-    },
+    headers: { accept: 'application/json', authorization: bearer },
     method: 'POST',
   });
   return promise;
 }
 
 /**
+ * @param {string} baseURL - base url of the api
  * @param {Dictionary} payload - the payload
  * @returns {Promise<void>}
  */
-export async function putProduct(payload: Dictionary) {
+export async function putProduct(baseURL: string, payload: Dictionary) {
   const data = new FormData();
   Object.entries(payload).forEach(([key, value]) => {
     if (value instanceof File) {
@@ -110,10 +112,11 @@ export async function putProduct(payload: Dictionary) {
     data.append(key, value);
   });
   const bearer = `Bearer ${accessToken}`;
-  const promise = fetch(`${OPENSRP_API_BASE_URL}${PRODUCT_CATALOGUE_ENDPOINT}`, {
+  const promise = fetch(`${baseURL}${OPENSRP_PRODUCT_CATALOGUE}`, {
     body: data,
     headers: {
-      Authorization: bearer,
+      accept: 'application/json',
+      authorization: bearer,
     },
     method: 'PUT',
   });
