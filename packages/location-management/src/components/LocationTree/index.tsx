@@ -27,6 +27,10 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   let parentKey;
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
+    /**
+     * @param key
+     * @param tree
+     */
     function getParentKey(key: any, tree: ParsedHierarchySingleNode[]): any {
       if (node.children) {
         if (node.children.some((item: { key: any }) => item.key === key)) parentKey = node.key;
@@ -37,11 +41,19 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     return parentKey;
   }
 
+  /**
+   * @param expandedKeys
+   */
   function onExpand(expandedKeys: any) {
     setExpandedKeys(expandedKeys);
     setAutoExpandParent(true);
   }
 
+  /**
+   * @param e
+   * @param e.target
+   * @param e.target.value
+   */
   function onChange(e: { target: { value: any } }) {
     const { value } = e.target;
     const expandedKeys = filterData
@@ -54,6 +66,9 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     setAutoExpandParent(true);
   }
 
+  /**
+   * @param data
+   */
   function loop(data: any[]): any {
     return data.map((item) => {
       const index = item.title.indexOf(searchValue);
