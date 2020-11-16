@@ -140,7 +140,6 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
       lg: { offset: 8, span: 14 },
     },
   };
-  // todo: replace any with appropriate type
   const history = useHistory();
   return (
     <Row>
