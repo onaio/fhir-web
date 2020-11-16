@@ -94,6 +94,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         externalId: values.externalId,
         parentId: values.parentId,
         name: values.name,
+        // eslint-disable-next-line @typescript-eslint/camelcase
         name_en: values.name,
         status: values.status,
       },
@@ -107,11 +108,12 @@ export const Form: React.FC<Props> = (props: Props) => {
     function removeEmptykeys(obj: any) {
       Object.keys(obj).forEach(function (key) {
         if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
-        else if (obj[key] == null || obj[key] == [] || obj[key] == {} || obj[key] == undefined)
+        else if (obj[key] === null || obj[key] === [] || obj[key] === {} || obj[key] === undefined)
           delete obj[key];
       });
     }
     removeEmptykeys(payload);
+    // eslint-disable-next-line no-console
     console.log('payload : ', payload);
 
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
@@ -151,9 +153,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) => onSubmit(values, setSubmitting)}
     >
-      {({ values, isSubmitting, handleSubmit }) => {
-        console.log('values : ', values);
-
+      {({ isSubmitting, handleSubmit }) => {
         function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
           return hierarchyNode.map((node) => (
             <TreeSelect.TreeNode
