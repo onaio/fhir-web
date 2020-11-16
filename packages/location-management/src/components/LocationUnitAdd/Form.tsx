@@ -82,10 +82,8 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Function} setSubmitting method to set submission status
    */
   function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
-    const location_tag_filer = props.locationtag?.filter((e) =>
-      values.locationTags?.includes(e.id)
-    );
-    const location_tag = location_tag_filer?.map(
+    const locationTagFiler = props.locationtag?.filter((e) => values.locationTags?.includes(e.id));
+    const locationTag = locationTagFiler?.map(
       (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
     );
 
@@ -102,7 +100,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       id: props.id,
       syncStatus: LocationUnitSyncStatus.SYNCED,
       type: values.type,
-      locationTags: location_tag,
+      locationTags: locationTag,
       geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
     };
 
