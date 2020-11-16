@@ -29,24 +29,21 @@ import {
   ParsedHierarchySingleNode,
 } from '../LocationTree/utils';
 
-reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
-
 import './LocationUnitAdd.css';
+
+reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 export const LocationUnitAdd: React.FC = () => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const [IsLoading, setIsLoading] = useState<boolean>(false);
-  const [locationtag, setLocationtag] = useState<LocationTag[] | undefined>(undefined);
+  const [locationtag, setLocationtag] = useState<LocationTag[]>([]);
+  const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
+  const [isLoading, setisLoading] = useState<boolean>(true);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
   );
 
   const dispatch = useDispatch();
-
-  let LocationUnitDetail: FormField | undefined = undefined;
-  let locationunitReady = locationtag?.length != 0 || false;
-  let treeselectReady = Treedata.length != 0 || false;
 
   useEffect(() => {
     if (params.id) {
@@ -55,40 +52,29 @@ export const LocationUnitAdd: React.FC = () => {
         API_BASE_URL,
         `location/${params.id}?is_jurisdiction=true`
       );
-      serve
-        .list()
-        .then((response: LocationUnit) => {
-          LocationUnitDetail = {
-            name: response.properties.name,
-            parentId: response.properties.parentId,
-            status: response.properties.status,
-            externalId: response.properties.externalId,
-            locationTags: response.locationTags?.map((e) => e.id),
-            geometry: JSON.stringify(response.geometry),
-            type: response.type,
-          };
-          console.log('Location Unit Detail : ', response);
-          setIsLoading(false);
-        })
-        .catch((e) => console.log(e));
-    } else {
-      setIsLoading(false);
+      serve.list().then((response: LocationUnit) => {
+        setLocationUnitDetail({
+          name: response.properties.name,
+          parentId: response.properties.parentId,
+          status: response.properties.status,
+          externalId: response.properties.externalId,
+          locationTags: response.locationTags?.map((e) => e.id),
+          geometry: JSON.stringify(response.geometry),
+          type: response.type,
+        });
+      });
     }
   }, []);
 
   useEffect(() => {
-    if (!locationtag) {
+    if (!locationtag.length) {
       const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
       serve
         .list()
         .then((response: LocationTag[]) => {
-          locationunitReady = true;
           setLocationtag(response);
-          if (treeselectReady && locationunitReady) setIsLoading(false);
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
-    } else {
-      if (treeselectReady && locationunitReady) setIsLoading(false);
     }
   }, []);
 
@@ -113,23 +99,17 @@ export const LocationUnitAdd: React.FC = () => {
                   const hierarchy = generateJurisdictionTree(res);
                   if (hierarchy.model && hierarchy.model.children)
                     dispatch(fetchAllHierarchies(hierarchy.model));
-                  treeselectReady = true;
-                  if (treeselectReady && locationunitReady) setIsLoading(false);
                 })
                 .catch((e) => notification.error({ message: `${e}`, description: '' }));
             });
-          } else {
-            treeselectReady = true;
-            if (treeselectReady && locationunitReady) setIsLoading(false);
           }
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
-    } else {
-      if (treeselectReady && locationunitReady) setIsLoading(false);
     }
   }, []);
 
-  if (IsLoading || !locationtag || !Treedata) return <Ripple />;
+  if (!locationtag.length || !Treedata.length || (params.id && !LocationUnitDetail))
+    return <Ripple />;
 
   return (
     <section>
