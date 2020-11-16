@@ -7,7 +7,16 @@ import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import { Link } from 'react-router-dom';
-import { URL_ADMIN, URL_HOME, URL_TEAMS } from '../../../constants';
+import {
+  LOCATIONS_UNIT,
+  LOCATIONS_UNIT_GROUP,
+  LOCATIONS_UNIT_GROUP_SET,
+  TEAM,
+  URL_ADMIN,
+  URL_HOME,
+  URL_TEAMS,
+  USER_MANAGEMENT,
+} from '../../../constants';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -39,20 +48,20 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.SubMenu key="users" title="Users">
               <Menu.Item key="users">
                 <Link to={URL_ADMIN} className="admin-link">
-                  User Management
+                  {USER_MANAGEMENT}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
           )}
           <Menu.Item key="teams">
             <Link to={URL_TEAMS} className="admin-link">
-              Teams
+              {TEAM}
             </Link>
           </Menu.Item>
           <Menu.SubMenu key="admin-locations" title="Locations">
-            <Menu.Item key="locations-unit">Locations unit</Menu.Item>
-            <Menu.Item key="locations-unit-group">Locations unit group</Menu.Item>
-            <Menu.Item key="locations-unit-group-set">Locations unit group set</Menu.Item>
+            <Menu.Item key="locations-unit">{LOCATIONS_UNIT}</Menu.Item>
+            <Menu.Item key="locations-unit-group">{LOCATIONS_UNIT_GROUP}</Menu.Item>
+            <Menu.Item key="locations-unit-group-set">{LOCATIONS_UNIT_GROUP_SET}</Menu.Item>
           </Menu.SubMenu>
         </Menu.SubMenu>
       </Menu>
