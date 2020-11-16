@@ -159,10 +159,10 @@ const ProductForm = (props: ProductFormProps) => {
             postProduct(baseURL, payload)
               .then(() => {
                 sendSuccessNotification('Successfully Added');
+                setAreWeDoneHere(true);
               })
               .catch((err: Error) => {
                 sendErrorNotification(err.name, err.message);
-                setAreWeDoneHere(true);
               });
           }
         }}
