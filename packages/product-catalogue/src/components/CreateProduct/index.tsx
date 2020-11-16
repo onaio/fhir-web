@@ -24,7 +24,7 @@ const CreateProductView = (props: CreateProductViewProps) => {
   const pageTitle = 'Add Product to Catalogue';
 
   return (
-    <Layout className="main-content">
+    <Layout className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>

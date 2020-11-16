@@ -86,7 +86,7 @@ const EditProductView = (props: EditProductViewTypes) => {
   const pageTitle = `Edit > ${product?.productName}`;
 
   return (
-    <Layout className="main-content">
+    <Layout className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
