@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Input } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, Input, notification } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationTagDetail, { LocationTagDetailProps } from '../LocationTagDetail';
 import { SearchOutlined } from '@ant-design/icons';
@@ -41,7 +41,7 @@ const LocationTagView: React.FC = () => {
           dispatch(fetchLocationTags(response));
           setIsLoading(false);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
   });
 
