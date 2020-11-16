@@ -48,7 +48,7 @@ export const LocationUnitAdd: React.FC = () => {
 
   useEffect(() => {
     if (params.id) {
-      let serve = new OpenSRPService(
+      const serve = new OpenSRPService(
         accessToken,
         API_BASE_URL,
         `location/${params.id}?is_jurisdiction=true`
@@ -76,7 +76,7 @@ export const LocationUnitAdd: React.FC = () => {
 
   useEffect(() => {
     if (!locationtag) {
-      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
       serve
         .list()
         .then((response: LocationTag[]) => {
