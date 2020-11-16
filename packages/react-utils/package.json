@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/react-utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A couple of utils that work with react",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -33,7 +33,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
-    "@opensrp/notifications": "^0.0.1",
+    "@opensrp/notifications": "^0.0.2",
     "antd": "^4.6.3"
   },
   "peerDependencies": {
