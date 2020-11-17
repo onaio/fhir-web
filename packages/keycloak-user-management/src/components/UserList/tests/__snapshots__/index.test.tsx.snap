@@ -1,58 +1,126 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UserList renders user list correctly: breadcrumb col props 1`] = `
-Object {
-  "children": <Space>
-    <HeaderBreadCrumb
-      isAdmin={true}
-    />
-    <Divider />
-  </Space>,
-  "span": 12,
-}
-`;
-
 exports[`components/UserList renders user list correctly: header actions col props 1`] = `
 Object {
-  "children": <Space
-    style={
-      Object {
-        "justifyContent": "flex-end",
-        "marginBottom": 16,
+  "children": Array [
+    <Space
+      style={
+        Object {
+          "float": "left",
+          "marginBottom": 16,
+        }
       }
-    }
-  >
-    <Button
-      block={false}
-      className="create-user"
-      ghost={false}
-      htmlType="button"
-      loading={false}
-      onClick={[Function]}
-      type="primary"
     >
-      Add User
-    </Button>
-  </Space>,
-  "span": 12,
-  "style": Object {
-    "display": "flex",
-    "justifyContent": "flex-end",
-  },
+      <h5>
+        <Input
+          placeholder="Search"
+          prefix={<ForwardRef(SearchOutlined) />}
+          size="large"
+          type="text"
+        />
+      </h5>
+    </Space>,
+    <Space
+      style={
+        Object {
+          "float": "right",
+          "marginBottom": 16,
+        }
+      }
+    >
+      <Button
+        block={false}
+        className="create-user"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="primary"
+      >
+        <ForwardRef(PlusOutlined) />
+        Add User
+      </Button>
+      <Divider
+        type="vertical"
+      />
+      <ForwardRef(SettingOutlined) />
+    </Space>,
+    <Space>
+      <Table
+        columns={
+          Array [
+            Object {
+              "dataIndex": "username",
+              "ellipsis": true,
+              "key": "username",
+              "sortOrder": undefined,
+              "sorter": [Function],
+              "title": "Username",
+            },
+            Object {
+              "dataIndex": "email",
+              "ellipsis": true,
+              "key": "email",
+              "sortOrder": undefined,
+              "sorter": [Function],
+              "title": "Email",
+            },
+            Object {
+              "dataIndex": "firstName",
+              "ellipsis": true,
+              "key": "firstName",
+              "sortOrder": undefined,
+              "sorter": [Function],
+              "title": "First Name",
+            },
+            Object {
+              "dataIndex": "lastName",
+              "ellipsis": true,
+              "key": "lastName",
+              "sortOrder": undefined,
+              "sorter": [Function],
+              "title": "Last Name",
+            },
+            Object {
+              "dataIndex": "actions",
+              "key": "Actions",
+              "render": [Function],
+              "title": "Actions",
+            },
+          ]
+        }
+        dataSource={Array []}
+        onChange={[Function]}
+        pagination={
+          Object {
+            "defaultPageSize": 5,
+            "pageSizeOptions": Array [
+              "5",
+              "10",
+              "20",
+              "50",
+              "100",
+            ],
+            "showQuickJumper": true,
+            "showSizeChanger": true,
+          }
+        }
+        rowKey="key"
+      />
+    </Space>,
+  ],
+  "className": "bg-white p-3",
+  "span": 24,
 }
 `;
 
 exports[`components/UserList renders user list correctly: table props 1`] = `
 Object {
-  "bordered": true,
   "columns": Array [
     Object {
       "dataIndex": "username",
       "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
       "key": "username",
-      "onFilter": [Function],
       "sortOrder": undefined,
       "sorter": [Function],
       "title": "Username",
@@ -60,10 +128,7 @@ Object {
     Object {
       "dataIndex": "email",
       "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
       "key": "email",
-      "onFilter": [Function],
       "sortOrder": undefined,
       "sorter": [Function],
       "title": "Email",
@@ -71,10 +136,7 @@ Object {
     Object {
       "dataIndex": "firstName",
       "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
       "key": "firstName",
-      "onFilter": [Function],
       "sortOrder": undefined,
       "sorter": [Function],
       "title": "First Name",
@@ -82,10 +144,7 @@ Object {
     Object {
       "dataIndex": "lastName",
       "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
       "key": "lastName",
-      "onFilter": [Function],
       "sortOrder": undefined,
       "sorter": [Function],
       "title": "Last Name",
@@ -100,7 +159,16 @@ Object {
   "dataSource": Array [],
   "onChange": [Function],
   "pagination": Object {
-    "pageSize": 5,
+    "defaultPageSize": 5,
+    "pageSizeOptions": Array [
+      "5",
+      "10",
+      "20",
+      "50",
+      "100",
+    ],
+    "showQuickJumper": true,
+    "showSizeChanger": true,
   },
   "rowKey": "key",
 }
