@@ -69,7 +69,7 @@ describe('forms/UserForm', () => {
         method: 'GET',
       },
     ]);
-    const form = wrapper.find('div.form-container');
+    const form = wrapper.find('Row').at(0).find('Col').at(0);
     expect(form.find('Formik').props()).toMatchSnapshot('formik props');
     expect(form.find('FormItem').at(0).props()).toMatchSnapshot('First Name');
     expect(form.find('FormItem').at(1).props()).toMatchSnapshot('Last Name');

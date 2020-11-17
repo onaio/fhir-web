@@ -2,6 +2,11 @@ export const LOGOUT_REDIRECTION_DELAY = 1000;
 export const REACT_CALLBACK_PATH = '/oauth/callback/:id';
 export const LOGIN_PROMPT = 'Please log in with one of the following providers';
 export const BACKEND_CALLBACK_PATH = '/fe/oauth/callback/:id';
+export const USER_MANAGEMENT = 'User Management';
+export const TEAMS = 'Teams';
+export const LOCATIONS_UNIT = 'Locations unit';
+export const LOCATIONS_UNIT_GROUP = 'Locations unit group';
+export const LOCATIONS_UNIT_GROUP_SET = 'Locations unit group set';
 
 // URLs
 export const URL_EXPRESS_LOGIN = '/login';
