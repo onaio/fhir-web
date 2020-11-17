@@ -13,7 +13,7 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 
 /** type describing the fields in the product catalogue form */
 export interface ProductFormFields {
-  uniqueId?: string;
+  uniqueId?: number;
   productName: string;
   materialNumber: string;
   isAttractiveItem?: boolean;

@@ -1,6 +1,7 @@
 // opensrp api strings
 export const OPENSRP_API_BASE_URL = 'https://mg-eusm-staging.smartregister.org/opensrp/rest/';
 export const OPENSRP_PRODUCT_CATALOGUE = 'product-catalogue';
+export const PRODUCT_ID_ROUTE_PARAM = 'productId';
 
 // router routes
 export const CATALOGUE_LIST_VIEW_URL = '/product-catalogue';
