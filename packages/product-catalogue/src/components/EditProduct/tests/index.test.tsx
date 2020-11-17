@@ -10,7 +10,7 @@ import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
 import { ProductForm } from '../../ProductForm';
 import { act } from 'react-dom/test-utils';
-import { fetchProducts } from '../../../ducks/productCatalogue';
+import { removeProducts } from '../../../ducks/productCatalogue';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -18,13 +18,16 @@ const fetch = require('jest-fetch-mock');
 const history = createBrowserHistory();
 
 describe('CreateEditProduct Page', () => {
+  beforeEach(() => {
+    store.dispatch(removeProducts());
+  });
+
   afterEach(() => {
     fetch.resetMocks();
   });
 
   it('renders correctly with store(for editing product)', async () => {
     fetch.mockResponse(JSON.stringify(product1));
-    store.dispatch(fetchProducts([product1]));
 
     const props = {
       history,

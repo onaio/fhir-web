@@ -1,4 +1,4 @@
-/** component renders view where users can create or and edit products
+/** component renders view where users can edit products
  * in the catalogue
  */
 import { RouteParams } from '../../constants';
