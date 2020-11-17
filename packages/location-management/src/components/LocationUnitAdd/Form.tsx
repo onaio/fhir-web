@@ -56,7 +56,8 @@ const status = [
   { label: 'Active', value: LocationUnitStatus.ACTIVE },
   { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
 ];
-export const defaultProps: Required<Props> = {
+
+const defaultProps: Required<Props> = {
   id: v4(),
   locationtag: [{ id: 0, active: false, name: '', description: '' }],
   treedata: [],
