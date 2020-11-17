@@ -38,7 +38,6 @@ export const LocationUnitAdd: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationtag, setLocationtag] = useState<LocationTag[]>([]);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
-  const [isLoading, setisLoading] = useState<boolean>(true);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
   );
