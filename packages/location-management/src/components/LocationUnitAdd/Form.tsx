@@ -167,6 +167,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
           return hierarchyNode.map((node) => (
             <TreeSelect.TreeNode
+              key={node.id}
               value={node.id}
               title={node.title}
               children={node.children && parseHierarchyNode(node.children)}
