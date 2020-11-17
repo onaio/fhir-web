@@ -110,7 +110,7 @@ describe('CreateEditProduct Page', () => {
       wrapper.update();
     });
 
-    // show loading screen
+    // should be in error page
     expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorCould not pull dataGo BackBack Home"`);
   });
 
@@ -141,6 +141,7 @@ describe('CreateEditProduct Page', () => {
       </Provider>
     );
 
+    // should be in loading screen
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Loading...Fetching product CataloguePlease wait, as we fetch the product Catalogue."`
     );
@@ -150,6 +151,7 @@ describe('CreateEditProduct Page', () => {
       wrapper.update();
     });
 
+    /** resource404 info page */
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
     );
