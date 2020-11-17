@@ -63,7 +63,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                 {LOCATIONS_UNIT_GROUP}
               </Link>
             </Menu.Item>
-            <Menu.Item key="locations-unit-group-set">Locations unit group set</Menu.Item>
           </Menu.SubMenu>
         </Menu.SubMenu>
       </Menu>
