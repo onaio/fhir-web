@@ -38,7 +38,6 @@ import {
   RawOpenSRPHierarchy,
   getFilterParams,
   ParsedHierarchySingleNode,
-  HierarchySingleNode,
 } from '../LocationTree/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
