@@ -1642,23 +1642,6 @@
   dependencies:
     "@opensrp/store" "^0.0.6"
 
-"@opensrp/loader@file:../packages/loader":
-  version "0.0.0"
-  dependencies:
-    "@opensrp/reducer-factory" "^0.0.10"
-    "@opensrp/server-service" "^0.0.11"
-    "@opensrp/store" "^0.0.6"
-
-"@opensrp/reducer-factory@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.10.tgz#151e3bb55b7833958b20f8c0b3c163b8a7b0c594"
-  integrity sha512-+MmDVLzQNghTz81MNaPg5b90s9H0mZRI/HktLLaBAGqQK5gdmy7unzXKKlthiZv/koSEpHjAqDQcksbxKLGT1A==
-  dependencies:
-    "@onaio/utils" "^0.0.1"
-    lodash "^4.17.15"
-    redux "^4.0.5"
-    seamless-immutable "^7.1.4"
-
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"

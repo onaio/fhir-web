@@ -17,3 +17,12 @@ export const ERROR_OCCURED = 'An error occurred';
 
 // Messages
 export const USER_DELETED_SUCCESSFULLY = 'User deleted successfully';
+export const PASSWORD_MATCH_FAILURE = 'The two passwords that you entered do not match!';
+export const INPUT_PASSWORD = 'Please input your password!';
+export const CONFIRM_PASSWORD = 'Please confirm your password!';
+export const CREDENTIALS_UPDATED_SUCCESSFULLY = 'Credentials updated successfully';
+
+// rendered text
+export const CREDENTIALS = 'Credentials';
+export const RESET_PASSWORD = 'Reset Password';
+export const CANCEL = 'Cancel';
