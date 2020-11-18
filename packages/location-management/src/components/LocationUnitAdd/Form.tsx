@@ -126,8 +126,6 @@ export const Form: React.FC<Props> = (props: Props) => {
     };
 
     removeEmptykeys(payload);
-    // eslint-disable-next-line no-console
-    console.log('payload : ', payload);
 
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
     if (props.id) {
@@ -177,73 +175,71 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) => onSubmit(values, setSubmitting)}
     >
-      {({ isSubmitting, handleSubmit }) => {
-        return (
-          <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
-            <AntForm.Item label="Parent" name="parentId" required>
-              <TreeSelect
-                name="parentId"
-                style={{ width: '100%' }}
-                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                placeholder="Please select"
-              >
-                {parseHierarchyNode(props.treedata)}
-              </TreeSelect>
-            </AntForm.Item>
+      {({ isSubmitting, handleSubmit }) => (
+        <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
+          <AntForm.Item label="Parent" name="parentId" required>
+            <TreeSelect
+              name="parentId"
+              style={{ width: '100%' }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              placeholder="Please select"
+            >
+              {parseHierarchyNode(props.treedata)}
+            </TreeSelect>
+          </AntForm.Item>
 
-            <AntForm.Item name="name" label="Name" required>
-              <Input name="name" placeholder="Enter a location name" />
-            </AntForm.Item>
+          <AntForm.Item name="name" label="Name" required>
+            <Input name="name" placeholder="Enter a location name" />
+          </AntForm.Item>
 
-            <AntForm.Item label="Status" name="status" valuePropName="checked" required>
-              <Radio.Group name="status" defaultValue={props.initialValue?.status}>
-                {status.map((e) => (
-                  <Radio name="status" key={e.label} value={e.value}>
-                    {e.label}
-                  </Radio>
-                ))}
-              </Radio.Group>
-            </AntForm.Item>
+          <AntForm.Item label="Status" name="status" valuePropName="checked" required>
+            <Radio.Group name="status" defaultValue={props.initialValue?.status}>
+              {status.map((e) => (
+                <Radio name="status" key={e.label} value={e.value}>
+                  {e.label}
+                </Radio>
+              ))}
+            </Radio.Group>
+          </AntForm.Item>
 
-            <AntForm.Item name="type" label="Type" required>
-              <Input name="type" placeholder="Select type" />
-            </AntForm.Item>
+          <AntForm.Item name="type" label="Type" required>
+            <Input name="type" placeholder="Select type" />
+          </AntForm.Item>
 
-            <AntForm.Item name="externalId" label="External ID">
-              <Input name="externalId" placeholder="Select status" />
-            </AntForm.Item>
+          <AntForm.Item name="externalId" label="External ID">
+            <Input name="externalId" placeholder="Select status" />
+          </AntForm.Item>
 
-            <AntForm.Item name="geometry" label="geometry">
-              <Input.TextArea name="geometry" rows={4} placeholder="</> JSON" />
-            </AntForm.Item>
+          <AntForm.Item name="geometry" label="geometry">
+            <Input.TextArea name="geometry" rows={4} placeholder="</> JSON" />
+          </AntForm.Item>
 
-            <AntForm.Item label="Unit Group" name="locationTags">
-              <Select
-                name="locationTags"
-                mode="multiple"
-                allowClear
-                showSearch
-                placeholder="Enter a location group name"
-                optionFilterProp="children"
-                filterOption={filterFunction}
-              >
-                {props.locationtag.map((e) => (
-                  <Select.Option key={e.id} value={e.id}>
-                    {e.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </AntForm.Item>
+          <AntForm.Item label="Unit Group" name="locationTags">
+            <Select
+              name="locationTags"
+              mode="multiple"
+              allowClear
+              showSearch
+              placeholder="Enter a location group name"
+              optionFilterProp="children"
+              filterOption={filterFunction}
+            >
+              {props.locationtag.map((e) => (
+                <Select.Option key={e.id} value={e.id}>
+                  {e.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </AntForm.Item>
 
-            <AntForm.Item name="buttons" {...offsetLayout}>
-              <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
-              <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-                Cancel
-              </Button>
-            </AntForm.Item>
-          </AntForm>
-        );
-      }}
+          <AntForm.Item name="buttons" {...offsetLayout}>
+            <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
+            <Button id="cancel" onClick={() => history.goBack()} type="dashed">
+              Cancel
+            </Button>
+          </AntForm.Item>
+        </AntForm>
+      )}
     </Formik>
   );
 };
