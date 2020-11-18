@@ -108,7 +108,7 @@ export const LocationUnitAdd: React.FC = () => {
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
-  }, [accessToken, Treedata.length]);
+  }, [accessToken, Treedata.length, dispatch]);
 
   if (!locationtag.length || !Treedata.length || (params.id && !LocationUnitDetail))
     return <Ripple />;
