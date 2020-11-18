@@ -20,17 +20,23 @@ import { API_BASE_URL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
 import { ParsedHierarchySingleNode } from '../LocationTree/utils';
-import { initialState } from 'location-management/src/ducks/location-hierarchy';
 
 export interface FormField {
-  parentId: string;
   name: string;
   status: LocationUnitStatus;
   type: string;
+  parentId?: string;
   externalId?: string;
   locationTags?: number[];
   geometry?: string;
 }
+
+const defaultFormField: FormField = {
+  parentId: '',
+  name: '',
+  status: LocationUnitStatus.ACTIVE,
+  type: '',
+};
 
 export interface Props {
   id?: string;
@@ -41,7 +47,7 @@ export interface Props {
 
 /** yup validations for practitioner data object from form */
 const userSchema = Yup.object().shape({
-  parentId: Yup.string().typeError('Parentid must be a Number').required('Parentid is Required'),
+  parentId: Yup.string().typeError('Parentid must be a String'),
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   status: Yup.string().required('Status is Required'),
   type: Yup.string().typeError('Type must be a String').required('Type is Required'),
@@ -56,28 +62,14 @@ const status = [
   { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
 ];
 
-const defaultProps: Required<Props> = {
-  id: v4(),
-  locationtag: [{ id: 0, active: false, name: '', description: '' }],
-  treedata: [],
-  initialValue: {
-    parentId: '',
-    name: '',
-    status: LocationUnitStatus.ACTIVE,
-    type: '',
-    externalId: '',
-    locationTags: [],
-    geometry: '',
-  },
-};
-
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
 
-  /** Function to parse the hierarchy tree into treeselect node format
+  /** Function to parse the hierarchy tree into TreeSelect node format
    *
-   * @param {Array<ParsedHierarchySingleNode>}hierarchyNode the tree node to parse
+   * @param {Array<ParsedHierarchySingleNode>} hierarchyNode the tree node to parse
+   * @returns {Array<JSX.Element>} the parsed format of for Ant TreeSelect
    */
   function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
     return hierarchyNode.map((node) => (
@@ -176,7 +168,7 @@ export const Form: React.FC<Props> = (props: Props) => {
 
   return (
     <Formik
-      initialValues={props.initialValue ? props.initialValue : defaultProps.initialValue}
+      initialValues={props.initialValue ? props.initialValue : defaultFormField}
       validationSchema={userSchema}
       onSubmit={(
         values: FormField,
@@ -253,7 +245,5 @@ export const Form: React.FC<Props> = (props: Props) => {
     </Formik>
   );
 };
-
-Form.defaultProps = defaultProps;
 
 export default Form;
