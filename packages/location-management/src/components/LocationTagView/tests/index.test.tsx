@@ -7,16 +7,6 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
 describe('containers/pages/locations/LocationTagView', () => {
-  it('renders without crashing', () => {
-    const wrapper = shallow(
-      <Provider store={store}>
-        <LocationTagView />
-      </Provider>
-    );
-
-    expect(wrapper.props()).toMatchSnapshot();
-  });
-
   it('renders without crashing', async () => {
     const wrapper = shallow(
       <Provider store={store}>
@@ -28,6 +18,8 @@ describe('containers/pages/locations/LocationTagView', () => {
       await flushPromises();
       wrapper.update();
     });
+
+    expect(wrapper.props()).toMatchSnapshot();
 
     wrapper.unmount();
   });

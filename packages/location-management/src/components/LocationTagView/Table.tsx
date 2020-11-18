@@ -29,7 +29,7 @@ const Table: React.FC<Props> = (props: Props) => {
     const clientService = new OpenSRPService(
       accessToken,
       API_BASE_URL,
-      LOCATION_TAG_DELETE + record.id
+      LOCATION_TAG_DELETE + record.id.toString()
     );
     clientService
       .delete()
@@ -52,7 +52,7 @@ const Table: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_LOCATION_TAG_EDIT + '/' + record.id}>
+          <Link to={URL_LOCATION_TAG_EDIT + '/' + record.id.toString()}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
