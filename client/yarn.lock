@@ -1642,6 +1642,9 @@
   dependencies:
     "@opensrp/store" "^0.0.6"
 
+"@opensrp/loader@file:../packages/loader":
+  version "0.0.0"
+
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"

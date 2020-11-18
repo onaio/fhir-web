@@ -6,7 +6,7 @@ that something on your page is... loading.
 ## Installation
 
 ```node
-yarn add @onaio/loaders
+yarn add @opensrp/loaders
 ```
 
 ## Loader
@@ -16,7 +16,7 @@ The Loader displays a nice Loader effect via pure CSS.
 ### Usage
 
 ```javascript
-import Loader from '@onaio/loaders';
+import Loader from '@opensrp/loaders';
 
 <Loader />;
 ```
@@ -35,7 +35,7 @@ The Loader takes a number of props that can be used to customize it:
 #### Code example
 
 ```javascript
-import Loader from '@onaio/loaders'
+import Loader from '@opensrp/loaders'
 
 const props = {
   borderColor: '#FF22EF',
