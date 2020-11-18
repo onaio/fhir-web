@@ -111,11 +111,10 @@ const LocationUnitView: React.FC = () => {
     setTableData(data);
   }, [Treedata, currentParentChildren]);
 
-  /** Function to parse the hierarchy tree into treeselect node format
+  /** Function to Load selected location unit for details
    *
-   * @param {Array<ParsedHierarchySingleNode>}hierarchyNode the tree node to parse
+   * @param {TableData} row data selected from the table
    */
-
   function loadSingleLocation(row: TableData) {
     setDetail('loading');
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
