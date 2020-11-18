@@ -38,6 +38,7 @@ import {
   RawOpenSRPHierarchy,
   getFilterParams,
   ParsedHierarchySingleNode,
+  HierarchySingleNode,
 } from '../LocationTree/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -65,11 +66,11 @@ const LocationUnitView: React.FC = () => {
           return_geometry: false,
           properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
         })
-        .then((response: any) => {
+        .then((response: LocationUnit[]) => {
           dispatch(fetchLocationUnits(response));
-          const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
+          const rootIds = response.map((rootLocObj) => rootLocObj.id);
           if (rootIds.length) {
-            rootIds.forEach((id: string) => {
+            rootIds.forEach((id) => {
               const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
               serve
                 .read(id)
@@ -98,7 +99,7 @@ const LocationUnitView: React.FC = () => {
         });
       });
     } else if (Treedata && Treedata.length && !currentParentChildren.length) {
-      Treedata.forEach((location: any, i: number) => {
+      Treedata.forEach((location: ParsedHierarchySingleNode, i: number) => {
         data.push({
           id: location.id,
           key: i.toString(),
@@ -109,6 +110,11 @@ const LocationUnitView: React.FC = () => {
     }
     setTableData(data);
   }, [Treedata, currentParentChildren]);
+
+  /** Function to parse the hierarchy tree into treeselect node format
+   *
+   * @param {Array<ParsedHierarchySingleNode>}hierarchyNode the tree node to parse
+   */
 
   function loadSingleLocation(row: TableData) {
     setDetail('loading');
