@@ -11,7 +11,8 @@ import {
 
 /** interface for Client identfiers */
 export interface Identifiers {
-  M_ZEIR_ID: string;
+  M_ZEIR_ID?: string;
+  zeir_id?: string;
 }
 
 /** interface address field */
