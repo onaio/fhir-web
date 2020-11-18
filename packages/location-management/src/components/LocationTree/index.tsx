@@ -64,6 +64,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   /** process the data before it could be displayed in tree
    *
    * @param {Array<ParsedHierarchySingleNode[]>} data the tree data to preprocess
+   * @returns {object} - returns obj with title, key and children
    */
   function loop(data: ParsedHierarchySingleNode[]): any {
     return data.map((item) => {
