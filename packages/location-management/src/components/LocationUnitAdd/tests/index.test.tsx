@@ -1,33 +1,47 @@
+import flushPromises from 'flush-promises';
 import { mount } from 'enzyme';
 import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { MemoryRouter, Route, Router } from 'react-router';
 import { store } from '@opensrp/store';
 
-import LocationUnitGroupAdd from '..';
+import { id } from './fixtures';
+import LocationUnitAdd from '..';
+import { act } from 'react-dom/test-utils';
 
 describe('containers/pages/locations/LocationUnitAdd', () => {
-  it('renders without crashing', () => {
+  it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupAdd />
+          <LocationUnitAdd />
         </Router>
       </Provider>
     );
-    expect(wrapper.find('section').props()).toMatchSnapshot();
-    expect(wrapper.find('form').props()).toMatchSnapshot();
+    expect(wrapper.props()).toMatchSnapshot();
+
+    await act(async () => {
+      await flushPromises();
+    });
   });
 
-  it('tests cancel button', () => {
+  it('renders without crashing when editting', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
-          <LocationUnitGroupAdd />
-        </Router>
+        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
+          <Route path={'/:id'} component={LocationUnitAdd} />
+        </MemoryRouter>
       </Provider>
     );
-    wrapper.find('form').find('button#cancel').simulate('click');
+    expect(wrapper.props()).toMatchSnapshot();
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await act(async () => {
+      await flushPromises();
+    });
   });
 });

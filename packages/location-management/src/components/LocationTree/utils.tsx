@@ -35,7 +35,7 @@ export interface Meta {
  * this field will be added to each node during parsing the raw data from the api
  */
 export interface MetaField {
-  meta: Meta;
+  meta?: Meta;
 }
 
 /** single node description after coming in from the api */
