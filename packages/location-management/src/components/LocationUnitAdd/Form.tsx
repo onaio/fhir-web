@@ -20,8 +20,7 @@ import { API_BASE_URL, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
 import { ParsedHierarchySingleNode } from '../LocationTree/utils';
-
-// TODO : need to resolve this data from server
+import { initialState } from 'location-management/src/ducks/location-hierarchy';
 
 export interface FormField {
   parentId: string;
@@ -82,12 +81,9 @@ export const Form: React.FC<Props> = (props: Props) => {
    */
   function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
     return hierarchyNode.map((node) => (
-      <TreeSelect.TreeNode
-        key={node.id}
-        value={node.id}
-        title={node.title}
-        children={node.children && parseHierarchyNode(node.children)}
-      />
+      <TreeSelect.TreeNode key={node.id} value={node.id} title={node.title}>
+        {node.children && parseHierarchyNode(node.children)}
+      </TreeSelect.TreeNode>
     ));
   }
 
@@ -124,13 +120,13 @@ export const Form: React.FC<Props> = (props: Props) => {
       properties: {
         username: user.username,
         externalId: values.externalId,
-        parentId: values.parentId,
+        parentId: values.parentId ? values.parentId : '',
         name: values.name,
         // eslint-disable-next-line @typescript-eslint/camelcase
         name_en: values.name,
         status: values.status,
       },
-      id: props.id,
+      id: props.id ? props.id : v4(),
       syncStatus: LocationUnitSyncStatus.SYNCED,
       type: values.type,
       locationTags: locationTag,
@@ -167,6 +163,15 @@ export const Form: React.FC<Props> = (props: Props) => {
           setSubmitting(false);
         });
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /**
+   * @param input
+   * @param option
+   */
+  function filterFunction(input: string, option: any): boolean {
+    return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
   return (
@@ -226,9 +231,7 @@ export const Form: React.FC<Props> = (props: Props) => {
                 showSearch
                 placeholder="Enter a location group name"
                 optionFilterProp="children"
-                filterOption={(input: string, option: any) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
+                filterOption={filterFunction}
               >
                 {props.locationtag.map((e) => (
                   <Select.Option key={e.id} value={e.id}>
