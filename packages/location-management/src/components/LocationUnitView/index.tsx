@@ -75,8 +75,8 @@ const LocationUnitView: React.FC = () => {
                 .read(id)
                 .then((res: RawOpenSRPHierarchy) => {
                   const hierarchy = generateJurisdictionTree(res);
-                  if (hierarchy.model && hierarchy.model.children)
-                    dispatch(fetchAllHierarchies(hierarchy.model));
+                  // if (hierarchy.model && hierarchy.model.children)
+                  dispatch(fetchAllHierarchies(hierarchy.model));
                 })
                 .catch((e) => notification.error({ message: `${e}`, description: '' }));
             });
