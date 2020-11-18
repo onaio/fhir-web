@@ -76,6 +76,34 @@ export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
 
+  /** Function to parse the hierarchy tree into treeselect node format
+   *
+   * @param {Array<ParsedHierarchySingleNode>}hierarchyNode the tree node to parse
+   */
+  function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
+    return hierarchyNode.map((node) => (
+      <TreeSelect.TreeNode
+        key={node.id}
+        value={node.id}
+        title={node.title}
+        children={node.children && parseHierarchyNode(node.children)}
+      />
+    ));
+  }
+
+  /** removes empty undefined and null objects before they payload is sent to server
+   *
+   * @param {any} obj object to remove empty keys from
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function removeEmptykeys(obj: any) {
+    Object.keys(obj).forEach(function (key) {
+      if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
+      else if (obj[key] === null || obj[key] === [] || obj[key] === {} || obj[key] === undefined)
+        delete obj[key];
+    });
+  }
+
   /**
    * Handle form submission
    *
@@ -91,6 +119,7 @@ export const Form: React.FC<Props> = (props: Props) => {
     const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
       is_jurisdiction: true;
     } = {
+      // eslint-disable-next-line @typescript-eslint/camelcase
       is_jurisdiction: true,
       properties: {
         username: user.username,
@@ -108,17 +137,6 @@ export const Form: React.FC<Props> = (props: Props) => {
       geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
     };
 
-    /** removes empty undefined and null objects before they payload is sent to server
-     *
-     * @param obj
-     */
-    function removeEmptykeys(obj: any) {
-      Object.keys(obj).forEach(function (key) {
-        if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
-        else if (obj[key] === null || obj[key] === [] || obj[key] === {} || obj[key] === undefined)
-          delete obj[key];
-      });
-    }
     removeEmptykeys(payload);
     // eslint-disable-next-line no-console
     console.log('payload : ', payload);
@@ -126,7 +144,7 @@ export const Form: React.FC<Props> = (props: Props) => {
     const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
     if (props.id) {
       serve
-        .update(payload)
+        .update({ ...payload })
         .then(() => {
           notification.success({ message: 'User Updated successfully', description: '' });
           setSubmitting(false);
@@ -138,7 +156,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         });
     } else {
       serve
-        .create(payload)
+        .create({ ...payload })
         .then(() => {
           notification.success({ message: 'User Created successfully', description: '' });
           setSubmitting(false);
@@ -161,21 +179,6 @@ export const Form: React.FC<Props> = (props: Props) => {
       ) => onSubmit(values, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
-        /** Function to parse the hierarchy tree into treeselect node format
-         *
-         * @param hierarchyNode
-         */
-        function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
-          return hierarchyNode.map((node) => (
-            <TreeSelect.TreeNode
-              key={node.id}
-              value={node.id}
-              title={node.title}
-              children={node.children && parseHierarchyNode(node.children)}
-            />
-          ));
-        }
-
         return (
           <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
             <AntForm.Item label="Parent" name="parentId" required>

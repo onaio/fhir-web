@@ -63,7 +63,7 @@ export const LocationUnitAdd: React.FC = () => {
         });
       });
     }
-  }, []);
+  }, [accessToken, params.id]);
 
   useEffect(() => {
     if (!locationtag.length) {
@@ -75,15 +75,18 @@ export const LocationUnitAdd: React.FC = () => {
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
-  }, []);
+  }, [accessToken, locationtag.length]);
 
   useEffect(() => {
     if (!Treedata.length) {
       const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_FINDBYPROPERTIES);
       serve
         .list({
+          // eslint-disable-next-line @typescript-eslint/camelcase
           is_jurisdiction: true,
+          // eslint-disable-next-line @typescript-eslint/camelcase
           return_geometry: false,
+          // eslint-disable-next-line @typescript-eslint/camelcase
           properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
         })
         .then((response: any) => {
@@ -105,7 +108,7 @@ export const LocationUnitAdd: React.FC = () => {
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
-  }, []);
+  }, [accessToken, Treedata.length]);
 
   if (!locationtag.length || !Treedata.length || (params.id && !LocationUnitDetail))
     return <Ripple />;
