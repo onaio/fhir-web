@@ -36,8 +36,8 @@ describe('containers/pages/locations/locationunit', () => {
 
   it('Test Table Edit', () => {
     const wrapper = mount(<Table data={tableData} />);
-    const first_action = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
-    first_action.find('button').simulate('click');
+    const firstAction = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
+    firstAction.find('button').simulate('click');
   });
 
   it('Test Name Sorting functionality', () => {

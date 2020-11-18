@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
 import LocationUnit from '..';
 

@@ -43,11 +43,7 @@ import {
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-export interface Props {}
-
-const defaultProps: Props = {};
-
-const LocationUnitView: React.FC<Props> = () => {
+const LocationUnitView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
@@ -88,10 +84,10 @@ const LocationUnitView: React.FC<Props> = () => {
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
-  }, []);
+  }, [Treedata.length, accessToken, dispatch]);
 
   useEffect(() => {
-    let data: TableData[] = [];
+    const data: TableData[] = [];
     if (currentParentChildren && currentParentChildren.length) {
       currentParentChildren.forEach((child: ParsedHierarchySingleNode, i: number) => {
         data.push({
@@ -190,7 +186,5 @@ const LocationUnitView: React.FC<Props> = () => {
     </section>
   );
 };
-
-LocationUnitView.defaultProps = defaultProps;
 
 export default LocationUnitView;
