@@ -69,9 +69,9 @@ export const Form: React.FC<Props> = (props: Props) => {
   /** Function to parse the hierarchy tree into TreeSelect node format
    *
    * @param {Array<ParsedHierarchySingleNode>} hierarchyNode the tree node to parse
-   * @returns {Array<JSX.Element>} the parsed format of for Ant TreeSelect
+   * @returns {Array<React.ReactNode>} the parsed format of for Ant TreeSelect
    */
-  function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): JSX.Element[] {
+  function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): React.ReactNode[] {
     return hierarchyNode.map((node) => (
       <TreeSelect.TreeNode key={node.id} value={node.id} title={node.title}>
         {node.children && parseHierarchyNode(node.children)}
@@ -157,11 +157,13 @@ export const Form: React.FC<Props> = (props: Props) => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  /**
-   * @param input
-   * @param option
+  /** functino to filter options from the select or not
+   *
+   * @param {string} input value
+   * @param {any} option .
+   * @returns {boolean} return weather option will be included in the filtered set;
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function filterFunction(input: string, option: any): boolean {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
