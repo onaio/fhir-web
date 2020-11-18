@@ -44,12 +44,12 @@ describe('containers/pages/locations/locationTagView', () => {
   it('Test Name Sorting functionality', () => {
     const wrapper = mount(<Table data={tableData} />);
 
-    let heading = wrapper.find('thead');
+    const heading = wrapper.find('thead');
     expect(heading.find('th')).toHaveLength(2);
     heading.find('th').at(0).children().simulate('click');
     heading.find('th').at(0).children().simulate('click');
 
-    let body = wrapper.find('tbody');
+    const body = wrapper.find('tbody');
     expect(body.children().first().prop('rowKey')).toBe('4');
     expect(body.children().last().prop('rowKey')).toBe('1');
   });

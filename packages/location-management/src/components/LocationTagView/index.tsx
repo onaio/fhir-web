@@ -89,7 +89,6 @@ const LocationTagView: React.FC = () => {
               />
             </h5>
             <div>
-              '
               <Link to={URL_LOCATION_TAG_ADD}>
                 <Button type="primary">
                   <PlusOutlined />

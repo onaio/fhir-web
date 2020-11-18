@@ -26,8 +26,8 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   /** Return the the parent key in a tree for the supplied key
    *
-   * @param key the key to find parent of
-   * @param tree the orignal tree
+   * @param {any} key the key to find parent of
+   * @param {Array<ParsedHierarchySingleNode>} tree the orignal tree
    */
   function getParentKey(key: any, tree: ParsedHierarchySingleNode[]): any {
     tree.forEach((node) => {
@@ -40,7 +40,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   /** Function to handle event when a tree is expanded
    *
-   * @param expandedKeys
+   * @param {Array<React.Key>} expandedKeys currently expanded keys
    */
   function onExpand(expandedKeys: React.Key[]) {
     setExpandedKeys(expandedKeys);
@@ -49,7 +49,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   /** Function to handle event when tree serach input changes value
    *
-   * @param event the actual event
+   * @param {ChangeEvent<HTMLInputElement>} event the actual event
    */
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
@@ -63,8 +63,9 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   /** process the data before it could be displayed in tree
    *
+   * @param {Array<ParsedHierarchySingleNode[]>} data the tree data to preprocess
    */
-  function loop(data: any[]): any {
+  function loop(data: ParsedHierarchySingleNode[]): any {
     return data.map((item) => {
       const index = item.title.indexOf(searchValue);
       const beforeStr = item.title.substr(0, index);
