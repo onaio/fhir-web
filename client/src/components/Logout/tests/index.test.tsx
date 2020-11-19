@@ -2,12 +2,10 @@ import { mount, shallow } from 'enzyme';
 import flushPromises from 'flush-promises';
 import * as serverLogout from '@opensrp/server-logout';
 import toJson from 'enzyme-to-json';
-import { history } from '@onaio/connected-reducer-registry';
 import React from 'react';
-
 import { CustomLogout } from '..';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import { store } from '@opensrp/store';
 import * as notifications from '@opensrp/notifications';
 import { act } from 'react-dom/test-utils';
@@ -29,9 +27,9 @@ describe('components/Logout', () => {
   it('renders logout component', () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <MemoryRouter>
           <CustomLogout />
-        </Router>
+        </MemoryRouter>
       </Provider>
     );
     expect(toJson(wrapper.find('CustomLogout'))).toMatchSnapshot();
@@ -53,9 +51,9 @@ describe('components/Logout', () => {
       'https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout';
     mount(
       <Provider store={store}>
-        <Router history={history}>
+        <MemoryRouter>
           <CustomLogout />
-        </Router>
+        </MemoryRouter>
       </Provider>
     );
     await flushPromises();
@@ -67,9 +65,9 @@ describe('components/Logout', () => {
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     mount(
       <Provider store={store}>
-        <Router history={history}>
+        <MemoryRouter>
           <CustomLogout />
-        </Router>
+        </MemoryRouter>
       </Provider>
     );
     await act(async () => {

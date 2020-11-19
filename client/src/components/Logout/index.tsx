@@ -28,7 +28,7 @@ export const CustomLogout: React.FC = (): JSX.Element => {
   );
   const redirectUri = BACKEND_ACTIVE ? EXPRESS_OAUTH_LOGOUT_URL : DOMAIN_NAME;
   const history = useHistory();
-  logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((error) => {
+  logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((_: Error) => {
     sendErrorNotification(ERROR_OCCURRED);
     history.push('/');
   });
