@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.0",
+  "version": "0.0.7",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -20,8 +20,7 @@
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "add-location-mangement": "yarn run tsc && yarn run transpile:windows && yarn run copy && cd ../../client && yarn add file:../packages/location-management && yarn start"
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
@@ -36,11 +35,9 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "uuidv4": "^6.2.5",
-    "formik-antd": "^2.0.1",
-    "@opensrp/reducer-factory": "^0.0.10",
-    "@opensrp/server-service": "^0.0.11",
-    "@opensrp/store": "^0.0.6"
+    "@opensrp/reducer-factory": "^0.0.11",
+    "@opensrp/server-service": "^0.0.12",
+    "@opensrp/store": "^0.0.7"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7"

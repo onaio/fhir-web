@@ -1,23 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UserList/utils/getDataFilters builds table columns correctly: table columns 1`] = `
+exports[`components/UserList/utils/getTableColumns builds table columns correctly: table columns 1`] = `
 Array [
   Object {
     "dataIndex": "username",
     "ellipsis": true,
-    "filteredValue": null,
-    "filters": Array [
-      Object {
-        "text": "mwalimu",
-        "value": "mwalimu",
-      },
-      Object {
-        "text": "ona",
-        "value": "ona",
-      },
-    ],
     "key": "username",
-    "onFilter": [Function],
     "sortOrder": undefined,
     "sorter": [Function],
     "title": "Username",
@@ -25,19 +13,7 @@ Array [
   Object {
     "dataIndex": "email",
     "ellipsis": true,
-    "filteredValue": null,
-    "filters": Array [
-      Object {
-        "text": "dubdabasoduba@gmail.com",
-        "value": "dubdabasoduba@gmail.com",
-      },
-      Object {
-        "text": undefined,
-        "value": undefined,
-      },
-    ],
     "key": "email",
-    "onFilter": [Function],
     "sortOrder": undefined,
     "sorter": [Function],
     "title": "Email",
@@ -45,19 +21,7 @@ Array [
   Object {
     "dataIndex": "firstName",
     "ellipsis": true,
-    "filteredValue": null,
-    "filters": Array [
-      Object {
-        "text": "Benjamin",
-        "value": "Benjamin",
-      },
-      Object {
-        "text": "Ona",
-        "value": "Ona",
-      },
-    ],
     "key": "firstName",
-    "onFilter": [Function],
     "sortOrder": undefined,
     "sorter": [Function],
     "title": "First Name",
@@ -65,19 +29,7 @@ Array [
   Object {
     "dataIndex": "lastName",
     "ellipsis": true,
-    "filteredValue": null,
-    "filters": Array [
-      Object {
-        "text": "Mwalimu",
-        "value": "Mwalimu",
-      },
-      Object {
-        "text": "kenya",
-        "value": "kenya",
-      },
-    ],
     "key": "lastName",
-    "onFilter": [Function],
     "sortOrder": undefined,
     "sorter": [Function],
     "title": "Last Name",
