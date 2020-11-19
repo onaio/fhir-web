@@ -9,11 +9,23 @@ import { CustomLogout } from '..';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
+import * as notifications from '@opensrp/notifications';
+import { act } from 'react-dom/test-utils';
+import { ERROR_OCCURRED } from '../../../constants';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 describe('components/Logout', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it('renders without crashing', () => {
     shallow(<CustomLogout />);
   });
+
   it('renders logout component', () => {
     const wrapper = mount(
       <Provider store={store}>
@@ -24,6 +36,7 @@ describe('components/Logout', () => {
     );
     expect(toJson(wrapper.find('CustomLogout'))).toMatchSnapshot();
   });
+
   it('calls logout with correct params', async () => {
     const mock = jest.spyOn(serverLogout, 'logout');
     mock.mockRejectedValue('Logout failed');
@@ -47,5 +60,21 @@ describe('components/Logout', () => {
     );
     await flushPromises();
     expect(mock).toHaveBeenCalledWith(payload, logoutURL, keycloakURL, 'http://localhost:3000');
+  });
+
+  it('handles logout failure correctly', async () => {
+    jest.spyOn(serverLogout, 'logout').mockImplementation(() => Promise.reject('error'));
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
+    mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <CustomLogout />
+        </Router>
+      </Provider>
+    );
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
   });
 });
