@@ -33,7 +33,7 @@ export const locationUnit1: LocationUnit = {
     ],
     type: 'MultiPolygon',
   },
-  locationGroups: [{ id: 2, name: 'Operational Area' }],
+  locationTags: [{ id: 2, name: 'Operational Area' }],
   properties: {
     geographicLevel: 5,
     name: 'Thailand test site BVBD 2',
@@ -66,7 +66,7 @@ export const locationUnit2 = {
     type: 'MultiPolygon',
   },
   id: 'a7baf57d-ad31-46d2-8d28-0c81dd306b08',
-  locationGroups: [{ id: 2, name: 'Operational Area' }],
+  locationTags: [{ id: 2, name: 'Operational Area' }],
   properties: {
     geographicLevel: 5,
     name: 'Thailand test site BVBD 2',

@@ -41,7 +41,7 @@ export interface LocationUnit {
   properties: Properties;
   syncStatus: string;
   type: string;
-  locationGroups: LocationUnitGroup[];
+  locationTags: LocationUnitGroup[];
   geometry: Geometry;
 }
 
@@ -52,7 +52,7 @@ export interface LocationUnitPayloadPUT {
   syncStatus: string;
   serverVersion: string;
   properties: Properties;
-  locationGroups: LocationUnitGroup[];
+  locationTags: LocationUnitGroup[];
   geometry: Geometry;
 }
 
@@ -61,7 +61,7 @@ export interface LocationUnitPayloadPOST {
   type: string;
   syncStatus: string;
   properties: Properties;
-  locationGroups: LocationUnitGroup[];
+  locationTags: LocationUnitGroup[];
   geometry: Geometry;
 }
 
