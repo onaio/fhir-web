@@ -49,10 +49,11 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
     const searchString = trimStart(props.location.search, '?');
     const searchParams = querystring.parse(searchString);
     const nextPath = searchParams.next as string | undefined;
+
     if (nextPath) {
       pathToRedirectTo = nextPath;
     }
-    if (nextPath === '/') {
+    if (!nextPath || nextPath === '/') {
       const user = getUser(store.getState());
       openNotification(user);
     }

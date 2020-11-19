@@ -2,8 +2,17 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
+import { authenticateUser } from '@onaio/session-reducer';
+import * as notifications from '@opensrp/notifications';
+import { store } from '@opensrp/store';
 import { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
 import { URL_EXPRESS_LOGIN } from '../../../../constants';
+import { Provider } from 'react-redux';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 const App = () => {
   return (
@@ -24,17 +33,54 @@ const App = () => {
 };
 const realLocation = window.location;
 describe('src/components/page/CustomCallback.SuccessfulLogin', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        {
+          roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
+          username: 'superset-user',
+          user_id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        }
+      )
+    );
+  });
   afterEach(() => {
     window.location = realLocation;
   });
   it('renders correctly', () => {
+    const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
     const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/callback`, search: '', hash: '', state: {} }]}>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/callback`, search: '', hash: '', state: {} }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
     // should redirect to home
     expect(wrapper.find('#home')).toHaveLength(1);
+    expect(mockNotificationSuccess).toHaveBeenCalledWith('Welcome back, RobertBaratheon');
+  });
+
+  it('redirects to home if next page is /', () => {
+    const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: `/callback`, search: '?next=/', hash: '', state: {} }]}
+        >
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    // should redirect to home
+    expect(wrapper.find('#home')).toHaveLength(1);
+    expect(mockNotificationSuccess).toHaveBeenCalledWith('Welcome back, RobertBaratheon');
   });
 
   it('redirects if next page is provided; nominal', () => {
