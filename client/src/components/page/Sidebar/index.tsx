@@ -10,11 +10,10 @@ import { Link } from 'react-router-dom';
 import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
-  LOCATIONS_UNIT_GROUP_SET,
-  TEAMS,
   URL_ADMIN,
   URL_HOME,
-  URL_TEAMS,
+  URL_LOCATION_TAG,
+  URL_LOCATION_UNIT,
   USER_MANAGEMENT,
 } from '../../../constants';
 
@@ -53,15 +52,17 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.Item>
             </Menu.SubMenu>
           )}
-          <Menu.Item key="teams">
-            <Link to={URL_TEAMS} className="admin-link">
-              {TEAMS}
-            </Link>
-          </Menu.Item>
           <Menu.SubMenu key="admin-locations" title="Locations">
-            <Menu.Item key="locations-unit">{LOCATIONS_UNIT}</Menu.Item>
-            <Menu.Item key="locations-unit-group">{LOCATIONS_UNIT_GROUP}</Menu.Item>
-            <Menu.Item key="locations-unit-group-set">{LOCATIONS_UNIT_GROUP_SET}</Menu.Item>
+            <Menu.Item key="locations-unit">
+              <Link to={URL_LOCATION_UNIT} className="admin-link">
+                {LOCATIONS_UNIT}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="locations-unit-group">
+              <Link to={URL_LOCATION_TAG} className="admin-link">
+                {LOCATIONS_UNIT_GROUP}
+              </Link>
+            </Menu.Item>
           </Menu.SubMenu>
         </Menu.SubMenu>
       </Menu>
