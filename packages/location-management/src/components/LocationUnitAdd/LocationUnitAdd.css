@@ -7,3 +7,7 @@
   color: #999;
   transition: all 0.3s;
 }
+
+.ant-form-item-control-input-content {
+  display: flex;
+}

@@ -9,7 +9,7 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 import { Geometry } from 'geojson';
-import { values } from 'lodash';
+import { Dictionary, values } from 'lodash';
 import { Store } from 'redux';
 
 /** Enum representing the possible location unit status types */
@@ -24,7 +24,7 @@ export enum LocationUnitSyncStatus {
 }
 
 /** interface for LocationUnit.properties */
-export interface Properties {
+export interface Properties extends Dictionary<string | number | LocationUnitStatus | undefined> {
   name: string;
   parentId: string;
   status: LocationUnitStatus;
@@ -55,12 +55,11 @@ export interface LocationUnit {
 
 /** interface for the POST payload */
 export interface LocationUnitPayloadPOST {
-  properties?: Properties;
+  properties: Properties;
   syncStatus?: LocationUnitSyncStatus;
   type: string;
   locationTags?: LocationUnitTag[];
   geometry?: Geometry;
-  textEntry?: string[];
   // we will remove this id as it should be auto generated on server
   id: string | number;
 }

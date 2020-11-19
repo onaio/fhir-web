@@ -1,12 +1,11 @@
 import * as Yup from 'yup';
 import React from 'react';
-import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
-import { notification, Button } from 'antd';
+import { SubmitButton, Form as FormikAntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
+import { notification, Button, Row, Col } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { getUser } from '@onaio/session-reducer';
+import { getUser, getAccessToken } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
-import { getAccessToken } from '@onaio/session-reducer';
-import { Formik } from 'formik';
+import { Formik, FieldArray } from 'formik';
 import {
   LocationUnitPayloadPOST,
   LocationUnitPayloadPUT,
@@ -18,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { LocationTag } from '../../ducks/location-tags';
 import { ParsedHierarchySingleNode, RawOpenSRPHierarchy } from '../LocationTree/utils';
 
@@ -29,6 +29,7 @@ export interface FormField {
   externalId?: string;
   locationTags?: number[];
   geometry?: string;
+  extraFields?: { key: string; value: any }[];
 }
 
 const defaultFormField: FormField = {
@@ -54,6 +55,7 @@ const userSchema = Yup.object().shape({
   externalId: Yup.string().typeError('External id must be a String'),
   locationTags: Yup.array().typeError('location Tags must be an Array'),
   geometry: Yup.string().typeError('location Tags must be a An String'),
+  extraFields: Yup.array().typeError('Text Entry Key must be an Array'),
 });
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -106,8 +108,9 @@ export const Form: React.FC<Props> = (props: Props) => {
 
     let geographicLevel;
     if (values.parentId) {
+      const parentId = values.parentId;
       geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
-        .read(values.parentId)
+        .read(parentId)
         .then((res: RawOpenSRPHierarchy) => {
           return res.locationsHierarchy.map[values.parentId as string].node.attributes
             .geographicLevel as number;
@@ -136,6 +139,10 @@ export const Form: React.FC<Props> = (props: Props) => {
       locationTags: locationTag,
       geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
     };
+
+    values.extraFields?.forEach((field) => {
+      payload.properties[field.key] = field.value;
+    });
 
     removeEmptykeys(payload);
 
@@ -187,9 +194,9 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) => onSubmit(values, setSubmitting)}
     >
-      {({ isSubmitting, handleSubmit }) => (
-        <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
-          <AntForm.Item label="Parent" name="parentId" required>
+      {({ values, isSubmitting, handleSubmit }) => (
+        <FormikAntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
+          <FormikAntForm.Item label="Parent" name="parentId" required>
             <TreeSelect
               name="parentId"
               style={{ width: '100%' }}
@@ -198,13 +205,13 @@ export const Form: React.FC<Props> = (props: Props) => {
             >
               {parseHierarchyNode(props.treedata)}
             </TreeSelect>
-          </AntForm.Item>
+          </FormikAntForm.Item>
 
-          <AntForm.Item name="name" label="Name" required>
+          <FormikAntForm.Item name="name" label="Name" required>
             <Input name="name" placeholder="Enter a location name" />
-          </AntForm.Item>
+          </FormikAntForm.Item>
 
-          <AntForm.Item label="Status" name="status" valuePropName="checked" required>
+          <FormikAntForm.Item label="Status" name="status" valuePropName="checked" required>
             <Radio.Group name="status" defaultValue={props.initialValue?.status}>
               {status.map((e) => (
                 <Radio name="status" key={e.label} value={e.value}>
@@ -212,21 +219,21 @@ export const Form: React.FC<Props> = (props: Props) => {
                 </Radio>
               ))}
             </Radio.Group>
-          </AntForm.Item>
+          </FormikAntForm.Item>
 
-          <AntForm.Item name="type" label="Type" required>
+          <FormikAntForm.Item name="type" label="Type" required>
             <Input name="type" placeholder="Select type" />
-          </AntForm.Item>
+          </FormikAntForm.Item>
 
-          <AntForm.Item name="externalId" label="External ID">
+          <FormikAntForm.Item name="externalId" label="External ID">
             <Input name="externalId" placeholder="Select status" />
-          </AntForm.Item>
+          </FormikAntForm.Item>
 
-          <AntForm.Item name="geometry" label="geometry">
+          <FormikAntForm.Item name="geometry" label="geometry">
             <Input.TextArea name="geometry" rows={4} placeholder="</> JSON" />
-          </AntForm.Item>
+          </FormikAntForm.Item>
 
-          <AntForm.Item label="Unit Group" name="locationTags">
+          <FormikAntForm.Item label="Unit Group" name="locationTags">
             <Select
               name="locationTags"
               mode="multiple"
@@ -242,15 +249,69 @@ export const Form: React.FC<Props> = (props: Props) => {
                 </Select.Option>
               ))}
             </Select>
-          </AntForm.Item>
+          </FormikAntForm.Item>
 
-          <AntForm.Item name="buttons" {...offsetLayout}>
+          <FieldArray
+            name="extraFields"
+            render={(arrayHelpers) => (
+              <>
+                {values.extraFields &&
+                  values.extraFields.length > 0 &&
+                  values.extraFields.map((field, index) => {
+                    const extraFields = `extraFields.${index}`;
+                    const extraKeyFields = `${extraFields}.key`;
+                    const extraValueFields = `${extraFields}.value`;
+
+                    return (
+                      <Row key={extraFields}>
+                        <Col span={13}>
+                          <FormikAntForm.Item
+                            name={extraKeyFields}
+                            {...(index === 0
+                              ? { labelCol: { span: 15 }, wrapperCol: { span: 9 } }
+                              : { wrapperCol: { offset: 15, span: 9 } })}
+                            label={index === 0 ? 'Text entry' : ''}
+                          >
+                            <Input type="text" name={extraKeyFields} placeholder="Key" />
+                          </FormikAntForm.Item>
+                        </Col>
+
+                        <Col span={6}>
+                          <FormikAntForm.Item name={extraValueFields} wrapperCol={{ span: 24 }}>
+                            <Input type="text" name={extraValueFields} placeholder="Value" />
+                          </FormikAntForm.Item>
+                        </Col>
+                        <Col>
+                          <MinusCircleOutlined
+                            className="dynamic-delete-button"
+                            onClick={() => arrayHelpers.remove(index)}
+                          />
+                        </Col>
+                      </Row>
+                    );
+                  })}
+
+                <FormikAntForm.Item name="extraButtonFields" {...offsetLayout}>
+                  <Button
+                    type="dashed"
+                    onClick={() => arrayHelpers.push({ key: '', value: '' })}
+                    style={{ width: '100%', margin: 0 }}
+                    icon={<PlusOutlined />}
+                  >
+                    Add Text Entry field
+                  </Button>
+                </FormikAntForm.Item>
+              </>
+            )}
+          />
+
+          <FormikAntForm.Item name="buttons" {...offsetLayout}>
             <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
             <Button id="cancel" onClick={() => history.goBack()} type="dashed">
               Cancel
             </Button>
-          </AntForm.Item>
-        </AntForm>
+          </FormikAntForm.Item>
+        </FormikAntForm>
       )}
     </Formik>
   );
