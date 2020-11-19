@@ -1,75 +1,132 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, notification } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
-import LocationDetail, { Props as LocationDetailData } from '../LocationDetail';
+import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, {
+import locationUnitsReducer, {
   fetchLocationUnits,
-  getLocationUnitsArray,
   LocationUnit,
-  LocationUnitStatus,
-  LocationUnitSyncStatus,
-  reducerName,
+  reducerName as locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, LOCATION_UNIT_ALL, URL_LOCATION_UNIT_ADD } from '../../constants';
-import Tree from './Tree';
+import {
+  API_BASE_URL,
+  LOCATION_FINDBYPROPERTIES,
+  LOCATION_HIERARCHY,
+  LOCATION_UNIT_GET,
+  URL_LOCATION_UNIT_ADD,
+} from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
+import Tree from '../LocationTree';
 
-reducerRegistry.register(reducerName, reducer);
+import reducerRegistry from '@onaio/redux-reducer-registry';
+import locationHierarchyReducer, {
+  getAllHierarchiesArray,
+  getCurrentChildren,
+  fetchAllHierarchies,
+  fetchCurrentChildren,
+  reducerName as locationHierarchyReducerName,
+} from '../../ducks/location-hierarchy';
+import {
+  generateJurisdictionTree,
+  RawOpenSRPHierarchy,
+  getFilterParams,
+  ParsedHierarchySingleNode,
+} from '../LocationTree/utils';
+
+reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
+reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 const LocationUnitView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const locationsArray = useSelector((state) => getLocationUnitsArray(state));
-  const dispatch = useDispatch();
+  const Treedata = useSelector(
+    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
+  );
 
-  const [detail, setDetail] = useState<LocationDetailData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const currentParentChildren = (useSelector((state) =>
+    getCurrentChildren(state)
+  ) as unknown) as ParsedHierarchySingleNode[];
+  const dispatch = useDispatch();
+  const [tableData, setTableData] = useState<TableData[]>([]);
+  const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
 
   useEffect(() => {
-    if (isLoading) {
-      let serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_ALL);
+    if (!Treedata.length) {
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_FINDBYPROPERTIES);
       serve
-        .list({ is_jurisdiction: true, serverVersion: 0 })
+        .list({
+          is_jurisdiction: true,
+          return_geometry: false,
+          properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+        })
         .then((response: LocationUnit[]) => {
           dispatch(fetchLocationUnits(response));
-          setIsLoading(false);
+          const rootIds = response.map((rootLocObj) => rootLocObj.id);
+          if (rootIds.length) {
+            rootIds.forEach((id) => {
+              const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
+              serve
+                .read(id)
+                .then((res: RawOpenSRPHierarchy) => {
+                  const hierarchy = generateJurisdictionTree(res);
+                  // if (hierarchy.model && hierarchy.model.children)
+                  dispatch(fetchAllHierarchies(hierarchy.model));
+                })
+                .catch((e) => notification.error({ message: `${e}`, description: '' }));
+            });
+          }
         })
-        .catch((e) => console.log(e));
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
-  });
+  }, [Treedata.length, accessToken, dispatch]);
 
-  const tableData: TableData[] = [];
+  useEffect(() => {
+    const data: TableData[] = [];
+    if (currentParentChildren && currentParentChildren.length) {
+      currentParentChildren.forEach((child: ParsedHierarchySingleNode, i: number) => {
+        data.push({
+          id: child.id,
+          key: i.toString(),
+          name: child.label,
+          geographicLevel: child.node.attributes.geographicLevel,
+        });
+      });
+    } else if (Treedata && Treedata.length && !currentParentChildren.length) {
+      Treedata.forEach((location: ParsedHierarchySingleNode, i: number) => {
+        data.push({
+          id: location.id,
+          key: i.toString(),
+          name: location.label,
+          geographicLevel: location.node.attributes.geographicLevel,
+        });
+      });
+    }
+    setTableData(data);
+  }, [Treedata, currentParentChildren]);
 
-  if (locationsArray.length) {
-    locationsArray.forEach((location: LocationUnit, i: number) =>
-      tableData.push({
-        id: location.id,
-        key: i.toString(),
-        parentId: location.properties.parentId ? location.properties.parentId : '-',
-        externalId: location.properties.externalId ? location.properties.externalId : '-',
-        status: location.properties.status
-          ? location.properties.status
-          : LocationUnitStatus.INACTIVE,
-        syncstatus: location.syncStatus ? location.syncStatus : LocationUnitSyncStatus.NOTSYNCED,
-        type: location.type ? location.type : '-',
-        username: location.properties.username ? location.properties.username : '-',
-        version: location.properties.version ? location.properties.version : 0,
-        name: location.properties.name ? location.properties.name : '-',
-        geographicLevel: location.properties.geographicLevel
-          ? location.properties.geographicLevel
-          : 0,
+  /** Function to Load selected location unit for details
+   *
+   * @param {TableData} row data selected from the table
+   */
+  function loadSingleLocation(row: TableData) {
+    setDetail('loading');
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    serve
+      .read(row.id, { is_jurisdiction: true })
+      .then((res: LocationUnit) => {
+        setDetail(res);
       })
-    );
+      .catch((e) => notification.error({ message: `${e}`, description: '' }));
   }
-  if (isLoading) return <Ripple />;
+
+  if (!tableData.length || !Treedata.length) return <Ripple />;
 
   return (
     <section>
@@ -80,27 +137,16 @@ const LocationUnitView: React.FC = () => {
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
-            data={[
-              {
-                title: 'Sierra Leone',
-                key: 'Sierra Leone',
-                children: [
-                  { title: 'Bo', key: 'Bo', children: [{ title: '1', key: '1' }] },
-                  { title: 'Bombali', key: 'Bombali', children: [{ title: '2', key: '2' }] },
-                  {
-                    title: 'Bonthe',
-                    key: 'Bonthe',
-                    children: [
-                      {
-                        title: 'Kissi Ten',
-                        key: 'Kissi Ten',
-                        children: [{ title: 'Bayama CHP', key: 'Bayama CHP' }],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ]}
+            OnItemClick={(item, [expandedKeys, setExpandedKeys]) => {
+              if (item.children) {
+                // build out parent row info from here
+                const children = [item, ...item.children];
+                dispatch(fetchCurrentChildren(children));
+                const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
+                setExpandedKeys(allExpandedKeys);
+              }
+            }}
+            data={Treedata}
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
@@ -127,13 +173,17 @@ const LocationUnitView: React.FC = () => {
             </div>
           </div>
           <div className="bg-white p-4">
-            <Table data={tableData} onViewDetails={(e: LocationDetailData) => setDetail(e)} />
+            <Table data={tableData} onViewDetails={loadSingleLocation} />
           </div>
         </Col>
 
         {detail && (
           <Col className="pl-3" span={5}>
-            <LocationDetail onClose={() => setDetail(null)} {...detail} />
+            {detail === 'loading' ? (
+              <Ripple />
+            ) : (
+              <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
+            )}
           </Col>
         )}
       </Row>

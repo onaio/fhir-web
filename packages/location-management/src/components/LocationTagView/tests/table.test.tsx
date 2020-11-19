@@ -1,27 +1,23 @@
 import { mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import React from 'react';
-import { LocationUnitStatus, LocationUnitSyncStatus } from '../../../ducks/location-units';
 import Table, { TableData } from '../Table';
 
-describe('containers/pages/locations/locationunit', () => {
+describe('containers/pages/locations/locationTagView', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
     tableData.push({
-      parentId: i.toString(),
       key: i.toString(),
+      id: i,
       name: `Edrward ${i}`,
-      geographicLevel: i,
-      status: LocationUnitStatus.ACTIVE,
-      type: 'Feautire',
-      externalId: `asdkjh123${i}`,
-      username: `edward ${i}`,
-      version: i,
-      syncstatus: LocationUnitSyncStatus.SYNCED,
+      active: i % 2 === 0,
+      description: `asdasdasdkjh123${i}`,
     });
   }
 
   it('renders without crashing', () => {
     const wrapper = mount(<Table data={tableData} />);
+
     expect(wrapper.props()).toMatchSnapshot();
   });
 
@@ -34,32 +30,24 @@ describe('containers/pages/locations/locationunit', () => {
     expect(wrapper).toHaveLength(0);
   });
 
-  it('Test Table Edit', () => {
+  it('Test Table Delete', () => {
     const wrapper = mount(<Table data={tableData} />);
-    const firstAction = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
-    firstAction.find('button').simulate('click');
+
+    wrapper.find('.more-options').first().simulate('click');
+    wrapper.find('.delete').first().simulate('click');
+    const temp = wrapper.find('div.ant-popover-content');
+    const temp2 = temp.find('.ant-popover-buttons');
+    expect(toJson(temp)).toMatchSnapshot();
+    temp2.find('button').simulate('click');
   });
 
   it('Test Name Sorting functionality', () => {
     const wrapper = mount(<Table data={tableData} />);
 
     const heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(3);
+    expect(heading.find('th')).toHaveLength(2);
     heading.find('th').at(0).children().simulate('click');
     heading.find('th').at(0).children().simulate('click');
-
-    const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe('4');
-    expect(body.children().last().prop('rowKey')).toBe('1');
-  });
-
-  it('Test Level Sorting functionality', () => {
-    const wrapper = mount(<Table data={tableData} />);
-
-    const heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(3);
-    heading.find('th').at(1).children().simulate('click');
-    heading.find('th').at(1).children().simulate('click');
 
     const body = wrapper.find('tbody');
     expect(body.children().first().prop('rowKey')).toBe('4');

@@ -1,13 +1,13 @@
 import { Button } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { TableData } from '../LocationUnitView/Table';
+import { LocationUnit } from '../../ducks/location-units';
 
-export interface Props extends TableData {
+export interface Props extends LocationUnit {
   onClose?: Function;
 }
 
-const LocationDetail: React.FC<Props> = (props: Props) => {
+const LocationUnitDetail: React.FC<Props> = (props: Props) => {
   return (
     <div className="p-4 bg-white">
       <Button
@@ -19,12 +19,12 @@ const LocationDetail: React.FC<Props> = (props: Props) => {
       />
       <div className="mb-4 small mt-4">
         <p className="mb-0 font-weight-bold">Name</p>
-        <p className="mb-0 loc-desc">{props.name}</p>
+        <p className="mb-0 loc-desc">{props.properties.name}</p>
       </div>
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Status</p>
-        <p className="mb-0 loc-desc">{props.status}</p>
+        <p className="mb-0 loc-desc">{props.properties.status}</p>
       </div>
 
       <div className="mb-4 small">
@@ -34,30 +34,30 @@ const LocationDetail: React.FC<Props> = (props: Props) => {
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">External Id</p>
-        <p className="mb-0 loc-desc">{props.externalId}</p>
+        <p className="mb-0 loc-desc">{props.properties.externalId}</p>
       </div>
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Username</p>
-        <p className="mb-0 loc-desc">{props.username}</p>
+        <p className="mb-0 loc-desc">{props.properties.username}</p>
       </div>
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Version</p>
-        <p className="mb-0 loc-desc">{props.version}</p>
+        <p className="mb-0 loc-desc">{props.properties.version}</p>
       </div>
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Sync status</p>
-        <p className="mb-0 loc-desc">{props.status}</p>
+        <p className="mb-0 loc-desc">{props.syncStatus}</p>
       </div>
 
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Level</p>
-        <p className="mb-0 loc-desc">{props.geographicLevel}</p>
+        <p className="mb-0 loc-desc">{props.properties.geographicLevel}</p>
       </div>
     </div>
   );
 };
 
-export default LocationDetail;
+export default LocationUnitDetail;

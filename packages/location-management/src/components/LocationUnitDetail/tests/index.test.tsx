@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import LocationDetail, { Props } from '..';
+import LocationUnitDetail, { Props } from '..';
 import { LocationUnitStatus, LocationUnitSyncStatus } from '../../../ducks/location-units';
 
 describe('containers/pages/Home', () => {
@@ -19,15 +19,15 @@ describe('containers/pages/Home', () => {
   };
 
   it('renders without crashing', () => {
-    let wrapper = mount(<LocationDetail {...props} />);
+    const wrapper = mount(<LocationUnitDetail {...props} />);
 
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('removes it self on close', () => {
-    let wrapper = mount(<LocationDetail {...props} onClose={() => wrapper.unmount()} />);
-    expect(wrapper.children().length).toBe(1);
+    const wrapper = mount(<LocationUnitDetail {...props} onClose={() => wrapper.unmount()} />);
+    expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
-    expect(wrapper.length).toBe(0);
+    expect(wrapper).toHaveLength(0);
   });
 });

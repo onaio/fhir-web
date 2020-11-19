@@ -48,7 +48,7 @@ export const defaultProps: Partial<UserFormProps> = {
   serviceClass: KeycloakService,
 };
 
-export const userSchema = Yup.object().shape({
+const userSchema = Yup.object().shape({
   lastName: Yup.string().required('Required'),
   firstName: Yup.string().required('Required'),
   email: Yup.string().required('Required'),
