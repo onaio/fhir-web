@@ -40,6 +40,14 @@ Object {
               Teams
             </Link>
           </MenuItem>
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/product-catalogue"
+            >
+              Product Catalogue
+            </Link>
+          </MenuItem>
           <SubMenu
             title="Locations"
           >
