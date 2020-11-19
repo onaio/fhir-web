@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { Row, Col, Button, Space, Table, Divider } from 'antd';
+import { Row, Col, Button, Space, Table, Divider, Input } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { history } from '@onaio/connected-reducer-registry';
 import Ripple from '../Loading';
-import HeaderBreadCrumb from '../HeaderBreadCrumb';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { PlusOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -21,6 +19,8 @@ import {
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
+import { useHistory } from 'react-router';
+import { sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -59,7 +59,6 @@ interface TableData {
 }
 
 const UserList = (props: Props): JSX.Element => {
-  const [filteredInfo, setFilteredInfo] = React.useState<Dictionary>();
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const {
@@ -75,6 +74,7 @@ const UserList = (props: Props): JSX.Element => {
   const isLoadingCallback = (isLoading: boolean) => {
     setIsLoading(isLoading);
   };
+  const history = useHistory();
 
   React.useEffect(() => {
     if (isLoading) {
@@ -108,48 +108,52 @@ const UserList = (props: Props): JSX.Element => {
     };
   });
   return (
-    <>
+    <section>
+      <h5 className="mb-3">User Management</h5>
       <Row>
-        <Col span={12}>
-          <Space>
-            <HeaderBreadCrumb isAdmin={true} />
-            <Divider />
+        <Col className="bg-white p-3" span={24}>
+          <Space style={{ marginBottom: 16, float: 'left' }}>
+            <h5>
+              <Input placeholder="Search" size="large" prefix={<SearchOutlined />} />
+            </h5>
           </Space>
-        </Col>
-        <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Space style={{ marginBottom: 16, justifyContent: 'flex-end' }}>
+          <Space style={{ marginBottom: 16, float: 'right' }}>
             <Button
               type="primary"
               className="create-user"
               onClick={() => history.push(URL_USER_CREATE)}
             >
+              <PlusOutlined />
               Add User
             </Button>
+            <Divider type="vertical" />
+            <SettingOutlined />
+          </Space>
+          <Space>
+            <Table
+              columns={getTableColumns(
+                removeKeycloakUsersCreator,
+                accessToken,
+                keycloakBaseURL,
+                isLoadingCallback,
+                extraData,
+                sortedInfo
+              )}
+              dataSource={tableData as KeycloakUser[]}
+              pagination={{
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultPageSize: 5,
+                pageSizeOptions: ['5', '10', '20', '50', '100'],
+              }}
+              onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
+                setSortedInfo(sorter);
+              }}
+            />
           </Space>
         </Col>
       </Row>
-      <Row>
-        <Table
-          columns={getTableColumns(
-            keycloakUsers,
-            removeKeycloakUsersCreator,
-            accessToken,
-            keycloakBaseURL,
-            isLoadingCallback,
-            extraData,
-            filteredInfo,
-            sortedInfo
-          )}
-          dataSource={tableData as KeycloakUser[]}
-          pagination={{ pageSize: 5 }}
-          onChange={(_: Dictionary, filters: Dictionary, sorter: Dictionary) => {
-            setFilteredInfo(filters);
-            setSortedInfo(sorter);
-          }}
-          bordered
-        />
-      </Row>
-    </>
+    </section>
   );
 };
 
