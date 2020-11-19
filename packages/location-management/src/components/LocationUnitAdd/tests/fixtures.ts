@@ -13,6 +13,155 @@ export const locationtag: LocationTag[] = [
   { id: 6, active: true, name: 'Demo Test', description: 'The demo unit group' },
 ];
 
+export const sampleLocationUnit = {
+  type: 'Feature',
+  id: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
+  properties: {
+    status: 'Active',
+    parentId: '',
+    name: 'Tunisia',
+    geographicLevel: 0,
+    version: 0,
+    externalId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
+  },
+  serverVersion: 4,
+  locationTags: [{ id: 2, name: 'Sample 3' }],
+  geometry: {},
+};
+
+export const sampleHierarchiesList = [
+  {
+    type: 'asd',
+    id: '5a286fc9-e985-4aa7-a843-d71f93d1f4b4',
+    properties: {
+      status: 'Active',
+      parentId: '1123',
+      name: 'asd',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      OpenMRS_Id: '42797547-80ca-4685-b178-b25010735794',
+      name_en: 'asd',
+    },
+    serverVersion: 43,
+  },
+  {
+    type: 'Feature',
+    id: '9feb1a4d-3020-4f1a-bbd9-0a47b54d2ae9',
+    properties: {
+      status: 'Active',
+      parentId: '4372700f-eec3-4943-b01e-6d795d73dc68',
+      name: 'CBD Nairobi',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'CBD Nairobi',
+    },
+    serverVersion: 72,
+    locationTags: [{ id: 2, name: 'Sample 2' }],
+  },
+  {
+    type: 'Feature',
+    id: 'b652b2f4-a95d-489b-9e28-4629746db96a',
+    properties: {
+      status: 'Active',
+      parentId: 'b652b2f4-a95d-489b-9e28-4629746db96a',
+      name: 'Kenya',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'Kenya',
+    },
+    serverVersion: 69,
+    locationTags: [{ id: 2, name: 'Sample 2' }],
+  },
+  {
+    type: 'Feature',
+    id: '35bf4771-a404-4220-bd9e-e2916decc116',
+    properties: {
+      status: 'Active',
+      parentId: 'b652b2f4-a95d-489b-9e28-4629746db96a',
+      name: 'Nairobi',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'Nairobi',
+    },
+    serverVersion: 68,
+    locationTags: [{ id: 2, name: 'Sample 2' }],
+  },
+  {
+    type: 'Feature',
+    id: 'a68d8a73-f235-4b9c-9717-41ba2546d771',
+    properties: {
+      status: 'Active',
+      parentId: '1123',
+      name: 'OpenSRP web sample 1 location',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'OpenSRP web sample 1 location',
+    },
+    serverVersion: 45,
+    locationTags: [{ id: 1, name: 'Sample' }],
+  },
+  {
+    type: 'asd',
+    id: '66be3e59-5d49-4051-8ea4-dff7503d8d69',
+    properties: {
+      status: 'Active',
+      parentId: '1123',
+      name: 'sad',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'sad',
+    },
+    serverVersion: 47,
+    locationTags: [
+      { id: 2, name: 'Sample 2' },
+      { id: 4, name: 'Option1' },
+    ],
+  },
+  {
+    type: 'test',
+    id: '4f12391e-48ce-40d7-9dbb-813e93d042cb',
+    properties: {
+      status: 'Active',
+      parentId: 'c692b90d-ee20-4240-8904-8cbbbcab54f7',
+      name: 'test 1',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'test 1',
+    },
+    serverVersion: 113,
+    locationTags: [],
+  },
+  {
+    type: 'test',
+    id: 'c692b90d-ee20-4240-8904-8cbbbcab54f7',
+    properties: {
+      status: 'Active',
+      parentId: '',
+      name: 'testing',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'testing',
+    },
+    serverVersion: 111,
+    locationTags: [],
+  },
+  {
+    type: 'Feature',
+    id: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
+    properties: { status: 'Active', parentId: '', name: 'Tunisia', geographicLevel: 0, version: 0 },
+    serverVersion: 4,
+    locationTags: [{ id: 2, name: 'Sample 3' }],
+  },
+];
+
 export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
 export const LocationTagValue: FormField = {

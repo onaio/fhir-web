@@ -12,11 +12,14 @@ export interface TableData {
 }
 
 export interface Props {
+  accessToken: string;
+  setDetail: () => void;
   data: TableData[];
-  onViewDetails?: (row: TableData) => void;
+  onViewDetails?: (row: TableData, accessToken: string, setDetail: () => void) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
+  const { accessToken, setDetail } = props;
   const columns = [
     {
       title: 'Name',
@@ -49,7 +52,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
-                    props.onViewDetails && props.onViewDetails(record);
+                    props.onViewDetails && props.onViewDetails(record, accessToken, setDetail);
                   }}
                 >
                   View Details
