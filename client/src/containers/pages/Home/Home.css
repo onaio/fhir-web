@@ -9,7 +9,7 @@
   text-decoration: none;
 }
 
-.ant-btn.btn-links {
+.home.btn-links {
   color: #40a9ff;
   background-color: #ffffff;
   border: 2px solid #40a9ff;
@@ -23,7 +23,7 @@
   margin-top: 50px;
 }
 
-.ant-btn.btn-links:hover {
+.home.btn-links:hover {
   background: #40a9ff;
   color: #fff;
 }
