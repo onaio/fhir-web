@@ -2,50 +2,36 @@
 
 exports[`components/Logout renders logout component 1`] = `
 <CustomLogout>
-  <Ripple
-    borderColor="#ff5d00"
-    borderStyle="solid"
-    borderWidth="4px"
-    height="64px"
-    minHeight="80vh"
-    width="64px"
-  >
+  <Ripple>
     <div
       className="lds-ripple-parent"
-      style={
-        Object {
-          "minHeight": "80vh",
-        }
-      }
     >
-      <div
-        className="lds-ripple"
-        style={
-          Object {
-            "height": "64px",
-            "width": "64px",
-          }
-        }
+      <Spin
+        size="large"
+        spinning={true}
+        wrapperClassName=""
       >
         <div
-          style={
-            Object {
-              "borderColor": "#ff5d00",
-              "borderStyle": "solid",
-              "borderWidth": "4px",
-            }
-          }
-        />
-        <div
-          style={
-            Object {
-              "borderColor": "#ff5d00",
-              "borderStyle": "solid",
-              "borderWidth": "4px",
-            }
-          }
-        />
-      </div>
+          className="ant-spin ant-spin-lg ant-spin-spinning"
+        >
+          <span
+            className="ant-spin-dot ant-spin-dot-spin"
+          >
+            <i
+              className="ant-spin-dot-item"
+            />
+            <i
+              className="ant-spin-dot-item"
+            />
+            <i
+              className="ant-spin-dot-item"
+            />
+            <i
+              className="ant-spin-dot-item"
+            />
+          </span>
+        </div>
+      </Spin>
     </div>
   </Ripple>
 </CustomLogout>
