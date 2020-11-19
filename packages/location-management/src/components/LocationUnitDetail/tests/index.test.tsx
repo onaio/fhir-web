@@ -6,16 +6,19 @@ import { LocationUnitStatus, LocationUnitSyncStatus } from '../../../ducks/locat
 
 describe('containers/pages/Home', () => {
   const props: Props = {
-    parentId: '2',
     key: '0',
-    name: 'Edrward 0',
-    geographicLevel: 2,
-    status: LocationUnitStatus.ACTIVE,
+    id: '6y66ggde',
     type: 'Feautire',
-    externalId: 'asdkjh1230',
-    username: 'edward 0',
-    version: 0,
-    syncstatus: LocationUnitSyncStatus.SYNCED,
+    properties: {
+      parentId: '2',
+      name: 'test',
+      status: LocationUnitStatus.ACTIVE,
+      externalId: 'asdkjh1230',
+      username: 'edward 0',
+      version: 0,
+      geographicLevel: 2,
+    },
+    syncStatus: LocationUnitSyncStatus.SYNCED,
   };
 
   it('renders without crashing', () => {
@@ -29,5 +32,12 @@ describe('containers/pages/Home', () => {
     expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
     expect(wrapper).toHaveLength(0);
+  });
+
+  it('doesnt remove itself if onclose is not provided', () => {
+    const wrapper = mount(<LocationUnitDetail {...props} />);
+    expect(wrapper.children()).toHaveLength(1);
+    wrapper.find('button').simulate('click');
+    expect(wrapper).toHaveLength(1);
   });
 });

@@ -4,10 +4,13 @@ import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Router } from 'react-router';
 import flushPromises from 'flush-promises';
+import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 
 import LocationUnitGroupAdd from '..';
+import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
+import toJson from 'enzyme-to-json';
 
 describe('containers/pages/locations/LocationTagAddition', () => {
   it('renders without crashing', () => {
@@ -60,6 +63,7 @@ describe('containers/pages/locations/LocationTagAddition', () => {
   });
 
   it('tests Update Payload', async () => {
+    fetch.once(JSON.stringify(fixtures.sampleLocationTagPayload));
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/testingid`]}>
         <Provider store={store}>
@@ -68,7 +72,13 @@ describe('containers/pages/locations/LocationTagAddition', () => {
       </MemoryRouter>
     );
 
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
     // with values test
+    // expect(toJson(wrapper.find('Form'))).toEqual('');
     wrapper
       .find('input[name="name"]')
       .simulate('change', { target: { name: 'name', value: 'Name213' } });
