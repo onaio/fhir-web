@@ -43,7 +43,29 @@ import {
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-const LocationUnitView: React.FC = () => {
+/** Function to Load selected location unit for details
+ *
+ * @param {TableData} row data selected from the table
+ * @param {string} accessToken - access token
+ * @param {function} setDetail funtion to set detail to state
+ */
+export const loadSingleLocation = (
+  row: TableData,
+  accessToken: string,
+  setDetail: (isLoading: string | LocationUnit) => void
+) => {
+  setDetail('loading');
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  serve
+    .read(row.id, { is_jurisdiction: true })
+    .then((res: LocationUnit) => {
+      setDetail(res);
+    })
+    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+};
+
+export const LocationUnitView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
@@ -110,22 +132,6 @@ const LocationUnitView: React.FC = () => {
     setTableData(data);
   }, [Treedata, currentParentChildren]);
 
-  /** Function to Load selected location unit for details
-   *
-   * @param {TableData} row data selected from the table
-   */
-  function loadSingleLocation(row: TableData) {
-    setDetail('loading');
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    serve
-      .read(row.id, { is_jurisdiction: true })
-      .then((res: LocationUnit) => {
-        setDetail(res);
-      })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
-  }
-
   if (!tableData.length || !Treedata.length) return <Ripple />;
 
   return (
@@ -173,7 +179,12 @@ const LocationUnitView: React.FC = () => {
             </div>
           </div>
           <div className="bg-white p-4">
-            <Table data={tableData} onViewDetails={loadSingleLocation} />
+            <Table
+              data={tableData}
+              onViewDetails={loadSingleLocation}
+              accessToken={accessToken}
+              setDetail={setDetail}
+            />
           </div>
         </Col>
 

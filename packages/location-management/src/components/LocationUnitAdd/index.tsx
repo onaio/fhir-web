@@ -51,17 +51,20 @@ export const LocationUnitAdd: React.FC = () => {
         API_BASE_URL,
         `location/${params.id}?is_jurisdiction=true`
       );
-      serve.list().then((response: LocationUnit) => {
-        setLocationUnitDetail({
-          name: response.properties.name,
-          parentId: response.properties.parentId,
-          status: response.properties.status,
-          externalId: response.properties.externalId,
-          locationTags: response.locationTags?.map((e) => e.id),
-          geometry: JSON.stringify(response.geometry),
-          type: response.type,
-        });
-      });
+      serve
+        .list()
+        .then((response: LocationUnit) => {
+          setLocationUnitDetail({
+            name: response.properties.name,
+            parentId: response.properties.parentId,
+            status: response.properties.status,
+            externalId: response.properties.externalId,
+            locationTags: response.locationTags?.map((e) => e.id),
+            geometry: JSON.stringify(response.geometry),
+            type: response.type,
+          });
+        })
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
   }, [accessToken, params.id]);
 
@@ -90,6 +93,7 @@ export const LocationUnitAdd: React.FC = () => {
           properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
         })
         .then((response: any) => {
+          console.log('all lication 0 units', response);
           dispatch(fetchLocationUnits(response));
           const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
           if (rootIds.length) {

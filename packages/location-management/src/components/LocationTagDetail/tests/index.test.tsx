@@ -28,7 +28,7 @@ describe('containers/pages/Home', () => {
     const wrapper = mount(<LocationTagDetail {...props} onClose={() => wrapper.unmount()} />);
     expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
-    expect(wrapper).toHaveLength(1);
+    expect(wrapper).toHaveLength(0);
   });
   it('doesnt close if onClose prop is not set', () => {
     const wrapper = mount(<LocationTagDetail {...props} />);

@@ -109,7 +109,8 @@ export const Form: React.FC<Props> = (props: Props) => {
       geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
         .read(values.parentId)
         .then((res: RawOpenSRPHierarchy) => {
-          return res.locationsHierarchy.map[values.parentId].node.attributes.geographicLevel;
+          return res.locationsHierarchy.map[values.parentId as string].node.attributes
+            .geographicLevel as number;
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
