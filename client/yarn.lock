@@ -1629,13 +1629,17 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
+<<<<<<< HEAD
 "@opensrp/error-boundary-fallback@file:../packages/error-boundary-fallback":
   version "0.0.0"
 
+=======
+>>>>>>> bd2893e5268b0f729477fd718c576e8a64d43baf
 "@opensrp/keycloak-service@^0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.7.tgz#be652d2dc26751fd865dc495c115437f9f7f2488"
   integrity sha512-K+2cOadLaM/7e9QmENfXJ49HX67DDucd7DYJB2WNtKi+D4SQNvc3SX97oFB5645f73zB/pm0ZLyK3N7Hj/f9XA==
+<<<<<<< HEAD
   dependencies:
     "@opensrp/store" "^0.0.6"
 
@@ -1645,6 +1649,10 @@
   integrity sha512-tIfrSKOTfLJ72FupNroC3ubN1B3tXrl4iye3IVDOgeUJxNDpbVWapiCtPo6Cc4Yz7wF1zOlGHRUcxNQwYxRLvQ==
   dependencies:
     "@opensrp/store" "^0.0.7"
+=======
+  dependencies:
+    "@opensrp/store" "^0.0.6"
+>>>>>>> bd2893e5268b0f729477fd718c576e8a64d43baf
 
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
@@ -1657,11 +1665,14 @@
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
   integrity sha512-WymZntvFba3/0FKM6f2L+YT7BF+t/HFlr6A16UIBFz83+nYTIoI93MS/ocO/7MDTL9F7yzTBpjA0D1CkogFnfg==
+<<<<<<< HEAD
 
 "@opensrp/server-service@^0.0.12":
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.12.tgz#3a887269384797c1b217f4e242453c1fae1805d1"
   integrity sha512-n3bmvLRyGNG+NZXWT4NMPC2kelJL3lcWGFRYo8qX/9j5hTm6HBNJWUvnPgvg57xnC9YBfXUY/SkVOkALN0iNJw==
+=======
+>>>>>>> bd2893e5268b0f729477fd718c576e8a64d43baf
 
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
@@ -1672,6 +1683,7 @@
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.6.tgz#074d18e98414190a2cd79aa53399dcf7e80b4a1e"
   integrity sha512-qwfl99FxfRX9Iol0nG4YgCiiD9hdhNu7rqANb+vahAY9hGgFK1L3NnG92Zw8WbEd7JHT50b/1bGYLOAZYjipiA==
+<<<<<<< HEAD
   dependencies:
     "@onaio/connected-reducer-registry" "^0.0.3"
     "@onaio/gatekeeper" "^0.1.0"
@@ -1689,6 +1701,8 @@
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.7.tgz#e5d6a49f2a2124f87f13e3ba72bd796e50ce9d0f"
   integrity sha512-Jp4I0qGLCU//e+lb+7B9MDaK4q6sTWzVEQmYSOTdxIsoXlXrkDRKtWmbg28QdS2lqJO00V0OaVDyVRtqVMjgxw==
+=======
+>>>>>>> bd2893e5268b0f729477fd718c576e8a64d43baf
   dependencies:
     "@onaio/connected-reducer-registry" "^0.0.3"
     "@onaio/gatekeeper" "^0.1.0"
@@ -1703,17 +1717,29 @@
     seamless-immutable "^7.1.4"
 
 "@opensrp/user-management@^0.1.8":
+<<<<<<< HEAD
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/@opensrp/user-management/-/user-management-0.1.9.tgz#5520670566894932c83795601681e148ec0cab77"
   integrity sha512-GrMyFGAOMxS6UhE5xlCCozfNRB2cBdy5uSbgJgdVmEfKzD6haPd4/4cMSf8IXZju9LPhPA4MsZhu4dmpx0+fWQ==
+=======
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@opensrp/user-management/-/user-management-0.1.8.tgz#b4ac0900b29cbaa5ab0354b4a4f430966df94a1d"
+  integrity sha512-4liXaprydOIAvo8Uan2KfYXrkQtv4Vzvbdrqy5dIboHXqYyiyONx8buyH/8CZxpGbUdbAuN7Bk3Sk/6xOS/fFg==
+>>>>>>> bd2893e5268b0f729477fd718c576e8a64d43baf
   dependencies:
     "@onaio/loaders" "^0.0.1"
     "@onaio/redux-reducer-registry" "^0.0.9"
     "@onaio/session-reducer" "^0.0.11"
     "@onaio/utils" "^0.0.1"
+<<<<<<< HEAD
     "@opensrp/keycloak-service" "^0.0.8"
     "@opensrp/server-service" "^0.0.12"
     "@opensrp/store" "^0.0.7"
+=======
+    "@opensrp/keycloak-service" "^0.0.7"
+    "@opensrp/server-service" "^0.0.11"
+    "@opensrp/store" "^0.0.6"
+>>>>>>> bd2893e5268b0f729477fd718c576e8a64d43baf
     antd "^4.6.3"
     babel-plugin-transform-es2015-modules-commonjs "^6.26.2"
     bootstrap "^4.5.2"
