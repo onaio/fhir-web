@@ -16,10 +16,10 @@ import {
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { API_BASE_URL, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
-import { ParsedHierarchySingleNode } from '../LocationTree/utils';
+import { ParsedHierarchySingleNode, RawOpenSRPHierarchy } from '../LocationTree/utils';
 
 export interface FormField {
   name: string;
@@ -98,11 +98,21 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Object} values the form fields
    * @param {Function} setSubmitting method to set submission status
    */
-  function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
+  async function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
     const locationTagFiler = props.locationtag?.filter((e) => values.locationTags?.includes(e.id));
     const locationTag = locationTagFiler?.map(
       (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
     );
+
+    let geographicLevel;
+    if (values.parentId) {
+      geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
+        .read(values.parentId)
+        .then((res: RawOpenSRPHierarchy) => {
+          return res.locationsHierarchy.map[values.parentId].node.attributes.geographicLevel;
+        })
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    }
 
     const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
       is_jurisdiction: true;
@@ -110,6 +120,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line @typescript-eslint/camelcase
       is_jurisdiction: true,
       properties: {
+        geographicLevel: geographicLevel ? geographicLevel + 1 : 0,
         username: user.username,
         externalId: values.externalId,
         parentId: values.parentId ? values.parentId : '',
