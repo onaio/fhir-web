@@ -129,3 +129,29 @@ export const csvEntry2 = {
   lastName: 'Isaboke',
   gender: 'Male',
 };
+
+export const locationHierarchy = {
+  locationsHierarchy: {
+    map: {
+      'e2b4a441-21b5-4d03-816b-09d45b17cad7': {
+        id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+        label: 'CSB Hopital Bouficha',
+        node: {
+          locationId: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+          name: 'CSB Hopital Bouficha',
+          attributes: {
+            geographicLevel: 0,
+          },
+          voided: false,
+        },
+      },
+    },
+    parentChildren: {},
+  },
+};
+
+export const userAssignment = {
+  organizationIds: [2],
+  jurisdictions: ['5d99a60e-126e-4c40-b5ce-439f920de090'],
+  plans: [],
+};

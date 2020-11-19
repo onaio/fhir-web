@@ -112,6 +112,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
           OPENSRP_URL_LOCATION_HIERARCHY
         );
         serve
+          // eslint-disable-next-line @typescript-eslint/camelcase
           .read(defaultLocationId, { is_jurisdiction: true })
           .then((res: RawOpenSRPHierarchy) => {
             const hierarchy = generateJurisdictionTree(res);
@@ -126,18 +127,30 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
           description: '',
         });
       });
-  }, []);
+  }, [
+    accessToken,
+    opensrpBaseURL,
+    fetchAllHierarchiesActionCreator,
+    opensrpServiceClass,
+    dispatch,
+  ]);
 
-  function parseTreeNode(TreeNode: TreeNode[]): JSX.Element[] {
+  /**
+   *
+   * @param {TreeNode} TreeNode - location tree
+   * @returns {React.Element} TreeSelect.TreeNode
+   */
+  const parseTreeNode = (TreeNode: TreeNode[]): JSX.Element[] => {
     return TreeNode.map((node) => (
       <TreeSelect.TreeNode
         key={node.id}
         value={node.id}
         title={node.title}
+        // eslint-disable-next-line react/no-children-prop
         children={node.children && parseTreeNode(node.children)}
       />
     ));
-  }
+  };
 
   return (
     <>
@@ -155,8 +168,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               accessToken,
               opensrpBaseURL,
               opensrpServiceClass,
-              setSubmitting,
-              locationHierarchies
+              setSubmitting
             );
           }}
         >
@@ -194,7 +206,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
           <Form.Item {...tailLayout}>
             <Tooltip
               placement="bottom"
-              title={!!cardOrderDate[0] || !!cardOrderDate[1] ? '' : 'Select Card Order Date'}
+              title={!cardOrderDate[0] || !cardOrderDate[1] ? 'Select Card Order Date' : ''}
             >
               <Button
                 type="primary"
