@@ -36,6 +36,7 @@ export const onDelete = (record: LocationTag, accessToken: string) => {
 };
 
 const Table: React.FC<Props> = (props: Props) => {
+  const { onViewDetails } = props;
   const accessToken = useSelector((state) => getAccessToken(state) as string);
 
   const columns = [
@@ -64,7 +65,7 @@ const Table: React.FC<Props> = (props: Props) => {
               <Menu className="menu">
                 <Menu.Item
                   className="viewdetails"
-                  onClick={() => props.onViewDetails && props.onViewDetails(record)}
+                  onClick={() => onViewDetails && onViewDetails(record)}
                 >
                   View Details
                 </Menu.Item>

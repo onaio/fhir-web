@@ -38,6 +38,7 @@ import {
   RawOpenSRPHierarchy,
   getFilterParams,
   ParsedHierarchySingleNode,
+  TreeNode,
 } from '../LocationTree/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -149,7 +150,7 @@ export const LocationUnitView: React.FC = () => {
                 const children = [item, ...item.children];
                 dispatch(fetchCurrentChildren(children));
                 const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
-                setExpandedKeys(allExpandedKeys);
+                setExpandedKeys(allExpandedKeys as string[]);
               }
             }}
             data={Treedata}
