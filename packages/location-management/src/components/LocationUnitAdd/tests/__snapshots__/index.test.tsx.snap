@@ -35,35 +35,6 @@ Object {
 }
 `;
 
-exports[`containers/pages/locations/LocationUnitAdd renders without crashing 2`] = `
-Object {
-  "children": <MemoryRouter
-    initialEntries={
-      Array [
-        Object {
-          "hash": "",
-          "pathname": "/a26ca9c8-1441-495a-83b6-bb5df7698996",
-          "search": "",
-          "state": Object {},
-        },
-      ]
-    }
-  >
-    <Route
-      component={[Function]}
-      path="/:id"
-    />
-  </MemoryRouter>,
-  "store": Object {
-    "dispatch": [Function],
-    "getState": [Function],
-    "replaceReducer": [Function],
-    "subscribe": [Function],
-    Symbol(observable): [Function],
-  },
-}
-`;
-
 exports[`containers/pages/locations/LocationUnitAdd renders without crashing when editting 1`] = `
 Object {
   "children": <MemoryRouter
