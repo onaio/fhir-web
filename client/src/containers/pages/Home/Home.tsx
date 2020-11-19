@@ -30,7 +30,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
         {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
           <Col className="gutter-row" span={12}>
             <Link to={URL_ADMIN} className="admin-link">
-              <Button color="outline" className="btn-links">
+              <Button color="outline" className="home btn-links">
                 Admin
               </Button>
             </Link>
@@ -38,7 +38,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
         )}
         <Col className="gutter-row" span={12}>
           <Link to={URL_TEAMS} className="admin-link">
-            <Button color="outline" className="btn-links">
+            <Button color="outline" className="home btn-links">
               Teams
             </Button>
           </Link>

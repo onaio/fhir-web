@@ -4,12 +4,6 @@
 h2.page-title {
   font-weight: 200;
 }
-
-/* .ant-layout,
-.ant-layout-header {
-  background: #fff;
-} */
-
 .gatekeeper-cb,
 .gatekeeper-login {
   margin-top: 3rem !important;
@@ -92,26 +86,10 @@ fieldset[disabled] .gatekeeper-btn.active {
   padding: 0 50px;
   margin-top: 20px;
 }
-
-/* .ant-menu-horizontal > .ant-menu-item,
-.ant-menu-horizontal > .ant-menu-submenu {
-  padding: 0 20px !important;
-  margin: -1px 5px 0 !important;
-} */
-
 .body-wrapper .layout-header {
   display: flex;
   flex: 0;
 }
-
-/* .ant-menu-horizontal {
-  width: 100%;
-} */
-
-/* .ant-card-body {
-  padding: 24px 0;
-} */
-
 svg {
   vertical-align: baseline !important;
 }
