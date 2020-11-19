@@ -86,9 +86,10 @@ export const Form: React.FC<Props> = (props: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function removeEmptykeys(obj: any) {
     Object.keys(obj).forEach(function (key) {
-      if (obj[key] && typeof obj[key] === 'object') removeEmptykeys(obj[key]);
-      else if (obj[key] === null || obj[key] === [] || obj[key] === {} || obj[key] === undefined)
-        delete obj[key];
+      if (typeof obj[key] === 'object' && !obj[key].length) delete obj[key];
+      else if (typeof obj[key] === 'object') removeEmptykeys(obj[key]);
+      else if (key === '') delete obj[key];
+      else if (obj[key] === null || obj[key] === undefined) delete obj[key];
     });
   }
 
