@@ -183,7 +183,7 @@ export const LocationUnitView: React.FC = () => {
               data={tableData}
               onViewDetails={loadSingleLocation}
               accessToken={accessToken}
-              setDetail={setDetail}
+              setDetail={setDetail as (isLoading: string | LocationUnit) => void}
             />
           </div>
         </Col>
