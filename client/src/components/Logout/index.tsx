@@ -9,9 +9,9 @@ import {
   BACKEND_ACTIVE,
 } from '../../configs/env';
 import { getFetchOptions } from '@opensrp/keycloak-service';
-import Ripple from '../page/Loading';
 import { getAccessToken } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
+import { Spin } from 'antd';
 import { sendErrorNotification } from '../../utils/Notification/Notifications';
 
 /** HOC function that calls function that logs out the user from both opensrp
@@ -30,5 +30,5 @@ export const CustomLogout: React.FC = (): JSX.Element => {
     sendErrorNotification(error);
     history.push('/');
   });
-  return <Ripple />;
+  return <Spin size="large" />;
 };
