@@ -10,7 +10,6 @@ import { store } from '@opensrp/store';
 import LocationUnitGroupAdd from '..';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
-import toJson from 'enzyme-to-json';
 
 describe('containers/pages/locations/LocationTagAddition', () => {
   it('renders without crashing', () => {
