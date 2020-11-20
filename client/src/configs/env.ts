@@ -56,4 +56,3 @@ export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROT
 
 /** Activate the product-catalogue menu */
 export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CATALOGUE === 'true';
-export type ENABLE_PRODUCT_CATALOGUE = typeof ENABLE_PRODUCT_CATALOGUE;
