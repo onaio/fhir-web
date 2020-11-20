@@ -19,7 +19,7 @@ const defaultProps: TreeProp = {
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const { data, OnItemClick } = props;
 
-  const [expandedKeys, setExpandedKeys] = useState<string[]>([]);
+  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchySingleNode[] = [];
@@ -68,7 +68,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param {Array<ParsedHierarchySingleNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
    */
-  function loop(data: ParsedHierarchySingleNode[]) {
+  function loop(data: ParsedHierarchySingleNode[]): any {
     return data.map((item) => {
       const index = item.title.indexOf(searchValue);
       const beforeStr = item.title.substr(0, index);
