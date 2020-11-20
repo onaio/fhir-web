@@ -2,14 +2,17 @@ import React, { ChangeEvent, useState } from 'react';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ParsedHierarchySingleNode } from './utils';
+import { ParsedHierarchyNode } from './utils';
 import reducer, { reducerName } from '../../ducks/location-hierarchy';
 
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
-  data: ParsedHierarchySingleNode[];
-  OnItemClick?: (item: any, [expandedKeys, setExpandedKeys]: any) => void;
+  data: ParsedHierarchyNode[];
+  OnItemClick?: (
+    item: ParsedHierarchyNode,
+    [expandedKeys, setExpandedKeys]: [any, Function]
+  ) => void;
 }
 
 const defaultProps: TreeProp = {
@@ -22,15 +25,15 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-  const filterData: ParsedHierarchySingleNode[] = [];
+  const filterData: ParsedHierarchyNode[] = [];
 
   /** Return the the parent key in a tree for the supplied key
    *
    * @param {string} key the key to find parent of
-   * @param {Array<ParsedHierarchySingleNode>} tree the orignal tree
+   * @param {Array<ParsedHierarchyNode>} tree the orignal tree
    * @returns {string} - returns parent key
    */
-  function getParentKey(key: string, tree: ParsedHierarchySingleNode[]): string {
+  function getParentKey(key: string, tree: ParsedHierarchyNode[]): string {
     tree.forEach((node) => {
       if (node.children) {
         if (node.children.some((item: { key: string }) => item.key === key)) return node.key;
@@ -65,10 +68,10 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   /** process the data before it could be displayed in tree
    *
-   * @param {Array<ParsedHierarchySingleNode[]>} data the tree data to preprocess
+   * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
    */
-  function loop(data: ParsedHierarchySingleNode[]): any {
+  function loop(data: ParsedHierarchyNode[]): any {
     return data.map((item) => {
       const index = item.title.indexOf(searchValue);
       const beforeStr = item.title.substr(0, index);
@@ -91,7 +94,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     });
   }
 
-  const generateFilterData = (data: ParsedHierarchySingleNode[]) => {
+  const generateFilterData = (data: ParsedHierarchyNode[]) => {
     data.forEach((node) => {
       filterData.push({ ...node, title: node.key });
       if (node.children) generateFilterData(node.children);

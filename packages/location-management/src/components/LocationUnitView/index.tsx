@@ -37,8 +37,7 @@ import {
   generateJurisdictionTree,
   RawOpenSRPHierarchy,
   getFilterParams,
-  ParsedHierarchySingleNode,
-  TreeNode,
+  ParsedHierarchyNode,
 } from '../LocationTree/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -69,12 +68,12 @@ export const loadSingleLocation = (
 export const LocationUnitView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
+    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
 
   const currentParentChildren = (useSelector((state) =>
     getCurrentChildren(state)
-  ) as unknown) as ParsedHierarchySingleNode[];
+  ) as unknown) as ParsedHierarchyNode[];
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
@@ -112,7 +111,7 @@ export const LocationUnitView: React.FC = () => {
   useEffect(() => {
     const data: TableData[] = [];
     if (currentParentChildren && currentParentChildren.length) {
-      currentParentChildren.forEach((child: ParsedHierarchySingleNode, i: number) => {
+      currentParentChildren.forEach((child: ParsedHierarchyNode, i: number) => {
         data.push({
           id: child.id,
           key: i.toString(),
@@ -121,7 +120,7 @@ export const LocationUnitView: React.FC = () => {
         });
       });
     } else if (Treedata && Treedata.length && !currentParentChildren.length) {
-      Treedata.forEach((location: ParsedHierarchySingleNode, i: number) => {
+      Treedata.forEach((location: ParsedHierarchyNode, i: number) => {
         data.push({
           id: location.id,
           key: i.toString(),
