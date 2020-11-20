@@ -56,7 +56,7 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { wrapWithRouterProps } from './utils';
+import { productCatalogueProps } from './utils';
 
 const { Content } = Layout;
 
@@ -152,36 +152,32 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={CATALOGUE_LIST_VIEW_URL}
-              component={(props: RouteComponentProps) =>
-                wrapWithRouterProps(props, ConnectedProductCatalogueList)
-              }
+              {...productCatalogueProps}
+              component={ConnectedProductCatalogueList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              component={(props: RouteComponentProps) =>
-                wrapWithRouterProps(props, ConnectedProductCatalogueList)
-              }
+              {...productCatalogueProps}
+              component={ConnectedProductCatalogueList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={CATALOGUE_CREATE_VIEW_URL}
-              component={(props: RouteComponentProps) =>
-                wrapWithRouterProps(props, CreateProductView)
-              }
+              {...productCatalogueProps}
+              component={CreateProductView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              component={(props: RouteComponentProps) =>
-                wrapWithRouterProps(props, ConnectedEditProductView)
-              }
+              {...productCatalogueProps}
+              component={ConnectedEditProductView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
