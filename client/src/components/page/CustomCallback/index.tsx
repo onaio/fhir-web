@@ -53,7 +53,7 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
     if (nextPath) {
       pathToRedirectTo = nextPath;
     }
-    if (!nextPath || nextPath === '/') {
+    if (nextPath === '/') {
       const user = getUser(store.getState());
       openNotification(user);
     }

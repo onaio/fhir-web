@@ -54,7 +54,6 @@ describe('src/components/page/CustomCallback.SuccessfulLogin', () => {
     window.location = realLocation;
   });
   it('renders correctly', () => {
-    const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/callback`, search: '', hash: '', state: {} }]}>
@@ -64,7 +63,6 @@ describe('src/components/page/CustomCallback.SuccessfulLogin', () => {
     );
     // should redirect to home
     expect(wrapper.find('#home')).toHaveLength(1);
-    expect(mockNotificationSuccess).toHaveBeenCalledWith('Welcome back, RobertBaratheon');
   });
 
   it('redirects to home if next page is /', () => {
