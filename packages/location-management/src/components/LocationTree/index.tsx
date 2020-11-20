@@ -19,23 +19,25 @@ const defaultProps: TreeProp = {
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const { data, OnItemClick } = props;
 
-  const [expandedKeys, setExpandedKeys] = useState<any>([]);
+  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchySingleNode[] = [];
 
   /** Return the the parent key in a tree for the supplied key
    *
-   * @param {any} key the key to find parent of
+   * @param {string} key the key to find parent of
    * @param {Array<ParsedHierarchySingleNode>} tree the orignal tree
+   * @returns {string} - returns parent key
    */
-  function getParentKey(key: any, tree: ParsedHierarchySingleNode[]): any {
+  function getParentKey(key: string, tree: ParsedHierarchySingleNode[]): string {
     tree.forEach((node) => {
       if (node.children) {
-        if (node.children.some((item: { key: any }) => item.key === key)) return node.key;
+        if (node.children.some((item: { key: string }) => item.key === key)) return node.key;
         else if (getParentKey(key, node.children)) return getParentKey(key, node.children);
       }
     });
+    return '';
   }
 
   /** Function to handle event when a tree is expanded
@@ -53,10 +55,10 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    */
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
-    const expandedKeys = filterData
+    const expandedKey = filterData
       .map((item) => (item.title.indexOf(value) > -1 ? getParentKey(item.key, props.data) : null))
       .filter((item, i, self) => item && self.indexOf(item) === i);
-    setExpandedKeys(expandedKeys);
+    setExpandedKeys(expandedKeys as string[]);
     setSearchValue(value);
     setAutoExpandParent(true);
   }

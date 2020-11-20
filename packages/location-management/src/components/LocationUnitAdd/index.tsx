@@ -93,7 +93,6 @@ export const LocationUnitAdd: React.FC = () => {
           properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
         })
         .then((response: any) => {
-          console.log('all lication 0 units', response);
           dispatch(fetchLocationUnits(response));
           const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
           if (rootIds.length) {
