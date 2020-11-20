@@ -5,7 +5,7 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { Ripple } from '@onaio/loaders';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
-  LOCATION_FINDBYPROPERTIES,
+  LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_TAG_ALL,
   API_BASE_URL,
@@ -82,7 +82,7 @@ export const LocationUnitAdd: React.FC = () => {
 
   useEffect(() => {
     if (!Treedata.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_FINDBYPROPERTIES);
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
       serve
         .list({
           // eslint-disable-next-line @typescript-eslint/camelcase
