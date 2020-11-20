@@ -33,10 +33,27 @@ import './LocationUnitAdd.css';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
+export interface Settings {
+  key: string;
+  value?: string | number;
+  label?: string;
+  description?: string;
+  type: 'email' | 'number' | 'password' | 'text' | 'time' | 'url';
+  uuid: string;
+  settingsId: string;
+  settingIdentifier: string;
+  settingMetadataId: string;
+  v1Settings: boolean;
+  resolveSettings: boolean;
+  documentId: string;
+  serverVersion: number;
+}
+
 export const LocationUnitAdd: React.FC = () => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationtag, setLocationtag] = useState<LocationTag[]>([]);
+  const [extrafields, setExtrafields] = useState<Settings[]>([]);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
@@ -113,6 +130,105 @@ export const LocationUnitAdd: React.FC = () => {
     }
   }, [accessToken, Treedata.length, dispatch]);
 
+  useEffect(() => {
+    // TODO : Replace with Api Call and constant identifier
+    setExtrafields([
+      {
+        key: 'sample_key',
+        value: 'Sample Key',
+        uuid: '4f1502f7-1a7f-499d-89bc-55e9a9cb3fd5',
+        settingsId: '1',
+        settingIdentifier: 'location_settings',
+        settingMetadataId: '1',
+        v1Settings: false,
+        resolveSettings: false,
+        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+        serverVersion: 1,
+        type: 'text',
+      },
+      {
+        key: 'area_nick_name',
+        value: 'Area Nick name',
+        label: 'Nick name',
+        uuid: '9905fcdd-f2b7-46db-b999-ea7a60d692d8',
+        settingsId: '1',
+        settingIdentifier: 'location_settings',
+        settingMetadataId: '2',
+        v1Settings: false,
+        resolveSettings: false,
+        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+        serverVersion: 1,
+        type: 'number',
+      },
+      {
+        key: 'sample_key_two',
+        label: 'Sample Ke',
+        description: 'Two placeholde',
+        uuid: '27cdf577-91ce-43e6-ab04-4fd519c96085',
+        settingsId: '1',
+        settingIdentifier: 'location_settings',
+        settingMetadataId: '3',
+        v1Settings: false,
+        resolveSettings: false,
+        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+        serverVersion: 1,
+        type: 'email',
+      },
+      {
+        key: 'area_code',
+        label: 'Area code',
+        uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
+        settingsId: '1',
+        settingIdentifier: 'location_settings',
+        settingMetadataId: '4',
+        v1Settings: false,
+        resolveSettings: false,
+        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+        serverVersion: 1,
+        type: 'text',
+      },
+      {
+        key: 'first',
+        label: 'first',
+        uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
+        settingsId: '1',
+        settingIdentifier: 'location_settings',
+        settingMetadataId: '4',
+        v1Settings: false,
+        resolveSettings: false,
+        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+        serverVersion: 1,
+        type: 'password',
+      },
+      {
+        key: 'third',
+        label: 'Third',
+        uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
+        settingsId: '1',
+        settingIdentifier: 'location_settings',
+        settingMetadataId: '4',
+        v1Settings: false,
+        resolveSettings: false,
+        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+        serverVersion: 1,
+        type: 'time',
+      },
+      {
+        key: 'Fourth',
+        label: 'Fourth',
+        uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
+        settingsId: '1',
+        settingIdentifier: 'location_settings',
+        settingMetadataId: '4',
+        v1Settings: false,
+        resolveSettings: false,
+        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+        serverVersion: 1,
+        type: 'url',
+      },
+    ]);
+  }, []);
+
   if (!locationtag.length || !Treedata.length || (params.id && !LocationUnitDetail))
     return <Ripple />;
 
@@ -126,6 +242,7 @@ export const LocationUnitAdd: React.FC = () => {
 
       <div className="bg-white p-5">
         <Form
+          extraFields={extrafields}
           treedata={Treedata}
           id={params.id}
           locationtag={locationtag}
