@@ -1,7 +1,7 @@
 {
-  "name": "@opensrp/template",
-  "version": "0.0.4",
-  "description": "",
+  "name": "@opensrp/plans",
+  "version": "0.0.0",
+  "description": "Opensrp plans Ui",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
@@ -12,7 +12,7 @@
   },
   "repository": "https://github.com/opensrp/web",
   "config": {
-    "folderName": "template"
+    "folderName": "opensrp-plan"
   },
   "scripts": {
     "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
@@ -33,6 +33,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
+    "antd": "^4.6.3",
     "react": "^16.18.1"
   },
   "author": "OpenSRP Engineering",
