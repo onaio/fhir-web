@@ -1,5 +1,5 @@
-import { notification } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { removeKeycloakUsers } from '../../../ducks/user';
 import { KEYCLOAK_URL_USERS, USER_DELETED_SUCCESSFULLY, ERROR_OCCURED } from '../../../constants';
 
@@ -30,15 +30,9 @@ export const deleteUser = (
     .then(() => {
       removeKeycloakUsersCreator();
       isLoadingCallback(true);
-      notification.success({
-        message: `${USER_DELETED_SUCCESSFULLY}`,
-        description: '',
-      });
+      sendSuccessNotification(USER_DELETED_SUCCESSFULLY);
     })
     .catch((_: Error) => {
-      notification.error({
-        message: `${ERROR_OCCURED}`,
-        description: '',
-      });
+      sendErrorNotification(ERROR_OCCURED);
     });
 };
