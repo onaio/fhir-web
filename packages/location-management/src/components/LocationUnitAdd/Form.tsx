@@ -19,7 +19,7 @@ import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
-import { ParsedHierarchySingleNode, RawOpenSRPHierarchy } from '../LocationTree/utils';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../LocationTree/utils';
 
 export interface FormField {
   name: string;
@@ -42,7 +42,7 @@ export interface Props {
   id?: string;
   initialValue?: FormField;
   locationtag: LocationTag[];
-  treedata: ParsedHierarchySingleNode[];
+  treedata: ParsedHierarchyNode[];
 }
 
 /** yup validations for practitioner data object from form */
@@ -68,10 +68,10 @@ export const Form: React.FC<Props> = (props: Props) => {
 
   /** Function to parse the hierarchy tree into TreeSelect node format
    *
-   * @param {Array<ParsedHierarchySingleNode>} hierarchyNode the tree node to parse
+   * @param {Array<ParsedHierarchyNode>} hierarchyNode the tree node to parse
    * @returns {Array<React.ReactNode>} the parsed format of for Ant TreeSelect
    */
-  function parseHierarchyNode(hierarchyNode: ParsedHierarchySingleNode[]): React.ReactNode[] {
+  function parseHierarchyNode(hierarchyNode: ParsedHierarchyNode[]): React.ReactNode[] {
     return hierarchyNode.map((node) => (
       <TreeSelect.TreeNode key={node.id} value={node.id} title={node.title}>
         {node.children && parseHierarchyNode(node.children)}
