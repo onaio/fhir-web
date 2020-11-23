@@ -15,7 +15,7 @@ import locationUnitsReducer, {
 import { getAccessToken } from '@onaio/session-reducer';
 import {
   API_BASE_URL,
-  LOCATION_FINDBYPROPERTIES,
+  LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
@@ -37,28 +37,56 @@ import {
   generateJurisdictionTree,
   RawOpenSRPHierarchy,
   getFilterParams,
-  ParsedHierarchySingleNode,
+  ParsedHierarchyNode,
 } from '../LocationTree/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-const LocationUnitView: React.FC = () => {
+export interface AntTreeProps {
+  title: JSX.Element;
+  key: string;
+  children: AntTreeProps[];
+}
+
+/** Function to Load selected location unit for details
+ *
+ * @param {TableData} row data selected from the table
+ * @param {string} accessToken - access token
+ * @param {Function} setDetail funtion to set detail to state
+ */
+export const loadSingleLocation = (
+  row: TableData,
+  accessToken: string,
+  setDetail: (isLoading: string | LocationUnit) => void
+): void => {
+  setDetail('loading');
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  serve
+    .read(row.id, { is_jurisdiction: true })
+    .then((res: LocationUnit) => {
+      setDetail(res);
+    })
+    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+};
+
+export const LocationUnitView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
+    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
 
   const currentParentChildren = (useSelector((state) =>
     getCurrentChildren(state)
-  ) as unknown) as ParsedHierarchySingleNode[];
+  ) as unknown) as ParsedHierarchyNode[];
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
 
   useEffect(() => {
     if (!Treedata.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_FINDBYPROPERTIES);
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
       serve
         .list({
           is_jurisdiction: true,
@@ -89,7 +117,7 @@ const LocationUnitView: React.FC = () => {
   useEffect(() => {
     const data: TableData[] = [];
     if (currentParentChildren && currentParentChildren.length) {
-      currentParentChildren.forEach((child: ParsedHierarchySingleNode, i: number) => {
+      currentParentChildren.forEach((child: ParsedHierarchyNode, i: number) => {
         data.push({
           id: child.id,
           key: i.toString(),
@@ -98,7 +126,7 @@ const LocationUnitView: React.FC = () => {
         });
       });
     } else if (Treedata && Treedata.length && !currentParentChildren.length) {
-      Treedata.forEach((location: ParsedHierarchySingleNode, i: number) => {
+      Treedata.forEach((location: ParsedHierarchyNode, i: number) => {
         data.push({
           id: location.id,
           key: i.toString(),
@@ -109,22 +137,6 @@ const LocationUnitView: React.FC = () => {
     }
     setTableData(data);
   }, [Treedata, currentParentChildren]);
-
-  /** Function to Load selected location unit for details
-   *
-   * @param {TableData} row data selected from the table
-   */
-  function loadSingleLocation(row: TableData) {
-    setDetail('loading');
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    serve
-      .read(row.id, { is_jurisdiction: true })
-      .then((res: LocationUnit) => {
-        setDetail(res);
-      })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
-  }
 
   if (!tableData.length || !Treedata.length) return <Ripple />;
 
@@ -143,7 +155,7 @@ const LocationUnitView: React.FC = () => {
                 const children = [item, ...item.children];
                 dispatch(fetchCurrentChildren(children));
                 const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
-                setExpandedKeys(allExpandedKeys);
+                setExpandedKeys(allExpandedKeys as string[]);
               }
             }}
             data={Treedata}
@@ -173,7 +185,12 @@ const LocationUnitView: React.FC = () => {
             </div>
           </div>
           <div className="bg-white p-4">
-            <Table data={tableData} onViewDetails={loadSingleLocation} />
+            <Table
+              data={tableData}
+              onViewDetails={loadSingleLocation}
+              accessToken={accessToken}
+              setDetail={setDetail as (isLoading: string | LocationUnit) => void}
+            />
           </div>
         </Col>
 

@@ -44,11 +44,13 @@ export interface LocationUnitGroup {
 /** location interface */
 export interface LocationUnit {
   id: string | number;
+  key?: string;
   properties: Properties;
   syncStatus: LocationUnitSyncStatus;
   type: string;
   locationTags: LocationUnitGroup[];
-  geometry: Geometry;
+  geometry?: Geometry;
+  parentId?: string;
 }
 
 /** interface for the POST payload */

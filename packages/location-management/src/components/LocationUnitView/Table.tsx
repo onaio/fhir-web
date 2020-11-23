@@ -3,6 +3,7 @@ import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
+import { LocationUnit } from '../../ducks/location-units';
 
 export interface TableData {
   geographicLevel: number;
@@ -12,11 +13,18 @@ export interface TableData {
 }
 
 export interface Props {
+  accessToken: string;
+  setDetail: (isLoading: string | LocationUnit) => void;
   data: TableData[];
-  onViewDetails?: (row: TableData) => void;
+  onViewDetails?: (
+    row: TableData,
+    accessToken: string,
+    setDetail: (isLoading: string | LocationUnit) => void
+  ) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
+  const { accessToken, setDetail } = props;
   const columns = [
     {
       title: 'Name',
@@ -49,7 +57,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
-                    props.onViewDetails && props.onViewDetails(record);
+                    props.onViewDetails && props.onViewDetails(record, accessToken, setDetail);
                   }}
                 >
                   View Details

@@ -10,7 +10,7 @@ import reducer, {
   removeLocationGroups,
   fetchLocationGroups,
   LocationGroup,
-} from '../location-groups';
+} from '../location-tags';
 import { LocationGroup1, LocationGroup2 } from './fixtures';
 
 reducerRegistry.register(reducerName, reducer);

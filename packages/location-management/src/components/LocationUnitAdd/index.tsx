@@ -5,7 +5,7 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { Ripple } from '@onaio/loaders';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
-  LOCATION_FINDBYPROPERTIES,
+  LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_TAG_ALL,
   API_BASE_URL,
@@ -26,7 +26,7 @@ import {
   RawOpenSRPHierarchy,
   generateJurisdictionTree,
   getFilterParams,
-  ParsedHierarchySingleNode,
+  ParsedHierarchyNode,
 } from '../LocationTree/utils';
 
 import './LocationUnitAdd.css';
@@ -39,7 +39,7 @@ export const LocationUnitAdd: React.FC = () => {
   const [locationtag, setLocationtag] = useState<LocationTag[]>([]);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
   const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchySingleNode[]
+    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
 
   const dispatch = useDispatch();
@@ -51,17 +51,20 @@ export const LocationUnitAdd: React.FC = () => {
         API_BASE_URL,
         `location/${params.id}?is_jurisdiction=true`
       );
-      serve.list().then((response: LocationUnit) => {
-        setLocationUnitDetail({
-          name: response.properties.name,
-          parentId: response.properties.parentId,
-          status: response.properties.status,
-          externalId: response.properties.externalId,
-          locationTags: response.locationTags?.map((e) => e.id),
-          geometry: JSON.stringify(response.geometry),
-          type: response.type,
-        });
-      });
+      serve
+        .list()
+        .then((response: LocationUnit) => {
+          setLocationUnitDetail({
+            name: response.properties.name,
+            parentId: response.properties.parentId,
+            status: response.properties.status,
+            externalId: response.properties.externalId,
+            locationTags: response.locationTags?.map((e) => e.id),
+            geometry: JSON.stringify(response.geometry),
+            type: response.type,
+          });
+        })
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
   }, [accessToken, params.id]);
 
@@ -79,7 +82,7 @@ export const LocationUnitAdd: React.FC = () => {
 
   useEffect(() => {
     if (!Treedata.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_FINDBYPROPERTIES);
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
       serve
         .list({
           // eslint-disable-next-line @typescript-eslint/camelcase

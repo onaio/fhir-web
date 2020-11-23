@@ -1,4 +1,4 @@
-import { LocationGroup } from '../location-groups';
+import { LocationGroup } from '../location-tags';
 import { LocationUnit, LocationUnitStatus } from '../location-units';
 /* eslint-disable @typescript-eslint/camelcase */
 

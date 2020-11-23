@@ -3,13 +3,13 @@ import { cloneDeep } from 'lodash';
 import TreeModel from 'tree-model';
 
 /** describes a node's attribute field */
-export interface HierarchySingleNodeAttributes {
+export interface HierarchyNodeAttributes {
   geographicLevel: number;
   structureCount?: number;
 }
 
 /** Generic type to create types for a single node where children prop is generic */
-export interface HierarchySingleNode<TChild> {
+export interface HierarchyNode<TChild> {
   id: string;
   label: string;
   title: string;
@@ -18,7 +18,7 @@ export interface HierarchySingleNode<TChild> {
     locationId: string;
     name: string;
     parentLocation?: { locationId: string; voided: boolean };
-    attributes: HierarchySingleNodeAttributes;
+    attributes: HierarchyNodeAttributes;
     voided: boolean;
   };
   children?: TChild;
@@ -39,49 +39,46 @@ export interface MetaField {
 }
 
 /** single node description after coming in from the api */
-export type RawHierarchySingleNode = HierarchySingleNode<RawHierarchySingleNodeMap>;
+export type RawHierarchyNode = HierarchyNode<RawHierarchyNodeMap>;
 
 /** single node description after our initial custom parsing in preparation of
  * building the tree model
  */
-export type ParsedHierarchySingleNode = HierarchySingleNode<ParsedHierarchySingleNode[]> &
-  MetaField;
+export type ParsedHierarchyNode = HierarchyNode<ParsedHierarchyNode[]> & MetaField;
 
 /** in the opensrp api hierarchy response, the raw hierarchy will be key'd
  * by the node's id
  */
-export interface RawHierarchySingleNodeMap {
-  [id: string]: RawHierarchySingleNode;
+export interface RawHierarchyNodeMap {
+  [id: string]: RawHierarchyNode;
 }
 
 /** describes the full api Response (raw opensrp hierarchy) */
 export interface RawOpenSRPHierarchy {
   locationsHierarchy: {
-    map: RawHierarchySingleNodeMap;
+    map: RawHierarchyNodeMap;
     parentChildren: Dictionary<string[]>;
   };
 }
 
 /** helper type, shortened form */
-export type TreeNode = TreeModel.Node<ParsedHierarchySingleNode>;
+export type TreeNode = TreeModel.Node<ParsedHierarchyNode>;
 
 /** describes callback used by the autoSelect functionality */
 export type AutoSelectCallback = (node: TreeNode) => boolean;
 
 /** mutates the structure of the children property in a single node
  *
- * @param {RawHierarchySingleNode} rawSingleNode - single node i.e. part of rawOpensrp hierarchy
+ * @param {RawHierarchyNode} rawNode - single node i.e. part of rawOpensrp hierarchy
  */
-const parseChildren = (rawSingleNode: RawHierarchySingleNode) => {
+const parseChildren = (rawNode: RawHierarchyNode) => {
   // explicitly dictating the types since we are mutating the object to a diff structure.
-  const typedRawSingleNode = (rawSingleNode as unknown) as ParsedHierarchySingleNode;
+  const typedRawNode = (rawNode as unknown) as ParsedHierarchyNode;
 
-  if (typedRawSingleNode.children) {
-    typedRawSingleNode.children = Object.entries(typedRawSingleNode.children).map(
-      ([_, value]) => value
-    );
-    typedRawSingleNode.children.forEach((child) => {
-      const typedChild = (child as unknown) as RawHierarchySingleNode;
+  if (typedRawNode.children) {
+    typedRawNode.children = Object.entries(typedRawNode.children).map(([_, value]) => value);
+    typedRawNode.children.forEach((child) => {
+      const typedChild = (child as unknown) as RawHierarchyNode;
       typedChild.title = child.label;
       typedChild.key = child.label;
       parseChildren(typedChild);
@@ -94,7 +91,7 @@ const parseChildren = (rawSingleNode: RawHierarchySingleNode) => {
  * @param {RawOpenSRPHierarchy} map - value of map in the rawOpenSRPHierarchy
  * @returns {Dictionary} - returns Parent jurisdiction object
  */
-const parseParent = (map: RawHierarchySingleNodeMap) => {
+const parseParent = (map: RawHierarchyNodeMap) => {
   const parentJurisdiction = Object.entries(map).map(([_, value]) => value)[0];
   parentJurisdiction.key = parentJurisdiction.id;
   parentJurisdiction.title = parentJurisdiction.label;
@@ -105,7 +102,7 @@ const parseParent = (map: RawHierarchySingleNodeMap) => {
  * our tree model from.
  *
  * @param {RawOpenSRPHierarchy} rawOpenSRPHierarchy - the response we get from opensrp
- * @returns {ParsedHierarchySingleNode} - returns Parent node with its children
+ * @returns {ParsedHierarchyNode} - returns Parent node with its children
  */
 const parseHierarchy = (rawOpenSRPHierarchy: RawOpenSRPHierarchy) => {
   // clone the locationTree, we are going to be mutating a copy
@@ -115,7 +112,7 @@ const parseHierarchy = (rawOpenSRPHierarchy: RawOpenSRPHierarchy) => {
 
   const parentNodeWithChildren = parseParent(map);
   parseChildren(parentNodeWithChildren);
-  return (parentNodeWithChildren as unknown) as ParsedHierarchySingleNode;
+  return (parentNodeWithChildren as unknown) as ParsedHierarchyNode;
 };
 
 /** takes the raw opensrp hierarchy response and creates a tree model structure
@@ -126,7 +123,7 @@ const parseHierarchy = (rawOpenSRPHierarchy: RawOpenSRPHierarchy) => {
 export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy) => {
   const tree = new TreeModel();
   const hierarchy = parseHierarchy(apiResponse);
-  const root = tree.parse<ParsedHierarchySingleNode>(hierarchy);
+  const root = tree.parse<ParsedHierarchyNode>(hierarchy);
   return root;
 };
 
