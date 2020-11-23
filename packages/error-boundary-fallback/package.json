@@ -29,5 +29,8 @@
   },
   "devDependencies": {
     "@types/antd": "^1.0.0"
+  },
+  "dependencies": {
+    "@sentry/react": "^5.27.4"
   }
 }

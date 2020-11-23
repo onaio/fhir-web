@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { history } from '@onaio/connected-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import * as Sentry from '@sentry/react';
 import './index.css';
 import App from './App/App';
 import { SENTRY_DSN } from './configs/env';
@@ -14,17 +13,13 @@ import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
 
-if (SENTRY_DSN && SENTRY_DSN !== '') {
-  Sentry.init({ dsn: SENTRY_DSN });
-}
-
 ReactDOM.render(
   <Provider store={store}>
-    <Sentry.ErrorBoundary fallback={ErrorBoundary}>
-      <ConnectedRouter history={history}>
+    <ConnectedRouter history={history}>
+      <ErrorBoundary dsn={SENTRY_DSN} homeUrl="/home">
         <App />
-      </ConnectedRouter>
-    </Sentry.ErrorBoundary>
+      </ErrorBoundary>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('opensrp-root')
 );

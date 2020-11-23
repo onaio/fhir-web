@@ -25,7 +25,6 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
-  URL_FALL_BACK,
   URL_HOME,
 } from '../constants';
 import { providers } from '../configs/settings';
@@ -45,7 +44,6 @@ import {
 } from '@opensrp/user-management';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
-import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 
 const { Content } = Layout;
@@ -158,7 +156,6 @@ const App: React.FC = () => {
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
             />
-            <Route exact path={URL_FALL_BACK} component={ErrorBoundary} />
             <Route
               exact
               path={APP_LOGIN_URL}
