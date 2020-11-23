@@ -19,7 +19,7 @@ describe('fileDownload', () => {
   });
 
   it('should handle download', async () => {
-    await handleDownload(testData, 'test-data.json');
+    handleDownload(testData, 'test-data.json');
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((global as any).URL.createObjectURL).toHaveBeenCalledTimes(1);
