@@ -37,7 +37,7 @@ describe('fileDownload', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((global as any).URL.revokeObjectURL).toHaveBeenCalledTimes(1);
 
-    expect(document.getElementsByTagName('a').length).toHaveLength(1);
+    expect(document.getElementsByTagName('a')).toHaveLength(1);
 
     // find way to test actual download
   });
