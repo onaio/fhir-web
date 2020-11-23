@@ -16,6 +16,7 @@ import { FixManifestDraftFiles, downloadFile } from '../../../ducks/tests/fixtur
 import toJson from 'enzyme-to-json';
 import * as helpers from '../../../helpers/fileDownload';
 import _ from 'lodash';
+import { act } from 'react-dom/test-utils';
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const fetch = require('jest-fetch-mock');
 
@@ -75,7 +76,10 @@ describe('components/ManifestReleases', () => {
       </Provider>
     );
 
-    await flushPromises();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     wrapper.update();
     expect(wrapper.find('DrillDownTable').props()).toMatchSnapshot();
     expect(wrapper.find('SearchBar')).toHaveLength(1);
