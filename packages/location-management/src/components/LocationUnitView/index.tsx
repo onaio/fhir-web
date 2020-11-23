@@ -15,7 +15,7 @@ import locationUnitsReducer, {
 import { getAccessToken } from '@onaio/session-reducer';
 import {
   API_BASE_URL,
-  LOCATION_FINDBYPROPERTIES,
+  LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
@@ -86,7 +86,7 @@ export const LocationUnitView: React.FC = () => {
 
   useEffect(() => {
     if (!Treedata.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_FINDBYPROPERTIES);
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
       serve
         .list({
           is_jurisdiction: true,
