@@ -50,7 +50,12 @@ const TableActions = (props: Props): JSX.Element => {
             )
           }
         >
-          {user_id && (record.id === user_id ? null : <Link to="#">Delete</Link>)}
+          {user_id &&
+            (record.id === user_id ? null : (
+              <Button danger type="link" style={{ color: '#' }}>
+                Delete
+              </Button>
+            ))}
         </Popconfirm>
       </Menu.Item>
       <Menu.Item>
