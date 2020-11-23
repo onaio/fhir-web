@@ -6,29 +6,28 @@ import { store } from '@opensrp/store';
 
 import { LocationUnitModule } from '../LocationUnitModule';
 import { LocationTagModule } from '../LocationTagModule';
+import { URL_LOCATION_TAG, URL_LOCATION_UNIT } from '../constants';
 
-describe('containers/pages/locations/LocationTagAddition', () => {
-  it('renders without crashing', () => {
-    const wrapper = mount(
-      <MemoryRouter initialEntries={['/location/group']}>
+describe('containers/pages/locations/LocationTagModule', () => {
+  it('renders', () => {
+    mount(
+      <MemoryRouter initialEntries={[URL_LOCATION_TAG]}>
         <Provider store={store}>
           <LocationTagModule />
         </Provider>
       </MemoryRouter>
     );
-    expect(wrapper.props()).toMatchSnapshot();
   });
 });
 
-describe('containers/pages/locations/LocationUnitAddition', () => {
-  it('renders without crashing', () => {
-    const wrapper = mount(
-      <MemoryRouter initialEntries={['/location/group']}>
+describe('containers/pages/locations/LocationUnitModule', () => {
+  it('renders', () => {
+    mount(
+      <MemoryRouter initialEntries={[URL_LOCATION_UNIT]}>
         <Provider store={store}>
           <LocationUnitModule />
         </Provider>
       </MemoryRouter>
     );
-    expect(wrapper.props()).toMatchSnapshot();
   });
 });
