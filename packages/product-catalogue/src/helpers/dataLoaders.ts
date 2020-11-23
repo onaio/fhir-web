@@ -32,10 +32,7 @@ export async function loadProductCatalogue(
   const serve = new service(OPENSRP_PRODUCT_CATALOGUE, baseURL);
   return serve
     .list()
-    .then((response: ProductCatalogue[] | null) => {
-      if (response === null || response.length === 0) {
-        return Promise.reject(new Error('No products found in the catalogue'));
-      }
+    .then((response: ProductCatalogue[]) => {
       actionCreator(response);
     })
     .catch((err: Error) => {
@@ -62,7 +59,7 @@ export async function loadSingleProduct(
     .read(id)
     .then((response: ProductCatalogue | {}) => {
       if (Object.keys(response).length === 0) {
-        return Promise.reject(new Error('No products found in the catalogue'));
+        return Promise.reject(new Error('Product not found in the catalogue'));
       }
       actionCreator([response as ProductCatalogue]);
     })
