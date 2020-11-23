@@ -154,9 +154,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     clientService
       .list(params)
       .then((res) => {
-        handleDownload(res.clientForm.json, name).catch((err) => {
-          customAlert && customAlert(String(err), { type: 'error' });
-        });
+        handleDownload(res.clientForm.json, name);
       })
       .catch((error) => {
         customAlert && customAlert(String(error), { type: 'error' });
