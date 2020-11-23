@@ -1,7 +1,8 @@
 /**
  * Download files
- * @param {typeOf Blob} file
- * @param {string} fileName
+ *
+ * @param {Blob} file file to be downloaded
+ * @param {string} fileName file name
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const DownloadFile = (file: any, fileName: string) => {
@@ -16,6 +17,7 @@ export const DownloadFile = (file: any, fileName: string) => {
 
 /**
  * Handles file downloads from server
+ *
  * @param {string} data a blob file
  * @param {string} fileName file name
  */
