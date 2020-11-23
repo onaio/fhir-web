@@ -22,7 +22,7 @@ export const DownloadFile = (file: any, fileName: string) => {
  * @param {string} fileName file name
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const handleDownload = async (data: any, fileName: string) => {
+export const handleDownload = (data: any, fileName: string) => {
   const content = JSON.parse(data);
   const blob = new Blob([content], { type: 'application/json' });
   DownloadFile(blob, fileName);

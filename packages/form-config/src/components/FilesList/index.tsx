@@ -100,8 +100,8 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestFilesTypes[]>(data);
 
-  /** get manifest files */
-  const getManifestForms = async () => {
+  useEffect(() => {
+    /** get manifest files */
     setLoading(true);
     let params = null;
     // if form version is available -  means request is to get manifest files else get json validator files
@@ -109,7 +109,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     params = formVersion ? { identifier: formVersion } : { is_json_validator: true };
     removeFiles();
     const clientService = new OpenSRPService(baseURL, endpoint, getPayload);
-    await clientService
+    clientService
       .list(params)
       .then((res: ManifestFilesTypes[]) => {
         fetchFiles(res);
@@ -118,14 +118,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
         customAlert && customAlert(String(error), { type: 'error' });
       })
       .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    getManifestForms().catch((error) => {
-      customAlert && customAlert(String(error), { type: 'error' });
-    });
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, []);
+  }, [baseURL, customAlert, endpoint, removeFiles, fetchFiles, formVersion, getPayload]);
 
   useEffect(() => {
     setStateData(data);
@@ -136,14 +129,12 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
    * @param {string} name name of file
    * @param {URLParams} params url params
    */
-  const downloadFile = async (name: string, params: URLParams) => {
+  const downloadFile = (name: string, params: URLParams) => {
     const clientService = new OpenSRPService(baseURL, downloadEndPoint, getPayload);
-    await clientService
+    clientService
       .list(params)
       .then((res) => {
-        handleDownload(res.clientForm.json, name).catch((error) => {
-          customAlert && customAlert(String(error), { type: 'error' });
-        });
+        handleDownload(res.clientForm.json, name);
       })
       .catch((error) => {
         customAlert && customAlert(String(error), { type: 'error' });
@@ -167,7 +158,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
    * @param {MouseEvent} e - mouse event
    * @param {ManifestFilesTypes} obj table row data
    */
-  const onDownloadClick = async (e: MouseEvent, obj: ManifestFilesTypes) => {
+  const onDownloadClick = (e: MouseEvent, obj: ManifestFilesTypes) => {
     e.preventDefault();
     const { identifier } = obj;
     const params: URLParams = {
@@ -177,7 +168,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     if (isJsonValidator) {
       params['is_json_validator'] = true;
     }
-    await downloadFile(identifier, params);
+    downloadFile(identifier, params);
   };
 
   /**
