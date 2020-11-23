@@ -8,6 +8,7 @@ export const LOCATION_UNIT_GET = 'location';
 export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
 export const LOCATION_UNIT_FINDBYPROPERTIES = 'location/findByProperties';
 export const LOCATION_UNIT_FIELDS = 'v2/settings/?serverVersion=0';
+
 // Url
 export const URL_LOCATION_UNIT = '/location/unit';
 export const URL_LOCATION_UNIT_ADD = URL_LOCATION_UNIT + '/add';

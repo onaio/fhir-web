@@ -4,6 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ParsedHierarchyNode } from './utils';
 import reducer, { reducerName } from '../../ducks/location-hierarchy';
+import { AntTreeProps } from '../LocationUnitView';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -58,7 +59,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    */
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
-    const expandedKey = filterData
+    const expandedKeys = filterData
       .map((item) => (item.title.indexOf(value) > -1 ? getParentKey(item.key, props.data) : null))
       .filter((item, i, self) => item && self.indexOf(item) === i);
     setExpandedKeys(expandedKeys as string[]);
