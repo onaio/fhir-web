@@ -67,3 +67,8 @@ Below is a list of currently supported environment variables:
 
 - URL to send crash reports
 - **Required**
+11. **REACT_APP_ENABLE_PRODUCT_CATALOGUE**
+
+- Enables the product-catalogue module
+- **Optional**(_string_)
+- default: `"false"`

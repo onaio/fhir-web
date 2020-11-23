@@ -55,3 +55,6 @@ export const EXPRESS_OAUTH_LOGOUT_URL =
 export const SENTRY_DSN = process.env.REACT_APP_SENTRY_DSN || '';
 /** Do you want to disable login protection? */
 export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROTECTION === 'true';
+
+/** Activate the product-catalogue menu */
+export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CATALOGUE === 'true';

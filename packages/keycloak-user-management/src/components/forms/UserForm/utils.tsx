@@ -1,8 +1,8 @@
-import { notification } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { KeycloakUser } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
@@ -41,18 +41,12 @@ export const submitForm = (
       .update(values)
       .then(() => {
         setSubmitting(false);
+        sendSuccessNotification('User edited successfully');
         history.push(URL_ADMIN);
-        notification.success({
-          message: 'User edited successfully',
-          description: '',
-        });
       })
       .catch((_: Error) => {
         setSubmitting(false);
-        notification.error({
-          message: ERROR_OCCURED,
-          description: '',
-        });
+        sendErrorNotification(ERROR_OCCURED);
       });
   } else {
     const serve = new keycloakServiceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
@@ -60,18 +54,13 @@ export const submitForm = (
       .create(values)
       .then(() => {
         setSubmitting(false);
+        sendSuccessNotification('User created successfully');
         history.push(URL_ADMIN);
-        notification.success({
-          message: 'User created successfully',
-          description: '',
-        });
       })
       .catch((_: Error) => {
         setSubmitting(false);
-        notification.error({
-          message: ERROR_OCCURED,
-          description: '',
-        });
+
+        sendErrorNotification(ERROR_OCCURED);
       });
   }
 };
@@ -115,9 +104,6 @@ export const fetchRequiredActions = (
       );
     })
     .catch((_: Error) => {
-      notification.error({
-        message: ERROR_OCCURED,
-        description: '',
-      });
+      sendErrorNotification(ERROR_OCCURED);
     });
 };
