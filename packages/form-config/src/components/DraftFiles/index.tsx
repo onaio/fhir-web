@@ -98,13 +98,13 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
   const [stateData, setStateData] = useState<ManifestFilesTypes[]>(data);
   const [ifDoneHere, setIfDoneHere] = useState(false);
 
-  /** get manifest Draftfiles */
-  const getManifestForms = async () => {
-    setLoading(data.length < 1);
+  useEffect(() => {
+    /** get manifest Draftfiles */
+    setLoading(true);
     /* eslint-disable-next-line @typescript-eslint/camelcase */
     const params = { is_draft: true };
     const clientService = new OpenSRPService(baseURL, endpoint, getPayload);
-    await clientService
+    clientService
       .list(params)
       .then((res: ManifestFilesTypes[]) => {
         fetchDraftFiles(res);
@@ -113,14 +113,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
         customAlert && customAlert(String(error), { type: 'error' });
       })
       .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    getManifestForms().catch((error) => {
-      customAlert && customAlert(String(error), { type: 'error' });
-    });
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, []);
+  }, [baseURL, endpoint, getPayload, customAlert, fetchDraftFiles]);
 
   useEffect(() => {
     setStateData(data);
@@ -131,7 +124,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
    *
    * @param {MouseEvent} e - mouse event
    */
-  const onMakeReleaseClick = async (e: MouseEvent) => {
+  const onMakeReleaseClick = (e: MouseEvent) => {
     e.preventDefault();
     const identifiers = data.map((form) => form.identifier);
     const json = {
@@ -140,7 +133,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
       identifiers,
     };
     const clientService = new OpenSRPService(baseURL, manifestEndPoint, getPayload);
-    await clientService
+    clientService
       .create({ json: JSON.stringify(json) })
       .then(() => {
         clearDraftFiles();
@@ -156,9 +149,9 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
    * @param {string} name name of file
    * @param {URLParams} params url params
    */
-  const downloadFile = async (name: string, params: URLParams) => {
+  const downloadFile = (name: string, params: URLParams) => {
     const clientService = new OpenSRPService(baseURL, downloadEndPoint, getPayload);
-    await clientService
+    clientService
       .list(params)
       .then((res) => {
         handleDownload(res.clientForm.json, name).catch((err) => {
@@ -187,7 +180,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
    * @param {MouseEvent} e - mouse event
    * @param {Dictionary} obj table row data
    */
-  const onDownloadClick = async (e: MouseEvent, obj: ManifestFilesTypes) => {
+  const onDownloadClick = (e: MouseEvent, obj: ManifestFilesTypes) => {
     e.preventDefault();
     const { identifier } = obj;
     const params = {
@@ -195,7 +188,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
       form_version: obj.version, // eslint-disable-line @typescript-eslint/camelcase
     };
 
-    await downloadFile(identifier, params);
+    downloadFile(identifier, params);
   };
 
   const columns: Array<DrillDownColumn<ManifestFilesTypes>> = [
