@@ -1,6 +1,6 @@
-import { Team } from '../teams';
+import { Organization } from '../teams';
 
-export const team1: Team = {
+export const org1: Organization = {
   active: true,
   id: 1,
   identifier: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4',
@@ -16,14 +16,14 @@ export const team1: Team = {
   },
 };
 
-export const team2: Team = {
+export const org2: Organization = {
   active: true,
   id: 3,
   identifier: '4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4',
   name: 'Demo Team',
 };
 
-export const team3: Team = {
+export const org3: Organization = {
   active: true,
   id: 2,
   identifier: 'd23f7350-d406-11e9-bb65-2a2ae2dbcce4',
@@ -40,4 +40,4 @@ export const team3: Team = {
   },
 };
 
-export const teams: Team[] = [team1, team2];
+export const organizations: Organization[] = [org1, org2];
