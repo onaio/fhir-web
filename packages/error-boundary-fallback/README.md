@@ -16,9 +16,9 @@ import App from '..';
 import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
 
 ReactDOM.render(
-  <Sentry.ErrorBoundary fallback={ErrorBoundary}>
+  <ErrorBoundary dsn={SENTRY_DSN} homeUrl={HOME_URL}>
     <App />
-  </Sentry.ErrorBoundary>,
+  </ErrorBoundary>,
   document.getElementById('root')
 );
 ```

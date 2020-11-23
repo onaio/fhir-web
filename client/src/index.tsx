@@ -9,14 +9,14 @@ import { SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
 import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
-
+import { URL_HOME } from './constants';
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <ErrorBoundary dsn={SENTRY_DSN} homeUrl="/home">
+      <ErrorBoundary dsn={SENTRY_DSN} homeUrl={URL_HOME}>
         <App />
       </ErrorBoundary>
     </ConnectedRouter>
