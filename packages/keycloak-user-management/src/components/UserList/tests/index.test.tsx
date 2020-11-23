@@ -13,6 +13,7 @@ import { act } from 'react-dom/test-utils';
 import * as opensrpStore from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import * as notifications from '@opensrp/notifications';
 import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
@@ -21,10 +22,16 @@ import {
 } from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
+import { ERROR_OCCURED } from '../../../constants';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
   ...jest.requireActual('@opensrp/store'),
+}));
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -33,6 +40,22 @@ describe('components/UserList', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
+
+  beforeAll(() => {
+    opensrpStore.store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'simple-token', state: 'abcde' } }
+      )
+    );
+  });
+
   it('renders users table without crashing', () => {
     shallow(<UserList />);
   });
@@ -68,19 +91,6 @@ describe('components/UserList', () => {
   it('works correctly with store', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
     const getAccessTokenMock = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
-    opensrpStore.store.dispatch(
-      authenticateUser(
-        true,
-        {
-          email: 'bob@example.com',
-          name: 'Bobbie',
-          username: 'RobertBaratheon',
-        },
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'simple-token', state: 'abcde' } }
-      )
-    );
-
     const props = {
       accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
         accessToken: true,
@@ -111,5 +121,43 @@ describe('components/UserList', () => {
     expect(getAccessTokenMock).toHaveBeenCalled();
     expect(wrapper.find('UserList').props()).toMatchSnapshot('user list props');
     wrapper.unmount();
+  });
+
+  it('handles user list fetch failure', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
+    const props = {
+      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
+        accessToken: true,
+      }),
+      extraData: {
+        user_id: fixtures.keycloakUser.id,
+      },
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
+      serviceClass: KeycloakService,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <ConnectedUserList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    // Loader should be displayed
+    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // Loader should be displayed
+    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+    expect(toJson(wrapper.find('Table'))).toBeFalsy();
+    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
   });
 });

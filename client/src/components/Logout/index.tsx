@@ -1,6 +1,5 @@
 import { logout } from '@opensrp/server-logout';
 import React from 'react';
-import { history } from '@onaio/connected-reducer-registry';
 import {
   DOMAIN_NAME,
   KEYCLOAK_LOGOUT_URL,
@@ -12,7 +11,9 @@ import { getFetchOptions } from '@opensrp/keycloak-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { Spin } from 'antd';
-import { sendErrorNotification } from '../../utils/Notification/Notifications';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { useHistory } from 'react-router';
+import { ERROR_OCCURRED } from '../../constants';
 
 /** HOC function that calls function that logs out the user from both opensrp
  * and keycloak.
@@ -26,8 +27,9 @@ export const CustomLogout: React.FC = (): JSX.Element => {
     'GET'
   );
   const redirectUri = BACKEND_ACTIVE ? EXPRESS_OAUTH_LOGOUT_URL : DOMAIN_NAME;
-  logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((error) => {
-    sendErrorNotification(error);
+  const history = useHistory();
+  logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((_: Error) => {
+    sendErrorNotification(ERROR_OCCURRED);
     history.push('/');
   });
   return <Spin size="large" />;

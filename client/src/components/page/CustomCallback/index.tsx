@@ -8,7 +8,7 @@ import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
 import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
 import { Spin } from 'antd';
-import { sendSuccessNotification } from '../../../utils/Notification/Notifications';
+import { sendSuccessNotification } from '@opensrp/notifications';
 /**
  * antd notification popup.
  *
@@ -49,6 +49,7 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
     const searchString = trimStart(props.location.search, '?');
     const searchParams = querystring.parse(searchString);
     const nextPath = searchParams.next as string | undefined;
+
     if (nextPath) {
       pathToRedirectTo = nextPath;
     }
