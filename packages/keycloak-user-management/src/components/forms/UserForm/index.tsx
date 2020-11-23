@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { useHistory } from 'react-router';
 import { Button, Col, Row } from 'antd';
 import { Form, Select, Input } from 'formik-antd';
-import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -99,6 +99,8 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
+
+  const history = useHistory();
 
   return (
     <Row className="layout-content">
