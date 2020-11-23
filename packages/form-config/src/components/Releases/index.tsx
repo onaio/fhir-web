@@ -76,25 +76,20 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestReleasesTypes[]>(data);
 
-  /** get manifest releases */
-  const getManifests = async () => {
-    setLoading(data.length < 1);
-    const clientService = new OpenSRPService(baseURL, endpoint, getPayload);
-    await clientService
-      .list()
-      .then((res: ManifestReleasesTypes[]) => fetchReleases(res))
-      .catch((error) => {
-        customAlert && customAlert(String(error), { type: 'error' });
-      })
-      .finally(() => setLoading(false));
-  };
-
   useEffect(() => {
-    getManifests().catch((error) => {
-      customAlert && customAlert(String(error), { type: 'error' });
-    });
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, []);
+    /** get manifest releases */
+    if (data.length < 1) {
+      setLoading(true);
+      const clientService = new OpenSRPService(baseURL, endpoint, getPayload);
+      clientService
+        .list()
+        .then((res: ManifestReleasesTypes[]) => fetchReleases(res))
+        .catch((error) => {
+          customAlert && customAlert(String(error), { type: 'error' });
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [baseURL, endpoint, getPayload, customAlert, fetchReleases, data.length]);
 
   useEffect(() => {
     setStateData(data);
