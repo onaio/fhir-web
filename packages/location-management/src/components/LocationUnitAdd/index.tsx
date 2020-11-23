@@ -9,6 +9,8 @@ import {
   LOCATION_HIERARCHY,
   LOCATION_TAG_ALL,
   API_BASE_URL,
+  LOCATION_UNIT_EXTRAFIELDS,
+  LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER,
 } from '../../constants';
 import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,12 +35,12 @@ import './LocationUnitAdd.css';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-export interface Settings {
-  key: string;
-  value?: string | number;
-  label?: string;
-  description?: string;
-  type: 'email' | 'number' | 'password' | 'text' | 'time' | 'url';
+export interface ExtraFieldsSettings {
+  key: string; // Used for key value in location properties in payload
+  value?: string | number; // Used for default Value in input
+  label?: string; // Label For input field
+  description?: string; // Placeholder for input
+  type: 'email' | 'number' | 'password' | 'text' | 'time' | 'url'; // type of the input
   uuid: string;
   settingsId: string;
   settingIdentifier: string;
@@ -52,9 +54,9 @@ export interface Settings {
 export const LocationUnitAdd: React.FC = () => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const [locationtag, setLocationtag] = useState<LocationTag[]>([]);
-  const [extrafields, setExtrafields] = useState<Settings[]>([]);
-  const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
+  const [locationtag, setLocationtag] = useState<LocationTag[] | null>(null);
+  const [extrafields, setExtrafields] = useState<ExtraFieldsSettings[] | null>(null);
+  const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | null>(null);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
@@ -86,7 +88,7 @@ export const LocationUnitAdd: React.FC = () => {
   }, [accessToken, params.id]);
 
   useEffect(() => {
-    if (!locationtag.length) {
+    if (!locationtag) {
       const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
       serve
         .list()
@@ -95,7 +97,7 @@ export const LocationUnitAdd: React.FC = () => {
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
-  }, [accessToken, locationtag.length]);
+  }, [accessToken, locationtag]);
 
   useEffect(() => {
     if (!Treedata.length) {
@@ -109,11 +111,11 @@ export const LocationUnitAdd: React.FC = () => {
           // eslint-disable-next-line @typescript-eslint/camelcase
           properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
         })
-        .then((response: any) => {
+        .then((response: LocationUnit[]) => {
           dispatch(fetchLocationUnits(response));
-          const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
+          const rootIds = response.map((rootLocObj) => rootLocObj.id);
           if (rootIds.length) {
-            rootIds.forEach((id: string) => {
+            rootIds.forEach((id) => {
               const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
               serve
                 .read(id)
@@ -131,105 +133,27 @@ export const LocationUnitAdd: React.FC = () => {
   }, [accessToken, Treedata.length, dispatch]);
 
   useEffect(() => {
-    // TODO : Replace with Api Call and constant identifier
-    setExtrafields([
-      {
-        key: 'sample_key',
-        value: 'Sample Key',
-        uuid: '4f1502f7-1a7f-499d-89bc-55e9a9cb3fd5',
-        settingsId: '1',
-        settingIdentifier: 'location_settings',
-        settingMetadataId: '1',
-        v1Settings: false,
-        resolveSettings: false,
-        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
-        serverVersion: 1,
-        type: 'text',
-      },
-      {
-        key: 'area_nick_name',
-        value: 'Area Nick name',
-        label: 'Nick name',
-        uuid: '9905fcdd-f2b7-46db-b999-ea7a60d692d8',
-        settingsId: '1',
-        settingIdentifier: 'location_settings',
-        settingMetadataId: '2',
-        v1Settings: false,
-        resolveSettings: false,
-        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
-        serverVersion: 1,
-        type: 'number',
-      },
-      {
-        key: 'sample_key_two',
-        label: 'Sample Ke',
-        description: 'Two placeholde',
-        uuid: '27cdf577-91ce-43e6-ab04-4fd519c96085',
-        settingsId: '1',
-        settingIdentifier: 'location_settings',
-        settingMetadataId: '3',
-        v1Settings: false,
-        resolveSettings: false,
-        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
-        serverVersion: 1,
-        type: 'email',
-      },
-      {
-        key: 'area_code',
-        label: 'Area code',
-        uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
-        settingsId: '1',
-        settingIdentifier: 'location_settings',
-        settingMetadataId: '4',
-        v1Settings: false,
-        resolveSettings: false,
-        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
-        serverVersion: 1,
-        type: 'text',
-      },
-      {
-        key: 'first',
-        label: 'first',
-        uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
-        settingsId: '1',
-        settingIdentifier: 'location_settings',
-        settingMetadataId: '4',
-        v1Settings: false,
-        resolveSettings: false,
-        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
-        serverVersion: 1,
-        type: 'password',
-      },
-      {
-        key: 'third',
-        label: 'Third',
-        uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
-        settingsId: '1',
-        settingIdentifier: 'location_settings',
-        settingMetadataId: '4',
-        v1Settings: false,
-        resolveSettings: false,
-        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
-        serverVersion: 1,
-        type: 'time',
-      },
-      {
-        key: 'Fourth',
-        label: 'Fourth',
-        uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
-        settingsId: '1',
-        settingIdentifier: 'location_settings',
-        settingMetadataId: '4',
-        v1Settings: false,
-        resolveSettings: false,
-        documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
-        serverVersion: 1,
-        type: 'url',
-      },
-    ]);
-  }, []);
+    if (!extrafields) {
+      const serve = new OpenSRPService(
+        accessToken,
+        API_BASE_URL,
+        LOCATION_UNIT_EXTRAFIELDS + `&identifier=${LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER}`
+      );
+      serve
+        .list()
+        .then((response: ExtraFieldsSettings[]) => {
+          setExtrafields(response !== [] ? response : []);
+        })
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    }
+  }, [accessToken, extrafields]);
 
-  if (!locationtag.length || !Treedata.length || (params.id && !LocationUnitDetail))
+  if (
+    extrafields === null ||
+    locationtag === null ||
+    !Treedata.length ||
+    (params.id && !LocationUnitDetail)
+  )
     return <Ripple />;
 
   return (
@@ -246,7 +170,7 @@ export const LocationUnitAdd: React.FC = () => {
           treedata={Treedata}
           id={params.id}
           locationtag={locationtag}
-          initialValue={LocationUnitDetail}
+          initialValue={LocationUnitDetail ? LocationUnitDetail : undefined}
         />
       </div>
     </section>
