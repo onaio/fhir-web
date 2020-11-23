@@ -6,7 +6,7 @@ import { throwNetworkError, throwHTTPError } from './errors';
 export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 
 /** allowed http methods */
-type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 /** get default HTTP headers for OpenSRP service
  *
@@ -38,11 +38,11 @@ export function getDefaultHeaders(
  * @param {object} data - data to be used for payload
  * @returns {Object} the payload
  */
-export function getFetchOptions<T>(
+export function getFetchOptions(
   _: AbortSignal,
   accessToken: string,
   method: HTTPMethod,
-  data?: T
+  data?: unknown
 ): RequestInit {
   return {
     headers: getDefaultHeaders(accessToken) as HeadersInit,
@@ -157,7 +157,7 @@ export class OpenSRPService {
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
-      ...this.getOptions<T>(this.signal, this.accessToken, method, data),
+      ...this.getOptions(this.signal, this.accessToken, method, data),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
     };
