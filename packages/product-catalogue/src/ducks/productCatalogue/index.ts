@@ -31,9 +31,9 @@ export interface ProductCatalogue {
 export const reducerName = 'product-catalogue';
 
 /** Action types */
-const FETCHED_CATALOGUE_TYPE = `${reducerName}/LOCATION_TAGS_FETCHED`;
-const REMOVE_CATALOGUE_TYPE = `${reducerName}/REMOVE_LOCATION_TAGS`;
-const SET_TOTAL_RECORDS_TYPE = `${reducerName}/SET_TOTAL_LOCATION_TAGS`;
+const FETCHED_CATALOGUE_TYPE = `${reducerName}/LOCATION_GROUPS_FETCHED`;
+const REMOVE_CATALOGUE_TYPE = `${reducerName}/REMOVE_LOCATION_GROUPS`;
+const SET_TOTAL_RECORDS_TYPE = `${reducerName}/SET_TOTAL_LOCATION_GROUPS`;
 
 /** Item Reducer */
 export const ProductCatalogueReducer = reducerFactory<ProductCatalogue>(

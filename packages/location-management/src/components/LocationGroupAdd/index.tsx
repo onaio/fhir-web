@@ -7,7 +7,7 @@ import { useParams } from 'react-router';
 
 reducerRegistry.register(reducerName, reducer);
 
-export const LocationTagAdd: React.FC = () => {
+export const LocationGroupAdd: React.FC = () => {
   const params: { id: string } = useParams();
   const { id } = params;
   return (
@@ -25,4 +25,4 @@ export const LocationTagAdd: React.FC = () => {
   );
 };
 
-export default LocationTagAdd;
+export default LocationGroupAdd;

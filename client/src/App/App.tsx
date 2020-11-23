@@ -30,8 +30,8 @@ import {
   URL_HOME,
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_TAG,
-  URL_LOCATION_TAG_ADD,
-  URL_LOCATION_TAG_EDIT,
+  URL_LOCATION_GROUP_ADD,
+  URL_LOCATION_GROUP_EDIT,
   URL_LOCATION_UNIT_EDIT,
 } from '../constants';
 import { providers } from '../configs/settings';
@@ -55,8 +55,8 @@ import ConnectedSidebar from '../containers/ConnectedSidebar';
 import {
   LocationUnitAdd,
   LocationUnitView,
-  LocationTagAdd,
-  LocationTagView,
+  LocationGroupAdd,
+  LocationGroupView,
 } from '@opensrp/location-management';
 
 const { Content } = Layout;
@@ -195,21 +195,21 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_TAG}
-              component={LocationTagView}
+              component={LocationGroupView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG_ADD}
-              component={LocationTagAdd}
+              path={URL_LOCATION_GROUP_ADD}
+              component={LocationGroupAdd}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG_EDIT + '/:id'}
-              component={LocationTagAdd}
+              path={URL_LOCATION_GROUP_EDIT + '/:id'}
+              component={LocationGroupAdd}
             />
             <Route
               exact

@@ -2,53 +2,53 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { store } from '@opensrp/store';
 import reducer, {
   reducerName,
-  getLocationTagsById,
-  getLocationTagById,
-  getLocationTagsArray,
-  getTotalLocationTags,
-  setTotalLocationtags,
-  removeLocationTags,
-  fetchLocationTags,
-  LocationTag,
-} from '../location-tags';
-import { locationTag1, locationTag2 } from './fixtures';
+  getLocationGroupsById,
+  getLocationGroupById,
+  getLocationGroupsArray,
+  getTotalLocationGroups,
+  setTotalLocationgroups,
+  removeLocationGroups,
+  fetchLocationGroups,
+  LocationGroup,
+} from '../location-groups';
+import { locationGroup1, locationGroup2 } from './fixtures';
 
 reducerRegistry.register(reducerName, reducer);
 
 describe('src/ducks/location-tags', () => {
   beforeEach(() => {
-    store.dispatch(removeLocationTags());
+    store.dispatch(removeLocationGroups());
   });
 
   it('should have initial state', () => {
-    expect(getLocationTagsById(store.getState())).toEqual({});
-    expect(getLocationTagById(store.getState(), 'someId')).toEqual(null);
-    expect(getLocationTagsArray(store.getState())).toEqual([]);
-    expect(getTotalLocationTags(store.getState())).toEqual(0);
+    expect(getLocationGroupsById(store.getState())).toEqual({});
+    expect(getLocationGroupById(store.getState(), 'someId')).toEqual(null);
+    expect(getLocationGroupsArray(store.getState())).toEqual([]);
+    expect(getTotalLocationGroups(store.getState())).toEqual(0);
   });
 
   it('sets total records correctly', () => {
-    store.dispatch(setTotalLocationtags(5));
-    expect(getTotalLocationTags(store.getState())).toEqual(5);
-    store.dispatch(setTotalLocationtags(10));
-    expect(getTotalLocationTags(store.getState())).toEqual(10);
+    store.dispatch(setTotalLocationgroups(5));
+    expect(getTotalLocationGroups(store.getState())).toEqual(5);
+    store.dispatch(setTotalLocationgroups(10));
+    expect(getTotalLocationGroups(store.getState())).toEqual(10);
   });
 
   it('fetches location tags correctly', () => {
-    store.dispatch(fetchLocationTags([locationTag1, locationTag2] as LocationTag[]));
-    expect(getLocationTagsById(store.getState())).toEqual({
-      1: locationTag1,
-      2: locationTag2,
+    store.dispatch(fetchLocationGroups([locationGroup1, locationGroup2] as LocationGroup[]));
+    expect(getLocationGroupsById(store.getState())).toEqual({
+      1: locationGroup1,
+      2: locationGroup2,
     });
-    expect(getLocationTagById(store.getState(), '2')).toEqual(locationTag2);
-    expect(getLocationTagsArray(store.getState())).toEqual([locationTag1, locationTag2]);
+    expect(getLocationGroupById(store.getState(), '2')).toEqual(locationGroup2);
+    expect(getLocationGroupsArray(store.getState())).toEqual([locationGroup1, locationGroup2]);
   });
 
   it('removes location tags correctly', () => {
-    store.dispatch(fetchLocationTags([locationTag1, locationTag2] as LocationTag[]));
-    expect(getLocationTagsArray(store.getState())).toHaveLength(2);
+    store.dispatch(fetchLocationGroups([locationGroup1, locationGroup2] as LocationGroup[]));
+    expect(getLocationGroupsArray(store.getState())).toHaveLength(2);
 
-    store.dispatch(removeLocationTags());
-    expect(getLocationTagsArray(store.getState())).toHaveLength(0);
+    store.dispatch(removeLocationGroups());
+    expect(getLocationGroupsArray(store.getState())).toHaveLength(0);
   });
 });

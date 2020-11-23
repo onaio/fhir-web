@@ -35,8 +35,8 @@ export interface Properties {
   externalId?: string;
 }
 
-/** location unit tag interface */
-export interface LocationUnitTag {
+/** location unit group interface */
+export interface LocationUnitGroup {
   id: number;
   name: string;
 }
@@ -48,7 +48,7 @@ export interface LocationUnit {
   properties: Properties;
   syncStatus: LocationUnitSyncStatus;
   type: string;
-  locationTags?: LocationUnitTag[];
+  locationTags?: LocationUnitGroup[];
   geometry?: Geometry;
   parentId?: string;
 }
@@ -58,7 +58,7 @@ export interface LocationUnitPayloadPOST {
   properties?: Properties;
   syncStatus?: LocationUnitSyncStatus;
   type: string;
-  locationTags?: LocationUnitTag[];
+  locationTags?: LocationUnitGroup[];
   geometry?: Geometry;
   textEntry?: string[];
   // we will remove this id as it should be auto generated on server

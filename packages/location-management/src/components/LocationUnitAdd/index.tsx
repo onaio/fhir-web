@@ -7,7 +7,7 @@ import { OpenSRPService } from '@opensrp/server-service';
 import {
   LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
-  LOCATION_TAG_ALL,
+  LOCATION_GROUP_ALL,
   API_BASE_URL,
 } from '../../constants';
 import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 
 import { notification } from 'antd';
-import { LocationTag } from '../../ducks/location-tags';
+import { LocationGroup } from '../../ducks/location-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
   getAllHierarchiesArray,
@@ -36,7 +36,7 @@ reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer)
 export const LocationUnitAdd: React.FC = () => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const [locationtag, setLocationtag] = useState<LocationTag[]>([]);
+  const [locationgroup, setLocationgroup] = useState<LocationGroup[]>([]);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
@@ -69,16 +69,16 @@ export const LocationUnitAdd: React.FC = () => {
   }, [accessToken, params.id]);
 
   useEffect(() => {
-    if (!locationtag.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+    if (!locationgroup.length) {
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_GROUP_ALL);
       serve
         .list()
-        .then((response: LocationTag[]) => {
-          setLocationtag(response);
+        .then((response: LocationGroup[]) => {
+          setLocationgroup(response);
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
-  }, [accessToken, locationtag.length]);
+  }, [accessToken, locationgroup.length]);
 
   useEffect(() => {
     if (!Treedata.length) {
@@ -113,7 +113,7 @@ export const LocationUnitAdd: React.FC = () => {
     }
   }, [accessToken, Treedata.length, dispatch]);
 
-  if (!locationtag.length || !Treedata.length || (params.id && !LocationUnitDetail))
+  if (!locationgroup.length || !Treedata.length || (params.id && !LocationUnitDetail))
     return <Ripple />;
 
   return (
@@ -128,7 +128,7 @@ export const LocationUnitAdd: React.FC = () => {
         <Form
           treedata={Treedata}
           id={params.id}
-          locationtag={locationtag}
+          locationgroup={locationgroup}
           initialValue={LocationUnitDetail}
         />
       </div>

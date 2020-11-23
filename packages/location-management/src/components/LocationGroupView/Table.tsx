@@ -1,21 +1,21 @@
 import React from 'react';
 import { Table as AntTable, Menu, Dropdown, Button, Divider, Popconfirm, notification } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
-import { LocationTag } from '../../ducks/location-tags';
+import { LocationGroup } from '../../ducks/location-groups';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import { API_BASE_URL, LOCATION_TAG_DELETE, URL_LOCATION_TAG_EDIT } from '../../constants';
+import { API_BASE_URL, LOCATION_GROUP_DELETE, URL_LOCATION_GROUP_EDIT } from '../../constants';
 import { Link } from 'react-router-dom';
-import { LocationTagDetailProps } from '../LocationTagDetail';
+import { LocationGroupDetailProps } from '../LocationGroupDetail';
 
-export interface TableData extends LocationTag {
+export interface TableData extends LocationGroup {
   key: string;
 }
 
 export interface Props {
   data: TableData[];
-  onViewDetails?: (locationUnit: LocationTagDetailProps) => void;
+  onViewDetails?: (locationUnit: LocationGroupDetailProps) => void;
 }
 
 /** function to delete the record
@@ -23,11 +23,11 @@ export interface Props {
  * @param {object} record - The record to delete
  * @param {string} accessToken - Access token to be used for requests
  */
-export const onDelete = (record: LocationTag, accessToken: string) => {
+export const onDelete = (record: LocationGroup, accessToken: string) => {
   const clientService = new OpenSRPService(
     accessToken,
     API_BASE_URL,
-    LOCATION_TAG_DELETE + record.id.toString()
+    LOCATION_GROUP_DELETE + record.id.toString()
   );
   clientService
     .delete()
@@ -54,7 +54,7 @@ const Table: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_LOCATION_TAG_EDIT + '/' + record.id.toString()}>
+          <Link to={URL_LOCATION_GROUP_EDIT + '/' + record.id.toString()}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>

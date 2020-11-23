@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/locations/LocationTagAddition renders without crashing 1`] = `
+exports[`containers/pages/locations/LocationGroupAddition renders without crashing 1`] = `
 Object {
   "children": <Provider
     store={
@@ -13,7 +13,7 @@ Object {
       }
     }
   >
-    <LocationTagModule />
+    <LocationGroupModule />
   </Provider>,
   "initialEntries": Array [
     "/location/group",

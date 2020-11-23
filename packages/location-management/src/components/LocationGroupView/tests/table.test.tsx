@@ -11,11 +11,11 @@ import Table, { onDelete, TableData } from '../Table';
 import { Router } from 'react-router';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
-import { sampleLocationTagPayload } from '../../LocationTagAdd/tests/fixtures';
+import { sampleLocationGroupPayload } from '../../LocationGroupAdd/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
-describe('containers/pages/locations/locationTagView', () => {
+describe('containers/pages/locations/locationGroupView', () => {
   const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   const endpoint = 'location-tag/delete';
   const tagId = '1';
@@ -110,9 +110,9 @@ describe('containers/pages/locations/locationTagView', () => {
 
   it('deletes location', async () => {
     const notificationSuccessMock = jest.spyOn(notification, 'success');
-    fetch.mockResponse(JSON.stringify(sampleLocationTagPayload));
+    fetch.mockResponse(JSON.stringify(sampleLocationGroupPayload));
 
-    onDelete(sampleLocationTagPayload, 'sometoken');
+    onDelete(sampleLocationGroupPayload, 'sometoken');
 
     await act(async () => {
       await flushPromises();
@@ -136,7 +136,7 @@ describe('containers/pages/locations/locationTagView', () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject('API is down'));
 
-    onDelete(sampleLocationTagPayload, 'sometoken');
+    onDelete(sampleLocationGroupPayload, 'sometoken');
 
     await act(async () => {
       await flushPromises();

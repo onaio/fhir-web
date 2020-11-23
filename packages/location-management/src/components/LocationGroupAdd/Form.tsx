@@ -7,12 +7,12 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
-import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_TAG_GET } from '../../constants';
+import { API_BASE_URL, LOCATION_GROUP_ALL, LOCATION_GROUP_GET } from '../../constants';
 import {
-  LocationTag,
-  LocationTagPayloadPOST,
-  LocationTagPayloadPUT,
-} from '../../ducks/location-tags';
+  LocationGroup,
+  LocationGroupPayloadPOST,
+  LocationGroupPayloadPUT,
+} from '../../ducks/location-groups';
 import { Ripple } from '@onaio/loaders';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
@@ -54,10 +54,10 @@ export const Form: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (isLoading) {
       if (props.id) {
-        const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_GET + props.id);
+        const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_GROUP_GET + props.id);
         serve
           .list()
-          .then((response: LocationTag) => {
+          .then((response: LocationGroup) => {
             setInitialValue({
               active: response.active,
               description: response.description,
@@ -76,12 +76,12 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Function} setSubmitting method to set submission status
    */
   function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_GROUP_ALL);
 
-    const payload: LocationTagPayloadPOST | LocationTagPayloadPUT = values;
+    const payload: LocationGroupPayloadPOST | LocationGroupPayloadPUT = values;
 
     if (props.id) {
-      (payload as LocationTagPayloadPUT).id = props.id;
+      (payload as LocationGroupPayloadPUT).id = props.id;
       serve
         .update(payload)
         .then(() => {

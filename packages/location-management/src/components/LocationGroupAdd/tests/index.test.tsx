@@ -11,7 +11,7 @@ import LocationUnitGroupAdd from '..';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 
-describe('containers/pages/locations/LocationTagAddition', () => {
+describe('containers/pages/locations/LocationGroupAddition', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>
@@ -62,7 +62,7 @@ describe('containers/pages/locations/LocationTagAddition', () => {
   });
 
   it('tests Update Payload', async () => {
-    fetch.once(JSON.stringify(fixtures.sampleLocationTagPayload));
+    fetch.once(JSON.stringify(fixtures.sampleLocationGroupPayload));
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/testingid`]}>
         <Provider store={store}>

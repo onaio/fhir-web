@@ -5,14 +5,14 @@ import { MemoryRouter } from 'react-router';
 import { store } from '@opensrp/store';
 
 import { LocationUnitModule } from '../LocationUnitModule';
-import { LocationTagModule } from '../LocationTagModule';
+import { LocationGroupModule } from '../LocationGroupModule';
 
-describe('containers/pages/locations/LocationTagAddition', () => {
+describe('containers/pages/locations/LocationGroupAddition', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={['/location/group']}>
         <Provider store={store}>
-          <LocationTagModule />
+          <LocationGroupModule />
         </Provider>
       </MemoryRouter>
     );

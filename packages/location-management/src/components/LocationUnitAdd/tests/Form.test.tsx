@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 
-import { id, LocationTagValue, locationtag, treedata } from './fixtures';
+import { id, LocationGroupValue, locationgroup, treedata } from './fixtures';
 import Form from '../Form';
 import { act } from 'react-dom/test-utils';
 
@@ -37,7 +37,7 @@ describe('containers/pages/locations/LocationUnitAdd', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationtag={locationtag} treedata={treedata} />
+          <Form locationgroup={locationgroup} treedata={treedata} />
         </Router>
       </Provider>
     );
@@ -50,35 +50,35 @@ describe('containers/pages/locations/LocationUnitAdd', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
-            initialValue={LocationTagValue}
+            initialValue={LocationGroupValue}
             id={id}
-            locationtag={locationtag}
+            locationgroup={locationgroup}
             treedata={treedata}
           />
         </Router>
       </Provider>
     );
 
-    expect(wrapper.find('form input[name="name"]').prop('value')).toBe(LocationTagValue.name);
+    expect(wrapper.find('form input[name="name"]').prop('value')).toBe(LocationGroupValue.name);
 
     expect(
-      wrapper.find(`form input[type="radio"][value="${LocationTagValue.status}"]`).prop('checked')
+      wrapper.find(`form input[type="radio"][value="${LocationGroupValue.status}"]`).prop('checked')
     ).toBe(true);
 
     expect(wrapper.find('form TreeSelect[className="ant-tree-select"]').prop('value')).toBe(
-      LocationTagValue.parentId
+      LocationGroupValue.parentId
     );
     expect(
       wrapper.find('form Field[name="locationTags"] Select[prefixCls="ant-select"]').prop('value')
-    ).toBe(LocationTagValue.locationTags);
-    expect(wrapper.find('form input[name="type"]').prop('value')).toBe(LocationTagValue.type);
+    ).toBe(LocationGroupValue.locationTags);
+    expect(wrapper.find('form input[name="type"]').prop('value')).toBe(LocationGroupValue.type);
   });
 
   it('Cancel button', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationtag={locationtag} treedata={treedata} />
+          <Form locationgroup={locationgroup} treedata={treedata} />
         </Router>
       </Provider>
     );
@@ -86,14 +86,14 @@ describe('containers/pages/locations/LocationUnitAdd', () => {
     wrapper.find('button#cancel').simulate('click');
   });
 
-  it('Update LocationTagValue', async () => {
+  it('Update LocationGroupValue', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <Form
-            initialValue={LocationTagValue}
+            initialValue={LocationGroupValue}
             id={id}
-            locationtag={locationtag}
+            locationgroup={locationgroup}
             treedata={treedata}
           />
         </Router>
@@ -107,11 +107,15 @@ describe('containers/pages/locations/LocationUnitAdd', () => {
     });
   });
 
-  it('Create LocationTagValue', async () => {
+  it('Create LocationGroupValue', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form initialValue={LocationTagValue} locationtag={locationtag} treedata={treedata} />
+          <Form
+            initialValue={LocationGroupValue}
+            locationgroup={locationgroup}
+            treedata={treedata}
+          />
         </Router>
       </Provider>
     );
@@ -128,7 +132,7 @@ describe('containers/pages/locations/LocationUnitAdd', () => {
   //   // const wrapper = mount(
   //   //   <Provider store={store}>
   //   //     <Router history={history}>
-  //   //       <Form initialValue={LocationTagValue} locationtag={locationtag} treedata={treedata} />
+  //   //       <Form initialValue={LocationGroupValue} locationgroup={locationgroup} treedata={treedata} />
   //   //     </Router>
   //   //   </Provider>
   //   // );

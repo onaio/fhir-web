@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/locations/locationTagView Test Table Delete 1`] = `null`;
+exports[`containers/pages/locations/locationGroupView Test Table Delete 1`] = `null`;
 
-exports[`containers/pages/locations/locationTagView renders without crashing 1`] = `
+exports[`containers/pages/locations/locationGroupView renders without crashing 1`] = `
 Object {
   "children": <Router
     history={

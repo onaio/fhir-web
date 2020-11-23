@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/locations/LocationTagAddition renders without crashing 1`] = `
+exports[`containers/pages/locations/LocationGroupAddition renders without crashing 1`] = `
 Object {
   "children": Array [
     <HelmetWrapper
@@ -25,7 +25,7 @@ Object {
 }
 `;
 
-exports[`containers/pages/locations/LocationTagAddition renders without crashing 2`] = `
+exports[`containers/pages/locations/LocationGroupAddition renders without crashing 2`] = `
 Object {
   "children": <Context.Provider
     value={

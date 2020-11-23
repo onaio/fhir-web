@@ -1,17 +1,17 @@
 import LocationUnitModule from './LocationUnitModule';
-import LocationTagModule from './LocationTagModule';
+import LocationGroupModule from './LocationGroupModule';
 import LocationUnitAdd from './components/LocationUnitAdd';
-import LocationTagView from './components/LocationTagView';
-import LocationTagAdd from './components/LocationTagAdd';
+import LocationGroupView from './components/LocationGroupView';
+import LocationGroupAdd from './components/LocationGroupAdd';
 import LocationUnitView from './components/LocationUnitView';
 import Tree from './components/LocationTree';
 
 export {
   LocationUnitModule,
-  LocationTagModule,
+  LocationGroupModule,
   LocationUnitView,
   LocationUnitAdd,
-  LocationTagView,
-  LocationTagAdd,
+  LocationGroupView,
+  LocationGroupAdd,
   Tree,
 };

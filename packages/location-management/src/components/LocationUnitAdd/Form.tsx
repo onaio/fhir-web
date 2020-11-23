@@ -12,13 +12,13 @@ import {
   LocationUnitPayloadPUT,
   LocationUnitStatus,
   LocationUnitSyncStatus,
-  LocationUnitTag,
+  LocationUnitGroup,
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
-import { LocationTag } from '../../ducks/location-tags';
+import { LocationGroup } from '../../ducks/location-groups';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../LocationTree/utils';
 
 export interface FormField {
@@ -41,7 +41,7 @@ const defaultFormField: FormField = {
 export interface Props {
   id?: string;
   initialValue?: FormField;
-  locationtag: LocationTag[];
+  locationgroup: LocationGroup[];
   treedata: ParsedHierarchyNode[];
 }
 
@@ -52,8 +52,8 @@ const userSchema = Yup.object().shape({
   status: Yup.string().required('Status is Required'),
   type: Yup.string().typeError('Type must be a String').required('Type is Required'),
   externalId: Yup.string().typeError('External id must be a String'),
-  locationTags: Yup.array().typeError('location Tags must be an Array'),
-  geometry: Yup.string().typeError('location Tags must be a An String'),
+  locationTags: Yup.array().typeError('location Groups must be an Array'),
+  geometry: Yup.string().typeError('location Groups must be a An String'),
 });
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -100,9 +100,11 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Function} setSubmitting method to set submission status
    */
   async function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
-    const locationTagFiler = props.locationtag?.filter((e) => values.locationTags?.includes(e.id));
-    const locationTag = locationTagFiler?.map(
-      (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
+    const locationGroupFiler = props.locationgroup?.filter((e) =>
+      values.locationTags?.includes(e.id)
+    );
+    const locationGroup = locationGroupFiler?.map(
+      (e) => ({ id: e.id, name: e.name } as LocationUnitGroup)
     );
 
     let geographicLevel;
@@ -134,7 +136,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       id: props.id ? props.id : v4(),
       syncStatus: LocationUnitSyncStatus.SYNCED,
       type: values.type,
-      locationTags: locationTag,
+      locationTags: locationGroup,
       geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
     };
 
@@ -237,7 +239,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               optionFilterProp="children"
               filterOption={filterFunction}
             >
-              {props.locationtag.map((e) => (
+              {props.locationgroup.map((e) => (
                 <Select.Option key={e.id} value={e.id}>
                   {e.name}
                 </Select.Option>

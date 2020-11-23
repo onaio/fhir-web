@@ -1,4 +1,4 @@
-export const sampleLocationTagPayload = {
+export const sampleLocationGroupPayload = {
   active: false,
   description: 'Sample description 1',
   id: 1,

@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import LocationTagDetail, { Props } from '..';
+import LocationGroupDetail, { Props } from '..';
 
 describe('containers/pages/Home', () => {
   const props: Props = {
@@ -20,18 +20,18 @@ describe('containers/pages/Home', () => {
   };
 
   it('renders without crashing', () => {
-    const wrapper = mount(<LocationTagDetail {...props} />);
+    const wrapper = mount(<LocationGroupDetail {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('removes it self on close', () => {
-    const wrapper = mount(<LocationTagDetail {...props} onClose={() => wrapper.unmount()} />);
+    const wrapper = mount(<LocationGroupDetail {...props} onClose={() => wrapper.unmount()} />);
     expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
     expect(wrapper).toHaveLength(0);
   });
   it('doesnt close if onClose prop is not set', () => {
-    const wrapper = mount(<LocationTagDetail {...props} />);
+    const wrapper = mount(<LocationGroupDetail {...props} />);
     expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
     expect(wrapper).toHaveLength(1);
