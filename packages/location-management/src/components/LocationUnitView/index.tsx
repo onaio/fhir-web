@@ -38,23 +38,28 @@ import {
   RawOpenSRPHierarchy,
   getFilterParams,
   ParsedHierarchySingleNode,
-  TreeNode,
 } from '../LocationTree/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
+export interface AntTreeProps {
+  title: JSX.Element;
+  key: string;
+  children: AntTreeProps[];
+}
+
 /** Function to Load selected location unit for details
  *
  * @param {TableData} row data selected from the table
  * @param {string} accessToken - access token
- * @param {function} setDetail funtion to set detail to state
+ * @param {Function} setDetail funtion to set detail to state
  */
 export const loadSingleLocation = (
   row: TableData,
   accessToken: string,
   setDetail: (isLoading: string | LocationUnit) => void
-) => {
+): void => {
   setDetail('loading');
   const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
