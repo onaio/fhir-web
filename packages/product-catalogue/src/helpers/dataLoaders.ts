@@ -8,11 +8,11 @@ import { fetchProducts, ProductCatalogue } from '../ducks/productCatalogue';
 import { Dictionary } from '@onaio/utils';
 
 const sessionSelector = makeAPIStateSelector();
-const accessToken = sessionSelector(store.getState(), { accessToken: true });
 
 /** OpenSRP service */
 export class OpenSRPService extends GenericOpenSRPService {
   constructor(endpoint: string, baseURL: string = OPENSRP_API_BASE_URL) {
+    const accessToken = sessionSelector(store.getState(), { accessToken: true });
     super(accessToken, baseURL, endpoint);
   }
 }
@@ -88,6 +88,7 @@ export async function postProduct(baseURL: string, payload: Dictionary) {
     }
     data.append(key, value);
   });
+  const accessToken = sessionSelector(store.getState(), { accessToken: true });
   const bearer = `Bearer ${accessToken}`;
   const promise = fetch(`${baseURL}${OPENSRP_PRODUCT_CATALOGUE}`, {
     body: data,
@@ -111,6 +112,7 @@ export async function putProduct(baseURL: string, payload: Dictionary) {
     }
     data.append(key, value);
   });
+  const accessToken = sessionSelector(store.getState(), { accessToken: true });
   const bearer = `Bearer ${accessToken}`;
   const promise = fetch(`${baseURL}${OPENSRP_PRODUCT_CATALOGUE}`, {
     body: data,
