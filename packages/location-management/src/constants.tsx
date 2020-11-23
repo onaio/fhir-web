@@ -6,7 +6,7 @@ export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/res
 export const LOCATION_UNIT_ALL = 'location/sync';
 export const LOCATION_UNIT_GET = 'location';
 export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
-export const LOCATION_UNIT_FIdNDBYPROPERTIES = 'location/findByProperties';
+export const LOCATION_UNIT_FINDBYPROPERTIES = 'location/findByProperties';
 // Url
 export const URL_LOCATION_UNIT = '/location/unit';
 export const URL_LOCATION_UNIT_ADD = URL_LOCATION_UNIT + '/add';
