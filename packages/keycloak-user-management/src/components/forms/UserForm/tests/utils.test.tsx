@@ -1,12 +1,17 @@
 import { submitForm, fetchRequiredActions } from '../utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import fetch from 'jest-fetch-mock';
-import { notification } from 'antd';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
+import * as notifications from '@opensrp/notifications';
 import { ERROR_OCCURED } from '../../../../constants';
 import * as fixtures from './fixtures';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...jest.requireActual('@opensrp/notifications'),
+}));
 
 describe('forms/utils/fetchRequiredActions', () => {
   afterEach(() => {
@@ -53,7 +58,7 @@ describe('forms/utils/fetchRequiredActions', () => {
 
   it('handles error if fetching fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptionsMock, serviceClass);
 
@@ -63,10 +68,7 @@ describe('forms/utils/fetchRequiredActions', () => {
 
     expect(setUserActionOptionsMock).not.toHaveBeenCalled();
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
-      description: '',
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
   });
 });
 
@@ -89,8 +91,8 @@ describe('forms/utils/submitForm', () => {
   const accessToken = 'token';
   const serviceClass = KeycloakService;
   const setSubmittingMock = jest.fn();
-  const notificationSuccessMock = jest.spyOn(notification, 'success');
-  const notificationErrorMock = jest.spyOn(notification, 'error');
+  const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+  const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
   const historyPushMock = jest.spyOn(history, 'push');
   const userId = 'cab07278-c77b-4bc7-b154-bcbf01b7d35b';
 
@@ -118,10 +120,7 @@ describe('forms/utils/submitForm', () => {
         method: 'POST',
       },
     ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith({
-      message: 'User created successfully',
-      description: '',
-    });
+    expect(notificationSuccessMock).toHaveBeenCalledWith('User created successfully');
     expect(historyPushMock).toHaveBeenCalledWith('/admin');
   });
 
@@ -148,10 +147,7 @@ describe('forms/utils/submitForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith({
-      message: 'User edited successfully',
-      description: '',
-    });
+    expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
     expect(historyPushMock).toHaveBeenCalledWith('/admin');
   });
 
@@ -166,10 +162,7 @@ describe('forms/utils/submitForm', () => {
 
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
-      description: '',
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
     expect(historyPushMock).not.toHaveBeenCalled();
   });
 
@@ -184,10 +177,7 @@ describe('forms/utils/submitForm', () => {
 
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
-      description: '',
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
     expect(historyPushMock).not.toHaveBeenCalled();
   });
 });
