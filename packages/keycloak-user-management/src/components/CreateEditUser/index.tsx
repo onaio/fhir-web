@@ -18,6 +18,7 @@ import {
 } from '../../ducks/user';
 import Ripple from '../Loading';
 import '../../index.css';
+import { OpenSRPService } from '@opensrp/server-service';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -35,7 +36,9 @@ export interface EditUserProps {
   accessToken: string;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
+  opensrpServiceClass: typeof OpenSRPService;
   keycloakBaseURL: string;
+  opensrpBaseURL: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
 }
 
@@ -47,7 +50,9 @@ export const defaultEditUserProps: EditUserProps = {
   accessToken: '',
   keycloakUser: null,
   serviceClass: KeycloakService,
+  opensrpServiceClass: OpenSRPService,
   keycloakBaseURL: '',
+  opensrpBaseURL: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
 
@@ -62,7 +67,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     keycloakUser,
     accessToken,
     keycloakBaseURL,
+    opensrpBaseURL,
     serviceClass,
+    opensrpServiceClass,
     fetchKeycloakUsersCreator,
   } = props;
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
@@ -97,8 +104,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const userFormProps: UserFormProps = {
     accessToken,
     initialValues: initialValues as KeycloakUser,
+    opensrpServiceClass,
     serviceClass,
     keycloakBaseURL,
+    opensrpBaseURL,
   };
 
   return (
