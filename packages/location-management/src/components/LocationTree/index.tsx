@@ -78,7 +78,9 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       const beforeStr = item.title.substr(0, index);
       const afterStr = item.title.substr(index + searchValue.length);
       const title = (
-        <span onClick={() => OnItemClick && OnItemClick(item, [expandedKeys, setExpandedKeys])}>
+        <span
+          onClick={() => (OnItemClick ? OnItemClick(item, [expandedKeys, setExpandedKeys]) : {})}
+        >
           {index > -1 ? (
             <>
               {beforeStr}
