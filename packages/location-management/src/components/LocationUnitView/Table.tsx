@@ -42,8 +42,8 @@ const Table: React.FC<Props> = (props: Props) => {
       title: 'Actions',
       dataIndex: 'operation',
       width: '10%',
-      // eslint-disable-next-line react/display-name
-      render: (_: any, record: TableData) => (
+      // eslint-disable-next-line react/display-name @typescript-eslint/no-explicit-any
+      render: (value: boolean, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
           <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
             <Button type="link" className="m-0 p-1">

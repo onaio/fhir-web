@@ -92,11 +92,11 @@ export const LocationUnitAdd: React.FC = () => {
           // eslint-disable-next-line @typescript-eslint/camelcase
           properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
         })
-        .then((response: any) => {
+        .then((response: LocationUnit[]) => {
           dispatch(fetchLocationUnits(response));
-          const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
+          const rootIds = response.map((rootLocObj) => rootLocObj.id);
           if (rootIds.length) {
-            rootIds.forEach((id: string) => {
+            rootIds.forEach((id) => {
               const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
               serve
                 .read(id)
