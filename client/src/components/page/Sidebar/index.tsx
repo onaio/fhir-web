@@ -10,13 +10,13 @@ import { Link } from 'react-router-dom';
 import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
-  LOCATIONS_UNIT_GROUP_SET,
   PRODUCT_CATALOGUE,
   TEAMS,
   URL_ADMIN,
   URL_HOME,
   URL_LOCATION_TAG,
   URL_LOCATION_UNIT,
+  URL_TEAMS,
   USER_MANAGEMENT,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';

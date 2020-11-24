@@ -2,13 +2,19 @@ import { mount } from 'enzyme';
 import React from 'react';
 import Tree from '../../LocationTree';
 import * as fixtures from './fixtures';
-import { generateJurisdictionTree, ParsedHierarchySingleNode } from '../../LocationTree/utils';
-import toJson from 'enzyme-to-json';
+import {
+  generateJurisdictionTree,
+  ParsedHierarchyNode,
+  RawOpenSRPHierarchy,
+  TreeNode,
+} from '../../LocationTree/utils';
 
-const getHierarchy: any = generateJurisdictionTree(fixtures.sampleHierarchy as any);
+const getHierarchy: TreeNode = generateJurisdictionTree(
+  (fixtures.sampleHierarchy as unknown) as RawOpenSRPHierarchy
+);
 
 describe('containers/pages/locations/locationunit', () => {
-  const tree = [getHierarchy.model] as ParsedHierarchySingleNode[];
+  const tree = [getHierarchy.model] as ParsedHierarchyNode[];
 
   it('renders without crashing', () => {
     const wrapper = mount(<Tree data={tree} />);
