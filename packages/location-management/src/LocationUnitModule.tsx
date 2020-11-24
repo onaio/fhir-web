@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { URL_LOCATION_UNIT_ADD, URL_LOCATION_UNIT_EDIT } from './constants';
 
 import LocationUnitView from './components/LocationUnitView';
-import LocationUnitAdd from './components/LocationUnitAdd';
+import LocationUnitAdd from './components/LocationUnitAddEdit';
 
 /**
  * Location Unit Module

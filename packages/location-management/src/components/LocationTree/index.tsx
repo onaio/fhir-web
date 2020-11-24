@@ -82,7 +82,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           {index > -1 ? (
             <>
               {beforeStr}
-              <span className="site-tree-search-value">{searchValue}</span>
+              <span className="searchValue">{searchValue}</span>
               {afterStr}
             </>
           ) : (

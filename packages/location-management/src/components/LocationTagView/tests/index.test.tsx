@@ -8,7 +8,7 @@ import LocationTagView from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { sampleLocationTagPayload } from '../../LocationTagAdd/tests/fixtures';
+import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixtures';
 import { notification } from 'antd';
 
 describe('containers/pages/locations/LocationTagView', () => {

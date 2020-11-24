@@ -7,39 +7,38 @@ import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 
-import LocationUnitGroupAdd from '..';
+import Form from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 
-describe('containers/pages/locations/LocationTagAddition', () => {
+describe('containers/pages/locations/Form', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupAdd />
+          <Form />
         </Router>
       </Provider>
     );
-    expect(wrapper.find('section').props()).toMatchSnapshot();
-    expect(wrapper.find('form').props()).toMatchSnapshot();
+    expect(wrapper.props()).toMatchSnapshot();
   });
 
   it('tests cancel button', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupAdd />
+          <Form />
         </Router>
       </Provider>
     );
-    wrapper.find('form').find('button#cancel').simulate('click');
+    wrapper.find('button#cancel').simulate('click');
   });
 
   it('tests Create New Payload', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupAdd />
+          <Form />
         </Router>
       </Provider>
     );
@@ -51,7 +50,7 @@ describe('containers/pages/locations/LocationTagAddition', () => {
     wrapper
       .find('textarea[name="description"]')
       .simulate('change', { target: { name: 'description', value: 'this is description' } });
-    wrapper.find('form').simulate('submit');
+    wrapper.simulate('submit');
 
     await act(async () => {
       await flushPromises();
@@ -66,7 +65,7 @@ describe('containers/pages/locations/LocationTagAddition', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/testingid`]}>
         <Provider store={store}>
-          <Route path={'/:id'} component={LocationUnitGroupAdd} />
+          <Route path={'/:id'} component={Form} />
         </Provider>
       </MemoryRouter>
     );
@@ -77,14 +76,14 @@ describe('containers/pages/locations/LocationTagAddition', () => {
     });
 
     // with values test
-    // expect(toJson(wrapper.find('Form'))).toEqual('');
+    // expect(toJson(wrapper)).toEqual('');
     wrapper
       .find('input[name="name"]')
       .simulate('change', { target: { name: 'name', value: 'Name213' } });
     wrapper
       .find('textarea[name="description"]')
       .simulate('change', { target: { name: 'description', value: 'this is description' } });
-    wrapper.find('form').simulate('submit');
+    wrapper.simulate('submit');
 
     await act(async () => {
       await flushPromises();

@@ -8,16 +8,16 @@ import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 
 import { id, locationtag, sampleHierarchiesList, sampleLocationUnit } from './fixtures';
-import LocationUnitAdd from '..';
+import LocationUnitAddEdit from '..';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
 
-describe('containers/pages/locations/LocationUnitAdd', () => {
+describe('containers/pages/locations/LocationUnitAddEdit', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitAdd />
+          <LocationUnitAddEdit />
         </Router>
       </Provider>
     );
@@ -33,7 +33,7 @@ describe('containers/pages/locations/LocationUnitAdd', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={LocationUnitAdd} />
+          <Route path={'/:id'} component={LocationUnitAddEdit} />
         </MemoryRouter>
       </Provider>
     );
@@ -54,7 +54,7 @@ describe('containers/pages/locations/LocationUnitAdd', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={LocationUnitAdd} />
+          <Route path={'/:id'} component={LocationUnitAddEdit} />
         </MemoryRouter>
       </Provider>
     );

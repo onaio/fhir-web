@@ -66,9 +66,7 @@ export const loadSingleLocation = (
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   serve
     .read(row.id, { is_jurisdiction: true })
-    .then((res: LocationUnit) => {
-      setDetail(res);
-    })
+    .then((res: LocationUnit) => setDetail(res))
     .catch((e) => notification.error({ message: `${e}`, description: '' }));
 };
 

@@ -11,7 +11,7 @@ import {
   sampleHierarchiesList,
   sampleLocationUnit,
   treedata,
-} from '../../LocationUnitAdd/tests/fixtures';
+} from '../../LocationUnitAddEdit/tests/fixtures';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from './fixtures';
@@ -47,7 +47,11 @@ describe('containers/pages/locations/locationunit', () => {
 
   it('renders fetched data correctly', async () => {
     fetch.once(JSON.stringify(sampleLocationUnit));
-    loadSingleLocation({ id: '1' }, 'sometoken', jest.fn());
+    loadSingleLocation(
+      { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
+      'sometoken',
+      jest.fn()
+    );
     store.dispatch(fetchCurrentChildren(treedata[0].children));
     const wrapper = mount(
       <Provider store={store}>
@@ -86,7 +90,11 @@ describe('containers/pages/locations/locationunit', () => {
     fetch
       .mockReject(() => Promise.reject('API is down'))
       .mockReject(() => Promise.reject('API is down'));
-    loadSingleLocation({ id: '1' }, 'sometoken', jest.fn());
+    loadSingleLocation(
+      { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
+      'sometoken',
+      jest.fn()
+    );
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>

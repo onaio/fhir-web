@@ -2,6 +2,8 @@ import { mount } from 'enzyme';
 import React from 'react';
 import Tree from '../../LocationTree';
 import * as fixtures from './fixtures';
+import { act } from 'react-dom/test-utils';
+import flushPromises from 'flush-promises';
 import {
   generateJurisdictionTree,
   ParsedHierarchyNode,
@@ -23,16 +25,12 @@ describe('containers/pages/locations/locationunit', () => {
 
   it('test tree search functionality', async () => {
     const wrapper = mount(<Tree data={tree} />);
+    await act(async () => {
+      await flushPromises();
+    });
     const search = wrapper.find('input').first();
     search.simulate('change', { target: { value: 'Tunisia' } });
-    expect(wrapper.find('span.site-tree-search-value')).toHaveLength(1);
-  });
-
-  it('test child node search', async () => {
-    const wrapper = mount(<Tree data={tree} />);
-    const search = wrapper.find('input').first();
-    search.simulate('change', { target: { value: 'Sousse' } });
-    expect(wrapper.find('span.site-tree-search-value')).toHaveLength(0);
+    expect(wrapper.find('span.searchValue')).toHaveLength(1);
   });
 
   it('expand tree child using click', () => {

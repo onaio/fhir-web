@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/locations/LocationUnitAdd renders without crashing 1`] = `
+exports[`containers/pages/locations/LocationUnitAddEdit renders without crashing 1`] = `
 Object {
   "children": <Router
     history={
@@ -23,7 +23,7 @@ Object {
       }
     }
   >
-    <LocationUnitAdd />
+    <LocationUnitAddEdit />
   </Router>,
   "store": Object {
     "dispatch": [Function],
@@ -35,7 +35,7 @@ Object {
 }
 `;
 
-exports[`containers/pages/locations/LocationUnitAdd renders without crashing when editting 1`] = `
+exports[`containers/pages/locations/LocationUnitAddEdit renders without crashing when editting 1`] = `
 Object {
   "children": <MemoryRouter
     initialEntries={
