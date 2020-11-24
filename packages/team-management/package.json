@@ -1,15 +1,18 @@
 {
-  "name": "@opensrp/server-service",
-  "version": "0.0.12",
-  "description": "Wrapper around OpenSRP Server REST API",
+  "name": "@opensrp/team-management",
+  "version": "0.0.0",
+  "description": "Team management components for opensrp web",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/OpenSRP/web",
+  "repository": "https://github.com/OpenSRP/web/",
   "scripts": {
-    "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/opensrp-server-service --verbose --collectCoverage=true && cd packages/opensrp-server-service",
-    "test:watch": "cd ../../ && jest test  packages/opensrp-server-service --verbose --watch && cd packages/opensrp-server-service",
+    "test": "cd ../../ && jest test  packages/team-management --verbose --collectCoverage=true && cd packages/team-management",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
@@ -26,15 +29,17 @@
   "bugs": {
     "url": "https://github.com/OpenSRP/web/issues"
   },
-  "author": "Ona Engineering",
+  "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "private": false,
-  "main": "dist/index.js",
-  "types": "dist/types",
-  "files": [
-    "dist"
-  ],
   "dependencies": {
-    "@onaio/utils": "^0.0.1"
+    "@opensrp/reducer-factory": "^0.0.11",
+    "@opensrp/server-service": "^0.0.11"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.7"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
   }
 }

@@ -169,7 +169,7 @@ export class KeycloakAPIService {
         return {};
       }
 
-      const defaultMessage = `KeycloakAPIService create on ${this.endpoint} failed, HTTP status ${response?.status}`;
+      const defaultMessage = `KeycloakAPIService create on ${this.endpoint} failed, HTTP status ${response.status}`;
       await throwHTTPError(response, defaultMessage);
     }
   }
@@ -268,13 +268,11 @@ export class KeycloakAPIService {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const response = await fetch(url, this.getOptions(this.signal, this.accessToken, method));
 
-    if (response) {
-      if (response.ok || response.status === 204 || response.status === 200) {
-        return {};
-      }
-      const defaultMessage = `KeycloakAPIService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
-      await throwHTTPError(response, defaultMessage);
+    if (response.ok || response.status === 204 || response.status === 200) {
+      return {};
     }
+    const defaultMessage = `KeycloakAPIService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
+    await throwHTTPError(response, defaultMessage);
   }
 }
 
