@@ -21,7 +21,7 @@ export interface ProductFormFields {
   appropriateUsage: string;
   accountabilityPeriod?: number;
   availability: string;
-  productPhoto: string | File;
+  photoURL: string | File;
 }
 
 export const defaultInitialValues: ProductFormFields = {
@@ -33,7 +33,7 @@ export const defaultInitialValues: ProductFormFields = {
   appropriateUsage: '',
   accountabilityPeriod: undefined,
   availability: '',
-  productPhoto: '',
+  photoURL: '',
 };
 
 /** props for the product Catalogue form */
@@ -58,7 +58,7 @@ const ProductFormValidationSchema = Yup.object().shape({
   appropriateUsage: Yup.string(),
   accountabilityPeriod: Yup.number().required('Required'),
   availability: Yup.string().required('Required'),
-  productPhoto: Yup.mixed(),
+  photoURL: Yup.mixed(),
 });
 
 /** responsive layout for the form labels and columns */
@@ -86,7 +86,7 @@ const tailLayout = {
 const ProductForm = (props: ProductFormProps) => {
   const { initialValues, redirectAfterAction, baseURL } = props;
   const isEditMode = !!initialValues.uniqueId;
-  const defaultImageUrl = isEditMode ? props.initialValues.productPhoto : '';
+  const defaultImageUrl = (isEditMode ? props.initialValues.photoURL : '') ?? '';
   const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>(defaultImageUrl as string);
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const history = useHistory();
@@ -114,11 +114,11 @@ const ProductForm = (props: ProductFormProps) => {
     if (file.originFileObj) {
       const reader = new FileReader();
 
-      reader.onload = (event) => {
+      reader.addEventListener('load', function (event) {
         if (event?.target?.result) {
           setImageUrl(event.target.result);
         }
-      };
+      });
 
       // convert to base64 string
       reader.readAsDataURL(file.originFileObj);
@@ -130,7 +130,7 @@ const ProductForm = (props: ProductFormProps) => {
    *
    * @param {UploadChangeParam} info - info object containing File, and filelist
    * @param {Function} setFieldValue - the callback that updates formik state
-   * for the productPhoto field
+   * for the photoURL field
    */
   const handleChange: (info: UploadChangeParam, setFieldValue: Function) => void = (
     info,
@@ -138,7 +138,7 @@ const ProductForm = (props: ProductFormProps) => {
   ) => {
     const { file } = info;
     readURL(file);
-    setFieldValue('productPhoto', file.originFileObj);
+    setFieldValue('photoURL', file.originFileObj);
   };
 
   /** if plan is updated or saved redirect to plans page */
@@ -151,25 +151,31 @@ const ProductForm = (props: ProductFormProps) => {
       <Formik
         initialValues={initialValues}
         validationSchema={ProductFormValidationSchema}
-        onSubmit={(values) => {
+        onSubmit={(values, actions) => {
           const payload = { ...values };
           if (isEditMode) {
             putProduct(baseURL, payload)
               .then(() => {
                 sendSuccessNotification('Successfully Updated');
+                // the reason this is not in a finally block, it should be called before setAreWeDoneHere
+                // to avoid updating an unmounted component.
+                actions.setSubmitting(false);
                 setAreWeDoneHere(true);
               })
               .catch((err: Error) => {
                 sendErrorNotification(err.name, err.message);
+                actions.setSubmitting(false);
               });
           } else {
             postProduct(baseURL, payload)
               .then(() => {
                 sendSuccessNotification('Successfully Added');
+                actions.setSubmitting(false);
                 setAreWeDoneHere(true);
               })
               .catch((err: Error) => {
                 sendErrorNotification(err.name, err.message);
+                actions.setSubmitting(false);
               });
           }
         }}
@@ -243,14 +249,14 @@ const ProductForm = (props: ProductFormProps) => {
                   <InputNumber name="accountabilityPeriod" min={0} />
                 </FormItem>
 
-                <FormItem id="productPhoto" name="productPhoto" label="Photo of the product">
+                <FormItem id="photoURL" name="photoURL" label="Photo of the product">
                   <Upload
                     customRequest={async () => {
                       return;
                     }}
                     accept="image/*"
                     multiple={false}
-                    name="productPhoto"
+                    name="photoURL"
                     listType="picture-card"
                     onChange={(info) => handleChange(info, setFieldValue)}
                     showUploadList={false}

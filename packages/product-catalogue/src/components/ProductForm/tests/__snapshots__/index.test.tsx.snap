@@ -138,7 +138,7 @@ exports[`productForm renders correctly: radio 2 1`] = `"no"`;
 
 exports[`productForm validation works: "Product name" 1`] = `undefined`;
 
-exports[`productForm validation works: "productPhoto" 1`] = `undefined`;
+exports[`productForm validation works: "photoURL" 1`] = `undefined`;
 
 exports[`productForm validation works: accountability period 1`] = `undefined`;
 

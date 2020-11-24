@@ -10,12 +10,12 @@ Object {
     "condition": "good condition",
     "isAttractiveItem": true,
     "materialNumber": "MT-123",
+    "photoURL": "",
     "productName": "Scale",
-    "productPhoto": "",
     "serverVersion": 123456,
     "uniqueId": 1,
   },
-  "redirectAfterAction": "/product-catalogue",
+  "redirectAfterAction": "/product-catalogue/list",
 }
 `;
 

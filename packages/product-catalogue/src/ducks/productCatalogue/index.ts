@@ -24,7 +24,7 @@ export interface ProductCatalogue {
   serverVersion: number;
   uniqueId: number;
   availability: string;
-  productPhoto: string;
+  photoURL: string;
 }
 
 /** reducer name for the Item module */

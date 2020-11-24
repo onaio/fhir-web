@@ -1,7 +1,6 @@
 import { product1, products } from '../../ducks/productCatalogue/tests/fixtures';
 import { loadProductCatalogue, loadSingleProduct, postProduct, putProduct } from '../dataLoaders';
 import * as catalogueDux from '../../ducks/productCatalogue';
-import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -184,7 +183,6 @@ describe('dataLoading', () => {
       }
     });
 
-    await flushPromises();
     await new Promise((resolve) => setImmediate(resolve));
   });
 

@@ -92,12 +92,12 @@ export const postPutOptions = (
   payload: Dictionary
 ): RequestInit => {
   const data = new FormData();
-  const productPhotoKeyName = 'file';
+  const photoURLKeyName = 'file';
   const formFieldsFileKeyName = 'productCatalogue';
 
-  const file = payload.productPhoto;
+  const file = payload.photoURL;
   if (file) {
-    data.append(productPhotoKeyName, file, file.name);
+    data.append(photoURLKeyName, file, file.name);
   }
 
   // curate the other values
@@ -105,7 +105,7 @@ export const postPutOptions = (
   if (method === 'POST') {
     delete formFields.uniqueId;
   }
-  delete formFields.productPhoto;
+  delete formFields.photoURL;
 
   // random file name to give to this file.
   const formFieldsFileName = 'product.json';
