@@ -8,6 +8,8 @@ import { UserForm, defaultInitialValues } from '..';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { Router } from 'react-router';
 
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
@@ -37,6 +39,8 @@ describe('forms/UserForm', () => {
     serviceClass: KeycloakService,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     accessToken: 'access token',
+    opensrpServiceClass: OpenSRPService,
+    opensrpBaseURL: OPENSRP_API_BASE_URL,
   };
 
   beforeEach(() => {
@@ -75,8 +79,9 @@ describe('forms/UserForm', () => {
     expect(form.find('FormItem').at(1).props()).toMatchSnapshot('Last Name');
     expect(form.find('FormItem').at(2).props()).toMatchSnapshot('Username');
     expect(form.find('FormItem').at(3).props()).toMatchSnapshot('Email');
-    expect(form.find('FormItem').at(4).props()).toMatchSnapshot('User Actions');
-    expect(form.find('FormItem').at(5).props()).toMatchSnapshot('Submit');
+    expect(form.find('FormItem').at(4).props()).toMatchSnapshot('Mark as Practitioner');
+    expect(form.find('FormItem').at(5).props()).toMatchSnapshot('User Actions');
+    expect(form.find('FormItem').at(6).props()).toMatchSnapshot('Submit');
     wrapper.unmount();
   });
 
@@ -296,7 +301,11 @@ describe('forms/UserForm', () => {
   });
 
   it('cancel button returns user to admin page', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...props} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();

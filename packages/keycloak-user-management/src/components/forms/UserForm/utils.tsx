@@ -1,6 +1,7 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
+import { v4 } from 'uuid';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { KeycloakUser } from '../../../ducks/user';
@@ -10,6 +11,42 @@ import {
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   ERROR_OCCURED,
 } from '../../../constants';
+import { OpenSRPService } from 'opensrp-server-service/dist/types';
+import { Practitioner } from '.';
+
+/**
+ *
+ * @param {string} accessToken - access token
+ * @param {string} baseURL - opensrp API base URL
+ * @param {OpenSRPService} serviceClass - opensrp api service class
+ * @param {Dictionary} values - form values
+ * @param {boolean} isEdit - boolean to show whether edit mode or not
+ */
+export const createOrEditPractitioners = (
+  accessToken: string,
+  baseURL: string,
+  serviceClass: typeof OpenSRPService,
+  values: Partial<KeycloakUser> & Partial<Practitioner>,
+  isEdit: boolean
+) => {
+  const requestType = isEdit ? 'update' : 'create';
+  const practitionerValues = {
+    active: values.active,
+    identifier: v4(),
+    name: `${values.firstName} ${values.lastName}`,
+    userId: values.id,
+    username: values.username,
+  };
+
+  const practitionersService = new serviceClass(accessToken, baseURL, 'practitioner');
+  practitionersService[requestType](practitionerValues)
+    .then(() => {
+      sendSuccessNotification('Practitioner created successfully');
+    })
+    .catch((_: Error) => {
+      sendErrorNotification(ERROR_OCCURED);
+    });
+};
 
 /**
  * Handle form submission
@@ -17,20 +54,28 @@ import {
  * @param {Dictionary} values - form values
  * @param {string} accessToken - keycloak API access token
  * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {string} opensrpBaseURL - opensrp api base url
  * @param {KeycloakService} keycloakServiceClass - keycloak API service class
+ * @param {OpenSRPService} opensrpServiceClass - OpenSRP API service
  * @param {Function} setSubmitting - method to set submission status
  * @param {string} userId - keycloak user id, required when editing a user
  */
 export const submitForm = (
-  values: Partial<KeycloakUser>,
+  values: Partial<KeycloakUser> & Partial<Practitioner>,
   accessToken: string,
   keycloakBaseURL: string,
+  opensrpBaseURL: string,
   keycloakServiceClass: typeof KeycloakService,
+  opensrpServiceClass: typeof OpenSRPService,
   setSubmitting: (isSubmitting: boolean) => void,
   userId?: string
 ): void => {
+  const isEditing = !!userId;
   setSubmitting(true);
-
+  const keycloakUserValues = {
+    ...values,
+  };
+  delete keycloakUserValues.active;
   if (userId) {
     const serve = new keycloakServiceClass(
       accessToken,
@@ -38,8 +83,15 @@ export const submitForm = (
       keycloakBaseURL
     );
     serve
-      .update(values)
+      .update(keycloakUserValues)
       .then(() => {
+        createOrEditPractitioners(
+          accessToken,
+          opensrpBaseURL,
+          opensrpServiceClass,
+          values,
+          isEditing
+        );
         setSubmitting(false);
         sendSuccessNotification('User edited successfully');
         history.push(URL_ADMIN);
@@ -51,15 +103,21 @@ export const submitForm = (
   } else {
     const serve = new keycloakServiceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
     serve
-      .create(values)
+      .create(keycloakUserValues)
       .then(() => {
+        createOrEditPractitioners(
+          accessToken,
+          opensrpBaseURL,
+          opensrpServiceClass,
+          values,
+          isEditing
+        );
         setSubmitting(false);
         sendSuccessNotification('User created successfully');
         history.push(URL_ADMIN);
       })
       .catch((_: Error) => {
         setSubmitting(false);
-
         sendErrorNotification(ERROR_OCCURED);
       });
   }
