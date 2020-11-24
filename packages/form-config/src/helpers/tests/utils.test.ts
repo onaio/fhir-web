@@ -1,7 +1,5 @@
 import { formatDate, downloadManifestFile } from '../utils';
 import { fixManifestFiles, downloadFile } from '../../ducks/tests/fixtures';
-import { act } from 'react-dom/test-utils';
-import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { getFetchOptions } from '@opensrp/server-service';
 
@@ -27,11 +25,15 @@ describe('utils/formatDate', () => {
 });
 
 describe('utils/downloadManifestFile', () => {
-  fetch.once(JSON.stringify(downloadFile));
   const baseURL = 'https://test-example.com/rest';
   const downloadEndPoint = 'form-download';
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('downloads manifest file correctly', async () => {
+    fetch.once(JSON.stringify(downloadFile));
     await downloadManifestFile(
       baseURL,
       downloadEndPoint,
@@ -40,13 +42,34 @@ describe('utils/downloadManifestFile', () => {
       getFetchOptions
     );
 
-    await act(async () => {
-      await flushPromises();
-    });
-
     expect(fetch.mock.calls).toEqual([
       [
         'https://test-example.com/restform-download?form_identifier=test-form-1.json&form_version=1.0.26&is_json_validator=true',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
+  it('it downloads correctly if is not json validator', async () => {
+    fetch.once(JSON.stringify(downloadFile));
+    await downloadManifestFile(
+      baseURL,
+      downloadEndPoint,
+      fixManifestFiles[0],
+      false,
+      getFetchOptions
+    );
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://test-example.com/restform-download?form_identifier=test-form-1.json&form_version=1.0.26',
         {
           headers: {
             accept: 'application/json',
