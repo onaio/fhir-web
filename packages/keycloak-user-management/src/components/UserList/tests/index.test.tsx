@@ -39,6 +39,7 @@ reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 describe('components/UserList', () => {
   beforeEach(() => {
     fetch.resetMocks();
+    opensrpStore.store.dispatch(removeKeycloakUsers());
   });
 
   beforeAll(() => {
@@ -59,35 +60,6 @@ describe('components/UserList', () => {
   it('renders users table without crashing', () => {
     shallow(<UserList />);
   });
-
-  it('renders user list correctly', async () => {
-    fetch.once(JSON.stringify(keycloakUsersArray));
-    const wrapper = mount(
-      <Router history={history}>
-        <UserList />
-      </Router>
-    );
-    // Loader should be displayed
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-    // Loader should be hiddern
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
-
-    const userList = wrapper.find('UserList');
-
-    expect(userList.props()).toMatchSnapshot('user list props');
-
-    const headerRow = userList.find('Row').at(0);
-
-    expect(headerRow.find('Col').at(0).props()).toMatchSnapshot('header actions col props');
-    expect(headerRow.find('Table').at(0).props()).toMatchSnapshot('table props');
-    wrapper.unmount();
-  });
-
   it('works correctly with store', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
     const getAccessTokenMock = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
@@ -123,6 +95,49 @@ describe('components/UserList', () => {
     wrapper.unmount();
   });
 
+  it('renders user list correctly', async () => {
+    fetch.once(JSON.stringify(keycloakUsersArray));
+    const props = {
+      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
+        accessToken: true,
+      }),
+      extraData: {
+        user_id: fixtures.keycloakUser.id,
+      },
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
+      serviceClass: KeycloakService,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <ConnectedUserList {...props} />
+        </Router>
+      </Provider>
+    );
+    // Loader should be displayed
+    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    // Loader should be hiddern
+    expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
+
+    const userList = wrapper.find('UserList');
+
+    expect(userList.props()).toMatchSnapshot('user list props');
+
+    const headerRow = userList.find('Row').at(0);
+
+    expect(headerRow.find('Col').at(0).props()).toMatchSnapshot('header actions col props');
+    expect(headerRow.find('Table').at(0).props()).toMatchSnapshot('table props');
+    wrapper.unmount();
+  });
+
   it('handles user list fetch failure', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
@@ -155,8 +170,12 @@ describe('components/UserList', () => {
       wrapper.update();
     });
 
-    // Loader should be displayed
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+    /**
+     * Loader should not be displayed
+     * since we've set loading to false
+     * on the final block
+     */
+    expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
     expect(toJson(wrapper.find('Table'))).toBeFalsy();
     expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
   });
