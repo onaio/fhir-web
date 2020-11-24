@@ -1,4 +1,5 @@
 import { IncomingHttpHeaders } from 'http';
+import { Dictionary } from '@onaio/utils';
 import queryString from 'querystring';
 
 import { throwNetworkError, throwHTTPError } from './errors';
@@ -38,12 +39,11 @@ export function getDefaultHeaders(
  * @param {object} data - data to be used for payload
  * @returns {Object} the payload
  */
-export function getFetchOptions(
+export function getFetchOptions<T extends object = Dictionary>(
   _: AbortSignal,
   accessToken: string,
   method: HTTPMethod,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: any
+  data?: T
 ): RequestInit {
   return {
     headers: getDefaultHeaders(accessToken) as HeadersInit,
@@ -86,7 +86,7 @@ type paramsType = URLParams | null;
  *
  * **To update an object**: service.update(theObject)
  */
-export class OpenSRPService {
+export class OpenSRPService<PayloadT extends object = Dictionary> {
   public accessToken: string;
   public baseURL: string;
   public endpoint: string;
@@ -151,14 +151,14 @@ export class OpenSRPService {
    * @param {string} method - the HTTP method
    * @returns {object} the object returned by API
    */
-  public async create<T>(
-    data: T,
+  public async create(
+    data: PayloadT,
     params: paramsType = null,
     method: HTTPMethod = 'POST'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
-      ...this.getOptions(this.signal, this.accessToken, method, data),
+      ...this.getOptions<PayloadT>(this.signal, this.accessToken, method, data),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
     };
@@ -212,13 +212,13 @@ export class OpenSRPService {
    * @returns {object} the object returned by API
    */
   public async update<T>(
-    data: T,
+    data: PayloadT,
     params: paramsType = null,
     method: HTTPMethod = 'PUT'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
-      ...this.getOptions(this.signal, this.accessToken, method, data),
+      ...this.getOptions<PayloadT>(this.signal, this.accessToken, method, data),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
     };
@@ -264,7 +264,7 @@ export class OpenSRPService {
    * @returns {object} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async delete<T>(
+  public async delete(
     params: paramsType = null,
     method: HTTPMethod = 'DELETE'
   ): Promise<Record<string, unknown>> {
