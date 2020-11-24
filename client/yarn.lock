@@ -1686,6 +1686,48 @@
     redux "^4.0.5"
     seamless-immutable "^7.1.4"
 
+"@opensrp/notifications@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
+  integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
+
+"@opensrp/notifications@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.2.tgz#c2821b5934b4f0f944ca3ad65a38274ec448cb13"
+  integrity sha512-hQIQCqVMv0c26tY42YlSFbdyIdhcG710Wn5gTRwTvF6wiiWHpDnD+vuwhF+2LGSJu3c0rRRW0VFoJ9jPNBKUZg==
+
+"@opensrp/product-catalogue@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/product-catalogue/-/product-catalogue-0.0.2.tgz#9bec221c711bff3226e4bbebb79b39f3fddc90bc"
+  integrity sha512-FtGs31pRLXKEyV7QlmEz3QzP+3iLutqVMF8eEuDMlX9uPM/Ste6KyzwV6fPriKqb3jFr/0Zby8ZgKUqJiW/B5Q==
+  dependencies:
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@opensrp/notifications" "^0.0.1"
+    "@opensrp/react-utils" "^0.0.1"
+    "@opensrp/reducer-factory" "^0.0.7"
+    "@opensrp/server-service" "^0.0.11"
+    "@opensrp/store" "^0.0.6"
+    formik-antd "2.0.1"
+    yup "^0.29.3"
+
+"@opensrp/react-utils@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.1.tgz#25d0dfab92245c730141529fa389ea2833215ed2"
+  integrity sha512-vZVjYnW1MkU5pMpaIE8F73uuD2uHldS8c20sCRAhyHZcb+InljpZ/CiPD4JViAXx88Szru8BDuw54x//OzBPWg==
+  dependencies:
+    "@opensrp/notifications" "^0.0.2"
+    antd "^4.6.3"
+
+"@opensrp/reducer-factory@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.7.tgz#f4509f6bff3e9481730110d3fea96bf14cf53749"
+  integrity sha512-s4RsHA0r1SrJK4o4WCHCUrWRWA3oe/YnLPFT/p+mThdougFc3P+e42rPQSuLMNJdH7cze8ZlutT3t7R5pvBiIg==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
+    lodash "^4.17.15"
+    redux "^4.0.5"
+    seamless-immutable "^7.1.4"
+
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"
@@ -5418,7 +5460,7 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-formik-antd@^2.0.1:
+formik-antd@2.0.1, formik-antd@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/formik-antd/-/formik-antd-2.0.1.tgz#0f50ee1141c299187132fd7641e3467a2261e58d"
   integrity sha512-KyDRqzPUchYvKLLku5/yphzIDkAFDT8ViKo6+9wXYJf0duwcuCmsNZlgQiEdlCrm1IWN3XMLUCPV/MUm0iLKww==

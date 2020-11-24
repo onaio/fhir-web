@@ -1308,13 +1308,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.7.6":
-  version "7.12.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
-  integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
 "@babel/template@^7.10.4", "@babel/template@^7.3.3", "@babel/template@^7.4.0", "@babel/template@^7.8.6":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.10.4.tgz#3251996c4200ebc71d1a8fc405fba940f36ba278"
@@ -2646,15 +2639,10 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
-"@opensrp/reducer-factory@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.10.tgz#151e3bb55b7833958b20f8c0b3c163b8a7b0c594"
-  integrity sha512-+MmDVLzQNghTz81MNaPg5b90s9H0mZRI/HktLLaBAGqQK5gdmy7unzXKKlthiZv/koSEpHjAqDQcksbxKLGT1A==
-  dependencies:
-    "@onaio/utils" "^0.0.1"
-    lodash "^4.17.15"
-    redux "^4.0.5"
-    seamless-immutable "^7.1.4"
+"@opensrp/notifications@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
+  integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
 
 "@opensrp/reducer-factory@^0.0.7":
   version "0.0.7"
@@ -2682,23 +2670,6 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
-
-"@opensrp/store@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.3.tgz#c97cc57be7d7b3c993d2c4e4e7a7165d52eb2457"
-  integrity sha512-ylgSi4y2kwD0u0V8o8GD3vM/2FDORpiTX42RbXQijoP7Jj94SeXPo73d14eEINOgxiQ09I6NYfxDRIc5mCGlHw==
-  dependencies:
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.0"
-    "@onaio/redux-reducer-registry" "^0.0.9"
-    "@onaio/session-reducer" "^0.0.11"
-    "@onaio/utils" "^0.0.1"
-    connected-react-router "^6.8.0"
-    fast_array_intersect "^1.1.0"
-    lodash "^4.17.20"
-    redux-thunk "^2.3.0"
-    reselect "^4.0.0"
-    seamless-immutable "^7.1.4"
 
 "@opensrp/store@^0.0.6":
   version "0.0.6"
@@ -3177,11 +3148,6 @@
   version "2.3.7"
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-2.3.7.tgz#979434b5900f9d710f5d4e15c466cadb8e9fdc47"
   integrity sha512-rMQbgMGxnLsdn8e9aPVyuN+zMQLrZ2QW8xlv7eWS1mydfGXN+tsTKffcIzd8rGCcLdmi3xvQw2MDaZI1bBNTaw==
-
-"@types/uuid@8.3.0":
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.0.tgz#215c231dff736d5ba92410e6d602050cce7e273f"
-  integrity sha512-eQ9qFW/fhfGJF8WKHGEHZEyVWfZxrT+6CLIJGBcZPfxUh/+BnEj+UCGYMlr9qZuX/2AltsvwrGqp0LhEW8D0zQ==
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -7359,11 +7325,6 @@ find-cache-dir@^3.3.1:
     make-dir "^3.0.2"
     pkg-dir "^4.1.0"
 
-find-insert-index@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/find-insert-index/-/find-insert-index-0.0.1.tgz#16cd34664c2ac233905ab2b39745bcec721362de"
-  integrity sha1-Fs00ZkwqwjOQWrKzl0W87HITYt4=
-
 find-up@4.1.0, find-up@^4.0.0, find-up@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-4.1.0.tgz#97afe7d6cdc0bc5928584b7c8d7b16e8a9aa5d19"
@@ -7488,7 +7449,7 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-formik-antd@^2.0.1:
+formik-antd@2.0.1, formik-antd@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/formik-antd/-/formik-antd-2.0.1.tgz#0f50ee1141c299187132fd7641e3467a2261e58d"
   integrity sha512-KyDRqzPUchYvKLLku5/yphzIDkAFDT8ViKo6+9wXYJf0duwcuCmsNZlgQiEdlCrm1IWN3XMLUCPV/MUm0iLKww==
@@ -8051,13 +8012,6 @@ history@^4.9.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
     value-equal "^1.0.1"
-
-history@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/history/-/history-5.0.0.tgz#0cabbb6c4bbf835addb874f8259f6d25101efd08"
-  integrity sha512-3NyRMKIiFSJmIPdq7FxkNMJkQ7ZEtVblOQ38VtKaA0zZMW1Eo6Q6W8oDKEflr1kNNTItSnk4JMCO1deeSgbLLg==
-  dependencies:
-    "@babel/runtime" "^7.7.6"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -10450,11 +10404,6 @@ merge2@^1.2.3, merge2@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
-
-mergesort@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/mergesort/-/mergesort-0.0.1.tgz#364ecc31b297dc7f44e511d365176f1c39d08fc2"
-  integrity sha1-Nk7MMbKX3H9E5RHTZRdvHDnQj8I=
 
 methods@~1.1.2:
   version "1.1.2"
@@ -15360,14 +15309,6 @@ tr46@^2.0.2:
   dependencies:
     punycode "^2.1.1"
 
-tree-model@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/tree-model/-/tree-model-1.0.7.tgz#45b2307aa2dfc2da8ceb6a631c1e2b15550dce88"
-  integrity sha512-oP4LUbCVtD2gcjcRaeI4L5hY60tHzB+AK/bthIJ2Pq1EUUOio5/xFzPWnGoBZlhtqpqbOkhFDzKIwKLOn0kccQ==
-  dependencies:
-    find-insert-index "0.0.1"
-    mergesort "0.0.1"
-
 trim-newlines@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-1.0.0.tgz#5887966bb582a4503a41eb524f7d35011815a613"
@@ -15509,10 +15450,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@~3.8.3:
-  version "3.8.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
-  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
+typescript@~3.7.2:
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
+  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
 
 uglify-js@^3.1.4:
   version "3.11.2"
@@ -15727,23 +15668,10 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@8.3.1:
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.1.tgz#2ba2e6ca000da60fce5a196954ab241131e05a31"
-  integrity sha512-FOmRr+FmWEIG8uhZv6C2bTgEVXsHk08kE7mPlrBbEe+c3r9pjceVPgupIfNIhc4yx55H69OXANrUaSuu9eInKg==
-
 uuid@^3.0.1, uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
-
-uuidv4@^6.2.5:
-  version "6.2.5"
-  resolved "https://registry.yarnpkg.com/uuidv4/-/uuidv4-6.2.5.tgz#e92f323dad04431e930892bb14863ebfc7a94b0e"
-  integrity sha512-ZUFxKFP9EWmju6a1tdne/pP+R65QGfcZ3LK2ExHHdwKuznX0Sx9kwhFd3Ss543Ft107SCQLyXcvHS+lmFsM9Zw==
-  dependencies:
-    "@types/uuid" "8.3.0"
-    uuid "8.3.1"
 
 v8-compile-cache@^2.0.3:
   version "2.1.1"

@@ -32,6 +32,22 @@ Object {
           icon={<ForwardRef(DashboardOutlined) />}
           title="Admin"
         >
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/teams"
+            >
+              Teams
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/product-catalogue"
+            >
+              Product Catalogue
+            </Link>
+          </MenuItem>
           <SubMenu
             title="Locations"
           >
