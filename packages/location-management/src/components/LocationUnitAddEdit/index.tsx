@@ -29,11 +29,11 @@ import {
   ParsedHierarchyNode,
 } from '../LocationTree/utils';
 
-import './LocationUnitAdd.css';
+import './LocationUnitAddEdit.css';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-export const LocationUnitAdd: React.FC = () => {
+export const LocationUnitAddEdit: React.FC = () => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationtag, setLocationtag] = useState<LocationTag[]>([]);
@@ -119,10 +119,10 @@ export const LocationUnitAdd: React.FC = () => {
   return (
     <section>
       <Helmet>
-        <title>Add Location Unit Group</title>
+        <title>{params.id ? 'Edit' : 'Add'} Location Unit Group</title>
       </Helmet>
 
-      <h5 className="mb-3">Add Location Unit Group</h5>
+      <h5 className="mb-3">{params.id ? 'Edit' : 'Add'} Location Unit Group</h5>
 
       <div className="bg-white p-5">
         <Form
@@ -136,4 +136,4 @@ export const LocationUnitAdd: React.FC = () => {
   );
 };
 
-export default LocationUnitAdd;
+export default LocationUnitAddEdit;

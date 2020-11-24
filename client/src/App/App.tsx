@@ -62,9 +62,9 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import {
-  LocationUnitAdd,
+  LocationUnitAddEdit,
   LocationUnitView,
-  LocationTagAdd,
+  LocationTagAddEdit,
   LocationTagView,
 } from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
@@ -224,14 +224,14 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_UNIT_ADD}
-              component={LocationUnitAdd}
+              component={LocationUnitAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_UNIT_EDIT + '/:id'}
-              component={LocationUnitAdd}
+              component={LocationUnitAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -245,14 +245,14 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_TAG_ADD}
-              component={LocationTagAdd}
+              component={LocationTagAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_TAG_EDIT + '/:id'}
-              component={LocationTagAdd}
+              component={LocationTagAddEdit}
             />
             <Route
               exact

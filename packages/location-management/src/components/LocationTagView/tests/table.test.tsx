@@ -11,7 +11,7 @@ import Table, { onDelete, TableData } from '../Table';
 import { Router } from 'react-router';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
-import { sampleLocationTagPayload } from '../../LocationTagAdd/tests/fixtures';
+import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 

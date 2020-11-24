@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { URL_LOCATION_TAG_ADD, URL_LOCATION_TAG_EDIT } from './constants';
 import LocationTagView from './components/LocationTagView';
-import LocationTagAdd from './components/LocationTagAdd';
+import LocationTagAdd from './components/LocationTagAddEdit';
 
 /**
  * Location Tag Module

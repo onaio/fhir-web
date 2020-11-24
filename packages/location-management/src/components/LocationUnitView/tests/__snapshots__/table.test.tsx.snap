@@ -3,58 +3,36 @@
 exports[`containers/pages/locations/locationunit renders without crashing 1`] = `
 Object {
   "children": <Table
+    accessToken="hunter 2"
     data={
       Array [
         Object {
-          "externalId": "asdkjh1231",
           "geographicLevel": 1,
+          "id": "1",
           "key": "1",
           "name": "Edrward 1",
-          "parentId": "1",
-          "status": "Active",
-          "syncstatus": "Synced",
-          "type": "Feautire",
-          "username": "edward 1",
-          "version": 1,
         },
         Object {
-          "externalId": "asdkjh1232",
           "geographicLevel": 2,
+          "id": "2",
           "key": "2",
           "name": "Edrward 2",
-          "parentId": "2",
-          "status": "Active",
-          "syncstatus": "Synced",
-          "type": "Feautire",
-          "username": "edward 2",
-          "version": 2,
         },
         Object {
-          "externalId": "asdkjh1233",
           "geographicLevel": 3,
+          "id": "3",
           "key": "3",
           "name": "Edrward 3",
-          "parentId": "3",
-          "status": "Active",
-          "syncstatus": "Synced",
-          "type": "Feautire",
-          "username": "edward 3",
-          "version": 3,
         },
         Object {
-          "externalId": "asdkjh1234",
           "geographicLevel": 4,
+          "id": "4",
           "key": "4",
           "name": "Edrward 4",
-          "parentId": "4",
-          "status": "Active",
-          "syncstatus": "Synced",
-          "type": "Feautire",
-          "username": "edward 4",
-          "version": 4,
         },
       ]
     }
+    setDetail={[Function]}
   />,
   "history": Object {
     "action": "POP",

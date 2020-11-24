@@ -32,7 +32,7 @@ import { act } from 'react-dom/test-utils';
 //   };
 // });
 
-describe('containers/pages/locations/LocationUnitAdd', () => {
+describe('containers/pages/locations/LocationUnitAddEdit', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>

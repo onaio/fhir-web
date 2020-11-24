@@ -2,30 +2,23 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { Router } from 'react-router';
 import { history } from '@onaio/connected-reducer-registry';
-import { LocationUnitStatus, LocationUnitSyncStatus } from '../../../ducks/location-units';
 import Table, { TableData } from '../Table';
 
 describe('containers/pages/locations/locationunit', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
     tableData.push({
-      parentId: i.toString(),
+      id: i.toString(),
       key: i.toString(),
       name: `Edrward ${i}`,
       geographicLevel: i,
-      status: LocationUnitStatus.ACTIVE,
-      type: 'Feautire',
-      externalId: `asdkjh123${i}`,
-      username: `edward ${i}`,
-      version: i,
-      syncstatus: LocationUnitSyncStatus.SYNCED,
     });
   }
 
   it('renders without crashing', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} />
+        <Table setDetail={() => {}} accessToken="hunter 2" data={tableData} />
       </Router>
     );
     expect(wrapper.props()).toMatchSnapshot();
@@ -34,7 +27,12 @@ describe('containers/pages/locations/locationunit', () => {
   it('Test Table View Detail', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} onViewDetails={() => wrapper.unmount()} />
+        <Table
+          setDetail={() => {}}
+          accessToken="hunter 2"
+          data={tableData}
+          onViewDetails={() => wrapper.unmount()}
+        />
       </Router>
     );
 
@@ -47,7 +45,7 @@ describe('containers/pages/locations/locationunit', () => {
   it('Test Table Edit', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} />
+        <Table setDetail={() => {}} accessToken="hunter 2" data={tableData} />
       </Router>
     );
     const firstAction = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
@@ -57,7 +55,7 @@ describe('containers/pages/locations/locationunit', () => {
   it('Test Name Sorting functionality', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} />
+        <Table setDetail={() => {}} accessToken="hunter 2" data={tableData} />
       </Router>
     );
 
@@ -74,7 +72,7 @@ describe('containers/pages/locations/locationunit', () => {
   it('Test Level Sorting functionality', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} />
+        <Table setDetail={() => {}} accessToken="hunter 2" data={tableData} />
       </Router>
     );
 
