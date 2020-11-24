@@ -14,7 +14,7 @@ import { Dictionary } from '@onaio/utils';
 const sessionSelector = makeAPIStateSelector();
 
 /** OpenSRP service */
-export class OpenSRPService extends GenericOpenSRPService {
+export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
   constructor(
     endpoint: string,
     baseURL: string = OPENSRP_API_BASE_URL,
@@ -89,8 +89,11 @@ export const postPutOptions = (
   _: AbortSignal,
   accessToken: string,
   method: HTTPMethod,
-  payload: Dictionary
+  payload?: Dictionary
 ): RequestInit => {
+  if (!payload) {
+    return getFetchOptions(_, accessToken, method, payload);
+  }
   const data = new FormData();
   const photoURLKeyName = 'file';
   const formFieldsFileKeyName = 'productCatalogue';

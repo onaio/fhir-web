@@ -1,5 +1,11 @@
 import { product1, products } from '../../ducks/productCatalogue/tests/fixtures';
-import { loadProductCatalogue, loadSingleProduct, postProduct, putProduct } from '../dataLoaders';
+import {
+  loadProductCatalogue,
+  loadSingleProduct,
+  postProduct,
+  postPutOptions,
+  putProduct,
+} from '../dataLoaders';
 import * as catalogueDux from '../../ducks/productCatalogue';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -98,7 +104,7 @@ describe('dataLoading', () => {
   it('postProduct works correctly', async (done) => {
     fetch.once(JSON.stringify({}));
     const sampleFile = new File(['dummy'], 'dummy.txt');
-    const mockPayload = { name: 'Ghost', productPhoto: sampleFile, uniqueId: '1' };
+    const mockPayload = { name: 'Ghost', photoURL: sampleFile, uniqueId: '1' };
     postProduct(mockBaseURL, mockPayload).catch((e) => {
       throw e;
     });
@@ -144,7 +150,7 @@ describe('dataLoading', () => {
     jest.setTimeout(30000);
     fetch.once(JSON.stringify({}));
     const sampleFile = new File(['dummy'], 'dummy.txt');
-    const mockPayload = { name: 'Ghost', productPhoto: sampleFile, uniqueId: '1' };
+    const mockPayload = { name: 'Ghost', photoURL: sampleFile, uniqueId: '1' };
     putProduct(mockBaseURL, mockPayload).catch((e) => {
       throw e;
     });
@@ -190,7 +196,7 @@ describe('dataLoading', () => {
     const errorMessage = 'Posting failed';
     fetch.mockReject(new Error(errorMessage));
     const sampleFile = new File(['dummy'], 'dummy.txt');
-    const mockPayload = { name: 'Ghost', productPhoto: sampleFile, uniqueId: '1' };
+    const mockPayload = { name: 'Ghost', photoURL: sampleFile, uniqueId: '1' };
     postProduct(mockBaseURL, mockPayload).catch((e) => {
       expect(e.message).toEqual(errorMessage);
     });
@@ -201,10 +207,24 @@ describe('dataLoading', () => {
     const errorMessage = 'Posting failed';
     fetch.mockReject(new Error(errorMessage));
     const sampleFile = new File(['dummy'], 'dummy.txt');
-    const mockPayload = { name: 'Ghost', productPhoto: sampleFile };
+    const mockPayload = { name: 'Ghost', photoURL: sampleFile };
     putProduct(mockBaseURL, mockPayload).catch((e) => {
       expect(e.message).toEqual(errorMessage);
     });
     await new Promise((resolve) => setImmediate(resolve));
+  });
+
+  it('custom getFetchOptions works when payload is undefined', () => {
+    const signal = new AbortController().signal;
+    const mockAccessToken = 'So secret';
+    const res = postPutOptions(signal, mockAccessToken, 'POST');
+    expect(res).toEqual({
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer So secret',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    });
   });
 });
