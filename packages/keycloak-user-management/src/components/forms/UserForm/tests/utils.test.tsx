@@ -7,6 +7,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
 import { ERROR_OCCURED } from '../../../../constants';
 import * as fixtures from './fixtures';
+import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -85,9 +86,12 @@ describe('forms/utils/submitForm', () => {
     username: 'janedoe@example.com',
     email: 'janedoe@example.com',
     requiredActions: ['UPDATE_PASSWORD'],
+    identifier: '40522954-a9cb-44d4-9ea9-735674717eb3',
   };
   const keycloakBaseURL =
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const opensrpBaseURL = OPENSRP_API_BASE_URL;
+  const opensrpServiceClass = OpenSRPService;
   const accessToken = 'token';
   const serviceClass = KeycloakService;
   const setSubmittingMock = jest.fn();
@@ -97,7 +101,16 @@ describe('forms/utils/submitForm', () => {
   const userId = 'cab07278-c77b-4bc7-b154-bcbf01b7d35b';
 
   it('submits user creation correctly', async () => {
-    submitForm(values, accessToken, keycloakBaseURL, serviceClass, setSubmittingMock);
+    submitForm(
+      values,
+      accessToken,
+      keycloakBaseURL,
+      opensrpBaseURL,
+      serviceClass,
+      opensrpServiceClass,
+      setSubmittingMock,
+      undefined
+    );
 
     await act(async () => {
       await flushPromises();
@@ -120,12 +133,35 @@ describe('forms/utils/submitForm', () => {
         method: 'POST',
       },
     ]);
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[1][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'POST',
+      },
+    ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User created successfully');
     expect(historyPushMock).toHaveBeenCalledWith('/admin');
   });
 
   it('submits user edit correctly', async () => {
-    submitForm(values, accessToken, keycloakBaseURL, serviceClass, setSubmittingMock, userId);
+    submitForm(
+      values,
+      accessToken,
+      keycloakBaseURL,
+      opensrpBaseURL,
+      serviceClass,
+      opensrpServiceClass,
+      setSubmittingMock,
+      userId
+    );
 
     await act(async () => {
       await flushPromises();
@@ -154,7 +190,16 @@ describe('forms/utils/submitForm', () => {
   it('handles error when user creation fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
 
-    submitForm(values, accessToken, keycloakBaseURL, serviceClass, setSubmittingMock);
+    submitForm(
+      values,
+      accessToken,
+      keycloakBaseURL,
+      opensrpBaseURL,
+      serviceClass,
+      opensrpServiceClass,
+      setSubmittingMock,
+      userId
+    );
 
     await act(async () => {
       await flushPromises();
@@ -169,7 +214,16 @@ describe('forms/utils/submitForm', () => {
   it('handles error when user edit fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
 
-    submitForm(values, accessToken, keycloakBaseURL, serviceClass, setSubmittingMock, userId);
+    submitForm(
+      values,
+      accessToken,
+      keycloakBaseURL,
+      opensrpBaseURL,
+      serviceClass,
+      opensrpServiceClass,
+      setSubmittingMock,
+      userId
+    );
 
     await act(async () => {
       await flushPromises();

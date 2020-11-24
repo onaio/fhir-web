@@ -23,6 +23,7 @@ import {
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
 import { ERROR_OCCURED } from '../../../constants';
+import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -43,6 +44,8 @@ describe('components/CreateEditUser', () => {
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     serviceClass: KeycloakService,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
+    opensrpBaseURL: OPENSRP_API_BASE_URL,
+    opensrpServiceClass: OpenSRPService,
     accessToken: 'access token',
     location: {
       hash: '',
@@ -97,6 +100,8 @@ describe('components/CreateEditUser', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       serviceClass: KeycloakService,
       fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      opensrpServiceClass: OpenSRPService,
       accessToken: 'access token',
       location: {
         hash: '',

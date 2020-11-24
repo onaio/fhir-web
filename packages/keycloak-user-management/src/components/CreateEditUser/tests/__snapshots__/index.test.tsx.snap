@@ -31,6 +31,8 @@ Object {
         }
       }
       keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
+      opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
+      opensrpServiceClass={[Function]}
       serviceClass={[Function]}
     />
   </Col>,
