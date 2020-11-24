@@ -86,7 +86,7 @@ const tailLayout = {
 const ProductForm = (props: ProductFormProps) => {
   const { initialValues, redirectAfterAction, baseURL } = props;
   const isEditMode = !!initialValues.uniqueId;
-  const defaultImageUrl = (isEditMode ? props.initialValues.photoURL : '') ?? '';
+  const defaultImageUrl = isEditMode ? props.initialValues.photoURL : '';
   const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>(defaultImageUrl as string);
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const history = useHistory();
