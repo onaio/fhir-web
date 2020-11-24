@@ -19,9 +19,9 @@ export const LOCATION_GROUP_ALL = 'location-tag';
 export const LOCATION_GROUP_GET = 'location-tag/';
 export const LOCATION_GROUP_DELETE = 'location-tag/delete/';
 // Url
-export const URL_LOCATION_TAG = '/location/group';
-export const URL_LOCATION_GROUP_ADD = URL_LOCATION_TAG + '/add';
-export const URL_LOCATION_GROUP_EDIT = URL_LOCATION_TAG + '/edit';
+export const URL_LOCATION_GROUP = '/location/group';
+export const URL_LOCATION_GROUP_ADD = URL_LOCATION_GROUP + '/add';
+export const URL_LOCATION_GROUP_EDIT = URL_LOCATION_GROUP + '/edit';
 
 //
 // Location HIERARCHY

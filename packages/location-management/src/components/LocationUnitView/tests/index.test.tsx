@@ -15,7 +15,6 @@ import {
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from './fixtures';
-import toJson from 'enzyme-to-json';
 import { fetchCurrentChildren } from '../../../ducks/location-hierarchy';
 
 describe('containers/pages/locations/locationunit', () => {

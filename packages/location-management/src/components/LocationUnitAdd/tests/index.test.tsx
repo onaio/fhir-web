@@ -11,7 +11,6 @@ import { id, locationgroup, sampleHierarchiesList, sampleLocationUnit } from './
 import LocationUnitAdd from '..';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
-import toJson from 'enzyme-to-json';
 
 describe('containers/pages/locations/LocationUnitAdd', () => {
   it('renders without crashing', async () => {

@@ -11,15 +11,21 @@ import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
+import * as notifications from '@opensrp/notifications';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
   fetchKeycloakUsers,
   KeycloakUser,
 } from '../../../ducks/user';
-import { URL_ADMIN } from '../../../constants';
+import { URL_ADMIN, ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
@@ -87,6 +93,8 @@ describe('components/Credentials', () => {
   });
 
   it('adds user credentials correctly', async () => {
+    const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -132,7 +140,7 @@ describe('components/Credentials', () => {
         method: 'PUT',
       },
     ]);
-    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
+    expect(mockNotificationSuccess).toHaveBeenCalledWith(CREDENTIALS_UPDATED_SUCCESSFULLY);
     wrapper.unmount();
   });
 
@@ -206,6 +214,7 @@ describe('components/Credentials', () => {
 
   it('it handles errors correctly if API response is not 200', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(
       <Provider store={store}>
@@ -232,7 +241,9 @@ describe('components/Credentials', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
+
+    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+
     wrapper.unmount();
   });
   it('returns to user list on cancel user credentials', async () => {

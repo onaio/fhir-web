@@ -29,7 +29,7 @@ import {
   URL_LOCATION_UNIT,
   URL_HOME,
   URL_LOCATION_UNIT_ADD,
-  URL_LOCATION_TAG,
+  URL_LOCATION_GROUP,
   URL_LOCATION_GROUP_ADD,
   URL_LOCATION_GROUP_EDIT,
   URL_LOCATION_UNIT_EDIT,
@@ -39,6 +39,15 @@ import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
 import '@opensrp/user-management/dist/index.css';
+import {
+  ConnectedProductCatalogueList,
+  CATALOGUE_LIST_VIEW_URL,
+  PRODUCT_ID_ROUTE_PARAM,
+  CATALOGUE_CREATE_VIEW_URL,
+  CreateProductView,
+  CATALOGUE_EDIT_VIEW_URL,
+  ConnectedEditProductView,
+} from '@opensrp/product-catalogue';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -58,6 +67,8 @@ import {
   LocationGroupAdd,
   LocationGroupView,
 } from '@opensrp/location-management';
+import '@opensrp/product-catalogue/dist/index.css';
+import { productCatalogueProps } from './utils';
 
 const { Content } = Layout;
 
@@ -152,6 +163,38 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={CATALOGUE_LIST_VIEW_URL}
+              {...productCatalogueProps}
+              component={ConnectedProductCatalogueList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
+              {...productCatalogueProps}
+              component={ConnectedProductCatalogueList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={CATALOGUE_CREATE_VIEW_URL}
+              {...productCatalogueProps}
+              component={CreateProductView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
+              {...productCatalogueProps}
+              component={ConnectedEditProductView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedCreateEditUser}
             />
@@ -194,7 +237,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG}
+              path={URL_LOCATION_GROUP}
               component={LocationGroupView}
             />
             <PrivateComponent

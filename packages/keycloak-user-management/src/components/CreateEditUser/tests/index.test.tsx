@@ -11,6 +11,7 @@ import * as fixtures from './fixtures';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import * as notifications from '@opensrp/notifications';
 import fetch from 'jest-fetch-mock';
 import { defaultInitialValues } from '../../forms/UserForm';
 import toJson from 'enzyme-to-json';
@@ -21,10 +22,16 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
+import { ERROR_OCCURED } from '../../../constants';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
   ...jest.requireActual('@opensrp/store'),
+}));
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -175,6 +182,47 @@ describe('components/CreateEditUser', () => {
     ]);
 
     wrapper.unmount();
+  });
+
+  it('handles error if fetch user fails if page is refreshed', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
+
+    opensrpStore.store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
+      )
+    );
+
+    const propsPageRefreshed = {
+      ...props,
+      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
+        accessToken: true,
+      }),
+      keycloakUser: null,
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedCreateEditUser {...propsPageRefreshed} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
   });
 
   it('works correctly with the store', async () => {

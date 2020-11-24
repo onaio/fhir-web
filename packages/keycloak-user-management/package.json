@@ -10,6 +10,7 @@
     "@opensrp/keycloak-service": "^0.0.8",
     "@opensrp/server-service": "^0.0.12",
     "@opensrp/store": "^0.0.7",
+    "@opensrp/notifications": "^0.0.1",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",
