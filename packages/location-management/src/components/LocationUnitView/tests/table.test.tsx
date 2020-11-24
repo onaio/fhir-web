@@ -18,7 +18,7 @@ describe('containers/pages/locations/locationunit', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => {}} accessToken="hunter 2" data={tableData} />
+        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
       </Router>
     );
     expect(wrapper.props()).toMatchSnapshot();
@@ -28,7 +28,7 @@ describe('containers/pages/locations/locationunit', () => {
     const wrapper = mount(
       <Router history={history}>
         <Table
-          setDetail={() => {}}
+          setDetail={() => jest.fn()}
           accessToken="hunter 2"
           data={tableData}
           onViewDetails={() => wrapper.unmount()}
@@ -45,7 +45,7 @@ describe('containers/pages/locations/locationunit', () => {
   it('Test Table Edit', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => {}} accessToken="hunter 2" data={tableData} />
+        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
       </Router>
     );
     const firstAction = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
@@ -55,7 +55,7 @@ describe('containers/pages/locations/locationunit', () => {
   it('Test Name Sorting functionality', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => {}} accessToken="hunter 2" data={tableData} />
+        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
       </Router>
     );
 
@@ -72,7 +72,7 @@ describe('containers/pages/locations/locationunit', () => {
   it('Test Level Sorting functionality', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => {}} accessToken="hunter 2" data={tableData} />
+        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
       </Router>
     );
 
