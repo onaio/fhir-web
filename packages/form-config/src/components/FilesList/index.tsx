@@ -1,12 +1,11 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { OpenSRPService, URLParams } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/server-service';
 import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
 import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { connect } from 'react-redux';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
-import { handleDownload } from '../../helpers/fileDownload';
 import { Link } from 'react-router-dom';
 import filesReducer, {
   fetchManifestFiles,
@@ -29,7 +28,7 @@ import {
   CREATED_AT_LABEL,
 } from '../../constants';
 import { Cell } from 'react-table';
-import { formatDate } from '../../helpers/utils';
+import { formatDate, downloadManifestFile } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
 
 /** Register reducer */
@@ -124,23 +123,6 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     setStateData(data);
   }, [data]);
 
-  /**
-   *
-   * @param {string} name name of file
-   * @param {URLParams} params url params
-   */
-  const downloadFile = (name: string, params: URLParams) => {
-    const clientService = new OpenSRPService(baseURL, downloadEndPoint, getPayload);
-    clientService
-      .list(params)
-      .then((res) => {
-        handleDownload(res.clientForm.json, name);
-      })
-      .catch((error) => {
-        customAlert && customAlert(String(error), { type: 'error' });
-      });
-  };
-
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.toUpperCase();
     const searchResult = data.filter(
@@ -160,15 +142,11 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
    */
   const onDownloadClick = (e: MouseEvent, obj: ManifestFilesTypes) => {
     e.preventDefault();
-    const { identifier } = obj;
-    const params: URLParams = {
-      form_identifier: identifier, // eslint-disable-line @typescript-eslint/camelcase
-      form_version: obj.version, // eslint-disable-line @typescript-eslint/camelcase
-    };
-    if (isJsonValidator) {
-      params['is_json_validator'] = true;
-    }
-    downloadFile(identifier, params);
+    downloadManifestFile(baseURL, downloadEndPoint, obj, isJsonValidator, getPayload).catch(
+      (error) => {
+        customAlert && customAlert(String(error), { type: 'error' });
+      }
+    );
   };
 
   /**
