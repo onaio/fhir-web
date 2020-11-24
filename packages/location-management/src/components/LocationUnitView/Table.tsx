@@ -24,7 +24,7 @@ export interface Props {
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { accessToken, setDetail } = props;
+  const { accessToken, setDetail, onViewDetails } = props;
   const columns = [
     {
       title: 'Name',
@@ -56,9 +56,9 @@ const Table: React.FC<Props> = (props: Props) => {
               <Menu className="menu">
                 <Menu.Item
                   className="viewdetails"
-                  onClick={() =>
-                    props.onViewDetails && props.onViewDetails(record, accessToken, setDetail)
-                  }
+                  onClick={() => {
+                    onViewDetails && onViewDetails(record, accessToken, setDetail);
+                  }}
                 >
                   View Details
                 </Menu.Item>

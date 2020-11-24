@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ParsedHierarchyNode } from './utils';
+import { ParsedHierarchyNode } from '../../ducks/types';
 import reducer, { reducerName } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
 

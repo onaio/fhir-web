@@ -19,7 +19,7 @@ import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../LocationTree/utils';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 export interface FormField {
   name: string;
