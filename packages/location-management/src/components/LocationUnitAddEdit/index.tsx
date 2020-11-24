@@ -22,12 +22,9 @@ import locationHierarchyReducer, {
   fetchAllHierarchies,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import {
-  RawOpenSRPHierarchy,
-  generateJurisdictionTree,
-  getFilterParams,
-  ParsedHierarchyNode,
-} from '../LocationTree/utils';
+import { generateJurisdictionTree, getFilterParams } from '../LocationTree/utils';
+
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 import './LocationUnitAddEdit.css';
 

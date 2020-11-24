@@ -33,13 +33,9 @@ import locationHierarchyReducer, {
   fetchCurrentChildren,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import {
-  generateJurisdictionTree,
-  RawOpenSRPHierarchy,
-  getFilterParams,
-  ParsedHierarchyNode,
-  TreeNode,
-} from '../LocationTree/utils';
+import { generateJurisdictionTree, getFilterParams } from '../LocationTree/utils';
+
+import { ParsedHierarchyNode, TreeNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
