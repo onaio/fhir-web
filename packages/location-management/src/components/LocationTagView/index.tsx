@@ -115,10 +115,12 @@ const LocationTagView: React.FC = () => {
             />
           </div>
         </Col>
-        {detail && (
+        {detail ? (
           <Col className="pl-3" span={5}>
             <LocationTagDetail onClose={() => setDetail(null)} {...detail} />
           </Col>
+        ) : (
+          ''
         )}
       </Row>
     </section>

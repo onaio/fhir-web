@@ -74,7 +74,7 @@ export const Form: React.FC<Props> = (props: Props) => {
   function parseHierarchyNode(hierarchyNode: ParsedHierarchyNode[]): React.ReactNode[] {
     return hierarchyNode.map((node) => (
       <TreeSelect.TreeNode key={node.id} value={node.id} title={node.title}>
-        {node.children && parseHierarchyNode(node.children)}
+        {node.children ? parseHierarchyNode(node.children) : ''}
       </TreeSelect.TreeNode>
     ));
   }
@@ -100,8 +100,10 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Function} setSubmitting method to set submission status
    */
   async function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
-    const locationTagFiler = props.locationtag?.filter((e) => values.locationTags?.includes(e.id));
-    const locationTag = locationTagFiler?.map(
+    const locationTagFiler = props.locationtag.filter((e) =>
+      (values.locationTags as number[]).includes(e.id)
+    );
+    const locationTag = locationTagFiler.map(
       (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
     );
 

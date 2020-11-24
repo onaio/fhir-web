@@ -57,7 +57,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
-                    onViewDetails && onViewDetails(record, accessToken, setDetail);
+                    return onViewDetails ? onViewDetails(record, accessToken, setDetail) : {};
                   }}
                 >
                   View Details

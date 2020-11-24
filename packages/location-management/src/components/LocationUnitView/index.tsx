@@ -111,7 +111,7 @@ export const LocationUnitView: React.FC = () => {
 
   useEffect(() => {
     const data: TableData[] = [];
-    if (currentParentChildren && currentParentChildren.length) {
+    if (currentParentChildren.length) {
       currentParentChildren.forEach((child: ParsedHierarchyNode, i: number) => {
         data.push({
           id: child.id,
@@ -120,7 +120,7 @@ export const LocationUnitView: React.FC = () => {
           geographicLevel: child.node.attributes.geographicLevel,
         });
       });
-    } else if (Treedata && Treedata.length && !currentParentChildren.length) {
+    } else if (Treedata.length && !currentParentChildren.length) {
       Treedata.forEach((location: ParsedHierarchyNode, i: number) => {
         data.push({
           id: location.id,
@@ -189,7 +189,7 @@ export const LocationUnitView: React.FC = () => {
           </div>
         </Col>
 
-        {detail && (
+        {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
               <Ripple />
@@ -197,6 +197,8 @@ export const LocationUnitView: React.FC = () => {
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}
           </Col>
+        ) : (
+          ''
         )}
       </Row>
     </section>

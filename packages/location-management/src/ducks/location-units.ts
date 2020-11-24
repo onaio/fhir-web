@@ -99,6 +99,6 @@ export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerN
 export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
 
 export const LocationUnitsArray = (state: Partial<Store>): LocationUnit[] =>
-  values(getLocationUnitsById(state) || {});
+  values(getLocationUnitsById(state));
 
 export default reducer;
