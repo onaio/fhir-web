@@ -89,7 +89,42 @@ Object {
             },
           ]
         }
-        dataSource={Array []}
+        dataSource={
+          Array [
+            Object {
+              "email": "dubdabasoduba@gmail.com",
+              "firstName": "Benjamin",
+              "id": "97f36061-52fb-4474-88f2-fd286311ff1d",
+              "key": "0",
+              "lastName": "Mwalimu",
+              "username": "mwalimu",
+            },
+            Object {
+              "email": undefined,
+              "firstName": "Ona",
+              "id": "80385001-f385-42ec-8edf-8591dc181a54",
+              "key": "1",
+              "lastName": "kenya",
+              "username": "ona",
+            },
+            Object {
+              "email": "test@onatest.com",
+              "firstName": "Ona",
+              "id": "520b579e-70e9-4ae9-b1f8-0775c605b8d2",
+              "key": "2",
+              "lastName": "Admin",
+              "username": "ona-admin",
+            },
+            Object {
+              "email": undefined,
+              "firstName": "Demo",
+              "id": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+              "key": "3",
+              "lastName": "kenya",
+              "username": "opensrp",
+            },
+          ]
+        }
         onChange={[Function]}
         pagination={
           Object {
@@ -156,7 +191,40 @@ Object {
       "title": "Actions",
     },
   ],
-  "dataSource": Array [],
+  "dataSource": Array [
+    Object {
+      "email": "dubdabasoduba@gmail.com",
+      "firstName": "Benjamin",
+      "id": "97f36061-52fb-4474-88f2-fd286311ff1d",
+      "key": "0",
+      "lastName": "Mwalimu",
+      "username": "mwalimu",
+    },
+    Object {
+      "email": undefined,
+      "firstName": "Ona",
+      "id": "80385001-f385-42ec-8edf-8591dc181a54",
+      "key": "1",
+      "lastName": "kenya",
+      "username": "ona",
+    },
+    Object {
+      "email": "test@onatest.com",
+      "firstName": "Ona",
+      "id": "520b579e-70e9-4ae9-b1f8-0775c605b8d2",
+      "key": "2",
+      "lastName": "Admin",
+      "username": "ona-admin",
+    },
+    Object {
+      "email": undefined,
+      "firstName": "Demo",
+      "id": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+      "key": "3",
+      "lastName": "kenya",
+      "username": "opensrp",
+    },
+  ],
   "onChange": [Function],
   "pagination": Object {
     "defaultPageSize": 5,
@@ -176,11 +244,102 @@ Object {
 
 exports[`components/UserList renders user list correctly: user list props 1`] = `
 Object {
-  "accessToken": "",
-  "extraData": Object {},
+  "accessToken": "simple-token",
+  "extraData": Object {
+    "api_token": "hunter2",
+    "oAuth2Data": Object {
+      "access_token": "simple-token",
+      "state": "abcde",
+    },
+  },
   "fetchKeycloakUsersCreator": [Function],
-  "keycloakBaseURL": "",
-  "keycloakUsers": Array [],
+  "keycloakBaseURL": "https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage",
+  "keycloakUsers": Array [
+    Object {
+      "access": Object {
+        "impersonate": false,
+        "manage": true,
+        "manageGroupMembership": true,
+        "mapRoles": true,
+        "view": true,
+      },
+      "createdTimestamp": 1600843525533,
+      "disableableCredentialTypes": Array [],
+      "email": "dubdabasoduba@gmail.com",
+      "emailVerified": false,
+      "enabled": true,
+      "firstName": "Benjamin",
+      "id": "97f36061-52fb-4474-88f2-fd286311ff1d",
+      "lastName": "Mwalimu",
+      "notBefore": 0,
+      "requiredActions": Array [
+        "UPDATE_PASSWORD",
+      ],
+      "totp": false,
+      "username": "mwalimu",
+    },
+    Object {
+      "access": Object {
+        "impersonate": false,
+        "manage": true,
+        "manageGroupMembership": true,
+        "mapRoles": true,
+        "view": true,
+      },
+      "createdTimestamp": 1600156374050,
+      "disableableCredentialTypes": Array [],
+      "emailVerified": false,
+      "enabled": true,
+      "firstName": "Ona",
+      "id": "80385001-f385-42ec-8edf-8591dc181a54",
+      "lastName": "kenya",
+      "notBefore": 0,
+      "requiredActions": Array [],
+      "totp": false,
+      "username": "ona",
+    },
+    Object {
+      "access": Object {
+        "impersonate": false,
+        "manage": true,
+        "manageGroupMembership": true,
+        "mapRoles": true,
+        "view": true,
+      },
+      "createdTimestamp": 1599565616551,
+      "disableableCredentialTypes": Array [],
+      "email": "test@onatest.com",
+      "emailVerified": false,
+      "enabled": true,
+      "firstName": "Ona",
+      "id": "520b579e-70e9-4ae9-b1f8-0775c605b8d2",
+      "lastName": "Admin",
+      "notBefore": 1600329648,
+      "requiredActions": Array [],
+      "totp": false,
+      "username": "ona-admin",
+    },
+    Object {
+      "access": Object {
+        "impersonate": false,
+        "manage": true,
+        "manageGroupMembership": true,
+        "mapRoles": true,
+        "view": true,
+      },
+      "createdTimestamp": 1600156317992,
+      "disableableCredentialTypes": Array [],
+      "emailVerified": false,
+      "enabled": true,
+      "firstName": "Demo",
+      "id": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+      "lastName": "kenya",
+      "notBefore": 0,
+      "requiredActions": Array [],
+      "totp": false,
+      "username": "opensrp",
+    },
+  ],
   "removeKeycloakUsersCreator": [Function],
   "serviceClass": [Function],
 }
