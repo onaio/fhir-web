@@ -4,9 +4,9 @@ export const OPENSRP_PRODUCT_CATALOGUE = 'product-catalogue';
 export const PRODUCT_ID_ROUTE_PARAM = 'productId';
 
 // router routes
-export const CATALOGUE_LIST_VIEW_URL = '/product-catalogue';
+export const CATALOGUE_LIST_VIEW_URL = '/product-catalogue/list';
 export const CATALOGUE_EDIT_VIEW_URL = '/product-catalogue/edit';
-export const CATALOGUE_CREATE_VIEW_URL = 'product-catalogue/new';
+export const CATALOGUE_CREATE_VIEW_URL = '/product-catalogue/new';
 export const HOME_URL = '/';
 
 // magic strings
