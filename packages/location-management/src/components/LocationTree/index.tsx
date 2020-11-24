@@ -12,7 +12,7 @@ interface TreeProp {
   data: ParsedHierarchyNode[];
   OnItemClick?: (
     item: ParsedHierarchyNode,
-    [expandedKeys, setExpandedKeys]: [any, Function]
+    [expandedKeys, setExpandedKeys]: [React.Key[], (key: React.Key[]) => void]
   ) => void;
 }
 
@@ -72,8 +72,8 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
    */
-  function loop(data: ParsedHierarchyNode[]): any {
-    return data.map((item) => {
+  function loop(data: ParsedHierarchyNode[]): AntTreeProps[] {
+    data.map((item) => {
       const index = item.title.indexOf(searchValue);
       const beforeStr = item.title.substr(0, index);
       const afterStr = item.title.substr(index + searchValue.length);
@@ -90,9 +90,14 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           )}
         </span>
       );
-      if (item.children) return { title, key: item.key, children: loop(item.children) };
-      else return { title, key: item.key };
+      if (item.children) {
+        return { title, key: item.key, children: loop(item.children) } as AntTreeProps;
+      } else {
+        return { title, key: item.key } as AntTreeProps;
+      }
     });
+
+    return (data as unknown) as AntTreeProps[];
   }
 
   const generateFilterData = (data: ParsedHierarchyNode[]) => {

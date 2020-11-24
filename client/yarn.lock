@@ -1676,10 +1676,52 @@
     tree-model "^1.0.7"
     uuidv4 "^6.2.5"
 
+"@opensrp/notifications@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
+  integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
+
+"@opensrp/notifications@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.2.tgz#c2821b5934b4f0f944ca3ad65a38274ec448cb13"
+  integrity sha512-hQIQCqVMv0c26tY42YlSFbdyIdhcG710Wn5gTRwTvF6wiiWHpDnD+vuwhF+2LGSJu3c0rRRW0VFoJ9jPNBKUZg==
+
+"@opensrp/product-catalogue@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/product-catalogue/-/product-catalogue-0.0.2.tgz#9bec221c711bff3226e4bbebb79b39f3fddc90bc"
+  integrity sha512-FtGs31pRLXKEyV7QlmEz3QzP+3iLutqVMF8eEuDMlX9uPM/Ste6KyzwV6fPriKqb3jFr/0Zby8ZgKUqJiW/B5Q==
+  dependencies:
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@opensrp/notifications" "^0.0.1"
+    "@opensrp/react-utils" "^0.0.1"
+    "@opensrp/reducer-factory" "^0.0.7"
+    "@opensrp/server-service" "^0.0.11"
+    "@opensrp/store" "^0.0.6"
+    formik-antd "2.0.1"
+    yup "^0.29.3"
+
+"@opensrp/react-utils@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.1.tgz#25d0dfab92245c730141529fa389ea2833215ed2"
+  integrity sha512-vZVjYnW1MkU5pMpaIE8F73uuD2uHldS8c20sCRAhyHZcb+InljpZ/CiPD4JViAXx88Szru8BDuw54x//OzBPWg==
+  dependencies:
+    "@opensrp/notifications" "^0.0.2"
+    antd "^4.6.3"
+
 "@opensrp/reducer-factory@^0.0.11":
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.11.tgz#1ae3c8f948ca5297d53ec63828f20815ae8484e2"
   integrity sha512-OMKBnUEIyraM9DFrAJ7IpYNp/WlEn5cAWhfITfjGxRcye7jUhYAk4jyZw2IIx/V4MKLWHCdLBX6UJlP7xK/LJA==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
+    lodash "^4.17.15"
+    redux "^4.0.5"
+    seamless-immutable "^7.1.4"
+
+"@opensrp/reducer-factory@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.7.tgz#f4509f6bff3e9481730110d3fea96bf14cf53749"
+  integrity sha512-s4RsHA0r1SrJK4o4WCHCUrWRWA3oe/YnLPFT/p+mThdougFc3P+e42rPQSuLMNJdH7cze8ZlutT3t7R5pvBiIg==
   dependencies:
     "@onaio/utils" "^0.0.1"
     lodash "^4.17.15"
@@ -1693,6 +1735,11 @@
   dependencies:
     "@opensrp/server-service" "^0.0.4"
 
+"@opensrp/server-service@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
+  integrity sha512-WymZntvFba3/0FKM6f2L+YT7BF+t/HFlr6A16UIBFz83+nYTIoI93MS/ocO/7MDTL9F7yzTBpjA0D1CkogFnfg==
+
 "@opensrp/server-service@^0.0.12":
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.12.tgz#3a887269384797c1b217f4e242453c1fae1805d1"
@@ -1702,6 +1749,23 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
+
+"@opensrp/store@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.6.tgz#074d18e98414190a2cd79aa53399dcf7e80b4a1e"
+  integrity sha512-qwfl99FxfRX9Iol0nG4YgCiiD9hdhNu7rqANb+vahAY9hGgFK1L3NnG92Zw8WbEd7JHT50b/1bGYLOAZYjipiA==
+  dependencies:
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.0"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/session-reducer" "^0.0.11"
+    "@onaio/utils" "^0.0.1"
+    connected-react-router "^6.8.0"
+    fast_array_intersect "^1.1.0"
+    lodash "^4.17.20"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
+    seamless-immutable "^7.1.4"
 
 "@opensrp/store@^0.0.7":
   version "0.0.7"
@@ -5418,7 +5482,7 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-formik-antd@^2.0.1:
+formik-antd@2.0.1, formik-antd@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/formik-antd/-/formik-antd-2.0.1.tgz#0f50ee1141c299187132fd7641e3467a2261e58d"
   integrity sha512-KyDRqzPUchYvKLLku5/yphzIDkAFDT8ViKo6+9wXYJf0duwcuCmsNZlgQiEdlCrm1IWN3XMLUCPV/MUm0iLKww==

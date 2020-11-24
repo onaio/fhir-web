@@ -1308,13 +1308,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.7.6":
-  version "7.12.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
-  integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
 "@babel/template@^7.10.4", "@babel/template@^7.3.3", "@babel/template@^7.4.0", "@babel/template@^7.8.6":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.10.4.tgz#3251996c4200ebc71d1a8fc405fba940f36ba278"
@@ -2646,15 +2639,10 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
-"@opensrp/reducer-factory@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.10.tgz#151e3bb55b7833958b20f8c0b3c163b8a7b0c594"
-  integrity sha512-+MmDVLzQNghTz81MNaPg5b90s9H0mZRI/HktLLaBAGqQK5gdmy7unzXKKlthiZv/koSEpHjAqDQcksbxKLGT1A==
-  dependencies:
-    "@onaio/utils" "^0.0.1"
-    lodash "^4.17.15"
-    redux "^4.0.5"
-    seamless-immutable "^7.1.4"
+"@opensrp/notifications@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
+  integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
 
 "@opensrp/reducer-factory@^0.0.7":
   version "0.0.7"
@@ -2682,23 +2670,6 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
-
-"@opensrp/store@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.3.tgz#c97cc57be7d7b3c993d2c4e4e7a7165d52eb2457"
-  integrity sha512-ylgSi4y2kwD0u0V8o8GD3vM/2FDORpiTX42RbXQijoP7Jj94SeXPo73d14eEINOgxiQ09I6NYfxDRIc5mCGlHw==
-  dependencies:
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.0"
-    "@onaio/redux-reducer-registry" "^0.0.9"
-    "@onaio/session-reducer" "^0.0.11"
-    "@onaio/utils" "^0.0.1"
-    connected-react-router "^6.8.0"
-    fast_array_intersect "^1.1.0"
-    lodash "^4.17.20"
-    redux-thunk "^2.3.0"
-    reselect "^4.0.0"
-    seamless-immutable "^7.1.4"
 
 "@opensrp/store@^0.0.6":
   version "0.0.6"
@@ -7488,7 +7459,7 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-formik-antd@^2.0.1:
+formik-antd@2.0.1, formik-antd@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/formik-antd/-/formik-antd-2.0.1.tgz#0f50ee1141c299187132fd7641e3467a2261e58d"
   integrity sha512-KyDRqzPUchYvKLLku5/yphzIDkAFDT8ViKo6+9wXYJf0duwcuCmsNZlgQiEdlCrm1IWN3XMLUCPV/MUm0iLKww==
@@ -8051,13 +8022,6 @@ history@^4.9.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
     value-equal "^1.0.1"
-
-history@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/history/-/history-5.0.0.tgz#0cabbb6c4bbf835addb874f8259f6d25101efd08"
-  integrity sha512-3NyRMKIiFSJmIPdq7FxkNMJkQ7ZEtVblOQ38VtKaA0zZMW1Eo6Q6W8oDKEflr1kNNTItSnk4JMCO1deeSgbLLg==
-  dependencies:
-    "@babel/runtime" "^7.7.6"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"

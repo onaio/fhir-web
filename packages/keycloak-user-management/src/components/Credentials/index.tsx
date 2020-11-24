@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Col, Row, Input, Switch, notification } from 'antd';
+import { Button, Form, Col, Row, Input, Switch } from 'antd';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -19,6 +19,7 @@ import {
   INPUT_PASSWORD,
   CONFIRM_PASSWORD,
   CREDENTIALS_UPDATED_SUCCESSFULLY,
+  ERROR_OCCURED,
 } from '../../constants';
 import {
   reducer as keycloakUsersReducer,
@@ -28,6 +29,7 @@ import {
   KeycloakUser,
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -106,17 +108,11 @@ export const submitForm = (
       value: password,
     })
     .then(() => {
+      sendSuccessNotification(CREDENTIALS_UPDATED_SUCCESSFULLY);
       useHistory().push(URL_ADMIN);
-      notification.success({
-        message: CREDENTIALS_UPDATED_SUCCESSFULLY,
-        description: '',
-      });
     })
     .catch((_: Error) => {
-      notification.error({
-        message: 'An error occurred',
-        description: '',
-      });
+      sendErrorNotification(ERROR_OCCURED);
     });
 };
 
