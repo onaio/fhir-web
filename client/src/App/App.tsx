@@ -27,7 +27,9 @@ import {
   URL_REACT_LOGIN,
   URL_LOGOUT,
   URL_HOME,
+  URL_TEAMS,
 } from '../constants';
+import { TeamsView } from '../teams-mgmt';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
@@ -146,6 +148,13 @@ const App: React.FC = () => {
               exact
               path={URL_ADMIN}
               component={ConnectedUserList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_TEAMS}
+              component={TeamsView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
