@@ -1,0 +1,18 @@
+window._env_ = {
+  REACT_APP_BACKEND_ACTIVE: "{{ getv "/react/app/backend/active" "true"}}",
+  REACT_APP_DISABLE_LOGIN_PROTECTION: "{{ getv "/react/app/disable/login/protection" }}",
+  REACT_APP_DOMAIN_NAME: "{{ getv "/react/app/domain/name" }}",
+  REACT_APP_ENABLE_OPENSRP_OAUTH: "{{ getv "/react/app/enable/opensrp/oauth" }}",
+  REACT_APP_EXPRESS_OAUTH_GET_STATE_URL: "{{ getv "/react/app/express/oauth/get/state/url" }}",
+  REACT_APP_EXPRESS_OAUTH_LOGOUT_URL: "{{ getv "/react/app/express/oauth/logout/url" }}",
+  REACT_APP_KEYCLOAK_API_BASE_URL: "{{ getv "/react/app/keycloak/api/base/url" "https://opensrp-stage.smartregister.org/opensrp/rest/"}}",
+  REACT_APP_KEYCLOAK_LOGOUT_URL: "{{ getv "/react/app/keycloak/logout/url" "https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout" }}",
+  REACT_APP_NAVBAR_BRAND_IMG_SRC: "{{ getv "/react/app/navbar/brand/img/src" "https://github.com/OpenSRP/opensrp-web/raw/master/clients/core/src/assets/images/logo.png"}}",
+  REACT_APP_OPENSRP_ACCESS_TOKEN_URL: "{{ getv "/react/app/opensrp/access/token/url" }}",
+  REACT_APP_OPENSRP_API_BASE_URL: "{{ getv "/react/app/opensrp/api/base/url" }}",
+  REACT_APP_OPENSRP_AUTHORIZATION_URL: "{{ getv "/react/app/opensrp/authorization/url" }}",
+  REACT_APP_OPENSRP_CLIENT_ID: "{{ getv "/react/app/opensrp/client/id" }}",
+  REACT_APP_OPENSRP_LOGOUT_URL: "{{ getv "/react/app/opensrp/logout/url" "https://opensrp-stage.smartregister.org/opensrp/logout.do" }}",
+  REACT_APP_OPENSRP_USER_URL: "{{ getv "/react/app/opensrp/user/url" }}",
+  REACT_APP_WEBSITE_NAME: "{{ getv "/react/app/website/name" }}",
+};
