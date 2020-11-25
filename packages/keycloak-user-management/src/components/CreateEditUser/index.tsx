@@ -7,7 +7,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { UserForm, UserFormProps, defaultInitialValues } from '../forms/UserForm';
+import { UserForm, UserFormProps, defaultInitialValues, Practitioner } from '../forms/UserForm';
 import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
 import {
   reducer as keycloakUsersReducer,
@@ -63,6 +63,7 @@ export const defaultEditUserProps: EditUserProps = {
 
 const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [practitioner, setPractitioner] = React.useState<Practitioner | undefined>(undefined);
   const {
     keycloakUser,
     accessToken,
@@ -74,6 +75,22 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   } = props;
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
   const initialValues = keycloakUser ? keycloakUser : defaultInitialValues;
+
+  const loadPractitioner = async () => {
+    if (userId && practitioner === undefined) {
+      setIsLoading(true);
+      const serve = new opensrpServiceClass(accessToken, opensrpBaseURL, 'practitioner/user');
+      serve
+        .read(userId)
+        .then((response: Practitioner) => {
+          setIsLoading(false);
+          setPractitioner(response);
+        })
+        .catch((_: Error) => {
+          sendErrorNotification(ERROR_OCCURED);
+        });
+    }
+  };
 
   /**
    * Fetch user incase the user is not available e.g when page is refreshed
@@ -97,6 +114,14 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     }
   }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);
 
+  React.useEffect(() => {
+    try {
+      loadPractitioner().catch((err) => sendErrorNotification(err));
+    } catch (err) {
+      sendErrorNotification(err);
+    }
+  });
+
   if (isLoading) {
     return <Ripple />;
   }
@@ -108,6 +133,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     serviceClass,
     keycloakBaseURL,
     opensrpBaseURL,
+    practitioner: practitioner as Practitioner,
   };
 
   return (
