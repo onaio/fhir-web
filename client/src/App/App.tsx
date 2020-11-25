@@ -1,5 +1,11 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
+import { Layout } from 'antd';
+import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router';
 
+//
+// Core
+//
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
@@ -8,11 +14,6 @@ import {
   useOAuthLogin,
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
-import { Helmet } from 'react-helmet';
-import { Layout } from 'antd';
-import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router';
-import Loading from '../components/page/Loading';
-import { CustomLogout } from '../components/Logout';
 import {
   WEBSITE_NAME,
   BACKEND_ACTIVE,
@@ -29,10 +30,23 @@ import {
   URL_HOME,
 } from '../constants';
 import { providers } from '../configs/settings';
-import ConnectedHeader from '../containers/ConnectedHeader';
+import { CustomLogout } from '../components/Logout';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
+
+//
+// Project
+//
+import ConnectedHeader from '../containers/ConnectedHeader';
+import ConnectedSidebar from '../containers/ConnectedSidebar';
+import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import NotFound from '../components/NotFound';
+import Loading from '../components/page/Loading';
 import '@opensrp/user-management/dist/index.css';
+import './App.css';
+
+//
+// Modules
+//
 import {
   ConnectedProductCatalogueList,
   CATALOGUE_LIST_VIEW_URL,
@@ -42,6 +56,7 @@ import {
   CATALOGUE_EDIT_VIEW_URL,
   ConnectedEditProductView,
 } from '@opensrp/product-catalogue';
+import '@opensrp/product-catalogue/dist/index.css';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -52,14 +67,11 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
-import ConnectedHomeComponent from '../containers/pages/Home/Home';
-import './App.css';
-import ConnectedSidebar from '../containers/ConnectedSidebar';
-import '@opensrp/product-catalogue/dist/index.css';
 import { productCatalogueProps } from './utils';
 
-const { Content } = Layout;
-
+//
+// Utilities
+//
 interface ComponentProps extends Partial<RouteProps> {
   component: any;
   redirectPath: string;
@@ -116,6 +128,9 @@ export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) 
   );
 };
 
+//
+// App
+//
 const App: React.FC = () => {
   const APP_CALLBACK_URL = BACKEND_ACTIVE ? URL_BACKEND_CALLBACK : URL_REACT_LOGIN;
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
@@ -129,7 +144,7 @@ const App: React.FC = () => {
       <ConnectedSidebar />
       <div className="body-wrapper">
         <ConnectedHeader />
-        <Content>
+        <Layout.Content>
           <Switch>
             {/* tslint:disable jsx-no-lambda */}
             {/* Home Page view */}
@@ -220,7 +235,7 @@ const App: React.FC = () => {
             />
             <Route exact component={NotFound} />
           </Switch>
-        </Content>
+        </Layout.Content>
       </div>
     </Layout>
   );
