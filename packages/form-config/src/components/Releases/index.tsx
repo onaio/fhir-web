@@ -166,7 +166,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
   };
 
   return (
-    <div>
+    <>
       <Row>
         <Col xs="8">
           <SearchBar {...searchBarProps} />
@@ -178,7 +178,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
         </Col>
       </Row>
       <DrillDownTable {...DrillDownTableProps} />
-    </div>
+    </>
   );
 };
 

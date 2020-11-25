@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/ManifestReleases renders without crashing when connected to store 1`] = `
+exports[`components/Releases renders without crashing when connected to store 1`] = `
 Object {
   "CellComponent": [Function],
   "columns": Array [
@@ -67,7 +67,7 @@ Object {
 }
 `;
 
-exports[`components/ManifestReleases renders without crashing when connected to store 2`] = `
+exports[`components/Releases renders without crashing when connected to store 2`] = `
 <a
   href="/releases/1.0.16"
   onClick={[Function]}

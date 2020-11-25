@@ -2,18 +2,20 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import { ManifestReleases, ConnectedManifestReleases } from '../index';
-import { getFetchOptions, OpenSRPService } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import reducerRegistry, { store } from '@onaio/redux-reducer-registry';
 import flushPromises from 'flush-promises';
 import releasesReducer, {
-  fetchManifestReleases,
   releasesReducerName,
+  removeManifestReleases,
 } from '../../../ducks/manifestReleases';
 import { fixManifestReleases } from '../../../ducks/tests/fixtures';
 import toJson from 'enzyme-to-json';
+import fetch from 'jest-fetch-mock';
 import _ from 'lodash';
+import { act } from 'react-dom/test-utils';
 
 /** register the reducers */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -30,6 +32,7 @@ const props = {
   getPayload: getFetchOptions,
   LoadingComponent: <div>Loading</div>,
   uploadTypeUrl: 'file',
+  customAlert: jest.fn(),
 };
 
 const actualDebounce = _.debounce;
@@ -37,9 +40,15 @@ const actualDebounce = _.debounce;
 const customDebounce = (callback: any) => callback;
 _.debounce = customDebounce;
 
-describe('components/ManifestReleases', () => {
+describe('components/Releases', () => {
   afterAll(() => {
     _.debounce = actualDebounce;
+  });
+
+  afterEach(() => {
+    store.dispatch(removeManifestReleases());
+    jest.clearAllMocks();
+    fetch.resetMocks();
   });
 
   it('renders without crashing', () => {
@@ -47,10 +56,7 @@ describe('components/ManifestReleases', () => {
   });
 
   it('renders without crashing when connected to store', async () => {
-    store.dispatch(fetchManifestReleases(fixManifestReleases));
-    const mockList = jest.fn();
-    OpenSRPService.prototype.list = mockList;
-    mockList.mockReturnValueOnce(Promise.resolve(fixManifestReleases));
+    fetch.once(JSON.stringify(fixManifestReleases));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -60,8 +66,14 @@ describe('components/ManifestReleases', () => {
       </Provider>
     );
 
-    await flushPromises();
+    // should display loading component if there is no data
+    expect(wrapper.find('div').at(1).text()).toEqual('Loading');
+
+    await act(async () => {
+      await flushPromises();
+    });
     wrapper.update();
+
     expect(wrapper.find('DrillDownTable').props()).toMatchSnapshot();
     expect(wrapper.find('SearchBar')).toHaveLength(1);
     expect(wrapper.find('Row Col').at(1).text()).toEqual('Upload New File');
@@ -74,9 +86,7 @@ describe('components/ManifestReleases', () => {
   });
 
   it('test search', async () => {
-    const mockList = jest.fn();
-    OpenSRPService.prototype.list = mockList;
-    mockList.mockReturnValueOnce(Promise.resolve(fixManifestReleases));
+    fetch.once(JSON.stringify(fixManifestReleases));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -85,7 +95,10 @@ describe('components/ManifestReleases', () => {
         </Router>
       </Provider>
     );
-    await flushPromises();
+
+    await act(async () => {
+      await flushPromises();
+    });
     wrapper.update();
 
     // search
@@ -93,5 +106,27 @@ describe('components/ManifestReleases', () => {
     search.simulate('input', { target: { value: '1.0.12' } });
     wrapper.update();
     expect(wrapper.find('.tbody .tr')).toHaveLength(1);
+  });
+
+  it('handles failure when fetching releases', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedManifestReleases {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(props.customAlert).toHaveBeenCalledWith('API is down', { type: 'error' });
+    expect(wrapper.find('.tbody .tr')).toHaveLength(0);
+
+    wrapper.unmount();
   });
 });
