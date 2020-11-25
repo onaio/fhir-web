@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/ManifestReleases renders without crashing when connected to store 1`] = `
+exports[`components/DraftFiles renders without crashing when connected to store 1`] = `
 Object {
   "CellComponent": [Function],
   "columns": Array [
@@ -75,11 +75,39 @@ Object {
 }
 `;
 
-exports[`components/ManifestReleases renders without crashing when connected to store 2`] = `
+exports[`components/DraftFiles renders without crashing when connected to store 2`] = `
 <a
   href="#"
   onClick={[Function]}
 >
   Download
 </a>
+`;
+
+exports[`components/DraftFiles renders without crashing when connected to store: upload link 1`] = `
+<Link
+  className="btn btn-secondary float-right"
+  to={
+    Object {
+      "pathname": "/manifest/file-upload",
+      "state": Object {
+        "fromDrafts": true,
+      },
+    }
+  }
+>
+  <LinkAnchor
+    className="btn btn-secondary float-right"
+    href="/manifest/file-upload"
+    navigate={[Function]}
+  >
+    <a
+      className="btn btn-secondary float-right"
+      href="/manifest/file-upload"
+      onClick={[Function]}
+    >
+      Upload New File
+    </a>
+  </LinkAnchor>
+</Link>
 `;
