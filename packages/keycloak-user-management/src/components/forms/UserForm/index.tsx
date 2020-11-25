@@ -28,6 +28,7 @@ export interface UserFormProps {
   opensrpServiceClass: typeof OpenSRPService;
   keycloakBaseURL: string;
   opensrpBaseURL: string;
+  practitioner: Practitioner | undefined;
 }
 
 /** default form initial values */
@@ -58,6 +59,7 @@ export const defaultProps: Partial<UserFormProps> = {
   accessToken: '',
   initialValues: defaultInitialValues,
   opensrpServiceClass: OpenSRPService,
+  practitioner: undefined,
   serviceClass: KeycloakService,
 };
 
@@ -89,6 +91,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     keycloakBaseURL,
     opensrpServiceClass,
     opensrpBaseURL,
+    practitioner,
   } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
@@ -142,6 +145,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               serviceClass,
               opensrpServiceClass,
               setSubmitting,
+              practitioner,
               initialValues.id
             );
           }}
@@ -164,9 +168,16 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 <Input id="username" name="username" disabled={initialValues.id ? true : false} />
               </Form.Item>
 
-              <Form.Item name="active" label="Mark as Practitioner" valuePropName="checked">
-                <Switch name="active" />
-              </Form.Item>
+              {!initialValues.id && !practitioner ? (
+                ''
+              ) : (
+                <Form.Item name="active" label="Mark as Practitioner" valuePropName="checked">
+                  <Switch
+                    name="active"
+                    defaultChecked={practitioner ? practitioner.active : false}
+                  />
+                </Form.Item>
+              )}
 
               <Form.Item name="requiredActions" label="Required Actions">
                 <Select

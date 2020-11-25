@@ -11,7 +11,7 @@ import {
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   ERROR_OCCURED,
 } from '../../../constants';
-import { OpenSRPService } from 'opensrp-server-service/dist/types';
+import { OpenSRPService } from '@opensrp/server-service';
 import { Practitioner } from '.';
 
 /**
@@ -20,6 +20,7 @@ import { Practitioner } from '.';
  * @param {string} baseURL - opensrp API base URL
  * @param {OpenSRPService} serviceClass - opensrp api service class
  * @param {Dictionary} values - form values
+ * @param {Practitioner} practitioner - practitioner object
  * @param {boolean} isEdit - boolean to show whether edit mode or not
  */
 export const createOrEditPractitioners = (
@@ -27,12 +28,13 @@ export const createOrEditPractitioners = (
   baseURL: string,
   serviceClass: typeof OpenSRPService,
   values: Partial<KeycloakUser> & Partial<Practitioner>,
+  practitioner: Practitioner | undefined,
   isEdit: boolean
 ) => {
   const requestType = isEdit ? 'update' : 'create';
   const practitionerValues = {
-    active: values.active,
-    identifier: v4(),
+    active: isEdit ? values.active : true,
+    identifier: practitioner ? practitioner.identifier : v4(),
     name: `${values.firstName} ${values.lastName}`,
     userId: values.id,
     username: values.username,
@@ -58,6 +60,7 @@ export const createOrEditPractitioners = (
  * @param {KeycloakService} keycloakServiceClass - keycloak API service class
  * @param {OpenSRPService} opensrpServiceClass - OpenSRP API service
  * @param {Function} setSubmitting - method to set submission status
+ * @param {Practitioner} practitioner - single practitioner object
  * @param {string} userId - keycloak user id, required when editing a user
  */
 export const submitForm = (
@@ -68,6 +71,7 @@ export const submitForm = (
   keycloakServiceClass: typeof KeycloakService,
   opensrpServiceClass: typeof OpenSRPService,
   setSubmitting: (isSubmitting: boolean) => void,
+  practitioner: Practitioner | undefined,
   userId?: string
 ): void => {
   const isEditing = !!userId;
@@ -90,6 +94,7 @@ export const submitForm = (
           opensrpBaseURL,
           opensrpServiceClass,
           values,
+          practitioner,
           isEditing
         );
         setSubmitting(false);
@@ -104,12 +109,21 @@ export const submitForm = (
     const serve = new keycloakServiceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
     serve
       .create(keycloakUserValues)
-      .then(() => {
+      .then((res: Response) => {
+        // workaround to get userId for newly created user
+        // immediately after performing a POST
+        const locationStr = res.headers.get('location')?.split('/') as string[];
+        const newUUID = locationStr[locationStr.length - 1];
+        const newValues: Partial<KeycloakUser> & Partial<Practitioner> = {
+          ...values,
+          id: newUUID as string,
+        };
         createOrEditPractitioners(
           accessToken,
           opensrpBaseURL,
           opensrpServiceClass,
-          values,
+          newValues,
+          practitioner,
           isEditing
         );
         setSubmitting(false);
