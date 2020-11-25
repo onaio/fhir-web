@@ -13,6 +13,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
+    'plugin:cypress/recommended',
     'typestrict',
   ],
   rules: {
