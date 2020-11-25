@@ -34,7 +34,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   render() {
     const { hasError } = this.state;
-    const { homeUrl } = this.props;
+    const { homeUrl, children } = this.props;
     if (hasError) {
       return (
         <Result
@@ -46,7 +46,7 @@ class ErrorBoundary extends Component<Props, State> {
             <Button
               id="backHome"
               key="error"
-              onClick={() => (window.location.href = homeUrl || '/')}
+              onClick={() => (window.location.href = homeUrl ? homeUrl : '/')}
               type="primary"
             >
               Back Home
@@ -55,7 +55,7 @@ class ErrorBoundary extends Component<Props, State> {
         />
       );
     } else {
-      return this.props.children;
+      return children ? children : <></>;
     }
   }
 }

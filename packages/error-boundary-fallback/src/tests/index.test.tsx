@@ -1,6 +1,8 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
+import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from '..';
+
 const mockHistoryPush = jest.fn();
 jest.mock('react-router', () => ({
   useHistory: () => ({
@@ -15,6 +17,7 @@ describe('/components/Fallback', () => {
 
   it('render correctly', () => {
     const wrapper = shallow(<ErrorBoundary />);
+    wrapper.simulateError(new Error());
     expect(wrapper.find('Result')).toHaveLength(1);
     expect(wrapper.find('Result').prop('status')).toBe('error');
     expect(wrapper.find('Result').prop('title')).toBe('An Error Occurred');
@@ -24,9 +27,23 @@ describe('/components/Fallback', () => {
   });
 
   it('correctly redirects to home', () => {
-    const wrapper = mount(<ErrorBoundary />);
-    expect(wrapper.find('button')).toHaveLength(1);
-    wrapper.find('button').simulate('click');
-    expect(mockHistoryPush).toHaveBeenCalledWith('/');
+    const wrapper = shallow(<ErrorBoundary />);
+    wrapper.simulateError(new Error());
+    expect(window.location.href).toEqual('http://localhost/');
+    wrapper.find('Result').props().extra.props.onClick();
+    expect(window.location.href).toEqual('/');
+  });
+
+  it('should intialize Sentry when dsn is provided', () => {
+    Sentry.init = jest.fn();
+    const dsn = 'testUrl';
+    shallow(<ErrorBoundary dsn={dsn} />);
+    expect(Sentry.init).toHaveBeenCalledWith({ dsn: dsn });
+  });
+
+  it('should not intialize Sentry when dsn is not provided', () => {
+    Sentry.init = jest.fn();
+    shallow(<ErrorBoundary />);
+    expect(Sentry.init).not.toHaveBeenCalled();
   });
 });
