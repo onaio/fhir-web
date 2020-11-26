@@ -150,4 +150,39 @@ describe('components/UploadFile', () => {
     });
     wrapper.unmount();
   });
+
+  it('uploads file if isJsonValidator is true', async () => {
+    const isJsonValidatorProps = {
+      ...props,
+      isJsonValidator: true,
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedUploadConfigFile {...isJsonValidatorProps} />
+        </Router>
+      </Provider>
+    );
+
+    wrapper
+      .find('input[name="form_name"]')
+      .simulate('change', { target: { name: 'form_name', value: 'test name' } });
+    wrapper
+      .find('input[name="module"]')
+      .simulate('change', { target: { name: 'module', value: 'test module' } });
+    wrapper
+      .find('input[name="form"]')
+      .simulate('change', { target: { name: 'form', files: sampleFile } });
+    wrapper.find('Button').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(fetch).toHaveBeenCalledWith(
+      'https://test-example.com/rest/forms/upload',
+      expect.any(Object)
+    );
+  });
 });
