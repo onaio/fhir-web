@@ -7,11 +7,11 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import reducerRegistry, { store } from '@onaio/redux-reducer-registry';
 import flushPromises from 'flush-promises';
+import fetch from 'jest-fetch-mock';
 import filesReducer, { fetchManifestFiles, filesReducerName } from '../../../ducks/manifestFiles';
 import { fixManifestFiles } from '../../../ducks/tests/fixtures';
 import sampleFile from './sampleFile.json';
-/* eslint-disable-next-line @typescript-eslint/no-var-requires */
-const fetch = require('jest-fetch-mock');
+import { act } from 'react-dom/test-utils';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -27,9 +27,15 @@ const props = {
   getPayload: getFetchOptions,
   LoadingComponent: <div>Loading</div>,
   validatorsUrl: '/validators',
+  customAlert: jest.fn(),
 };
 
 describe('components/UploadFile', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+  });
+
   it('renders without crashing', () => {
     shallow(<UploadConfigFile {...props} />);
   });
@@ -49,8 +55,9 @@ describe('components/UploadFile', () => {
 
     expect(wrapper.find('Button').text()).toEqual('Upload file');
     wrapper.find('Button').simulate('submit');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await new Promise<any>((resolve) => setImmediate(resolve));
+    await act(async () => {
+      await flushPromises();
+    });
     wrapper.update();
     // we have errors
     expect(wrapper.find('.text-danger').at(0).text()).toEqual('Form name is required');
@@ -66,9 +73,9 @@ describe('components/UploadFile', () => {
       .find('input[name="form"]')
       .simulate('change', { target: { name: 'form', files: sampleFile } });
     wrapper.find('Button').simulate('submit');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await new Promise<any>((resolve) => setImmediate(resolve));
-    await flushPromises();
+    await act(async () => {
+      await flushPromises();
+    });
     wrapper.update();
 
     expect(fetch).toHaveBeenCalledWith(
@@ -100,14 +107,47 @@ describe('components/UploadFile', () => {
       .find('input[name="form"]')
       .simulate('change', { target: { name: 'form', files: sampleFile } });
     wrapper.find('Button').simulate('submit');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await new Promise<any>((resolve) => setImmediate(resolve));
-    await flushPromises();
+    await act(async () => {
+      await flushPromises();
+    });
     wrapper.update();
 
     expect(fetch).toHaveBeenCalledWith(
       'https://test-example.com/rest/forms/upload',
       expect.any(Object)
     );
+  });
+
+  it('handles error if upload fails', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API has been hijacked by aliens'));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedUploadConfigFile {...props} />
+        </Router>
+      </Provider>
+    );
+
+    wrapper
+      .find('input[name="form_name"]')
+      .simulate('change', { target: { name: 'form_name', value: 'test name' } });
+    wrapper
+      .find('input[name="module"]')
+      .simulate('change', { target: { name: 'module', value: 'test module' } });
+    wrapper
+      .find('input[name="form"]')
+      .simulate('change', { target: { name: 'form', files: sampleFile } });
+    wrapper.find('Button').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(props.customAlert).toHaveBeenCalledWith('API has been hijacked by aliens', {
+      type: 'error',
+    });
+    wrapper.unmount();
   });
 });
