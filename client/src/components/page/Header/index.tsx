@@ -38,7 +38,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id } = extraData;
   return (
-    <Layout.Header className="txt-white align-items-center justify-content-end px-1">
+    <Layout.Header className="txt-white align-items-center justify-content-end px-1 layout-header">
       <Button
         shape="circle"
         icon={<SearchOutlined />}
