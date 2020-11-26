@@ -28,7 +28,6 @@ module.exports = {
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
     'jest/no-large-snapshots': ['warn', { maxSize: 50, inlineMaxSize: 6 }],
-    '@typescript-eslint/no-unnecessary-condition': 'off',
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'jest', 'jsdoc'],
   parserOptions: {

@@ -114,7 +114,9 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
         fetchFiles(res);
       })
       .catch((error) => {
-        customAlert && customAlert(String(error), { type: 'error' });
+        if (customAlert) {
+          customAlert(String(error), { type: 'error' });
+        }
       })
       .finally(() => setLoading(false));
   }, [baseURL, customAlert, endpoint, removeFiles, fetchFiles, formVersion, getPayload]);
@@ -144,7 +146,9 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     e.preventDefault();
     downloadManifestFile(baseURL, downloadEndPoint, obj, isJsonValidator, getPayload).catch(
       (error) => {
-        customAlert && customAlert(String(error), { type: 'error' });
+        if (customAlert) {
+          customAlert(String(error), { type: 'error' });
+        }
       }
     );
   };
@@ -200,7 +204,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
 
   const moduleColumn = {
     Header: moduleLabel,
-    accessor: (obj: ManifestFilesTypes) => (() => <span>{obj.module || '_'}</span>)(),
+    accessor: (obj: ManifestFilesTypes) => (() => <span>{obj.module}</span>)(),
     disableSortBy: true,
     maxWidth: 100,
   };
@@ -235,6 +239,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
         </Col>
         <Col xs="4">
           {isJsonValidator && (
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             <Link
               className="btn btn-secondary float-right"
               to={`${fileUploadUrl}/${uploadTypeUrl}`}

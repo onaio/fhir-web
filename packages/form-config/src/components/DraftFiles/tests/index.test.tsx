@@ -76,6 +76,9 @@ describe('components/DraftFiles', () => {
       </Provider>
     );
 
+    // should display loading component if there is no data
+    expect(wrapper.find('div').at(1).text()).toEqual('Loading');
+
     await act(async () => {
       await flushPromises();
     });
@@ -118,6 +121,7 @@ describe('components/DraftFiles', () => {
     expect(wrapper.find('.tbody .tr')).toHaveLength(1);
 
     // test creating manifest file
+    expect(wrapper.find('Button').text()).toEqual('Make Release');
     wrapper.find('Button').simulate('click');
 
     await act(async () => {
@@ -227,5 +231,23 @@ describe('components/DraftFiles', () => {
     });
     wrapper.update();
     expect(props.customAlert).toHaveBeenCalledWith('Cannot create file', { type: 'error' });
+  });
+
+  it('renders correctly if manifest fetch is empty', async () => {
+    fetch.once(JSON.stringify([]));
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedManifestDraftFiles {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(wrapper.find('Button')).toHaveLength(0);
   });
 });

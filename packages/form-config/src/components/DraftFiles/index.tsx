@@ -109,7 +109,9 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
         fetchDraftFiles(res);
       })
       .catch((error) => {
-        customAlert && customAlert(String(error), { type: 'error' });
+        if (customAlert) {
+          customAlert(String(error), { type: 'error' });
+        }
       })
       .finally(() => setLoading(false));
   }, [baseURL, endpoint, getPayload, customAlert, fetchDraftFiles]);
@@ -139,7 +141,9 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
         setIfDoneHere(true);
       })
       .catch((err) => {
-        customAlert && customAlert(String(err), { type: 'error' });
+        if (customAlert) {
+          customAlert(String(err), { type: 'error' });
+        }
       });
   };
 
@@ -163,7 +167,9 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
   const onDownloadClick = (e: MouseEvent, obj: ManifestFilesTypes) => {
     e.preventDefault();
     downloadManifestFile(baseURL, downloadEndPoint, obj, false, getPayload).catch((error) => {
-      customAlert && customAlert(String(error), { type: 'error' });
+      if (customAlert) {
+        customAlert(String(error), { type: 'error' });
+      }
     });
   };
 
@@ -188,7 +194,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     },
     {
       Header: moduleLabel,
-      accessor: (obj: ManifestFilesTypes) => (() => <span>{obj.module || '_'}</span>)(),
+      accessor: (obj: ManifestFilesTypes) => (() => <span>{obj.module}</span>)(),
       disableSortBy: true,
       maxWidth: 80,
     },
@@ -248,6 +254,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
       </Row>
       <DrillDownTable {...DrillDownTableProps} />
       {data.length > 0 && (
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         <Button
           className="btn btn-md btn btn-primary float-right"
           color="primary"
