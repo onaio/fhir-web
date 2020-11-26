@@ -14,6 +14,26 @@ import {
 import { OpenSRPService } from '@opensrp/server-service';
 import { Practitioner } from '.';
 
+/** Utility function to set new user UUID extracted from the
+ * POST response location header
+ *
+ * @param {Response} response - response object from POST request
+ * @param {object} values - form submit values to be POSTed
+ * @returns {object} - new values object with userid set
+ *
+ */
+export const buildUserObject = (
+  response: Response,
+  values: Partial<KeycloakUser> & Partial<Practitioner>
+): object => {
+  const locationStr = response.headers.get('location')?.split('/') as string[];
+  const newUUID = locationStr[locationStr.length - 1];
+  return {
+    ...values,
+    id: newUUID as string,
+  };
+};
+
 /**
  *
  * @param {string} accessToken - access token
@@ -109,15 +129,10 @@ export const submitForm = (
     const serve = new keycloakServiceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
     serve
       .create(keycloakUserValues)
-      .then((res: Response) => {
+      .then((response: Response | undefined) => {
         // workaround to get userId for newly created user
         // immediately after performing a POST
-        const locationStr = res.headers.get('location')?.split('/') as string[];
-        const newUUID = locationStr[locationStr.length - 1];
-        const newValues: Partial<KeycloakUser> & Partial<Practitioner> = {
-          ...values,
-          id: newUUID as string,
-        };
+        const newValues = response ? buildUserObject(response, values) : values;
         createOrEditPractitioners(
           accessToken,
           opensrpBaseURL,
