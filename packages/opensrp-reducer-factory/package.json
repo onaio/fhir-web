@@ -34,7 +34,7 @@
   "author": "Ona Engineering",
   "license": "Apache-2.0",
   "private": false,
-  "dependencies": {
+  "peerDependencies": {
     "@onaio/utils": "^0.0.1",
     "lodash": "^4.17.15",
     "redux": "^4.0.5",
