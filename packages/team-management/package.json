@@ -33,10 +33,10 @@
   "license": "Apache-2.0",
   "private": false,
   "devDependencies": {
+    "@opensrp/reducer-factory": "^0.0.11",
     "@types/geojson": "^7946.0.7"
   },
   "peerDependencies": {
-    "@opensrp/reducer-factory": "^0.0.11",
     "@opensrp/server-service": "^0.0.11",
     "react": "^16.13.1"
   }
