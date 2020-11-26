@@ -11,7 +11,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
   }
 >
   <div
-    className="text-center"
+    className="text-center home"
   >
     <HelmetWrapper
       defer={true}
@@ -95,7 +95,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                 >
                   <Button
                     block={false}
-                    className="home btn-links"
+                    className="btn-links"
                     color="outline"
                     ghost={false}
                     htmlType="button"
@@ -103,7 +103,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                   >
                     <Wave>
                       <button
-                        className="ant-btn home btn-links"
+                        className="ant-btn btn-links"
                         color="outline"
                         onClick={[Function]}
                         type="button"
@@ -169,7 +169,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                 >
                   <Button
                     block={false}
-                    className="home btn-links"
+                    className="btn-links"
                     color="outline"
                     ghost={false}
                     htmlType="button"
@@ -177,7 +177,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                   >
                     <Wave>
                       <button
-                        className="ant-btn home btn-links"
+                        className="ant-btn btn-links"
                         color="outline"
                         onClick={[Function]}
                         type="button"
