@@ -29,7 +29,7 @@ import {
   URL_HOME,
   URL_TEAMS,
 } from '../constants';
-import { TeamsView } from '../teams-mgmt';
+import { TeamsView } from '@opensrp/team-management';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';

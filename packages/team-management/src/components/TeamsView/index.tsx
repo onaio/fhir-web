@@ -38,27 +38,7 @@ const TeamsView: React.FC = () => {
       serve
         .list()
         .then((response: Organization[]) => {
-          console.log('get all teams :: ', response);
-
-          dispatch(
-            fetchOrganizationsAction([
-              {
-                active: true,
-                id: 1,
-                identifier: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4',
-                name: 'The Luang',
-                type: {
-                  coding: [
-                    {
-                      code: 'team',
-                      display: 'Team',
-                      system: 'http://terminology.hl7.org/CodeSystem/team-type',
-                    },
-                  ],
-                },
-              },
-            ])
-          );
+          dispatch(fetchOrganizationsAction(response));
           setIsLoading(false);
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));

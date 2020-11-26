@@ -1668,6 +1668,16 @@
     "@opensrp/notifications" "^0.0.2"
     antd "^4.6.3"
 
+"@opensrp/reducer-factory@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.11.tgz#1ae3c8f948ca5297d53ec63828f20815ae8484e2"
+  integrity sha512-OMKBnUEIyraM9DFrAJ7IpYNp/WlEn5cAWhfITfjGxRcye7jUhYAk4jyZw2IIx/V4MKLWHCdLBX6UJlP7xK/LJA==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
+    lodash "^4.17.15"
+    redux "^4.0.5"
+    seamless-immutable "^7.1.4"
+
 "@opensrp/reducer-factory@^0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.7.tgz#f4509f6bff3e9481730110d3fea96bf14cf53749"
@@ -1677,12 +1687,6 @@
     lodash "^4.17.15"
     redux "^4.0.5"
     seamless-immutable "^7.1.4"
-"@opensrp/keycloak-service@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.7.tgz#be652d2dc26751fd865dc495c115437f9f7f2488"
-  integrity sha512-K+2cOadLaM/7e9QmENfXJ49HX67DDucd7DYJB2WNtKi+D4SQNvc3SX97oFB5645f73zB/pm0ZLyK3N7Hj/f9XA==
-  dependencies:
-    "@opensrp/store" "^0.0.6"
 
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
@@ -1718,22 +1722,11 @@
     reselect "^4.0.0"
     seamless-immutable "^7.1.4"
 
-"@opensrp/store@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.6.tgz#074d18e98414190a2cd79aa53399dcf7e80b4a1e"
-  integrity sha512-qwfl99FxfRX9Iol0nG4YgCiiD9hdhNu7rqANb+vahAY9hGgFK1L3NnG92Zw8WbEd7JHT50b/1bGYLOAZYjipiA==
+"@opensrp/team-management@file:../packages/team-management":
+  version "0.0.0"
   dependencies:
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.0"
-    "@onaio/redux-reducer-registry" "^0.0.9"
-    "@onaio/session-reducer" "^0.0.11"
-    "@onaio/utils" "^0.0.1"
-    connected-react-router "^6.8.0"
-    fast_array_intersect "^1.1.0"
-    lodash "^4.17.20"
-    redux-thunk "^2.3.0"
-    reselect "^4.0.0"
-    seamless-immutable "^7.1.4"
+    "@opensrp/reducer-factory" "^0.0.11"
+    "@opensrp/server-service" "^0.0.11"
 
 "@opensrp/user-management@^0.1.8":
   version "0.1.8"
