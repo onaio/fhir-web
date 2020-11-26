@@ -121,7 +121,7 @@
     "react-scripts/jest": "25.3.0"
   },
   "workspaces": [
-    "client/*",
+    "client",
     "packages/*"
   ]
 }
