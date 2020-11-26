@@ -4,6 +4,9 @@
 h2.page-title {
   font-weight: 200;
 }
+button {
+  margin-right: 8px;
+}
 .gatekeeper-cb,
 .gatekeeper-login {
   margin-top: 3rem !important;
