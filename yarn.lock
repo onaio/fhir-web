@@ -3562,7 +3562,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-antd@^4.6.3:
+antd@^4.6.3, antd@^4.8.2:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.8.5.tgz#eb0af8154a6dffb070c016b344d4b49b6910ce4f"
   integrity sha512-QN8//mMToHo1u7gRThbVYKW9rqdN+2x/5PAk5d76MkeALezE3J2Tf4mm2+COUf0qUNiV0ZNtdcLY3weTVlKpDg==
@@ -7381,7 +7381,7 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-formik-antd@^2.0.1:
+formik-antd@2.0.1, formik-antd@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/formik-antd/-/formik-antd-2.0.1.tgz#0f50ee1141c299187132fd7641e3467a2261e58d"
   integrity sha512-KyDRqzPUchYvKLLku5/yphzIDkAFDT8ViKo6+9wXYJf0duwcuCmsNZlgQiEdlCrm1IWN3XMLUCPV/MUm0iLKww==

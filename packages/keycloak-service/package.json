@@ -34,8 +34,7 @@
   "author": "Ona Engineering",
   "license": "Apache-2.0",
   "private": false,
-  "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
-    "react": "^16.13.1"
+  "devDependencies": {
+    "@opensrp/store": "^0.0.7"
   }
 }
