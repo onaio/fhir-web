@@ -101,7 +101,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   }, [initialValues.requiredActions]);
 
   return (
-    <Row>
+    <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
       <h5 className="mb-3">{props.initialValues.email ? 'Edit User' : 'Add User'}</h5>
       <Col className="bg-white p-3" span={24}>
