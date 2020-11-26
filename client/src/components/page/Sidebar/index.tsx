@@ -15,7 +15,7 @@ import {
   TEAMS,
   URL_ADMIN,
   URL_HOME,
-  URL_TEAMS,
+  URL_TEAM_ADD,
   USER_MANAGEMENT,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
@@ -57,7 +57,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.SubMenu>
           )}
           <Menu.Item key="teams">
-            <Link to={URL_TEAMS} className="admin-link">
+            <Link to={URL_TEAM_ADD} className="admin-link">
               {TEAMS}
             </Link>
           </Menu.Item>

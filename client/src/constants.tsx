@@ -17,6 +17,8 @@ export const URL_HOME = '/';
 export const URL_ADMIN = '/admin';
 export const URL_USER_EDIT = '/user/edit';
 export const URL_TEAMS = '/teams';
+export const URL_TEAM_ADD = '/teams/add';
+export const URL_TEAM_EDIT = '/teams/edit/:id';
 export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';
 

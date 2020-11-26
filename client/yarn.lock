@@ -1607,7 +1607,7 @@
   dependencies:
     "@onaio/element-map" "^0.0.5"
 
-"@onaio/loaders@^0.0.1":
+"@onaio/loaders@0.0.1", "@onaio/loaders@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@onaio/loaders/-/loaders-0.0.1.tgz#bccf621fd1e2842f962220a570d0898965765db9"
   integrity sha512-EJZQ9dXnKI2dATXtRnEIe/zzAvrtXhT0DTIylLLT5ihq/kyM2PxjjFcNgrlsBHhxVs/7+OkKg2IoXfSUzfA4ng==
@@ -1668,6 +1668,16 @@
     "@opensrp/notifications" "^0.0.2"
     antd "^4.6.3"
 
+"@opensrp/reducer-factory@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.11.tgz#1ae3c8f948ca5297d53ec63828f20815ae8484e2"
+  integrity sha512-OMKBnUEIyraM9DFrAJ7IpYNp/WlEn5cAWhfITfjGxRcye7jUhYAk4jyZw2IIx/V4MKLWHCdLBX6UJlP7xK/LJA==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
+    lodash "^4.17.15"
+    redux "^4.0.5"
+    seamless-immutable "^7.1.4"
+
 "@opensrp/reducer-factory@^0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.7.tgz#f4509f6bff3e9481730110d3fea96bf14cf53749"
@@ -1677,12 +1687,6 @@
     lodash "^4.17.15"
     redux "^4.0.5"
     seamless-immutable "^7.1.4"
-"@opensrp/keycloak-service@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.7.tgz#be652d2dc26751fd865dc495c115437f9f7f2488"
-  integrity sha512-K+2cOadLaM/7e9QmENfXJ49HX67DDucd7DYJB2WNtKi+D4SQNvc3SX97oFB5645f73zB/pm0ZLyK3N7Hj/f9XA==
-  dependencies:
-    "@opensrp/store" "^0.0.6"
 
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
@@ -1695,6 +1699,11 @@
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
   integrity sha512-WymZntvFba3/0FKM6f2L+YT7BF+t/HFlr6A16UIBFz83+nYTIoI93MS/ocO/7MDTL9F7yzTBpjA0D1CkogFnfg==
+
+"@opensrp/server-service@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.12.tgz#3a887269384797c1b217f4e242453c1fae1805d1"
+  integrity sha512-n3bmvLRyGNG+NZXWT4NMPC2kelJL3lcWGFRYo8qX/9j5hTm6HBNJWUvnPgvg57xnC9YBfXUY/SkVOkALN0iNJw==
 
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
@@ -1718,10 +1727,10 @@
     reselect "^4.0.0"
     seamless-immutable "^7.1.4"
 
-"@opensrp/store@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.6.tgz#074d18e98414190a2cd79aa53399dcf7e80b4a1e"
-  integrity sha512-qwfl99FxfRX9Iol0nG4YgCiiD9hdhNu7rqANb+vahAY9hGgFK1L3NnG92Zw8WbEd7JHT50b/1bGYLOAZYjipiA==
+"@opensrp/store@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.7.tgz#e5d6a49f2a2124f87f13e3ba72bd796e50ce9d0f"
+  integrity sha512-Jp4I0qGLCU//e+lb+7B9MDaK4q6sTWzVEQmYSOTdxIsoXlXrkDRKtWmbg28QdS2lqJO00V0OaVDyVRtqVMjgxw==
   dependencies:
     "@onaio/connected-reducer-registry" "^0.0.3"
     "@onaio/gatekeeper" "^0.1.0"
@@ -1734,6 +1743,15 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
     seamless-immutable "^7.1.4"
+
+"@opensrp/team-management@file:../packages/team-management":
+  version "0.0.0"
+  dependencies:
+    "@onaio/loaders" "0.0.1"
+    "@opensrp/reducer-factory" "^0.0.11"
+    "@opensrp/server-service" "^0.0.12"
+    "@opensrp/store" "^0.0.7"
+    uuid "^8.3.1"
 
 "@opensrp/user-management@^0.1.8":
   version "0.1.8"
@@ -11877,6 +11895,11 @@ uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+uuid@^8.3.1:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.1.tgz#2ba2e6ca000da60fce5a196954ab241131e05a31"
+  integrity sha512-FOmRr+FmWEIG8uhZv6C2bTgEVXsHk08kE7mPlrBbEe+c3r9pjceVPgupIfNIhc4yx55H69OXANrUaSuu9eInKg==
 
 v8-compile-cache@^2.0.3:
   version "2.2.0"

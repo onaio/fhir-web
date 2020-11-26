@@ -28,11 +28,17 @@ interface OrganizationType {
 /** interface for a Organization object */
 export interface Organization {
   active: boolean;
-  id: number;
   identifier: string;
   name: string;
+  id: number;
   partOf?: number;
   type?: OrganizationType;
+}
+
+export interface OrganizationPOST extends Partial<Organization> {
+  active: boolean;
+  identifier: string;
+  name: string;
 }
 
 // action interfaces
