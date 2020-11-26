@@ -2,10 +2,6 @@
   position: relative;
   top: 20px;
 }
-.btn {
-  margin-right: 8px;
-}
-
 .lds-ripple-parent {
   display: flex;
   justify-content: center;
