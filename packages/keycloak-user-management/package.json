@@ -40,8 +40,10 @@
   "files": [
     "dist"
   ],
+  "devDependencies": {
+    "@opensrp/store": "^0.0.7"
+  },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",

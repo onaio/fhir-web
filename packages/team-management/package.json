@@ -32,12 +32,14 @@
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "private": false,
+  "dependencies": {
+    "@opensrp/reducer-factory": "^0.0.11"
+  },
   "devDependencies": {
-    "@opensrp/reducer-factory": "^0.0.11",
-    "@types/geojson": "^7946.0.7"
+    "@onaio/redux-reducer-registry": "^0.0.9",
+    "@opensrp/store": "^0.0.7"
   },
   "peerDependencies": {
-    "@opensrp/server-service": "^0.0.11",
     "react": "^16.13.1"
   }
 }
