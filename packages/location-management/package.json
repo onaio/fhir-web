@@ -44,6 +44,7 @@
     "@opensrp/store": "^0.0.7"
   },
   "devDependencies": {
+    "@onaio/redux-reducer-registry": "^0.0.9",
     "@types/geojson": "^7946.0.7"
   },
   "peerDependencies": {

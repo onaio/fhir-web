@@ -34,19 +34,24 @@
   },
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
+    "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.1",
     "@opensrp/react-utils": "^0.0.1",
-    "@opensrp/reducer-factory": "^0.0.7",
+    "@opensrp/reducer-factory": "^0.0.11",
     "@opensrp/server-service": "^0.0.11",
-    "@opensrp/store": "^0.0.6",
+    "@opensrp/store": "^0.0.7",
+    "antd": "^4.8.2",
+    "formik": "^2.1.5",
     "formik-antd": "2.0.1",
+    "react-helmet": "^6.1.0",
     "yup": "^0.29.3"
   },
   "peerDependencies": {
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
-    "redux": "^4.0.1",
-    "antd": "^4.8.2"
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.1"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
