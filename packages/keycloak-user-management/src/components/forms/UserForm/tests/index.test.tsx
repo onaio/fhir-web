@@ -79,9 +79,8 @@ describe('forms/UserForm', () => {
     expect(form.find('FormItem').at(1).props()).toMatchSnapshot('Last Name');
     expect(form.find('FormItem').at(2).props()).toMatchSnapshot('Username');
     expect(form.find('FormItem').at(3).props()).toMatchSnapshot('Email');
-    expect(form.find('FormItem').at(4).props()).toMatchSnapshot('Mark as Practitioner');
-    expect(form.find('FormItem').at(5).props()).toMatchSnapshot('User Actions');
-    expect(form.find('FormItem').at(6).props()).toMatchSnapshot('Submit');
+    expect(form.find('FormItem').at(4).props()).toMatchSnapshot('User Actions');
+    expect(form.find('FormItem').at(5).props()).toMatchSnapshot('Submit');
     wrapper.unmount();
   });
 

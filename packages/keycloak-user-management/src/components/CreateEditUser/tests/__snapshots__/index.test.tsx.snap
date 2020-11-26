@@ -33,6 +33,15 @@ Object {
       keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
       opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
       opensrpServiceClass={[Function]}
+      practitioner={
+        Object {
+          "active": true,
+          "identifier": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+          "name": "prac one",
+          "userId": "7306784c-64fb-4d45-990b-306863eb478b",
+          "username": "prac_1",
+        }
+      }
       serviceClass={[Function]}
     />
   </Col>,

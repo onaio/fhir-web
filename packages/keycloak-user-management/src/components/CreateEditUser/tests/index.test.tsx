@@ -24,6 +24,7 @@ import {
 import { authenticateUser } from '@onaio/session-reducer';
 import { ERROR_OCCURED } from '../../../constants';
 import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { practitioner1 } from '../../forms/UserForm/tests/fixtures';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -76,14 +77,24 @@ describe('components/CreateEditUser', () => {
     });
   });
 
-  it('renders correctly', () => {
-    store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
+  it('renders correctly', async () => {
+    fetch
+      .once(JSON.stringify({}))
+      .once(JSON.stringify(fixtures.keycloakUser))
+      .once(JSON.stringify(practitioner1));
 
     const wrapper = mount(
-      <Router history={history}>
-        <CreateEditUser {...props} />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <CreateEditUser {...props} />
+        </Router>
+      </Provider>
     );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     const row = wrapper.find('Row').at(0);
 

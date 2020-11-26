@@ -87,19 +87,6 @@ Object {
 }
 `;
 
-exports[`forms/UserForm renders correctly: Mark as Practitioner 1`] = `
-Object {
-  "children": <Unknown
-    name="active"
-  />,
-  "hasFeedback": false,
-  "help": false,
-  "label": "Mark as Practitioner",
-  "validateStatus": undefined,
-  "valuePropName": "checked",
-}
-`;
-
 exports[`forms/UserForm renders correctly: Submit 1`] = `
 Object {
   "children": Array [
