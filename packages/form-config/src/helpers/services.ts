@@ -37,12 +37,10 @@ export class OpenSRPServiceExtend extends OpenSRPService {
       method: 'POST',
     });
 
-    if (response) {
-      if (response.ok || response.status === 201) {
-        return {};
-      }
-      const defaultMessage = `OpenSRPService create on ${this.endpoint} failed, HTTP status ${response?.status}`;
-      await throwHTTPError(response, defaultMessage);
+    if (response.ok || response.status === 201) {
+      return {};
     }
+    const defaultMessage = `OpenSRPService create on ${this.endpoint} failed, HTTP status ${response.status}`;
+    await throwHTTPError(response, defaultMessage);
   }
 }

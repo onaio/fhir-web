@@ -85,7 +85,9 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
         .list()
         .then((res: ManifestReleasesTypes[]) => fetchReleases(res))
         .catch((error) => {
-          customAlert && customAlert(String(error), { type: 'error' });
+          if (customAlert) {
+            customAlert(String(error), { type: 'error' });
+          }
         })
         .finally(() => setLoading(false));
     }

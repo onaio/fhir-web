@@ -91,7 +91,10 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
       .postData(postData)
       .then(() => setIfDoneHere(true))
       .catch((err) => {
-        customAlert && customAlert(String(err), { type: 'error' });
+        if (customAlert) {
+          customAlert(String(err), { type: 'error' });
+        }
+
         setSubmitting(false);
       });
   };
@@ -125,6 +128,7 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
                   onChange={handleChange}
                 />
                 {errors.form_name && touched.form_name && (
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   <small className="form-text text-danger jurisdictions-error">
                     {formNameRequiredLable}
                   </small>
@@ -144,6 +148,7 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
                   onChange={handleChange}
                 />
                 {errors.module && touched.module && (
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   <small className="form-text text-danger jurisdictions-error">
                     {errors.module}
                   </small>
@@ -165,6 +170,7 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
                   onChange={handleChange}
                 />
                 {errors.form_relation && touched.form_relation && (
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   <small className="form-text text-danger jurisdictions-error">
                     {errors.form_relation}
                   </small>
@@ -180,13 +186,13 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
               name="form"
               // tslint:disable-next-line: jsx-no-lambda
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setFieldValue(
-                  'form',
-                  event && event.target && event.target.files && event.target.files[0]
-                );
+                if (event.target.files) {
+                  setFieldValue('form', event.target.files[0]);
+                }
               }}
             />
             {errors.form && touched.form && (
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               <small className="form-text text-danger jurisdictions-error">
                 {formRequiredLabel}
               </small>
@@ -244,7 +250,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: OwnProps): UploadDefau
     formInitialValues = {
       form: null,
       form_name: formData.label,
-      form_relation: formData.form_relation || '',
+      form_relation: formData.form_relation,
       module: formData.module,
     };
   }
