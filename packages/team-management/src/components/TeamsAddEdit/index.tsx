@@ -8,7 +8,7 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { API_BASE_URL, PRACTITIONER_GET } from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
-import { notification } from 'antd';
+import { notification, Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioner';
 
 reducerRegistry.register(reducerName, reducer);
@@ -48,7 +48,18 @@ export const TeamsAddEdit: React.FC = () => {
       .catch((e) => notification.error({ message: `${e}`, description: '' }));
   }, [accessToken]);
 
-  if (!practitioner) return <h1>loading</h1>;
+  if (!practitioner)
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
 
   return (
     <section>
