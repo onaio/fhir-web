@@ -86,10 +86,11 @@ export const Form: React.FC<Props> = (props: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function removeEmptykeys(obj: any) {
     Object.keys(obj).forEach(function (key) {
-      if (typeof obj[key] === 'object' && !obj[key].length) delete obj[key];
-      else if (typeof obj[key] === 'object') removeEmptykeys(obj[key]);
-      else if (key === '') delete obj[key];
-      else if (obj[key] === null || obj[key] === undefined) delete obj[key];
+      const objCopy = { ...obj };
+      if (typeof objCopy[key] === 'object' && !objCopy[key].length) delete objCopy[key];
+      else if (typeof objCopy[key] === 'object') removeEmptykeys(objCopy[key]);
+      else if (key === '') delete objCopy[key];
+      else if (objCopy[key] === null || objCopy[key] === undefined) delete objCopy[key];
     });
   }
 
@@ -103,9 +104,11 @@ export const Form: React.FC<Props> = (props: Props) => {
     const locationTagFiler = props.locationtag.filter((e) =>
       (values.locationTags as number[]).includes(e.id)
     );
-    const locationTag = locationTagFiler.map(
-      (e) => ({ id: e.id, name: e.name } as LocationUnitTag)
-    );
+
+    const locationTag: LocationUnitTag[] = locationTagFiler.map((tag: LocationUnitTag) => ({
+      id: tag.id,
+      name: tag.name,
+    }));
 
     let geographicLevel;
     if (values.parentId) {
