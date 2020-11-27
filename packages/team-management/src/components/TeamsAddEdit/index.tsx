@@ -11,6 +11,8 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { notification, Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioner';
 
+import './TeamsAddEdit.css';
+
 reducerRegistry.register(reducerName, reducer);
 
 export const TeamsAddEdit: React.FC = () => {
