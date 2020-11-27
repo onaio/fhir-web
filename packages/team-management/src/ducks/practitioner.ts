@@ -18,4 +18,10 @@ export interface Practitioner {
   code?: PractitionerCoding;
 }
 
-export interface PractitionerPOST extends Practitioner {}
+export interface PractitionerPOST {
+  active: boolean;
+  code: { text: 'Community Health Worker' };
+  identifier: string; // --- uuid, auto generated
+  organization: string; // --- team uuid
+  practitioner: string; // --- practitioner uuid
+}
