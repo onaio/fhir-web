@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
+import { Select, Button, Form as AntdForm, Radio, Input, notification } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { v4 } from 'uuid';
@@ -38,9 +38,8 @@ export const Form: React.FC<Props> = (props: Props) => {
    * @param {Object} values the form fields
    * @param {Function} setSubmitting method to set submission status
    */
-  function onSubmit(values: FormField) {
+  async function onSubmit(values: FormField) {
     setIsSubmitting(true);
-    console.log(values);
     const Teamid = v4();
 
     const serve = new OpenSRPService(props.accessToken, API_BASE_URL, ORGANIZATION_POST);
@@ -59,69 +58,43 @@ export const Form: React.FC<Props> = (props: Props) => {
       },
     };
 
-    console.log(payload);
-
-    serve
+    await serve
       .create(payload)
-      .then((e) => {
-        console.log(e);
+      .then(async () => {
+        notification.success({ message: 'Successfully Added Teams', description: '' });
+        notification.info({ message: 'Assigning Practitioners', description: '' });
+
         const serve = new OpenSRPService(props.accessToken, API_BASE_URL, PRACTITIONER_POST);
 
         const practitioner = props.practitioner.filter((e) =>
           values.practitioners.includes(e.identifier)
         );
 
-        console.log(practitioner);
+        const payload: PractitionerPOST[] = practitioner.map((prac) => {
+          return {
+            active: prac.active,
+            identifier: v4(),
+            practitioner: prac.identifier,
+            organization: Teamid,
+            code: { text: 'Community Health Worker' },
+          };
+        });
 
-        const payload: PractitionerPOST[] = practitioner;
-        // values.practitioners.map((practitioner) => {
-        //   return {
-        //     active: values.active,
-        //     code: { text: 'Community Health Worker' },
-        //     identifier: v4(),
-        //     organization: Teamid,
-        //     practitioner: practitioner,
-        //   };
-        // });
+        console.log(payload);
 
-        // console.log(payload);
-
-        serve
+        await serve
           .create(payload)
-          .then((e) => {
-            console.log(e);
-            setIsSubmitting(false);
-          })
-          .catch((e) => {
-            console.log(e);
-            setIsSubmitting(false);
-          });
+          .then(() =>
+            notification.success({
+              message: 'Successfully Assigning Practitioners',
+              description: '',
+            })
+          )
+          .catch((e) => notification.error({ message: `${e}`, description: '' }));
       })
-      .catch((e) => {
-        console.log(e);
-        setIsSubmitting(false);
-      });
+      .catch((e) => notification.error({ message: `${e}`, description: '' }));
 
-    // team payload
-    // {
-    //   "id": 3,
-    //   "identifier": "1cb25782-89ec-4a35-8609-95729cc1035f",
-    //   "active": true,
-    //   "name": "Sample test Team 2",
-    //   "type": { "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/organization-type", "code": "team", "display": "Team" }] }
-    // }
-
-    // Practitioner payload
-    // {
-    //   "identifier": "24fe334a-4bbf-4698-99b8-1fa1a5a46d35",
-    //   "active": true,
-    //   "name": "prac two",
-    //   "userId": "e09deae4-50fe-40d4-8b5a-6f59683dbdba",
-    //   "username": "prac2"
-    // }
-
-    // const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
-    // const payload: LocationTagPayloadPOST | LocationTagPayloadPUT = values;
+    setIsSubmitting(false);
   }
 
   return (
