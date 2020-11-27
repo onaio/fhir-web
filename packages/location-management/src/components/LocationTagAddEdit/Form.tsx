@@ -85,7 +85,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       serve
         .update(payload)
         .then(() => {
-          notification.success({ message: 'User updated successfully', description: '' });
+          notification.success({ message: 'Location Tag updated successfully', description: '' });
           setSubmitting(false);
           history.goBack();
         })
@@ -97,7 +97,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       serve
         .create(payload)
         .then(() => {
-          notification.success({ message: 'User created successfully', description: '' });
+          notification.success({ message: 'Location Tag successfully', description: '' });
           setSubmitting(false);
           history.goBack();
         })
