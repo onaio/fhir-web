@@ -4,7 +4,7 @@ export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/res
 // Practitioner
 //
 export const PRACTITIONER_GET = 'practitioner';
-export const PRACTITIONER_POST = 'practitioner';
+export const PRACTITIONER_POST = 'practitionerRole/add';
 
 //
 // Organization
