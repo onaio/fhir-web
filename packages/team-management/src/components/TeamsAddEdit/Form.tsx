@@ -124,7 +124,6 @@ export const Form: React.FC<Props> = (props: Props) => {
     // const payload: LocationTagPayloadPOST | LocationTagPayloadPUT = values;
   }
 
-  // if (loading) return <Ripple />;
   return (
     <AntdForm requiredMark={false} {...layout} onFinish={onSubmit} initialValues={initialValue}>
       <AntdForm.Item name="name" label="Team Name">
