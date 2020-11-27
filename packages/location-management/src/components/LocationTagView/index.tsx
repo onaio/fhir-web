@@ -71,14 +71,14 @@ const LocationTagView: React.FC = () => {
   if (isLoading) return <Ripple />;
 
   return (
-    <section>
+    <section className="layout-content">
       <Helmet>
         <title>Locations Tag</title>
       </Helmet>
       <h5 className="mb-3">Location Tag Management</h5>
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
-          <div className="mb-3 d-flex justify-content-between">
+          <div className="mb-3 d-flex justify-content-between p-3">
             <h5>
               <Input
                 placeholder="Search"
@@ -108,7 +108,7 @@ const LocationTagView: React.FC = () => {
               </Dropdown>
             </div>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white p-3">
             <Table
               data={value.length < 1 ? tableData : (filter as TableData[])}
               onViewDetails={(e: LocationTagDetailProps) => setDetail(e)}

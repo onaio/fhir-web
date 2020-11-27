@@ -136,7 +136,7 @@ export const LocationUnitView: React.FC = () => {
   if (!tableData.length || !Treedata.length) return <Ripple />;
 
   return (
-    <section>
+    <section className="layout-content">
       <Helmet>
         <title>Locations Unit</title>
       </Helmet>
@@ -157,7 +157,7 @@ export const LocationUnitView: React.FC = () => {
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
-          <div className="mb-3 d-flex justify-content-between">
+          <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">Bombali</h5>
             <div>
               <Link to={URL_LOCATION_UNIT_ADD}>
@@ -179,7 +179,7 @@ export const LocationUnitView: React.FC = () => {
               </Dropdown>
             </div>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white p-3">
             <Table
               data={tableData}
               onViewDetails={loadSingleLocation}
