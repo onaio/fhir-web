@@ -1,4 +1,4 @@
-import { Organization } from '../teams';
+import { Organization } from '../organizations';
 
 export const org1: Organization = {
   active: true,
