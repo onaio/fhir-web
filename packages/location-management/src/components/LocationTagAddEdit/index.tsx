@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { Row, Col } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, { reducerName } from '../../ducks/location-units';
 import Form from './Form';
@@ -11,17 +12,17 @@ export const LocationTagAddEdit: React.FC = () => {
   const params: { id: string } = useParams();
   const { id } = params;
   return (
-    <section>
+    <Row className="layout-content">
       <Helmet>
         <title>{params.id ? 'Edit' : 'Add'} Location Unit Group</title>
       </Helmet>
 
-      <h5 className="mb-3">{params.id ? 'Edit' : 'Add'} Location Unit Group</h5>
+      <h5 className="mb-4">{params.id ? 'Edit' : 'Add'} Location Unit Group</h5>
 
-      <div className="bg-white p-5">
+      <Col className="bg-white p-4" span={24}>
         <Form id={id} />
-      </div>
-    </section>
+      </Col>
+    </Row>
   );
 };
 
