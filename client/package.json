@@ -18,7 +18,7 @@
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
     "@opensrp/keycloak-service": "^0.0.8",
-    "@opensrp/location-management": "file:../packages/location-management",
+    "@opensrp/location-management": "^0.0.7",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/product-catalogue": "^0.0.2",
     "@opensrp/react-utils": "^0.0.1",

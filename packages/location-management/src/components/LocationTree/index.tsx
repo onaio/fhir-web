@@ -10,13 +10,13 @@ reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
   data: ParsedHierarchyNode[];
-  OnItemClick?: (
+  OnItemClick: (
     item: ParsedHierarchyNode,
     [expandedKeys, setExpandedKeys]: [React.Key[], (key: React.Key[]) => void]
   ) => void;
 }
 
-const defaultProps: TreeProp = {
+const defaultProps: Partial<TreeProp> = {
   data: [],
 };
 
@@ -78,9 +78,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       const beforeStr = item.title.substr(0, index);
       const afterStr = item.title.substr(index + searchValue.length);
       const title = (
-        <span
-          onClick={() => (OnItemClick ? OnItemClick(item, [expandedKeys, setExpandedKeys]) : {})}
-        >
+        <span>
           {index > -1 ? (
             <>
               {beforeStr}
@@ -121,6 +119,10 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
+        onClick={(_, node: any) => {
+          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
+          OnItemClick(node, [allExpandedKeys, setExpandedKeys]);
+        }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
