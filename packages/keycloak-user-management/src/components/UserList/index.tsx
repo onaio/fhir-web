@@ -107,6 +107,7 @@ const UserList = (props: Props): JSX.Element => {
       lastName: user.lastName,
     };
   });
+
   return (
     <section className="layout-content">
       <h5 className="mb-3">User Management</h5>
