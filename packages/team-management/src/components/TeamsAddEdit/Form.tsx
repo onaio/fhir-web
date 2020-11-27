@@ -131,8 +131,8 @@ export const Form: React.FC<Props> = (props: Props) => {
         <Input placeholder="Enter a team name" />
       </AntdForm.Item>
 
-      <AntdForm.Item name="active" label="Status" valuePropName="checked">
-        <Radio.Group defaultValue={initialValue.active}>
+      <AntdForm.Item name="active" label="Status">
+        <Radio.Group>
           <Radio value={true}>Active</Radio>
           <Radio value={false}>Inactive</Radio>
         </Radio.Group>
