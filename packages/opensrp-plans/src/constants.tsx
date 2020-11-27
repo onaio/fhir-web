@@ -34,3 +34,6 @@ export const PRODUCT_CHECK = 'Product Check';
 export const FIX_PRODUCT_PROBLEMS = 'Fix Product Problems';
 export const RECORD_GPS = 'Record GPS';
 export const SERVICE_POINT_CHECK = 'Service Point Check';
+
+/** Field to sort plans by */
+export const SORT_BY_EFFECTIVE_PERIOD_START_FIELD = 'plan_effective_period_start';
