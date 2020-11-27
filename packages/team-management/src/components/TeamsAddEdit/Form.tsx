@@ -189,13 +189,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       </AntdForm.List>
 
       <AntdForm.Item {...offsetLayout}>
-        <Button
-          id="submit"
-          loading={isSubmitting}
-          type="primary"
-          htmlType="submit"
-          // disabled={!isValid && (dirty || submitCount > 0)}
-        >
+        <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
           {isSubmitting ? 'Saving' : 'Save'}
         </Button>
         <Button id="cancel" onClick={() => history.goBack()} type="dashed">
