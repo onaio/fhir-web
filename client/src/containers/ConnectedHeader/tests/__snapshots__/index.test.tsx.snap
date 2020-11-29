@@ -59,7 +59,7 @@ Object {
       type="primary"
     />,
   ],
-  "className": "txt-white align-items-center justify-content-end px-1",
+  "className": "txt-white align-items-center justify-content-end px-1 layout-header",
 }
 `;
 
@@ -151,6 +151,6 @@ Object {
       type="primary"
     />,
   ],
-  "className": "txt-white align-items-center justify-content-end px-1",
+  "className": "txt-white align-items-center justify-content-end px-1 layout-header",
 }
 `;
