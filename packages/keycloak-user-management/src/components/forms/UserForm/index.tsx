@@ -103,7 +103,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   return (
     <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
-      <h5 className="mb-3">{props.initialValues.email ? 'Edit User' : 'Add User'}</h5>
+      <h5 className="mb-3">{props.initialValues.email ? 'Edit User' : 'User addition'}</h5>
       <Col className="bg-white p-3" span={24}>
         <Formik
           initialValues={initialValues}
