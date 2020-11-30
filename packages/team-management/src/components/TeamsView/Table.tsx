@@ -2,7 +2,6 @@ import React from 'react';
 import { Table as AntTable, Button, Divider } from 'antd';
 import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
-import { TeamsDetailProps } from '../TeamsDetail';
 import { URL_EDIT_TEAM } from '../../constants';
 
 export interface TableData extends Organization {
@@ -12,11 +11,17 @@ export interface TableData extends Organization {
 
 export interface Props {
   data: TableData[];
-  onViewDetails?: (teams: TeamsDetailProps) => void;
+  accessToken: string;
+  setDetail: (isLoading: string | Organization) => void;
+  onViewDetails?: (
+    row: TableData,
+    accessToken: string,
+    setDetail: (isLoading: string | Organization) => void
+  ) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails } = props;
+  const { accessToken, setDetail, onViewDetails } = props;
 
   const columns = [
     {
@@ -24,12 +29,6 @@ const Table: React.FC<Props> = (props: Props) => {
       dataIndex: 'name',
       editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
-    },
-    {
-      title: 'Date created',
-      dataIndex: 'date',
-      editable: true,
-      sorter: (a: TableData, b: TableData) => a.date.localeCompare(b.date),
     },
     {
       title: 'Actions',
@@ -40,15 +39,15 @@ const Table: React.FC<Props> = (props: Props) => {
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
           <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
-            <Button type="link" className="m-0 p-1 viewdetails">
+            <Button type="link" className="m-0 p-1">
               Edit
             </Button>
           </Link>
           <Divider type="vertical" />
           <Button
-            onClick={() => (onViewDetails ? onViewDetails(record) : {})}
+            onClick={() => (onViewDetails ? onViewDetails(record, accessToken, setDetail) : {})}
             type="link"
-            className="m-0 p-1"
+            className="m-0 p-1 viewdetails"
           >
             View Details
           </Button>

@@ -22,30 +22,27 @@ describe('containers/pages/Home', () => {
         },
       ],
     },
+    teamMembers: [
+      {
+        active: false,
+        identifier: '718e2b7d-22d7-4c23-aaa7-62cca4b9e318',
+        name: 'prac one',
+        userId: '7306784c-64fb-4d45-990b-306863eb478b',
+        username: 'prac_1',
+      },
+    ],
   };
 
   it('renders without crashing', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <TeamsDetail {...props} />
-      </Provider>
-    );
+    const wrapper = mount(<TeamsDetail {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  it('removes it self on close', async () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <TeamsDetail {...props} onClose={() => wrapper.unmount()} />
-      </Provider>
-    );
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  it('removes it self on close', () => {
+    const wrapper = mount(<TeamsDetail {...props} onClose={() => wrapper.unmount()} />);
     expect(wrapper.children()).toHaveLength(1);
-    // wrapper.find('.close-btn').simulate('click');
-    // expect(wrapper).toHaveLength(0);
+    wrapper.find('button').simulate('click');
+    expect(wrapper).toHaveLength(0);
   });
   // it('doesnt close if onClose prop is not set', () => {
   //   const wrapper = mount(

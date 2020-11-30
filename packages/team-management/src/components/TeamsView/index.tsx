@@ -15,11 +15,16 @@ import reducer, {
   reducerName,
 } from '../../ducks/organizations';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, TEAMS_ALL, URL_ADD_TEAM } from '../../constants';
+import { API_BASE_URL, TEAMS_ALL, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
+import {
+  fetchPractitionerAction,
+  Practitioner,
+  removePractitionerAction,
+} from '../../ducks/practitioners';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -28,6 +33,7 @@ const TeamsView: React.FC = () => {
   const teamsArray = useSelector((state) => getOrganizationsArray(state));
   const dispatch = useDispatch();
   const [detail, setDetail] = useState<TeamsDetailProps | null>(null);
+  const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState('');
   const [filter, setfilterData] = useState<TableData[] | null>(null);
@@ -67,6 +73,27 @@ const TeamsView: React.FC = () => {
       entry.name.toLowerCase().includes(currentValue.toLowerCase())
     );
     setfilterData(filteredData as TableData[]);
+  };
+
+  const loadSingleTeam = (
+    row: TableData,
+    accessToken: string,
+    setDetail: (isLoading: string | Organization) => void
+  ): void => {
+    const serve = new OpenSRPService(
+      accessToken,
+      API_BASE_URL,
+      TEAM_PRACTITIONERS + row.identifier
+    );
+    dispatch(removePractitionerAction());
+    serve
+      .list()
+      .then((response: Practitioner[]) => {
+        dispatch(fetchPractitionerAction(response));
+        setPractitionersList(response);
+        setDetail(row);
+      })
+      .catch((e) => notification.error({ message: `${e}`, description: '' }));
   };
 
   if (isLoading) return <Spin size="large" />;
@@ -112,13 +139,19 @@ const TeamsView: React.FC = () => {
           <div className="bg-white p-4">
             <Table
               data={value.length < 1 ? tableData : (filter as TableData[])}
-              onViewDetails={(e: TeamsDetailProps) => setDetail(e)}
+              onViewDetails={loadSingleTeam}
+              accessToken={accessToken}
+              setDetail={setDetail as (isLoading: string | Organization) => void}
             />
           </div>
         </Col>
         {detail ? (
           <Col className="pl-3" span={5}>
-            <TeamsDetail onClose={() => setDetail(null)} {...detail} />
+            <TeamsDetail
+              onClose={() => setDetail(null)}
+              {...detail}
+              teamMembers={practitionersList}
+            />
           </Col>
         ) : (
           ''

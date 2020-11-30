@@ -40,7 +40,7 @@ describe('containers/pages/team/TeamsView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
         </Router>
       </Provider>
     );
@@ -50,28 +50,31 @@ describe('containers/pages/team/TeamsView', () => {
 
   it('Test Table View Detail', () => {
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Table data={tableData} onViewDetails={() => wrapper.unmount()} />
-        </Router>
-      </Provider>
+      <Router history={history}>
+        <Table
+          setDetail={() => jest.fn()}
+          accessToken="hunter 2"
+          data={tableData}
+          onViewDetails={() => wrapper.unmount()}
+        />
+      </Router>
     );
 
     wrapper.find('.viewdetails').first().simulate('click');
-    expect(wrapper).toHaveLength(1);
+    expect(wrapper).toHaveLength(0);
   });
 
   it('Test Name Sorting functionality', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
         </Router>
       </Provider>
     );
 
     const heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(3);
+    expect(heading.find('th')).toHaveLength(2);
     heading.find('th').at(0).children().simulate('click');
     heading.find('th').at(0).children().simulate('click');
 

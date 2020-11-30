@@ -24,6 +24,7 @@ Object {
     }
   >
     <Table
+      accessToken="hunter 2"
       data={
         Array [
           Object {
@@ -60,6 +61,7 @@ Object {
           },
         ]
       }
+      setDetail={[Function]}
     />
   </Router>,
   "store": Object {
