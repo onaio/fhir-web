@@ -72,6 +72,21 @@ describe('containers/pages/locations/locationTagView', () => {
     expect(wrapper).toHaveLength(0);
   });
 
+  it('Test Table when detail view prop is undefined', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Table data={tableData} />
+        </Router>
+      </Provider>
+    );
+
+    wrapper.find('.more-options').first().simulate('click');
+    wrapper.find('.viewdetails').first().simulate('click');
+
+    expect(wrapper).toHaveLength(1);
+  });
+
   it('Test Table Delete', () => {
     const wrapper = mount(
       <Provider store={store}>

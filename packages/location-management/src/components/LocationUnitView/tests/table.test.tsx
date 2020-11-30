@@ -42,6 +42,19 @@ describe('containers/pages/locations/locationunit', () => {
     expect(wrapper).toHaveLength(0);
   });
 
+  it('Test Table View Detai prop is undefined', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
+      </Router>
+    );
+
+    wrapper.find('.more-options').first().simulate('click');
+    wrapper.find('.viewdetails').first().simulate('click');
+
+    expect(wrapper).toHaveLength(1);
+  });
+
   it('Test Table Edit', () => {
     const wrapper = mount(
       <Router history={history}>

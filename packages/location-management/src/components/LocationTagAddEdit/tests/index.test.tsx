@@ -16,6 +16,6 @@ describe('containers/pages/locations/LocationTagAddEdit', () => {
         </Router>
       </Provider>
     );
-    expect(wrapper.find('section').props()).toMatchSnapshot();
+    expect(wrapper.find('Row').at(0).props()).toMatchSnapshot();
   });
 });
