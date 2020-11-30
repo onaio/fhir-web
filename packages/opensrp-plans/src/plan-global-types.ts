@@ -26,7 +26,7 @@ import {
   SERVICE_POINT_CHECK,
   TASK_GENERATION_STATUS_CODE,
   TEAM_ASSIGNMENT_STATUS_CODE,
-} from '../../constants';
+} from './constants';
 /** Allowed action Reason values */
 /* tslint:disable-next-line no-useless-cast */
 export const actionReasons = [INVESTIGATION, ROUTINE] as const;
