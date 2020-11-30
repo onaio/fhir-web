@@ -22,10 +22,8 @@ import * as fixtures from './fixtures';
 reducerRegistry.register(reducerName, reducer);
 
 describe('reducers/opensrp/PlanDefinition', () => {
-  let flushThunks;
-
   beforeEach(() => {
-    flushThunks = FlushThunks.createMiddleware();
+    FlushThunks.createMiddleware();
     jest.resetAllMocks();
     store.dispatch(removePlanDefinitions());
   });
@@ -87,7 +85,7 @@ describe('reducers/opensrp/PlanDefinition', () => {
       PlanDefinitionsArraySelector(store.getState(), { planIds: [fixtures.plans[3].identifier] })
     ).toEqual([fixtures.plans[3]]);
     expect(PlanDefinitionsArraySelector(store.getState(), { planIds: [] })).toEqual([]);
-    expect(PlanDefinitionsArraySelector(store.getState(), { planIds: null }).length).toEqual(6);
+    expect(PlanDefinitionsArraySelector(store.getState(), { planIds: null })).toHaveLength(6);
 
     // reset
     store.dispatch(removePlanDefinitions());

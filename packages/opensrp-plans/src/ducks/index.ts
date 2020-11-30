@@ -4,7 +4,7 @@ import { get, keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
-import { PlanDefinition, UseContext } from '../plan-global-types';
+import { PlanDefinition } from '../plan-global-types';
 import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
 
 /** the reducer name */
@@ -61,7 +61,7 @@ export interface RemovePlanDefinitionsAction extends AnyAction {
 
 /** interface for adding a single PlanDefinitions action */
 export interface AddPlanDefinitionAction extends AnyAction {
-  planObj: PlanDefinition;
+  planObj: PlanDefinition | null;
   type: typeof ADD_PLAN_DEFINITION;
 }
 
@@ -131,7 +131,7 @@ export default function reducer(
       }
       return state;
     case ADD_PLAN_DEFINITION:
-      if (action.planObj as PlanDefinition) {
+      if (action.planObj.identifier) {
         return SeamlessImmutable({
           ...state,
           planDefinitionsById: {
@@ -174,7 +174,7 @@ export function getPlanDefinitionsById(
  * @returns {PlanDefinition|null} a PlanDefinition object or null
  */
 export function getPlanDefinitionById(state: Partial<Store>, id: string): PlanDefinition | null {
-  return get((state as any)[reducerName].planDefinitionsById, id) || null;
+  return get((state as any)[reducerName].planDefinitionsById, id, null);
 }
 
 /** get an array of PlanDefinition objects
