@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`containers/pages/team/TeamsView renders without crashing 1`] = `
+Object {
+  "children": <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 1,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <Table
+      data={
+        Array [
+          Object {
+            "active": false,
+            "date": "2017-10-31",
+            "id": 1,
+            "identifier": "mock 1",
+            "key": "1",
+            "name": "Edrward 1",
+          },
+          Object {
+            "active": true,
+            "date": "2017-10-31",
+            "id": 2,
+            "identifier": "mock 2",
+            "key": "2",
+            "name": "Edrward 2",
+          },
+          Object {
+            "active": false,
+            "date": "2017-10-31",
+            "id": 3,
+            "identifier": "mock 3",
+            "key": "3",
+            "name": "Edrward 3",
+          },
+          Object {
+            "active": true,
+            "date": "2017-10-31",
+            "id": 4,
+            "identifier": "mock 4",
+            "key": "4",
+            "name": "Edrward 4",
+          },
+        ]
+      }
+    />
+  </Router>,
+  "store": Object {
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+    Symbol(observable): [Function],
+  },
+}
+`;

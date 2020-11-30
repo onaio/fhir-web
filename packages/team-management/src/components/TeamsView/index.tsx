@@ -72,7 +72,7 @@ const TeamsView: React.FC = () => {
   if (isLoading) return <Spin size="large" />;
 
   return (
-    <section>
+    <section className="layout-content">
       <Helmet>
         <title>Teams</title>
       </Helmet>

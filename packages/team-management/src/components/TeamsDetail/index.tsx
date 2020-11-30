@@ -53,7 +53,7 @@ const TeamsDetail = (props: TeamsDetailProps) => {
       <Button
         shape="circle"
         onClick={() => (props.onClose ? props.onClose() : '')}
-        className="float-right"
+        className="float-right close-btn"
         type="text"
         icon={<CloseOutlined />}
       />

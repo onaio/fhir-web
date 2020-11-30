@@ -6,7 +6,7 @@ import { TeamsDetailProps } from '../TeamsDetail';
 import { URL_EDIT_TEAM } from '../../constants';
 
 export interface TableData extends Organization {
-  date: any;
+  date: string;
   key: string;
 }
 
@@ -39,8 +39,8 @@ const Table: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Link to={`${URL_EDIT_TEAM}+${record.id}`}>
-            <Button type="link" className="m-0 p-1">
+          <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
+            <Button type="link" className="m-0 p-1 viewdetails">
               Edit
             </Button>
           </Link>
