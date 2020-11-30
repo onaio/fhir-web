@@ -1,4 +1,3 @@
-import { notification } from 'antd';
 import Papaparse from 'papaparse';
 import { OpenSRPService } from '@opensrp/server-service';
 import { DownloadClientDataFormFields } from '../DownloadClientData';
@@ -6,7 +5,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { ERROR_OCCURRED, OPENSRP_URL_CLIENT_SEARCH, APPLICATION_CSV } from '../../constants';
 import { Client } from '../../ducks/clients';
 import { downloadFile } from '../../helpers/utils';
-import { TreeNode } from '@opensrp/location-management/dist/types';
+import { TreeNode } from '@opensrp/location-management';
+import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 
 /** interface for user assignment response */
@@ -104,18 +104,12 @@ export const submitForm = (
       if (entries.length) {
         createCsv(entries, buildCSVFileName('', startDate, endDate));
       } else {
-        notification.error({
-          message: 'No data found',
-          description: '',
-        });
+        sendErrorNotification('No data found');
       }
     })
     .catch((_: Error) => {
       setSubmitting(false);
-      notification.error({
-        message: ERROR_OCCURRED,
-        description: '',
-      });
+      sendErrorNotification(ERROR_OCCURRED);
     });
 };
 

@@ -13,9 +13,14 @@ import fetch from 'jest-fetch-mock';
 import { DownloadClientDataFormFields } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import { notification } from 'antd';
+import * as notifications from '@opensrp/notifications';
 import { ERROR_OCCURRED } from '../../../constants';
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 describe('components/DownloadClientData/utils/createCSV', () => {
   afterEach(() => {
@@ -144,7 +149,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
   it('handles error if submission fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     submitForm(values, accessToken, opensrpBaseURL, OpenSRPService, setSubmittingMock);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
@@ -165,10 +170,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     });
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURRED,
-      description: '',
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
   });
 
   it('calls API correctly if card status is empty', async () => {
@@ -209,7 +211,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   it('handles an empty API response correctly', async () => {
     fetch.mockResponse(JSON.stringify([]));
 
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     submitForm(values, accessToken, opensrpBaseURL, OpenSRPService, setSubmittingMock);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
@@ -219,10 +221,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     });
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'No data found',
-      description: '',
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith('No data found');
   });
 
   it('filters correctly if start and end for date range is the same', async () => {
