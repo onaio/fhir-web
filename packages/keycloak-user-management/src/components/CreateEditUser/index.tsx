@@ -8,7 +8,12 @@ import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { UserForm, UserFormProps, defaultInitialValues, Practitioner } from '../forms/UserForm';
-import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
+import {
+  ROUTE_PARAM_USER_ID,
+  KEYCLOAK_URL_USERS,
+  ERROR_OCCURED,
+  OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
+} from '../../constants';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -79,7 +84,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const loadPractitioner = async () => {
     if (userId && practitioner === undefined) {
       setIsLoading(true);
-      const serve = new opensrpServiceClass(accessToken, opensrpBaseURL, 'practitioner/user');
+      const serve = new opensrpServiceClass(
+        accessToken,
+        opensrpBaseURL,
+        OPENSRP_CREATE_PRACTITIONER_ENDPOINT
+      );
       serve
         .read(userId)
         .then((response: Practitioner) => {

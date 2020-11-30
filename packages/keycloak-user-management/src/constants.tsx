@@ -12,6 +12,9 @@ export const KEYCLOAK_URL_USERS = '/users';
 export const KEYCLOAK_URL_RESET_PASSWORD = '/reset-password';
 export const KEYCLOAK_URL_REQUIRED_USER_ACTIONS = '/authentication/required-actions/';
 
+// OpenSRP API strings
+export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = 'practitioner/user';
+
 // Errors
 export const ERROR_OCCURED = 'An error occurred';
 
