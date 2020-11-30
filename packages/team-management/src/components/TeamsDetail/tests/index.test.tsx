@@ -1,10 +1,6 @@
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import flushPromises from 'flush-promises';
-import { act } from 'react-dom/test-utils';
-import { Provider } from 'react-redux';
-import { store } from '@opensrp/store';
 import TeamsDetail, { Props } from '..';
 
 describe('containers/pages/Home', () => {
