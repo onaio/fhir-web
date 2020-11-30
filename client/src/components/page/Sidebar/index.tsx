@@ -17,6 +17,7 @@ import {
   URL_HOME,
   URL_TEAMS,
   USER_MANAGEMENT,
+  URL_UPLOAD_JSON_VALIDATOR,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import { ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
@@ -56,6 +57,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.Item>
             </Menu.SubMenu>
           )}
+          <Menu.Item key="teams">
+            <Link to={URL_UPLOAD_JSON_VALIDATOR} className="admin-link">
+              Upload Json Validator
+            </Link>
+          </Menu.Item>
           <Menu.Item key="teams">
             <Link to={URL_TEAMS} className="admin-link">
               {TEAMS}
