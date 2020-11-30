@@ -128,9 +128,9 @@ export const Form: React.FC<Props> = (props: Props) => {
                       required: true,
                       whitespace: true,
                       message:
-                        index == 0
-                          ? "Please input user's name"
-                          : "Please input user's name or delete this field.",
+                        fields.length > 0
+                          ? "Please input user's name or delete this field."
+                          : "Please input user's name",
                     },
                   ]}
                   noStyle
