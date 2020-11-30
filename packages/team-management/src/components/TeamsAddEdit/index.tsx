@@ -64,7 +64,7 @@ export const TeamsAddEdit: React.FC = () => {
     );
 
   return (
-    <section>
+    <section className="layout-content">
       <Helmet>
         <title>{params.id ? 'Edit' : 'Create'} Team</title>
       </Helmet>
