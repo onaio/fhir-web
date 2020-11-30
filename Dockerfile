@@ -1,35 +1,27 @@
+FROM alpine/git AS sources
+
+RUN git clone --depth=1 --branch=config-sessions https://github.com/onaio/express-server.git /usr/src/express-server
+
 FROM node:14.9.0-alpine as build
 
+COPY ./ /app
 
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-COPY ./package.json /app/package.json
-COPY ./yarn.lock /app/yarn.lock
-COPY ./client/package.json /app/client/package.json
-COPY ./client/yarn.lock /app/client/yarn.lock
-COPY ./packages /app/packages
-COPY ./lerna.json /app/lerna.json
 
 RUN chown -R node .
 USER node
-RUN yarn install
 
-COPY ./client /app/client
-COPY ./public /app/public
-COPY ./tsconfig.json /app/tsconfig.json
-COPY ./client/.env /app/client/.env
-
-COPY ./babel.config.js /app/babel.config.js
+RUN cp /app/client/.env.sample /app/client/.env \
+      && yarn install
 
 USER root
 RUN chown -R node .
 USER node
-RUN yarn lerna:prepublish
-RUN yarn build
-
-FROM alpine/git AS sources
-
-RUN git clone --depth=1 --branch=config-sessions https://github.com/onaio/express-server.git /usr/src/express-server
+RUN yarn lerna:prepublish \
+      && cd ./client \
+      && yarn \
+      && yarn build
 
 FROM node:14.9.0-alpine as nodejsbuild
 COPY --from=sources /usr/src/express-server /usr/src/express-server
