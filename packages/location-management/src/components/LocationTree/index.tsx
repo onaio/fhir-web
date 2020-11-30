@@ -5,6 +5,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ParsedHierarchyNode } from '../../ducks/types';
 import reducer, { reducerName } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
+import { Dictionary } from '@onaio/utils';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -85,7 +86,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
       const title = (
         <span>
-          {index > -1 ? (
+          {searchValue.length > 0 && index > -1 ? (
             <>
               {beforeStr}
               <span className="searchValue">{searchValue}</span>
@@ -125,9 +126,9 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(_, node: any) => {
+        onClick={(_, node: Dictionary) => {
           const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
-          OnItemClick(node, [allExpandedKeys, setExpandedKeys]);
+          OnItemClick(node as ParsedHierarchyNode, [allExpandedKeys, setExpandedKeys]);
         }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
