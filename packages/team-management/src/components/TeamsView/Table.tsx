@@ -3,6 +3,7 @@ import { Table as AntTable, Button, Divider } from 'antd';
 import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { TeamsDetailProps } from '../TeamsDetail';
+import { URL_EDIT_TEAM } from '../../constants';
 
 export interface TableData extends Organization {
   date: any;
@@ -38,7 +39,7 @@ const Table: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Link to={'#'}>
+          <Link to={`${URL_EDIT_TEAM}+${record.id}`}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>

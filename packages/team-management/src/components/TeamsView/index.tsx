@@ -15,7 +15,7 @@ import reducer, {
   reducerName,
 } from '../../ducks/organizations';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, TEAMS_ALL } from '../../constants';
+import { API_BASE_URL, TEAMS_ALL, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
@@ -90,7 +90,7 @@ const TeamsView: React.FC = () => {
               />
             </h5>
             <div>
-              <Link to={'#'}>
+              <Link to={URL_ADD_TEAM}>
                 <Button type="primary">
                   <PlusOutlined />
                   Create Team

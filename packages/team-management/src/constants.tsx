@@ -1,5 +1,9 @@
 export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 
+//url
+export const URL_ADD_TEAM = 'team/add';
+export const URL_EDIT_TEAM = 'team/edit/';
+
 //
 // Teams detail
 //
