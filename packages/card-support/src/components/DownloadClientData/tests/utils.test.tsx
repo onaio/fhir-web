@@ -11,19 +11,22 @@ import { OpenSRPService } from '@opensrp/server-service';
 import Papaparse from 'papaparse';
 import fetch from 'jest-fetch-mock';
 import { DownloadClientDataFormFields } from '..';
-import { OPENSRP_URL_CLIENT_SEARCH } from '../../../constants';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { notification } from 'antd';
-import { ERROR_OCCURED } from '../../../../../../client/node_modules/@opensrp/user-management/src';
+import { ERROR_OCCURRED } from '../../../constants';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 describe('components/DownloadClientData/utils/createCSV', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('downloads csv correctly', () => {
     const mockDownload = jest.fn();
     (globalUtils as any).downloadFile = mockDownload;
     const fileName = 'client_data';
-    createCsv([fixtures.csvEntry1, fixtures.csvEntry2], fileName);
+    createCsv([fixtures.child1CsvEntry, fixtures.child2CsvEntry], fileName);
     expect(mockDownload).toBeCalled();
     // File name should be correct
     expect(mockDownload.mock.calls[0][1]).toEqual('client_data');
@@ -33,14 +36,32 @@ describe('components/DownloadClientData/utils/createCSV', () => {
 });
 
 describe('components/DownloadClientData/utils/buildCSVFileName', () => {
+  const currentDate = new Date('2020-11-18');
+  const realDate = Date;
+
+  beforeAll(() => {
+    // Mock new Date() but do not mock if date passed to constructor i.e
+    // mock current date only
+    (global as any).Date = class extends Date {
+      constructor(date) {
+        if (date) {
+          super(date);
+        } else {
+          return currentDate;
+        }
+      }
+    };
+  });
+
+  afterAll(() => {
+    global.Date = realDate;
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('builds the csv file name correctly', () => {
-    beforeAll(() => {
-      jest.useFakeTimers('modern');
-      jest.setSystemTime(new Date('2020-11-18'));
-    });
-    afterAll(() => {
-      jest.useRealTimers();
-    });
     const fileName = buildCSVFileName('nairobi', '2020-01-01', '2020-04-30');
 
     expect(fileName).toEqual('Children_list_nairobi_18_11_2020_(01-01-2020 - 30-04-2020)');
@@ -48,6 +69,9 @@ describe('components/DownloadClientData/utils/buildCSVFileName', () => {
 });
 
 describe('components/DownloadClientData/utils/formatDDMMYYYY', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it('formats a Date object correctly using the default delimiter', () => {
     expect(formatDDMMYYY(new Date('2020-11-18'))).toEqual('18/11/2020');
   });
@@ -58,6 +82,10 @@ describe('components/DownloadClientData/utils/formatDDMMYYYY', () => {
 });
 
 describe('components/DownloadClientData/utils/handleCardOrderDateChange', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('sets the card order data state', () => {
     const setCardOrderDateMock = jest.fn();
     const dateRange: [string, string] = ['2020-01-01', '2020-04-30'];
@@ -76,8 +104,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   (globalUtils as any).downloadFile = mockDownload;
   const clientLocation = 'e2b4a441-21b5-4d03-816b-09d45b17cad7';
   const cardStatus = 'needs_card';
-  const startDate = '2020-01-01';
-  const endDate = '2020-04-30';
+  const startDate = '2020-04-26';
+  const endDate = '2020-12-26';
   const cardOrderDate: [string, string] = [startDate, endDate];
   const values: DownloadClientDataFormFields = {
     clientLocation,
@@ -89,12 +117,12 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   const setSubmittingMock = jest.fn();
 
   it('submits the form correctly', async () => {
-    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child, fixtures.child2]));
+    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
     submitForm(values, accessToken, opensrpBaseURL, OpenSRPService, setSubmittingMock);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(fetch.mock.calls[0]).toEqual([
-      `${opensrpBaseURL}${OPENSRP_URL_CLIENT_SEARCH}?startDate=${startDate}&endDate=${endDate}&registration_location=${clientLocation}&attribute=card_status:${cardStatus}`,
+      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}&attribute=card_status:${cardStatus}`,
       {
         headers: {
           accept: 'application/json',
@@ -109,7 +137,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       await flushPromises();
     });
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
-    expect(papaparseMock).toBeCalledWith([fixtures.csvEntry1, fixtures.csvEntry2], {
+    expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
     });
   });
@@ -121,7 +149,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     submitForm(values, accessToken, opensrpBaseURL, OpenSRPService, setSubmittingMock);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(fetch.mock.calls[0]).toEqual([
-      `${opensrpBaseURL}${OPENSRP_URL_CLIENT_SEARCH}?startDate=${startDate}&endDate=${endDate}&registration_location=${clientLocation}&attribute=card_status:${cardStatus}`,
+      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}&attribute=card_status:${cardStatus}`,
       {
         headers: {
           accept: 'application/json',
@@ -138,18 +166,17 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
+      message: ERROR_OCCURRED,
       description: '',
     });
   });
 
-  it('calls API correctly if non-required params are empty', async () => {
-    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child, fixtures.child2]));
+  it('calls API correctly if card status is empty', async () => {
+    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
     submitForm(
       {
         ...values,
-        clientLocation: '',
         cardStatus: '',
       },
       accessToken,
@@ -159,7 +186,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     );
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(fetch.mock.calls[0]).toEqual([
-      `${opensrpBaseURL}${OPENSRP_URL_CLIENT_SEARCH}?startDate=${startDate}&endDate=${endDate}`,
+      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}`,
       {
         headers: {
           accept: 'application/json',
@@ -174,7 +201,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       await flushPromises();
     });
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
-    expect(papaparseMock).toBeCalledWith([fixtures.csvEntry1, fixtures.csvEntry2], {
+    expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
     });
   });
@@ -196,5 +223,72 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       message: 'No data found',
       description: '',
     });
+  });
+
+  it('filters correctly if start and end for date range is the same', async () => {
+    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+    submitForm(
+      {
+        ...values,
+        cardOrderDate: ['2020-11-26', '2020-11-26'],
+      },
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      setSubmittingMock
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry], {
+      header: true,
+    });
+  });
+
+  it('filters correctly if registration date does not meet range', async () => {
+    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+    submitForm(
+      {
+        ...values,
+        cardOrderDate: ['2020-04-26', '2020-10-26'],
+      },
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      setSubmittingMock
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(papaparseMock).toBeCalledWith([fixtures.child2CsvEntry], {
+      header: true,
+    });
+  });
+
+  it('does not fetch clients if location is empty', async () => {
+    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
+    submitForm(
+      {
+        ...values,
+        clientLocation: '',
+      },
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      setSubmittingMock
+    );
+    expect(setSubmittingMock).not.toHaveBeenCalled();
+    expect(fetch).not.toHaveBeenCalled();
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(papaparseMock).not.toHaveBeenCalled();
   });
 });

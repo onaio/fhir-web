@@ -45,6 +45,7 @@
     "@opensrp/server-service": "^0.0.10",
     "@opensrp/store": "^0.0.5",
     "@opensrp/location-management": "file:../location-management",
+    "@opensrp/notifications": "^0.0.2",
     "papaparse": "^5.3.0"
   },
   "author": "OpenSRP Engineering",

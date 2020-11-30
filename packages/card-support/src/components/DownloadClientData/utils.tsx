@@ -6,6 +6,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { ERROR_OCCURRED, OPENSRP_URL_CLIENT_SEARCH, APPLICATION_CSV } from '../../constants';
 import { Client } from '../../ducks/clients';
 import { downloadFile } from '../../helpers/utils';
+import { TreeNode } from '@opensrp/location-management/dist/types';
+import { Dictionary } from '@onaio/utils';
 
 /** interface for user assignment response */
 export interface UserAssignment {
@@ -52,29 +54,44 @@ export const submitForm = (
   serviceClass: typeof OpenSRPService,
   setSubmitting: (isSubmitting: boolean) => void
 ): void => {
-  setSubmitting(true);
   const { clientLocation, cardStatus, cardOrderDate } = values;
-  const startDate = cardOrderDate && cardOrderDate[0];
-  const endDate = cardOrderDate && cardOrderDate[1];
-  let endPoint = `${OPENSRP_URL_CLIENT_SEARCH}?startDate=${startDate}&endDate=${endDate}`;
 
-  if (clientLocation) {
-    endPoint = `${endPoint}&registration_location=${clientLocation}`;
+  if (!clientLocation) {
+    return;
   }
+
+  setSubmitting(true);
+  const startDate = cardOrderDate[0];
+  const endDate = cardOrderDate[1];
+  const endPoint = `${OPENSRP_URL_CLIENT_SEARCH}`;
+  const serve = new serviceClass(accessToken, opensrpBaseURL, endPoint);
+  let params: Dictionary = {
+    locationIds: clientLocation,
+  };
 
   if (cardStatus) {
-    endPoint = `${endPoint}&attribute=card_status:${cardStatus}`;
+    params = {
+      ...params,
+      attribute: `card_status:${cardStatus}`,
+    };
   }
 
-  const serve = new serviceClass(accessToken, opensrpBaseURL, endPoint);
   serve
-    .list()
+    .list(params)
     .then((clients: Client[]) => {
       const entries: ClientCSVEntry[] = clients
         .filter((client: Client) => !!client.identifiers.zeir_id)
+        .filter((client: Client) => {
+          const dateCreated = new Date(client.dateCreated.split('T')[0]);
+
+          return (
+            dateCreated.getTime() >= new Date(startDate).getTime() &&
+            dateCreated.getTime() <= new Date(endDate).getTime()
+          );
+        })
         .map((client: Client) => {
           return {
-            id: client.identifiers.zeir_id ? client.identifiers.zeir_id : '',
+            id: client.identifiers.zeir_id,
             dob: formatDDMMYYY(new Date(client.birthdate)),
             firstName: client.firstName,
             lastName: client.lastName,
@@ -138,4 +155,31 @@ export const createCsv = (entries: ClientCSVEntry[], fileName: string): void => 
   });
   // Export csv file
   downloadFile(csv, fileName, APPLICATION_CSV);
+};
+
+export const getLocationDetails = (locations: TreeNode[], locationId: string): TreeNode | null => {
+  let found = false;
+  let i = 0;
+  let location = null;
+
+  while (!found && i < locations.length) {
+    const node = locations[i];
+
+    if (node.id) {
+      if (node.id === locationId) {
+        found = true;
+        location = node;
+      }
+    } else {
+      location = getLocationDetails(node.children, locationId);
+
+      if (location) {
+        found = true;
+      }
+    }
+
+    i += 1;
+  }
+
+  return location;
 };

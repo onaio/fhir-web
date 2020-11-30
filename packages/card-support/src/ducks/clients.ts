@@ -11,8 +11,7 @@ import {
 
 /** interface for Client identfiers */
 export interface Identifiers {
-  M_ZEIR_ID?: string;
-  zeir_id?: string;
+  zeir_id: string;
 }
 
 /** interface address field */
@@ -29,17 +28,26 @@ export interface Address {
 
 /** interface attributes */
 export interface Attributes {
-  first_birth: string;
-  mother_tdv_doses: string;
-  mother_nationality: string;
-  second_phone_number: string;
-  mother_guardian_number: string;
+  age: string;
+  card_status: string;
+  ga_at_birth: string;
+  sms_recipient: string;
+  place_of_birth: string;
+  card_status_date: string;
+  registration_location_id: string;
+}
+
+/** interface for  relationships*/
+export interface Relationships {
+  mother: string[];
 }
 
 /** interface client */
 export interface Client {
   type: string;
   dateCreated: string;
+  clientApplicationVersion: number;
+  clientDatabaseVersion: number;
   serverVersion: number;
   baseEntityId: string;
   identifiers: Identifiers;
@@ -51,6 +59,9 @@ export interface Client {
   birthdateApprox: boolean;
   deathdateApprox: boolean;
   gender: string;
+  relationships: Relationships;
+  teamId: string;
+  locationId: string;
   _id: string;
   _rev: string;
 }

@@ -40,7 +40,7 @@ export interface DownloadClientDataProps {
 }
 /** interface for form fields */
 export interface DownloadClientDataFormFields {
-  clientLocation: string | undefined;
+  clientLocation: string;
   cardStatus: string;
   cardOrderDate: [string, string];
 }
