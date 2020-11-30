@@ -40,14 +40,10 @@ describe('containers/pages/Home', () => {
     wrapper.find('button').simulate('click');
     expect(wrapper).toHaveLength(0);
   });
-  // it('doesnt close if onClose prop is not set', () => {
-  //   const wrapper = mount(
-  //     <Provider store={store}>
-  //       <TeamsDetail {...props} />
-  //     </Provider>
-  //   );
-  //   expect(wrapper.children()).toHaveLength(1);
-  //   wrapper.find('button').simulate('click');
-  //   expect(wrapper).toHaveLength(1);
-  // });
+  it('doesnt close if onClose prop is not set', () => {
+    const wrapper = mount(<TeamsDetail {...props} />);
+    expect(wrapper.children()).toHaveLength(1);
+    wrapper.find('button').simulate('click');
+    expect(wrapper).toHaveLength(1);
+  });
 });

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Input, notification } from 'antd';
-import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Input, notification } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,18 +20,30 @@ import Table, { TableData } from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
-import {
-  fetchPractitionerAction,
-  Practitioner,
-  removePractitionerAction,
-} from '../../ducks/practitioners';
+import { Practitioner } from '../../ducks/practitioners';
 
 reducerRegistry.register(reducerName, reducer);
 
+export const loadSingleTeam = (
+  row: TableData,
+  accessToken: string,
+  setDetail: (isLoading: string | Organization) => void,
+  setPractitionersList: (isLoading: string | Practitioner[]) => void
+): void => {
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + row.identifier);
+  serve
+    .list()
+    .then((response: Practitioner[]) => {
+      setPractitionersList(response);
+      setDetail(row);
+    })
+    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+};
+
 const TeamsView: React.FC = () => {
+  const dispatch = useDispatch();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const teamsArray = useSelector((state) => getOrganizationsArray(state));
-  const dispatch = useDispatch();
   const [detail, setDetail] = useState<TeamsDetailProps | null>(null);
   const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -61,7 +73,6 @@ const TeamsView: React.FC = () => {
         name: team.name,
         active: team.active,
         identifier: team.identifier,
-        date: '2017-10-31',
       });
     });
   }
@@ -73,27 +84,6 @@ const TeamsView: React.FC = () => {
       entry.name.toLowerCase().includes(currentValue.toLowerCase())
     );
     setfilterData(filteredData as TableData[]);
-  };
-
-  const loadSingleTeam = (
-    row: TableData,
-    accessToken: string,
-    setDetail: (isLoading: string | Organization) => void
-  ): void => {
-    const serve = new OpenSRPService(
-      accessToken,
-      API_BASE_URL,
-      TEAM_PRACTITIONERS + row.identifier
-    );
-    dispatch(removePractitionerAction());
-    serve
-      .list()
-      .then((response: Practitioner[]) => {
-        dispatch(fetchPractitionerAction(response));
-        setPractitionersList(response);
-        setDetail(row);
-      })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
   };
 
   if (isLoading) return <Spin size="large" />;
@@ -123,24 +113,16 @@ const TeamsView: React.FC = () => {
                   Create Team
                 </Button>
               </Link>
-              <Divider type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="1">Logout</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-              >
-                <Button shape="circle" icon={<SettingOutlined />} type="text" />
-              </Dropdown>
             </div>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white">
             <Table
               data={value.length < 1 ? tableData : (filter as TableData[])}
               onViewDetails={loadSingleTeam}
               accessToken={accessToken}
+              setPractitionersList={
+                setPractitionersList as (isLoading: string | Practitioner[]) => void
+              }
               setDetail={setDetail as (isLoading: string | Organization) => void}
             />
           </div>

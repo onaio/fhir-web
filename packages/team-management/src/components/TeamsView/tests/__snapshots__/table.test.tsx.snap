@@ -29,7 +29,6 @@ Object {
         Array [
           Object {
             "active": false,
-            "date": "2017-10-31",
             "id": 1,
             "identifier": "mock 1",
             "key": "1",
@@ -37,7 +36,6 @@ Object {
           },
           Object {
             "active": true,
-            "date": "2017-10-31",
             "id": 2,
             "identifier": "mock 2",
             "key": "2",
@@ -45,7 +43,6 @@ Object {
           },
           Object {
             "active": false,
-            "date": "2017-10-31",
             "id": 3,
             "identifier": "mock 3",
             "key": "3",
@@ -53,7 +50,6 @@ Object {
           },
           Object {
             "active": true,
-            "date": "2017-10-31",
             "id": 4,
             "identifier": "mock 4",
             "key": "4",
@@ -62,6 +58,7 @@ Object {
         ]
       }
       setDetail={[Function]}
+      setPractitionersList={[Function]}
     />
   </Router>,
   "store": Object {

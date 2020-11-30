@@ -32,7 +32,6 @@ describe('containers/pages/team/TeamsView', () => {
       name: `Edrward ${i}`,
       active: i % 2 === 0,
       identifier: `mock ${i}`,
-      date: '2017-10-31',
     });
   }
 
@@ -40,7 +39,12 @@ describe('containers/pages/team/TeamsView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
+          <Table
+            setPractitionersList={() => jest.fn()}
+            setDetail={() => jest.fn()}
+            accessToken="hunter 2"
+            data={tableData}
+          />
         </Router>
       </Provider>
     );
@@ -52,6 +56,7 @@ describe('containers/pages/team/TeamsView', () => {
     const wrapper = mount(
       <Router history={history}>
         <Table
+          setPractitionersList={() => jest.fn()}
           setDetail={() => jest.fn()}
           accessToken="hunter 2"
           data={tableData}
@@ -68,7 +73,12 @@ describe('containers/pages/team/TeamsView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
+          <Table
+            setPractitionersList={() => jest.fn()}
+            setDetail={() => jest.fn()}
+            accessToken="hunter 2"
+            data={tableData}
+          />
         </Router>
       </Provider>
     );
