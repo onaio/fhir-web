@@ -32,6 +32,7 @@ const props = {
   LoadingComponent: <div></div>,
   uploadTypeUrl: 'manifest-file',
   customAlert: jest.fn(),
+  accessToken: 'hunter2',
 };
 
 const actualDebounce = _.debounce;

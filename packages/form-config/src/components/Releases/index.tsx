@@ -41,6 +41,7 @@ export interface ReleasesDefaultProps extends SearchBarDefaultProps {
   updatedAt: string;
   uploadFileLabel: string;
   viewFilesLabel: string;
+  accessToken: string;
 }
 
 /** ManifestReleases props interface */
@@ -71,6 +72,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
     identifierLabel,
     updatedAt,
     drillDownProps,
+    accessToken,
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -80,7 +82,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
     /** get manifest releases */
     if (data.length < 1) {
       setLoading(true);
-      const clientService = new OpenSRPService(baseURL, endpoint, getPayload);
+      const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
       clientService
         .list()
         .then((res: ManifestReleasesTypes[]) => fetchReleases(res))
@@ -91,7 +93,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
         })
         .finally(() => setLoading(false));
     }
-  }, [baseURL, endpoint, getPayload, customAlert, fetchReleases, data.length]);
+  }, [baseURL, endpoint, getPayload, customAlert, fetchReleases, data.length, accessToken]);
 
   useEffect(() => {
     setStateData(data);
@@ -199,6 +201,7 @@ const defaultProps: ReleasesDefaultProps = {
   updatedAt: UPDATED_AT_LABEL,
   uploadFileLabel: UPOL0AD_FILE_LABEL,
   viewFilesLabel: VIEW_FILES_LABEL,
+  accessToken: '',
 };
 
 /** pass default props to component */

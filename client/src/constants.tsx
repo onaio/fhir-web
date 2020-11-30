@@ -19,5 +19,7 @@ export const URL_USER_EDIT = '/user/edit';
 export const URL_TEAMS = '/teams';
 export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';
+export const URL_MANIFEST = '/manifest';
+export const URL_UPLOAD_JSON_VALIDATOR = '/upload-json-validator';
 
 export const ERROR_OCCURRED = 'An error occurred';

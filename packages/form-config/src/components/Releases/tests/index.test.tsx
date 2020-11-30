@@ -33,6 +33,7 @@ const props = {
   LoadingComponent: <div>Loading</div>,
   uploadTypeUrl: 'file',
   customAlert: jest.fn(),
+  accessToken: 'hunter2',
 };
 
 const actualDebounce = _.debounce;

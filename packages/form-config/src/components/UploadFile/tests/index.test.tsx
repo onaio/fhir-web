@@ -28,6 +28,7 @@ const props = {
   LoadingComponent: <div>Loading</div>,
   validatorsUrl: '/validators',
   customAlert: jest.fn(),
+  accessToken: 'hunter2',
 };
 
 describe('components/UploadFile', () => {

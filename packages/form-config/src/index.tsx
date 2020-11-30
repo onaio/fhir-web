@@ -13,5 +13,6 @@ export * from './components/UploadFile/helpers';
 export * from './components/Releases';
 export * from './components/FilesList';
 export * from './components/DraftFiles';
+export * as AntdUploadForm from './components/Antd/UploadFileForm';
 
 export { draftFilesReducer, manifestFilesReducer, manifestReleasesReducer };
