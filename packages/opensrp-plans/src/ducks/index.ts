@@ -1,10 +1,10 @@
-import { Dictionary } from '@onaio/utils/dist/types/types';
+import { Dictionary } from '@onaio/utils';
 import intersect from 'fast_array_intersect';
 import { get, keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
-import { PlanDefinition, UseContext } from './configs/settings';
+import { PlanDefinition, UseContext } from '../plan-global-types';
 import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
 
 /** the reducer name */
@@ -36,34 +36,6 @@ export enum PlanStatus {
   DRAFT = 'draft',
   RETIRED = 'retired',
 }
-
-/** PlanRecord - base Plan interface for plan objects,  keyed by `id` in state */
-export interface PlanRecord {
-  id: string;
-  plan_date: string;
-  plan_effective_period_end: string;
-  plan_effective_period_start: string;
-  plan_fi_reason: string;
-  plan_fi_status: string;
-  plan_id: string;
-  plan_intervention_type: InterventionType;
-  plan_status: PlanStatus;
-  plan_title: string;
-  plan_useContext?: UseContext[];
-  plan_version?: string;
-  plan_jurisdictions_ids?: string[];
-}
-
-/** Plan - interface for plan[-jurisdiction] objects */
-export interface Plan extends PlanRecord {
-  jurisdiction_depth: number;
-  jurisdiction_id: string;
-  jurisdiction_name: string;
-  jurisdiction_name_path: string[];
-  jurisdiction_parent_id: string;
-  jurisdiction_path: string[];
-}
-
 /** Enum representing the possible intervention types */
 export enum InterventionType {
   DynamicFI = 'Dynamic-FI',

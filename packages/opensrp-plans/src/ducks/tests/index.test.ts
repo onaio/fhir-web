@@ -1,7 +1,7 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { keyBy } from 'lodash';
 import { FlushThunks } from 'redux-testkit';
-import { PlanDefinition } from '../configs/settings';
+import { PlanDefinition } from '../../plan-global-types';
 import { store } from '@opensrp/store';
 import { InterventionType } from '../index';
 import reducer, {

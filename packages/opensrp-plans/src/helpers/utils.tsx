@@ -1,6 +1,6 @@
 import { Dictionary } from '@onaio/utils';
 import { InterventionType } from '../ducks';
-import { PlanDefinition, UseContext } from '../ducks/configs/settings';
+import { PlanDefinition, UseContext } from '../plan-global-types';
 
 /**
  * helper to retrieve the plan Type from a plan definition object

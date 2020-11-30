@@ -1,8 +1,9 @@
 import { SORT_BY_EFFECTIVE_PERIOD_START_FIELD } from '../../constants';
 import * as planDefinitionFixtures from '../../ducks/tests/fixtures';
-import { InterventionType, Plan } from '../../ducks/index';
-import { plan1, plan99, sortedPlansArray } from './fixtures';
+import { InterventionType } from '../../ducks/index';
+import * as fixtures from '../../ducks/tests/fixtures';
 import { descendingOrderSort, isPlanDefinitionOfType } from '../utils';
+import { PlanDefinition } from '../../plan-global-types';
 
 describe('helpers/utils', () => {
   beforeEach(() => {
@@ -11,10 +12,10 @@ describe('helpers/utils', () => {
 
   it('sorts plans array in descending order', () => {
     const sortedPlans = descendingOrderSort(
-      [plan99, plan1] as Plan[],
+      fixtures.eusmPlans as PlanDefinition[],
       SORT_BY_EFFECTIVE_PERIOD_START_FIELD
     );
-    expect(sortedPlans).toEqual(sortedPlansArray);
+    expect(sortedPlans).toEqual(fixtures.eusmPlans);
   });
 
   it('computes the interventionType of a planDefinition correctly', () => {
