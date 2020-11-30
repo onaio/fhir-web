@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, {
-  fetchPractionerAction,
+  fetchPractitionerAction,
   getPractitionerArray,
   reducerName,
-  Practioner,
-  removePractionerAction,
+  Practitioner,
+  removePractitionerAction,
 } from '../../ducks/practitioners';
 import { getAccessToken } from '@onaio/session-reducer';
 import { API_BASE_URL, TEAM_PRACTITIONERS } from '../../constants';
@@ -36,11 +36,11 @@ const TeamsDetail = (props: TeamsDetailProps) => {
   useEffect(() => {
     if (isLoading) {
       const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + identifier);
-      dispatch(removePractionerAction());
+      dispatch(removePractitionerAction());
       serve
         .list()
-        .then((response: Practioner[]) => {
-          dispatch(fetchPractionerAction(response));
+        .then((response: Practitioner[]) => {
+          dispatch(fetchPractitionerAction(response));
           setIsLoading(false);
         })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
