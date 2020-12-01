@@ -46,4 +46,9 @@ describe('containers/pages/Home', () => {
     wrapper.find('button').simulate('click');
     expect(wrapper).toHaveLength(1);
   });
+
+  it('show no team members if doesnt have team members', () => {
+    const wrapper = mount(<TeamsDetail {...props} teamMembers={[]} />);
+    expect(wrapper.find('.no-team-members').text()).toEqual('No team members');
+  });
 });
