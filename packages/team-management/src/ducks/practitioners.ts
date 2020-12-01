@@ -1,11 +1,6 @@
-/** interface for Organizations coding property */
+/** interface for a Organization object */
 interface PractitionerCoding {
   text: string;
-}
-
-/** interface for the type key in an Practitioner Object */
-interface PractitionerType {
-  coding: PractitionerCoding[];
 }
 
 /** interface for a Practitioner object */

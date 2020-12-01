@@ -6,7 +6,7 @@ import { v4 } from 'uuid';
 import { API_BASE_URL, ORGANIZATION_POST, PRACTITIONER_POST } from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import { OrganizationPOST } from '../../ducks/organizations';
-import { Practitioner, PractitionerPOST } from '../../ducks/practitioner';
+import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -36,7 +36,6 @@ export const Form: React.FC<Props> = (props: Props) => {
    * Handle form submission
    *
    * @param {Object} values the form fields
-   * @param {Function} setSubmitting method to set submission status
    */
   async function onSubmit(values: FormField) {
     setIsSubmitting(true);
@@ -79,8 +78,6 @@ export const Form: React.FC<Props> = (props: Props) => {
             code: { text: 'Community Health Worker' },
           };
         });
-
-        console.log(payload);
 
         await serve
           .create(payload)

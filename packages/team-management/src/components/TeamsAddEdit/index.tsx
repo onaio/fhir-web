@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { API_BASE_URL, PRACTITIONER_GET } from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import { notification, Spin } from 'antd';
-import { Practitioner } from '../../ducks/practitioner';
+import { Practitioner } from '../../ducks/practitioners';
 
 import './TeamsAddEdit.css';
 
@@ -43,10 +43,7 @@ export const TeamsAddEdit: React.FC = () => {
     const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_GET);
     serve
       .list()
-      .then((response: Practitioner[]) => {
-        console.log(response);
-        setPractitioner(response);
-      })
+      .then((response: Practitioner[]) => setPractitioner(response))
       .catch((e) => notification.error({ message: `${e}`, description: '' }));
   }, [accessToken]);
 
