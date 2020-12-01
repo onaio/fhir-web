@@ -68,11 +68,11 @@ const status = [
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function removeEmptykeys(obj: any) {
+  const objCopy = { ...obj };
   Object.keys(obj).forEach(function (key) {
-    const objCopy = { ...obj };
     if (typeof objCopy[key] === 'object' && !objCopy[key].length) delete objCopy[key];
     else if (typeof objCopy[key] === 'object') removeEmptykeys(objCopy[key]);
-    else if (key === '') delete objCopy[key];
+    else if (objCopy[key] === '') delete objCopy[key];
     else if (objCopy[key] === null || objCopy[key] === undefined) delete objCopy[key];
   });
 }
