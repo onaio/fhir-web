@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import { HierarchyNode, ParsedHierarchyNode } from 'location-management/src/ducks/types';
 import { LocationTag } from '../../../ducks/location-tags';
 import { LocationUnitStatus } from '../../../ducks/location-units';
-import { HierarchySingleNode, ParsedHierarchySingleNode } from '../../LocationTree/utils';
 import { FormField } from '../Form';
 
 export const locationtag: LocationTag[] = [
@@ -172,7 +172,7 @@ export const LocationTagValue: FormField = {
   type: 'Feature',
 };
 
-export const treedata: HierarchySingleNode<ParsedHierarchySingleNode[]>[] = [
+export const treedata: HierarchyNode<ParsedHierarchyNode[]>[] = [
   {
     id: '35bf4771-a404-4220-bd9e-e2916decc116',
     label: 'Nairobi',

@@ -3,7 +3,7 @@ import React from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
 import { notification, Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { getUser } from '@onaio/session-reducer';
+import { getUser, User } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
@@ -62,6 +62,109 @@ const status = [
   { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
 ];
 
+/** removes empty undefined and null objects before they payload is sent to server
+ *
+ * @param {any} obj object to remove empty keys from
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function removeEmptykeys(obj: any) {
+  Object.keys(obj).forEach(function (key) {
+    const objCopy = { ...obj };
+    if (typeof objCopy[key] === 'object' && !objCopy[key].length) delete objCopy[key];
+    else if (typeof objCopy[key] === 'object') removeEmptykeys(objCopy[key]);
+    else if (key === '') delete objCopy[key];
+    else if (objCopy[key] === null || objCopy[key] === undefined) delete objCopy[key];
+  });
+}
+
+/**
+ * Handle form submission
+ *
+ * @param {Object} values the form fields
+ * @param {string} accessToken api access token
+ * @param {object} props component props
+ * @param {object} user logged in user object
+ * @param {Function} setSubmitting method to set submission status
+ */
+export const onSubmit = async (
+  values: FormField,
+  accessToken: string,
+  props: Props,
+  user: User,
+  setSubmitting: (isSubmitting: boolean) => void
+) => {
+  const locationTagFiler = props.locationtag.filter((e) =>
+    (values.locationTags as number[]).includes(e.id)
+  );
+
+  const locationTag: LocationUnitTag[] = locationTagFiler.map((tag: LocationUnitTag) => ({
+    id: tag.id,
+    name: tag.name,
+  }));
+
+  let geographicLevel;
+  if (values.parentId) {
+    geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
+      .read(values.parentId)
+      .then((res: RawOpenSRPHierarchy) => {
+        return res.locationsHierarchy.map[values.parentId as string].node.attributes
+          .geographicLevel as number;
+      })
+      .catch((e) => notification.error({ message: `${e}`, description: '' }));
+  }
+
+  const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
+    is_jurisdiction: true;
+  } = {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    is_jurisdiction: true,
+    properties: {
+      geographicLevel: geographicLevel && geographicLevel >= 0 ? geographicLevel + 1 : 0,
+      username: user.username,
+      externalId: values.externalId,
+      parentId: values.parentId ? values.parentId : '',
+      name: values.name,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      name_en: values.name,
+      status: values.status,
+    },
+    id: props.id ? props.id : v4(),
+    syncStatus: LocationUnitSyncStatus.SYNCED,
+    type: values.type,
+    locationTags: locationTag,
+    geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
+  };
+
+  removeEmptykeys(payload);
+
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
+  if (props.id) {
+    serve
+      .update({ ...payload })
+      .then(() => {
+        notification.success({ message: 'Location Unit Updated successfully', description: '' });
+        setSubmitting(false);
+        history.goBack();
+      })
+      .catch((e: Error) => {
+        notification.error({ message: `${e}`, description: '' });
+        setSubmitting(false);
+      });
+  } else {
+    serve
+      .create({ ...payload })
+      .then(() => {
+        notification.success({ message: 'Location Unit Created successfully', description: '' });
+        setSubmitting(false);
+        history.goBack();
+      })
+      .catch((e: Error) => {
+        notification.error({ message: `${e}`, description: '' });
+        setSubmitting(false);
+      });
+  }
+};
+
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
   const accessToken = useSelector((state) => getAccessToken(state) as string);
@@ -79,101 +182,7 @@ export const Form: React.FC<Props> = (props: Props) => {
     ));
   }
 
-  /** removes empty undefined and null objects before they payload is sent to server
-   *
-   * @param {any} obj object to remove empty keys from
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function removeEmptykeys(obj: any) {
-    Object.keys(obj).forEach(function (key) {
-      const objCopy = { ...obj };
-      if (typeof objCopy[key] === 'object' && !objCopy[key].length) delete objCopy[key];
-      else if (typeof objCopy[key] === 'object') removeEmptykeys(objCopy[key]);
-      else if (key === '') delete objCopy[key];
-      else if (objCopy[key] === null || objCopy[key] === undefined) delete objCopy[key];
-    });
-  }
-
-  /**
-   * Handle form submission
-   *
-   * @param {Object} values the form fields
-   * @param {Function} setSubmitting method to set submission status
-   */
-  async function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
-    const locationTagFiler = props.locationtag.filter((e) =>
-      (values.locationTags as number[]).includes(e.id)
-    );
-
-    const locationTag: LocationUnitTag[] = locationTagFiler.map((tag: LocationUnitTag) => ({
-      id: tag.id,
-      name: tag.name,
-    }));
-
-    let geographicLevel;
-    if (values.parentId) {
-      geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
-        .read(values.parentId)
-        .then((res: RawOpenSRPHierarchy) => {
-          return res.locationsHierarchy.map[values.parentId as string].node.attributes
-            .geographicLevel as number;
-        })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
-    }
-
-    const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
-      is_jurisdiction: true;
-    } = {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      is_jurisdiction: true,
-      properties: {
-        geographicLevel: geographicLevel ? geographicLevel + 1 : 0,
-        username: user.username,
-        externalId: values.externalId,
-        parentId: values.parentId ? values.parentId : '',
-        name: values.name,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        name_en: values.name,
-        status: values.status,
-      },
-      id: props.id ? props.id : v4(),
-      syncStatus: LocationUnitSyncStatus.SYNCED,
-      type: values.type,
-      locationTags: locationTag,
-      geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
-    };
-
-    removeEmptykeys(payload);
-
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
-    if (props.id) {
-      serve
-        .update({ ...payload })
-        .then(() => {
-          notification.success({ message: 'Location Unit Updated successfully', description: '' });
-          setSubmitting(false);
-          history.goBack();
-        })
-        .catch((e: Error) => {
-          notification.error({ message: `${e}`, description: '' });
-          setSubmitting(false);
-        });
-    } else {
-      serve
-        .create({ ...payload })
-        .then(() => {
-          notification.success({ message: 'Location Unit Created successfully', description: '' });
-          setSubmitting(false);
-          history.goBack();
-        })
-        .catch((e: Error) => {
-          notification.error({ message: `${e}`, description: '' });
-          setSubmitting(false);
-        });
-    }
-  }
-
-  /** functino to filter options from the select or not
+  /** function to filter options from the select or not
    *
    * @param {string} input value
    * @param {any} option .
@@ -191,7 +200,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, setSubmitting)}
+      ) => onSubmit(values, accessToken, props, user, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => (
         <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
