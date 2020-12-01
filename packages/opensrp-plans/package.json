@@ -1,7 +1,7 @@
 {
   "name": "@opensrp/plans",
   "version": "0.0.0",
-  "description": "Opensrp plans UI",
+  "description": "Opensrp plans",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
