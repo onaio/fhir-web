@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import MockDate from 'mockdate';
-import { PlanActionCodes } from '../constants/enumsAndCodeConstants';
+import { GoalUnit, PlanActionCodes } from '../constants/enumsAndCodeConstants';
 import { planActivities as planActivitiesFromConfig } from '../activitiesLookup';
 import { PlanDefinition } from '../types';
 import { IGNORE, TRUE } from '../constants/stringConstants';

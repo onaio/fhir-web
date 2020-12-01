@@ -9,7 +9,6 @@ import {
   PlanActivityTitles,
   GoalUnit,
 } from './constants/enumsAndCodeConstants';
-import { Moment } from 'moment';
 
 /** FI Status type */
 export type FIStatusType = typeof FIStatuses[number];
@@ -64,8 +63,8 @@ export interface PlanActivityFormFields {
   goalDue: Date;
   goalPriority: string;
   goalValue: number;
-  timingPeriodEnd: Moment;
-  timingPeriodStart: Moment;
+  timingPeriodEnd: Date;
+  timingPeriodStart: Date;
   trigger?: PlanActivityTrigger[];
 }
 
@@ -79,16 +78,16 @@ export interface PlanJurisdictionFormFields {
 export interface PlanFormFields {
   activities: PlanActivityFormFields[];
   caseNum?: string;
-  date: Moment;
-  end: Moment;
+  date: Date;
+  end: Date;
   fiReason?: FIReasonType;
   fiStatus?: FIStatusType;
   identifier: string;
   interventionType: InterventionType;
-  jurisdictions?: PlanJurisdictionFormFields[];
+  jurisdictions: PlanJurisdictionFormFields[];
   name: string;
   opensrpEventId?: string;
-  start: Moment;
+  start: Date;
   status: PlanStatus;
   taskGenerationStatus: taskGenerationStatusType;
   teamAssignmentStatus?: string;
@@ -112,6 +111,7 @@ export enum InterventionType {
   IRSLite = 'IRS-Lite',
   MDA = 'MDA',
   MDAPoint = 'MDA-Point',
+  SM = 'SM',
 }
 
 /** Enum representing the possible intervention types */
@@ -157,7 +157,7 @@ export interface PlanActionTimingPeriod {
 }
 
 /** Plan Action subjectCodableConcept */
-export interface PlanActionsubjectCodableConcept {
+export interface PlanActionSubjectCodableConcept {
   text: 'Family' | 'Person' | 'Location' | 'Jurisdiction' | 'Device';
 }
 
@@ -167,7 +167,7 @@ export interface PlanExpression {
   expression: string;
   name?: string;
   reference?: string;
-  subjectCodableConcept?: PlanActionsubjectCodableConcept;
+  subjectCodableConcept?: PlanActionSubjectCodableConcept;
 }
 
 /** Plan Action Trigger */
@@ -193,7 +193,7 @@ export interface PlanAction {
   identifier: string;
   prefix: number;
   reason: ActionReasonType;
-  subjectCodableConcept: PlanActionsubjectCodableConcept;
+  subjectCodableConcept: PlanActionSubjectCodableConcept;
   taskTemplate?: string;
   timingPeriod: PlanActionTimingPeriod;
   title: string;
@@ -202,7 +202,7 @@ export interface PlanAction {
 }
 
 /** Plan Goal detailQuantity */
-export interface PlanGoaldetailQuantity {
+export interface PlanGoalDetailQuantity {
   comparator: '>=' | '<=' | '>';
   unit: GoalUnit;
   value: number;
@@ -210,7 +210,7 @@ export interface PlanGoaldetailQuantity {
 
 /** Plan Goal Detail */
 export interface PlanGoalDetail {
-  detailQuantity: PlanGoaldetailQuantity;
+  detailQuantity: PlanGoalDetailQuantity;
 }
 
 /** Plan Goal Target */

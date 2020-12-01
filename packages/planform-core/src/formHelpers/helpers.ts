@@ -55,6 +55,10 @@ import {
   OPENSRP_EVENT_ID_CODE,
   TASK_GENERATION_STATUS_CODE,
   TEAM_ASSIGNMENT_STATUS_CODE,
+  FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
+  PRODUCT_CHECK_ACTIVITY_CODE,
+  RECORD_GPS_ACTIVITY_CODE,
+  SERVICE_POINT_CHECK_ACTIVITY_CODE,
 } from './constants/stringConstants';
 import {
   FIStatusType,
@@ -71,7 +75,7 @@ import {
   PlanAction,
   PlanGoal,
   ActionReasonType,
-  PlanGoaldetailQuantity,
+  PlanGoalDetailQuantity,
   PlanGoalDetail,
   PlanGoalTarget,
   GoalPriorityType,
@@ -170,12 +174,12 @@ export function extractActivityForForm(activityObj: PlanActivity): PlanActivityF
       1,
     timingPeriodEnd:
       activityObj.action.timingPeriod.end && activityObj.action.timingPeriod.end !== ''
-        ? moment(parseISO(`${activityObj.action.timingPeriod.end}${DEFAULT_TIME}`))
-        : moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, DAYS),
+        ? parseISO(`${activityObj.action.timingPeriod.end}${DEFAULT_TIME}`)
+        : moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, DAYS).toDate(),
     timingPeriodStart:
       activityObj.action.timingPeriod.start && activityObj.action.timingPeriod.start !== ''
-        ? moment(parseISO(`${activityObj.action.timingPeriod.start}${DEFAULT_TIME}`))
-        : moment(),
+        ? parseISO(`${activityObj.action.timingPeriod.start}${DEFAULT_TIME}`)
+        : moment().toDate(),
   };
 }
 
@@ -209,7 +213,7 @@ export const DynamicMDAActivities = pick(planActivities, [
   DYNAMIC_FAMILY_REGISTRATION_ACTIVITY_CODE,
 ]);
 export const DynamicIRSActivities = pick(planActivities, [DYNAMIC_IRS_ACTIVITY_CODE]);
-export const EUSMActivities = pick(planActivities, [
+export const SMActivities = pick(planActivities, [
   PRODUCT_CHECK_ACTIVITY_CODE,
   FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
   RECORD_GPS_ACTIVITY_CODE,
@@ -223,7 +227,7 @@ export type FormActivity =
   | typeof DynamicFIActivities
   | typeof DynamicIRSActivities
   | typeof DynamicMDAActivities
-  | typeof EUSMActivities;
+  | typeof SMActivities;
 
 /**
  * Converts a plan activities objects to a list of activities for use on PlanForm
@@ -244,7 +248,7 @@ planActivitiesMap[InterventionType.MDAPoint] = getFormActivities(MDAPointActivit
 planActivitiesMap[InterventionType.DynamicFI] = getFormActivities(DynamicFIActivities);
 planActivitiesMap[InterventionType.DynamicIRS] = getFormActivities(DynamicIRSActivities);
 planActivitiesMap[InterventionType.DynamicMDA] = getFormActivities(DynamicMDAActivities);
-planActivitiesMap['EUSM'] = getFormActivities(EUSMActivities);
+planActivitiesMap[InterventionType.SM] = getFormActivities(SMActivities);
 export { planActivitiesMap };
 
 /**
@@ -443,7 +447,7 @@ export function extractActivitiesFromPlanForm(
       thisAction = Object.assign(thisAction, actionFields);
 
       if (thisGoal.target[0]) {
-        const goalDetailQty: Partial<PlanGoaldetailQuantity> = {
+        const goalDetailQty: Partial<PlanGoalDetailQuantity> = {
           value: element.goalValue,
         };
 
@@ -705,7 +709,7 @@ export function getPlanFormValues(planObject: PlanDefinition): PlanFormFields {
   const interventionType =
     typeUseContext.length > 0
       ? (typeUseContext[0].valueCodableConcept as InterventionType)
-      : 'EUSM';
+      : InterventionType.FI;
 
   let activities = planObject.action.reduce(
     (accumulator: PlanActivityFormFields[], currentAction) => {
@@ -746,8 +750,8 @@ export function getPlanFormValues(planObject: PlanDefinition): PlanFormFields {
   return {
     activities,
     caseNum: caseNumUseContext.length > 0 ? caseNumUseContext[0].valueCodableConcept : '',
-    date: moment(parseISO(`${planObject.date}${DEFAULT_TIME}`)),
-    end: moment(parseISO(`${planObject.effectivePeriod.end}${DEFAULT_TIME}`)),
+    date: parseISO(`${planObject.date}${DEFAULT_TIME}`),
+    end: parseISO(`${planObject.effectivePeriod.end}${DEFAULT_TIME}`),
     fiReason:
       reasonUseContext.length > 0
         ? (reasonUseContext[0].valueCodableConcept as FIReasonType)
@@ -765,7 +769,7 @@ export function getPlanFormValues(planObject: PlanDefinition): PlanFormFields {
     name: planObject.name,
     opensrpEventId:
       eventIdUseContext.length > 0 ? eventIdUseContext[0].valueCodableConcept : undefined,
-    start: moment(parseISO(`${planObject.effectivePeriod.start}${DEFAULT_TIME}`)),
+    start: parseISO(`${planObject.effectivePeriod.start}${DEFAULT_TIME}`),
     status: planObject.status as PlanStatus,
     taskGenerationStatus,
     teamAssignmentStatus,
