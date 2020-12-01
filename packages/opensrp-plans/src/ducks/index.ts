@@ -61,7 +61,7 @@ export interface RemovePlanDefinitionsAction extends AnyAction {
 
 /** interface for adding a single PlanDefinitions action */
 export interface AddPlanDefinitionAction extends AnyAction {
-  planObj: PlanDefinition | null;
+  planObj: PlanDefinition;
   type: typeof ADD_PLAN_DEFINITION;
 }
 
@@ -134,24 +134,18 @@ export default function reducer(
 ): ImmutablePlanDefinitionState {
   switch (action.type) {
     case PLAN_DEFINITIONS_FETCHED:
-      if (action.planDefinitionsById) {
-        return SeamlessImmutable({
-          ...state,
-          planDefinitionsById: { ...state.planDefinitionsById, ...action.planDefinitionsById },
-        });
-      }
-      return state;
+      return SeamlessImmutable({
+        ...state,
+        planDefinitionsById: { ...state.planDefinitionsById, ...action.planDefinitionsById },
+      });
     case ADD_PLAN_DEFINITION:
-      if (action.planObj.identifier) {
-        return SeamlessImmutable({
-          ...state,
-          planDefinitionsById: {
-            ...state.planDefinitionsById,
-            [action.planObj.identifier as string]: action.planObj,
-          },
-        });
-      }
-      return state;
+      return SeamlessImmutable({
+        ...state,
+        planDefinitionsById: {
+          ...state.planDefinitionsById,
+          [action.planObj.identifier as string]: action.planObj,
+        },
+      });
     case REMOVE_PLAN_DEFINITIONS:
       return SeamlessImmutable({
         ...state,
