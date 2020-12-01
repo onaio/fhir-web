@@ -46,7 +46,7 @@ import {
   MEDIUM_PRIORITY,
   ROUTINE,
 } from './constants/stringConstants';
-import { LocationItem, Classification } from './types';
+import { LocationItem, Classification, EnvConfig } from './types';
 
 /** Location configs */
 
@@ -133,3 +133,19 @@ export const FIClassifications: Classification[] = [
     name: B2_NAME,
   },
 ];
+
+/** the default env configuration object */
+export const defaultEnvConfig: EnvConfig = {
+  dateFormat: 'YYYY-MM-DD',
+  defaultPlanDurationDays: 20,
+  defaultPlanVersion: '1',
+  enabledFiReasons: [],
+  planTypesAllowedToCreate: [],
+  planTypesWithMultiJurisdictions: [],
+  actionUuidNamespace: 'ea2d1b7b-828b-4898-947e-586858971529',
+  planUuidNamespace: '8326dd0c-faa5-4a24-9eaa-252bd245e0ff',
+  defaultTime: 'T00:00:00+00:00',
+  defaultActivityDurationDays: 0,
+  displayedPlanTypes: [],
+  taskGenerationStatus: 'internal',
+};

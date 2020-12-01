@@ -247,3 +247,19 @@ export interface LocationItem {
   level: number /** The HDX-compliant level of the location in the hierarchy */;
   name: string /** The name of the location */;
 }
+
+/** describes all possible configuration options */
+export interface EnvConfig {
+  dateFormat: string;
+  defaultPlanDurationDays: number;
+  defaultPlanVersion: string;
+  enabledFiReasons: FIReasonType[];
+  planTypesAllowedToCreate: InterventionType[];
+  planTypesWithMultiJurisdictions: InterventionType[];
+  actionUuidNamespace: string;
+  planUuidNamespace: string;
+  defaultTime: string;
+  defaultActivityDurationDays: number;
+  displayedPlanTypes: InterventionType[];
+  taskGenerationStatus: taskGenerationStatusType;
+}
