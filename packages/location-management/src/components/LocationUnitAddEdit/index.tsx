@@ -22,13 +22,15 @@ import locationHierarchyReducer, {
   fetchAllHierarchies,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree, getFilterParams } from '../LocationTree/utils';
+import { generateJurisdictionTree } from '../LocationTree/utils';
 
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 import './LocationUnitAddEdit.css';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
+
+const { getFilterParams } = OpenSRPService;
 
 export const LocationUnitAddEdit: React.FC = () => {
   const params: { id: string } = useParams();

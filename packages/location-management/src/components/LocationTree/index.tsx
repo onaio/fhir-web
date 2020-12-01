@@ -3,15 +3,16 @@ import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ParsedHierarchyNode } from '../../ducks/types';
-import reducer, { reducerName } from '../../ducks/location-hierarchy';
+import reducer, { fetchCurrentChildren, reducerName } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
 import { Dictionary } from '@onaio/utils';
+import { useDispatch } from 'react-redux';
 
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
   data: ParsedHierarchyNode[];
-  OnItemClick: (
+  OnItemClick?: (
     item: ParsedHierarchyNode,
     [expandedKeys, setExpandedKeys]: [React.Key[], (key: React.Key[]) => void]
   ) => void;
@@ -22,7 +23,8 @@ const defaultProps: Partial<TreeProp> = {
 };
 
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
-  const { data, OnItemClick } = props;
+  const { data } = props;
+  const dispatch = useDispatch();
 
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -128,7 +130,11 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       <AntTree
         onClick={(_, node: Dictionary) => {
           const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
-          OnItemClick(node as ParsedHierarchyNode, [allExpandedKeys, setExpandedKeys]);
+          if (node.children) {
+            const children = [node, ...node.children];
+            dispatch(fetchCurrentChildren(children));
+          }
+          setExpandedKeys(allExpandedKeys);
         }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}

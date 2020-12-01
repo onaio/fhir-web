@@ -4,7 +4,6 @@ import {
   RawHierarchyNodeMap,
   RawOpenSRPHierarchy,
   TreeNode,
-  URLParams,
 } from '../../ducks/types';
 import { cloneDeep } from 'lodash';
 import TreeModel from 'tree-model';
@@ -68,14 +67,3 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
   const root = tree.parse<ParsedHierarchyNode>(hierarchy);
   return root;
 };
-
-/** converts filter params object to string
- *
- * @param {URLParams} obj - the object representing filter params
- * @returns {string} filter params as a string
- */
-export function getFilterParams(obj: URLParams | {}): string {
-  return Object.entries(obj)
-    .map(([key, val]) => `${key}:${val}`)
-    .join(',');
-}

@@ -4,6 +4,8 @@ import Tree from '../../LocationTree';
 import * as fixtures from './fixtures';
 import { generateJurisdictionTree } from '../../LocationTree/utils';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../../ducks/types';
+import { store } from '@onaio/redux-reducer-registry';
+import { Provider } from 'react-redux';
 
 const getHierarchy: TreeNode = generateJurisdictionTree(
   (fixtures.sampleHierarchy as unknown) as RawOpenSRPHierarchy
@@ -13,13 +15,21 @@ describe('containers/pages/locations/locationunit', () => {
   const tree = [getHierarchy.model] as ParsedHierarchyNode[];
 
   it('renders without crashing', () => {
-    const wrapper = mount(<Tree data={tree} />);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={tree} />
+      </Provider>
+    );
     expect(wrapper.find('.ant-tree')).toHaveLength(1);
     wrapper.unmount();
   });
 
   it('test tree search functionality', async () => {
-    const wrapper = mount(<Tree data={tree} />);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={tree} />
+      </Provider>
+    );
     const search = wrapper.find('input').first();
     search.simulate('change', { target: { value: 'kairouan' } });
     wrapper.update();
@@ -28,7 +38,11 @@ describe('containers/pages/locations/locationunit', () => {
   });
 
   it('expand tree child using click', async () => {
-    const wrapper = mount(<Tree data={tree} OnItemClick={jest.fn()} />);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={tree} OnItemClick={() => jest.fn()} />
+      </Provider>
+    );
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
     const treeItem = wrapper.find('span.ant-tree-title');
     treeItem.simulate('click');

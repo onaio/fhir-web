@@ -30,15 +30,16 @@ import locationHierarchyReducer, {
   getAllHierarchiesArray,
   getCurrentChildren,
   fetchAllHierarchies,
-  fetchCurrentChildren,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree, getFilterParams } from '../LocationTree/utils';
+import { generateJurisdictionTree } from '../LocationTree/utils';
 
-import { ParsedHierarchyNode, TreeNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
+
+const { getFilterParams } = OpenSRPService;
 
 export interface AntTreeProps {
   title: JSX.Element;
@@ -143,18 +144,7 @@ export const LocationUnitView: React.FC = () => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree
-            OnItemClick={(item, [expandedKeys, setExpandedKeys]) => {
-              if (item.children) {
-                // build out parent row info from here
-                const children = [item, ...item.children];
-                dispatch(fetchCurrentChildren((children as unknown) as TreeNode[]));
-                const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
-                setExpandedKeys(allExpandedKeys as string[]);
-              }
-            }}
-            data={Treedata}
-          />
+          <Tree data={Treedata} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
