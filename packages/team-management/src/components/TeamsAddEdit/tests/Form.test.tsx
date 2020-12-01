@@ -1,95 +1,63 @@
-import { mount } from 'enzyme';
 import React from 'react';
+import { mount } from 'enzyme';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Route, Router } from 'react-router';
-import flushPromises from 'flush-promises';
-import fetch from 'jest-fetch-mock';
+import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 
+import { accessToken, id, intialValue, practitioners } from './fixtures';
 import Form from '../Form';
-import * as fixtures from './fixtures';
-import { act } from 'react-dom/test-utils';
 
-describe('containers/pages/locations/Form', () => {
+describe('containers/pages/locations/LocationUnitAddEdit', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form />
+          <Form accessToken={accessToken} practitioner={practitioners} />
         </Router>
       </Provider>
     );
-    expect(wrapper.props()).toMatchSnapshot();
+
+    expect(wrapper.find('form')).toHaveLength(1);
   });
 
-  it('tests cancel button', () => {
+  it('renders without crashing with id', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form />
+          <Form
+            id={id}
+            initialValue={intialValue}
+            accessToken={accessToken}
+            practitioner={practitioners}
+          />
         </Router>
       </Provider>
     );
+
+    expect(wrapper.find('Form').prop('initialValue')).toMatchObject(intialValue);
+  });
+
+  it('Cancel button', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Form
+            id={id}
+            initialValue={intialValue}
+            accessToken={accessToken}
+            practitioner={practitioners}
+          />
+        </Router>
+      </Provider>
+    );
+
     wrapper.find('button#cancel').simulate('click');
   });
 
-  it('tests Create New Payload', async () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Form />
-        </Router>
-      </Provider>
-    );
-
-    // with values test
-    wrapper
-      .find('input[name="name"]')
-      .simulate('change', { target: { name: 'name', value: 'Name213' } });
-    wrapper
-      .find('textarea[name="description"]')
-      .simulate('change', { target: { name: 'description', value: 'this is description' } });
-    wrapper.simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    wrapper.unmount();
-  });
-
-  it('tests Update Payload', async () => {
-    fetch.once(JSON.stringify(fixtures.sampleLocationTagPayload));
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[`/testingid`]}>
-        <Provider store={store}>
-          <Route path={'/:id'} component={Form} />
-        </Provider>
-      </MemoryRouter>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // with values test
-    // expect(toJson(wrapper)).toEqual('');
-    wrapper
-      .find('input[name="name"]')
-      .simulate('change', { target: { name: 'name', value: 'Name213' } });
-    wrapper
-      .find('textarea[name="description"]')
-      .simulate('change', { target: { name: 'description', value: 'this is description' } });
-    wrapper.simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    wrapper.unmount();
-  });
+  // TODO : Add test
+  // it('Create LocationUnitAddEdit', async () => {});
+  // it('Update LocationUnitAddEdit', async () => {});
+  // it('Add Practinier field', async () => {});
+  // it('Remove Practinier field', async () => {});
 });
