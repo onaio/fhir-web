@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import React from 'react';
 import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from '..';
@@ -26,10 +26,24 @@ describe('/components/Fallback', () => {
     );
   });
 
+  it('render correctly with children', () => {
+    mount(
+      <ErrorBoundary homeUrl="/">
+        <p>error boundary</p>
+      </ErrorBoundary>
+    );
+  });
+
   it('correctly redirects to home', () => {
+    const wrapper = shallow(<ErrorBoundary homeUrl="/" />);
+    wrapper.simulateError(new Error());
+    wrapper.find('Result').props().extra.props.onClick();
+    expect(window.location.href).toEqual('/');
+  });
+
+  it('correctly redirects if homeUrl not passed', () => {
     const wrapper = shallow(<ErrorBoundary />);
     wrapper.simulateError(new Error());
-    expect(window.location.href).toEqual('http://localhost/');
     wrapper.find('Result').props().extra.props.onClick();
     expect(window.location.href).toEqual('/');
   });
