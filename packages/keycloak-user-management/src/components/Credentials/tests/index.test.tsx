@@ -5,20 +5,27 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
-import { ConnectedUserCredentials, UserCredentials } from '..';
+import { cancelUserHandler, ConnectedUserCredentials, UserCredentials } from '..';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
+import * as notifications from '@opensrp/notifications';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
   fetchKeycloakUsers,
   KeycloakUser,
 } from '../../../ducks/user';
+import { URL_ADMIN, ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
@@ -82,15 +89,12 @@ describe('components/Credentials', () => {
         </Router>
       </Provider>
     );
-    expect(wrapper.find('Col').at(0).prop('span')).toEqual(12);
-    expect(wrapper.find('Card').prop('title')).toEqual('Edit User');
-    expect(wrapper.find('Card').prop('bordered')).toEqual(false);
-    expect(wrapper.find('HeaderBreadCrumb').prop('userId')).toEqual(fixtures.keycloakUser.id);
-    const formContainer = wrapper.find('div.form-container');
-    expect(formContainer.props()).toMatchSnapshot();
+    expect(wrapper.find('Row').at(0).props()).toMatchSnapshot('row props');
   });
 
   it('adds user credentials correctly', async () => {
+    const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -136,6 +140,7 @@ describe('components/Credentials', () => {
         method: 'PUT',
       },
     ]);
+    expect(mockNotificationSuccess).toHaveBeenCalledWith(CREDENTIALS_UPDATED_SUCCESSFULLY);
     wrapper.unmount();
   });
 
@@ -209,6 +214,7 @@ describe('components/Credentials', () => {
 
   it('it handles errors correctly if API response is not 200', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(
       <Provider store={store}>
@@ -235,7 +241,32 @@ describe('components/Credentials', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
+
+    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+
     wrapper.unmount();
+  });
+  it('returns to user list on cancel user credentials', async () => {
+    const cancelUserHandlerMock = jest.fn();
+    const props2 = {
+      ...props,
+      cancelUserHandler: cancelUserHandlerMock,
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedUserCredentials {...props2} />
+        </Router>
+      </Provider>
+    );
+    wrapper.find('button.cancel-user').simulate('click');
+    expect(cancelUserHandlerMock).toBeCalled();
+  });
+  it('cancelUserHandler pushes to history', () => {
+    const mockUseHistory = {
+      push: jest.fn(),
+    };
+    cancelUserHandler(mockUseHistory);
+    expect(mockUseHistory.push).toBeCalledWith(URL_ADMIN);
   });
 });

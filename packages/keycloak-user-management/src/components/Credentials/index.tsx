@@ -1,11 +1,9 @@
 import React from 'react';
-import { Button, Form, Col, Card, Row, Input, Switch, notification } from 'antd';
-import { RouteComponentProps } from 'react-router';
+import { Button, Form, Col, Row, Input, Switch } from 'antd';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { history } from '@onaio/connected-reducer-registry';
-import { HeaderBreadCrumb } from '../HeaderBreadCrumb';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import '../../index.css';
@@ -13,6 +11,15 @@ import {
   KEYCLOAK_URL_USERS,
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
+  URL_ADMIN,
+  CREDENTIALS,
+  PASSWORD_MATCH_FAILURE,
+  RESET_PASSWORD,
+  CANCEL,
+  INPUT_PASSWORD,
+  CONFIRM_PASSWORD,
+  CREDENTIALS_UPDATED_SUCCESSFULLY,
+  ERROR_OCCURED,
 } from '../../constants';
 import {
   reducer as keycloakUsersReducer,
@@ -21,6 +28,8 @@ import {
   makeKeycloakUsersSelector,
   KeycloakUser,
 } from '../../ducks/user';
+import { Dictionary } from '@onaio/utils';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -40,6 +49,7 @@ export interface CredentialsProps {
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
+  cancelUserHandler: (genericHistory: Dictionary) => void;
 }
 
 /** interface for data fields for team's form */
@@ -51,6 +61,15 @@ export interface UserCredentialsFormFields {
 
 /** type intersection for all types that pertain to the props */
 export type CredentialsPropsTypes = CredentialsProps & RouteComponentProps<CredentialsRouteParams>;
+/**
+ * redirect to /admin view
+ * find appropriate type for history from usehistory hook
+ *
+ * @param {Dictionary} genericHistory react-rouet usehistory hook
+ */
+export const cancelUserHandler = (genericHistory: Dictionary): void => {
+  genericHistory.push(URL_ADMIN);
+};
 
 /** default props for editing user component */
 export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
@@ -58,20 +77,24 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
+  cancelUserHandler: cancelUserHandler,
 };
-
 /**
  * Handle form submission
  *
- * @param {object} values the form fields
- * @param {object} props the headers
+ * @param {Dictionary} values - submitted values
+ * @param {string} userId - user id
+ * @param {string} serviceClass - KeycloakService
+ * @param {string} accessToken - Keycloak API access token
+ * @param {string} keycloakBaseURL - Keycloak API base URL
  */
 export const submitForm = (
   values: UserCredentialsFormFields,
-  props: CredentialsPropsTypes
+  userId: string,
+  serviceClass: typeof KeycloakService,
+  accessToken: string,
+  keycloakBaseURL: string
 ): void => {
-  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
-  const userId = match.params[ROUTE_PARAM_USER_ID];
   const serve = new serviceClass(
     accessToken,
     `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
@@ -85,36 +108,45 @@ export const submitForm = (
       value: password,
     })
     .then(() => {
-      history.push('/admin');
-      notification.success({
-        message: 'Credentials updated successfully',
-        description: '',
-      });
+      sendSuccessNotification(CREDENTIALS_UPDATED_SUCCESSFULLY);
+      useHistory().push(URL_ADMIN);
     })
     .catch((_: Error) => {
-      notification.error({
-        message: 'An error occurred',
-        description: '',
-      });
+      sendErrorNotification(ERROR_OCCURED);
     });
 };
 
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const userId = props.match.params[ROUTE_PARAM_USER_ID];
-  const isEditMode = !!userId;
+  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
+  const userId = match.params[ROUTE_PARAM_USER_ID];
   const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    labelCol: {
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 2, span: 10 },
+      md: { offset: 0, span: 12 },
+      lg: { offset: 0, span: 8 },
+    },
+    wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
   };
-
+  const tailLayout = {
+    wrapperCol: {
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 12, span: 24 },
+      md: { offset: 10, span: 16 },
+      lg: { offset: 8, span: 14 },
+    },
+  };
+  const history = useHistory();
   return (
-    <Col span={12}>
-      <Card title={`${isEditMode ? 'Edit User' : 'Create New User'}`} bordered={false}>
-        <HeaderBreadCrumb userId={userId} />
+    <Row className="layout-content">
+      <h5 className="mb-3">{CREDENTIALS}</h5>
+      <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form
             {...layout}
-            onFinish={(values: UserCredentialsFormFields) => submitForm(values, props)}
+            onFinish={(values: UserCredentialsFormFields) =>
+              submitForm(values, userId, serviceClass, accessToken, keycloakBaseURL)
+            }
           >
             <Form.Item
               name="password"
@@ -122,7 +154,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
               rules={[
                 {
                   required: true,
-                  message: 'Please input your password!',
+                  message: INPUT_PASSWORD,
                 },
               ]}
               hasFeedback
@@ -138,14 +170,14 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
               rules={[
                 {
                   required: true,
-                  message: 'Please confirm your password!',
+                  message: CONFIRM_PASSWORD,
                 },
                 ({ getFieldValue }) => ({
                   validator(rule, value) {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject('The two passwords that you entered do not match!');
+                    return Promise.reject(PASSWORD_MATCH_FAILURE);
                   },
                 }),
               ]}
@@ -155,19 +187,18 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
             <Form.Item name="temporary" label="Temporary" valuePropName="checked">
               <Switch />
             </Form.Item>
-            <Form.Item>
-              <Row justify="start">
-                <Col span={4}>
-                  <Button htmlType="submit" className="reset-password">
-                    Reset Password
-                  </Button>
-                </Col>
-              </Row>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit" className="reset-password">
+                {RESET_PASSWORD}
+              </Button>
+              <Button onClick={() => props.cancelUserHandler(history)} className="cancel-user">
+                {CANCEL}
+              </Button>
             </Form.Item>
           </Form>
         </div>
-      </Card>
-    </Col>
+      </Col>
+    </Row>
   );
 };
 

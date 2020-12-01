@@ -8,13 +8,20 @@ import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
 import { Link } from 'react-router-dom';
 import {
+  LOCATIONS_UNIT,
+  LOCATIONS_UNIT_GROUP,
+  PRODUCT_CATALOGUE,
+  TEAMS,
   URL_ADMIN,
   URL_HOME,
   URL_LOCATION_TAG,
   URL_LOCATION_UNIT,
   URL_TEAMS,
   URL_DOWNLOAD_CLIENT_DATA,
+  USER_MANAGEMENT,
 } from '../../../constants';
+import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
+import { ENABLE_PRODUCT_CATALOGUE, ENABLE_TEAMS_MODULE } from '../../../configs/env';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -34,18 +41,34 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { roles } = extraData;
 
   return (
-    <Layout.Sider width="275px">
+    <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
         <Link to={URL_HOME}>
           <img src={Logo} className="img-fluid" alt="" />
         </Link>
       </div>
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" className="menu-dark">
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title="Admin">
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.Item key="users">
-              <Link to={URL_ADMIN} className="admin-link">
-                Users
+            <Menu.SubMenu key="users" title="Users">
+              <Menu.Item key="users">
+                <Link to={URL_ADMIN} className="admin-link">
+                  {USER_MANAGEMENT}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}
+          {ENABLE_TEAMS_MODULE && (
+            <Menu.Item key="teams">
+              <Link to={URL_TEAMS} className="admin-link">
+                {TEAMS}
+              </Link>
+            </Menu.Item>
+          )}
+          {ENABLE_PRODUCT_CATALOGUE && (
+            <Menu.Item key="product-catalogue">
+              <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
+                {PRODUCT_CATALOGUE}
               </Link>
             </Menu.Item>
           )}
@@ -62,15 +85,14 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           <Menu.SubMenu key="admin-locations" title="Locations">
             <Menu.Item key="locations-unit">
               <Link to={URL_LOCATION_UNIT} className="admin-link">
-                Locations unit
+                {LOCATIONS_UNIT}
               </Link>
             </Menu.Item>
             <Menu.Item key="locations-unit-group">
               <Link to={URL_LOCATION_TAG} className="admin-link">
-                Locations unit group
+                {LOCATIONS_UNIT_GROUP}
               </Link>
             </Menu.Item>
-            <Menu.Item key="locations-unit-group-set">Locations unit group set</Menu.Item>
           </Menu.SubMenu>
         </Menu.SubMenu>
       </Menu>

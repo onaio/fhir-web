@@ -20,6 +20,7 @@ Object {
         </Link>
       </div>
       <Menu
+        className="menu-dark"
         defaultSelectedKeys={
           Array [
             "1",
@@ -35,22 +36,29 @@ Object {
           <MenuItem>
             <Link
               className="admin-link"
-              to="/teams"
+              to="/product-catalogue"
             >
-              Teams
+              Product Catalogue
             </Link>
           </MenuItem>
           <SubMenu
             title="Locations"
           >
             <MenuItem>
-              Locations unit
+              <Link
+                className="admin-link"
+                to="/location/unit"
+              >
+                Locations unit
+              </Link>
             </MenuItem>
             <MenuItem>
-              Locations unit group
-            </MenuItem>
-            <MenuItem>
-              Locations unit group set
+              <Link
+                className="admin-link"
+                to="/location/group"
+              >
+                Locations unit group
+              </Link>
             </MenuItem>
           </SubMenu>
         </SubMenu>
@@ -58,7 +66,7 @@ Object {
     </div>,
     null,
   ],
-  "className": "ant-layout-sider ant-layout-sider-dark",
+  "className": "ant-layout-sider ant-layout-sider-dark layout-sider",
   "style": Object {
     "flex": "0 0 275px",
     "maxWidth": "275px",

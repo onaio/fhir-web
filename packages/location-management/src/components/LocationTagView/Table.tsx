@@ -18,24 +18,26 @@ export interface Props {
   onViewDetails?: (locationUnit: LocationTagDetailProps) => void;
 }
 
+/** function to delete the record
+ *
+ * @param {object} record - The record to delete
+ * @param {string} accessToken - Access token to be used for requests
+ */
+export const onDelete = (record: LocationTag, accessToken: string) => {
+  const clientService = new OpenSRPService(
+    accessToken,
+    API_BASE_URL,
+    LOCATION_TAG_DELETE + record.id.toString()
+  );
+  clientService
+    .delete()
+    .then(() => notification.success({ message: 'Successfully Deleted!', description: '' }))
+    .catch((err: string) => notification.error({ message: `${err}`, description: '' }));
+};
+
 const Table: React.FC<Props> = (props: Props) => {
+  const { onViewDetails } = props;
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  /**
-   * fucntion to delete the record
-   *
-   * @param {object} record - The record to delete
-   */
-  function onDelete(record: LocationTag) {
-    const clientService = new OpenSRPService(
-      accessToken,
-      API_BASE_URL,
-      LOCATION_TAG_DELETE + record.id
-    );
-    clientService
-      .delete()
-      .then(() => notification.success({ message: 'Successfully Deleted!', description: '' }))
-      .catch((err: string) => notification.error({ message: `${err}`, description: '' }));
-  }
 
   const columns = [
     {
@@ -52,7 +54,7 @@ const Table: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_LOCATION_TAG_EDIT + '/' + record.id}>
+          <Link to={URL_LOCATION_TAG_EDIT + '/' + record.id.toString()}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
@@ -63,12 +65,15 @@ const Table: React.FC<Props> = (props: Props) => {
               <Menu className="menu">
                 <Menu.Item
                   className="viewdetails"
-                  onClick={() => props.onViewDetails && props.onViewDetails(record)}
+                  onClick={() => (onViewDetails ? onViewDetails(record) : {})}
                 >
                   View Details
                 </Menu.Item>
                 <Menu.Item className="delete">
-                  <Popconfirm title="Sure to Delete?" onConfirm={() => onDelete(record)}>
+                  <Popconfirm
+                    title="Sure to Delete?"
+                    onConfirm={() => onDelete(record, accessToken)}
+                  >
                     Delete
                   </Popconfirm>
                 </Menu.Item>

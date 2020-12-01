@@ -3,6 +3,7 @@ import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
+import { LocationUnit } from '../../ducks/location-units';
 
 export interface TableData {
   geographicLevel: number;
@@ -12,11 +13,18 @@ export interface TableData {
 }
 
 export interface Props {
+  accessToken: string;
+  setDetail: (isLoading: string | LocationUnit) => void;
   data: TableData[];
-  onViewDetails?: (row: TableData) => void;
+  onViewDetails?: (
+    row: TableData,
+    accessToken: string,
+    setDetail: (isLoading: string | LocationUnit) => void
+  ) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
+  const { accessToken, setDetail, onViewDetails } = props;
   const columns = [
     {
       title: 'Name',
@@ -35,7 +43,7 @@ const Table: React.FC<Props> = (props: Props) => {
       dataIndex: 'operation',
       width: '10%',
       // eslint-disable-next-line react/display-name
-      render: (_: any, record: TableData) => (
+      render: (value: boolean, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
           <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
             <Button type="link" className="m-0 p-1">
@@ -49,7 +57,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
-                    props.onViewDetails && props.onViewDetails(record);
+                    return onViewDetails ? onViewDetails(record, accessToken, setDetail) : {};
                   }}
                 >
                   View Details

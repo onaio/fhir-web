@@ -1,26 +1,35 @@
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
+import { history } from '@onaio/connected-reducer-registry';
+import { Router } from 'react-router';
 import React from 'react';
 import LocationTagView from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
+import fetch from 'jest-fetch-mock';
+import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixtures';
+import { notification } from 'antd';
 
 describe('containers/pages/locations/LocationTagView', () => {
-  it('renders without crashing', () => {
-    const wrapper = shallow(
-      <Provider store={store}>
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+  it('renders without crashing', async () => {
+    shallow(
+      <Router history={history}>
         <LocationTagView />
-      </Provider>
+      </Router>
     );
-
-    expect(wrapper.props()).toMatchSnapshot();
   });
 
-  it('renders without crashing', async () => {
-    const wrapper = shallow(
+  it('works correctly with store', async () => {
+    fetch.mockResponse(JSON.stringify([sampleLocationTagPayload]));
+    const wrapper = mount(
       <Provider store={store}>
-        <LocationTagView />
+        <Router history={history}>
+          <LocationTagView />
+        </Router>
       </Provider>
     );
 
@@ -28,7 +37,34 @@ describe('containers/pages/locations/LocationTagView', () => {
       await flushPromises();
       wrapper.update();
     });
-
+    // test search input works
+    const input = wrapper.find('input').first();
+    input.simulate('change', { target: { value: 'Sample' } });
+    await act(async () => {
+      wrapper.update();
+    });
+    expect(input.instance().value).toEqual('Sample');
     wrapper.unmount();
+  });
+
+  it('test error thrown if API is down', async () => {
+    const notificationErrorMock = jest.spyOn(notification, 'error');
+    fetch.mockReject(() => Promise.reject('API is down'));
+    mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationTagView />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith({
+      message: 'API is down',
+      description: '',
+    });
   });
 });

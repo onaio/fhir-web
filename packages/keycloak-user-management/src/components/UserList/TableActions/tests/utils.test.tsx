@@ -1,12 +1,17 @@
 import fetch from 'jest-fetch-mock';
 import { deleteUser } from '../utils';
 import * as fixtures from '../../../forms/UserForm/tests/fixtures';
-import { KEYCLOAK_URL_USERS } from '../../../../constants';
+import { KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../../../constants';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import { notification } from 'antd';
+import * as notifications from '@opensrp/notifications';
 
-describe('components/UserList/uti/deleteUser', () => {
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...jest.requireActual('@opensrp/notifications'),
+}));
+
+describe('components/UserList/utils/deleteUser', () => {
   const removeUsersMock = jest.fn();
   const isLoadingCallback = jest.fn();
   const accessToken = 'sometoken';
@@ -21,7 +26,7 @@ describe('components/UserList/uti/deleteUser', () => {
   });
 
   it('deletes user', async () => {
-    const notificationSuccessMock = jest.spyOn(notification, 'success');
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     fetch.mockResponse(JSON.stringify([fixtures.keycloakUser]));
 
     deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
@@ -40,14 +45,11 @@ describe('components/UserList/uti/deleteUser', () => {
     });
     expect(removeUsersMock).toHaveBeenCalled();
     expect(isLoadingCallback).toHaveBeenCalled();
-    expect(notificationSuccessMock).toHaveBeenCalledWith({
-      message: 'User deleted successfully',
-      description: '',
-    });
+    expect(notificationSuccessMock).toHaveBeenCalledWith('User deleted successfully');
   });
 
   it('handles API error when calling the deletion endpoint', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockReject(() => Promise.reject('API is down'));
     deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
 
@@ -55,14 +57,11 @@ describe('components/UserList/uti/deleteUser', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: '',
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
   });
 
   it('handles API error when calling the fetch endpoint', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.once(JSON.stringify([])).mockRejectOnce(() => Promise.reject('API is down'));
     deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
 
@@ -79,9 +78,6 @@ describe('components/UserList/uti/deleteUser', () => {
       method: 'DELETE',
     });
     expect(removeUsersMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: '',
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
   });
 });

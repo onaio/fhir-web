@@ -13,7 +13,13 @@ import locationUnitsReducer, {
   reducerName as locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, LOCATION_UNIT_GET, URL_LOCATION_UNIT_ADD } from '../../constants';
+import {
+  API_BASE_URL,
+  LOCATION_UNIT_FINDBYPROPERTIES,
+  LOCATION_HIERARCHY,
+  LOCATION_UNIT_GET,
+  URL_LOCATION_UNIT_ADD,
+} from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
@@ -24,138 +30,124 @@ import locationHierarchyReducer, {
   getAllHierarchiesArray,
   getCurrentChildren,
   fetchAllHierarchies,
-  fetchCurrentChildren,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import {
-  generateJurisdictionTree,
-  RawOpenSRPHierarchy,
-  getFilterParams,
-  TreeNode,
-} from '../LocationTree/utils';
+import { generateJurisdictionTree } from '../LocationTree/utils';
+
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-export interface Props {}
+const { getFilterParams } = OpenSRPService;
 
-const defaultProps: Props = {};
+export interface AntTreeProps {
+  title: JSX.Element;
+  key: string;
+  children: AntTreeProps[];
+}
 
-const LocationUnitView: React.FC<Props> = () => {
+/** Function to Load selected location unit for details
+ *
+ * @param {TableData} row data selected from the table
+ * @param {string} accessToken - access token
+ * @param {Function} setDetail funtion to set detail to state
+ */
+export const loadSingleLocation = (
+  row: TableData,
+  accessToken: string,
+  setDetail: (isLoading: string | LocationUnit) => void
+): void => {
+  setDetail('loading');
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  serve
+    .read(row.id, { is_jurisdiction: true })
+    .then((res: LocationUnit) => setDetail(res))
+    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+};
+
+export const LocationUnitView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const Treedata = useSelector((state) => (getAllHierarchiesArray(state) as unknown) as TreeNode[]);
-  const locationsArray = (useSelector((state) =>
-    getAllHierarchiesArray(state)
-  ) as unknown) as TreeNode[];
+  const Treedata = useSelector(
+    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
+  );
+
   const currentParentChildren = (useSelector((state) =>
     getCurrentChildren(state)
-  ) as unknown) as TreeNode[];
+  ) as unknown) as ParsedHierarchyNode[];
   const dispatch = useDispatch();
-
+  const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  let tableready = false;
-  let treeready = false;
 
   useEffect(() => {
-    const params = {
-      is_jurisdiction: true,
-      return_geometry: false,
-      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-    };
-
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/findByProperties');
-    serve
-      .list(params)
-      .then((response: any) => {
-        dispatch(fetchLocationUnits(response));
-        const rootIds = response.map((rootLocObj: any) => rootLocObj.id);
-        if (rootIds.length && !Treedata.length) {
-          rootIds.forEach((id: string) => {
-            const serve = new OpenSRPService(accessToken, API_BASE_URL, '/location/hierarchy');
-            serve
-              .read(id)
-              .then((res: RawOpenSRPHierarchy) => {
-                const hierarchy = generateJurisdictionTree(res);
-                if (hierarchy.model && hierarchy.model.children)
+    if (!Treedata.length) {
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
+      serve
+        .list({
+          is_jurisdiction: true,
+          return_geometry: false,
+          properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+        })
+        .then((response: LocationUnit[]) => {
+          dispatch(fetchLocationUnits(response));
+          const rootIds = response.map((rootLocObj) => rootLocObj.id);
+          if (rootIds.length) {
+            rootIds.forEach((id) => {
+              const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
+              serve
+                .read(id)
+                .then((res: RawOpenSRPHierarchy) => {
+                  const hierarchy = generateJurisdictionTree(res);
+                  // if (hierarchy.model && hierarchy.model.children)
                   dispatch(fetchAllHierarchies(hierarchy.model));
-                treeready = true;
-                if (treeready && tableready) setIsLoading(false);
-              })
-              .catch((e) => notification.error({ message: `${e}`, description: '' }));
-          });
-        } else {
-          treeready = true;
-          if (treeready && tableready) setIsLoading(false);
-        }
-      })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
-  });
+                })
+                .catch((e) => notification.error({ message: `${e}`, description: '' }));
+            });
+          }
+        })
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    }
+  }, [Treedata.length, accessToken, dispatch]);
 
-  const tableData: any = [];
-
-  if (currentParentChildren && currentParentChildren.length) {
-    currentParentChildren.forEach((child: TreeNode, i: number) => {
-      tableData.push({
-        id: child.id,
-        key: i.toString(),
-        name: child.label,
-        geographicLevel: child.node.attributes.geographicLevel,
+  useEffect(() => {
+    const data: TableData[] = [];
+    if (currentParentChildren.length) {
+      currentParentChildren.forEach((child: ParsedHierarchyNode, i: number) => {
+        data.push({
+          id: child.id,
+          key: i.toString(),
+          name: child.label,
+          geographicLevel: child.node.attributes.geographicLevel,
+        });
       });
-      tableready = true;
-      if (treeready && tableready) setIsLoading(false);
-    });
-  } else if (locationsArray && locationsArray.length && !currentParentChildren.length) {
-    locationsArray.forEach((location: any, i: number) => {
-      tableData.push({
-        id: location.id,
-        key: i.toString(),
-        name: location.label,
-        geographicLevel: location.node.attributes.geographicLevel,
+    } else if (Treedata.length && !currentParentChildren.length) {
+      Treedata.forEach((location: ParsedHierarchyNode, i: number) => {
+        data.push({
+          id: location.id,
+          key: i.toString(),
+          name: location.label,
+          geographicLevel: location.node.attributes.geographicLevel,
+        });
       });
-    });
-    tableready = true;
-    if (treeready && tableready) setIsLoading(false);
-  }
+    }
+    setTableData(data);
+  }, [Treedata, currentParentChildren]);
 
-  function loadSingleLocation(row: TableData) {
-    setDetail('loading');
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    serve
-      .read(row.id, { is_jurisdiction: true })
-      .then((res: LocationUnit) => {
-        setDetail(res);
-      })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
-  }
-
-  if (isLoading) return <Ripple />;
+  if (!tableData.length || !Treedata.length) return <Ripple />;
 
   return (
-    <section>
+    <section className="layout-content">
       <Helmet>
         <title>Locations Unit</title>
       </Helmet>
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree
-            OnItemClick={(item, [expandedKeys, setExpandedKeys]) => {
-              if (item.children) {
-                // build out parent row info from here
-                const children = [item, ...item.children];
-                dispatch(fetchCurrentChildren(children));
-                const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
-                setExpandedKeys(allExpandedKeys);
-              }
-            }}
-            data={Treedata}
-          />
+          <Tree data={Treedata} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
-          <div className="mb-3 d-flex justify-content-between">
+          <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">Bombali</h5>
             <div>
               <Link to={URL_LOCATION_UNIT_ADD}>
@@ -177,12 +169,17 @@ const LocationUnitView: React.FC<Props> = () => {
               </Dropdown>
             </div>
           </div>
-          <div className="bg-white p-4">
-            <Table data={tableData} onViewDetails={loadSingleLocation} />
+          <div className="bg-white p-3">
+            <Table
+              data={tableData}
+              onViewDetails={loadSingleLocation}
+              accessToken={accessToken}
+              setDetail={setDetail as (isLoading: string | LocationUnit) => void}
+            />
           </div>
         </Col>
 
-        {detail && (
+        {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
               <Ripple />
@@ -190,12 +187,12 @@ const LocationUnitView: React.FC<Props> = () => {
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}
           </Col>
+        ) : (
+          ''
         )}
       </Row>
     </section>
   );
 };
-
-LocationUnitView.defaultProps = defaultProps;
 
 export default LocationUnitView;

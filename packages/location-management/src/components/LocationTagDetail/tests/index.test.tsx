@@ -21,7 +21,6 @@ describe('containers/pages/Home', () => {
 
   it('renders without crashing', () => {
     const wrapper = mount(<LocationTagDetail {...props} />);
-
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -30,5 +29,11 @@ describe('containers/pages/Home', () => {
     expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
     expect(wrapper).toHaveLength(0);
+  });
+  it('doesnt close if onClose prop is not set', () => {
+    const wrapper = mount(<LocationTagDetail {...props} />);
+    expect(wrapper.children()).toHaveLength(1);
+    wrapper.find('button').simulate('click');
+    expect(wrapper).toHaveLength(1);
   });
 });

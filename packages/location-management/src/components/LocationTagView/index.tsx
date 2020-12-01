@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Input } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, Input, notification } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationTagDetail, { LocationTagDetailProps } from '../LocationTagDetail';
 import { SearchOutlined } from '@ant-design/icons';
@@ -41,7 +41,7 @@ const LocationTagView: React.FC = () => {
           dispatch(fetchLocationTags(response));
           setIsLoading(false);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
     }
   });
 
@@ -71,14 +71,14 @@ const LocationTagView: React.FC = () => {
   if (isLoading) return <Ripple />;
 
   return (
-    <section>
+    <section className="layout-content">
       <Helmet>
         <title>Locations Tag</title>
       </Helmet>
       <h5 className="mb-3">Location Tag Management</h5>
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
-          <div className="mb-3 d-flex justify-content-between">
+          <div className="mb-3 d-flex justify-content-between p-3">
             <h5>
               <Input
                 placeholder="Search"
@@ -89,7 +89,6 @@ const LocationTagView: React.FC = () => {
               />
             </h5>
             <div>
-              '
               <Link to={URL_LOCATION_TAG_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
@@ -109,17 +108,19 @@ const LocationTagView: React.FC = () => {
               </Dropdown>
             </div>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white p-3">
             <Table
               data={value.length < 1 ? tableData : (filter as TableData[])}
               onViewDetails={(e: LocationTagDetailProps) => setDetail(e)}
             />
           </div>
         </Col>
-        {detail && (
+        {detail ? (
           <Col className="pl-3" span={5}>
             <LocationTagDetail onClose={() => setDetail(null)} {...detail} />
           </Col>
+        ) : (
+          ''
         )}
       </Row>
     </section>

@@ -44,11 +44,13 @@ export interface LocationUnitTag {
 /** location interface */
 export interface LocationUnit {
   id: string | number;
+  key?: string;
   properties: Properties;
   syncStatus: LocationUnitSyncStatus;
   type: string;
   locationTags?: LocationUnitTag[];
   geometry?: Geometry;
+  parentId?: string;
 }
 
 /** interface for the POST payload */
@@ -60,7 +62,7 @@ export interface LocationUnitPayloadPOST {
   geometry?: Geometry;
   textEntry?: string[];
   // we will remove this id as it should be auto generated on server
-  id?: string | number;
+  id: string | number;
 }
 
 /** interface for the PUT payload */
@@ -97,6 +99,6 @@ export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerN
 export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
 
 export const LocationUnitsArray = (state: Partial<Store>): LocationUnit[] =>
-  values(getLocationUnitsById(state) || {});
+  values(getLocationUnitsById(state));
 
 export default reducer;

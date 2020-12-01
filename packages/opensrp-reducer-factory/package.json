@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/reducer-factory",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "Abstraction for creating other dux modules",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -34,6 +34,9 @@
   "author": "Ona Engineering",
   "license": "Apache-2.0",
   "private": false,
+  "devDependencies": {
+    "@onaio/redux-reducer-registry": "^0.0.9"
+  },
   "dependencies": {
     "@onaio/utils": "^0.0.1",
     "lodash": "^4.17.15",

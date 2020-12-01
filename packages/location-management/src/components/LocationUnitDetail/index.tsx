@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { LocationUnit } from 'location-management/src/ducks/location-units';
+import { LocationUnit } from '../../ducks/location-units';
 
 export interface Props extends LocationUnit {
   onClose?: Function;

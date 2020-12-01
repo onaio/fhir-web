@@ -2,15 +2,20 @@
 
 exports[`containers/pages/Home renders without crashing 1`] = `
 <LocationUnitDetail
-  externalId="asdkjh1230"
-  geographicLevel={2}
-  name="Edrward 0"
-  parentId="2"
-  status="Active"
-  syncstatus="Synced"
+  id="6y66ggde"
+  properties={
+    Object {
+      "externalId": "asdkjh1230",
+      "geographicLevel": 2,
+      "name": "test",
+      "parentId": "2",
+      "status": "Active",
+      "username": "edward 0",
+      "version": 0,
+    }
+  }
+  syncStatus="Synced"
   type="Feautire"
-  username="edward 0"
-  version={0}
 >
   <div
     className="p-4 bg-white"
@@ -61,7 +66,6 @@ exports[`containers/pages/Home renders without crashing 1`] = `
               role="img"
             >
               <IconReact
-                className=""
                 icon={
                   Object {
                     "icon": Object {
@@ -86,7 +90,6 @@ exports[`containers/pages/Home renders without crashing 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  className=""
                   data-icon="close"
                   fill="currentColor"
                   focusable="false"
@@ -117,7 +120,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       <p
         className="mb-0 loc-desc"
       >
-        Edrward 0
+        test
       </p>
     </div>
     <div
@@ -201,7 +204,7 @@ exports[`containers/pages/Home renders without crashing 1`] = `
       <p
         className="mb-0 loc-desc"
       >
-        Active
+        Synced
       </p>
     </div>
     <div

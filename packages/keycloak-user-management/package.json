@@ -1,14 +1,15 @@
 {
   "name": "@opensrp/user-management",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "dependencies": {
+    "@ant-design/icons": "^4.2.2",
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/keycloak-service": "^0.0.6",
-    "@opensrp/server-service": "^0.0.10",
-    "@opensrp/store": "^0.0.5",
+    "@opensrp/keycloak-service": "^0.0.8",
+    "@opensrp/server-service": "^0.0.12",
+    "@opensrp/notifications": "^0.0.1",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",
@@ -23,11 +24,15 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "scripts": {
-    "test": "jest --coverage --verbose --color",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx'  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "jest": "jest --coverage --verbose --color",
+    "test": "cd ../../ && jest test  packages/keycloak-user-management --verbose --collectCoverage=true && cd packages/keycloak-user-management",
+    "test:watch": "cd ../../ && jest test  packages/keycloak-user-management --verbose --watch && cd packages/keycloak-user-management",
     "tsc": "tsc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy"
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "license": "Apache-2.0",
   "publishConfig": {
@@ -39,6 +44,9 @@
   "files": [
     "dist"
   ],
+  "devDependencies": {
+    "@opensrp/store": "^0.0.7"
+  },
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
