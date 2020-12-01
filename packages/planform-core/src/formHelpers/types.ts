@@ -85,7 +85,7 @@ export interface PlanFormFields {
   fiStatus?: FIStatusType;
   identifier: string;
   interventionType: InterventionType;
-  jurisdictions: PlanJurisdictionFormFields[];
+  jurisdictions?: PlanJurisdictionFormFields[];
   name: string;
   opensrpEventId?: string;
   start: Moment;
