@@ -3,7 +3,7 @@ import { Select, Button, Form as AntdForm, Radio, Input, notification } from 'an
 import { history } from '@onaio/connected-reducer-registry';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { v4 } from 'uuid';
-import { API_BASE_URL, ORGANIZATION_POST, PRACTITIONER_POST } from '../../constants';
+import { API_BASE_URL, TEAMS_POST, PRACTITIONER_POST } from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import { OrganizationPOST } from '../../ducks/organizations';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
@@ -13,7 +13,7 @@ const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 const layoutFull = { labelCol: { span: 8 }, wrapperCol: { span: 16 } };
 const offsetLayoutFull = { wrapperCol: { offset: 8, span: 16 } };
 
-interface FormField {
+export interface FormField {
   name: string;
   active: boolean;
   practitioners: string[];
@@ -22,13 +22,14 @@ interface FormField {
 interface Props {
   id?: string;
   practitioner: Practitioner[];
-  initialValue?: FormField;
+  initialValue?: FormField | null;
   accessToken: string;
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
+  const [form] = AntdForm.useForm();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue: FormField = props.initialValue
+  const initialValue = props.initialValue
     ? props.initialValue
     : { active: true, name: '', practitioners: [''] };
 
@@ -41,7 +42,7 @@ export const Form: React.FC<Props> = (props: Props) => {
     setIsSubmitting(true);
     const Teamid = v4();
 
-    const serve = new OpenSRPService(props.accessToken, API_BASE_URL, ORGANIZATION_POST);
+    const serve = new OpenSRPService(props.accessToken, API_BASE_URL, TEAMS_POST);
     const payload: OrganizationPOST = {
       active: values.active,
       identifier: Teamid,
@@ -95,7 +96,13 @@ export const Form: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <AntdForm requiredMark={false} {...layout} onFinish={onSubmit} initialValues={initialValue}>
+    <AntdForm
+      form={form}
+      requiredMark={false}
+      {...layout}
+      onFinish={onSubmit}
+      initialValues={initialValue}
+    >
       <AntdForm.Item name="name" label="Team Name">
         <Input placeholder="Enter a team name" />
       </AntdForm.Item>
