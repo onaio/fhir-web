@@ -196,3 +196,26 @@ export const locationHierarchy = {
     parentChildren: {},
   },
 };
+
+export const locationTreeNode1 = {
+  id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+  label: 'CSB Hopital Bouficha',
+  node: {
+    locationId: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+    name: 'CSB Hopital Bouficha',
+    attributes: {
+      geographicLevel: 0,
+    },
+    voided: false,
+  },
+  key: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+  title: 'CSB Hopital Bouficha',
+};
+
+export const locations = [locationTreeNode1];
+
+export const userAssignment = {
+  organizationIds: [2],
+  jurisdictions: ['e2b4a441-21b5-4d03-816b-09d45b17cad7'],
+  plans: [],
+};

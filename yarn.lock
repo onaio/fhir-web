@@ -2603,11 +2603,6 @@
   dependencies:
     "@opensrp/server-service" "^0.0.4"
 
-"@opensrp/server-service@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.10.tgz#89f7f3ada0c6f21ca1928dec58827b995f624607"
-  integrity sha512-KXTJG39DRxd2lC/21uA/hERhnFDQ0bazwpmfIATPZyUDL1WhOyNfDzwq6f/6+yeSdqeNsx20sBSk3RwLVUItAQ==
-
 "@opensrp/server-service@^0.0.11":
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
@@ -2617,6 +2612,11 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
+
+"@opensrp/server-service@file:packages/opensrp-server-service":
+  version "0.0.12"
+  dependencies:
+    "@onaio/utils" "^0.0.1"
 
 "@opensrp/store@^0.0.5":
   version "0.0.5"

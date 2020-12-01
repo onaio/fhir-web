@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { ERROR_OCCURRED, OPENSRP_URL_CLIENT_SEARCH, APPLICATION_CSV } from '../../constants';
 import { Client } from '../../ducks/clients';
 import { downloadFile } from '../../helpers/utils';
-import { TreeNode } from '@opensrp/location-management';
+import { ParsedHierarchyNode } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 /* eslint-disable @typescript-eslint/camelcase */
@@ -50,7 +50,7 @@ export const handleCardOrderDateChange = (
  * @param {string} accessToken - OPENSRP API access token
  * @param {string} opensrpBaseURL - OPENSRP API base URL
  * @param {string} serviceClass - OPENSRP service class
- * @param {TreeNode} locations location hierarchy
+ * @param {ParsedHierarchyNode} locations location hierarchy
  * @param {Function} setSubmitting - method to set form `isSubmitting` status
  */
 export const submitForm = (
@@ -58,7 +58,7 @@ export const submitForm = (
   accessToken: string,
   opensrpBaseURL: string,
   serviceClass: typeof OpenSRPService,
-  locations: TreeNode[],
+  locations: ParsedHierarchyNode[],
   setSubmitting: (isSubmitting: boolean) => void
 ): void => {
   const { clientLocation, cardStatus, cardOrderDate } = values;
@@ -168,11 +168,14 @@ export const createCsv = (entries: ClientCSVEntry[], fileName: string): void => 
 /**
  * Get location from the location hierarchy
  *
- * @param {TreeNode} locations location hierarchy
+ * @param {ParsedHierarchyNode} locations location hierarchy
  * @param {string} locationId id of location to return
- * @returns {TreeNode | null} location if found, null if not found
+ * @returns {ParsedHierarchyNode | null} location if found, null if not found
  */
-export const getLocationDetails = (locations: TreeNode[], locationId: string): TreeNode | null => {
+export const getLocationDetails = (
+  locations: ParsedHierarchyNode[],
+  locationId: string
+): ParsedHierarchyNode | null => {
   let found = false;
   let i = 0;
   let location = null;
@@ -185,7 +188,7 @@ export const getLocationDetails = (locations: TreeNode[], locationId: string): T
         found = true;
         location = node;
       }
-    } else {
+    } else if (node.children) {
       location = getLocationDetails(node.children, locationId);
 
       if (location) {

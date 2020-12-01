@@ -7,6 +7,7 @@ import LocationTagAddEdit from './components/LocationTagAddEdit';
 import Tree from './components/LocationTree';
 
 export * as locationHierachyDucks from './ducks/location-hierarchy';
+export * from './ducks/types';
 export * from './components/LocationTree/utils';
 
 export {

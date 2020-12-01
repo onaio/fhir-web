@@ -6,6 +6,7 @@ import {
   formatDDMMYYY,
   handleCardOrderDateChange,
   submitForm,
+  getLocationDetails,
 } from '../utils';
 import { OpenSRPService } from '@opensrp/server-service';
 import Papaparse from 'papaparse';
@@ -16,11 +17,14 @@ import flushPromises from 'flush-promises';
 import * as notifications from '@opensrp/notifications';
 import { ERROR_OCCURRED } from '../../../constants';
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/camelcase */
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
+const mockDownload = jest.fn();
+(globalUtils as any).downloadFile = mockDownload;
 
 describe('components/DownloadClientData/utils/createCSV', () => {
   afterEach(() => {
@@ -28,8 +32,6 @@ describe('components/DownloadClientData/utils/createCSV', () => {
   });
 
   it('downloads csv correctly', () => {
-    const mockDownload = jest.fn();
-    (globalUtils as any).downloadFile = mockDownload;
     const fileName = 'client_data';
     createCsv([fixtures.child1CsvEntry, fixtures.child2CsvEntry], fileName);
     expect(mockDownload).toBeCalled();
@@ -47,8 +49,8 @@ describe('components/DownloadClientData/utils/buildCSVFileName', () => {
   beforeAll(() => {
     // Mock new Date() but do not mock if date passed to constructor i.e
     // mock current date only
-    (global as any).Date = class extends Date {
-      constructor(date) {
+    const DateExtend = class extends Date {
+      constructor(date: any) {
         if (date) {
           super(date);
         } else {
@@ -56,6 +58,7 @@ describe('components/DownloadClientData/utils/buildCSVFileName', () => {
         }
       }
     };
+    (global as any).Date = DateExtend;
   });
 
   afterAll(() => {
@@ -100,13 +103,33 @@ describe('components/DownloadClientData/utils/handleCardOrderDateChange', () => 
 });
 
 describe('components/DownloadClientData/utils/submitForm', () => {
+  const currentDate = new Date('2020-11-18');
+  const realDate = Date;
+
+  beforeAll(() => {
+    // Mock new Date() but do not mock if date passed to constructor i.e
+    // mock current date only
+    const DateExtend = class extends Date {
+      constructor(date: any) {
+        if (date) {
+          super(date);
+        } else {
+          return currentDate;
+        }
+      }
+    };
+    (global as any).Date = DateExtend;
+  });
+
+  afterAll(() => {
+    global.Date = realDate;
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  const mockDownload = jest.fn();
   const papaparseMock = jest.spyOn(Papaparse, 'unparse');
-  (globalUtils as any).downloadFile = mockDownload;
   const clientLocation = 'e2b4a441-21b5-4d03-816b-09d45b17cad7';
   const cardStatus = 'needs_card';
   const startDate = '2020-04-26';
@@ -124,7 +147,14 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   it('submits the form correctly', async () => {
     fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
-    submitForm(values, accessToken, opensrpBaseURL, OpenSRPService, setSubmittingMock);
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    );
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(fetch.mock.calls[0]).toEqual([
       `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}&attribute=card_status:${cardStatus}`,
@@ -145,13 +175,24 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
     });
+    // File name should be correct
+    expect(mockDownload.mock.calls[0][1]).toEqual(
+      'Children_list_CSB Hopital Bouficha_18_11_2020_(26-04-2020 - 26-12-2020)'
+    );
   });
 
   it('handles error if submission fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-    submitForm(values, accessToken, opensrpBaseURL, OpenSRPService, setSubmittingMock);
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    );
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(fetch.mock.calls[0]).toEqual([
       `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}&attribute=card_status:${cardStatus}`,
@@ -184,6 +225,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       accessToken,
       opensrpBaseURL,
       OpenSRPService,
+      fixtures.locations,
       setSubmittingMock
     );
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
@@ -213,7 +255,14 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-    submitForm(values, accessToken, opensrpBaseURL, OpenSRPService, setSubmittingMock);
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    );
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
 
     await act(async () => {
@@ -234,6 +283,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       accessToken,
       opensrpBaseURL,
       OpenSRPService,
+      fixtures.locations,
       setSubmittingMock
     );
 
@@ -256,6 +306,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       accessToken,
       opensrpBaseURL,
       OpenSRPService,
+      fixtures.locations,
       setSubmittingMock
     );
 
@@ -279,6 +330,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       accessToken,
       opensrpBaseURL,
       OpenSRPService,
+      fixtures.locations,
       setSubmittingMock
     );
     expect(setSubmittingMock).not.toHaveBeenCalled();
@@ -289,5 +341,56 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     });
 
     expect(papaparseMock).not.toHaveBeenCalled();
+  });
+
+  it('creates csv correctly if location is not found in hierarchy', async () => {
+    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
+    submitForm(
+      {
+        ...values,
+        clientLocation: 'a2b4a441-21b5-4d03-816b-09d45b17cad9', // id not in hierarchy
+      },
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    );
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(papaparseMock).toBeCalledWith(
+      [
+        {
+          ...fixtures.child1CsvEntry,
+          facility_of_registration: '',
+        },
+        {
+          ...fixtures.child2CsvEntry,
+          facility_of_registration: '',
+        },
+      ],
+      {
+        header: true,
+      }
+    );
+    expect(mockDownload.mock.calls[0][1]).toEqual(
+      'Children_list__18_11_2020_(26-04-2020 - 26-12-2020)'
+    );
+  });
+});
+
+describe('components/DownloadClientData/utils/getLocationDetails', () => {
+  it('returns location from hierarchy', () => {
+    expect(getLocationDetails(fixtures.locations, 'e2b4a441-21b5-4d03-816b-09d45b17cad7')).toEqual(
+      fixtures.locationTreeNode1
+    );
+  });
+
+  it('returns null if location not found in hierarchy', () => {
+    expect(getLocationDetails(fixtures.locations, 'a2b4a441-21b5-4d03-816b-09d45b17cad9')).toEqual(
+      null
+    );
   });
 });

@@ -1,16 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Button,
-  Card,
-  Typography,
-  Form,
-  Select,
-  TreeSelect,
-  DatePicker,
-  Tooltip,
-  notification,
-} from 'antd';
+import moment from 'moment';
+import { Button, Card, Typography, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
@@ -19,7 +10,7 @@ import {
   locationHierachyDucks,
   RawOpenSRPHierarchy,
   generateJurisdictionTree,
-  TreeNode,
+  ParsedHierarchyNode,
 } from '@opensrp/location-management';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { submitForm, handleCardOrderDateChange, UserAssignment } from './utils';
@@ -28,6 +19,7 @@ import {
   OPENSRP_URL_LOCATION_HIERARCHY,
   OPENSRP_URL_USER_ASSIGNMENT,
 } from '../../constants';
+import { sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.default);
 
@@ -73,8 +65,10 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
   const { opensrpBaseURL, opensrpServiceClass, fetchAllHierarchiesActionCreator } = props;
   const [cardOrderDate, setCardOrderDate] = React.useState<[string, string]>(['', '']);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+  const [defaultLocationId, setDefaultLocationId] = React.useState<string>('');
   const locationHierarchies = useSelector(
-    (state) => (locationHierachyDucks.getAllHierarchiesArray(state) as unknown) as TreeNode[]
+    (state) =>
+      (locationHierachyDucks.getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const dispatch = useDispatch();
@@ -98,6 +92,11 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
       lg: { offset: 6, span: 14 },
     },
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const disabledDate = (current: any) => {
+    // Can not select days after
+    return current && current > moment().startOf('day');
+  };
 
   React.useEffect(() => {
     const serve = new opensrpServiceClass(accessToken, opensrpBaseURL, OPENSRP_URL_USER_ASSIGNMENT);
@@ -106,6 +105,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
       .then((assignment: UserAssignment) => {
         const { jurisdictions } = assignment;
         const defaultLocationId = jurisdictions[0];
+        setDefaultLocationId(defaultLocationId);
         const serve = new opensrpServiceClass(
           accessToken,
           opensrpBaseURL,
@@ -118,14 +118,12 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
             const hierarchy = generateJurisdictionTree(res);
             dispatch(fetchAllHierarchiesActionCreator(hierarchy.model));
           })
-          .catch((e) => notification.error({ message: `${e}`, description: '' }));
+          .catch((_: Error) => {
+            sendErrorNotification(ERROR_OCCURRED);
+          });
       })
       .catch((_: Error) => {
-        setSubmitting(false);
-        notification.error({
-          message: ERROR_OCCURRED,
-          description: '',
-        });
+        sendErrorNotification(ERROR_OCCURRED);
       });
   }, [
     accessToken,
@@ -135,22 +133,18 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     dispatch,
   ]);
 
-  /**
+  /** Function to parse the hierarchy tree into TreeSelect node format
    *
-   * @param {TreeNode} TreeNode - location tree
-   * @returns {React.Element} TreeSelect.TreeNode
+   * @param {Array<ParsedHierarchyNode>} hierarchyNode the tree node to parse
+   * @returns {Array<React.ReactNode>} the parsed format of for Ant TreeSelect
    */
-  const parseTreeNode = (TreeNode: TreeNode[]): JSX.Element[] => {
-    return TreeNode.map((node) => (
-      <TreeSelect.TreeNode
-        key={node.id}
-        value={node.id}
-        title={node.title}
-        // eslint-disable-next-line react/no-children-prop
-        children={node.children && parseTreeNode(node.children)}
-      />
+  function parseHierarchyNode(hierarchyNode: ParsedHierarchyNode[]): React.ReactNode[] {
+    return hierarchyNode.map((node) => (
+      <TreeSelect.TreeNode key={node.id} value={node.id} title={node.title}>
+        {node.children ? parseHierarchyNode(node.children) : ''}
+      </TreeSelect.TreeNode>
     ));
-  };
+  }
 
   return (
     <>
@@ -163,6 +157,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
             submitForm(
               {
                 ...values,
+                clientLocation: values.clientLocation ? values.clientLocation : defaultLocationId,
                 cardOrderDate,
               },
               accessToken,
@@ -180,7 +175,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               placeholder="Please select"
             >
               <TreeSelect.TreeNode value="" title="All locations"></TreeSelect.TreeNode>
-              {parseTreeNode(locationHierarchies)}
+              {parseHierarchyNode(locationHierarchies)}
             </TreeSelect>
           </Form.Item>
           <Form.Item name="cardStatus" label="Card Status">
@@ -198,6 +193,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
             ]}
           >
             <RangePicker
+              disabledDate={disabledDate}
               onChange={
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (_: any, formatString) => handleCardOrderDateChange(formatString, setCardOrderDate)

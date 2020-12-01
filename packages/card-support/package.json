@@ -42,7 +42,7 @@
     "@onaio/utils": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@opensrp/reducer-factory": "^0.0.9",
-    "@opensrp/server-service": "^0.0.10",
+    "@opensrp/server-service": "file:../opensrp-server-service",
     "@opensrp/store": "^0.0.5",
     "@opensrp/location-management": "file:../location-management",
     "@opensrp/notifications": "^0.0.2",
