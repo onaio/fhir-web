@@ -1,0 +1,28 @@
+.planform.form-container{
+  background-color: #fff;
+  padding: 24px;
+  min-height: 70vh;
+}
+
+.condition-group,
+.trigger-group {
+  background-color: aliceblue;
+  padding: 0.5rem;
+}
+
+.dynamic-delete-button {
+  margin: 0 8px;
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  color: #999;
+  transition: all 0.3s;
+}
+.dynamic-delete-button:hover {
+  color: #777;
+}
+.dynamic-delete-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
