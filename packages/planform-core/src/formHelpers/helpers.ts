@@ -11,18 +11,7 @@ import {
   taskGenerationStatuses,
   GoalUnit,
 } from './constants/enumsAndCodeConstants';
-import {
-  DEFAULT_TIME,
-  DEFAULT_ACTIVITY_DURATION_DAYS,
-  ACTION_UUID_NAMESPACE,
-  DATE_FORMAT,
-  PLAN_UUID_NAMESPACE,
-  DEFAULT_PLAN_VERSION,
-  TASK_GENERATION_STATUS,
-  DISPLAYED_PLAN_TYPES,
-  PLAN_TYPES_ALLOWED_TO_CREATE,
-} from './envs';
-import { FIClassifications } from './settings';
+import { defaultEnvConfig, FIClassifications } from './settings';
 import {
   DAYS,
   BCC_ACTIVITY_CODE,
@@ -84,6 +73,7 @@ import {
   UseContext,
   FIReasonType,
   PlanStatus,
+  EnvConfig,
 } from './types';
 import { v5 as uuidv5 } from 'uuid';
 
@@ -118,9 +108,17 @@ export const isFIOrDynamicFI = (interventionType: InterventionType): boolean => 
  * activities section
  *
  * @param {PlanActivity} activityObj - the plan activity object
+ * @param {EnvConfig} envConfig - env configuration variables
  * @returns {PlanActivityFormFields} -
  */
-export function extractActivityForForm(activityObj: PlanActivity): PlanActivityFormFields {
+export function extractActivityForForm(
+  activityObj: PlanActivity,
+  envConfig?: EnvConfig
+): PlanActivityFormFields {
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfig,
+  };
   const planActivityKey: string =
     findKey(planActivities, (a: PlanActivity) => a.action.code === activityObj.action.code) ?? '';
 
@@ -162,8 +160,8 @@ export function extractActivityForForm(activityObj: PlanActivity): PlanActivityF
       activityObj.goal.target &&
       activityObj.goal.target[0].due &&
       activityObj.goal.target[0].due !== ''
-        ? parseISO(`${activityObj.goal.target[0].due}${DEFAULT_TIME}`)
-        : moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, DAYS).toDate(),
+        ? parseISO(`${activityObj.goal.target[0].due}${configs.defaultTime}`)
+        : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     goalPriority: activityObj.goal.priority || goalPriorities[1],
     goalValue:
       (activityObj.goal.target && activityObj.goal.target[0].detail.detailQuantity.value) ||
@@ -174,11 +172,11 @@ export function extractActivityForForm(activityObj: PlanActivity): PlanActivityF
       1,
     timingPeriodEnd:
       activityObj.action.timingPeriod.end && activityObj.action.timingPeriod.end !== ''
-        ? parseISO(`${activityObj.action.timingPeriod.end}${DEFAULT_TIME}`)
-        : moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, DAYS).toDate(),
+        ? parseISO(`${activityObj.action.timingPeriod.end}${configs.defaultTime}`)
+        : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     timingPeriodStart:
       activityObj.action.timingPeriod.start && activityObj.action.timingPeriod.start !== ''
-        ? parseISO(`${activityObj.action.timingPeriod.start}${DEFAULT_TIME}`)
+        ? parseISO(`${activityObj.action.timingPeriod.start}${configs.defaultTime}`)
         : moment().toDate(),
   };
 }
@@ -371,13 +369,19 @@ const getTriggerFromFormField = (
  * @param {PlanActivityFormFields[]} activities - this of activities from PlanForm
  * @param {string} planIdentifier - this plan identifier
  * @param {PlanDefinition | null} planObj - a plan object
+ * @param {EnvConfig} envConfigs - environment config variables
  * @returns {PlanActivity} -
  */
 export function extractActivitiesFromPlanForm(
   activities: PlanActivityFormFields[],
   planIdentifier = '',
-  planObj: PlanDefinition | null = null
+  planObj: PlanDefinition | null = null,
+  envConfigs?: EnvConfig
 ) {
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfigs,
+  };
   const actions: PlanAction[] = [];
   const goals: PlanGoal[] = [];
 
@@ -421,11 +425,11 @@ export function extractActivitiesFromPlanForm(
           ? planIdentifier === ''
             ? generateNameSpacedUUID(
                 `${moment().toString()}-${thisAction.goalId}`,
-                ACTION_UUID_NAMESPACE
+                configs.actionUuidNamespace
               )
             : generateNameSpacedUUID(
                 `${moment().toString()}-${planIdentifier}-${thisAction.goalId}`,
-                ACTION_UUID_NAMESPACE
+                configs.actionUuidNamespace
               )
           : element.actionIdentifier;
 
@@ -438,8 +442,8 @@ export function extractActivitiesFromPlanForm(
         prefix,
         reason: element.actionReason as ActionReasonType,
         timingPeriod: {
-          end: moment(element.timingPeriodEnd).format(DATE_FORMAT.toUpperCase()),
-          start: moment(element.timingPeriodStart).format(DATE_FORMAT.toUpperCase()),
+          end: moment(element.timingPeriodEnd).format(configs.dateFormat.toUpperCase()),
+          start: moment(element.timingPeriodStart).format(configs.dateFormat.toUpperCase()),
         },
         title: element.actionTitle,
       };
@@ -457,7 +461,7 @@ export function extractActivitiesFromPlanForm(
 
         const goalTarget: PlanGoalTarget = Object.assign(thisGoal.target[0], {
           detail: goalDetail,
-          due: moment(element.goalDue).format(DATE_FORMAT.toUpperCase()),
+          due: moment(element.goalDue).format(configs.dateFormat.toUpperCase()),
         });
 
         const goalFields: Partial<PlanGoal> = {
@@ -485,9 +489,18 @@ export function extractActivitiesFromPlanForm(
  *
  * @param {FormEvent} event - the event object
  * @param {PlanFormFields} formValues - the form values
+ * @param {envConfigs} envConfigs - configuration from the env
  * @returns {[string, string]} - the plan name and title
  */
-export const getNameTitle = (event: FormEvent, formValues: PlanFormFields): [string, string] => {
+export const getNameTitle = (
+  event: FormEvent,
+  formValues: PlanFormFields,
+  envConfigs?: EnvConfig
+): [string, string] => {
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfigs,
+  };
   const target = event.target as HTMLInputElement;
   const currentInterventionType =
     target.name === INTERVENTION_TYPE_CODE ? target.value : formValues.interventionType;
@@ -506,7 +519,7 @@ export const getNameTitle = (event: FormEvent, formValues: PlanFormFields): [str
     const result = [
       currentFiStatus,
       currentJurisdiction,
-      moment(currentDate).format(DATE_FORMAT.toUpperCase()),
+      moment(currentDate).format(configs.dateFormat.toUpperCase()),
     ].map((e) => {
       if (e) {
         return e;
@@ -516,7 +529,7 @@ export const getNameTitle = (event: FormEvent, formValues: PlanFormFields): [str
     name = result.join('-');
     title = result.join(' ');
   } else {
-    const result = [name, moment(currentDate).format(DATE_FORMAT.toUpperCase())].map((e) => {
+    const result = [name, moment(currentDate).format(configs.dateFormat.toUpperCase())].map((e) => {
       if (e) {
         return e;
       }
@@ -573,22 +586,28 @@ export const getTaskGenerationValue = (
  * @param {PlanFormFields} formValue - the value gotten from the PlanForm
  * @param {PlanDefinition | null}planObj -  the plan object
  * @param {boolean} isEditMode - creating or editing plan?
+ * @param {EnvConfig} envConfigs - the env configuration vars
  * @returns {PlanDefinition} - the plan definition object
  */
 export function generatePlanDefinition(
   formValue: PlanFormFields,
   planObj: PlanDefinition | null = null,
-  isEditMode = false
+  isEditMode = false,
+  envConfigs?: EnvConfig
 ): PlanDefinition {
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfigs,
+  };
   const planIdentifier =
     formValue.identifier && formValue.identifier !== '' // is this an existing plan?
       ? formValue.identifier
-      : generateNameSpacedUUID(moment().toString(), PLAN_UUID_NAMESPACE);
+      : generateNameSpacedUUID(moment().toString(), configs.planUuidNamespace);
 
   const planVersion =
     formValue.identifier && formValue.identifier !== '' // is this an existing plan?
       ? isNaN(parseInt(formValue.version, 10)) // is the existing version valid?
-        ? parseInt(DEFAULT_PLAN_VERSION, 10) + 1
+        ? parseInt(configs.defaultPlanVersion, 10) + 1
         : parseInt(formValue.version, 10) + 1
       : formValue.version;
 
@@ -599,7 +618,7 @@ export function generatePlanDefinition(
   );
 
   const taskGenerationStatusValue =
-    getTaskGenerationValue(TASK_GENERATION_STATUS, actionAndGoals) ??
+    getTaskGenerationValue(configs.taskGenerationStatus, actionAndGoals) ??
     formValue.taskGenerationStatus;
 
   const useContext: UseContext[] = [
@@ -645,10 +664,10 @@ export function generatePlanDefinition(
 
   return {
     ...actionAndGoals, // action and goal
-    date: moment(formValue.date).format(DATE_FORMAT.toUpperCase()),
+    date: moment(formValue.date).format(configs.dateFormat.toUpperCase()),
     effectivePeriod: {
-      end: moment(formValue.end).format(DATE_FORMAT.toUpperCase()),
-      start: moment(formValue.start).format(DATE_FORMAT.toUpperCase()),
+      end: moment(formValue.end).format(configs.dateFormat.toUpperCase()),
+      start: moment(formValue.start).format(configs.dateFormat.toUpperCase()),
     },
     experimental: false,
     identifier: planIdentifier,
@@ -669,9 +688,17 @@ export function generatePlanDefinition(
  * Get plan form field values from plan definition object
  *
  * @param {PlanDefinition} planObject - the plan definition object
+ * @param {EnvConfig} envConfigs - the environmental configurations
  * @returns {PlanFormFields} - the plan form field values
  */
-export function getPlanFormValues(planObject: PlanDefinition): PlanFormFields {
+export function getPlanFormValues(
+  planObject: PlanDefinition,
+  envConfigs?: EnvConfig
+): PlanFormFields {
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfigs,
+  };
   const typeUseContext = [];
   const reasonUseContext = [];
   const statusUseContext = [];
@@ -750,8 +777,8 @@ export function getPlanFormValues(planObject: PlanDefinition): PlanFormFields {
   return {
     activities,
     caseNum: caseNumUseContext.length > 0 ? caseNumUseContext[0].valueCodableConcept : '',
-    date: parseISO(`${planObject.date}${DEFAULT_TIME}`),
-    end: parseISO(`${planObject.effectivePeriod.end}${DEFAULT_TIME}`),
+    date: parseISO(`${planObject.date}${configs.defaultTime}`),
+    end: parseISO(`${planObject.effectivePeriod.end}${configs.defaultTime}`),
     fiReason:
       reasonUseContext.length > 0
         ? (reasonUseContext[0].valueCodableConcept as FIReasonType)
@@ -769,7 +796,7 @@ export function getPlanFormValues(planObject: PlanDefinition): PlanFormFields {
     name: planObject.name,
     opensrpEventId:
       eventIdUseContext.length > 0 ? eventIdUseContext[0].valueCodableConcept : undefined,
-    start: parseISO(`${planObject.effectivePeriod.start}${DEFAULT_TIME}`),
+    start: parseISO(`${planObject.effectivePeriod.start}${configs.defaultTime}`),
     status: planObject.status as PlanStatus,
     taskGenerationStatus,
     teamAssignmentStatus,
@@ -795,17 +822,33 @@ export function getGoalUnitFromActionCode(actionCode: PlanActionCodesType): Goal
  * Check if a plan type should be visible
  *
  * @param {InterventionType} planType - plan type
+ * @param {EnvConfig} envConfig - the environmental configurations
  * @returns {boolean} -
  */
-export const isPlanTypeEnabled = (planType: InterventionType): boolean =>
-  DISPLAYED_PLAN_TYPES.includes(planType);
+export const isPlanTypeEnabled = (planType: InterventionType, envConfig?: EnvConfig): boolean => {
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfig,
+  };
+  return configs.displayedPlanTypes.includes(planType);
+};
 
 /**
  * Check if plan type should be created and display all plan types on edit mode
  *
  * @param {InterventionType} planType - plan type
  * @param {boolean} isEditMode - are we editing or creating a plan
+ * @param {EnvConfig} envConfig - the environmental configurations
  * @returns {boolean} -
  */
-export const displayPlanTypeOnForm = (planType: InterventionType, isEditMode: boolean): boolean =>
-  isEditMode || PLAN_TYPES_ALLOWED_TO_CREATE.includes(planType);
+export const displayPlanTypeOnForm = (
+  planType: InterventionType,
+  isEditMode: boolean,
+  envConfig: EnvConfig
+): boolean => {
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfig,
+  };
+  return isEditMode || configs.planTypesAllowedToCreate.includes(planType);
+};
