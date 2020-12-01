@@ -26,6 +26,76 @@ interface Props {
   accessToken: string;
 }
 
+/**
+ * Handle form submission
+ *
+ * @param {string} accessToken Token for api calles
+ * @param {Object} values the form fields
+ * @param {Practitioner} practitioner list of practitioner to filter the selected one from
+ * @param {Function} setIsSubmitting function to set IsSubmitting loading process
+ */
+export async function onSubmit(
+  accessToken: string,
+  values: FormField,
+  practitioner: Practitioner[],
+  setIsSubmitting: (value: boolean) => void
+) {
+  setIsSubmitting(true);
+  const Teamid = v4();
+
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_POST);
+  const payload: OrganizationPOST = {
+    active: values.active,
+    identifier: Teamid,
+    name: values.name,
+    type: {
+      coding: [
+        {
+          code: 'team',
+          display: 'Team',
+          system: 'http://terminology.hl7.org/CodeSystem/organization-type',
+        },
+      ],
+    },
+  };
+
+  await serve
+    .create(payload)
+    .then(async () => {
+      notification.success({ message: 'Successfully Added Teams', description: '' });
+      notification.info({ message: 'Assigning Practitioners', description: '' });
+
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
+
+      const selectedPractitioner = practitioner.filter((e) =>
+        values.practitioners.includes(e.identifier)
+      );
+
+      const payload: PractitionerPOST[] = selectedPractitioner.map((prac) => {
+        return {
+          active: prac.active,
+          identifier: v4(),
+          practitioner: prac.identifier,
+          organization: Teamid,
+          code: { text: 'Community Health Worker' },
+        };
+      });
+
+      await serve
+        .create(payload)
+        .then(() =>
+          notification.success({
+            message: 'Successfully Assigning Practitioners',
+            description: '',
+          })
+        )
+        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    })
+    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+
+  setIsSubmitting(false);
+}
+
 export const Form: React.FC<Props> = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -33,70 +103,15 @@ export const Form: React.FC<Props> = (props: Props) => {
     ? props.initialValue
     : { active: true, name: '', practitioners: [''] };
 
-  /**
-   * Handle form submission
-   *
-   * @param {Object} values the form fields
-   */
-  async function onSubmit(values: FormField) {
-    setIsSubmitting(true);
-    const Teamid = v4();
-
-    const serve = new OpenSRPService(props.accessToken, API_BASE_URL, TEAMS_POST);
-    const payload: OrganizationPOST = {
-      active: values.active,
-      identifier: Teamid,
-      name: values.name,
-      type: {
-        coding: [
-          {
-            code: 'team',
-            display: 'Team',
-            system: 'http://terminology.hl7.org/CodeSystem/organization-type',
-          },
-        ],
-      },
-    };
-
-    await serve
-      .create(payload)
-      .then(async () => {
-        notification.success({ message: 'Successfully Added Teams', description: '' });
-        notification.info({ message: 'Assigning Practitioners', description: '' });
-
-        const serve = new OpenSRPService(props.accessToken, API_BASE_URL, PRACTITIONER_POST);
-
-        const practitioner = props.practitioner.filter((e) =>
-          values.practitioners.includes(e.identifier)
-        );
-
-        const payload: PractitionerPOST[] = practitioner.map((prac) => {
-          return {
-            active: prac.active,
-            identifier: v4(),
-            practitioner: prac.identifier,
-            organization: Teamid,
-            code: { text: 'Community Health Worker' },
-          };
-        });
-
-        await serve
-          .create(payload)
-          .then(() =>
-            notification.success({
-              message: 'Successfully Assigning Practitioners',
-              description: '',
-            })
-          )
-          .catch((e) => notification.error({ message: `${e}`, description: '' }));
-      })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
-
-    setIsSubmitting(false);
-  }
-
   return (
-    <AntdForm requiredMark={false} {...layout} onFinish={onSubmit} initialValues={initialValue}>
+    <AntdForm
+      requiredMark={false}
+      {...layout}
+      onFinish={(values) =>
+        onSubmit(props.accessToken, values, props.practitioner, setIsSubmitting)
+      }
+      initialValues={initialValue}
+    >
       <AntdForm.Item name="name" label="Team Name">
         <Input placeholder="Enter a team name" />
       </AntdForm.Item>
