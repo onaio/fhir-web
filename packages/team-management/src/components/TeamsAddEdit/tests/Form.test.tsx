@@ -8,7 +8,7 @@ import { store } from '@opensrp/store';
 import { accessToken, id, intialValue, practitioners } from './fixtures';
 import Form from '../Form';
 
-describe('containers/pages/locations/LocationUnitAddEdit', () => {
+describe('Team-management/TeamsAddEdit/Form', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>
@@ -56,8 +56,8 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
   });
 
   // TODO : Add test
-  // it('Create LocationUnitAddEdit', async () => {});
-  // it('Update LocationUnitAddEdit', async () => {});
+  // it('Create TeamsAddEdit', async () => {});
+  // it('Update TeamsAddEdit', async () => {});
   // it('Add Practinier field', async () => {});
   // it('Remove Practinier field', async () => {});
 });
