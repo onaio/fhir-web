@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 import MockDate from 'mockdate';
 import { GoalUnit, PlanActionCodes } from '../constants/enumsAndCodeConstants';
 import { planActivities as planActivitiesFromConfig } from '../activitiesLookup';
-import { PlanDefinition } from '../types';
+import { EnvConfig, PlanDefinition } from '../types';
 import { IGNORE, TRUE } from '../constants/stringConstants';
 import { plans } from './revealFixtures';
 import { InterventionType } from '../types';
@@ -41,19 +41,18 @@ import {
   values2,
   valuesWithJurisdiction,
 } from './revealFixtures';
-
-jest.mock('../../../../configs/env');
+import { defaultEnvConfig } from '../settings';
 
 describe('containers/forms/PlanForm/helpers', () => {
   it('extractActivityForForm works for all activities', () => {
     for (const [key, activityObj] of Object.entries(planActivitiesFromConfig)) {
-      expect(extractActivityForForm(activityObj)).toEqual((expectedActivity as any)[key]);
+      expect(extractActivityForForm(activityObj)).toEqual(expectedActivity[key]);
     }
     for (const [key, activityObj] of Object.entries(planActivityWithEmptyfields)) {
-      expect(extractActivityForForm(activityObj)).toEqual((expectedActivityEmptyField as any)[key]);
+      expect(extractActivityForForm(activityObj)).toEqual(expectedActivityEmptyField[key]);
     }
     for (const [key, obj] of Object.entries(planActivityWithoutTargets)) {
-      expect(extractActivityForForm(obj)).toEqual((expectedActivity as any)[key]);
+      expect(extractActivityForForm(obj)).toEqual(expectedActivity[key]);
     }
   });
 
@@ -63,27 +62,15 @@ describe('containers/forms/PlanForm/helpers', () => {
     );
   });
 
-  it('check doesFieldHaveErrors returns the correct value', () => {
-    let errors = [
-      {
-        id: 'Required',
-      },
-    ];
-    let field = 'id';
-    let index = 0;
-    expect(doesFieldHaveErrors(field, index, errors)).toBe(true);
-    field = '';
-    index = NaN;
-    errors = [];
-    expect(doesFieldHaveErrors(field, index, errors)).toBe(false);
-  });
-
   it('check extractActivitiesFromPlanForm returns the correct value', () => {
-    const envModule = require('../../../../configs/env');
-    envModule.PLAN_UUID_NAMESPACE = '85f7dbbf-07d0-4c92-aa2d-d50d141dde00';
-    envModule.ACTION_UUID_NAMESPACE = '35968df5-f335-44ae-8ae5-25804caa2d86';
-    MockDate.set('1/30/2000', 0);
-    expect(extractActivitiesFromPlanForm(activities)).toEqual(
+    const configs: EnvConfig = {
+      ...defaultEnvConfig,
+      planUuidNamespace: '85f7dbbf-07d0-4c92-aa2d-d50d141dde00',
+      actionUuidNamespace: '35968df5-f335-44ae-8ae5-25804caa2d86',
+    };
+
+    MockDate.set('1/30/2000');
+    expect(extractActivitiesFromPlanForm(activities, undefined, undefined, configs)).toEqual(
       expectedExtractActivityFromPlanformResult
     );
     MockDate.reset();
@@ -114,7 +101,7 @@ describe('containers/forms/PlanForm/helpers', () => {
   });
 
   it('check generatePlanDefinition returns the correct value', () => {
-    MockDate.set('1/30/2000', 0);
+    MockDate.set('1/30/2000');
     expect(generatePlanDefinition(values2)).toEqual(expectedPlanDefinition);
 
     // add taskGenerationStatus and increment version
@@ -134,11 +121,14 @@ describe('containers/forms/PlanForm/helpers', () => {
   });
 
   it('generatePlanDefinition should use value of TASK_GENERATION_STATUS defined on create if value not ignore', () => {
-    MockDate.set('1/30/2000', 0);
-    const envModule = require('../../../../configs/env');
-    envModule.PLAN_UUID_NAMESPACE = '85f7dbbf-07d0-4c92-aa2d-d50d141dde00';
-    envModule.ACTION_UUID_NAMESPACE = '35968df5-f335-44ae-8ae5-25804caa2d86';
-    envModule.TASK_GENERATION_STATUS = TRUE;
+    MockDate.set('1/30/2000');
+    const configs: EnvConfig = {
+      ...defaultEnvConfig,
+      planUuidNamespace: '85f7dbbf-07d0-4c92-aa2d-d50d141dde00',
+      actionUuidNamespace: '35968df5-f335-44ae-8ae5-25804caa2d86',
+      taskGenerationStatus: TRUE,
+    };
+
     const planCopy = {
       ...plans[5],
       version: 2,
@@ -150,18 +140,21 @@ describe('containers/forms/PlanForm/helpers', () => {
       code: 'taskGenerationStatus',
       valueCodableConcept: TRUE,
     });
-    expect(generatePlanDefinition(planFormValues3 as PlanFormFields, null, false)).toEqual(
+    expect(generatePlanDefinition(planFormValues3 as PlanFormFields, null, false, configs)).toEqual(
       expectedDynamicPlan
     );
   });
 
   it('plans with no task generation status are not added task generation status', () => {
-    MockDate.set('1/30/2000', 0);
-    const envModule = require('../../../../configs/env');
-    envModule.PLAN_UUID_NAMESPACE = '85f7dbbf-07d0-4c92-aa2d-d50d141dde00';
-    envModule.ACTION_UUID_NAMESPACE = '35968df5-f335-44ae-8ae5-25804caa2d86';
-    envModule.TASK_GENERATION_STATUS = TRUE;
-    const noTaskGenerationstatus = getPlanFormValues(plans[5]);
+    MockDate.set('1/30/2000');
+    const configs: EnvConfig = {
+      ...defaultEnvConfig,
+      planUuidNamespace: '85f7dbbf-07d0-4c92-aa2d-d50d141dde00',
+      actionUuidNamespace: '35968df5-f335-44ae-8ae5-25804caa2d86',
+      taskGenerationStatus: TRUE,
+    };
+
+    const noTaskGenerationstatus = getPlanFormValues(plans[5], configs);
     const planCopy = {
       ...plans[5],
       version: 2,
@@ -170,19 +163,24 @@ describe('containers/forms/PlanForm/helpers', () => {
     const { serverVersion, ...expectedDynamicPlan } = planCopy;
     expectedDynamicPlan.action[0].type = 'create';
     // on create
-    expect(generatePlanDefinition(noTaskGenerationstatus, null, false)).toEqual(
+    expect(generatePlanDefinition(noTaskGenerationstatus, null, false, configs)).toEqual(
       expectedDynamicPlan
     );
     // on edit
-    expect(generatePlanDefinition(noTaskGenerationstatus, null, true)).toEqual(expectedDynamicPlan);
+    expect(generatePlanDefinition(noTaskGenerationstatus, null, true, configs)).toEqual(
+      expectedDynamicPlan
+    );
   });
 
   it('generatePlanDefinition should ignore taskGenerationStatus if specified when creating plan and keep value on edit', () => {
-    MockDate.set('1/30/2000', 0);
-    const envModule = require('../../../../configs/env');
-    envModule.PLAN_UUID_NAMESPACE = '85f7dbbf-07d0-4c92-aa2d-d50d141dde00';
-    envModule.ACTION_UUID_NAMESPACE = '35968df5-f335-44ae-8ae5-25804caa2d86';
-    envModule.TASK_GENERATION_STATUS = IGNORE;
+    MockDate.set('1/30/2000');
+    const configs: EnvConfig = {
+      ...defaultEnvConfig,
+      planUuidNamespace: '85f7dbbf-07d0-4c92-aa2d-d50d141dde00',
+      actionUuidNamespace: '35968df5-f335-44ae-8ae5-25804caa2d86',
+      taskGenerationStatus: IGNORE,
+    };
+
     const planCopy = {
       ...plans[5],
       version: 2,
@@ -193,22 +191,24 @@ describe('containers/forms/PlanForm/helpers', () => {
 
     // on create
     expectedDynamicPlan.action[0].type = 'create';
-    expect(generatePlanDefinition(planFormValues3 as PlanFormFields)).toEqual(expectedDynamicPlan);
+    expect(
+      generatePlanDefinition(planFormValues3 as PlanFormFields, undefined, undefined, configs)
+    ).toEqual(expectedDynamicPlan);
 
     // on edit when taskGenerationStatus is present
     expectedDynamicPlan.useContext = expectedDynamicPlan.useContext.concat({
       code: 'taskGenerationStatus',
       valueCodableConcept: planFormValues3.taskGenerationStatus,
     });
-    expect(generatePlanDefinition(planFormValues3 as PlanFormFields, null, true)).toEqual(
+    expect(generatePlanDefinition(planFormValues3 as PlanFormFields, null, true, configs)).toEqual(
       expectedDynamicPlan
     );
 
     // on edit when taskGenerationStatus is not present
     const { taskGenerationStatus, ...planFormValues3Copy } = planFormValues3;
-    expect(generatePlanDefinition(planFormValues3Copy as PlanFormFields, null, true)).toEqual(
-      expectedDynamicPlanCopy
-    );
+    expect(
+      generatePlanDefinition(planFormValues3Copy as PlanFormFields, null, true, configs)
+    ).toEqual(expectedDynamicPlanCopy);
   });
 
   it('getPlanFormValues can get original planForm', () => {
@@ -254,7 +254,7 @@ describe('containers/forms/PlanForm/helpers', () => {
     // multiple jurisdictions are gotten right
     expect(getPlanFormValues(plans[1]).jurisdictions).toEqual([
       { id: '35968df5-f335-44ae-8ae5-25804caa2d86', name: '35968df5-f335-44ae-8ae5-25804caa2d86' },
-      { id: '3952', name: '3952' },
+      { id: '3952', name: ' ' },
       { id: 'ac7ba751-35e8-4b46-9e53-3cbaad193697', name: 'ac7ba751-35e8-4b46-9e53-3cbaad193697' },
     ]);
   });
@@ -277,34 +277,6 @@ describe('containers/forms/PlanForm/helpers', () => {
       expect(getGoalUnitFromActionCode(PlanActionCodes[index])).toEqual(expectedUnits[index]);
     }
     expect(getGoalUnitFromActionCode('mosh' as PlanActionCodesType)).toEqual(GoalUnit.UNKNOWN);
-  });
-
-  it('onSubmitSuccess works if', () => {
-    const setSubmittingMock = jest.fn();
-    const addPlanMock = jest.fn();
-    const setAreWeDoneHereMock = jest.fn();
-    const payload = {
-      ...generatePlanDefinition(getPlanFormValues(plans[1])),
-      version: '2',
-    };
-
-    onSubmitSuccess(setSubmittingMock, setAreWeDoneHereMock, payload, addPlanMock);
-    expect(addPlanMock).toHaveBeenLastCalledWith(payload);
-    expect(setAreWeDoneHereMock).toHaveBeenLastCalledWith(true);
-    expect(setSubmittingMock).toHaveBeenLastCalledWith(false);
-  });
-
-  it('onSubmitSuccess works correctly if addPlan is undefined', () => {
-    const setSubmittingMock = jest.fn();
-    const setAreWeDoneHereMock = jest.fn();
-    const payload = {
-      ...generatePlanDefinition(getPlanFormValues(plans[1])),
-      version: '2',
-    };
-
-    onSubmitSuccess(setSubmittingMock, setAreWeDoneHereMock, payload);
-    expect(setAreWeDoneHereMock).toHaveBeenLastCalledWith(true);
-    expect(setSubmittingMock).toHaveBeenLastCalledWith(false);
   });
 
   it('getConditionFromFormField works correctly', () => {
