@@ -99,16 +99,18 @@ export const PublicComponent = ({ component: Component, ...rest }: Partial<Compo
  * @param routeProps - Component route props object
  */
 
+export const LoadingComponent = () => <Spin size="large" />;
+export const SuccessfulLoginComponent = () => <Redirect to="/" />;
+
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
     return <CustomConnectedAPICallBack {...routeProps} />;
   }
+
   return (
     <ConnectedOauthCallback
-      SuccessfulLoginComponent={() => {
-        return <Redirect to="/" />;
-      }}
-      LoadingComponent={() => <Spin size="large" />}
+      SuccessfulLoginComponent={SuccessfulLoginComponent}
+      LoadingComponent={LoadingComponent}
       providers={providers}
       oAuthUserInfoGetter={getOpenSRPUserInfo}
       {...routeProps}
