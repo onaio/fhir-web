@@ -3,7 +3,7 @@ import { keyBy } from 'lodash';
 import { FlushThunks } from 'redux-testkit';
 import { PlanDefinition } from '../../plan-global-types';
 import { store } from '@opensrp/store';
-import { InterventionType } from '../index';
+import { getPlanIds, getTitle, InterventionType } from '../index';
 import reducer, {
   addPlanDefinition,
   fetchPlanDefinitions,
@@ -67,11 +67,18 @@ describe('reducers/opensrp/PlanDefinition', () => {
     const titleFilter = {
       title: 'mosh',
     };
+    const idsFilter = {
+      planIds: ['0e85c238-39c1-4cea-a926-3d89f0c98429'],
+    };
     const titleUpperFilter = {
       title: 'MOSH',
     };
     const PlanDefinitionsArraySelector = makePlanDefinitionsArraySelector();
 
+    expect(getTitle(store.getState(), titleFilter)).toEqual('mosh');
+    expect(getPlanIds(store.getState(), idsFilter)).toEqual([
+      '0e85c238-39c1-4cea-a926-3d89f0c98429',
+    ]);
     expect(getPlanDefinitionsArrayByTitle()(store.getState(), titleFilter)).toEqual([
       fixtures.plans[3],
     ]);
@@ -101,6 +108,10 @@ describe('reducers/opensrp/PlanDefinition', () => {
     expect(getPlanDefinitionsArray(store.getState())).toEqual([
       fixtures.plans[0],
       fixtures.plans[1],
+    ]);
+    // get plansarray definition by interventiontype
+    expect(getPlanDefinitionsArray(store.getState(), InterventionType.FI)).toEqual([
+      fixtures.plans[0],
     ]);
     // fetch one more plan definition objects
     store.dispatch(fetchPlanDefinitions([fixtures.plans[3]] as PlanDefinition[]));
