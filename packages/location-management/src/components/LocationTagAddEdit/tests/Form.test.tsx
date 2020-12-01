@@ -96,8 +96,6 @@ describe('containers/pages/locations/Form', () => {
       ],
     ]);
 
-    // with values test
-    // expect(toJson(wrapper)).toEqual('');
     wrapper
       .find('input[name="name"]')
       .simulate('change', { target: { name: 'name', value: 'Name213' } });
