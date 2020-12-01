@@ -2,7 +2,7 @@ import { SORT_BY_EFFECTIVE_PERIOD_START_FIELD } from '../../constants';
 import * as planDefinitionFixtures from '../../ducks/tests/fixtures';
 import { InterventionType } from '../../ducks/index';
 import * as fixtures from '../../ducks/tests/fixtures';
-import { descendingOrderSort, isPlanDefinitionOfType } from '../utils';
+import { descendingOrderSort, isPlanDefinitionOfType, getPlanType } from '../utils';
 import { PlanDefinition } from '../../plan-global-types';
 
 describe('helpers/utils', () => {
@@ -16,6 +16,15 @@ describe('helpers/utils', () => {
       SORT_BY_EFFECTIVE_PERIOD_START_FIELD
     );
     expect(sortedPlans).toEqual(fixtures.eusmPlans);
+  });
+  it('returns unsorted plans array', () => {
+    const unsortedPlans = descendingOrderSort(fixtures.plans as PlanDefinition[], '');
+    expect(unsortedPlans).toEqual(fixtures.plans);
+  });
+
+  it('returns plan type', () => {
+    const type = getPlanType(fixtures.plans[0] as PlanDefinition);
+    expect(type).toEqual('FI');
   });
 
   it('computes the interventionType of a planDefinition correctly', () => {
