@@ -27,8 +27,8 @@ interface Props {
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
-  const [form] = AntdForm.useForm();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const initialValue = props.initialValue
     ? props.initialValue
     : { active: true, name: '', practitioners: [''] };
@@ -96,13 +96,7 @@ export const Form: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <AntdForm
-      form={form}
-      requiredMark={false}
-      {...layout}
-      onFinish={onSubmit}
-      initialValues={initialValue}
-    >
+    <AntdForm requiredMark={false} {...layout} onFinish={onSubmit} initialValues={initialValue}>
       <AntdForm.Item name="name" label="Team Name">
         <Input placeholder="Enter a team name" />
       </AntdForm.Item>
