@@ -168,6 +168,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               accessToken,
               opensrpBaseURL,
               opensrpServiceClass,
+              locationHierarchies,
               setSubmitting
             );
           }}

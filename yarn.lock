@@ -2649,6 +2649,11 @@
     tree-model "^1.0.7"
     uuidv4 "^6.2.5"
 
+"@opensrp/notifications@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.2.tgz#c2821b5934b4f0f944ca3ad65a38274ec448cb13"
+  integrity sha512-hQIQCqVMv0c26tY42YlSFbdyIdhcG710Wn5gTRwTvF6wiiWHpDnD+vuwhF+2LGSJu3c0rRRW0VFoJ9jPNBKUZg==
+
 "@opensrp/reducer-factory@^0.0.10":
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.10.tgz#151e3bb55b7833958b20f8c0b3c163b8a7b0c594"

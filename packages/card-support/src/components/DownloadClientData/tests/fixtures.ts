@@ -156,17 +156,25 @@ export const child2 = {
 export const child1CsvEntry = {
   id: '1833045',
   dob: '26/10/2017',
-  firstName: 'Baby',
-  lastName: 'Nameless',
+  first_name: 'Baby',
+  last_name: 'Nameless',
   gender: 'Male',
+  facility_of_registration: 'CSB Hopital Bouficha',
+  date_of_registration: '26/11/2020',
+  card_status: 'needs_card',
+  card_status_last_update: '24/11/2020',
 };
 
 export const child2CsvEntry = {
   id: '1833128',
   dob: '26/12/2019',
-  firstName: 'Baby',
-  lastName: 'Hameed',
+  first_name: 'Baby',
+  last_name: 'Hameed',
   gender: 'Male',
+  facility_of_registration: 'CSB Hopital Bouficha',
+  date_of_registration: '26/08/2020',
+  card_status: 'needs_card',
+  card_status_last_update: '24/11/2020',
 };
 
 export const locationHierarchy = {
@@ -187,10 +195,4 @@ export const locationHierarchy = {
     },
     parentChildren: {},
   },
-};
-
-export const userAssignment = {
-  organizationIds: [2],
-  jurisdictions: ['5d99a60e-126e-4c40-b5ce-439f920de090'],
-  plans: [],
 };

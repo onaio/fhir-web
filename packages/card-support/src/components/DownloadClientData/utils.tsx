@@ -8,6 +8,7 @@ import { downloadFile } from '../../helpers/utils';
 import { TreeNode } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
+/* eslint-disable @typescript-eslint/camelcase */
 
 /** interface for user assignment response */
 export interface UserAssignment {
@@ -20,9 +21,13 @@ export interface UserAssignment {
 export interface ClientCSVEntry {
   id: string;
   dob: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   gender: string;
+  facility_of_registration: string;
+  date_of_registration: string;
+  card_status: string;
+  card_status_last_update: string;
 }
 
 /**
@@ -45,6 +50,7 @@ export const handleCardOrderDateChange = (
  * @param {string} accessToken - OPENSRP API access token
  * @param {string} opensrpBaseURL - OPENSRP API base URL
  * @param {string} serviceClass - OPENSRP service class
+ * @param {TreeNode} locations location hierarchy
  * @param {Function} setSubmitting - method to set form `isSubmitting` status
  */
 export const submitForm = (
@@ -52,6 +58,7 @@ export const submitForm = (
   accessToken: string,
   opensrpBaseURL: string,
   serviceClass: typeof OpenSRPService,
+  locations: TreeNode[],
   setSubmitting: (isSubmitting: boolean) => void
 ): void => {
   const { clientLocation, cardStatus, cardOrderDate } = values;
@@ -79,6 +86,7 @@ export const submitForm = (
   serve
     .list(params)
     .then((clients: Client[]) => {
+      const location = getLocationDetails(locations, clientLocation);
       const entries: ClientCSVEntry[] = clients
         .filter((client: Client) => !!client.identifiers.zeir_id)
         .filter((client: Client) => {
@@ -92,17 +100,23 @@ export const submitForm = (
         .map((client: Client) => {
           return {
             id: client.identifiers.zeir_id,
-            dob: formatDDMMYYY(new Date(client.birthdate)),
-            firstName: client.firstName,
-            lastName: client.lastName,
+            dob: formatDDMMYYY(new Date(client.birthdate.split('T')[0])),
+            first_name: client.firstName,
+            last_name: client.lastName,
             gender: client.gender,
+            facility_of_registration: location ? location.title : '',
+            date_of_registration: formatDDMMYYY(new Date(client.dateCreated.split('T')[0])),
+            card_status: client.attributes.card_status,
+            card_status_last_update: formatDDMMYYY(
+              new Date(client.attributes.card_status_date.split('T')[0])
+            ),
           };
         });
 
       setSubmitting(false);
 
       if (entries.length) {
-        createCsv(entries, buildCSVFileName('', startDate, endDate));
+        createCsv(entries, buildCSVFileName(location ? location.title : '', startDate, endDate));
       } else {
         sendErrorNotification('No data found');
       }
@@ -151,6 +165,13 @@ export const createCsv = (entries: ClientCSVEntry[], fileName: string): void => 
   downloadFile(csv, fileName, APPLICATION_CSV);
 };
 
+/**
+ * Get location from the location hierarchy
+ *
+ * @param {TreeNode} locations location hierarchy
+ * @param {string} locationId id of location to return
+ * @returns {TreeNode | null} location if found, null if not found
+ */
 export const getLocationDetails = (locations: TreeNode[], locationId: string): TreeNode | null => {
   let found = false;
   let i = 0;
