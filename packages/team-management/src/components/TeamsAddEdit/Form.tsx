@@ -83,12 +83,13 @@ export async function onSubmit(
 
       await serve
         .create(payload)
-        .then(() =>
+        .then(() => {
           notification.success({
             message: 'Successfully Assigning Practitioners',
             description: '',
-          })
-        )
+          });
+          history.goBack();
+        })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
     })
     .catch((e) => notification.error({ message: `${e}`, description: '' }));
