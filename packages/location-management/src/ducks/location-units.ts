@@ -9,8 +9,6 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 import { Geometry } from 'geojson';
-import { values } from 'lodash';
-import { Store } from 'redux';
 
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
@@ -97,8 +95,5 @@ export const getLocationUnitsById = getItemsByIdFactory<LocationUnit>(reducerNam
 export const getLocationUnitById = getItemByIdFactory<LocationUnit>(reducerName);
 export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerName);
 export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
-
-export const LocationUnitsArray = (state: Partial<Store>): LocationUnit[] =>
-  values(getLocationUnitsById(state));
 
 export default reducer;

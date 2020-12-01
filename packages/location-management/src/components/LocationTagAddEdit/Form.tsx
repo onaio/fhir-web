@@ -42,6 +42,52 @@ interface Props {
   id?: string;
 }
 
+/**
+ * Handle form submission
+ *
+ * @param {Object} values the form fields
+ * @param {string} accessToken api access token
+ * @param {object} props component props
+ * @param {Function} setSubmitting method to set submission status
+ */
+export const onSubmit = (
+  values: FormField,
+  accessToken: string,
+  props: Props,
+  setSubmitting: (isSubmitting: boolean) => void
+) => {
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+
+  const payload: LocationTagPayloadPOST | LocationTagPayloadPUT = values;
+
+  if (props.id) {
+    (payload as LocationTagPayloadPUT).id = props.id;
+    serve
+      .update(payload)
+      .then(() => {
+        notification.success({ message: 'Location Tag updated successfully', description: '' });
+        setSubmitting(false);
+        history.goBack();
+      })
+      .catch((e: Error) => {
+        notification.error({ message: `${e}`, description: '' });
+        setSubmitting(false);
+      });
+  } else {
+    serve
+      .create(payload)
+      .then(() => {
+        notification.success({ message: 'Location Tag successfully', description: '' });
+        setSubmitting(false);
+        history.goBack();
+      })
+      .catch((e: Error) => {
+        notification.error({ message: `${e}`, description: '' });
+        setSubmitting(false);
+      });
+  }
+};
+
 export const Form: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -69,44 +115,6 @@ export const Form: React.FC<Props> = (props: Props) => {
       } else setIsLoading(false);
     }
   }, [accessToken, isLoading, props.id]);
-  /**
-   * Handle form submission
-   *
-   * @param {Object} values the form fields
-   * @param {Function} setSubmitting method to set submission status
-   */
-  function onSubmit(values: FormField, setSubmitting: (isSubmitting: boolean) => void) {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
-
-    const payload: LocationTagPayloadPOST | LocationTagPayloadPUT = values;
-
-    if (props.id) {
-      (payload as LocationTagPayloadPUT).id = props.id;
-      serve
-        .update(payload)
-        .then(() => {
-          notification.success({ message: 'Location Tag updated successfully', description: '' });
-          setSubmitting(false);
-          history.goBack();
-        })
-        .catch((e: Error) => {
-          notification.error({ message: `${e}`, description: '' });
-          setSubmitting(false);
-        });
-    } else {
-      serve
-        .create(payload)
-        .then(() => {
-          notification.success({ message: 'Location Tag successfully', description: '' });
-          setSubmitting(false);
-          history.goBack();
-        })
-        .catch((e: Error) => {
-          notification.error({ message: `${e}`, description: '' });
-          setSubmitting(false);
-        });
-    }
-  }
 
   if (isLoading) return <Ripple />;
   return (
@@ -116,7 +124,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, setSubmitting)}
+      ) => onSubmit(values, accessToken, props, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
         return (

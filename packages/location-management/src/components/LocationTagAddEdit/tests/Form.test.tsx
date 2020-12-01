@@ -8,7 +8,7 @@ import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 
-import Form from '../Form';
+import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 
@@ -167,7 +167,7 @@ describe('containers/pages/locations/Form', () => {
     wrapper.unmount();
   });
 
-  it('Handles errors on creating', async () => {
+  it('Handles errors on creating tag', async () => {
     fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
@@ -199,5 +199,20 @@ describe('containers/pages/locations/Form', () => {
     });
 
     wrapper.unmount();
+  });
+
+  it('Handles errors on editing tag', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    const mockNotificationError = jest.spyOn(notification, 'error');
+    onSubmit(fixtures.sampleLocationTagPayload, 'sometoken', { id: '1' }, jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: '',
+      message: 'API request Failed',
+    });
   });
 });
