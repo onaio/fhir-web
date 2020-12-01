@@ -47,11 +47,11 @@ const Table: React.FC<Props> = (props: Props) => {
           </Link>
           <Divider type="vertical" />
           <Button
-            onClick={() =>
-              onViewDetails
-                ? onViewDetails(record, accessToken, setDetail, setPractitionersList)
-                : {}
-            }
+            onClick={() => {
+              if (onViewDetails) {
+                onViewDetails(record, accessToken, setDetail, setPractitionersList);
+              }
+            }}
             type="link"
             className="m-0 p-1 viewdetails"
           >
