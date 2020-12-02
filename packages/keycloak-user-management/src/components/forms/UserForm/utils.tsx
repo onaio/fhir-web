@@ -10,6 +10,8 @@ import {
   URL_ADMIN,
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   ERROR_OCCURED,
+  PRACTITIONER_UPDATED_SUCCESSFULLY,
+  PRACTITIONER_CREATED_SUCCESSFULLY,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import { Practitioner } from '.';
@@ -52,6 +54,9 @@ export const createOrEditPractitioners = (
   isEdit: boolean
 ) => {
   const requestType = isEdit ? 'update' : 'create';
+  const successMessage = isEdit
+    ? PRACTITIONER_UPDATED_SUCCESSFULLY
+    : PRACTITIONER_CREATED_SUCCESSFULLY;
   const practitionerValues = {
     active: isEdit ? values.active : true,
     identifier: practitioner ? practitioner.identifier : v4(),
@@ -63,7 +68,7 @@ export const createOrEditPractitioners = (
   const practitionersService = new serviceClass(accessToken, baseURL, 'practitioner');
   practitionersService[requestType](practitionerValues)
     .then(() => {
-      sendSuccessNotification('Practitioner created successfully');
+      sendSuccessNotification(successMessage);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);
