@@ -100,7 +100,7 @@ export const showDefinitionUriFor = [
 ];
 
 export const isFIOrDynamicFI = (interventionType: InterventionType): boolean => {
-  return [(InterventionType.DynamicFI, InterventionType.FI)].includes(interventionType);
+  return [InterventionType.DynamicFI, InterventionType.FI].includes(interventionType);
 };
 
 /**
