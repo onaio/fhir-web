@@ -46,7 +46,7 @@ export enum InterventionType {
   IRSLite = 'IRS-Lite',
   MDA = 'MDA',
   MDAPoint = 'MDA-Point',
-  SupplyManagement = 'Supply-Management',
+  SM = 'SM',
 }
 /** interface for fetch PlanDefinitions action */
 export interface FetchPlanDefinitionsAction extends AnyAction {
