@@ -10,8 +10,10 @@ import {
   PlanStatus,
   taskGenerationStatuses,
   fiStatusCodes,
+  PlanActivityFormFields,
 } from '@opensrp/planform-core';
 import { Rule } from 'rc-field-form/lib/interface';
+import moment from 'moment';
 
 export const formIsFIOrDynamicFI = (
   form: FormInstance<PlanFormFields>,
@@ -79,4 +81,15 @@ export const validationRules = {
   teamAssignmentStatus: [{ type: 'string', required: true }] as Rule[],
   title: [{ type: 'string', required: true }] as Rule[],
   version: [{ type: 'string' }] as Rule[],
+};
+
+export const processActivitiesDates = (planActivities: PlanActivityFormFields[]) => {
+  const withProcessedDates: PlanActivityFormFields[] = planActivities.map((activity) => {
+    return {
+      ...activity,
+      timingPeriodEnd: moment(activity.timingPeriodEnd),
+      timingPeriodStart: moment(activity.timingPeriodStart),
+    };
+  });
+  return withProcessedDates;
 };

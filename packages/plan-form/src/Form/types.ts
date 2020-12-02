@@ -1,4 +1,4 @@
-import { PlanDefinition, EnvConfig } from '@opensrp/planform-core';
+import { PlanDefinition, EnvConfig, PlanFormFields } from '@opensrp/planform-core';
 
 /** called before submission starts, return true to proceed with submission */
 export type BeforeSubmit = (payload: PlanDefinition) => boolean;
@@ -7,3 +7,5 @@ export type BeforeSubmit = (payload: PlanDefinition) => boolean;
 export type AfterSubmit = (payload: PlanDefinition) => void;
 
 export type PlanFormConfig = EnvConfig;
+
+export type PlanFormFieldsKeys = keyof PlanFormFields;
