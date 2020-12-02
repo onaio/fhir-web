@@ -112,7 +112,7 @@ export const defaultEnvConfig: EnvConfig = {
   actionUuidNamespace: 'ea2d1b7b-828b-4898-947e-586858971529',
   planUuidNamespace: '8326dd0c-faa5-4a24-9eaa-252bd245e0ff',
   defaultTime: 'T00:00:00+00:00',
-  defaultActivityDurationDays: 0,
+  defaultActivityDurationDays: 7,
   displayedPlanTypes: [],
   taskGenerationStatus: 'internal',
 };

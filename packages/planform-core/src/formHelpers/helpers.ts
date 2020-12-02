@@ -10,6 +10,8 @@ import {
   PlanActionCodes,
   taskGenerationStatuses,
   GoalUnit,
+  InterventionType,
+  PlanStatus,
 } from './constants/enumsAndCodeConstants';
 import { defaultEnvConfig, FIClassifications } from './settings';
 import {
@@ -51,7 +53,6 @@ import {
 } from './constants/stringConstants';
 import {
   FIStatusType,
-  InterventionType,
   PlanActivity,
   PlanActivityFormFields,
   PlanActivityExpression,
@@ -72,7 +73,6 @@ import {
   taskGenerationStatusType,
   UseContext,
   FIReasonType,
-  PlanStatus,
   EnvConfig,
 } from './types';
 import { v5 as uuidv5 } from 'uuid';
