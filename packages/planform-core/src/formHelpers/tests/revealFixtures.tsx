@@ -2,14 +2,14 @@
 import { Dictionary } from '@onaio/utils';
 import moment from 'moment';
 import { FormEvent } from 'react';
-import { PlanActivityFormFields, InterventionType, PlanStatus, PlanFormFields } from '../types';
-import { GoalUnit } from '../constants/enumsAndCodeConstants';
+import { PlanActivityFormFields, PlanFormFields } from '../types';
+import { GoalUnit, InterventionType, PlanStatus } from '../constants/enumsAndCodeConstants';
 import { PlanActivity } from '../types';
 import { parseISO } from 'date-fns';
 import { planActivities as planActivitiesFromConfig } from '../activitiesLookup';
 import { defaultEnvConfig } from '../settings';
 
-const DEFAULT_ACTIVITY_DURATION_DAYS = 3;
+const DEFAULT_ACTIVITY_DURATION_DAYS = defaultEnvConfig.defaultActivityDurationDays;
 
 const goalDue = moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
 goalDue.setMilliseconds(0);
