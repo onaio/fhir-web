@@ -9,6 +9,9 @@ import {
   PlanActivityTitles,
   GoalUnit,
 } from './constants/enumsAndCodeConstants';
+import { Moment } from 'moment';
+
+export type DateType = Moment | Date;
 
 /** FI Status type */
 export type FIStatusType = typeof FIStatuses[number];
@@ -60,11 +63,11 @@ export interface PlanActivityFormFields {
   actionTitle: string;
   condition?: PlanActivityExpression[];
   goalDescription: string;
-  goalDue: Date;
+  goalDue: DateType;
   goalPriority: string;
   goalValue: number;
-  timingPeriodEnd: Date;
-  timingPeriodStart: Date;
+  timingPeriodEnd: DateType;
+  timingPeriodStart: DateType;
   trigger?: PlanActivityTrigger[];
 }
 
@@ -78,8 +81,8 @@ export interface PlanJurisdictionFormFields {
 export interface PlanFormFields {
   activities: PlanActivityFormFields[];
   caseNum?: string;
-  date: Date;
-  end: Date;
+  date: DateType;
+  end: DateType;
   fiReason?: FIReasonType;
   fiStatus?: FIStatusType;
   identifier: string;
@@ -87,7 +90,7 @@ export interface PlanFormFields {
   jurisdictions: PlanJurisdictionFormFields[];
   name: string;
   opensrpEventId?: string;
-  start: Date;
+  start: DateType;
   status: PlanStatus;
   taskGenerationStatus: taskGenerationStatusType;
   teamAssignmentStatus?: string;
