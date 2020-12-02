@@ -97,9 +97,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           }
         })
         .catch((_: Error) => {
-          setIsLoading(false);
           sendErrorNotification(ERROR_OCCURED);
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
   }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);
 
@@ -118,9 +118,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           setPractitioner(response);
         })
         .catch((_: Error) => {
-          setIsLoading(false);
           sendErrorNotification(ERROR_OCCURED);
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
   }, [userId, practitioner, accessToken, opensrpServiceClass, opensrpBaseURL]);
 
