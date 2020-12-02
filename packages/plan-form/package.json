@@ -33,9 +33,17 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
+    "antd": "^4.6.3",
     "react": "^16.18.1"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "@opensrp/planform-core": "file://home/peter/Desktop/opensrp/web/packages/planform-core/",
+    "@ant-design/icons": "^4.3.0",
+    "@opensrp/notifications": "^0.0.2",
+    "lodash": "^4.17.20",
+    "uuid": "^8.3.1"
+  }
 }
