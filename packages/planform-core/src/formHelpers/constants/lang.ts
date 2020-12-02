@@ -12,7 +12,7 @@ export const B2_NAME = 'Cleared Non-Receptive';
 export const BCC_ACTIVITY = 'Behaviour Change Communication';
 export const BCC_ACTIVITY_DESCRIPTION = 'Conduct BCC activity';
 export const BCC_GOAL_DESCRIPTION = 'Complete at least 1 BCC activity for the operational area';
-export const BCC_GOAL_MEASURE = 'BCC Activities Complete';
+export const BCC_GOAL_MEASURE = 'BCC Activities Completed';
 
 export const IRS_ACTIVITY = 'Spray Structures';
 export const IRS_ACTIVITY_DESCRIPTION =
