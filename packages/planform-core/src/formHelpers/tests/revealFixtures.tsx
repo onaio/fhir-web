@@ -548,7 +548,7 @@ export const event3: FormEvent = {
 };
 
 export const expectedActivity: Dictionary = {};
-export const planActivityWithEmptyfields: Dictionary = {};
+export const planActivityWithEmptyFields: Dictionary = {};
 
 const processActivity = (activityObj: PlanActivity) => {
   return {
@@ -590,8 +590,8 @@ for (const [key, activityObj] of Object.entries(planActivitiesFromConfig)) {
   // build expectedActivity
   expectedActivity[key] = processActivity(activityObj);
 
-  // build planActivityWithEmptyfields
-  planActivityWithEmptyfields[key] = {
+  // build planActivityWithEmptyFields
+  planActivityWithEmptyFields[key] = {
     ...activityObj,
     action: {
       ...activityObj.action,
@@ -644,8 +644,8 @@ for (const [key, activityObj] of Object.entries(planActivitiesFromConfig)) {
   };
 }
 
-export const planActivityWithoutTargets: Dictionary = {};
-for (const [key, activity] of Object.entries(planActivities)) {
+const planActivityWithoutTargets: Dictionary = {};
+for (const [key, activity] of Object.entries(planActivitiesFromConfig)) {
   planActivityWithoutTargets[key] = {
     ...activity,
     goal: {
@@ -655,6 +655,7 @@ for (const [key, activity] of Object.entries(planActivities)) {
     },
   };
 }
+export { planActivityWithoutTargets };
 
 export const expectedExtractActivityFromPlanformResult = {
   action: [
@@ -662,7 +663,7 @@ export const expectedExtractActivityFromPlanformResult = {
       code: 'Case Confirmation',
       description: 'Confirm the index case',
       goalId: 'Case_Confirmation',
-      identifier: '5728cbf8-0e95-5b1b-863a-d03769a785c9',
+      identifier: 'd60f14f2-9975-57c7-af8e-decd7e108606',
       prefix: 1,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -680,7 +681,7 @@ export const expectedExtractActivityFromPlanformResult = {
       description:
         'Register all families & family members in all residential structures enumerated (100%) within the operational area',
       goalId: 'RACD_register_families',
-      identifier: '541258e7-4bd0-5699-89ba-7e832e5452b3',
+      identifier: '02958cc9-f63e-5536-bfd0-c864c784146f',
       prefix: 2,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -698,7 +699,7 @@ export const expectedExtractActivityFromPlanformResult = {
       description:
         'Visit all residential structures (100%) within a 1 km radius of a confirmed index case and test each registered person',
       goalId: 'RACD_Blood_Screening',
-      identifier: 'a73a487d-b93a-5a06-84eb-19ccf9785045',
+      identifier: 'ccbfaee6-7153-5b29-a41c-946ebdb7c52c',
       prefix: 3,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -715,7 +716,7 @@ export const expectedExtractActivityFromPlanformResult = {
       code: 'Bednet Distribution',
       description: 'Visit 100% of residential structures in the operational area and provide nets',
       goalId: 'RACD_bednet_distribution',
-      identifier: '2439129c-3d1f-5d16-99b0-a0f02db4dd83',
+      identifier: '81a4cb1e-63d1-5880-948f-189bc6a16ae4',
       prefix: 4,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -732,7 +733,7 @@ export const expectedExtractActivityFromPlanformResult = {
       code: 'Larval Dipping',
       description: 'Perform a minimum of three larval dipping activities in the operational area',
       goalId: 'Larval_Dipping',
-      identifier: 'c1054dec-2c11-5cf8-83fe-c31b1f5de660',
+      identifier: '312afb80-b754-506c-a12a-66c74e21a705',
       prefix: 5,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -750,7 +751,7 @@ export const expectedExtractActivityFromPlanformResult = {
       description:
         'Set a minimum of three mosquito collection traps and complete the mosquito collection process',
       goalId: 'Mosquito_Collection',
-      identifier: '28633053-4c6a-5332-8f6e-fa26d5ccb2f6',
+      identifier: '86ee2e9e-1fd2-5188-b73f-3fcce4af85cd',
       prefix: 6,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -767,7 +768,7 @@ export const expectedExtractActivityFromPlanformResult = {
       code: 'BCC',
       description: 'Conduct BCC activity',
       goalId: 'BCC_Focus',
-      identifier: '089522a3-bd02-5de3-b2d5-95234b1a5d01',
+      identifier: '8862886b-0e94-5dc1-a09e-35639c5d46c4',
       prefix: 7,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -920,7 +921,7 @@ export const expectedPlanDefinition = {
       code: 'IRS',
       description: 'Visit each structure in the operational area and attempt to spray',
       goalId: 'IRS',
-      identifier: '79255d56-9190-578d-8452-fc8520f24f2b',
+      identifier: '20d7358a-b2b1-5eaf-a3c5-725afd923371',
       prefix: 1,
       reason: 'Routine',
       subjectCodableConcept: {
@@ -960,7 +961,7 @@ export const expectedPlanDefinition = {
       ],
     },
   ],
-  identifier: '0230f9e8-1f30-5e91-8693-4c993661785e',
+  identifier: '28fa562c-a659-5c3c-929a-ca854b32445f',
   jurisdiction: [
     {
       code: '3952',

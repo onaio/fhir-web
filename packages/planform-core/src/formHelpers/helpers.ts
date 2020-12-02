@@ -382,6 +382,7 @@ export function extractActivitiesFromPlanForm(
     ...defaultEnvConfig,
     ...envConfigs,
   };
+
   const actions: PlanAction[] = [];
   const goals: PlanGoal[] = [];
 
@@ -809,10 +810,14 @@ export function getPlanFormValues(
  * Get goal unit from action code
  *
  * @param {PlanActionCodesType} actionCode - the plan action code
+ * @param {boolean} isDynamic - whether we are looking for dynamic activities
  * @returns {GoalUnit} -
  */
-export function getGoalUnitFromActionCode(actionCode: PlanActionCodesType): GoalUnit {
-  const planActivity = getPlanActivityFromActionCode(actionCode);
+export function getGoalUnitFromActionCode(
+  actionCode: PlanActionCodesType,
+  isDynamic = false
+): GoalUnit {
+  const planActivity = getPlanActivityFromActionCode(actionCode, isDynamic);
   if (planActivity) {
     return planActivity.goal.target[0].detail.detailQuantity.unit;
   }
