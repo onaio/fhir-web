@@ -40,9 +40,9 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/planform-core": "file://home/peter/Desktop/opensrp/web/packages/planform-core/",
     "@ant-design/icons": "^4.3.0",
     "@opensrp/notifications": "^0.0.2",
+    "@opensrp/planform-core": "file://home/peter/Desktop/opensrp/web/packages/planform-core/",
     "lodash": "^4.17.20",
     "uuid": "^8.3.1"
   }
