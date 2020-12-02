@@ -32,7 +32,7 @@ const TeamAssignmentView = (props: any) => {
           <div className="main-content__header">
             <Link to={TEAM_ASSIGNMENT_CREATE_VIEW_URL}>
               <Button type="primary" size="large">
-                {' + Product Catalogue'}
+                {' + Assign Team'}
               </Button>
             </Link>
           </div>
