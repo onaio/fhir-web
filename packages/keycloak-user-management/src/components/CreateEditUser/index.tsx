@@ -81,26 +81,6 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
   const initialValues = keycloakUser ? keycloakUser : defaultInitialValues;
 
-  const loadPractitioner = async () => {
-    if (userId && practitioner === undefined) {
-      setIsLoading(true);
-      const serve = new opensrpServiceClass(
-        accessToken,
-        opensrpBaseURL,
-        OPENSRP_CREATE_PRACTITIONER_ENDPOINT
-      );
-      serve
-        .read(userId)
-        .then((response: Practitioner) => {
-          setIsLoading(false);
-          setPractitioner(response);
-        })
-        .catch((_: Error) => {
-          sendErrorNotification(ERROR_OCCURED);
-        });
-    }
-  };
-
   /**
    * Fetch user incase the user is not available e.g when page is refreshed
    */
@@ -124,12 +104,25 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);
 
   React.useEffect(() => {
-    try {
-      loadPractitioner().catch((err) => sendErrorNotification(err));
-    } catch (err) {
-      sendErrorNotification(err);
+    if (userId && practitioner === undefined) {
+      setIsLoading(true);
+      const serve = new opensrpServiceClass(
+        accessToken,
+        opensrpBaseURL,
+        OPENSRP_CREATE_PRACTITIONER_ENDPOINT
+      );
+      serve
+        .read(userId)
+        .then((response: Practitioner) => {
+          setIsLoading(false);
+          setPractitioner(response);
+        })
+        .catch((_: Error) => {
+          setIsLoading(false);
+          sendErrorNotification(ERROR_OCCURED);
+        });
     }
-  });
+  }, [userId, practitioner, accessToken, opensrpServiceClass, opensrpBaseURL]);
 
   if (isLoading) {
     return <Ripple />;
