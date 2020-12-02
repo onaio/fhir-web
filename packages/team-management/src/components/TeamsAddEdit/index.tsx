@@ -15,17 +15,17 @@ import './TeamsAddEdit.css';
 
 reducerRegistry.register(reducerName, reducer);
 
-export async function getTeamDetail(accessToken: string, params: { id: string }) {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_GET + params.id);
+export async function getTeamDetail(accessToken: string, id: string) {
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_GET + id);
   return await serve.list().then(async (response: Organization) => {
-    return await getPractinonerDetail(accessToken, params).then((prac) => {
+    return await getPractinonerDetail(accessToken, id).then((prac) => {
       return { name: response.name, active: response.active, practitioners: prac };
     });
   });
 }
 
-export async function getPractinonerDetail(accessToken: string, params: { id: string }) {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + params.id);
+export async function getPractinonerDetail(accessToken: string, id: string) {
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + id);
   return await serve
     .list()
     .then((response: Practitioner[]) => response.map((prac) => prac.identifier));
@@ -39,7 +39,7 @@ export const TeamsAddEdit: React.FC = () => {
 
   useEffect(() => {
     if (params.id)
-      getTeamDetail(accessToken, params)
+      getTeamDetail(accessToken, params.id)
         .then((data) => setInitialValue(data))
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
   }, [accessToken, params.id]);
