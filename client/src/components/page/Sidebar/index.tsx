@@ -17,7 +17,6 @@ import {
   URL_HOME,
   URL_TEAMS,
   USER_MANAGEMENT,
-  URL_UPLOAD_JSON_VALIDATOR,
   URL_JSON_VALIDATOR_LIST,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
@@ -58,11 +57,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.Item>
             </Menu.SubMenu>
           )}
-          <Menu.Item key="json-validator-upload">
-            <Link to={URL_UPLOAD_JSON_VALIDATOR} className="admin-link">
-              Upload Json Validator
-            </Link>
-          </Menu.Item>
           <Menu.Item key="json-validators">
             <Link to={URL_JSON_VALIDATOR_LIST} className="admin-link">
               Json Validators

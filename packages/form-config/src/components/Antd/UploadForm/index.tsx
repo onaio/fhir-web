@@ -5,6 +5,14 @@ import { Typography, Form, Button, Input, Upload, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { submitForm } from './utils';
 import { useSelector } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
+import { getManifestFilesById } from '../../../ducks/manifestFiles';
+import { ROUTE_PARAM_FORM_ID } from '../../../constants';
+
+/** inteface for route params */
+export interface RouteParams {
+  [ROUTE_PARAM_FORM_ID]: string;
+}
 
 /** form field props */
 export interface UploadFileFieldTypes {
@@ -19,10 +27,12 @@ export interface UploadFileFieldTypes {
 export interface UploadFileProps {
   initialValues: UploadFileFieldTypes;
   opensrpBaseURL: string;
-  endpoint: string;
-  isJsonValidator: false;
+  isJsonValidator: boolean;
   getPayload?: typeof getFetchOptions;
 }
+
+/** type intersection for all types that pertain to the props */
+export type UploadFilePropTypes = UploadFileProps & RouteComponentProps<RouteParams>;
 
 /** default form values */
 export const defaultInitialValues: UploadFileFieldTypes = {
@@ -38,16 +48,28 @@ export const defaultInitialValues: UploadFileFieldTypes = {
 export const defaultProps: UploadFileProps = {
   initialValues: defaultInitialValues,
   opensrpBaseURL: '',
-  endpoint: '',
-  isJsonValidator: false,
+  isJsonValidator: true,
 };
 
-const UploadFileForm = (props: UploadFileProps): JSX.Element => {
+const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [fileList, setFileList] = React.useState<Array<any>>([]);
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const { initialValues, opensrpBaseURL, isJsonValidator } = props;
+  const { initialValues, opensrpBaseURL, isJsonValidator, match } = props;
+  const formId = match.params[ROUTE_PARAM_FORM_ID];
+  const formData = useSelector((state) => getManifestFilesById(state, formId));
+  let formInitialValues = initialValues;
+  if (formId && formData) {
+    formInitialValues = {
+      ...formInitialValues,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      form_name: formData.label,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      form_relation: formData.form_relation,
+      module: formData.module,
+    };
+  }
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -91,12 +113,12 @@ const UploadFileForm = (props: UploadFileProps): JSX.Element => {
   };
 
   return (
-    <>
+    <div className="layout-content">
       <Title level={3}>Upload Form</Title>
       <Card>
         <Form
           {...layout}
-          initialValues={initialValues}
+          initialValues={formInitialValues}
           onFinish={(values) => {
             submitForm(
               {
@@ -141,10 +163,10 @@ const UploadFileForm = (props: UploadFileProps): JSX.Element => {
           </Form.Item>
         </Form>
       </Card>
-    </>
+    </div>
   );
 };
 
-UploadFileForm.defaultProps = defaultProps;
+UploadForm.defaultProps = defaultProps;
 
-export { UploadFileForm };
+export { UploadForm };

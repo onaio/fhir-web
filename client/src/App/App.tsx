@@ -55,7 +55,7 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
-import { AntdUploadForm, AntdFilesList } from '@opensrp/form-config';
+import { AntdUploadForm, AntdFilesList, ROUTE_PARAM_FORM_ID } from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
@@ -213,7 +213,14 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_UPLOAD_JSON_VALIDATOR}
-              component={AntdUploadForm.UploadFileForm}
+              component={AntdUploadForm.UploadForm}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_UPLOAD_JSON_VALIDATOR}/:${ROUTE_PARAM_FORM_ID}`}
+              component={AntdUploadForm.UploadForm}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
