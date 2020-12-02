@@ -31,7 +31,7 @@ import {
   extractedActivitiesFromForms,
   fiReasonTestPlan,
   planActivities,
-  planActivityWithEmptyfields,
+  planActivityWithEmptyFields,
   planActivityWithoutTargets,
   planFormValues,
   planFormValues2,
@@ -47,7 +47,7 @@ describe('containers/forms/PlanForm/helpers', () => {
     for (const [key, activityObj] of Object.entries(planActivitiesFromConfig)) {
       expect(extractActivityForForm(activityObj)).toEqual(expectedActivity[key]);
     }
-    for (const [key, activityObj] of Object.entries(planActivityWithEmptyfields)) {
+    for (const [key, activityObj] of Object.entries(planActivityWithEmptyFields)) {
       expect(extractActivityForForm(activityObj)).toEqual(expectedActivityEmptyField[key]);
     }
     for (const [key, obj] of Object.entries(planActivityWithoutTargets)) {
@@ -115,7 +115,9 @@ describe('containers/forms/PlanForm/helpers', () => {
     // remove serverVersion
     const { serverVersion, ...expectedDynamicPlan } = planCopy;
     expectedDynamicPlan.action[0].type = 'create';
-    expect(generatePlanDefinition(planFormValues3 as PlanFormFields)).toEqual(expectedDynamicPlan);
+    expect(generatePlanDefinition(planFormValues3 as PlanFormFields, null, true)).toEqual(
+      expectedDynamicPlan
+    );
     MockDate.reset();
   });
 
@@ -253,7 +255,7 @@ describe('containers/forms/PlanForm/helpers', () => {
     // multiple jurisdictions are gotten right
     expect(getPlanFormValues(plans[1]).jurisdictions).toEqual([
       { id: '35968df5-f335-44ae-8ae5-25804caa2d86', name: '35968df5-f335-44ae-8ae5-25804caa2d86' },
-      { id: '3952', name: ' ' },
+      { id: '3952', name: '3952' },
       { id: 'ac7ba751-35e8-4b46-9e53-3cbaad193697', name: 'ac7ba751-35e8-4b46-9e53-3cbaad193697' },
     ]);
   });
@@ -271,9 +273,16 @@ describe('containers/forms/PlanForm/helpers', () => {
       GoalUnit.UNKNOWN, // MDA Adherence  ==> TODO: figure out how to pass isDyanmic to getPlanActivityFromActionCode
       GoalUnit.PERCENT, // MDA Dispense
       GoalUnit.PERCENT, // MDA Adverse events
+      GoalUnit.PERCENT, // PRODUCT_CHECK_CODE,
+      GoalUnit.PERCENT, // FIX_PRODUCT_PROBLEMS_CODE,
+      GoalUnit.PERCENT, // RECORD_GPS_CODE,
+      GoalUnit.PERCENT, // SERVICE_POINT_CHECK_CODE
     ];
-    for (let index = 0; index < PlanActionCodes.length; index++) {
+    for (let index = 0; index < 11; index++) {
       expect(getGoalUnitFromActionCode(PlanActionCodes[index])).toEqual(expectedUnits[index]);
+    }
+    for (let index = 11; index < PlanActionCodes.length; index++) {
+      expect(getGoalUnitFromActionCode(PlanActionCodes[index], true)).toEqual(expectedUnits[index]);
     }
     expect(getGoalUnitFromActionCode('mosh' as PlanActionCodesType)).toEqual(GoalUnit.UNKNOWN);
   });

@@ -44,10 +44,10 @@ export const DYNAMIC_BCC_ACTIVITY_CODE = 'dynamicBCC';
 export const DYNAMIC_IRS_ACTIVITY_CODE = 'dynamicIRS';
 export const DYNAMIC_MDA_COMMUNITY_DISPENSE_ACTIVITY_CODE = 'dynamicCommunityDispenseMDA';
 export const DYNAMIC_MDA_COMMUNITY_ADHERENCE_ACTIVITY_CODE = 'dynamicCommunityAdherenceMDA';
-export const PRODUCT_CHECK_ACTIVITY_CODE = 'productCheck';
-export const FIX_PRODUCT_PROBLEM_ACTIVITY_CODE = 'fixProductProblem';
-export const RECORD_GPS_ACTIVITY_CODE = 'recordGPS';
-export const SERVICE_POINT_CHECK_ACTIVITY_CODE = 'servicePoint';
+export const PRODUCT_CHECK_ACTIVITY_CODE = 'dynamicProductCheck';
+export const FIX_PRODUCT_PROBLEM_ACTIVITY_CODE = 'dynamicFixProductProblem';
+export const RECORD_GPS_ACTIVITY_CODE = 'dynamicRecordGPS';
+export const SERVICE_POINT_CHECK_ACTIVITY_CODE = 'dynamicServicePoint';
 
 // task action codes
 export const BCC_CODE = 'BCC';
