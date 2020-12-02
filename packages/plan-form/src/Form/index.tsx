@@ -6,7 +6,6 @@ import { xor } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { format } from 'util';
-import { DATE_FORMAT, DEFAULT_PLAN_DURATION_DAYS, DEFAULT_PLAN_VERSION } from '../../envs';
 import {
   ACTION,
   ACTIVITIES_LABEL,
@@ -32,9 +31,8 @@ import {
   TRIGGERS_LABEL,
 } from '../lang';
 import { PLAN_LIST_URL } from '../constants';
-// import JurisdictionSelect from '../JurisdictionSelect';
 import { getConditionAndTriggers } from './componentsUtils/actions';
-import { validationRules } from './helpers';
+import { validationRules } from '../helpers/utils';
 import {
   actionReasons,
   actionReasonsDisplay,
@@ -55,6 +53,8 @@ import {
   generatePlanDefinition,
   getFormActivities,
   getGoalUnitFromActionCode,
+  defaultEnvConfig,
+  MDA_POINT_ADVERSE_EFFECTS_CODE,
 } from '@opensrp/planform-core';
 import moment from 'moment';
 import { Select, Input, DatePicker } from 'antd';
@@ -63,8 +63,8 @@ import { Collapse, Modal, Divider } from 'antd';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { CommonProps, defaultCommonProps } from '../helpers/common';
 import { SUPPLY_MANAGEMENT_TITLE } from '../lang';
-import { AfterSubmit, BeforeSubmit } from './types';
-import { postPlan, postPutPlan, putPlan } from '../helpers/dataloaders';
+import { AfterSubmit, BeforeSubmit, PlanFormConfig } from './types';
+import { postPutPlan } from '../helpers/dataloaders';
 
 const { Panel } = Collapse;
 const { List, Item: FormItem } = Form;
@@ -72,13 +72,14 @@ const { TextArea } = Input;
 
 const defaultInterventionType = InterventionType.SM;
 const initialJurisdictionValues: PlanJurisdictionFormFields[] = [];
+const defaultEnvs = defaultEnvConfig;
 
 /** initial values for plan Form */
 export const defaultInitialValues: PlanFormFields = {
   activities: planActivitiesMap[defaultInterventionType],
   caseNum: '',
   date: moment(),
-  end: moment().add(DEFAULT_PLAN_DURATION_DAYS, 'days'),
+  end: moment().add(defaultEnvs.defaultPlanDurationDays, 'days'),
   fiReason: FIReasons[0],
   fiStatus: undefined,
   identifier: '',
@@ -89,7 +90,7 @@ export const defaultInitialValues: PlanFormFields = {
   status: PlanStatus.DRAFT,
   taskGenerationStatus: 'internal',
   title: '',
-  version: DEFAULT_PLAN_VERSION,
+  version: defaultEnvs.defaultPlanVersion,
   jurisdictions: initialJurisdictionValues,
 };
 
@@ -117,12 +118,13 @@ export interface PlanFormProps extends CommonProps {
   ) => JSX.Element;
   beforeSubmit: BeforeSubmit /** called before submission starts, return true to proceed with submission */;
   afterSubmit?: AfterSubmit /** called after the payload is successfully sent to the server */;
+  envConfigs?: PlanFormConfig /** env configuration options */;
 }
 
 /**
  * Plan Form component
  *
- * @param {PlanFormProps} props - props
+ * @param {object} props - props
  * @returns {Element} PlanForm component
  */
 
@@ -141,7 +143,13 @@ const PlanForm = (props: PlanFormProps) => {
     initialValues,
     redirectAfterAction,
     baseURL,
+    envConfigs,
   } = props;
+
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfigs,
+  };
 
   const [form] = Form.useForm();
 
@@ -173,6 +181,7 @@ const PlanForm = (props: PlanFormProps) => {
    * This is used to filter out activities selected but not in the "source"
    *
    * @param {PlanFormFields} values - current form values
+   * @returns {object} -
    */
   function getSourceActivities(values: PlanFormFields) {
     // if(Object.prototype.hasOwnProperty.call(planActivitiesMap, values.interventionType))
@@ -187,6 +196,7 @@ const PlanForm = (props: PlanFormProps) => {
    * Check if all the source activities have been selected
    *
    * @param {PlanFormFields} values - current form values
+   * @returns {object} -
    */
   function checkIfAllActivitiesSelected(values: PlanFormFields) {
     return (
@@ -250,20 +260,19 @@ const PlanForm = (props: PlanFormProps) => {
             setSubmitting(false);
             return;
           }
-          const successMessage = isEditMode ? 'Successfully Updated' : 'Successfully Updated';
-
+          const successMessage = isEditMode ? 'Successfully Updated' : 'Successfully Created';
 
           postPutPlan(payload, baseURL, isEditMode)
-              .then(() => {
-                sendSuccessNotification(successMessage);
-                props.afterSubmit?(payload);
-                setSubmitting(false);
-                setAreWeDoneHere(true);
-              })
-              .catch((err: Error) => {
-                setSubmitting(false);
-                sendErrorNotification(err.name, err.message);
-              });
+            .then(() => {
+              sendSuccessNotification(successMessage);
+              props.afterSubmit && props.afterSubmit(payload);
+              setSubmitting(false);
+              setAreWeDoneHere(true);
+            })
+            .catch((err: Error) => {
+              setSubmitting(false);
+              sendErrorNotification(err.name, err.message);
+            });
         }}
       >
         <>
@@ -343,7 +352,7 @@ const PlanForm = (props: PlanFormProps) => {
             <DatePicker
               id="start"
               disabled={disabledFields.includes('start')}
-              format={DATE_FORMAT}
+              format={configs.dateFormat}
             />
           </FormItem>
 
@@ -357,7 +366,11 @@ const PlanForm = (props: PlanFormProps) => {
             name="end"
             required={true}
           >
-            <DatePicker id="end" disabled={disabledFields.includes('end')} format={DATE_FORMAT} />
+            <DatePicker
+              id="end"
+              disabled={disabledFields.includes('end')}
+              format={configs.dateFormat}
+            />
           </FormItem>
 
           <Divider orientation="left">
@@ -636,7 +649,7 @@ const PlanForm = (props: PlanFormProps) => {
                                         disabledFields.includes('activities') ||
                                         disabledActivityFields.includes('timingPeriodStart')
                                       }
-                                      format={DATE_FORMAT}
+                                      format={configs.dateFormat}
                                       // className={
                                       //   errors.activities &&
                                       //   doesFieldHaveErrors('timingPeriodStart', index, errors.activities)
@@ -665,7 +678,7 @@ const PlanForm = (props: PlanFormProps) => {
                                         disabledFields.includes('activities') ||
                                         disabledActivityFields.includes('timingPeriodEnd')
                                       }
-                                      format={DATE_FORMAT}
+                                      format={configs.dateFormat}
                                       // className={
                                       //   errors.activities &&
                                       //   doesFieldHaveErrors('timingPeriodEnd', index, errors.activities)
@@ -854,7 +867,8 @@ export const defaultProps: PlanFormProps = {
  * props for updating plan definition objects
  * We are defining these here to keep things DRY
  *
- * @param planStatus
+ * @param {string} planStatus - a plan status
+ * @returns {object} -
  */
 export const propsForUpdatingPlans = (
   planStatus: string = PlanStatus.DRAFT
