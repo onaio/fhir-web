@@ -45,7 +45,7 @@ export const validationRules = {
     { type: 'enum', enum: Object.values(InterventionType), required: true },
   ] as Rule[],
   jurisdictions: {
-    id: [{ type: 'string'}] as Rule[],
+    id: [{ type: 'string' }] as Rule[],
     name: [{ type: 'string' }] as Rule[],
   },
   fiReason: [
