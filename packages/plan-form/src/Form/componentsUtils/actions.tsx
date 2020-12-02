@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Dictionary } from '@onaio/utils';
 import React from 'react';
-import { DESCRIPTION_LABEL, EXPRESSION_LABEL, NAME } from '../../../lang';
-import { PlanActivityFormFields } from '../../../../opensrp-plans/src/components/JurisdictionSelect/PlanForm/types';
+import { DESCRIPTION_LABEL, EXPRESSION_LABEL, NAME } from '../../lang';
+import { PlanActivityFormFields } from '@opensrp/planform-core';
 import { Form, Input } from 'antd';
 
-const { Item: FormItem, List } = Form;
+const { Item: FormItem } = Form;
 const { TextArea } = Input;
 
 /**
  * Returns form components to render triggers and conditions form fields
  *
- * @param planActivities - activities from the plan form field values
- * @param isDisabled - whether to disable the fields or not
+ * @param {PlanActivityFormFields} planActivities - activities from the plan form field values
+ * @param {boolean} isDisabled - whether to disable the fields or not
+ * @returns {object} -
  */
 export const getConditionAndTriggers = (
   planActivities: PlanActivityFormFields[],
