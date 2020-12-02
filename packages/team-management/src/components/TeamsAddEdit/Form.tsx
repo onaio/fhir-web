@@ -38,9 +38,9 @@ export async function onSubmit(
   accessToken: string,
   values: FormField,
   practitioner: Practitioner[],
-  setIsSubmitting: (value: boolean) => void
+  setIsSubmitting?: (value: boolean) => void
 ) {
-  setIsSubmitting(true);
+  if (setIsSubmitting) setIsSubmitting(true);
   const Teamid = v4();
 
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_POST);
@@ -81,20 +81,17 @@ export async function onSubmit(
         };
       });
 
-      await serve
-        .create(payload)
-        .then(() => {
-          notification.success({
-            message: 'Successfully Assigning Practitioners',
-            description: '',
-          });
-          history.goBack();
-        })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+      return await serve.create(payload).then(() => {
+        notification.success({
+          message: 'Successfully Assigning Practitioners',
+          description: '',
+        });
+        history.goBack();
+      });
     })
     .catch((e) => notification.error({ message: `${e}`, description: '' }));
 
-  setIsSubmitting(false);
+  if (setIsSubmitting) setIsSubmitting(false);
 }
 
 export const Form: React.FC<Props> = (props: Props) => {

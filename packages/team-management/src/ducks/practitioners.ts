@@ -5,6 +5,7 @@ interface PractitionerCoding {
 
 /** interface for a Practitioner object */
 export interface Practitioner {
+  id?: string | number;
   identifier: string;
   active: boolean;
   name: string;

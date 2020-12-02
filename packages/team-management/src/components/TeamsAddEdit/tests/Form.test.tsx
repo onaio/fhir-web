@@ -2,11 +2,15 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
 import { store } from '@opensrp/store';
+import flushPromises from 'flush-promises';
+import { act } from 'react-dom/test-utils';
+import { Router } from 'react-router';
+import { notification } from 'antd';
+import fetch from 'jest-fetch-mock';
 
 import { accessToken, id, intialValue, practitioners } from './fixtures';
-import Form from '../Form';
+import Form, { onSubmit } from '../Form';
 
 describe('Team-management/TeamsAddEdit/Form', () => {
   it('renders without crashing', () => {
@@ -55,9 +59,73 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     wrapper.find('button#cancel').simulate('click');
   });
 
-  // TODO : Add test
-  // it('Create TeamsAddEdit', async () => {});
-  // it('Update TeamsAddEdit', async () => {});
-  // it('Add Practinier field', async () => {});
-  // it('Remove Practinier field', async () => {});
+  it('Create TeamsAddEdit', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Form
+            id={id}
+            initialValue={intialValue}
+            accessToken={accessToken}
+            practitioner={practitioners}
+          />
+        </Router>
+      </Provider>
+    );
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+  });
+
+  it('Fail Create TeamsAddEdit', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    const mockNotificationError = jest.spyOn(notification, 'error');
+
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: '',
+      message: 'API request Failed',
+    });
+
+    onSubmit(accessToken, intialValue, practitioners).then(jest.fn(), jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: '',
+      message: 'API request Failed',
+    });
+  });
+
+  it('Add Practinier field', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Form accessToken={accessToken} practitioner={practitioners} />
+        </Router>
+      </Provider>
+    );
+
+    wrapper.find('button#addPractitioner').simulate('click');
+    expect(wrapper.find('List[name="practitioners"] div.practitioners_Field')).toHaveLength(2);
+  });
+
+  it('Remove Practinier field', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Form accessToken={accessToken} practitioner={practitioners} />
+        </Router>
+      </Provider>
+    );
+
+    wrapper.find('button#addPractitioner').simulate('click');
+    expect(wrapper.find('List[name="practitioners"] div.practitioners_Field')).toHaveLength(2);
+    wrapper.find('button.removePractitioner').last().simulate('click');
+    expect(wrapper.find('List[name="practitioners"] div.practitioners_Field')).toHaveLength(1);
+  });
 });
