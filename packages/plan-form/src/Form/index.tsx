@@ -6,38 +6,20 @@ import { xor } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { format } from 'util';
-import {
-  DATE_FORMAT,
-  DEFAULT_PLAN_DURATION_DAYS,
-  DEFAULT_PLAN_VERSION,
-  ENABLED_FI_REASONS,
-  PLAN_TYPES_ALLOWED_TO_CREATE,
-  PLAN_TYPES_WITH_MULTI_JURISDICTIONS,
-} from '../../envs';
+import { DATE_FORMAT, DEFAULT_PLAN_DURATION_DAYS, DEFAULT_PLAN_VERSION } from '../../envs';
 import {
   ACTION,
   ACTIVITIES_LABEL,
-  ADD,
   ADD_ACTIVITY,
   ADD_CODED_ACTIVITY,
   AND,
-  CASE_NUMBER,
   CONDITIONS_LABEL,
   DEFINITION_URI,
   DESCRIPTION_LABEL,
-  DYNAMIC_FI_TITLE,
-  DYNAMIC_IRS_TITLE,
-  DYNAMIC_MDA_TITLE,
   END_DATE,
   FOCUS_AREA_HEADER,
-  FOCUS_CLASSIFICATION_LABEL,
-  FOCUS_INVESTIGATION,
-  FOCUS_INVESTIGATION_STATUS_REASON,
   GOAL_LABEL,
   INTERVENTION_TYPE_LABEL,
-  IRS_TITLE,
-  LOCATIONS,
-  MDA_POINT_TITLE,
   PLAN_END_DATE_LABEL,
   PLAN_START_DATE_LABEL,
   PLAN_TITLE_LABEL,
@@ -45,68 +27,51 @@ import {
   QUANTITY_LABEL,
   REASON_HEADER,
   SAVE_PLAN,
-  SELECT_PLACHOLDER,
   START_DATE,
   STATUS_HEADER,
   TRIGGERS_LABEL,
-} from '../../lang';
+} from '../lang';
+import { PLAN_LIST_URL } from '../constants';
+// import JurisdictionSelect from '../JurisdictionSelect';
+import { getConditionAndTriggers } from './componentsUtils/actions';
+import { validationRules } from './helpers';
 import {
   actionReasons,
   actionReasonsDisplay,
-  FIClassifications,
   FIReasons,
-  FIReasonsDisplay,
   goalPriorities,
   goalPrioritiesDisplay,
   goalUnitDisplay,
   planActivities,
   planStatusDisplay,
-} from '../../settings';
-import { MDA_POINT_ADVERSE_EFFECTS_CODE, PLAN_LIST_URL } from '../../constants';
-import { AfterSubmit, InterventionType, PlanStatus } from '../../../opensrp-plans/src/components/JurisdictionSelect/PlanForm/types';
-// import JurisdictionSelect from '../JurisdictionSelect';
-import { getConditionAndTriggers } from './componentsUtils/actions';
-import {
-  displayPlanTypeOnForm,
-  doesFieldHaveErrors,
-  generatePlanDefinition,
-  getFormActivities,
-  getGoalUnitFromActionCode,
-  formIsFIOrDynamicFI,
-  planActivitiesMap,
-  showDefinitionUriFor,
-  validationRules,
-} from '../../../opensrp-plans/src/components/JurisdictionSelect/PlanForm/helpers';
-import {
-  BeforeSubmit,
-  FIReasonType,
+  PlanStatus,
+  InterventionType,
   PlanActionCodesType,
   PlanActivityFormFields,
   PlanFormFields,
   PlanJurisdictionFormFields,
-} from '../../../opensrp-plans/src/components/JurisdictionSelect/PlanForm/types';
+  planActivitiesMap,
+  showDefinitionUriFor,
+  generatePlanDefinition,
+  getFormActivities,
+  getGoalUnitFromActionCode,
+} from '@opensrp/planform-core';
 import moment from 'moment';
 import { Select, Input, DatePicker } from 'antd';
-import { MinusCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import { Collapse, Modal, Divider } from 'antd';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
-import { CommonProps, defaultCommonProps } from '../../common';
-import { JurisdictionSelect } from '../JurisdictionSelect';
+import { CommonProps, defaultCommonProps } from '../helpers/common';
+import { SUPPLY_MANAGEMENT_TITLE } from '../lang';
+import { AfterSubmit, BeforeSubmit } from './types';
+import { postPlan, postPutPlan, putPlan } from '../helpers/dataloaders';
 
 const { Panel } = Collapse;
 const { List, Item: FormItem } = Form;
 const { TextArea } = Input;
 
-/** initial values for plan jurisdiction forms */
-const initialJurisdictionValues: PlanJurisdictionFormFields = {
-  id: '',
-  name: '',
-};
-
-/** default intervention type displayed */
-const defaultInterventionType = PLAN_TYPES_ALLOWED_TO_CREATE
-  ? (PLAN_TYPES_ALLOWED_TO_CREATE[0] as InterventionType)
-  : InterventionType.FI;
+const defaultInterventionType = InterventionType.SM;
+const initialJurisdictionValues: PlanJurisdictionFormFields[] = [];
 
 /** initial values for plan Form */
 export const defaultInitialValues: PlanFormFields = {
@@ -125,6 +90,7 @@ export const defaultInitialValues: PlanFormFields = {
   taskGenerationStatus: 'internal',
   title: '',
   version: DEFAULT_PLAN_VERSION,
+  jurisdictions: initialJurisdictionValues,
 };
 
 /** render Prop interface for render function that planForm
@@ -188,11 +154,19 @@ const PlanForm = (props: PlanFormProps) => {
     setActionTriggers(triggers);
   }, [disabledFields, initialValues.activities]);
 
-  const editMode: boolean = initialValues.identifier !== '';
+  const isEditMode: boolean = initialValues.identifier !== '';
 
   /** simple function to toggle activity modal */
   function toggleActivityModal() {
     setActivityModal(!activityModal);
+  }
+
+  const disAllowedStatusChoices: string[] = [];
+  if (isEditMode) {
+    // Don't allow setting status back to draft
+    if (initialValues.status !== PlanStatus.DRAFT) {
+      disAllowedStatusChoices.push(PlanStatus.DRAFT);
+    }
   }
 
   /** get the source list of activities
@@ -270,68 +244,40 @@ const PlanForm = (props: PlanFormProps) => {
         initialValues={initialValues}
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={(values) => {
-          const payload = generatePlanDefinition(values, null, editMode);
+          const payload = generatePlanDefinition(values, null, isEditMode);
           const continueWithSubmit = props.beforeSubmit(payload);
           if (!continueWithSubmit) {
             setSubmitting(false);
             return;
           }
+          const successMessage = isEditMode ? 'Successfully Updated' : 'Successfully Updated';
 
-          const putPlan = async (...args: any) => {
-            console.log(args);
-          };
-          const postPlan = async (...args: any) => {
-            console.log(args);
-          };
 
-          if (editMode) {
-            putPlan(baseURL, payload)
+          postPutPlan(payload, baseURL, isEditMode)
               .then(() => {
-                sendSuccessNotification('Successfully Updated');
+                sendSuccessNotification(successMessage);
+                props.afterSubmit?(payload);
+                setSubmitting(false);
                 setAreWeDoneHere(true);
               })
               .catch((err: Error) => {
+                setSubmitting(false);
                 sendErrorNotification(err.name, err.message);
               });
-          } else {
-            postPlan(baseURL, payload)
-              .then(() => {
-                sendSuccessNotification('Successfully Added');
-                setAreWeDoneHere(true);
-              })
-              .catch((err: Error) => {
-                sendErrorNotification(err.name, err.message);
-              });
-          }
         }}
       >
         <>
-          {/* {formHandler && <FormikEffect onChange={formHandler} />} */}
-          {/* <FormGroup className="non-field-errors">
-              <ErrorMessage
-                name="name"
-                component="p"
-                className="form-text text-danger name-error"
-              />
-              <ErrorMessage
-                name="date"
-                component="p"
-                className="form-text text-danger date-error"
-              />
-            </FormGroup> */}
           <FormItem
             name="interventionType"
             label={INTERVENTION_TYPE_LABEL}
             required
             rules={validationRules.interventionType}
+            hidden
           >
             <Select
               id="interventionType"
               disabled={disabledFields.includes('interventionType')}
-              // className={errors.interventionType ? 'form-control is-invalid' : 'form-control'}
               onChange={(value: string) => {
-                // const target = value.target as HTMLInputElement;
-
                 if (planActivitiesMap.hasOwnProperty(value)) {
                   form.setFieldsValue({ activities: planActivitiesMap[value] });
                   const newStuff = getConditionAndTriggers(
@@ -345,31 +291,8 @@ const PlanForm = (props: PlanFormProps) => {
                 form.setFieldsValue({ jurisdictions: [initialJurisdictionValues] });
               }}
             >
-              {displayPlanTypeOnForm(InterventionType.FI, editMode) && (
-                <Option value={InterventionType.FI}>{FOCUS_INVESTIGATION}</Option>
-              )}
-              {displayPlanTypeOnForm(InterventionType.IRS, editMode) && (
-                <Option value={InterventionType.IRS}>{IRS_TITLE}</Option>
-              )}
-              {displayPlanTypeOnForm(InterventionType.MDAPoint, editMode) && (
-                <Option value={InterventionType.MDAPoint}>{MDA_POINT_TITLE}</Option>
-              )}
-              {displayPlanTypeOnForm(InterventionType.DynamicFI, editMode) && (
-                <Option value={InterventionType.DynamicFI}>{DYNAMIC_FI_TITLE}</Option>
-              )}
-              {displayPlanTypeOnForm(InterventionType.DynamicIRS, editMode) && (
-                <Option value={InterventionType.DynamicIRS}>{DYNAMIC_IRS_TITLE}</Option>
-              )}
-              {displayPlanTypeOnForm(InterventionType.DynamicMDA, editMode) && (
-                <Option value={InterventionType.DynamicMDA}>{DYNAMIC_MDA_TITLE}</Option>
-              )}
+              <Option value={InterventionType.SM}>{SUPPLY_MANAGEMENT_TITLE}</Option>
             </Select>
-
-            {/* <ErrorMessage
-                name="interventionType"
-                component="small"
-                className="form-text text-danger interventionType-error"
-              /> */}
           </FormItem>
 
           <FormItem label={PLAN_TITLE_LABEL} name="title" rules={validationRules.title}>
@@ -378,17 +301,7 @@ const PlanForm = (props: PlanFormProps) => {
               type="text"
               id="title"
               disabled={disabledFields.includes('title')}
-              // className={
-              //   (errors.name && touched.name) || (errors.title && touched.title)
-              //     ? 'form-control is-invalid'
-              //     : 'form-control'
-              // }
             />
-            {/* <ErrorMessage
-                name="title"
-                component="small"
-                className="form-text text-danger title-error"
-              /> */}
           </FormItem>
           <FormItem name="name" hidden rules={validationRules.name}>
             <Input type="hidden" id="name" />
@@ -411,11 +324,7 @@ const PlanForm = (props: PlanFormProps) => {
             label={STATUS_HEADER}
             rules={validationRules.status}
           >
-            <Select
-              id="status"
-              disabled={disabledFields.includes('status')}
-              // className={errors.status ? 'form-control is-invalid' : 'form-control'}
-            >
+            <Select id="status" disabled={disabledFields.includes('status')}>
               {Object.entries(PlanStatus)
                 .filter((e) => !disAllowedStatusChoices.includes(e[1]))
                 .map((e) => (
@@ -424,11 +333,6 @@ const PlanForm = (props: PlanFormProps) => {
                   </Option>
                 ))}
             </Select>
-            {/* <ErrorMessage
-                name="status"
-                component="small"
-                className="form-text text-danger status-error"
-              /> */}
           </FormItem>
           <FormItem
             rules={validationRules.start}
@@ -440,17 +344,10 @@ const PlanForm = (props: PlanFormProps) => {
               id="start"
               disabled={disabledFields.includes('start')}
               format={DATE_FORMAT}
-              // className={errors.start ? 'form-control is-invalid' : 'form-control'}
             />
-            {/* <ErrorMessage
-                name="start"
-                component="small"
-                className="form-text text-danger start-error"
-              /> */}
           </FormItem>
 
           <FormItem rules={validationRules.date} name="date" hidden>
-            {/* why do we have so many hidden fields in planform */}
             <Input type="hidden" name="date" id="date" />
           </FormItem>
 
@@ -460,17 +357,7 @@ const PlanForm = (props: PlanFormProps) => {
             name="end"
             required={true}
           >
-            <DatePicker
-              id="end"
-              disabled={disabledFields.includes('end')}
-              format={DATE_FORMAT}
-              // className={errors.start ? 'form-control is-invalid' : 'form-control'}
-            />
-            {/* <ErrorMessage
-                name="end"
-                component="small"
-                className="form-text text-danger end-error"
-              /> */}
+            <DatePicker id="end" disabled={disabledFields.includes('end')} format={DATE_FORMAT} />
           </FormItem>
 
           <Divider orientation="left">
@@ -495,7 +382,7 @@ const PlanForm = (props: PlanFormProps) => {
                             extra={
                               activities &&
                               activities.length > 1 &&
-                              !editMode && (
+                              !isEditMode && (
                                 <Button
                                   // type="button"
                                   // className="close position-absolute removeArrItem removeActivity"
@@ -877,7 +764,7 @@ const PlanForm = (props: PlanFormProps) => {
                         {activities &&
                           activities.length >= 1 &&
                           !checkIfAllActivitiesSelected(allValues) &&
-                          !editMode && (
+                          !isEditMode && (
                             <div>
                               <Button type="primary" danger onClick={toggleActivityModal}>
                                 {ADD_ACTIVITY}
@@ -958,7 +845,6 @@ export const defaultProps: PlanFormProps = {
   cascadingSelect: true,
   disabledActivityFields: [],
   disabledFields: [],
-  // formHandler: (_, __) => void 0,
   initialValues: defaultInitialValues,
   jurisdictionLabel: FOCUS_AREA_HEADER,
   redirectAfterAction: PLAN_LIST_URL,
