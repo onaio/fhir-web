@@ -247,6 +247,42 @@ describe('services/OpenSRP', () => {
     expect(error.statusCode).toEqual(500);
   });
 
+  it('can create own body when posting ', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}), { status: 201 });
+    const sampleObj = { message: 'We do not do that here' };
+    const customOptions = () => {
+      return {
+        body: JSON.stringify(sampleObj),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+        },
+        method: 'POST',
+      };
+    };
+    const placeboPayload = {
+      message: 'We actually do',
+    };
+    const planService = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'plans', customOptions);
+    const result = await planService.create(placeboPayload);
+    expect(result).toEqual({});
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: '{"message":"We do not do that here"}',
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+          },
+          method: 'POST',
+        },
+      ],
+    ]);
+  });
+
   it('OpenSRPService update method works', async () => {
     fetch.mockResponseOnce(JSON.stringify({}));
     const planService = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'plans');
@@ -311,6 +347,42 @@ describe('services/OpenSRP', () => {
     expect(error.description).toEqual('"Some error happened"');
     expect(error.statusText).toEqual('something happened');
     expect(error.statusCode).toEqual(500);
+  });
+
+  it('Can create own body when updating', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const sampleObj = { message: 'We do not do that here' };
+    const customOptions = () => {
+      return {
+        body: JSON.stringify(sampleObj),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+        },
+        method: 'PUT',
+      };
+    };
+    const placeboPayload = {
+      message: 'We actually do',
+    };
+    const planService = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'plans', customOptions);
+    const result = await planService.update(placeboPayload);
+    expect(result).toEqual({});
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: '{"message":"We do not do that here"}',
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+          },
+          method: 'PUT',
+        },
+      ],
+    ]);
   });
 });
 

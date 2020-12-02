@@ -17,7 +17,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
   const { extraData } = props;
   const { roles } = extraData;
   return (
-    <div className="text-center">
+    <div className="text-center home">
       <Helmet>
         <title>OpenSRP Web</title>
       </Helmet>

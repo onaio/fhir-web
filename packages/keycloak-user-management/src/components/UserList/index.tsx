@@ -16,7 +16,7 @@ import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
 } from '../../ducks/user';
-import { URL_USER_CREATE, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
+import { URL_USER_CREATE, KEYCLOAK_URL_USERS, ERROR_OCCURED, NO_DATA_FOUND } from '../../constants';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { useHistory } from 'react-router';
@@ -82,13 +82,13 @@ const UserList = (props: Props): JSX.Element => {
       serve
         .list()
         .then((res: KeycloakUser[]) => {
-          if (isLoading) {
-            setIsLoading(false);
-            fetchKeycloakUsersCreator(res);
-          }
+          return fetchKeycloakUsersCreator(res);
         })
         .catch((_: Error) => {
-          sendErrorNotification(ERROR_OCCURED);
+          return sendErrorNotification(ERROR_OCCURED);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   });
@@ -107,8 +107,9 @@ const UserList = (props: Props): JSX.Element => {
       lastName: user.lastName,
     };
   });
+
   return (
-    <section>
+    <section className="layout-content">
       <h5 className="mb-3">User Management</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>
@@ -130,26 +131,30 @@ const UserList = (props: Props): JSX.Element => {
             <SettingOutlined />
           </Space>
           <Space>
-            <Table
-              columns={getTableColumns(
-                removeKeycloakUsersCreator,
-                accessToken,
-                keycloakBaseURL,
-                isLoadingCallback,
-                extraData,
-                sortedInfo
-              )}
-              dataSource={tableData as KeycloakUser[]}
-              pagination={{
-                showQuickJumper: true,
-                showSizeChanger: true,
-                defaultPageSize: 5,
-                pageSizeOptions: ['5', '10', '20', '50', '100'],
-              }}
-              onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
-                setSortedInfo(sorter);
-              }}
-            />
+            {tableData.length > 0 ? (
+              <Table
+                columns={getTableColumns(
+                  removeKeycloakUsersCreator,
+                  accessToken,
+                  keycloakBaseURL,
+                  isLoadingCallback,
+                  extraData,
+                  sortedInfo
+                )}
+                dataSource={tableData as KeycloakUser[]}
+                pagination={{
+                  showQuickJumper: true,
+                  showSizeChanger: true,
+                  defaultPageSize: 5,
+                  pageSizeOptions: ['5', '10', '20', '50', '100'],
+                }}
+                onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
+                  setSortedInfo(sorter);
+                }}
+              />
+            ) : (
+              NO_DATA_FOUND
+            )}
           </Space>
         </Col>
       </Row>

@@ -20,6 +20,7 @@ Object {
         </Link>
       </div>
       <Menu
+        className="menu-dark"
         defaultSelectedKeys={
           Array [
             "1",
@@ -32,14 +33,6 @@ Object {
           icon={<ForwardRef(DashboardOutlined) />}
           title="Admin"
         >
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/teams"
-            >
-              Teams
-            </Link>
-          </MenuItem>
           <MenuItem>
             <Link
               className="admin-link"
@@ -73,7 +66,7 @@ Object {
     </div>,
     null,
   ],
-  "className": "ant-layout-sider ant-layout-sider-dark",
+  "className": "ant-layout-sider ant-layout-sider-dark layout-sider",
   "style": Object {
     "flex": "0 0 275px",
     "maxWidth": "275px",
