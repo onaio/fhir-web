@@ -8,6 +8,8 @@ import {
   taskGenerationStatuses,
   PlanActivityTitles,
   GoalUnit,
+  InterventionType,
+  PlanStatus,
 } from './constants/enumsAndCodeConstants';
 import { Moment } from 'moment';
 
@@ -103,27 +105,6 @@ export type BeforeSubmit = (payload: PlanDefinition) => boolean;
 
 /** type of function to be called with payload before submission */
 export type AfterSubmit = (payload: PlanDefinition) => void;
-
-/** Enum representing the possible intervention types */
-export enum InterventionType {
-  DynamicFI = 'Dynamic-FI',
-  DynamicIRS = 'Dynamic-IRS',
-  DynamicMDA = 'Dynamic-MDA',
-  FI = 'FI',
-  IRS = 'IRS',
-  IRSLite = 'IRS-Lite',
-  MDA = 'MDA',
-  MDAPoint = 'MDA-Point',
-  SM = 'SM',
-}
-
-/** Enum representing the possible intervention types */
-export enum PlanStatus {
-  ACTIVE = 'active',
-  COMPLETE = 'complete',
-  DRAFT = 'draft',
-  RETIRED = 'retired',
-}
 
 /** UseContext - interface for PlanPayload.useContext[] items */
 export interface UseContext {

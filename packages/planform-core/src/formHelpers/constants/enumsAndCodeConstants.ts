@@ -149,3 +149,24 @@ export const PlanActivityTitles = [
   RECORD_GPS_ACTIVITY_CODE,
   SERVICE_POINT_CHECK_ACTIVITY_CODE,
 ] as const;
+
+/** Enum representing the possible intervention types */
+export enum InterventionType {
+  DynamicFI = 'Dynamic-FI',
+  DynamicIRS = 'Dynamic-IRS',
+  DynamicMDA = 'Dynamic-MDA',
+  FI = 'FI',
+  IRS = 'IRS',
+  IRSLite = 'IRS-Lite',
+  MDA = 'MDA',
+  MDAPoint = 'MDA-Point',
+  SM = 'SM',
+}
+
+/** Enum representing the possible intervention types */
+export enum PlanStatus {
+  ACTIVE = 'active',
+  COMPLETE = 'complete',
+  DRAFT = 'draft',
+  RETIRED = 'retired',
+}
