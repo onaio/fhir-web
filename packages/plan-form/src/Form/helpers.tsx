@@ -1,5 +1,20 @@
+import { FormInstance } from 'antd/lib/form/hooks/useForm';
+import {
+  PlanFormFields,
+  isFIOrDynamicFI,
+  actionReasons,
+  PlanActionCodes,
+  goalPriorities,
+  InterventionType,
+  FIReasons,
+  PlanStatus,
+  taskGenerationStatuses,
+  fiStatusCodes,
+} from '@opensrp/planform-core';
+import { Rule } from 'rc-field-form/lib/interface';
+
 export const formIsFIOrDynamicFI = (
-  form: any,
+  form: FormInstance<PlanFormFields>,
   interventionFieldName = 'interventionType'
 ): boolean => {
   const interventionType = form.getFieldValue([interventionFieldName]);
@@ -30,7 +45,7 @@ export const validationRules = {
     { type: 'enum', enum: Object.values(InterventionType), required: true },
   ] as Rule[],
   jurisdictions: {
-    id: [{ type: 'string', required: true }] as Rule[],
+    id: [{ type: 'string'}] as Rule[],
     name: [{ type: 'string' }] as Rule[],
   },
   fiReason: [
