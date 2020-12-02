@@ -126,6 +126,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           <>
             {fields.map((field, index) => (
               <AntdForm.Item
+                className="practitioners_Field"
                 {...(index === 0 ? layoutFull : offsetLayoutFull)}
                 label={index === 0 ? 'Team Members' : ''}
                 key={field.key}
@@ -155,15 +156,23 @@ export const Form: React.FC<Props> = (props: Props) => {
                   </Select>
                 </AntdForm.Item>
                 {fields.length > 1 ? (
-                  <MinusCircleOutlined
-                    className="dynamic-delete-button"
+                  <Button
+                    className="removePractitioner"
+                    type="default"
                     onClick={() => remove(field.name)}
+                    icon={<MinusCircleOutlined className="dynamic-delete-button" />}
                   />
                 ) : null}
               </AntdForm.Item>
             ))}
             <AntdForm.Item {...offsetLayout}>
-              <Button type="dashed" onClick={() => add()} className="w-100" icon={<PlusOutlined />}>
+              <Button
+                id="addPractitioner"
+                type="dashed"
+                onClick={() => add()}
+                className="w-100"
+                icon={<PlusOutlined />}
+              >
                 Add field
               </Button>
               <AntdForm.ErrorList errors={errors} />
