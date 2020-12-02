@@ -24,6 +24,8 @@ export const PASSWORD_MATCH_FAILURE = 'The two passwords that you entered do not
 export const INPUT_PASSWORD = 'Please input your password!';
 export const CONFIRM_PASSWORD = 'Please confirm your password!';
 export const CREDENTIALS_UPDATED_SUCCESSFULLY = 'Credentials updated successfully';
+export const PRACTITIONER_CREATED_SUCCESSFULLY = 'Practitioner created successfully';
+export const PRACTITIONER_UPDATED_SUCCESSFULLY = 'Practitioner updated successfully';
 export const NO_DATA_FOUND = 'No Data Found';
 
 // rendered text
