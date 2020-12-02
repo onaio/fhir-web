@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cd ./client && react-scripts start",
     "build": "cd ./client && react-scripts build",
-    "lerna:prepublish": "lerna run build",
+    "lerna:prepublish": "lerna bootstrap && lerna run build --include-dependencies --stream",
     "lerna:version": "lerna version --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
     "lerna:publish": "yarn install && yarn run lerna:prepublish && lerna publish from-package --ignore-scripts --ignore-prepublish",
     "test": "jest",
@@ -78,6 +78,7 @@
     "@typescript-eslint/eslint-plugin": "^2.9.0",
     "@typescript-eslint/parser": "^2.9.0",
     "babel-eslint": "^10.0.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "copyfiles": "^2.4.0",
     "coveralls": "^3.1.0",
     "enzyme": "^3.10.0",
@@ -121,7 +122,7 @@
     "react-scripts/jest": "25.3.0"
   },
   "workspaces": [
-    "client/*",
+    "client",
     "packages/*"
   ]
 }
