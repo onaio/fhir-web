@@ -1,15 +1,15 @@
-import { LocationGroup } from '../location-groups';
+import { LocationUnitGroup } from '../location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../location-units';
 /* eslint-disable @typescript-eslint/camelcase */
 
-export const locationGroup1: LocationGroup = {
+export const locationUnitGroup1: LocationUnitGroup = {
   id: 1,
   active: true,
   name: 'Sample',
   description: 'Sample description',
 };
 
-export const locationGroup2: LocationGroup = {
+export const locationUnitGroup2: LocationUnitGroup = {
   id: 2,
   active: true,
   name: 'Sample 2',

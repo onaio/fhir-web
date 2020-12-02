@@ -25,3 +25,11 @@
 table tr:nth-child(2n) td {
   background-color: #f4f4f4;
 }
+
+span.site-tree-search-value {
+  color: #1890ff;
+}
+
+span.searchValue {
+  background-color: #1890ff;
+}

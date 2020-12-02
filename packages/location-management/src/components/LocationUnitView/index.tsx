@@ -30,19 +30,16 @@ import locationHierarchyReducer, {
   getAllHierarchiesArray,
   getCurrentChildren,
   fetchAllHierarchies,
-  fetchCurrentChildren,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import {
-  generateJurisdictionTree,
-  RawOpenSRPHierarchy,
-  getFilterParams,
-  ParsedHierarchyNode,
-  TreeNode,
-} from '../LocationTree/utils';
+import { generateJurisdictionTree } from '../LocationTree/utils';
+
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
+
+const { getFilterParams } = OpenSRPService;
 
 export interface AntTreeProps {
   title: JSX.Element;
@@ -66,9 +63,7 @@ export const loadSingleLocation = (
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   serve
     .read(row.id, { is_jurisdiction: true })
-    .then((res: LocationUnit) => {
-      setDetail(res);
-    })
+    .then((res: LocationUnit) => setDetail(res))
     .catch((e) => notification.error({ message: `${e}`, description: '' }));
 };
 
@@ -117,7 +112,7 @@ export const LocationUnitView: React.FC = () => {
 
   useEffect(() => {
     const data: TableData[] = [];
-    if (currentParentChildren && currentParentChildren.length) {
+    if (currentParentChildren.length) {
       currentParentChildren.forEach((child: ParsedHierarchyNode, i: number) => {
         data.push({
           id: child.id,
@@ -126,7 +121,7 @@ export const LocationUnitView: React.FC = () => {
           geographicLevel: child.node.attributes.geographicLevel,
         });
       });
-    } else if (Treedata && Treedata.length && !currentParentChildren.length) {
+    } else if (Treedata.length && !currentParentChildren.length) {
       Treedata.forEach((location: ParsedHierarchyNode, i: number) => {
         data.push({
           id: location.id,
@@ -142,28 +137,17 @@ export const LocationUnitView: React.FC = () => {
   if (!tableData.length || !Treedata.length) return <Ripple />;
 
   return (
-    <section>
+    <section className="layout-content">
       <Helmet>
         <title>Locations Unit</title>
       </Helmet>
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree
-            OnItemClick={(item, [expandedKeys, setExpandedKeys]) => {
-              if (item.children) {
-                // build out parent row info from here
-                const children = [item, ...item.children];
-                dispatch(fetchCurrentChildren((children as unknown) as TreeNode[]));
-                const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
-                setExpandedKeys(allExpandedKeys as string[]);
-              }
-            }}
-            data={Treedata}
-          />
+          <Tree data={Treedata} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
-          <div className="mb-3 d-flex justify-content-between">
+          <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">Bombali</h5>
             <div>
               <Link to={URL_LOCATION_UNIT_ADD}>
@@ -185,7 +169,7 @@ export const LocationUnitView: React.FC = () => {
               </Dropdown>
             </div>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white p-3">
             <Table
               data={tableData}
               onViewDetails={loadSingleLocation}
@@ -195,7 +179,7 @@ export const LocationUnitView: React.FC = () => {
           </div>
         </Col>
 
-        {detail && (
+        {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
               <Ripple />
@@ -203,6 +187,8 @@ export const LocationUnitView: React.FC = () => {
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}
           </Col>
+        ) : (
+          ''
         )}
       </Row>
     </section>

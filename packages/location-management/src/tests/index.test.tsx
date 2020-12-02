@@ -5,15 +5,15 @@ import { MemoryRouter } from 'react-router';
 import { store } from '@opensrp/store';
 
 import { LocationUnitModule } from '../LocationUnitModule';
-import { LocationGroupModule } from '../LocationGroupModule';
-import { URL_LOCATION_TAG, URL_LOCATION_UNIT } from '../constants';
+import { LocationUnitGroupModule } from '../LocationUnitGroupModule';
+import { URL_LOCATION_UNIT_GROUP, URL_LOCATION_UNIT } from '../constants';
 
-describe('containers/pages/locations/LocationGroupAddition', () => {
+describe('containers/pages/locations/LocationUnitGroupModule', () => {
   it('renders', () => {
     mount(
-      <MemoryRouter initialEntries={[URL_LOCATION_TAG]}>
+      <MemoryRouter initialEntries={[URL_LOCATION_UNIT_GROUP]}>
         <Provider store={store}>
-          <LocationGroupModule />
+          <LocationUnitGroupModule />
         </Provider>
       </MemoryRouter>
     );

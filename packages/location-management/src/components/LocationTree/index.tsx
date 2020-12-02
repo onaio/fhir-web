@@ -2,9 +2,11 @@ import React, { ChangeEvent, useState } from 'react';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ParsedHierarchyNode } from './utils';
-import reducer, { reducerName } from '../../ducks/location-hierarchy';
+import { ParsedHierarchyNode } from '../../ducks/types';
+import reducer, { fetchCurrentChildren, reducerName } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
+import { Dictionary } from '@onaio/utils';
+import { useDispatch } from 'react-redux';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -16,12 +18,13 @@ interface TreeProp {
   ) => void;
 }
 
-const defaultProps: TreeProp = {
+const defaultProps: Partial<TreeProp> = {
   data: [],
 };
 
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
-  const { data, OnItemClick } = props;
+  const { data } = props;
+  const dispatch = useDispatch();
 
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -35,21 +38,23 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @returns {string} - returns parent key
    */
   function getParentKey(key: string, tree: ParsedHierarchyNode[]): string {
+    let nodeKey = '';
     tree.forEach((node) => {
       if (node.children) {
-        if (node.children.some((item: { key: string }) => item.key === key)) return node.key;
-        else if (getParentKey(key, node.children)) return getParentKey(key, node.children);
+        if (node.children.some((item: ParsedHierarchyNode) => item.parent === key)) {
+          nodeKey = node.key;
+        } else if (getParentKey(key, node.children)) return getParentKey(key, node.children);
       }
     });
-    return '';
+    return nodeKey;
   }
 
   /** Function to handle event when a tree is expanded
    *
-   * @param {Array<React.Key>} expandedKeys currently expanded keys
+   * @param {Array<React.Key>} allExpandedKeys currently expanded keys
    */
-  function onExpand(expandedKeys: React.Key[]) {
-    setExpandedKeys(expandedKeys);
+  function onExpand(allExpandedKeys: React.Key[]) {
+    setExpandedKeys(allExpandedKeys);
     setAutoExpandParent(true);
   }
 
@@ -60,11 +65,15 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     const expandedKeys = filterData
-      .map((item) => (item.title.indexOf(value) > -1 ? getParentKey(item.key, props.data) : null))
+      .map((item) =>
+        value.length && item.label.toLocaleLowerCase().indexOf(value) > -1
+          ? getParentKey(item.id, filterData)
+          : null
+      )
       .filter((item, i, self) => item && self.indexOf(item) === i);
     setExpandedKeys(expandedKeys as string[]);
     setSearchValue(value);
-    setAutoExpandParent(true);
+    setAutoExpandParent(value.length > 0);
   }
 
   /** process the data before it could be displayed in tree
@@ -74,15 +83,15 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    */
   function loop(data: ParsedHierarchyNode[]): AntTreeProps[] {
     data.map((item) => {
-      const index = item.title.indexOf(searchValue);
-      const beforeStr = item.title.substr(0, index);
-      const afterStr = item.title.substr(index + searchValue.length);
+      const index = item.title.toLowerCase().indexOf(searchValue);
+      const beforeStr = item.title.toLowerCase().substr(0, index);
+      const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
       const title = (
-        <span onClick={() => OnItemClick && OnItemClick(item, [expandedKeys, setExpandedKeys])}>
-          {index > -1 ? (
+        <span>
+          {searchValue.length > 0 && index > -1 ? (
             <>
               {beforeStr}
-              <span className="site-tree-search-value">{searchValue}</span>
+              <span className="searchValue">{searchValue}</span>
               {afterStr}
             </>
           ) : (
@@ -119,6 +128,14 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
+        onClick={(_, node: Dictionary) => {
+          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
+          if (node.children) {
+            const children = [node, ...node.children];
+            dispatch(fetchCurrentChildren(children));
+          }
+          setExpandedKeys(allExpandedKeys);
+        }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}

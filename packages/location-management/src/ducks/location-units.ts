@@ -9,8 +9,6 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 import { Geometry } from 'geojson';
-import { values } from 'lodash';
-import { Store } from 'redux';
 
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
@@ -35,8 +33,8 @@ export interface Properties {
   externalId?: string;
 }
 
-/** location unit group interface */
-export interface LocationUnitGroup {
+/** location unit tag interface */
+export interface LocationUnitTag {
   id: number;
   name: string;
 }
@@ -48,7 +46,7 @@ export interface LocationUnit {
   properties: Properties;
   syncStatus: LocationUnitSyncStatus;
   type: string;
-  locationTags?: LocationUnitGroup[];
+  locationTags?: LocationUnitTag[];
   geometry?: Geometry;
   parentId?: string;
 }
@@ -58,7 +56,7 @@ export interface LocationUnitPayloadPOST {
   properties?: Properties;
   syncStatus?: LocationUnitSyncStatus;
   type: string;
-  locationTags?: LocationUnitGroup[];
+  locationTags?: LocationUnitTag[];
   geometry?: Geometry;
   textEntry?: string[];
   // we will remove this id as it should be auto generated on server
@@ -97,8 +95,5 @@ export const getLocationUnitsById = getItemsByIdFactory<LocationUnit>(reducerNam
 export const getLocationUnitById = getItemByIdFactory<LocationUnit>(reducerName);
 export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerName);
 export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
-
-export const LocationUnitsArray = (state: Partial<Store>): LocationUnit[] =>
-  values(getLocationUnitsById(state) || {});
 
 export default reducer;
