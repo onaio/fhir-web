@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Typography, Form, Button, Input, Upload, Card } from 'antd';
@@ -55,6 +55,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [fileList, setFileList] = React.useState<Array<any>>([]);
+  const [isEditMode, setIsEditMode] = React.useState(false);
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const { initialValues, opensrpBaseURL, isJsonValidator, match } = props;
   const formId = match.params[ROUTE_PARAM_FORM_ID];
@@ -70,6 +71,12 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
       module: formData.module,
     };
   }
+  useEffect(() => {
+    if (formId) {
+      setIsEditMode(true);
+    }
+  }, [formId]);
+
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -137,13 +144,13 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
             label="Form Name"
             rules={[{ required: true, message: 'Form Name is required' }]}
           >
-            <Input />
+            <Input disabled={isEditMode} />
           </Form.Item>
           <Form.Item name="module" label="Module">
-            <Input />
+            <Input disabled={isEditMode} />
           </Form.Item>
           <Form.Item name="form_relation" label="Related to">
-            <Input />
+            <Input disabled={isEditMode} />
           </Form.Item>
           <Form.Item
             name="form"
