@@ -44,6 +44,7 @@ describe('components/CreateEditUser', () => {
     keycloakUser: fixtures.keycloakUser,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     serviceClass: KeycloakService,
+    practitioner: undefined,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
     opensrpBaseURL: OPENSRP_API_BASE_URL,
     opensrpServiceClass: OpenSRPService,
@@ -78,10 +79,7 @@ describe('components/CreateEditUser', () => {
   });
 
   it('renders correctly', async () => {
-    fetch
-      .once(JSON.stringify({}))
-      .once(JSON.stringify(fixtures.keycloakUser))
-      .once(JSON.stringify(practitioner1));
+    fetch.once(JSON.stringify(fixtures.keycloakUser)).once(JSON.stringify(practitioner1));
 
     const wrapper = mount(
       <Provider store={store}>
