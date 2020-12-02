@@ -74,6 +74,3 @@ export const CREATE_TYPE = 'create';
 export const NAMED_EVENT_TRIGGER_TYPE = 'named-event';
 export const PLAN_ACTIVATION_TRIGGER_NAME = 'plan-activation';
 export const APPLICABILITY_CONDITION_KIND = 'applicability';
-
-// opensrp api strings
-export const PLAN_LIST_URL = '/plans/list';

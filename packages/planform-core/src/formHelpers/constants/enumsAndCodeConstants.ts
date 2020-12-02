@@ -1,4 +1,3 @@
-import { INVESTIGATION } from './lang';
 import {
   A1,
   A2,
@@ -59,6 +58,7 @@ import {
   FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
   RECORD_GPS_ACTIVITY_CODE,
   SERVICE_POINT_CHECK_ACTIVITY_CODE,
+  INVESTIGATION,
 } from './stringConstants';
 
 /** Enum representing the possible goal unitss */
