@@ -14,9 +14,7 @@ import {
   B1_NAME,
   B2_DESCRIPTION,
   B2_NAME,
-  CANTON,
   CASE_TRIGGERED_TITLE,
-  DISTRICT,
   GOAL_UNIT_ACTIVITY,
   GOAL_UNIT_CASE,
   GOAL_UNIT_PERCENT,
@@ -30,9 +28,7 @@ import {
   PLAN_STATUS_COMPLETE,
   PLAN_STATUS_DRAFT,
   PLAN_STATUS_RETIRED,
-  PROVINCE,
   ROUTINE_TITLE,
-  VILLAGE,
 } from './constants/lang';
 import {
   A1,
@@ -46,36 +42,7 @@ import {
   MEDIUM_PRIORITY,
   ROUTINE,
 } from './constants/stringConstants';
-import { LocationItem, Classification, EnvConfig } from './types';
-
-/** Location configs */
-
-/** Location item hierarchy
- * This is a list of locations.  The "level" field will be used to sort the
- * locations hierarchically, from lowest to highest.
- */
-export const locationHierarchy: LocationItem[] = [
-  {
-    identifier: 'province',
-    level: 1,
-    name: PROVINCE,
-  },
-  {
-    identifier: 'district',
-    level: 2,
-    name: DISTRICT,
-  },
-  {
-    identifier: 'canton',
-    level: 3,
-    name: CANTON,
-  },
-  {
-    identifier: 'village',
-    level: 4,
-    name: VILLAGE,
-  },
-];
+import { Classification, EnvConfig } from './types';
 
 export const FIReasonsDisplay: { [key: string]: string } = {
   [ROUTINE]: ROUTINE_TITLE,
