@@ -111,6 +111,7 @@ export const DESCRIPTION_LABEL = 'Description';
 export const DYNAMIC_FI_TITLE = 'Dynamic FI';
 export const DYNAMIC_IRS_TITLE = 'Dynamic IRS';
 export const DYNAMIC_MDA_TITLE = 'Dynamic MDA';
+export const SUPPLY_MANAGEMENT_TITLE = 'Supply Management';
 export const START_DATE = 'Start Date';
 export const END_DATE = 'End Date';
 export const FOCUS_AREA_HEADER = 'Focus Area';
