@@ -29,6 +29,7 @@ import {
   URL_LOGOUT,
   URL_HOME,
   URL_UPLOAD_JSON_VALIDATOR,
+  URL_JSON_VALIDATOR_LIST,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -54,12 +55,12 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
-import { AntdUploadForm } from '@opensrp/form-config';
+import { AntdUploadForm, AntdFilesList } from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps } from './utils';
+import { productCatalogueProps, jsonValidatorsProps } from './utils';
 
 const { Content } = Layout;
 
@@ -213,6 +214,14 @@ const App: React.FC = () => {
               exact
               path={URL_UPLOAD_JSON_VALIDATOR}
               component={AntdUploadForm.UploadFileForm}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_JSON_VALIDATOR_LIST}
+              {...jsonValidatorsProps}
+              component={AntdFilesList.FileList}
             />
             <Route
               exact
