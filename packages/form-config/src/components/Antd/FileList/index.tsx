@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getFetchOptions, OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Card, Typography, Spin, Table } from 'antd';
+import { Card, Typography, Spin, Table, Space, Button, Divider } from 'antd';
 import { Dictionary } from '@onaio/utils';
 import filesReducer, {
   ManifestFilesTypes,
@@ -15,6 +15,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { ERROR_OCCURRED, OPENSRP_FORM_METADATA_ENDPOINT } from '../../../constants';
 import { getTableColumns } from './utils';
+import { useHistory } from 'react-router';
+import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -56,6 +58,7 @@ const FileList = (props: FileListProps): JSX.Element => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const data: ManifestFilesTypes[] = useSelector((state) => getAllManifestFilesArray(state));
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     /** get manifest files */
@@ -95,9 +98,17 @@ const FileList = (props: FileListProps): JSX.Element => {
   }
 
   return (
-    <>
-      <Title level={3}>Upload Form</Title>
+    <div className="layout-content">
+      <Title level={3}>JSON Validators</Title>
       <Card>
+        <Space style={{ marginBottom: 16, float: 'right' }}>
+          <Button type="primary" className="create-user" onClick={() => history.push(formRoute)}>
+            <UploadOutlined />
+            Upload New File
+          </Button>
+          <Divider type="vertical" />
+          <SettingOutlined />
+        </Space>
         <Table
           columns={getTableColumns(
             accessToken,
@@ -119,7 +130,7 @@ const FileList = (props: FileListProps): JSX.Element => {
           }}
         />
       </Card>
-    </>
+    </div>
   );
 };
 

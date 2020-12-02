@@ -22,5 +22,9 @@ export const CREATED_AT_LABEL = 'Created at';
 export const UPDATED_AT_LABEL = 'Updated at';
 export const ERROR_OCCURRED = 'Error occurred';
 
+// Opensrp API endpoints
 export const OPENSRP_FORMS_ENDPOINT = '/clientForm';
-export const OPENSRP_FORM_METADATA_ENDPOINT = 'clientForm/metadata';
+export const OPENSRP_FORM_METADATA_ENDPOINT = '/clientForm/metadata';
+
+// Route params
+export const ROUTE_PARAM_FORM_ID = 'formId';
