@@ -246,6 +246,28 @@ describe('forms/utils/submitForm', () => {
     expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner created successfully');
   });
 
+  it('updates practitioner successfully', async () => {
+    const valuesCopy = {
+      ...values,
+      active: true,
+      id: keycloakUser.id,
+    };
+
+    createOrEditPractitioners(
+      accessToken,
+      opensrpBaseURL,
+      opensrpServiceClass,
+      valuesCopy,
+      fixtures.practitioner1,
+      true
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
+  });
+
   it('handles errors when marking practitioner fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const valuesCopy = {
@@ -260,7 +282,7 @@ describe('forms/utils/submitForm', () => {
       opensrpServiceClass,
       valuesCopy,
       undefined,
-      false
+      true
     );
 
     await act(async () => {
