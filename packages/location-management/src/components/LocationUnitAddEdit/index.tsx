@@ -58,7 +58,7 @@ export const LocationUnitAddEdit: React.FC = () => {
             parentId: response.properties.parentId,
             status: response.properties.status,
             externalId: response.properties.externalId,
-            locationTags: response.locationTags?.map(() => e.id),
+            locationTags: response.locationTags?.map((loc) => loc.id),
             geometry: JSON.stringify(response.geometry),
             type: response.type,
           });
