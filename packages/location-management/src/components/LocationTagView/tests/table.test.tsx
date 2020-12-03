@@ -15,7 +15,7 @@ import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixture
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
-describe('containers/pages/locations/locationTagView', () => {
+describe('location-management/src/components/LocationTagView', () => {
   const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   const endpoint = 'location-tag/delete';
   const tagId = '1';
