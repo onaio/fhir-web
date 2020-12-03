@@ -17,5 +17,6 @@ export * from './constants';
 
 export * as AntdUploadForm from './components/Antd/UploadForm';
 export * as AntdFilesList from './components/Antd/FileList';
+export * as AntdDraftFileList from './components/Antd/DraftFileList';
 
 export { draftFilesReducer, manifestFilesReducer, manifestReleasesReducer };
