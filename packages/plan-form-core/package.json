@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/plan-form-core",
-  "version": "0.0.4",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/types",
