@@ -33,7 +33,7 @@ export const onDelete = (record: LocationTag, accessToken: string) => {
   clientService
     .delete()
     .then(() => sendSuccessNotification('Successfully Deleted!'))
-    .catch((e: string) => sendErrorNotification(`${e}`));
+    .catch(() => sendErrorNotification('An error occurred'));
 };
 
 const Table: React.FC<Props> = (props: Props) => {

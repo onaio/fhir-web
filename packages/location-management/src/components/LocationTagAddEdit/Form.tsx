@@ -70,8 +70,8 @@ export const onSubmit = (
         setSubmitting(false);
         history.goBack();
       })
-      .catch((e: Error) => {
-        sendErrorNotification(`${e}`);
+      .catch(() => {
+        sendErrorNotification('An error occurred');
         setSubmitting(false);
       });
   } else {
@@ -82,8 +82,8 @@ export const onSubmit = (
         setSubmitting(false);
         history.goBack();
       })
-      .catch((e: Error) => {
-        sendErrorNotification(`${e}`);
+      .catch(() => {
+        sendErrorNotification('An error occurred');
         setSubmitting(false);
       });
   }
@@ -112,7 +112,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             });
             setIsLoading(false);
           })
-          .catch((e) => sendErrorNotification(`${e}`));
+          .catch(() => sendErrorNotification('An error occurred'));
       } else setIsLoading(false);
     }
   }, [accessToken, isLoading, props.id]);
