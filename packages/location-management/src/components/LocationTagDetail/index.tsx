@@ -10,7 +10,7 @@ export interface LocationTagDetailProps extends LocationTag {
 const LocationTagDetail = (props: LocationTagDetailProps) => {
   const { name, active, description } = props;
   return (
-    <div className="p-4 bg-white">
+    <div id="LocationTagDetail" className="p-4 bg-white">
       <Button
         shape="circle"
         onClick={() => (props.onClose ? props.onClose() : '')}

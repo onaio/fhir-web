@@ -2,7 +2,7 @@
 import flushPromises from 'flush-promises';
 import { mount } from 'enzyme';
 import React from 'react';
-import { history } from '@onaio/connected-reducer-registry';
+import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
@@ -11,7 +11,7 @@ import fetch from 'jest-fetch-mock';
 import * as fixtures from './fixtures';
 
 import { id, LocationTagValue, locationtag, treedata } from './fixtures';
-import Form, { onSubmit } from '../Form';
+import Form, { FormField, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
 import { LocationUnitStatus } from '../../../ducks/location-units';
@@ -22,7 +22,9 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     jest.clearAllMocks();
   });
 
-  const values = {
+  const history = createBrowserHistory();
+
+  const values: FormField = {
     name: 'Tunisia',
     status: LocationUnitStatus.ACTIVE,
     type: 'Feature',
@@ -54,13 +56,14 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
 
   it('creates new location unit', async () => {
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
+
     await onSubmit(
+      setSubmittingMock,
       values,
       accessToken,
-      props.id,
       props.locationtag,
       props.username,
-      setSubmittingMock
+      props.id
     );
     await act(async () => {
       await flushPromises();
@@ -83,7 +86,7 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     ]);
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'Location Unit Created successfully',
     });
   });
@@ -105,7 +108,7 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'API is down',
     });
   });
@@ -143,7 +146,7 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     ]);
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'Location Unit Updated successfully',
     });
     wrapper.unmount();
@@ -159,7 +162,7 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'API is down',
     });
   });
@@ -254,6 +257,9 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
   });
 
   it('Cancel button', () => {
+    const mockBack = jest.fn();
+    history.goBack = mockBack;
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -263,6 +269,18 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     );
 
     wrapper.find('button#cancel').simulate('click');
+
+    // click go back
+    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Go Back"`);
+    wrapper.find('button').first().simulate('click');
+
+    expect(mockBack).toHaveBeenCalled();
+
+    // click go back
+    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Back Home"`);
+    wrapper.find('button').last().simulate('click');
+
+    expect(history.location.pathname).toEqual('Asd');
   });
 
   it('Update LocationTagValue', async () => {

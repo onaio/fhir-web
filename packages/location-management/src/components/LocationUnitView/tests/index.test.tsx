@@ -86,10 +86,7 @@ describe('containers/pages/locations/locationunit', () => {
 
   it('test error thrown if API is down', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    // fetch.once(JSON.stringify([])).once(JSON.stringify({}));
-    fetch
-      .mockReject(() => Promise.reject('API is down'))
-      .mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('API is down'));
     loadSingleLocation(
       { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
       'sometoken',
@@ -110,7 +107,7 @@ describe('containers/pages/locations/locationunit', () => {
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
       message: 'API is down',
-      description: '',
+      description: undefined,
     });
   });
 });
