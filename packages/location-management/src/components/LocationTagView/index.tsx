@@ -20,7 +20,7 @@ import Table, { TableData } from './Table';
 import './LocationTagView.css';
 import { Ripple } from '@onaio/loaders';
 import { Link } from 'react-router-dom';
-import { sendErrorNotification } from 'opensrp-notifications';
+import { sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(reducerName, reducer);
 

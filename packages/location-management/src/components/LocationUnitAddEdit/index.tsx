@@ -23,7 +23,7 @@ import locationHierarchyReducer, {
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { generateJurisdictionTree } from '../LocationTree/utils';
-import { sendErrorNotification } from 'opensrp-notifications';
+import { sendErrorNotification } from '@opensrp/notifications';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 import './LocationUnitAddEdit.css';

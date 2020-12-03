@@ -8,7 +8,7 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_TAG_GET } from '../../constants';
-import { sendSuccessNotification, sendErrorNotification } from 'opensrp-notifications';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationTag,
   LocationTagPayloadPOST,
@@ -94,7 +94,7 @@ export const Form: React.FC<Props> = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [initialValue, setInitialValue] = useState<FormField>({
     name: '',
-    description: undefined,
+    description: '',
     active: true,
   });
 
