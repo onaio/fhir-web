@@ -19,7 +19,7 @@ yarn add @opensrp/planform-core
 
 ### Props/ Configuration
 
-Util functions exposed can optionally take a config object shaped as follows:
+Some of the util functions exposed can optionally take a config object shaped as follows:
 
 ```typescript
 /** describes all possible configuration options */
