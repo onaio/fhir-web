@@ -35,8 +35,6 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "uuidv4": "^6.2.5",
-    "formik-antd": "^2.0.1",
     "tree-model": "^1.0.7"
   },
   "devDependencies": {
@@ -44,6 +42,8 @@
     "@types/geojson": "^7946.0.7"
   },
   "peerDependencies": {
+    "formik-antd": "^2.0.1",
+    "uuidv4": "^6.2.5",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/reducer-factory": "^0.0.11",
     "@opensrp/server-service": "^0.0.12",
