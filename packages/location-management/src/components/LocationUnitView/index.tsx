@@ -24,7 +24,7 @@ import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
 import Tree from '../LocationTree';
-
+import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
   getAllHierarchiesArray,
