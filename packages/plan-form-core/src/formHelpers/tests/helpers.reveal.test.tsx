@@ -4,7 +4,7 @@ import { GoalUnit, PlanActionCodes, InterventionType } from '../constants/enumsA
 import { planActivities as planActivitiesFromConfig } from '../activitiesLookup';
 import { EnvConfig, PlanDefinition } from '../types';
 import { IGNORE, TRUE } from '../constants/stringConstants';
-import { plans } from './revealFixtures';
+import { planFormValues4, plans } from './revealFixtures';
 import {
   displayPlanTypeOnForm,
   extractActivitiesFromPlanForm,
@@ -367,5 +367,18 @@ describe('containers/forms/PlanForm/helpers', () => {
     expect(displayPlanTypeOnForm(InterventionType.IRS, true, configs)).toBeTruthy();
     expect(displayPlanTypeOnForm(InterventionType.FI, false, configs)).toBeFalsy();
     expect(displayPlanTypeOnForm(InterventionType.FI, true, configs)).toBeTruthy();
+  });
+
+  it('test getPlanFormValues without actions', () => {
+    // current logic: should add actions
+    const withoutAction = cloneDeep(expectedPlanDefinition);
+    withoutAction.action = [];
+
+    MockDate.set('1/30/2000');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const received = getPlanFormValues(withoutAction as any);
+    MockDate.reset();
+
+    expect(received).toEqual(planFormValues4);
   });
 });

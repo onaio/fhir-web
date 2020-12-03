@@ -1219,6 +1219,46 @@ export const planFormValues = {
   version: '1',
 };
 
+export const planFormValues4 = {
+  activities: [
+    {
+      actionCode: 'IRS',
+      actionDefinitionUri: '',
+      actionDescription: 'Visit each structure in the operational area and attempt to spray',
+      actionIdentifier: '',
+      actionReason: 'Routine',
+      actionTitle: 'Spray Structures',
+      goalDescription: 'Spray structures in the operational area',
+      goalDue: parseISO('2019-08-16T00:00:00.000Z'),
+      goalPriority: 'medium-priority',
+      goalValue: 90,
+      timingPeriodEnd: parseISO('2000-02-06T00:00:00.000Z'),
+      timingPeriodStart: parseISO('2000-01-30T00:00:00.000Z'),
+    },
+  ],
+  caseNum: '',
+  date: parseISO(`2019-08-09${defaultEnvConfig.defaultTime}`),
+  end: parseISO(`2019-08-29${defaultEnvConfig.defaultTime}`),
+  fiReason: undefined,
+  fiStatus: undefined,
+  identifier: '8f507b70-1f50-5616-805d-db5b8ae4280e',
+  interventionType: 'IRS',
+  jurisdictions: [
+    {
+      id: '3952',
+      name: '3952',
+    },
+  ],
+  name: 'IRS-2019-08-09',
+  opensrpEventId: undefined,
+  start: parseISO(`2019-08-09${defaultEnvConfig.defaultTime}`),
+  status: 'draft',
+  taskGenerationStatus: 'False',
+  teamAssignmentStatus: '',
+  title: 'IRS 2019-08-09',
+  version: '1',
+};
+
 export const planFormValues2 = {
   activities: [
     {
