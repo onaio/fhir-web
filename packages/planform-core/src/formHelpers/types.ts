@@ -12,6 +12,39 @@ import {
   PlanStatus,
 } from './constants/enumsAndCodeConstants';
 import { Moment } from 'moment';
+import {
+  actionCode,
+  name,
+  status,
+  actionDefinitionUri,
+  actionDescription,
+  actionIdentifier,
+  actionReason,
+  actionTitle,
+  activities,
+  caseNum,
+  condition,
+  date,
+  end,
+  fiReason,
+  fiStatus,
+  goalDescription,
+  goalDue,
+  goalPriority,
+  goalValue,
+  identifier,
+  interventionType,
+  jurisdictions,
+  opensrpEventId,
+  start,
+  taskGenerationStatus,
+  teamAssignmentStatus,
+  timingPeriodEnd,
+  timingPeriodStart,
+  title,
+  trigger,
+  version,
+} from './constants/stringConstants';
 
 export type DateType = Moment | Date;
 
@@ -57,20 +90,20 @@ export interface PlanActivityTrigger {
 
 /** Plan activity form fields interface */
 export interface PlanActivityFormFields {
-  actionCode: string;
-  actionDefinitionUri?: string;
-  actionDescription: string;
-  actionIdentifier: string;
-  actionReason: string;
-  actionTitle: string;
-  condition?: PlanActivityExpression[];
-  goalDescription: string;
-  goalDue: DateType;
-  goalPriority: string;
-  goalValue: number;
-  timingPeriodEnd: DateType;
-  timingPeriodStart: DateType;
-  trigger?: PlanActivityTrigger[];
+  [actionCode]: string;
+  [actionDefinitionUri]?: string;
+  [actionDescription]: string;
+  [actionIdentifier]: string;
+  [actionReason]: string;
+  [actionTitle]: string;
+  [condition]?: PlanActivityExpression[];
+  [goalDescription]: string;
+  [goalDue]: DateType;
+  [goalPriority]: string;
+  [goalValue]: number;
+  [timingPeriodEnd]: DateType;
+  [timingPeriodStart]: DateType;
+  [trigger]?: PlanActivityTrigger[];
 }
 
 /** Plan jurisdictions form fields interface */
@@ -81,23 +114,23 @@ export interface PlanJurisdictionFormFields {
 
 /** Plan form fields interface */
 export interface PlanFormFields {
-  activities: PlanActivityFormFields[];
-  caseNum?: string;
-  date: DateType;
-  end: DateType;
-  fiReason?: FIReasonType;
-  fiStatus?: FIStatusType;
-  identifier: string;
-  interventionType: InterventionType;
-  jurisdictions: PlanJurisdictionFormFields[];
-  name: string;
-  opensrpEventId?: string;
-  start: DateType;
-  status: PlanStatus;
-  taskGenerationStatus: taskGenerationStatusType;
-  teamAssignmentStatus?: string;
-  title: string;
-  version: string;
+  [activities]: PlanActivityFormFields[];
+  [caseNum]?: string;
+  [date]: DateType;
+  [end]: DateType;
+  [fiReason]?: FIReasonType;
+  [fiStatus]?: FIStatusType;
+  [identifier]: string;
+  [interventionType]: InterventionType;
+  [jurisdictions]: PlanJurisdictionFormFields[];
+  [name]: string;
+  [opensrpEventId]?: string;
+  [start]: DateType;
+  [status]: PlanStatus;
+  [taskGenerationStatus]: taskGenerationStatusType;
+  [teamAssignmentStatus]?: string;
+  [title]: string;
+  [version]: string;
 }
 
 /** type of function to be called with payload before submission */
