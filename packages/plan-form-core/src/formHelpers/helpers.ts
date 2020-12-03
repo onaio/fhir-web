@@ -856,16 +856,18 @@ export const isPlanTypeEnabled = (
  * Check if plan type should be created
  *
  * @param {InterventionType} planType - plan type
+ * @param {boolean} isEditMode - are we editing or creating a plan
  * @param {EnvConfig} envConfig - the environmental configurations
  * @returns {boolean} -
  */
 export const displayPlanTypeOnForm = (
   planType: InterventionType,
+  isEditMode: boolean,
   envConfig: Partial<EnvConfig>
 ): boolean => {
   const configs = {
     ...defaultEnvConfig,
     ...envConfig,
   };
-  return configs.planTypesAllowedToCreate.includes(planType);
+  return isEditMode || configs.planTypesAllowedToCreate.includes(planType);
 };

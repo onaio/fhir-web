@@ -364,7 +364,8 @@ describe('containers/forms/PlanForm/helpers', () => {
       planTypesAllowedToCreate: [InterventionType.IRS],
     };
 
-    expect(displayPlanTypeOnForm(InterventionType.IRS, configs)).toBeTruthy();
-    expect(displayPlanTypeOnForm(InterventionType.FI, configs)).toBeFalsy();
+    expect(displayPlanTypeOnForm(InterventionType.IRS, true, configs)).toBeTruthy();
+    expect(displayPlanTypeOnForm(InterventionType.FI, false, configs)).toBeFalsy();
+    expect(displayPlanTypeOnForm(InterventionType.FI, true, configs)).toBeTruthy();
   });
 });
