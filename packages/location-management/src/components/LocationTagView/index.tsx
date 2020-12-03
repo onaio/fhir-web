@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Menu, Dropdown, Button, Divider, Input } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
@@ -60,7 +60,7 @@ const LocationTagView: React.FC = () => {
     });
   }
 
-  const onChange = (e: { target: { value: string } }) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.target.value;
     setValue(currentValue);
     const filteredData = tableData.filter((entry: { name: string }) =>
