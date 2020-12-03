@@ -230,7 +230,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_UNIT_EDIT + '/:id'}
+              path={URL_LOCATION_UNIT_EDIT}
               component={LocationUnitAddEdit}
             />
             <PrivateComponent
@@ -251,7 +251,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG_EDIT + '/:id'}
+              path={URL_LOCATION_TAG_EDIT}
               component={LocationTagAddEdit}
             />
             <Route
