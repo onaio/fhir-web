@@ -103,8 +103,7 @@ describe('components/TeamsView', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'API is down',
-      description: '',
+      message: 'An error occurred',
     });
   });
 });

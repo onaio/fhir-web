@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/Home renders without crashing 1`] = `
+exports[`components/TeamsDetail renders without crashing 1`] = `
 <TeamsDetail
   active={true}
   id={1}

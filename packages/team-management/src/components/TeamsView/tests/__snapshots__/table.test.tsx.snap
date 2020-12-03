@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/team/TeamsView renders without crashing 1`] = `
+exports[`components/TeamsView/table renders without crashing 1`] = `
 Object {
   "children": <Router
     history={
