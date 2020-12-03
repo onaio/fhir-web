@@ -158,7 +158,7 @@ describe('containers/pages/locations/Form', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'API request Failed',
     });
 
@@ -192,7 +192,7 @@ describe('containers/pages/locations/Form', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'API request Failed',
     });
 
@@ -209,7 +209,7 @@ describe('containers/pages/locations/Form', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'API request Failed',
     });
   });

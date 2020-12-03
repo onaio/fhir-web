@@ -31,6 +31,8 @@ describe('containers/pages/Home', () => {
     const wrapper = mount(<LocationUnitDetail {...props} onClose={() => wrapper.unmount()} />);
     expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
+
+    wrapper.update();
     expect(wrapper).toHaveLength(0);
   });
 

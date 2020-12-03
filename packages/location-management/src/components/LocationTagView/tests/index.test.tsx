@@ -64,7 +64,7 @@ describe('containers/pages/locations/LocationTagView', () => {
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
       message: 'API is down',
-      description: '',
+      description: undefined,
     });
   });
 });

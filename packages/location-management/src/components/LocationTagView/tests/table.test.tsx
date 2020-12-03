@@ -143,7 +143,7 @@ describe('containers/pages/locations/locationTagView', () => {
     });
     expect(notificationSuccessMock).toHaveBeenCalledWith({
       message: 'Successfully Deleted!',
-      description: '',
+      description: undefined,
     });
   });
 
@@ -159,7 +159,7 @@ describe('containers/pages/locations/locationTagView', () => {
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
       message: 'API is down',
-      description: '',
+      description: undefined,
     });
   });
 });

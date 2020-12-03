@@ -94,7 +94,7 @@ export const Form: React.FC<Props> = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [initialValue, setInitialValue] = useState<FormField>({
     name: '',
-    description: '',
+    description: undefined,
     active: true,
   });
 
