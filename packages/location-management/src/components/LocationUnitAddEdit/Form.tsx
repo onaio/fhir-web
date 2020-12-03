@@ -113,7 +113,7 @@ export const onSubmit = async (
         return res.locationsHierarchy.map[values.parentId as string].node.attributes
           .geographicLevel as number;
       })
-      .catch((e) => sendErrorNotification(`${e}`));
+      .catch(() => sendErrorNotification('An error occurred'));
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
@@ -149,8 +149,8 @@ export const onSubmit = async (
         setSubmitting(false);
         history.goBack();
       })
-      .catch((e: Error) => {
-        sendErrorNotification(`${e}`);
+      .catch(() => {
+        sendErrorNotification('An error occurred');
         setSubmitting(false);
       });
   } else {
@@ -161,8 +161,8 @@ export const onSubmit = async (
         setSubmitting(false);
         history.goBack();
       })
-      .catch((e: Error) => {
-        sendErrorNotification(`${e}`);
+      .catch(() => {
+        sendErrorNotification('An error occurred');
         setSubmitting(false);
       });
   }

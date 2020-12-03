@@ -58,12 +58,12 @@ export const LocationUnitAddEdit: React.FC = () => {
             parentId: response.properties.parentId,
             status: response.properties.status,
             externalId: response.properties.externalId,
-            locationTags: response.locationTags?.map((e) => e.id),
+            locationTags: response.locationTags?.map(() => e.id),
             geometry: JSON.stringify(response.geometry),
             type: response.type,
           });
         })
-        .catch((e) => sendErrorNotification(`${e}`));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, params.id]);
 
@@ -75,7 +75,7 @@ export const LocationUnitAddEdit: React.FC = () => {
         .then((response: LocationTag[]) => {
           setLocationtag(response);
         })
-        .catch((e) => sendErrorNotification(`${e}`));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, locationtag.length]);
 
@@ -104,11 +104,11 @@ export const LocationUnitAddEdit: React.FC = () => {
                   // if (hierarchy.model && hierarchy.model.children)
                   dispatch(fetchAllHierarchies(hierarchy.model));
                 })
-                .catch((e) => sendErrorNotification(`${e}`));
+                .catch(() => sendErrorNotification('An error occurred'));
             });
           }
         })
-        .catch((e) => sendErrorNotification(`${e}`));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, Treedata.length, dispatch]);
 

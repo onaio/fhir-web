@@ -64,7 +64,7 @@ export const loadSingleLocation = (
   serve
     .read(row.id, { is_jurisdiction: true })
     .then((res: LocationUnit) => setDetail(res))
-    .catch((e) => sendErrorNotification(`${e}`));
+    .catch(() => sendErrorNotification('An error occurred'));
 };
 
 export const LocationUnitView: React.FC = () => {
@@ -102,11 +102,11 @@ export const LocationUnitView: React.FC = () => {
                   // if (hierarchy.model && hierarchy.model.children)
                   dispatch(fetchAllHierarchies(hierarchy.model));
                 })
-                .catch((e) => sendErrorNotification(`${e}`));
+                .catch(() => sendErrorNotification('An error occurred'));
             });
           }
         })
-        .catch((e) => sendErrorNotification(`${e}`));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [Treedata.length, accessToken, dispatch]);
 

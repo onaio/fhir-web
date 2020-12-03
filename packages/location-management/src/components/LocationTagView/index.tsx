@@ -42,7 +42,7 @@ const LocationTagView: React.FC = () => {
           dispatch(fetchLocationTags(response));
           setIsLoading(false);
         })
-        .catch((e) => sendErrorNotification(`${e}`));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   });
 
