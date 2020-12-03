@@ -103,7 +103,7 @@ export const onSubmit = async (
     name: tag.name,
   }));
 
-  let geographicLevel;
+  let geographicLevel: number;
   if (values.parentId) {
     geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
       .read(values.parentId)
