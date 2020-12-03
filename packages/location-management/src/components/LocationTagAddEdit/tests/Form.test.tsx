@@ -96,18 +96,16 @@ describe('containers/pages/locations/Form', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer null',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'GET',
+      },
     ]);
 
     wrapper
@@ -125,32 +123,31 @@ describe('containers/pages/locations/Form', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer null',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: '{"active":false,"description":"this is description","name":"Name213","id":"1"}',
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
+        method: 'GET',
+      },
+    ]);
+
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: '{"active":false,"description":"this is description","name":"Name213","id":"1"}',
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer null',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'PUT',
+      },
     ]);
     wrapper.unmount();
   });

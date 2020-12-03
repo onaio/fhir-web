@@ -65,18 +65,16 @@ describe('containers/pages/locations/locationunit', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/1?is_jurisdiction=true',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/1?is_jurisdiction=true',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'GET',
+      },
     ]);
     expect(wrapper.find('Table').at(1).text()).toEqual(
       'NameLevelActionsNairobi West2EditCentral2Edit1'
