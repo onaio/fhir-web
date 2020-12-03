@@ -15,28 +15,6 @@ import Form, { onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
 
-// jest.mock('antd', () => {
-//   const antd = jest.requireActual('antd');
-
-//   /* eslint-disable react/prop-types */
-//   const Select = ({ children, onChange }) => {
-//     return <select onChange={(e) => onChange(e.target.value)}>{children}</select>;
-//   };
-
-//   const Option = ({ children, ...otherProps }) => {
-//     return <option {...otherProps}>{children}</option>;
-//   };
-//   /* eslint-disable react/prop-types */
-
-//   Select.Option = Option;
-
-//   return {
-//     __esModule: true,
-//     ...antd,
-//     Select,
-//   };
-// });
-
 describe('containers/pages/locations/LocationUnitAddEdit', () => {
   beforeEach(() => {
     fetch.resetMocks();
