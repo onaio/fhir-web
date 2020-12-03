@@ -5,7 +5,7 @@ import { Typography, Form, Button, Input, Upload, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { submitForm } from './utils';
 import { useSelector } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, Redirect } from 'react-router';
 import { getManifestFilesById } from '../../../ducks/manifestFiles';
 import { ROUTE_PARAM_FORM_ID } from '../../../constants';
 
@@ -28,6 +28,7 @@ export interface UploadFileProps {
   initialValues: UploadFileFieldTypes;
   opensrpBaseURL: string;
   isJsonValidator: boolean;
+  onSaveRedirectURL: string;
   getPayload?: typeof getFetchOptions;
 }
 
@@ -49,6 +50,7 @@ export const defaultProps: UploadFileProps = {
   initialValues: defaultInitialValues,
   opensrpBaseURL: '',
   isJsonValidator: true,
+  onSaveRedirectURL: '',
 };
 
 const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
@@ -56,8 +58,9 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [fileList, setFileList] = React.useState<Array<any>>([]);
   const [isEditMode, setIsEditMode] = React.useState(false);
+  const [ifDoneHere, setIfDoneHere] = React.useState(false);
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const { initialValues, opensrpBaseURL, isJsonValidator, match } = props;
+  const { initialValues, opensrpBaseURL, isJsonValidator, match, onSaveRedirectURL } = props;
   const formId = match.params[ROUTE_PARAM_FORM_ID];
   const formData = useSelector((state) => getManifestFilesById(state, formId));
   let formInitialValues = initialValues;
@@ -119,6 +122,10 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
     return e && e.fileList;
   };
 
+  if (ifDoneHere && onSaveRedirectURL) {
+    return <Redirect to={onSaveRedirectURL} />;
+  }
+
   return (
     <div className="layout-content">
       <Title level={3}>Upload Form</Title>
@@ -135,7 +142,8 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
               accessToken,
               opensrpBaseURL,
               isJsonValidator,
-              setSubmitting
+              setSubmitting,
+              setIfDoneHere
             );
           }}
         >
