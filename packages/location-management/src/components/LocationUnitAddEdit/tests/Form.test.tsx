@@ -67,32 +67,31 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
       await flushPromises();
     });
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: fetch.mock.calls[1][1].body,
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'POST',
+        method: 'GET',
+      },
+    ]);
+
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[1][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'POST',
+      },
     ]);
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
@@ -137,32 +136,31 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
       wrapper.update();
       await flushPromises();
     });
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: fetch.mock.calls[1][1].body,
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[1][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'PUT',
+      },
     ]);
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
@@ -217,32 +215,31 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
       await flushPromises();
     });
     // first call is made on the hierarchies endpoint to get geographic level
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: fetch.mock.calls[1][1].body,
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
+        method: 'GET',
+      },
+    ]);
+
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[1][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'PUT',
+      },
     ]);
   });
 
