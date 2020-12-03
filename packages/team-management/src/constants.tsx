@@ -15,3 +15,5 @@ export const TEAM_PRACTITIONERS = 'organization/practitioner/';
 export const PRACTITIONER_ROLE_ADD = 'practitionerRole/add';
 
 export const TEAM_UUID = 'team-uuid';
+
+export const ERROR_OCCURRED = 'An error occurred';

@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Input, notification } from 'antd';
+import { Row, Col, Button, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { sendErrorNotification } from '@opensrp/notifications';
 import reducer, {
   fetchOrganizationsAction,
   getOrganizationsArray,
@@ -15,7 +16,13 @@ import reducer, {
   reducerName,
 } from '../../ducks/organizations';
 import { getAccessToken } from '@onaio/session-reducer';
-import { API_BASE_URL, TEAMS_ALL, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
+import {
+  API_BASE_URL,
+  ERROR_OCCURRED,
+  TEAMS_ALL,
+  TEAM_PRACTITIONERS,
+  URL_ADD_TEAM,
+} from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
@@ -45,7 +52,7 @@ export const loadSingleTeam = (
       setPractitionersList(response);
       setDetail(row);
     })
-    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    .catch(() => sendErrorNotification(ERROR_OCCURRED));
 };
 
 /** Function which shows the list of all teams and there details
@@ -71,7 +78,7 @@ const TeamsView: React.FC = () => {
           dispatch(fetchOrganizationsAction(response));
           setIsLoading(false);
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification(ERROR_OCCURRED));
     }
   });
 
