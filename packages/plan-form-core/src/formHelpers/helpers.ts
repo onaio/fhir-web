@@ -113,7 +113,7 @@ export const isFIOrDynamicFI = (interventionType: InterventionType): boolean => 
  */
 export function extractActivityForForm(
   activityObj: PlanActivity,
-  envConfig?: EnvConfig
+  envConfig?: Partial<EnvConfig>
 ): PlanActivityFormFields {
   const configs = {
     ...defaultEnvConfig,
@@ -376,7 +376,7 @@ export function extractActivitiesFromPlanForm(
   activities: PlanActivityFormFields[],
   planIdentifier = '',
   planObj: PlanDefinition | null = null,
-  envConfigs?: EnvConfig
+  envConfigs?: Partial<EnvConfig>
 ) {
   const configs = {
     ...defaultEnvConfig,
@@ -496,7 +496,7 @@ export function extractActivitiesFromPlanForm(
 export const getNameTitle = (
   event: FormEvent,
   formValues: PlanFormFields,
-  envConfigs?: EnvConfig
+  envConfigs?: Partial<EnvConfig>
 ): [string, string] => {
   const configs = {
     ...defaultEnvConfig,
@@ -594,7 +594,7 @@ export function generatePlanDefinition(
   formValue: PlanFormFields,
   planObj: PlanDefinition | null = null,
   isEditMode = false,
-  envConfigs?: EnvConfig
+  envConfigs?: Partial<EnvConfig>
 ): PlanDefinition {
   const configs = {
     ...defaultEnvConfig,
@@ -694,7 +694,7 @@ export function generatePlanDefinition(
  */
 export function getPlanFormValues(
   planObject: PlanDefinition,
-  envConfigs?: EnvConfig
+  envConfigs?: Partial<EnvConfig>
 ): PlanFormFields {
   const configs = {
     ...defaultEnvConfig,
@@ -830,7 +830,10 @@ export function getGoalUnitFromActionCode(
  * @param {EnvConfig} envConfig - the environmental configurations
  * @returns {boolean} -
  */
-export const isPlanTypeEnabled = (planType: InterventionType, envConfig?: EnvConfig): boolean => {
+export const isPlanTypeEnabled = (
+  planType: InterventionType,
+  envConfig?: Partial<EnvConfig>
+): boolean => {
   const configs = {
     ...defaultEnvConfig,
     ...envConfig,
@@ -839,21 +842,19 @@ export const isPlanTypeEnabled = (planType: InterventionType, envConfig?: EnvCon
 };
 
 /**
- * Check if plan type should be created and display all plan types on edit mode
+ * Check if plan type should be created
  *
  * @param {InterventionType} planType - plan type
- * @param {boolean} isEditMode - are we editing or creating a plan
  * @param {EnvConfig} envConfig - the environmental configurations
  * @returns {boolean} -
  */
 export const displayPlanTypeOnForm = (
   planType: InterventionType,
-  isEditMode: boolean,
-  envConfig: EnvConfig
+  envConfig: Partial<EnvConfig>
 ): boolean => {
   const configs = {
     ...defaultEnvConfig,
     ...envConfig,
   };
-  return isEditMode || configs.planTypesAllowedToCreate.includes(planType);
+  return configs.planTypesAllowedToCreate.includes(planType);
 };

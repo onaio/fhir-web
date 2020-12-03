@@ -6,6 +6,7 @@ import { EnvConfig, PlanDefinition } from '../types';
 import { IGNORE, TRUE } from '../constants/stringConstants';
 import { plans } from './revealFixtures';
 import {
+  displayPlanTypeOnForm,
   extractActivitiesFromPlanForm,
   extractActivityForForm,
   generatePlanDefinition,
@@ -16,6 +17,7 @@ import {
   getPlanFormValues,
   getTaskGenerationValue,
   isFIOrDynamicFI,
+  isPlanTypeEnabled,
 } from '../helpers';
 import { PlanActionCodesType, PlanActivities, PlanFormFields } from '../types';
 import {
@@ -62,8 +64,7 @@ describe('containers/forms/PlanForm/helpers', () => {
   });
 
   it('check extractActivitiesFromPlanForm returns the correct value', () => {
-    const configs: EnvConfig = {
-      ...defaultEnvConfig,
+    const configs: Partial<EnvConfig> = {
       planUuidNamespace: '85f7dbbf-07d0-4c92-aa2d-d50d141dde00',
       actionUuidNamespace: '35968df5-f335-44ae-8ae5-25804caa2d86',
     };
@@ -123,7 +124,7 @@ describe('containers/forms/PlanForm/helpers', () => {
 
   it('generatePlanDefinition should use value of TASK_GENERATION_STATUS defined on create if value not ignore', () => {
     MockDate.set('1/30/2000');
-    const configs: EnvConfig = {
+    const configs: Partial<EnvConfig> = {
       ...defaultEnvConfig,
       planUuidNamespace: '85f7dbbf-07d0-4c92-aa2d-d50d141dde00',
       actionUuidNamespace: '35968df5-f335-44ae-8ae5-25804caa2d86',
@@ -148,7 +149,7 @@ describe('containers/forms/PlanForm/helpers', () => {
 
   it('plans with no task generation status are not added task generation status', () => {
     MockDate.set('1/30/2000');
-    const configs: EnvConfig = {
+    const configs: Partial<EnvConfig> = {
       ...defaultEnvConfig,
       planUuidNamespace: '85f7dbbf-07d0-4c92-aa2d-d50d141dde00',
       actionUuidNamespace: '35968df5-f335-44ae-8ae5-25804caa2d86',
@@ -175,7 +176,7 @@ describe('containers/forms/PlanForm/helpers', () => {
 
   it('generatePlanDefinition should ignore taskGenerationStatus if specified when creating plan and keep value on edit', () => {
     MockDate.set('1/30/2000');
-    const configs: EnvConfig = {
+    const configs: Partial<EnvConfig> = {
       ...defaultEnvConfig,
       planUuidNamespace: '85f7dbbf-07d0-4c92-aa2d-d50d141dde00',
       actionUuidNamespace: '35968df5-f335-44ae-8ae5-25804caa2d86',
@@ -349,5 +350,23 @@ describe('containers/forms/PlanForm/helpers', () => {
     sampleDynamicPlan = cloneDeep((fiReasonTestPlan as unknown) as PlanDefinition);
     res = getPlanFormValues(sampleDynamicPlan);
     expect(res.taskGenerationStatus).toEqual('False');
+  });
+
+  it('test isPlanTypeEnabled works correctly', () => {
+    const configs = {
+      displayedPlanTypes: [InterventionType.IRS],
+    };
+
+    expect(isPlanTypeEnabled(InterventionType.IRS, configs)).toBeTruthy();
+    expect(isPlanTypeEnabled(InterventionType.FI, configs)).toBeFalsy();
+  });
+
+  it('test displayPlanTypeOnForm works correctly', () => {
+    const configs: Partial<EnvConfig> = {
+      planTypesAllowedToCreate: [InterventionType.IRS],
+    };
+
+    expect(displayPlanTypeOnForm(InterventionType.IRS, configs)).toBeTruthy();
+    expect(displayPlanTypeOnForm(InterventionType.FI, configs)).toBeFalsy();
   });
 });
