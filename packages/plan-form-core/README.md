@@ -1,6 +1,13 @@
 # PlanForm Core
 
-Core functions and utilities that support the plan form UI.
+Core functions and utilities that support the plan creation and editing activities.
+The main pieces exposed from here are:
+
+- types: types defining the supported plan structure, supported form fields structure
+- utility functions: Utilities that help parse form data and plan definition structure to and fro, Pieces not covered include any Form-implementation specific stuff e.g validating form fields, or utilities such as reading errors from a form
+- constants: The plan structure defines a few constants that we re-expose for use in your projects, just to avoid a-lot of duplication
+
+The intention for this package, is to serve as a common building block for several different user-facing form components that can create or edit opensrp plans.
 
 ## Installation
 
@@ -8,39 +15,26 @@ Core functions and utilities that support the plan form UI.
 yarn add @opensrp/planform-core
 ```
 
-<!--
-Include further installation instructions, for instance if the package requires for the user
-to manually add css.
--->
-
 ## Usage
-
-<!--
 
 ### Props/ Configuration
 
-#### linkerField
+Util functions exposed can optionally take a config object shaped as follows:
 
-_Optional_(`string` | `undefined` = `undefined`)
-
-When the table is rendered, you can click anywhere on a row to drill down to the next level of the hierarchy. However, you may want to display some kind of indication that it is possible to drill down on a row of data. The `linkerField` prop allows you to define which field should have this indicator. By default this is set to the `id` field.
-
--->
-
-### Code examples
-
-<!--
-
-A single simple, minimal, working snippet for each use-case that the package supports
-
-```tsx
-import { DrillDownTable, columnsFromObjects } from '@onaio/drill-down-table/';
-
-const props = {
-  columns: columnsFromObjects(data),
-  data
-};
-<DrillDownTable {...props} />;
+```typescript
+/** describes all possible configuration options */
+export interface EnvConfig {
+  dateFormat: string;
+  defaultPlanDurationDays: number;
+  defaultPlanVersion: string;
+  enabledFiReasons: FIReasonType[];
+  planTypesAllowedToCreate: InterventionType[];
+  planTypesWithMultiJurisdictions: InterventionType[];
+  actionUuidNamespace: string;
+  planUuidNamespace: string;
+  defaultTime: string;
+  defaultActivityDurationDays: number;
+  displayedPlanTypes: InterventionType[];
+  taskGenerationStatus: taskGenerationStatusType;
+}
 ```
-
--->
