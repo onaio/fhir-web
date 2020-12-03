@@ -24,6 +24,6 @@ export const CREDENTIALS_UPDATED_SUCCESSFULLY = 'Credentials updated successfull
 export const NO_DATA_FOUND = 'No Data Found';
 
 // rendered text
-export const CREDENTIALS = 'Credentials';
+export const CREDENTIALS = 'User Credentials';
 export const RESET_PASSWORD = 'Reset Password';
 export const CANCEL = 'Cancel';

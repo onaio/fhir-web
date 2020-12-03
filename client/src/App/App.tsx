@@ -26,7 +26,13 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
+  URL_LOCATION_UNIT,
   URL_HOME,
+  URL_LOCATION_UNIT_ADD,
+  URL_LOCATION_TAG,
+  URL_LOCATION_TAG_ADD,
+  URL_LOCATION_TAG_EDIT,
+  URL_LOCATION_UNIT_EDIT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -55,6 +61,12 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
+import {
+  LocationUnitAddEdit,
+  LocationUnitView,
+  LocationTagAddEdit,
+  LocationTagView,
+} from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
 import { productCatalogueProps } from './utils';
 
@@ -199,6 +211,48 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_LOCATION_UNIT}
+              component={LocationUnitView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_LOCATION_UNIT_ADD}
+              component={LocationUnitAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_LOCATION_UNIT_EDIT + '/:id'}
+              component={LocationUnitAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_LOCATION_TAG}
+              component={LocationTagView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_LOCATION_TAG_ADD}
+              component={LocationTagAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_LOCATION_TAG_EDIT + '/:id'}
+              component={LocationTagAddEdit}
             />
             <Route
               exact

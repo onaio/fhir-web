@@ -10,7 +10,7 @@
     "lerna:publish": "yarn install && yarn run lerna:prepublish && lerna publish from-package --ignore-scripts --ignore-prepublish",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint '{packages,client}/**/*.{js,ts,tsx}' --max-warnings 0",
+    "lint": "eslint '{packages,client}/**/*.{ts,tsx}' --max-warnings 0",
     "lint-snap": "eslint '{packages,client}/**/*.snap'"
   },
   "jest": {
@@ -32,7 +32,7 @@
       "eslint --fix --max-warnings 0",
       "git add"
     ],
-    "{js,jsx}": [
+    "!(**/*dist/**/*).{js,jsx}": [
       "eslint --fix --max-warnings 0",
       "git add"
     ],
@@ -62,6 +62,7 @@
     "@types/enzyme": "^3.10.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/enzyme-to-json": "^1.5.3",
+    "@types/geojson": "^7946.0.7",
     "@types/jest": "^26.0.13",
     "@types/lodash": "^4.14.163",
     "@types/node": "^14.6.4",
@@ -116,7 +117,7 @@
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
     "redux-thunk": "^2.3.0",
-    "typescript": "^3.8.3"
+    "typescript": "~3.8.3"
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"

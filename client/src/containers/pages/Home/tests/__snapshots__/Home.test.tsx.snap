@@ -155,16 +155,16 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
           >
             <Link
               className="admin-link"
-              to="/teams"
+              to="/location/unit"
             >
               <LinkAnchor
                 className="admin-link"
-                href="/teams"
+                href="/location/unit"
                 navigate={[Function]}
               >
                 <a
                   className="admin-link"
-                  href="/teams"
+                  href="/location/unit"
                   onClick={[Function]}
                 >
                   <Button
@@ -204,7 +204,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                         <span
                           key=".0"
                         >
-                          Teams
+                          Locations unit
                         </span>
                       </button>
                     </Wave>

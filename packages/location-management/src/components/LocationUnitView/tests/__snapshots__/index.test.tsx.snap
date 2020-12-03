@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`containers/pages/locations/locationunit location unit table renders correctly 1`] = `
+Object {
+  "accessToken": null,
+  "data": Array [
+    Object {
+      "geographicLevel": 0,
+      "id": "a26ca9c8-1441-495a-83b6-bb5df7698996",
+      "key": "0",
+      "name": "Tunisia",
+    },
+  ],
+  "onViewDetails": [Function],
+  "setDetail": [Function],
+}
+`;

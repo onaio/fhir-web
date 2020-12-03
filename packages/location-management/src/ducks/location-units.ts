@@ -16,17 +16,21 @@ export enum LocationUnitStatus {
   INACTIVE = 'InActive',
 }
 
+export enum LocationUnitSyncStatus {
+  SYNCED = 'Synced',
+  NOTSYNCED = 'NotSynced',
+}
+
 /** interface for LocationUnit.properties */
 export interface Properties {
-  geographicLevel: number;
   name: string;
   parentId: string;
   status: LocationUnitStatus;
-  username: string;
-  version: number;
-  name_en: string;
-  externalId: string;
-  OpenMRS_Id: string;
+  geographicLevel?: number;
+  username?: string;
+  version?: number;
+  name_en?: string;
+  externalId?: string;
 }
 
 /** location unit tag interface */
@@ -38,31 +42,30 @@ export interface LocationUnitTag {
 /** location interface */
 export interface LocationUnit {
   id: string | number;
+  key?: string;
   properties: Properties;
-  syncStatus: string;
+  syncStatus: LocationUnitSyncStatus;
   type: string;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
+  locationTags?: LocationUnitTag[];
+  geometry?: Geometry;
+  parentId?: string;
+}
+
+/** interface for the POST payload */
+export interface LocationUnitPayloadPOST {
+  properties?: Properties;
+  syncStatus?: LocationUnitSyncStatus;
+  type: string;
+  locationTags?: LocationUnitTag[];
+  geometry?: Geometry;
+  textEntry?: string[];
+  // we will remove this id as it should be auto generated on server
+  id: string | number;
 }
 
 /** interface for the PUT payload */
-export interface LocationUnitPayloadPUT {
-  id: string;
-  type: string;
-  syncStatus: string;
-  serverVersion: string;
-  properties: Properties;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
-}
-
-/** interface for POST payload */
-export interface LocationUnitPayloadPOST {
-  type: string;
-  syncStatus: string;
-  properties: Properties;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
+export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
+  id: string | number;
 }
 
 /** reducer name for the Item module */
