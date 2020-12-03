@@ -125,5 +125,8 @@
   "workspaces": [
     "client",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "tsd": "^0.13.1"
+  }
 }
