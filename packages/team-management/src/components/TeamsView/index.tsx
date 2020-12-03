@@ -24,6 +24,14 @@ import { Practitioner } from '../../ducks/practitioners';
 
 reducerRegistry.register(reducerName, reducer);
 
+/**
+ * Function to load selected Team for details
+ *
+ * @param {TableData} row data selected from the table
+ * @param {string} accessToken - access token
+ * @param {Function} setDetail funtion to set detail to state
+ * @param {Function} setPractitionersList funtion to set detail to state
+ */
 export const loadSingleTeam = (
   row: TableData,
   accessToken: string,
@@ -40,6 +48,10 @@ export const loadSingleTeam = (
     .catch((e) => notification.error({ message: `${e}`, description: '' }));
 };
 
+/** Function which shows the list of all teams and there details
+ *
+ * @returns {Function} returns team display
+ */
 const TeamsView: React.FC = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
