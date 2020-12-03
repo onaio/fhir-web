@@ -79,6 +79,7 @@ export type PlanActivities = { [K in PlanActivityTitlesType]: PlanActivity };
 export interface PlanActivityExpression {
   description: string;
   expression: string;
+  subjectCodableConceptText: SubjectCodableConceptType;
 }
 
 /** Interface for Plan activity trigger */
@@ -173,9 +174,16 @@ export interface PlanActionTimingPeriod {
   start: string;
 }
 
+export type SubjectCodableConceptType =
+  | 'Family'
+  | 'Person'
+  | 'Location'
+  | 'Jurisdiction'
+  | 'Device';
+
 /** Plan Action subjectCodableConcept */
 export interface PlanActionSubjectCodableConcept {
-  text: 'Family' | 'Person' | 'Location' | 'Jurisdiction' | 'Device';
+  text: SubjectCodableConceptType;
 }
 
 /** Plan Expression */

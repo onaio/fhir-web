@@ -557,6 +557,7 @@ const processActivity = (activityObj: PlanActivity) => {
         return {
           description: item.expression.description || '',
           expression: item.expression.expression || '',
+          subjectCodableConceptText: item.expression.subjectCodableConcept?.text || '',
         };
       }),
     }),

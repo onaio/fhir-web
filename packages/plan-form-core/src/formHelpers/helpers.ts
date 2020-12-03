@@ -74,6 +74,7 @@ import {
   UseContext,
   FIReasonType,
   EnvConfig,
+  SubjectCodableConceptType,
 } from './types';
 import { v5 as uuidv5 } from 'uuid';
 
@@ -126,9 +127,10 @@ export function extractActivityForForm(
   if (activityObj.action.condition) {
     for (const iterator of activityObj.action.condition) {
       condition.push({
-        description: iterator.expression.description ?? '',
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        description: iterator.expression.description || '',
         expression: iterator.expression.expression || '',
+        subjectCodableConceptText: (iterator.expression.subjectCodableConcept?.text ||
+          '') as SubjectCodableConceptType,
       });
     }
   }
@@ -231,23 +233,30 @@ export type FormActivity =
  * Converts a plan activities objects to a list of activities for use on PlanForm
  *
  * @param {object} items - plan activities
+ * @param {EnvConfig} configs - environment configs
  * @returns {PlanActivityFormFields[]} -
  */
-export function getFormActivities(items: FormActivity) {
+export function getFormActivities(items: FormActivity, configs?: EnvConfig) {
   return Object.values(items)
     .sort((a, b) => a.action.prefix - b.action.prefix)
-    .map((e) => extractActivityForForm(e));
+    .map((e) => extractActivityForForm(e, configs));
 }
-
-const planActivitiesMap: Dictionary<PlanActivityFormFields[]> = {};
-planActivitiesMap[InterventionType.IRS] = getFormActivities(IRSActivities);
-planActivitiesMap[InterventionType.FI] = getFormActivities(FIActivities);
-planActivitiesMap[InterventionType.MDAPoint] = getFormActivities(MDAPointActivities);
-planActivitiesMap[InterventionType.DynamicFI] = getFormActivities(DynamicFIActivities);
-planActivitiesMap[InterventionType.DynamicIRS] = getFormActivities(DynamicIRSActivities);
-planActivitiesMap[InterventionType.DynamicMDA] = getFormActivities(DynamicMDAActivities);
-planActivitiesMap[InterventionType.SM] = getFormActivities(SMActivities);
-export { planActivitiesMap };
+/** returns a lookup object for activities per interventionType
+ *
+ * @param {EnvConfig} configs - configurations
+ * @returns {object} -
+ */
+export const getPlanActivitiesMap = (configs?: EnvConfig) => {
+  const planActivitiesMap: Dictionary<PlanActivityFormFields[]> = {};
+  planActivitiesMap[InterventionType.IRS] = getFormActivities(IRSActivities, configs);
+  planActivitiesMap[InterventionType.FI] = getFormActivities(FIActivities, configs);
+  planActivitiesMap[InterventionType.MDAPoint] = getFormActivities(MDAPointActivities, configs);
+  planActivitiesMap[InterventionType.DynamicFI] = getFormActivities(DynamicFIActivities, configs);
+  planActivitiesMap[InterventionType.DynamicIRS] = getFormActivities(DynamicIRSActivities, configs);
+  planActivitiesMap[InterventionType.DynamicMDA] = getFormActivities(DynamicMDAActivities, configs);
+  planActivitiesMap[InterventionType.SM] = getFormActivities(SMActivities, configs);
+  return planActivitiesMap;
+};
 
 /**
  * Get a plan activity from a plan definition object
@@ -310,25 +319,21 @@ export function getPlanActivityFromActionCode(
  * Get the plan definition conditions from form field values
  *
  * @param {PlanActivityFormFields} element - form field values for one plan activity
- * @param {PlanActivity | null} planActivity - plan activity
  * @returns {PlanActionCondition[] | undefined } -
  */
 export const getConditionFromFormField = (
-  element: PlanActivityFormFields,
-  planActivity: PlanActivity | null
+  element: PlanActivityFormFields
 ): PlanActionCondition[] | undefined => {
   return (
     element.condition &&
-    element.condition.map((item, index) => {
-      const subjectCodableConcept =
-        (planActivity &&
-          planActivity.action.condition &&
-          planActivity.action.condition[index].expression.subjectCodableConcept) ||
-        null;
+    element.condition.map((item) => {
+      const subjectCodableConcept = {
+        text: item.subjectCodableConceptText,
+      };
       return {
         expression: {
           ...(item.description && { description: item.description }),
-          ...(subjectCodableConcept && { subjectCodableConcept }),
+          ...(item.subjectCodableConceptText && { subjectCodableConcept }),
           expression: item.expression,
         },
         kind: APPLICABILITY_CONDITION_KIND,
@@ -418,7 +423,7 @@ export function extractActivitiesFromPlanForm(
         };
       }
 
-      const condition = getConditionFromFormField(element, planActivity);
+      const condition = getConditionFromFormField(element);
       const trigger = getTriggerFromFormField(element);
 
       const thisActionIdentifier =
@@ -615,7 +620,8 @@ export function generatePlanDefinition(
   const actionAndGoals = extractActivitiesFromPlanForm(
     formValue.activities,
     planObj ? planObj.identifier : '',
-    planObj
+    planObj,
+    envConfigs
   );
 
   const taskGenerationStatusValue =
@@ -744,10 +750,13 @@ export function getPlanFormValues(
       const goalArray = planObject.goal.filter((goal) => goal.id === currentAction.goalId);
 
       goalArray.forEach((currentGoal) => {
-        const currentActivity = extractActivityForForm({
-          action: currentAction,
-          goal: currentGoal,
-        });
+        const currentActivity = extractActivityForForm(
+          {
+            action: currentAction,
+            goal: currentGoal,
+          },
+          envConfigs
+        );
         accumulator.push(currentActivity);
       });
 
@@ -755,6 +764,8 @@ export function getPlanFormValues(
     },
     []
   );
+
+  const planActivitiesMap = getPlanActivitiesMap(configs);
 
   if (activities.length < 1) {
     // eslint-disable-next-line no-prototype-builtins

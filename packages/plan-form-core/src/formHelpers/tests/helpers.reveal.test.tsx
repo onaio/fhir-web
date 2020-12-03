@@ -291,9 +291,7 @@ describe('containers/forms/PlanForm/helpers', () => {
   it('getConditionFromFormField works correctly', () => {
     const { dynamicFamilyRegistration } = planActivities;
     const formPlan = extractActivityForForm(dynamicFamilyRegistration);
-    expect(getConditionFromFormField(formPlan, dynamicFamilyRegistration)).toEqual(
-      dynamicFamilyRegistration.action.condition
-    );
+    expect(getConditionFromFormField(formPlan)).toEqual(dynamicFamilyRegistration.action.condition);
   });
 
   it('isFIOrDynamicFI works correctly', () => {
