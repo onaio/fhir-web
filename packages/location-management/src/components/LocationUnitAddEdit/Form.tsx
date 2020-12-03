@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import React from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
-import { notification, Button } from 'antd';
+import { Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { getUser, User } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -20,6 +20,7 @@ import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { sendErrorNotification, sendSuccessNotification } from 'opensrp-notifications/dist/types';
 
 export interface FormField {
   name: string;
@@ -110,7 +111,7 @@ export const onSubmit = async (
         return res.locationsHierarchy.map[values.parentId as string].node.attributes
           .geographicLevel as number;
       })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
+      .catch((e) => sendErrorNotification(`${e}`));
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
@@ -142,24 +143,24 @@ export const onSubmit = async (
     serve
       .update({ ...payload })
       .then(() => {
-        notification.success({ message: 'Location Unit Updated successfully', description: '' });
+        sendSuccessNotification('Location Unit Updated successfully');
         setSubmitting(false);
         history.goBack();
       })
       .catch((e: Error) => {
-        notification.error({ message: `${e}`, description: '' });
+        sendErrorNotification(`${e}`);
         setSubmitting(false);
       });
   } else {
     serve
       .create({ ...payload })
       .then(() => {
-        notification.success({ message: 'Location Unit Created successfully', description: '' });
+        sendSuccessNotification('Location Unit Created successfully');
         setSubmitting(false);
         history.goBack();
       })
       .catch((e: Error) => {
-        notification.error({ message: `${e}`, description: '' });
+        sendErrorNotification(`${e}`);
         setSubmitting(false);
       });
   }
