@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, notification } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -64,7 +64,7 @@ export const loadSingleLocation = (
   serve
     .read(row.id, { is_jurisdiction: true })
     .then((res: LocationUnit) => setDetail(res))
-    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    .catch((e) => sendErrorNotification(`${e}`));
 };
 
 export const LocationUnitView: React.FC = () => {
@@ -102,11 +102,11 @@ export const LocationUnitView: React.FC = () => {
                   // if (hierarchy.model && hierarchy.model.children)
                   dispatch(fetchAllHierarchies(hierarchy.model));
                 })
-                .catch((e) => notification.error({ message: `${e}`, description: '' }));
+                .catch((e) => sendErrorNotification(`${e}`));
             });
           }
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch((e) => sendErrorNotification(`${e}`));
     }
   }, [Treedata.length, accessToken, dispatch]);
 

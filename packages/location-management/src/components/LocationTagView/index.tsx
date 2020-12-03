@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Input, notification } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, Input } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationTagDetail, { LocationTagDetailProps } from '../LocationTagDetail';
 import { SearchOutlined } from '@ant-design/icons';
@@ -20,6 +20,7 @@ import Table, { TableData } from './Table';
 import './LocationTagView.css';
 import { Ripple } from '@onaio/loaders';
 import { Link } from 'react-router-dom';
+import { sendErrorNotification } from 'opensrp-notifications';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -41,7 +42,7 @@ const LocationTagView: React.FC = () => {
           dispatch(fetchLocationTags(response));
           setIsLoading(false);
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch((e) => sendErrorNotification(`${e}`));
     }
   });
 
