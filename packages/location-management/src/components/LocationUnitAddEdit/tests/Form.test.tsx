@@ -2,7 +2,6 @@
 import flushPromises from 'flush-promises';
 import { mount } from 'enzyme';
 import React from 'react';
-import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
@@ -15,14 +14,13 @@ import Form, { FormField, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
 import { LocationUnitStatus } from '../../../ducks/location-units';
+import { history } from '@onaio/connected-reducer-registry';
 
 describe('containers/pages/locations/LocationUnitAddEdit', () => {
   beforeEach(() => {
     fetch.resetMocks();
     jest.clearAllMocks();
   });
-
-  const history = createBrowserHistory();
 
   const values: FormField = {
     name: 'Tunisia',
@@ -68,13 +66,25 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     await act(async () => {
       await flushPromises();
     });
+
     expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
-          body: fetch.mock.calls[0][1]?.body,
+          body: fetch.mock.calls[1][1].body,
           headers: {
             accept: 'application/json',
             authorization: 'Bearer sometoken',
@@ -129,12 +139,22 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     });
     expect(fetch.mock.calls).toEqual([
       [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
-          body:
-            '{"is_jurisdiction":true,"properties":{"geographicLevel":0,"username":"user_test","parentId":""},"id":"1","syncStatus":"Synced","type":"Feature","locationTags":[]}',
+          body: fetch.mock.calls[1][1].body,
           headers: {
             accept: 'application/json',
             authorization: 'Bearer sometoken',
@@ -214,8 +234,7 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
-          body:
-            '{"is_jurisdiction":true,"properties":{"geographicLevel":0,"username":"user_test","parentId":"51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2"},"id":"1","syncStatus":"Synced","type":"Feature","locationTags":[],"geometry":{"type":"Feature","geometry":{"type":"Point","coordinates":[125.6,10.1]},"properties":{"name":"Dinagat Islands"}}}',
+          body: fetch.mock.calls[1][1].body,
           headers: {
             accept: 'application/json',
             authorization: 'Bearer sometoken',
@@ -271,16 +290,14 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     wrapper.find('button#cancel').simulate('click');
 
     // click go back
-    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Go Back"`);
+    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Save"`);
     wrapper.find('button').first().simulate('click');
 
-    expect(mockBack).toHaveBeenCalled();
-
     // click go back
-    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Back Home"`);
+    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Cancel"`);
     wrapper.find('button').last().simulate('click');
 
-    expect(history.location.pathname).toEqual('Asd');
+    expect(mockBack).toHaveBeenCalled();
   });
 
   it('Update LocationTagValue', async () => {
