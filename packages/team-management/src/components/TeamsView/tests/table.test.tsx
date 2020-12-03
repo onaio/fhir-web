@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import Table, { TableData } from '../Table';
 import { Router } from 'react-router';
 
-describe('containers/pages/team/TeamsView', () => {
+describe('components/TeamsView/table', () => {
   beforeAll(() => {
     const { authenticated, user, extraData } = getOpenSRPUserInfo({
       oAuth2Data: {

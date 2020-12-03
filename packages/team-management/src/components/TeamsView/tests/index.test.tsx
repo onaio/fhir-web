@@ -11,7 +11,7 @@ import fetch from 'jest-fetch-mock';
 import { org1, teamMember } from '../../../ducks/tests/fixtures';
 import { notification } from 'antd';
 
-describe('containers/pages/teams/TeamsView', () => {
+describe('components/TeamsView', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });

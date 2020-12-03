@@ -3,7 +3,7 @@ import toJson from 'enzyme-to-json';
 import React from 'react';
 import TeamsDetail, { Props } from '..';
 
-describe('containers/pages/Home', () => {
+describe('components/TeamsDetail', () => {
   const props: Props = {
     active: true,
     id: 1,
