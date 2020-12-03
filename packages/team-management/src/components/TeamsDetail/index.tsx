@@ -2,10 +2,7 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Organization } from '../../ducks/organizations';
-import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, { Practitioner, reducerName } from '../../ducks/practitioners';
-
-reducerRegistry.register(reducerName, reducer);
+import { Practitioner } from '../../ducks/practitioners';
 
 export interface TeamsDetailProps extends Organization {
   onClose?: Function;
