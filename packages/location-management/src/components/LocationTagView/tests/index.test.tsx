@@ -11,7 +11,7 @@ import fetch from 'jest-fetch-mock';
 import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixtures';
 import { notification } from 'antd';
 
-describe('containers/pages/locations/LocationTagView', () => {
+describe('location-management/src/components/LocationTagView', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
