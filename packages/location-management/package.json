@@ -39,7 +39,8 @@
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@types/geojson": "^7946.0.7"
+    "@types/geojson": "^7946.0.7",
+    "@types/uuid": "8.3.0"
   },
   "peerDependencies": {
     "formik-antd": "^2.0.1",
