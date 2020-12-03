@@ -8,7 +8,8 @@ export const submitForm = (
   accessToken: string,
   opensrpBaseURL: string,
   isJsonValidator: boolean,
-  setSubmitting: (isSubmitting: boolean) => void
+  setSubmitting: (isSubmitting: boolean) => void,
+  setIfDoneHere: (ifDoneHere: boolean) => void
 ): void => {
   setSubmitting(true);
   const formData = new FormData();
@@ -45,6 +46,9 @@ export const submitForm = (
   );
   clientService
     .create(formData)
+    .then(() => {
+      setIfDoneHere(true);
+    })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURRED);
     })

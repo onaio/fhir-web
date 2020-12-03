@@ -60,7 +60,7 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps, jsonValidatorsProps } from './utils';
+import { productCatalogueProps, jsonValidatorListProps, jsonValidatorFormProps } from './utils';
 
 const { Content } = Layout;
 
@@ -214,6 +214,7 @@ const App: React.FC = () => {
               exact
               path={URL_UPLOAD_JSON_VALIDATOR}
               component={AntdUploadForm.UploadForm}
+              {...jsonValidatorFormProps}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -221,14 +222,15 @@ const App: React.FC = () => {
               exact
               path={`${URL_UPLOAD_JSON_VALIDATOR}/:${ROUTE_PARAM_FORM_ID}`}
               component={AntdUploadForm.UploadForm}
+              {...jsonValidatorFormProps}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_JSON_VALIDATOR_LIST}
-              {...jsonValidatorsProps}
               component={AntdFilesList.FileList}
+              {...jsonValidatorListProps}
             />
             <Route
               exact
