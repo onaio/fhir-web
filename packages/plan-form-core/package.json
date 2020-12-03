@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/planform-core",
+  "name": "@opensrp/plan-form-core",
   "version": "0.0.4",
   "description": "",
   "main": "dist/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": "https://github.com/opensrp/web",
   "config": {
-    "folderName": "planform-core"
+    "folderName": "plan-form-core"
   },
   "scripts": {
     "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
