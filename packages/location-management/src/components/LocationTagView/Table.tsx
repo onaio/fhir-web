@@ -8,7 +8,7 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { API_BASE_URL, LOCATION_TAG_DELETE, URL_LOCATION_TAG_EDIT } from '../../constants';
 import { Link } from 'react-router-dom';
 import { LocationTagDetailProps } from '../LocationTagDetail';
-import { sendSuccessNotification, sendErrorNotification } from 'opensrp-notifications';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 
 export interface TableData extends LocationTag {
   key: string;

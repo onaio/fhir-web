@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { HierarchyNode, ParsedHierarchyNode } from 'location-management/src/ducks/types';
+import { HierarchyNode, ParsedHierarchyNode } from '../../../ducks/types';
 import { LocationTag } from '../../../ducks/location-tags';
 import { LocationUnitStatus } from '../../../ducks/location-units';
 import { FormField } from '../Form';

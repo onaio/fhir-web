@@ -20,7 +20,7 @@ import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
-import { sendErrorNotification, sendSuccessNotification } from 'opensrp-notifications';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 
 export interface FormField {
   name: string;
