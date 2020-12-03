@@ -30,6 +30,8 @@ import {
   URL_HOME,
   URL_UPLOAD_JSON_VALIDATOR,
   URL_JSON_VALIDATOR_LIST,
+  URL_UPLOAD_DRAFT_FILE,
+  URL_DRAFT_FILE_LIST,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -55,12 +57,23 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
-import { AntdUploadForm, AntdFilesList, ROUTE_PARAM_FORM_ID } from '@opensrp/form-config';
+import {
+  AntdUploadForm,
+  AntdFilesList,
+  ROUTE_PARAM_FORM_ID,
+  AntdDraftFileList,
+} from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps, jsonValidatorListProps, jsonValidatorFormProps } from './utils';
+import {
+  productCatalogueProps,
+  jsonValidatorListProps,
+  jsonValidatorFormProps,
+  draftFormProps,
+  draftListProps,
+} from './utils';
 
 const { Content } = Layout;
 
@@ -231,6 +244,22 @@ const App: React.FC = () => {
               path={URL_JSON_VALIDATOR_LIST}
               component={AntdFilesList.FileList}
               {...jsonValidatorListProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_UPLOAD_DRAFT_FILE}
+              component={AntdUploadForm.UploadForm}
+              {...draftFormProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_DRAFT_FILE_LIST}
+              component={AntdDraftFileList.DrafFileList}
+              {...draftListProps}
             />
             <Route
               exact

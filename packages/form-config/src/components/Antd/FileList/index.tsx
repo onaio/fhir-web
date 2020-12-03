@@ -102,7 +102,7 @@ const FileList = (props: FileListProps): JSX.Element => {
       <Title level={3}>JSON Validators</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'right' }}>
-          <Button type="primary" className="create-user" onClick={() => history.push(formRoute)}>
+          <Button type="primary" onClick={() => history.push(formRoute)}>
             <UploadOutlined />
             Upload New File
           </Button>
