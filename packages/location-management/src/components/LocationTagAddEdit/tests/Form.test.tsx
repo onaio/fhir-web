@@ -29,6 +29,9 @@ describe('containers/pages/locations/Form', () => {
   });
 
   it('tests cancel button', () => {
+    const mockBack = jest.fn();
+    history.goBack = mockBack;
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -36,7 +39,18 @@ describe('containers/pages/locations/Form', () => {
         </Router>
       </Provider>
     );
+
     wrapper.find('button#cancel').simulate('click');
+
+    // click go back
+    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Save"`);
+    wrapper.find('button').first().simulate('click');
+
+    // click go back
+    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Cancel"`);
+    wrapper.find('button').last().simulate('click');
+
+    expect(mockBack).toHaveBeenCalled();
   });
 
   it('tests Create New Payload', async () => {
