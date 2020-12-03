@@ -14,36 +14,26 @@ import { id, LocationTagValue, locationtag, treedata } from './fixtures';
 import Form, { onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
+import { LocationUnitStatus } from '../../../ducks/location-units';
 
 describe('containers/pages/locations/LocationUnitAddEdit', () => {
   beforeEach(() => {
     fetch.resetMocks();
     jest.clearAllMocks();
   });
+
   const values = {
-    is_jurisdiction: true,
-    properties: {
-      geographicLevel: 1,
-      username: 'testuser',
-      externalId: 'testextid',
-      parentId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
-      name: 'Tunisia',
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      name_en: 'Tunisia',
-      status: 'Active',
-    },
-    id: 'testextid',
-    syncStatus: 'Synced',
+    name: 'Tunisia',
+    status: LocationUnitStatus.ACTIVE,
     type: 'Feature',
-    locationTags: fixtures.locationtag,
+    parentId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
+    locationTags: fixtures.locationtag.map((loc) => loc.id),
     geometry: undefined,
   };
 
   const props = {
     id: undefined,
-    user: {
-      username: 'user_test',
-    },
+    username: 'user_test',
     locationtag: fixtures.locationtag,
   };
 
@@ -64,7 +54,14 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
 
   it('creates new location unit', async () => {
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
-    await onSubmit(values, accessToken, props, props.user, setSubmittingMock);
+    await onSubmit(
+      values,
+      accessToken,
+      props.id,
+      props.locationtag,
+      props.username,
+      setSubmittingMock
+    );
     await act(async () => {
       await flushPromises();
     });
@@ -94,7 +91,15 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
   it('handles error when creating new location unit', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    await onSubmit(values, accessToken, props, props.user, setSubmittingMock);
+
+    await onSubmit(
+      setSubmittingMock,
+      values,
+      accessToken,
+      props.locationtag,
+      props.username,
+      props.id
+    );
     await act(async () => {
       await flushPromises();
     });
@@ -106,10 +111,6 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
   });
 
   it('edits location unit successfully', async () => {
-    const newProps = {
-      ...props,
-      id: '1',
-    };
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -118,7 +119,7 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
       </Provider>
     );
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
-    await onSubmit(values, accessToken, newProps, props.user, setSubmittingMock);
+    await onSubmit(setSubmittingMock, values, accessToken, props.locationtag, props.username, '1');
     await act(async () => {
       wrapper.update();
       await flushPromises();
@@ -149,13 +150,10 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
   });
 
   it('handles error when editing location unit', async () => {
-    const newProps = {
-      ...props,
-      id: '1',
-    };
     fetch.mockReject(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    await onSubmit(values, accessToken, newProps, props.user, setSubmittingMock);
+    await onSubmit(setSubmittingMock, values, accessToken, props.locationtag, props.username, '1');
+
     await act(async () => {
       await flushPromises();
     });
@@ -181,12 +179,17 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
         },
       }),
     };
-    const newProps = {
-      ...props,
-      id: '1',
-    };
+
     fetch.once(JSON.stringify(sampleHierarchy));
-    await onSubmit(newValues, accessToken, newProps, props.user, setSubmittingMock);
+    await onSubmit(
+      setSubmittingMock,
+      newValues,
+      accessToken,
+      props.locationtag,
+      props.username,
+      '1'
+    );
+
     await act(async () => {
       await flushPromises();
     });
