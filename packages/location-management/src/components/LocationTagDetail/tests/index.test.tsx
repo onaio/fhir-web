@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import LocationTagDetail, { LocationTagDetailProps } from '..';
 
-describe('containers/pages/Home', () => {
+describe('location-management/src/components/LocationTagDetail', () => {
   const props: LocationTagDetailProps = {
     id: 123123,
     name: 'Edrward 0',
