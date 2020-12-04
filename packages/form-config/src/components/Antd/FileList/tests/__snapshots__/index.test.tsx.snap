@@ -6,6 +6,24 @@ Object {
     <Space
       style={
         Object {
+          "float": "left",
+          "marginBottom": 16,
+        }
+      }
+    >
+      <Input
+        id="search"
+        onChange={[Function]}
+        placeholder="Search"
+        prefix={<ForwardRef(SearchOutlined) />}
+        size="large"
+        type="text"
+        value=""
+      />
+    </Space>,
+    <Space
+      style={
+        Object {
           "float": "right",
           "marginBottom": 16,
         }
@@ -120,6 +138,24 @@ Object {
 exports[`components/Antd/FileList renders correctly: card 1`] = `
 Object {
   "children": Array [
+    <Space
+      style={
+        Object {
+          "float": "left",
+          "marginBottom": 16,
+        }
+      }
+    >
+      <Input
+        id="search"
+        onChange={[Function]}
+        placeholder="Search"
+        prefix={<ForwardRef(SearchOutlined) />}
+        size="large"
+        type="text"
+        value=""
+      />
+    </Space>,
     <Space
       style={
         Object {
