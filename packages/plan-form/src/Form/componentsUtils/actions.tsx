@@ -33,13 +33,23 @@ export const getConditionAndTriggers = (
             key={`${element.actionCode}-condition-${index}-${mapIndex}`}
             // name={['activities', index]}
           >
+            {item.subjectCodableConceptText && (
+              <FormItem name={[index, 'condition', mapIndex, 'subjectCodableConceptText']}>
+                <Input
+                  required={false}
+                  id={`activities[${index}].condition[${mapIndex}].subjectCodableConceptText`}
+                  disabled={true}
+                  hidden={true}
+                />
+              </FormItem>
+            )}
             {item.expression && (
               <FormItem
                 label={EXPRESSION_LABEL}
                 name={[index, 'condition', mapIndex, 'expression']}
               >
                 <TextArea
-                  className="form-control col-sm-10"
+                  className="form-control"
                   required={true}
                   id={`activities[${index}].condition[${mapIndex}].expression`}
                   disabled={isDisabled}
@@ -52,7 +62,7 @@ export const getConditionAndTriggers = (
                 name={[index, 'condition', mapIndex, 'description']}
               >
                 <TextArea
-                  className="form-control col-sm-10"
+                  className="form-control"
                   required={true}
                   id={`activities[${index}].condition[${mapIndex}].description`}
                   disabled={isDisabled}
