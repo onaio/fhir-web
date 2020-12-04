@@ -109,7 +109,7 @@ const initialState: ImmutablePlanDefinitionState = SeamlessImmutable({
  * @param {object} action - plans actions
  * @returns {object} - the updated states
  */
-export default function reducer(
+export function reducer(
   state = initialState,
   action: PlanDefinitionActionTypes
 ): ImmutablePlanDefinitionState {
@@ -173,11 +173,15 @@ export function getPlanDefinitionById(state: Partial<Store>, id: string): PlanDe
  */
 export function getPlanDefinitionsArray(
   state: Partial<Store>,
-  interventionType: InterventionType | null = null
+  interventionType: InterventionType | null = null,
+  sortField?: string
 ): PlanDefinition[] {
   const result = values((state as Dictionary)[reducerName].planDefinitionsById);
   if (interventionType) {
     return result.filter((e: PlanDefinition) => isPlanDefinitionOfType(e, interventionType));
+  }
+  if (sortField) {
+    return descendingOrderSort(result, sortField);
   }
   return result;
 }
