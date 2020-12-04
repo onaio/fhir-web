@@ -48,14 +48,14 @@ import {
   PlanActivityFormFields,
   PlanFormFields,
   PlanJurisdictionFormFields,
-  planActivitiesMap,
   showDefinitionUriFor,
   generatePlanDefinition,
   getFormActivities,
   getGoalUnitFromActionCode,
   defaultEnvConfig,
+  getPlanActivitiesMap,
   MDA_POINT_ADVERSE_EFFECTS_CODE,
-} from '@opensrp/planform-core';
+} from '@opensrp/plan-form-core';
 import moment from 'moment';
 import { Select, Input, DatePicker } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -73,6 +73,7 @@ const { TextArea } = Input;
 const defaultInterventionType = InterventionType.SM;
 const initialJurisdictionValues: PlanJurisdictionFormFields[] = [];
 const defaultEnvs = defaultEnvConfig;
+const planActivitiesMap = getPlanActivitiesMap();
 
 /** initial values for plan Form */
 export const defaultInitialValues: PlanFormFields = {
