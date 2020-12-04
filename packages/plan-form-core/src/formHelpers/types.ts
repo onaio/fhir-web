@@ -134,12 +134,6 @@ export interface PlanFormFields {
   [version]: string;
 }
 
-/** type of function to be called with payload before submission */
-export type BeforeSubmit = (payload: PlanDefinition) => boolean;
-
-/** type of function to be called with payload before submission */
-export type AfterSubmit = (payload: PlanDefinition) => void;
-
 /** UseContext - interface for PlanPayload.useContext[] items */
 export interface UseContext {
   code: UseContextCodesType;
@@ -264,13 +258,6 @@ export interface Classification {
   code: string;
   name: string;
   description: string;
-}
-
-/** Interface that describes location items */
-export interface LocationItem {
-  identifier: string /** Should match the name of the column in data */;
-  level: number /** The HDX-compliant level of the location in the hierarchy */;
-  name: string /** The name of the location */;
 }
 
 /** describes all possible configuration options */

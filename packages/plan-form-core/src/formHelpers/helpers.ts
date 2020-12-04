@@ -93,13 +93,6 @@ export function generateNameSpacedUUID(seedString: string, namespace: string) {
 /** Array of FI Statuses */
 export const fiStatusCodes = Object.values(FIClassifications).map((e) => e.code as FIStatusType);
 
-/** intervention types on which to show action.definitionUri form */
-export const showDefinitionUriFor = [
-  InterventionType.DynamicFI,
-  InterventionType.DynamicIRS,
-  InterventionType.DynamicMDA,
-];
-
 export const isFIOrDynamicFI = (interventionType: InterventionType): boolean => {
   return [InterventionType.DynamicFI, InterventionType.FI].includes(interventionType);
 };
