@@ -138,3 +138,5 @@ export const timingPeriodStart = 'timingPeriodStart';
 export type timingPeriodStart = typeof timingPeriodStart;
 export const trigger = 'trigger';
 export type trigger = typeof trigger;
+export const description = 'description';
+export type description = typeof description;

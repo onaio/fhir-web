@@ -44,6 +44,7 @@ import {
   title,
   trigger,
   version,
+  description,
 } from './constants/stringConstants';
 
 export type DateType = Moment | Date;
@@ -132,6 +133,7 @@ export interface PlanFormFields {
   [teamAssignmentStatus]?: string;
   [title]: string;
   [version]: string;
+  [description]?: string;
 }
 
 /** UseContext - interface for PlanPayload.useContext[] items */
@@ -160,6 +162,7 @@ export interface PlanDefinition {
   title: string;
   useContext: UseContext[];
   version: string;
+  description?: string;
 }
 
 /** Plan Action Timing Period */

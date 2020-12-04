@@ -662,6 +662,8 @@ export function generatePlanDefinition(
     });
   }
 
+  const description = formValue.description ?? '';
+
   return {
     ...actionAndGoals, // action and goal
     date: moment(formValue.date).format(configs.dateFormat.toUpperCase()),
@@ -681,6 +683,7 @@ export function generatePlanDefinition(
     title: formValue.title,
     useContext,
     version: planVersion as string,
+    description,
   };
 }
 
@@ -807,6 +810,7 @@ export function getPlanFormValues(
     teamAssignmentStatus,
     title: planObject.title,
     version: planObject.version,
+    description: planObject.description,
   };
 }
 
