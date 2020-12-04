@@ -114,7 +114,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
       <Title level={3}>{title}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'right' }}>
-          {isJsonValidator && (
+          {!formVersion && (
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             <>
               <Button type="primary" onClick={() => history.push(uploadFileURL)}>
