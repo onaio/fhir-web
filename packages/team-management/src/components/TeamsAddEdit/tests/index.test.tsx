@@ -6,15 +6,14 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { id, practitioner, practitioners, team } from './fixtures';
+import { accessToken, id, intialValue, practitioner, practitioners, team } from './fixtures';
 import fetch from 'jest-fetch-mock';
 
-import TeamsAddEdit, { getTeamDetail, getPractinonerDetail } from '..';
-import toJson from 'enzyme-to-json';
+import TeamsAddEdit, { getPractinonerDetail, getTeamDetail } from '..';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   it('renders without crashing', async () => {
-    const wrapper = mount(
+    mount(
       <Provider store={store}>
         <Router history={history}>
           <TeamsAddEdit />
@@ -28,7 +27,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('renders with id without crashing', async () => {
-    const wrapper = mount(
+    mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
           <Route path="/:id" component={TeamsAddEdit} />
@@ -47,7 +46,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       .once(JSON.stringify(practitioner))
       .once(JSON.stringify(team));
 
-    const wrapper = mount(
+    mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
           <Route path="/:id" component={TeamsAddEdit} />
@@ -57,7 +56,6 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
 
     const fetchCalls = [
@@ -129,7 +127,37 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       ],
     ];
 
-    expect(fetch.mock.calls).toMatchSnapshot();
     expect(fetch.mock.calls).toEqual(fetchCalls);
+  });
+
+  it('test getPractinonerDetail', async () => {
+    fetch.mockResponse(JSON.stringify(practitioner));
+    const response = await getPractinonerDetail(accessToken, id);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(response).toMatchObject(practitioner);
+  });
+
+  it('test getTeamDetail', async () => {
+    fetch.mockResponse(
+      JSON.stringify({
+        name: intialValue.name,
+        active: intialValue.active,
+        practitioner: practitioner,
+      })
+    );
+    const response = await getTeamDetail(accessToken, id);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(response).toMatchObject({
+      name: intialValue.name,
+      active: intialValue.active,
+    });
   });
 });
