@@ -1218,6 +1218,7 @@ export const planFormValues = {
   teamAssignmentStatus: '',
   title: 'IRS 2019-08-09',
   version: '1',
+  description: "",
 };
 
 export const planFormValues4 = {
@@ -1233,11 +1234,12 @@ export const planFormValues4 = {
       goalDue: parseISO('2019-08-16T00:00:00.000Z'),
       goalPriority: 'medium-priority',
       goalValue: 90,
-      timingPeriodEnd: parseISO('2000-02-06T00:00:00.000Z'),
-      timingPeriodStart: parseISO('2000-01-30T00:00:00.000Z'),
+      timingPeriodEnd: parseISO('2000-02-05T21:00:00.000Z'),
+      timingPeriodStart: parseISO('2000-01-29T21:00:00.000Z'),
     },
   ],
   caseNum: '',
+  description: "",
   date: parseISO(`2019-08-09${defaultEnvConfig.defaultTime}`),
   end: parseISO(`2019-08-29${defaultEnvConfig.defaultTime}`),
   fiReason: undefined,

@@ -104,6 +104,7 @@ describe('containers/forms/PlanForm/helpers', () => {
     MockDate.set('1/30/2000');
     expect(generatePlanDefinition(values2)).toEqual(expectedPlanDefinition);
 
+    const planDescription = 'A plan';
     // add taskGenerationStatus and increment version
     const planCopy = {
       ...plans[5],
@@ -112,11 +113,13 @@ describe('containers/forms/PlanForm/helpers', () => {
         valueCodableConcept: 'Disabled',
       }),
       version: 2,
+      description: planDescription,
     };
     // remove serverVersion
+    const planValues = { ...planFormValues3, description: planDescription };
     const { serverVersion, ...expectedDynamicPlan } = planCopy;
     expectedDynamicPlan.action[0].type = 'create';
-    expect(generatePlanDefinition(planFormValues3 as PlanFormFields, null, true)).toEqual(
+    expect(generatePlanDefinition(planValues as PlanFormFields, null, true)).toEqual(
       expectedDynamicPlan
     );
     MockDate.reset();
@@ -142,6 +145,7 @@ describe('containers/forms/PlanForm/helpers', () => {
       code: 'taskGenerationStatus',
       valueCodableConcept: TRUE,
     });
+    expectedDynamicPlan.description = '';
     expect(generatePlanDefinition(planFormValues3 as PlanFormFields, null, false, configs)).toEqual(
       expectedDynamicPlan
     );
@@ -164,6 +168,7 @@ describe('containers/forms/PlanForm/helpers', () => {
     // remove serverVersion
     const { serverVersion, ...expectedDynamicPlan } = planCopy;
     expectedDynamicPlan.action[0].type = 'create';
+    expectedDynamicPlan.description = '';
     // on create
     expect(generatePlanDefinition(noTaskGenerationstatus, null, false, configs)).toEqual(
       expectedDynamicPlan
@@ -189,6 +194,7 @@ describe('containers/forms/PlanForm/helpers', () => {
     };
     // remove serverVersion
     const { serverVersion, ...expectedDynamicPlan } = planCopy;
+    expectedDynamicPlan.description = '';
     const expectedDynamicPlanCopy = { ...expectedDynamicPlan };
 
     // on create
@@ -238,8 +244,9 @@ describe('containers/forms/PlanForm/helpers', () => {
     const generatedPlanForm = getPlanFormValues(plan);
     const generatedPlan = generatePlanDefinition(generatedPlanForm, plan);
 
-    expect({ ...plan, experimental: false }).toEqual({
+    expect({ ...plan, experimental: false, description: '' }).toEqual({
       ...generatedPlan,
+      description: '',
       serverVersion: 1563494230144,
       version: '1',
     });
@@ -379,6 +386,6 @@ describe('containers/forms/PlanForm/helpers', () => {
     const received = getPlanFormValues(withoutAction as any);
     MockDate.reset();
 
-    expect(received).toEqual(planFormValues4);
+    expect(received.activities).toEqual(planFormValues4.activities);
   });
 });
