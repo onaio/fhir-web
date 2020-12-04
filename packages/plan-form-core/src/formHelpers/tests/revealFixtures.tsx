@@ -941,7 +941,7 @@ export const expectedPlanDefinition = {
     end: '2019-08-29',
     start: '2019-08-09',
   },
-  description: "",
+  description: '',
   experimental: false,
   goal: [
     {
