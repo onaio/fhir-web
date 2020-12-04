@@ -109,7 +109,7 @@ const initialState: ImmutablePlanDefinitionState = SeamlessImmutable({
  * @param {object} action - plans actions
  * @returns {object} - the updated states
  */
-export function reducer(
+export default function reducer(
   state = initialState,
   action: PlanDefinitionActionTypes
 ): ImmutablePlanDefinitionState {

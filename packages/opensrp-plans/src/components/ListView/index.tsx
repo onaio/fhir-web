@@ -9,7 +9,7 @@ import { PlansLoading, columns } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { reducerName as PlansReducerName, reducer as PlansReducer } from '../../ducks';
+import PlansReducer, { reducerName as PlansReducerName } from '../../ducks';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { PLANS_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
