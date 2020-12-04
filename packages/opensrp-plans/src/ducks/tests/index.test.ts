@@ -1,9 +1,9 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { keyBy } from 'lodash';
 import { FlushThunks } from 'redux-testkit';
-import { PlanDefinition } from '../../plan-global-types';
+import { PlanDefinition, InterventionType } from '@opensrp/plan-form-core';
 import { store } from '@opensrp/store';
-import { getPlanIds, getTitle, InterventionType } from '../index';
+import { getPlanIds, getTitle } from '../index';
 import reducer, {
   addPlanDefinition,
   fetchPlanDefinitions,
