@@ -1218,7 +1218,7 @@ export const planFormValues = {
   teamAssignmentStatus: '',
   title: 'IRS 2019-08-09',
   version: '1',
-  description: "",
+  description: '',
 };
 
 export const planFormValues4 = {
@@ -1239,7 +1239,7 @@ export const planFormValues4 = {
     },
   ],
   caseNum: '',
-  description: "",
+  description: '',
   date: parseISO(`2019-08-09${defaultEnvConfig.defaultTime}`),
   end: parseISO(`2019-08-29${defaultEnvConfig.defaultTime}`),
   fiReason: undefined,
