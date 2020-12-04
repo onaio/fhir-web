@@ -20,7 +20,7 @@ export class OpenSRPService extends GenericOpenSRPService {
 /**
  * @param {string} baseURL -  base url of api
  * @param {OpenSRPService} service - the opensrp service
- * @param {fetchProducts}actionCreator - Action creator; creates actions thad adds products to the store
+ * @param {FetchPlanDefinitions} actionCreator - Action creator; creates actions thad adds products to the store
  *
  * @returns {Promise<void>}
  */
@@ -33,7 +33,6 @@ export async function loadPlans(
   return serve
     .list()
     .then((response: PlanDefinition[] | null) => {
-      console.log(response);
       if (response === null || response.length === 0) {
         return Promise.reject(new Error('No data found'));
       }
