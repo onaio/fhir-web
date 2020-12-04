@@ -175,6 +175,32 @@ describe('components/Antd/FileList', () => {
     wrapper.unmount();
   });
 
+  it('searches correctly', async () => {
+    fetch.once(JSON.stringify(fixManifestFiles));
+    fetch.once(JSON.stringify(downloadFile));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <FileList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    const search = wrapper.find('input#search');
+    search.simulate('change', { target: { value: 'test publish' } });
+    wrapper.update();
+
+    expect(wrapper.find('tbody').find('tr')).toHaveLength(1);
+
+    wrapper.unmount();
+  });
+
   it('download files correctly', async () => {
     fetch.once(JSON.stringify(fixManifestFiles));
     fetch.once(JSON.stringify(downloadFile));

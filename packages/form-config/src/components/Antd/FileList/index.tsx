@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { getFetchOptions, OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Card, Typography, Spin, Table, Space, Button, Divider } from 'antd';
+import { Card, Typography, Spin, Table, Space, Button, Divider, Input } from 'antd';
 import { Dictionary } from '@onaio/utils';
 import filesReducer, {
   ManifestFilesTypes,
@@ -20,7 +20,7 @@ import {
 } from '../../../constants';
 import { getTableColumns } from './utils';
 import { useHistory, RouteComponentProps } from 'react-router';
-import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
+import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -67,6 +67,8 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const data: ManifestFilesTypes[] = useSelector((state) => getAllManifestFilesArray(state));
+  const [value, setValue] = useState('');
+  const [filterData, setfilterDataData] = useState<ManifestFilesTypes[] | null>(null);
   const formVersion = match.params[ROUTE_PARAM_FORM_VERSION];
   const dispatch = useDispatch();
   const history = useHistory();
@@ -109,10 +111,29 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
     return <Spin />;
   }
 
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const currentValue = e.target.value;
+    setValue(currentValue);
+    const filterDataedData = data.filter((entry: { label: string }) =>
+      entry.label.toLowerCase().includes(currentValue.toLowerCase())
+    );
+    setfilterDataData(filterDataedData);
+  };
+
   return (
     <div className="layout-content">
       <Title level={3}>{title}</Title>
       <Card>
+        <Space style={{ marginBottom: 16, float: 'left' }}>
+          <Input
+            id="search"
+            placeholder="Search"
+            size="large"
+            value={value}
+            prefix={<SearchOutlined />}
+            onChange={onChange}
+          />
+        </Space>
         <Space style={{ marginBottom: 16, float: 'right' }}>
           {!formVersion && (
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -135,7 +156,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             sortedInfo,
             customFetchOptions
           )}
-          dataSource={data}
+          dataSource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
           pagination={{
             showQuickJumper: true,
             showSizeChanger: true,
