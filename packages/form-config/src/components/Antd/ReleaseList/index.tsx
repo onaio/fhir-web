@@ -24,7 +24,7 @@ reducerRegistry.register(releasesReducerName, releasesReducer);
 export interface ReleaseListProps {
   opensrpBaseURL: string;
   uploadFileURL: string;
-  viewFileURL: string;
+  currentURL: string;
   fetchReleases: typeof fetchManifestReleases;
   customFetchOptions?: typeof getFetchOptions;
 }
@@ -33,7 +33,7 @@ export interface ReleaseListProps {
 export const defaultProps: ReleaseListProps = {
   opensrpBaseURL: '',
   uploadFileURL: '',
-  viewFileURL: '',
+  currentURL: '',
   fetchReleases: fetchManifestReleases,
 };
 
@@ -46,7 +46,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const data: ManifestReleasesTypes[] = useSelector((state) => getAllManifestReleasesArray(state));
   data.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
-  const { opensrpBaseURL, uploadFileURL, viewFileURL, customFetchOptions, fetchReleases } = props;
+  const { opensrpBaseURL, uploadFileURL, currentURL, customFetchOptions, fetchReleases } = props;
 
   useEffect(() => {
     /** get manifest releases */
@@ -83,7 +83,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
           <SettingOutlined />
         </Space>
         <Table
-          columns={getTableColumns(viewFileURL, sortedInfo)}
+          columns={getTableColumns(currentURL, sortedInfo)}
           dataSource={data}
           pagination={{
             showQuickJumper: true,
