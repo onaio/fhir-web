@@ -7,12 +7,11 @@ import { OPENSRP_API_BASE_URL, OPENSRP_PLANS } from '../constants';
 import { fetchPlanDefinitions } from '../ducks';
 import { PlanDefinition } from '../plan-global-types';
 
-const sessionSelector = makeAPIStateSelector();
-const accessToken = sessionSelector(store.getState(), { accessToken: true });
-
 /** OpenSRP service */
 export class OpenSRPService extends GenericOpenSRPService {
   constructor(endpoint: string, baseURL: string = OPENSRP_API_BASE_URL) {
+    const sessionSelector = makeAPIStateSelector();
+    const accessToken = sessionSelector(store.getState(), { accessToken: true });
     super(accessToken, baseURL, endpoint);
   }
 }
