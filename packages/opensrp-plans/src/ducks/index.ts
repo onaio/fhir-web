@@ -169,6 +169,7 @@ export function getPlanDefinitionById(state: Partial<Store>, id: string): PlanDe
  *
  * @param {object} state - the redux store
  * @param {InterventionType | null} interventionType - the PlanDefinition intervention Type
+ * @param {string} sortField - field to sort by
  * @returns {PlanDefinition[]} an array of PlanDefinition objects
  */
 export function getPlanDefinitionsArray(

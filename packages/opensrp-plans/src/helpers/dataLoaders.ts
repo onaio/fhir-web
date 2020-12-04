@@ -20,7 +20,7 @@ export class OpenSRPService extends GenericOpenSRPService {
 /**
  * @param {string} baseURL -  base url of api
  * @param {OpenSRPService} service - the opensrp service
- * @param {FetchPlanDefinitions} actionCreator - Action creator; creates actions thad adds products to the store
+ * @param {fetchPlanDefinitions} actionCreator - Action creator; creates actions thad adds products to the store
  *
  * @returns {Promise<void>}
  */
