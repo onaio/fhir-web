@@ -7,6 +7,7 @@ import { OPENSRP_MANIFEST_ENDPOINT, ERROR_OCCURRED } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { removeManifestDraftFiles } from '../../../ducks/manifestDraftFiles';
 import { store } from '@onaio/redux-reducer-registry';
+import { formatDate } from '../../../helpers/utils';
 
 export const getTableColumns = (
   accessToken: string,
@@ -20,7 +21,7 @@ export const getTableColumns = (
   const fields: string[] = ['identifier', 'label', 'version', 'createdAt', 'module'];
 
   fields.forEach((field: string, index: number) => {
-    columns.push({
+    let column: Dictionary = {
       title: headerItems[index],
       dataIndex: fields[index],
       key: fields[index],
@@ -31,7 +32,16 @@ export const getTableColumns = (
       },
       sortOrder: sortedInfo && sortedInfo.columnKey === fields[index] && sortedInfo.order,
       ellipsis: true,
-    });
+    };
+
+    if (field === 'createdAt') {
+      column = {
+        ...column,
+        render: (value: string) => formatDate(value),
+      };
+    }
+
+    columns.push(column);
   });
 
   columns.push({

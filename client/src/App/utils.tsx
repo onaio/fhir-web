@@ -12,7 +12,6 @@ export const productCatalogueProps = {
 };
 
 export const jsonValidatorListProps = {
-  formVersion: null,
   uploadFileURL: URL_UPLOAD_JSON_VALIDATOR,
   isJsonValidator: true,
 };
@@ -35,4 +34,9 @@ export const draftListProps = {
 export const releaseListProps = {
   uploadFileURL: URL_UPLOAD_DRAFT_FILE,
   currentURL: URL_MANIFEST_RELEASE_LIST,
+};
+
+export const releaseViewProps = {
+  uploadFileURL: URL_UPLOAD_DRAFT_FILE,
+  isJsonValidator: false,
 };
