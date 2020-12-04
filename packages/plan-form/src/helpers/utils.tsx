@@ -1,27 +1,13 @@
-import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import {
-  PlanFormFields,
-  isFIOrDynamicFI,
   actionReasons,
   PlanActionCodes,
   goalPriorities,
   InterventionType,
-  FIReasons,
-  PlanStatus,
   taskGenerationStatuses,
-  fiStatusCodes,
   PlanActivityFormFields,
-} from '@opensrp/planform-core';
+} from '@opensrp/plan-form-core';
 import { Rule } from 'rc-field-form/lib/interface';
 import moment from 'moment';
-
-export const formIsFIOrDynamicFI = (
-  form: FormInstance<PlanFormFields>,
-  interventionFieldName = 'interventionType'
-): boolean => {
-  const interventionType = form.getFieldValue([interventionFieldName]);
-  return isFIOrDynamicFI(interventionType);
-};
 
 export const validationRules = {
   activities: {
@@ -41,7 +27,6 @@ export const validationRules = {
   caseNum: [{ type: 'string' }] as Rule[],
   date: [{ required: true, type: 'string' }] as Rule[],
   end: [{ required: true, type: 'date' }] as Rule[],
-  fiStatus: [{ type: 'enum', enum: fiStatusCodes }] as Rule[],
   identifier: [{ type: 'string' }] as Rule[],
   interventionType: [
     { type: 'enum', enum: Object.values(InterventionType), required: true },
@@ -50,35 +35,15 @@ export const validationRules = {
     id: [{ type: 'string' }] as Rule[],
     name: [{ type: 'string' }] as Rule[],
   },
-  fiReason: [
-    (form: FormInstance) => {
-      if (formIsFIOrDynamicFI(form)) {
-        return {
-          type: 'enum',
-          enum: FIReasons.map((e) => e),
-          required: true,
-        };
-      }
-      return { type: 'string' };
-    },
-  ] as Rule[],
   name: [{ type: 'string', required: true }] as Rule[],
-  opensrpEventId: [{ type: 'string' }] as Rule[],
   start: [{ type: 'date', required: true }] as Rule[],
-  status: [
-    {
-      type: 'string',
-      enum: Object.values(PlanStatus),
-      required: true,
-    },
-  ] as Rule[],
   taskGenerationStatus: [
     {
       type: 'enum',
       enum: Object.values(taskGenerationStatuses),
     },
   ] as Rule[],
-  teamAssignmentStatus: [{ type: 'string', required: true }] as Rule[],
+  teamAssignmentStatus: [{ type: 'string' }] as Rule[],
   title: [{ type: 'string', required: true }] as Rule[],
   version: [{ type: 'string' }] as Rule[],
 };
