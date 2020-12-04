@@ -8,6 +8,7 @@ export const LOCATIONS_UNIT = 'Locations unit';
 export const LOCATIONS_UNIT_GROUP = 'Locations unit group';
 export const LOCATIONS_UNIT_GROUP_SET = 'Locations unit group set';
 export const PRODUCT_CATALOGUE = 'Product Catalogue';
+export const PLANS = 'Plans';
 
 // URLs
 export const URL_EXPRESS_LOGIN = '/login';
