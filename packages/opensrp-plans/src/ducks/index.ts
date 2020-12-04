@@ -4,7 +4,7 @@ import { get, keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
-import { PlanDefinition } from '../plan-global-types';
+import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
 import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
 
 /** the reducer name */
@@ -28,26 +28,6 @@ export const REMOVE_PLAN_DEFINITIONS =
 /** PLAN_DEFINITION_FETCHED action type */
 export const ADD_PLAN_DEFINITION = 'reveal/reducer/opensrp/PlanDefinition/ADD_PLAN_DEFINITION';
 
-/** interface for plan Objects */
-/** Enum representing the possible intervention types */
-export enum PlanStatus {
-  ACTIVE = 'active',
-  COMPLETE = 'complete',
-  DRAFT = 'draft',
-  RETIRED = 'retired',
-}
-/** Enum representing the possible intervention types */
-export enum InterventionType {
-  DynamicFI = 'Dynamic-FI',
-  DynamicIRS = 'Dynamic-IRS',
-  DynamicMDA = 'Dynamic-MDA',
-  FI = 'FI',
-  IRS = 'IRS',
-  IRSLite = 'IRS-Lite',
-  MDA = 'MDA',
-  MDAPoint = 'MDA-Point',
-  SM = 'SM',
-}
 /** interface for fetch PlanDefinitions action */
 export interface FetchPlanDefinitionsAction extends AnyAction {
   planDefinitionsById: { [key: string]: PlanDefinition };
@@ -78,7 +58,7 @@ export type PlanDefinitionActionTypes =
 /**Fetch Plan Definitions action creator
  *
  * @param {PlanDefinition[]} planList - list of plan definition objects
- * @returns {FetchPlanDefinitionsAction} - returns fetch plandefinition action
+ * @returns {FetchPlanDefinitionsAction} - returns fetch planDefinition action
  */
 export const fetchPlanDefinitions = (
   planList: PlanDefinition[] = []
@@ -99,7 +79,7 @@ export const removePlanDefinitions = () => ({
 /**Add one Plan Definition action creator
  *
  * @param {PlanDefinition} planObj - the plan definition object
- * @returns {AddPlanDefinitionAction} returns add plandefinition action
+ * @returns {AddPlanDefinitionAction} returns add planDefinition action
  */
 export const addPlanDefinition = (planObj: PlanDefinition): AddPlanDefinitionAction => ({
   planObj,
