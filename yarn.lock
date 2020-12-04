@@ -2616,8 +2616,10 @@
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
   integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
 
-"@opensrp/planform-core@file:packages/planform-core":
-  version "0.0.4"
+"@opensrp/plan-form-core@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/plan-form-core/-/plan-form-core-0.0.1.tgz#a5a339415f80df9a7f29639cab25b4fc46f47ad0"
+  integrity sha512-mhoXuRbT4IHzJFBEtQB4PgnIgmuE/5E/5e1vSmJaouzDxmNtiT/Lo4hT4AmNmy2uwhobKq1aGL3d7dAak+oDJA==
   dependencies:
     "@onaio/utils" "^0.0.1"
     date-fns "2.11.1"

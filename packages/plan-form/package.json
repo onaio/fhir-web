@@ -42,7 +42,8 @@
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
     "@opensrp/notifications": "^0.0.2",
-    "@opensrp/planform-core": "file://home/peter/Desktop/opensrp/web/packages/planform-core",
+    "@opensrp/plan-form-core": "^0.0.1",
+    "@opensrp/server-service": "^0.0.12",
     "lodash": "^4.17.20",
     "uuid": "^8.3.1"
   }
