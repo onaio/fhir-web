@@ -112,10 +112,13 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const currentValue = e.target.value;
-    setValue(currentValue);
-    const filterDataedData = data.filter((entry: { label: string }) =>
-      entry.label.toLowerCase().includes(currentValue.toLowerCase())
+    const searchValue = e.target.value.toLowerCase();
+    setValue(searchValue);
+    const filterDataedData = data.filter(
+      (entry) =>
+        entry.label.toLowerCase().includes(searchValue) ||
+        entry.identifier.toLowerCase().includes(searchValue) ||
+        (entry.module && entry.module.toUpperCase().includes(searchValue))
     );
     setfilterDataData(filterDataedData);
   };

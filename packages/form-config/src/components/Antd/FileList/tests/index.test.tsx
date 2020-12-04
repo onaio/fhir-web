@@ -16,6 +16,9 @@ import {
   fixManifestFiles,
   downloadFile,
   fixManifestReleases,
+  manifestFile1,
+  manifestFile2,
+  manifestFile3,
 } from '../../../../ducks/tests/fixtures';
 import * as helpers from '../../../../helpers/fileDownload';
 import { act } from 'react-dom/test-utils';
@@ -176,7 +179,7 @@ describe('components/Antd/FileList', () => {
   });
 
   it('searches correctly', async () => {
-    fetch.once(JSON.stringify(fixManifestFiles));
+    fetch.once(JSON.stringify([manifestFile1, manifestFile2, manifestFile3]));
     fetch.once(JSON.stringify(downloadFile));
 
     const wrapper = mount(
@@ -193,9 +196,32 @@ describe('components/Antd/FileList', () => {
     wrapper.update();
 
     const search = wrapper.find('input#search');
+    // Before search
+    expect(wrapper.find('tbody').find('tr')).toHaveLength(3);
+
+    // Search by label
     search.simulate('change', { target: { value: 'test publish' } });
     wrapper.update();
+    expect(wrapper.find('tbody').find('tr')).toHaveLength(1);
 
+    // Reset
+    search.simulate('change', { target: { value: '' } });
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr')).toHaveLength(3);
+
+    // Search by identifier
+    search.simulate('change', { target: { value: 'test-form' } });
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr')).toHaveLength(1);
+
+    // Reset
+    search.simulate('change', { target: { value: '' } });
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr')).toHaveLength(3);
+
+    // Search by module
+    search.simulate('change', { target: { value: 'baz' } });
+    wrapper.update();
     expect(wrapper.find('tbody').find('tr')).toHaveLength(1);
 
     wrapper.unmount();
