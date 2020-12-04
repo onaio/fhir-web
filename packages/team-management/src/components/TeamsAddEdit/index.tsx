@@ -15,20 +15,34 @@ import './TeamsAddEdit.css';
 
 reducerRegistry.register(reducerName, reducer);
 
+/**
+ * Gets Team data
+ *
+ * @param {string} accessToken Token for api calles
+ * @param {string} id id of the team
+ * @returns {Promise<Object>} Object Containing Team Data
+ */
 export async function getTeamDetail(accessToken: string, id: string) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_GET + id);
   return await serve.list().then(async (response: Organization) => {
-    return await getPractinonerDetail(accessToken, id).then((prac) => {
-      return { name: response.name, active: response.active, practitioners: prac };
-    });
+    return {
+      name: response.name,
+      active: response.active,
+      practitioners: await getPractinonerDetail(accessToken, id),
+    };
   });
 }
 
+/**
+ * Gets Practioners assigned to a team
+ *
+ * @param {string} accessToken Token for api calles
+ * @param {string} id id of the team
+ * @returns {Promise<Array<Practitioner>>} list of Practitioner Assigned to a team
+ */
 export async function getPractinonerDetail(accessToken: string, id: string) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + id);
-  return await serve
-    .list()
-    .then((response: Practitioner[]) => response.map((prac) => prac.identifier));
+  return await serve.list().then((response: Practitioner[]) => response);
 }
 
 export const TeamsAddEdit: React.FC = () => {
@@ -40,7 +54,13 @@ export const TeamsAddEdit: React.FC = () => {
   useEffect(() => {
     if (params.id)
       getTeamDetail(accessToken, params.id)
-        .then((data) => setInitialValue(data))
+        .then((response) => {
+          const data = {
+            ...response,
+            practitioners: response.practitioners.map((prac) => prac.identifier),
+          };
+          setInitialValue(data);
+        })
         .catch((e) => notification.error({ message: `${e}`, description: '' }));
   }, [accessToken, params.id]);
 
