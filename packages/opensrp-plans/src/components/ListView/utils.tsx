@@ -21,21 +21,22 @@ export const columns: ColumnsType<PlanDefinition> = [
     title: 'Name',
     dataIndex: 'name',
     key: `${TableColumnsNamespace}-name`,
+    defaultSortOrder: 'descend',
+    sorter: (rec1, rec2) => {
+      if (rec1.name > rec2.name) {
+        return -1;
+      } else if (rec1.name < rec2.name) {
+        return 1;
+      } else {
+        return 0;
+      }
+    },
     width: '60%',
   },
   {
     title: 'Date',
     dataIndex: 'date',
     key: `${TableColumnsNamespace}-date`,
-    sorter: (rec1, rec2) => {
-      if (rec1.date > rec2.date) {
-        return 1;
-      } else if (rec1.date < rec2.date) {
-        return -1;
-      } else {
-        return 0;
-      }
-    },
   },
   {
     title: 'Actions',
