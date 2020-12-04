@@ -1,0 +1,56 @@
+import React from 'react';
+import { Dictionary } from '@onaio/utils';
+import { ManifestReleasesTypes } from '../../../ducks/manifestReleases';
+import { TableActions } from './TableActions';
+import { formatDate } from '../../../helpers/utils';
+
+export const getTableColumns = (viewFileURL: string, sortedInfo?: Dictionary): Dictionary[] => {
+  const columns: Dictionary[] = [];
+  const headerItems: string[] = ['Identifier', 'App Id', 'App Version', 'Updated At'];
+  const fields: string[] = ['identifier', 'appId', 'appVersion', 'updatedAt'];
+
+  fields.forEach((field: string, index: number) => {
+    let column: Dictionary = {
+      title: headerItems[index],
+      dataIndex: fields[index],
+      key: fields[index],
+      sorter: (a: Dictionary, b: Dictionary) => {
+        if (b[fields[index]]) {
+          return a[fields[index]].length - b[fields[index]].length;
+        }
+      },
+      sortOrder: sortedInfo && sortedInfo.columnKey === fields[index] && sortedInfo.order,
+      ellipsis: true,
+    };
+
+    if (field === 'identifier' || field === 'appVersion') {
+      column = {
+        ...column,
+        render: (value: string) => `V${value}`,
+      };
+    }
+
+    if (field === 'updatedAt') {
+      column = {
+        ...column,
+        render: (value: string) => formatDate(value),
+      };
+    }
+
+    columns.push(column);
+  });
+
+  columns.push({
+    title: 'Action',
+    key: 'action',
+    // eslint-disable-next-line react/display-name
+    render: (_: string, file: ManifestReleasesTypes) => {
+      const tableActionProps = {
+        file,
+        viewFileURL,
+      };
+      return <TableActions {...tableActionProps} />;
+    },
+  });
+  return columns;
+};

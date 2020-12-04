@@ -4,6 +4,7 @@ import {
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_UPLOAD_DRAFT_FILE,
+  URL_MANIFEST_RELEASE_LIST,
 } from '../constants';
 
 export const productCatalogueProps = {
@@ -12,7 +13,7 @@ export const productCatalogueProps = {
 
 export const jsonValidatorListProps = {
   formVersion: null,
-  formRoute: URL_UPLOAD_JSON_VALIDATOR,
+  uploadFileURL: URL_UPLOAD_JSON_VALIDATOR,
   isJsonValidator: true,
 };
 
@@ -27,6 +28,11 @@ export const draftFormProps = {
 };
 
 export const draftListProps = {
-  formRoute: URL_UPLOAD_DRAFT_FILE,
-  onMakeReleaseRedirectURL: '/',
+  uploadFileURL: URL_UPLOAD_DRAFT_FILE,
+  onMakeReleaseRedirectURL: URL_MANIFEST_RELEASE_LIST,
+};
+
+export const releaseListProps = {
+  uploadFileURL: URL_UPLOAD_DRAFT_FILE,
+  viewFileURL: URL_MANIFEST_RELEASE_LIST,
 };

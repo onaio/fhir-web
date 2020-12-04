@@ -8,7 +8,7 @@ export const getTableColumns = (
   accessToken: string,
   opensrpBaseURL: string,
   isJsonValidator: boolean,
-  formRoute: string,
+  uploadFileURL: string,
   sortedInfo?: Dictionary,
   customFetchOptions?: typeof getFetchOptions
 ): Dictionary[] => {
@@ -46,7 +46,7 @@ export const getTableColumns = (
     render: (_: string, file: ManifestFilesTypes) => {
       const tableActionProps = {
         file,
-        formRoute,
+        uploadFileURL,
         accessToken,
         opensrpBaseURL,
         isJsonValidator,

@@ -32,6 +32,7 @@ import {
   URL_JSON_VALIDATOR_LIST,
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
+  URL_MANIFEST_RELEASE_LIST,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -62,6 +63,7 @@ import {
   AntdFilesList,
   ROUTE_PARAM_FORM_ID,
   AntdDraftFileList,
+  AntdReleaseList,
 } from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
@@ -73,6 +75,7 @@ import {
   jsonValidatorFormProps,
   draftFormProps,
   draftListProps,
+  releaseListProps,
 } from './utils';
 
 const { Content } = Layout;
@@ -260,6 +263,14 @@ const App: React.FC = () => {
               path={URL_DRAFT_FILE_LIST}
               component={AntdDraftFileList.DrafFileList}
               {...draftListProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_MANIFEST_RELEASE_LIST}
+              component={AntdReleaseList.ReleaseList}
+              {...releaseListProps}
             />
             <Route
               exact

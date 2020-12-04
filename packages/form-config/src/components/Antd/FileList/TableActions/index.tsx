@@ -10,7 +10,7 @@ import { downloadManifestFile } from '../../../../helpers/utils';
 /** interface for component props */
 export interface TableActionsProps {
   file: ManifestFilesTypes;
-  formRoute: string;
+  uploadFileURL: string;
   accessToken: string;
   opensrpBaseURL: string;
   isJsonValidator: boolean;
@@ -39,7 +39,7 @@ export const onDownloadClick = (
 const TableActions = (props: TableActionsProps): JSX.Element => {
   const {
     file,
-    formRoute,
+    uploadFileURL,
     accessToken,
     opensrpBaseURL,
     isJsonValidator,
@@ -47,7 +47,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
   } = props;
   return (
     <>
-      <Link to={`${formRoute}/${file.id}`} key="actions">
+      <Link to={`${uploadFileURL}/${file.id}`} key="actions">
         Edit
       </Link>
       <Divider type="vertical" />
