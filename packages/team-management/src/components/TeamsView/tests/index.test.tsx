@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { history } from '@onaio/connected-reducer-registry';
 import { Router } from 'react-router';
 import React from 'react';
-import TeamsView, { loadSingleTeam } from '..';
+import TeamsView, { defaultProps, loadSingleTeam } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
@@ -18,7 +18,7 @@ describe('components/TeamsView', () => {
   it('renders without crashing', async () => {
     shallow(
       <Router history={history}>
-        <TeamsView />
+        <TeamsView {...defaultProps} />
       </Router>
     );
   });
@@ -28,7 +28,7 @@ describe('components/TeamsView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <TeamsView />
+          <TeamsView {...defaultProps} />
         </Router>
       </Provider>
     );
@@ -58,13 +58,14 @@ describe('components/TeamsView', () => {
         identifier: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
       },
       'sometoken',
+      '',
       jest.fn(),
       jest.fn()
     );
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <TeamsView />
+          <TeamsView {...defaultProps} />
         </Router>
       </Provider>
     );
@@ -87,13 +88,14 @@ describe('components/TeamsView', () => {
         identifier: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
       },
       'sometoken',
+      '',
       jest.fn(),
       jest.fn()
     );
     mount(
       <Provider store={store}>
         <Router history={history}>
-          <TeamsView />
+          <TeamsView {...defaultProps} />
         </Router>
       </Provider>
     );
