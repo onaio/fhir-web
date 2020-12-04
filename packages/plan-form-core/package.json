@@ -1,7 +1,7 @@
 {
   "name": "@opensrp/plan-form-core",
   "version": "0.0.1",
-  "description": "",
+  "description": "Core utils to support UIs for creating or editing plans",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
