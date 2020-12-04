@@ -39,7 +39,7 @@ export const SERVICE_POINT_CHECK = 'Service Point Check';
 export const SORT_BY_EFFECTIVE_PERIOD_START_FIELD = 'date';
 
 // opensrp api strings
-export const OPENSRP_API_BASE_URL = 'https://mg-eusm-staging.smartregister.org/opensrp/rest/';
+export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 export const OPENSRP_PLANS = 'plans';
 
 // router routes
