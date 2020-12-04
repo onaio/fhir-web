@@ -40,5 +40,8 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "@opensrp/plan-form-core": "^0.0.1"
+  }
 }

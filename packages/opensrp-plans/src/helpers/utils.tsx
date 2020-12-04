@@ -1,6 +1,5 @@
 import { Dictionary } from '@onaio/utils';
-import { InterventionType } from '../ducks';
-import { PlanDefinition, UseContext } from '../plan-global-types';
+import { InterventionType, PlanDefinition, UseContext } from '@opensrp/plan-form-core';
 
 /**
  * helper to retrieve the plan Type from a plan definition object
