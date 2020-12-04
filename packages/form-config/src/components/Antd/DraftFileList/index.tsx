@@ -26,7 +26,7 @@ export interface DraftFileListProps {
   opensrpBaseURL: string;
   removeDraftFiles: typeof removeManifestDraftFiles;
   fetchDraftFiles: typeof fetchManifestDraftFiles;
-  formRoute: string;
+  uploadFileURL: string;
   onMakeReleaseRedirectURL: string;
   customFetchOptions?: typeof getFetchOptions;
 }
@@ -34,7 +34,7 @@ export interface DraftFileListProps {
 /** default component props */
 export const defaultProps: DraftFileListProps = {
   opensrpBaseURL: '',
-  formRoute: '',
+  uploadFileURL: '',
   onMakeReleaseRedirectURL: '',
   removeDraftFiles: removeManifestDraftFiles,
   fetchDraftFiles: fetchManifestDraftFiles,
@@ -54,7 +54,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
     opensrpBaseURL,
     customFetchOptions,
     fetchDraftFiles,
-    formRoute,
+    uploadFileURL,
     onMakeReleaseRedirectURL,
     removeDraftFiles,
   } = props;
@@ -94,7 +94,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
       <Title level={3}>Draft Files</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'right' }}>
-          <Button type="primary" onClick={() => history.push(formRoute)}>
+          <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
             Upload New File
           </Button>

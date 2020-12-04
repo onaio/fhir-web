@@ -27,7 +27,7 @@ export interface FileListProps {
   formVersion: string | null;
   removeFiles: typeof removeManifestFiles;
   fetchFiles: typeof fetchManifestFiles;
-  formRoute: string;
+  uploadFileURL: string;
   isJsonValidator: boolean;
   customFetchOptions?: typeof getFetchOptions;
 }
@@ -36,7 +36,7 @@ export interface FileListProps {
 export const defaultProps: FileListProps = {
   opensrpBaseURL: '',
   formVersion: null,
-  formRoute: '',
+  uploadFileURL: '',
   isJsonValidator: false,
   removeFiles: removeManifestFiles,
   fetchFiles: fetchManifestFiles,
@@ -49,7 +49,7 @@ const FileList = (props: FileListProps): JSX.Element => {
     removeFiles,
     formVersion,
     fetchFiles,
-    formRoute,
+    uploadFileURL,
     isJsonValidator,
   } = props;
   const { Title } = Typography;
@@ -102,7 +102,7 @@ const FileList = (props: FileListProps): JSX.Element => {
       <Title level={3}>JSON Validators</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'right' }}>
-          <Button type="primary" onClick={() => history.push(formRoute)}>
+          <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
             Upload New File
           </Button>
@@ -114,7 +114,7 @@ const FileList = (props: FileListProps): JSX.Element => {
             accessToken,
             opensrpBaseURL,
             isJsonValidator,
-            formRoute,
+            uploadFileURL,
             sortedInfo,
             customFetchOptions
           )}

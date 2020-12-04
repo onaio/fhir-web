@@ -19,6 +19,7 @@ import {
   USER_MANAGEMENT,
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
+  URL_MANIFEST_RELEASE_LIST,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import { ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
@@ -58,6 +59,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.Item>
             </Menu.SubMenu>
           )}
+          <Menu.Item key="manifest-releases">
+            <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
+              Manifest Releases
+            </Link>
+          </Menu.Item>
           <Menu.Item key="drafts">
             <Link to={URL_DRAFT_FILE_LIST} className="admin-link">
               Draft Files
