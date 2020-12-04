@@ -941,6 +941,7 @@ export const expectedPlanDefinition = {
     end: '2019-08-29',
     start: '2019-08-09',
   },
+  description: "",
   experimental: false,
   goal: [
     {
@@ -1233,8 +1234,8 @@ export const planFormValues4 = {
       goalDue: parseISO('2019-08-16T00:00:00.000Z'),
       goalPriority: 'medium-priority',
       goalValue: 90,
-      timingPeriodEnd: parseISO('2000-02-05T21:00:00.000Z'),
-      timingPeriodStart: parseISO('2000-01-29T21:00:00.000Z'),
+      timingPeriodEnd: parseISO('2000-02-06T00:00:00.000Z'),
+      timingPeriodStart: parseISO('2000-01-30T00:00:00.000Z'),
     },
   ],
   caseNum: '',
