@@ -2,22 +2,18 @@
  */
 
 import { store, makeAPIStateSelector } from '@opensrp/store';
-import { getFetchOptions, OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { OPENSRP_API_BASE_URL, OPENSRP_PLAN_ENDPOINT } from '../constants';
-import { PlanDefinition } from '@opensrp/planform-core';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 
 const sessionSelector = makeAPIStateSelector();
 
 /** OpenSRP service */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
-  constructor(
-    endpoint: string,
-    baseURL: string = OPENSRP_API_BASE_URL,
-    fetchOptions: typeof getFetchOptions = getFetchOptions
-  ) {
+  constructor(endpoint: string, baseURL: string = OPENSRP_API_BASE_URL) {
     const accessToken = sessionSelector(store.getState(), { accessToken: true });
-    super(accessToken, baseURL, endpoint, fetchOptions);
+    super(accessToken, baseURL, endpoint);
   }
 }
 
@@ -35,11 +31,12 @@ export async function postPutPlan(
   service = OpenSRPService
 ) {
   const serve = new service(OPENSRP_PLAN_ENDPOINT, baseURL);
-  let serveMethod = serve.create;
   if (isEdit) {
-    serveMethod = serve.update;
+    return serve.update(payload).catch((err: Error) => {
+      throw err;
+    });
   }
-  return serveMethod(payload).catch((err: Error) => {
+  return serve.create(payload).catch((err: Error) => {
     throw err;
   });
 }
