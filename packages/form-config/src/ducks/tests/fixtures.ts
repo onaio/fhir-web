@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 export const fixManifestReleases = [
   {
     identifier: '1.0.11',
@@ -25,33 +27,46 @@ export const fixManifestReleases = [
   },
 ];
 
-/* eslint-disable @typescript-eslint/camelcase */
-export const fixManifestFiles = [
-  {
-    createdAt: 'Jun 19, 2020, 12:31:37 PM',
-    form_relation: '',
-    id: '52',
-    identifier: 'test-form-1.json',
-    isDraft: false,
-    isJsonValidator: false,
-    jursdiction: '',
-    label: 'test form',
-    module: '',
-    version: '1.0.26',
-  },
-  {
-    createdAt: 'Jun 19, 2020, 4:23:22 PM',
-    form_relation: '',
-    id: '53',
-    identifier: 'reveal-test-file.json',
-    isDraft: false,
-    isJsonValidator: false,
-    jursdiction: '',
-    label: 'test publish',
-    module: '',
-    version: '1.0.27',
-  },
-];
+export const manifestFile1 = {
+  createdAt: 'Jun 19, 2020, 12:31:37 PM',
+  form_relation: '',
+  id: '52',
+  identifier: 'test-form-1.json',
+  isDraft: false,
+  isJsonValidator: false,
+  jursdiction: '',
+  label: 'test form',
+  module: '',
+  version: '1.0.26',
+};
+
+export const manifestFile2 = {
+  createdAt: 'Jun 19, 2020, 4:23:22 PM',
+  form_relation: '',
+  id: '53',
+  identifier: 'reveal-test-file.json',
+  isDraft: false,
+  isJsonValidator: false,
+  jursdiction: '',
+  label: 'test publish',
+  module: '',
+  version: '1.0.27',
+};
+
+export const manifestFile3 = {
+  createdAt: 'Jun 19, 2020, 6:23:22 PM',
+  form_relation: '',
+  id: '54',
+  identifier: 'foo.json',
+  isDraft: false,
+  isJsonValidator: false,
+  jursdiction: '',
+  label: 'foo',
+  module: 'baz',
+  version: '1.0.28',
+};
+
+export const fixManifestFiles = [manifestFile1, manifestFile2];
 
 export const FixManifestDraftFiles = [
   {
