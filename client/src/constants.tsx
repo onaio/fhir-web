@@ -23,6 +23,6 @@ export const URL_UPLOAD_JSON_VALIDATOR = '/json-validators/upload';
 export const URL_JSON_VALIDATOR_LIST = '/json-validators';
 export const URL_DRAFT_FILE_LIST = '/drafts';
 export const URL_UPLOAD_DRAFT_FILE = '/drafts/upload';
-export const URL_MANIFEST_RELEASE_LIST = '/manifest/releases';
+export const URL_MANIFEST_RELEASE_LIST = '/releases';
 
 export const ERROR_OCCURRED = 'An error occurred';

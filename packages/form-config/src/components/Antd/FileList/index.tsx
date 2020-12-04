@@ -13,18 +13,26 @@ import filesReducer, {
 } from '../../../ducks/manifestFiles';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ERROR_OCCURRED, OPENSRP_FORM_METADATA_ENDPOINT } from '../../../constants';
+import {
+  ERROR_OCCURRED,
+  OPENSRP_FORM_METADATA_ENDPOINT,
+  ROUTE_PARAM_FORM_VERSION,
+} from '../../../constants';
 import { getTableColumns } from './utils';
-import { useHistory } from 'react-router';
+import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
 
+/** inteface for route params */
+export interface RouteParams {
+  [ROUTE_PARAM_FORM_VERSION]: string;
+}
+
 /** interface for component props */
 export interface FileListProps {
   opensrpBaseURL: string;
-  formVersion: string | null;
   removeFiles: typeof removeManifestFiles;
   fetchFiles: typeof fetchManifestFiles;
   uploadFileURL: string;
@@ -35,30 +43,34 @@ export interface FileListProps {
 /** default component props */
 export const defaultProps: FileListProps = {
   opensrpBaseURL: '',
-  formVersion: null,
   uploadFileURL: '',
   isJsonValidator: false,
   removeFiles: removeManifestFiles,
   fetchFiles: fetchManifestFiles,
 };
 
-const FileList = (props: FileListProps): JSX.Element => {
+/** type intersection for all types that pertain to the props */
+export type FileListPropTypes = FileListProps & RouteComponentProps<RouteParams>;
+
+const FileList = (props: FileListPropTypes): JSX.Element => {
   const {
     opensrpBaseURL,
     customFetchOptions,
     removeFiles,
-    formVersion,
     fetchFiles,
     uploadFileURL,
     isJsonValidator,
+    match,
   } = props;
   const { Title } = Typography;
   const [loading, setLoading] = useState<boolean>(false);
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const data: ManifestFilesTypes[] = useSelector((state) => getAllManifestFilesArray(state));
+  const formVersion = match.params[ROUTE_PARAM_FORM_VERSION];
   const dispatch = useDispatch();
   const history = useHistory();
+  const title = formVersion ? `Releases: ${formVersion}` : 'JSON Validators';
 
   useEffect(() => {
     /** get manifest files */
@@ -99,14 +111,19 @@ const FileList = (props: FileListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>JSON Validators</Title>
+      <Title level={3}>{title}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'right' }}>
-          <Button type="primary" onClick={() => history.push(uploadFileURL)}>
-            <UploadOutlined />
-            Upload New File
-          </Button>
-          <Divider type="vertical" />
+          {isJsonValidator && (
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            <>
+              <Button type="primary" onClick={() => history.push(uploadFileURL)}>
+                <UploadOutlined />
+                Upload New File
+              </Button>
+              <Divider type="vertical" />
+            </>
+          )}
           <SettingOutlined />
         </Space>
         <Table

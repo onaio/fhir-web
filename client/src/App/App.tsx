@@ -64,6 +64,7 @@ import {
   ROUTE_PARAM_FORM_ID,
   AntdDraftFileList,
   AntdReleaseList,
+  ROUTE_PARAM_FORM_VERSION,
 } from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
@@ -76,6 +77,7 @@ import {
   draftFormProps,
   draftListProps,
   releaseListProps,
+  releaseViewProps,
 } from './utils';
 
 const { Content } = Layout;
@@ -260,6 +262,14 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={`${URL_UPLOAD_DRAFT_FILE}/:${ROUTE_PARAM_FORM_ID}`}
+              component={AntdUploadForm.UploadForm}
+              {...draftFormProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={URL_DRAFT_FILE_LIST}
               component={AntdDraftFileList.DrafFileList}
               {...draftListProps}
@@ -271,6 +281,14 @@ const App: React.FC = () => {
               path={URL_MANIFEST_RELEASE_LIST}
               component={AntdReleaseList.ReleaseList}
               {...releaseListProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_MANIFEST_RELEASE_LIST}/:${ROUTE_PARAM_FORM_VERSION}`}
+              component={AntdFilesList.FileList}
+              {...releaseViewProps}
             />
             <Route
               exact

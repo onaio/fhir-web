@@ -3,6 +3,7 @@ import { Dictionary } from '@onaio/utils';
 import { ManifestFilesTypes } from '../../../ducks/manifestFiles';
 import { TableActions } from './TableActions';
 import { getFetchOptions } from '@opensrp/server-service';
+import { formatDate } from '../../../helpers/utils';
 
 export const getTableColumns = (
   accessToken: string,
@@ -17,7 +18,7 @@ export const getTableColumns = (
   const fields: string[] = ['identifier', 'label', 'version', 'createdAt'];
 
   fields.forEach((field: string, index: number) => {
-    columns.push({
+    let column: Dictionary = {
       title: headerItems[index],
       dataIndex: fields[index],
       key: fields[index],
@@ -28,7 +29,16 @@ export const getTableColumns = (
       },
       sortOrder: sortedInfo && sortedInfo.columnKey === fields[index] && sortedInfo.order,
       ellipsis: true,
-    });
+    };
+
+    if (field === 'createdAt') {
+      column = {
+        ...column,
+        render: (value: string) => formatDate(value),
+      };
+    }
+
+    columns.push(column);
   });
 
   if (!isJsonValidator) {
