@@ -1,5 +1,3 @@
-export const API_BASE_URL = process.env.REACT_APP_OPENSRP_API_BASE_URL;
-
 //url
 export const URL_ADD_TEAM = 'teams/add';
 export const URL_EDIT_TEAM = 'teams/edit/';

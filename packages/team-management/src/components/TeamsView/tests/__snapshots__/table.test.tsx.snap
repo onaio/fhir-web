@@ -57,6 +57,7 @@ Object {
           },
         ]
       }
+      opensrpBaseURL=""
       setDetail={[Function]}
       setPractitionersList={[Function]}
     />
