@@ -49,8 +49,7 @@ describe('components/TeamsView/table', () => {
         </Router>
       </Provider>
     );
-
-    expect(wrapper.props()).toMatchSnapshot();
+    expect(wrapper.props().children.props.children).toMatchSnapshot('Table');
   });
 
   it('Test Table View Detail', () => {
