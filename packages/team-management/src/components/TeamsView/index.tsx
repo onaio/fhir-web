@@ -23,6 +23,7 @@ import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
 
+/** Register reducer */
 reducerRegistry.register(reducerName, reducer);
 
 /**
@@ -107,6 +108,13 @@ const TeamsView: React.FC<Props> = (props: Props) => {
     });
   }
 
+  /**
+   * Returns filted list of teams
+   *
+   * @param {object} e event recieved onChange
+   * @param {object} e.target -
+   * @param {object} e.target.value value to be filtered from tabel list
+   */
   const onChange = (e: { target: { value: string } }) => {
     const currentValue = e.target.value;
     setValue(currentValue);
