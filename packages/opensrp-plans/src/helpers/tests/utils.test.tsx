@@ -1,9 +1,8 @@
 import { SORT_BY_EFFECTIVE_PERIOD_START_FIELD } from '../../constants';
 import * as planDefinitionFixtures from '../../ducks/tests/fixtures';
-import { InterventionType } from '../../ducks/index';
+import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
 import * as fixtures from '../../ducks/tests/fixtures';
 import { descendingOrderSort, isPlanDefinitionOfType, getPlanType } from '../utils';
-import { PlanDefinition } from '../../plan-global-types';
 
 describe('helpers/utils', () => {
   beforeEach(() => {
