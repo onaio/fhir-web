@@ -1,4 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
+export const manifestRelease4 = {
+  identifier: '1.0.30',
+  json: '{"forms_version":"1.0.16","identifiers":["blood_screening.json"}',
+  appId: 'org.smartregister.foo',
+  appVersion: '1.2.18',
+  createdAt: '2020-06-09T14:40:04.189+02:00',
+  updatedAt: '2020-06-09T14:40:04.189+02:00',
+};
 
 export const fixManifestReleases = [
   {
