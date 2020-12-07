@@ -21,15 +21,14 @@ reducerRegistry.register(reducerName, reducer);
  * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
  * @param {Function} setInitialValue function to set initial value
- * @returns {Promise<Object>} Object Containing Team Data
  */
-export async function getTeamDetail(
+export function getTeamDetail(
   accessToken: string,
   id: string,
   setInitialValue: React.Dispatch<React.SetStateAction<FormField | null>>
 ) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_GET + id);
-  return await serve
+  serve
     .list()
     .then(async (response: Organization) => {
       setInitialValue({
