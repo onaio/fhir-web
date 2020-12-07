@@ -16,7 +16,7 @@ import reducer, {
   reducerName,
 } from '../../ducks/organizations';
 import { getAccessToken } from '@onaio/session-reducer';
-import { ERROR_OCCURRED, TEAMS_ALL, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
+import { ERROR_OCCURRED, TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
@@ -83,7 +83,7 @@ const TeamsView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new OpenSRPService(accessToken, opensrpBaseURL, TEAMS_ALL);
+      const serve = new OpenSRPService(accessToken, opensrpBaseURL, TEAMS_GET);
       serve
         .list()
         .then((response: Organization[]) => {
