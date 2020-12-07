@@ -3,7 +3,7 @@ import { Spin, Alert } from 'antd';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { PLANS_LIST_VIEW_URL, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
-import { PlanDefinition } from 'opensrp-plans/src/plan-global-types';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 
 /** component rendered in the action column of the table */
 

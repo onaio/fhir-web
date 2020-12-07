@@ -5,7 +5,7 @@ import { store, makeAPIStateSelector } from '@opensrp/store';
 import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
 import { OPENSRP_API_BASE_URL, OPENSRP_PLANS } from '../constants';
 import { fetchPlanDefinitions } from '../ducks';
-import { PlanDefinition } from '../plan-global-types';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 
 /** OpenSRP service */
 export class OpenSRPService extends GenericOpenSRPService {

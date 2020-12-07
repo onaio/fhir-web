@@ -14,7 +14,7 @@ import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { PLANS_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { PlanDefinition } from 'opensrp-plans/src/plan-global-types';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(PlansReducerName, PlansReducer);
