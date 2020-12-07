@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Row, PageHeader, Col, Button, Table } from 'antd';
 import { TeamAssignmentLoading, columns } from './utils';
@@ -63,6 +63,8 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [planLocationId, setPlanLocationId] = useState<string>('');
+  const planLocationIdRef = useRef(planLocationId);
+  planLocationIdRef.current = planLocationId;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
 
   React.useEffect(() => {
@@ -103,7 +105,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
       // fetch plan location hierarchy
       let hierarchyPromise;
-      if (planLocationId.length && !Treedata.length) {
+      if (planLocationIdRef.current.length) {
         const hierarchyService = new OpenSRPService(
           accessToken,
           opensrpBaseURL,
@@ -114,6 +116,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           .then((response: RawOpenSRPHierarchy) => {
             const hierarchy = generateJurisdictionTree(response);
             dispatch(fetchAllHierarchies(hierarchy.model));
+            setPlanLocationId('');
           })
           .catch((e) => {
             handleBrokenPage(e.message);
@@ -127,7 +130,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         });
     }
   }, [
-    Treedata.length,
+    Treedata,
     accessToken,
     currentParentChildren.length,
     defaultPlanId,
@@ -158,12 +161,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       );
       return jurisdictionOrgIds.includes(org.identifier);
     });
-    const jurisdictionOrgIds = jurisdictionOrgs.map((org) => org.name);
+    const jurisdictionOrgNames = jurisdictionOrgs.map((org) => org.name);
     return {
       id: datum.id,
       key: i.toString(),
       locationName: datum.label,
-      assignedTeams: jurisdictionOrgIds.length ? jurisdictionOrgIds.join(', ') : '-',
+      assignedTeams: jurisdictionOrgNames.length ? jurisdictionOrgNames.join(', ') : '-',
     };
   });
 
