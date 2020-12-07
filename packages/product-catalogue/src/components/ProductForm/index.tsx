@@ -241,6 +241,7 @@ const ProductForm = (props: ProductFormProps) => {
                   required={true}
                 >
                   <Input.TextArea
+                    rows={4}
                     name="availability"
                     placeholder="Describe where a supply monitor can locate this product at the service point."
                   />
@@ -251,6 +252,7 @@ const ProductForm = (props: ProductFormProps) => {
                   label="Is it in good condition? (optional)"
                 >
                   <Input.TextArea
+                    rows={4}
                     name="condition"
                     placeholder="Describe how a supply monitor would assess whether the product is in good condition"
                   />
@@ -261,6 +263,7 @@ const ProductForm = (props: ProductFormProps) => {
                   label="Is it being used appropriately? (optional)"
                 >
                   <Input.TextArea
+                    rows={4}
                     name="appropriateUsage"
                     placeholder="Describe the product's intended use at the service point"
                   />
