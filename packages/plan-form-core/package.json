@@ -1,7 +1,7 @@
 {
-  "name": "@opensrp/template",
-  "version": "0.0.4",
-  "description": "",
+  "name": "@opensrp/plan-form-core",
+  "version": "0.0.1",
+  "description": "Core utils to support UIs for creating or editing plans",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
@@ -12,7 +12,7 @@
   },
   "repository": "https://github.com/opensrp/web",
   "config": {
-    "folderName": "template"
+    "folderName": "plan-form-core"
   },
   "scripts": {
     "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
@@ -37,5 +37,15 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "@onaio/utils": "^0.0.1",
+    "date-fns": "2.11.1",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^8.3.0"
+  }
 }
