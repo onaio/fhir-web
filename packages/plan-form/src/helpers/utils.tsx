@@ -5,9 +5,16 @@ import {
   InterventionType,
   taskGenerationStatuses,
   PlanActivityFormFields,
+  PlanStatus,
+  PlanFormFields as BasePlanFormFields,
+  getPlanFormValues as getBasePlanFormValues,
+  generatePlanDefinition as generateBasePlanDefinition,
+  PlanDefinition,
 } from '@opensrp/plan-form-core';
 import { Rule } from 'rc-field-form/lib/interface';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
+import { PlanFormFields } from './types';
+import { Dictionary } from '@onaio/utils';
 
 export const validationRules = {
   activities: {
@@ -25,8 +32,8 @@ export const validationRules = {
     timingPeriodStart: [{ required: true, type: 'date' }] as Rule[],
   },
   caseNum: [{ type: 'string' }] as Rule[],
-  date: [{ required: true, type: 'string' }] as Rule[],
-  end: [{ required: true, type: 'date' }] as Rule[],
+  date: [{ required: true, type: 'date' }] as Rule[],
+  dateRange: [{ required: true }] as Rule[],
   identifier: [{ type: 'string' }] as Rule[],
   interventionType: [
     { type: 'enum', enum: Object.values(InterventionType), required: true },
@@ -36,7 +43,6 @@ export const validationRules = {
     name: [{ type: 'string' }] as Rule[],
   },
   name: [{ type: 'string', required: true }] as Rule[],
-  start: [{ type: 'date', required: true }] as Rule[],
   taskGenerationStatus: [
     {
       type: 'enum',
@@ -46,8 +52,21 @@ export const validationRules = {
   teamAssignmentStatus: [{ type: 'string' }] as Rule[],
   title: [{ type: 'string', required: true }] as Rule[],
   version: [{ type: 'string' }] as Rule[],
+  status: [
+    {
+      type: 'string',
+      enum: Object.values(PlanStatus),
+      required: true,
+    },
+  ] as Rule[],
+  description: [{ type: 'string', required: true }] as Rule[],
 };
 
+/** util that changes date fields in activities to use moment
+ *
+ * @param {PlanActivityFormFields[]} planActivities -  the plan activities
+ * @returns {PlanActivityFormFields[]} -
+ */
 export const processActivitiesDates = (planActivities: PlanActivityFormFields[]) => {
   const withProcessedDates: PlanActivityFormFields[] = planActivities.map((activity) => {
     return {
@@ -57,4 +76,63 @@ export const processActivitiesDates = (planActivities: PlanActivityFormFields[])
     };
   });
   return withProcessedDates;
+};
+
+/** Takes our form values and transforms that to a form value object that plan-form-core can parse
+ *
+ * @param {PlanFormFields} formValues - formValues straight from the form
+ * @returns {BasePlanFormFields} formValues as described in form-core
+ */
+export const processToBasePlanForm = (formValues: PlanFormFields): BasePlanFormFields => {
+  const baseFormValues = {
+    ...formValues,
+    start: formValues.dateRange[0].toDate(),
+    end: formValues.dateRange[1].toDate(),
+    date: (formValues.date as Moment).toDate(),
+  };
+  delete (baseFormValues as Dictionary).dateRange;
+  return baseFormValues;
+};
+
+/** Takes formValues as created by form-core and changes the dates structures to use moment
+ *
+ * @param {BasePlanFormFields} baseFormValues - formValues as parsed by form-core utils
+ * @returns {PlanFormFields} formValues that can has a Moment as date type
+ */
+export const parseBasePlanFormValues = (baseFormValues: BasePlanFormFields): PlanFormFields => {
+  const formValues = {
+    ...baseFormValues,
+    date: moment(baseFormValues.date),
+    dateRange: [moment(baseFormValues.start), moment(baseFormValues.end)],
+  };
+  delete (formValues as Dictionary).start;
+  delete (formValues as Dictionary).end;
+
+  return formValues;
+};
+
+/** a wrapper around form-core that generates formValues from a plan definition,
+ *
+ * @param {PlanDefinition} plan - the plan object
+ * @returns {PlanFormFields} - the form values
+ */
+export const getPlanFormValues = (plan: PlanDefinition) => {
+  const basePlanFormValues = getBasePlanFormValues(plan);
+  const planFormValues = parseBasePlanFormValues(basePlanFormValues);
+  const finalFormValues = {
+    ...planFormValues,
+    activities: processActivitiesDates(planFormValues.activities),
+  };
+  return finalFormValues;
+};
+
+/** A wrapper around form-core plan generation, generates a plan definition object
+ * from form values
+ *
+ * @param {PlanFormFields} planFormValues - the form values
+ * @returns {PlanDefinition} a plan definition
+ */
+export const generatePlanDefinition = (planFormValues: PlanFormFields) => {
+  const basePlanFormValues = processToBasePlanForm(planFormValues);
+  return generateBasePlanDefinition(basePlanFormValues);
 };
