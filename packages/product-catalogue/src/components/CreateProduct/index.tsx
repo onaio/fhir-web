@@ -21,7 +21,7 @@ const defaultProps = {
 
 const CreateProductView = (props: CreateProductViewProps) => {
   const { baseURL } = props;
-  const pageTitle = 'Add Product to Catalogue';
+  const pageTitle = 'Add product to catalogue';
 
   return (
     <Layout className="content-section">
