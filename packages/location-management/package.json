@@ -44,7 +44,7 @@
   },
   "peerDependencies": {
     "formik-antd": "^2.0.1",
-    "uuidv4": "^6.2.5",
+    "uuid": "^8.3.1",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/reducer-factory": "^0.0.11",
     "@opensrp/server-service": "^0.0.12",
