@@ -50,7 +50,7 @@ export const EXPRESS_OAUTH_GET_STATE_URL =
 export const EXPRESS_OAUTH_LOGOUT_URL =
   process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
 
-/** Do you want to disable login protection? */
+/** Do you want to disable login protection */
 export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROTECTION === 'true';
 
 /** Activate the product-catalogue menu */
@@ -58,6 +58,10 @@ export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CAT
 
 /** Activate teams menu */
 export const ENABLE_TEAMS_MODULE = process.env.REACT_APP_ENABLE_TEAMS_MODULE === 'true';
+
+/** Activate teams assignment menu */
+export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
+  process.env.REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE === 'true';
 
 /** Default plan id */
 export const DEFAULT_PLAN_ID =
