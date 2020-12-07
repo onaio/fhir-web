@@ -58,3 +58,7 @@ export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CAT
 
 /** Activate teams menu */
 export const ENABLE_TEAMS_MODULE = process.env.REACT_APP_ENABLE_TEAMS_MODULE === 'true';
+
+/** Default plan id */
+export const DEFAULT_PLAN_ID =
+  process.env.REACT_APP_DEFAULT_PLAN_ID || '27362060-0309-411a-910c-64f55ede3758';
