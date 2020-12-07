@@ -12,7 +12,7 @@ import LocationUnitAddEdit from '..';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
 
-describe('location-management/src/components/LocationUnitAddEditt', () => {
+describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>

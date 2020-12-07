@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/locations/Form renders without crashing 1`] = `
+exports[`Location-module/Form renders without crashing 1`] = `
 Object {
   "children": <Router
     history={
