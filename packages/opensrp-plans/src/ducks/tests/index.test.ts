@@ -1,9 +1,9 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { keyBy } from 'lodash';
 import { FlushThunks } from 'redux-testkit';
-import { PlanDefinition } from '../../plan-global-types';
+import { PlanDefinition, InterventionType } from '@opensrp/plan-form-core';
 import { store } from '@opensrp/store';
-import { getPlanIds, getTitle, InterventionType } from '../index';
+import { getPlanIds, getTitle } from '../index';
 import reducer, {
   addPlanDefinition,
   fetchPlanDefinitions,
@@ -16,8 +16,6 @@ import reducer, {
   removePlanDefinitions,
 } from '../index';
 import * as fixtures from './fixtures';
-
-// jest.mock('../../../../../configs/env');
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -93,6 +91,17 @@ describe('reducers/opensrp/PlanDefinition', () => {
     ).toEqual([fixtures.plans[3]]);
     expect(PlanDefinitionsArraySelector(store.getState(), { planIds: [] })).toEqual([]);
     expect(PlanDefinitionsArraySelector(store.getState(), { planIds: null })).toHaveLength(6);
+    const plansSelector = makePlanDefinitionsArraySelector(undefined, 'date');
+    const sorted = plansSelector(store.getState(), {});
+    const dates = sorted.map((plan) => plan.date);
+    expect(dates).toEqual([
+      '2020-06-24',
+      '2019-10-18',
+      '2019-07-18',
+      '2019-07-10',
+      '2019-05-19',
+      '2019-05-19',
+    ]);
 
     // reset
     store.dispatch(removePlanDefinitions());
@@ -148,5 +157,12 @@ describe('reducers/opensrp/PlanDefinition', () => {
       fixtures.plans[2],
       fixtures.plans[3],
     ]);
+  });
+
+  it('non Existent plan key', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const planSelectors = makePlanDefinitionsArraySelector('someKey' as any);
+    const response = planSelectors(store.getState(), {});
+    expect(response).toEqual([]);
   });
 });

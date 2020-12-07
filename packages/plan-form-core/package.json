@@ -1,7 +1,7 @@
 {
-  "name": "@opensrp/plans",
-  "version": "0.0.0",
-  "description": "Opensrp plans",
+  "name": "@opensrp/plan-form-core",
+  "version": "0.0.1",
+  "description": "Core utils to support UIs for creating or editing plans",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
@@ -12,16 +12,14 @@
   },
   "repository": "https://github.com/opensrp/web",
   "config": {
-    "folderName": "opensrp-plans"
+    "folderName": "plan-form-core"
   },
   "scripts": {
     "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
-    "lint:windows": "eslint ./**/*.{js,jsx,ts,tsx}",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "build:windows": "yarn run tsc && yarn run transpile:windows && yarn run copy",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
@@ -35,13 +33,19 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "antd": "^4.6.3",
     "react": "^16.18.1"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/plan-form-core": "^0.0.1"
+    "@onaio/utils": "^0.0.1",
+    "date-fns": "2.11.1",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^8.3.0"
   }
 }
