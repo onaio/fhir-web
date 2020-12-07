@@ -149,7 +149,7 @@ describe('location-management/src/components/LocationTagView', () => {
 
   it('hanldles failed deletion', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
 
     onDelete(sampleLocationTagPayload, 'sometoken');
 
@@ -158,7 +158,7 @@ describe('location-management/src/components/LocationTagView', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'API is down',
+      message: 'An error occurred',
       description: undefined,
     });
   });

@@ -101,7 +101,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   });
 
   it('handles error when creating new location unit', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
     await onSubmit(
@@ -118,7 +118,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'API is down',
+      message: 'An error occurred',
     });
   });
 
@@ -171,7 +171,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   });
 
   it('handles error when editing location unit', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     await onSubmit(setSubmittingMock, values, accessToken, props.locationtag, props.username, '1');
 
@@ -181,7 +181,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'API is down',
+      message: 'An error occurred',
     });
   });
 

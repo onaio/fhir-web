@@ -82,9 +82,9 @@ describe('Location-module/locationunit', () => {
     wrapper.unmount();
   });
 
-  it('test error thrown if API is down', async () => {
+  it('test error thrown if An error occurred', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
     loadSingleLocation(
       { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
       'sometoken',
@@ -104,7 +104,7 @@ describe('Location-module/locationunit', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'API is down',
+      message: 'An error occurred',
       description: undefined,
     });
   });

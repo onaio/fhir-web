@@ -153,7 +153,7 @@ describe('Location-module/Form', () => {
   });
 
   it('Handles errors on fetching single tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -170,14 +170,14 @@ describe('Location-module/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'API request Failed',
+      message: 'An error occurred',
     });
 
     wrapper.unmount();
   });
 
   it('Handles errors on creating tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -204,14 +204,14 @@ describe('Location-module/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'API request Failed',
+      message: 'An error occurred',
     });
 
     wrapper.unmount();
   });
 
   it('Handles errors on editing tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     onSubmit(fixtures.sampleLocationTagPayload, 'sometoken', { id: '1' }, jest.fn());
 
@@ -221,7 +221,7 @@ describe('Location-module/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'API request Failed',
+      message: 'An error occurred',
     });
   });
 });
