@@ -8,6 +8,7 @@ import toJson from 'enzyme-to-json';
 import { product1 } from '../../../ducks/productCatalogue/tests/fixtures';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
+import { product2 } from './fixtures';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -376,6 +377,69 @@ describe('productForm', () => {
       availability: 'Is available',
       serverVersion: 123456,
       uniqueId: 1,
+    };
+
+    expect(data).toMatchObject({
+      productCatalogue: expect.any(File),
+    });
+
+    const reader = new FileReader();
+    reader.readAsText(data.productCatalogue);
+
+    reader.addEventListener('load', function () {
+      try {
+        const result = reader.result;
+        expect(JSON.parse(result as string)).toEqual(formFields);
+        done();
+      } catch (error) {
+        done.fail(error);
+      }
+    });
+  });
+
+  it('Retest form submission formdata append error', async (done) => {
+    // investigating formData.append: argument 2 is not an object error
+    fetch.once(JSON.stringify({ message: 'success' }));
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const props = {
+      initialValues: product2,
+    };
+
+    const wrapper = mount(
+      <MemoryRouter>
+        <ProductForm {...props} />
+      </MemoryRouter>,
+      { attachTo: div }
+    );
+
+    // change is it in good condition
+    wrapper
+      .find('textarea[name="condition"]')
+      .simulate('change', { target: { name: 'condition', value: 'well maintained' } });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    const fd = fetch.mock.calls[0][1].body;
+
+    const data = (Object as any).fromEntries(fd);
+
+    const formFields = {
+      accountabilityPeriod: 2,
+      appropriateUsage: 'this should be optional',
+      availability: 'yeah',
+      condition: 'well maintained',
+      isAttractiveItem: false,
+      materialNumber: 'asd',
+      photoURL: 'http://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4',
+      productName: 'Change name',
+      uniqueId: 4,
     };
 
     expect(data).toMatchObject({

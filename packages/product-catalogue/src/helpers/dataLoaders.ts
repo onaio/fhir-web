@@ -95,20 +95,22 @@ export const postPutOptions = (
     return getFetchOptions(_, accessToken, method, payload);
   }
   const data = new FormData();
-  const photoURLKeyName = 'file';
+  // name of key of file in payload
+  const payLoadKeyName = 'file';
+  // name of key for other formFields
   const formFieldsFileKeyName = 'productCatalogue';
-
   const file = payload.photoURL;
-  if (file) {
-    data.append(photoURLKeyName, file, file.name);
+  const formFields = { ...payload };
+
+  // add file to payload if file whether for post or put
+  if (file instanceof File) {
+    data.append(payLoadKeyName, file, file.name);
   }
 
-  // curate the other values
-  const formFields = { ...payload };
+  // post method should not have uniqueId
   if (method === 'POST') {
     delete formFields.uniqueId;
   }
-  delete formFields.photoURL;
 
   // random file name to give to this file.
   const formFieldsFileName = 'product.json';
@@ -120,7 +122,7 @@ export const postPutOptions = (
   const bearer = `Bearer ${accessToken}`;
   return {
     body: data,
-    headers: { authorization: bearer, accept: 'application/json' },
+    headers: { authorization: bearer },
     method,
   };
 };
