@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { getFetchOptions, OpenSRPService } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { getAccessToken } from '@onaio/session-reducer';
-import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
+import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import releasesReducer, {
   fetchManifestReleases,
   releasesReducerName,
@@ -12,7 +12,7 @@ import releasesReducer, {
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
-import { Card, Typography, Spin, Table, Space, Button, Divider } from 'antd';
+import { Card, Typography, Spin, Table, Space, Button, Divider, Input } from 'antd';
 import { OPENSRP_MANIFEST_ENDPOINT, ERROR_OCCURRED } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
@@ -46,6 +46,8 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const data: ManifestReleasesTypes[] = useSelector((state) => getAllManifestReleasesArray(state));
   data.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const [filterData, setfilterDataData] = useState<ManifestReleasesTypes[] | null>(null);
+  const [value, setValue] = useState('');
   const { opensrpBaseURL, uploadFileURL, currentURL, customFetchOptions, fetchReleases } = props;
 
   useEffect(() => {
@@ -70,10 +72,32 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
     return <Spin />;
   }
 
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value.toLowerCase();
+    setValue(searchValue);
+    const filterDataedData = data.filter(
+      (entry) =>
+        entry.appId.toLowerCase().includes(searchValue) ||
+        entry.appVersion.toLowerCase().includes(searchValue) ||
+        entry.identifier.toLowerCase().includes(searchValue)
+    );
+    setfilterDataData(filterDataedData);
+  };
+
   return (
     <div className="layout-content">
       <Title level={3}>Releases</Title>
       <Card>
+        <Space style={{ marginBottom: 16, float: 'left' }}>
+          <Input
+            id="search"
+            placeholder="Search"
+            size="large"
+            value={value}
+            prefix={<SearchOutlined />}
+            onChange={onChange}
+          />
+        </Space>
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
@@ -84,7 +108,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
         </Space>
         <Table
           columns={getTableColumns(currentURL, sortedInfo)}
-          dataSource={data}
+          dataSource={value.length < 1 ? data : (filterData as ManifestReleasesTypes[])}
           pagination={{
             showQuickJumper: true,
             showSizeChanger: true,
