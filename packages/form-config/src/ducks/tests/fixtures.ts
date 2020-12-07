@@ -66,6 +66,24 @@ export const manifestFile3 = {
   version: '1.0.28',
 };
 
+export const draftFile1 = {
+  ...manifestFile1,
+  isDraft: true,
+  isJsonValidator: false,
+};
+
+export const draftFile2 = {
+  ...manifestFile2,
+  isDraft: true,
+  isJsonValidator: false,
+};
+
+export const draftFile3 = {
+  ...manifestFile3,
+  isDraft: true,
+  isJsonValidator: false,
+};
+
 export const fixManifestFiles = [manifestFile1, manifestFile2];
 
 export const FixManifestDraftFiles = [
