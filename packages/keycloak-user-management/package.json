@@ -26,8 +26,8 @@
   },
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/keycloak-user-management --verbose --collectCoverage=true && cd packages/keycloak-user-management",
-    "test:watch": "cd ../../ && jest test  packages/keycloak-user-management --verbose --watch && cd packages/keycloak-user-management",
+    "test": "cd ../../ && jest packages/keycloak-user-management --verbose --collectCoverage=true && cd packages/keycloak-user-management",
+    "test:watch": "cd ../../ && jest packages/keycloak-user-management --verbose --watch && cd packages/keycloak-user-management",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
