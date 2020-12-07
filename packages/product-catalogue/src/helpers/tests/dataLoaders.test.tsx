@@ -115,7 +115,6 @@ describe('dataLoading', () => {
       {
         body: expect.any(FormData),
         headers: {
-          accept: 'application/json',
           authorization: 'Bearer null',
         },
         method: 'POST',
@@ -161,7 +160,6 @@ describe('dataLoading', () => {
       {
         body: expect.any(FormData),
         headers: {
-          accept: 'application/json',
           authorization: 'Bearer null',
         },
         method: 'PUT',

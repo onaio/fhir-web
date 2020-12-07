@@ -96,6 +96,7 @@ exports[`productForm edit form submission: materialNumber 1`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  placeholder="Enter the product's material number"
   type="text"
   value="MT-123"
 />

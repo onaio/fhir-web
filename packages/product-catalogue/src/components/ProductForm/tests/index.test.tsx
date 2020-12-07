@@ -59,16 +59,16 @@ describe('productForm', () => {
 
     expect(wrapper.find('#availability label').text()).toMatchInlineSnapshot(`"Is it there?"`);
     expect(wrapper.find('#condition label').text()).toMatchInlineSnapshot(
-      `"Is it in good condition?(optional)"`
+      `"Is it in good condition? (optional)"`
     );
     expect(wrapper.find('#appropriateUsage label').text()).toMatchInlineSnapshot(
-      `"Is it being used appropriately?(optional)"`
+      `"Is it being used appropriately? (optional)"`
     );
     expect(wrapper.find('#accountabilityPeriod label').text()).toMatchInlineSnapshot(
       `"Accountability period (in months)"`
     );
     expect(wrapper.find('#photoURL label').text()).toMatchInlineSnapshot(
-      `"Photo of the product(optional)"`
+      `"Photo of the product (optional)"`
     );
     expect(wrapper.find('#submit button').text()).toMatchInlineSnapshot(`"Submit"`);
   });
@@ -437,7 +437,6 @@ describe('productForm', () => {
       condition: 'well maintained',
       isAttractiveItem: false,
       materialNumber: 'asd',
-      photoURL: 'http://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4',
       productName: 'Change name',
       uniqueId: 4,
     };
