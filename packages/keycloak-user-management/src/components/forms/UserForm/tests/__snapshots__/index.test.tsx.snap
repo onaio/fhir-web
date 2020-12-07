@@ -91,21 +91,14 @@ exports[`forms/UserForm renders correctly: Submit 1`] = `
 Object {
   "children": Array [
     <Button
-      block={false}
       className="create-user"
-      ghost={false}
       htmlType="submit"
-      loading={false}
       type="primary"
     >
       Save
     </Button>,
     <Button
-      block={false}
       className="cancel-user"
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
     >
       Cancel
