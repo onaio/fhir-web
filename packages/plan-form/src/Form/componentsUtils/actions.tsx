@@ -2,7 +2,7 @@
 import { Dictionary } from '@onaio/utils';
 import React from 'react';
 import { DESCRIPTION_LABEL, EXPRESSION_LABEL, NAME } from '../../lang';
-import { PlanActivityFormFields } from '@opensrp/planform-core';
+import { PlanActivityFormFields } from '@opensrp/plan-form-core';
 import { Form, Input } from 'antd';
 
 const { Item: FormItem } = Form;
@@ -29,44 +29,32 @@ export const getConditionAndTriggers = (
         return (
           <FormItem
             className="condition-group"
-            // row={true}
             key={`${element.actionCode}-condition-${index}-${mapIndex}`}
-            // name={['activities', index]}
           >
             {item.subjectCodableConceptText && (
-              <FormItem name={[index, 'condition', mapIndex, 'subjectCodableConceptText']}>
-                <Input
-                  required={false}
-                  id={`activities[${index}].condition[${mapIndex}].subjectCodableConceptText`}
-                  disabled={true}
-                  hidden={true}
-                />
+              <FormItem
+                name={[index, 'condition', mapIndex, 'subjectCodableConceptText']}
+                id={`activities[${index}].condition[${mapIndex}].subjectCodableConceptText`}
+              >
+                <Input required={false} disabled={true} hidden={true} />
               </FormItem>
             )}
             {item.expression && (
               <FormItem
                 label={EXPRESSION_LABEL}
                 name={[index, 'condition', mapIndex, 'expression']}
+                id={`activities[${index}].condition[${mapIndex}].expression`}
               >
-                <TextArea
-                  className="form-control"
-                  required={true}
-                  id={`activities[${index}].condition[${mapIndex}].expression`}
-                  disabled={isDisabled}
-                />
+                <TextArea className="form-control" required={true} disabled={isDisabled} />
               </FormItem>
             )}
             {item.description && (
               <FormItem
                 label={DESCRIPTION_LABEL}
                 name={[index, 'condition', mapIndex, 'description']}
+                id={`activities[${index}].condition[${mapIndex}].description`}
               >
-                <TextArea
-                  className="form-control"
-                  required={true}
-                  id={`activities[${index}].condition[${mapIndex}].description`}
-                  disabled={isDisabled}
-                />
+                <TextArea className="form-control" required={true} disabled={isDisabled} />
               </FormItem>
             )}
           </FormItem>
@@ -79,40 +67,32 @@ export const getConditionAndTriggers = (
           <FormItem
             className="trigger-group"
             key={`${element.actionCode}-trigger-${index}-${mapIndex}`}
-            // name={''}
           >
             {item.name && (
-              <FormItem label={NAME} name={[index, 'trigger', mapIndex, 'name']}>
-                <Input
-                  className="form-control col-sm-10"
-                  required={true}
-                  type="text"
-                  id={`activities[${index}].trigger[${mapIndex}].name`}
-                  disabled={isDisabled}
-                />
+              <FormItem
+                label={NAME}
+                name={[index, 'trigger', mapIndex, 'name']}
+                id={`activities[${index}].trigger[${mapIndex}].name`}
+              >
+                <Input required={true} type="text" disabled={isDisabled} />
               </FormItem>
             )}
             {item.expression && (
-              <FormItem label={EXPRESSION_LABEL} name={[index, 'trigger', mapIndex, 'expression']}>
-                <TextArea
-                  className="form-control col-sm-10"
-                  required={true}
-                  id={`activities[${index}].trigger[${mapIndex}].expression`}
-                  disabled={isDisabled}
-                />
+              <FormItem
+                label={EXPRESSION_LABEL}
+                name={[index, 'trigger', mapIndex, 'expression']}
+                id={`activities[${index}].trigger[${mapIndex}].expression`}
+              >
+                <TextArea required={true} disabled={isDisabled} />
               </FormItem>
             )}
             {item.description && (
               <FormItem
                 label={DESCRIPTION_LABEL}
                 name={[index, 'trigger', mapIndex, 'description']}
+                id={`activities[${index}].trigger[${mapIndex}].description`}
               >
-                <TextArea
-                  className="form-control col-sm-10"
-                  required={false}
-                  id={`activities[${index}].trigger[${mapIndex}].description`}
-                  disabled={isDisabled}
-                />
+                <TextArea required={false} disabled={isDisabled} />
               </FormItem>
             )}
           </FormItem>
