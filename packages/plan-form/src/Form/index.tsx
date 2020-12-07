@@ -13,14 +13,10 @@ import {
   ADD_CODED_ACTIVITY,
   AND,
   CONDITIONS_LABEL,
-  DEFINITION_URI,
   DESCRIPTION_LABEL,
   END_DATE,
-  FOCUS_AREA_HEADER,
   GOAL_LABEL,
   INTERVENTION_TYPE_LABEL,
-  PLAN_END_DATE_LABEL,
-  PLAN_START_DATE_LABEL,
   PLAN_TITLE_LABEL,
   PRIORITY_LABEL,
   QUANTITY_LABEL,
@@ -32,8 +28,9 @@ import {
 } from '../lang';
 import { PLAN_LIST_URL } from '../constants';
 import { getConditionAndTriggers } from './componentsUtils/actions';
-import { processActivitiesDates, validationRules } from '../helpers/utils';
+import { processActivitiesDates, processToBasePlanForm, validationRules } from '../helpers/utils';
 import {
+  version,
   actionReasons,
   actionReasonsDisplay,
   FIReasons,
@@ -46,24 +43,49 @@ import {
   InterventionType,
   PlanActionCodesType,
   PlanActivityFormFields,
-  PlanFormFields,
+  PlanFormFields as BasePlanFormFields,
   PlanJurisdictionFormFields,
-  showDefinitionUriFor,
   generatePlanDefinition,
   getFormActivities,
   getGoalUnitFromActionCode,
   defaultEnvConfig,
   getPlanActivitiesMap,
   MDA_POINT_ADVERSE_EFFECTS_CODE,
+  interventionType,
+  activities,
+  identifier,
+  date,
+  taskGenerationStatus,
+  name,
+  actionTitle,
+  actionIdentifier,
+  actionDescription,
+  goalValue,
+  timingPeriodStart,
+  timingPeriodEnd,
+  goalDue,
+  goalPriority,
+  actionCode,
+  actionReason,
+  description,
+  goalDescription,
+  status,
+  title,
 } from '@opensrp/plan-form-core';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { Select, Input, DatePicker } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Collapse, Modal, Divider } from 'antd';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { CommonProps, defaultCommonProps } from '../helpers/common';
 import { SUPPLY_MANAGEMENT_TITLE } from '../lang';
-import { AfterSubmit, BeforeSubmit, PlanFormConfig, PlanFormFieldsKeys } from './types';
+import {
+  AfterSubmit,
+  BeforeSubmit,
+  PlanFormConfig,
+  PlanFormFields,
+  PlanFormFieldsKeys,
+} from '../helpers/types';
 import { postPutPlan } from '../helpers/dataloaders';
 
 const { Panel } = Collapse;
@@ -73,21 +95,20 @@ const { TextArea } = Input;
 const defaultInterventionType = InterventionType.SM;
 const initialJurisdictionValues: PlanJurisdictionFormFields[] = [];
 const defaultEnvs = defaultEnvConfig;
-const planActivitiesMap = getPlanActivitiesMap();
+const defaultPlanActivitiesMap = getPlanActivitiesMap(defaultEnvs);
 
 /** initial values for plan Form */
 export const defaultInitialValues: PlanFormFields = {
-  activities: processActivitiesDates(planActivitiesMap[defaultInterventionType]),
+  activities: processActivitiesDates(defaultPlanActivitiesMap[defaultInterventionType]),
   caseNum: '',
+  dateRange: [moment(), moment().add(defaultEnvs.defaultPlanDurationDays, 'days')],
   date: moment(),
-  end: moment().add(defaultEnvs.defaultPlanDurationDays, 'days'),
   fiReason: FIReasons[0],
   fiStatus: undefined,
   identifier: '',
   interventionType: defaultInterventionType,
   name: '',
   opensrpEventId: undefined,
-  start: moment(),
   status: PlanStatus.DRAFT,
   taskGenerationStatus: 'internal',
   title: '',
@@ -107,12 +128,9 @@ export type LocationChildRenderProp = (
 /** interface for plan form props */
 export interface PlanFormProps extends CommonProps {
   allFormActivities: PlanActivityFormFields[] /** the list of all allowed activities */;
-  allowMoreJurisdictions: boolean /** should we allow one to add more jurisdictions */;
-  cascadingSelect: boolean /** should we use cascading selects for jurisdiction selection */;
   disabledActivityFields: string[] /** activity fields that are disabled */;
   disabledFields: string[] /** fields that are disabled */;
   initialValues: PlanFormFields /** initial values for fields on the form */;
-  jurisdictionLabel: string /** the label used for the jurisdiction selection */;
   redirectAfterAction: string /** the url to redirect to after form submission */;
   renderLocationNames?: (
     child?: LocationChildRenderProp /** nested render content for each location name */
@@ -136,12 +154,12 @@ const PlanForm = (props: PlanFormProps) => {
   const [actionConditions, setActionConditions] = useState<Dictionary>({});
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  let allFormActivities = props.allFormActivities;
+  let planActivitiesMap = defaultPlanActivitiesMap;
 
   const {
-    allFormActivities,
     disabledActivityFields,
     disabledFields,
-    // formHandler,
     initialValues,
     redirectAfterAction,
     baseURL,
@@ -153,6 +171,14 @@ const PlanForm = (props: PlanFormProps) => {
     ...defaultEnvConfig,
     ...envConfigs,
   };
+
+  if (envConfigs) {
+    planActivitiesMap = getPlanActivitiesMap(configs);
+    allFormActivities = getFormActivities(planActivities, configs);
+    initialValues.activities = processActivitiesDates(
+      getPlanActivitiesMap(configs)[defaultInterventionType]
+    );
+  }
 
   const [form] = Form.useForm();
 
@@ -187,13 +213,13 @@ const PlanForm = (props: PlanFormProps) => {
   /** get the source list of activities
    * This is used to filter out activities selected but not in the "source"
    *
-   * @param {PlanFormFields} values - current form values
+   * @param {BasePlanFormFields} values - current form values
    * @returns {object} -
    */
-  function getSourceActivities(values: PlanFormFields) {
+  function getSourceActivities(values: BasePlanFormFields) {
     // eslint-disable-next-line no-prototype-builtins
-    if (planActivitiesMap.hasOwnProperty(values.interventionType)) {
-      return planActivitiesMap[values.interventionType];
+    if (defaultPlanActivitiesMap.hasOwnProperty(values.interventionType)) {
+      return defaultPlanActivitiesMap[values.interventionType];
     }
     return allFormActivities;
   }
@@ -201,10 +227,10 @@ const PlanForm = (props: PlanFormProps) => {
   /**
    * Check if all the source activities have been selected
    *
-   * @param {PlanFormFields} values - current form values
+   * @param {BasePlanFormFields} values - current form values
    * @returns {object} -
    */
-  function checkIfAllActivitiesSelected(values: PlanFormFields) {
+  function checkIfAllActivitiesSelected(values: BasePlanFormFields) {
     return (
       xor(
         getSourceActivities(values).map((e) => e.actionCode),
@@ -262,7 +288,8 @@ const PlanForm = (props: PlanFormProps) => {
         initialValues={initialValues}
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={(values) => {
-          const payload = generatePlanDefinition(values, null, isEditMode);
+          const baseFormValues = processToBasePlanForm(values);
+          const payload = generatePlanDefinition(baseFormValues, null, isEditMode, configs);
           const continueWithSubmit = props.beforeSubmit && props.beforeSubmit(payload);
           if (!continueWithSubmit) {
             setSubmitting(false);
@@ -285,22 +312,22 @@ const PlanForm = (props: PlanFormProps) => {
       >
         <>
           <FormItem
-            name="interventionType"
+            name={interventionType}
             label={INTERVENTION_TYPE_LABEL}
             required
             rules={validationRules.interventionType}
-            hidden={isHidden('interventionType')}
+            hidden={isHidden(interventionType)}
+            id={interventionType}
           >
             <Select
-              id="interventionType"
-              disabled={disabledFields.includes('interventionType')}
+              disabled={disabledFields.includes(interventionType)}
               onChange={(value: string) => {
-                if (planActivitiesMap.hasOwnProperty(value)) {
+                if (defaultPlanActivitiesMap.hasOwnProperty(value)) {
                   const currentActivities = processActivitiesDates(planActivitiesMap[value]);
-                  form.setFieldsValue({ activities: currentActivities });
+                  form.setFieldsValue({ [activities]: currentActivities });
                   const newStuff = getConditionAndTriggers(
-                    planActivitiesMap[value],
-                    disabledFields.includes('activities')
+                    defaultPlanActivitiesMap[value],
+                    disabledFields.includes(activities)
                   );
                   setActionConditions(newStuff.conditions);
                   setActionTriggers(newStuff.triggers);
@@ -314,41 +341,49 @@ const PlanForm = (props: PlanFormProps) => {
           </FormItem>
 
           <FormItem
-            hidden={isHidden('title')}
+            hidden={isHidden(title)}
             label={PLAN_TITLE_LABEL}
-            name="title"
+            name={title}
             rules={validationRules.title}
+            id={title}
           >
             <Input
+              onChange={(value) => {
+                form.setFieldsValue({
+                  [name]: value.target.value,
+                });
+              }}
               required={true}
               type="text"
-              id="title"
-              disabled={disabledFields.includes('title')}
+              disabled={disabledFields.includes(title)}
             />
           </FormItem>
-          <FormItem hidden={isHidden('name')} name="name" rules={validationRules.name}>
-            <Input type="hidden" id="name" />
+          <FormItem hidden={isHidden(name)} name={name} id="name" rules={validationRules.name}>
+            <Input type="hidden" />
           </FormItem>
-          <FormItem name="identifier" hidden rules={validationRules.identifier}>
-            <Input type="hidden" id="identifier" readOnly={true} />
+          <FormItem name={identifier} id="identifier" hidden rules={validationRules.identifier}>
+            <Input type="hidden" readOnly={true} />
           </FormItem>
-          <FormItem name="version" hidden rules={validationRules.version}>
-            <Input type="hidden" id="version" readOnly={true} />
-          </FormItem>
-          <FormItem name="taskGenerationStatus" hidden rules={validationRules.taskGenerationStatus}>
-            <Input type="hidden" id="taskGenerationStatus" readOnly={true} />
-          </FormItem>
-          <FormItem name="teamAssignmentStatus" hidden rules={validationRules.teamAssignmentStatus}>
-            <Input type="hidden" id="teamAssignmentStatus" readOnly={true} />
+          <FormItem name={version} id="version" hidden rules={validationRules.version}>
+            <Input type="hidden" readOnly={true} />
           </FormItem>
           <FormItem
-            name="status"
+            name={taskGenerationStatus}
+            id="taskGenerationStatus"
+            hidden
+            rules={validationRules.taskGenerationStatus}
+          >
+            <Input type="hidden" readOnly={true} />
+          </FormItem>
+          <FormItem
+            name={status}
             required={true}
             label={STATUS_HEADER}
             rules={validationRules.status}
-            hidden={isHidden('status')}
+            hidden={isHidden(status)}
+            id="status"
           >
-            <Select id="status" disabled={disabledFields.includes('status')}>
+            <Select disabled={disabledFields.includes(status)}>
               {Object.entries(PlanStatus)
                 .filter((e) => !disAllowedStatusChoices.includes(e[1]))
                 .map((e) => (
@@ -359,62 +394,92 @@ const PlanForm = (props: PlanFormProps) => {
             </Select>
           </FormItem>
           <FormItem
-            rules={validationRules.start}
-            label={PLAN_START_DATE_LABEL}
-            name="start"
+            rules={validationRules.dateRange}
+            label="Active date range"
+            name="dateRange"
             required={true}
-            hidden={isHidden('start')}
+            hidden={isHidden('dateRange')}
+            id="dateRange"
           >
-            <DatePicker
-              id="start"
-              disabled={disabledFields.includes('start')}
+            <DatePicker.RangePicker
+              disabled={disabledFields.includes('dateRange')}
               format={configs.dateFormat}
             />
           </FormItem>
 
-          <FormItem hidden={isHidden('date')} rules={validationRules.date} name="date">
-            <Input type="hidden" name="date" id="date" />
+          <FormItem hidden={isHidden(date)} rules={validationRules.date} name={date} id="date">
+            <DatePicker format={configs.dateFormat} />
           </FormItem>
 
           <FormItem
-            rules={validationRules.end}
-            label={PLAN_END_DATE_LABEL}
-            name="end"
+            rules={validationRules.description}
+            label={DESCRIPTION_LABEL}
+            name={description}
             required={true}
-            hidden={isHidden('end')}
+            hidden={isHidden(description)}
+            id="description"
           >
-            <DatePicker
-              id="end"
-              disabled={disabledFields.includes('end')}
-              format={configs.dateFormat}
-            />
+            <TextArea disabled={disabledFields.includes(description)} />
           </FormItem>
+          <Form.List name="jurisdictions">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map((field) => (
+                  <Form.Item hidden required={false} key={field.key}>
+                    <Form.Item name={[field.name, 'id']} hidden>
+                      <Input />
+                    </Form.Item>
+                    <Form.Item name={[field.name, 'name']} hidden>
+                      <Input />
+                    </Form.Item>
+                    {fields.length > 1 ? (
+                      <MinusCircleOutlined
+                        className="dynamic-delete-button"
+                        onClick={() => remove(field.name)}
+                      />
+                    ) : null}
+                  </Form.Item>
+                ))}
+                <Form.Item hidden>
+                  <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                    Add Jurisdiction
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
 
-          <FormItem hidden={isHidden('activities')}>
+          <FormItem hidden={isHidden(activities)} id="activities">
             <Divider orientation="left">
               <h4>{ACTIVITIES_LABEL}</h4>
             </Divider>
-            <List name="activities">
+            <List name={activities}>
               {(_, { remove }) => {
                 return (
                   <div>
                     {(() => {
-                      const activities: PlanFormFields['activities'] = form.getFieldValue(
-                        'activities'
+                      const planActivities: BasePlanFormFields[activities] = form.getFieldValue(
+                        activities
                       );
                       const allValues = form.getFieldValue([]);
+
+                      const conditionsDisabledDates = (current: Moment) => {
+                        // Can not select days before the set plan date range
+                        return current && allValues.start < current && current < allValues.end;
+                      };
                       return (
                         <>
-                          {activities.map((arrItem, index) => (
+                          {planActivities.map((arrItem, index) => (
                             <Card
                               type="inner"
                               key={`div${arrItem.actionCode}-${index}`}
-                              title={activities[index].actionTitle}
+                              title={planActivities[index].actionTitle}
                               extra={
-                                activities &&
-                                activities.length > 1 &&
+                                planActivities &&
+                                planActivities.length > 1 &&
                                 !isEditMode && (
                                   <Button
+                                    className="removeActivity"
                                     aria-label="Close"
                                     icon={<CloseOutlined />}
                                     onClick={() => {
@@ -423,10 +488,10 @@ const PlanForm = (props: PlanFormProps) => {
                                        */
                                       remove(index);
                                       const newActivityValues = getConditionAndTriggers(
-                                        activities.filter(
-                                          (e) => e.actionCode !== activities[index].actionCode
+                                        planActivities.filter(
+                                          (e) => e.actionCode !== planActivities[index].actionCode
                                         ),
-                                        disabledFields.includes('activities')
+                                        disabledFields.includes(activities)
                                       );
                                       setActionConditions(newActivityValues.conditions);
                                       setActionTriggers(newActivityValues.triggers);
@@ -439,80 +504,80 @@ const PlanForm = (props: PlanFormProps) => {
                                 <fieldset key={`fieldset${arrItem.actionCode}-${index}`}>
                                   <FormItem
                                     label={ACTION}
-                                    name={[index, 'actionTitle']}
+                                    name={[index, actionTitle]}
                                     rules={validationRules.activities.actionTitle}
+                                    id={`activities-${index}-actionTitle`}
                                   >
                                     <Input
                                       type="text"
-                                      id={`activities-${index}-actionTitle`}
                                       required={true}
                                       disabled={
-                                        disabledFields.includes('activities') ||
-                                        disabledActivityFields.includes('actionTitle')
+                                        disabledFields.includes(activities) ||
+                                        disabledActivityFields.includes(actionTitle)
                                       }
                                     />
                                   </FormItem>
                                   <FormItem
                                     hidden
-                                    name={[index, 'actionCode']}
+                                    name={[index, actionCode]}
                                     rules={validationRules.activities.actionCode}
+                                    id={`activities-${index}-actionCode`}
                                   >
                                     <Input
                                       type="hidden"
-                                      id={`activities-${index}-actionCode`}
-                                      value={activities[index].actionCode}
+                                      value={planActivities[index].actionCode}
                                       readOnly={true}
                                     />
                                   </FormItem>
 
                                   <FormItem
                                     hidden
-                                    name={[index, 'actionIdentifier']}
+                                    name={[index, actionIdentifier]}
                                     rules={validationRules.activities.actionIdentifier}
+                                    id={`activities-${index}-actionIdentifier`}
                                   >
                                     <Input
                                       type="hidden"
-                                      id={`activities-${index}-actionIdentifier`}
-                                      value={activities[index].actionIdentifier}
+                                      value={planActivities[index].actionIdentifier}
                                       readOnly={true}
                                     />
                                   </FormItem>
                                   <FormItem
                                     rules={validationRules.activities.actionDescription}
                                     label={DESCRIPTION_LABEL}
-                                    name={[index, 'actionDescription']}
+                                    id={`activities-${index}-actionDescription`}
+                                    name={[index, actionDescription]}
                                   >
                                     <TextArea
-                                      id={`activities-${index}-actionDescription`}
                                       required={true}
                                       disabled={
                                         disabledFields.includes('activities') ||
-                                        disabledActivityFields.includes('actionDescription')
+                                        disabledActivityFields.includes(actionDescription)
                                       }
                                     />
                                   </FormItem>
                                   <FormItem
                                     rules={validationRules.activities.goalDescription}
                                     hidden
-                                    name={[index, 'goalDescription']}
+                                    name={[index, goalDescription]}
+                                    id={`activities-${index}-goalDescription`}
                                   >
                                     <Input
                                       type="hidden"
-                                      id={`activities-${index}-goalDescription`}
-                                      value={activities[index].actionDescription}
+                                      value={planActivities[index].actionDescription}
                                     />
                                   </FormItem>
                                   <FormItem
                                     rules={validationRules.activities.actionReason}
                                     label={REASON_HEADER}
-                                    name={[index, 'actionReason']}
+                                    name={[index, actionReason]}
                                     required={true}
+                                    id={`activities-${index}-actionReason`}
                                   >
                                     <Select
-                                      id={`activities-${index}-actionReason`}
                                       disabled={
                                         disabledFields.includes('activities') ||
-                                        disabledActivityFields.includes('actionReason')
+                                        disabledActivityFields.includes(actionReason)
                                       }
                                     >
                                       {actionReasons.map((e) => (
@@ -522,56 +587,29 @@ const PlanForm = (props: PlanFormProps) => {
                                       ))}
                                     </Select>
                                   </FormItem>
-                                  {showDefinitionUriFor.includes(
-                                    form.getFieldValue('interventionType')
-                                  ) && (
-                                    <>
-                                      <FormItem
-                                        rules={validationRules.activities.actionDefinitionUri}
-                                        label={DEFINITION_URI}
-                                        name={[index, 'actionDefinitionUri']}
-                                      >
-                                        <Input
-                                          type="text"
-                                          id={`activities-${index}-actionDefinitionUri`}
-                                          required={true}
-                                          disabled={
-                                            disabledFields.includes('activities') ||
-                                            disabledActivityFields.includes('actionDefinitionUri')
-                                          }
-                                        />
-                                      </FormItem>
-                                      <FormItem hidden name={[index, 'goalDefinitionUri']}>
-                                        <Input
-                                          type="hidden"
-                                          id={`activities-${index}-goalDefinitionUri`}
-                                          value={activities[index].actionDefinitionUri}
-                                        />
-                                      </FormItem>
-                                    </>
-                                  )}
                                   <fieldset>
                                     <legend>{GOAL_LABEL}</legend>
                                     <FormItem
                                       label={QUANTITY_LABEL}
-                                      name={[index, 'goalValue']}
+                                      name={[index, goalValue]}
                                       rules={validationRules.activities.goalValue}
+                                      id={`activities-${index}-goalValue`}
                                     >
                                       <Input
                                         addonAfter={
                                           goalUnitDisplay[
                                             getGoalUnitFromActionCode(
-                                              activities[index].actionCode as PlanActionCodesType
+                                              planActivities[index]
+                                                .actionCode as PlanActionCodesType
                                             )
                                           ]
                                         }
                                         type="number"
-                                        id={`activities-${index}-goalValue`}
                                         required={true}
                                         disabled={
-                                          disabledFields.includes('activities') ||
-                                          disabledActivityFields.includes('goalValue') ||
-                                          activities[index].actionCode ===
+                                          disabledFields.includes(activities) ||
+                                          disabledActivityFields.includes(goalValue) ||
+                                          planActivities[index].actionCode ===
                                             MDA_POINT_ADVERSE_EFFECTS_CODE
                                         }
                                       />
@@ -579,63 +617,60 @@ const PlanForm = (props: PlanFormProps) => {
                                     <FormItem
                                       rules={validationRules.activities.timingPeriodStart}
                                       label={START_DATE}
-                                      name={[index, 'timingPeriodStart']}
+                                      name={[index, timingPeriodStart]}
                                       required={true}
+                                      id={`activities-${index}-timingPeriodStart`}
                                     >
                                       <DatePicker
-                                        id={`activities-${index}-timingPeriodStart`}
                                         disabled={
-                                          disabledFields.includes('activities') ||
-                                          disabledActivityFields.includes('timingPeriodStart')
+                                          disabledFields.includes(activities) ||
+                                          disabledActivityFields.includes(timingPeriodStart)
                                         }
                                         format={configs.dateFormat}
-
-                                        // minDate={values.start}
-                                        // maxDate={values.end}
+                                        disabledDate={conditionsDisabledDates}
                                       />
                                     </FormItem>
                                     <FormItem
                                       rules={validationRules.activities.timingPeriodEnd}
                                       label={END_DATE}
-                                      name={[index, 'timingPeriodEnd']}
+                                      name={[index, timingPeriodEnd]}
                                       required={true}
+                                      id={`activities-${index}-timingPeriodEnd`}
                                     >
                                       <DatePicker
-                                        id={`activities-${index}-timingPeriodEnd`}
                                         disabled={
                                           disabledFields.includes('activities') ||
-                                          disabledActivityFields.includes('timingPeriodEnd')
+                                          disabledActivityFields.includes(timingPeriodEnd)
                                         }
                                         format={configs.dateFormat}
-
-                                        // minDate={values.activities[index].timingPeriodStart}
-                                        // maxDate={values.end}
+                                        disabledDate={conditionsDisabledDates}
                                       />
                                     </FormItem>
                                     <FormItem
                                       hidden
-                                      name={[index, 'goalDue']}
+                                      name={[index, goalDue]}
                                       rules={validationRules.activities.goalDue}
+                                      id={`activities-${index}-goalDue`}
                                     >
                                       <Input
                                         type="hidden"
-                                        id={`activities-${index}-goalDue`}
                                         value={
-                                          (activities[index].timingPeriodEnd as unknown) as string
+                                          (planActivities[index]
+                                            .timingPeriodEnd as unknown) as string
                                         }
                                       />
                                     </FormItem>
                                     <FormItem
                                       rules={validationRules.activities.goalPriority}
                                       label={PRIORITY_LABEL}
-                                      name={[index, 'goalPriority']}
+                                      name={[index, goalPriority]}
                                       required={true}
+                                      id={`activities-${index}-goalPriority`}
                                     >
                                       <Select
-                                        id={`activities-${index}-goalPriority`}
                                         disabled={
-                                          disabledFields.includes('activities') ||
-                                          disabledActivityFields.includes('goalPriority')
+                                          disabledFields.includes(activities) ||
+                                          disabledActivityFields.includes(goalPriority)
                                         }
                                       >
                                         {goalPriorities.map((e) => (
@@ -646,9 +681,11 @@ const PlanForm = (props: PlanFormProps) => {
                                       </Select>
                                     </FormItem>
                                   </fieldset>
-                                  {(actionTriggers.hasOwnProperty(activities[index].actionCode) ||
+                                  {(actionTriggers.hasOwnProperty(
+                                    planActivities[index].actionCode
+                                  ) ||
                                     actionConditions.hasOwnProperty(
-                                      activities[index].actionCode
+                                      planActivities[index].actionCode
                                     )) && (
                                     <Collapse>
                                       <Panel
@@ -658,19 +695,19 @@ const PlanForm = (props: PlanFormProps) => {
                                         key="1"
                                       >
                                         {actionTriggers.hasOwnProperty(
-                                          activities[index].actionCode
+                                          planActivities[index].actionCode
                                         ) && (
                                           <fieldset className="triggers-fieldset">
                                             <legend>{TRIGGERS_LABEL}</legend>
-                                            {actionTriggers[activities[index].actionCode]}
+                                            {actionTriggers[planActivities[index].actionCode]}
                                           </fieldset>
                                         )}
                                         {actionConditions.hasOwnProperty(
-                                          activities[index].actionCode
+                                          planActivities[index].actionCode
                                         ) && (
                                           <fieldset className="conditions-fieldset">
                                             <legend>{CONDITIONS_LABEL}</legend>
-                                            {actionConditions[activities[index].actionCode]}
+                                            {actionConditions[planActivities[index].actionCode]}
                                           </fieldset>
                                         )}
                                       </Panel>
@@ -681,17 +718,21 @@ const PlanForm = (props: PlanFormProps) => {
                             </Card>
                           ))}
 
-                          {activities &&
-                            activities.length >= 1 &&
+                          {planActivities &&
+                            planActivities.length >= 1 &&
                             !checkIfAllActivitiesSelected(allValues) &&
                             !isEditMode && (
                               <div>
-                                <Button type="primary" danger onClick={toggleActivityModal}>
+                                <Button
+                                  className="add-more-activities"
+                                  type="primary"
+                                  danger
+                                  onClick={toggleActivityModal}
+                                >
                                   {ADD_ACTIVITY}
                                 </Button>
 
                                 <Modal
-                                  // size="lg"
                                   visible={activityModal}
                                   className="activity-modal"
                                   title={ADD_ACTIVITY}
@@ -711,12 +752,15 @@ const PlanForm = (props: PlanFormProps) => {
                                           <li key={thisActivity.actionCode}>
                                             <Button
                                               type="primary"
-                                              className="btn btn-primary btn-sm mb-1 addActivity"
+                                              className="addActivity"
                                               onClick={() => {
-                                                values.activities.push(thisActivity);
+                                                const withParsedDates = processActivitiesDates([
+                                                  thisActivity,
+                                                ]);
+                                                values.activities.push(withParsedDates[0]);
                                                 const newActivityValues = getConditionAndTriggers(
                                                   values.activities,
-                                                  disabledFields.includes('activities')
+                                                  disabledFields.includes(activities)
                                                 );
                                                 setActionConditions(newActivityValues.conditions);
                                                 setActionTriggers(newActivityValues.triggers);
@@ -747,8 +791,9 @@ const PlanForm = (props: PlanFormProps) => {
               id="planform-submit-button"
               aria-label={SAVE_PLAN}
               disabled={isSubmitting}
+              htmlType="submit"
             >
-              {isSubmitting ? 'Saving Plan' : SAVE_PLAN}
+              {SAVE_PLAN}
             </Button>
           </FormItem>
         </>
@@ -759,14 +804,11 @@ const PlanForm = (props: PlanFormProps) => {
 
 export const defaultProps: PlanFormProps = {
   ...defaultCommonProps,
-  allFormActivities: getFormActivities(planActivities),
-  allowMoreJurisdictions: true,
+  allFormActivities: getFormActivities(planActivities, defaultEnvs),
   beforeSubmit: () => true,
-  cascadingSelect: true,
   disabledActivityFields: [],
   disabledFields: [],
   initialValues: defaultInitialValues,
-  jurisdictionLabel: FOCUS_AREA_HEADER,
   redirectAfterAction: PLAN_LIST_URL,
   hiddenFields: [],
 };
@@ -781,9 +823,9 @@ export const defaultProps: PlanFormProps = {
 export const propsForUpdatingPlans = (
   planStatus: string = PlanStatus.DRAFT
 ): Partial<PlanFormProps> => {
-  let disabledFields = ['interventionType', 'identifier', 'name'];
-  const fieldsForActivePlan = ['activities', 'date', 'taskGenerationStatus', 'title', 'version'];
-  const fieldsForCompletePlans = ['status'];
+  let disabledFields = [interventionType, identifier, name];
+  const fieldsForActivePlan = [activities, date, taskGenerationStatus, title, version];
+  const fieldsForCompletePlans = [status];
   disabledFields =
     planStatus === PlanStatus.ACTIVE ? [...disabledFields, ...fieldsForActivePlan] : disabledFields;
   disabledFields =

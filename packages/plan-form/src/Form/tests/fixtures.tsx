@@ -1,3 +1,5 @@
+import { PlanDefinition } from '@opensrp/plan-form-core';
+
 export const mission1 = {
   identifier: '335ef7a3-7f35-58aa-8263-4419464946d8',
   version: '1',
@@ -234,4 +236,168 @@ export const mission1 = {
     },
   ],
   experimental: false,
+} as PlanDefinition;
+
+export const newPayload1 = {
+  action: [
+    {
+      identifier: '7d5a9652-0d1c-583d-9d98-ab2f9e9979ca',
+      prefix: 1,
+      description: 'Check for all products (100% within the jurisdiction',
+      code: 'Product Check',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'Product_Check',
+      subjectCodableConcept: { text: 'Device' },
+      condition: [
+        {
+          expression: { description: 'Product exists', expression: '$this.is(FHIR.Device)' },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'product_check.json',
+      title: 'Product Check',
+      trigger: [{ name: 'plan-activation', type: 'named-event' }],
+      type: 'create',
+    },
+    {
+      identifier: '936d4dbc-d803-56c9-888d-280810d1aa36',
+      prefix: 2,
+      description: 'Fix problems for all products (100% within the jurisdiction',
+      code: 'Fix Product Problems',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'Fix_Product_Problem',
+      subjectCodableConcept: { text: 'Device' },
+      condition: [
+        {
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'product_check.json',
+      title: 'Product Check',
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Fix Product event is submitted',
+            expression: "questionnaire = 'Fix_Product_Problem'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      type: 'create',
+    },
+    {
+      identifier: 'b920b277-6927-5d75-9862-b87e1968a0c4',
+      prefix: 3,
+      description: 'Record GPS for all service points without GPS within the jurisdiction',
+      code: 'Record GPS',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'Record_GPS',
+      subjectCodableConcept: { text: 'Location' },
+      condition: [
+        {
+          expression: {
+            description: 'Service point does not have geometry',
+            expression: "$this.identifier.where(id='hasGeometry').value='false'",
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'record_gps.json',
+      title: 'Record GPS',
+      trigger: [{ name: 'plan-activation', type: 'named-event' }],
+      type: 'create',
+    },
+    {
+      identifier: '527c9afd-ca37-56bc-a035-7be8a3da79f4',
+      prefix: 4,
+      description: 'Conduct checks for all service point (100% within the Jurisdiction',
+      code: 'Service Point Check',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'Service_Point_Check',
+      subjectCodableConcept: { text: 'Location' },
+      condition: [
+        {
+          expression: { description: 'All service points', expression: '$this.is(FHIR.Location)' },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'service_point_check.json',
+      title: 'Service Point Check',
+      trigger: [{ name: 'plan-activation', type: 'named-event' }],
+      type: 'create',
+    },
+  ],
+  goal: [
+    {
+      description: 'Check for all products (100% within the jurisdiction',
+      id: 'Product_Check',
+      priority: 'medium-priority',
+      target: [
+        {
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+          measure: 'Percent of products checked',
+        },
+      ],
+    },
+    {
+      description: 'Fix problems for all products (100% within the jurisdiction',
+      id: 'Fix_Product_Problem',
+      priority: 'medium-priority',
+      target: [
+        {
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+          measure: 'Percent of products problems fixed',
+        },
+      ],
+    },
+    {
+      description: 'Record GPS for all service points without GPS within the jurisdiction',
+      id: 'Record_GPS',
+      priority: 'medium-priority',
+      target: [
+        {
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+          measure: 'Percent of GPS recorded',
+        },
+      ],
+    },
+    {
+      description: 'Conduct checks for all service point (100% within the Jurisdiction',
+      id: 'Service_Point_Check',
+      priority: 'medium-priority',
+      target: [
+        {
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+          measure: 'Percent of service points checked',
+        },
+      ],
+    },
+  ],
+  date: '2017-07-13',
+  effectivePeriod: { end: '2017-08-02', start: '2017-07-13' },
+  experimental: false,
+  identifier: '0fdfb6c4-692d-5420-a7e7-6084a61907c9',
+  jurisdiction: [],
+  name: 'Plan Name',
+  status: 'draft',
+  title: 'Plan Name',
+  useContext: [
+    { code: 'interventionType', valueCodableConcept: 'SM' },
+    { code: 'taskGenerationStatus', valueCodableConcept: 'internal' },
+  ],
+  version: '1',
+  description: 'Mission plan description',
 };
