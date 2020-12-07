@@ -6,10 +6,10 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { accessToken, id, intialValue, practitioner, practitioners, team } from './fixtures';
+import { accessToken, id, practitioner, practitioners, team } from './fixtures';
 import fetch from 'jest-fetch-mock';
 
-import TeamsAddEdit, { getPractinonerDetail, getTeamDetail } from '..';
+import TeamsAddEdit, { getPractinonerIdentifier, getTeamDetail } from '..';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   afterEach(() => {
@@ -103,32 +103,27 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
   it('test getPractinonerDetail', async () => {
     fetch.mockResponse(JSON.stringify(practitioner));
-    const response = await getPractinonerDetail(accessToken, id);
+    const response = await getPractinonerIdentifier(accessToken, id);
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(response).toMatchObject(practitioner);
+    expect(response).toMatchObject(practitioner.map((prac) => prac.identifier));
   });
 
   it('test getTeamDetail', async () => {
-    fetch.mockResponse(
-      JSON.stringify({
-        name: intialValue.name,
-        active: intialValue.active,
-        practitioner: practitioner,
-      })
-    );
-    const response = await getTeamDetail(accessToken, id);
+    const mockfc = jest.fn();
 
-    await act(async () => {
-      await flushPromises();
-    });
+    fetch.mockResponseOnce(JSON.stringify(team));
+    fetch.mockResponseOnce(JSON.stringify(practitioner));
 
-    expect(response).toMatchObject({
-      name: intialValue.name,
-      active: intialValue.active,
+    await getTeamDetail(accessToken, id, mockfc);
+
+    expect(mockfc).toBeCalledWith({
+      active: team.active,
+      name: team.name,
+      practitioners: practitioner.map((prac) => prac.identifier),
     });
   });
 });
