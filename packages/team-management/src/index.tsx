@@ -1,4 +1,2 @@
-import TeamsAddEdit from './components/TeamsAddEdit';
-import TeamsView from './components/TeamsView';
-
-export { TeamsView, TeamsAddEdit };
+export * from './components/TeamsAddEdit';
+export * from './components/TeamsView';

@@ -32,7 +32,6 @@ import {
   URL_TEAM_ADD,
   URL_TEAMS,
 } from '../constants';
-import { TeamsView } from '@opensrp/team-management';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
@@ -60,7 +59,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
-import { TeamsAddEdit } from '@opensrp/team-management';
+import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import '@opensrp/product-catalogue/dist/index.css';
 import { productCatalogueProps } from './utils';
 
