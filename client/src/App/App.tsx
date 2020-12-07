@@ -30,7 +30,9 @@ import {
   URL_HOME,
   URL_TEAM_EDIT,
   URL_TEAM_ADD,
+  URL_TEAMS,
 } from '../constants';
+import { TeamsView } from '@opensrp/team-management';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
@@ -154,6 +156,13 @@ const App: React.FC = () => {
               exact
               path={URL_ADMIN}
               component={ConnectedUserList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
+              exact
+              path={URL_TEAMS}
+              component={TeamsView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

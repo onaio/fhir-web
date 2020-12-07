@@ -1,4 +1,4 @@
-/** interface for a Organization object */
+/** interface for a Practitioner object */
 interface PractitionerCoding {
   text: string;
 }
