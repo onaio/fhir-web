@@ -17,9 +17,10 @@ import Form, { FormField } from './Form';
 import { notification, Row, Col } from 'antd';
 import { LocationTag } from '../../ducks/location-tags';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import locationHierarchyReducer, {
+import {
   getAllHierarchiesArray,
   fetchAllHierarchies,
+  reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { generateJurisdictionTree } from '../LocationTree/utils';

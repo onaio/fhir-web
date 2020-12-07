@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 
 reducerRegistry.register(reducerName, reducer);
 
-const LocationTagView: React.FC = () => {
+export const LocationTagView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const locationsArray = useSelector((state) => getLocationTagsArray(state));
   const dispatch = useDispatch();

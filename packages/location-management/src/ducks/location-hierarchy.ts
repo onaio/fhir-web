@@ -17,7 +17,6 @@ export const reducerName = 'location-hierarchy';
 /** action to add a tree to store */
 export const TREE_FETCHED = 'location-hierarchy/TREE_FETCHED';
 export const FETCH_CURRENT_CHILDREN = 'location-hierarchy/FETCH_CURRENT_CHILDREN';
-export const FETCH_SINGLE_LOCATION = 'location-hierarchy/FETCH_SINGLE_LOCATION';
 
 /** describes action that adds a hierarchy tree to store */
 export interface FetchedTreeAction extends AnyAction {
@@ -88,7 +87,7 @@ export const initialState: ImmutableTreeState | Dictionary = SeamlessImmutable({
  * @param {AnyAction} action - the redux action
  * @returns {object} - updated state
  */
-export default function reducer(
+export function reducer(
   state: ImmutableTreeState | Dictionary = initialState,
   action: TreeActionTypes
 ) {

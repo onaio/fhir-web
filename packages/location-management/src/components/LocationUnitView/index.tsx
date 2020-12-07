@@ -26,10 +26,11 @@ import { Ripple } from '@onaio/loaders';
 import Tree from '../LocationTree';
 
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import locationHierarchyReducer, {
+import {
   getAllHierarchiesArray,
   getCurrentChildren,
   fetchAllHierarchies,
+  reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { generateJurisdictionTree } from '../LocationTree/utils';
