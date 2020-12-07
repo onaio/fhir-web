@@ -64,12 +64,33 @@ const ProductFormValidationSchema = Yup.object().shape({
 /** responsive layout for the form labels and columns */
 const formItemLayout = {
   labelCol: {
-    xs: { offset: 0, span: 16 },
-    sm: { offset: 2, span: 10 },
-    md: { offset: 0, span: 8 },
-    lg: { offset: 0, span: 6 },
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 24,
+    },
+    md: {
+      span: 24,
+    },
+    lg: {
+      span: 6,
+    },
   },
-  wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 24,
+    },
+    md: {
+      span: 20,
+    },
+    lg: {
+      span: 16,
+    },
+  },
 };
 
 const tailLayout = {
@@ -128,7 +149,7 @@ const ProductForm = (props: ProductFormProps) => {
 
   /** change handler for Upload component
    *
-   * @param {UploadChangeParam} info - info object containing File, and filelist
+   * @param {UploadChangeParam} info - info object containing File, and fileList
    * @param {Function} setFieldValue - the callback that updates formik state
    * for the photoURL field
    */
@@ -147,7 +168,7 @@ const ProductForm = (props: ProductFormProps) => {
   }
 
   return (
-    <div className="form-container">
+    <div className="product-form form-container">
       <Formik
         initialValues={initialValues}
         validationSchema={ProductFormValidationSchema}
@@ -183,7 +204,7 @@ const ProductForm = (props: ProductFormProps) => {
         {({ setFieldValue }) => {
           return (
             <>
-              <Form {...formItemLayout} colon={true} requiredMark={'optional'}>
+              <Form {...formItemLayout} colon={true} requiredMark={false}>
                 <Form.Item id="productName" name="productName" label="Product name" required={true}>
                   <Input
                     name="productName"
@@ -201,7 +222,7 @@ const ProductForm = (props: ProductFormProps) => {
                   label="Material number"
                   required={true}
                 >
-                  <Input name="materialNumber" />
+                  <Input name="materialNumber" placeholder="Enter the product's material number" />
                 </FormItem>
 
                 <FormItem
@@ -224,7 +245,11 @@ const ProductForm = (props: ProductFormProps) => {
                     placeholder="Describe where a supply monitor can locate this product at the service point."
                   />
                 </FormItem>
-                <FormItem id="condition" name="condition" label="Is it in good condition?">
+                <FormItem
+                  id="condition"
+                  name="condition"
+                  label="Is it in good condition? (optional)"
+                >
                   <Input.TextArea
                     name="condition"
                     placeholder="Describe how a supply monitor would assess whether the product is in good condition"
@@ -233,7 +258,7 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="appropriateUsage"
                   name="appropriateUsage"
-                  label="Is it being used appropriately?"
+                  label="Is it being used appropriately? (optional)"
                 >
                   <Input.TextArea
                     name="appropriateUsage"
@@ -249,7 +274,7 @@ const ProductForm = (props: ProductFormProps) => {
                   <InputNumber name="accountabilityPeriod" min={0} />
                 </FormItem>
 
-                <FormItem id="photoURL" name="photoURL" label="Photo of the product">
+                <FormItem id="photoURL" name="photoURL" label="Photo of the product (optional)">
                   <Upload
                     customRequest={async () => {
                       return;
