@@ -118,7 +118,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     fetch.mockResponseOnce(JSON.stringify(team));
     fetch.mockResponseOnce(JSON.stringify(practitioner));
 
-    await getTeamDetail(accessToken, id, mockfc);
+    getTeamDetail(accessToken, id, mockfc);
 
     expect(mockfc).toBeCalledWith({
       active: team.active,
