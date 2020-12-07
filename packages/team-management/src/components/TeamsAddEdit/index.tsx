@@ -20,17 +20,25 @@ reducerRegistry.register(reducerName, reducer);
  *
  * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
+ * @param {Function} setInitialValue function to set initial value
  * @returns {Promise<Object>} Object Containing Team Data
  */
-export async function getTeamDetail(accessToken: string, id: string) {
+export async function getTeamDetail(
+  accessToken: string,
+  id: string,
+  setInitialValue: React.Dispatch<React.SetStateAction<FormField | null>>
+) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_GET + id);
-  return await serve.list().then(async (response: Organization) => {
-    return {
-      name: response.name,
-      active: response.active,
-      practitioners: await getPractinonerDetail(accessToken, id),
-    };
-  });
+  return await serve
+    .list()
+    .then(async (response: Organization) => {
+      setInitialValue({
+        name: response.name,
+        active: response.active,
+        practitioners: await getPractinonerIdentifier(accessToken, id),
+      });
+    })
+    .catch((e) => notification.error({ message: `${e}`, description: '' }));
 }
 
 /**
@@ -38,11 +46,13 @@ export async function getTeamDetail(accessToken: string, id: string) {
  *
  * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
- * @returns {Promise<Array<Practitioner>>} list of Practitioner Assigned to a team
+ * @returns {Promise<Array<string>>} list of Practitioner Assigned to a team
  */
-export async function getPractinonerDetail(accessToken: string, id: string) {
+export async function getPractinonerIdentifier(accessToken: string, id: string) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + id);
-  return await serve.list().then((response: Practitioner[]) => response);
+  return await serve
+    .list()
+    .then((response: Practitioner[]) => response.map((prac) => prac.identifier));
 }
 
 export const TeamsAddEdit: React.FC = () => {
@@ -52,16 +62,7 @@ export const TeamsAddEdit: React.FC = () => {
   const [practitioner, setPractitioner] = useState<Practitioner[] | null>(null);
 
   useEffect(() => {
-    if (params.id)
-      getTeamDetail(accessToken, params.id)
-        .then((response) => {
-          const data = {
-            ...response,
-            practitioners: response.practitioners.map((prac) => prac.identifier),
-          };
-          setInitialValue(data);
-        })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    if (params.id) getTeamDetail(accessToken, params.id, setInitialValue);
   }, [accessToken, params.id]);
 
   useEffect(() => {
