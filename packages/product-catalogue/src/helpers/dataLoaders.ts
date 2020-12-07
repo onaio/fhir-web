@@ -112,6 +112,9 @@ export const postPutOptions = (
     delete formFields.uniqueId;
   }
 
+  // delete photoURL field, photo is sent as a file above
+  delete formFields.photoURL;
+
   // random file name to give to this file.
   const formFieldsFileName = 'product.json';
   const formFieldsFile = new File([JSON.stringify(formFields)], formFieldsFileName, {
