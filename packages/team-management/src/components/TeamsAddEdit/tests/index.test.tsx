@@ -12,6 +12,10 @@ import fetch from 'jest-fetch-mock';
 import TeamsAddEdit, { getPractinonerDetail, getTeamDetail } from '..';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
+  afterEach(() => {
+    fetch.resetMocks();
+  });
+
   it('renders without crashing', async () => {
     mount(
       <Provider store={store}>
@@ -59,39 +63,6 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     });
 
     const fetchCalls = [
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
