@@ -1,5 +1,4 @@
-/** get the full product Catalogue
- */
+/** plans  service hook */
 
 import { store, makeAPIStateSelector } from '@opensrp/store';
 import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
