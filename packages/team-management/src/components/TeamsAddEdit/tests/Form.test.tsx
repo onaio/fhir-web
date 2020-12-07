@@ -84,7 +84,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
-    onSubmit(accessToken, intialValue, practitioners).then(jest.fn());
+    onSubmit(accessToken, intialValue, practitioners).then(jest.fn(), mockNotificationError);
 
     await act(async () => {
       await flushPromises();

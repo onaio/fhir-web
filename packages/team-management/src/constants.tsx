@@ -3,7 +3,6 @@ export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/res
 // String
 export const ERROR_OCCURRED = 'An error occurred';
 
-
 // url
 export const URL_ADD_TEAM = 'teams/add';
 export const URL_EDIT_TEAM = 'teams/edit/';
