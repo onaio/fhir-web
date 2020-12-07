@@ -59,6 +59,7 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
+import { TeamAssignmentView } from '@opensrp/team-assignment';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
@@ -69,7 +70,7 @@ import {
   LocationTagView,
 } from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps } from './utils';
+import { productCatalogueProps, teamAssignmentProps } from './utils';
 
 const { Content } = Layout;
 
@@ -163,6 +164,14 @@ const App: React.FC = () => {
               exact
               path={URL_ADMIN}
               component={ConnectedUserList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={'/team-assignment'}
+              {...teamAssignmentProps}
+              component={TeamAssignmentView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
