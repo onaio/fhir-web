@@ -18,6 +18,7 @@ import {
   BACKEND_ACTIVE,
   KEYCLOAK_API_BASE_URL,
   DISABLE_LOGIN_PROTECTION,
+  OPENSRP_API_BASE_URL,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -81,7 +82,11 @@ export const PrivateComponent = ({ component: Component, ...rest }: ComponentPro
     <ConnectedPrivateRoute
       {...rest}
       component={(props: RouteComponentProps) => (
-        <Component {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+        <Component
+          {...props}
+          keycloakBaseURL={KEYCLOAK_API_BASE_URL}
+          opensrpBaseURL={OPENSRP_API_BASE_URL}
+        />
       )}
     />
   );
