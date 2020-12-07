@@ -12,15 +12,21 @@ import {
   LOCATIONS_UNIT_GROUP,
   PRODUCT_CATALOGUE,
   TEAMS,
+  TEAM_ASSIGNMENT,
   URL_ADMIN,
   URL_HOME,
   URL_LOCATION_TAG,
   URL_LOCATION_UNIT,
   URL_TEAMS,
+  URL_TEAM_ASSIGNMENT,
   USER_MANAGEMENT,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
-import { ENABLE_PRODUCT_CATALOGUE, ENABLE_TEAMS_MODULE } from '../../../configs/env';
+import {
+  ENABLE_PRODUCT_CATALOGUE,
+  ENABLE_TEAMS_ASSIGNMENT_MODULE,
+  ENABLE_TEAMS_MODULE,
+} from '../../../configs/env';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -68,6 +74,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.Item key="product-catalogue">
               <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
                 {PRODUCT_CATALOGUE}
+              </Link>
+            </Menu.Item>
+          )}
+          {ENABLE_TEAMS_ASSIGNMENT_MODULE && (
+            <Menu.Item key="team-assignment">
+              <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
+                {TEAM_ASSIGNMENT}
               </Link>
             </Menu.Item>
           )}
