@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks';
+import { columns } from '../utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -155,4 +156,11 @@ describe('List view Page', () => {
     /** error view */
     expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo BackBack Home"`);
   });
+
+  // test column sorter method
+
+  const columnsSorter = columns[0].sorter as Function;
+  expect(columnsSorter({ name: 4 }, { name: 1 })).toBe(-1);
+  expect(columnsSorter({ name: 1 }, { name: 4 })).toBe(1);
+  expect(columnsSorter({ name: 0 }, { name: 0 })).toBe(0);
 });
