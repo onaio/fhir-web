@@ -45,7 +45,7 @@ export const REMOVE_ORGANIZATIONS = 'organizations/REMOVE_ORGANIZATIONS';
 export const SET_TOTAL_ORGANIZATIONS = 'organizations/SET_TOTAL_ORGANIZATIONS';
 
 /** Item Reducer */
-const reducer = reducerFactory<Organization>(
+export const reducer = reducerFactory<Organization>(
   reducerName,
   ORGANIZATIONS_FETCHED,
   REMOVE_ORGANIZATIONS,
