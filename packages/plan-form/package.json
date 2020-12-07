@@ -1,7 +1,7 @@
 {
   "name": "@opensrp/plan-form",
-  "version": "0.0.4",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Form component for creating OpenSRP pages",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
@@ -41,6 +41,7 @@
   "private": false,
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
+    "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/plan-form-core": "^0.0.1",
     "@opensrp/server-service": "^0.0.12",
