@@ -16,16 +16,16 @@ export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (reco
 };
 
 /** product Catalogue table columns */
-export const columns: ColumnsType<Assignment> = [
+export const columns: ColumnsType<any> = [
   {
     title: 'Name',
     dataIndex: 'locationName',
     key: `${TableColumnsNamespace}-locationName`,
     defaultSortOrder: 'descend',
     sorter: (rec1, rec2) => {
-      if (rec1.jurisdictionId > rec2.jurisdictionId) {
+      if (rec1.label > rec2.label) {
         return -1;
-      } else if (rec1.jurisdictionId < rec2.jurisdictionId) {
+      } else if (rec1.label < rec2.label) {
         return 1;
       } else {
         return 0;
@@ -33,7 +33,7 @@ export const columns: ColumnsType<Assignment> = [
     },
   },
   {
-    title: 'AssignedTeams',
+    title: 'Assigned Teams',
     dataIndex: 'assignedTeams',
     key: `${TableColumnsNamespace}-assignedTeams`,
   },
