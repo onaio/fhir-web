@@ -16,7 +16,7 @@ import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
 import { LocationUnitStatus } from '../../../ducks/location-units';
 import { history } from '@onaio/connected-reducer-registry';
 
-describe('location-management/src/components/LocationUnitAddEditt', () => {
+describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
     fetch.resetMocks();
     jest.clearAllMocks();

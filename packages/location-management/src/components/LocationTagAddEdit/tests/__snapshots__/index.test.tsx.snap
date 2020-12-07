@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/locations/LocationTagAddEdit renders without crashing 1`] = `
+exports[`Location-module/LocationTagAddEdit renders without crashing 1`] = `
 Object {
   "children": Array [
     <HelmetWrapper

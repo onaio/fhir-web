@@ -12,7 +12,7 @@ import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 
-describe('containers/pages/locations/Form', () => {
+describe('Location-module/Form', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });

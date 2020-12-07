@@ -17,7 +17,7 @@ import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from './fixtures';
 import { fetchCurrentChildren } from '../../../ducks/location-hierarchy';
 
-describe('containers/pages/locations/locationunit', () => {
+describe('Location-module/locationunit', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });

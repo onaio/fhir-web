@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/Home renders without crashing 1`] = `
+exports[`location-management/src/components/LocationUnitDetail renders without crashing 1`] = `
 <LocationUnitDetail
   id="6y66ggde"
   properties={
