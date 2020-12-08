@@ -62,12 +62,12 @@ const PlansList = (props: PlansListTypes) => {
 
   const pageTitle = ACTIVE_MISSIONS;
   // add a key prop to the array data to be consumed by the table
-  const dataSource = data.map((singleObject) => {
-    const prodWithKey = {
+  const dataSource = data.map((singleObject, key) => {
+    const planWithKey = {
       ...singleObject,
-      key: `${TableColumnsNamespace}-${singleObject.date}`,
+      key: `${TableColumnsNamespace}-${key}`,
     };
-    return prodWithKey;
+    return planWithKey;
   });
 
   return (

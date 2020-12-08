@@ -61,11 +61,13 @@ describe('List view Page', () => {
       wrapper.update();
     });
 
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorNo data foundGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Active Missions + New MissionNameDateActionsNo Data"`
+    );
   });
 
   it('sort works', async () => {
-    const plan3 = { ...eusmPlans[0], name: 'Simple Plan', identifier: '300' };
+    const plan3 = { ...eusmPlans[0], title: 'Simple Plan', identifier: '300' };
     fetch.mockResponse(JSON.stringify([...eusmPlans, plan3]));
     const props = {
       history,
@@ -130,7 +132,7 @@ describe('List view Page', () => {
       },
       match: {
         isExact: true,
-        params: { productId: '1' },
+        params: {},
         path: `${PLANS_LIST_VIEW_URL}`,
         url: `${PLANS_LIST_VIEW_URL}`,
       },
@@ -160,7 +162,7 @@ describe('List view Page', () => {
   // test column sorter method
 
   const columnsSorter = columns[0].sorter as Function;
-  expect(columnsSorter({ name: 4 }, { name: 1 })).toBe(-1);
-  expect(columnsSorter({ name: 1 }, { name: 4 })).toBe(1);
-  expect(columnsSorter({ name: 0 }, { name: 0 })).toBe(0);
+  expect(columnsSorter({ title: 4 }, { title: 1 })).toBe(-1);
+  expect(columnsSorter({ title: 1 }, { title: 4 })).toBe(1);
+  expect(columnsSorter({ title: 0 }, { title: 0 })).toBe(0);
 });

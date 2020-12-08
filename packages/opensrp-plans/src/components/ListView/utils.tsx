@@ -23,9 +23,9 @@ export const columns: ColumnsType<PlanDefinition> = [
     key: `${TableColumnsNamespace}-name`,
     defaultSortOrder: 'descend',
     sorter: (rec1, rec2) => {
-      if (rec1.name > rec2.name) {
+      if (rec1.title > rec2.title) {
         return -1;
-      } else if (rec1.name < rec2.name) {
+      } else if (rec1.title < rec2.title) {
         return 1;
       }
       return 0;

@@ -1,4 +1,4 @@
-/** get the full product Catalogue
+/** get the full plans dataloader
  */
 
 import { store, makeAPIStateSelector } from '@opensrp/store';
@@ -7,10 +7,11 @@ import { OPENSRP_API_BASE_URL, OPENSRP_PLANS } from '../constants';
 import { fetchPlanDefinitions } from '../ducks';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 
+const sessionSelector = makeAPIStateSelector();
+
 /** OpenSRP service */
 export class OpenSRPService extends GenericOpenSRPService {
   constructor(endpoint: string, baseURL: string = OPENSRP_API_BASE_URL) {
-    const sessionSelector = makeAPIStateSelector();
     const accessToken = sessionSelector(store.getState(), { accessToken: true });
     super(accessToken, baseURL, endpoint);
   }
@@ -19,7 +20,7 @@ export class OpenSRPService extends GenericOpenSRPService {
 /**
  * @param {string} baseURL -  base url of api
  * @param {OpenSRPService} service - the opensrp service
- * @param {fetchPlanDefinitions} actionCreator - Action creator; creates actions thad adds products to the store
+ * @param {fetchPlanDefinitions} actionCreator - Action creator; creates actions that adds plans to the store
  *
  * @returns {Promise<void>}
  */
@@ -32,7 +33,7 @@ export async function loadPlans(
   return serve
     .list()
     .then((response: PlanDefinition[] | null) => {
-      if (response === null || response.length === 0) {
+      if (response === null) {
         return Promise.reject(new Error('No data found'));
       }
       actionCreator(response);
