@@ -71,6 +71,10 @@ describe('dataLoading', () => {
     postPutPlan({} as any, mockBaseURL, false).catch((e) => {
       expect(e.message).toEqual(errorMessage);
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    postPutPlan({} as any, mockBaseURL, true).catch((e) => {
+      expect(e.message).toEqual(errorMessage);
+    });
     await new Promise((resolve) => setImmediate(resolve));
   });
 });
