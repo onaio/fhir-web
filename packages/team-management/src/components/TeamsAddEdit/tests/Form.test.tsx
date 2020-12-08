@@ -91,7 +91,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'An error occurred',
     });
   });

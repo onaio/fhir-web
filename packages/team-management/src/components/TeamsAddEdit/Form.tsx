@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Select, Button, Form as AntdForm, Radio, Input, notification } from 'antd';
+import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { v4 } from 'uuid';
 import { API_BASE_URL, TEAMS_POST, PRACTITIONER_POST } from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
+import {
+  sendSuccessNotification,
+  sendInfoNotification,
+  sendErrorNotification,
+} from '@opensrp/notifications';
 import { OrganizationPOST } from '../../ducks/organizations';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 
@@ -62,8 +67,8 @@ export async function onSubmit(
   await serve
     .create(payload)
     .then(async () => {
-      notification.success({ message: 'Successfully Added Teams', description: '' });
-      notification.info({ message: 'Assigning Practitioners', description: '' });
+      sendSuccessNotification('Successfully Added Teams');
+      sendInfoNotification('Assigning Practitioners');
 
       const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
 
@@ -82,14 +87,11 @@ export async function onSubmit(
       });
 
       return await serve.create(payload).then(() => {
-        notification.success({
-          message: 'Successfully Assigning Practitioners',
-          description: '',
-        });
+        sendSuccessNotification('Successfully Assigning Practitioners');
         history.goBack();
       });
     })
-    .catch(() => notification.error({ message: 'An error occurred', description: '' }));
+    .catch(() => sendErrorNotification('An error occurred'));
 
   if (setIsSubmitting) setIsSubmitting(false);
 }

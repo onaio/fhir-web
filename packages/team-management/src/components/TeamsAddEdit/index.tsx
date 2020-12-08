@@ -8,7 +8,8 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { API_BASE_URL, PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
-import { notification, Spin } from 'antd';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioners';
 
 import './TeamsAddEdit.css';
@@ -60,7 +61,7 @@ function setupInitialValue(accessToken: string, id: string, setInitialValue: Fun
         practitioners: response.practitioners.map((prac) => prac.identifier),
       });
     })
-    .catch(() => notification.error({ message: 'An error occurred', description: '' }));
+    .catch(() => sendErrorNotification('An error occurred'));
 }
 
 export const TeamsAddEdit: React.FC = () => {
@@ -78,7 +79,7 @@ export const TeamsAddEdit: React.FC = () => {
     serve
       .list()
       .then((response: Practitioner[]) => setPractitioner(response))
-      .catch(() => notification.error({ message: 'An error occurred', description: '' }));
+      .catch(() => sendErrorNotification('An error occurred'));
   }, [accessToken]);
 
   if (!practitioner || (params.id && !initialValue))
