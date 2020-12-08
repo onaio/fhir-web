@@ -19,8 +19,8 @@ export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (
 export const columns: ColumnsType<PlanDefinition> = [
   {
     title: 'Name',
-    dataIndex: 'name',
-    key: `${TableColumnsNamespace}-name`,
+    dataIndex: 'title',
+    key: `${TableColumnsNamespace}-title`,
     defaultSortOrder: 'descend',
     sorter: (rec1, rec2) => {
       if (rec1.title > rec2.title) {
