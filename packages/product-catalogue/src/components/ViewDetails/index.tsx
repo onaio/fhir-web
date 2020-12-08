@@ -3,16 +3,11 @@ import React from 'react';
 import { Col, Typography, Space } from 'antd';
 import { Resource404 } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
-import {
-  PRODUCT_NAME,
-  UNIQUE_ID,
-  MATERIAL_NUMBER,
-  SERVER_VERSION,
-  CATALOGUE_LIST_VIEW_URL,
-} from '../../constants';
+import { PRODUCT_NAME, UNIQUE_ID, MATERIAL_NUMBER, SERVER_VERSION } from '../../lang';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { Button } from 'antd';
+import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 
 const { Text } = Typography;
 

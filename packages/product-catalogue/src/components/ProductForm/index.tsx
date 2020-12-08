@@ -10,6 +10,28 @@ import * as Yup from 'yup';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
+import {
+  ACCOUNTABILITY_PERIOD,
+  ATTRACTIVE_ITEM_LABEL,
+  AVAILABILITY_LABEL,
+  AVAILABILITY_PLACEHOLDER,
+  CANCEL,
+  CONDITION_LABEL,
+  CONDITION_PLACEHOLDER,
+  DESCRIBE_THE_PRODUCTS_USE,
+  ENTER_PRODUCTS_NAME,
+  MATERIAL_NUMBER,
+  MATERIAL_NUMBER_PLACEHOLDER,
+  NO,
+  PHOTO_OF_THE_PRODUCT,
+  PRODUCT_NAME,
+  REQUIRED,
+  SUBMIT,
+  SUCCESSFULLY_ADDED,
+  SUCCESSFULLY_UPDATED,
+  USED_APPROPRIATELY,
+  YES,
+} from '../../lang';
 
 /** type describing the fields in the product catalogue form */
 export interface ProductFormFields {
@@ -51,13 +73,13 @@ const defaultProps = {
 /** yup validation schema for productForm fields */
 const ProductFormValidationSchema = Yup.object().shape({
   uniqueId: Yup.number(),
-  productName: Yup.string().required('Required'),
-  materialNumber: Yup.string().required('Required'),
-  isAttractiveItem: Yup.boolean().required('Required'),
+  productName: Yup.string().required(REQUIRED),
+  materialNumber: Yup.string().required(REQUIRED),
+  isAttractiveItem: Yup.boolean().required(REQUIRED),
   condition: Yup.string(),
   appropriateUsage: Yup.string(),
-  accountabilityPeriod: Yup.number().required('Required'),
-  availability: Yup.string().required('Required'),
+  accountabilityPeriod: Yup.number().required(REQUIRED),
+  availability: Yup.string().required(REQUIRED),
   photoURL: Yup.mixed(),
 });
 
@@ -114,8 +136,8 @@ const ProductForm = (props: ProductFormProps) => {
 
   /** options for the isAttractive form field radio buttons */
   const attractiveOptions = [
-    { label: 'yes', value: true },
-    { label: 'no', value: false },
+    { label: YES, value: true },
+    { label: NO, value: false },
   ];
 
   /** component used by antd Upload, to upload the product photo */
@@ -177,7 +199,7 @@ const ProductForm = (props: ProductFormProps) => {
           if (isEditMode) {
             putProduct(baseURL, payload)
               .then(() => {
-                sendSuccessNotification('Successfully Updated');
+                sendSuccessNotification(SUCCESSFULLY_UPDATED);
                 // the reason this is not in a finally block, it should be called before setAreWeDoneHere
                 // to avoid updating an unmounted component.
                 actions.setSubmitting(false);
@@ -190,7 +212,7 @@ const ProductForm = (props: ProductFormProps) => {
           } else {
             postProduct(baseURL, payload)
               .then(() => {
-                sendSuccessNotification('Successfully Added');
+                sendSuccessNotification(SUCCESSFULLY_ADDED);
                 actions.setSubmitting(false);
                 setAreWeDoneHere(true);
               })
@@ -205,11 +227,8 @@ const ProductForm = (props: ProductFormProps) => {
           return (
             <>
               <Form {...formItemLayout} colon={true} requiredMark={false}>
-                <Form.Item id="productName" name="productName" label="Product name" required={true}>
-                  <Input
-                    name="productName"
-                    placeholder="Enter the product's name e.g Midwifery Kit"
-                  />
+                <Form.Item id="productName" name="productName" label={PRODUCT_NAME} required={true}>
+                  <Input name="productName" placeholder={ENTER_PRODUCTS_NAME} />
                 </Form.Item>
 
                 <Form.Item id="uniqueId" name="uniqueId" hidden={true} required={true}>
@@ -219,16 +238,16 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="materialNumber"
                   name="materialNumber"
-                  label="Material number"
+                  label={MATERIAL_NUMBER}
                   required={true}
                 >
-                  <Input name="materialNumber" placeholder="Enter the product's material number" />
+                  <Input name="materialNumber" placeholder={MATERIAL_NUMBER_PLACEHOLDER} />
                 </FormItem>
 
                 <FormItem
                   id="isAttractiveItem"
                   name="isAttractiveItem"
-                  label="Attractive item?"
+                  label={ATTRACTIVE_ITEM_LABEL}
                   required={true}
                 >
                   <Radio.Group name="isAttractiveItem" options={attractiveOptions} />
@@ -237,47 +256,35 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="availability"
                   name="availability"
-                  label="Is it there?"
+                  label={AVAILABILITY_LABEL}
                   required={true}
                 >
                   <Input.TextArea
                     rows={4}
                     name="availability"
-                    placeholder="Describe where a supply monitor can locate this product at the service point."
+                    placeholder={AVAILABILITY_PLACEHOLDER}
                   />
                 </FormItem>
-                <FormItem
-                  id="condition"
-                  name="condition"
-                  label="Is it in good condition? (optional)"
-                >
-                  <Input.TextArea
-                    rows={4}
-                    name="condition"
-                    placeholder="Describe how a supply monitor would assess whether the product is in good condition"
-                  />
+                <FormItem id="condition" name="condition" label={CONDITION_LABEL}>
+                  <Input.TextArea rows={4} name="condition" placeholder={CONDITION_PLACEHOLDER} />
                 </FormItem>
-                <FormItem
-                  id="appropriateUsage"
-                  name="appropriateUsage"
-                  label="Is it being used appropriately? (optional)"
-                >
+                <FormItem id="appropriateUsage" name="appropriateUsage" label={USED_APPROPRIATELY}>
                   <Input.TextArea
                     rows={4}
                     name="appropriateUsage"
-                    placeholder="Describe the product's intended use at the service point"
+                    placeholder={DESCRIBE_THE_PRODUCTS_USE}
                   />
                 </FormItem>
                 <FormItem
                   id="accountabilityPeriod"
                   name="accountabilityPeriod"
-                  label="Accountability period (in months)"
+                  label={ACCOUNTABILITY_PERIOD}
                   required={true}
                 >
                   <InputNumber name="accountabilityPeriod" min={0} />
                 </FormItem>
 
-                <FormItem id="photoURL" name="photoURL" label="Photo of the product (optional)">
+                <FormItem id="photoURL" name="photoURL" label={PHOTO_OF_THE_PRODUCT}>
                   <Upload
                     customRequest={async () => {
                       return;
@@ -299,7 +306,7 @@ const ProductForm = (props: ProductFormProps) => {
 
                 <FormItem {...tailLayout} name="submitCancel">
                   <Space>
-                    <SubmitButton id="submit">Submit</SubmitButton>
+                    <SubmitButton id="submit">{SUBMIT}</SubmitButton>
 
                     <Button
                       id="cancel"
@@ -307,7 +314,7 @@ const ProductForm = (props: ProductFormProps) => {
                         history.push(CATALOGUE_LIST_VIEW_URL);
                       }}
                     >
-                      Cancel
+                      {CANCEL}
                     </Button>
                   </Space>
                 </FormItem>
