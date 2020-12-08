@@ -6,17 +6,20 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { accessToken, id, practitioner, practitioners, team } from './fixtures';
+import { accessToken, id, intialValue, practitioner, practitioners, team } from './fixtures';
 import fetch from 'jest-fetch-mock';
 
-import TeamsAddEdit, { getPractinonerIdentifier, getTeamDetail } from '..';
+import TeamsAddEdit, { getPractinonerDetail, getTeamDetail } from '..';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   afterEach(() => {
+    jest.resetAllMocks();
     fetch.resetMocks();
   });
 
   it('renders without crashing', async () => {
+    fetch.mockResponse(JSON.stringify(practitioner));
+
     mount(
       <Provider store={store}>
         <Router history={history}>
@@ -31,6 +34,8 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('renders with id without crashing', async () => {
+    fetch.mockResponse(JSON.stringify(practitioner));
+
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
@@ -103,27 +108,32 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
   it('test getPractinonerDetail', async () => {
     fetch.mockResponse(JSON.stringify(practitioner));
-    const response = await getPractinonerIdentifier(accessToken, id);
+    const response = await getPractinonerDetail(accessToken, id);
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(response).toMatchObject(practitioner.map((prac) => prac.identifier));
+    expect(response).toMatchObject(practitioner);
   });
 
   it('test getTeamDetail', async () => {
-    const mockfc = jest.fn();
+    fetch.mockResponse(
+      JSON.stringify({
+        name: intialValue.name,
+        active: intialValue.active,
+        practitioner: practitioner,
+      })
+    );
+    const response = await getTeamDetail(accessToken, id);
 
-    fetch.mockResponseOnce(JSON.stringify(team));
-    fetch.mockResponseOnce(JSON.stringify(practitioner));
+    await act(async () => {
+      await flushPromises();
+    });
 
-    getTeamDetail(accessToken, id, mockfc);
-
-    expect(mockfc).toBeCalledWith({
-      active: team.active,
-      name: team.name,
-      practitioners: practitioner.map((prac) => prac.identifier),
+    expect(response).toMatchObject({
+      name: intialValue.name,
+      active: intialValue.active,
     });
   });
 });

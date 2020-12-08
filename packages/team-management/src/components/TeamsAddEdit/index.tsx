@@ -20,24 +20,17 @@ reducerRegistry.register(reducerName, reducer);
  *
  * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
- * @param {Function} setInitialValue function to set initial value
+ * @returns {Promise<Object>} Object Containing Team Data
  */
-export function getTeamDetail(
-  accessToken: string,
-  id: string,
-  setInitialValue: React.Dispatch<React.SetStateAction<FormField | null>>
-) {
+export async function getTeamDetail(accessToken: string, id: string) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_GET + id);
-  serve
-    .list()
-    .then(async (response: Organization) => {
-      setInitialValue({
-        name: response.name,
-        active: response.active,
-        practitioners: await getPractinonerIdentifier(accessToken, id),
-      });
-    })
-    .catch(() => notification.error({ message: 'An error occurred', description: '' }));
+  return await serve.list().then(async (response: Organization) => {
+    return {
+      name: response.name,
+      active: response.active,
+      practitioners: await getPractinonerDetail(accessToken, id),
+    };
+  });
 }
 
 /**
@@ -45,13 +38,11 @@ export function getTeamDetail(
  *
  * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
- * @returns {Promise<Array<string>>} list of Practitioner Assigned to a team
+ * @returns {Promise<Array<Practitioner>>} list of Practitioner Assigned to a team
  */
-export async function getPractinonerIdentifier(accessToken: string, id: string) {
+export async function getPractinonerDetail(accessToken: string, id: string) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + id);
-  return await serve
-    .list()
-    .then((response: Practitioner[]) => response.map((prac) => prac.identifier));
+  return await serve.list().then((response: Practitioner[]) => response);
 }
 
 export const TeamsAddEdit: React.FC = () => {
@@ -61,7 +52,15 @@ export const TeamsAddEdit: React.FC = () => {
   const [practitioner, setPractitioner] = useState<Practitioner[] | null>(null);
 
   useEffect(() => {
-    if (params.id) getTeamDetail(accessToken, params.id, setInitialValue);
+    if (params.id)
+      getTeamDetail(accessToken, params.id)
+        .then((response) => {
+          setInitialValue({
+            ...response,
+            practitioners: response.practitioners.map((prac) => prac.identifier),
+          });
+        })
+        .catch(() => notification.error({ message: 'An error occurred', description: '' }));
   }, [accessToken, params.id]);
 
   useEffect(() => {
