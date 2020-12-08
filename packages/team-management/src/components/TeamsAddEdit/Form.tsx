@@ -81,7 +81,12 @@ export function onSubmit(
         };
       });
 
-      await setPractitioner(accessToken, Teamid, payload);
+      sendInfoNotification('Assigning Practitioners');
+
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
+      await serve.create(payload);
+
+      sendSuccessNotification('Successfully Assigned Practitioners');
       if (setIsSubmitting) setIsSubmitting(false);
       history.goBack();
     })
@@ -99,24 +104,6 @@ export async function setTeam(accessToken: string, payload: OrganizationPOST, id
   } else {
     await serve.create(payload);
     sendSuccessNotification('Successfully Added Teams');
-  }
-}
-
-export async function setPractitioner(
-  accessToken: string,
-  id: string,
-  payload: PractitionerPOST[]
-) {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
-
-  if (id) {
-    sendInfoNotification('Updating Practitioners');
-    await serve.update(payload);
-    sendSuccessNotification('Successfully Updated Practitioners');
-  } else {
-    sendInfoNotification('Assigning Practitioners');
-    await serve.create(payload);
-    sendSuccessNotification('Successfully Assigned Practitioners');
   }
 }
 
