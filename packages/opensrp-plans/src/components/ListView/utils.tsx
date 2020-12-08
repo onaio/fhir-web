@@ -4,7 +4,7 @@ import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { PLANS_LIST_VIEW_URL, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
-import { NAME, DATE, ACTIONS } from '../../lang';
+import { NAME, DATE, ACTIONS, TIP, MESSAGE, DESCRIPTION } from '../../lang';
 
 /** component rendered in the action column of the table */
 
@@ -48,14 +48,10 @@ export const columns: ColumnsType<PlanDefinition> = [
 
 /** util component shown when there is a pending promise */
 
-export const PlansLoading = () => {
+export const plansLoading = () => {
   return (
-    <Spin tip="Loading...">
-      <Alert
-        message="Fetching Plans"
-        description="Please wait, as we fetch the plans."
-        type="info"
-      />
+    <Spin tip={TIP}>
+      <Alert message={MESSAGE} description={DESCRIPTION} type="info" />
     </Spin>
   );
 };
