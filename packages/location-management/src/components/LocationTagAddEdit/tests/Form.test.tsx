@@ -12,7 +12,7 @@ import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 
-describe('containers/pages/locations/Form', () => {
+describe('Location-module/Form', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -29,6 +29,9 @@ describe('containers/pages/locations/Form', () => {
   });
 
   it('tests cancel button', () => {
+    const mockBack = jest.fn();
+    history.goBack = mockBack;
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -36,7 +39,18 @@ describe('containers/pages/locations/Form', () => {
         </Router>
       </Provider>
     );
+
     wrapper.find('button#cancel').simulate('click');
+
+    // click go back
+    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Save"`);
+    wrapper.find('button').first().simulate('click');
+
+    // click go back
+    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Cancel"`);
+    wrapper.find('button').last().simulate('click');
+
+    expect(mockBack).toHaveBeenCalled();
   });
 
   it('tests Create New Payload', async () => {
@@ -82,22 +96,18 @@ describe('containers/pages/locations/Form', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer null',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'GET',
+      },
     ]);
 
-    // with values test
-    // expect(toJson(wrapper)).toEqual('');
     wrapper
       .find('input[name="name"]')
       .simulate('change', { target: { name: 'name', value: 'Name213' } });
@@ -113,38 +123,37 @@ describe('containers/pages/locations/Form', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer null',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: '{"active":false,"description":"this is description","name":"Name213","id":"1"}',
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
+        method: 'GET',
+      },
+    ]);
+
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: '{"active":false,"description":"this is description","name":"Name213","id":"1"}',
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer null',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'PUT',
+      },
     ]);
     wrapper.unmount();
   });
 
   it('Handles errors on fetching single tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -160,15 +169,15 @@ describe('containers/pages/locations/Form', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
-      message: 'API request Failed',
+      description: undefined,
+      message: 'An error occurred',
     });
 
     wrapper.unmount();
   });
 
   it('Handles errors on creating tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -194,15 +203,15 @@ describe('containers/pages/locations/Form', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
-      message: 'API request Failed',
+      description: undefined,
+      message: 'An error occurred',
     });
 
     wrapper.unmount();
   });
 
   it('Handles errors on editing tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     onSubmit(fixtures.sampleLocationTagPayload, 'sometoken', { id: '1' }, jest.fn());
 
@@ -211,8 +220,8 @@ describe('containers/pages/locations/Form', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
-      message: 'API request Failed',
+      description: undefined,
+      message: 'An error occurred',
     });
   });
 });

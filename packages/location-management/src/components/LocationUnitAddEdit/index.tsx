@@ -14,7 +14,7 @@ import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 
-import { notification, Row, Col } from 'antd';
+import { Row, Col } from 'antd';
 import { LocationTag } from '../../ducks/location-tags';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
@@ -24,7 +24,7 @@ import {
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { generateJurisdictionTree } from '../LocationTree/utils';
-
+import { sendErrorNotification } from '@opensrp/notifications';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 import './LocationUnitAddEdit.css';
@@ -59,12 +59,12 @@ export const LocationUnitAddEdit: React.FC = () => {
             parentId: response.properties.parentId,
             status: response.properties.status,
             externalId: response.properties.externalId,
-            locationTags: response.locationTags?.map((e) => e.id),
+            locationTags: response.locationTags?.map((loc) => loc.id),
             geometry: JSON.stringify(response.geometry),
             type: response.type,
           });
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, params.id]);
 
@@ -76,7 +76,7 @@ export const LocationUnitAddEdit: React.FC = () => {
         .then((response: LocationTag[]) => {
           setLocationtag(response);
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, locationtag.length]);
 
@@ -105,11 +105,11 @@ export const LocationUnitAddEdit: React.FC = () => {
                   // if (hierarchy.model && hierarchy.model.children)
                   dispatch(fetchAllHierarchies(hierarchy.model));
                 })
-                .catch((e) => notification.error({ message: `${e}`, description: '' }));
+                .catch(() => sendErrorNotification('An error occurred'));
             });
           }
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, Treedata.length, dispatch]);
 

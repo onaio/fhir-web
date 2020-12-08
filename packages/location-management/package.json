@@ -13,15 +13,14 @@
   "repository": "https://github.com/OpenSRP/web/",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/location-management --verbose --collectCoverage=true && cd packages/location-management",
-    "test:watch": "cd ../../ && jest test  packages/location-management --verbose --watch && cd packages/location-management",
+    "test": "cd ../../ && yarn test  packages/location-management --verbose --collectCoverage=true -u && cd packages/location-management",
+    "test:watch": "cd ../../ && yarn test  packages/location-management --verbose --watch && cd packages/location-management",
     "tsc": "tsc",
-    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__",
-    "add-package": "yarn run tsc && yarn run transpile:windows && yarn run copy && cd ../../client && yarn add file:../packages/location-management && yarn start"
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__"
   },
   "jest": {
     "automock": false,
@@ -36,18 +35,20 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "uuidv4": "^6.2.5",
-    "formik-antd": "^2.0.1",
     "tree-model": "^1.0.7",
+    "@opensrp/notifications": "^0.0.2",
     "@opensrp/reducer-factory": "^0.0.11",
     "@opensrp/server-service": "^0.0.12",
     "@opensrp/store": "^0.0.7"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@types/geojson": "^7946.0.7"
+    "@types/geojson": "^7946.0.7",
+    "@types/uuid": "8.3.0"
   },
   "peerDependencies": {
+    "formik-antd": "^2.0.1",
+    "uuid": "^8.3.1",
     "react": "^16.13.1"
   }
 }

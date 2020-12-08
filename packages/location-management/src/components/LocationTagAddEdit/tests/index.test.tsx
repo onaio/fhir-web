@@ -7,7 +7,7 @@ import { store } from '@opensrp/store';
 
 import LocationTagAddEdit from '..';
 
-describe('containers/pages/locations/LocationTagAddEdit', () => {
+describe('Location-module/LocationTagAddEdit', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>

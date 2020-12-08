@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table as AntTable, Menu, Dropdown, Button, Divider, Popconfirm, notification } from 'antd';
+import { Table as AntTable, Menu, Dropdown, Button, Divider, Popconfirm } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationTag } from '../../ducks/location-tags';
 import { getAccessToken } from '@onaio/session-reducer';
@@ -8,6 +8,7 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { API_BASE_URL, LOCATION_TAG_DELETE, URL_LOCATION_TAG_EDIT } from '../../constants';
 import { Link } from 'react-router-dom';
 import { LocationTagDetailProps } from '../LocationTagDetail';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 
 export interface TableData extends LocationTag {
   key: string;
@@ -31,8 +32,8 @@ export const onDelete = (record: LocationTag, accessToken: string) => {
   );
   clientService
     .delete()
-    .then(() => notification.success({ message: 'Successfully Deleted!', description: '' }))
-    .catch((err: string) => notification.error({ message: `${err}`, description: '' }));
+    .then(() => sendSuccessNotification('Successfully Deleted!'))
+    .catch(() => sendErrorNotification('An error occurred'));
 };
 
 const Table: React.FC<Props> = (props: Props) => {
@@ -43,7 +44,6 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       title: 'Name',
       dataIndex: 'name',
-      editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {

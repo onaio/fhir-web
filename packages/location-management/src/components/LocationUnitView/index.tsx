@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, notification } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -24,7 +24,7 @@ import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import { Ripple } from '@onaio/loaders';
 import Tree from '../LocationTree';
-
+import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   getAllHierarchiesArray,
@@ -65,7 +65,7 @@ export const loadSingleLocation = (
   serve
     .read(row.id, { is_jurisdiction: true })
     .then((res: LocationUnit) => setDetail(res))
-    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    .catch(() => sendErrorNotification('An error occurred'));
 };
 
 export const LocationUnitView: React.FC = () => {
@@ -103,11 +103,11 @@ export const LocationUnitView: React.FC = () => {
                   // if (hierarchy.model && hierarchy.model.children)
                   dispatch(fetchAllHierarchies(hierarchy.model));
                 })
-                .catch((e) => notification.error({ message: `${e}`, description: '' }));
+                .catch(() => sendErrorNotification('An error occurred'));
             });
           }
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [Treedata.length, accessToken, dispatch]);
 

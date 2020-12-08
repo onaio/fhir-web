@@ -15,7 +15,7 @@ import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixture
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
-describe('containers/pages/locations/locationTagView', () => {
+describe('location-management/src/components/LocationTagView', () => {
   const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   const endpoint = 'location-tag/delete';
   const tagId = '1';
@@ -143,13 +143,13 @@ describe('containers/pages/locations/locationTagView', () => {
     });
     expect(notificationSuccessMock).toHaveBeenCalledWith({
       message: 'Successfully Deleted!',
-      description: '',
+      description: undefined,
     });
   });
 
   it('hanldles failed deletion', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
 
     onDelete(sampleLocationTagPayload, 'sometoken');
 
@@ -158,8 +158,8 @@ describe('containers/pages/locations/locationTagView', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'API is down',
-      description: '',
+      message: 'An error occurred',
+      description: undefined,
     });
   });
 });

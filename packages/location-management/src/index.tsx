@@ -1,5 +1,3 @@
-export * from './LocationUnitModule';
-export * from './LocationTagModule';
 export * from './components/LocationUnitAddEdit';
 export * from './components/LocationUnitView';
 export * from './components/LocationTagView';

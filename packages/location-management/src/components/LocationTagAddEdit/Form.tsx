@@ -1,13 +1,14 @@
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio } from 'formik-antd';
-import { notification, Button } from 'antd';
+import { Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_TAG_GET } from '../../constants';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationTag,
   LocationTagPayloadPOST,
@@ -65,24 +66,24 @@ export const onSubmit = (
     serve
       .update(payload)
       .then(() => {
-        notification.success({ message: 'Location Tag updated successfully', description: '' });
+        sendSuccessNotification('Location Tag updated successfully');
         setSubmitting(false);
         history.goBack();
       })
-      .catch((e: Error) => {
-        notification.error({ message: `${e}`, description: '' });
+      .catch(() => {
+        sendErrorNotification('An error occurred');
         setSubmitting(false);
       });
   } else {
     serve
       .create(payload)
       .then(() => {
-        notification.success({ message: 'Location Tag successfully', description: '' });
+        sendSuccessNotification('Location Tag successfully');
         setSubmitting(false);
         history.goBack();
       })
-      .catch((e: Error) => {
-        notification.error({ message: `${e}`, description: '' });
+      .catch(() => {
+        sendErrorNotification('An error occurred');
         setSubmitting(false);
       });
   }
@@ -111,7 +112,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             });
             setIsLoading(false);
           })
-          .catch((e) => notification.error({ message: `${e}`, description: '' }));
+          .catch(() => sendErrorNotification('An error occurred'));
       } else setIsLoading(false);
     }
   }, [accessToken, isLoading, props.id]);

@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 import React from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
-import { notification, Button } from 'antd';
+import { Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { getUser, User } from '@onaio/session-reducer';
+import { getUser } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
@@ -20,6 +20,7 @@ import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../
 import { v4 } from 'uuid';
 import { LocationTag } from '../../ducks/location-tags';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 
 export interface FormField {
   name: string;
@@ -80,20 +81,22 @@ function removeEmptykeys(obj: any) {
 /**
  * Handle form submission
  *
+ * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
- * @param {object} props component props
- * @param {object} user logged in user object
- * @param {Function} setSubmitting method to set submission status
+ * @param {Array<LocationTag>} locationtag all locationtag
+ * @param {string} username username of logged in user
+ * @param {number} id location unit
  */
 export const onSubmit = async (
+  setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   accessToken: string,
-  props: Props,
-  user: User,
-  setSubmitting: (isSubmitting: boolean) => void
+  locationtag: LocationTag[],
+  username: string,
+  id?: string
 ) => {
-  const locationTagFiler = props.locationtag.filter((e) =>
+  const locationTagFiler = locationtag.filter((e) =>
     (values.locationTags as number[]).includes(e.id)
   );
 
@@ -102,7 +105,7 @@ export const onSubmit = async (
     name: tag.name,
   }));
 
-  let geographicLevel;
+  let geographicLevel: number | undefined | void;
   if (values.parentId) {
     geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
       .read(values.parentId)
@@ -110,7 +113,7 @@ export const onSubmit = async (
         return res.locationsHierarchy.map[values.parentId as string].node.attributes
           .geographicLevel as number;
       })
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
+      .catch(() => sendErrorNotification('An error occurred'));
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
@@ -120,7 +123,7 @@ export const onSubmit = async (
     is_jurisdiction: true,
     properties: {
       geographicLevel: geographicLevel && geographicLevel >= 0 ? geographicLevel + 1 : 0,
-      username: user.username,
+      username: username,
       externalId: values.externalId,
       parentId: values.parentId ? values.parentId : '',
       name: values.name,
@@ -128,7 +131,7 @@ export const onSubmit = async (
       name_en: values.name,
       status: values.status,
     },
-    id: props.id ? props.id : v4(),
+    id: id ? id : v4(),
     syncStatus: LocationUnitSyncStatus.SYNCED,
     type: values.type,
     locationTags: locationTag,
@@ -138,28 +141,28 @@ export const onSubmit = async (
   removeEmptykeys(payload);
 
   const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
-  if (props.id) {
-    serve
+  if (id) {
+    await serve
       .update({ ...payload })
       .then(() => {
-        notification.success({ message: 'Location Unit Updated successfully', description: '' });
+        sendSuccessNotification('Location Unit Updated successfully');
         setSubmitting(false);
         history.goBack();
       })
-      .catch((e: Error) => {
-        notification.error({ message: `${e}`, description: '' });
+      .catch(() => {
+        sendErrorNotification('An error occurred');
         setSubmitting(false);
       });
   } else {
-    serve
+    await serve
       .create({ ...payload })
       .then(() => {
-        notification.success({ message: 'Location Unit Created successfully', description: '' });
+        sendSuccessNotification('Location Unit Created successfully');
         setSubmitting(false);
         history.goBack();
       })
-      .catch((e: Error) => {
-        notification.error({ message: `${e}`, description: '' });
+      .catch(() => {
+        sendErrorNotification('An error occurred');
         setSubmitting(false);
       });
   }
@@ -200,7 +203,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, accessToken, props, user, setSubmitting)}
+      ) => onSubmit(setSubmitting, values, accessToken, props.locationtag, user.username, props.id)}
     >
       {({ isSubmitting, handleSubmit }) => (
         <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>

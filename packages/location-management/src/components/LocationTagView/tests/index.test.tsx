@@ -11,7 +11,7 @@ import fetch from 'jest-fetch-mock';
 import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixtures';
 import { notification } from 'antd';
 
-describe('containers/pages/locations/LocationTagView', () => {
+describe('location-management/src/components/LocationTagView', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
@@ -47,9 +47,9 @@ describe('containers/pages/locations/LocationTagView', () => {
     wrapper.unmount();
   });
 
-  it('test error thrown if API is down', async () => {
+  it('test error thrown if An error occurred', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
     mount(
       <Provider store={store}>
         <Router history={history}>
@@ -63,8 +63,8 @@ describe('containers/pages/locations/LocationTagView', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'API is down',
-      description: '',
+      message: 'An error occurred',
+      description: undefined,
     });
   });
 });
