@@ -48,7 +48,7 @@ export const columns: ColumnsType<PlanDefinition> = [
 
 /** util component shown when there is a pending promise */
 
-export const plansLoading = () => {
+export const PlansLoading = () => {
   return (
     <Spin tip={TIP}>
       <Alert message={MESSAGE} description={DESCRIPTION} type="info" />
