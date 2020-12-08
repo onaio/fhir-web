@@ -7,7 +7,7 @@ import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
 import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
-import Loading from '../Loading';
+import { Spin } from 'antd';
 import { sendSuccessNotification } from '@opensrp/notifications';
 /**
  * antd notification popup.
@@ -78,7 +78,7 @@ export const UnSuccessfulLogin = withRouter(BaseUnsuccessfulLogin);
 const CustomConnectedAPICallBack: React.FC<RouteComponentProps<RouteParams>> = (props) => {
   return (
     <ConnectedAPICallback
-      LoadingComponent={Loading}
+      LoadingComponent={() => <Spin size="large" />}
       // tslint:disable-next-line: jsx-no-lambda
       UnSuccessfulLoginComponent={UnSuccessfulLogin}
       SuccessfulLoginComponent={SuccessfulLoginComponent}

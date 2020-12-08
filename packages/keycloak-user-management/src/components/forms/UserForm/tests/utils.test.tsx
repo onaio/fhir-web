@@ -1,4 +1,4 @@
-import { submitForm, fetchRequiredActions } from '../utils';
+import { submitForm, fetchRequiredActions, createOrEditPractitioners } from '../utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import fetch from 'jest-fetch-mock';
 import { act } from 'react-dom/test-utils';
@@ -7,6 +7,8 @@ import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
 import { ERROR_OCCURED } from '../../../../constants';
 import * as fixtures from './fixtures';
+import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { keycloakUser } from './fixtures';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -85,9 +87,12 @@ describe('forms/utils/submitForm', () => {
     username: 'janedoe@example.com',
     email: 'janedoe@example.com',
     requiredActions: ['UPDATE_PASSWORD'],
+    identifier: '40522954-a9cb-44d4-9ea9-735674717eb3',
   };
   const keycloakBaseURL =
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const opensrpBaseURL = OPENSRP_API_BASE_URL;
+  const opensrpServiceClass = OpenSRPService;
   const accessToken = 'token';
   const serviceClass = KeycloakService;
   const setSubmittingMock = jest.fn();
@@ -97,15 +102,23 @@ describe('forms/utils/submitForm', () => {
   const userId = 'cab07278-c77b-4bc7-b154-bcbf01b7d35b';
 
   it('submits user creation correctly', async () => {
-    submitForm(values, accessToken, keycloakBaseURL, serviceClass, setSubmittingMock);
+    submitForm(
+      values,
+      accessToken,
+      keycloakBaseURL,
+      opensrpBaseURL,
+      serviceClass,
+      opensrpServiceClass,
+      setSubmittingMock,
+      undefined,
+      undefined
+    );
 
     await act(async () => {
       await flushPromises();
     });
-
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
-
     expect(fetch.mock.calls[0]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users',
       {
@@ -125,7 +138,17 @@ describe('forms/utils/submitForm', () => {
   });
 
   it('submits user edit correctly', async () => {
-    submitForm(values, accessToken, keycloakBaseURL, serviceClass, setSubmittingMock, userId);
+    submitForm(
+      values,
+      accessToken,
+      keycloakBaseURL,
+      opensrpBaseURL,
+      serviceClass,
+      opensrpServiceClass,
+      setSubmittingMock,
+      fixtures.practitioner1,
+      userId
+    );
 
     await act(async () => {
       await flushPromises();
@@ -154,7 +177,17 @@ describe('forms/utils/submitForm', () => {
   it('handles error when user creation fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
 
-    submitForm(values, accessToken, keycloakBaseURL, serviceClass, setSubmittingMock);
+    submitForm(
+      values,
+      accessToken,
+      keycloakBaseURL,
+      opensrpBaseURL,
+      serviceClass,
+      opensrpServiceClass,
+      setSubmittingMock,
+      undefined,
+      undefined
+    );
 
     await act(async () => {
       await flushPromises();
@@ -169,7 +202,17 @@ describe('forms/utils/submitForm', () => {
   it('handles error when user edit fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
 
-    submitForm(values, accessToken, keycloakBaseURL, serviceClass, setSubmittingMock, userId);
+    submitForm(
+      values,
+      accessToken,
+      keycloakBaseURL,
+      opensrpBaseURL,
+      serviceClass,
+      opensrpServiceClass,
+      setSubmittingMock,
+      fixtures.practitioner1,
+      userId
+    );
 
     await act(async () => {
       await flushPromises();
@@ -179,5 +222,72 @@ describe('forms/utils/submitForm', () => {
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
     expect(historyPushMock).not.toHaveBeenCalled();
+  });
+
+  it('marks user as practitioner successfully', async () => {
+    const valuesCopy = {
+      ...values,
+      active: true,
+      id: keycloakUser.id,
+    };
+
+    createOrEditPractitioners(
+      accessToken,
+      opensrpBaseURL,
+      opensrpServiceClass,
+      valuesCopy,
+      undefined,
+      false
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner created successfully');
+  });
+
+  it('updates practitioner successfully', async () => {
+    const valuesCopy = {
+      ...values,
+      active: true,
+      id: keycloakUser.id,
+    };
+
+    createOrEditPractitioners(
+      accessToken,
+      opensrpBaseURL,
+      opensrpServiceClass,
+      valuesCopy,
+      fixtures.practitioner1,
+      true
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
+  });
+
+  it('handles errors when marking practitioner fails', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const valuesCopy = {
+      ...values,
+      active: true,
+      id: keycloakUser.id,
+    };
+
+    createOrEditPractitioners(
+      accessToken,
+      opensrpBaseURL,
+      opensrpServiceClass,
+      valuesCopy,
+      undefined,
+      true
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 });
