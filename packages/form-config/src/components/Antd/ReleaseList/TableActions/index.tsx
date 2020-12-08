@@ -5,14 +5,14 @@ import { ManifestReleasesTypes } from '../../../../ducks/manifestReleases';
 /** interface for component props */
 export interface TableActionsProps {
   file: ManifestReleasesTypes;
-  currentURL: string;
+  viewReleaseURL: string;
 }
 
 const TableActions = (props: TableActionsProps): JSX.Element => {
-  const { file, currentURL } = props;
+  const { file, viewReleaseURL } = props;
   return (
     <>
-      <Link to={`${currentURL}/${file.identifier}`} key="actions">
+      <Link to={`${viewReleaseURL}/${file.identifier}`} key="actions">
         View Files
       </Link>
     </>

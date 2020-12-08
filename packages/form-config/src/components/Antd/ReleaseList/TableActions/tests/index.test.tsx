@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 describe('components/Antd/ReleaseList', () => {
   const props = {
     file: fixManifestReleases[0],
-    currentURL: '/releases',
+    viewReleaseURL: '/releases',
   };
 
   it('renders without crashing', () => {
