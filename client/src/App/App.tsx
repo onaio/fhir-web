@@ -11,7 +11,7 @@ import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
 import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router';
-import Loading from '../components/page/Loading';
+import { Spin } from 'antd';
 import { CustomLogout } from '../components/Logout';
 import {
   WEBSITE_NAME,
@@ -104,16 +104,18 @@ export const PublicComponent = ({ component: Component, ...rest }: Partial<Compo
  * @param routeProps - Component route props object
  */
 
+export const LoadingComponent = () => <Spin size="large" />;
+export const SuccessfulLoginComponent = () => <Redirect to="/" />;
+
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
     return <CustomConnectedAPICallBack {...routeProps} />;
   }
+
   return (
     <ConnectedOauthCallback
-      SuccessfulLoginComponent={() => {
-        return <Redirect to="/" />;
-      }}
-      LoadingComponent={Loading}
+      SuccessfulLoginComponent={SuccessfulLoginComponent}
+      LoadingComponent={LoadingComponent}
       providers={providers}
       oAuthUserInfoGetter={getOpenSRPUserInfo}
       {...routeProps}
