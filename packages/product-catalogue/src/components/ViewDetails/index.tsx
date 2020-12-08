@@ -3,7 +3,11 @@ import React from 'react';
 import { Col, Typography, Space } from 'antd';
 import { Resource404 } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
-import { PRODUCT_NAME, UNIQUE_ID, MATERIAL_NUMBER, SERVER_VERSION } from '../../constants';
+import { PRODUCT_NAME, UNIQUE_ID, MATERIAL_NUMBER, SERVER_VERSION } from '../../lang';
+import { CloseOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router';
+import { Button } from 'antd';
+import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 
 const { Text } = Typography;
 
@@ -42,12 +46,21 @@ export const defaultProps = {
 
 const ViewDetails = (props: ViewDetailsProps) => {
   const { object, objectId, extractViewDetails } = props;
+  const history = useHistory();
+
   if (objectId === '') {
     return null;
   }
 
   return (
     <Col className="view-details-content">
+      <div className="flex-right">
+        <Button
+          icon={<CloseOutlined />}
+          className="display-block"
+          onClick={() => history.push(CATALOGUE_LIST_VIEW_URL)}
+        />
+      </div>
       {objectId && !object ? (
         <Resource404></Resource404>
       ) : (
