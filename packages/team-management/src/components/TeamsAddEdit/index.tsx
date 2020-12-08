@@ -45,6 +45,24 @@ export async function getPractinonerDetail(accessToken: string, id: string) {
   return await serve.list().then((response: Practitioner[]) => response);
 }
 
+/**
+ * Set the InitialValue in component
+ *
+ * @param {string} accessToken Token for api calles
+ * @param {string} id id of the team
+ * @param {Function} setInitialValue Function to set intial value
+ */
+function setupInitialValue(accessToken: string, id: string, setInitialValue: Function) {
+  getTeamDetail(accessToken, id)
+    .then((response) => {
+      setInitialValue({
+        ...response,
+        practitioners: response.practitioners.map((prac) => prac.identifier),
+      });
+    })
+    .catch(() => notification.error({ message: 'An error occurred', description: '' }));
+}
+
 export const TeamsAddEdit: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const params: { id: string } = useParams();
@@ -52,15 +70,7 @@ export const TeamsAddEdit: React.FC = () => {
   const [practitioner, setPractitioner] = useState<Practitioner[] | null>(null);
 
   useEffect(() => {
-    if (params.id)
-      getTeamDetail(accessToken, params.id)
-        .then((response) => {
-          setInitialValue({
-            ...response,
-            practitioners: response.practitioners.map((prac) => prac.identifier),
-          });
-        })
-        .catch(() => notification.error({ message: 'An error occurred', description: '' }));
+    if (params.id) setupInitialValue(accessToken, params.id, setInitialValue);
   }, [accessToken, params.id]);
 
   useEffect(() => {
