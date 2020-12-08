@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Organization } from '../../../ducks/organizations';
+import { Organization, OrganizationPOST } from '../../../ducks/organizations';
 import { Practitioner } from '../../../ducks/practitioners';
+import { FormField } from '../Form';
 
 export const accessToken = 'token';
 export const id = '258b4dec-79d3-546d-9c5c-f172aa7e03b0';
 
 export const team: Organization = {
   id: 1,
-  identifier: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+  identifier: id,
   active: true,
   name: 'Test Test Team',
   type: {
@@ -38,10 +39,25 @@ export const practitioner: Practitioner[] = [
   },
 ];
 
-export const intialValue = {
+export const intialValue: FormField = {
   name: team.name,
   active: team.active,
   practitioners: practitioner.map((prac) => prac.identifier),
+};
+
+export const teamPost: OrganizationPOST = {
+  active: intialValue.active,
+  identifier: id,
+  name: intialValue.name,
+  type: {
+    coding: [
+      {
+        code: 'team',
+        display: 'Team',
+        system: 'http://terminology.hl7.org/CodeSystem/organization-type',
+      },
+    ],
+  },
 };
 
 export const teams: Organization[] = [

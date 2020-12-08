@@ -9,8 +9,8 @@ import { Router } from 'react-router';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 
-import { accessToken, id, intialValue, practitioners } from './fixtures';
-import Form, { onSubmit } from '../Form';
+import { accessToken, id, intialValue, practitioners, teamPost } from './fixtures';
+import Form, { onSubmit, setTeam } from '../Form';
 
 describe('Team-management/TeamsAddEdit/Form', () => {
   it('renders without crashing', () => {
@@ -80,12 +80,10 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     });
   });
 
-  it('Fail Create TeamsAddEdit', async () => {
+  it('Fail onSubmit', async () => {
     fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-
-    onSubmit(accessToken, intialValue, practitioners).then(jest.fn(), mockNotificationError);
-
+    onSubmit(practitioners, accessToken, intialValue, id, jest.fn());
     await act(async () => {
       await flushPromises();
     });
@@ -94,6 +92,56 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       description: undefined,
       message: 'An error occurred',
     });
+  });
+
+  it('Create setTeam', async () => {
+    fetch.mockResponse(JSON.stringify({}));
+
+    setTeam(accessToken, teamPost).then(jest.fn, jest.fn);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/organization',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[0][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'PUT',
+      },
+    ]);
+  });
+
+  it('Edit setTeam', async () => {
+    fetch.mockResponse(JSON.stringify({}));
+
+    setTeam(accessToken, teamPost, id).then(jest.fn, jest.fn);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/organization',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[0][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'PUT',
+      },
+    ]);
   });
 
   it('Add Practinier field', async () => {
