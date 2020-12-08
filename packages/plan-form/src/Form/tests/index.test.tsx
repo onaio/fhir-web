@@ -363,6 +363,7 @@ describe('containers/forms/PlanForm', () => {
     const props = {
       ...propsForUpdatingPlans(planStatus),
       initialValues,
+      beforeSubmit: () => false,
     };
     const wrapper = mount(
       <MemoryRouter>
@@ -375,6 +376,15 @@ describe('containers/forms/PlanForm', () => {
     expect(wrapper.find('#interventionType Select').props().disabled).toBeTruthy();
     expect(wrapper.find('#identifier input').props().disabled).toBeTruthy();
     expect(wrapper.find('#name input').props().disabled).toBeTruthy();
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise<any>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(fetch).not.toHaveBeenCalled();
   });
 
   it('Can add and remove jurisdictions', async () => {
