@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RouteComponentProps, Redirect } from 'react-router';
 import { getManifestFilesById } from '../../../ducks/manifestFiles';
 import { ROUTE_PARAM_FORM_ID } from '../../../constants';
+import { Dictionary } from '@onaio/utils';
 
 /** inteface for route params */
 export interface RouteParams {
@@ -53,6 +54,12 @@ export const defaultProps: UploadFileProps = {
   onSaveRedirectURL: '',
 };
 
+/**
+ * Component to upload forms
+ *
+ * @param {Dictionary} props component props
+ * @returns {Element} react form for form upload
+ */
 const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

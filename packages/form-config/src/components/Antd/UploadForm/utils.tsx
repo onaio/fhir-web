@@ -1,8 +1,18 @@
-import { UploadFileFieldTypes } from '.';
+import { UploadFileFieldTypes, UploadFilePropTypes } from '.';
 import { OpenSRPService } from '@opensrp/server-service';
 import { OPENSRP_FORMS_ENDPOINT, ERROR_OCCURRED } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 
+/**
+ * Handle form upload submission
+ *
+ * @param {UploadFilePropTypes} values - submitted values
+ * @param {string} accessToken  - Opensrp API access token
+ * @param {string} opensrpBaseURL - Opensrp API base URL
+ * @param {boolean} isJsonValidator - boolean to confirm if the form is json validator or not
+ * @param {Function} setSubmitting - set the form state for isSubmitting
+ * @param {Function} setIfDoneHere - set the form state for ifDoneHere
+ */
 export const submitForm = (
   values: UploadFileFieldTypes,
   accessToken: string,
