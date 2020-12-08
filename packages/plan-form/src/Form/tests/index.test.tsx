@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { PlanForm } from '../';
+import { PlanForm, propsForUpdatingPlans } from '../';
 import { Form } from 'antd';
 import { generatePlanDefinition, getPlanFormValues } from '../../helpers/utils';
 import { mission1, newPayload1 } from './fixtures';
@@ -337,6 +337,40 @@ describe('containers/forms/PlanForm', () => {
 
     // the last request should be the one that is sent to OpenSRP
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
+  });
+
+  it('Can add and remove jurisdictions', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const initialValues = getPlanFormValues(mission1);
+
+    const disabledProps = propsForUpdatingPlans();
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    const props = {
+      ...disabledProps,
+      initialValues,
+    };
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: container }
+    );
+
+    expect(wrapper.find('.jurisdiction-fields')).toHaveLength(5);
+
+    // find the add field button and simulate click
+    wrapper.find('button.jurisdiction-fields__add').simulate('click');
+
+    // jurisdiction-fields columns should have increased
+    expect(wrapper.find('.jurisdiction-fields')).toHaveLength(10);
+
+    // we now click the remove button and we expect this to have dropped
+    wrapper.find('.jurisdiction-fields__delete').first().simulate('click');
+
+    expect(wrapper.find('.jurisdiction-fields')).toHaveLength(5);
   });
 
   it('removing dynamic activities works correctly', async () => {

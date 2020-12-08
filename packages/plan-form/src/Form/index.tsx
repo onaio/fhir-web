@@ -132,9 +132,6 @@ export interface PlanFormProps extends CommonProps {
   disabledFields: string[] /** fields that are disabled */;
   initialValues: PlanFormFields /** initial values for fields on the form */;
   redirectAfterAction: string /** the url to redirect to after form submission */;
-  renderLocationNames?: (
-    child?: LocationChildRenderProp /** nested render content for each location name */
-  ) => JSX.Element;
   beforeSubmit?: BeforeSubmit /** called before submission starts, return true to proceed with submission */;
   afterSubmit?: AfterSubmit /** called after the payload is successfully sent to the server */;
   envConfigs?: PlanFormConfig /** env configuration options */;
@@ -425,7 +422,12 @@ const PlanForm = (props: PlanFormProps) => {
             {(fields, { add, remove }) => (
               <>
                 {fields.map((field) => (
-                  <Form.Item hidden required={false} key={field.key}>
+                  <Form.Item
+                    className="jurisdiction-fields"
+                    hidden
+                    required={false}
+                    key={field.key}
+                  >
                     <Form.Item name={[field.name, 'id']} hidden>
                       <Input />
                     </Form.Item>
@@ -434,14 +436,19 @@ const PlanForm = (props: PlanFormProps) => {
                     </Form.Item>
                     {fields.length > 1 ? (
                       <MinusCircleOutlined
-                        className="dynamic-delete-button"
+                        className="jurisdiction-fields__delete dynamic-delete-button"
                         onClick={() => remove(field.name)}
                       />
                     ) : null}
                   </Form.Item>
                 ))}
                 <Form.Item hidden>
-                  <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                  <Button
+                    className="jurisdiction-fields__add"
+                    type="dashed"
+                    onClick={() => add()}
+                    icon={<PlusOutlined />}
+                  >
                     Add Jurisdiction
                   </Button>
                 </Form.Item>
