@@ -18,6 +18,9 @@ import {
   URL_HOME,
   URL_TEAMS,
   USER_MANAGEMENT,
+  LOCATIONS,
+  USERS,
+  ADMIN,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import { ENABLE_PLANS, ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
@@ -48,9 +51,9 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         </Link>
       </div>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" className="menu-dark">
-        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title="Admin">
+        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.SubMenu key="users" title="Users">
+            <Menu.SubMenu key="users" title={USERS}>
               <Menu.Item key="users">
                 <Link to={URL_ADMIN} className="admin-link">
                   {USER_MANAGEMENT}
@@ -77,7 +80,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Link>
             </Menu.Item>
           )}
-          <Menu.SubMenu key="admin-locations" title="Locations">
+          <Menu.SubMenu key="admin-locations" title={LOCATIONS}>
             <Menu.Item key="locations-unit">{LOCATIONS_UNIT}</Menu.Item>
             <Menu.Item key="locations-unit-group">{LOCATIONS_UNIT_GROUP}</Menu.Item>
             <Menu.Item key="locations-unit-group-set">{LOCATIONS_UNIT_GROUP_SET}</Menu.Item>

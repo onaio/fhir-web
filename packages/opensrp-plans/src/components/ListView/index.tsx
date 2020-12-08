@@ -15,6 +15,7 @@ import { Helmet } from 'react-helmet';
 import { PLANS_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition } from '@opensrp/plan-form-core';
+import { ACTIVE_MISSIONS, NEW_MISSION } from '../../lang';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(PlansReducerName, PlansReducer);
@@ -61,7 +62,7 @@ const PlansList = (props: PlansListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = `Active Missions`;
+  const pageTitle = ACTIVE_MISSIONS;
   // add a key prop to the array data to be consumed by the table
   const dataSource = data.map((singleObject) => {
     const prodWithKey = {
@@ -82,7 +83,7 @@ const PlansList = (props: PlansListTypes) => {
           <div className="main-content__header">
             <Link to={PLANS_CREATE_VIEW_URL}>
               <Button type="primary" size="large">
-                {' + New Mission'}
+                {NEW_MISSION}
               </Button>
             </Link>
           </div>
