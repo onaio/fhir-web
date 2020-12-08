@@ -8,7 +8,7 @@ import { Form } from 'antd';
 import { generatePlanDefinition, getPlanFormValues } from '../../helpers/utils';
 import { mission1, newPayload1 } from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { PlanStatus } from '@opensrp/plan-form-core';
+import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
 import { sendErrorNotification } from '@opensrp/notifications';
 
 jest.mock('@opensrp/notifications', () => {
@@ -265,6 +265,12 @@ describe('containers/forms/PlanForm', () => {
     // Set interventionType field value
     formInstance.setFieldsValue({
       interventionType: 'SM',
+    });
+    act(() => {
+      wrapper
+        .find('#interventionType Select')
+        .props()
+        .onChange(InterventionType.SM as any);
     });
 
     // Set title for the plan

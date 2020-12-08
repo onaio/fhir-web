@@ -216,8 +216,8 @@ const PlanForm = (props: PlanFormProps) => {
    */
   function getSourceActivities(values: BasePlanFormFields) {
     // eslint-disable-next-line no-prototype-builtins
-    if (defaultPlanActivitiesMap.hasOwnProperty(values.interventionType)) {
-      return defaultPlanActivitiesMap[values.interventionType];
+    if (planActivitiesMap.hasOwnProperty(values.interventionType)) {
+      return planActivitiesMap[values.interventionType];
     }
     return allFormActivities;
   }
@@ -320,18 +320,17 @@ const PlanForm = (props: PlanFormProps) => {
             <Select
               disabled={disabledFields.includes(interventionType)}
               onChange={(value: string) => {
-                if (defaultPlanActivitiesMap.hasOwnProperty(value)) {
+                if (planActivitiesMap.hasOwnProperty(value)) {
                   const currentActivities = processActivitiesDates(planActivitiesMap[value]);
                   form.setFieldsValue({ [activities]: currentActivities });
                   const newStuff = getConditionAndTriggers(
-                    defaultPlanActivitiesMap[value],
+                    planActivitiesMap[value],
                     disabledFields.includes(activities)
                   );
                   setActionConditions(newStuff.conditions);
                   setActionTriggers(newStuff.triggers);
                 }
-
-                form.setFieldsValue({ jurisdictions: [initialJurisdictionValues] });
+                form.setFieldsValue({ jurisdictions: initialJurisdictionValues });
               }}
             >
               <Option value={InterventionType.SM}>{SUPPLY_MANAGEMENT_TITLE}</Option>
