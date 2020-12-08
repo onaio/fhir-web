@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Row, PageHeader, Col, Button, Table } from 'antd';
+import moment from 'moment';
+import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
 import { TeamAssignmentLoading, columns } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import {
   reducer as teamsReducer,
@@ -44,6 +46,11 @@ interface RouteParams {
   id?: string;
 }
 
+interface AssignedLocationAndTeams {
+  jurisdictionId: string;
+  assignedTeams: string[];
+}
+
 interface TeamAssignmentViewProps extends RouteComponentProps<RouteParams> {
   opensrpBaseURL: string;
   defaultPlanId: string;
@@ -62,6 +69,10 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   ) as unknown) as ParsedHierarchyNode[];
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [assignedLocAndTeams, setAssignedLocAndTeams] = useState<AssignedLocationAndTeams | null>(
+    null
+  );
   const [planLocationId, setPlanLocationId] = useState<string>('');
   const planLocationIdRef = useRef(planLocationId);
   planLocationIdRef.current = planLocationId;
@@ -124,7 +135,10 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       }
 
       Promise.all([plansPromise, assignmentsPromise, organizationsPromise, hierarchyPromise])
-        .finally(() => setLoading(false))
+        .finally(() => {
+          setLoading(false);
+          planLocationIdRef.current = '';
+        })
         .catch((e) => {
           handleBrokenPage(e.message);
         });
@@ -141,12 +155,27 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     planLocationId,
   ]);
 
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
   if (loading || !Treedata.length) {
     return <TeamAssignmentLoading />;
   }
 
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;
+  }
+
+  /** function to filter options from the select or not
+   *
+   * @param {string} input value
+   * @param {any} option .
+   * @returns {boolean} return weather option will be included in the filtered set;
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function filterFunction(input: string, option: any): boolean {
+    return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
   const dataSource = currentParentChildren.length ? currentParentChildren : Treedata;
@@ -162,10 +191,14 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       return jurisdictionOrgIds.includes(org.identifier);
     });
     const jurisdictionOrgNames = jurisdictionOrgs.map((org) => org.name);
+
     return {
       id: datum.id,
       key: i.toString(),
       locationName: datum.label,
+      setAssignedLocAndTeams: setAssignedLocAndTeams,
+      setModalVisibility: setVisible,
+      assignedTeamIds: jurisdictionOrgs.map((org) => org.identifier),
       assignedTeams: jurisdictionOrgNames.length ? jurisdictionOrgNames.join(', ') : '-',
     };
   });
@@ -177,6 +210,73 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         <title>{pageTitle}</title>
       </Helmet>
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
+      <Modal
+        title="Title"
+        visible={visible}
+        onCancel={handleCancel}
+        okText={'Save'}
+        cancelText={'Cancel'}
+        footer={[
+          <Button id="Cancel" key="cancel" onClick={() => setVisible(false)}>
+            Cancel
+          </Button>,
+          <Button form="teamAssignment" key="submit" htmlType="submit">
+            Save
+          </Button>,
+        ]}
+        okType="default"
+      >
+        <div className="form-container">
+          <Form
+            name="teamAssignment"
+            onFinish={(values: { assignTeams: string[] }) => {
+              const { assignTeams } = values;
+              const payload = assignTeams.map((orgId: string) => {
+                return {
+                  fromDate: moment(new Date()).format(),
+                  jurisdiction: assignedLocAndTeams?.jurisdictionId,
+                  organization: orgId,
+                  plan: defaultPlanId,
+                  toDate: '',
+                };
+              });
+              const serve = new OpenSRPService(
+                accessToken,
+                opensrpBaseURL,
+                'organization/assignLocationsAndPlans'
+              );
+              serve
+                .create(payload)
+                .then(() => {
+                  sendSuccessNotification('Successfully Assigned Teams');
+                  setVisible(false);
+                  setLoading(true);
+                })
+                .catch((err: Error) => {
+                  sendErrorNotification(err.name, err.message);
+                });
+            }}
+            initialValues={{ assignTeams: assignedLocAndTeams?.assignedTeams }}
+          >
+            <Form.Item label="Assign Teams" name="assignTeams">
+              <Select
+                mode="multiple"
+                allowClear
+                showSearch
+                placeholder="Enter a Team name"
+                optionFilterProp="children"
+                filterOption={filterFunction}
+              >
+                {allOrganizations.map((e) => (
+                  <Select.Option key={e.identifier} value={e.identifier}>
+                    {e.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Form>
+        </div>
+      </Modal>
       <Row className={'list-view'}>
         <Col className="bg-white p-3" span={6}>
           <Tree data={Treedata} appendParentAsChild={false} />
