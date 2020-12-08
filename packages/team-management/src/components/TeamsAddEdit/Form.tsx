@@ -34,21 +34,22 @@ interface Props {
 /**
  * Handle form submission
  *
+ * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {string} accessToken Token for api calles
  * @param {Object} values the form fields
- * @param {Practitioner} practitioner list of practitioner to filter the selected one from
+ * @param {string} id of the team
  * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  */
-export async function onSubmit(
+export function onSubmit(
+  practitioner: Practitioner[],
   accessToken: string,
   values: FormField,
-  practitioner: Practitioner[],
+  id?: string,
   setIsSubmitting?: (value: boolean) => void
 ) {
   if (setIsSubmitting) setIsSubmitting(true);
-  const Teamid = v4();
+  const Teamid = id ? id : v4();
 
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_POST);
   const payload: OrganizationPOST = {
     active: values.active,
     identifier: Teamid,
@@ -64,14 +65,8 @@ export async function onSubmit(
     },
   };
 
-  await serve
-    .create(payload)
+  setTeam(accessToken, payload, id)
     .then(async () => {
-      sendSuccessNotification('Successfully Added Teams');
-      sendInfoNotification('Assigning Practitioners');
-
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
-
       const selectedPractitioner = practitioner.filter((e) =>
         values.practitioners.includes(e.identifier)
       );
@@ -86,14 +81,43 @@ export async function onSubmit(
         };
       });
 
-      return await serve.create(payload).then(() => {
-        sendSuccessNotification('Successfully Assigning Practitioners');
-        history.goBack();
-      });
+      await setPractitioner(accessToken, Teamid, payload);
+      if (setIsSubmitting) setIsSubmitting(false);
+      history.goBack();
     })
-    .catch(() => sendErrorNotification('An error occurred'));
+    .catch(() => {
+      if (setIsSubmitting) setIsSubmitting(false);
+      sendErrorNotification('An error occurred');
+    });
+}
 
-  if (setIsSubmitting) setIsSubmitting(false);
+export async function setTeam(accessToken: string, payload: OrganizationPOST, id?: string) {
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_POST);
+  if (id) {
+    await serve.update(payload);
+    sendSuccessNotification('Successfully Updated Teams');
+  } else {
+    await serve.create(payload);
+    sendSuccessNotification('Successfully Added Teams');
+  }
+}
+
+export async function setPractitioner(
+  accessToken: string,
+  id: string,
+  payload: PractitionerPOST[]
+) {
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
+
+  if (id) {
+    sendInfoNotification('Updating Practitioners');
+    await serve.update(payload);
+    sendSuccessNotification('Successfully Updated Practitioners');
+  } else {
+    sendInfoNotification('Assigning Practitioners');
+    await serve.create(payload);
+    sendSuccessNotification('Successfully Assigned Practitioners');
+  }
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
@@ -108,7 +132,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       requiredMark={false}
       {...layout}
       onFinish={(values) =>
-        onSubmit(props.accessToken, values, props.practitioner, setIsSubmitting)
+        onSubmit(props.practitioner, props.accessToken, values, props.id, setIsSubmitting)
       }
       initialValues={initialValue}
     >
