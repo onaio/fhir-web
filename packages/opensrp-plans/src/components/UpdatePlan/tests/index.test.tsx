@@ -5,10 +5,10 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { eusmPlans } from '../../../ducks/tests/fixtures';
-import { PLAN_LIST_VIEW_URL } from '../../../constants';
+import { PLANS_LIST_VIEW_URL } from '../../../constants';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
-import {  PlanForm } from '@opensrp/plan-form';
+import { PlanForm } from '@opensrp/plan-form';
 import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks';
 
@@ -28,22 +28,22 @@ describe('CreateEditProduct Page', () => {
     fetch.resetMocks();
   });
 
-  it('renders correctly with store(for editing product)', async () => {
-    fetch.mockResponse(JSON.stringify(mission1));
+  it('renders correctly with store(for editing plans)', async () => {
+    fetch.mockResponse(JSON.stringify([mission1]));
 
     const props = {
       history,
       location: {
         hash: '',
-        pathname: `${PLAN_LIST_VIEW_URL}/1`,
+        pathname: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
-        params: { productId: `1` },
-        path: `${PLAN_LIST_VIEW_URL}/:planId`,
-        url: `${PLAN_LIST_VIEW_URL}/1`,
+        params: { planId: mission1.identifier },
+        path: `${PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
       },
     };
 
@@ -57,7 +57,7 @@ describe('CreateEditProduct Page', () => {
 
     // loading
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching product CataloguePlease wait, as we fetch the product Catalogue."`
+      `"Loading...Fetching planPlease wait, as we fetch the plan."`
     );
 
     await act(async () => {
@@ -82,15 +82,15 @@ describe('CreateEditProduct Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLAN_LIST_VIEW_URL}/1`,
+        pathname: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
-        params: { productId: `1` },
-        path: `${PLAN_LIST_VIEW_URL}/:planId`,
-        url: `${PLAN_LIST_VIEW_URL}/1`,
+        params: { planId: mission1.identifier },
+        path: `${PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
       },
     };
 
@@ -116,24 +116,24 @@ describe('CreateEditProduct Page', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorCould not pull dataGo BackBack Home"`);
   });
 
-  it('handles missing product', async () => {
+  it('handles missing plan', async () => {
     const props = {
       history,
       location: {
         hash: '',
-        pathname: `${PLAN_LIST_VIEW_URL}/7`,
+        pathname: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
-        params: { productId: `7` },
-        path: `${PLAN_LIST_VIEW_URL}/:planId`,
-        url: `${PLAN_LIST_VIEW_URL}/7`,
+        params: { planId: mission1.identifier },
+        path: `${PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
       },
     };
 
-    fetch.mockResponse(JSON.stringify(products));
+    fetch.mockResponse(JSON.stringify([mission1]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -145,7 +145,7 @@ describe('CreateEditProduct Page', () => {
 
     // should be in loading screen
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching product CataloguePlease wait, as we fetch the product Catalogue."`
+      `"Loading...Fetching planPlease wait, as we fetch the plan."`
     );
 
     await act(async () => {

@@ -3,7 +3,6 @@
 import { RouteParams } from '../../helpers/types';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { PlanForm } from '@opensrp/plan-form';
 import { Layout, PageHeader } from 'antd';
 import planReducer, {
   fetchPlanDefinitions,
@@ -17,8 +16,16 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import Helmet from 'react-helmet';
 import { BrokenPage, useHandleBrokenPage, Resource404 } from '@opensrp/react-utils';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { getPlanFormValues, PlanDefinition } from '@opensrp/plan-form-core';
-import { PlanLoading } from 'opensrp-plans/src/helpers/utils';
+import {
+  defaultEnvConfig,
+  getFormActivities,
+  planActivities,
+  PlanDefinition,
+} from '@opensrp/plan-form-core';
+import { PlanLoading } from '../../helpers/utils';
+import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp/plan-form';
+import { EDIT_PLAN } from '../../lang';
+import { PLANS_LIST_VIEW_URL } from '../../constants';
 
 /** register catalogue reducer */
 reducerRegistry.register(planReducerName, planReducer);
@@ -47,13 +54,21 @@ export type EditViewTypes = EditViewProps & RouteComponentProps<RouteParams>;
  */
 
 const EditPlanView = (props: EditViewTypes) => {
-  const { plan, fetchPlan, serviceClass, baseURL } = props;
+  const { plan, fetchPlan, serviceClass, baseURL, envConfigs } = props;
   const { planId } = props.match.params;
   const [loading, setLoading] = useState<boolean>(!plan);
 
   const { errorMessage, broken, handleBrokenPage } = useHandleBrokenPage();
 
+  const configs = {
+    ...defaultEnvConfig,
+    ...envConfigs,
+  };
+
   useEffect(() => {
+    if (!planId) {
+      return;
+    }
     loadSinglePlan(baseURL, planId, serviceClass, fetchPlan)
       .finally(() => setLoading(false))
       .catch((err: Error) => handleBrokenPage(err));
@@ -68,7 +83,7 @@ const EditPlanView = (props: EditViewTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  if (!plan && planId) {
+  if (!plan) {
     return <Resource404 />;
   }
 
@@ -76,9 +91,13 @@ const EditPlanView = (props: EditViewTypes) => {
   const productFormProps = {
     baseURL,
     initialValues,
+    ...propsForUpdatingPlans(plan.status),
+    redirectAfterAction: PLANS_LIST_VIEW_URL,
+    allFormActivities: getFormActivities(planActivities, configs),
+    envConfigs: configs,
   };
 
-  const pageTitle = planId ? `Edit Plan` : `Create Plan`;
+  const pageTitle = EDIT_PLAN;
 
   return (
     <Layout className="content-section">
