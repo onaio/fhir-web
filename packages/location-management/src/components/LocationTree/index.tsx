@@ -119,7 +119,6 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   };
 
   generateFilterData(data);
-
   return (
     <div>
       <Input
@@ -132,7 +131,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       <AntTree
         onClick={(_, node: Dictionary) => {
           const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
-          setExpandedKeys(allExpandedKeys);
+          onExpand(allExpandedKeys);
           if (node.children) {
             let children;
             if (appendParentAsChild) {
