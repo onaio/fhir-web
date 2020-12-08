@@ -96,14 +96,22 @@ const defaultInterventionType = InterventionType.SM;
 const initialJurisdictionValues: PlanJurisdictionFormFields[] = [];
 const defaultEnvs = defaultEnvConfig;
 const defaultPlanActivitiesMap = getPlanActivitiesMap(defaultEnvs);
+const defaultFiReasonRoutine = FIReasons[0];
+
+/** caveats due to current way to configure limitation
+ * https://github.com/OpenSRP/web/issues/202
+ * the initialValues if not explicitly passed through the props,
+ * they will not be subject to the envConfigs variables,
+ */
 
 /** initial values for plan Form */
 export const defaultInitialValues: PlanFormFields = {
   activities: processActivitiesDates(defaultPlanActivitiesMap[defaultInterventionType]),
   caseNum: '',
+  // this is an example of a situation where we do not have a proper way to pass configuration to the package.
   dateRange: [moment(), moment().add(defaultEnvs.defaultPlanDurationDays, 'days')],
   date: moment(),
-  fiReason: FIReasons[0],
+  fiReason: defaultFiReasonRoutine,
   fiStatus: undefined,
   identifier: '',
   interventionType: defaultInterventionType,
@@ -151,10 +159,9 @@ const PlanForm = (props: PlanFormProps) => {
   const [actionConditions, setActionConditions] = useState<Dictionary>({});
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
-  let allFormActivities = props.allFormActivities;
-  let planActivitiesMap = defaultPlanActivitiesMap;
 
   const {
+    allFormActivities,
     disabledActivityFields,
     disabledFields,
     initialValues,
@@ -169,13 +176,7 @@ const PlanForm = (props: PlanFormProps) => {
     ...envConfigs,
   };
 
-  if (envConfigs) {
-    planActivitiesMap = getPlanActivitiesMap(configs);
-    allFormActivities = getFormActivities(planActivities, configs);
-    initialValues.activities = processActivitiesDates(
-      getPlanActivitiesMap(configs)[defaultInterventionType]
-    );
-  }
+  const planActivitiesMap = getPlanActivitiesMap(configs);
 
   const [form] = Form.useForm();
 
