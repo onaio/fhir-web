@@ -43,6 +43,7 @@ import {
   CATALOGUE_EDIT_VIEW_URL,
   ConnectedEditProductView,
 } from '@opensrp/product-catalogue';
+import { PLANS_LIST_VIEW_URL, ConnectedPlansList } from '@opensrp/plans';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -57,7 +58,7 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps } from './utils';
+import { productCatalogueProps, plansListProps } from './utils';
 
 const { Content } = Layout;
 
@@ -161,6 +162,14 @@ const App: React.FC = () => {
               path={CATALOGUE_LIST_VIEW_URL}
               {...productCatalogueProps}
               component={ConnectedProductCatalogueList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              component={ConnectedPlansList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
