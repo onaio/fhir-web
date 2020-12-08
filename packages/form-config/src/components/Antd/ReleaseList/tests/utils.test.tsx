@@ -1,9 +1,9 @@
 import { getTableColumns } from '../utils';
 
 describe('components/Antd/ReleaseList/utils/getTableColumns', () => {
-  const currentURL = '/releases';
+  const viewReleaseURL = '/releases';
 
   it('returns table columns', () => {
-    expect(getTableColumns(currentURL)).toMatchSnapshot('table columns');
+    expect(getTableColumns(viewReleaseURL)).toMatchSnapshot('table columns');
   });
 });

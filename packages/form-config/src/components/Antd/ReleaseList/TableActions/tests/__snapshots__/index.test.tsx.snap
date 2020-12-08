@@ -2,7 +2,7 @@
 
 exports[`components/Antd/ReleaseList renders correctly 1`] = `
 <TableActions
-  currentURL="/releases"
+  viewReleaseURL="/releases"
   file={
     Object {
       "appId": "org.smartregister.reveal",

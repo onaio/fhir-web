@@ -45,7 +45,7 @@ const props = {
     path: '/releases',
     url: `/releases`,
   },
-  currentURL: '/releases',
+  viewReleaseURL: '/releases',
 };
 
 describe('components/Antd/ReleaseList', () => {

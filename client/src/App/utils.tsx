@@ -33,7 +33,7 @@ export const draftListProps = {
 
 export const releaseListProps = {
   uploadFileURL: URL_UPLOAD_DRAFT_FILE,
-  currentURL: URL_MANIFEST_RELEASE_LIST,
+  viewReleaseURL: URL_MANIFEST_RELEASE_LIST,
 };
 
 export const releaseViewProps = {

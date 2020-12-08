@@ -4,7 +4,7 @@ import { ManifestReleasesTypes } from '../../../ducks/manifestReleases';
 import { TableActions } from './TableActions';
 import { formatDate } from '../../../helpers/utils';
 
-export const getTableColumns = (currentURL: string, sortedInfo?: Dictionary): Dictionary[] => {
+export const getTableColumns = (viewReleaseURL: string, sortedInfo?: Dictionary): Dictionary[] => {
   const columns: Dictionary[] = [];
   const headerItems: string[] = ['Identifier', 'App Id', 'App Version', 'Updated At'];
   const fields: string[] = ['identifier', 'appId', 'appVersion', 'updatedAt'];
@@ -47,7 +47,7 @@ export const getTableColumns = (currentURL: string, sortedInfo?: Dictionary): Di
     render: (_: string, file: ManifestReleasesTypes) => {
       const tableActionProps = {
         file,
-        currentURL,
+        viewReleaseURL,
       };
       return <TableActions {...tableActionProps} />;
     },
