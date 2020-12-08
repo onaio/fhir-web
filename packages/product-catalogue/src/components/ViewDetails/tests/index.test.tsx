@@ -6,6 +6,7 @@ import { ViewDetails } from '..';
 import { product1 } from '../../../ducks/productCatalogue/tests/fixtures';
 import { createBrowserHistory } from 'history';
 import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
+import { act } from 'react-dom/test-utils';
 
 const history = createBrowserHistory();
 
@@ -43,7 +44,9 @@ describe('View Details', () => {
     );
 
     // simulate clicking on close button
-    wrapper.find('.flex-right button').simulate('click');
+    act(() => {
+      wrapper.find('.flex-right button').simulate('click');
+    });
 
     expect(wrapper.props().history.location.pathname).toEqual(CATALOGUE_LIST_VIEW_URL);
   });
