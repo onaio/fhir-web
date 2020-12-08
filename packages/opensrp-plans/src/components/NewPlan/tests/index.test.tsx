@@ -8,13 +8,14 @@ import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
 import { PlanForm } from '@opensrp/plan-form';
 import { act } from 'react-dom/test-utils';
+import { CREATE_PLAN } from '../../../lang';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
 const history = createBrowserHistory();
 
-describe('CreateEditProduct Page', () => {
+describe('Create Plan Page', () => {
   afterEach(() => {
     fetch.resetMocks();
   });
@@ -35,7 +36,7 @@ describe('CreateEditProduct Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual('Add Product to Catalogue');
+    expect(helmet.title).toEqual(CREATE_PLAN);
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
