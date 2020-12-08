@@ -22,6 +22,7 @@ export const FETCH_CURRENT_CHILDREN = 'location-hierarchy/FETCH_CURRENT_CHILDREN
 export interface FetchedTreeAction extends AnyAction {
   type: typeof TREE_FETCHED;
   hierarchyObject: TreeNode;
+  isSingleHierarchy: boolean;
 }
 
 /** describes action that adds current parent children to store  */
@@ -38,13 +39,18 @@ export type TreeActionTypes = FetchedTreeAction | FetchedParentChildrenAction | 
 /** action creator when adding a tree to store
  *
  * @param {TreeNode} hierarchy - the raw hierarchy as received from opensrp
+ * @param {boolean} isSingleHierarchy - boolean to toggle between single and multiple hierarchies
  * @returns {object} - action object
  */
-export function fetchAllHierarchies(hierarchy: TreeNode): FetchedTreeAction {
+export function fetchAllHierarchies(
+  hierarchy: TreeNode,
+  isSingleHierarchy = false
+): FetchedTreeAction {
   return {
     hierarchyObject: {
       ...hierarchy,
     } as TreeNode,
+    isSingleHierarchy,
     type: TREE_FETCHED,
   };
 }
@@ -95,7 +101,9 @@ export function reducer(
     case TREE_FETCHED:
       return {
         ...state,
-        hierarchyArray: [...state.hierarchyArray, action.hierarchyObject],
+        hierarchyArray: action.isSingleHierarchy
+          ? [action.hierarchyObject]
+          : [...state.hierarchyArray, action.hierarchyObject],
       };
     case FETCH_CURRENT_CHILDREN:
       return {
