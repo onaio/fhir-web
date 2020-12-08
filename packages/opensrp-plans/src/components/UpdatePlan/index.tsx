@@ -99,14 +99,14 @@ export { EditPlanView as EditProductView };
 const planSelector = makePlanDefinitionsArraySelector();
 
 /** Interface for connected state to props */
-export type MapStateToProps = Pick<EditViewProps, 'plan'>
-export type MapDispatchToProps = Pick<EditViewProps, 'fetchPlan'>
+export type MapStateToProps = Pick<EditViewProps, 'plan'>;
+export type MapDispatchToProps = Pick<EditViewProps, 'fetchPlan'>;
 // connect to store
 const mapStateToProps = (state: Partial<Store>, ownProps: EditViewTypes): MapStateToProps => {
   const planId = ownProps.match.params.planId ?? '';
-  const plans = planSelector(state, {planIds: [planId]});
-  const plan  = plans?[0] ?? null;
-  return {  plan };
+  const plans = planSelector(state, { planIds: [planId] });
+  const plan = plans[0] ?? null;
+  return { plan };
 };
 
 /** map props to action creators */

@@ -23,7 +23,7 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
   const pageTitle = 'Add Plan';
 
   const planFormProps = {
-    baseURL:baseURL
+    baseURL: baseURL,
   };
 
   return (
@@ -40,4 +40,4 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
 
 CreatePlanView.defaultProps = defaultProps;
 
-export { CreatePlanView  };
+export { CreatePlanView };
