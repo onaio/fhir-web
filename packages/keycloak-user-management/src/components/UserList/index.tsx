@@ -108,7 +108,7 @@ const UserList = (props: Props): JSX.Element => {
     };
   });
   return (
-    <section>
+    <section className="layout-content">
       <h5 className="mb-3">User Management</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>

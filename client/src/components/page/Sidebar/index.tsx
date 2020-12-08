@@ -39,13 +39,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { roles } = extraData;
 
   return (
-    <Layout.Sider width="275px">
+    <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
         <Link to={URL_HOME}>
           <img src={Logo} className="img-fluid" alt="" />
         </Link>
       </div>
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" className="menu-dark">
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title="Admin">
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title="Users">

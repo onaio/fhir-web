@@ -8,9 +8,9 @@ import {
   BACKEND_ACTIVE,
 } from '../../configs/env';
 import { getFetchOptions } from '@opensrp/keycloak-service';
-import Ripple from '../page/Loading';
 import { getAccessToken } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
+import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { useHistory } from 'react-router';
 import { ERROR_OCCURRED } from '../../constants';
@@ -32,5 +32,5 @@ export const CustomLogout: React.FC = (): JSX.Element => {
     sendErrorNotification(ERROR_OCCURRED);
     history.push('/');
   });
-  return <Ripple />;
+  return <Spin size="large" />;
 };

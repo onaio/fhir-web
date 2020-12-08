@@ -31,11 +31,6 @@
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
-  "devDependencies": {
-    "@types/lodash": "^4.14.161",
-    "@types/react-redux": "^7.1.9",
-    "@types/seamless-immutable": "^7.1.13"
-  },
   "dependencies": {
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/gatekeeper": "^0.1.0",
@@ -43,19 +38,11 @@
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
     "connected-react-router": "^6.8.0",
-    "fast_array_intersect": "^1.1.0",
-    "lodash": "^4.17.20",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0",
-    "seamless-immutable": "^7.1.4"
+    "reselect": "^4.0.0"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-redux": "^7.2.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "author": "Ona Engineering",
   "license": "Apache-2.0",

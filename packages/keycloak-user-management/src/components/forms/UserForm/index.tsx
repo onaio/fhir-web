@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { useHistory } from 'react-router';
 import { Button, Col, Row } from 'antd';
-import { Form, Select, Input } from 'formik-antd';
-import { history } from '@onaio/connected-reducer-registry';
+import { Form, Select, Input, Switch } from 'formik-antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -9,13 +9,26 @@ import { KeycloakUser } from '../../../ducks/user';
 import { URL_ADMIN, CANCEL } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
+import { OpenSRPService } from '@opensrp/server-service';
+
+/** Interface for practitioner json object */
+export interface Practitioner {
+  active: boolean;
+  identifier: string;
+  name: string;
+  userId: string;
+  username: string;
+}
 
 /** props for editing a user view */
 export interface UserFormProps {
   accessToken: string;
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
+  opensrpServiceClass: typeof OpenSRPService;
   keycloakBaseURL: string;
+  opensrpBaseURL: string;
+  practitioner: Practitioner | undefined;
 }
 
 /** default form initial values */
@@ -45,6 +58,8 @@ export const defaultInitialValues: KeycloakUser = {
 export const defaultProps: Partial<UserFormProps> = {
   accessToken: '',
   initialValues: defaultInitialValues,
+  opensrpServiceClass: OpenSRPService,
+  practitioner: undefined,
   serviceClass: KeycloakService,
 };
 
@@ -69,7 +84,15 @@ export const handleUserActionsChange = (
 };
 
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
-  const { initialValues, serviceClass, accessToken, keycloakBaseURL } = props;
+  const {
+    initialValues,
+    serviceClass,
+    accessToken,
+    keycloakBaseURL,
+    opensrpServiceClass,
+    opensrpBaseURL,
+    practitioner,
+  } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const layout = {
@@ -100,27 +123,32 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
 
+  const history = useHistory();
+
   return (
-    <Row>
+    <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
       <h5 className="mb-3">{props.initialValues.email ? 'Edit User' : 'Add User'}</h5>
       <Col className="bg-white p-3" span={24}>
         <Formik
           initialValues={initialValues}
           validationSchema={userSchema}
-          onSubmit={(values, { setSubmitting }) =>
-            submitForm(
+          onSubmit={(values, { setSubmitting }) => {
+            return submitForm(
               {
                 ...values,
                 requiredActions,
               },
               accessToken,
               keycloakBaseURL,
+              opensrpBaseURL,
               serviceClass,
+              opensrpServiceClass,
               setSubmitting,
+              practitioner,
               initialValues.id
-            )
-          }
+            );
+          }}
         >
           {({ isSubmitting }) => (
             <Form className=" bg-white p-3 form-container" {...layout}>
@@ -139,6 +167,17 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               <Form.Item name="username" label="Username">
                 <Input id="username" name="username" disabled={initialValues.id ? true : false} />
               </Form.Item>
+
+              {!initialValues.id && !practitioner ? (
+                ''
+              ) : (
+                <Form.Item name="active" label="Mark as Practitioner" valuePropName="checked">
+                  <Switch
+                    name="active"
+                    defaultChecked={practitioner ? practitioner.active : false}
+                  />
+                </Form.Item>
+              )}
 
               <Form.Item name="requiredActions" label="Required Actions">
                 <Select

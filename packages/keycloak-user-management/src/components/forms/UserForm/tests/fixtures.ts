@@ -107,6 +107,22 @@ export const keycloakUser = {
   },
 };
 
+export const practitioner1 = {
+  identifier: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+  active: true,
+  name: 'prac one',
+  userId: '7306784c-64fb-4d45-990b-306863eb478b',
+  username: 'prac_1',
+};
+
+export const practitioner2 = {
+  identifier: '718e2b7d-22d7-4c23-aaa7-62cca4b9e318',
+  active: false,
+  name: 'prac one',
+  userId: '7306784c-64fb-4d45-990b-306863eb478b',
+  username: 'prac_1',
+};
+
 export const userAction1 = {
   alias: 'CONFIGURE_TOTP',
   name: 'Configure OTP',
