@@ -1,16 +1,27 @@
 import React from 'react';
-import { Spin, Alert } from 'antd';
+import { Spin, Alert, Button } from 'antd';
 import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import { TEAM_ASSIGNMENT_EDIT_VIEW_URL, TableColumnsNamespace } from '../../constants';
-import { Link } from 'react-router-dom';
+import { TableColumnsNamespace } from '../../constants';
 
 /** component rendered in the action column of the table */
 
 export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (record) => {
   return (
     <>
-      <Link to={`${TEAM_ASSIGNMENT_EDIT_VIEW_URL}/${record.uniqueId}`}>Edit</Link>
+      <Button
+        type="link"
+        style={{ padding: '4px 0px' }}
+        onClick={() => {
+          record.setModalVisibility(true);
+          record.setAssignedLocAndTeams({
+            jurisdictionId: record.id,
+            assignedTeams: record.assignedTeamIds,
+          });
+        }}
+      >
+        Edit
+      </Button>
     </>
   );
 };
