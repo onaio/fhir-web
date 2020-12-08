@@ -9,6 +9,16 @@ import { removeManifestDraftFiles } from '../../../ducks/manifestDraftFiles';
 import { store } from '@onaio/redux-reducer-registry';
 import { formatDate } from '../../../helpers/utils';
 
+/**
+ * Return table columns
+ *
+ * @param {string} accessToken Opensrp API access token
+ * @param {string} opensrpBaseURL Opensrp API base URL
+ * @param {boolean} isJsonValidator true if is json validator, false otherwise
+ * @param {Dictionary} sortedInfo object containing sort order information
+ * @param {Function} customFetchOptions Opensrp API custom options
+ * @returns {Dictionary[]} table columns
+ */
 export const getTableColumns = (
   accessToken: string,
   opensrpBaseURL: string,
@@ -62,6 +72,17 @@ export const getTableColumns = (
   return columns;
 };
 
+/**
+ * Handle make release
+ *
+ * @param {ManifestFilesTypes[]} data draft files to make release for
+ * @param {string} accessToken  Opensrp API access token
+ * @param {string} opensrpBaseURL Opensrp API base URL
+ * @param {Function} dispatch redux dispatch
+ * @param {Function} removeDraftFiles redux action to remove draft files
+ * @param {Function} setIfDoneHere set ifDoneHere form status
+ * @param {Function} customFetchOptions custom opensrp API fetch options
+ */
 export const makeRelease = (
   data: ManifestFilesTypes[],
   accessToken: string,

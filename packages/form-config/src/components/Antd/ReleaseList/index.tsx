@@ -37,6 +37,12 @@ export const defaultProps: ReleaseListProps = {
   fetchReleases: fetchManifestReleases,
 };
 
+/**
+ * Component ReleaseList
+ *
+ * @param {Dictionary} props component props
+ * @returns {Element} react element displaying the list of release items
+ */
 const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   const { Title } = Typography;
   const dispatch = useDispatch();
