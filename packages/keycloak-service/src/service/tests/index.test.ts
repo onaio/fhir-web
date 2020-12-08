@@ -211,7 +211,7 @@ describe('services/keycloak', () => {
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
     const result = await usersService.create(keycloakUser);
-    expect(result).toEqual({});
+    expect(result.statusText).toEqual('Created');
     expect(fetch.mock.calls).toEqual([
       [
         'https://keycloak-test.smartregister.org/auth/realms/users',

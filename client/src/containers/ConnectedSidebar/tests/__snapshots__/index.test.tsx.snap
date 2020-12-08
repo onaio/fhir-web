@@ -20,6 +20,7 @@ Object {
         </Link>
       </div>
       <Menu
+        className="menu-dark"
         defaultSelectedKeys={
           Array [
             "1",
@@ -66,7 +67,7 @@ Object {
     </div>,
     null,
   ],
-  "className": "ant-layout-sider ant-layout-sider-dark",
+  "className": "ant-layout-sider ant-layout-sider-dark layout-sider",
   "style": Object {
     "flex": "0 0 275px",
     "maxWidth": "275px",
