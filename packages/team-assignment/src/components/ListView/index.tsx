@@ -231,15 +231,16 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             name="teamAssignment"
             onFinish={(values: { assignTeams: string[] }) => {
               const { assignTeams } = values;
-              const payload = assignTeams.map((orgId: string) => {
-                return {
-                  fromDate: moment(new Date()).format(),
-                  jurisdiction: assignedLocAndTeams?.jurisdictionId,
-                  organization: orgId,
-                  plan: defaultPlanId,
-                  toDate: '',
-                };
-              });
+              let payload: AssignLocationsAndPlans[] = [];
+              if (assignTeams.length) {
+                payload = getPayload(
+                  assignTeams,
+                  defaultPlanId,
+                  assignedLocAndTeams?.jurisdictionId as string,
+                  assignedLocAndTeams?.assignedTeams,
+                  assignmentsList
+                );
+              }
               const serve = new OpenSRPService(
                 accessToken,
                 opensrpBaseURL,

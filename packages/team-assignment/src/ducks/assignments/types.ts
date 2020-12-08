@@ -19,3 +19,11 @@ export interface PlanDefinition {
   useContext?: [];
   version: string;
 }
+
+export interface AssignLocationsAndPlans {
+  fromDate: string;
+  jurisdiction: string;
+  organization: string;
+  plan: string;
+  toDate: string;
+}
