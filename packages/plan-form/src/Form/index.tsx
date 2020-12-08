@@ -287,8 +287,8 @@ const PlanForm = (props: PlanFormProps) => {
         onFinish={(values) => {
           const baseFormValues = processToBasePlanForm(values);
           const payload = generatePlanDefinition(baseFormValues, null, isEditMode, configs);
-          const continueWithSubmit = props.beforeSubmit && props.beforeSubmit(payload);
-          if (!continueWithSubmit) {
+          const shouldContinue = props.beforeSubmit && props.beforeSubmit(payload);
+          if (!shouldContinue) {
             setSubmitting(false);
             return;
           }

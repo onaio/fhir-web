@@ -9,6 +9,11 @@ import { generatePlanDefinition, getPlanFormValues } from '../../helpers/utils';
 import { mission1, newPayload1 } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { PlanStatus } from '@opensrp/plan-form-core';
+import { sendErrorNotification } from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => {
+  return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
+});
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -310,9 +315,11 @@ describe('containers/forms/PlanForm', () => {
 
     const container = document.createElement('div');
     document.body.appendChild(container);
+    const afterSubmitMock = jest.fn();
 
     const props = {
       initialValues,
+      afterSubmit: afterSubmitMock,
     };
     const wrapper = mount(
       <MemoryRouter>
@@ -345,6 +352,8 @@ describe('containers/forms/PlanForm', () => {
 
     // the last request should be the one that is sent to OpenSRP
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
+
+    expect(afterSubmitMock).toHaveBeenCalled();
   });
 
   it('Checking disabled fields for draft plans', async () => {
@@ -353,6 +362,7 @@ describe('containers/forms/PlanForm', () => {
     const mission = {
       ...mission1,
       status: planStatus,
+      description: 'This plan will survive enemy contact',
     };
 
     const initialValues = getPlanFormValues(mission);
@@ -383,8 +393,48 @@ describe('containers/forms/PlanForm', () => {
       await new Promise<any>((resolve) => setImmediate(resolve));
       wrapper.update();
     });
+  });
 
-    expect(fetch).not.toHaveBeenCalled();
+  it('Notifies on errors during submission', async () => {
+    const errorMessage = 'Contact with the enemy';
+    fetch.mockReject(new Error(errorMessage));
+    const planStatus = PlanStatus.COMPLETE;
+    const mission = {
+      ...mission1,
+      status: planStatus,
+      description: 'This plan will survive enemy contact',
+    };
+
+    const errorNotificationSMock = jest.fn();
+    (sendErrorNotification as jest.Mock).mockImplementation((...args) =>
+      errorNotificationSMock(...args)
+    );
+
+    const initialValues = getPlanFormValues(mission);
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    const props = {
+      ...propsForUpdatingPlans(planStatus),
+      initialValues,
+      afterSubmit: () => false,
+    };
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: container }
+    );
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise<any>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(errorNotificationSMock).toHaveBeenCalledWith('Error', errorMessage);
+    (sendErrorNotification as jest.Mock).mockReset();
   });
 
   it('Can add and remove jurisdictions', async () => {
