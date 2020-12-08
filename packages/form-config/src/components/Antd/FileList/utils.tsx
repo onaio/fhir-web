@@ -5,6 +5,17 @@ import { TableActions } from './TableActions';
 import { getFetchOptions } from '@opensrp/server-service';
 import { formatDate } from '../../../helpers/utils';
 
+/**
+ * Return table columns
+ *
+ * @param {string} accessToken  Opensrp API access token
+ * @param {string} opensrpBaseURL Opensrp API base URL
+ * @param {boolean} isJsonValidator boolean to check whether is Json validator
+ * @param {string} uploadFileURL route to upload form
+ * @param {Dictionary }sortedInfo object containing sort order information
+ * @param {Function} customFetchOptions custom Opensrp API fetch options
+ * @returns {Dictionary[]} table columns
+ */
 export const getTableColumns = (
   accessToken: string,
   opensrpBaseURL: string,

@@ -52,6 +52,12 @@ export const defaultProps: FileListProps = {
 /** type intersection for all types that pertain to the props */
 export type FileListPropTypes = FileListProps & RouteComponentProps<RouteParams>;
 
+/**
+ * Component FileList
+ *
+ * @param {Dictionary} props component props
+ * @returns {Element} react element displaying the files
+ */
 const FileList = (props: FileListPropTypes): JSX.Element => {
   const {
     opensrpBaseURL,

@@ -4,6 +4,13 @@ import { ManifestReleasesTypes } from '../../../ducks/manifestReleases';
 import { TableActions } from './TableActions';
 import { formatDate } from '../../../helpers/utils';
 
+/**
+ * Return table columns
+ *
+ * @param {string} viewReleaseURL URL to view the release details
+ * @param {Dictionary} sortedInfo object containing sorting order information
+ * @returns {Dictionary[]} table columns
+ */
 export const getTableColumns = (viewReleaseURL: string, sortedInfo?: Dictionary): Dictionary[] => {
   const columns: Dictionary[] = [];
   const headerItems: string[] = ['Identifier', 'App Id', 'App Version', 'Updated At'];
