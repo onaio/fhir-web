@@ -2,7 +2,6 @@
 
 exports[`components/Antd/ReleaseList renders correctly 1`] = `
 <TableActions
-  viewReleaseURL="/releases"
   file={
     Object {
       "appId": "org.smartregister.reveal",
@@ -13,6 +12,7 @@ exports[`components/Antd/ReleaseList renders correctly 1`] = `
       "updatedAt": "2020-06-08T15:00:38.413+02:00",
     }
   }
+  viewReleaseURL="/releases"
 >
   <Link
     key="actions"

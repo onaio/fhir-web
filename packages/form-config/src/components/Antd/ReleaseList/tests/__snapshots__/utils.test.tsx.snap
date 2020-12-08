@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/Antd/FileList/utils/getTableColumns returns table columns: table columns 1`] = `
+exports[`components/Antd/ReleaseList/utils/getTableColumns returns table columns: table columns 1`] = `
 Array [
   Object {
     "dataIndex": "identifier",
