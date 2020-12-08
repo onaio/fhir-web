@@ -1192,11 +1192,7 @@
     "@babel/parser" "^7.10.4"
     "@babel/types" "^7.10.4"
 
-<<<<<<< HEAD
 "@babel/template@^7.12.7", "@babel/template@^7.3.3":
-=======
-"@babel/template@^7.12.7":
->>>>>>> Initial Plan Edit / Creation pages
   version "7.12.7"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.12.7.tgz#c817233696018e39fbb6c491d2fb684e05ed43bc"
   integrity sha512-GkDzmHS6GV7ZeXfJZ0tLRBhZcMcY0/Lnb+eEbXDBfCAcZCjrZKe6p3J4we/D24O9Y8enxWAg1cWwof59yLh2ow==
@@ -2498,7 +2494,23 @@
     moment "^2.29.1"
     uuid "^8.3.1"
 
+<<<<<<< HEAD
 >>>>>>> Initial Plan Edit / Creation pages
+=======
+"@opensrp/plan-form@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/plan-form/-/plan-form-0.0.1.tgz#dbe2ebf52edefc13c670e13dd6dcaf1873df0856"
+  integrity sha512-7as7OqTu32CZppai57W0R2zk8F7aiausPifMHodQHXVDQT/EgFYBqwLdP+6De7hvC2ewOfmeCYMp8oMMvafl4w==
+  dependencies:
+    "@ant-design/icons" "^4.3.0"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.2"
+    "@opensrp/plan-form-core" "^0.0.1"
+    "@opensrp/server-service" "^0.0.12"
+    lodash "^4.17.20"
+    uuid "^8.3.1"
+
+>>>>>>> Add plan-form to packages
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"
