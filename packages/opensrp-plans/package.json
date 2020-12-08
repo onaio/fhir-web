@@ -40,7 +40,8 @@
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "@opensrp/store": "^0.0.7"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
@@ -49,7 +50,6 @@
     "@opensrp/plan-form-core": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@opensrp/react-utils": "^0.0.1",
-    "@opensrp/server-service": "^0.0.12",
-    "@opensrp/store": "^0.0.7"
+    "@opensrp/server-service": "^0.0.12"
   }
 }

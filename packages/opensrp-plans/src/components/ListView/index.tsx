@@ -17,13 +17,12 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { ACTIVE_MISSIONS, NEW_MISSION } from '../../lang';
 
-/** make sure product catalogue reducer is registered */
+/** make sure plans reducer is registered */
 reducerRegistry.register(PlansReducerName, PlansReducer);
 
 /** props for the PlansList view */
 interface Props<T = PlanDefinition> extends CommonProps {
   data: T[];
-  productUnderView: T | null;
   columns: ColumnsType<T>;
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
@@ -32,7 +31,6 @@ interface Props<T = PlanDefinition> extends CommonProps {
 const defaultProps = {
   ...defaultCommonProps,
   data: [],
-  productUnderView: null,
   columns: columns,
   fetchPlansCreator: fetchPlanDefinitions,
   service: OpenSRPService,
