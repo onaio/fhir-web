@@ -15,6 +15,7 @@ export const eusmPlans = [
       end: '2021-12-24',
     },
     useContext: [
+      { code: 'interventionType', valueCodableConcept: 'SM' },
       {
         code: 'taskGenerationStatus',
         valueCodableConcept: 'internal',
