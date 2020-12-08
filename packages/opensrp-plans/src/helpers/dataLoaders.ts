@@ -42,3 +42,28 @@ export async function loadPlans(
       throw err;
     });
 }
+
+/**
+ * @param {string} baseURL -  base url of api
+ * @param {string} id - id of the product to be fetched
+ * @param {OpenSRPService} service - the opensrp service
+ * @param {fetchPlanDefinitions} actionCreator - Action creator; creates actions thad adds plans to the store
+ *
+ * @returns {Promise<void>}
+ */
+export async function loadSinglePlan(
+  baseURL: string,
+  id: string,
+  service: typeof OpenSRPService = OpenSRPService,
+  actionCreator: typeof fetchPlanDefinitions = fetchPlanDefinitions
+) {
+  const serve = new service(OPENSRP_PLANS, baseURL);
+  return serve
+    .read(id)
+    .then((response: PlanDefinition[]) => {
+      actionCreator(response);
+    })
+    .catch((err: Error) => {
+      throw err;
+    });
+}
