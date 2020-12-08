@@ -37,7 +37,7 @@ export function getTeamDetail(
         practitioners: await getPractinonerIdentifier(accessToken, id),
       });
     })
-    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    .catch(() => notification.error({ message: 'An error occurred', description: '' }));
 }
 
 /**
@@ -69,7 +69,7 @@ export const TeamsAddEdit: React.FC = () => {
     serve
       .list()
       .then((response: Practitioner[]) => setPractitioner(response))
-      .catch((e) => notification.error({ message: `${e}`, description: '' }));
+      .catch(() => notification.error({ message: 'An error occurred', description: '' }));
   }, [accessToken]);
 
   if (!practitioner || (params.id && !initialValue))

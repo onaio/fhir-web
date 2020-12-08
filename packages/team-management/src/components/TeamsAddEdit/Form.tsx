@@ -89,7 +89,7 @@ export async function onSubmit(
         history.goBack();
       });
     })
-    .catch((e) => notification.error({ message: `${e}`, description: '' }));
+    .catch(() => notification.error({ message: 'An error occurred', description: '' }));
 
   if (setIsSubmitting) setIsSubmitting(false);
 }

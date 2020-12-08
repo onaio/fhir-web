@@ -81,7 +81,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
   });
 
   it('Fail Create TeamsAddEdit', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API request Failed'));
+    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
     onSubmit(accessToken, intialValue, practitioners).then(jest.fn(), mockNotificationError);
@@ -92,7 +92,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: '',
-      message: 'API request Failed',
+      message: 'An error occurred',
     });
   });
 
