@@ -9,7 +9,7 @@ import { MemoryRouter, Route, Router } from 'react-router';
 import { accessToken, id, intialValue, practitioner, practitioners, team } from './fixtures';
 import fetch from 'jest-fetch-mock';
 
-import TeamsAddEdit, { getPractinonerDetail, getTeamDetail } from '..';
+import TeamsAddEdit, { getPractitonerDetail, getTeamDetail } from '..';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   afterEach(() => {
@@ -106,9 +106,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     expect(fetch.mock.calls).toEqual(fetchCalls);
   });
 
-  it('test getPractinonerDetail', async () => {
+  it('test getPractitonerDetail', async () => {
     fetch.mockResponse(JSON.stringify(practitioner));
-    const response = await getPractinonerDetail(accessToken, id);
+    const response = await getPractitonerDetail(accessToken, id);
 
     await act(async () => {
       await flushPromises();

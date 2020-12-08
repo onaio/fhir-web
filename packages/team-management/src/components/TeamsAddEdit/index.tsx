@@ -29,7 +29,7 @@ export async function getTeamDetail(accessToken: string, id: string) {
     return {
       name: response.name,
       active: response.active,
-      practitioners: await getPractinonerDetail(accessToken, id),
+      practitioners: await getPractitonerDetail(accessToken, id),
     };
   });
 }
@@ -41,7 +41,7 @@ export async function getTeamDetail(accessToken: string, id: string) {
  * @param {string} id id of the team
  * @returns {Promise<Array<Practitioner>>} list of Practitioner Assigned to a team
  */
-export async function getPractinonerDetail(accessToken: string, id: string) {
+export async function getPractitonerDetail(accessToken: string, id: string) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + id);
   return await serve.list().then((response: Practitioner[]) => response);
 }
