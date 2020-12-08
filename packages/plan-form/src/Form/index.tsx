@@ -356,10 +356,10 @@ const PlanForm = (props: PlanFormProps) => {
             />
           </FormItem>
           <FormItem hidden={isHidden(name)} name={name} id="name" rules={validationRules.name}>
-            <Input type="hidden" />
+            <Input type="hidden" disabled={disabledFields.includes(name)} />
           </FormItem>
           <FormItem name={identifier} id="identifier" hidden rules={validationRules.identifier}>
-            <Input type="hidden" readOnly={true} />
+            <Input type="hidden" disabled={disabledFields.includes(identifier)} readOnly={true} />
           </FormItem>
           <FormItem name={version} id="version" hidden rules={validationRules.version}>
             <Input type="hidden" readOnly={true} />
@@ -370,7 +370,11 @@ const PlanForm = (props: PlanFormProps) => {
             hidden
             rules={validationRules.taskGenerationStatus}
           >
-            <Input type="hidden" readOnly={true} />
+            <Input
+              type="hidden"
+              disabled={disabledFields.includes(taskGenerationStatus)}
+              readOnly={true}
+            />
           </FormItem>
           <FormItem
             name={status}

@@ -8,6 +8,7 @@ import { Form } from 'antd';
 import { generatePlanDefinition, getPlanFormValues } from '../../helpers/utils';
 import { mission1, newPayload1 } from './fixtures';
 import { act } from 'react-dom/test-utils';
+import { PlanStatus } from '@opensrp/plan-form-core';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -254,6 +255,13 @@ describe('containers/forms/PlanForm', () => {
       </MemoryRouter>
     );
 
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    // Set interventionType field value
+    formInstance.setFieldsValue({
+      interventionType: 'SM',
+    });
+
     // Set title for the plan
     wrapper
       .find('#title input')
@@ -337,6 +345,36 @@ describe('containers/forms/PlanForm', () => {
 
     // the last request should be the one that is sent to OpenSRP
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
+  });
+
+  it('Checking disabled fields for draft plans', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const planStatus = PlanStatus.DRAFT;
+    const mission = {
+      ...mission1,
+      status: planStatus,
+    };
+
+    const initialValues = getPlanFormValues(mission);
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    const props = {
+      ...propsForUpdatingPlans(planStatus),
+      initialValues,
+    };
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: container }
+    );
+
+    // [interventionType, identifier, name] should be disabled
+    expect(wrapper.find('#interventionType Select').props().disabled).toBeTruthy();
+    expect(wrapper.find('#identifier input').props().disabled).toBeTruthy();
+    expect(wrapper.find('#name input').props().disabled).toBeTruthy();
   });
 
   it('Can add and remove jurisdictions', async () => {

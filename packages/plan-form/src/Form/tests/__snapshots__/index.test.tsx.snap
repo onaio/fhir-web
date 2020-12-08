@@ -227,6 +227,7 @@ exports[`containers/forms/PlanForm renders correctly: description label 1`] = `R
 exports[`containers/forms/PlanForm renders correctly: identifier field 1`] = `
 <input
   className="ant-input"
+  disabled={false}
   id="planForm_identifier"
   onBlur={[Function]}
   onChange={[Function]}
@@ -253,6 +254,7 @@ exports[`containers/forms/PlanForm renders correctly: interventionType label 1`]
 exports[`containers/forms/PlanForm renders correctly: name field 1`] = `
 <input
   className="ant-input"
+  disabled={false}
   id="planForm_name"
   onBlur={[Function]}
   onChange={[Function]}
@@ -346,6 +348,7 @@ exports[`containers/forms/PlanForm renders correctly: submit button 1`] = `
 exports[`containers/forms/PlanForm renders correctly: taskGenerationStatus field 1`] = `
 <input
   className="ant-input"
+  disabled={false}
   id="planForm_taskGenerationStatus"
   onBlur={[Function]}
   onChange={[Function]}
