@@ -4,6 +4,7 @@ import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { PLANS_LIST_VIEW_URL, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
+import { NAME, DATE, ACTIONS } from '../../lang';
 
 /** component rendered in the action column of the table */
 
@@ -18,7 +19,7 @@ export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (
 /**  plans table columns */
 export const columns: ColumnsType<PlanDefinition> = [
   {
-    title: 'Name',
+    title: NAME,
     dataIndex: 'title',
     key: `${TableColumnsNamespace}-title`,
     defaultSortOrder: 'descend',
@@ -33,12 +34,12 @@ export const columns: ColumnsType<PlanDefinition> = [
     width: '60%',
   },
   {
-    title: 'Date',
+    title: DATE,
     dataIndex: 'date',
     key: `${TableColumnsNamespace}-date`,
   },
   {
-    title: 'Actions',
+    title: ACTIONS,
     key: `${TableColumnsNamespace}-actions`,
     render: ActionsColumnCustomRender,
     width: '20%',
