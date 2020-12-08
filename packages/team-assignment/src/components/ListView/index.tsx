@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import moment from 'moment';
 import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
-import { TeamAssignmentLoading, columns } from './utils';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { TeamAssignmentLoading, columns, getPayload } from './utils';
+import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -27,7 +26,6 @@ import {
   getCurrentChildren,
 } from '@opensrp/location-management';
 import { Helmet } from 'react-helmet';
-import { TEAM_ASSIGNMENT_CREATE_VIEW_URL } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import reducer, {
   Assignment,
@@ -35,7 +33,7 @@ import reducer, {
   getAssignments,
   reducerName as assignmentReducerName,
 } from '../../ducks/assignments';
-import { PlanDefinition } from 'team-assignment/src/ducks/assignments/types';
+import { AssignLocationsAndPlans, PlanDefinition } from '../../ducks/assignments/types';
 
 reducerRegistry.register(teamsReducerName, teamsReducer);
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -58,6 +56,7 @@ interface TeamAssignmentViewProps extends RouteComponentProps<RouteParams> {
 
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
+  const [form] = Form.useForm();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
@@ -126,7 +125,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           .read(planLocationId)
           .then((response: RawOpenSRPHierarchy) => {
             const hierarchy = generateJurisdictionTree(response);
-            dispatch(fetchAllHierarchies(hierarchy.model));
+            dispatch(fetchAllHierarchies(hierarchy.model, true));
             setPlanLocationId('');
           })
           .catch((e) => {
@@ -154,6 +153,10 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     opensrpBaseURL,
     planLocationId,
   ]);
+
+  React.useEffect(() => {
+    form.setFieldsValue({ assignTeams: assignedLocAndTeams?.assignedTeams });
+  }, [assignedLocAndTeams, form]);
 
   const handleCancel = () => {
     setVisible(false);
@@ -211,13 +214,20 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       </Helmet>
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
       <Modal
+        destroyOnClose={true}
         title="Title"
         visible={visible}
         onCancel={handleCancel}
         okText={'Save'}
         cancelText={'Cancel'}
         footer={[
-          <Button id="Cancel" key="cancel" onClick={() => setVisible(false)}>
+          <Button
+            id="Cancel"
+            key="cancel"
+            onClick={() => {
+              setVisible(false);
+            }}
+          >
             Cancel
           </Button>,
           <Button form="teamAssignment" key="submit" htmlType="submit">
@@ -228,6 +238,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       >
         <div className="form-container">
           <Form
+            form={form}
             name="teamAssignment"
             onFinish={(values: { assignTeams: string[] }) => {
               const { assignTeams } = values;
@@ -283,13 +294,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           <Tree data={Treedata} appendParentAsChild={false} />
         </Col>
         <Col className={'main-content'}>
-          <div className="main-content__header">
-            <Link to={TEAM_ASSIGNMENT_CREATE_VIEW_URL}>
-              <Button type="primary" size="large">
-                {' + Assign Team'}
-              </Button>
-            </Link>
-          </div>
           <Table dataSource={tableData} columns={columns}></Table>
         </Col>
       </Row>
