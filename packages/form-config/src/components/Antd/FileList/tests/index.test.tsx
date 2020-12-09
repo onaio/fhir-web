@@ -37,6 +37,8 @@ const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification')
 reducerRegistry.register(filesReducerName, filesReducer);
 
 const history = createBrowserHistory();
+const mockHistoryPush = jest.fn();
+history.push = mockHistoryPush;
 
 describe('components/Antd/FileList', () => {
   beforeAll(() => {
@@ -382,6 +384,29 @@ describe('components/Antd/FileList', () => {
     wrapper.update();
     expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
     expect(downloadSpy).not.toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
+  it('upload file button works', async () => {
+    fetch.once(JSON.stringify(fixManifestFiles));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <FileList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    wrapper.find('Space').at(1).find('button').simulate('click');
+
+    expect(mockHistoryPush).toHaveBeenCalledWith('/form-upload');
+
     wrapper.unmount();
   });
 });

@@ -27,6 +27,8 @@ import {
 } from '../../../../ducks/tests/fixtures';
 import toJson from 'enzyme-to-json';
 
+const mockHistoryPush = jest.fn();
+
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
@@ -37,6 +39,7 @@ const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification')
 reducerRegistry.register(draftReducerName, draftReducer);
 
 const history = createBrowserHistory();
+history.push = mockHistoryPush;
 
 const props = {
   opensrpBaseURL: 'https://test-example.com/rest',
@@ -377,6 +380,29 @@ describe('components/Antd/DraftFileList', () => {
 
     expect(wrapper.find('tbody').find('tr').find('td').find('div.ant-empty-image')).toHaveLength(1);
     expect(toJson(wrapper.find('Space').at(2))).toBeFalsy();
+
+    wrapper.unmount();
+  });
+
+  it('upload file button works', async () => {
+    fetch.once(JSON.stringify(FixManifestDraftFiles));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <DrafFileList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    wrapper.find('Space').at(1).find('button').simulate('click');
+
+    expect(mockHistoryPush).toHaveBeenCalledWith('/form-upload');
 
     wrapper.unmount();
   });
