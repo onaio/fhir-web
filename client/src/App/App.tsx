@@ -43,7 +43,6 @@ import {
   CATALOGUE_EDIT_VIEW_URL,
   ConnectedEditProductView,
 } from '@opensrp/product-catalogue';
-import { PLANS_LIST_VIEW_URL, ConnectedPlansList } from '@opensrp/plans';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -58,7 +57,15 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps, plansListProps } from './utils';
+import { productCatalogueProps, plansListProps, planCreationProps } from './utils';
+import {
+  ConnectedPlansList,
+  PLANS_LIST_VIEW_URL,
+  ConnectedEditPlanView,
+  CreatePlanView,
+  PLANS_CREATE_VIEW_URL,
+  PLANS_EDIT_VIEW_URL,
+} from '@opensrp/plans';
 
 const { Content } = Layout;
 
@@ -194,6 +201,22 @@ const App: React.FC = () => {
               path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
               {...productCatalogueProps}
               component={ConnectedEditProductView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={PLANS_CREATE_VIEW_URL}
+              {...planCreationProps}
+              component={CreatePlanView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${PLANS_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
+              {...planCreationProps}
+              component={ConnectedEditPlanView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
