@@ -19,6 +19,8 @@ import { ReleaseList } from '..';
 import { ERROR_OCCURRED } from '../../../../constants';
 
 const history = createBrowserHistory();
+const mockHistoryPush = jest.fn();
+history.push = mockHistoryPush;
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -202,6 +204,29 @@ describe('components/Antd/ReleaseList', () => {
     wrapper.update();
 
     expect(wrapper.find('tbody').find('tr').find('td').find('div.ant-empty-image')).toHaveLength(1);
+
+    wrapper.unmount();
+  });
+
+  it('upload file button works', async () => {
+    fetch.once(JSON.stringify(fixManifestReleases));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ReleaseList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    wrapper.find('Space').at(1).find('button').simulate('click');
+
+    expect(mockHistoryPush).toHaveBeenCalledWith('/form-upload');
 
     wrapper.unmount();
   });
