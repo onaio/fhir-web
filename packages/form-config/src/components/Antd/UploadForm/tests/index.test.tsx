@@ -286,4 +286,46 @@ describe('components/UploadFile', () => {
     expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
     wrapper.unmount();
   });
+
+  it('removes selected file', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <UploadForm {...props} />
+        </Router>
+      </Provider>
+    );
+    wrapper
+      .find('input')
+      .at(3)
+      .simulate('change', { target: { name: 'form', files: sampleFile } });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual([]);
+
+    // We can remove the selected file
+    wrapper.find('button').at(1).simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual(['Form is required']);
+
+    wrapper.unmount();
+  });
 });
