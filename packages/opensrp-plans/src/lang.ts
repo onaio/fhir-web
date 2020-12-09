@@ -12,5 +12,5 @@ export const MESSAGE = 'Fetching Plans';
 export const DESCRIPTION = 'Please wait, as we fetch the plans.';
 export const TIP = 'Loading...';
 
-export const EDIT_PLAN = `Edit Plan`;
-export const CREATE_PLAN = `Create Plan`;
+export const EDIT_PLAN = `Edit plan`;
+export const CREATE_PLAN = `Create new plan`;
