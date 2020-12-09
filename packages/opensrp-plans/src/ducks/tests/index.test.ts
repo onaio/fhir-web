@@ -130,6 +130,12 @@ describe('reducers/opensrp/PlanDefinition', () => {
     expect(getPlanDefinitionsArray(store.getState(), InterventionType.FI)).toEqual([
       fixtures.plans[0],
     ]);
+    // get plansarray sorted in descending order
+    expect(getPlanDefinitionsArray(store.getState(), null, 'date')).toEqual([
+      fixtures.plans[1],
+      fixtures.plans[0],
+    ]);
+
     // fetch one more plan definition objects
     store.dispatch(fetchPlanDefinitions([fixtures.plans[3]] as PlanDefinition[]));
     // we should now have a total of three plan definition objects in the store

@@ -42,6 +42,7 @@ describe('List view Page', () => {
         path: `${PLANS_LIST_VIEW_URL}`,
         url: `${PLANS_LIST_VIEW_URL}`,
       },
+      allowedPlanStatus: 'active',
     };
     const wrapper = mount(
       <Provider store={store}>
@@ -83,6 +84,7 @@ describe('List view Page', () => {
         path: `${PLANS_LIST_VIEW_URL}`,
         url: `${PLANS_LIST_VIEW_URL}`,
       },
+      allowedPlanStatus: 'active',
     };
     const wrapper = mount(
       <Provider store={store}>
@@ -136,6 +138,7 @@ describe('List view Page', () => {
         path: `${PLANS_LIST_VIEW_URL}`,
         url: `${PLANS_LIST_VIEW_URL}`,
       },
+      allowedPlanStatus: 'active',
     };
     const wrapper = mount(
       <Provider store={store}>
