@@ -17,10 +17,12 @@ import {
   CANCEL,
   CONDITIONS_LABEL,
   DESCRIPTION_LABEL,
+  DESCRIPTION_PLACEHOLDER,
   END_DATE,
   GOAL_LABEL,
   INTERVENTION_TYPE_LABEL,
   PLAN_TITLE_LABEL,
+  PLAN_TITLE_PLACEHOLDER,
   PRIORITY_LABEL,
   QUANTITY_LABEL,
   REASON_HEADER,
@@ -367,7 +369,7 @@ const PlanForm = (props: PlanFormProps) => {
                 });
               }}
               required={true}
-              placeholder={}
+              placeholder={PLAN_TITLE_PLACEHOLDER}
               type="text"
               disabled={disabledFields.includes(title)}
             />
