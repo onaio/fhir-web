@@ -8,9 +8,11 @@ import { Redirect } from 'react-router-dom';
 import { format } from 'util';
 import {
   ACTION,
+  ACTIVE_DATE_RANGE_LABEL,
   ACTIVITIES_LABEL,
   ADD_ACTIVITY,
   ADD_CODED_ACTIVITY,
+  ADD_JURISDICTION,
   AND,
   CONDITIONS_LABEL,
   DESCRIPTION_LABEL,
@@ -24,6 +26,8 @@ import {
   SAVE_PLAN,
   START_DATE,
   STATUS_HEADER,
+  SUCCESSFULLY_CREATED,
+  SUCCESSFULLY_UPDATED,
   TRIGGERS_LABEL,
 } from '../lang';
 import { PLAN_LIST_URL } from '../constants';
@@ -188,7 +192,7 @@ const PlanForm = (props: PlanFormProps) => {
     setActionConditions(conditions);
     setActionTriggers(triggers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabledFields, envConfigs]);
+  }, [disabledFields, initialValues.activities, envConfigs]);
 
   const isEditMode: boolean = initialValues.identifier !== '';
 
@@ -294,7 +298,7 @@ const PlanForm = (props: PlanFormProps) => {
             setSubmitting(false);
             return;
           }
-          const successMessage = isEditMode ? 'Successfully Updated' : 'Successfully Created';
+          const successMessage = isEditMode ? SUCCESSFULLY_UPDATED : SUCCESSFULLY_CREATED;
 
           postPutPlan(payload, baseURL, isEditMode)
             .then(() => {
@@ -397,7 +401,7 @@ const PlanForm = (props: PlanFormProps) => {
           </FormItem>
           <FormItem
             rules={validationRules.dateRange}
-            label="Active date range"
+            label={ACTIVE_DATE_RANGE_LABEL}
             name="dateRange"
             required={true}
             hidden={isHidden('dateRange')}
@@ -454,7 +458,7 @@ const PlanForm = (props: PlanFormProps) => {
                     onClick={() => add()}
                     icon={<PlusOutlined />}
                   >
-                    Add Jurisdiction
+                    {ADD_JURISDICTION}
                   </Button>
                 </Form.Item>
               </>

@@ -139,3 +139,7 @@ export const NAME_IS_REQUIRED = 'Name is Required';
 export const REQUIRED = 'Required';
 export const EXPRESSION_LABEL = 'Expression';
 export const NAME = 'Name';
+export const SUCCESSFULLY_UPDATED = 'Successfully Updated';
+export const SUCCESSFULLY_CREATED = 'Successfully Created';
+export const ACTIVE_DATE_RANGE_LABEL = 'Active date range';
+export const ADD_JURISDICTION = 'Add Jurisdiction';
