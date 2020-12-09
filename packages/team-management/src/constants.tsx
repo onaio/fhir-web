@@ -20,5 +20,6 @@ export const PRACTITIONER_ROLE_ADD = 'practitionerRole/add';
 //
 export const TEAM_UUID = 'team-uuid';
 export const TEAMS_GET = 'organization/';
+export const TEAMS_PUT = 'organization/';
 export const TEAMS_POST = 'organization';
 export const TEAM_PRACTITIONERS = 'organization/practitioner/';
