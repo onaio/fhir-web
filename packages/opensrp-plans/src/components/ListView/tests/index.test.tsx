@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks';
-import { columns } from '../utils';
+import { columns, pageTitleBuilder } from '../utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -273,4 +273,11 @@ describe('List view Page', () => {
   expect(columnsSorter({ title: 4 }, { title: 1 })).toBe(-1);
   expect(columnsSorter({ title: 1 }, { title: 4 })).toBe(1);
   expect(columnsSorter({ title: 0 }, { title: 0 })).toBe(0);
+
+  // test pageTitleBuilder
+
+  expect(pageTitleBuilder('active')).toEqual('Active Missions');
+  expect(pageTitleBuilder('draft')).toEqual('Draft Missions');
+  expect(pageTitleBuilder('complete')).toEqual('Complete Missions');
+  expect(pageTitleBuilder('retired')).toEqual('Retired Missions');
 });
