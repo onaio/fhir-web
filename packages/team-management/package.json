@@ -18,7 +18,8 @@
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__",
+    "add-package": "yarn run tsc && yarn run transpile:windows && yarn run copy && cd ../../client && yarn add file:../packages/team-management && yarn start"
   },
   "jest": {
     "automock": false,
@@ -33,10 +34,13 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/notifications": "^0.0.2",
-    "@opensrp/reducer-factory": "^0.0.11"
+    "uuid": "^8.3.1",
+    "@opensrp/reducer-factory": "^0.0.11",
+    "@opensrp/server-service": "^0.0.12",
+    "@opensrp/notifications": "^0.0.2"
   },
   "devDependencies": {
+    "@types/uuid": "8.3.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@opensrp/store": "^0.0.7"
   },

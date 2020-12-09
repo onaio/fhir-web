@@ -7,3 +7,7 @@ export const productCatalogueProps = {
 export const teamAssignmentProps = {
   defaultPlanId: DEFAULT_PLAN_ID,
 };
+
+export const plansListProps = {
+  baseURL: OPENSRP_API_BASE_URL,
+};
