@@ -1,7 +1,8 @@
 .planform.form-container{
   background-color: #fff;
-  padding: 24px;
-  min-height: 70vh;
+  padding: 24px !important;
+  min-height: 80vh;
+  margin-bottom: 24px;
 }
 
 .condition-group,
@@ -25,4 +26,9 @@
 .dynamic-delete-button[disabled] {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.planform.form-container .ant-form-item-label {
+  overflow: visible;
+  white-space: normal;
 }

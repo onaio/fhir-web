@@ -360,7 +360,7 @@ const PlanForm = (props: PlanFormProps) => {
               disabled={disabledFields.includes(title)}
             />
           </FormItem>
-          <FormItem hidden={isHidden(name)} name={name} id="name" rules={validationRules.name}>
+          <FormItem name={name} id="name" hidden rules={validationRules.name}>
             <Input type="hidden" disabled={disabledFields.includes(name)} />
           </FormItem>
           <FormItem name={identifier} id="identifier" hidden rules={validationRules.identifier}>
@@ -413,7 +413,7 @@ const PlanForm = (props: PlanFormProps) => {
             />
           </FormItem>
 
-          <FormItem hidden={isHidden(date)} rules={validationRules.date} name={date} id="date">
+          <FormItem hidden rules={validationRules.date} name={date} id="date">
             <DatePicker format={configs.dateFormat} />
           </FormItem>
 
@@ -465,10 +465,11 @@ const PlanForm = (props: PlanFormProps) => {
             )}
           </Form.List>
 
-          <FormItem hidden={isHidden(activities)} id="activities">
-            <Divider orientation="left">
-              <h4>{ACTIVITIES_LABEL}</h4>
-            </Divider>
+          <FormItem
+            label={<h4>{ACTIVITIES_LABEL}</h4>}
+            hidden={isHidden(activities)}
+            id="activities"
+          >
             <List name={activities}>
               {(_, { remove }) => {
                 return (
