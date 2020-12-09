@@ -1,7 +1,12 @@
 /** component renders view where users can create plans
  */
 import React from 'react';
-import { defaultInitialValues, PlanForm, processActivitiesDates } from '@opensrp/plan-form';
+import {
+  defaultInitialValues,
+  PlanForm,
+  PlanFormFieldsKeys,
+  processActivitiesDates,
+} from '@opensrp/plan-form';
 import { Layout, PageHeader } from 'antd';
 import Helmet from 'react-helmet';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
@@ -43,11 +48,12 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
   };
 
   const planFormProps = {
+    hiddenFields: ['interventionType', 'activities', 'status'] as PlanFormFieldsKeys[],
     initialValues,
     baseURL: baseURL,
     redirectAfterAction: PLANS_LIST_VIEW_URL,
     allFormActivities: getFormActivities(planActivities, configs),
-    // envConfigs: configs,
+    envConfigs: configs,
   };
 
   return (

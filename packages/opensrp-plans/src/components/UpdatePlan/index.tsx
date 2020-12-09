@@ -23,7 +23,12 @@ import {
   PlanDefinition,
 } from '@opensrp/plan-form-core';
 import { PlanLoading } from '../../helpers/utils';
-import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp/plan-form';
+import {
+  PlanForm,
+  getPlanFormValues,
+  propsForUpdatingPlans,
+  PlanFormFieldsKeys,
+} from '@opensrp/plan-form';
 import { EDIT_PLAN } from '../../lang';
 import { PLANS_LIST_VIEW_URL } from '../../constants';
 
@@ -89,12 +94,13 @@ const EditPlanView = (props: EditViewTypes) => {
 
   const initialValues = getPlanFormValues(plan as PlanDefinition);
   const productFormProps = {
+    hiddenFields: ['interventionType', 'activities', 'status'] as PlanFormFieldsKeys[],
     baseURL,
     initialValues,
     ...propsForUpdatingPlans(plan.status),
     redirectAfterAction: PLANS_LIST_VIEW_URL,
     allFormActivities: getFormActivities(planActivities, configs),
-    // envConfigs: configs,
+    envConfigs: configs,
   };
 
   const pageTitle = EDIT_PLAN;
@@ -118,8 +124,8 @@ export { EditPlanView as EditProductView };
 const planSelector = makePlanDefinitionsArraySelector();
 
 /** Interface for connected state to props */
-export type MapStateToProps = Pick<EditViewProps, 'plan'>;
-export type MapDispatchToProps = Pick<EditViewProps, 'fetchPlan'>;
+type MapStateToProps = Pick<EditViewProps, 'plan'>;
+type MapDispatchToProps = Pick<EditViewProps, 'fetchPlan'>;
 // connect to store
 const mapStateToProps = (state: Partial<Store>, ownProps: EditViewTypes): MapStateToProps => {
   const planId = ownProps.match.params.planId ?? '';
