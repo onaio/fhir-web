@@ -6,7 +6,6 @@ import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
-import { PlanForm } from '@opensrp/plan-form';
 import { act } from 'react-dom/test-utils';
 import { CREATE_PLAN } from '../../../lang';
 
@@ -40,7 +39,5 @@ describe('Create Plan Page', () => {
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
-
-    expect(wrapper.find(PlanForm).props()).toMatchSnapshot('new form props');
   });
 });

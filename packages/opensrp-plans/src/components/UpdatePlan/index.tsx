@@ -94,7 +94,7 @@ const EditPlanView = (props: EditViewTypes) => {
     ...propsForUpdatingPlans(plan.status),
     redirectAfterAction: PLANS_LIST_VIEW_URL,
     allFormActivities: getFormActivities(planActivities, configs),
-    envConfigs: configs,
+    // envConfigs: configs,
   };
 
   const pageTitle = EDIT_PLAN;

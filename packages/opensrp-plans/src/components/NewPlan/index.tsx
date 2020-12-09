@@ -47,7 +47,7 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
     baseURL: baseURL,
     redirectAfterAction: PLANS_LIST_VIEW_URL,
     allFormActivities: getFormActivities(planActivities, configs),
-    envConfigs: configs,
+    // envConfigs: configs,
   };
 
   return (
