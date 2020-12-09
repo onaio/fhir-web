@@ -79,7 +79,7 @@ import {
 import moment, { Moment } from 'moment';
 import { Select, Input, DatePicker } from 'antd';
 import { CloseOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Collapse, Modal, Divider } from 'antd';
+import { Collapse, Modal } from 'antd';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { CommonProps, defaultCommonProps } from '../helpers/common';
 import { SUPPLY_MANAGEMENT_TITLE } from '../lang';
