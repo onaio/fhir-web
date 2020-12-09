@@ -169,15 +169,20 @@ export function getPlanDefinitionById(state: Partial<Store>, id: string): PlanDe
  *
  * @param {object} state - the redux store
  * @param {InterventionType | null} interventionType - the PlanDefinition intervention Type
+ * @param {string} sortField - field to sort by
  * @returns {PlanDefinition[]} an array of PlanDefinition objects
  */
 export function getPlanDefinitionsArray(
   state: Partial<Store>,
-  interventionType: InterventionType | null = null
+  interventionType: InterventionType | null = null,
+  sortField?: string
 ): PlanDefinition[] {
   const result = values((state as Dictionary)[reducerName].planDefinitionsById);
   if (interventionType) {
     return result.filter((e: PlanDefinition) => isPlanDefinitionOfType(e, interventionType));
+  }
+  if (sortField) {
+    return descendingOrderSort(result, sortField);
   }
   return result;
 }
