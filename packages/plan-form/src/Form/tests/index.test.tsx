@@ -10,6 +10,8 @@ import { mission1, newPayload1 } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { PLAN_LIST_URL } from '../../constants';
+import { Dictionary } from '@onaio/utils';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -610,5 +612,21 @@ describe('containers/forms/PlanForm', () => {
     // there should not be any button to add activities
     expect(wrapper.find(`button.add-more-activities`)).toHaveLength(0);
     wrapper.unmount();
+  });
+
+  it('Clicking on cancel takes you to list page', async () => {
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm />
+      </MemoryRouter>
+    );
+    // Set title for the plan
+    wrapper.find('#planform-cancel-button').simulate('click');
+
+    wrapper.update();
+
+    expect((wrapper.find('Router').props() as Dictionary).history.location.pathname).toEqual(
+      PLAN_LIST_URL
+    );
   });
 });
