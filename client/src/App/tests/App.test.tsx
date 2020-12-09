@@ -7,7 +7,13 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, RouteComponentProps, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
-import App, { PrivateComponent, PublicComponent, CallbackComponent } from '../App';
+import App, {
+  PrivateComponent,
+  PublicComponent,
+  CallbackComponent,
+  LoadingComponent,
+  SuccessfulLoginComponent,
+} from '../App';
 import { expressAPIResponse } from './fixtures';
 import { UserList } from '@opensrp/user-management';
 import { KEYCLOAK_API_BASE_URL } from '../../configs/env';
@@ -128,6 +134,32 @@ describe('App', () => {
     );
     wrapper.update();
     expect(wrapper.exists('CallbackComponent')).toBeTruthy();
+    wrapper.unmount();
+  });
+
+  it('Loading component Renders correctly', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/` }]}>
+          <LoadingComponent />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.update();
+    expect(wrapper.exists('LoadingComponent')).toBeTruthy();
+    wrapper.unmount();
+  });
+
+  it('Successful Login component Renders correctly', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/` }]}>
+          <SuccessfulLoginComponent />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.update();
+    expect(wrapper.exists('SuccessfulLoginComponent')).toBeTruthy();
     wrapper.unmount();
   });
 });

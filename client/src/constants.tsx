@@ -8,6 +8,9 @@ export const LOCATIONS_UNIT = 'Locations unit';
 export const LOCATIONS_UNIT_GROUP = 'Locations unit group';
 export const PRODUCT_CATALOGUE = 'Product Catalogue';
 export const ERROR_OCCURRED = 'An error occurred';
+export const PLANS = 'Plans';
+export const USERS = 'Users';
+export const ADMIN = 'Admin';
 
 // URLs
 export const URL_EXPRESS_LOGIN = '/login';

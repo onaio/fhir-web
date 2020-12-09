@@ -23,6 +23,7 @@ import Helmet from 'react-helmet';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Resource404 } from '@opensrp/react-utils';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
+import { EDIT } from '../../lang';
 
 /** register catalogue reducer */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
@@ -83,7 +84,7 @@ const EditProductView = (props: EditProductViewTypes) => {
     initialValues: { ...(product as ProductCatalogue) },
   };
 
-  const pageTitle = `Edit > ${product?.productName}`;
+  const pageTitle = `${EDIT} > ${product?.productName}`;
 
   return (
     <Layout className="content-section">

@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
+  PLANS,
   PRODUCT_CATALOGUE,
   TEAMS,
   URL_ADMIN,
@@ -18,9 +19,12 @@ import {
   URL_LOCATION_TAG,
   URL_LOCATION_UNIT,
   USER_MANAGEMENT,
+  USERS,
+  ADMIN,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
-import { ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
+import { ENABLE_LOCATIONS, ENABLE_PLANS, ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
+import { PLANS_LIST_VIEW_URL } from '@opensrp/plans';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -47,9 +51,9 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         </Link>
       </div>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" className="menu-dark">
-        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title="Admin">
+        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.SubMenu key="users" title="Users">
+            <Menu.SubMenu key="users" title={USERS}>
               <Menu.Item key="users">
                 <Link to={URL_ADMIN} className="admin-link">
                   {USER_MANAGEMENT}
@@ -69,18 +73,27 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Link>
             </Menu.Item>
           )}
-          <Menu.SubMenu key="admin-locations" title="Locations">
-            <Menu.Item key="locations-unit">
-              <Link to={URL_LOCATION_UNIT} className="admin-link">
-                {LOCATIONS_UNIT}
+          {ENABLE_PLANS && (
+            <Menu.Item key="plans">
+              <Link to={PLANS_LIST_VIEW_URL} className="admin-link">
+                {PLANS}
               </Link>
             </Menu.Item>
-            <Menu.Item key="locations-unit-group">
-              <Link to={URL_LOCATION_TAG} className="admin-link">
-                {LOCATIONS_UNIT_GROUP}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
+          )}
+          {ENABLE_LOCATIONS && (
+            <Menu.SubMenu key="admin-locations" title="Locations">
+              <Menu.Item key="locations-unit">
+                <Link to={URL_LOCATION_UNIT} className="admin-link">
+                  {LOCATIONS_UNIT}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="locations-unit-group">
+                <Link to={URL_LOCATION_TAG} className="admin-link">
+                  {LOCATIONS_UNIT_GROUP}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}{' '}
         </Menu.SubMenu>
       </Menu>
     </Layout.Sider>

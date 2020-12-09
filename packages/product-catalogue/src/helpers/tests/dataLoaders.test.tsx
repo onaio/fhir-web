@@ -1,5 +1,11 @@
 import { product1, products } from '../../ducks/productCatalogue/tests/fixtures';
-import { loadProductCatalogue, loadSingleProduct, postProduct, putProduct } from '../dataLoaders';
+import {
+  loadProductCatalogue,
+  loadSingleProduct,
+  postProduct,
+  postPutOptions,
+  putProduct,
+} from '../dataLoaders';
 import * as catalogueDux from '../../ducks/productCatalogue';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -45,7 +51,7 @@ describe('dataLoading', () => {
 
     await new Promise((resolve) => setImmediate(resolve));
 
-    expect(creatorSpy).not.toHaveBeenCalled();
+    expect(creatorSpy).toHaveBeenCalled();
     creatorSpy.mockRestore();
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/restproduct-catalogue',
@@ -87,7 +93,7 @@ describe('dataLoading', () => {
     fetch.once(JSON.stringify({}));
     const creatorSpy = jest.spyOn(catalogueDux, 'fetchProducts');
     loadSingleProduct(mockBaseURL, '1').catch((e) => {
-      expect(e.message).toEqual('No products found in the catalogue');
+      expect(e.message).toEqual('Product not found in the catalogue');
     });
     await new Promise((resolve) => setImmediate(resolve));
 
@@ -95,10 +101,10 @@ describe('dataLoading', () => {
     creatorSpy.mockRestore();
   });
 
-  it('postProduct works correctly', async () => {
+  it('postProduct works correctly', async (done) => {
     fetch.once(JSON.stringify({}));
     const sampleFile = new File(['dummy'], 'dummy.txt');
-    const mockPayload = { name: 'Ghost', file: sampleFile, uniqueId: '1' };
+    const mockPayload = { name: 'Ghost', photoURL: sampleFile, uniqueId: '1' };
     postProduct(mockBaseURL, mockPayload).catch((e) => {
       throw e;
     });
@@ -109,7 +115,6 @@ describe('dataLoading', () => {
       {
         body: expect.any(FormData),
         headers: {
-          accept: 'application/json',
           authorization: 'Bearer null',
         },
         method: 'POST',
@@ -119,21 +124,105 @@ describe('dataLoading', () => {
     const body = fetch.mock.calls[0][1].body;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const bodyObject = (Object as any).fromEntries(body);
-    expect(bodyObject).toEqual({ name: 'Ghost', file: sampleFile });
+    expect(bodyObject).toMatchObject({
+      file: sampleFile,
+      productCatalogue: expect.any(File),
+    });
+
+    const reader = new FileReader();
+    reader.readAsText(bodyObject.productCatalogue);
+
+    reader.addEventListener('load', function () {
+      try {
+        const result = reader.result;
+        expect(result).toEqual(JSON.stringify({ name: 'Ghost' }));
+        done();
+      } catch (error) {
+        done.fail(error);
+      }
+    });
+
+    await new Promise((resolve) => setImmediate(resolve));
   });
 
-  it('putProduct works correctly', async () => {
+  it('putProduct works correctly', async (done) => {
+    jest.setTimeout(30000);
     fetch.once(JSON.stringify({}));
     const sampleFile = new File(['dummy'], 'dummy.txt');
-    const mockPayload = { name: 'Ghost', file: sampleFile };
+    const mockPayload = { name: 'Ghost', photoURL: sampleFile, uniqueId: '1' };
     putProduct(mockBaseURL, mockPayload).catch((e) => {
       throw e;
     });
     await new Promise((resolve) => setImmediate(resolve));
 
+    expect(fetch.mock.calls[0]).toMatchObject([
+      'https://example.com/restproduct-catalogue/1',
+      {
+        body: expect.any(FormData),
+        headers: {
+          authorization: 'Bearer null',
+        },
+        method: 'PUT',
+      },
+    ]);
+
     const body = fetch.mock.calls[0][1].body;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const bodyObject = (Object as any).fromEntries(body);
-    expect(bodyObject).toEqual(mockPayload);
+    expect(bodyObject).toMatchObject({
+      file: sampleFile,
+      productCatalogue: expect.any(File),
+    });
+
+    const reader = new FileReader();
+    reader.readAsText(bodyObject.productCatalogue);
+
+    reader.addEventListener('load', function () {
+      try {
+        const result = reader.result;
+        expect(result).toEqual(JSON.stringify({ name: 'Ghost', uniqueId: '1' }));
+        done();
+      } catch (error) {
+        done.fail(error);
+      }
+    });
+
+    await new Promise((resolve) => setImmediate(resolve));
+  });
+
+  it('postProduct behaves when error', async () => {
+    const errorMessage = 'Posting failed';
+    fetch.mockReject(new Error(errorMessage));
+    const sampleFile = new File(['dummy'], 'dummy.txt');
+    const mockPayload = { name: 'Ghost', photoURL: sampleFile, uniqueId: '1' };
+    postProduct(mockBaseURL, mockPayload).catch((e) => {
+      expect(e.message).toEqual(errorMessage);
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+  });
+
+  it('putProduct behaves when error', async () => {
+    const errorMessage = 'Posting failed';
+    fetch.mockReject(new Error(errorMessage));
+    const sampleFile = new File(['dummy'], 'dummy.txt');
+    const mockPayload = { name: 'Ghost', photoURL: sampleFile };
+    putProduct(mockBaseURL, mockPayload).catch((e) => {
+      expect(e.message).toEqual(errorMessage);
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+  });
+
+  it('custom getFetchOptions works when payload is undefined', () => {
+    const signal = new AbortController().signal;
+    const mockAccessToken = 'So secret';
+    const res = postPutOptions(signal, mockAccessToken, 'POST');
+    expect(res).toEqual({
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer So secret',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    });
   });
 });
