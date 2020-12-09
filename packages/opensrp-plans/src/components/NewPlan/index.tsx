@@ -13,7 +13,7 @@ import {
   getPlanActivitiesMap,
   InterventionType,
   planActivities,
-} from '@opensrp/plan-form-core/dist/types';
+} from '@opensrp/plan-form-core';
 
 type CreatePlanViewProps = CommonProps;
 
