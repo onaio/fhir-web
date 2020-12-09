@@ -49,26 +49,7 @@ Object {
               Product Catalogue
             </Link>
           </MenuItem>
-          <SubMenu
-            title="Locations"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/location/unit"
-              >
-                Locations unit
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/location/group"
-              >
-                Locations unit group
-              </Link>
-            </MenuItem>
-          </SubMenu>
+           
         </SubMenu>
       </Menu>
     </div>,

@@ -93,7 +93,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
-          )}{' '}
+          )}
         </Menu.SubMenu>
       </Menu>
     </Layout.Sider>
