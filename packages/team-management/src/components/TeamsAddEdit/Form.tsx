@@ -77,12 +77,10 @@ export function onSubmit(
     .then(async () => {
       // Filter and seperate the practitioners uuid
       // const toBe = initialValue.practitioners.filter((val) => values.practitioners.includes(val));
-      const toAdd = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
-      const toRemove = values.practitioners.filter(
-        (val) => !initialValue.practitioners.includes(val)
-      );
+      const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
+      const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
-      await SetPractitioners(practitioner, toAdd, toRemove, accessToken, Teamid);
+      await SetPractitioners(practitioner, toAdd, toRem, accessToken, Teamid);
 
       if (setIsSubmitting) setIsSubmitting(false);
       history.goBack();
@@ -127,6 +125,7 @@ async function SetPractitioners(
       code: { text: 'Community Health Worker' },
     };
   });
+
   const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
   await serve.create(payload);
 
