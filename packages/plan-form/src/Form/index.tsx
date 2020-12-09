@@ -187,7 +187,8 @@ const PlanForm = (props: PlanFormProps) => {
     );
     setActionConditions(conditions);
     setActionTriggers(triggers);
-  }, [disabledFields, initialValues.activities]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disabledFields, configs]);
 
   const isEditMode: boolean = initialValues.identifier !== '';
 
