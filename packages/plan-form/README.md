@@ -1,6 +1,6 @@
 # PlanForm
 
-Component that renders form to create or edit OpenSRP plans
+Component that renders a form to create or edit OpenSRP plans. It implements custom UI and user interactions as required by opensrp-web apps that use antd.
 
 ## Installation
 
