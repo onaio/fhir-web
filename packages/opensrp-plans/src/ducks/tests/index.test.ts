@@ -100,6 +100,9 @@ describe('reducers/opensrp/PlanDefinition', () => {
     expect(getPlanDefinitionsArrayByStatus()(store.getState(), { status: 'retired' })).toEqual([
       fixtures.plans[5],
     ]);
+    expect(filterPlansByStatus(fixtures.eusmPlans as PlanDefinition[], undefined)).toEqual(
+      fixtures.eusmPlans
+    );
     expect(getPlanDefinitionsArrayByStatus()(store.getState(), { status: 'complete' })).toEqual([]);
     expect(PlanDefinitionsArraySelector(store.getState(), { title: 'Mosh' })).toEqual([
       fixtures.plans[3],
