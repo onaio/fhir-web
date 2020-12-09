@@ -440,6 +440,7 @@ const PlanForm = (props: PlanFormProps) => {
             id="description"
           >
             <TextArea
+              rows={4}
               placeholder={DESCRIPTION_PLACEHOLDER}
               disabled={disabledFields.includes(description)}
             />
