@@ -10,10 +10,10 @@ Object {
     "condition": "",
     "isAttractiveItem": undefined,
     "materialNumber": "",
+    "photoURL": "",
     "productName": "",
-    "productPhoto": "",
     "uniqueId": undefined,
   },
-  "redirectAfterAction": "/product-catalogue",
+  "redirectAfterAction": "/product-catalogue/list",
 }
 `;

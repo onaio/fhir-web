@@ -11,8 +11,8 @@ exports[`View Details case without objectId: Should be null 1`] = `
       "condition": "good condition",
       "isAttractiveItem": true,
       "materialNumber": "MT-123",
+      "photoURL": "",
       "productName": "Scale",
-      "productPhoto": "",
       "serverVersion": 123456,
       "uniqueId": 1,
     }

@@ -40,3 +40,7 @@ export const releaseViewProps = {
   uploadFileURL: URL_UPLOAD_DRAFT_FILE,
   isJsonValidator: false,
 };
+
+export const plansListProps = {
+  baseURL: OPENSRP_API_BASE_URL,
+};

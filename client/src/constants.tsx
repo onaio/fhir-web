@@ -12,6 +12,10 @@ export const MANIFEST_RELEASES = 'Manifest Releases';
 export const DRAFT_FILES = 'Draft Files';
 export const JSON_VALIDATORS = 'JSON Validators';
 export const FORM_CONFIGURATIONS = 'Form Configurations';
+export const PLANS = 'Plans';
+export const LOCATIONS = 'Locations';
+export const USERS = 'Users';
+export const ADMIN = 'Admin';
 
 // URLs
 export const URL_EXPRESS_LOGIN = '/login';
