@@ -4,7 +4,7 @@ import { get, keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
-import { InterventionType, PlanDefinition, start } from '@opensrp/plan-form-core';
+import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
 import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
 
 /** the reducer name */
@@ -251,8 +251,9 @@ export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
   );
 /** Filter plans by status
  *
- * @param {PlanDefinition[]} plans -plan definitions array
+ * @param {PlanDefinition[]} plans - plan definitions array
  * @param {string} status - plan status
+ * @returns {PlanDefinition[]} - plan definitions array
  */
 export const filterPlansByStatus = (plans: PlanDefinition[], status: string | undefined) =>
   status ? plans.filter((plan) => plan.status === status) : plans;
