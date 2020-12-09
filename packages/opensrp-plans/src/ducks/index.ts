@@ -193,6 +193,7 @@ export function getPlanDefinitionsArray(
 export interface PlanDefinitionFilters {
   title?: string /** plan object title */;
   planIds?: string[] | null /** return only plans whose id appear here */;
+  status?: string;
 }
 
 /** planDefinitionsByIdBaseSelector selects store slice object with of all plans
@@ -223,6 +224,14 @@ export const planDefinitionsArrayBaseSelector = (planKey?: string) => (
  */
 export const getTitle = (_: Partial<Store>, props: PlanDefinitionFilters) => props.title;
 
+/** Gets status from PlanFilters
+ *
+ * @param {object} _ - the redux store
+ * @param {object} props - the plan filters object
+ * @returns {string} return status
+ */
+export const getStatus = (_: Partial<Store>, props: PlanDefinitionFilters) => props.status;
+
 /** Gets planIds from PlanFilters
  *
  * @param {object} _ - the redux store
@@ -239,6 +248,16 @@ export const getPlanIds = (_: Partial<Store>, props: PlanDefinitionFilters) => p
 export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
   createSelector([planDefinitionsArrayBaseSelector(planKey), getTitle], (plans, title) =>
     title ? plans.filter((plan) => plan.title.toLowerCase().includes(title.toLowerCase())) : plans
+  );
+
+/** Gets an array of Plan objects filtered by plan title
+ *
+ * @param {string} planKey - plan identifier
+ * @returns {Function} returns createSelector method
+ */
+export const getPlanDefinitionsArrayByStatus = (planKey?: string) =>
+  createSelector([planDefinitionsArrayBaseSelector(planKey), getStatus], (plans, status) =>
+    status ? plans.filter((plan) => plan.status === status) : plans
   );
 
 /** get plans for the given planIds
