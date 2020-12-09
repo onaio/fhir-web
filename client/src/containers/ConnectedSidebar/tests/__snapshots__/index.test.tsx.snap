@@ -49,7 +49,6 @@ Object {
               Product Catalogue
             </Link>
           </MenuItem>
-           
         </SubMenu>
       </Menu>
     </div>,
