@@ -11,9 +11,8 @@ export const URL_EDIT_TEAM = 'teams/edit/';
 // Practitioner
 //
 export const PRACTITIONER_GET = 'practitioner/';
-export const PRACTITIONER_POST = 'practitionerRole/add';
+export const PRACTITIONER_POST = 'practitionerRole/add/';
 export const PRACTITIONER_DEL = 'practitionerRole/delete/';
-export const PRACTITIONER_ROLE_ADD = 'practitionerRole/add';
 
 //
 // Teams
