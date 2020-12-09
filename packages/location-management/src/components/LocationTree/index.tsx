@@ -130,7 +130,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       />
       <AntTree
         onClick={(_, node: Dictionary) => {
-          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
+          const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
           onExpand(allExpandedKeys);
           if (node.children) {
             let children;
