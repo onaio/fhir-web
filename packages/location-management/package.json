@@ -39,7 +39,8 @@
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/reducer-factory": "^0.0.11",
     "@opensrp/server-service": "^0.0.12",
-    "@opensrp/store": "^0.0.7"
+    "@opensrp/store": "^0.0.7",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
@@ -48,7 +49,6 @@
   },
   "peerDependencies": {
     "formik-antd": "^2.0.1",
-    "uuid": "^8.3.1",
     "react": "^16.13.1"
   }
 }
