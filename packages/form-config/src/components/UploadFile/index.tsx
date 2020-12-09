@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import { Button, Form, FormGroup, Input, Label, Row, Col } from 'reactstrap';
 import { uploadValidationSchema, defaultInitialValues, InitialValuesTypes } from './helpers';
 import { Redirect } from 'react-router';
+import { OpenSRPService } from '@opensrp/server-service';
 import { FormConfigProps } from '../../helpers/types';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -15,7 +16,6 @@ import {
   FORM_REQUIRED_LABEL,
   FORM_NAME_REQUIRED_LABEL,
 } from '../../constants';
-import { OpenSRPServiceExtend } from '../../helpers/services';
 import { Dictionary } from '@onaio/utils';
 
 /** default props interface */
@@ -28,6 +28,7 @@ export interface UploadDefaultProps {
   formRequiredLabel: string;
   moduleLabel: string;
   relatedToLabel: string;
+  accessToken: string;
 }
 
 /** UploadConfigFile interface */
@@ -45,7 +46,6 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
     draftFilesUrl,
     formInitialValues,
     endpoint,
-    getPayload,
     baseURL,
     customAlert,
     validatorsUrl,
@@ -55,6 +55,7 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
     relatedToLabel,
     formNameRequiredLable,
     formRequiredLabel,
+    accessToken,
   } = props;
 
   const [ifDoneHere, setIfDoneHere] = useState(false);
@@ -85,10 +86,19 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
     if (isJsonValidator) {
       postData.append('is_json_validator', 'true');
     }
+    const customOptions = () => {
+      return {
+        body: postData,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        method: 'POST',
+      };
+    };
 
-    const clientService = new OpenSRPServiceExtend(baseURL, endpoint, getPayload);
+    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, customOptions);
     clientService
-      .postData(postData)
+      .create(postData)
       .then(() => setIfDoneHere(true))
       .catch((err) => {
         if (customAlert) {
@@ -225,6 +235,7 @@ const defaultProps: UploadDefaultProps = {
   formRequiredLabel: FORM_REQUIRED_LABEL,
   moduleLabel: MODULE_LABEL,
   relatedToLabel: RELATED_TO_LABEL,
+  accessToken: '',
 };
 
 UploadConfigFile.defaultProps = defaultProps;

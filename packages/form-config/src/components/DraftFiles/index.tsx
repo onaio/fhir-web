@@ -48,6 +48,7 @@ export interface DraftsDefaultProps extends SearchBarDefaultProps {
   makeReleaseLabel: string;
   moduleLabel: string;
   uploadFileLabel: string;
+  accessToken: string;
 }
 
 /** manifest Draft files props interface */
@@ -91,6 +92,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     formUploadUrl,
     uploadTypeUrl,
     drillDownProps,
+    accessToken,
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -102,7 +104,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     setLoading(true);
     /* eslint-disable-next-line @typescript-eslint/camelcase */
     const params = { is_draft: true };
-    const clientService = new OpenSRPService(baseURL, endpoint, getPayload);
+    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
     clientService
       .list(params)
       .then((res: ManifestFilesTypes[]) => {
@@ -114,7 +116,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
         }
       })
       .finally(() => setLoading(false));
-  }, [baseURL, endpoint, getPayload, customAlert, fetchDraftFiles]);
+  }, [baseURL, endpoint, getPayload, customAlert, fetchDraftFiles, accessToken]);
 
   useEffect(() => {
     setStateData(data);
@@ -133,7 +135,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
       forms_version: data[0].version,
       identifiers,
     };
-    const clientService = new OpenSRPService(baseURL, manifestEndPoint, getPayload);
+    const clientService = new OpenSRPService(accessToken, baseURL, manifestEndPoint, getPayload);
     clientService
       .create({ json: JSON.stringify(json) })
       .then(() => {
@@ -166,11 +168,13 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
    */
   const onDownloadClick = (e: MouseEvent, obj: ManifestFilesTypes) => {
     e.preventDefault();
-    downloadManifestFile(baseURL, downloadEndPoint, obj, false, getPayload).catch((error) => {
-      if (customAlert) {
-        customAlert(String(error), { type: 'error' });
+    downloadManifestFile(accessToken, baseURL, downloadEndPoint, obj, false, getPayload).catch(
+      (error) => {
+        if (customAlert) {
+          customAlert(String(error), { type: 'error' });
+        }
       }
-    });
+    );
   };
 
   const columns: Array<DrillDownColumn<ManifestFilesTypes>> = [
@@ -285,6 +289,7 @@ const defaultProps: DraftsDefaultProps = {
   moduleLabel: MODULE_LABEL,
   placeholder: FIND_DRAFT_RELEASES_LABEL,
   uploadFileLabel: UPOL0AD_FILE_LABEL,
+  accessToken: '',
 };
 
 /** pass default props to component */

@@ -2593,6 +2593,28 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
+"@opensrp/form-config@file:packages/form-config":
+  version "0.0.6"
+  dependencies:
+    "@ant-design/icons" "^4.3.0"
+    "@fortawesome/fontawesome-svg-core" "^1.2.20"
+    "@fortawesome/free-brands-svg-icons" "^5.10.0"
+    "@fortawesome/free-regular-svg-icons" "^5.10.0"
+    "@fortawesome/free-solid-svg-icons" "^5.10.0"
+    "@fortawesome/react-fontawesome" "^0.1.4"
+    "@onaio/drill-down-table" "^1.0.2"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.2"
+    "@opensrp/reducer-factory" "^0.0.1"
+    "@opensrp/server-service" "^0.0.12"
+    "@types/react-table" "^7.0.25"
+    formik "^2.1.4"
+    lodash "^4.17.15"
+    react-toastify "^6.0.5"
+    reactstrap "^8.0.1"
+    yup "^0.29.1"
+
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
@@ -2618,11 +2640,6 @@
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
   integrity sha512-WymZntvFba3/0FKM6f2L+YT7BF+t/HFlr6A16UIBFz83+nYTIoI93MS/ocO/7MDTL9F7yzTBpjA0D1CkogFnfg==
-
-"@opensrp/server-service@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.2.tgz#db9de1d6ce6d5ebc14daf838c89b235268d41c17"
-  integrity sha512-vCjPNAeNv9hgESlqr87lmpb/FPT3kyMXeHNfKXBMYwdgaVriCcIicL5HtsiYQLi49ydWtBYz7N6i78O4iM0olw==
 
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"

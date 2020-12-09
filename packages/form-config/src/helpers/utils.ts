@@ -23,6 +23,7 @@ export const formatDate = (stringDate: string): string => {
 /**
  * Handle download link click
  *
+ * @param {string} accessToken - opensrp API access token
  * @param {string} baseURL OpenSRP API base URL
  * @param {string} downloadEndPoint opensrp download URL
  * @param {ManifestFilesTypes} obj manifest object file to be downloaded
@@ -30,6 +31,7 @@ export const formatDate = (stringDate: string): string => {
  *  @param {getFetchOptions} getPayload custom fetch options
  */
 export const downloadManifestFile = async (
+  accessToken: string,
   baseURL: string,
   downloadEndPoint: string,
   obj: ManifestFilesTypes,
@@ -44,7 +46,7 @@ export const downloadManifestFile = async (
   if (isJsonValidator) {
     params['is_json_validator'] = true;
   }
-  const clientService = new OpenSRPService(baseURL, downloadEndPoint, getPayload);
+  const clientService = new OpenSRPService(accessToken, baseURL, downloadEndPoint, getPayload);
   await clientService.list(params).then((res) => {
     handleDownload(res.clientForm.json, identifier);
   });

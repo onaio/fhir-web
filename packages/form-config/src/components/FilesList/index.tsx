@@ -49,6 +49,7 @@ export interface FilesListDefaultProps extends SearchBarDefaultProps {
   removeFiles: typeof removeManifestFiles;
   uploadEditLabel: string;
   uploadFileLabel: string;
+  accessToken: string;
 }
 
 /** manifest files list props interface */
@@ -94,6 +95,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     uploadFileLabel,
     createdAt,
     drillDownProps,
+    accessToken,
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -107,7 +109,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     /* eslint-disable-next-line @typescript-eslint/camelcase */
     params = formVersion ? { identifier: formVersion } : { is_json_validator: true };
     removeFiles();
-    const clientService = new OpenSRPService(baseURL, endpoint, getPayload);
+    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
     clientService
       .list(params)
       .then((res: ManifestFilesTypes[]) => {
@@ -119,7 +121,16 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
         }
       })
       .finally(() => setLoading(false));
-  }, [baseURL, customAlert, endpoint, removeFiles, fetchFiles, formVersion, getPayload]);
+  }, [
+    baseURL,
+    customAlert,
+    endpoint,
+    removeFiles,
+    fetchFiles,
+    formVersion,
+    getPayload,
+    accessToken,
+  ]);
 
   useEffect(() => {
     setStateData(data);
@@ -144,13 +155,18 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
    */
   const onDownloadClick = (e: MouseEvent, obj: ManifestFilesTypes) => {
     e.preventDefault();
-    downloadManifestFile(baseURL, downloadEndPoint, obj, isJsonValidator, getPayload).catch(
-      (error) => {
-        if (customAlert) {
-          customAlert(String(error), { type: 'error' });
-        }
+    downloadManifestFile(
+      accessToken,
+      baseURL,
+      downloadEndPoint,
+      obj,
+      isJsonValidator,
+      getPayload
+    ).catch((error) => {
+      if (customAlert) {
+        customAlert(String(error), { type: 'error' });
       }
-    );
+    });
   };
 
   /**
@@ -273,6 +289,7 @@ const defaultProps: FilesListDefaultProps = {
   removeFiles: removeManifestFiles,
   uploadEditLabel: UPLOAD_EDIT_LABEL,
   uploadFileLabel: UPOL0AD_FILE_LABEL,
+  accessToken: '',
 };
 
 /** pass default props to component */
