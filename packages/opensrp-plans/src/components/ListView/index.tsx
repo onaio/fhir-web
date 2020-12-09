@@ -20,7 +20,7 @@ import {
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition } from '@opensrp/plan-form-core';
-import { ACTIVE_MISSIONS, NEW_MISSION } from '../../lang';
+import { MISSIONS, NEW_MISSION } from '../../lang';
 import { descendingOrderSort } from '../../helpers/utils';
 
 /** make sure plans reducer is registered */
@@ -68,7 +68,9 @@ const PlansList = (props: PlansListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = ACTIVE_MISSIONS;
+  const pageTitle = allowedPlanStatus
+    ? `${allowedPlanStatus.charAt(0).toUpperCase()}${allowedPlanStatus.slice(1)} ${MISSIONS}`
+    : MISSIONS;
   // add a key prop to the array data to be consumed by the table
   const dataSource = data.map((singleObject, key) => {
     const planWithKey = {
