@@ -10,7 +10,7 @@ import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
 import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router';
-import Loading from '../components/page/Loading';
+import { Spin } from 'antd';
 import { CustomLogout } from '../components/Logout';
 import {
   WEBSITE_NAME,
@@ -42,6 +42,7 @@ import {
   CATALOGUE_EDIT_VIEW_URL,
   ConnectedEditProductView,
 } from '@opensrp/product-catalogue';
+import { PLANS_LIST_VIEW_URL, ConnectedPlansList } from '@opensrp/plans';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -56,7 +57,7 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps } from './utils';
+import { productCatalogueProps, plansListProps } from './utils';
 
 const { Content } = Layout;
 
@@ -103,16 +104,18 @@ export const PublicComponent = ({ component: Component, ...rest }: Partial<Compo
  * @param routeProps - Component route props object
  */
 
+export const LoadingComponent = () => <Spin size="large" />;
+export const SuccessfulLoginComponent = () => <Redirect to="/" />;
+
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
     return <CustomConnectedAPICallBack {...routeProps} />;
   }
+
   return (
     <ConnectedOauthCallback
-      SuccessfulLoginComponent={() => {
-        return <Redirect to="/" />;
-      }}
-      LoadingComponent={Loading}
+      SuccessfulLoginComponent={SuccessfulLoginComponent}
+      LoadingComponent={LoadingComponent}
       providers={providers}
       oAuthUserInfoGetter={getOpenSRPUserInfo}
       {...routeProps}
@@ -158,6 +161,14 @@ const App: React.FC = () => {
               path={CATALOGUE_LIST_VIEW_URL}
               {...productCatalogueProps}
               component={ConnectedProductCatalogueList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              component={ConnectedPlansList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

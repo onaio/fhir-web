@@ -60,8 +60,9 @@ describe('List view Page', () => {
       wrapper.update();
     });
 
+    // no data
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"ErrorNo products found in the catalogueGo BackBack Home"`
+      `"Product Catalogue (0) + Product CatalogueProduct NameIDActionsNo Data"`
     );
 
     // details view is not displayed
