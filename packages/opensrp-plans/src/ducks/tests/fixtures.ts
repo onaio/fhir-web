@@ -241,10 +241,10 @@ export const eusmPlans = [
     experimental: false,
   },
   {
-    identifier: '335ef7a3-7f35-58aa-8263-4419464946d8',
+    identifier: '335ef7a3-7f35-58aa-8263-4419464946d9',
     version: '1',
-    name: 'EUSM Mission 2020-11-17',
-    title: 'EUSM Mission 2020-11-17',
+    name: 'EUSM Mission 2020-11-18',
+    title: 'EUSM Mission 2020-11-18',
     status: 'active',
     date: '2020-11-16',
     effectivePeriod: {
