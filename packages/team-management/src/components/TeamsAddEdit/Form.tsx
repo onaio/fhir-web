@@ -110,9 +110,10 @@ async function SetPractitioners(
   sendInfoNotification('Assigning Practitioners');
 
   // Api Call to delete practitioners
-  toRemove.forEach((prac) =>
-    new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_DEL + prac).delete()
-  );
+  toRemove.forEach((prac) => {
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_DEL + prac);
+    serve.delete();
+  });
 
   // Api Call to add practitioners
   const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.identifier));
