@@ -34,9 +34,7 @@ export const getTableColumns = (
       dataIndex: fields[index],
       key: fields[index],
       sorter: (a: Dictionary, b: Dictionary) => {
-        if (b[fields[index]]) {
-          return a[fields[index]].length - b[fields[index]].length;
-        }
+        return a[fields[index]].length - b[fields[index]].length;
       },
       sortOrder: sortedInfo && sortedInfo.columnKey === fields[index] && sortedInfo.order,
       ellipsis: true,
