@@ -1,6 +1,6 @@
 # PlanForm
 
-component that renders form to create or edit OpenSRP plans
+Component that renders form to create or edit OpenSRP plans
 
 ## Installation
 
