@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/plans",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Opensrp plans",
   "main": "dist/index.js",
   "types": "dist/types",
