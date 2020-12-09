@@ -20,6 +20,7 @@
     "@opensrp/keycloak-service": "^0.0.8",
     "@opensrp/notifications": "^0.0.1",
     "@opensrp/product-catalogue": "^0.0.2",
+    "@opensrp/plans": "0.0.1",
     "@opensrp/react-utils": "^0.0.1",
     "@opensrp/reducer-factory": "^0.0.11",
     "@opensrp/server-logout": "^0.0.1",
