@@ -147,7 +147,7 @@ export interface PlanFormProps extends CommonProps {
   beforeSubmit?: BeforeSubmit /** called before submission starts, return true to proceed with submission */;
   afterSubmit?: AfterSubmit /** called after the payload is successfully sent to the server */;
   envConfigs?: PlanFormConfig /** env configuration options */;
-  hiddenFields: PlanFormFieldsKeys[];
+  hiddenFields: PlanFormFieldsKeys[] /** what fields to hide */;
 }
 
 /**
