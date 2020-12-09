@@ -8,6 +8,14 @@ import {
   TableColumnsNamespace,
 } from '../../constants';
 import { Link } from 'react-router-dom';
+import {
+  FETCHING_PRODUCT,
+  LOADING_ELLIPSIS,
+  PRODUCT_NAME_TH,
+  ID_TH,
+  ACTIONS_TH,
+  FETCHING_PRODUCT_DESCRIPTION,
+} from '../../lang';
 
 /** component rendered in the action column of the table */
 
@@ -24,7 +32,7 @@ export const ActionsColumnCustomRender: ColumnType<ProductCatalogue>['render'] =
 /** product Catalogue table columns */
 export const columns: ColumnsType<ProductCatalogue> = [
   {
-    title: 'Product Name',
+    title: PRODUCT_NAME_TH,
     dataIndex: 'productName',
     key: `${TableColumnsNamespace}-productName`,
     defaultSortOrder: 'descend',
@@ -39,12 +47,12 @@ export const columns: ColumnsType<ProductCatalogue> = [
     },
   },
   {
-    title: 'ID',
+    title: ID_TH,
     dataIndex: 'uniqueId',
     key: `${TableColumnsNamespace}-uniqueId`,
   },
   {
-    title: 'Actions',
+    title: ACTIONS_TH,
     key: `${TableColumnsNamespace}-actions`,
     render: ActionsColumnCustomRender,
     width: '20%',
@@ -55,12 +63,8 @@ export const columns: ColumnsType<ProductCatalogue> = [
 
 export const CatalogueLoading = () => {
   return (
-    <Spin tip="Loading...">
-      <Alert
-        message="Fetching product Catalogue"
-        description="Please wait, as we fetch the product Catalogue."
-        type="info"
-      />
+    <Spin tip={LOADING_ELLIPSIS}>
+      <Alert message={FETCHING_PRODUCT} description={FETCHING_PRODUCT_DESCRIPTION} type="info" />
     </Spin>
   );
 };
