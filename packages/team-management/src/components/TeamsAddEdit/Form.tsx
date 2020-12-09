@@ -3,7 +3,13 @@ import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { v4 } from 'uuid';
-import { API_BASE_URL, TEAMS_POST, PRACTITIONER_POST, PRACTITIONER_DEL } from '../../constants';
+import {
+  API_BASE_URL,
+  TEAMS_POST,
+  PRACTITIONER_POST,
+  PRACTITIONER_DEL,
+  TEAMS_PUT,
+} from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
   sendSuccessNotification,
@@ -135,11 +141,12 @@ async function SetPractitioners(
  * @param {string} id of the team if already created
  */
 export async function setTeam(accessToken: string, payload: OrganizationPOST, id?: string) {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_POST);
   if (id) {
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_PUT + id);
     await serve.update(payload);
     sendSuccessNotification('Successfully Updated Teams');
   } else {
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_POST);
     await serve.create(payload);
     sendSuccessNotification('Successfully Added Teams');
   }
