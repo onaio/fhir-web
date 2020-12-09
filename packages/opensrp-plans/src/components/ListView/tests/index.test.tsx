@@ -66,6 +66,111 @@ describe('List view Page', () => {
       `"Active Missions + New MissionNameDateActionsNo Data"`
     );
   });
+  it('renders Draft Missions Title', async () => {
+    fetch.mockResponse(JSON.stringify([]));
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${PLANS_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${PLANS_LIST_VIEW_URL}`,
+        url: `${PLANS_LIST_VIEW_URL}`,
+      },
+      allowedPlanStatus: 'draft',
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlansList {...props}></ConnectedPlansList>
+        </Router>
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Draft Missions + New MissionNameDateActionsNo Data"`
+    );
+  });
+  it('renders Complete Missions Title', async () => {
+    fetch.mockResponse(JSON.stringify([]));
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${PLANS_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${PLANS_LIST_VIEW_URL}`,
+        url: `${PLANS_LIST_VIEW_URL}`,
+      },
+      allowedPlanStatus: 'complete',
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlansList {...props}></ConnectedPlansList>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Complete Missions + New MissionNameDateActionsNo Data"`
+    );
+  });
+
+  it('renders Retired Missions Title', async () => {
+    fetch.mockResponse(JSON.stringify([]));
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${PLANS_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${PLANS_LIST_VIEW_URL}`,
+        url: `${PLANS_LIST_VIEW_URL}`,
+      },
+      allowedPlanStatus: 'retired',
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlansList {...props}></ConnectedPlansList>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Retired Missions + New MissionNameDateActionsNo Data"`
+    );
+  });
 
   it('sort works', async () => {
     const plan3 = { ...eusmPlans[0], title: 'Simple Plan', identifier: '300' };
