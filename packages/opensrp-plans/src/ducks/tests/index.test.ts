@@ -3,7 +3,7 @@ import { keyBy } from 'lodash';
 import { FlushThunks } from 'redux-testkit';
 import { PlanDefinition, InterventionType } from '@opensrp/plan-form-core';
 import { store } from '@opensrp/store';
-import { getPlanIds, getTitle } from '../index';
+import { getPlanDefinitionsArrayByStatus, getPlanIds, getStatus, getTitle } from '../index';
 import reducer, {
   addPlanDefinition,
   fetchPlanDefinitions,
@@ -65,6 +65,9 @@ describe('reducers/opensrp/PlanDefinition', () => {
     const titleFilter = {
       title: 'mosh',
     };
+    const statusFilter = {
+      status: 'active',
+    };
     const idsFilter = {
       planIds: ['0e85c238-39c1-4cea-a926-3d89f0c98429'],
     };
@@ -77,12 +80,17 @@ describe('reducers/opensrp/PlanDefinition', () => {
     expect(getPlanIds(store.getState(), idsFilter)).toEqual([
       '0e85c238-39c1-4cea-a926-3d89f0c98429',
     ]);
+    expect(getStatus(store.getState(), statusFilter)).toEqual('active');
     expect(getPlanDefinitionsArrayByTitle()(store.getState(), titleFilter)).toEqual([
       fixtures.plans[3],
     ]);
     expect(getPlanDefinitionsArrayByTitle()(store.getState(), titleUpperFilter)).toEqual([
       fixtures.plans[3],
     ]);
+    expect(getPlanDefinitionsArrayByStatus()(store.getState(), { status: 'retired' })).toEqual([
+      fixtures.plans[5],
+    ]);
+    expect(getPlanDefinitionsArrayByStatus()(store.getState(), { status: 'complete' })).toEqual([]);
     expect(PlanDefinitionsArraySelector(store.getState(), { title: 'Mosh' })).toEqual([
       fixtures.plans[3],
     ]);
