@@ -2577,10 +2577,10 @@
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
   integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
 
-"@opensrp/plan-form@0.0.1", "@opensrp/plan-form@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@opensrp/plan-form/-/plan-form-0.0.1.tgz#dbe2ebf52edefc13c670e13dd6dcaf1873df0856"
-  integrity sha512-7as7OqTu32CZppai57W0R2zk8F7aiausPifMHodQHXVDQT/EgFYBqwLdP+6De7hvC2ewOfmeCYMp8oMMvafl4w==
+"@opensrp/plan-form@0.0.2-1":
+  version "0.0.2-1"
+  resolved "https://registry.yarnpkg.com/@opensrp/plan-form/-/plan-form-0.0.2-1.tgz#b25f8973552a64391aa0100a12511944146e0e7d"
+  integrity sha512-hwx8KIOXax4Xo3D340hRdueSjk7eMmdsygac/z+2gcgoVPdP2TkBgxer9MTWKUgUI0l651PaNBnqyur60t/lHw==
   dependencies:
     "@ant-design/icons" "^4.3.0"
     "@onaio/utils" "^0.0.1"
