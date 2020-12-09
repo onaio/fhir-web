@@ -8,7 +8,6 @@ import { eusmPlans } from '../../../ducks/tests/fixtures';
 import { PLANS_LIST_VIEW_URL } from '../../../constants';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
-import { PlanForm } from '@opensrp/plan-form';
 import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks';
 
@@ -69,12 +68,10 @@ describe('CreateEditProduct Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual('Edit > Scale');
+    expect(helmet.title).toEqual('Edit Plan');
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
-
-    expect(wrapper.find(PlanForm).props()).toMatchSnapshot('edit form props');
   });
 
   it('shows broken page', async () => {
@@ -105,7 +102,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // show loading screen
-    expect(wrapper.text()).toMatchSnapshot('full page text');
+    expect(wrapper.text()).toMatchSnapshot('show loader');
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -121,15 +118,15 @@ describe('CreateEditProduct Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
+        pathname: `${PLANS_LIST_VIEW_URL}/${'missingPlan'}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
-        params: { planId: mission1.identifier },
+        params: { planId: 'missingPlan' },
         path: `${PLANS_LIST_VIEW_URL}/:planId`,
-        url: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
+        url: `${PLANS_LIST_VIEW_URL}/${'missingPlan'}`,
       },
     };
 
@@ -157,5 +154,51 @@ describe('CreateEditProduct Page', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
     );
+  });
+
+  it('wrong route congiguration', async () => {
+    // such that we do not have a plan Id
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${PLANS_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${PLANS_LIST_VIEW_URL}`,
+        url: `${PLANS_LIST_VIEW_URL}`,
+      },
+    };
+
+    fetch.mockResponse(JSON.stringify([mission1]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedEditPlanView {...props}></ConnectedEditPlanView>
+        </Router>
+      </Provider>
+    );
+
+    // should be in loading screen
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Loading...Fetching planPlease wait, as we fetch the plan."`
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    /** should still be loading page */
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Loading...Fetching planPlease wait, as we fetch the plan."`
+    );
+
+    expect(fetch).not.toHaveBeenCalled();
   });
 });

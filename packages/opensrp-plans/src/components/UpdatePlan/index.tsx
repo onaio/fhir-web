@@ -92,9 +92,9 @@ const EditPlanView = (props: EditViewTypes) => {
     return <Resource404 />;
   }
 
-  const initialValues = getPlanFormValues(plan as PlanDefinition);
+  const initialValues = getPlanFormValues(plan);
   const productFormProps = {
-    hiddenFields: ['interventionType', 'activities', 'status'] as PlanFormFieldsKeys[],
+    hiddenFields: ['interventionType', 'activities'] as PlanFormFieldsKeys[],
     baseURL,
     initialValues,
     ...propsForUpdatingPlans(plan.status),
