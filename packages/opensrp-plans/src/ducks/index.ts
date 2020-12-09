@@ -4,7 +4,7 @@ import { get, keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
-import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
+import { InterventionType, PlanDefinition, start } from '@opensrp/plan-form-core';
 import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
 
 /** the reducer name */
@@ -249,6 +249,13 @@ export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
   createSelector([planDefinitionsArrayBaseSelector(planKey), getTitle], (plans, title) =>
     title ? plans.filter((plan) => plan.title.toLowerCase().includes(title.toLowerCase())) : plans
   );
+/** Filter plans by status
+ *
+ * @param {PlanDefinition[]} plans -plan definitions array
+ * @param {string} status - plan status
+ */
+export const filterPlansByStatus = (plans: PlanDefinition[], status: string | undefined) =>
+  status ? plans.filter((plan) => plan.status === status) : plans;
 
 /** Gets an array of Plan objects filtered by plan title
  *
@@ -256,9 +263,7 @@ export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
  * @returns {Function} returns createSelector method
  */
 export const getPlanDefinitionsArrayByStatus = (planKey?: string) =>
-  createSelector([planDefinitionsArrayBaseSelector(planKey), getStatus], (plans, status) =>
-    status ? plans.filter((plan) => plan.status === status) : plans
-  );
+  createSelector([planDefinitionsArrayBaseSelector(planKey), getStatus], filterPlansByStatus);
 
 /** get plans for the given planIds
  *

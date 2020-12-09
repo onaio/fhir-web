@@ -3,7 +3,13 @@ import { keyBy } from 'lodash';
 import { FlushThunks } from 'redux-testkit';
 import { PlanDefinition, InterventionType } from '@opensrp/plan-form-core';
 import { store } from '@opensrp/store';
-import { getPlanDefinitionsArrayByStatus, getPlanIds, getStatus, getTitle } from '../index';
+import {
+  filterPlansByStatus,
+  getPlanDefinitionsArrayByStatus,
+  getPlanIds,
+  getStatus,
+  getTitle,
+} from '../index';
 import reducer, {
   addPlanDefinition,
   fetchPlanDefinitions,
@@ -87,6 +93,10 @@ describe('reducers/opensrp/PlanDefinition', () => {
     expect(getPlanDefinitionsArrayByTitle()(store.getState(), titleUpperFilter)).toEqual([
       fixtures.plans[3],
     ]);
+    expect(filterPlansByStatus(fixtures.eusmPlans as PlanDefinition[], 'active')).toEqual(
+      fixtures.eusmPlans
+    );
+    expect(filterPlansByStatus(fixtures.eusmPlans as PlanDefinition[], 'retired')).toEqual([]);
     expect(getPlanDefinitionsArrayByStatus()(store.getState(), { status: 'retired' })).toEqual([
       fixtures.plans[5],
     ]);
