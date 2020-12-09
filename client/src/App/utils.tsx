@@ -1,4 +1,4 @@
-import { interventionType, status, activities } from '@opensrp/plan-form-core';
+import { interventionType, status, activities, PlanStatus } from '@opensrp/plan-form-core';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 
 import {
@@ -45,4 +45,16 @@ export const planCreateProps = {
 export const planEditProps = {
   ...planCreateEditProps,
   hiddenFields: [interventionType, activities],
+}
+export const activePlansListStatusProp = {
+  allowedPlanStatus: PlanStatus.ACTIVE,
+};
+export const draftPlansListStatusProp = {
+  allowedPlanStatus: PlanStatus.DRAFT,
+};
+export const completedPlansListStatusProp = {
+  allowedPlanStatus: PlanStatus.COMPLETE,
+};
+export const trashPlansListStatusProp = {
+  allowedPlanStatus: PlanStatus.RETIRED,
 };

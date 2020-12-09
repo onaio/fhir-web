@@ -44,6 +44,18 @@ import {
   ConnectedEditProductView,
 } from '@opensrp/product-catalogue';
 import {
+  ConnectedPlansList,
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  TRASH_PLANS_LIST_VIEW_URL,
+  PLANS_LIST_VIEW_URL,
+  ConnectedEditPlanView,
+  CreatePlanView,
+  PLANS_CREATE_VIEW_URL,
+  PLANS_EDIT_VIEW_URL,
+} from '@opensrp/plans';
+import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
@@ -57,15 +69,11 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps, plansListProps, planEditProps, planCreateProps } from './utils';
-import {
-  ConnectedPlansList,
-  PLANS_LIST_VIEW_URL,
-  ConnectedEditPlanView,
-  CreatePlanView,
-  PLANS_CREATE_VIEW_URL,
-  PLANS_EDIT_VIEW_URL,
-} from '@opensrp/plans';
+import { productCatalogueProps, plansListProps, planEditProps, planCreateProps,
+  activePlansListStatusProp,
+  draftPlansListStatusProp,
+  completedPlansListStatusProp,
+  trashPlansListStatusProp, } from './utils';
 import '@opensrp/plan-form/dist/index.css';
 
 const { Content } = Layout;
@@ -175,8 +183,36 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={PLANS_LIST_VIEW_URL}
+              path={ACTIVE_PLANS_LIST_VIEW_URL}
               {...plansListProps}
+              {...activePlansListStatusProp}
+              component={ConnectedPlansList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={DRAFT_PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              {...draftPlansListStatusProp}
+              component={ConnectedPlansList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={COMPLETE_PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              {...completedPlansListStatusProp}
+              component={ConnectedPlansList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={TRASH_PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              {...trashPlansListStatusProp}
               component={ConnectedPlansList}
             />
             <PrivateComponent
