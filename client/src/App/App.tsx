@@ -66,6 +66,7 @@ import {
   PLANS_CREATE_VIEW_URL,
   PLANS_EDIT_VIEW_URL,
 } from '@opensrp/plans';
+import '@opensrp/plan-form/dist/index.css';
 
 const { Content } = Layout;
 
@@ -214,7 +215,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={`${PLANS_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
+              path={`${PLANS_EDIT_VIEW_URL}/:planId`}
               {...planCreationProps}
               component={ConnectedEditPlanView}
             />
