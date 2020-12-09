@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Antd/FileList/TableActions renders correctly 1`] = `
+<TableActions
+  accessToken="hunter2"
+  file={
+    Object {
+      "createdAt": "Jun 19, 2020, 12:31:37 PM",
+      "form_relation": "",
+      "id": "52",
+      "identifier": "test-form-1.json",
+      "isDraft": false,
+      "isJsonValidator": false,
+      "jursdiction": "",
+      "label": "test form",
+      "module": "",
+      "version": "1.0.26",
+    }
+  }
+  isJsonValidator={false}
+  opensrpBaseURL="https://test-example.com/rest"
+  uploadFileURL="/upload"
+>
+  <Link
+    key="actions"
+    to="/upload/52"
+  >
+    <LinkAnchor
+      href="/upload/52"
+      navigate={[Function]}
+    >
+      <a
+        href="/upload/52"
+        onClick={[Function]}
+      >
+        Edit
+      </a>
+    </LinkAnchor>
+  </Link>
+  <Divider
+    type="vertical"
+  >
+    <div
+      className="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+  </Divider>
+  <Button
+    block={false}
+    ghost={false}
+    htmlType="button"
+    loading={false}
+    onClick={[Function]}
+    type="link"
+  >
+    <button
+      className="ant-btn ant-btn-link"
+      onClick={[Function]}
+      type="button"
+    >
+      <LoadingIcon
+        existIcon={false}
+        loading={false}
+        prefixCls="ant-btn"
+      >
+        <CSSMotion
+          motionName="ant-btn-loading-icon-motion"
+          onAppearActive={[Function]}
+          onAppearStart={[Function]}
+          onEnterActive={[Function]}
+          onEnterStart={[Function]}
+          onLeaveActive={[Function]}
+          onLeaveStart={[Function]}
+          removeOnLeave={true}
+          visible={false}
+        >
+          <DomWrapper />
+        </CSSMotion>
+      </LoadingIcon>
+      <span
+        key=".0"
+      >
+        Download
+      </span>
+    </button>
+  </Button>
+</TableActions>
+`;

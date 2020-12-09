@@ -36,6 +36,7 @@ const props = {
   releasesUrl: '/manifest/releases',
   uploadTypeUrl: 'file-upload',
   customAlert: jest.fn(),
+  accessToken: 'hunter2',
 };
 
 const actualDebounce = _.debounce;

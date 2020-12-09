@@ -27,6 +27,7 @@ describe('utils/formatDate', () => {
 describe('utils/downloadManifestFile', () => {
   const baseURL = 'https://test-example.com/rest';
   const downloadEndPoint = 'form-download';
+  const accessToken = 'hunter2';
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -35,6 +36,7 @@ describe('utils/downloadManifestFile', () => {
   it('downloads manifest file correctly', async () => {
     fetch.once(JSON.stringify(downloadFile));
     await downloadManifestFile(
+      accessToken,
       baseURL,
       downloadEndPoint,
       fixManifestFiles[0],
@@ -60,6 +62,7 @@ describe('utils/downloadManifestFile', () => {
   it('it downloads correctly if is not json validator', async () => {
     fetch.once(JSON.stringify(downloadFile));
     await downloadManifestFile(
+      accessToken,
       baseURL,
       downloadEndPoint,
       fixManifestFiles[0],

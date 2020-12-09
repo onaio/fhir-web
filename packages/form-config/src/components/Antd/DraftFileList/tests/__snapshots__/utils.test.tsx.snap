@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Antd/DraftFileList/utils/getTableColumns builds table columns correctly: table columns 1`] = `
+Array [
+  Object {
+    "dataIndex": "identifier",
+    "ellipsis": true,
+    "key": "identifier",
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "Identifier",
+  },
+  Object {
+    "dataIndex": "label",
+    "ellipsis": true,
+    "key": "label",
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "File Name",
+  },
+  Object {
+    "dataIndex": "version",
+    "ellipsis": true,
+    "key": "version",
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "File Version",
+  },
+  Object {
+    "dataIndex": "createdAt",
+    "ellipsis": true,
+    "key": "createdAt",
+    "render": [Function],
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "Created At",
+  },
+  Object {
+    "dataIndex": "module",
+    "ellipsis": true,
+    "key": "module",
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "Module",
+  },
+  Object {
+    "key": "action",
+    "render": [Function],
+    "title": "Action",
+  },
+]
+`;
