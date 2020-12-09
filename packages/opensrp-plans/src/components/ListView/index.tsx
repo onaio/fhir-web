@@ -5,7 +5,7 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import { fetchPlanDefinitions, getPlanDefinitionsArrayByStatus } from '../../ducks';
 import { connect } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
-import { PlansLoading, columns } from './utils';
+import { PlansLoading, columns, pageTitleBuilder } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -19,8 +19,8 @@ import {
   TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { PlanDefinition } from '@opensrp/plan-form-core';
-import { MISSIONS, NEW_MISSION } from '../../lang';
+import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
+import { NEW_MISSION } from '../../lang';
 import { descendingOrderSort } from '../../helpers/utils';
 
 /** make sure plans reducer is registered */
@@ -32,7 +32,7 @@ interface Props<T = PlanDefinition> extends CommonProps {
   columns: ColumnsType<T>;
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
-  allowedPlanStatus: string | undefined;
+  allowedPlanStatus: string;
 }
 
 const defaultProps = {
@@ -41,7 +41,7 @@ const defaultProps = {
   columns: columns,
   fetchPlansCreator: fetchPlanDefinitions,
   service: OpenSRPService,
-  allowedPlanStatus: undefined,
+  allowedPlanStatus: PlanStatus.ACTIVE,
 };
 
 export type PlansListTypes = Props<PlanDefinition> & RouteComponentProps<RouteParams>;
@@ -68,9 +68,7 @@ const PlansList = (props: PlansListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = allowedPlanStatus
-    ? `${allowedPlanStatus.charAt(0).toUpperCase()}${allowedPlanStatus.slice(1)} ${MISSIONS}`
-    : MISSIONS;
+  const pageTitle = pageTitleBuilder(allowedPlanStatus);
   // add a key prop to the array data to be consumed by the table
   const dataSource = data.map((singleObject, key) => {
     const planWithKey = {
