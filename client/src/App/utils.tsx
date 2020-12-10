@@ -1,3 +1,6 @@
+import { interventionType, status, activities } from '@opensrp/plan-form-core';
+import { PlanFormFieldsKeys } from '@opensrp/plan-form';
+
 import {
   ACTION_UUID_NAMESPACE,
   DATE_FORMAT,
@@ -18,7 +21,7 @@ export const plansListProps = {
   baseURL: OPENSRP_API_BASE_URL,
 };
 
-export const planCreationProps = {
+export const planCreateEditProps = {
   baseURL: OPENSRP_API_BASE_URL,
   envConfigs: {
     dateFormat: DATE_FORMAT,
@@ -30,4 +33,16 @@ export const planCreationProps = {
     defaultActivityDurationDays: DEFAULT_ACTIVITY_DURATION_DAYS,
     taskGenerationStatus: TASK_GENERATION_STATUS,
   },
+};
+
+/** props for create plan page */
+export const planCreateProps = {
+  ...planCreateEditProps,
+  hiddenFields: [interventionType, status, activities] as PlanFormFieldsKeys[],
+};
+
+/** props for plan edit page */
+export const planEditProps = {
+  ...planCreateEditProps,
+  hiddenFields: [interventionType, activities],
 };

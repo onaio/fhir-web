@@ -57,7 +57,7 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps, plansListProps, planCreationProps } from './utils';
+import { productCatalogueProps, plansListProps, planEditProps, planCreateProps } from './utils';
 import {
   ConnectedPlansList,
   PLANS_LIST_VIEW_URL,
@@ -208,7 +208,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={PLANS_CREATE_VIEW_URL}
-              {...planCreationProps}
+              {...planCreateProps}
               component={CreatePlanView}
             />
             <PrivateComponent
@@ -216,7 +216,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${PLANS_EDIT_VIEW_URL}/:planId`}
-              {...planCreationProps}
+              {...planEditProps}
               component={ConnectedEditPlanView}
             />
             <PrivateComponent

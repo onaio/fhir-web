@@ -1,15 +1,15 @@
 /** component renders view where users can create plans
  */
 import React from 'react';
-import {
-  defaultInitialValues,
-  PlanForm,
-  PlanFormFieldsKeys,
-  processActivitiesDates,
-} from '@opensrp/plan-form';
+import { defaultInitialValues, PlanForm, processActivitiesDates } from '@opensrp/plan-form';
 import { Layout, PageHeader } from 'antd';
 import Helmet from 'react-helmet';
-import { CommonProps, defaultCommonProps } from '../../helpers/common';
+import {
+  CommonProps,
+  defaultCommonProps,
+  defaultPropsForPlanForm,
+  PropsForPlanForm,
+} from '../../helpers/common';
 import { CREATE_PLAN } from '../../lang';
 import { PLANS_LIST_VIEW_URL } from '../../constants';
 import {
@@ -20,20 +20,21 @@ import {
   planActivities,
 } from '@opensrp/plan-form-core';
 
-type CreatePlanViewProps = CommonProps;
+type CreatePlanViewProps = CommonProps & PropsForPlanForm;
 
 const defaultProps = {
   ...defaultCommonProps,
+  ...defaultPropsForPlanForm,
 };
 
 /**
- * CreateProductView component
+ * CreatePlanView component
  *
  *  props - component props
  */
 
 const CreatePlanView = (props: CreatePlanViewProps) => {
-  const { envConfigs, baseURL } = props;
+  const { envConfigs, baseURL, hiddenFields } = props;
   const pageTitle = CREATE_PLAN;
 
   const configs = {
@@ -48,7 +49,7 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
   };
 
   const planFormProps = {
-    hiddenFields: ['interventionType', 'activities', 'status'] as PlanFormFieldsKeys[],
+    hiddenFields,
     initialValues,
     baseURL: baseURL,
     redirectAfterAction: PLANS_LIST_VIEW_URL,

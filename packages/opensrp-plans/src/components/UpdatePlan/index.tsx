@@ -15,7 +15,12 @@ import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import Helmet from 'react-helmet';
 import { BrokenPage, useHandleBrokenPage, Resource404 } from '@opensrp/react-utils';
-import { CommonProps, defaultCommonProps } from '../../helpers/common';
+import {
+  CommonProps,
+  defaultCommonProps,
+  defaultPropsForPlanForm,
+  PropsForPlanForm,
+} from '../../helpers/common';
 import {
   defaultEnvConfig,
   getFormActivities,
@@ -23,20 +28,15 @@ import {
   PlanDefinition,
 } from '@opensrp/plan-form-core';
 import { PlanLoading } from '../../helpers/utils';
-import {
-  PlanForm,
-  getPlanFormValues,
-  propsForUpdatingPlans,
-  PlanFormFieldsKeys,
-} from '@opensrp/plan-form';
+import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp/plan-form';
 import { EDIT_PLAN } from '../../lang';
 import { PLANS_LIST_VIEW_URL } from '../../constants';
 
 /** register catalogue reducer */
 reducerRegistry.register(planReducerName, planReducer);
 
-/** props for createEditProduct view */
-export interface EditViewProps extends CommonProps {
+/** props for EditPlan view */
+export interface EditViewProps extends CommonProps, PropsForPlanForm {
   plan: PlanDefinition | null;
   fetchPlan: typeof fetchPlanDefinitions;
   serviceClass: typeof OpenSRPService;
@@ -44,6 +44,7 @@ export interface EditViewProps extends CommonProps {
 
 const defaultProps = {
   ...defaultCommonProps,
+  ...defaultPropsForPlanForm,
   plan: null,
   fetchPlan: fetchPlanDefinitions,
   serviceClass: OpenSRPService,
@@ -53,13 +54,13 @@ const defaultProps = {
 export type EditViewTypes = EditViewProps & RouteComponentProps<RouteParams>;
 
 /**
- * CreateEditProductView component
+ * Edit plan view component
  *
  *  props - component props
  */
 
 const EditPlanView = (props: EditViewTypes) => {
-  const { plan, fetchPlan, serviceClass, baseURL, envConfigs } = props;
+  const { plan, fetchPlan, serviceClass, baseURL, envConfigs, hiddenFields } = props;
   const { planId } = props.match.params;
   const [loading, setLoading] = useState<boolean>(!plan);
 
@@ -94,7 +95,7 @@ const EditPlanView = (props: EditViewTypes) => {
 
   const initialValues = getPlanFormValues(plan);
   const productFormProps = {
-    hiddenFields: ['interventionType', 'activities'] as PlanFormFieldsKeys[],
+    hiddenFields,
     baseURL,
     initialValues,
     ...propsForUpdatingPlans(plan.status),
