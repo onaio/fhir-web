@@ -15,6 +15,7 @@ import { Rule } from 'rc-field-form/lib/interface';
 import moment, { Moment } from 'moment';
 import { PlanFormFields } from './types';
 import { Dictionary } from '@onaio/utils';
+import { cloneDeep } from 'lodash';
 
 export const validationRules = {
   activities: {
@@ -68,14 +69,12 @@ export const validationRules = {
  * @returns {PlanActivityFormFields[]} -
  */
 export const processActivitiesDates = (planActivities: PlanActivityFormFields[]) => {
-  const withProcessedDates: PlanActivityFormFields[] = planActivities.map((activity) => {
-    return {
-      ...activity,
-      timingPeriodEnd: moment(activity.timingPeriodEnd),
-      timingPeriodStart: moment(activity.timingPeriodStart),
-    };
+  const values = cloneDeep(planActivities);
+  planActivities.forEach((activity, ind) => {
+    values[ind].timingPeriodStart = moment(activity.timingPeriodStart);
+    values[ind].timingPeriodEnd = moment(activity.timingPeriodEnd);
   });
-  return withProcessedDates;
+  return values;
 };
 
 /** Takes our form values and transforms that to a form value object that plan-form-core can parse

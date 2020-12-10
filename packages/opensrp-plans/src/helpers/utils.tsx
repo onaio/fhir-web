@@ -1,5 +1,7 @@
 import { Dictionary } from '@onaio/utils';
 import { InterventionType, PlanDefinition, UseContext } from '@opensrp/plan-form-core';
+import { Alert, Spin } from 'antd';
+import React from 'react';
 
 /**
  * helper to retrieve the plan Type from a plan definition object
@@ -45,4 +47,14 @@ export const isPlanDefinitionOfType = (
   const allowedTypes = Array.isArray(interventionType) ? interventionType : [interventionType];
   const plansType = getPlanType(plan);
   return allowedTypes.includes(plansType as InterventionType);
+};
+
+/** util component shown when there is a pending promise */
+
+export const PlanLoading = () => {
+  return (
+    <Spin tip="Loading...">
+      <Alert message="Fetching plan" description="Please wait, as we fetch the plan." type="info" />
+    </Spin>
+  );
 };
