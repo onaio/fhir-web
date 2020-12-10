@@ -21,7 +21,6 @@ import {
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { NEW_MISSION } from '../../lang';
-import { descendingOrderSort } from '../../helpers/utils';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(PlansReducerName, PlansReducer);
@@ -111,12 +110,13 @@ export const mapStateToProps = (
   state: Partial<Store>,
   ownProps: PlansListTypes
 ): MapStateToProps => {
-  let data = getPlanDefinitionsArrayByStatus()(state, {
-    status: ownProps.allowedPlanStatus,
-  });
-  if (data.length) {
-    data = descendingOrderSort(data, SORT_BY_EFFECTIVE_PERIOD_START_FIELD);
-  }
+  const data = getPlanDefinitionsArrayByStatus()(
+    state,
+    {
+      status: ownProps.allowedPlanStatus,
+    },
+    { sortField: SORT_BY_EFFECTIVE_PERIOD_START_FIELD }
+  );
   return {
     data,
   };

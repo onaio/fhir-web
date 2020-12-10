@@ -196,6 +196,10 @@ export interface PlanDefinitionFilters {
   status?: string;
 }
 
+export interface PlanDefinitionGetters extends PlanDefinitionFilters {
+  sortField?: string;
+}
+
 /** planDefinitionsByIdBaseSelector selects store slice object with of all plans
  *
  * @param {string} planKey get plans by id
@@ -232,6 +236,14 @@ export const getTitle = (_: Partial<Store>, props: PlanDefinitionFilters) => pro
  */
 export const getStatus = (_: Partial<Store>, props: PlanDefinitionFilters) => props.status;
 
+/** sortField Getter
+ *
+ * @param {object} _ - the redux store
+ * @param {object} props - the plan object
+ * @returns {string} return sort field
+ */
+export const getSortField = (_: Partial<Store>, props: PlanDefinitionGetters) => props.sortField;
+
 /** Gets planIds from PlanFilters
  *
  * @param {object} _ - the redux store
@@ -255,8 +267,21 @@ export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
  * @param {string} status - plan status
  * @returns {PlanDefinition[]} - plan definitions array
  */
-export const filterPlansByStatus = (plans: PlanDefinition[], status: string | undefined) =>
-  status ? plans.filter((plan) => plan.status === status) : plans;
+export const filterPlansByStatus = (
+  plans: PlanDefinition[],
+  status?: string | undefined,
+  sortField?: string
+) => {
+  if (sortField) {
+    return status
+      ? descendingOrderSort(
+          plans.filter((plan) => plan.status === status),
+          sortField
+        )
+      : descendingOrderSort(plans, sortField);
+  }
+  return status ? plans.filter((plan) => plan.status === status) : plans;
+};
 
 /** Gets an array of Plan objects filtered by plan title
  *
@@ -264,7 +289,10 @@ export const filterPlansByStatus = (plans: PlanDefinition[], status: string | un
  * @returns {Function} returns createSelector method
  */
 export const getPlanDefinitionsArrayByStatus = (planKey?: string) =>
-  createSelector([planDefinitionsArrayBaseSelector(planKey), getStatus], filterPlansByStatus);
+  createSelector(
+    [planDefinitionsArrayBaseSelector(planKey), getStatus, getSortField],
+    filterPlansByStatus
+  );
 
 /** get plans for the given planIds
  *
