@@ -23,6 +23,7 @@ import { Helmet } from 'react-helmet';
 import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
+import { PRODUCT_CATALOGUE } from '../../lang';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
@@ -72,7 +73,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = `Product Catalogue (${data.length})`;
+  const pageTitle = `${PRODUCT_CATALOGUE} (${data.length})`;
   // add a key prop to the array data to be consumed by the table
   const dataSource = data.map((singleObject) => {
     const prodWithKey = {
@@ -93,7 +94,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
           <div className="main-content__header">
             <Link to={CATALOGUE_CREATE_VIEW_URL}>
               <Button type="primary" size="large">
-                {' + Product Catalogue'}
+                {` + ${PRODUCT_CATALOGUE}`}
               </Button>
             </Link>
           </div>

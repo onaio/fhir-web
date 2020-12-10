@@ -74,3 +74,9 @@ Below is a list of currently supported environment variables:
 - Enables the card support module
 - **Optional**(_string_)
 - default: `"false"
+
+13. **REACT_APP_ENABLE_PLANS**
+
+- Enables the plans module
+- **Optional**(_string_)
+- default: `"false"`

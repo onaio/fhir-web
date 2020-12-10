@@ -38,7 +38,6 @@ export const KEYCLOAK_LOGOUT_URL =
 export const OPENSRP_API_BASE_URL =
   process.env.REACT_APP_OPENSRP_API_BASE_URL ||
   'https://opensrp-stage.smartregister.org/opensrp/rest/';
-export type OPENSRP_API_BASE_URL = typeof OPENSRP_API_BASE_URL;
 
 export const KEYCLOAK_API_BASE_URL =
   process.env.REACT_APP_KEYCLOAK_API_BASE_URL ||
@@ -62,3 +61,8 @@ export const ENABLE_TEAMS_MODULE = process.env.REACT_APP_ENABLE_TEAMS_MODULE ===
 
 /** Activate card support menu */
 export const ENABLE_CARD_SUPPORT = process.env.REACT_APP_ENABLE_CARD_SUPPORT === 'true';
+/** Activate the plans menu */
+export const ENABLE_PLANS = process.env.REACT_APP_ENABLE_PLANS === 'true';
+
+/** Activate the plans menu */
+export const ENABLE_LOCATIONS = process.env.REACT_APP_ENABLE_LOCATIONS === 'true';

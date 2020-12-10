@@ -166,7 +166,7 @@ export class KeycloakAPIService {
     const response = await customFetch(url, payload);
     if (response) {
       if (response.ok || response.status === 201) {
-        return {};
+        return response;
       }
 
       const defaultMessage = `KeycloakAPIService create on ${this.endpoint} failed, HTTP status ${response.status}`;

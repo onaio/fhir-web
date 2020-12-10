@@ -7,15 +7,15 @@ import { OpenSRPService } from '@opensrp/server-service';
 import {
   LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
-  LOCATION_TAG_ALL,
+  LOCATION_UNIT_GROUP_ALL,
   API_BASE_URL,
 } from '../../constants';
 import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 
-import { notification, Row, Col } from 'antd';
-import { LocationTag } from '../../ducks/location-tags';
+import { Row, Col } from 'antd';
+import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
   getAllHierarchiesArray,
@@ -23,7 +23,7 @@ import locationHierarchyReducer, {
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { generateJurisdictionTree } from '../LocationTree/utils';
-
+import { sendErrorNotification } from '@opensrp/notifications';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 import './LocationUnitAddEdit.css';
@@ -35,7 +35,7 @@ const { getFilterParams } = OpenSRPService;
 export const LocationUnitAddEdit: React.FC = () => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const [locationtag, setLocationtag] = useState<LocationTag[]>([]);
+  const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
@@ -58,26 +58,26 @@ export const LocationUnitAddEdit: React.FC = () => {
             parentId: response.properties.parentId,
             status: response.properties.status,
             externalId: response.properties.externalId,
-            locationTags: response.locationTags?.map((e) => e.id),
+            locationTags: response.locationTags?.map((loc) => loc.id),
             geometry: JSON.stringify(response.geometry),
             type: response.type,
           });
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, params.id]);
 
   useEffect(() => {
-    if (!locationtag.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+    if (!locationUnitGroup.length) {
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GROUP_ALL);
       serve
         .list()
-        .then((response: LocationTag[]) => {
-          setLocationtag(response);
+        .then((response: LocationUnitGroup[]) => {
+          setLocationUnitGroup(response);
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
-  }, [accessToken, locationtag.length]);
+  }, [accessToken, locationUnitGroup.length]);
 
   useEffect(() => {
     if (!Treedata.length) {
@@ -104,15 +104,15 @@ export const LocationUnitAddEdit: React.FC = () => {
                   // if (hierarchy.model && hierarchy.model.children)
                   dispatch(fetchAllHierarchies(hierarchy.model));
                 })
-                .catch((e) => notification.error({ message: `${e}`, description: '' }));
+                .catch(() => sendErrorNotification('An error occurred'));
             });
           }
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, Treedata.length, dispatch]);
 
-  if (!locationtag.length || !Treedata.length || (params.id && !LocationUnitDetail))
+  if (!locationUnitGroup.length || !Treedata.length || (params.id && !LocationUnitDetail))
     return <Ripple />;
 
   return (
@@ -127,7 +127,7 @@ export const LocationUnitAddEdit: React.FC = () => {
         <Form
           treedata={Treedata}
           id={params.id}
-          locationtag={locationtag}
+          locationUnitGroup={locationUnitGroup}
           initialValue={LocationUnitDetail}
         />
       </Col>

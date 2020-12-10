@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { LocationTag } from '../../../ducks/location-tags';
+import { HierarchyNode, ParsedHierarchyNode } from '../../../ducks/types';
+import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnitStatus } from '../../../ducks/location-units';
-import { HierarchySingleNode, ParsedHierarchySingleNode } from '../../LocationTree/utils';
 import { FormField } from '../Form';
 
-export const locationtag: LocationTag[] = [
+export const locationUnitgroup: LocationUnitGroup[] = [
   { id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' },
   { id: 4, active: false, name: 'Option1', description: 'asdsad' },
   { id: 3, active: false, name: 'Sample 3', description: 'Sample description 3' },
@@ -164,7 +164,7 @@ export const sampleHierarchiesList = [
 
 export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
-export const LocationTagValue: FormField = {
+export const LocationUnitGroupValue: FormField = {
   name: 'Tunisia',
   parentId: '',
   status: LocationUnitStatus.ACTIVE,
@@ -172,7 +172,7 @@ export const LocationTagValue: FormField = {
   type: 'Feature',
 };
 
-export const treedata: HierarchySingleNode<ParsedHierarchySingleNode[]>[] = [
+export const treedata: HierarchyNode<ParsedHierarchyNode[]>[] = [
   {
     id: '35bf4771-a404-4220-bd9e-e2916decc116',
     label: 'Nairobi',

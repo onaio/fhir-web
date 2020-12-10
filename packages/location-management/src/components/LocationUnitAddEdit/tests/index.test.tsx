@@ -7,12 +7,12 @@ import { MemoryRouter, Route, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 
-import { id, locationtag, sampleHierarchiesList, sampleLocationUnit } from './fixtures';
+import { id, locationUnitgroup, sampleHierarchiesList, sampleLocationUnit } from './fixtures';
 import LocationUnitAddEdit from '..';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
 
-describe('containers/pages/locations/LocationUnitAddEdit', () => {
+describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>
@@ -48,7 +48,7 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
   it('works correctly with store', async () => {
     fetch
       .once(JSON.stringify(sampleLocationUnit))
-      .once(JSON.stringify(locationtag))
+      .once(JSON.stringify(locationUnitgroup))
       .once(JSON.stringify(sampleHierarchiesList))
       .once(JSON.stringify(sampleHierarchy));
     const wrapper = mount(
