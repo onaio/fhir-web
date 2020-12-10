@@ -103,9 +103,9 @@ describe('reducers/opensrp/PlanDefinition', () => {
       fixtures.eusmPlans
     );
     // filters  plans if filter is provided
-    expect(FilterPlanDefinitionsByInterventionType(fixtures.plans as PlanDefinition[])).toEqual(
-      fixtures.plans
-    );
+    expect(
+      FilterPlanDefinitionsByInterventionType(fixtures.plans as PlanDefinition[], 'FI')
+    ).toHaveLength(3);
     expect(filterPlansByStatus(fixtures.eusmPlans as PlanDefinition[], 'retired')).toEqual([]);
     expect(getPlanDefinitionsArrayByStatus()(store.getState(), { status: 'retired' })).toEqual([
       fixtures.plans[5],
