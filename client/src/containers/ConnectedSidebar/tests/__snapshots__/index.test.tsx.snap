@@ -44,7 +44,7 @@ Object {
           <MenuItem>
             <Link
               className="admin-link"
-              to="/product-catalogue"
+              to="/product-catalogue/list"
             >
               Product Catalogue
             </Link>

@@ -68,3 +68,9 @@ Below is a list of currently supported environment variables:
   - Enables the product-catalogue module
   - **Optional**(_string_)
   - default: `"false"`
+
+- **REACT_APP_ENABLE_PLANS**
+
+  - Enables the plans module
+  - **Optional**(_string_)
+  - default: `"false"`
