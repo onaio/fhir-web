@@ -9,6 +9,7 @@ import {
   getPlanIds,
   getStatus,
   getTitle,
+  FilterPlanDefinitionsByInterventionType,
 } from '../index';
 import reducer, {
   addPlanDefinition,
@@ -96,6 +97,14 @@ describe('reducers/opensrp/PlanDefinition', () => {
     // filters plans by status
     expect(filterPlansByStatus(fixtures.eusmPlans as PlanDefinition[], 'active')).toEqual(
       fixtures.eusmPlans
+    );
+    // returns all plans if filter isn't provided
+    expect(FilterPlanDefinitionsByInterventionType(fixtures.eusmPlans as PlanDefinition[])).toEqual(
+      fixtures.eusmPlans
+    );
+    // filters  plans if filter is provided
+    expect(FilterPlanDefinitionsByInterventionType(fixtures.plans as PlanDefinition[])).toEqual(
+      fixtures.plans
     );
     expect(filterPlansByStatus(fixtures.eusmPlans as PlanDefinition[], 'retired')).toEqual([]);
     expect(getPlanDefinitionsArrayByStatus()(store.getState(), { status: 'retired' })).toEqual([
