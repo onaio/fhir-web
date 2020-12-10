@@ -21,10 +21,19 @@ import {
   LOCATIONS,
   USERS,
   ADMIN,
+  ACTIVE,
+  DRAFT,
+  COMPLETE,
+  TRASH,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import { ENABLE_PLANS, ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
-import { PLANS_LIST_VIEW_URL } from '@opensrp/plans';
+import {
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  TRASH_PLANS_LIST_VIEW_URL,
+} from '@opensrp/plans';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -74,11 +83,28 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           )}
           {ENABLE_PLANS && (
-            <Menu.Item key="plans">
-              <Link to={PLANS_LIST_VIEW_URL} className="admin-link">
-                {PLANS}
-              </Link>
-            </Menu.Item>
+            <Menu.SubMenu key="admin-locations" title={PLANS}>
+              <Menu.Item key="plans-active">
+                <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
+                  {ACTIVE}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="plans-draft">
+                <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
+                  {DRAFT}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="plans-complete">
+                <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
+                  {COMPLETE}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="plans-trash">
+                <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
+                  {TRASH}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
           )}
           <Menu.SubMenu key="admin-locations" title={LOCATIONS}>
             <Menu.Item key="locations-unit">{LOCATIONS_UNIT}</Menu.Item>

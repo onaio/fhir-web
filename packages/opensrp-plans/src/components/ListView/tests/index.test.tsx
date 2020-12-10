@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks';
-import { columns } from '../utils';
+import { columns, pageTitleBuilder } from '../utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -42,6 +42,7 @@ describe('List view Page', () => {
         path: `${PLANS_LIST_VIEW_URL}`,
         url: `${PLANS_LIST_VIEW_URL}`,
       },
+      allowedPlanStatus: 'active',
     };
     const wrapper = mount(
       <Provider store={store}>
@@ -65,6 +66,118 @@ describe('List view Page', () => {
       `"Active Missions + New MissionNameDateActionsNo Data"`
     );
   });
+  it('renders Draft Missions Title', async () => {
+    const plan3 = { ...eusmPlans[0], title: 'Draft Plan', identifier: '300', status: 'draft' };
+    fetch.mockResponse(JSON.stringify([...eusmPlans, plan3]));
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${PLANS_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${PLANS_LIST_VIEW_URL}`,
+        url: `${PLANS_LIST_VIEW_URL}`,
+      },
+      allowedPlanStatus: 'draft',
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlansList {...props}></ConnectedPlansList>
+        </Router>
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Draft Missions + New MissionNameDateActionsDraft Plan2020-11-17View1"`
+    );
+  });
+  it('renders Complete Missions Title', async () => {
+    const plan3 = {
+      ...eusmPlans[0],
+      title: 'Complete Plan',
+      identifier: '300',
+      status: 'complete',
+    };
+    fetch.mockResponse(JSON.stringify([...eusmPlans, plan3]));
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${PLANS_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${PLANS_LIST_VIEW_URL}`,
+        url: `${PLANS_LIST_VIEW_URL}`,
+      },
+      allowedPlanStatus: 'complete',
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlansList {...props}></ConnectedPlansList>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Complete Missions + New MissionNameDateActionsComplete Plan2020-11-17View1"`
+    );
+  });
+
+  it('renders Retired Missions Title', async () => {
+    const plan3 = { ...eusmPlans[0], title: 'Retired Plan', identifier: '300', status: 'retired' };
+    fetch.mockResponse(JSON.stringify([...eusmPlans, plan3]));
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${PLANS_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${PLANS_LIST_VIEW_URL}`,
+        url: `${PLANS_LIST_VIEW_URL}`,
+      },
+      allowedPlanStatus: 'retired',
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlansList {...props}></ConnectedPlansList>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Retired Missions + New MissionNameDateActionsRetired Plan2020-11-17View1"`
+    );
+  });
 
   it('sort works', async () => {
     const plan3 = { ...eusmPlans[0], title: 'Simple Plan', identifier: '300' };
@@ -83,6 +196,7 @@ describe('List view Page', () => {
         path: `${PLANS_LIST_VIEW_URL}`,
         url: `${PLANS_LIST_VIEW_URL}`,
       },
+      allowedPlanStatus: 'active',
     };
     const wrapper = mount(
       <Provider store={store}>
@@ -136,6 +250,7 @@ describe('List view Page', () => {
         path: `${PLANS_LIST_VIEW_URL}`,
         url: `${PLANS_LIST_VIEW_URL}`,
       },
+      allowedPlanStatus: 'active',
     };
     const wrapper = mount(
       <Provider store={store}>
@@ -165,4 +280,11 @@ describe('List view Page', () => {
   expect(columnsSorter({ title: 4 }, { title: 1 })).toBe(-1);
   expect(columnsSorter({ title: 1 }, { title: 4 })).toBe(1);
   expect(columnsSorter({ title: 0 }, { title: 0 })).toBe(0);
+
+  // test pageTitleBuilder
+
+  expect(pageTitleBuilder('active')).toEqual('Active Missions');
+  expect(pageTitleBuilder('draft')).toEqual('Draft Missions');
+  expect(pageTitleBuilder('complete')).toEqual('Complete Missions');
+  expect(pageTitleBuilder('retired')).toEqual('Retired Missions');
 });

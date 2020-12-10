@@ -46,6 +46,10 @@ export const OPENSRP_PLANS = 'plans';
 export const PLANS_LIST_VIEW_URL = '/plans';
 export const PLANS_CREATE_VIEW_URL = '/plans/new';
 export const PLANS_EDIT_VIEW_URL = '/plans/edit';
+export const ACTIVE_PLANS_LIST_VIEW_URL = '/plans/active';
+export const DRAFT_PLANS_LIST_VIEW_URL = '/plans/draft';
+export const COMPLETE_PLANS_LIST_VIEW_URL = '/plans/complete';
+export const TRASH_PLANS_LIST_VIEW_URL = '/plans/trash';
 export const HOME_URL = '/';
 
 // other constants
