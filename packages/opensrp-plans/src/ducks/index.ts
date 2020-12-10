@@ -265,24 +265,10 @@ export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
  *
  * @param {PlanDefinition[]} plans - plan definitions array
  * @param {string} status - plan status
- * @param {string} sortField - plan sort field
  * @returns {PlanDefinition[]} - plan definitions array
  */
-export const filterPlansByStatus = (
-  plans: PlanDefinition[],
-  status?: string | undefined,
-  sortField?: string
-) => {
-  if (sortField) {
-    return status
-      ? descendingOrderSort(
-          plans.filter((plan) => plan.status === status),
-          sortField
-        )
-      : descendingOrderSort(plans, sortField);
-  }
-  return status ? plans.filter((plan) => plan.status === status) : plans;
-};
+export const filterPlansByStatus = (plans: PlanDefinition[], status?: string | undefined) =>
+  status ? plans.filter((plan) => plan.status === status) : plans;
 
 /** Gets an array of Plan objects filtered by plan title
  *
@@ -290,10 +276,7 @@ export const filterPlansByStatus = (
  * @returns {Function} returns createSelector method
  */
 export const getPlanDefinitionsArrayByStatus = (planKey?: string) =>
-  createSelector(
-    [planDefinitionsArrayBaseSelector(planKey), getStatus, getSortField],
-    filterPlansByStatus
-  );
+  createSelector([planDefinitionsArrayBaseSelector(planKey), getStatus], filterPlansByStatus);
 
 /** get plans for the given planIds
  *
@@ -368,6 +351,7 @@ export const makePlanDefinitionsArraySelector = (
       getPlanDefinitionsArrayByInterventionType(planKey),
       getPlanDefinitionsArrayByTitle(planKey),
       getPlanDefinitionsArrayByPlanIds(planKey),
+      getPlanDefinitionsArrayByStatus(planKey),
     ],
     (plans1, plans2, plans3) => {
       let finalPlans = intersect([plans1, plans2, plans3], JSON.stringify);

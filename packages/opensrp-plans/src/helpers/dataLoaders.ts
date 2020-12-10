@@ -28,7 +28,7 @@ export async function loadPlans(
   baseURL: string,
   service: typeof OpenSRPService = OpenSRPService,
   actionCreator: typeof fetchPlanDefinitions = fetchPlanDefinitions,
-  planStatus?: string
+  planStatus?: string | null
 ) {
   const serve = new service(OPENSRP_PLANS, baseURL);
   return serve

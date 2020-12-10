@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, PageHeader, Col, Button, Table } from 'antd';
 import { loadPlans } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
-import { fetchPlanDefinitions, getPlanDefinitionsArrayByStatus } from '../../ducks';
+import { fetchPlanDefinitions, makePlanDefinitionsArraySelector } from '../../ducks';
 import { connect } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { PlansLoading, columns, pageTitleBuilder } from './utils';
@@ -110,13 +110,13 @@ export const mapStateToProps = (
   state: Partial<Store>,
   ownProps: PlansListTypes
 ): MapStateToProps => {
-  const data = getPlanDefinitionsArrayByStatus()(
-    state,
-    {
-      status: ownProps.allowedPlanStatus,
-    },
-    { sortField: SORT_BY_EFFECTIVE_PERIOD_START_FIELD }
+  const plansByStatus = makePlanDefinitionsArraySelector(
+    undefined,
+    SORT_BY_EFFECTIVE_PERIOD_START_FIELD
   );
+  const data = plansByStatus(state, {
+    status: ownProps.allowedPlanStatus,
+  });
   return {
     data,
   };
