@@ -6,7 +6,6 @@ import { MemoryRouter, Route, Router } from 'react-router';
 import { store } from '@opensrp/store';
 
 import LocationTagAddEdit from '..';
-import toJson from 'enzyme-to-json';
 
 describe('Location-module/LocationTagAddEdit', () => {
   it('renders without crashing', () => {
