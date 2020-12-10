@@ -68,3 +68,9 @@ Below is a list of currently supported environment variables:
 - Enables the product-catalogue module
 - **Optional**(_string_)
 - default: `"false"`
+
+12. **REACT_APP_ENABLE_CARD_SUPPORT**
+
+- Enables the card support module
+- **Optional**(_string_)
+- default: `"false"

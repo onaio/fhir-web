@@ -21,7 +21,11 @@ import {
   USER_MANAGEMENT,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
-import { ENABLE_PRODUCT_CATALOGUE, ENABLE_TEAMS_MODULE } from '../../../configs/env';
+import {
+  ENABLE_PRODUCT_CATALOGUE,
+  ENABLE_TEAMS_MODULE,
+  ENABLE_CARD_SUPPORT,
+} from '../../../configs/env';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -72,11 +76,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Link>
             </Menu.Item>
           )}
-          <Menu.Item key="teams">
-            <Link to={URL_TEAMS} className="admin-link">
-              Teams
-            </Link>
-          </Menu.Item>
           <Menu.SubMenu key="admin-locations" title="Locations">
             <Menu.Item key="locations-unit">
               <Link to={URL_LOCATION_UNIT} className="admin-link">
@@ -89,13 +88,15 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Link>
             </Menu.Item>
           </Menu.SubMenu>
-          <Menu.SubMenu key="admin-card-support" title="Card Support">
-            <Menu.Item key="admin-card-support-client-data">
-              <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-                Download Client Data
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
+          {ENABLE_CARD_SUPPORT && (
+            <Menu.SubMenu key="admin-card-support" title="Card Support">
+              <Menu.Item key="admin-card-support-client-data">
+                <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
+                  Download Client Data
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}
         </Menu.SubMenu>
       </Menu>
     </Layout.Sider>

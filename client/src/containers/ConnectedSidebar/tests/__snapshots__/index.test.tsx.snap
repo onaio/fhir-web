@@ -41,14 +41,6 @@ Object {
               Product Catalogue
             </Link>
           </MenuItem>
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/teams"
-            >
-              Teams
-            </Link>
-          </MenuItem>
           <SubMenu
             title="Locations"
           >
@@ -66,18 +58,6 @@ Object {
                 to="/location/group"
               >
                 Locations unit group
-              </Link>
-            </MenuItem>
-          </SubMenu>
-          <SubMenu
-            title="Card Support"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/download-client-data"
-              >
-                Download Client Data
               </Link>
             </MenuItem>
           </SubMenu>

@@ -59,3 +59,6 @@ export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CAT
 
 /** Activate teams menu */
 export const ENABLE_TEAMS_MODULE = process.env.REACT_APP_ENABLE_TEAMS_MODULE === 'true';
+
+/** Activate card support menu */
+export const ENABLE_CARD_SUPPORT = process.env.REACT_APP_ENABLE_CARD_SUPPORT === 'true';
