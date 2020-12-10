@@ -62,34 +62,6 @@ Object {
               Locations unit group set
             </MenuItem>
           </SubMenu>
-          <SubMenu
-            title="Form Configurations"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/releases"
-              >
-                Manifest Releases
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/drafts"
-              >
-                Draft Files
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/json-validators"
-              >
-                JSON Validators
-              </Link>
-            </MenuItem>
-          </SubMenu>
         </SubMenu>
       </Menu>
     </div>,
