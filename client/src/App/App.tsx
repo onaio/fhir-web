@@ -49,7 +49,6 @@ import {
   DRAFT_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,
   TRASH_PLANS_LIST_VIEW_URL,
-  PLANS_LIST_VIEW_URL,
   ConnectedEditPlanView,
   CreatePlanView,
   PLANS_CREATE_VIEW_URL,
@@ -69,11 +68,16 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps, plansListProps, planEditProps, planCreateProps,
+import {
+  productCatalogueProps,
+  plansListProps,
+  planEditProps,
+  planCreateProps,
   activePlansListStatusProp,
   draftPlansListStatusProp,
   completedPlansListStatusProp,
-  trashPlansListStatusProp, } from './utils';
+  trashPlansListStatusProp,
+} from './utils';
 import '@opensrp/plan-form/dist/index.css';
 
 const { Content } = Layout;
