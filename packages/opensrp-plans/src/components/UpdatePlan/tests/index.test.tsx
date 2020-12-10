@@ -68,7 +68,7 @@ describe('CreateEditProduct Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual('Edit Plan');
+    expect(helmet.title).toEqual('Edit plan');
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
