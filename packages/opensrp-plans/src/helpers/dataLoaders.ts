@@ -21,17 +21,18 @@ export class OpenSRPService extends GenericOpenSRPService {
  * @param {string} baseURL -  base url of api
  * @param {OpenSRPService} service - the opensrp service
  * @param {fetchPlanDefinitions} actionCreator - Action creator; creates actions that adds plans to the store
- *
+ * @param {string} planStatus - plan's status
  * @returns {Promise<void>}
  */
 export async function loadPlans(
   baseURL: string,
   service: typeof OpenSRPService = OpenSRPService,
-  actionCreator: typeof fetchPlanDefinitions = fetchPlanDefinitions
+  actionCreator: typeof fetchPlanDefinitions = fetchPlanDefinitions,
+  planStatus?: string | null
 ) {
   const serve = new service(OPENSRP_PLANS, baseURL);
   return serve
-    .list()
+    .list(planStatus ? { status: planStatus } : null)
     .then((response: PlanDefinition[] | null) => {
       if (response === null) {
         return Promise.reject(new Error('No data found'));
