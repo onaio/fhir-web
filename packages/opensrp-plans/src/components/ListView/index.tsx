@@ -2,20 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { Row, PageHeader, Col, Button, Table } from 'antd';
 import { loadPlans } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
-import { fetchPlanDefinitions, getPlanDefinitionsArray } from '../../ducks';
+import { fetchPlanDefinitions, makePlanDefinitionsArraySelector } from '../../ducks';
 import { connect } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
-import { PlansLoading, columns } from './utils';
+import { PlansLoading, columns, pageTitleBuilder } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import PlansReducer, { reducerName as PlansReducerName } from '../../ducks';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { PLANS_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
+import {
+  PLANS_CREATE_VIEW_URL,
+  RouteParams,
+  SORT_BY_EFFECTIVE_PERIOD_START_FIELD,
+  TableColumnsNamespace,
+} from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { PlanDefinition } from '@opensrp/plan-form-core';
-import { ACTIVE_MISSIONS, NEW_MISSION } from '../../lang';
+import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
+import { NEW_MISSION } from '../../lang';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(PlansReducerName, PlansReducer);
@@ -26,6 +31,7 @@ interface Props<T = PlanDefinition> extends CommonProps {
   columns: ColumnsType<T>;
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
+  allowedPlanStatus: string;
 }
 
 const defaultProps = {
@@ -34,6 +40,7 @@ const defaultProps = {
   columns: columns,
   fetchPlansCreator: fetchPlanDefinitions,
   service: OpenSRPService,
+  allowedPlanStatus: PlanStatus.ACTIVE,
 };
 
 export type PlansListTypes = Props<PlanDefinition> & RouteComponentProps<RouteParams>;
@@ -41,12 +48,12 @@ export type PlansListTypes = Props<PlanDefinition> & RouteComponentProps<RoutePa
 /** component that renders plans */
 
 const PlansList = (props: PlansListTypes) => {
-  const { service, data, columns, fetchPlansCreator, baseURL } = props;
+  const { service, data, columns, fetchPlansCreator, baseURL, allowedPlanStatus } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
 
   useEffect(() => {
-    loadPlans(baseURL, service, fetchPlansCreator)
+    loadPlans(baseURL, service, fetchPlansCreator, allowedPlanStatus)
       .catch((err: Error) => handleBrokenPage(err))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +67,7 @@ const PlansList = (props: PlansListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = ACTIVE_MISSIONS;
+  const pageTitle = pageTitleBuilder(allowedPlanStatus);
   // add a key prop to the array data to be consumed by the table
   const dataSource = data.map((singleObject, key) => {
     const planWithKey = {
@@ -99,8 +106,17 @@ export { PlansList };
 export type MapStateToProps = Pick<PlansListTypes, 'data'>;
 export type MapDispatchToProps = Pick<PlansListTypes, 'fetchPlansCreator'>;
 
-export const mapStateToProps = (state: Partial<Store>): MapStateToProps => {
-  const data = getPlanDefinitionsArray(state, null, 'date');
+export const mapStateToProps = (
+  state: Partial<Store>,
+  ownProps: PlansListTypes
+): MapStateToProps => {
+  const plansByStatus = makePlanDefinitionsArraySelector(
+    undefined,
+    SORT_BY_EFFECTIVE_PERIOD_START_FIELD
+  );
+  const data = plansByStatus(state, {
+    status: ownProps.allowedPlanStatus,
+  });
   return {
     data,
   };

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable no-prototype-builtins */
-import { Form, Button, Card } from 'antd';
+import { Form, Button, Card, Space } from 'antd';
 import { Dictionary } from '@onaio/utils';
 import { xor } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { format } from 'util';
 import {
   ACTION,
@@ -14,12 +14,15 @@ import {
   ADD_CODED_ACTIVITY,
   ADD_JURISDICTION,
   AND,
+  CANCEL,
   CONDITIONS_LABEL,
   DESCRIPTION_LABEL,
+  DESCRIPTION_PLACEHOLDER,
   END_DATE,
   GOAL_LABEL,
   INTERVENTION_TYPE_LABEL,
   PLAN_TITLE_LABEL,
+  PLAN_TITLE_PLACEHOLDER,
   PRIORITY_LABEL,
   QUANTITY_LABEL,
   REASON_HEADER,
@@ -181,6 +184,7 @@ const PlanForm = (props: PlanFormProps) => {
   };
 
   const planActivitiesMap = getPlanActivitiesMap(configs);
+  const history = useHistory();
 
   const [form] = Form.useForm();
 
@@ -250,6 +254,7 @@ const PlanForm = (props: PlanFormProps) => {
   const { Option } = Select;
   const values = form.getFieldValue([]);
 
+  /** responsive layout for the form labels and columns */
   const formItemLayout = {
     labelCol: {
       xs: {
@@ -259,6 +264,9 @@ const PlanForm = (props: PlanFormProps) => {
         span: 24,
       },
       md: {
+        span: 24,
+      },
+      lg: {
         span: 6,
       },
     },
@@ -270,17 +278,22 @@ const PlanForm = (props: PlanFormProps) => {
         span: 24,
       },
       md: {
+        span: 20,
+      },
+      lg: {
         span: 16,
       },
     },
   };
 
-  const SubmitLayout = {
+  const tailLayout = {
     wrapperCol: {
-      offset: 10,
+      xs: { offset: 0, span: 16 },
+      sm: { offset: 12, span: 24 },
+      md: { offset: 8, span: 16 },
+      lg: { offset: 6, span: 14 },
     },
   };
-
   return (
     <div className="planform form-container">
       <Form
@@ -356,6 +369,7 @@ const PlanForm = (props: PlanFormProps) => {
                 });
               }}
               required={true}
+              placeholder={PLAN_TITLE_PLACEHOLDER}
               type="text"
               disabled={disabledFields.includes(title)}
             />
@@ -425,7 +439,11 @@ const PlanForm = (props: PlanFormProps) => {
             hidden={isHidden(description)}
             id="description"
           >
-            <TextArea disabled={disabledFields.includes(description)} />
+            <TextArea
+              rows={4}
+              placeholder={DESCRIPTION_PLACEHOLDER}
+              disabled={disabledFields.includes(description)}
+            />
           </FormItem>
           <Form.List name="jurisdictions">
             {(fields, { add, remove }) => (
@@ -802,17 +820,29 @@ const PlanForm = (props: PlanFormProps) => {
               }}
             </List>
           </FormItem>
-          <FormItem {...SubmitLayout}>
-            <Button
-              type="primary"
-              id="planform-submit-button"
-              aria-label={SAVE_PLAN}
-              disabled={isSubmitting}
-              htmlType="submit"
-            >
-              {SAVE_PLAN}
-            </Button>
+          <FormItem {...tailLayout} name="submitCancel">
+            <Space>
+              <Button
+                type="primary"
+                id="planform-submit-button"
+                aria-label={SAVE_PLAN}
+                disabled={isSubmitting}
+                htmlType="submit"
+              >
+                {SAVE_PLAN}
+              </Button>
+
+              <Button
+                id="planform-cancel-button"
+                onClick={() => {
+                  history.push(redirectAfterAction);
+                }}
+              >
+                {CANCEL}
+              </Button>
+            </Space>
           </FormItem>
+          <FormItem></FormItem>
         </>
       </Form>
     </div>
