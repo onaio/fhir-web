@@ -93,9 +93,18 @@ describe('reducers/opensrp/PlanDefinition', () => {
     expect(getPlanDefinitionsArrayByTitle()(store.getState(), titleUpperFilter)).toEqual([
       fixtures.plans[3],
     ]);
+    // filters plans by status
     expect(filterPlansByStatus(fixtures.eusmPlans as PlanDefinition[], 'active')).toEqual(
       fixtures.eusmPlans
     );
+    // filters plans by status and test sort
+    const eusmPlan3 = { ...fixtures.eusmPlans[0], date: '2020-12-25' };
+    const eusmplans = [...fixtures.eusmPlans, eusmPlan3];
+    expect(filterPlansByStatus(eusmplans as PlanDefinition[], 'active', 'date')).toEqual([
+      eusmplans[2],
+      eusmplans[0],
+      eusmplans[1],
+    ]);
     expect(filterPlansByStatus(fixtures.eusmPlans as PlanDefinition[], 'retired')).toEqual([]);
     expect(getPlanDefinitionsArrayByStatus()(store.getState(), { status: 'retired' })).toEqual([
       fixtures.plans[5],
@@ -139,6 +148,13 @@ describe('reducers/opensrp/PlanDefinition', () => {
       fixtures.plans[0],
       fixtures.plans[1],
     ]);
+    expect(
+      getPlanDefinitionsArrayByStatus()(
+        store.getState(),
+        { status: 'active' },
+        { sortField: 'date' }
+      )
+    ).toEqual([fixtures.plans[0], fixtures.plans[1]]);
     // get plansarray definition by interventiontype
     expect(getPlanDefinitionsArray(store.getState(), InterventionType.FI)).toEqual([
       fixtures.plans[0],
