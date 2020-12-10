@@ -4,7 +4,7 @@ import { Form, Button, Card, Space } from 'antd';
 import { Dictionary } from '@onaio/utils';
 import { xor } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { format } from 'util';
 import {
   ACTION,
@@ -146,11 +146,14 @@ export interface PlanFormProps extends CommonProps {
   disabledActivityFields: string[] /** activity fields that are disabled */;
   disabledFields: string[] /** fields that are disabled */;
   initialValues: PlanFormFields /** initial values for fields on the form */;
-  redirectAfterAction: string /** the url to redirect to after form submission */;
   beforeSubmit?: BeforeSubmit /** called before submission starts, return true to proceed with submission */;
   afterSubmit?: AfterSubmit /** called after the payload is successfully sent to the server */;
   envConfigs?: PlanFormConfig /** env configuration options */;
   hiddenFields: PlanFormFieldsKeys[] /** what fields to hide */;
+  onCancel: () => void /** called when user clicks cancel on form */;
+  getRedirectPath: (
+    status: PlanStatus
+  ) => string /** callback to get the path to redirect after successfully form submission */;
 }
 
 /**
@@ -166,17 +169,18 @@ const PlanForm = (props: PlanFormProps) => {
   const [actionConditions, setActionConditions] = useState<Dictionary>({});
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
-
   const {
     allFormActivities,
     disabledActivityFields,
     disabledFields,
     initialValues,
-    redirectAfterAction,
     baseURL,
     envConfigs,
     hiddenFields,
+    getRedirectPath,
+    onCancel,
   } = props;
+  const [newPlanStatus, setNewPlanStatus] = useState<PlanStatus>(initialValues.status);
 
   const configs = {
     ...defaultEnvConfig,
@@ -184,7 +188,6 @@ const PlanForm = (props: PlanFormProps) => {
   };
 
   const planActivitiesMap = getPlanActivitiesMap(configs);
-  const history = useHistory();
 
   const [form] = Form.useForm();
 
@@ -248,7 +251,8 @@ const PlanForm = (props: PlanFormProps) => {
 
   /** if plan is updated or saved redirect to plans page */
   if (areWeDoneHere) {
-    return <Redirect to={redirectAfterAction} />;
+    const redirectAfter = getRedirectPath(newPlanStatus);
+    return <Redirect to={redirectAfter} />;
   }
 
   const { Option } = Select;
@@ -318,6 +322,7 @@ const PlanForm = (props: PlanFormProps) => {
               sendSuccessNotification(successMessage);
               props.afterSubmit && props.afterSubmit(payload);
               setSubmitting(false);
+              setNewPlanStatus(payload.status as PlanStatus);
               setAreWeDoneHere(true);
             })
             .catch((err: Error) => {
@@ -832,12 +837,7 @@ const PlanForm = (props: PlanFormProps) => {
                 {SAVE_PLAN}
               </Button>
 
-              <Button
-                id="planform-cancel-button"
-                onClick={() => {
-                  history.push(redirectAfterAction);
-                }}
-              >
+              <Button id="planform-cancel-button" onClick={() => onCancel()}>
                 {CANCEL}
               </Button>
             </Space>
@@ -856,7 +856,10 @@ export const defaultProps: PlanFormProps = {
   disabledActivityFields: [],
   disabledFields: [],
   initialValues: defaultInitialValues,
-  redirectAfterAction: PLAN_LIST_URL,
+  getRedirectPath: () => PLAN_LIST_URL,
+  onCancel: () => {
+    return;
+  },
   hiddenFields: [],
 };
 
