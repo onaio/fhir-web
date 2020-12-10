@@ -67,7 +67,8 @@ describe('List view Page', () => {
     );
   });
   it('renders Draft Missions Title', async () => {
-    fetch.mockResponse(JSON.stringify([]));
+    const plan3 = { ...eusmPlans[0], title: 'Draft Plan', identifier: '300', status: 'draft' };
+    fetch.mockResponse(JSON.stringify([...eusmPlans, plan3]));
     const props = {
       history,
       location: {
@@ -95,13 +96,18 @@ describe('List view Page', () => {
       await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
-
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Draft Missions + New MissionNameDateActionsNo Data"`
+      `"Draft Missions + New MissionNameDateActionsDraft Plan2020-11-17View1"`
     );
   });
   it('renders Complete Missions Title', async () => {
-    fetch.mockResponse(JSON.stringify([]));
+    const plan3 = {
+      ...eusmPlans[0],
+      title: 'Complete Plan',
+      identifier: '300',
+      status: 'complete',
+    };
+    fetch.mockResponse(JSON.stringify([...eusmPlans, plan3]));
     const props = {
       history,
       location: {
@@ -132,12 +138,13 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Complete Missions + New MissionNameDateActionsNo Data"`
+      `"Complete Missions + New MissionNameDateActionsComplete Plan2020-11-17View1"`
     );
   });
 
   it('renders Retired Missions Title', async () => {
-    fetch.mockResponse(JSON.stringify([]));
+    const plan3 = { ...eusmPlans[0], title: 'Retired Plan', identifier: '300', status: 'retired' };
+    fetch.mockResponse(JSON.stringify([...eusmPlans, plan3]));
     const props = {
       history,
       location: {
@@ -168,7 +175,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Retired Missions + New MissionNameDateActionsNo Data"`
+      `"Retired Missions + New MissionNameDateActionsRetired Plan2020-11-17View1"`
     );
   });
 
