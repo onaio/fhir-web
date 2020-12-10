@@ -621,7 +621,7 @@ describe('containers/forms/PlanForm', () => {
       </MemoryRouter>
     );
     // Set title for the plan
-    wrapper.find('#planform-cancel-button').simulate('click');
+    wrapper.find('button#planform-cancel-button').simulate('click');
 
     wrapper.update();
 
