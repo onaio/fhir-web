@@ -104,7 +104,7 @@ Below is a list of currently supported environment variables:
 - **REACT_APP_ACTION_UUID_NAMESPACE**
 
   - _not required_; _(`string`)_
-  - a random string to use as the namespace when creating uuids for actions
+  - a random string to use as the namespace when creating uuids for plan actions
 
 - **REACT_APP_DEFAULT_PLAN_VERSION**
 
