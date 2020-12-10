@@ -126,7 +126,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    */
   public static getURL(generalUrl: string, params: paramsType): string {
     if (params) {
-      return `${generalUrl}?${queryString.stringify(params)}`;
+      return `${generalUrl}?${queryString.unescape(queryString.stringify(params))}`;
     }
     return generalUrl;
   }
