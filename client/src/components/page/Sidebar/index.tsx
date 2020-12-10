@@ -72,11 +72,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Link>
             </Menu.Item>
           )}
-          <Menu.Item key="card-support">
-            <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-              Download Client Data
-            </Link>
-          </Menu.Item>
           <Menu.Item key="teams">
             <Link to={URL_TEAMS} className="admin-link">
               Teams
@@ -91,6 +86,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.Item key="locations-unit-group">
               <Link to={URL_LOCATION_TAG} className="admin-link">
                 {LOCATIONS_UNIT_GROUP}
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="admin-card-support" title="Card Support">
+            <Menu.Item key="admin-card-support-client-data">
+              <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
+                Download Client Data
               </Link>
             </Menu.Item>
           </Menu.SubMenu>
