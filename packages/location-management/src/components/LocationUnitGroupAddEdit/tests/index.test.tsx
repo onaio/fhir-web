@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { MemoryRouter, Route, Router } from 'react-router';
 import { store } from '@opensrp/store';
 
 import LocationUnitGroupAddEdit from '..';
@@ -16,6 +16,19 @@ describe('Location-module/LocationUnitGroupAddEdit', () => {
         </Router>
       </Provider>
     );
-    expect(wrapper.find('Row').at(0).props()).toMatchSnapshot();
+
+    expect(wrapper.find('Row').first().prop('children')).toMatchSnapshot();
+  });
+
+  it('render with id without crashing', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/54`, hash: '', search: '', state: {} }]}>
+          <Route path="/:id" component={LocationUnitGroupAddEdit} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find('Row').first().prop('children')).toMatchSnapshot();
   });
 });
