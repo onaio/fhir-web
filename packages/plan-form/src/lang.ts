@@ -143,3 +143,6 @@ export const SUCCESSFULLY_UPDATED = 'Successfully Updated';
 export const SUCCESSFULLY_CREATED = 'Successfully Created';
 export const ACTIVE_DATE_RANGE_LABEL = 'Active date range';
 export const ADD_JURISDICTION = 'Add Jurisdiction';
+export const CANCEL = 'Cancel';
+export const PLAN_TITLE_PLACEHOLDER = "Enter the Plan's name";
+export const DESCRIPTION_PLACEHOLDER = 'Enter the plans Description';

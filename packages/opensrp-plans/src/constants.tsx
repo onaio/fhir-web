@@ -44,7 +44,8 @@ export const OPENSRP_PLANS = 'plans';
 
 // router routes
 export const PLANS_LIST_VIEW_URL = '/plans';
-export const PLANS_CREATE_VIEW_URL = 'plans/new';
+export const PLANS_CREATE_VIEW_URL = '/plans/new';
+export const PLANS_EDIT_VIEW_URL = '/plans/edit';
 export const HOME_URL = '/';
 
 // other constants

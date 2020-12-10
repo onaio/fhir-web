@@ -13,7 +13,7 @@ export const reducerName = 'PlanDefinition';
 /** list of plan types displayed
  * TODO: To be moved to env
  */
-export const DISPLAYED_PLAN_TYPES = 'FI,IRS,MDA,MDA-Point,Dynamic-FI,Dynamic-IRS,Dynamic-MDA';
+export const DISPLAYED_PLAN_TYPES = 'FI,IRS,MDA,MDA-Point,Dynamic-FI,Dynamic-IRS,Dynamic-MDA,SM';
 
 // actions
 
