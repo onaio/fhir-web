@@ -1,8 +1,19 @@
-import { SORT_BY_EFFECTIVE_PERIOD_START_FIELD } from '../../constants';
+import {
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
+  SORT_BY_EFFECTIVE_PERIOD_START_FIELD,
+  TRASH_PLANS_LIST_VIEW_URL,
+} from '../../constants';
 import * as planDefinitionFixtures from '../../ducks/tests/fixtures';
-import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
+import { InterventionType, PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import * as fixtures from '../../ducks/tests/fixtures';
-import { descendingOrderSort, isPlanDefinitionOfType, getPlanType } from '../utils';
+import {
+  descendingOrderSort,
+  isPlanDefinitionOfType,
+  getPlanType,
+  redirectPathGetter,
+} from '../utils';
 
 describe('helpers/utils', () => {
   beforeEach(() => {
@@ -56,5 +67,11 @@ describe('helpers/utils', () => {
     expect(result).toBeFalsy();
     result = isPlanDefinitionOfType(sampleIRSPlan, InterventionType.IRS);
     expect(result).toBeTruthy();
+  });
+  it('tests redirectGetter util', () => {
+    expect(redirectPathGetter(PlanStatus.DRAFT)).toEqual(DRAFT_PLANS_LIST_VIEW_URL);
+    expect(redirectPathGetter(PlanStatus.ACTIVE)).toEqual(ACTIVE_PLANS_LIST_VIEW_URL);
+    expect(redirectPathGetter(PlanStatus.COMPLETE)).toEqual(COMPLETE_PLANS_LIST_VIEW_URL);
+    expect(redirectPathGetter(PlanStatus.RETIRED)).toEqual(TRASH_PLANS_LIST_VIEW_URL);
   });
 });

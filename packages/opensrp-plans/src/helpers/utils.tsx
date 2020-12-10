@@ -1,7 +1,13 @@
 import { Dictionary } from '@onaio/utils';
-import { InterventionType, PlanDefinition, UseContext } from '@opensrp/plan-form-core';
+import { InterventionType, PlanDefinition, PlanStatus, UseContext } from '@opensrp/plan-form-core';
 import { Alert, Spin } from 'antd';
 import React from 'react';
+import {
+  DRAFT_PLANS_LIST_VIEW_URL,
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  TRASH_PLANS_LIST_VIEW_URL,
+} from '..';
 
 /**
  * helper to retrieve the plan Type from a plan definition object
@@ -57,4 +63,21 @@ export const PlanLoading = () => {
       <Alert message="Fetching plan" description="Please wait, as we fetch the plan." type="info" />
     </Spin>
   );
+};
+
+/** mapping of plan statuses to the redirection urls for the plan form */
+export const redirectMapping = {
+  [PlanStatus.DRAFT]: DRAFT_PLANS_LIST_VIEW_URL,
+  [PlanStatus.ACTIVE]: ACTIVE_PLANS_LIST_VIEW_URL,
+  [PlanStatus.COMPLETE]: COMPLETE_PLANS_LIST_VIEW_URL,
+  [PlanStatus.RETIRED]: TRASH_PLANS_LIST_VIEW_URL,
+};
+
+/** plan form will redirect to the returned path after form submission based on the plan status
+ *
+ * @param {PlanStatus} status - status of the plan
+ * @returns {string} - the redirect url
+ */
+export const redirectPathGetter = (status: PlanStatus = PlanStatus.DRAFT) => {
+  return redirectMapping[status];
 };

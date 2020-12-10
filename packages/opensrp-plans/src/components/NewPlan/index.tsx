@@ -11,7 +11,7 @@ import {
   PropsForPlanForm,
 } from '../../helpers/common';
 import { CREATE_PLAN } from '../../lang';
-import { PLANS_LIST_VIEW_URL } from '../../constants';
+import { DRAFT_PLANS_LIST_VIEW_URL } from '../../constants';
 import {
   defaultEnvConfig,
   getFormActivities,
@@ -19,6 +19,8 @@ import {
   InterventionType,
   planActivities,
 } from '@opensrp/plan-form-core';
+import { useHistory } from 'react-router';
+import { redirectPathGetter } from '../../helpers/utils';
 
 type CreatePlanViewProps = CommonProps & PropsForPlanForm;
 
@@ -36,6 +38,7 @@ const defaultProps = {
 const CreatePlanView = (props: CreatePlanViewProps) => {
   const { envConfigs, baseURL, hiddenFields } = props;
   const pageTitle = CREATE_PLAN;
+  const history = useHistory();
 
   const configs = {
     ...defaultEnvConfig,
@@ -48,13 +51,19 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
     activities: processActivitiesDates(planActivitiesMap[InterventionType.SM]),
   };
 
+  /** called when user clicks on cancel on the plan form */
+  const clickHandler = () => {
+    history.push(DRAFT_PLANS_LIST_VIEW_URL);
+  };
+
   const planFormProps = {
     hiddenFields,
     initialValues,
     baseURL: baseURL,
-    redirectAfterAction: PLANS_LIST_VIEW_URL,
+    getRedirectPath: redirectPathGetter,
     allFormActivities: getFormActivities(planActivities, configs),
     envConfigs: configs,
+    onCancel: clickHandler,
   };
 
   return (
