@@ -2,18 +2,26 @@
  */
 
 import { store, makeAPIStateSelector } from '@opensrp/store';
-import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
+import {
+  getFetchOptions,
+  OpenSRPService as GenericOpenSRPService,
+  HTTPMethod,
+} from '@opensrp/server-service';
 import { OPENSRP_API_BASE_URL, OPENSRP_PRODUCT_CATALOGUE } from '../constants';
 import { fetchProducts, ProductCatalogue } from '../ducks/productCatalogue';
 import { Dictionary } from '@onaio/utils';
 
 const sessionSelector = makeAPIStateSelector();
-const accessToken = sessionSelector(store.getState(), { accessToken: true });
 
 /** OpenSRP service */
-export class OpenSRPService extends GenericOpenSRPService {
-  constructor(endpoint: string, baseURL: string = OPENSRP_API_BASE_URL) {
-    super(accessToken, baseURL, endpoint);
+export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
+  constructor(
+    endpoint: string,
+    baseURL: string = OPENSRP_API_BASE_URL,
+    fetchOptions: typeof getFetchOptions = getFetchOptions
+  ) {
+    const accessToken = sessionSelector(store.getState(), { accessToken: true });
+    super(accessToken, baseURL, endpoint, fetchOptions);
   }
 }
 
@@ -32,10 +40,7 @@ export async function loadProductCatalogue(
   const serve = new service(OPENSRP_PRODUCT_CATALOGUE, baseURL);
   return serve
     .list()
-    .then((response: ProductCatalogue[] | null) => {
-      if (response === null || response.length === 0) {
-        return Promise.reject(new Error('No products found in the catalogue'));
-      }
+    .then((response: ProductCatalogue[]) => {
       actionCreator(response);
     })
     .catch((err: Error) => {
@@ -62,7 +67,7 @@ export async function loadSingleProduct(
     .read(id)
     .then((response: ProductCatalogue | {}) => {
       if (Object.keys(response).length === 0) {
-        return Promise.reject(new Error('No products found in the catalogue'));
+        return Promise.reject(new Error('Product not found in the catalogue'));
       }
       actionCreator([response as ProductCatalogue]);
     })
@@ -72,53 +77,93 @@ export async function loadSingleProduct(
 }
 
 /**
+ * custom function that returns options to pass to fetch
+ *
+ * @param {AbortSignal} _ - signal object that allows you to communicate with a DOM request
+ * @param {string} accessToken - the access token
+ * @param {string} method - the HTTP method
+ * @param {Dictionary} payload - the payload
+ * @returns {object} options to be passed to fetch
+ */
+export const postPutOptions = (
+  _: AbortSignal,
+  accessToken: string,
+  method: HTTPMethod,
+  payload?: Dictionary
+): RequestInit => {
+  if (!payload) {
+    return getFetchOptions(_, accessToken, method, payload);
+  }
+  const data = new FormData();
+  // name of key of file in payload
+  const payLoadKeyName = 'file';
+  // name of key for other formFields
+  const formFieldsFileKeyName = 'productCatalogue';
+  const file = payload.photoURL;
+  const formFields = { ...payload };
+
+  // add file to payload if file whether for post or put
+  if (file instanceof File) {
+    data.append(payLoadKeyName, file, file.name);
+  }
+
+  // post method should not have uniqueId
+  if (method === 'POST') {
+    delete formFields.uniqueId;
+  }
+
+  // delete photoURL field, photo is sent as a file above
+  delete formFields.photoURL;
+
+  // random file name to give to this file.
+  const formFieldsFileName = 'product.json';
+  const formFieldsFile = new File([JSON.stringify(formFields)], formFieldsFileName, {
+    type: 'application/json',
+  });
+  data.append(formFieldsFileKeyName, formFieldsFile, formFieldsFileName);
+
+  const bearer = `Bearer ${accessToken}`;
+  return {
+    body: data,
+    headers: { authorization: bearer },
+    method,
+  };
+};
+
+/**
  * @param {string} baseURL - base url of the api
  * @param {Dictionary} payload - the payload
+ * @param {OpenSRPService} service - the opensrp service
  * @returns {Promise<void>}
  */
-export async function postProduct(baseURL: string, payload: Dictionary) {
-  const data = new FormData();
-  Object.entries(payload).forEach(([key, value]) => {
-    if (value instanceof File) {
-      data.append(key, value, value.name);
-      return;
-    }
-    if (key === 'uniqueId') {
-      return;
-    }
-    data.append(key, value);
+export async function postProduct(
+  baseURL: string,
+  payload: Dictionary,
+  service: typeof OpenSRPService = OpenSRPService
+) {
+  const serve = new service(OPENSRP_PRODUCT_CATALOGUE, baseURL, postPutOptions);
+  return serve.create(payload).catch((err: Error) => {
+    throw err;
   });
-  const bearer = `Bearer ${accessToken}`;
-  const promise = fetch(`${baseURL}${OPENSRP_PRODUCT_CATALOGUE}`, {
-    body: data,
-    headers: { accept: 'application/json', authorization: bearer },
-    method: 'POST',
-  });
-  return promise;
 }
 
 /**
  * @param {string} baseURL - base url of the api
  * @param {Dictionary} payload - the payload
+ * @param {OpenSRPService} service - the opensrp service
  * @returns {Promise<void>}
  */
-export async function putProduct(baseURL: string, payload: Dictionary) {
-  const data = new FormData();
-  Object.entries(payload).forEach(([key, value]) => {
-    if (value instanceof File) {
-      data.append(key, value, value.name);
-      return;
-    }
-    data.append(key, value);
+export async function putProduct(
+  baseURL: string,
+  payload: Dictionary,
+  service: typeof OpenSRPService = OpenSRPService
+) {
+  const serve = new service(
+    `${OPENSRP_PRODUCT_CATALOGUE}/${payload.uniqueId}`,
+    baseURL,
+    postPutOptions
+  );
+  return serve.update(payload).catch((err: Error) => {
+    throw err;
   });
-  const bearer = `Bearer ${accessToken}`;
-  const promise = fetch(`${baseURL}${OPENSRP_PRODUCT_CATALOGUE}`, {
-    body: data,
-    headers: {
-      accept: 'application/json',
-      authorization: bearer,
-    },
-    method: 'PUT',
-  });
-  return promise;
 }

@@ -2,7 +2,6 @@
 import flushPromises from 'flush-promises';
 import { mount } from 'enzyme';
 import React from 'react';
-import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
@@ -11,61 +10,30 @@ import fetch from 'jest-fetch-mock';
 import * as fixtures from './fixtures';
 
 import { id, LocationUnitGroupValue, locationUnitgroup, treedata } from './fixtures';
-import Form, { onSubmit } from '../Form';
+import Form, { FormField, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
+import { LocationUnitStatus } from '../../../ducks/location-units';
+import { history } from '@onaio/connected-reducer-registry';
 
-// jest.mock('antd', () => {
-//   const antd = jest.requireActual('antd');
-
-//   /* eslint-disable react/prop-types */
-//   const Select = ({ children, onChange }) => {
-//     return <select onChange={(e) => onChange(e.target.value)}>{children}</select>;
-//   };
-
-//   const Option = ({ children, ...otherProps }) => {
-//     return <option {...otherProps}>{children}</option>;
-//   };
-//   /* eslint-disable react/prop-types */
-
-//   Select.Option = Option;
-
-//   return {
-//     __esModule: true,
-//     ...antd,
-//     Select,
-//   };
-// });
-
-describe('containers/pages/locations/LocationUnitAddEdit', () => {
+describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
     fetch.resetMocks();
     jest.clearAllMocks();
   });
-  const values = {
-    is_jurisdiction: true,
-    properties: {
-      geographicLevel: 1,
-      username: 'testuser',
-      externalId: 'testextid',
-      parentId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
-      name: 'Tunisia',
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      name_en: 'Tunisia',
-      status: 'Active',
-    },
-    id: 'testextid',
-    syncStatus: 'Synced',
+
+  const values: FormField = {
+    name: 'Tunisia',
+    status: LocationUnitStatus.ACTIVE,
     type: 'Feature',
-    locationTags: fixtures.locationUnitgroup,
+    parentId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
+    locationTags: fixtures.locationUnitgroup.map((loc) => loc.id),
     geometry: undefined,
   };
 
   const props = {
     id: undefined,
-    user: {
-      username: 'user_test',
-    },
+    username: 'user_test',
     locationUnitGroup: fixtures.locationUnitgroup,
   };
 
@@ -86,52 +54,75 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
 
   it('creates new location unit', async () => {
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
-    await onSubmit(values, accessToken, props, props.user, setSubmittingMock);
+
+    await onSubmit(
+      setSubmittingMock,
+      values,
+      accessToken,
+      props.locationUnitGroup,
+      props.username,
+      props.id
+    );
     await act(async () => {
       await flushPromises();
     });
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: fetch.mock.calls[0][1]?.body,
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'POST',
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'GET',
+      },
+    ]);
+
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[1][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'POST',
+      },
     ]);
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'Location Unit Created successfully',
     });
   });
 
   it('handles error when creating new location unit', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    await onSubmit(values, accessToken, props, props.user, setSubmittingMock);
+
+    await onSubmit(
+      setSubmittingMock,
+      values,
+      accessToken,
+      props.locationUnitGroup,
+      props.username,
+      props.id
+    );
     await act(async () => {
       await flushPromises();
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
-      message: 'API is down',
+      description: undefined,
+      message: 'An error occurred',
     });
   });
 
   it('edits location unit successfully', async () => {
-    const newProps = {
-      ...props,
-      id: '1',
-    };
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -140,51 +131,71 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
       </Provider>
     );
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
-    await onSubmit(values, accessToken, newProps, props.user, setSubmittingMock);
+    await onSubmit(
+      setSubmittingMock,
+      values,
+      accessToken,
+      props.locationUnitGroup,
+      props.username,
+      '1'
+    );
     await act(async () => {
       wrapper.update();
       await flushPromises();
     });
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body:
-            '{"is_jurisdiction":true,"properties":{"geographicLevel":0,"username":"user_test","parentId":""},"id":"1","syncStatus":"Synced","type":"Feature","locationTags":[]}',
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[1][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'PUT',
+      },
     ]);
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
-      description: '',
+      description: undefined,
       message: 'Location Unit Updated successfully',
     });
     wrapper.unmount();
   });
 
   it('handles error when editing location unit', async () => {
-    const newProps = {
-      ...props,
-      id: '1',
-    };
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    await onSubmit(values, accessToken, newProps, props.user, setSubmittingMock);
+    await onSubmit(
+      setSubmittingMock,
+      values,
+      accessToken,
+      props.locationUnitGroup,
+      props.username,
+      '1'
+    );
+
     await act(async () => {
       await flushPromises();
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
-      description: '',
-      message: 'API is down',
+      description: undefined,
+      message: 'An error occurred',
     });
   });
 
@@ -203,43 +214,46 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
         },
       }),
     };
-    const newProps = {
-      ...props,
-      id: '1',
-    };
+
     fetch.once(JSON.stringify(sampleHierarchy));
-    await onSubmit(newValues, accessToken, newProps, props.user, setSubmittingMock);
+    await onSubmit(
+      setSubmittingMock,
+      newValues,
+      accessToken,
+      props.locationUnitGroup,
+      props.username,
+      '1'
+    );
+
     await act(async () => {
       await flushPromises();
     });
     // first call is made on the hierarchies endpoint to get geographic level
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body:
-            '{"is_jurisdiction":true,"properties":{"geographicLevel":0,"username":"user_test","parentId":"51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2"},"id":"1","syncStatus":"Synced","type":"Feature","locationTags":[],"geometry":{"type":"Feature","geometry":{"type":"Point","coordinates":[125.6,10.1]},"properties":{"name":"Dinagat Islands"}}}',
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
+        method: 'GET',
+      },
+    ]);
+
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: fetch.mock.calls[1][1].body,
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'PUT',
+      },
     ]);
   });
 
@@ -275,6 +289,9 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
   });
 
   it('Cancel button', () => {
+    const mockBack = jest.fn();
+    history.goBack = mockBack;
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -284,6 +301,16 @@ describe('containers/pages/locations/LocationUnitAddEdit', () => {
     );
 
     wrapper.find('button#cancel').simulate('click');
+
+    // click go back
+    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Save"`);
+    wrapper.find('button').first().simulate('click');
+
+    // click go back
+    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Cancel"`);
+    wrapper.find('button').last().simulate('click');
+
+    expect(mockBack).toHaveBeenCalled();
   });
 
   it('Update LocationUnitGroupValue', async () => {

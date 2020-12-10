@@ -17,7 +17,7 @@ import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from './fixtures';
 import { fetchCurrentChildren } from '../../../ducks/location-hierarchy';
 
-describe('containers/pages/locations/locationunit', () => {
+describe('Location-module/locationunit', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
@@ -65,18 +65,16 @@ describe('containers/pages/locations/locationunit', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/1?is_jurisdiction=true',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/1?is_jurisdiction=true',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
         },
-      ],
+        method: 'GET',
+      },
     ]);
     expect(wrapper.find('Table').at(1).text()).toEqual(
       'NameLevelActionsNairobi West2EditCentral2Edit1'
@@ -84,12 +82,9 @@ describe('containers/pages/locations/locationunit', () => {
     wrapper.unmount();
   });
 
-  it('test error thrown if API is down', async () => {
+  it('test error thrown if An error occurred', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    // fetch.once(JSON.stringify([])).once(JSON.stringify({}));
-    fetch
-      .mockReject(() => Promise.reject('API is down'))
-      .mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject('An error occurred'));
     loadSingleLocation(
       { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
       'sometoken',
@@ -109,8 +104,8 @@ describe('containers/pages/locations/locationunit', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'API is down',
-      description: '',
+      message: 'An error occurred',
+      description: undefined,
     });
   });
 });

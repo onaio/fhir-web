@@ -8,6 +8,9 @@ export const LOCATIONS_UNIT = 'Locations unit';
 export const LOCATIONS_UNIT_GROUP = 'Locations unit group';
 export const PRODUCT_CATALOGUE = 'Product Catalogue';
 export const ERROR_OCCURRED = 'An error occurred';
+export const PLANS = 'Plans';
+export const USERS = 'Users';
+export const ADMIN = 'Admin';
 
 // URLs
 export const URL_EXPRESS_LOGIN = '/login';
@@ -21,7 +24,7 @@ export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';
 export const URL_LOCATION_UNIT = '/location/unit';
 export const URL_LOCATION_UNIT_ADD = '/location/unit/add';
-export const URL_LOCATION_UNIT_EDIT = '/location/unit/edit';
+export const URL_LOCATION_UNIT_EDIT = '/location/unit/edit/:id';
 export const URL_LOCATION_UNIT_GROUP = '/location/group';
 export const URL_LOCATION_UNIT_GROUP_ADD = '/location/group/add';
-export const URL_LOCATION_UNIT_GROUP_EDIT = '/location/group/edit';
+export const URL_LOCATION_UNIT_GROUP_EDIT = '/location/group/edit/:id';

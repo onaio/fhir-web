@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/locations/locationunit renders without crashing 1`] = `
+exports[`Location-module/locationunit renders without crashing 1`] = `
 Object {
   "children": <Table
     accessToken="hunter 2"

@@ -4,7 +4,7 @@ import { Router } from 'react-router';
 import { history } from '@onaio/connected-reducer-registry';
 import Table, { TableData } from '../Table';
 
-describe('containers/pages/locations/locationunit', () => {
+describe('Location-module/locationunit', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
     tableData.push({

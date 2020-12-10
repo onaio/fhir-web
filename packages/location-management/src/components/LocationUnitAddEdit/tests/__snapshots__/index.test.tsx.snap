@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/locations/LocationUnitAddEdit renders without crashing 1`] = `
+exports[`location-management/src/components/LocationUnitAddEdit renders without crashing 1`] = `
 Object {
   "children": <Router
     history={
@@ -35,7 +35,7 @@ Object {
 }
 `;
 
-exports[`containers/pages/locations/LocationUnitAddEdit renders without crashing when editting 1`] = `
+exports[`location-management/src/components/LocationUnitAddEdit renders without crashing when editting 1`] = `
 Object {
   "children": <MemoryRouter
     initialEntries={

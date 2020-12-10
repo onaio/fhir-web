@@ -85,6 +85,14 @@ fieldset[disabled] .gatekeeper-btn.active {
 
 /* antd overrides */
 
+.ant-spin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 85vh;
+}
+
 .body-wrapper .layout-content {
   padding: 0 50px;
   margin-top: 20px;

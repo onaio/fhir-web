@@ -10,7 +10,7 @@ export interface LocationUnitGroupDetailProps extends LocationUnitGroup {
 const LocationUnitGroupDetail = (props: LocationUnitGroupDetailProps) => {
   const { name, active, description } = props;
   return (
-    <div className="p-4 bg-white">
+    <div id="LocationUnitGroupDetail" className="p-4 bg-white">
       <Button
         shape="circle"
         onClick={() => (props.onClose ? props.onClose() : '')}

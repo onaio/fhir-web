@@ -7,7 +7,7 @@ import { store } from '@opensrp/store';
 
 import LocationUnitGroupAddEdit from '..';
 
-describe('containers/pages/locations/LocationUnitGroupAddEdit', () => {
+describe('Location-module/LocationUnitGroupAddEdit', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>

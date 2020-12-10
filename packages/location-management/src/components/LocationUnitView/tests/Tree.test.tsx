@@ -11,7 +11,7 @@ const getHierarchy: TreeNode = generateJurisdictionTree(
   (fixtures.sampleHierarchy as unknown) as RawOpenSRPHierarchy
 );
 
-describe('containers/pages/locations/locationunit', () => {
+describe('Location-module/locationunit', () => {
   const tree = [getHierarchy.model] as ParsedHierarchyNode[];
 
   it('renders without crashing', () => {
