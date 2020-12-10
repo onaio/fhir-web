@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { CREATE_PLAN } from '../../../lang';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
+import { DRAFT_PLANS_LIST_VIEW_URL } from '../../../constants';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -40,6 +41,15 @@ describe('Create Plan Page', () => {
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
+
+    wrapper.find('button#planform-cancel-button').simulate('click');
+
+    wrapper.update();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((wrapper.find('Router').props() as any).history.location.pathname).toEqual(
+      DRAFT_PLANS_LIST_VIEW_URL
+    );
   });
 
   it('planForm gets configured', () => {

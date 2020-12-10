@@ -52,11 +52,17 @@ _Optional_(`(payload) => boolean`)
 
 hook called before the submitting is initiated, return boolean to indicate if submitting should proceed
 
-#### redirectAfterAction
+#### getRedirectPath
 
-_Optional_(`string`)
+**required**(`(planStatus) => string`)
 
-Takes user the defined route upon successfully submitting payload to api
+callback to get the path to redirect after successfully form submission
+
+#### onCancel
+
+**required**(`() => void`)
+
+callback called once user clicks on cancel in the plan form
 
 #### allFormActivities
 
