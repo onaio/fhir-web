@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { eusmPlans } from '../../../ducks/tests/fixtures';
-import { PLANS_LIST_VIEW_URL } from '../../../constants';
+import { ACTIVE_PLANS_LIST_VIEW_URL, PLANS_LIST_VIEW_URL } from '../../../constants';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
@@ -74,6 +74,15 @@ describe('CreateEditProduct Page', () => {
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
+
+    wrapper.find('button#planform-cancel-button').simulate('click');
+
+    wrapper.update();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((wrapper.find('Router').props() as any).history.location.pathname).toEqual(
+      ACTIVE_PLANS_LIST_VIEW_URL
+    );
   });
 
   it('planform is configured correctly', async () => {

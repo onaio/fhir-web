@@ -2,7 +2,7 @@
  */
 import { RouteParams } from '../../helpers/types';
 import React, { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { Layout, PageHeader } from 'antd';
 import planReducer, {
   fetchPlanDefinitions,
@@ -20,17 +20,19 @@ import {
   defaultCommonProps,
   defaultPropsForPlanForm,
   PropsForPlanForm,
+  redirectMapping,
+  redirectPathGetter,
 } from '../../helpers/common';
 import {
   defaultEnvConfig,
   getFormActivities,
   planActivities,
   PlanDefinition,
+  PlanStatus,
 } from '@opensrp/plan-form-core';
 import { PlanLoading } from '../../helpers/utils';
 import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp/plan-form';
 import { EDIT_PLAN } from '../../lang';
-import { PLANS_LIST_VIEW_URL } from '../../constants';
 
 /** register catalogue reducer */
 reducerRegistry.register(planReducerName, planReducer);
@@ -63,6 +65,7 @@ const EditPlanView = (props: EditViewTypes) => {
   const { plan, fetchPlan, serviceClass, baseURL, envConfigs, hiddenFields } = props;
   const { planId } = props.match.params;
   const [loading, setLoading] = useState<boolean>(!plan);
+  const history = useHistory();
 
   const { errorMessage, broken, handleBrokenPage } = useHandleBrokenPage();
 
@@ -93,15 +96,21 @@ const EditPlanView = (props: EditViewTypes) => {
     return <Resource404 />;
   }
 
+  /** called when user clicks on cancel on the plan form */
+  const cancelHandler = () => {
+    history.push(redirectMapping[plan.status as PlanStatus]);
+  };
+
   const initialValues = getPlanFormValues(plan);
   const productFormProps = {
     hiddenFields,
     baseURL,
     initialValues,
     ...propsForUpdatingPlans(plan.status),
-    redirectAfterAction: PLANS_LIST_VIEW_URL,
+    getRedirectPath: redirectPathGetter,
     allFormActivities: getFormActivities(planActivities, configs),
     envConfigs: configs,
+    onCancel: cancelHandler,
   };
 
   const pageTitle = EDIT_PLAN;
