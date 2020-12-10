@@ -11,7 +11,7 @@ import Table, { onDelete, TableData } from '../Table';
 import { Router } from 'react-router';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
-import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixtures';
+import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
@@ -125,9 +125,9 @@ describe('location-management/src/components/LocationTagView', () => {
 
   it('deletes location', async () => {
     const notificationSuccessMock = jest.spyOn(notification, 'success');
-    fetch.mockResponse(JSON.stringify(sampleLocationTagPayload));
+    fetch.mockResponse(JSON.stringify(sampleLocationUnitGroupPayload));
 
-    onDelete(sampleLocationTagPayload, 'sometoken');
+    onDelete(sampleLocationUnitGroupPayload, 'sometoken');
 
     await act(async () => {
       await flushPromises();
@@ -151,7 +151,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject('An error occurred'));
 
-    onDelete(sampleLocationTagPayload, 'sometoken');
+    onDelete(sampleLocationUnitGroupPayload, 'sometoken');
 
     await act(async () => {
       await flushPromises();

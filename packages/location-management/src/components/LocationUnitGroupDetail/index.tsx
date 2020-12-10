@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { LocationTag } from '../../ducks/location-tags';
+import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 
-export interface LocationTagDetailProps extends LocationTag {
+export interface LocationUnitGroupDetailProps extends LocationUnitGroup {
   onClose?: Function;
 }
 
-const LocationTagDetail = (props: LocationTagDetailProps) => {
+const LocationUnitGroupDetail = (props: LocationUnitGroupDetailProps) => {
   const { name, active, description } = props;
   return (
-    <div id="LocationTagDetail" className="p-4 bg-white">
+    <div id="LocationUnitGroupDetail" className="p-4 bg-white">
       <Button
         shape="circle"
         onClick={() => (props.onClose ? props.onClose() : '')}
@@ -34,4 +34,4 @@ const LocationTagDetail = (props: LocationTagDetailProps) => {
   );
 };
 
-export default LocationTagDetail;
+export default LocationUnitGroupDetail;

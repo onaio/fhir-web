@@ -8,7 +8,7 @@ import { useParams } from 'react-router';
 
 reducerRegistry.register(reducerName, reducer);
 
-export const LocationTagAddEdit: React.FC = () => {
+export const LocationUnitGroupAddEdit: React.FC = () => {
   const params: { id: string } = useParams();
   return (
     <Row className="layout-content">
@@ -25,4 +25,4 @@ export const LocationTagAddEdit: React.FC = () => {
   );
 };
 
-export default LocationTagAddEdit;
+export default LocationUnitGroupAddEdit;

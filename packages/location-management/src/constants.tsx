@@ -15,13 +15,13 @@ export const URL_LOCATION_UNIT_EDIT = URL_LOCATION_UNIT + '/edit';
 //
 // Location Tag
 //
-export const LOCATION_TAG_ALL = 'location-tag';
-export const LOCATION_TAG_GET = 'location-tag/';
-export const LOCATION_TAG_DELETE = 'location-tag/delete/';
+export const LOCATION_UNIT_GROUP_ALL = 'location-tag';
+export const LOCATION_UNIT_GROUP_GET = 'location-tag/';
+export const LOCATION_UNIT_GROUP_DELETE = 'location-tag/delete/';
 // Url
-export const URL_LOCATION_TAG = '/location/group';
-export const URL_LOCATION_TAG_ADD = URL_LOCATION_TAG + '/add';
-export const URL_LOCATION_TAG_EDIT = URL_LOCATION_TAG + '/edit';
+export const URL_LOCATION_UNIT_GROUP = '/location/group';
+export const URL_LOCATION_UNIT_GROUP_ADD = URL_LOCATION_UNIT_GROUP + '/add';
+export const URL_LOCATION_UNIT_GROUP_EDIT = URL_LOCATION_UNIT_GROUP + '/edit';
 
 //
 // Location HIERARCHY

@@ -9,7 +9,7 @@ import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 import * as fixtures from './fixtures';
 
-import { id, LocationTagValue, locationtag, treedata } from './fixtures';
+import { id, LocationUnitGroupValue, locationUnitgroup, treedata } from './fixtures';
 import Form, { FormField, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
@@ -27,14 +27,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     status: LocationUnitStatus.ACTIVE,
     type: 'Feature',
     parentId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
-    locationTags: fixtures.locationtag.map((loc) => loc.id),
+    locationTags: fixtures.locationUnitgroup.map((loc) => loc.id),
     geometry: undefined,
   };
 
   const props = {
     id: undefined,
     username: 'user_test',
-    locationtag: fixtures.locationtag,
+    locationUnitGroup: fixtures.locationUnitgroup,
   };
 
   const accessToken = 'sometoken';
@@ -44,7 +44,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationtag={locationtag} treedata={treedata} />
+          <Form locationUnitGroup={locationUnitgroup} treedata={treedata} />
         </Router>
       </Provider>
     );
@@ -59,7 +59,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       setSubmittingMock,
       values,
       accessToken,
-      props.locationtag,
+      props.locationUnitGroup,
       props.username,
       props.id
     );
@@ -108,7 +108,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       setSubmittingMock,
       values,
       accessToken,
-      props.locationtag,
+      props.locationUnitGroup,
       props.username,
       props.id
     );
@@ -126,12 +126,19 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form id="1" locationtag={locationtag} treedata={treedata} />
+          <Form id="1" locationUnitGroup={locationUnitgroup} treedata={treedata} />
         </Router>
       </Provider>
     );
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
-    await onSubmit(setSubmittingMock, values, accessToken, props.locationtag, props.username, '1');
+    await onSubmit(
+      setSubmittingMock,
+      values,
+      accessToken,
+      props.locationUnitGroup,
+      props.username,
+      '1'
+    );
     await act(async () => {
       wrapper.update();
       await flushPromises();
@@ -173,7 +180,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('handles error when editing location unit', async () => {
     fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    await onSubmit(setSubmittingMock, values, accessToken, props.locationtag, props.username, '1');
+    await onSubmit(
+      setSubmittingMock,
+      values,
+      accessToken,
+      props.locationUnitGroup,
+      props.username,
+      '1'
+    );
 
     await act(async () => {
       await flushPromises();
@@ -206,7 +220,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       setSubmittingMock,
       newValues,
       accessToken,
-      props.locationtag,
+      props.locationUnitGroup,
       props.username,
       '1'
     );
@@ -248,28 +262,30 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
-            initialValue={LocationTagValue}
+            initialValue={LocationUnitGroupValue}
             id={id}
-            locationtag={locationtag}
+            locationUnitGroup={locationUnitgroup}
             treedata={treedata}
           />
         </Router>
       </Provider>
     );
 
-    expect(wrapper.find('form input[name="name"]').prop('value')).toBe(LocationTagValue.name);
+    expect(wrapper.find('form input[name="name"]').prop('value')).toBe(LocationUnitGroupValue.name);
 
     expect(
-      wrapper.find(`form input[type="radio"][value="${LocationTagValue.status}"]`).prop('checked')
+      wrapper
+        .find(`form input[type="radio"][value="${LocationUnitGroupValue.status}"]`)
+        .prop('checked')
     ).toBe(true);
 
     expect(wrapper.find('form TreeSelect[className="ant-tree-select"]').prop('value')).toBe(
-      LocationTagValue.parentId
+      LocationUnitGroupValue.parentId
     );
     expect(
       wrapper.find('form Field[name="locationTags"] Select[prefixCls="ant-select"]').prop('value')
-    ).toBe(LocationTagValue.locationTags);
-    expect(wrapper.find('form input[name="type"]').prop('value')).toBe(LocationTagValue.type);
+    ).toBe(LocationUnitGroupValue.locationTags);
+    expect(wrapper.find('form input[name="type"]').prop('value')).toBe(LocationUnitGroupValue.type);
   });
 
   it('Cancel button', () => {
@@ -279,7 +295,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationtag={locationtag} treedata={treedata} />
+          <Form locationUnitGroup={locationUnitgroup} treedata={treedata} />
         </Router>
       </Provider>
     );
@@ -297,14 +313,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     expect(mockBack).toHaveBeenCalled();
   });
 
-  it('Update LocationTagValue', async () => {
+  it('Update LocationUnitGroupValue', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <Form
-            initialValue={LocationTagValue}
+            initialValue={LocationUnitGroupValue}
             id={id}
-            locationtag={locationtag}
+            locationUnitGroup={locationUnitgroup}
             treedata={treedata}
           />
         </Router>
@@ -318,11 +334,15 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
   });
 
-  it('Create LocationTagValue', async () => {
+  it('Create LocationUnitGroupValue', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form initialValue={LocationTagValue} locationtag={locationtag} treedata={treedata} />
+          <Form
+            initialValue={LocationUnitGroupValue}
+            locationUnitGroup={locationUnitgroup}
+            treedata={treedata}
+          />
         </Router>
       </Provider>
     );

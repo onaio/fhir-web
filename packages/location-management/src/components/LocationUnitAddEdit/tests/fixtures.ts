@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { HierarchyNode, ParsedHierarchyNode } from '../../../ducks/types';
-import { LocationTag } from '../../../ducks/location-tags';
+import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnitStatus } from '../../../ducks/location-units';
 import { FormField } from '../Form';
 
-export const locationtag: LocationTag[] = [
+export const locationUnitgroup: LocationUnitGroup[] = [
   { id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' },
   { id: 4, active: false, name: 'Option1', description: 'asdsad' },
   { id: 3, active: false, name: 'Sample 3', description: 'Sample description 3' },
@@ -164,7 +164,7 @@ export const sampleHierarchiesList = [
 
 export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
-export const LocationTagValue: FormField = {
+export const LocationUnitGroupValue: FormField = {
   name: 'Tunisia',
   parentId: '',
   status: LocationUnitStatus.ACTIVE,

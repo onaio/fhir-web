@@ -30,9 +30,9 @@ import {
   URL_LOCATION_UNIT,
   URL_HOME,
   URL_LOCATION_UNIT_ADD,
-  URL_LOCATION_TAG,
-  URL_LOCATION_TAG_ADD,
-  URL_LOCATION_TAG_EDIT,
+  URL_LOCATION_UNIT_GROUP,
+  URL_LOCATION_UNIT_GROUP_ADD,
+  URL_LOCATION_UNIT_GROUP_EDIT,
   URL_LOCATION_UNIT_EDIT,
 } from '../constants';
 import { providers } from '../configs/settings';
@@ -66,8 +66,8 @@ import ConnectedSidebar from '../containers/ConnectedSidebar';
 import {
   LocationUnitAddEdit,
   LocationUnitView,
-  LocationTagAddEdit,
-  LocationTagView,
+  LocationUnitGroupAddEdit,
+  LocationUnitGroupView,
 } from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
 import { productCatalogueProps, plansListProps } from './utils';
@@ -253,22 +253,22 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG}
-              component={LocationTagView}
+              path={URL_LOCATION_UNIT_GROUP}
+              component={LocationUnitGroupView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG_ADD}
-              component={LocationTagAddEdit}
+              path={URL_LOCATION_UNIT_GROUP_ADD}
+              component={LocationUnitGroupAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG_EDIT}
-              component={LocationTagAddEdit}
+              path={URL_LOCATION_UNIT_GROUP_EDIT}
+              component={LocationUnitGroupAddEdit}
             />
             <Route
               exact
