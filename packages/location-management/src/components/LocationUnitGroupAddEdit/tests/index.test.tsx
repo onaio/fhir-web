@@ -5,14 +5,14 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Router } from 'react-router';
 import { store } from '@opensrp/store';
 
-import LocationTagAddEdit from '..';
+import LocationUnitGroupAddEdit from '..';
 
-describe('Location-module/LocationTagAddEdit', () => {
+describe('Location-module/LocationUnitGroupAddEdit', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationTagAddEdit />
+          <LocationUnitGroupAddEdit />
         </Router>
       </Provider>
     );
@@ -24,7 +24,7 @@ describe('Location-module/LocationTagAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/54`, hash: '', search: '', state: {} }]}>
-          <Route path="/:id" component={LocationTagAddEdit} />
+          <Route path="/:id" component={LocationUnitGroupAddEdit} />
         </MemoryRouter>
       </Provider>
     );

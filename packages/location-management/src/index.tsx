@@ -1,7 +1,13 @@
 import LocationUnitAddEdit from './components/LocationUnitAddEdit';
 import LocationUnitView from './components/LocationUnitView';
-import LocationTagView from './components/LocationTagView';
-import LocationTagAddEdit from './components/LocationTagAddEdit';
+import LocationUnitGroupView from './components/LocationUnitGroupView';
+import LocationUnitGroupAddEdit from './components/LocationUnitGroupAddEdit';
 import Tree from './components/LocationTree';
 
-export { LocationUnitView, LocationUnitAddEdit, LocationTagView, LocationTagAddEdit, Tree };
+export {
+  LocationUnitView,
+  LocationUnitAddEdit,
+  LocationUnitGroupView,
+  LocationUnitGroupAddEdit,
+  Tree,
+};

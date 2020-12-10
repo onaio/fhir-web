@@ -82,7 +82,7 @@ describe('Location-module/Form', () => {
   });
 
   it('tests Update Payload', async () => {
-    fetch.once(JSON.stringify(fixtures.sampleLocationTagPayload));
+    fetch.once(JSON.stringify(fixtures.sampleLocationUnitGroupPayload));
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
         <Provider store={store}>
@@ -213,7 +213,7 @@ describe('Location-module/Form', () => {
   it('Handles errors on editing tag', async () => {
     fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    onSubmit(fixtures.sampleLocationTagPayload, 'sometoken', { id: '1' }, jest.fn());
+    onSubmit(fixtures.sampleLocationUnitGroupPayload, 'sometoken', { id: '1' }, jest.fn());
 
     await act(async () => {
       await flushPromises();

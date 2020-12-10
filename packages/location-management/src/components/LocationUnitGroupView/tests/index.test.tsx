@@ -4,31 +4,31 @@ import { mount, shallow } from 'enzyme';
 import { history } from '@onaio/connected-reducer-registry';
 import { Router } from 'react-router';
 import React from 'react';
-import LocationTagView from '..';
+import LocationUnitGroupView from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { sampleLocationTagPayload } from '../../LocationTagAddEdit/tests/fixtures';
+import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { notification } from 'antd';
 
-describe('location-management/src/components/LocationTagView', () => {
+describe('location-management/src/components/LocationUnitGroupView', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
   it('renders without crashing', async () => {
     shallow(
       <Router history={history}>
-        <LocationTagView />
+        <LocationUnitGroupView />
       </Router>
     );
   });
 
   it('works correctly with store', async () => {
-    fetch.mockResponse(JSON.stringify([sampleLocationTagPayload]));
+    fetch.mockResponse(JSON.stringify([sampleLocationUnitGroupPayload]));
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationTagView />
+          <LocationUnitGroupView />
         </Router>
       </Provider>
     );
@@ -53,7 +53,7 @@ describe('location-management/src/components/LocationTagView', () => {
     mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationTagView />
+          <LocationUnitGroupView />
         </Router>
       </Provider>
     );

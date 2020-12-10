@@ -7,13 +7,13 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
-import { API_BASE_URL, LOCATION_TAG_ALL, LOCATION_TAG_GET } from '../../constants';
+import { API_BASE_URL, LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
-  LocationTag,
-  LocationTagPayloadPOST,
-  LocationTagPayloadPUT,
-} from '../../ducks/location-tags';
+  LocationUnitGroup,
+  LocationUnitGroupPayloadPOST,
+  LocationUnitGroupPayloadPUT,
+} from '../../ducks/location-unit-groups';
 import { Ripple } from '@onaio/loaders';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
@@ -57,16 +57,16 @@ export const onSubmit = (
   props: Props,
   setSubmitting: (isSubmitting: boolean) => void
 ) => {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_ALL);
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GROUP_ALL);
 
-  const payload: LocationTagPayloadPOST | LocationTagPayloadPUT = values;
+  const payload: LocationUnitGroupPayloadPOST | LocationUnitGroupPayloadPUT = values;
 
   if (props.id) {
-    (payload as LocationTagPayloadPUT).id = props.id;
+    (payload as LocationUnitGroupPayloadPUT).id = props.id;
     serve
       .update(payload)
       .then(() => {
-        sendSuccessNotification('Location Tag updated successfully');
+        sendSuccessNotification('Location Unit Group updated successfully');
         setSubmitting(false);
         history.goBack();
       })
@@ -78,7 +78,7 @@ export const onSubmit = (
     serve
       .create(payload)
       .then(() => {
-        sendSuccessNotification('Location Tag successfully');
+        sendSuccessNotification('Location Unit Group successfully');
         setSubmitting(false);
         history.goBack();
       })
@@ -101,10 +101,14 @@ export const Form: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (isLoading) {
       if (props.id) {
-        const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_TAG_GET + props.id);
+        const serve = new OpenSRPService(
+          accessToken,
+          API_BASE_URL,
+          LOCATION_UNIT_GROUP_GET + props.id
+        );
         serve
           .list()
-          .then((response: LocationTag) => {
+          .then((response: LocationUnitGroup) => {
             setInitialValue({
               active: response.active,
               description: response.description,

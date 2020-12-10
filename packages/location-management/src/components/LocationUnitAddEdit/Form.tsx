@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
-import { LocationTag } from '../../ducks/location-tags';
+import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 
@@ -42,7 +42,7 @@ const defaultFormField: FormField = {
 export interface Props {
   id?: string;
   initialValue?: FormField;
-  locationtag: LocationTag[];
+  locationUnitGroup: LocationUnitGroup[];
   treedata: ParsedHierarchyNode[];
 }
 
@@ -53,8 +53,8 @@ const userSchema = Yup.object().shape({
   status: Yup.string().required('Status is Required'),
   type: Yup.string().typeError('Type must be a String').required('Type is Required'),
   externalId: Yup.string().typeError('External id must be a String'),
-  locationTags: Yup.array().typeError('location Tags must be an Array'),
-  geometry: Yup.string().typeError('location Tags must be a An String'),
+  locationTags: Yup.array().typeError('location Unit Groupss must be an Array'),
+  geometry: Yup.string().typeError('location Unit Groups must be a An String'),
 });
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -84,7 +84,7 @@ function removeEmptykeys(obj: any) {
  * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
- * @param {Array<LocationTag>} locationtag all locationtag
+ * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
  * @param {string} username username of logged in user
  * @param {number} id location unit
  */
@@ -92,15 +92,15 @@ export const onSubmit = async (
   setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   accessToken: string,
-  locationtag: LocationTag[],
+  locationUnitgroup: LocationUnitGroup[],
   username: string,
   id?: string
 ) => {
-  const locationTagFiler = locationtag.filter((e) =>
+  const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
     (values.locationTags as number[]).includes(e.id)
   );
 
-  const locationTag: LocationUnitTag[] = locationTagFiler.map((tag: LocationUnitTag) => ({
+  const locationTag: LocationUnitTag[] = locationUnitGroupFiler.map((tag: LocationUnitTag) => ({
     id: tag.id,
     name: tag.name,
   }));
@@ -203,7 +203,16 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(setSubmitting, values, accessToken, props.locationtag, user.username, props.id)}
+      ) =>
+        onSubmit(
+          setSubmitting,
+          values,
+          accessToken,
+          props.locationUnitGroup,
+          user.username,
+          props.id
+        )
+      }
     >
       {({ isSubmitting, handleSubmit }) => (
         <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
@@ -254,7 +263,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               optionFilterProp="children"
               filterOption={filterFunction}
             >
-              {props.locationtag.map((e) => (
+              {props.locationUnitGroup.map((e) => (
                 <Select.Option key={e.id} value={e.id}>
                   {e.name}
                 </Select.Option>

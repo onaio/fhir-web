@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Location-module/LocationTagAddEdit render with id without crashing 1`] = `
+exports[`Location-module/LocationUnitGroupAddEdit render with id without crashing 1`] = `
 Array [
   <HelmetWrapper
     defer={true}
@@ -28,7 +28,7 @@ Array [
 ]
 `;
 
-exports[`Location-module/LocationTagAddEdit renders without crashing 1`] = `
+exports[`Location-module/LocationUnitGroupAddEdit renders without crashing 1`] = `
 Array [
   <HelmetWrapper
     defer={true}
