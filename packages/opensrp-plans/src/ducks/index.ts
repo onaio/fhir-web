@@ -10,11 +10,6 @@ import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
 /** the reducer name */
 export const reducerName = 'PlanDefinition';
 
-/** list of plan types displayed
- * TODO: To be moved to env
- */
-export const DISPLAYED_PLAN_TYPES = 'FI,IRS,MDA,MDA-Point,Dynamic-FI,Dynamic-IRS,Dynamic-MDA,SM';
-
 // actions
 
 /** PLAN_DEFINITION_FETCHED action type */
@@ -303,15 +298,19 @@ export const getPlanDefinitionsArrayByPlanIds = (planKey?: string) => {
  */
 export const FilterPlanDefinitionsByInterventionType = (
   plans: PlanDefinition[],
-  filters: string = DISPLAYED_PLAN_TYPES
+  filters?: string
 ) => {
-  return plans.filter(
-    (plan) =>
-      plan.useContext.filter(
-        (context) =>
-          context.code === 'interventionType' && filters.includes(context.valueCodableConcept)
-      ).length > 0
-  );
+  if (filters) {
+    return plans.filter(
+      (plan) =>
+        plan.useContext.filter(
+          (context) =>
+            context.code === 'interventionType' && filters.includes(context.valueCodableConcept)
+        ).length > 0
+    );
+  } else {
+    return plans;
+  }
 };
 
 /** Gets an array of Plan objects filtered by intervention type
@@ -353,8 +352,8 @@ export const makePlanDefinitionsArraySelector = (
       getPlanDefinitionsArrayByPlanIds(planKey),
       getPlanDefinitionsArrayByStatus(planKey),
     ],
-    (plans1, plans2, plans3) => {
-      let finalPlans = intersect([plans1, plans2, plans3], JSON.stringify);
+    (plans1, plans2, plans3, plans4) => {
+      let finalPlans = intersect([plans1, plans2, plans3, plans4], JSON.stringify);
       if (sortField) {
         finalPlans = descendingOrderSort(finalPlans, sortField);
       }
