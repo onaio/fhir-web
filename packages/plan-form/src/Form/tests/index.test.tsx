@@ -10,7 +10,6 @@ import { mission1, newPayload1 } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PLAN_LIST_URL } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 
 jest.mock('@opensrp/notifications', () => {
@@ -615,18 +614,66 @@ describe('containers/forms/PlanForm', () => {
   });
 
   it('Clicking on cancel takes you to list page', async () => {
+    const cancelMock = jest.fn();
+    const props = {
+      onCancel: cancelMock,
+    };
     const wrapper = mount(
       <MemoryRouter>
-        <PlanForm />
+        <PlanForm {...props} />
       </MemoryRouter>
     );
-    // Set title for the plan
+
     wrapper.find('button#planform-cancel-button').simulate('click');
 
     wrapper.update();
 
+    expect(cancelMock).toHaveBeenCalled();
+  });
+
+  it('test redirectPath getter', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const initialValues = getPlanFormValues(mission1);
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const afterSubmitMock = jest.fn();
+
+    const getRedirectPath = (planStatus) => {
+      if (planStatus === PlanStatus.DRAFT) {
+        return '/draftPlans';
+      } else {
+        return '/otherPlans';
+      }
+    };
+
+    const props = {
+      initialValues,
+      afterSubmit: afterSubmitMock,
+      getRedirectPath,
+    };
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: container }
+    );
+
+    wrapper
+      .find('#description textarea')
+      .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise<any>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(afterSubmitMock).toHaveBeenCalled();
+
     expect((wrapper.find('Router').props() as Dictionary).history.location.pathname).toEqual(
-      PLAN_LIST_URL
+      '/otherPlans'
     );
   });
 });
