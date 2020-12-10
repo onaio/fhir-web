@@ -207,6 +207,8 @@ exports[`containers/forms/PlanForm renders correctly: date field 2`] = `
   id="planForm_description"
   onChange={[Function]}
   onKeyDown={[Function]}
+  placeholder="Enter the plans Description"
+  rows={4}
   style={Object {}}
   value=""
 />
@@ -369,6 +371,7 @@ exports[`containers/forms/PlanForm renders correctly: title field 1`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  placeholder="Enter the Plan's name"
   required={true}
   type="text"
   value=""

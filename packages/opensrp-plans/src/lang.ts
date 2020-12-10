@@ -11,3 +11,6 @@ export const ACTIONS = 'Actions';
 export const MESSAGE = 'Fetching Plans';
 export const DESCRIPTION = 'Please wait, as we fetch the plans.';
 export const TIP = 'Loading...';
+
+export const EDIT_PLAN = `Edit mission`;
+export const CREATE_PLAN = `Create new mission`;

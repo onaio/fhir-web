@@ -1,7 +1,7 @@
 import React from 'react';
 import { Spin, Alert } from 'antd';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import { PLANS_LIST_VIEW_URL, TableColumnsNamespace } from '../../constants';
+import { PLANS_EDIT_VIEW_URL, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { NAME, DATE, ACTIONS, TIP, MESSAGE, DESCRIPTION } from '../../lang';
@@ -11,7 +11,7 @@ import { NAME, DATE, ACTIONS, TIP, MESSAGE, DESCRIPTION } from '../../lang';
 export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (record) => {
   return (
     <>
-      <Link to={`${PLANS_LIST_VIEW_URL}/${record.identifier}`}>View</Link>
+      <Link to={`${PLANS_EDIT_VIEW_URL}/${record.identifier}`}>View</Link>
     </>
   );
 };
