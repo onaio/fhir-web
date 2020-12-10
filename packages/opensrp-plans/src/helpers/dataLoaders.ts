@@ -28,11 +28,11 @@ export async function loadPlans(
   baseURL: string,
   service: typeof OpenSRPService = OpenSRPService,
   actionCreator: typeof fetchPlanDefinitions = fetchPlanDefinitions,
-  planStatusParam?: string
+  planStatus?: string
 ) {
   const serve = new service(OPENSRP_PLANS, baseURL);
   return serve
-    .list(planStatusParam ? { status: planStatusParam } : null)
+    .list(planStatus ? { status: planStatus } : null)
     .then((response: PlanDefinition[] | null) => {
       if (response === null) {
         return Promise.reject(new Error('No data found'));
