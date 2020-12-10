@@ -265,6 +265,7 @@ export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
  *
  * @param {PlanDefinition[]} plans - plan definitions array
  * @param {string} status - plan status
+ * @param {string} sortField - plan sort field
  * @returns {PlanDefinition[]} - plan definitions array
  */
 export const filterPlansByStatus = (
