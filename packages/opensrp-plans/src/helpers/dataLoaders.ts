@@ -21,7 +21,7 @@ export class OpenSRPService extends GenericOpenSRPService {
  * @param {string} baseURL -  base url of api
  * @param {OpenSRPService} service - the opensrp service
  * @param {fetchPlanDefinitions} actionCreator - Action creator; creates actions that adds plans to the store
- * @param {string} planStatusParam - plan's status
+ * @param {string} planStatus - plan's status
  * @returns {Promise<void>}
  */
 export async function loadPlans(
