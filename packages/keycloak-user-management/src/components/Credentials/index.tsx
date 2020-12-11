@@ -140,7 +140,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   return (
     <Row className="layout-content">
       <h5 className="mb-3">
-        {CREDENTIALS} | {keycloakUser?.username || '-'}
+        {CREDENTIALS} | {keycloakUser ? keycloakUser.username : ''}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
