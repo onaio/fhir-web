@@ -47,4 +47,21 @@ describe('components/ConnectedSidebar', () => {
     expect(wrapper.find('aside').length).toBe(1);
     wrapper.unmount();
   });
+
+  it('displays menu links for enabled modules', () => {
+    const envModule = require('../../../configs/env');
+    envModule.ENABLE_FORM_CONFIGURATION = 'true';
+    envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
+    envModule.ENABLE_PLANS = 'true';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('aside').props()).toMatchSnapshot();
+    wrapper.unmount();
+  });
 });
