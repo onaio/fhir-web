@@ -85,8 +85,8 @@ export const processActivitiesDates = (planActivities: PlanActivityFormFields[])
 export const processToBasePlanForm = (formValues: PlanFormFields): BasePlanFormFields => {
   const baseFormValues = {
     ...formValues,
-    start: formValues.dateRange[0].toDate(),
-    end: formValues.dateRange[1].toDate(),
+    start: (formValues.dateRange[0] as Moment).toDate(),
+    end: (formValues.dateRange[1] as Moment).toDate(),
     date: (formValues.date as Moment).toDate(),
   };
   delete (baseFormValues as Dictionary).dateRange;

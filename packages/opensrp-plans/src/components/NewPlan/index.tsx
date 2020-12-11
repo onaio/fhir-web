@@ -48,6 +48,7 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
   const planActivitiesMap = getPlanActivitiesMap(configs);
   const initialValues = {
     ...defaultInitialValues,
+    dateRange: [undefined, undefined],
     activities: processActivitiesDates(planActivitiesMap[InterventionType.SM]),
   };
 
