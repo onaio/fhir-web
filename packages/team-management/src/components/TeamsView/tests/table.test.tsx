@@ -42,7 +42,6 @@ describe('components/TeamsView/table', () => {
           <Table
             setPractitionersList={() => jest.fn()}
             setDetail={() => jest.fn()}
-            opensrpBaseURL=""
             accessToken="hunter 2"
             data={tableData}
           />
@@ -58,7 +57,6 @@ describe('components/TeamsView/table', () => {
         <Table
           setPractitionersList={() => jest.fn()}
           setDetail={() => jest.fn()}
-          opensrpBaseURL=""
           accessToken="hunter 2"
           data={tableData}
           onViewDetails={() => wrapper.unmount()}
@@ -77,7 +75,6 @@ describe('components/TeamsView/table', () => {
           <Table
             setPractitionersList={() => jest.fn()}
             setDetail={() => jest.fn()}
-            opensrpBaseURL=""
             accessToken="hunter 2"
             data={tableData}
           />

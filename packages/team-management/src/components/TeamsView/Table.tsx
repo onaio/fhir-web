@@ -12,20 +12,18 @@ export interface TableData extends Organization {
 export interface Props {
   data: TableData[];
   accessToken: string;
-  opensrpBaseURL: string;
   setDetail: (isLoading: string | Organization) => void;
   setPractitionersList: (isLoading: string | Practitioner[]) => void;
   onViewDetails?: (
     row: TableData,
     accessToken: string,
-    opensrpBaseURL: string,
     setDetail: (isLoading: string | Organization) => void,
     setPractitionersList: (isLoading: string | Practitioner[]) => void
   ) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { accessToken, setDetail, onViewDetails, setPractitionersList, opensrpBaseURL } = props;
+  const { accessToken, setDetail, onViewDetails, setPractitionersList } = props;
 
   const columns = [
     {
@@ -51,7 +49,7 @@ const Table: React.FC<Props> = (props: Props) => {
           <Button
             onClick={() => {
               if (onViewDetails) {
-                onViewDetails(record, accessToken, opensrpBaseURL, setDetail, setPractitionersList);
+                onViewDetails(record, accessToken, setDetail, setPractitionersList);
               }
             }}
             type="link"

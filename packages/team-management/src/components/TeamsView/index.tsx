@@ -16,7 +16,13 @@ import reducer, {
   reducerName,
 } from '../../ducks/organizations';
 import { getAccessToken } from '@onaio/session-reducer';
-import { ERROR_OCCURRED, TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
+import {
+  API_BASE_URL,
+  ERROR_OCCURRED,
+  TEAMS_GET,
+  TEAM_PRACTITIONERS,
+  URL_ADD_TEAM,
+} from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
@@ -31,22 +37,16 @@ reducerRegistry.register(reducerName, reducer);
  *
  * @param {TableData} row data selected from the table
  * @param {string} accessToken - access token
- * @param {string} opensrpBaseURL - base url
  * @param {Function} setDetail funtion to set detail to state
  * @param {Function} setPractitionersList funtion to set detail to state
  */
 export const loadSingleTeam = (
   row: TableData,
   accessToken: string,
-  opensrpBaseURL: string,
   setDetail: (isLoading: string | Organization) => void,
   setPractitionersList: (isLoading: string | Practitioner[]) => void
 ): void => {
-  const serve = new OpenSRPService(
-    accessToken,
-    opensrpBaseURL,
-    TEAM_PRACTITIONERS + row.identifier
-  );
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + row.identifier);
   serve
     .list()
     .then((response: Practitioner[]) => {
@@ -56,21 +56,11 @@ export const loadSingleTeam = (
     .catch(() => sendErrorNotification(ERROR_OCCURRED));
 };
 
-export interface Props {
-  opensrpBaseURL: string;
-}
-
-/** default component props */
-export const defaultProps = {
-  opensrpBaseURL: '',
-};
-
 /** Function which shows the list of all teams and there details
  *
- * @param {Object} props - TeamsView component props
  * @returns {Function} returns team display
  */
-const TeamsView: React.FC<Props> = (props: Props) => {
+const TeamsView: React.FC = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const teamsArray = useSelector((state) => getOrganizationsArray(state));
@@ -79,11 +69,10 @@ const TeamsView: React.FC<Props> = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState('');
   const [filter, setfilterData] = useState<TableData[] | null>(null);
-  const { opensrpBaseURL } = props;
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new OpenSRPService(accessToken, opensrpBaseURL, TEAMS_GET);
+      const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_GET);
       serve
         .list()
         .then((response: Organization[]) => {
@@ -158,7 +147,6 @@ const TeamsView: React.FC<Props> = (props: Props) => {
               data={value.length < 1 ? tableData : (filter as TableData[])}
               onViewDetails={loadSingleTeam}
               accessToken={accessToken}
-              opensrpBaseURL={opensrpBaseURL}
               setPractitionersList={
                 setPractitionersList as (isLoading: string | Practitioner[]) => void
               }
@@ -181,7 +169,5 @@ const TeamsView: React.FC<Props> = (props: Props) => {
     </section>
   );
 };
-
-TeamsView.defaultProps = defaultProps;
 
 export default TeamsView;
