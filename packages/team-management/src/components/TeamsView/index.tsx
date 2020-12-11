@@ -16,18 +16,13 @@ import reducer, {
   reducerName,
 } from '../../ducks/organizations';
 import { getAccessToken } from '@onaio/session-reducer';
-import {
-  API_BASE_URL,
-  ERROR_OCCURRED,
-  TEAMS_GET,
-  TEAM_PRACTITIONERS,
-  URL_ADD_TEAM,
-} from '../../constants';
+import { ERROR_OCCURRED, TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
+import { API_BASE_URL } from '../../configs/env';
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);
