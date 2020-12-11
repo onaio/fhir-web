@@ -68,6 +68,13 @@ describe('Create Plan Page', () => {
     const helmet = Helmet.peek();
     expect(helmet.title).toEqual(CREATE_PLAN);
 
+    // testing implementation details at its best.
+    // date range field has not initial value
+    expect(wrapper.find('FormItem#dateRange RangePicker').first().props().value).toEqual([
+      undefined,
+      undefined,
+    ]);
+
     // check interventionType hidden
     expect(wrapper.find('FormItem#interventionType').props().hidden).toBeTruthy();
 
