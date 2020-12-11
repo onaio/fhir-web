@@ -16,6 +16,7 @@ export const TRASH = 'Trash';
 export const LOCATIONS = 'Locations';
 export const USERS = 'Users';
 export const ADMIN = 'Admin';
+export const MISSIONS = 'Missions';
 
 // URLs
 export const URL_EXPRESS_LOGIN = '/login';
