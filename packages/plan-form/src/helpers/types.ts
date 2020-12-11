@@ -13,6 +13,8 @@ export type AfterSubmit = (payload: PlanDefinition) => void;
 
 export type PlanFormConfig = EnvConfig;
 
-export type PlanFormFields = Omit<BasePlanFormFields, 'start' | 'end'> & { dateRange: Moment[] };
+export type PlanFormFields = Omit<BasePlanFormFields, 'start' | 'end'> & {
+  dateRange: (Moment | undefined)[];
+};
 
 export type PlanFormFieldsKeys = keyof PlanFormFields;
