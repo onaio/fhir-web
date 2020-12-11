@@ -42,25 +42,24 @@ export interface LocationUnitTag {
 /** location interface */
 export interface LocationUnit {
   id: string | number;
-  key?: string;
   properties: Properties;
-  syncStatus: LocationUnitSyncStatus;
   type: string;
+  syncStatus?: LocationUnitSyncStatus;
   locationTags?: LocationUnitTag[];
-  geometry?: Geometry;
+  geometry?: Geometry; // todo : need to impliment the functionality
+  serverVersion?: number; // received by the response thought we dont really use it
   parentId?: string;
 }
 
 /** interface for the POST payload */
 export interface LocationUnitPayloadPOST {
   properties?: Properties;
-  syncStatus?: LocationUnitSyncStatus;
+  syncStatus: LocationUnitSyncStatus;
   type: string;
   locationTags?: LocationUnitTag[];
   geometry?: Geometry;
   textEntry?: string[];
-  // we will remove this id as it should be auto generated on server
-  id: string | number;
+  id: string | number; // todo : we will remove this later as it should be auto generated on server
 }
 
 /** interface for the PUT payload */
