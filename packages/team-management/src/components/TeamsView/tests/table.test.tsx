@@ -63,9 +63,22 @@ describe('components/TeamsView/table', () => {
         />
       </Router>
     );
-
-    wrapper.find('.viewdetails').first().simulate('click');
+    wrapper.find('.viewdetails').at(0).simulate('click');
     expect(wrapper).toHaveLength(0);
+  });
+
+  it('Test Table View Detail when onViewDetail prop is not passed', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <Table
+          setPractitionersList={() => jest.fn()}
+          setDetail={() => jest.fn()}
+          accessToken="hunter 2"
+          data={tableData}
+        />
+      </Router>
+    );
+    wrapper.find('.viewdetails').at(0).simulate('click');
   });
 
   it('Test Name Sorting functionality', () => {
