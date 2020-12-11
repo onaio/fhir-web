@@ -11,7 +11,6 @@ import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
   LOCATIONS_UNIT_GROUP_SET,
-  PLANS,
   PRODUCT_CATALOGUE,
   TEAMS,
   URL_ADMIN,
@@ -25,6 +24,7 @@ import {
   DRAFT,
   COMPLETE,
   TRASH,
+  MISSIONS,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import { ENABLE_PLANS, ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
@@ -60,6 +60,30 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         </Link>
       </div>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" className="menu-dark">
+        {ENABLE_PLANS && (
+          <Menu.SubMenu key="missions" icon={<DashboardOutlined />} title={MISSIONS}>
+            <Menu.Item key="plans-active">
+              <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
+                {ACTIVE}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="plans-draft">
+              <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
+                {DRAFT}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="plans-complete">
+              <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
+                {COMPLETE}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="plans-trash">
+              <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
+                {TRASH}
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title={USERS}>
@@ -81,30 +105,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                 {PRODUCT_CATALOGUE}
               </Link>
             </Menu.Item>
-          )}
-          {ENABLE_PLANS && (
-            <Menu.SubMenu key="admin-locations" title={PLANS}>
-              <Menu.Item key="plans-active">
-                <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
-                  {ACTIVE}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="plans-draft">
-                <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
-                  {DRAFT}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="plans-complete">
-                <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
-                  {COMPLETE}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="plans-trash">
-                <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
-                  {TRASH}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
           )}
           <Menu.SubMenu key="admin-locations" title={LOCATIONS}>
             <Menu.Item key="locations-unit">{LOCATIONS_UNIT}</Menu.Item>
