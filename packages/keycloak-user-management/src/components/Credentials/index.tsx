@@ -117,7 +117,7 @@ export const submitForm = (
 };
 
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
+  const { serviceClass, match, accessToken, keycloakBaseURL, keycloakUser } = props;
   const userId = match.params[ROUTE_PARAM_USER_ID];
   const layout = {
     labelCol: {
@@ -139,7 +139,9 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   const history = useHistory();
   return (
     <Row className="layout-content">
-      <h5 className="mb-3">{CREDENTIALS}</h5>
+      <h5 className="mb-3">
+        {CREDENTIALS} | {keycloakUser?.username || '-'}
+      </h5>
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form
