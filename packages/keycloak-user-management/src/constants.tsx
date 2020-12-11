@@ -29,6 +29,6 @@ export const PRACTITIONER_UPDATED_SUCCESSFULLY = 'Practitioner updated successfu
 export const NO_DATA_FOUND = 'No Data Found';
 
 // rendered text
-export const CREDENTIALS = 'Credentials';
-export const RESET_PASSWORD = 'Reset Password';
+export const CREDENTIALS = 'User Credentials';
+export const RESET_PASSWORD = 'Set password';
 export const CANCEL = 'Cancel';
