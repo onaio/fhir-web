@@ -7,7 +7,7 @@ import reducer, { fetchCurrentChildren, reducerName } from '../../ducks/location
 import { AntTreeProps } from '../LocationUnitView';
 import { Dictionary } from '@onaio/utils';
 import { useDispatch } from 'react-redux';
-
+import './tree.css';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
@@ -82,7 +82,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @returns {object} - returns obj with title, key and children
    */
   function loop(data: ParsedHierarchyNode[]): AntTreeProps[] {
-    data.map((item) => {
+    return data.map((item) => {
       const index = item.title.toLowerCase().indexOf(searchValue);
       const beforeStr = item.title.toLowerCase().substr(0, index);
       const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
@@ -105,8 +105,6 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         return { title, key: item.key } as AntTreeProps;
       }
     });
-
-    return (data as unknown) as AntTreeProps[];
   }
 
   const generateFilterData = (data: ParsedHierarchyNode[]) => {
