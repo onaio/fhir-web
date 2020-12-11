@@ -174,7 +174,7 @@ describe('components/CreateEditUser', () => {
     );
 
     // Loader should be displayed
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
       await flushPromises();

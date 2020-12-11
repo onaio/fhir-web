@@ -55,3 +55,25 @@ export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROT
 
 /** Activate the product-catalogue menu */
 export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CATALOGUE === 'true';
+
+/** Activate the plans menu */
+export const ENABLE_PLANS = process.env.REACT_APP_ENABLE_PLANS === 'true';
+
+export const DATE_FORMAT = process.env.REACT_APP_DATE_FORMAT || 'yyyy-MM-DD';
+
+export const DEFAULT_TIME = process.env.REACT_APP_DEFAULT_TIME || 'T00:00:00+00:00';
+
+export const DEFAULT_PLAN_DURATION_DAYS = process.env.REACT_APP_DEFAULT_PLAN_DURATION_DAYS || 20;
+
+export const DEFAULT_ACTIVITY_DURATION_DAYS =
+  process.env.REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS || 7;
+
+export const PLAN_UUID_NAMESPACE =
+  process.env.REACT_APP_PLAN_UUID_NAMESPACE || '85f7dbbf-07d0-4c92-aa2d-d50d141dde00';
+
+export const ACTION_UUID_NAMESPACE =
+  process.env.REACT_APP_ACTION_UUID_NAMESPACE || '35968df5-f335-44ae-8ae5-25804caa2d86';
+
+export const DEFAULT_PLAN_VERSION = process.env.REACT_APP_DEFAULT_PLAN_VERSION || '1';
+
+export const TASK_GENERATION_STATUS = process.env.REACT_APP_TASK_GENERATION_STATUS || 'internal';

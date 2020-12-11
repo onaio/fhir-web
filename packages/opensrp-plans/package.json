@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/plans",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Opensrp plans",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -35,13 +35,22 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
+    "@opensrp/store": "^0.0.7",
     "antd": "^4.6.3",
-    "react": "^16.18.1"
+    "react": "^16.18.1",
+    "react-redux": "^7.2.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.1"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/plan-form-core": "^0.0.1"
+    "@onaio/redux-reducer-registry": "^0.0.9",
+    "@opensrp/plan-form": "0.0.2-1",
+    "@opensrp/plan-form-core": "^0.0.1",
+    "@opensrp/react-utils": "^0.0.1",
+    "@opensrp/server-service": "^0.0.12"
   }
 }

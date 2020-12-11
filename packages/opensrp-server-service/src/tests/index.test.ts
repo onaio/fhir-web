@@ -62,9 +62,9 @@ describe('services/OpenSRP', () => {
     fetch.mockResponseOnce(JSON.stringify({}));
     const service = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'location');
 
-    await service.list({ is_jurisdiction: true });
+    await service.list({ is_jurisdiction: true, attribute: 'card_status:needs_card' });
     expect(fetch.mock.calls[0][0]).toEqual(
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true'
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true&attribute=card_status:needs_card'
     );
   });
 

@@ -10,11 +10,6 @@ import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
 /** the reducer name */
 export const reducerName = 'PlanDefinition';
 
-/** list of plan types displayed
- * TODO: To be moved to env
- */
-export const DISPLAYED_PLAN_TYPES = 'FI,IRS,MDA,MDA-Point,Dynamic-FI,Dynamic-IRS,Dynamic-MDA';
-
 // actions
 
 /** PLAN_DEFINITION_FETCHED action type */
@@ -169,15 +164,20 @@ export function getPlanDefinitionById(state: Partial<Store>, id: string): PlanDe
  *
  * @param {object} state - the redux store
  * @param {InterventionType | null} interventionType - the PlanDefinition intervention Type
+ * @param {string} sortField - field to sort by
  * @returns {PlanDefinition[]} an array of PlanDefinition objects
  */
 export function getPlanDefinitionsArray(
   state: Partial<Store>,
-  interventionType: InterventionType | null = null
+  interventionType: InterventionType | null = null,
+  sortField?: string
 ): PlanDefinition[] {
   const result = values((state as Dictionary)[reducerName].planDefinitionsById);
   if (interventionType) {
     return result.filter((e: PlanDefinition) => isPlanDefinitionOfType(e, interventionType));
+  }
+  if (sortField) {
+    return descendingOrderSort(result, sortField);
   }
   return result;
 }
@@ -188,6 +188,11 @@ export function getPlanDefinitionsArray(
 export interface PlanDefinitionFilters {
   title?: string /** plan object title */;
   planIds?: string[] | null /** return only plans whose id appear here */;
+  status?: string;
+}
+
+export interface PlanDefinitionGetters extends PlanDefinitionFilters {
+  sortField?: string;
 }
 
 /** planDefinitionsByIdBaseSelector selects store slice object with of all plans
@@ -218,6 +223,22 @@ export const planDefinitionsArrayBaseSelector = (planKey?: string) => (
  */
 export const getTitle = (_: Partial<Store>, props: PlanDefinitionFilters) => props.title;
 
+/** Gets status from PlanFilters
+ *
+ * @param {object} _ - the redux store
+ * @param {object} props - the plan filters object
+ * @returns {string} return status
+ */
+export const getStatus = (_: Partial<Store>, props: PlanDefinitionFilters) => props.status;
+
+/** sortField Getter
+ *
+ * @param {object} _ - the redux store
+ * @param {object} props - the plan object
+ * @returns {string} return sort field
+ */
+export const getSortField = (_: Partial<Store>, props: PlanDefinitionGetters) => props.sortField;
+
 /** Gets planIds from PlanFilters
  *
  * @param {object} _ - the redux store
@@ -235,6 +256,22 @@ export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
   createSelector([planDefinitionsArrayBaseSelector(planKey), getTitle], (plans, title) =>
     title ? plans.filter((plan) => plan.title.toLowerCase().includes(title.toLowerCase())) : plans
   );
+/** Filter plans by status
+ *
+ * @param {PlanDefinition[]} plans - plan definitions array
+ * @param {string} status - plan status
+ * @returns {PlanDefinition[]} - plan definitions array
+ */
+export const filterPlansByStatus = (plans: PlanDefinition[], status?: string | undefined) =>
+  status ? plans.filter((plan) => plan.status === status) : plans;
+
+/** Gets an array of Plan objects filtered by plan title
+ *
+ * @param {string} planKey - plan identifier
+ * @returns {Function} returns createSelector method
+ */
+export const getPlanDefinitionsArrayByStatus = (planKey?: string) =>
+  createSelector([planDefinitionsArrayBaseSelector(planKey), getStatus], filterPlansByStatus);
 
 /** get plans for the given planIds
  *
@@ -261,15 +298,19 @@ export const getPlanDefinitionsArrayByPlanIds = (planKey?: string) => {
  */
 export const FilterPlanDefinitionsByInterventionType = (
   plans: PlanDefinition[],
-  filters: string = DISPLAYED_PLAN_TYPES
+  filters?: string
 ) => {
-  return plans.filter(
-    (plan) =>
-      plan.useContext.filter(
-        (context) =>
-          context.code === 'interventionType' && filters.includes(context.valueCodableConcept)
-      ).length > 0
-  );
+  if (filters) {
+    return plans.filter(
+      (plan) =>
+        plan.useContext.filter(
+          (context) =>
+            context.code === 'interventionType' && filters.includes(context.valueCodableConcept)
+        ).length > 0
+    );
+  } else {
+    return plans;
+  }
 };
 
 /** Gets an array of Plan objects filtered by intervention type
@@ -309,9 +350,10 @@ export const makePlanDefinitionsArraySelector = (
       getPlanDefinitionsArrayByInterventionType(planKey),
       getPlanDefinitionsArrayByTitle(planKey),
       getPlanDefinitionsArrayByPlanIds(planKey),
+      getPlanDefinitionsArrayByStatus(planKey),
     ],
-    (plans1, plans2, plans3) => {
-      let finalPlans = intersect([plans1, plans2, plans3], JSON.stringify);
+    (plans1, plans2, plans3, plans4) => {
+      let finalPlans = intersect([plans1, plans2, plans3, plans4], JSON.stringify);
       if (sortField) {
         finalPlans = descendingOrderSort(finalPlans, sortField);
       }

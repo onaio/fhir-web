@@ -17,9 +17,23 @@ import {
   URL_HOME,
   URL_TEAMS,
   USER_MANAGEMENT,
+  LOCATIONS,
+  USERS,
+  ADMIN,
+  ACTIVE,
+  DRAFT,
+  COMPLETE,
+  TRASH,
+  MISSIONS,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
-import { ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
+import { ENABLE_PLANS, ENABLE_PRODUCT_CATALOGUE } from '../../../configs/env';
+import {
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  TRASH_PLANS_LIST_VIEW_URL,
+} from '@opensrp/plans';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -46,9 +60,33 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         </Link>
       </div>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" className="menu-dark">
-        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title="Admin">
+        {ENABLE_PLANS && (
+          <Menu.SubMenu key="missions" icon={<DashboardOutlined />} title={MISSIONS}>
+            <Menu.Item key="plans-active">
+              <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
+                {ACTIVE}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="plans-draft">
+              <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
+                {DRAFT}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="plans-complete">
+              <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
+                {COMPLETE}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="plans-trash">
+              <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
+                {TRASH}
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
+        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.SubMenu key="users" title="Users">
+            <Menu.SubMenu key="users" title={USERS}>
               <Menu.Item key="users">
                 <Link to={URL_ADMIN} className="admin-link">
                   {USER_MANAGEMENT}
@@ -68,7 +106,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Link>
             </Menu.Item>
           )}
-          <Menu.SubMenu key="admin-locations" title="Locations">
+          <Menu.SubMenu key="admin-locations" title={LOCATIONS}>
             <Menu.Item key="locations-unit">{LOCATIONS_UNIT}</Menu.Item>
             <Menu.Item key="locations-unit-group">{LOCATIONS_UNIT_GROUP}</Menu.Item>
             <Menu.Item key="locations-unit-group-set">{LOCATIONS_UNIT_GROUP_SET}</Menu.Item>
