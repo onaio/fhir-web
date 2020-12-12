@@ -99,11 +99,12 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           )}
         </span>
       );
-      if (item.children) {
-        return { title, key: item.key, children: loop(item.children) } as AntTreeProps;
-      } else {
-        return { title, key: item.key } as AntTreeProps;
-      }
+
+      return {
+        ...item,
+        title: title,
+        children: item.children ? loop(item.children) : undefined,
+      } as AntTreeProps;
     });
   }
 
@@ -126,7 +127,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(_, node: Dictionary) => {
+        onClick={(e, node: Dictionary<any>) => {
           const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
           if (node.children) {
             const children = [node, ...node.children];
