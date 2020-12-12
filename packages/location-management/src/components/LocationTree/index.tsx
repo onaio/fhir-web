@@ -12,15 +12,7 @@ reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
   data: ParsedHierarchyNode[];
-  OnItemClick?: (
-    item: ParsedHierarchyNode,
-    [expandedKeys, setExpandedKeys]: [React.Key[], (key: React.Key[]) => void]
-  ) => void;
 }
-
-const defaultProps: Partial<TreeProp> = {
-  data: [],
-};
 
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const { data } = props;
@@ -143,7 +135,5 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     </div>
   );
 };
-
-Tree.defaultProps = defaultProps;
 
 export default Tree;
