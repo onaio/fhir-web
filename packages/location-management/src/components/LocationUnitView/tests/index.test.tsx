@@ -15,7 +15,6 @@ import LocationUnitView, {
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, parsedTreeNode, rawHierarchy, parsedHierarchy } from './fixtures';
-import { fetchCurrentChildren } from '../../../ducks/location-hierarchy';
 import { TreeNode } from '../../../ducks/types';
 import toJson from 'enzyme-to-json';
 
@@ -234,39 +233,50 @@ describe('Location-module/location unit', () => {
     expect(wrapper.find('Table').first().props()).toMatchSnapshot();
   });
 
-  // it('renders fetched data correctly', async () => {
-  //   fetch.once(JSON.stringify(baseLocationUnits));
-  //   loadSingleLocation(
-  //     { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
-  //     'sometoken',
-  //     jest.fn()
-  //   );
-  //   store.dispatch(fetchCurrentChildren((treedata[0].children as unknown) as TreeNode[]));
-  //   const wrapper = mount(
-  //     <Provider store={store}>
-  //       <Router history={history}>
-  //         <LocationUnitView />
-  //       </Router>
-  //     </Provider>
-  //   );
-  //   await act(async () => {
-  //     await flushPromises();
-  //     wrapper.update();
-  //   });
+  it('change table view when clicked on tree node', async () => {
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
-  //   expect(fetch.mock.calls[0]).toEqual([
-  //     'https://opensrp-stage.smartregister.org/opensrp/rest/location/1?is_jurisdiction=true',
-  //     {
-  //       headers: {
-  //         accept: 'application/json',
-  //         authorization: 'Bearer sometoken',
-  //         'content-type': 'application/json;charset=UTF-8',
-  //       },
-  //       method: 'GET',
-  //     },
-  //   ]);
-  //   expect(wrapper.find('Table').at(1).text()).toEqual(
-  //     'NameLevelActionsNairobi West2EditCentral2Edit1'
-  //   );
-  // });
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitView />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    const tablelastrow = {
+      geographicLevel: baseLocationUnits[2].properties.geographicLevel,
+      id: baseLocationUnits[2].id,
+      key: '2',
+      name: baseLocationUnits[2].properties.name,
+    };
+
+    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow);
+
+    // test table with tree node without any child
+    const treeItemwithoutchild = wrapper.find('span.ant-tree-title').last();
+    treeItemwithoutchild.simulate('click');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow); // table didn't change
+
+    // test table with tree node with child
+    const treeItemwithchild = wrapper.find('span.ant-tree-title').first();
+    treeItemwithchild.simulate('click');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('tbody BodyRow').last().prop('record')).not.toMatchObject(tablelastrow); // table changed
+  });
 });
