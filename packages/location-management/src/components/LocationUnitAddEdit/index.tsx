@@ -8,8 +8,8 @@ import {
   LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GROUP_ALL,
-  API_BASE_URL,
 } from '../../constants';
+import { API_BASE_URL } from '../../configs/env';
 import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
