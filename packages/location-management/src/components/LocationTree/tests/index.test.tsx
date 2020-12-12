@@ -11,7 +11,7 @@ describe('Location-module/locationunit', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree data={treedata} />
+        <Tree data={treedata} OnItemClick={jest.fn} />
       </Provider>
     );
 
@@ -25,7 +25,7 @@ describe('Location-module/locationunit', () => {
   it('test tree search functionality', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree data={treedata} />
+        <Tree data={treedata} OnItemClick={jest.fn} />
       </Provider>
     );
 
@@ -39,10 +39,12 @@ describe('Location-module/locationunit', () => {
     expect(wrapper.find('.searchValue')).toHaveLength(1);
   });
 
-  it('expand tree child using click', async () => {
+  it('right props are passed on click', async () => {
+    const mockfn = jest.fn();
+
     const wrapper = mount(
       <Provider store={store}>
-        <Tree data={treedata} />
+        <Tree data={treedata} OnItemClick={mockfn} />
       </Provider>
     );
 
@@ -50,8 +52,38 @@ describe('Location-module/locationunit', () => {
       await flushPromises();
     });
 
-    const treeItem = wrapper.find('span.ant-tree-title').first();
+    const treeItem = wrapper.find('span.ant-tree-title').last();
     treeItem.simulate('click');
+
+    expect(mockfn).toBeCalledWith({
+      children: undefined,
+      id: '6bf9c085-350b-4bb2-990f-80dc2caafb33',
+      key: 'Malawi',
+      label: 'Malawi',
+      node: {
+        attributes: {
+          geographicLevel: 0,
+        },
+        locationId: '6bf9c085-350b-4bb2-990f-80dc2caafb33',
+        name: 'Malawi',
+        voided: false,
+      },
+      title: 'Malawi',
+    });
+  });
+
+  it('expand tree child using click', async () => {
+    const mockfn = jest.fn();
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={treedata} OnItemClick={jest.fn()} />
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
 
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
     expect(treeNode.children()).toHaveLength(treedata.length); // as per structure make sure we have 3 tree
