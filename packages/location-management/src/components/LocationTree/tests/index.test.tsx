@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Tree from '../';
-import * as fixtures from './fixtures';
+import { treedata } from './fixtures';
 import { store } from '@onaio/redux-reducer-registry';
 import { Provider } from 'react-redux';
 import { act } from 'react-dom/test-utils';
@@ -11,7 +11,7 @@ describe('Location-module/locationunit', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree data={fixtures.treedata} />
+        <Tree data={treedata} />
       </Provider>
     );
 
@@ -25,7 +25,7 @@ describe('Location-module/locationunit', () => {
   it('test tree search functionality', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree data={fixtures.treedata} />
+        <Tree data={treedata} />
       </Provider>
     );
 
@@ -42,7 +42,7 @@ describe('Location-module/locationunit', () => {
   it('expand tree child using click', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree data={fixtures.treedata} />
+        <Tree data={treedata} />
       </Provider>
     );
 
@@ -54,12 +54,12 @@ describe('Location-module/locationunit', () => {
     treeItem.simulate('click');
 
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
-    expect(treeNode.children()).toHaveLength(fixtures.treedata.length); // as per structure make sure we have 3 tree
+    expect(treeNode.children()).toHaveLength(treedata.length); // as per structure make sure we have 3 tree
 
     const expandButton = treeNode.find('span.ant-tree-switcher').first();
     expandButton.simulate('click');
 
     treeNode = wrapper.find('.ant-tree-list-holder-inner');
-    expect(treeNode.children().length).toBeGreaterThan(fixtures.treedata.length); // as per structure make sure the parent tree is expended i.e more child
+    expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
   });
 });
