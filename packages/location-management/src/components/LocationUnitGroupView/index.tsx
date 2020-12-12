@@ -15,11 +15,8 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
-import {
-  API_BASE_URL,
-  LOCATION_UNIT_GROUP_ALL,
-  URL_LOCATION_UNIT_GROUP_ADD,
-} from '../../constants';
+import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../constants';
+import { API_BASE_URL } from '../../configs/env';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
 import { Ripple } from '@onaio/loaders';

@@ -5,11 +5,8 @@ import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import {
-  API_BASE_URL,
-  LOCATION_UNIT_GROUP_DELETE,
-  URL_LOCATION_UNIT_GROUP_EDIT,
-} from '../../constants';
+import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
+import { API_BASE_URL } from '../../configs/env';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
