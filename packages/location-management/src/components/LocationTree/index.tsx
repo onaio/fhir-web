@@ -3,7 +3,7 @@ import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ParsedHierarchyNode } from '../../ducks/types';
-import reducer, { fetchCurrentChildren, reducerName } from '../../ducks/location-hierarchy';
+import reducer, { reducerName } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
 import { Dictionary } from '@onaio/utils';
 import { useDispatch } from 'react-redux';
@@ -12,10 +12,11 @@ reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
   data: ParsedHierarchyNode[];
+  OnItemClick: (item: ParsedHierarchyNode) => void;
 }
 
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
-  const { data } = props;
+  const { data, OnItemClick } = props;
   const dispatch = useDispatch();
 
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
@@ -93,6 +94,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       );
 
       return {
+        // important : we are mixing the antTreeProps with ParsedHierarchyNode
         ...item,
         title: title,
         children: item.children ? loop(item.children) : undefined,
@@ -119,12 +121,19 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(e, node: Dictionary<any>) => {
-          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
-          if (node.children) {
-            const children = [node, ...node.children];
-            dispatch(fetchCurrentChildren(children));
-          }
+        onClick={(e, node) => {
+          // seperating all data mixed with ParsedHierarchyNode
+          let temp = node as ParsedHierarchyNode & any;
+          let typedNode: ParsedHierarchyNode = {
+            children: node.children as ParsedHierarchyNode[],
+            id: temp.id,
+            key: temp.key,
+            label: temp.label,
+            node: temp.node,
+            title: temp.title.props.children,
+          };
+          OnItemClick(typedNode);
+          const allExpandedKeys = [...new Set([...expandedKeys, typedNode.id])];
           setExpandedKeys(allExpandedKeys);
         }}
         onExpand={onExpand}
