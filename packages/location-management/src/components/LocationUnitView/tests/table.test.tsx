@@ -18,7 +18,7 @@ describe('Location-module/locationunit', () => {
   it('renders without crashing', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
+        <Table data={tableData} />
       </Router>
     );
     expect(wrapper.props()).toMatchSnapshot();
@@ -27,12 +27,7 @@ describe('Location-module/locationunit', () => {
   it('Test Table View Detail', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table
-          setDetail={() => jest.fn()}
-          accessToken="hunter 2"
-          data={tableData}
-          onViewDetails={() => wrapper.unmount()}
-        />
+        <Table data={tableData} onViewDetails={() => wrapper.unmount()} />
       </Router>
     );
 
@@ -45,7 +40,7 @@ describe('Location-module/locationunit', () => {
   it('Test Table View Detai prop is undefined', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
+        <Table data={tableData} />
       </Router>
     );
 
@@ -58,7 +53,7 @@ describe('Location-module/locationunit', () => {
   it('Test Table Edit', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
+        <Table data={tableData} />
       </Router>
     );
     const firstAction = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
@@ -68,7 +63,7 @@ describe('Location-module/locationunit', () => {
   it('Test Name Sorting functionality', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
+        <Table data={tableData} />
       </Router>
     );
 
@@ -85,7 +80,7 @@ describe('Location-module/locationunit', () => {
   it('Test Level Sorting functionality', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table setDetail={() => jest.fn()} accessToken="hunter 2" data={tableData} />
+        <Table data={tableData} />
       </Router>
     );
 

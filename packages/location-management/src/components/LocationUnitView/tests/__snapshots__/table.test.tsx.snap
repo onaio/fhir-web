@@ -3,7 +3,6 @@
 exports[`Location-module/locationunit renders without crashing 1`] = `
 Object {
   "children": <Table
-    accessToken="hunter 2"
     data={
       Array [
         Object {
@@ -32,7 +31,6 @@ Object {
         },
       ]
     }
-    setDetail={[Function]}
   />,
   "history": Object {
     "action": "POP",
