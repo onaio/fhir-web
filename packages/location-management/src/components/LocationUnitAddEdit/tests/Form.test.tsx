@@ -9,12 +9,12 @@ import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 import * as fixtures from './fixtures';
 
-import { id, LocationUnitGroupValue, locationUnitgroup, treedata } from './fixtures';
+import { id, LocationUnitGroupValue, locationUnitgroups, treedata } from './fixtures';
 import Form, { FormField, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
-import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
 import { LocationUnitStatus } from '../../../ducks/location-units';
 import { history } from '@onaio/connected-reducer-registry';
+import { rawHierarchy } from '../../LocationUnitView/tests/fixtures';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
@@ -27,14 +27,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     status: LocationUnitStatus.ACTIVE,
     type: 'Feature',
     parentId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
-    locationTags: fixtures.locationUnitgroup.map((loc) => loc.id),
+    locationTags: locationUnitgroups.map((loc) => loc.id),
     geometry: undefined,
   };
 
   const props = {
     id: undefined,
     username: 'user_test',
-    locationUnitGroup: fixtures.locationUnitgroup,
+    locationUnitGroup: locationUnitgroups,
   };
 
   const accessToken = 'sometoken';
@@ -44,7 +44,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationUnitGroup={locationUnitgroup} treedata={treedata} />
+          <Form locationUnitGroup={locationUnitgroups} treedata={treedata} />
         </Router>
       </Provider>
     );
@@ -126,7 +126,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form id="1" locationUnitGroup={locationUnitgroup} treedata={treedata} />
+          <Form id="1" locationUnitGroup={locationUnitgroups} treedata={treedata} />
         </Router>
       </Provider>
     );
@@ -215,7 +215,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       }),
     };
 
-    fetch.once(JSON.stringify(sampleHierarchy));
+    fetch.once(JSON.stringify(rawHierarchy));
     await onSubmit(
       setSubmittingMock,
       newValues,
@@ -264,7 +264,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
           <Form
             initialValue={LocationUnitGroupValue}
             id={id}
-            locationUnitGroup={locationUnitgroup}
+            locationUnitGroup={locationUnitgroups}
             treedata={treedata}
           />
         </Router>
@@ -295,7 +295,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationUnitGroup={locationUnitgroup} treedata={treedata} />
+          <Form locationUnitGroup={locationUnitgroups} treedata={treedata} />
         </Router>
       </Provider>
     );
@@ -320,7 +320,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
           <Form
             initialValue={LocationUnitGroupValue}
             id={id}
-            locationUnitGroup={locationUnitgroup}
+            locationUnitGroup={locationUnitgroups}
             treedata={treedata}
           />
         </Router>
@@ -340,7 +340,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         <Router history={history}>
           <Form
             initialValue={LocationUnitGroupValue}
-            locationUnitGroup={locationUnitgroup}
+            locationUnitGroup={locationUnitgroups}
             treedata={treedata}
           />
         </Router>
