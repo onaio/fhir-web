@@ -17,6 +17,7 @@ import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, parsedTreeNode, rawHierarchy, parsedHierarchy } from './fixtures';
 import { fetchCurrentChildren } from '../../../ducks/location-hierarchy';
 import { TreeNode } from '../../../ducks/types';
+import toJson from 'enzyme-to-json';
 
 describe('Location-module/location unit', () => {
   beforeEach(() => {
@@ -109,42 +110,129 @@ describe('Location-module/location unit', () => {
     expect(response).toMatchObject([rawHierarchy[2]]);
   });
 
-  // it('location unit table renders correctly', async () => {
-  //   fetch.mockResponse(JSON.stringify(baseLocationUnits));
-  //   // fetch.mockResponse(JSON.stringify(rawHierarchy[0]));
-  //   // fetch.mockResponse(JSON.stringify(rawHierarchy[1]));
-  //   // fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
+  it('fail loading location ', async () => {
+    const notificationErrorMock = jest.spyOn(notification, 'error');
 
-  //   const wrapper = mount(
-  //     <Provider store={store}>
-  //       <Router history={history}>
-  //         <LocationUnitView />
-  //       </Router>
-  //     </Provider>
-  //   );
+    fetch.mockReject();
 
-  //   await act(async () => {
-  //     await flushPromises();
-  //   });
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitView />
+        </Router>
+      </Provider>
+    );
 
-  //   expect(fetch.mock.calls).toMatchInlineSnapshot(`
-  //     Array [
-  //       Array [
-  //         "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status%3AActive%2CgeographicLevel%3A0",
-  //         Object {
-  //           "headers": Object {
-  //             "accept": "application/json",
-  //             "authorization": "Bearer null",
-  //             "content-type": "application/json;charset=UTF-8",
-  //           },
-  //           "method": "GET",
-  //         },
-  //       ],
-  //     ]
-  //   `);
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
-  //   expect(wrapper.find('Table').first().props()).toMatchSnapshot();
-  // });
+    expect(notificationErrorMock).toHaveBeenCalledWith({
+      message: 'An error occurred',
+      description: undefined,
+    });
+  });
+
+  it('fail loading location hierarchy', async () => {
+    const notificationErrorMock = jest.spyOn(notification, 'error');
+
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockReject();
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitView />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith({
+      message: 'An error occurred',
+      description: undefined,
+    });
+  });
+
+  it('location unit table renders correctly', async () => {
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitView />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(fetch.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status%3AActive%2CgeographicLevel%3A0",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
+          },
+          "method": "GET",
+        },
+      ]
+    `);
+    expect(fetch.mock.calls[1]).toMatchInlineSnapshot(`
+      Array [
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
+          },
+          "method": "GET",
+        },
+      ]
+    `);
+    expect(fetch.mock.calls[2]).toMatchInlineSnapshot(`
+      Array [
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
+          },
+          "method": "GET",
+        },
+      ]
+    `);
+    expect(fetch.mock.calls[3]).toMatchInlineSnapshot(`
+      Array [
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
+          },
+          "method": "GET",
+        },
+      ]
+    `);
+
+    expect(wrapper.find('Table').first().props()).toMatchSnapshot();
+  });
 
   // it('renders fetched data correctly', async () => {
   //   fetch.once(JSON.stringify(baseLocationUnits));
