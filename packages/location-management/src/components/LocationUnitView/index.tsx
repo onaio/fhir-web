@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
+import reducer, { reducerName } from '../../ducks/location-hierarchy';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,13 +29,12 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
   getAllHierarchiesArray,
-  getCurrentChildren,
   fetchAllHierarchies,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { generateJurisdictionTree } from '../LocationTree/utils';
 
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -128,11 +128,9 @@ export const LocationUnitView: React.FC = () => {
     getAllHierarchiesArray(state)
   ) as unknown) as ParsedHierarchyNode[];
   const dispatch = useDispatch();
-  const currentParentChildren = (useSelector((state) =>
-    getCurrentChildren(state)
-  ) as unknown) as ParsedHierarchyNode[];
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
+  const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
 
   useEffect(() => {
     if (!treeData.length) {
@@ -167,7 +165,15 @@ export const LocationUnitView: React.FC = () => {
       <h5 className="mb-3">Location Unit Management</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={treeData} />
+          <Tree
+            data={treeData}
+            OnItemClick={(node) => {
+              if (node.children) {
+                const children = [node, ...node.children];
+                setCurrentParentChildren(children);
+              }
+            }}
+          />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
