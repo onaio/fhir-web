@@ -8,7 +8,7 @@ import {
 } from '../../../ducks/location-units';
 import { FormField } from '../Form';
 
-export const locationUnitgroup: LocationUnitGroup[] = [
+export const locationUnitgroups: LocationUnitGroup[] = [
   { id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' },
   { id: 4, active: false, name: 'Option1', description: 'asdsad' },
   { id: 3, active: false, name: 'Sample 3', description: 'Sample description 3' },
@@ -32,7 +32,7 @@ export const sampleLocationUnit: LocationUnit = {
   locationTags: [{ id: 2, name: 'Sample 3' }],
 };
 
-export const sampleHierarchiesList: LocationUnit[] = [
+export const BaseLocationUnits: LocationUnit[] = [
   {
     type: 'Feature',
     id: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
