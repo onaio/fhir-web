@@ -53,19 +53,11 @@ describe('Location-module/locationunit', () => {
     const treeItem = wrapper.find('span.ant-tree-title').first();
     treeItem.simulate('click');
 
-    await act(async () => {
-      await flushPromises();
-    });
-
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
     expect(treeNode.children()).toHaveLength(fixtures.treedata.length); // as per structure make sure we have 3 tree
 
     const expandButton = treeNode.find('span.ant-tree-switcher').first();
     expandButton.simulate('click');
-
-    await act(async () => {
-      await flushPromises();
-    });
 
     treeNode = wrapper.find('.ant-tree-list-holder-inner');
     expect(treeNode.children().length).toBeGreaterThan(fixtures.treedata.length); // as per structure make sure the parent tree is expended i.e more child
