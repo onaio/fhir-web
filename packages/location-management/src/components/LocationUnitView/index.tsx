@@ -56,15 +56,15 @@ export interface AntTreeProps {
 export function loadSingleLocation(
   row: TableData,
   accessToken: string,
-  setDetail?: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
+  setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
 ): void {
-  if (setDetail) setDetail('loading');
+  setDetail('loading');
   const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   serve
     .read(row.id, { is_jurisdiction: true })
     .then((res: LocationUnit) => {
-      if (setDetail) setDetail(res);
+      setDetail(res);
     })
     .catch(() => sendErrorNotification('An error occurred'));
 }
@@ -110,7 +110,7 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
  * @param {string} accessToken - Access token to be used for requests
  * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
  */
-async function getHierarchy(location: LocationUnit[], accessToken: string) {
+export async function getHierarchy(location: LocationUnit[], accessToken: string) {
   const hierarchy: RawOpenSRPHierarchy[] = [];
 
   for await (const loc of location) {

@@ -6,101 +6,60 @@ import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import { notification } from 'antd';
 import { Router } from 'react-router';
-import LocationUnitView, { loadSingleLocation } from '..';
-import {
-  sampleHierarchiesList,
-  sampleLocationUnit,
-  treedata,
-} from '../../LocationUnitAddEdit/tests/fixtures';
+import LocationUnitView, {
+  loadSingleLocation,
+  getBaseTreeNode,
+  parseTableData,
+  getHierarchy,
+} from '..';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import { sampleHierarchy } from './fixtures';
+import { baseLocationUnits, parsedTreeNode, rawHierarchy, parsedHierarchy } from './fixtures';
 import { fetchCurrentChildren } from '../../../ducks/location-hierarchy';
+import { TreeNode } from '../../../ducks/types';
 
-describe('Location-module/locationunit', () => {
+describe('Location-module/location unit', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
-  it('renders without crashing', () => {
-    shallow(
-      <Provider store={store}>
-        <LocationUnitView />
-      </Provider>
-    );
-  });
-  it('location unit table renders correctly', async () => {
-    fetch.once(JSON.stringify(sampleHierarchiesList)).once(JSON.stringify(sampleHierarchy));
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <LocationUnitView />
-        </Router>
-      </Provider>
-    );
+
+  it('test resolve loadSingleLocation', async () => {
+    fetch.mockResponse(JSON.stringify(baseLocationUnits[0]));
+    let called = jest.fn();
+
+    const row = {
+      geographicLevel: parsedHierarchy[0].node.attributes.geographicLevel,
+      id: parsedHierarchy[0].id,
+      key: '0',
+      name: parsedHierarchy[0].title,
+    };
+
+    loadSingleLocation(row, 'accessToken', called);
+
+    expect(called).toBeCalledWith('loading');
+
     await act(async () => {
       await flushPromises();
-      wrapper.update();
-    });
-    expect(wrapper.find('Table').first().props()).toMatchSnapshot();
-    wrapper.unmount();
-  });
-
-  it('renders fetched data correctly', async () => {
-    fetch.once(JSON.stringify(sampleLocationUnit));
-    loadSingleLocation(
-      { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
-      'sometoken',
-      jest.fn()
-    );
-    store.dispatch(fetchCurrentChildren(treedata[0].children));
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <LocationUnitView />
-        </Router>
-      </Provider>
-    );
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/1?is_jurisdiction=true',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-    expect(wrapper.find('Table').at(1).text()).toEqual(
-      'NameLevelActionsNairobi West2EditCentral2Edit1'
-    );
-    wrapper.unmount();
+    expect(called).toBeCalledWith(baseLocationUnits[0]);
   });
 
-  it('test error thrown if An error occurred', async () => {
+  it('test fail loadSingleLocation', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject('An error occurred'));
-    loadSingleLocation(
-      { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
-      'sometoken',
-      jest.fn()
-    );
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <LocationUnitView />
-        </Router>
-      </Provider>
-    );
+    fetch.mockReject();
+
+    const row = {
+      geographicLevel: parsedHierarchy[0].node.attributes.geographicLevel,
+      id: parsedHierarchy[0].id,
+      key: '0',
+      name: parsedHierarchy[0].title,
+    };
+
+    loadSingleLocation(row, 'accessToken', jest.fn());
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
@@ -108,4 +67,118 @@ describe('Location-module/locationunit', () => {
       description: undefined,
     });
   });
+
+  it('test getBaseTreeNode', async () => {
+    fetch.mockResponse(JSON.stringify(baseLocationUnits));
+
+    let response = await getBaseTreeNode('accessToken');
+
+    expect(response).toMatchObject(baseLocationUnits);
+  });
+
+  it('test parseTableData', () => {
+    let response = parseTableData(parsedHierarchy);
+
+    expect(response).toMatchObject([
+      {
+        geographicLevel: parsedHierarchy[0].node.attributes.geographicLevel,
+        id: parsedHierarchy[0].id,
+        key: '0',
+        name: parsedHierarchy[0].title,
+      },
+      {
+        geographicLevel: parsedHierarchy[1].node.attributes.geographicLevel,
+        id: parsedHierarchy[1].id,
+        key: '1',
+        name: parsedHierarchy[1].title,
+      },
+      {
+        geographicLevel: parsedHierarchy[2].node.attributes.geographicLevel,
+        id: parsedHierarchy[2].id,
+        key: '2',
+        name: parsedHierarchy[2].title,
+      },
+    ]);
+  });
+
+  it('test getHierarchy', async () => {
+    fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
+
+    let response = await getHierarchy([baseLocationUnits[2]], 'accessToken');
+
+    expect(response).toMatchObject([rawHierarchy[2]]);
+  });
+
+  // it('location unit table renders correctly', async () => {
+  //   fetch.mockResponse(JSON.stringify(baseLocationUnits));
+  //   // fetch.mockResponse(JSON.stringify(rawHierarchy[0]));
+  //   // fetch.mockResponse(JSON.stringify(rawHierarchy[1]));
+  //   // fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
+
+  //   const wrapper = mount(
+  //     <Provider store={store}>
+  //       <Router history={history}>
+  //         <LocationUnitView />
+  //       </Router>
+  //     </Provider>
+  //   );
+
+  //   await act(async () => {
+  //     await flushPromises();
+  //   });
+
+  //   expect(fetch.mock.calls).toMatchInlineSnapshot(`
+  //     Array [
+  //       Array [
+  //         "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status%3AActive%2CgeographicLevel%3A0",
+  //         Object {
+  //           "headers": Object {
+  //             "accept": "application/json",
+  //             "authorization": "Bearer null",
+  //             "content-type": "application/json;charset=UTF-8",
+  //           },
+  //           "method": "GET",
+  //         },
+  //       ],
+  //     ]
+  //   `);
+
+  //   expect(wrapper.find('Table').first().props()).toMatchSnapshot();
+  // });
+
+  // it('renders fetched data correctly', async () => {
+  //   fetch.once(JSON.stringify(baseLocationUnits));
+  //   loadSingleLocation(
+  //     { id: '1', geographicLevel: 0, key: 'key', name: 'Name' },
+  //     'sometoken',
+  //     jest.fn()
+  //   );
+  //   store.dispatch(fetchCurrentChildren((treedata[0].children as unknown) as TreeNode[]));
+  //   const wrapper = mount(
+  //     <Provider store={store}>
+  //       <Router history={history}>
+  //         <LocationUnitView />
+  //       </Router>
+  //     </Provider>
+  //   );
+  //   await act(async () => {
+  //     await flushPromises();
+  //     wrapper.update();
+  //   });
+
+  //   expect(fetch.mock.calls[0]).toEqual([
+  //     'https://opensrp-stage.smartregister.org/opensrp/rest/location/1?is_jurisdiction=true',
+  //     {
+  //       headers: {
+  //         accept: 'application/json',
+  //         authorization: 'Bearer sometoken',
+  //         'content-type': 'application/json;charset=UTF-8',
+  //       },
+  //       method: 'GET',
+  //     },
+  //   ]);
+  //   expect(wrapper.find('Table').at(1).text()).toEqual(
+  //     'NameLevelActionsNairobi West2EditCentral2Edit1'
+  //   );
+  // });
 });
