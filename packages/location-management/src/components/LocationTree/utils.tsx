@@ -15,7 +15,7 @@ import TreeModel from 'tree-model';
  */
 const parseChildren = (rawNodeMap: RawHierarchyNodeMap) => {
   const rawHierarchyNode: RawHierarchyNode[] = Object.entries(rawNodeMap).map(
-    ([key, value]) => value
+    ([_key, value]) => value
   );
   return rawHierarchyNode.map((child) => {
     const parsedNode: ParsedHierarchyNode = {
@@ -41,7 +41,7 @@ const parseHierarchy = (raw: RawOpenSRPHierarchy) => {
   // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
   const { map } = rawClone.locationsHierarchy;
   // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
-  const rawNode: RawHierarchyNode = Object.entries(map).map(([key, value]) => value)[0];
+  const rawNode: RawHierarchyNode = Object.entries(map).map(([_key, value]) => value)[0];
   const parsedNode: ParsedHierarchyNode = {
     ...rawNode,
     title: rawNode.label,

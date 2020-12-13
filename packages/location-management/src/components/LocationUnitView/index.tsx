@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
-import reducer, { reducerName } from '../../ducks/location-hierarchy';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +33,7 @@ import locationHierarchyReducer, {
 } from '../../ducks/location-hierarchy';
 import { generateJurisdictionTree } from '../LocationTree/utils';
 
-import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../ducks/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);

@@ -41,8 +41,11 @@ export async function getBaseTreeNode(accessToken: string) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
   return await serve
     .list({
+      // eslint-disable-next-line @typescript-eslint/camelcase
       is_jurisdiction: true,
+      // eslint-disable-next-line @typescript-eslint/camelcase
       return_geometry: false,
+      // eslint-disable-next-line @typescript-eslint/camelcase
       properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
     })
     .then((response: LocationUnit[]) => response);
