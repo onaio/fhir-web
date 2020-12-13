@@ -4,7 +4,6 @@ import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import {
   LocationUnit,
   LocationUnitStatus,
-  LocationUnitSyncStatus,
 } from '../../../ducks/location-units';
 import { generateJurisdictionTree } from '../../LocationTree/utils';
 
@@ -66,7 +65,7 @@ export const baseLocationUnits: LocationUnit[] = [
   },
 ];
 
-export const id: string = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
+export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
 export const parsedHierarchy: ParsedHierarchyNode[] = [
   {

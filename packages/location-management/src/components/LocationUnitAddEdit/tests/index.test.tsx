@@ -22,7 +22,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('test getBaseTreeNode', async () => {
     fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
-    let response = await getBaseTreeNode('accessToken');
+    const response = await getBaseTreeNode('accessToken');
 
     expect(response).toMatchObject(baseLocationUnits);
   });
@@ -30,7 +30,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('test getHierarchy', async () => {
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
-    let response = await getHierarchy([baseLocationUnits[2]], 'accessToken');
+    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken');
 
     expect(response).toMatchObject([rawHierarchy[2]]);
   });
@@ -98,30 +98,31 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
 
-    expect(fetch.mock.calls).toMatchInlineSnapshot(`
+    expect(fetch.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location-tag",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer null",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location-tag",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
           },
-        ],
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status%3AActive%2CgeographicLevel%3A0",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer null",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+          "method": "GET",
+        },
+      ]
+    `);
+
+    expect(fetch.mock.calls[1]).toMatchInlineSnapshot(`
+      Array [
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
           },
-        ],
+          "method": "GET",
+        },
       ]
     `);
 
@@ -145,30 +146,31 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
 
-    expect(fetch.mock.calls).toMatchInlineSnapshot(`
+    expect(fetch.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer null",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
           },
-        ],
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location-tag",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer null",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+          "method": "GET",
+        },
+      ]
+    `);
+
+    expect(fetch.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
           },
-        ],
+          "method": "GET",
+        },
       ]
     `);
 
@@ -197,30 +199,30 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
 
-    expect(fetch.mock.calls).toMatchInlineSnapshot(`
+    expect(fetch.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer null",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
           },
-        ],
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location-tag",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer null",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+          "method": "GET",
+        },
+      ]
+    `);
+    expect(fetch.mock.calls[1]).toMatchInlineSnapshot(`
+      Array [
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location-tag",
+        Object {
+          "headers": Object {
+            "accept": "application/json",
+            "authorization": "Bearer null",
+            "content-type": "application/json;charset=UTF-8",
           },
-        ],
+          "method": "GET",
+        },
       ]
     `);
 

@@ -73,8 +73,6 @@ describe('Location-module/locationunit', () => {
   });
 
   it('expand tree child using click', async () => {
-    const mockfn = jest.fn();
-
     const wrapper = mount(
       <Provider store={store}>
         <Tree data={treedata} OnItemClick={jest.fn()} />

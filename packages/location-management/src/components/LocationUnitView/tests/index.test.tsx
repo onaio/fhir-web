@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import fetch from 'jest-fetch-mock';
 import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
@@ -14,9 +14,7 @@ import LocationUnitView, {
 } from '..';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import { baseLocationUnits, parsedTreeNode, rawHierarchy, parsedHierarchy } from './fixtures';
-import { TreeNode } from '../../../ducks/types';
-import toJson from 'enzyme-to-json';
+import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 
 describe('Location-module/location unit', () => {
   beforeEach(() => {
@@ -25,7 +23,7 @@ describe('Location-module/location unit', () => {
 
   it('test resolve loadSingleLocation', async () => {
     fetch.mockResponse(JSON.stringify(baseLocationUnits[0]));
-    let called = jest.fn();
+    const called = jest.fn();
 
     const row = {
       geographicLevel: parsedHierarchy[0].node.attributes.geographicLevel,
@@ -71,13 +69,13 @@ describe('Location-module/location unit', () => {
   it('test getBaseTreeNode', async () => {
     fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
-    let response = await getBaseTreeNode('accessToken');
+    const response = await getBaseTreeNode('accessToken');
 
     expect(response).toMatchObject(baseLocationUnits);
   });
 
   it('test parseTableData', () => {
-    let response = parseTableData(parsedHierarchy);
+    const response = parseTableData(parsedHierarchy);
 
     expect(response).toMatchObject([
       {
@@ -104,7 +102,7 @@ describe('Location-module/location unit', () => {
   it('test getHierarchy', async () => {
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
-    let response = await getHierarchy([baseLocationUnits[2]], 'accessToken');
+    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken');
 
     expect(response).toMatchObject([rawHierarchy[2]]);
   });
@@ -179,7 +177,7 @@ describe('Location-module/location unit', () => {
 
     expect(fetch.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status%3AActive%2CgeographicLevel%3A0",
+        "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0",
         Object {
           "headers": Object {
             "accept": "application/json",
@@ -190,6 +188,7 @@ describe('Location-module/location unit', () => {
         },
       ]
     `);
+
     expect(fetch.mock.calls[1]).toMatchInlineSnapshot(`
       Array [
         "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996",
@@ -203,6 +202,7 @@ describe('Location-module/location unit', () => {
         },
       ]
     `);
+
     expect(fetch.mock.calls[2]).toMatchInlineSnapshot(`
       Array [
         "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a",
@@ -216,6 +216,7 @@ describe('Location-module/location unit', () => {
         },
       ]
     `);
+
     expect(fetch.mock.calls[3]).toMatchInlineSnapshot(`
       Array [
         "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33",

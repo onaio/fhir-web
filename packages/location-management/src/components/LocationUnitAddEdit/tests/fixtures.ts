@@ -45,6 +45,7 @@ export const baseLocationUnits: LocationUnit[] = [
       geographicLevel: 0,
       version: 0,
       username: 'web-admin',
+      // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: 'Kenya',
     },
     serverVersion: 206,
@@ -63,6 +64,7 @@ export const baseLocationUnits: LocationUnit[] = [
       geographicLevel: 0,
       version: 0,
       username: 'web-admin',
+      // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: 'Malawi',
     },
     serverVersion: 223,
@@ -70,7 +72,7 @@ export const baseLocationUnits: LocationUnit[] = [
   },
 ];
 
-export const id: string = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
+export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
 export const parsedHierarchy: ParsedHierarchyNode[] = [
   {

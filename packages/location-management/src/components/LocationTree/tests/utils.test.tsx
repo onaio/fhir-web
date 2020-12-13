@@ -3,7 +3,7 @@ import { rawHierarchy } from './fixtures';
 
 describe('Location-module/locationunit', () => {
   it('generate treenode from raw data', async () => {
-    let x = utils.generateJurisdictionTree(rawHierarchy[2]);
+    const x = utils.generateJurisdictionTree(rawHierarchy[2]);
 
     expect(x).toMatchObject({
       children: [],
