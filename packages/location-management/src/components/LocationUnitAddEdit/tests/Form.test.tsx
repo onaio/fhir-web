@@ -7,9 +7,8 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
-import * as fixtures from './fixtures';
 
-import { id, LocationUnitGroupValue, locationUnitgroups, treedata } from './fixtures';
+import { id, formValue, locationUnitgroups, parsedHierarchy } from './fixtures';
 import Form, { FormField, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { LocationUnitStatus } from '../../../ducks/location-units';
@@ -44,7 +43,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationUnitGroup={locationUnitgroups} treedata={treedata} />
+          <Form locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
         </Router>
       </Provider>
     );
@@ -126,7 +125,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form id="1" locationUnitGroup={locationUnitgroups} treedata={treedata} />
+          <Form id="1" locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
         </Router>
       </Provider>
     );
@@ -262,30 +261,28 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
-            initialValue={LocationUnitGroupValue}
+            initialValue={formValue}
             id={id}
             locationUnitGroup={locationUnitgroups}
-            treedata={treedata}
+            treedata={parsedHierarchy}
           />
         </Router>
       </Provider>
     );
 
-    expect(wrapper.find('form input[name="name"]').prop('value')).toBe(LocationUnitGroupValue.name);
+    expect(wrapper.find('form input[name="name"]').prop('value')).toBe(formValue.name);
 
     expect(
-      wrapper
-        .find(`form input[type="radio"][value="${LocationUnitGroupValue.status}"]`)
-        .prop('checked')
+      wrapper.find(`form input[type="radio"][value="${formValue.status}"]`).prop('checked')
     ).toBe(true);
 
     expect(wrapper.find('form TreeSelect[className="ant-tree-select"]').prop('value')).toBe(
-      LocationUnitGroupValue.parentId
+      formValue.parentId
     );
     expect(
       wrapper.find('form Field[name="locationTags"] Select[prefixCls="ant-select"]').prop('value')
-    ).toBe(LocationUnitGroupValue.locationTags);
-    expect(wrapper.find('form input[name="type"]').prop('value')).toBe(LocationUnitGroupValue.type);
+    ).toBe(formValue.locationTags);
+    expect(wrapper.find('form input[name="type"]').prop('value')).toBe(formValue.type);
   });
 
   it('Cancel button', () => {
@@ -295,7 +292,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationUnitGroup={locationUnitgroups} treedata={treedata} />
+          <Form locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
         </Router>
       </Provider>
     );
@@ -318,10 +315,10 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
-            initialValue={LocationUnitGroupValue}
+            initialValue={formValue}
             id={id}
             locationUnitGroup={locationUnitgroups}
-            treedata={treedata}
+            treedata={parsedHierarchy}
           />
         </Router>
       </Provider>
@@ -339,9 +336,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
-            initialValue={LocationUnitGroupValue}
+            initialValue={formValue}
             locationUnitGroup={locationUnitgroups}
-            treedata={treedata}
+            treedata={parsedHierarchy}
           />
         </Router>
       </Provider>
