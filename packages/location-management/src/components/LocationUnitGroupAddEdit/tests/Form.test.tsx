@@ -97,7 +97,7 @@ describe('Location-module/Form', () => {
     });
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
+      'https://reveal-stage.smartregister.org/opensrp/rest/location-tag/1',
       {
         headers: {
           accept: 'application/json',
@@ -124,7 +124,7 @@ describe('Location-module/Form', () => {
     });
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
+      'https://reveal-stage.smartregister.org/opensrp/rest/location-tag/1',
       {
         headers: {
           accept: 'application/json',
@@ -136,7 +136,7 @@ describe('Location-module/Form', () => {
     ]);
 
     expect(fetch.mock.calls[1]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+      'https://reveal-stage.smartregister.org/opensrp/rest/location-tag',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',

@@ -176,7 +176,7 @@ describe('Location-module/location unit', () => {
     });
 
     expect(fetch.mock.calls[0]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+      'https://reveal-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
       {
         headers: {
           accept: 'application/json',
@@ -188,7 +188,7 @@ describe('Location-module/location unit', () => {
     ]);
 
     expect(fetch.mock.calls[1]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+      'https://reveal-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
       {
         headers: {
           accept: 'application/json',
@@ -200,7 +200,7 @@ describe('Location-module/location unit', () => {
     ]);
 
     expect(fetch.mock.calls[2]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
+      'https://reveal-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
       {
         headers: {
           accept: 'application/json',
@@ -212,7 +212,7 @@ describe('Location-module/location unit', () => {
     ]);
 
     expect(fetch.mock.calls[3]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33',
+      'https://reveal-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33',
       {
         headers: {
           accept: 'application/json',
