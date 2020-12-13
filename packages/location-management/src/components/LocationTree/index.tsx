@@ -95,7 +95,8 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
       return {
         // important : we are mixing the antTreeProps with ParsedHierarchyNode
-        ...item,
+        data: item,
+        key: item.key,
         title: title,
         children: item.children ? loop(item.children) : undefined,
       } as AntTreeProps;
@@ -121,19 +122,11 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(e, node) => {
-          // seperating all data mixed with ParsedHierarchyNode
-          let temp = node as ParsedHierarchyNode & any;
-          let typedNode: ParsedHierarchyNode = {
-            children: node.children as ParsedHierarchyNode[],
-            id: temp.id,
-            key: temp.key,
-            label: temp.label,
-            node: temp.node,
-            title: temp.title.props.children,
-          };
-          OnItemClick(typedNode);
-          const allExpandedKeys = [...new Set([...expandedKeys, typedNode.id])];
+        onClick={(e, treenode) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
+          OnItemClick(node);
+          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
           setExpandedKeys(allExpandedKeys);
         }}
         onExpand={onExpand}
