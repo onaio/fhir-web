@@ -279,4 +279,74 @@ describe('Location-module/location unit', () => {
     });
     expect(wrapper.find('tbody BodyRow').last().prop('record')).not.toMatchObject(tablelastrow); // table changed
   });
+
+  it('test Open view details', async () => {
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitView />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    wrapper.find('.more-options').first().simulate('click');
+    wrapper.find('.viewdetails').first().simulate('click');
+
+    // test out loading animation works correctly
+    expect(wrapper.find('Ripple')).toHaveLength(1);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('Ripple')).toHaveLength(0);
+    expect(wrapper.find('LocationUnitDetail')).toHaveLength(1);
+  });
+
+  it('test Close view details', async () => {
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitView />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    wrapper.find('.more-options').first().simulate('click');
+    wrapper.find('.viewdetails').first().simulate('click');
+
+    // test out loading animation works correctly
+    expect(wrapper.find('Ripple')).toHaveLength(1);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('Ripple')).toHaveLength(0);
+    expect(wrapper.find('LocationUnitDetail')).toHaveLength(1);
+
+    // close LocationUnitDetail
+    wrapper.find('LocationUnitDetail button').simulate('click');
+    expect(wrapper.find('LocationUnitDetail')).toHaveLength(0);
+  });
 });
