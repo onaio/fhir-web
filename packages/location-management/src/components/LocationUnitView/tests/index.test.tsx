@@ -175,10 +175,22 @@ describe('Location-module/location unit', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0",
-        Object {
+    expect(fetch.mock.calls[0]).toMatchInlineSnapshot(
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      `
+      Object {
+        "0": "https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0",
+        "1": Object {
           "headers": Object {
             "accept": "application/json",
             "authorization": "Bearer null",
@@ -186,13 +198,26 @@ describe('Location-module/location unit', () => {
           },
           "method": "GET",
         },
-      ]
-    `);
+      }
+    `
+    );
 
-    expect(fetch.mock.calls[1]).toMatchInlineSnapshot(`
-      Array [
-        "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996",
-        Object {
+    expect(fetch.mock.calls[1]).toMatchInlineSnapshot(
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      `
+      Object {
+        "0": "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996",
+        "1": Object {
           "headers": Object {
             "accept": "application/json",
             "authorization": "Bearer null",
@@ -200,13 +225,26 @@ describe('Location-module/location unit', () => {
           },
           "method": "GET",
         },
-      ]
-    `);
+      }
+    `
+    );
 
-    expect(fetch.mock.calls[2]).toMatchInlineSnapshot(`
-      Array [
-        "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a",
-        Object {
+    expect(fetch.mock.calls[2]).toMatchInlineSnapshot(
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      `
+      Object {
+        "0": "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a",
+        "1": Object {
           "headers": Object {
             "accept": "application/json",
             "authorization": "Bearer null",
@@ -214,13 +252,26 @@ describe('Location-module/location unit', () => {
           },
           "method": "GET",
         },
-      ]
-    `);
+      }
+    `
+    );
 
-    expect(fetch.mock.calls[3]).toMatchInlineSnapshot(`
-      Array [
-        "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33",
-        Object {
+    expect(fetch.mock.calls[3]).toMatchInlineSnapshot(
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      `
+      Object {
+        "0": "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33",
+        "1": Object {
           "headers": Object {
             "accept": "application/json",
             "authorization": "Bearer null",
@@ -228,8 +279,9 @@ describe('Location-module/location unit', () => {
           },
           "method": "GET",
         },
-      ]
-    `);
+      }
+    `
+    );
 
     expect(wrapper.find('Table').first().props()).toMatchSnapshot();
   });
