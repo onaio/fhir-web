@@ -1,156 +1,112 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/ConnectedSidebar displays menu links for enabled modules 1`] = `
-Object {
-  "children": Array [
-    <div
-      className="ant-layout-sider-children"
+<SubMenu
+  icon={<ForwardRef(DashboardOutlined) />}
+  title="Admin"
+>
+  <SubMenu
+    title="Users"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin"
+      >
+        User Management
+      </Link>
+    </MenuItem>
+  </SubMenu>
+  <MenuItem>
+    <Link
+      className="admin-link"
+      to="/teams"
     >
-      <div
-        className="logo"
+      Teams
+    </Link>
+  </MenuItem>
+  <MenuItem>
+    <Link
+      className="admin-link"
+      to="/product-catalogue/list"
+    >
+      Product Catalogue
+    </Link>
+  </MenuItem>
+  <SubMenu
+    title="Plans"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
       >
-        <Link
-          to="/"
-        >
-          <img
-            alt=""
-            className="img-fluid"
-            src="test-file-stub"
-          />
-        </Link>
-      </div>
-      <Menu
-        className="menu-dark"
-        defaultSelectedKeys={
-          Array [
-            "1",
-          ]
-        }
-        mode="inline"
-        theme="dark"
+        Active
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
       >
-        <SubMenu
-          icon={<ForwardRef(DashboardOutlined) />}
-          title="Admin"
-        >
-          <SubMenu
-            title="Users"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin"
-              >
-                User Management
-              </Link>
-            </MenuItem>
-          </SubMenu>
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/teams"
-            >
-              Teams
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/product-catalogue/list"
-            >
-              Product Catalogue
-            </Link>
-          </MenuItem>
-          <SubMenu
-            title="Plans"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/plans/active"
-              >
-                Active
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/plans/draft"
-              >
-                Draft
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/plans/complete"
-              >
-                Complete
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/plans/trash"
-              >
-                Trash
-              </Link>
-            </MenuItem>
-          </SubMenu>
-          <SubMenu
-            title="Locations"
-          >
-            <MenuItem>
-              Locations unit
-            </MenuItem>
-            <MenuItem>
-              Locations unit group
-            </MenuItem>
-            <MenuItem>
-              Locations unit group set
-            </MenuItem>
-          </SubMenu>
-          <SubMenu
-            title="Form Configurations"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/releases"
-              >
-                Manifest Releases
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/drafts"
-              >
-                Draft Files
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/json-validators"
-              >
-                JSON Validators
-              </Link>
-            </MenuItem>
-          </SubMenu>
-        </SubMenu>
-      </Menu>
-    </div>,
-    null,
-  ],
-  "className": "ant-layout-sider ant-layout-sider-dark layout-sider",
-  "style": Object {
-    "flex": "0 0 275px",
-    "maxWidth": "275px",
-    "minWidth": "275px",
-    "width": "275px",
-  },
-}
+        Draft
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+      >
+        Complete
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+      >
+        Trash
+      </Link>
+    </MenuItem>
+  </SubMenu>
+  <SubMenu
+    title="Locations"
+  >
+    <MenuItem>
+      Locations unit
+    </MenuItem>
+    <MenuItem>
+      Locations unit group
+    </MenuItem>
+    <MenuItem>
+      Locations unit group set
+    </MenuItem>
+  </SubMenu>
+  <SubMenu
+    title="Form Configurations"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/releases"
+      >
+        Manifest Releases
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/drafts"
+      >
+        Draft Files
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/json-validators"
+      >
+        JSON Validators
+      </Link>
+    </MenuItem>
+  </SubMenu>
+</SubMenu>
 `;
 
 exports[`components/ConnectedSidebar renders the ConnectedSidebar component 1`] = `
