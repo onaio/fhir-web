@@ -50,6 +50,7 @@ Object {
     }
   >
     <FormItem
+      id="form_name"
       label="Form Name"
       name="form_name"
       rules={
@@ -67,6 +68,7 @@ Object {
       />
     </FormItem>
     <FormItem
+      id="module"
       label="Module"
       name="module"
     >
@@ -76,6 +78,7 @@ Object {
       />
     </FormItem>
     <FormItem
+      id="form_relation"
       label="Related to"
       name="form_relation"
     >
@@ -86,6 +89,7 @@ Object {
     </FormItem>
     <FormItem
       getValueFromEvent={[Function]}
+      id="form"
       label="Form"
       name="form"
       rules={
@@ -216,6 +220,7 @@ Object {
     }
   >
     <FormItem
+      id="form_name"
       label="Form Name"
       name="form_name"
       rules={
@@ -233,6 +238,7 @@ Object {
       />
     </FormItem>
     <FormItem
+      id="module"
       label="Module"
       name="module"
     >
@@ -242,6 +248,7 @@ Object {
       />
     </FormItem>
     <FormItem
+      id="form_relation"
       label="Related to"
       name="form_relation"
     >
@@ -252,6 +259,7 @@ Object {
     </FormItem>
     <FormItem
       getValueFromEvent={[Function]}
+      id="form"
       label="Form"
       name="form"
       rules={

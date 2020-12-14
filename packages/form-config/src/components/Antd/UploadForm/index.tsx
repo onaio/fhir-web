@@ -155,19 +155,21 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
           }}
         >
           <Form.Item
+            id="form_name"
             name="form_name"
             label="Form Name"
             rules={[{ required: true, message: 'Form Name is required' }]}
           >
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item name="module" label="Module">
+          <Form.Item id="module" name="module" label="Module">
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item name="form_relation" label="Related to">
+          <Form.Item id="form_relation" name="form_relation" label="Related to">
             <Input disabled={isEditMode} />
           </Form.Item>
           <Form.Item
+            id="form"
             name="form"
             label="Form"
             valuePropName="fileList"
