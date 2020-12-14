@@ -39,6 +39,7 @@ exports[`components/ConnectedSidebar displays menu links for enabled modules 1`]
     <MenuItem>
       <Link
         className="admin-link"
+        to="/plans/active"
       >
         Active
       </Link>
@@ -46,6 +47,7 @@ exports[`components/ConnectedSidebar displays menu links for enabled modules 1`]
     <MenuItem>
       <Link
         className="admin-link"
+        to="/plans/draft"
       >
         Draft
       </Link>
@@ -53,6 +55,7 @@ exports[`components/ConnectedSidebar displays menu links for enabled modules 1`]
     <MenuItem>
       <Link
         className="admin-link"
+        to="/plans/complete"
       >
         Complete
       </Link>
@@ -60,6 +63,7 @@ exports[`components/ConnectedSidebar displays menu links for enabled modules 1`]
     <MenuItem>
       <Link
         className="admin-link"
+        to="/plans/trash"
       >
         Trash
       </Link>
