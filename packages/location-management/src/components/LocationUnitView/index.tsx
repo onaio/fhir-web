@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, Spin } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -22,7 +22,6 @@ import {
 import { API_BASE_URL } from '../../configs/env';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
-import { Ripple } from '@onaio/loaders';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -154,7 +153,18 @@ export const LocationUnitView: React.FC = () => {
     setTableData(data);
   }, [treeData, currentParentChildren]);
 
-  if (!tableData.length || !treeData.length) return <Ripple />;
+  if (!tableData.length || !treeData.length)
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
 
   return (
     <section className="layout-content">
@@ -210,7 +220,16 @@ export const LocationUnitView: React.FC = () => {
         {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
-              <Ripple />
+              <Spin
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                size={'large'}
+              />
             ) : (
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}

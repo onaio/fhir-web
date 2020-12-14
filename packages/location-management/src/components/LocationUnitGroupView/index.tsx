@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Input } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, Input, Spin } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
@@ -19,7 +19,6 @@ import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../cons
 import { API_BASE_URL } from '../../configs/env';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
-import { Ripple } from '@onaio/loaders';
 import { Link } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
 
@@ -70,7 +69,18 @@ const LocationUnitGroupView: React.FC = () => {
     setfilterData(filteredData as TableData[]);
   };
 
-  if (isLoading) return <Ripple />;
+  if (isLoading)
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
 
   return (
     <section className="layout-content">
