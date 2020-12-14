@@ -185,3 +185,52 @@ Object {
   },
 }
 `;
+
+exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
+<SubMenu
+  icon={<ForwardRef(DashboardOutlined) />}
+  title="Admin"
+>
+  <SubMenu
+    title="Users"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin"
+      >
+        User Management
+      </Link>
+    </MenuItem>
+  </SubMenu>
+  <MenuItem>
+    <Link
+      className="admin-link"
+      to="/teams"
+    >
+      Teams
+    </Link>
+  </MenuItem>
+  <MenuItem>
+    <Link
+      className="admin-link"
+      to="/product-catalogue/list"
+    >
+      Product Catalogue
+    </Link>
+  </MenuItem>
+  <SubMenu
+    title="Locations"
+  >
+    <MenuItem>
+      Locations unit
+    </MenuItem>
+    <MenuItem>
+      Locations unit group
+    </MenuItem>
+    <MenuItem>
+      Locations unit group set
+    </MenuItem>
+  </SubMenu>
+</SubMenu>
+`;

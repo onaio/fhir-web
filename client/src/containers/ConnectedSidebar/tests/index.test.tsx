@@ -21,7 +21,7 @@ describe('components/ConnectedSidebar', () => {
     wrapper.unmount();
   });
 
-  it('renders the ConnectedSidebar when logged in', () => {
+  it('renders user managment menu for users with appropriate role', () => {
     store.dispatch(
       authenticateUser(
         true,
@@ -44,7 +44,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('aside').length).toBe(1);
+    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
     wrapper.unmount();
   });
 
