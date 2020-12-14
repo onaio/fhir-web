@@ -122,7 +122,10 @@ describe('components/Antd/FileList', () => {
     ]);
     const content = wrapper.find('div.layout-content');
     expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').props()).toMatchSnapshot('card');
+    expect(content.find('Card').prop('children')).toHaveLength(3);
+    expect(content.find('Card').prop('children')[0]).toMatchSnapshot('search');
+    expect(content.find('Card').prop('children')[1]).toMatchSnapshot('upload button');
+    expect(content.find('Card').prop('children')[2]).toMatchSnapshot('table');
     wrapper.unmount();
   });
 
@@ -176,7 +179,10 @@ describe('components/Antd/FileList', () => {
     ]);
     const content = wrapper.find('div.layout-content');
     expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').props()).toMatchSnapshot('card');
+    expect(content.find('Card').prop('children')).toHaveLength(3);
+    expect(content.find('Card').prop('children')[0]).toMatchSnapshot('search');
+    expect(content.find('Card').prop('children')[1]).toMatchSnapshot('upload button');
+    expect(content.find('Card').prop('children')[2]).toMatchSnapshot('table');
     wrapper.unmount();
   });
 
