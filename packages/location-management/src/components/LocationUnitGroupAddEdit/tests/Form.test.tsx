@@ -12,7 +12,7 @@ import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 
-describe('Location-module/Form', () => {
+describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });

@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
-describe('Location-module/locationunit', () => {
+describe('location-management/src/components/LocationTree', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>

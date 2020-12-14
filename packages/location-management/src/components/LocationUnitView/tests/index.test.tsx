@@ -16,7 +16,7 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 
-describe('Location-module/location unit', () => {
+describe('location-management/src/components/LocationUnitView', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
