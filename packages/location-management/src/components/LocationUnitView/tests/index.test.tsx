@@ -295,14 +295,14 @@ describe('location-management/src/components/LocationUnitView', () => {
     wrapper.find('.viewdetails').first().simulate('click');
 
     // test out loading animation works correctly
-    expect(wrapper.find('Ripple')).toHaveLength(1);
+    expect(wrapper.find('Spin')).toHaveLength(1);
 
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
 
-    expect(wrapper.find('Ripple')).toHaveLength(0);
+    expect(wrapper.find('Spin')).toHaveLength(0);
     expect(wrapper.find('LocationUnitDetail')).toHaveLength(1);
   });
 
@@ -328,14 +328,14 @@ describe('location-management/src/components/LocationUnitView', () => {
     wrapper.find('.viewdetails').first().simulate('click');
 
     // test out loading animation works correctly
-    expect(wrapper.find('Ripple')).toHaveLength(1);
+    expect(wrapper.find('Spin')).toHaveLength(1);
 
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
 
-    expect(wrapper.find('Ripple')).toHaveLength(0);
+    expect(wrapper.find('Spin')).toHaveLength(0);
     expect(wrapper.find('LocationUnitDetail')).toHaveLength(1);
 
     // close LocationUnitDetail

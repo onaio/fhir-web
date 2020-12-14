@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio } from 'formik-antd';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
@@ -15,7 +15,6 @@ import {
   LocationUnitGroupPayloadPOST,
   LocationUnitGroupPayloadPUT,
 } from '../../ducks/location-unit-groups';
-import { Ripple } from '@onaio/loaders';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -122,7 +121,18 @@ export const Form: React.FC<Props> = (props: Props) => {
     }
   }, [accessToken, isLoading, props.id]);
 
-  if (isLoading) return <Ripple />;
+  if (isLoading)
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
   return (
     <Formik
       initialValues={initialValue}

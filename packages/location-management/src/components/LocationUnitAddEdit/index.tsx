@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
-import { Ripple } from '@onaio/loaders';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
   LOCATION_UNIT_FINDBYPROPERTIES,
@@ -14,7 +13,7 @@ import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 
-import { Row, Col } from 'antd';
+import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
@@ -135,7 +134,17 @@ export const LocationUnitAddEdit: React.FC = () => {
   }, [Treedata, accessToken, dispatch]);
 
   if (!locationUnitGroup.length || !Treedata.length || (params.id && !LocationUnitDetail))
-    return <Ripple />;
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
 
   return (
     <Row className="layout-content">
