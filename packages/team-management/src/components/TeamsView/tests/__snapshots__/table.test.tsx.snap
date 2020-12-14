@@ -35,6 +35,7 @@ exports[`components/TeamsView/table renders without crashing: Table 1`] = `
       },
     ]
   }
+  opensrpBaseURL=""
   setDetail={[Function]}
   setPractitionersList={[Function]}
 />
