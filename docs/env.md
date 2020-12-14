@@ -63,6 +63,11 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://web.opensrp-stage.smartregister.org/oauth/state`
 
+- **REACT_APP_SENTRY_DSN**
+
+  - URL to send crash reports
+  - **Required**
+
 - **REACT_APP_ENABLE_PRODUCT_CATALOGUE**
 
   - Enables the product-catalogue module
