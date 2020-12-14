@@ -1,7 +1,7 @@
 import * as utils from '../utils';
 import { rawHierarchy } from './fixtures';
 
-describe('Location-module/locationunit', () => {
+describe('location-management/src/components/LocationTree', () => {
   it('generate treenode from raw data', async () => {
     const x = utils.generateJurisdictionTree(rawHierarchy[2]);
 
