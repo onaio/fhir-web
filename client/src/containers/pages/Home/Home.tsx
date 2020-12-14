@@ -7,7 +7,13 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
-import { LOCATIONS_UNIT, URL_ADMIN, URL_LOCATION_UNIT } from '../../../constants';
+import {
+  LOCATIONS_UNIT,
+  LOCATIONS_UNIT_GROUP,
+  URL_ADMIN,
+  URL_LOCATION_UNIT,
+  URL_LOCATION_UNIT_GROUP,
+} from '../../../constants';
 import { ENABLE_LOCATIONS } from '../../../configs/env';
 
 export interface HomeProps {
@@ -38,13 +44,23 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           </Col>
         )}
         {ENABLE_LOCATIONS && (
-          <Col className="gutter-row" span={12}>
-            <Link to={URL_LOCATION_UNIT} className="admin-link">
-              <Button color="outline" className="btn-links">
-                {LOCATIONS_UNIT}
-              </Button>
-            </Link>
-          </Col>
+          <>
+            <Col className="gutter-row" span={12}>
+              <Link to={URL_LOCATION_UNIT} className="admin-link">
+                <Button color="outline" className="btn-links">
+                  {LOCATIONS_UNIT}
+                </Button>
+              </Link>
+            </Col>
+
+            <Col className="gutter-row" span={12}>
+              <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
+                <Button color="outline" className="btn-links">
+                  {LOCATIONS_UNIT_GROUP}
+                </Button>
+              </Link>
+            </Col>
+          </>
         )}
       </Row>
     </div>
