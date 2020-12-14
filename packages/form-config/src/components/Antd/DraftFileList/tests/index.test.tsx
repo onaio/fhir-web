@@ -125,7 +125,11 @@ describe('components/Antd/DraftFileList', () => {
     ]);
     const content = wrapper.find('div.layout-content');
     expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').props()).toMatchSnapshot('card');
+    expect(content.find('Card').prop('children')).toHaveLength(4);
+    expect(content.find('Card').prop('children')[0]).toMatchSnapshot('search');
+    expect(content.find('Card').prop('children')[1]).toMatchSnapshot('upload button');
+    expect(content.find('Card').prop('children')[2]).toMatchSnapshot('table');
+    expect(content.find('Card').prop('children')[3]).toMatchSnapshot('release button');
     wrapper.unmount();
   });
 
