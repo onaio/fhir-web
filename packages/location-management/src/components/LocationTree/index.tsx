@@ -100,12 +100,16 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     });
   }
 
-  const generateFilterData = (data: ParsedHierarchyNode[]) => {
+  /** Generate filter data to later used to compare and filter keys on input with ant tree node
+   *
+   * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
+   */
+  function generateFilterData(data: ParsedHierarchyNode[]) {
     data.forEach((node) => {
       filterData.push({ ...node, title: node.key });
       if (node.children) generateFilterData(node.children);
     });
-  };
+  }
 
   generateFilterData(data);
 
