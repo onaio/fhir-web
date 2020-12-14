@@ -1034,13 +1034,13 @@ export const planActivities: PlanActivities = {
   },
   [PRODUCT_CHECK_ACTIVITY_CODE]: {
     action: {
-      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
-      prefix: 1, // TODO :what does prefix mean
+      identifier: '',
+      prefix: 7, // TODO :what does prefix mean
       description: PRODUCT_CHECK_ACTIVITY_DESCRIPTION,
       code: PRODUCT_CHECK_CODE,
       timingPeriod: {
-        end: '2020-12-24',
-        start: '2020-11-17',
+        end: '',
+        start: '',
       },
       reason: ROUTINE,
       goalId: 'Product_Check',
@@ -1079,7 +1079,7 @@ export const planActivities: PlanActivities = {
               value: 100,
             },
           },
-          due: '2020-12-24',
+          due: '',
           measure: PRODUCT_CHECK_GOAL_MEASURE,
         },
       ],
@@ -1087,13 +1087,13 @@ export const planActivities: PlanActivities = {
   },
   [FIX_PRODUCT_PROBLEM_ACTIVITY_CODE]: {
     action: {
-      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
-      prefix: 2, // TODO :what does prefix mean
+      identifier: '',
+      prefix: 8, // TODO :what does prefix mean
       description: FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION,
       code: FIX_PRODUCT_PROBLEMS_CODE,
       timingPeriod: {
-        end: '2020-12-24',
-        start: '2020-11-17',
+        end: '',
+        start: '',
       },
       reason: ROUTINE,
       goalId: 'Fix_Product_Problem',
@@ -1136,7 +1136,7 @@ export const planActivities: PlanActivities = {
               value: 100,
             },
           },
-          due: '2020-12-24',
+          due: '',
           measure: FIX_PRODUCT_PROBLEM_GOAL_MEASURE,
         },
       ],
@@ -1144,13 +1144,13 @@ export const planActivities: PlanActivities = {
   },
   [RECORD_GPS_ACTIVITY_CODE]: {
     action: {
-      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
-      prefix: 3, // TODO :what does prefix mean
+      identifier: '',
+      prefix: 9, // TODO :what does prefix mean
       description: RECORD_GPS_ACTIVITY_DESCRIPTION,
       code: RECORD_GPS_CODE,
       timingPeriod: {
-        end: '2020-12-24',
-        start: '2020-11-17',
+        end: '',
+        start: '',
       },
       reason: ROUTINE,
       goalId: 'Record_GPS',
@@ -1189,7 +1189,7 @@ export const planActivities: PlanActivities = {
               value: 100,
             },
           },
-          due: '2020-12-24',
+          due: '',
           measure: RECORD_GPS_GOAL_MEASURE,
         },
       ],
@@ -1197,13 +1197,13 @@ export const planActivities: PlanActivities = {
   },
   [SERVICE_POINT_CHECK_ACTIVITY_CODE]: {
     action: {
-      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
-      prefix: 3, // TODO :what does prefix mean
+      identifier: '',
+      prefix: 9, // TODO :what does prefix mean
       description: SERVICE_POINT_CHECK_ACTIVITY_DESCRIPTION,
       code: SERVICE_POINT_CHECK_CODE,
       timingPeriod: {
-        end: '2020-12-24',
-        start: '2020-11-17',
+        end: '',
+        start: '',
       },
       reason: ROUTINE,
       goalId: 'Service_Point_Check',
@@ -1242,7 +1242,7 @@ export const planActivities: PlanActivities = {
               value: 100,
             },
           },
-          due: '2020-12-24',
+          due: '',
           measure: SERVICE_POINT_CHECK_GOAL_MEASURE,
         },
       ],
