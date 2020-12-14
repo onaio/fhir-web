@@ -50,6 +50,8 @@ export const EXPRESS_OAUTH_GET_STATE_URL =
 export const EXPRESS_OAUTH_LOGOUT_URL =
   process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
 
+/** Sentry */
+export const SENTRY_DSN = process.env.REACT_APP_SENTRY_DSN || '';
 /** Do you want to disable login protection? */
 export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROTECTION === 'true';
 
