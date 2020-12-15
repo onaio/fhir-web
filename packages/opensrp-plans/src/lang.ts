@@ -14,3 +14,7 @@ export const TIP = 'Loading...';
 
 export const EDIT_PLAN = `Edit mission`;
 export const CREATE_PLAN = `Create new mission`;
+export const NO_STATUS_FOUND = `No Status Found`;
+export const EDIT = 'Edit';
+export const START_DATE = 'Start Date';
+export const END_DATE = 'End Date';
