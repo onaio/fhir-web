@@ -254,10 +254,14 @@ describe('components/Antd/FileList', () => {
 
     wrapper.update();
 
-    const downloadButton = wrapper.find('tbody').find('tr').at(0).find('td').at(4).find('button');
-    expect(downloadButton.text()).toEqual('Download');
+    const downloadCell = wrapper.find('tbody').find('tr').at(0).find('td').at(4);
+    const dropdown = downloadCell.find('Dropdown');
+    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+
+    expect(submenu.find('Button').text()).toEqual('Download');
+
     // click download button
-    downloadButton.simulate('click');
+    submenu.find('Button').simulate('click');
     await act(async () => {
       await flushPromises();
     });
@@ -305,10 +309,14 @@ describe('components/Antd/FileList', () => {
 
     wrapper.update();
 
-    const downloadButton = wrapper.find('tbody').find('tr').at(0).find('td').at(5).find('button');
-    expect(downloadButton.text()).toEqual('Download');
+    const downloadCell = wrapper.find('tbody').find('tr').at(0).find('td').at(5);
+    const dropdown = downloadCell.find('Dropdown');
+    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+
+    expect(submenu.find('Button').text()).toEqual('Download');
+
     // click download button
-    downloadButton.simulate('click');
+    submenu.find('Button').simulate('click');
     await act(async () => {
       await flushPromises();
     });
@@ -374,14 +382,11 @@ describe('components/Antd/FileList', () => {
 
     expect(wrapper.find('tbody').find('tr')).toHaveLength(fixManifestFiles.length);
 
-    const downloadFiledCell = wrapper
-      .find('tbody')
-      .find('tr')
-      .at(0)
-      .find('td')
-      .at(4)
-      .find('button');
-    downloadFiledCell.simulate('click');
+    const downloadFiledCell = wrapper.find('tbody').find('tr').at(0).find('td').at(4);
+    const dropdown = downloadFiledCell.find('Dropdown');
+    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+
+    submenu.find('Button').simulate('click');
 
     await act(async () => {
       await flushPromises();
