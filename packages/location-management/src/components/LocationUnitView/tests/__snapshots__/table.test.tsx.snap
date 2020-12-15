@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Location-module/locationunit renders without crashing 1`] = `
+exports[`location-management/src/components/LocationUnitView renders without crashing 1`] = `
 Object {
   "children": <Table
     data={

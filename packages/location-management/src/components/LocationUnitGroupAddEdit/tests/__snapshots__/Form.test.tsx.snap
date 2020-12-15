@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Location-module/Form renders without crashing 1`] = `
+exports[`location-management/src/components/LocationUnitGroupAddEdit renders without crashing 1`] = `
 Object {
   "children": <Router
     history={
