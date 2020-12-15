@@ -353,7 +353,9 @@ describe('containers/forms/PlanForm', () => {
     };
 
     // the last request should be the one that is sent to OpenSRP
-    expect(fetch.mock.calls[0][0]).toEqual('https://opensrp-stage.smartregister.org/opensrp/rest/plans');
+    expect(fetch.mock.calls[0][0]).toEqual(
+      'https://opensrp-stage.smartregister.org/opensrp/rest/plans'
+    );
 
     // the last request should be the one that is sent to OpenSRP
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
