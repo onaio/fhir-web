@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table as AntTable, Menu, Dropdown, Button, Divider, Popconfirm } from 'antd';
+import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
