@@ -13,9 +13,10 @@ import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
 
 import { act } from 'react-dom/test-utils';
 
+jest.mock('../../../configs/env');
+
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
     fetch.mockClear();
   });
 
