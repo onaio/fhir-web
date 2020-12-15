@@ -2,23 +2,16 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { Router } from 'react-router';
 import { history } from '@onaio/connected-reducer-registry';
-import { LocationUnitStatus, LocationUnitSyncStatus } from '../../../ducks/location-units';
 import Table, { TableData } from '../Table';
 
-describe('containers/pages/locations/locationunit', () => {
+describe('location-management/src/components/LocationUnitView', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
     tableData.push({
-      parentId: i.toString(),
+      id: i.toString(),
       key: i.toString(),
       name: `Edrward ${i}`,
       geographicLevel: i,
-      status: LocationUnitStatus.ACTIVE,
-      type: 'Feautire',
-      externalId: `asdkjh123${i}`,
-      username: `edward ${i}`,
-      version: i,
-      syncstatus: LocationUnitSyncStatus.SYNCED,
     });
   }
 
@@ -28,7 +21,7 @@ describe('containers/pages/locations/locationunit', () => {
         <Table data={tableData} />
       </Router>
     );
-    expect(wrapper.props()).toMatchSnapshot();
+    expect(wrapper.prop("children")).toMatchSnapshot();
   });
 
   it('Test Table View Detail', () => {
@@ -42,6 +35,19 @@ describe('containers/pages/locations/locationunit', () => {
     wrapper.find('.viewdetails').first().simulate('click');
 
     expect(wrapper).toHaveLength(0);
+  });
+
+  it('Test Table View Detai prop is undefined', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <Table data={tableData} />
+      </Router>
+    );
+
+    wrapper.find('.more-options').first().simulate('click');
+    wrapper.find('.viewdetails').first().simulate('click');
+
+    expect(wrapper).toHaveLength(1);
   });
 
   it('Test Table Edit', () => {

@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../../ducks/types';
 import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
 import { generateJurisdictionTree } from '../../LocationTree/utils';
+import { FormField } from '../Form';
 
 export const locationUnitgroups: LocationUnitGroup[] = [
   { id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' },
@@ -12,6 +12,14 @@ export const locationUnitgroups: LocationUnitGroup[] = [
   { id: 5, active: false, name: 'testing', description: 'testing 111' },
   { id: 6, active: true, name: 'Demo Test', description: 'The demo unit group' },
 ];
+
+export const formValue: FormField = {
+  name: 'Tunisia',
+  parentId: '',
+  status: LocationUnitStatus.ACTIVE,
+  locationTags: [2],
+  type: 'Feature',
+};
 
 export const baseLocationUnits: LocationUnit[] = [
   {
@@ -37,6 +45,7 @@ export const baseLocationUnits: LocationUnit[] = [
       geographicLevel: 0,
       version: 0,
       username: 'web-admin',
+      // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: 'Kenya',
     },
     serverVersion: 206,
@@ -55,6 +64,7 @@ export const baseLocationUnits: LocationUnit[] = [
       geographicLevel: 0,
       version: 0,
       username: 'web-admin',
+      // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: 'Malawi',
     },
     serverVersion: 223,

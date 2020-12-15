@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, notification } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, Spin } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -14,35 +14,30 @@ import locationUnitsReducer, {
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
-  API_BASE_URL,
   LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
 } from '../../constants';
+import { API_BASE_URL } from '../../configs/env';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
-import { Ripple } from '@onaio/loaders';
 import Tree from '../LocationTree';
-
+import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
   getAllHierarchiesArray,
-  getCurrentChildren,
   fetchAllHierarchies,
-  fetchCurrentChildren,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import {
-  generateJurisdictionTree,
-  RawOpenSRPHierarchy,
-  getFilterParams,
-  ParsedHierarchyNode,
-  TreeNode,
-} from '../LocationTree/utils';
+import { generateJurisdictionTree } from '../LocationTree/utils';
+
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
+
+const { getFilterParams } = OpenSRPService;
 
 export interface AntTreeProps {
   title: JSX.Element;
@@ -56,11 +51,11 @@ export interface AntTreeProps {
  * @param {string} accessToken - access token
  * @param {Function} setDetail funtion to set detail to state
  */
-export const loadSingleLocation = (
+export function loadSingleLocation(
   row: TableData,
   accessToken: string,
-  setDetail: (isLoading: string | LocationUnit) => void
-): void => {
+  setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
+): void {
   setDetail('loading');
   const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -69,80 +64,110 @@ export const loadSingleLocation = (
     .then((res: LocationUnit) => {
       setDetail(res);
     })
-    .catch((e) => notification.error({ message: `${e}`, description: '' }));
-};
+    .catch(() => sendErrorNotification('An error occurred'));
+}
+
+/** Gets all the location unit at geographicLevel 0
+ *
+ * @param {string} accessToken - Access token to be used for requests
+ * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
+ */
+export async function getBaseTreeNode(accessToken: string) {
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
+  return await serve
+    .list({
+      is_jurisdiction: true,
+      return_geometry: false,
+      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+    })
+    .then((response: LocationUnit[]) => response);
+}
+
+/** Parse the hierarchy node into table data
+ *
+ * @param {Array<ParsedHierarchyNode>} hierarchy - hierarchy node to be parsed
+ * @returns {Array<TableData>} array of table data
+ */
+export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
+  const data: TableData[] = [];
+
+  hierarchy.forEach((location, i: number) => {
+    data.push({
+      id: location.id,
+      key: i.toString(),
+      name: location.label,
+      geographicLevel: location.node.attributes.geographicLevel,
+    });
+  });
+  return data;
+}
+
+/** Gets the hierarchy of the location units
+ *
+ * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
+ * @param {string} accessToken - Access token to be used for requests
+ * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
+ */
+export async function getHierarchy(location: LocationUnit[], accessToken: string) {
+  const hierarchy: RawOpenSRPHierarchy[] = [];
+
+  for await (const loc of location) {
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
+    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
+    hierarchy.push(data);
+  }
+
+  return hierarchy;
+}
 
 export const LocationUnitView: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
-  );
-
-  const currentParentChildren = (useSelector((state) =>
-    getCurrentChildren(state)
+  const treeData = (useSelector((state) =>
+    getAllHierarchiesArray(state)
   ) as unknown) as ParsedHierarchyNode[];
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
+  const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
 
   useEffect(() => {
-    if (!Treedata.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
-      serve
-        .list({
-          is_jurisdiction: true,
-          return_geometry: false,
-          properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-        })
-        .then((response: LocationUnit[]) => {
+    if (!treeData.length) {
+      getBaseTreeNode(accessToken)
+        .then((response) => {
           dispatch(fetchLocationUnits(response));
-          const rootIds = response.map((rootLocObj) => rootLocObj.id);
-          if (rootIds.length) {
-            rootIds.forEach((id) => {
-              const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
-              serve
-                .read(id)
-                .then((res: RawOpenSRPHierarchy) => {
-                  const hierarchy = generateJurisdictionTree(res);
-                  // if (hierarchy.model && hierarchy.model.children)
-                  dispatch(fetchAllHierarchies(hierarchy.model));
-                })
-                .catch((e) => notification.error({ message: `${e}`, description: '' }));
-            });
-          }
+          getHierarchy(response, accessToken)
+            .then((hierarchy) => {
+              hierarchy.forEach((hier) => {
+                const processed = generateJurisdictionTree(hier);
+                dispatch(fetchAllHierarchies(processed.model));
+              });
+            })
+            .catch(() => sendErrorNotification('An error occurred'));
         })
-        .catch((e) => notification.error({ message: `${e}`, description: '' }));
+        .catch(() => sendErrorNotification('An error occurred'));
     }
-  }, [Treedata.length, accessToken, dispatch]);
+  }, [treeData, accessToken, dispatch]);
 
   useEffect(() => {
-    const data: TableData[] = [];
-    if (currentParentChildren && currentParentChildren.length) {
-      currentParentChildren.forEach((child: ParsedHierarchyNode, i: number) => {
-        data.push({
-          id: child.id,
-          key: i.toString(),
-          name: child.label,
-          geographicLevel: child.node.attributes.geographicLevel,
-        });
-      });
-    } else if (Treedata && Treedata.length && !currentParentChildren.length) {
-      Treedata.forEach((location: ParsedHierarchyNode, i: number) => {
-        data.push({
-          id: location.id,
-          key: i.toString(),
-          name: location.label,
-          geographicLevel: location.node.attributes.geographicLevel,
-        });
-      });
-    }
+    const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
     setTableData(data);
-  }, [Treedata, currentParentChildren]);
+  }, [treeData, currentParentChildren]);
 
-  if (!tableData.length || !Treedata.length) return <Ripple />;
+  if (!tableData.length || !treeData.length)
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
 
   return (
-    <section>
+    <section className="layout-content">
       <Helmet>
         <title>Locations Unit</title>
       </Helmet>
@@ -150,20 +175,17 @@ export const LocationUnitView: React.FC = () => {
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
-            OnItemClick={(item, [expandedKeys, setExpandedKeys]) => {
-              if (item.children) {
-                // build out parent row info from here
-                const children = [item, ...item.children];
-                dispatch(fetchCurrentChildren((children as unknown) as TreeNode[]));
-                const allExpandedKeys = [...new Set([...expandedKeys, item.title])];
-                setExpandedKeys(allExpandedKeys as string[]);
+            data={treeData}
+            OnItemClick={(node) => {
+              if (node.children) {
+                const children = [node, ...node.children];
+                setCurrentParentChildren(children);
               }
             }}
-            data={Treedata}
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
-          <div className="mb-3 d-flex justify-content-between">
+          <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">Bombali</h5>
             <div>
               <Link to={URL_LOCATION_UNIT_ADD}>
@@ -185,24 +207,35 @@ export const LocationUnitView: React.FC = () => {
               </Dropdown>
             </div>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white p-3">
             <Table
               data={tableData}
-              onViewDetails={loadSingleLocation}
-              accessToken={accessToken}
-              setDetail={setDetail as (isLoading: string | LocationUnit) => void}
+              onViewDetails={(row) => {
+                loadSingleLocation(row, accessToken, setDetail);
+              }}
             />
           </div>
         </Col>
 
-        {detail && (
+        {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
-              <Ripple />
+              <Spin
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                size={'large'}
+              />
             ) : (
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}
           </Col>
+        ) : (
+          ''
         )}
       </Row>
     </section>

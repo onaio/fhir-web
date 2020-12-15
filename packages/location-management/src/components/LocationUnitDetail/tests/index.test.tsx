@@ -4,7 +4,7 @@ import React from 'react';
 import LocationUnitDetail, { Props } from '..';
 import { LocationUnitStatus, LocationUnitSyncStatus } from '../../../ducks/location-units';
 
-describe('containers/pages/Home', () => {
+describe('location-management/src/components/LocationUnitDetail', () => {
   const props: Props = {
     key: '0',
     id: '6y66ggde',
@@ -31,6 +31,8 @@ describe('containers/pages/Home', () => {
     const wrapper = mount(<LocationUnitDetail {...props} onClose={() => wrapper.unmount()} />);
     expect(wrapper.children()).toHaveLength(1);
     wrapper.find('button').simulate('click');
+
+    wrapper.update();
     expect(wrapper).toHaveLength(0);
   });
 

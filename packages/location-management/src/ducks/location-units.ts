@@ -9,8 +9,6 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 import { Geometry } from 'geojson';
-import { Dictionary, values } from 'lodash';
-import { Store } from 'redux';
 
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
@@ -24,7 +22,7 @@ export enum LocationUnitSyncStatus {
 }
 
 /** interface for LocationUnit.properties */
-export interface Properties extends Dictionary<string | number | LocationUnitStatus | undefined> {
+export interface Properties {
   name: string;
   parentId: string;
   status: LocationUnitStatus;
@@ -45,21 +43,23 @@ export interface LocationUnitTag {
 export interface LocationUnit {
   id: string | number;
   properties: Properties;
-  syncStatus: LocationUnitSyncStatus;
   type: string;
   locationTags?: LocationUnitTag[];
-  geometry?: Geometry;
+  geometry?: Geometry; // todo : need to impliment the functionality
+  syncStatus?: LocationUnitSyncStatus;
+  parentId?: string;
+  serverVersion?: number; // received by the response thought we dont really use it
 }
 
 /** interface for the POST payload */
 export interface LocationUnitPayloadPOST {
-  properties: Properties;
-  syncStatus?: LocationUnitSyncStatus;
+  id: string | number; // todo : we will remove this later as it should be auto generated on server
+  properties?: Properties;
   type: string;
   locationTags?: LocationUnitTag[];
-  geometry?: Geometry;
-  // we will remove this id as it should be auto generated on server
-  id: string | number;
+  geometry?: Geometry; // todo : need to impliment its functionality
+  syncStatus: LocationUnitSyncStatus;
+  textEntry?: string[];
 }
 
 /** interface for the PUT payload */
@@ -94,8 +94,5 @@ export const getLocationUnitsById = getItemsByIdFactory<LocationUnit>(reducerNam
 export const getLocationUnitById = getItemByIdFactory<LocationUnit>(reducerName);
 export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerName);
 export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
-
-export const LocationUnitsArray = (state: Partial<Store>): LocationUnit[] =>
-  values(getLocationUnitsById(state) || {});
 
 export default reducer;

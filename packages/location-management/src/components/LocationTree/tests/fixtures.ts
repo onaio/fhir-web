@@ -1,70 +1,6 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../../ducks/types';
-import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
-import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
-import { generateJurisdictionTree } from '../../LocationTree/utils';
-
-export const locationUnitgroups: LocationUnitGroup[] = [
-  { id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' },
-  { id: 4, active: false, name: 'Option1', description: 'asdsad' },
-  { id: 3, active: false, name: 'Sample 3', description: 'Sample description 3' },
-  { id: 1, active: false, name: 'Sample 1', description: 'Sample description 1' },
-  { id: 5, active: false, name: 'testing', description: 'testing 111' },
-  { id: 6, active: true, name: 'Demo Test', description: 'The demo unit group' },
-];
-
-export const baseLocationUnits: LocationUnit[] = [
-  {
-    type: 'Feature',
-    id: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
-    properties: {
-      status: LocationUnitStatus.ACTIVE,
-      parentId: '',
-      name: 'Tunisia',
-      geographicLevel: 0,
-      version: 0,
-    },
-    serverVersion: 174,
-    locationTags: [{ id: 2, name: 'Sample 3' }],
-  },
-  {
-    type: 'Feature',
-    id: 'b652b2f4-a95d-489b-9e28-4629746db96a',
-    properties: {
-      status: LocationUnitStatus.ACTIVE,
-      parentId: '',
-      name: 'Kenya',
-      geographicLevel: 0,
-      version: 0,
-      username: 'web-admin',
-      name_en: 'Kenya',
-    },
-    serverVersion: 206,
-    locationTags: [
-      { id: 2, name: 'Sample 2' },
-      { id: 3, name: 'Sample 3' },
-    ],
-  },
-  {
-    type: 'Feature',
-    id: '6bf9c085-350b-4bb2-990f-80dc2caafb33',
-    properties: {
-      status: LocationUnitStatus.ACTIVE,
-      parentId: '',
-      name: 'Malawi',
-      geographicLevel: 0,
-      version: 0,
-      username: 'web-admin',
-      name_en: 'Malawi',
-    },
-    serverVersion: 223,
-    locationTags: [{ id: 4, name: 'Option1' }],
-  },
-];
-
-export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
-
-export const parsedHierarchy: ParsedHierarchyNode[] = [
+import { generateJurisdictionTree } from '../utils';
+export const treedata: ParsedHierarchyNode[] = [
   {
     id: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
     label: 'Tunisia',
@@ -1266,4 +1202,4 @@ export const rawHierarchy: RawOpenSRPHierarchy[] = [
   },
 ];
 
-export const parsedTreeNode: TreeNode[] = rawHierarchy.map((e) => generateJurisdictionTree(e));
+export const parsedHierarchy: TreeNode[] = rawHierarchy.map((e) => generateJurisdictionTree(e));
