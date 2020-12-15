@@ -15,6 +15,7 @@ import { act } from 'react-dom/test-utils';
 jest.mock('../../../configs/env');
 
 describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
+  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   afterEach(() => {
     fetch.mockClear();
   });
@@ -23,7 +24,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form />
+          <Form opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -37,7 +38,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form />
+          <Form opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -59,7 +60,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form />
+          <Form opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -88,7 +89,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
         <Provider store={store}>
-          <Route path={'/:id'} component={() => <Form id="1" />} />
+          <Route path={'/:id'} component={() => <Form id="1" opensrpBaseURL={baseURL} />} />
         </Provider>
       </MemoryRouter>
     );
@@ -160,7 +161,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
         <Provider store={store}>
-          <Route path={'/:id'} component={() => <Form id="1" />} />
+          <Route path={'/:id'} component={() => <Form id="1" opensrpBaseURL={baseURL} />} />
         </Provider>
       </MemoryRouter>
     );
@@ -215,7 +216,13 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   it('Handles errors on editing tag', async () => {
     fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    onSubmit(fixtures.sampleLocationUnitGroupPayload, 'sometoken', { id: '1' }, jest.fn());
+    onSubmit(
+      fixtures.sampleLocationUnitGroupPayload,
+      'sometoken',
+      baseURL,
+      { id: '1', opensrpBaseURL: baseURL },
+      jest.fn()
+    );
 
     await act(async () => {
       await flushPromises();

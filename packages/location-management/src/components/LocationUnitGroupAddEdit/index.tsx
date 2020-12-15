@@ -8,8 +8,18 @@ import { useParams } from 'react-router';
 
 reducerRegistry.register(reducerName, reducer);
 
-export const LocationUnitGroupAddEdit: React.FC = () => {
+export interface Props {
+  opensrpBaseURL: string;
+}
+
+/** default component props */
+export const defaultProps = {
+  opensrpBaseURL: '',
+};
+
+export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
+  const { opensrpBaseURL } = props;
   return (
     <Row className="layout-content">
       <Helmet>
@@ -19,10 +29,11 @@ export const LocationUnitGroupAddEdit: React.FC = () => {
       <h5 className="mb-4">{params.id ? 'Edit' : 'Add'} Location Unit Group</h5>
 
       <Col className="bg-white p-4" span={24}>
-        <Form id={params.id} />
+        <Form opensrpBaseURL={opensrpBaseURL} id={params.id} />
       </Col>
     </Row>
   );
 };
 
+LocationUnitGroupAddEdit.defaultProps = defaultProps;
 export default LocationUnitGroupAddEdit;

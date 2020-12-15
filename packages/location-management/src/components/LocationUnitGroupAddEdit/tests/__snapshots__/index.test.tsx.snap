@@ -23,6 +23,7 @@ Array [
   >
     <Form
       id="54"
+      opensrpBaseURL=""
     />
   </Col>,
 ]
@@ -49,7 +50,9 @@ Array [
     className="bg-white p-4"
     span={24}
   >
-    <Form />
+    <Form
+      opensrpBaseURL=""
+    />
   </Col>,
 ]
 `;
