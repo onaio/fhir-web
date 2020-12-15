@@ -99,7 +99,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     });
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
+      'https://test.smartregister.org/opensrp/rest/location-tag/1',
       {
         headers: {
           accept: 'application/json',
@@ -126,7 +126,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     });
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag/1',
+      'https://test.smartregister.org/opensrp/rest/location-tag/1',
       {
         headers: {
           accept: 'application/json',
@@ -138,7 +138,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     ]);
 
     expect(fetch.mock.calls[1]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+      'https://test.smartregister.org/opensrp/rest/location-tag',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',

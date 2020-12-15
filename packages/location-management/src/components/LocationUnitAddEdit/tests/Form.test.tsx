@@ -68,7 +68,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+      'https://test.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
       {
         headers: {
           accept: 'application/json',
@@ -80,7 +80,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     ]);
 
     expect(fetch.mock.calls[1]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      'https://test.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
@@ -145,7 +145,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+      'https://test.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
       {
         headers: {
           accept: 'application/json',
@@ -156,7 +156,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       },
     ]);
     expect(fetch.mock.calls[1]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      'https://test.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
@@ -230,7 +230,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
     // first call is made on the hierarchies endpoint to get geographic level
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2',
+      'https://test.smartregister.org/opensrp/rest/location/hierarchy/51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2',
       {
         headers: {
           accept: 'application/json',
@@ -242,7 +242,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     ]);
 
     expect(fetch.mock.calls[1]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      'https://test.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
