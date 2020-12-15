@@ -100,7 +100,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     );
 
     expect(fetch.mock.calls[0]).toMatchObject([
-      'https://test.smartregister.org/opensrp/rest/location-tag',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
       {
         headers: {
           accept: 'application/json',
@@ -112,7 +112,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     ]);
 
     expect(fetch.mock.calls[1]).toMatchObject([
-      'https://test.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
       {
         headers: {
           accept: 'application/json',
@@ -144,7 +144,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     );
 
     expect(fetch.mock.calls[0]).toMatchObject([
-      'https://test.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
       {
         headers: {
           accept: 'application/json',
@@ -156,7 +156,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     ]);
 
     expect(fetch.mock.calls[0]).toMatchObject([
-      'https://test.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
       {
         headers: {
           accept: 'application/json',
@@ -193,7 +193,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     );
 
     expect(fetch.mock.calls[0]).toMatchObject([
-      'https://test.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
       {
         headers: {
           accept: 'application/json',
@@ -204,7 +204,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       },
     ]);
     expect(fetch.mock.calls[1]).toMatchObject([
-      'https://test.smartregister.org/opensrp/rest/location-tag',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
       {
         headers: {
           accept: 'application/json',
