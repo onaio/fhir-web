@@ -16,7 +16,7 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
 describe('location-management/src/components/LocationTagView', () => {
-  const baseURL = 'https://reveal-stage.smartregister.org/opensrp/rest/';
+  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   const endpoint = 'location-tag/delete';
   const tagId = '1';
 
