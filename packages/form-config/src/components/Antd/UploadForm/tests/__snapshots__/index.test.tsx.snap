@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UploadFile edits form correctly: card 1`] = `
+exports[`components/UploadForm edits form correctly: card 1`] = `
 Object {
   "children": <ForwardRef(InternalForm)
     initialValues={
@@ -163,14 +163,14 @@ Object {
 }
 `;
 
-exports[`components/UploadFile edits form correctly: title 1`] = `
+exports[`components/UploadForm edits form correctly: title 1`] = `
 Object {
   "children": "Upload Form",
   "level": 3,
 }
 `;
 
-exports[`components/UploadFile renders correctly: card 1`] = `
+exports[`components/UploadForm renders correctly: card 1`] = `
 Object {
   "children": <ForwardRef(InternalForm)
     initialValues={
@@ -333,7 +333,7 @@ Object {
 }
 `;
 
-exports[`components/UploadFile renders correctly: title 1`] = `
+exports[`components/UploadForm renders correctly: title 1`] = `
 Object {
   "children": "Upload Form",
   "level": 3,
