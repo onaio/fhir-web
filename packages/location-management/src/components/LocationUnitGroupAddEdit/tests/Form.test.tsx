@@ -28,7 +28,8 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
         </Router>
       </Provider>
     );
-    expect(wrapper.props()).toMatchSnapshot();
+
+    expect(wrapper.find('form')).toHaveLength(1);
   });
 
   it('tests cancel button', () => {

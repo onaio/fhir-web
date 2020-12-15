@@ -293,42 +293,42 @@ const App: React.FC = () => {
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT}
               component={LocationUnitView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_ADD}
               component={LocationUnitAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_EDIT}
               component={LocationUnitAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_GROUP}
               component={LocationUnitGroupView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_GROUP_ADD}
               component={LocationUnitGroupAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_GROUP_EDIT}
               component={LocationUnitGroupAddEdit}

@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import LocationUnitDetail, { Props } from '..';
@@ -6,7 +6,6 @@ import { LocationUnitStatus, LocationUnitSyncStatus } from '../../../ducks/locat
 
 describe('location-management/src/components/LocationUnitDetail', () => {
   const props: Props = {
-    key: '0',
     id: '6y66ggde',
     type: 'Feautire',
     properties: {
@@ -22,7 +21,7 @@ describe('location-management/src/components/LocationUnitDetail', () => {
   };
 
   it('renders without crashing', () => {
-    const wrapper = mount(<LocationUnitDetail {...props} />);
+    const wrapper = shallow(<LocationUnitDetail {...props} />);
 
     expect(toJson(wrapper)).toMatchSnapshot();
   });
