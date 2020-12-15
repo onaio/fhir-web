@@ -4,7 +4,6 @@ import { mount } from 'enzyme';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 import { Provider } from 'react-redux';
 import Table, { onDelete, TableData } from '../Table';
@@ -56,7 +55,7 @@ describe('location-management/src/components/LocationTagView', () => {
       </Provider>
     );
 
-    expect(wrapper.props()).toMatchSnapshot();
+    expect(wrapper.find('table')).toHaveLength(1);
   });
 
   it('Test Table View Detail', () => {
@@ -93,7 +92,8 @@ describe('location-management/src/components/LocationTagView', () => {
     expect(wrapper).toHaveLength(1);
   });
 
-  it('Test Table Delete', () => {
+  it('Test Table Delete', async () => {
+    const mockNotificationSuccess = jest.spyOn(notification, 'success');
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -103,11 +103,14 @@ describe('location-management/src/components/LocationTagView', () => {
     );
 
     wrapper.find('.more-options').first().simulate('click');
-    wrapper.update();
-    wrapper.find('.delete').at(0).simulate('click');
-    wrapper.update();
-    const temp = wrapper.find('div.ant-popover-content');
-    expect(toJson(temp)).toMatchSnapshot();
+    wrapper.find('.delete').first().simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(mockNotificationSuccess).toBeCalled();
   });
 
   it('Test Name Sorting functionality', () => {
