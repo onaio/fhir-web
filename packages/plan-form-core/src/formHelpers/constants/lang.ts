@@ -49,22 +49,22 @@ export const MOSQUITO_COLLECTION_GOAL_MEASURE =
 
 export const PRODUCT_CHECK_ACTIVITY = 'Product Check';
 export const PRODUCT_CHECK_ACTIVITY_DESCRIPTION =
-  'Check for all products (100% within the jurisdiction';
+  'Check for all products (100%) within the jurisdiction';
 export const PRODUCT_CHECK_GOAL_MEASURE = 'Percent of products checked';
 
 export const FIX_PRODUCT_PROBLEM_ACTIVITY = 'Fix Product Problem';
 export const FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION =
-  'Fix problems for all products (100% within the jurisdiction';
+  'Fix problems for all products (100%) within the jurisdiction';
 export const FIX_PRODUCT_PROBLEM_GOAL_MEASURE = 'Percent of products problems fixed';
 
 export const RECORD_GPS_ACTIVITY = 'Record GPS';
 export const RECORD_GPS_ACTIVITY_DESCRIPTION =
-  'Record GPS for all service points without GPS within the jurisdiction';
+  'Record GPS for all service points (100%) without GPS within the jurisdiction';
 export const RECORD_GPS_GOAL_MEASURE = 'Percent of GPS recorded';
 
 export const SERVICE_POINT_CHECK_ACTIVITY = 'Service Point';
 export const SERVICE_POINT_CHECK_ACTIVITY_DESCRIPTION =
-  'Conduct checks for all service point (100% within the Jurisdiction';
+  'Conduct checks for all service point (100%) within the Jurisdiction';
 export const SERVICE_POINT_CHECK_GOAL_MEASURE = 'Percent of service points checked';
 
 export const MDA_POINT_DISPENSE_ACTIVITY_DESCRIPTION =

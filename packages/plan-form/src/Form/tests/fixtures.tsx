@@ -243,7 +243,7 @@ export const newPayload1 = {
     {
       identifier: '7d5a9652-0d1c-583d-9d98-ab2f9e9979ca',
       prefix: 1,
-      description: 'Check for all products (100% within the jurisdiction',
+      description: 'Check for all products (100%) within the jurisdiction',
       code: 'Product Check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
@@ -251,7 +251,7 @@ export const newPayload1 = {
       subjectCodableConcept: { text: 'Device' },
       condition: [
         {
-          expression: { description: 'Product exists', expression: '$this.is(FHIR.Device)' },
+          expression: { description: 'Product exists', expression: '$this.is(FHIR.Bundle)' },
           kind: 'applicability',
         },
       ],
@@ -263,7 +263,7 @@ export const newPayload1 = {
     {
       identifier: '936d4dbc-d803-56c9-888d-280810d1aa36',
       prefix: 2,
-      description: 'Fix problems for all products (100% within the jurisdiction',
+      description: 'Fix problems for all products (100%) within the jurisdiction',
       code: 'Fix Product Problems',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
@@ -279,12 +279,12 @@ export const newPayload1 = {
         },
       ],
       definitionUri: 'product_check.json',
-      title: 'Product Check',
+      title: 'Fix Product Problem',
       trigger: [
         {
           expression: {
             description: 'Trigger when a Fix Product event is submitted',
-            expression: "questionnaire = 'Fix_Product_Problem'",
+            expression: "questionnaire = 'flag_problem'",
           },
           name: 'event-submission',
           type: 'named-event',
@@ -295,7 +295,7 @@ export const newPayload1 = {
     {
       identifier: 'b920b277-6927-5d75-9862-b87e1968a0c4',
       prefix: 3,
-      description: 'Record GPS for all service points without GPS within the jurisdiction',
+      description: 'Record GPS for all service points (100%) without GPS within the jurisdiction',
       code: 'Record GPS',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
@@ -318,7 +318,7 @@ export const newPayload1 = {
     {
       identifier: '527c9afd-ca37-56bc-a035-7be8a3da79f4',
       prefix: 4,
-      description: 'Conduct checks for all service point (100% within the Jurisdiction',
+      description: 'Conduct checks for all service point (100%) within the Jurisdiction',
       code: 'Service Point Check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
@@ -338,7 +338,7 @@ export const newPayload1 = {
   ],
   goal: [
     {
-      description: 'Check for all products (100% within the jurisdiction',
+      description: 'Check for all products (100%) within the jurisdiction',
       id: 'Product_Check',
       priority: 'medium-priority',
       target: [
@@ -350,7 +350,7 @@ export const newPayload1 = {
       ],
     },
     {
-      description: 'Fix problems for all products (100% within the jurisdiction',
+      description: 'Fix problems for all products (100%) within the jurisdiction',
       id: 'Fix_Product_Problem',
       priority: 'medium-priority',
       target: [
@@ -362,7 +362,7 @@ export const newPayload1 = {
       ],
     },
     {
-      description: 'Record GPS for all service points without GPS within the jurisdiction',
+      description: 'Record GPS for all service points (100%) without GPS within the jurisdiction',
       id: 'Record_GPS',
       priority: 'medium-priority',
       target: [
@@ -374,7 +374,7 @@ export const newPayload1 = {
       ],
     },
     {
-      description: 'Conduct checks for all service point (100% within the Jurisdiction',
+      description: 'Conduct checks for all service point (100%) within the Jurisdiction',
       id: 'Service_Point_Check',
       priority: 'medium-priority',
       target: [
