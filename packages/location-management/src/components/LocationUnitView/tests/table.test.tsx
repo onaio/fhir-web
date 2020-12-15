@@ -21,7 +21,7 @@ describe('location-management/src/components/LocationUnitView', () => {
         <Table data={tableData} />
       </Router>
     );
-    expect(wrapper.props()).toMatchSnapshot();
+    expect(wrapper.prop("children")).toMatchSnapshot();
   });
 
   it('Test Table View Detail', () => {
