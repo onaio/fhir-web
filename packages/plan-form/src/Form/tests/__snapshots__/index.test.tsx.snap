@@ -736,7 +736,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Device)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -761,7 +761,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Device)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -786,7 +786,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Device)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
