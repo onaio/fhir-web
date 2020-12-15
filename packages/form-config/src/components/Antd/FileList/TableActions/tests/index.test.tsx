@@ -6,10 +6,14 @@ import { manifestFile1, downloadFile } from '../../../../../ducks/tests/fixtures
 import * as helpers from '../../../../../helpers/fileDownload';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import toJson from 'enzyme-to-json';
 import { BrowserRouter } from 'react-router-dom';
 
 describe('components/Antd/FileList/TableActions', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+  });
+
   const props = {
     file: manifestFile1,
     accessToken: 'hunter2',
@@ -33,7 +37,9 @@ describe('components/Antd/FileList/TableActions', () => {
       </BrowserRouter>
     );
 
-    expect(toJson(wrapper.find('TableActions'))).toMatchSnapshot();
+    expect(wrapper.find('Link').props()).toMatchSnapshot('edit');
+    expect(wrapper.find('Divider').props()).toMatchSnapshot('divider');
+    expect(wrapper.find('Dropdown').props()).toMatchSnapshot('dots menu');
 
     wrapper.unmount();
   });
@@ -48,7 +54,10 @@ describe('components/Antd/FileList/TableActions', () => {
       </BrowserRouter>
     );
 
-    wrapper.find('button').simulate('click');
+    const dropdown = wrapper.find('Dropdown');
+    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+
+    submenu.find('Button').simulate('click');
 
     await act(async () => {
       await flushPromises();
