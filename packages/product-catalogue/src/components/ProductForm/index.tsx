@@ -10,6 +10,28 @@ import * as Yup from 'yup';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
+import {
+  ACCOUNTABILITY_PERIOD,
+  ATTRACTIVE_ITEM_LABEL,
+  AVAILABILITY_LABEL,
+  AVAILABILITY_PLACEHOLDER,
+  CANCEL,
+  CONDITION_LABEL,
+  CONDITION_PLACEHOLDER,
+  DESCRIBE_THE_PRODUCTS_USE,
+  ENTER_PRODUCTS_NAME,
+  MATERIAL_NUMBER,
+  MATERIAL_NUMBER_PLACEHOLDER,
+  NO,
+  PHOTO_OF_THE_PRODUCT,
+  PRODUCT_NAME,
+  REQUIRED,
+  SUBMIT,
+  SUCCESSFULLY_ADDED,
+  SUCCESSFULLY_UPDATED,
+  USED_APPROPRIATELY,
+  YES,
+} from '../../lang';
 
 /** type describing the fields in the product catalogue form */
 export interface ProductFormFields {
@@ -21,7 +43,7 @@ export interface ProductFormFields {
   appropriateUsage: string;
   accountabilityPeriod?: number;
   availability: string;
-  productPhoto: string | File;
+  photoURL: string | File;
 }
 
 export const defaultInitialValues: ProductFormFields = {
@@ -33,7 +55,7 @@ export const defaultInitialValues: ProductFormFields = {
   appropriateUsage: '',
   accountabilityPeriod: undefined,
   availability: '',
-  productPhoto: '',
+  photoURL: '',
 };
 
 /** props for the product Catalogue form */
@@ -51,25 +73,46 @@ const defaultProps = {
 /** yup validation schema for productForm fields */
 const ProductFormValidationSchema = Yup.object().shape({
   uniqueId: Yup.number(),
-  productName: Yup.string().required('Required'),
-  materialNumber: Yup.string().required('Required'),
-  isAttractiveItem: Yup.boolean().required('Required'),
+  productName: Yup.string().required(REQUIRED),
+  materialNumber: Yup.string().required(REQUIRED),
+  isAttractiveItem: Yup.boolean().required(REQUIRED),
   condition: Yup.string(),
   appropriateUsage: Yup.string(),
-  accountabilityPeriod: Yup.number().required('Required'),
-  availability: Yup.string().required('Required'),
-  productPhoto: Yup.mixed(),
+  accountabilityPeriod: Yup.number().required(REQUIRED),
+  availability: Yup.string().required(REQUIRED),
+  photoURL: Yup.mixed(),
 });
 
 /** responsive layout for the form labels and columns */
 const formItemLayout = {
   labelCol: {
-    xs: { offset: 0, span: 16 },
-    sm: { offset: 2, span: 10 },
-    md: { offset: 0, span: 8 },
-    lg: { offset: 0, span: 6 },
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 24,
+    },
+    md: {
+      span: 24,
+    },
+    lg: {
+      span: 6,
+    },
   },
-  wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 24,
+    },
+    md: {
+      span: 20,
+    },
+    lg: {
+      span: 16,
+    },
+  },
 };
 
 const tailLayout = {
@@ -86,15 +129,15 @@ const tailLayout = {
 const ProductForm = (props: ProductFormProps) => {
   const { initialValues, redirectAfterAction, baseURL } = props;
   const isEditMode = !!initialValues.uniqueId;
-  const defaultImageUrl = (isEditMode ? props.initialValues.productPhoto : '') ?? '';
+  const defaultImageUrl = isEditMode ? props.initialValues.photoURL : '';
   const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>(defaultImageUrl as string);
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const history = useHistory();
 
   /** options for the isAttractive form field radio buttons */
   const attractiveOptions = [
-    { label: 'yes', value: true },
-    { label: 'no', value: false },
+    { label: YES, value: true },
+    { label: NO, value: false },
   ];
 
   /** component used by antd Upload, to upload the product photo */
@@ -111,14 +154,14 @@ const ProductForm = (props: ProductFormProps) => {
    * @param {UploadFile} file - the uploaded File
    */
   const readURL = (file: UploadFile): void => {
-    if (file && file.originFileObj) {
+    if (file.originFileObj) {
       const reader = new FileReader();
 
-      reader.onload = (event) => {
+      reader.addEventListener('load', function (event) {
         if (event?.target?.result) {
           setImageUrl(event.target.result);
         }
-      };
+      });
 
       // convert to base64 string
       reader.readAsDataURL(file.originFileObj);
@@ -128,9 +171,9 @@ const ProductForm = (props: ProductFormProps) => {
 
   /** change handler for Upload component
    *
-   * @param {UploadChangeParam} info - info object containing File, and filelist
+   * @param {UploadChangeParam} info - info object containing File, and fileList
    * @param {Function} setFieldValue - the callback that updates formik state
-   * for the productPhoto field
+   * for the photoURL field
    */
   const handleChange: (info: UploadChangeParam, setFieldValue: Function) => void = (
     info,
@@ -138,7 +181,7 @@ const ProductForm = (props: ProductFormProps) => {
   ) => {
     const { file } = info;
     readURL(file);
-    setFieldValue('productPhoto', file.originFileObj);
+    setFieldValue('photoURL', file.originFileObj);
   };
 
   /** if plan is updated or saved redirect to plans page */
@@ -147,29 +190,35 @@ const ProductForm = (props: ProductFormProps) => {
   }
 
   return (
-    <div className="form-container">
+    <div className="product-form form-container">
       <Formik
         initialValues={initialValues}
         validationSchema={ProductFormValidationSchema}
-        onSubmit={(values) => {
+        onSubmit={(values, actions) => {
           const payload = { ...values };
           if (isEditMode) {
             putProduct(baseURL, payload)
               .then(() => {
-                sendSuccessNotification('Successfully Updated');
+                sendSuccessNotification(SUCCESSFULLY_UPDATED);
+                // the reason this is not in a finally block, it should be called before setAreWeDoneHere
+                // to avoid updating an unmounted component.
+                actions.setSubmitting(false);
                 setAreWeDoneHere(true);
               })
               .catch((err: Error) => {
                 sendErrorNotification(err.name, err.message);
+                actions.setSubmitting(false);
               });
           } else {
             postProduct(baseURL, payload)
               .then(() => {
-                sendSuccessNotification('Successfully Added');
+                sendSuccessNotification(SUCCESSFULLY_ADDED);
+                actions.setSubmitting(false);
                 setAreWeDoneHere(true);
               })
               .catch((err: Error) => {
                 sendErrorNotification(err.name, err.message);
+                actions.setSubmitting(false);
               });
           }
         }}
@@ -177,12 +226,9 @@ const ProductForm = (props: ProductFormProps) => {
         {({ setFieldValue }) => {
           return (
             <>
-              <Form {...formItemLayout} colon={true} requiredMark={'optional'}>
-                <Form.Item id="productName" name="productName" label="Product name" required={true}>
-                  <Input
-                    name="productName"
-                    placeholder="Enter the product's name e.g Midwifery Kit"
-                  />
+              <Form {...formItemLayout} colon={true} requiredMark={false}>
+                <Form.Item id="productName" name="productName" label={PRODUCT_NAME} required={true}>
+                  <Input name="productName" placeholder={ENTER_PRODUCTS_NAME} />
                 </Form.Item>
 
                 <Form.Item id="uniqueId" name="uniqueId" hidden={true} required={true}>
@@ -192,16 +238,16 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="materialNumber"
                   name="materialNumber"
-                  label="Material number"
+                  label={MATERIAL_NUMBER}
                   required={true}
                 >
-                  <Input name="materialNumber" />
+                  <Input name="materialNumber" placeholder={MATERIAL_NUMBER_PLACEHOLDER} />
                 </FormItem>
 
                 <FormItem
                   id="isAttractiveItem"
                   name="isAttractiveItem"
-                  label="Attractive item?"
+                  label={ATTRACTIVE_ITEM_LABEL}
                   required={true}
                 >
                   <Radio.Group name="isAttractiveItem" options={attractiveOptions} />
@@ -210,47 +256,42 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="availability"
                   name="availability"
-                  label="Is it there?"
+                  label={AVAILABILITY_LABEL}
                   required={true}
                 >
                   <Input.TextArea
+                    rows={4}
                     name="availability"
-                    placeholder="Describe where a supply monitor can locate this product at the service point."
+                    placeholder={AVAILABILITY_PLACEHOLDER}
                   />
                 </FormItem>
-                <FormItem id="condition" name="condition" label="Is it in good condition?">
-                  <Input.TextArea
-                    name="condition"
-                    placeholder="Describe how a supply monitor would assess whether the product is in good condition"
-                  />
+                <FormItem id="condition" name="condition" label={CONDITION_LABEL}>
+                  <Input.TextArea rows={4} name="condition" placeholder={CONDITION_PLACEHOLDER} />
                 </FormItem>
-                <FormItem
-                  id="appropriateUsage"
-                  name="appropriateUsage"
-                  label="Is it being used appropriately?"
-                >
+                <FormItem id="appropriateUsage" name="appropriateUsage" label={USED_APPROPRIATELY}>
                   <Input.TextArea
+                    rows={4}
                     name="appropriateUsage"
-                    placeholder="Describe the product's intended use at the service point"
+                    placeholder={DESCRIBE_THE_PRODUCTS_USE}
                   />
                 </FormItem>
                 <FormItem
                   id="accountabilityPeriod"
                   name="accountabilityPeriod"
-                  label="Accountability period (in months)"
+                  label={ACCOUNTABILITY_PERIOD}
                   required={true}
                 >
                   <InputNumber name="accountabilityPeriod" min={0} />
                 </FormItem>
 
-                <FormItem id="productPhoto" name="productPhoto" label="Photo of the product">
+                <FormItem id="photoURL" name="photoURL" label={PHOTO_OF_THE_PRODUCT}>
                   <Upload
                     customRequest={async () => {
                       return;
                     }}
                     accept="image/*"
                     multiple={false}
-                    name="productPhoto"
+                    name="photoURL"
                     listType="picture-card"
                     onChange={(info) => handleChange(info, setFieldValue)}
                     showUploadList={false}
@@ -265,7 +306,7 @@ const ProductForm = (props: ProductFormProps) => {
 
                 <FormItem {...tailLayout} name="submitCancel">
                   <Space>
-                    <SubmitButton id="submit">Submit</SubmitButton>
+                    <SubmitButton id="submit">{SUBMIT}</SubmitButton>
 
                     <Button
                       id="cancel"
@@ -273,7 +314,7 @@ const ProductForm = (props: ProductFormProps) => {
                         history.push(CATALOGUE_LIST_VIEW_URL);
                       }}
                     >
-                      Cancel
+                      {CANCEL}
                     </Button>
                   </Space>
                 </FormItem>

@@ -9,6 +9,7 @@ import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
+import { URL_LOCATION_UNIT, URL_LOCATION_UNIT_GROUP } from '../../../../constants';
 
 describe('containers/pages/Home', () => {
   it('renders without crashing', () => {
@@ -37,6 +38,7 @@ describe('containers/pages/Home', () => {
     expect(toJson(wrapper.find('Home'))).toMatchSnapshot('Home page rendered');
     wrapper.unmount();
   });
+
   it('works correctly with store', () => {
     const { authenticated, user, extraData } = getOpenSRPUserInfo({
       oAuth2Data: {
@@ -69,5 +71,21 @@ describe('containers/pages/Home', () => {
       roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
       username: 'superset-user',
     });
+  });
+
+  it('displays links for location unit module', () => {
+    const envModule = require('../../../../configs/env');
+    envModule.ENABLE_LOCATIONS = 'true';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedHomeComponent />
+        </Router>
+      </Provider>
+    );
+
+    expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT}"]`)).toHaveLength(1);
+    expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT_GROUP}"]`)).toHaveLength(1);
   });
 });

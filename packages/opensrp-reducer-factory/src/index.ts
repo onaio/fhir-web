@@ -230,7 +230,9 @@ export const getItemByIdFactory = <ObjectType>(reducerName: string) =>
    * @returns {Dictionary | null} a obj if the id is found else null
    */
   function (state: Partial<Store>, id: string): ObjectType | null {
-    return get(getItemsByIdFactory<ObjectType>(reducerName)(state), id) || null;
+    return get(getItemsByIdFactory<ObjectType>(reducerName)(state), id)
+      ? get(getItemsByIdFactory<ObjectType>(reducerName)(state), id)
+      : null;
   };
 
 /** factory function that creates selector

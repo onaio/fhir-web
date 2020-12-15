@@ -23,6 +23,8 @@ import {
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
 import { ERROR_OCCURED } from '../../../constants';
+import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { practitioner1 } from '../../forms/UserForm/tests/fixtures';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -42,7 +44,10 @@ describe('components/CreateEditUser', () => {
     keycloakUser: fixtures.keycloakUser,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     serviceClass: KeycloakService,
+    practitioner: undefined,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
+    opensrpBaseURL: OPENSRP_API_BASE_URL,
+    opensrpServiceClass: OpenSRPService,
     accessToken: 'access token',
     location: {
       hash: '',
@@ -73,14 +78,21 @@ describe('components/CreateEditUser', () => {
     });
   });
 
-  it('renders correctly', () => {
-    store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
+  it('renders correctly', async () => {
+    fetch.once(JSON.stringify(fixtures.keycloakUser)).once(JSON.stringify(practitioner1));
 
     const wrapper = mount(
-      <Router history={history}>
-        <CreateEditUser {...props} />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <CreateEditUser {...props} />
+        </Router>
+      </Provider>
     );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     const row = wrapper.find('Row').at(0);
 
@@ -97,6 +109,8 @@ describe('components/CreateEditUser', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       serviceClass: KeycloakService,
       fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      opensrpServiceClass: OpenSRPService,
       accessToken: 'access token',
       location: {
         hash: '',
@@ -160,7 +174,7 @@ describe('components/CreateEditUser', () => {
     );
 
     // Loader should be displayed
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
       await flushPromises();

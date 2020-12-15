@@ -1,4 +1,5 @@
 import { IncomingHttpHeaders } from 'http';
+import { Dictionary } from '@onaio/utils';
 import queryString from 'querystring';
 
 import { throwNetworkError, throwHTTPError } from './errors';
@@ -6,7 +7,7 @@ import { throwNetworkError, throwHTTPError } from './errors';
 export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 
 /** allowed http methods */
-type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 /** get default HTTP headers for OpenSRP service
  *
@@ -35,16 +36,19 @@ export function getDefaultHeaders(
  * @param {object} _ - signal object that allows you to communicate with a DOM request
  * @param {string} accessToken - the access token
  * @param {string} method - the HTTP method
+ * @param {object} data - data to be used for payload
  * @returns {Object} the payload
  */
-export function getFetchOptions(
+export function getFetchOptions<T extends object = Dictionary>(
   _: AbortSignal,
   accessToken: string,
-  method: HTTPMethod
-): { headers: HeadersInit; method: HTTPMethod } {
+  method: HTTPMethod,
+  data?: T
+): RequestInit {
   return {
     headers: getDefaultHeaders(accessToken) as HeadersInit,
     method,
+    ...(data ? { body: JSON.stringify(data) } : {}),
   };
 }
 
@@ -82,7 +86,7 @@ type paramsType = URLParams | null;
  *
  * **To update an object**: service.update(theObject)
  */
-export class OpenSRPService {
+export class OpenSRPService<PayloadT extends object = Dictionary> {
   public accessToken: string;
   public baseURL: string;
   public endpoint: string;
@@ -96,18 +100,18 @@ export class OpenSRPService {
    * @param {string} accessToken - the access token
    * @param {string} baseURL - the base OpenSRP API URL
    * @param {string} endpoint - the OpenSRP endpoint
-   * @param {function()} getPayload - a function to get the payload
+   * @param {function()} getOptions - a function to get the payload
    * @param {AbortController} signal - abort signal
    */
   constructor(
     accessToken: string,
     baseURL: string = OPENSRP_API_BASE_URL,
     endpoint: string,
-    getPayload: typeof getFetchOptions = getFetchOptions,
+    getOptions: typeof getFetchOptions = getFetchOptions,
     signal: AbortSignal = new AbortController().signal
   ) {
     this.endpoint = endpoint;
-    this.getOptions = getPayload;
+    this.getOptions = getOptions;
     this.signal = signal;
     this.baseURL = baseURL;
     this.generalURL = `${this.baseURL}${this.endpoint}`;
@@ -122,7 +126,7 @@ export class OpenSRPService {
    */
   public static getURL(generalUrl: string, params: paramsType): string {
     if (params) {
-      return `${generalUrl}?${queryString.stringify(params)}`;
+      return `${generalUrl}?${decodeURIComponent(queryString.stringify(params))}`;
     }
     return generalUrl;
   }
@@ -147,17 +151,16 @@ export class OpenSRPService {
    * @param {string} method - the HTTP method
    * @returns {object} the object returned by API
    */
-  public async create<T>(
-    data: T,
+  public async create(
+    data: PayloadT,
     params: paramsType = null,
     method: HTTPMethod = 'POST'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
-      ...this.getOptions(this.signal, this.accessToken, method),
+      ...this.getOptions<PayloadT>(this.signal, this.accessToken, method, data),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
-      body: JSON.stringify(data),
     };
     const response = await customFetch(url, payload);
     if (response) {
@@ -165,7 +168,7 @@ export class OpenSRPService {
         return {};
       }
 
-      const defaultMessage = `OpenSRPService create on ${this.endpoint} failed, HTTP status ${response?.status}`;
+      const defaultMessage = `OpenSRPService create on ${this.endpoint} failed, HTTP status ${response.status}`;
       await throwHTTPError(response, defaultMessage);
     }
 
@@ -209,16 +212,15 @@ export class OpenSRPService {
    * @returns {object} the object returned by API
    */
   public async update<T>(
-    data: T,
+    data: PayloadT,
     params: paramsType = null,
     method: HTTPMethod = 'PUT'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const payload = {
-      ...this.getOptions(this.signal, this.accessToken, method),
+      ...this.getOptions<PayloadT>(this.signal, this.accessToken, method, data),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
-      body: JSON.stringify(data),
     };
     const response = await customFetch(url, payload);
     if (response) {
@@ -262,20 +264,17 @@ export class OpenSRPService {
    * @returns {object} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async delete<T>(
+  public async delete(
     params: paramsType = null,
     method: HTTPMethod = 'DELETE'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const response = await fetch(url, this.getOptions(this.signal, this.accessToken, method));
-
-    if (response) {
-      if (response.ok || response.status === 204 || response.status === 200) {
-        return {};
-      }
-      const defaultMessage = `OpenSRPService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
-      await throwHTTPError(response, defaultMessage);
+    if (response.ok || response.status === 204 || response.status === 200) {
+      return {};
     }
+    const defaultMessage = `OpenSRPService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
+    await throwHTTPError(response, defaultMessage);
 
     return {};
   }

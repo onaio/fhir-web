@@ -1,5 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`components/ConnectedSidebar displays menu links for enabled Location module 1`] = `
+Array [
+  undefined,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Admin"
+  >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <SubMenu
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/location/unit"
+        >
+          Locations unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/location/group"
+        >
+          Locations unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
 exports[`components/ConnectedSidebar renders the ConnectedSidebar component 1`] = `
 Object {
   "children": Array [
@@ -20,6 +79,7 @@ Object {
         </Link>
       </div>
       <Menu
+        className="menu-dark"
         defaultSelectedKeys={
           Array [
             "1",
@@ -43,37 +103,17 @@ Object {
           <MenuItem>
             <Link
               className="admin-link"
-              to="/product-catalogue"
+              to="/product-catalogue/list"
             >
               Product Catalogue
             </Link>
           </MenuItem>
-          <SubMenu
-            title="Locations"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/location/unit"
-              >
-                Locations unit
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/location/group"
-              >
-                Locations unit group
-              </Link>
-            </MenuItem>
-          </SubMenu>
         </SubMenu>
       </Menu>
     </div>,
     null,
   ],
-  "className": "ant-layout-sider ant-layout-sider-dark",
+  "className": "ant-layout-sider ant-layout-sider-dark layout-sider",
   "style": Object {
     "flex": "0 0 275px",
     "maxWidth": "275px",

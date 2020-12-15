@@ -11,13 +11,14 @@ import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
 import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router';
-import Loading from '../components/page/Loading';
+import { Spin } from 'antd';
 import { CustomLogout } from '../components/Logout';
 import {
   WEBSITE_NAME,
   BACKEND_ACTIVE,
   KEYCLOAK_API_BASE_URL,
   DISABLE_LOGIN_PROTECTION,
+  OPENSRP_API_BASE_URL,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -29,9 +30,9 @@ import {
   URL_LOCATION_UNIT,
   URL_HOME,
   URL_LOCATION_UNIT_ADD,
-  URL_LOCATION_TAG,
-  URL_LOCATION_TAG_ADD,
-  URL_LOCATION_TAG_EDIT,
+  URL_LOCATION_UNIT_GROUP,
+  URL_LOCATION_UNIT_GROUP_ADD,
+  URL_LOCATION_UNIT_GROUP_EDIT,
   URL_LOCATION_UNIT_EDIT,
 } from '../constants';
 import { providers } from '../configs/settings';
@@ -49,6 +50,17 @@ import {
   ConnectedEditProductView,
 } from '@opensrp/product-catalogue';
 import {
+  ConnectedPlansList,
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  TRASH_PLANS_LIST_VIEW_URL,
+  ConnectedEditPlanView,
+  CreatePlanView,
+  PLANS_CREATE_VIEW_URL,
+  PLANS_EDIT_VIEW_URL,
+} from '@opensrp/plans';
+import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
@@ -62,13 +74,23 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import {
-  LocationUnitAdd,
+  LocationUnitAddEdit,
   LocationUnitView,
-  LocationTagAdd,
-  LocationTagView,
+  LocationUnitGroupAddEdit,
+  LocationUnitGroupView,
 } from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
-import { productCatalogueProps } from './utils';
+import {
+  productCatalogueProps,
+  plansListProps,
+  planEditProps,
+  planCreateProps,
+  activePlansListStatusProp,
+  draftPlansListStatusProp,
+  completedPlansListStatusProp,
+  trashPlansListStatusProp,
+} from './utils';
+import '@opensrp/plan-form/dist/index.css';
 
 const { Content } = Layout;
 
@@ -90,7 +112,11 @@ export const PrivateComponent = ({ component: Component, ...rest }: ComponentPro
     <ConnectedPrivateRoute
       {...rest}
       component={(props: RouteComponentProps) => (
-        <Component {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+        <Component
+          {...props}
+          keycloakBaseURL={KEYCLOAK_API_BASE_URL}
+          opensrpBaseURL={OPENSRP_API_BASE_URL}
+        />
       )}
     />
   );
@@ -111,16 +137,18 @@ export const PublicComponent = ({ component: Component, ...rest }: Partial<Compo
  * @param routeProps - Component route props object
  */
 
+export const LoadingComponent = () => <Spin size="large" />;
+export const SuccessfulLoginComponent = () => <Redirect to="/" />;
+
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
     return <CustomConnectedAPICallBack {...routeProps} />;
   }
+
   return (
     <ConnectedOauthCallback
-      SuccessfulLoginComponent={() => {
-        return <Redirect to="/" />;
-      }}
-      LoadingComponent={Loading}
+      SuccessfulLoginComponent={SuccessfulLoginComponent}
+      LoadingComponent={LoadingComponent}
       providers={providers}
       oAuthUserInfoGetter={getOpenSRPUserInfo}
       {...routeProps}
@@ -171,6 +199,42 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={ACTIVE_PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              {...activePlansListStatusProp}
+              component={ConnectedPlansList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={DRAFT_PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              {...draftPlansListStatusProp}
+              component={ConnectedPlansList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={COMPLETE_PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              {...completedPlansListStatusProp}
+              component={ConnectedPlansList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={TRASH_PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              {...trashPlansListStatusProp}
+              component={ConnectedPlansList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
               {...productCatalogueProps}
               component={ConnectedProductCatalogueList}
@@ -190,6 +254,22 @@ const App: React.FC = () => {
               path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
               {...productCatalogueProps}
               component={ConnectedEditProductView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={PLANS_CREATE_VIEW_URL}
+              {...planCreateProps}
+              component={CreatePlanView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${PLANS_EDIT_VIEW_URL}/:planId`}
+              {...planEditProps}
+              component={ConnectedEditPlanView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -224,35 +304,35 @@ const App: React.FC = () => {
               disableLoginProtection={false}
               exact
               path={URL_LOCATION_UNIT_ADD}
-              component={LocationUnitAdd}
+              component={LocationUnitAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_UNIT_EDIT + '/:id'}
-              component={LocationUnitAdd}
+              path={URL_LOCATION_UNIT_EDIT}
+              component={LocationUnitAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG}
-              component={LocationTagView}
+              path={URL_LOCATION_UNIT_GROUP}
+              component={LocationUnitGroupView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG_ADD}
-              component={LocationTagAdd}
+              path={URL_LOCATION_UNIT_GROUP_ADD}
+              component={LocationUnitGroupAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
               exact
-              path={URL_LOCATION_TAG_EDIT + '/:id'}
-              component={LocationTagAdd}
+              path={URL_LOCATION_UNIT_GROUP_EDIT}
+              component={LocationUnitGroupAddEdit}
             />
             <Route
               exact

@@ -7,8 +7,13 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { UserForm, UserFormProps, defaultInitialValues } from '../forms/UserForm';
-import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../constants';
+import { UserForm, UserFormProps, defaultInitialValues, Practitioner } from '../forms/UserForm';
+import {
+  ROUTE_PARAM_USER_ID,
+  KEYCLOAK_URL_USERS,
+  ERROR_OCCURED,
+  OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
+} from '../../constants';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -16,8 +21,9 @@ import {
   makeKeycloakUsersSelector,
   KeycloakUser,
 } from '../../ducks/user';
-import Ripple from '../Loading';
+import { Spin } from 'antd';
 import '../../index.css';
+import { OpenSRPService } from '@opensrp/server-service';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -35,7 +41,9 @@ export interface EditUserProps {
   accessToken: string;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
+  opensrpServiceClass: typeof OpenSRPService;
   keycloakBaseURL: string;
+  opensrpBaseURL: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
 }
 
@@ -47,7 +55,9 @@ export const defaultEditUserProps: EditUserProps = {
   accessToken: '',
   keycloakUser: null,
   serviceClass: KeycloakService,
+  opensrpServiceClass: OpenSRPService,
   keycloakBaseURL: '',
+  opensrpBaseURL: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
 
@@ -58,11 +68,14 @@ export const defaultEditUserProps: EditUserProps = {
 
 const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [practitioner, setPractitioner] = React.useState<Practitioner | undefined>(undefined);
   const {
     keycloakUser,
     accessToken,
     keycloakBaseURL,
+    opensrpBaseURL,
     serviceClass,
+    opensrpServiceClass,
     fetchKeycloakUsersCreator,
   } = props;
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
@@ -77,28 +90,52 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       setIsLoading(true);
       serve
         .read(userId)
-        .then((response: KeycloakUser) => {
+        .then((response: KeycloakUser | null | undefined) => {
           if (response) {
             setIsLoading(false);
             fetchKeycloakUsersCreator([response]);
           }
         })
         .catch((_: Error) => {
-          setIsLoading(false);
           sendErrorNotification(ERROR_OCCURED);
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
   }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);
 
+  React.useEffect(() => {
+    if (userId && practitioner === undefined) {
+      setIsLoading(true);
+      const serve = new opensrpServiceClass(
+        accessToken,
+        opensrpBaseURL,
+        OPENSRP_CREATE_PRACTITIONER_ENDPOINT
+      );
+      serve
+        .read(userId)
+        .then((response: Practitioner) => {
+          setIsLoading(false);
+          setPractitioner(response);
+        })
+        .catch((_: Error) => {
+          sendErrorNotification(ERROR_OCCURED);
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [userId, practitioner, accessToken, opensrpServiceClass, opensrpBaseURL]);
+
   if (isLoading) {
-    return <Ripple />;
+    return <Spin size="large" />;
   }
 
   const userFormProps: UserFormProps = {
     accessToken,
     initialValues: initialValues as KeycloakUser,
+    opensrpServiceClass,
     serviceClass,
     keycloakBaseURL,
+    opensrpBaseURL,
+    practitioner: practitioner as Practitioner,
   };
 
   return (

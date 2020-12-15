@@ -48,6 +48,23 @@
   padding: 0 24px;
 }
 
+.product-form.form-container {
+  background-color: #fff;
+  padding: 24px !important;
+  min-height: 80vh;
+  margin-bottom: 24px;
+}
+
+.product-form.form-container .ant-form-item-label {
+  overflow: visible;
+  white-space: normal;
+}
+
+.content-section > div {
+  padding: 0;
+  padding-top: 24px;
+}
+
 .page-header {
   padding-left: 0;
   padding-right: 0;
@@ -62,4 +79,9 @@
 
 .display-block {
   display: block;
+}
+
+.flex-right {
+  display: flex;
+  justify-content: flex-end;
 }
