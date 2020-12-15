@@ -1,0 +1,27 @@
+.plan-info-header.content-section {
+  padding: 0 31px;
+}
+
+.plan-info-header.content-section > div {
+  padding-top: 16px;
+}
+
+.plan-info-main {
+  display: inline-flex;
+  align-items: center;
+  justify-content: unset;
+}
+.plan-title {
+  margin-left: 19px;
+}
+.plan-start {
+  margin-left: 474px;
+}
+.plan-end {
+  margin-left: 87px;
+}
+.timing-period-divider {
+  height: 40px;
+  margin-left: 60px;
+  margin-bottom: 38px;
+}

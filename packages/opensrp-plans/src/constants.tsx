@@ -60,7 +60,7 @@ export const TableColumnsNamespace = 'plans';
 
 /** route params for product-catalogue pages */
 export interface RouteParams {
-  planId: string;
+  planId?: string;
 }
 
 /** Enum representing the possible plan types colors*/
