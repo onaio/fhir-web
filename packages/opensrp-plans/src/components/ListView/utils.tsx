@@ -1,17 +1,26 @@
 import React from 'react';
 import { Spin, Alert } from 'antd';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import { PLANS_EDIT_VIEW_URL, TableColumnsNamespace } from '../../constants';
+import { PLANS_LIST_VIEW_URL, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
-import { NAME, DATE, ACTIONS, TIP, MESSAGE, DESCRIPTION, MISSIONS } from '../../lang';
+import {
+  NAME,
+  DATE,
+  ACTIONS,
+  TIP,
+  MESSAGE,
+  DESCRIPTION,
+  MISSIONS,
+  NO_STATUS_FOUND,
+} from '../../lang';
 
 /** component rendered in the action column of the table */
 
 export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (record) => {
   return (
     <>
-      <Link to={`${PLANS_EDIT_VIEW_URL}/${record.identifier}`}>View</Link>
+      <Link to={`${PLANS_LIST_VIEW_URL}/${record.status}/${record.identifier}`}>View</Link>
     </>
   );
 };
@@ -58,6 +67,9 @@ export const PlansLoading = () => {
 
 /** Util method that determines pageTitle */
 
-export const pageTitleBuilder = (status: string) => {
-  return `${status.charAt(0).toUpperCase()}${status.slice(1)} ${MISSIONS}`;
+export const pageTitleBuilder = (status?: string) => {
+  if (status) {
+    return `${status.charAt(0).toUpperCase()}${status.slice(1)} ${MISSIONS}`;
+  }
+  return NO_STATUS_FOUND;
 };

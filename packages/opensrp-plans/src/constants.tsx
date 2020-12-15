@@ -1,3 +1,5 @@
+import { Dictionary } from '@onaio/utils';
+
 /** Allowed action Reason values */
 export const ROUTINE = 'Routine';
 export const INVESTIGATION = 'Investigation';
@@ -58,5 +60,13 @@ export const TableColumnsNamespace = 'plans';
 
 /** route params for product-catalogue pages */
 export interface RouteParams {
-  plansId?: string;
+  planId: string;
 }
+
+/** Enum representing the possible plan types colors*/
+export const PlanStatusColors: Dictionary = {
+  active: '#22B509',
+  complete: '#000000',
+  draft: '#DBA400',
+  retired: '#000000',
+};
