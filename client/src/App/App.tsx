@@ -52,6 +52,7 @@ import {
   CreatePlanView,
   PLANS_CREATE_VIEW_URL,
   PLANS_EDIT_VIEW_URL,
+  ConnectedPlanInfo,
 } from '@opensrp/plans';
 import {
   ConnectedUserList,
@@ -217,6 +218,42 @@ const App: React.FC = () => {
               {...plansListProps}
               {...trashPlansListStatusProp}
               component={ConnectedPlansList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`}
+              {...plansListProps}
+              {...activePlansListStatusProp}
+              component={ConnectedPlanInfo}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${DRAFT_PLANS_LIST_VIEW_URL}/:planId`}
+              {...plansListProps}
+              {...activePlansListStatusProp}
+              component={ConnectedPlanInfo}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${COMPLETE_PLANS_LIST_VIEW_URL}/:planId`}
+              {...plansListProps}
+              {...activePlansListStatusProp}
+              component={ConnectedPlanInfo}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${TRASH_PLANS_LIST_VIEW_URL}/:planId`}
+              {...plansListProps}
+              {...activePlansListStatusProp}
+              component={ConnectedPlanInfo}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
