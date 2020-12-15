@@ -23,7 +23,9 @@ Object {
       }
     }
   >
-    <Form />
+    <Form
+      opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
+    />
   </Router>,
   "store": Object {
     "dispatch": [Function],

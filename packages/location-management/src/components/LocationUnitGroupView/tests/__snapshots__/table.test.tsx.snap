@@ -58,6 +58,7 @@ Object {
           },
         ]
       }
+      opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
     />
   </Router>,
   "store": Object {

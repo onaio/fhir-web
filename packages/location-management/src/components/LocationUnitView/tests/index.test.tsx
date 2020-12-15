@@ -19,6 +19,8 @@ import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 jest.mock('../../../configs/env');
 
 describe('location-management/src/components/LocationUnitView', () => {
+  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+
   beforeEach(() => {
     fetch.mockClear();
   });
@@ -34,7 +36,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       name: parsedHierarchy[0].title,
     };
 
-    loadSingleLocation(row, 'accessToken', called);
+    loadSingleLocation(row, 'accessToken', baseURL, called);
 
     expect(called).toBeCalledWith('loading');
 
@@ -56,7 +58,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       name: parsedHierarchy[0].title,
     };
 
-    loadSingleLocation(row, 'accessToken', jest.fn());
+    loadSingleLocation(row, 'accessToken', baseURL, jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -71,7 +73,7 @@ describe('location-management/src/components/LocationUnitView', () => {
   it('test getBaseTreeNode', async () => {
     fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
-    const response = await getBaseTreeNode('accessToken');
+    const response = await getBaseTreeNode('accessToken', baseURL);
 
     expect(response).toMatchObject(baseLocationUnits);
   });
@@ -104,7 +106,7 @@ describe('location-management/src/components/LocationUnitView', () => {
   it('test getHierarchy', async () => {
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
-    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken');
+    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken', baseURL);
 
     expect(response).toMatchObject([rawHierarchy[2]]);
   });
@@ -117,7 +119,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView />
+          <LocationUnitView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -142,7 +144,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView />
+          <LocationUnitView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -167,7 +169,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView />
+          <LocationUnitView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -237,7 +239,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView />
+          <LocationUnitView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -284,7 +286,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView />
+          <LocationUnitView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -318,7 +320,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView />
+          <LocationUnitView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );

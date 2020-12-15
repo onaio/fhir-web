@@ -19,7 +19,6 @@ import {
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
 } from '../../constants';
-import { API_BASE_URL } from '../../configs/env';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import Tree from '../LocationTree';
@@ -45,19 +44,30 @@ export interface AntTreeProps {
   children: AntTreeProps[];
 }
 
+export interface Props {
+  opensrpBaseURL: string;
+}
+
+/** default component props */
+export const defaultProps = {
+  opensrpBaseURL: '',
+};
+
 /** Function to Load selected location unit for details
  *
  * @param {TableData} row data selected from the table
  * @param {string} accessToken - access token
+ * @param {string} opensrpBaseURL - base url
  * @param {Function} setDetail funtion to set detail to state
  */
 export function loadSingleLocation(
   row: TableData,
   accessToken: string,
+  opensrpBaseURL: string,
   setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
 ): void {
   setDetail('loading');
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GET);
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GET);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   serve
     .read(row.id, { is_jurisdiction: true })
@@ -70,10 +80,11 @@ export function loadSingleLocation(
 /** Gets all the location unit at geographicLevel 0
  *
  * @param {string} accessToken - Access token to be used for requests
+ * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
-export async function getBaseTreeNode(accessToken: string) {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
+export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
   return await serve
     .list({
       is_jurisdiction: true,
@@ -106,13 +117,17 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
  *
  * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
  * @param {string} accessToken - Access token to be used for requests
+ * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
  */
-export async function getHierarchy(location: LocationUnit[], accessToken: string) {
+export async function getHierarchy(
+  location: LocationUnit[],
+  accessToken: string,
+  opensrpBaseURL: string
+) {
   const hierarchy: RawOpenSRPHierarchy[] = [];
-
   for await (const loc of location) {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
+    const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY);
     const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
     hierarchy.push(data);
   }
@@ -120,7 +135,7 @@ export async function getHierarchy(location: LocationUnit[], accessToken: string
   return hierarchy;
 }
 
-export const LocationUnitView: React.FC = () => {
+export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const treeData = (useSelector((state) =>
     getAllHierarchiesArray(state)
@@ -129,13 +144,14 @@ export const LocationUnitView: React.FC = () => {
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
+  const { opensrpBaseURL } = props;
 
   useEffect(() => {
     if (!treeData.length) {
-      getBaseTreeNode(accessToken)
+      getBaseTreeNode(accessToken, opensrpBaseURL)
         .then((response) => {
           dispatch(fetchLocationUnits(response));
-          getHierarchy(response, accessToken)
+          getHierarchy(response, accessToken, opensrpBaseURL)
             .then((hierarchy) => {
               hierarchy.forEach((hier) => {
                 const processed = generateJurisdictionTree(hier);
@@ -146,7 +162,7 @@ export const LocationUnitView: React.FC = () => {
         })
         .catch(() => sendErrorNotification('An error occurred'));
     }
-  }, [treeData, accessToken, dispatch]);
+  }, [treeData, accessToken, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
     const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
@@ -211,7 +227,7 @@ export const LocationUnitView: React.FC = () => {
             <Table
               data={tableData}
               onViewDetails={(row) => {
-                loadSingleLocation(row, accessToken, setDetail);
+                loadSingleLocation(row, accessToken, opensrpBaseURL, setDetail);
               }}
             />
           </div>
@@ -242,4 +258,5 @@ export const LocationUnitView: React.FC = () => {
   );
 };
 
+LocationUnitView.defaultProps = defaultProps;
 export default LocationUnitView;

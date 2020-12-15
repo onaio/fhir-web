@@ -12,13 +12,14 @@ import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/t
 import { notification } from 'antd';
 
 describe('location-management/src/components/LocationUnitGroupView', () => {
+  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   beforeEach(() => {
     fetch.resetMocks();
   });
   it('renders without crashing', async () => {
     shallow(
       <Router history={history}>
-        <LocationUnitGroupView />
+        <LocationUnitGroupView opensrpBaseURL={baseURL} />
       </Router>
     );
   });
@@ -28,7 +29,7 @@ describe('location-management/src/components/LocationUnitGroupView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupView />
+          <LocationUnitGroupView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -53,7 +54,7 @@ describe('location-management/src/components/LocationUnitGroupView', () => {
     mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupView />
+          <LocationUnitGroupView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );

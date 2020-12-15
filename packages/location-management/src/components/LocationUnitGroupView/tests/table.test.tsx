@@ -51,7 +51,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );
@@ -63,7 +63,11 @@ describe('location-management/src/components/LocationTagView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} onViewDetails={() => wrapper.unmount()} />
+          <Table
+            opensrpBaseURL={baseURL}
+            data={tableData}
+            onViewDetails={() => wrapper.unmount()}
+          />
         </Router>
       </Provider>
     );
@@ -78,7 +82,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );
@@ -93,7 +97,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );
@@ -110,7 +114,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );
@@ -129,7 +133,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const notificationSuccessMock = jest.spyOn(notification, 'success');
     fetch.mockResponse(JSON.stringify(sampleLocationUnitGroupPayload));
 
-    onDelete(sampleLocationUnitGroupPayload, 'sometoken');
+    onDelete(sampleLocationUnitGroupPayload, 'sometoken', baseURL);
 
     await act(async () => {
       await flushPromises();
@@ -153,7 +157,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject('An error occurred'));
 
-    onDelete(sampleLocationUnitGroupPayload, 'sometoken');
+    onDelete(sampleLocationUnitGroupPayload, 'sometoken', baseURL);
 
     await act(async () => {
       await flushPromises();
