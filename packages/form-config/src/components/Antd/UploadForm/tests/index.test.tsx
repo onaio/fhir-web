@@ -50,7 +50,7 @@ const props = {
   },
 };
 
-describe('components/UploadFile', () => {
+describe('components/UploadForm', () => {
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -166,21 +166,15 @@ describe('components/UploadFile', () => {
     );
 
     wrapper
-      .find('input')
-      .at(0)
+      .find('input#form_name')
       .simulate('change', { target: { name: 'form_name', value: 'test name' } });
     wrapper
-      .find('input')
-      .at(1)
+      .find('input#module')
       .simulate('change', { target: { name: 'module', value: 'test module' } });
     wrapper
-      .find('input')
-      .at(2)
+      .find('input#form_relation')
       .simulate('change', { target: { name: 'form_relation', value: 'bar' } });
-    wrapper
-      .find('input')
-      .at(3)
-      .simulate('change', { target: { name: 'form', files: sampleFile } });
+    wrapper.find('input#form').simulate('change', { target: { name: 'form', files: sampleFile } });
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -255,21 +249,15 @@ describe('components/UploadFile', () => {
     );
 
     wrapper
-      .find('input')
-      .at(0)
+      .find('input#form_name')
       .simulate('change', { target: { name: 'form_name', value: 'test name' } });
     wrapper
-      .find('input')
-      .at(1)
+      .find('input#module')
       .simulate('change', { target: { name: 'module', value: 'test module' } });
     wrapper
-      .find('input')
-      .at(2)
+      .find('input#form_relation')
       .simulate('change', { target: { name: 'form_relation', value: 'bar' } });
-    wrapper
-      .find('input')
-      .at(3)
-      .simulate('change', { target: { name: 'form', files: sampleFile } });
+    wrapper.find('input#form').simulate('change', { target: { name: 'form', files: sampleFile } });
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
