@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'https://test.smartregister.org/opensrp/rest/';
+export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
