@@ -33,6 +33,11 @@ import {
   URL_LOCATION_UNIT_GROUP_ADD,
   URL_LOCATION_UNIT_GROUP_EDIT,
   URL_LOCATION_UNIT_EDIT,
+  URL_UPLOAD_JSON_VALIDATOR,
+  URL_JSON_VALIDATOR_LIST,
+  URL_UPLOAD_DRAFT_FILE,
+  URL_DRAFT_FILE_LIST,
+  URL_MANIFEST_RELEASE_LIST,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -69,6 +74,14 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
+import {
+  AntdUploadForm,
+  AntdFilesList,
+  ROUTE_PARAM_FORM_ID,
+  AntdDraftFileList,
+  AntdReleaseList,
+  ROUTE_PARAM_FORM_VERSION,
+} from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
@@ -81,6 +94,12 @@ import {
 import '@opensrp/product-catalogue/dist/index.css';
 import {
   productCatalogueProps,
+  jsonValidatorListProps,
+  jsonValidatorFormProps,
+  draftFormProps,
+  draftListProps,
+  releaseListProps,
+  releaseViewProps,
   plansListProps,
   planEditProps,
   planCreateProps,
@@ -89,6 +108,7 @@ import {
   completedPlansListStatusProp,
   trashPlansListStatusProp,
 } from './utils';
+
 import '@opensrp/plan-form/dist/index.css';
 
 const { Content } = Layout;
@@ -290,6 +310,71 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              component={LocationUnitView}
+              path={URL_UPLOAD_JSON_VALIDATOR}
+              component={AntdUploadForm.UploadForm}
+              {...jsonValidatorFormProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_UPLOAD_JSON_VALIDATOR}/:${ROUTE_PARAM_FORM_ID}`}
+              component={AntdUploadForm.UploadForm}
+              {...jsonValidatorFormProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_JSON_VALIDATOR_LIST}
+              component={AntdFilesList.FileList}
+              {...jsonValidatorListProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_UPLOAD_DRAFT_FILE}
+              component={AntdUploadForm.UploadForm}
+              {...draftFormProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_UPLOAD_DRAFT_FILE}/:${ROUTE_PARAM_FORM_ID}`}
+              component={AntdUploadForm.UploadForm}
+              {...draftFormProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_DRAFT_FILE_LIST}
+              component={AntdDraftFileList.DrafFileList}
+              {...draftListProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_MANIFEST_RELEASE_LIST}
+              component={AntdReleaseList.ReleaseList}
+              {...releaseListProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_MANIFEST_RELEASE_LIST}/:${ROUTE_PARAM_FORM_VERSION}`}
+              component={AntdFilesList.FileList}
+              {...releaseViewProps}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
