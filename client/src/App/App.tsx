@@ -315,7 +315,6 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              component={LocationUnitView}
               path={URL_UPLOAD_JSON_VALIDATOR}
               component={AntdUploadForm.UploadForm}
               {...jsonValidatorFormProps}
