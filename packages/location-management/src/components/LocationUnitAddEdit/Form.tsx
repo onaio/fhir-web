@@ -78,7 +78,6 @@ function removeEmptykeys(obj: any) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const valueObj = value as { [key: string]: any } | any[];
       if (typeof valueObj.length !== 'undefined' && valueObj.length === 0) delete obj[key];
-      // else if (Object.values(valueObj).length === 0) delete obj[key]; // to handle object like [{'x': 'a'}, {}] but delete create empty object
       else removeEmptykeys(value);
     }
   });
