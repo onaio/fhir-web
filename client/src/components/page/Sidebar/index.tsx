@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
-  PLANS,
   PRODUCT_CATALOGUE,
   TEAMS,
   URL_ADMIN,
@@ -26,7 +25,6 @@ import {
   MANIFEST_RELEASES,
   DRAFT_FILES,
   JSON_VALIDATORS,
-  LOCATIONS,
   USERS,
   ADMIN,
   ACTIVE,
@@ -47,7 +45,6 @@ import {
   DRAFT_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,
   TRASH_PLANS_LIST_VIEW_URL,
-  PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
 
 /** interface for SidebarProps */
