@@ -65,4 +65,3 @@ export interface EnvConfig {
 ### Read the code
 
 For more, and for specific details on what parameters all the above take, we encourage you to read the code. It is also just good practice.
-

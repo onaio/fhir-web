@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Antd/FileList/TableActions renders correctly: divider 1`] = `
+Object {
+  "type": "vertical",
+}
+`;
+
+exports[`components/Antd/FileList/TableActions renders correctly: dots menu 1`] = `
+Object {
+  "children": <Button
+    block={false}
+    ghost={false}
+    htmlType="button"
+    loading={false}
+    style={
+      Object {
+        "margin": 0,
+        "padding": 0,
+      }
+    }
+    type="link"
+  >
+    <ForwardRef(MoreOutlined)
+      className="more-options"
+      style={
+        Object {
+          "fontSize": "16px",
+          "margin": 0,
+          "padding": 0,
+        }
+      }
+    />
+  </Button>,
+  "mouseEnterDelay": 0.15,
+  "mouseLeaveDelay": 0.1,
+  "overlay": <Menu>
+    <MenuItem>
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="link"
+      >
+        Download
+      </Button>
+    </MenuItem>
+  </Menu>,
+}
+`;
+
+exports[`components/Antd/FileList/TableActions renders correctly: edit 1`] = `
+Object {
+  "children": "Edit",
+  "to": "/upload/52",
+}
+`;
