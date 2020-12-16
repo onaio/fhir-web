@@ -70,12 +70,17 @@ const status = [
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function removeEmptykeys(obj: any) {
-  const objCopy = { ...obj };
-  Object.keys(obj).forEach(function (key) {
-    if (typeof objCopy[key] === 'object' && !objCopy[key].length) delete objCopy[key];
-    else if (typeof objCopy[key] === 'object') removeEmptykeys(objCopy[key]);
-    else if (objCopy[key] === '') delete objCopy[key];
-    else if (objCopy[key] === null || objCopy[key] === undefined) delete objCopy[key];
+  Object.entries(obj).forEach(([key, value]) => {
+    if (typeof value === 'undefined') delete obj[key];
+    else if (value === '' || value === null) delete obj[key];
+    else if (typeof value === 'object') {
+      // if datatype is object this clearly means that either the value is an array or a json object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const valueObj = value as { [key: string]: any } | any[];
+      if (typeof valueObj.length !== 'undefined' && valueObj.length === 0) delete obj[key];
+      // else if (Object.values(valueObj).length === 0) delete obj[key]; // to handle object like [{'x': 'a'}, {}] but delete create empty object
+      else removeEmptykeys(value);
+    }
   });
 }
 
