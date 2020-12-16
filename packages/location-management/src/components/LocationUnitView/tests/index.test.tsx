@@ -16,8 +16,6 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 
-jest.mock('../../../configs/env');
-
 describe('location-management/src/components/LocationUnitView', () => {
   const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 

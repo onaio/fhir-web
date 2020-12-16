@@ -14,8 +14,6 @@ import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/t
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
-jest.mock('../../../configs/env');
-
 describe('location-management/src/components/LocationTagView', () => {
   const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   const endpoint = 'location-tag/delete';

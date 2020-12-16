@@ -12,8 +12,6 @@ import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 
-jest.mock('../../../configs/env');
-
 describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   afterEach(() => {

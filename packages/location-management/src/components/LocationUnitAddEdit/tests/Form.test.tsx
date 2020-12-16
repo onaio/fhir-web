@@ -15,8 +15,6 @@ import { LocationUnitStatus } from '../../../ducks/location-units';
 import { history } from '@onaio/connected-reducer-registry';
 import { rawHierarchy } from '../../LocationUnitView/tests/fixtures';
 
-jest.mock('../../../configs/env');
-
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   beforeEach(() => {
