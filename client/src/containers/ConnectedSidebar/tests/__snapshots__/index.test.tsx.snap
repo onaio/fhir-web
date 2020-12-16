@@ -1,40 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/ConnectedSidebar displays menu links for enabled modules 1`] = `
-<SubMenu
-  icon={<ForwardRef(DashboardOutlined) />}
-  title="Admin"
->
+exports[`components/ConnectedSidebar displays menu links for enabled Location module 1`] = `
+Array [
   <SubMenu
-    title="Users"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin"
-      >
-        User Management
-      </Link>
-    </MenuItem>
-  </SubMenu>
-  <MenuItem>
-    <Link
-      className="admin-link"
-      to="/teams"
-    >
-      Teams
-    </Link>
-  </MenuItem>
-  <MenuItem>
-    <Link
-      className="admin-link"
-      to="/product-catalogue/list"
-    >
-      Product Catalogue
-    </Link>
-  </MenuItem>
-  <SubMenu
-    title="Plans"
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Missions"
   >
     <MenuItem>
       <Link
@@ -68,49 +38,192 @@ exports[`components/ConnectedSidebar displays menu links for enabled modules 1`]
         Trash
       </Link>
     </MenuItem>
-  </SubMenu>
+  </SubMenu>,
   <SubMenu
-    title="Locations"
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Admin"
+  >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <SubMenu
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/location/unit"
+        >
+          Locations unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/location/group"
+        >
+          Locations unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <SubMenu
+      title="Form Configurations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar displays menu links for enabled modules 1`] = `
+Array [
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Missions"
   >
     <MenuItem>
-      Locations unit
+      <Link
+        className="admin-link"
+        to="/plans/active"
+      >
+        Active
+      </Link>
     </MenuItem>
     <MenuItem>
-      Locations unit group
+      <Link
+        className="admin-link"
+        to="/plans/draft"
+      >
+        Draft
+      </Link>
     </MenuItem>
     <MenuItem>
-      Locations unit group set
+      <Link
+        className="admin-link"
+        to="/plans/complete"
+      >
+        Complete
+      </Link>
     </MenuItem>
-  </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/plans/trash"
+      >
+        Trash
+      </Link>
+    </MenuItem>
+  </SubMenu>,
   <SubMenu
-    title="Form Configurations"
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Admin"
   >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+    </SubMenu>
     <MenuItem>
       <Link
         className="admin-link"
-        to="/releases"
+        to="/teams"
       >
-        Manifest Releases
+        Teams
       </Link>
     </MenuItem>
     <MenuItem>
       <Link
         className="admin-link"
-        to="/drafts"
+        to="/product-catalogue/list"
       >
-        Draft Files
+        Product Catalogue
       </Link>
     </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/json-validators"
-      >
-        JSON Validators
-      </Link>
-    </MenuItem>
-  </SubMenu>
-</SubMenu>
+    <SubMenu
+      title="Form Configurations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
 `;
 
 exports[`components/ConnectedSidebar renders the ConnectedSidebar component 1`] = `
@@ -162,19 +275,6 @@ Object {
               Product Catalogue
             </Link>
           </MenuItem>
-          <SubMenu
-            title="Locations"
-          >
-            <MenuItem>
-              Locations unit
-            </MenuItem>
-            <MenuItem>
-              Locations unit group
-            </MenuItem>
-            <MenuItem>
-              Locations unit group set
-            </MenuItem>
-          </SubMenu>
         </SubMenu>
       </Menu>
     </div>,
@@ -191,50 +291,40 @@ Object {
 `;
 
 exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
-<SubMenu
-  icon={<ForwardRef(DashboardOutlined) />}
-  title="Admin"
->
+Array [
+  undefined,
   <SubMenu
-    title="Users"
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Admin"
   >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+    </SubMenu>
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin"
+        to="/teams"
       >
-        User Management
+        Teams
       </Link>
     </MenuItem>
-  </SubMenu>
-  <MenuItem>
-    <Link
-      className="admin-link"
-      to="/teams"
-    >
-      Teams
-    </Link>
-  </MenuItem>
-  <MenuItem>
-    <Link
-      className="admin-link"
-      to="/product-catalogue/list"
-    >
-      Product Catalogue
-    </Link>
-  </MenuItem>
-  <SubMenu
-    title="Locations"
-  >
     <MenuItem>
-      Locations unit
+      <Link
+        className="admin-link"
+        to="/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
     </MenuItem>
-    <MenuItem>
-      Locations unit group
-    </MenuItem>
-    <MenuItem>
-      Locations unit group set
-    </MenuItem>
-  </SubMenu>
-</SubMenu>
+  </SubMenu>,
+]
 `;

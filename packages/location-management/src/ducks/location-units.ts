@@ -16,17 +16,21 @@ export enum LocationUnitStatus {
   INACTIVE = 'InActive',
 }
 
+export enum LocationUnitSyncStatus {
+  SYNCED = 'Synced',
+  NOTSYNCED = 'NotSynced',
+}
+
 /** interface for LocationUnit.properties */
 export interface Properties {
-  geographicLevel: number;
   name: string;
   parentId: string;
   status: LocationUnitStatus;
-  username: string;
-  version: number;
-  name_en: string;
-  externalId: string;
-  OpenMRS_Id: string;
+  geographicLevel?: number;
+  username?: string;
+  version?: number;
+  name_en?: string;
+  externalId?: string;
 }
 
 /** location unit tag interface */
@@ -39,30 +43,28 @@ export interface LocationUnitTag {
 export interface LocationUnit {
   id: string | number;
   properties: Properties;
-  syncStatus: string;
   type: string;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
+  locationTags?: LocationUnitTag[];
+  geometry?: Geometry; // todo : need to impliment the functionality
+  syncStatus?: LocationUnitSyncStatus;
+  parentId?: string;
+  serverVersion?: number; // received by the response thought we dont really use it
+}
+
+/** interface for the POST payload */
+export interface LocationUnitPayloadPOST {
+  id: string | number; // todo : we will remove this later as it should be auto generated on server
+  properties?: Properties;
+  type: string;
+  locationTags?: LocationUnitTag[];
+  geometry?: Geometry; // todo : need to impliment its functionality
+  syncStatus: LocationUnitSyncStatus;
+  textEntry?: string[];
 }
 
 /** interface for the PUT payload */
-export interface LocationUnitPayloadPUT {
-  id: string;
-  type: string;
-  syncStatus: string;
-  serverVersion: string;
-  properties: Properties;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
-}
-
-/** interface for POST payload */
-export interface LocationUnitPayloadPOST {
-  type: string;
-  syncStatus: string;
-  properties: Properties;
-  locationTags: LocationUnitTag[];
-  geometry: Geometry;
+export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
+  id: string | number;
 }
 
 /** reducer name for the Item module */

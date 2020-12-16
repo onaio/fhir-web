@@ -10,12 +10,13 @@ import { Link } from 'react-router-dom';
 import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
-  LOCATIONS_UNIT_GROUP_SET,
   PRODUCT_CATALOGUE,
   TEAMS,
   URL_ADMIN,
   URL_HOME,
+  URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
+  URL_LOCATION_UNIT,
   USER_MANAGEMENT,
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
@@ -24,7 +25,6 @@ import {
   MANIFEST_RELEASES,
   DRAFT_FILES,
   JSON_VALIDATORS,
-  LOCATIONS,
   USERS,
   ADMIN,
   ACTIVE,
@@ -37,6 +37,7 @@ import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
   ENABLE_FORM_CONFIGURATION,
   ENABLE_PLANS,
+  ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
 } from '../../../configs/env';
 import {
@@ -117,11 +118,20 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Link>
             </Menu.Item>
           )}
-          <Menu.SubMenu key="admin-locations" title={LOCATIONS}>
-            <Menu.Item key="locations-unit">{LOCATIONS_UNIT}</Menu.Item>
-            <Menu.Item key="locations-unit-group">{LOCATIONS_UNIT_GROUP}</Menu.Item>
-            <Menu.Item key="locations-unit-group-set">{LOCATIONS_UNIT_GROUP_SET}</Menu.Item>
-          </Menu.SubMenu>
+          {ENABLE_LOCATIONS && (
+            <Menu.SubMenu key="admin-locations" title="Locations">
+              <Menu.Item key="locations-unit">
+                <Link to={URL_LOCATION_UNIT} className="admin-link">
+                  {LOCATIONS_UNIT}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="locations-unit-group">
+                <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
+                  {LOCATIONS_UNIT_GROUP}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}
           {ENABLE_FORM_CONFIGURATION && (
             <Menu.SubMenu key="admin-form-config" title={FORM_CONFIGURATIONS}>
               <Menu.Item key="admin-form-config-releases">
