@@ -71,7 +71,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
    */
-  function loop(data: ParsedHierarchyNode[]): AntTreeProps[] {
+  function buildTreeData(data: ParsedHierarchyNode[]): AntTreeProps[] {
     return data.map((item) => {
       const index = item.title.toLowerCase().indexOf(searchValue);
       const beforeStr = item.title.toLowerCase().substr(0, index);
@@ -95,7 +95,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         data: item,
         key: item.key,
         title: title,
-        children: item.children ? loop(item.children) : undefined,
+        children: item.children ? buildTreeData(item.children) : undefined,
       } as AntTreeProps;
     });
   }
@@ -133,7 +133,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
-        treeData={loop(data)}
+        treeData={buildTreeData(data)}
       />
     </div>
   );
