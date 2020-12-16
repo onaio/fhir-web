@@ -16,9 +16,11 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 
+jest.mock('../../../configs/env');
+
 describe('location-management/src/components/LocationUnitView', () => {
   beforeEach(() => {
-    fetch.resetMocks();
+    fetch.mockClear();
   });
 
   it('test resolve loadSingleLocation', async () => {
@@ -274,6 +276,7 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test Open view details', async () => {
+    fetch.resetMocks();
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
@@ -307,6 +310,7 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test Close view details', async () => {
+    fetch.resetMocks();
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));

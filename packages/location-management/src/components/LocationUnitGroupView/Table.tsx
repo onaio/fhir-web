@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table as AntTable, Menu, Dropdown, Button, Divider, Popconfirm } from 'antd';
+import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
@@ -70,13 +70,8 @@ const Table: React.FC<Props> = (props: Props) => {
                 >
                   View Details
                 </Menu.Item>
-                <Menu.Item className="delete">
-                  <Popconfirm
-                    title="Sure to Delete?"
-                    onConfirm={() => onDelete(record, accessToken)}
-                  >
-                    Delete
-                  </Popconfirm>
+                <Menu.Item className="delete" onClick={() => onDelete(record, accessToken)}>
+                  Delete
                 </Menu.Item>
               </Menu>
             }

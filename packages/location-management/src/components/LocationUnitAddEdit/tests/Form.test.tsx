@@ -15,10 +15,11 @@ import { LocationUnitStatus } from '../../../ducks/location-units';
 import { history } from '@onaio/connected-reducer-registry';
 import { rawHierarchy } from '../../LocationUnitView/tests/fixtures';
 
+jest.mock('../../../configs/env');
+
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
     fetch.resetMocks();
-    jest.clearAllMocks();
   });
 
   const values: FormField = {
