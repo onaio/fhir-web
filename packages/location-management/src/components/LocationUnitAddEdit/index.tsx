@@ -34,11 +34,6 @@ export interface Props {
   opensrpBaseURL: string;
 }
 
-/** default component props */
-export const defaultProps = {
-  opensrpBaseURL: '',
-};
-
 /** Gets all the location unit at geographicLevel 0
  *
  * @param {string} accessToken - Access token to be used for requests

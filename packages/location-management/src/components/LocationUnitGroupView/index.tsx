@@ -27,11 +27,6 @@ export interface Props {
   opensrpBaseURL: string;
 }
 
-/** default component props */
-export const defaultProps = {
-  opensrpBaseURL: '',
-};
-
 const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const locationsArray = useSelector((state) => getLocationUnitGroupsArray(state));
@@ -148,5 +143,4 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
     </section>
   );
 };
-LocationUnitGroupView.defaultProps = defaultProps;
 export default LocationUnitGroupView;

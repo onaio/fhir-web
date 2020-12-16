@@ -48,11 +48,6 @@ export interface Props {
   opensrpBaseURL: string;
 }
 
-/** default component props */
-export const defaultProps = {
-  opensrpBaseURL: '',
-};
-
 /** Function to Load selected location unit for details
  *
  * @param {TableData} row data selected from the table
@@ -258,5 +253,4 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   );
 };
 
-LocationUnitView.defaultProps = defaultProps;
 export default LocationUnitView;
