@@ -64,4 +64,19 @@ describe('components/ConnectedSidebar', () => {
     expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
     wrapper.unmount();
   });
+
+  it('displays menu links for enabled Location module', () => {
+    const envModule = require('../../../configs/env');
+    envModule.ENABLE_LOCATIONS = 'true';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    wrapper.unmount();
+  });
 });

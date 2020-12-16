@@ -80,6 +80,12 @@ Below is a list of currently supported environment variables:
   - **Optional**(_string_)
   - default: `"false"`
 
+- **REACT_APP_ENABLE_LOCATIONS**
+
+  - Enables the location module
+  - **Optional**(_string_)
+  - default: `"false"`
+
 - **REACT_APP_TASK_GENERATION_STATUS**
 
   - _not required_; _(ENUM<["True", "False", "Disabled", "internal"]>)_

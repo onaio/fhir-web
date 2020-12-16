@@ -26,7 +26,13 @@ import {
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
+  URL_LOCATION_UNIT,
   URL_HOME,
+  URL_LOCATION_UNIT_ADD,
+  URL_LOCATION_UNIT_GROUP,
+  URL_LOCATION_UNIT_GROUP_ADD,
+  URL_LOCATION_UNIT_GROUP_EDIT,
+  URL_LOCATION_UNIT_EDIT,
   URL_UPLOAD_JSON_VALIDATOR,
   URL_JSON_VALIDATOR_LIST,
   URL_UPLOAD_DRAFT_FILE,
@@ -79,6 +85,12 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
+import {
+  LocationUnitAddEdit,
+  LocationUnitView,
+  LocationUnitGroupAddEdit,
+  LocationUnitGroupView,
+} from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
 import {
   productCatalogueProps,
@@ -362,6 +374,48 @@ const App: React.FC = () => {
               path={`${URL_MANIFEST_RELEASE_LIST}/:${ROUTE_PARAM_FORM_VERSION}`}
               component={AntdFilesList.FileList}
               {...releaseViewProps}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_LOCATION_UNIT}
+              component={LocationUnitView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_LOCATION_UNIT_ADD}
+              component={LocationUnitAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_LOCATION_UNIT_EDIT}
+              component={LocationUnitAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_LOCATION_UNIT_GROUP}
+              component={LocationUnitGroupView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_LOCATION_UNIT_GROUP_ADD}
+              component={LocationUnitGroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_LOCATION_UNIT_GROUP_EDIT}
+              component={LocationUnitGroupAddEdit}
             />
             <Route
               exact

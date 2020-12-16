@@ -61,6 +61,9 @@ export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CAT
 /** Activate the plans menu */
 export const ENABLE_PLANS = process.env.REACT_APP_ENABLE_PLANS === 'true';
 
+/** Activate the plans menu */
+export const ENABLE_LOCATIONS = process.env.REACT_APP_ENABLE_LOCATIONS === 'true';
+
 export const DATE_FORMAT = process.env.REACT_APP_DATE_FORMAT || 'yyyy-MM-DD';
 
 export const DEFAULT_TIME = process.env.REACT_APP_DEFAULT_TIME || 'T00:00:00+00:00';
