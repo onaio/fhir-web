@@ -12,11 +12,6 @@ export interface Props {
   opensrpBaseURL: string;
 }
 
-/** default component props */
-export const defaultProps = {
-  opensrpBaseURL: '',
-};
-
 export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const { opensrpBaseURL } = props;
@@ -35,5 +30,4 @@ export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   );
 };
 
-LocationUnitGroupAddEdit.defaultProps = defaultProps;
 export default LocationUnitGroupAddEdit;
