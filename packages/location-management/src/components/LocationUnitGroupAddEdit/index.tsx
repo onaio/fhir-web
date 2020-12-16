@@ -8,7 +8,7 @@ import { useParams } from 'react-router';
 import {
   ADD_LOCATION_UNIT_GROUP,
   EDIT_LOCATION_UNIT_GROUP,
-} from 'location-management/src/constants';
+} from '../../constants';
 
 reducerRegistry.register(reducerName, reducer);
 
