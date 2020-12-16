@@ -115,3 +115,9 @@ Below is a list of currently supported environment variables:
 
   - _not required_; _(`string`)_
   - the default plan version , used when creating plans
+
+- **REACT_APP_ENABLE_FORM_CONFIGURATION**
+
+  - Enables the form configuration module
+  - **Optional**(_string_)
+  - default: `"false"`
