@@ -21,7 +21,6 @@
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
     "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__",
-    "add": "yarn tsc && yarn transpile:windows && yarn copy && cd ../../client && rmdir node_modules /Q /S && yarn && yarn start"
   },
   "jest": {
     "automock": false,
