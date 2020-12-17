@@ -15,7 +15,14 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
-import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../constants';
+import {
+  LOCATION_UNIT_GROUP_ALL,
+  LOCATION_UNIT_GROUP,
+  URL_LOCATION_UNIT_GROUP_ADD,
+  LOGOUT,
+  ADD_LOCATION_UNIT_GROUP,
+  LOCATION_UNIT_GROUP_MANAGEMENT,
+} from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
 import { Link } from 'react-router-dom';
@@ -89,9 +96,9 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>Locations Unit Group</title>
+        <title>{LOCATION_UNIT_GROUP}</title>
       </Helmet>
-      <h5 className="mb-3">Location Unit Group Management</h5>
+      <h5 className="mb-3">{LOCATION_UNIT_GROUP_MANAGEMENT}</h5>
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">
@@ -108,14 +115,14 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
               <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
-                  Add location unit group
+                  {ADD_LOCATION_UNIT_GROUP}
                 </Button>
               </Link>
               <Divider type="vertical" />
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key="1">Logout</Menu.Item>
+                    <Menu.Item key="1">{LOGOUT}</Menu.Item>
                   </Menu>
                 }
                 placement="bottomRight"

@@ -7,6 +7,8 @@ import {
   LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GROUP_ALL,
+  ADD_LOCATION_UNIT,
+  EDIT_LOCATION_UNIT,
 } from '../../constants';
 import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
@@ -158,10 +160,10 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   return (
     <Row className="layout-content">
       <Helmet>
-        <title>{params.id ? 'Edit' : 'Add'} Location Unit Group</title>
+        <title>{params.id ? EDIT_LOCATION_UNIT : ADD_LOCATION_UNIT}</title>
       </Helmet>
 
-      <h5 className="mb-4">{params.id ? 'Edit' : 'Add'} Location Unit Group</h5>
+      <h5 className="mb-4">{params.id ? EDIT_LOCATION_UNIT : ADD_LOCATION_UNIT}</h5>
 
       <Col className="bg-white p-4" span={24}>
         <Form

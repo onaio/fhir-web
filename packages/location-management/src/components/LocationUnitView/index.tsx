@@ -18,6 +18,10 @@ import {
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
+  ADD_LOCATION_UNIT,
+  LOCATION_UNIT,
+  LOCATION_UNIT_MANAGEMENT,
+  LOGOUT,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
@@ -180,9 +184,9 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>Locations Unit</title>
+        <title>{LOCATION_UNIT}</title>
       </Helmet>
-      <h5 className="mb-3">Location Unit Management</h5>
+      <h5 className="mb-3">{LOCATION_UNIT_MANAGEMENT}</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
@@ -202,14 +206,14 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
               <Link to={URL_LOCATION_UNIT_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
-                  Add location unit
+                  {ADD_LOCATION_UNIT}
                 </Button>
               </Link>
               <Divider type="vertical" />
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key="1">Logout</Menu.Item>
+                    <Menu.Item key="1">{LOGOUT}</Menu.Item>
                   </Menu>
                 }
                 placement="bottomRight"
