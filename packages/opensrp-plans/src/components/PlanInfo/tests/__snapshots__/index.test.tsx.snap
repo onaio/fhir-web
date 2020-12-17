@@ -2,11 +2,8 @@
 
 exports[`/components/PlanInfo renders and passes props correctly): activate link 1`] = `
 Object {
-  "children": "Active Missions",
-  "style": Object {
-    "color": "#22B509",
-  },
-  "to": "#",
+  "children": "Edit",
+  "to": "/plans/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
 }
 `;
 
@@ -35,6 +32,6 @@ Object {
 exports[`/components/PlanInfo renders and passes props correctly): edit link 1`] = `
 Object {
   "children": "Edit",
-  "to": "#",
+  "to": "/plans/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
 }
 `;

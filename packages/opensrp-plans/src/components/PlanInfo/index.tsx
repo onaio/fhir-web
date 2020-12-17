@@ -1,7 +1,7 @@
 import { FileDoneOutlined } from '@ant-design/icons';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { Avatar, Divider, PageHeader } from 'antd';
-import { PlanStatusColors, PLANS_LIST_VIEW_URL } from '../../constants';
+import { PlanStatusColors, PLANS_EDIT_VIEW_URL, PLANS_LIST_VIEW_URL } from '../../constants';
 import { pageTitleBuilder } from '../../containers/ListView/utils';
 import { EDIT, END_DATE, MISSIONS, START_DATE } from '../../lang';
 import React from 'react';
@@ -10,6 +10,7 @@ import './index.css';
 /** interface describing the props of PlanInfo */
 export interface PlanInfoProps {
   plan: PlanDefinition;
+  planId: string;
 }
 /**
  *
@@ -17,7 +18,7 @@ export interface PlanInfoProps {
  * @returns {React.ReactElement} returns html elements
  */
 const PlanInfo = (props: PlanInfoProps) => {
-  const { plan } = props;
+  const { plan, planId } = props;
   const routes = [
     {
       path: PLANS_LIST_VIEW_URL,
@@ -52,11 +53,11 @@ const PlanInfo = (props: PlanInfoProps) => {
         />
         <span className="plan-title">
           <h4>{plan.title}</h4>
-          <Link to="#">{EDIT}</Link>
+          <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
           <Divider type="vertical" />
-          <Link to="#" style={{ color: PlanStatusColors[plan.status] }}>
-            {pageTitleBuilder(plan.status)}
-          </Link>
+          <span style={{ color: PlanStatusColors[plan.status] }}>
+            {pageTitleBuilder(plan.status, false)}
+          </span>
           <Divider type="vertical" />
           <span>{plan.description}</span>
         </span>
@@ -67,7 +68,7 @@ const PlanInfo = (props: PlanInfoProps) => {
         <Divider className="timing-period-divider" type="vertical" />
         <span className="plan-end">
           <span className="plan-end-title">{END_DATE}</span>
-          <span>{plan.effectivePeriod.end}</span>
+          <h2>{plan.effectivePeriod.end}</h2>
         </span>
       </div>
     </>

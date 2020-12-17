@@ -10,6 +10,7 @@ describe('/components/PlanInfo', () => {
   const history = createBrowserHistory();
   const props = {
     plan: eusmPlans[0] as PlanDefinition,
+    planId: `335ef7a3-7f35-58aa-8263-4419464946d8`,
   };
   it('renders without crashing', () => {
     shallow(<PlanInfo {...props} />);
@@ -27,7 +28,7 @@ describe('/components/PlanInfo', () => {
     expect(planInfo.find('Divider')).toHaveLength(3);
     expect(planInfo.find('Avatar').props()).toMatchSnapshot('avatar props');
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Missions/Active Missions/EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditActive MissionsStart Date2020-11-17End Date2021-12-24 "`
+      `"Missions/Active Missions/EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditActive nullStart Date2020-11-17End Date2021-12-24 "`
     );
   });
 });
