@@ -1,6 +1,6 @@
 .plan-info-main {
   display: inline-flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: unset;
 }
 .plan-title {
