@@ -11,9 +11,11 @@ import { store } from '@opensrp/store';
 import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
+import { baseURL } from '../../../constants';
+
+Form.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
-  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   afterEach(() => {
     fetch.mockClear();
   });
