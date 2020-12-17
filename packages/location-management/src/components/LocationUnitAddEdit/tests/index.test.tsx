@@ -12,9 +12,11 @@ import { baseLocationUnits, rawHierarchy, locationUnitgroups, id } from './fixtu
 import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
 
 import { act } from 'react-dom/test-utils';
+import { baseURL } from '../../../constants';
+
+LocationUnitAddEdit.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
-  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   beforeEach(() => {
     fetch.mockClear();
   });

@@ -10,9 +10,11 @@ import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { notification } from 'antd';
+import { baseURL } from '../../../constants';
+
+LocationUnitGroupView.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitGroupView', () => {
-  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   beforeEach(() => {
     fetch.resetMocks();
   });

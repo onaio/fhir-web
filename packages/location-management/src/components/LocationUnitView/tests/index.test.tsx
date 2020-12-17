@@ -15,10 +15,11 @@ import LocationUnitView, {
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
+import { baseURL } from '../../../constants';
+
+LocationUnitView.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitView', () => {
-  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
-
   beforeEach(() => {
     fetch.mockClear();
   });

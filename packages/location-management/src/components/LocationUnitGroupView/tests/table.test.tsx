@@ -13,9 +13,11 @@ import fetch from 'jest-fetch-mock';
 import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
+import { baseURL } from '../../../constants';
+
+Table.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationTagView', () => {
-  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   const endpoint = 'location-tag/delete';
   const tagId = '1';
 
