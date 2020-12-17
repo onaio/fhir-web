@@ -287,4 +287,5 @@ describe('List view Page', () => {
   expect(pageTitleBuilder('draft')).toEqual('Draft Missions');
   expect(pageTitleBuilder('complete')).toEqual('Complete Missions');
   expect(pageTitleBuilder('retired')).toEqual('Retired Missions');
+  expect(pageTitleBuilder()).toEqual('No Status Found');
 });
