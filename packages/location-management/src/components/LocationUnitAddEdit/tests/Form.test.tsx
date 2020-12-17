@@ -17,6 +17,7 @@ import { rawHierarchy } from '../../LocationUnitView/tests/fixtures';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+
   beforeEach(() => {
     fetch.resetMocks();
   });
