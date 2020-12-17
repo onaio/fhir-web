@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`PlanInfo Page renders correctly with store(single plan): full text snapshot 1`] = `"Missions/Active Missions/EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditactiveStart Date2020-11-17End Date2021-12-24"`;
-
-exports[`PlanInfo Page shows broken page: full page text 1`] = `"Loading...Fetching PlansPlease wait, as we fetch the plans."`;
