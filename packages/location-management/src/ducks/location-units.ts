@@ -8,7 +8,18 @@ import {
   getItemByIdFactory,
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
+import { Dictionary } from '@onaio/utils';
 import { Geometry } from 'geojson';
+
+/** interface for extra fields in location properties **/
+
+export interface ExtraField {
+  key: string; // key with which the the payload will be sent to server
+  value?: string | number; // default value of the field
+  label?: string; // label of the field
+  description?: string; // default placeholder of the field
+  type: 'email' | 'number' | 'password' | 'text' | 'time' | 'url'; // type of the field
+}
 
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
@@ -22,7 +33,7 @@ export enum LocationUnitSyncStatus {
 }
 
 /** interface for LocationUnit.properties */
-export interface Properties {
+export interface Properties extends Dictionary<string | number | LocationUnitStatus | undefined> {
   name: string;
   parentId: string;
   status: LocationUnitStatus;
@@ -54,7 +65,7 @@ export interface LocationUnit {
 /** interface for the POST payload */
 export interface LocationUnitPayloadPOST {
   id: string | number; // todo : we will remove this later as it should be auto generated on server
-  properties?: Properties;
+  properties: Properties;
   type: string;
   locationTags?: LocationUnitTag[];
   geometry?: Geometry; // todo : need to impliment its functionality
