@@ -18,8 +18,9 @@ import {
 import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
 
 import { act } from 'react-dom/test-utils';
+import { baseURL } from '../../../constants';
 
-jest.mock('../../../configs/env');
+LocationUnitAddEdit.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
@@ -29,7 +30,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('test getBaseTreeNode', async () => {
     fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
-    const response = await getBaseTreeNode('accessToken');
+    const response = await getBaseTreeNode('accessToken', baseURL);
 
     expect(response).toMatchObject(baseLocationUnits);
   });
@@ -37,7 +38,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('test getHierarchy', async () => {
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
-    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken');
+    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken', baseURL);
 
     expect(response).toMatchObject([rawHierarchy[2]]);
   });
@@ -50,7 +51,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitAddEdit />
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -76,7 +77,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitAddEdit />
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -101,7 +102,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitAddEdit />
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
