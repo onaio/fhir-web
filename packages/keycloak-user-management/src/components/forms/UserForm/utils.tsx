@@ -12,6 +12,7 @@ import {
   ERROR_OCCURED,
   PRACTITIONER_UPDATED_SUCCESSFULLY,
   PRACTITIONER_CREATED_SUCCESSFULLY,
+  URL_USER_CREDENTIALS,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import { Practitioner } from '.';
@@ -68,6 +69,9 @@ export const createOrEditPractitioners = (
   const practitionersService = new serviceClass(accessToken, baseURL, 'practitioner');
   practitionersService[requestType](practitionerValues)
     .then(() => {
+      if (!isEdit) {
+        history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
+      }
       sendSuccessNotification(successMessage);
     })
     .catch((_: Error) => {
@@ -148,7 +152,6 @@ export const submitForm = (
         );
         setSubmitting(false);
         sendSuccessNotification('User created successfully');
-        history.push(URL_ADMIN);
       })
       .catch((_: Error) => {
         setSubmitting(false);

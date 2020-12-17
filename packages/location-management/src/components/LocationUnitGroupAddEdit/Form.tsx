@@ -8,7 +8,6 @@ import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
-import { API_BASE_URL } from '../../configs/env';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
@@ -41,6 +40,7 @@ const userSchema = Yup.object().shape({
 
 interface Props {
   id?: string;
+  opensrpBaseURL: string;
 }
 
 /**
@@ -48,16 +48,18 @@ interface Props {
  *
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
+ * @param {string} opensrpBaseURL - base url
  * @param {object} props component props
  * @param {Function} setSubmitting method to set submission status
  */
 export const onSubmit = (
   values: FormField,
   accessToken: string,
+  opensrpBaseURL: string,
   props: Props,
   setSubmitting: (isSubmitting: boolean) => void
 ) => {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GROUP_ALL);
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
 
   const payload: LocationUnitGroupPayloadPOST | LocationUnitGroupPayloadPUT = values;
 
@@ -97,13 +99,14 @@ export const Form: React.FC<Props> = (props: Props) => {
     description: '',
     active: true,
   });
+  const { opensrpBaseURL } = props;
 
   useEffect(() => {
     if (isLoading) {
       if (props.id) {
         const serve = new OpenSRPService(
           accessToken,
-          API_BASE_URL,
+          opensrpBaseURL,
           LOCATION_UNIT_GROUP_GET + props.id
         );
         serve
@@ -119,7 +122,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           .catch(() => sendErrorNotification('An error occurred'));
       } else setIsLoading(false);
     }
-  }, [accessToken, isLoading, props.id]);
+  }, [accessToken, isLoading, props.id, opensrpBaseURL]);
 
   if (isLoading)
     return (
@@ -140,7 +143,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, accessToken, props, setSubmitting)}
+      ) => onSubmit(values, accessToken, opensrpBaseURL, props, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
         return (

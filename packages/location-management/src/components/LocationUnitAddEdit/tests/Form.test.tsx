@@ -21,8 +21,7 @@ import { act } from 'react-dom/test-utils';
 import { LocationUnitStatus } from '../../../ducks/location-units';
 import { history } from '@onaio/connected-reducer-registry';
 import { rawHierarchy } from '../../LocationUnitView/tests/fixtures';
-
-jest.mock('../../../configs/env');
+import { baseURL } from '../../../constants';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
@@ -51,7 +50,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
+          <Form
+            opensrpBaseURL={baseURL}
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
         </Router>
       </Provider>
     );
@@ -93,6 +96,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       setSubmittingMock,
       values,
       accessToken,
+      baseURL,
       props.locationUnitGroup,
       props.username,
       props.id,
@@ -144,6 +148,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       setSubmittingMock,
       values,
       accessToken,
+      baseURL,
       props.locationUnitGroup,
       props.username,
       props.id
@@ -162,7 +167,12 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form id="1" locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
+          <Form
+            opensrpBaseURL={baseURL}
+            id="1"
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
         </Router>
       </Provider>
     );
@@ -171,6 +181,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       setSubmittingMock,
       values,
       accessToken,
+      baseURL,
       props.locationUnitGroup,
       props.username,
       '1'
@@ -222,6 +233,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       setSubmittingMock,
       values,
       accessToken,
+      baseURL,
       props.locationUnitGroup,
       props.username,
       '1'
@@ -258,6 +270,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       setSubmittingMock,
       newValues,
       accessToken,
+      baseURL,
       props.locationUnitGroup,
       props.username,
       '1'
@@ -301,6 +314,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
+            opensrpBaseURL={baseURL}
             initialValue={formValue}
             id={id}
             locationUnitGroup={locationUnitgroups}
@@ -332,7 +346,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
+          <Form
+            opensrpBaseURL={baseURL}
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
         </Router>
       </Provider>
     );
@@ -355,6 +373,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
+            opensrpBaseURL={baseURL}
             initialValue={formValue}
             id={id}
             locationUnitGroup={locationUnitgroups}
@@ -376,6 +395,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
+            opensrpBaseURL={baseURL}
             initialValue={formValue}
             locationUnitGroup={locationUnitgroups}
             treedata={parsedHierarchy}

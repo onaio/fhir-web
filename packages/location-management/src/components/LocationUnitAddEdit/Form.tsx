@@ -22,7 +22,6 @@ import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { API_BASE_URL } from '../../configs/env';
 import { Dictionary } from '@onaio/utils';
 
 export interface FormField extends Dictionary<string | number | number[] | undefined> {
@@ -48,6 +47,7 @@ export interface Props {
   extraFields?: ExtraField[];
   locationUnitGroup: LocationUnitGroup[];
   treedata: ParsedHierarchyNode[];
+  opensrpBaseURL: string;
 }
 
 /** yup validations for practitioner data object from form */
@@ -92,7 +92,8 @@ export function removeEmptykeys(obj: any) {
  * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
- * @param {Array<LocationUnitGroup>} locationUnitgroup all location Unit group
+ * @param {string} opensrpBaseURL - base url
+ * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
  * @param {string} username username of logged in user
  * @param {number} id location unit
  * @param {ExtraField} extraFields extraFields to be input with location unit
@@ -101,6 +102,7 @@ export const onSubmit = async (
   setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   accessToken: string,
+  opensrpBaseURL: string,
   locationUnitgroup: LocationUnitGroup[],
   username: string,
   id?: string,
@@ -117,7 +119,7 @@ export const onSubmit = async (
 
   let geographicLevel: number | undefined | void;
   if (values.parentId) {
-    geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
+    geographicLevel = await new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY)
       .read(values.parentId)
       .then((res: RawOpenSRPHierarchy) => {
         return res.locationsHierarchy.map[values.parentId as string].node.attributes
@@ -155,7 +157,7 @@ export const onSubmit = async (
 
   removeEmptykeys(payload);
 
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_POST_PUT);
   if (id) {
     await serve
       .update({ ...payload })
@@ -223,6 +225,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           setSubmitting,
           values,
           accessToken,
+          props.opensrpBaseURL,
           props.locationUnitGroup,
           user.username,
           props.id,
