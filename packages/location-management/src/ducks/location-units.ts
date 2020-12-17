@@ -19,6 +19,14 @@ export interface ExtraField {
   label?: string; // label of the field
   description?: string; // default placeholder of the field
   type: 'email' | 'number' | 'password' | 'text' | 'time' | 'url'; // type of the field
+  uuid: string; // received by the response thought we dont really use it
+  settingsId: string; // received by the response thought we dont really use it
+  settingIdentifier: string; // received by the response thought we dont really use it
+  settingMetadataId: string; // received by the response thought we dont really use it
+  v1Settings: boolean; // received by the response thought we dont really use it
+  resolveSettings: boolean; // received by the response thought we dont really use it
+  documentId: string; // received by the response thought we dont really use it
+  serverVersion: number; // received by the response thought we dont really use it
 }
 
 /** Enum representing the possible location unit status types */
@@ -33,7 +41,8 @@ export enum LocationUnitSyncStatus {
 }
 
 /** interface for LocationUnit.properties */
-export interface Properties extends Dictionary<string | number | LocationUnitStatus | undefined> {
+export interface Properties
+  extends Dictionary<string | number | LocationUnitStatus | undefined | string[] | number[]> {
   name: string;
   parentId: string;
   status: LocationUnitStatus;
