@@ -211,8 +211,6 @@ export const Form: React.FC<Props> = (props: Props) => {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
-  let formkey = 0;
-
   return (
     <Formik
       initialValues={props.initialValue ? props.initialValue : defaultFormField}
@@ -233,12 +231,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       }
     >
       {({ isSubmitting, handleSubmit }) => (
-        <AntForm
-          key={formkey++}
-          requiredMark={'optional'}
-          {...layout}
-          onSubmitCapture={handleSubmit}
-        >
+        <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
           <AntForm.Item label="Parent" name="parentId" required>
             <TreeSelect
               name="parentId"
