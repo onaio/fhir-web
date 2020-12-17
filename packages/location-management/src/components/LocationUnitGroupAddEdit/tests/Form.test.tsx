@@ -12,9 +12,11 @@ import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 
-describe('Location-module/Form', () => {
+jest.mock('../../../configs/env');
+
+describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    fetch.mockClear();
   });
 
   it('renders without crashing', () => {
@@ -25,7 +27,8 @@ describe('Location-module/Form', () => {
         </Router>
       </Provider>
     );
-    expect(wrapper.props()).toMatchSnapshot();
+
+    expect(wrapper.find('form')).toHaveLength(1);
   });
 
   it('tests cancel button', () => {

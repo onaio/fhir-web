@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
-import { Ripple } from '@onaio/loaders';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
   LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GROUP_ALL,
-  API_BASE_URL,
+  ADD_LOCATION_UNIT,
+  EDIT_LOCATION_UNIT,
 } from '../../constants';
+import { API_BASE_URL } from '../../configs/env';
 import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 
-import { Row, Col } from 'antd';
+import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
@@ -31,6 +32,43 @@ import './LocationUnitAddEdit.css';
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 const { getFilterParams } = OpenSRPService;
+
+/** Gets all the location unit at geographicLevel 0
+ *
+ * @param {string} accessToken - Access token to be used for requests
+ * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
+ */
+export async function getBaseTreeNode(accessToken: string) {
+  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
+  return await serve
+    .list({
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      is_jurisdiction: true,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      return_geometry: false,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+    })
+    .then((response: LocationUnit[]) => response);
+}
+
+/** Gets the hierarchy of the location units
+ *
+ * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
+ * @param {string} accessToken - Access token to be used for requests
+ * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
+ */
+export async function getHierarchy(location: LocationUnit[], accessToken: string) {
+  const hierarchy: RawOpenSRPHierarchy[] = [];
+
+  for await (const loc of location) {
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
+    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
+    hierarchy.push(data);
+  }
+
+  return hierarchy;
+}
 
 export const LocationUnitAddEdit: React.FC = () => {
   const params: { id: string } = useParams();
@@ -81,47 +119,42 @@ export const LocationUnitAddEdit: React.FC = () => {
 
   useEffect(() => {
     if (!Treedata.length) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_FINDBYPROPERTIES);
-      serve
-        .list({
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          is_jurisdiction: true,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          return_geometry: false,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-        })
-        .then((response: LocationUnit[]) => {
+      getBaseTreeNode(accessToken)
+        .then((response) => {
           dispatch(fetchLocationUnits(response));
-          const rootIds = response.map((rootLocObj) => rootLocObj.id);
-          if (rootIds.length) {
-            rootIds.forEach((id) => {
-              const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY);
-              serve
-                .read(id)
-                .then((res: RawOpenSRPHierarchy) => {
-                  const hierarchy = generateJurisdictionTree(res);
-                  // if (hierarchy.model && hierarchy.model.children)
-                  dispatch(fetchAllHierarchies(hierarchy.model));
-                })
-                .catch(() => sendErrorNotification('An error occurred'));
-            });
-          }
+          getHierarchy(response, accessToken)
+            .then((hierarchy) => {
+              hierarchy.forEach((hier) => {
+                const processed = generateJurisdictionTree(hier);
+                dispatch(fetchAllHierarchies(processed.model));
+              });
+            })
+            .catch(() => sendErrorNotification('An error occurred'));
         })
         .catch(() => sendErrorNotification('An error occurred'));
     }
-  }, [accessToken, Treedata.length, dispatch]);
+  }, [Treedata, accessToken, dispatch]);
 
   if (!locationUnitGroup.length || !Treedata.length || (params.id && !LocationUnitDetail))
-    return <Ripple />;
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
 
   return (
     <Row className="layout-content">
       <Helmet>
-        <title>{params.id ? 'Edit' : 'Add'} Location Unit Group</title>
+        <title>{params.id ? EDIT_LOCATION_UNIT : ADD_LOCATION_UNIT}</title>
       </Helmet>
 
-      <h5 className="mb-4">{params.id ? 'Edit' : 'Add'} Location Unit Group</h5>
+      <h5 className="mb-4">{params.id ? EDIT_LOCATION_UNIT : ADD_LOCATION_UNIT}</h5>
 
       <Col className="bg-white p-4" span={24}>
         <Form

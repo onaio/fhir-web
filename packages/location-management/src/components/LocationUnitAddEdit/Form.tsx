@@ -16,11 +16,12 @@ import {
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { API_BASE_URL } from '../../configs/env';
 
 export interface FormField {
   name: string;
@@ -69,12 +70,16 @@ const status = [
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function removeEmptykeys(obj: any) {
-  const objCopy = { ...obj };
-  Object.keys(obj).forEach(function (key) {
-    if (typeof objCopy[key] === 'object' && !objCopy[key].length) delete objCopy[key];
-    else if (typeof objCopy[key] === 'object') removeEmptykeys(objCopy[key]);
-    else if (objCopy[key] === '') delete objCopy[key];
-    else if (objCopy[key] === null || objCopy[key] === undefined) delete objCopy[key];
+  Object.entries(obj).forEach(([key, value]) => {
+    if (typeof value === 'undefined') delete obj[key];
+    else if (value === '' || value === null) delete obj[key];
+    else if (typeof value === 'object') {
+      // if datatype is object this clearly means that either the value is an array or a json object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const valueObj = value as { [key: string]: any } | any[];
+      if (typeof valueObj.length !== 'undefined' && valueObj.length === 0) delete obj[key];
+      else removeEmptykeys(value);
+    }
   });
 }
 

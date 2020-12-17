@@ -1,15 +1,12 @@
 import React from 'react';
-import { Table as AntTable, Menu, Dropdown, Button, Divider, Popconfirm } from 'antd';
+import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import {
-  API_BASE_URL,
-  LOCATION_UNIT_GROUP_DELETE,
-  URL_LOCATION_UNIT_GROUP_EDIT,
-} from '../../constants';
+import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
+import { API_BASE_URL } from '../../configs/env';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
@@ -73,13 +70,8 @@ const Table: React.FC<Props> = (props: Props) => {
                 >
                   View Details
                 </Menu.Item>
-                <Menu.Item className="delete">
-                  <Popconfirm
-                    title="Sure to Delete?"
-                    onConfirm={() => onDelete(record, accessToken)}
-                  >
-                    Delete
-                  </Popconfirm>
+                <Menu.Item className="delete" onClick={() => onDelete(record, accessToken)}>
+                  Delete
                 </Menu.Item>
               </Menu>
             }

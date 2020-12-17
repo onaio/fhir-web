@@ -1,4 +1,16 @@
-export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+//
+// Strings
+//
+
+export const LOCATION_UNIT = 'Location Unit';
+export const LOCATION_UNIT_GROUP = 'Location Unit Group';
+export const LOCATION_UNIT_MANAGEMENT = 'Location Unit Management';
+export const LOCATION_UNIT_GROUP_MANAGEMENT = 'Location Unit Group Management';
+export const ADD_LOCATION_UNIT = 'Add Location Unit';
+export const EDIT_LOCATION_UNIT = 'Edit Location Unit';
+export const ADD_LOCATION_UNIT_GROUP = 'Add Location Unit Group';
+export const EDIT_LOCATION_UNIT_GROUP = 'Edit Location Unit Group';
+export const LOGOUT = 'logout';
 
 //
 // Location Unit
