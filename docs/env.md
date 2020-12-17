@@ -63,6 +63,11 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://web.opensrp-stage.smartregister.org/oauth/state`
 
+- **REACT_APP_SENTRY_DSN**
+
+  - URL to send crash reports
+  - **Required**
+
 - **REACT_APP_ENABLE_PRODUCT_CATALOGUE**
 
   - Enables the product-catalogue module
@@ -72,6 +77,12 @@ Below is a list of currently supported environment variables:
 - **REACT_APP_ENABLE_PLANS**
 
   - Enables the plans module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_LOCATIONS**
+
+  - Enables the location module
   - **Optional**(_string_)
   - default: `"false"`
 
@@ -110,3 +121,9 @@ Below is a list of currently supported environment variables:
 
   - _not required_; _(`string`)_
   - the default plan version , used when creating plans
+
+- **REACT_APP_ENABLE_FORM_CONFIGURATION**
+
+  - Enables the form configuration module
+  - **Optional**(_string_)
+  - default: `"false"`

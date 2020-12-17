@@ -50,6 +50,8 @@ export const EXPRESS_OAUTH_GET_STATE_URL =
 export const EXPRESS_OAUTH_LOGOUT_URL =
   process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
 
+/** Sentry */
+export const SENTRY_DSN = process.env.REACT_APP_SENTRY_DSN || '';
 /** Do you want to disable login protection? */
 export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROTECTION === 'true';
 
@@ -58,6 +60,9 @@ export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CAT
 
 /** Activate the plans menu */
 export const ENABLE_PLANS = process.env.REACT_APP_ENABLE_PLANS === 'true';
+
+/** Activate the plans menu */
+export const ENABLE_LOCATIONS = process.env.REACT_APP_ENABLE_LOCATIONS === 'true';
 
 export const DATE_FORMAT = process.env.REACT_APP_DATE_FORMAT || 'yyyy-MM-DD';
 
@@ -77,3 +82,6 @@ export const ACTION_UUID_NAMESPACE =
 export const DEFAULT_PLAN_VERSION = process.env.REACT_APP_DEFAULT_PLAN_VERSION || '1';
 
 export const TASK_GENERATION_STATUS = process.env.REACT_APP_TASK_GENERATION_STATUS || 'internal';
+
+/** Activate form configuration */
+export const ENABLE_FORM_CONFIGURATION = process.env.REACT_APP_ENABLE_FORM_CONFIGURATION === 'true';
