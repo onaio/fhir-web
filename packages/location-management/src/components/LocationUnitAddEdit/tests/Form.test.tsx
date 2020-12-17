@@ -13,7 +13,6 @@ import Form, { FormField, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { LocationUnitStatus } from '../../../ducks/location-units';
 import { history } from '@onaio/connected-reducer-registry';
-import { rawHierarchy } from '../../LocationUnitView/tests/fixtures';
 
 jest.mock('../../../configs/env');
 
@@ -38,7 +37,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   };
 
   const accessToken = 'sometoken';
-  const setSubmittingMock = jest.fn();
 
   it('renders without crashing', () => {
     const wrapper = mount(
@@ -55,14 +53,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('creates new location unit', async () => {
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
 
-    await onSubmit(
-      setSubmittingMock,
-      values,
-      accessToken,
-      props.locationUnitGroup,
-      props.username,
-      props.id
-    );
+    await onSubmit(values, accessToken, props.locationUnitGroup, props.username, props.id, jest.fn);
     await act(async () => {
       await flushPromises();
     });
@@ -104,14 +95,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
-    await onSubmit(
-      setSubmittingMock,
-      values,
-      accessToken,
-      props.locationUnitGroup,
-      props.username,
-      props.id
-    );
+    await onSubmit(values, accessToken, props.locationUnitGroup, props.username, props.id, jest.fn);
     await act(async () => {
       await flushPromises();
     });
@@ -131,17 +115,10 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
-    await onSubmit(
-      setSubmittingMock,
-      values,
-      accessToken,
-      props.locationUnitGroup,
-      props.username,
-      '1'
-    );
+    await onSubmit(values, accessToken, props.locationUnitGroup, props.username, '1', jest.fn);
     await act(async () => {
-      wrapper.update();
       await flushPromises();
+      wrapper.update();
     });
 
     expect(fetch.mock.calls[0]).toEqual([
@@ -180,14 +157,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('handles error when editing location unit', async () => {
     fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    await onSubmit(
-      setSubmittingMock,
-      values,
-      accessToken,
-      props.locationUnitGroup,
-      props.username,
-      '1'
-    );
+    await onSubmit(values, accessToken, props.locationUnitGroup, props.username, '1', jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -197,64 +167,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       description: undefined,
       message: 'An error occurred',
     });
-  });
-
-  it('checks geo level is calculated correctly', async () => {
-    const newValues = {
-      ...values,
-      parentId: '51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2',
-      geometry: JSON.stringify({
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [125.6, 10.1],
-        },
-        properties: {
-          name: 'Dinagat Islands',
-        },
-      }),
-    };
-
-    fetch.once(JSON.stringify(rawHierarchy));
-    await onSubmit(
-      setSubmittingMock,
-      newValues,
-      accessToken,
-      props.locationUnitGroup,
-      props.username,
-      '1'
-    );
-
-    await act(async () => {
-      await flushPromises();
-    });
-    // first call is made on the hierarchies endpoint to get geographic level
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/51d421a8-ba53-4ae0-b1d1-00e2d1a8c2a2',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[1]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: fetch.mock.calls[1][1].body,
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'PUT',
-      },
-    ]);
   });
 
   it('renders without crashing with id', () => {

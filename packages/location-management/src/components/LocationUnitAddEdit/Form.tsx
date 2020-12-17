@@ -86,21 +86,21 @@ function removeEmptykeys(obj: any) {
 /**
  * Handle form submission
  *
- * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
  * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
  * @param {string} username username of logged in user
  * @param {number} id location unit
+ * @param {Function} setSubmitting method to set submission status
  */
-export const onSubmit = async (
-  setSubmitting: (isSubmitting: boolean) => void,
+export async function onSubmit(
   values: FormField,
   accessToken: string,
   locationUnitgroup: LocationUnitGroup[],
   username: string,
-  id?: string
-) => {
+  id?: string,
+  setSubmitting?: (isSubmitting: boolean) => void
+) {
   const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
     (values.locationTags as number[]).includes(e.id)
   );
@@ -151,27 +151,25 @@ export const onSubmit = async (
       .update({ ...payload })
       .then(() => {
         sendSuccessNotification('Location Unit Updated successfully');
-        setSubmitting(false);
         history.goBack();
       })
-      .catch(() => {
-        sendErrorNotification('An error occurred');
-        setSubmitting(false);
+      .catch(() => sendErrorNotification('An error occurred'))
+      .finally(() => {
+        if (setSubmitting) setSubmitting(false);
       });
   } else {
     await serve
       .create({ ...payload })
       .then(() => {
         sendSuccessNotification('Location Unit Created successfully');
-        setSubmitting(false);
         history.goBack();
       })
-      .catch(() => {
-        sendErrorNotification('An error occurred');
-        setSubmitting(false);
+      .catch(() => sendErrorNotification('An error occurred'))
+      .finally(() => {
+        if (setSubmitting) setSubmitting(false);
       });
   }
-};
+}
 
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
@@ -210,12 +208,12 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) =>
         onSubmit(
-          setSubmitting,
           values,
           accessToken,
           props.locationUnitGroup,
           user.username,
-          props.id
+          props.id,
+          setSubmitting
         )
       }
     >
