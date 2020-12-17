@@ -9,7 +9,7 @@ import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 
 import { id, formValue, locationUnitgroups, parsedHierarchy } from './fixtures';
-import Form, { onSubmit } from '../Form';
+import Form, { findParentGeoLocation, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 
@@ -37,29 +37,24 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('creates new location unit', async () => {
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
 
-    await onSubmit(formValue, accessToken, locationUnitgroups, 'user_test', id, jest.fn);
+    await onSubmit(
+      formValue,
+      accessToken,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test',
+      jest.fn
+    );
     await act(async () => {
       await flushPromises();
     });
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[1]).toEqual([
       'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: fetch.mock.calls[1][1].body,
+        body: fetch.mock.calls[0][1].body,
         headers: {
           accept: 'application/json',
           authorization: 'Bearer sometoken',
@@ -75,11 +70,27 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
   });
 
+  it('checks geo level is calculated correctly', async () => {
+    const parentgeo = findParentGeoLocation(
+      parsedHierarchy,
+      '400e9d97-4640-44f5-af54-6f4b314384f5'
+    );
+    expect(parentgeo).toEqual(5);
+  });
+
   it('handles error when creating new location unit', async () => {
     fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
-    await onSubmit(formValue, accessToken, locationUnitgroups, 'user_test', id, jest.fn);
+    await onSubmit(
+      formValue,
+      accessToken,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test',
+      jest.fn,
+      id
+    );
     await act(async () => {
       await flushPromises();
     });
@@ -99,29 +110,26 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
-    await onSubmit(formValue, accessToken, locationUnitgroups, 'user_test', '1', jest.fn);
+    await onSubmit(
+      formValue,
+      accessToken,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test',
+      jest.fn,
+      '1'
+    );
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-    expect(fetch.mock.calls[1]).toEqual([
       'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: fetch.mock.calls[1][1].body,
+        body: fetch.mock.calls[0][1].body,
         headers: {
           accept: 'application/json',
           authorization: 'Bearer sometoken',
@@ -141,7 +149,15 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('handles error when editing location unit', async () => {
     fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    await onSubmit(formValue, accessToken, locationUnitgroups, 'user_test', '1', jest.fn);
+    await onSubmit(
+      formValue,
+      accessToken,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test',
+      jest.fn,
+      '1'
+    );
 
     await act(async () => {
       await flushPromises();

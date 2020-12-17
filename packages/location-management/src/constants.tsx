@@ -34,8 +34,3 @@ export const LOCATION_UNIT_GROUP_DELETE = 'location-tag/delete/';
 export const URL_LOCATION_UNIT_GROUP = '/location/group';
 export const URL_LOCATION_UNIT_GROUP_ADD = URL_LOCATION_UNIT_GROUP + '/add';
 export const URL_LOCATION_UNIT_GROUP_EDIT = URL_LOCATION_UNIT_GROUP + '/edit';
-
-//
-// Location HIERARCHY
-//
-export const LOCATION_HIERARCHY = 'location/hierarchy';
