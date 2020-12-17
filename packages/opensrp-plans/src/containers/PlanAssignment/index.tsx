@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import { loadSinglePlan } from '../../helpers/dataLoaders';
 import { PlansLoading } from '../ListView/utils';
-import { RouteParams } from '../../constants';
+import { PlanAssignmentRouteParams } from '../../constants';
 import PlansReducer, {
   fetchPlanDefinitions,
   getPlanDefinitionById,
@@ -34,7 +34,8 @@ const defaultProps = {
   service: OpenSRPService,
 };
 
-export type PlanAssignmentTypes = PlanAssignmentProps & RouteComponentProps<RouteParams>;
+export type PlanAssignmentTypes = PlanAssignmentProps &
+  RouteComponentProps<PlanAssignmentRouteParams>;
 
 /** component that renders plansInfo, planTable and planData */
 
@@ -59,13 +60,15 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;
   }
-  if (!plan && planId) {
+  if (!plan) {
     return <Resource404 />;
   }
 
   /** Page Header routes */
   return (
-    <div className="plan-detail-view content-section">{plan ? <PlanInfo plan={plan} /> : null}</div>
+    <div className="plan-detail-view content-section">
+      {<PlanInfo plan={plan} planId={planId} />}
+    </div>
   );
 };
 
@@ -79,7 +82,7 @@ interface MapStateToProps {
 }
 
 const mapStateToProps = (state: Partial<Store>, ownProps: PlanAssignmentTypes): MapStateToProps => {
-  const planId = ownProps.match.params.planId ?? '';
+  const planId = ownProps.match.params.planId;
   const plan = getPlanDefinitionById(state, planId);
   return { plan };
 };

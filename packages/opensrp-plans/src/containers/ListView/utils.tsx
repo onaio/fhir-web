@@ -20,7 +20,7 @@ import {
 export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (record) => {
   return (
     <>
-      <Link to={`${PLANS_LIST_VIEW_URL}/${record.status}/${record.identifier}`}>View</Link>
+      <Link to={`${PLANS_LIST_VIEW_URL}/${record.identifier}`}>View</Link>
     </>
   );
 };
@@ -67,9 +67,11 @@ export const PlansLoading = () => {
 
 /** Util method that determines pageTitle */
 
-export const pageTitleBuilder = (status?: string) => {
+export const pageTitleBuilder = (status?: string, appendMissions = true) => {
   if (status) {
-    return `${status.charAt(0).toUpperCase()}${status.slice(1)} ${MISSIONS}`;
+    return `${status.charAt(0).toUpperCase()}${status.slice(1)} ${
+      appendMissions ? MISSIONS : null
+    }`;
   }
   return NO_STATUS_FOUND;
 };

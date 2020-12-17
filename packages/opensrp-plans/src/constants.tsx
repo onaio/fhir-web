@@ -1,5 +1,4 @@
 import { Dictionary } from '@onaio/utils';
-
 /** Allowed action Reason values */
 export const ROUTINE = 'Routine';
 export const INVESTIGATION = 'Investigation';
@@ -61,6 +60,9 @@ export const TableColumnsNamespace = 'plans';
 /** route params for product-catalogue pages */
 export interface RouteParams {
   planId?: string;
+}
+export interface PlanAssignmentRouteParams {
+  planId: string;
 }
 
 export const GREEN = '#22B509';
