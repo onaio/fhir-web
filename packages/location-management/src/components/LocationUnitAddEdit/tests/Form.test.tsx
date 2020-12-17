@@ -13,7 +13,7 @@ import Form, { findParentGeoLocation, onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 
-jest.mock('../../../configs/env');
+import { baseURL } from '../../../constants';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
@@ -26,7 +26,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
+          <Form
+            opensrpBaseURL={baseURL}
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
         </Router>
       </Provider>
     );
@@ -40,6 +44,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await onSubmit(
       formValue,
       accessToken,
+      baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
@@ -85,6 +90,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await onSubmit(
       formValue,
       accessToken,
+      baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
@@ -105,7 +111,12 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form id="1" locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
+          <Form
+            opensrpBaseURL={baseURL}
+            id="1"
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
         </Router>
       </Provider>
     );
@@ -113,6 +124,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await onSubmit(
       formValue,
       accessToken,
+      baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
@@ -152,6 +164,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await onSubmit(
       formValue,
       accessToken,
+      baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
@@ -174,6 +187,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
+            opensrpBaseURL={baseURL}
             initialValue={formValue}
             id={id}
             locationUnitGroup={locationUnitgroups}
@@ -205,7 +219,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form locationUnitGroup={locationUnitgroups} treedata={parsedHierarchy} />
+          <Form
+            opensrpBaseURL={baseURL}
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
         </Router>
       </Provider>
     );
@@ -228,6 +246,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
+            opensrpBaseURL={baseURL}
             initialValue={formValue}
             id={id}
             locationUnitGroup={locationUnitgroups}
@@ -249,6 +268,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
+            opensrpBaseURL={baseURL}
             initialValue={formValue}
             locationUnitGroup={locationUnitgroups}
             treedata={parsedHierarchy}
