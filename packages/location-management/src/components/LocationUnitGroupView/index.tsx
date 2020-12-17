@@ -23,7 +23,6 @@ import {
   ADD_LOCATION_UNIT_GROUP,
   LOCATION_UNIT_GROUP_MANAGEMENT,
 } from '../../constants';
-import { API_BASE_URL } from '../../configs/env';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
 import { Link } from 'react-router-dom';
@@ -31,7 +30,11 @@ import { sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(reducerName, reducer);
 
-const LocationUnitGroupView: React.FC = () => {
+export interface Props {
+  opensrpBaseURL: string;
+}
+
+const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const locationsArray = useSelector((state) => getLocationUnitGroupsArray(state));
   const dispatch = useDispatch();
@@ -39,10 +42,11 @@ const LocationUnitGroupView: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState('');
   const [filter, setfilterData] = useState<TableData[] | null>(null);
+  const { opensrpBaseURL } = props;
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GROUP_ALL);
+      const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
       serve
         .list({ is_jurisdiction: true, serverVersion: 0 })
         .then((response: LocationUnitGroup[]) => {
@@ -129,6 +133,7 @@ const LocationUnitGroupView: React.FC = () => {
           </div>
           <div className="bg-white p-3">
             <Table
+              opensrpBaseURL={opensrpBaseURL}
               data={value.length < 1 ? tableData : (filter as TableData[])}
               onViewDetails={(e: LocationUnitGroupDetailProps) => setDetail(e)}
             />
@@ -145,5 +150,4 @@ const LocationUnitGroupView: React.FC = () => {
     </section>
   );
 };
-
 export default LocationUnitGroupView;

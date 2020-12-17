@@ -9,8 +9,13 @@ import { ADD_LOCATION_UNIT_GROUP, EDIT_LOCATION_UNIT_GROUP } from '../../constan
 
 reducerRegistry.register(reducerName, reducer);
 
-export const LocationUnitGroupAddEdit: React.FC = () => {
+export interface Props {
+  opensrpBaseURL: string;
+}
+
+export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
+  const { opensrpBaseURL } = props;
   return (
     <Row className="layout-content">
       <Helmet>
@@ -20,7 +25,7 @@ export const LocationUnitGroupAddEdit: React.FC = () => {
       <h5 className="mb-4">{params.id ? EDIT_LOCATION_UNIT_GROUP : ADD_LOCATION_UNIT_GROUP}</h5>
 
       <Col className="bg-white p-4" span={24}>
-        <Form id={params.id} />
+        <Form opensrpBaseURL={opensrpBaseURL} id={params.id} />
       </Col>
     </Row>
   );
