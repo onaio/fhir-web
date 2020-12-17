@@ -27,7 +27,7 @@ describe('/components/PlanInfo', () => {
     expect(planInfo.find('Divider')).toHaveLength(3);
     expect(planInfo.find('Avatar').props()).toMatchSnapshot('avatar props');
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Missions/Active Missions/EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditactiveStart Date2020-11-17End Date2021-12-24 "`
+      `"Missions/Active Missions/EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditActive MissionsStart Date2020-11-17End Date2021-12-24 "`
     );
   });
 });

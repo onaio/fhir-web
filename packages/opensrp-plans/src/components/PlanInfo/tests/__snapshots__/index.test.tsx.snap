@@ -2,7 +2,7 @@
 
 exports[`/components/PlanInfo renders and passes props correctly): activate link 1`] = `
 Object {
-  "children": "active",
+  "children": "Active Missions",
   "style": Object {
     "color": "#22B509",
   },
@@ -13,7 +13,7 @@ Object {
 exports[`/components/PlanInfo renders and passes props correctly): avatar props 1`] = `
 Object {
   "className": "plan-info-avatar",
-  "icon": <ForwardRef(FileExcelFilled) />,
+  "icon": <ForwardRef(FileDoneOutlined) />,
   "shape": "circle",
   "size": Object {
     "lg": 64,
@@ -24,6 +24,7 @@ Object {
     "xxl": 100,
   },
   "style": Object {
+    "color": "#1CABE2",
     "height": 82,
     "lineHeight": 1.8,
     "width": 80,
