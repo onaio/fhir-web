@@ -9,9 +9,8 @@ import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 
 import { id, formValue, locationUnitgroups, parsedHierarchy } from './fixtures';
-import Form, { FormField, onSubmit } from '../Form';
+import Form, { onSubmit } from '../Form';
 import { act } from 'react-dom/test-utils';
-import { LocationUnitStatus } from '../../../ducks/location-units';
 import { history } from '@onaio/connected-reducer-registry';
 
 jest.mock('../../../configs/env');
@@ -20,21 +19,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
-
-  const values: FormField = {
-    name: 'Tunisia',
-    status: LocationUnitStatus.ACTIVE,
-    type: 'Feature',
-    parentId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
-    locationTags: locationUnitgroups.map((loc) => loc.id),
-    geometry: undefined,
-  };
-
-  const props = {
-    id: undefined,
-    username: 'user_test',
-    locationUnitGroup: locationUnitgroups,
-  };
 
   const accessToken = 'sometoken';
 
@@ -53,7 +37,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('creates new location unit', async () => {
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
 
-    await onSubmit(values, accessToken, props.locationUnitGroup, props.username, props.id, jest.fn);
+    await onSubmit(formValue, accessToken, locationUnitgroups, 'user_test', id, jest.fn);
     await act(async () => {
       await flushPromises();
     });
@@ -95,7 +79,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
-    await onSubmit(values, accessToken, props.locationUnitGroup, props.username, props.id, jest.fn);
+    await onSubmit(formValue, accessToken, locationUnitgroups, 'user_test', id, jest.fn);
     await act(async () => {
       await flushPromises();
     });
@@ -115,7 +99,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
-    await onSubmit(values, accessToken, props.locationUnitGroup, props.username, '1', jest.fn);
+    await onSubmit(formValue, accessToken, locationUnitgroups, 'user_test', '1', jest.fn);
     await act(async () => {
       await flushPromises();
       wrapper.update();
@@ -157,7 +141,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('handles error when editing location unit', async () => {
     fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    await onSubmit(values, accessToken, props.locationUnitGroup, props.username, '1', jest.fn);
+    await onSubmit(formValue, accessToken, locationUnitgroups, 'user_test', '1', jest.fn);
 
     await act(async () => {
       await flushPromises();
