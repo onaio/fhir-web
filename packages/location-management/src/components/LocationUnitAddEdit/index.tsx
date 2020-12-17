@@ -147,9 +147,7 @@ export const LocationUnitAddEdit: React.FC = () => {
       );
       serve
         .list()
-        .then((response: ExtraField[]) => {
-          setExtrafields(response !== [] ? response : []);
-        })
+        .then((response: ExtraField[]) => setExtrafields(response))
         .catch(() => sendErrorNotification('An error occurred'));
     }
   }, [accessToken, extrafields]);

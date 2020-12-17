@@ -72,7 +72,7 @@ const status = [
  * @param {any} obj object to remove empty keys from
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function removeEmptykeys(obj: any) {
+export function removeEmptykeys(obj: any) {
   Object.entries(obj).forEach(([key, value]) => {
     if (typeof value === 'undefined') delete obj[key];
     else if (value === '' || value === null) delete obj[key];
@@ -211,6 +211,8 @@ export const Form: React.FC<Props> = (props: Props) => {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
+  let formkey = 0;
+
   return (
     <Formik
       initialValues={props.initialValue ? props.initialValue : defaultFormField}
@@ -231,7 +233,12 @@ export const Form: React.FC<Props> = (props: Props) => {
       }
     >
       {({ isSubmitting, handleSubmit }) => (
-        <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
+        <AntForm
+          key={formkey++}
+          requiredMark={'optional'}
+          {...layout}
+          onSubmitCapture={handleSubmit}
+        >
           <AntForm.Item label="Parent" name="parentId" required>
             <TreeSelect
               name="parentId"

@@ -8,7 +8,13 @@ import { MemoryRouter, Route, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 
-import { baseLocationUnits, rawHierarchy, locationUnitgroups, id } from './fixtures';
+import {
+  baseLocationUnits,
+  rawHierarchy,
+  locationUnitgroups,
+  id,
+  locationSettings,
+} from './fixtures';
 import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
 
 import { act } from 'react-dom/test-utils';
@@ -89,6 +95,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('renders everything correctly', async () => {
     fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
     fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[0]]));
+    fetch.mockResponseOnce(JSON.stringify(locationSettings));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
 
     const wrapper = mount(
@@ -99,28 +106,40 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
 
-    expect(fetch.mock.calls[0]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer null',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[1]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer null',
-          'content-type': 'application/json;charset=UTF-8',
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
 
     await act(async () => {
@@ -143,28 +162,40 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
 
-    expect(fetch.mock.calls[0]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer null',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[0]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer null',
-          'content-type': 'application/json;charset=UTF-8',
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
 
     await act(async () => {
@@ -181,6 +212,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('renders everything correctly with id', async () => {
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
     fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify(locationSettings));
     fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[0]]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
 
@@ -192,27 +224,40 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
 
-    expect(fetch.mock.calls[0]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer null',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-    expect(fetch.mock.calls[1]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer null',
-          'content-type': 'application/json;charset=UTF-8',
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
 
     await act(async () => {
