@@ -63,10 +63,14 @@ export interface RouteParams {
   planId?: string;
 }
 
+export const GREEN = '#22B509';
+export const BLACK = '#000000';
+export const ORANGE = '#DBA400';
+
 /** Enum representing the possible plan types colors*/
 export const PlanStatusColors: Dictionary = {
-  active: '#22B509',
-  complete: '#000000',
-  draft: '#DBA400',
-  retired: '#000000',
+  active: GREEN,
+  complete: BLACK,
+  draft: ORANGE,
+  retired: BLACK,
 };
