@@ -21,7 +21,6 @@ import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode } from '../../ducks/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { API_BASE_URL } from '../../configs/env';
 
 export interface FormField {
   name: string;
@@ -45,6 +44,7 @@ export interface Props {
   initialValue?: FormField;
   locationUnitGroup: LocationUnitGroup[];
   treedata: ParsedHierarchyNode[];
+  opensrpBaseURL: string;
 }
 
 /** yup validations for practitioner data object from form */
@@ -105,6 +105,7 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  *
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
+ * @param {string} opensrpBaseURL - base url
  * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
  * @param {Array<ParsedHierarchyNode>} treedata ParsedHierarchyNode nodes to get geolocation from
  * @param {string} username username of logged in user
@@ -114,6 +115,7 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
 export async function onSubmit(
   values: FormField,
   accessToken: string,
+  opensrpBaseURL: string,
   locationUnitgroup: LocationUnitGroup[],
   treedata: ParsedHierarchyNode[],
   username: string,
@@ -159,7 +161,7 @@ export async function onSubmit(
 
   removeEmptykeys(payload);
 
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_POST_PUT);
   if (id) {
     await serve
       .update({ ...payload })
@@ -224,6 +226,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(
           values,
           accessToken,
+          props.opensrpBaseURL,
           props.locationUnitGroup,
           props.treedata,
           user.username,

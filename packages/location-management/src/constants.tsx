@@ -1,3 +1,4 @@
+export const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 //
 // Strings
 //
