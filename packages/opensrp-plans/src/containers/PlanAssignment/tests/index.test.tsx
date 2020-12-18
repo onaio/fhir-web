@@ -7,8 +7,9 @@ import { Provider } from 'react-redux';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '../../../constants';
+import { PlanStatus } from '@opensrp/plan-form-core';
+import * as planDux from '../../../ducks/planDefinitions';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -17,7 +18,7 @@ const history = createBrowserHistory();
 
 describe('PlanAssignment Page', () => {
   beforeEach(() => {
-    store.dispatch(removePlanDefinitions());
+    store.dispatch(planDux.removePlanDefinitions());
   });
 
   afterEach(() => {
@@ -62,6 +63,47 @@ describe('PlanAssignment Page', () => {
 
     expect(wrapper.text()).toMatchSnapshot('full text snapshot');
     expect(wrapper.find('PlanInfo')).toHaveLength(1);
+  });
+
+  it('shows activate mission', async () => {
+    const draftMission = {
+      ...eusmPlans[0],
+      status: PlanStatus.DRAFT,
+    };
+    fetch.mockResponse(JSON.stringify([draftMission]));
+    const props = {
+      showActivateMission: true,
+      history,
+      location: {
+        hash: '',
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}/${draftMission.identifier}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: { planId: draftMission.identifier },
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}/${draftMission.identifier}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlanAssignment {...props}></ConnectedPlanAssignment>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // activate mission is on the page
+    expect(wrapper.find('.activate-plan')).toHaveLength(2);
+    expect(wrapper.find('.activate-plan button')).toHaveLength(1);
   });
 
   it('shows broken page', async () => {

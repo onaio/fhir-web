@@ -17,6 +17,7 @@ import {
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import PlanInfo from '../../components/PlanInfo';
+import { ActivateMissionCard } from '../../components/ActivateMission';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(plansReducerName, plansReducer);
@@ -26,6 +27,7 @@ interface PlanAssignmentProps extends CommonProps {
   plan: PlanDefinition | null;
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
+  showActivateMission: boolean;
 }
 
 const defaultProps = {
@@ -33,6 +35,7 @@ const defaultProps = {
   plan: null,
   fetchPlansCreator: fetchPlanDefinitions,
   service: OpenSRPService,
+  showActivateMission: false,
 };
 
 export type PlanAssignmentTypes = PlanAssignmentProps &
@@ -41,7 +44,7 @@ export type PlanAssignmentTypes = PlanAssignmentProps &
 /** component that renders plansInfo, planTable and planData */
 
 const PlanAssignment = (props: PlanAssignmentTypes) => {
-  const { service, plan, fetchPlansCreator, baseURL } = props;
+  const { service, plan, fetchPlansCreator, baseURL, showActivateMission } = props;
   const { planId } = props.match.params;
   const [loading, setLoading] = useState<boolean>(!plan);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
@@ -65,8 +68,19 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
     return <Resource404 />;
   }
 
+  const activateMissionProps = {
+    plan,
+    submitCallback: (planPayload: PlanDefinition) => fetchPlansCreator([planPayload]),
+    serviceClass: OpenSRPService,
+  };
+
   /** Page Header routes */
-  return <div className="plan-detail-view">{<PlanInfo plan={plan} planId={planId} />}</div>;
+  return (
+    <div className="plan-detail-view">
+      <PlanInfo plan={plan} planId={planId} />
+      {showActivateMission ? <ActivateMissionCard {...activateMissionProps} /> : null}
+    </div>
+  );
 };
 
 PlanAssignment.defaultProps = defaultProps;
