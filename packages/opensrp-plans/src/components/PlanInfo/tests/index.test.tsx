@@ -1,6 +1,6 @@
 import React from 'react';
 import PlanInfo from '..';
-import { eusmPlans } from '../../../ducks/tests/fixtures';
+import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { mount, shallow } from 'enzyme';
 import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
 import { Router } from 'react-router';
