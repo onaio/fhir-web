@@ -150,7 +150,7 @@ export function getPlanDefinitionsById(
   return (state as Dictionary)[reducerName].planDefinitionsById;
 }
 
-/** get one PlanDefinition using its
+/** get one PlanDefinition using its id
  *
  * @param {object} state - the redux store
  * @param {string} id - the PlanDefinition id
