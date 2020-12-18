@@ -1,7 +1,5 @@
-.body-wrapper .plan-detail-view.content-section {
-  padding: 0 31px;
-}
-
-.plan-detail-view.content-section > div {
-  padding-top: 16px;
+.plan-detail-view {
+  background-color: #ffffff;
+  height: 156px;
+  border-bottom: 1px solid #e9e9e9;
 }
