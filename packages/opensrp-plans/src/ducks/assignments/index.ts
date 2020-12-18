@@ -2,6 +2,7 @@
 import { Dictionary } from '@onaio/utils';
 import { get, uniqWith } from 'lodash';
 import moment from 'moment';
+import { createSelector } from '@reduxjs/toolkit';
 import { Store } from 'redux';
 import { AnyAction } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
@@ -83,7 +84,7 @@ export function assignmentsReducer(
     case ASSIGNMENTS_FETCHED:
       if (!action.overwrite) {
         // so what we want to do is to ensure all action.assignmentsByPlanId arrays of the
-        // same plan are merged.  But while merging we want to that the array elements are
+        // same plan are merged.  But while merging we want the array elements to be
         // unique based on fromDate, jurisdiction and organization
         const currentState = state.assignmentsByPlanId.asMutable();
         // loop through each plan in the action object
@@ -98,7 +99,7 @@ export function assignmentsReducer(
             // current state will be ordered first.  We do this because we want to remove elements
             // that were in current state.  We assume that they are being overwritten
             allAssignments.sort((_, b) => ((assignments as Assignment[]).includes(b) ? 1 : -1));
-            // remove the elements in the current state.  This works because we hard already ordered
+            // remove the elements in the current state.  This works because we had already ordered
             // the elements.  uniqWith keeps the first found item
             const filteredAssignments = (action.assignmentsByPlanId[planId] = uniqWith(
               allAssignments,
@@ -180,6 +181,10 @@ export const resetPlanAssignments = (
 
 // selectors
 
+interface AssignmentFilters {
+  planId?: string;
+}
+
 /** get assignments as an object where their ids are the keys and the objects
  * the values
  *
@@ -191,15 +196,25 @@ export function getAssignmentsByPlanId(state: Partial<Store>): { [key: string]: 
   return (state as Dictionary)[assignmentReducerName].assignmentsByPlanId;
 }
 
-/** Get all assignments as an array
+/** get plan id from filters
  *
- * @param {object} state - Part of the redux store
- * @param {string} planId - The id of the plan of which to return associated Assignments
- *
- * @returns {object} - all assignments by planId in store as an array
+ * @param {object} _ - the store
+ * @param {object} props - the props
+ * @returns {string | undefined}  the planId
  */
-export function getAssignmentsArrayByPlanId(state: Partial<Store>, planId: string): Assignment[] {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const assignments = get(getAssignmentsByPlanId(state), planId) ?? [];
-  return assignments.filter((obj) => moment(obj.toDate) >= moment());
-}
+export const getPlanId = (_: Partial<Store>, props: AssignmentFilters) => props.planId;
+
+/** Get all assignments as an array by id
+ *
+ * @returns {object} - selector that gets assignments by planId in store as an array
+ */
+export const getAssignmentsArrayByPlanId = () => {
+  return createSelector(getAssignmentsByPlanId, getPlanId, (assignmentsmap, planId) => {
+    let assignments: Assignment[] = [];
+    if (planId !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      assignments = get(assignmentsmap, planId) ?? [];
+    }
+    return assignments.filter((obj) => moment(obj.toDate) >= moment());
+  });
+};

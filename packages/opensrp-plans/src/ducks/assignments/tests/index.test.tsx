@@ -15,6 +15,8 @@ import { processRawAssignments } from '../utils';
 
 reducerRegistry.register(assignmentReducerName, assignmentsReducer);
 
+const getAssByPlanId = getAssignmentsArrayByPlanId();
+
 describe('reducers/assignments', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -23,13 +25,13 @@ describe('reducers/assignments', () => {
   });
 
   it('should have initial state', () => {
-    expect(getAssignmentsArrayByPlanId(store.getState(), 'randomId')).toEqual([]);
+    expect(getAssByPlanId(store.getState(), { planId: 'randomId' })).toEqual([]);
     expect(getAssignmentsByPlanId(store.getState())).toEqual({});
   });
 
   it('should fetch Assignments', () => {
     store.dispatch(fetchAssignments(fixtures.assignments));
-    const planAssignments = getAssignmentsArrayByPlanId(store.getState(), 'alpha');
+    const planAssignments = getAssByPlanId(store.getState(), { planId: 'alpha' });
     expect(planAssignments).toHaveLength(4);
   });
 
@@ -37,46 +39,46 @@ describe('reducers/assignments', () => {
     store.dispatch(fetchAssignments([fixtures.assignment5])); // not alpha plan
 
     store.dispatch(fetchAssignments([fixtures.assignments[0]]));
-    let assignmentsNum = getAssignmentsArrayByPlanId(store.getState(), 'alpha').length;
+    let assignmentsNum = getAssByPlanId(store.getState(), { planId: 'alpha' }).length;
     expect(assignmentsNum).toEqual(1);
 
     store.dispatch(fetchAssignments([fixtures.assignments[1]]));
-    assignmentsNum = getAssignmentsArrayByPlanId(store.getState(), 'alpha').length;
+    assignmentsNum = getAssByPlanId(store.getState(), { planId: 'alpha' }).length;
     expect(assignmentsNum).toEqual(2);
 
     store.dispatch(fetchAssignments([fixtures.assignments[2]]));
-    assignmentsNum = getAssignmentsArrayByPlanId(store.getState(), 'alpha').length;
+    assignmentsNum = getAssByPlanId(store.getState(), { planId: 'alpha' }).length;
     expect(assignmentsNum).toEqual(3);
 
     store.dispatch(fetchAssignments([fixtures.assignment6]));
-    assignmentsNum = getAssignmentsArrayByPlanId(store.getState(), 'alpha').length;
+    assignmentsNum = getAssByPlanId(store.getState(), { planId: 'alpha' }).length;
     expect(assignmentsNum).toEqual(2);
 
-    expect(getAssignmentsArrayByPlanId(store.getState(), 'alpha')).toEqual([
+    expect(getAssByPlanId(store.getState(), { planId: 'alpha' })).toEqual([
       fixtures.assignments[1],
       fixtures.assignments[2],
     ]);
 
     store.dispatch(fetchAssignments([fixtures.assignment7]));
-    assignmentsNum = getAssignmentsArrayByPlanId(store.getState(), 'alpha').length;
+    assignmentsNum = getAssByPlanId(store.getState(), { planId: 'alpha' }).length;
     expect(assignmentsNum).toEqual(3);
 
-    expect(getAssignmentsArrayByPlanId(store.getState(), 'alpha')).toEqual([
+    expect(getAssByPlanId(store.getState(), { planId: 'alpha' })).toEqual([
       fixtures.assignment7,
       fixtures.assignments[2],
       fixtures.assignments[1],
     ]);
 
-    expect(getAssignmentsArrayByPlanId(store.getState(), 'beta')).toHaveLength(1);
+    expect(getAssByPlanId(store.getState(), { planId: 'beta' })).toHaveLength(1);
   });
 
   it('is able to overwrite existing Assignments with newly fetched', () => {
     store.dispatch(fetchAssignments([fixtures.assignments[0]]));
-    let assignmentsNum = getAssignmentsArrayByPlanId(store.getState(), 'alpha').length;
+    let assignmentsNum = getAssByPlanId(store.getState(), { planId: 'alpha' }).length;
     expect(assignmentsNum).toEqual(1);
 
     store.dispatch(fetchAssignments([fixtures.assignments[1]], true));
-    assignmentsNum = getAssignmentsArrayByPlanId(store.getState(), 'alpha').length;
+    assignmentsNum = getAssByPlanId(store.getState(), { planId: 'alpha' }).length;
     expect(assignmentsNum).toEqual(1);
   });
 
@@ -87,7 +89,7 @@ describe('reducers/assignments', () => {
         [fixtures.assignment1.plan]: [fixtures.assignment1],
       })
     );
-    const assignments = getAssignmentsArrayByPlanId(store.getState(), fixtures.assignment1.plan);
+    const assignments = getAssByPlanId(store.getState(), { planId: fixtures.assignment1.plan });
     expect(assignments).toHaveLength(1);
   });
 });
