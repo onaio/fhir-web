@@ -4,12 +4,12 @@ import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { eusmPlans } from '../../../ducks/tests/fixtures';
+import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { ACTIVE_PLANS_LIST_VIEW_URL, PLANS_LIST_VIEW_URL } from '../../../constants';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
-import { removePlanDefinitions } from '../../../ducks';
+import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import { EDIT_PLAN } from '../../../lang';
 
