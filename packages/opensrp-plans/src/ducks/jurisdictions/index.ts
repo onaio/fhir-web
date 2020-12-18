@@ -58,33 +58,33 @@ export interface Filters {
 /**
  * retrieve the jurisdictionId value
  *
- * @param {object} _ - the store
- * @param {object} props -  the filterProps
- * @returns {string} -
+ * @param _ - the store
+ * @param props -  the filterProps
+ * @returns jurisdictionId filter prop
  */
 export const getJurisdictionId = (_: Partial<Store>, props: Filters) => props.jurisdictionId;
 
 /**
  * retrieve the geoLevel value
  *
- * @param {object} _ - the store
- * @param {object} props -  the filterProps
- * @returns {boolean} -
+ * @param _ - the store
+ * @param props -  the filterProps
+ * @returns the geoLevel prop
  */
 export const getGeoLevel = (_: Partial<Store>, props: Filters) => props.geoLevel;
 
 /** gets all jurisdictions keyed by id
  *
- * @param {object} state - the store
- * @param {object} _ -  the filterProps
- * @returns {Dictionary<object>} -
+ * @param state - the store
+ * @param _ -  the filterProps
+ * @returns jurisdictions map whose keys are their respective ids
  */
 export const getJurisdictionsById = (state: Partial<Store>, _: Filters): Dictionary<Jurisdiction> =>
   (state as Dictionary)[jurisdictionReducerName].objectsById;
 
 /** retrieve the Jurisdiction using an id
  *
- * @returns {object} -
+ * @returns returns single jurisdiction or null
  */
 export const getJurisdictionById = () =>
   createSelector(
@@ -100,7 +100,7 @@ export const getJurisdictionById = () =>
 /**
  * retrieve jurisdictions as an array filtered by geoLevel
  *
- * @returns {object} -
+ * @returns jurisdictions filtered by geoLevel
  */
 export const getJursByGeoLevel = () =>
   createSelector(

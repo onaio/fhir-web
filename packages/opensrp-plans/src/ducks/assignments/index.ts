@@ -72,9 +72,9 @@ const initialAssignmentStoreState: ImmutableAssignmentsStoreState = SeamlessImmu
 /**
  * the Assignment reducer function
  *
- * @param {object} state - the store
- * @param {object} action - the action types
- * @returns {object} - the state
+ * @param state - the store
+ * @param action - the action types
+ * @returns the state
  */
 export function assignmentsReducer(
   state = initialAssignmentStoreState,
@@ -140,9 +140,9 @@ export const removeAssignmentsAction: RemoveAssignmentsAction = {
 
 /** creates action to add fetched assignments to store
  *
- * @param {object []} assignmentsList - array of assignments to be added to store
- * @param {boolean} overwrite - whether to overwrite assignments
- * @returns {object} - action with assignments payload that is added to store
+ * @param assignmentsList - array of assignments to be added to store
+ * @param overwrite - whether to overwrite assignments
+ * @returns action with assignments payload that is added to store
  */
 export const fetchAssignments = (
   assignmentsList: Assignment[],
@@ -166,8 +166,8 @@ export const fetchAssignments = (
 
 /** creates action to reset plan
  *
- * @param {object} assignmentsByPlanId object with updated assignment arrays, keyed by planId
- * @returns {object} -
+ * @param assignmentsByPlanId object with updated assignment arrays, keyed by planId
+ * @returns action to clean plan assignments dux
  */
 export const resetPlanAssignments = (
   assignmentsByPlanId: AssignmentsByPlanId = {}
@@ -190,7 +190,7 @@ interface AssignmentFilters {
  *
  * @param {object} state - Portion of the store
  *
- * @returns {object} -
+ * @returns map of assignments key'ed by the plan ids
  */
 export function getAssignmentsByPlanId(state: Partial<Store>): { [key: string]: Assignment[] } {
   return (state as Dictionary)[assignmentReducerName].assignmentsByPlanId;
@@ -198,15 +198,15 @@ export function getAssignmentsByPlanId(state: Partial<Store>): { [key: string]: 
 
 /** get plan id from filters
  *
- * @param {object} _ - the store
- * @param {object} props - the props
- * @returns {string | undefined}  the planId
+ * @param _ - the store
+ * @param props - the props
+ * @returns the planId
  */
 export const getPlanId = (_: Partial<Store>, props: AssignmentFilters) => props.planId;
 
 /** Get all assignments as an array by id
  *
- * @returns {object} - selector that gets assignments by planId in store as an array
+ * @returns selector that gets assignments by planId in store as an array
  */
 export const getAssignmentsArrayByPlanId = () => {
   return createSelector(getAssignmentsByPlanId, getPlanId, (assignmentsmap, planId) => {
