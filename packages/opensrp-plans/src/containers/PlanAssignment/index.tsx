@@ -65,11 +65,7 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
   }
 
   /** Page Header routes */
-  return (
-    <div className="plan-detail-view content-section">
-      {<PlanInfo plan={plan} planId={planId} />}
-    </div>
-  );
+  return <div className="plan-detail-view">{<PlanInfo plan={plan} planId={planId} />}</div>;
 };
 
 PlanAssignment.defaultProps = defaultProps;

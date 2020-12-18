@@ -26,7 +26,7 @@ const PlanInfo = (props: PlanInfoProps) => {
     },
     {
       path: `${PLANS_LIST_VIEW_URL}/${plan.status}`,
-      breadcrumbName: pageTitleBuilder(plan.status),
+      breadcrumbName: pageTitleBuilder(plan.status, false),
     },
     {
       path: `/plan/planid?${plan.identifier}`,
