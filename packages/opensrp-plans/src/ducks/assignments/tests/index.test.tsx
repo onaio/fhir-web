@@ -1,17 +1,18 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import MockDate from 'mockdate';
-import reducer, {
+import {
+  assignmentsReducer,
   fetchAssignments,
   getAssignmentsArrayByPlanId,
   getAssignmentsByPlanId,
-  reducerName,
+  assignmentReducerName,
   removeAssignmentsAction,
   resetPlanAssignments,
 } from '..';
 import * as fixtures from './fixtures';
 import { store } from '@opensrp/store';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(assignmentReducerName, assignmentsReducer);
 
 describe('reducers/assignments', () => {
   beforeEach(() => {

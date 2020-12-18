@@ -11,7 +11,8 @@ import {
   getTitle,
   FilterPlanDefinitionsByInterventionType,
 } from '../index';
-import reducer, {
+import {
+  plansReducer,
   addPlanDefinition,
   fetchPlanDefinitions,
   getPlanDefinitionById,
@@ -19,12 +20,12 @@ import reducer, {
   getPlanDefinitionsArrayByTitle,
   getPlanDefinitionsById,
   makePlanDefinitionsArraySelector,
-  reducerName,
+  plansReducerName,
   removePlanDefinitions,
 } from '../index';
 import * as fixtures from './fixtures';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(plansReducerName, plansReducer);
 
 describe('reducers/opensrp/PlanDefinition', () => {
   beforeEach(() => {

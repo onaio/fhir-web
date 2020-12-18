@@ -35,16 +35,18 @@ export interface Jurisdiction {
 }
 
 /** the reducer name */
-export const reducerName = 'Jurisdiction';
+export const jurisdictionReducerName = 'Jurisdiction';
 
 /** Jurisdiction Reducer */
-const reducer = reducerFactory<Jurisdiction>(reducerName);
-export default reducer;
+export const JurisdictionsReducer = reducerFactory<Jurisdiction>(jurisdictionReducerName);
 
 // actions
 /** actionCreator returns action to to add Item records to store */
-export const fetchJurisdictions = fetchActionCreatorFactory<Jurisdiction>(reducerName, 'id');
-export const removeJurisdictions = removeActionCreatorFactory(reducerName);
+export const fetchJurisdictions = fetchActionCreatorFactory<Jurisdiction>(
+  jurisdictionReducerName,
+  'id'
+);
+export const removeJurisdictions = removeActionCreatorFactory(jurisdictionReducerName);
 
 // selectors
 /** prop filters to customize selector queries */
@@ -78,7 +80,7 @@ export const getGeoLevel = (_: Partial<Store>, props: Filters) => props.geoLevel
  * @returns {Dictionary<object>} -
  */
 export const getJurisdictionsById = (state: Partial<Store>, _: Filters): Dictionary<Jurisdiction> =>
-  (state as Dictionary)[reducerName].objectsById;
+  (state as Dictionary)[jurisdictionReducerName].objectsById;
 
 /** retrieve the Jurisdiction using an id
  *

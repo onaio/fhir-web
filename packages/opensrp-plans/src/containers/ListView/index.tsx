@@ -12,7 +12,7 @@ import { PlansLoading, columns, pageTitleBuilder } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import PlansReducer, { reducerName as PlansReducerName } from '../../ducks/planDefinitions';
+import { plansReducer, plansReducerName as PlansReducerName } from '../../ducks/planDefinitions';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import {
@@ -26,7 +26,7 @@ import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { NEW_MISSION } from '../../lang';
 
 /** make sure plans reducer is registered */
-reducerRegistry.register(PlansReducerName, PlansReducer);
+reducerRegistry.register(PlansReducerName, plansReducer);
 
 /** props for the PlansList view */
 interface Props<T = PlanDefinition> extends CommonProps {

@@ -1,15 +1,16 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, {
+import {
+  jurisdictionReducerName,
+  JurisdictionsReducer,
   fetchJurisdictions,
   getJurisdictionById,
   getJursByGeoLevel,
-  reducerName,
   removeJurisdictions,
 } from '..';
 import { store } from '@opensrp/store';
 import { jurisdiction1, jurisdictions } from './fixtures';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(jurisdictionReducerName, JurisdictionsReducer);
 
 const byIdSelector = getJurisdictionById();
 const geoLevelSelector = getJursByGeoLevel();
