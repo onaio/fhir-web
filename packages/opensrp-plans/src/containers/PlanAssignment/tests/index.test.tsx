@@ -4,7 +4,7 @@ import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures'
+import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';

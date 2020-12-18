@@ -6,3 +6,4 @@ export * from './ducks/jurisdictions';
 export * from './containers/ListView';
 export * from './containers/NewPlan';
 export * from './containers/UpdatePlan';
+export * from './containers/PlanAssignment';
