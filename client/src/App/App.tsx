@@ -109,8 +109,9 @@ import {
   draftPlansListStatusProp,
   completedPlansListStatusProp,
   trashPlansListStatusProp,
+  planAssignmentProps,
 } from './utils';
-
+import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 
 const { Content } = Layout;
@@ -258,7 +259,7 @@ const App: React.FC = () => {
               exact
               path={`${PLANS_LIST_VIEW_URL}/:planId`}
               {...plansListProps}
-              {...activePlansListStatusProp}
+              {...planAssignmentProps}
               component={ConnectedPlanAssignment}
             />
             <PrivateComponent
