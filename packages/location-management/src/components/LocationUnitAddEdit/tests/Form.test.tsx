@@ -9,7 +9,7 @@ import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 
 import { id, formValue, locationUnitgroups, parsedHierarchy } from './fixtures';
-import Form, { findParentGeoLocation, onSubmit } from '../Form';
+import Form, { findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 
@@ -75,6 +75,28 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
   });
 
+  it('test removeEmptykeys from payload ', async () => {
+    const obj = {
+      key: 'value',
+      testa: undefined,
+      testb: [],
+      testc: null,
+      testd: '',
+      child: {
+        key: 'value',
+        testa: undefined,
+        testb: [],
+        testc: null,
+      },
+    };
+    removeEmptykeys(obj);
+
+    expect(obj).toMatchObject({
+      key: 'value',
+      child: { key: 'value' },
+    });
+  });
+
   it('checks geo level is calculated correctly', async () => {
     const parentgeo = findParentGeoLocation(
       parsedHierarchy,
@@ -108,6 +130,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   });
 
   it('edits location unit successfully', async () => {
+    const mockNotificationSuccess = jest.spyOn(notification, 'success');
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -120,9 +143,141 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
-    const mockNotificationSuccess = jest.spyOn(notification, 'success');
+    await onSubmit(
+      { ...formValue, parentId: '400e9d97-4640-44f5-af54-6f4b314384f5' },
+      accessToken,
+      baseURL,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test',
+      jest.fn,
+      '1'
+    );
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          is_jurisdiction: true,
+          properties: {
+            geographicLevel: 6,
+            username: 'user_test',
+            parentId: '400e9d97-4640-44f5-af54-6f4b314384f5',
+            name: 'Tunisia',
+            name_en: 'Tunisia',
+            status: 'Active',
+          },
+          id: '1',
+          syncStatus: 'Synced',
+          type: 'Feature',
+          locationTags: [{ id: 2, name: 'Sample 2' }],
+        }),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'PUT',
+      },
+    ]);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(mockNotificationSuccess).toHaveBeenCalledWith({
+      description: undefined,
+      message: 'Location Unit Updated successfully',
+    });
+  });
+
+  it('fail create location unit successfully', async () => {
+    fetch.mockReject();
+
+    const mockNotificationError = jest.spyOn(notification, 'error');
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Form
+            opensrpBaseURL={baseURL}
+            id="1"
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
+        </Router>
+      </Provider>
+    );
+
     await onSubmit(
       formValue,
+      accessToken,
+      baseURL,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test',
+      jest.fn
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          is_jurisdiction: true,
+          properties: {
+            geographicLevel: 0,
+            username: 'user_test',
+            name: 'Tunisia',
+            name_en: 'Tunisia',
+            status: 'Active',
+          },
+          id: JSON.parse(fetch.mock.calls[0][1].body as string).id,
+          syncStatus: 'Synced',
+          type: 'Feature',
+          locationTags: [{ id: 2, name: 'Sample 2' }],
+        }),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'POST',
+      },
+    ]);
+
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: undefined,
+      message: 'An error occurred',
+    });
+  });
+
+  it('fail geolocation fetch incase of wrong parent id passed', async () => {
+    const mockNotificationError = jest.spyOn(notification, 'error');
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Form
+            opensrpBaseURL={baseURL}
+            id="1"
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
+        </Router>
+      </Provider>
+    );
+    await onSubmit(
+      { ...formValue, parentId: 'wrong parent id' },
       accessToken,
       baseURL,
       locationUnitgroups,
@@ -136,26 +291,12 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: fetch.mock.calls[0][1].body,
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'PUT',
-      },
-    ]);
+    expect(fetch.mock.calls[0]).toEqual(undefined);
 
-    expect(mockNotificationSuccess).toHaveBeenCalledWith({
+    expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'Location Unit Updated successfully',
+      message: 'An error occurred',
     });
-    wrapper.unmount();
   });
 
   it('handles error when editing location unit', async () => {

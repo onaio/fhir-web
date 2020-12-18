@@ -69,7 +69,7 @@ const status = [
  * @param {any} obj object to remove empty keys from
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function removeEmptykeys(obj: any) {
+export function removeEmptykeys(obj: any) {
   Object.entries(obj).forEach(([key, value]) => {
     if (typeof value === 'undefined') delete obj[key];
     else if (value === '' || value === null) delete obj[key];
@@ -100,8 +100,7 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
   return filter[0];
 }
 
-/**
- * Handle form submission
+/** Handle form submission
  *
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
@@ -111,6 +110,7 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  * @param {string} username username of logged in user
  * @param {Function} setSubmitting method to set submission status
  * @param {number} id location unit
+ * @returns {void} return nothing
  */
 export async function onSubmit(
   values: FormField,
@@ -119,7 +119,7 @@ export async function onSubmit(
   locationUnitgroup: LocationUnitGroup[],
   treedata: ParsedHierarchyNode[],
   username: string,
-  setSubmitting?: (isSubmitting: boolean) => void,
+  setSubmitting: (isSubmitting: boolean) => void,
   id?: string
 ) {
   const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
@@ -135,6 +135,7 @@ export async function onSubmit(
   if (values.parentId) {
     const parent = findParentGeoLocation(treedata, values.parentId);
     if (parent) geographicLevel = parent + 1;
+    else return sendErrorNotification('An error occurred'); // stops execution because this is unlikely thing to happen and shouldn't send error to server
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
@@ -170,9 +171,7 @@ export async function onSubmit(
         history.goBack();
       })
       .catch(() => sendErrorNotification('An error occurred'))
-      .finally(() => {
-        if (setSubmitting) setSubmitting(false);
-      });
+      .finally(() => setSubmitting(false));
   } else {
     await serve
       .create({ ...payload })
@@ -181,9 +180,7 @@ export async function onSubmit(
         history.goBack();
       })
       .catch(() => sendErrorNotification('An error occurred'))
-      .finally(() => {
-        if (setSubmitting) setSubmitting(false);
-      });
+      .finally(() => setSubmitting(false));
   }
 }
 
