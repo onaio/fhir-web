@@ -294,7 +294,16 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           <Tree data={Treedata} appendParentAsChild={false} />
         </Col>
         <Col className={'main-content'}>
-          <Table dataSource={tableData} columns={columns}></Table>
+          <Table
+            pagination={{
+              showQuickJumper: true,
+              showSizeChanger: true,
+              defaultPageSize: 5,
+              pageSizeOptions: ['5', '10', '20', '50', '100'],
+            }}
+            dataSource={tableData}
+            columns={columns}
+          ></Table>
         </Col>
       </Row>
     </div>
