@@ -8,17 +8,18 @@ import { Store } from 'redux';
 import { loadSinglePlan } from '../../helpers/dataLoaders';
 import { PlansLoading } from '../ListView/utils';
 import { PlanAssignmentRouteParams } from '../../constants';
-import PlansReducer, {
+import {
+  plansReducer,
   fetchPlanDefinitions,
   getPlanDefinitionById,
-  reducerName as PlansReducerName,
-} from '../../ducks';
+  plansReducerName,
+} from '../../ducks/planDefinitions';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import PlanInfo from '../../components/PlanInfo';
 
 /** make sure plans reducer is registered */
-reducerRegistry.register(PlansReducerName, PlansReducer);
+reducerRegistry.register(plansReducerName, plansReducer);
 
 /** props for the PlanAssignment view  extends CommonProps*/
 interface PlanAssignmentProps extends CommonProps {
