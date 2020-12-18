@@ -5,7 +5,7 @@ import { AnyAction, Store } from 'redux';
 import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
 import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
-import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
+import { descendingOrderSort, isPlanDefinitionOfType } from '../../helpers/utils';
 
 /** the reducer name */
 export const reducerName = 'PlanDefinition';
