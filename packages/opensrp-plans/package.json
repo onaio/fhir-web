@@ -53,7 +53,5 @@
     "@opensrp/react-utils": "^0.0.1",
     "@opensrp/server-service": "^0.0.12"
   },
-  "devDependencies": {
-    "@turf/turf": "^5.1.6"
-  }
+  "devDependencies": {}
 }

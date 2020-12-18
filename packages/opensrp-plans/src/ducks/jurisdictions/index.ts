@@ -4,7 +4,7 @@ import {
   reducerFactory,
   removeActionCreatorFactory,
 } from '@opensrp/reducer-factory';
-import { Geometry } from '@turf/turf';
+import { Geometry } from 'geojson';
 import { get, values } from 'lodash';
 import { Store } from 'redux';
 import { createSelector } from 'reselect';
