@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Row, PageHeader, Col, Button, Table } from 'antd';
 import { loadPlans } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
-import { fetchPlanDefinitions, makePlanDefinitionsArraySelector } from '../../ducks';
+import {
+  fetchPlanDefinitions,
+  makePlanDefinitionsArraySelector,
+} from '../../ducks/planDefinitions';
 import { connect } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { PlansLoading, columns, pageTitleBuilder } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import PlansReducer, { reducerName as PlansReducerName } from '../../ducks';
+import PlansReducer, { reducerName as PlansReducerName } from '../../ducks/planDefinitions';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import {

@@ -8,7 +8,7 @@ import planReducer, {
   fetchPlanDefinitions,
   makePlanDefinitionsArraySelector,
   reducerName as planReducerName,
-} from '../../ducks';
+} from '../../ducks/planDefinitions';
 import { loadSinglePlan, OpenSRPService } from '../../helpers/dataLoaders';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
