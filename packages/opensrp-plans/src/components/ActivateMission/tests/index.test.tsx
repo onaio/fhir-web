@@ -33,14 +33,13 @@ describe('activate mission', () => {
     expect(toJson(wrapper.find('.activate-plan'))).toMatchInlineSnapshot(`null`);
   });
 
-  it('shows correct message for non-draft plans', () => {
+  it('does not show for non-draft plans', () => {
     // plan is active
     const props = {
       plan: plan as PlanDefinition,
     };
     const wrapper = mount(<ActivateMissionCard {...props} />);
-    expect(wrapper.text().includes(ONLY_DRAFT_MISSIONS_CAN_BE_ACTIVATED)).toBeTruthy();
-    // does not render the button
+    expect(toJson(wrapper.find('.activate-plan'))).toMatchInlineSnapshot(`null`);
     expect(wrapper.find('button')).toHaveLength(0);
   });
 

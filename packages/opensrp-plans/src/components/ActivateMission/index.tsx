@@ -1,16 +1,17 @@
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import React from 'react';
-import { Card, Button, Alert } from 'antd';
+import { Card, Button, Typography } from 'antd';
 import {
   ACTIVATE_MISSION,
   FAILED_TO_ACTIVATE_MISSION,
-  ONLY_DRAFT_MISSIONS_CAN_BE_ACTIVATED,
   SUCCESSFULLY_ACTIVATED_MISSION,
 } from '../../lang';
 import { CommonProps, postPutPlan } from '@opensrp/plan-form';
 import { defaultCommonProps } from '../../helpers/common';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+
+const { Title } = Typography;
 
 /** props for the activate mission component */
 interface ActivateMissionProps extends CommonProps {
@@ -34,11 +35,11 @@ const defaultProps = {
  */
 const ActivateMissionCard = (props: ActivateMissionProps) => {
   const { plan, serviceClass, baseURL, submitCallback } = props;
+  const planIsDraft = plan?.status === PlanStatus.DRAFT;
 
-  if (!plan) {
+  if (!plan || !planIsDraft) {
     return null;
   }
-  const planIsDraft = plan.status === PlanStatus.DRAFT;
 
   /** post the plan with a new status of active */
   const clickHandler = () => {
@@ -57,12 +58,14 @@ const ActivateMissionCard = (props: ActivateMissionProps) => {
   };
 
   return (
-    <Card className="activate-plan" bordered={false} title={ACTIVATE_MISSION}>
-      {!planIsDraft ? (
-        <Alert message={ONLY_DRAFT_MISSIONS_CAN_BE_ACTIVATED} type="info"></Alert>
-      ) : (
-        <Button onClick={clickHandler} type="primary"></Button>
-      )}
+    <Card
+      className="activate-plan"
+      bordered={false}
+      title={<Title level={5}>{ACTIVATE_MISSION}</Title>}
+    >
+      <Button onClick={clickHandler} type="primary">
+        {ACTIVATE_MISSION}
+      </Button>
     </Card>
   );
 };

@@ -26,6 +26,5 @@ export const SELECT = 'Select';
 export const SELECT_TEAMS = 'Select teams';
 export const SELECT_AREAS = 'Select areas';
 export const ACTIVATE_MISSION = 'Activate mission';
-export const ONLY_DRAFT_MISSIONS_CAN_BE_ACTIVATED = 'Only draft plans can be activated';
 export const SUCCESSFULLY_ACTIVATED_MISSION = 'Successfully activated mission';
-export const FAILED_TO_ACTIVATE_MISSION = 'Activation mission failed';
+export const FAILED_TO_ACTIVATE_MISSION = 'Activating mission failed';
