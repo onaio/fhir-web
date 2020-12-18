@@ -35,7 +35,8 @@ const defaultProps = {
 
 /** Modal component used for either locations or teams assignments
  *
- * @param props - props
+ * @param {object} props - props
+ * @returns {Element} -
  */
 function EditAssignmentsModal(props: EditAssignmentsModalProps) {
   const {

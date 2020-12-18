@@ -23,5 +23,5 @@ export const SAVE = 'Save';
 export const EDIT_TEAMS = 'Edit teams';
 export const EDIT_AREAS = 'Edit areas';
 export const SELECT = 'Select';
-export const SELECT_TEAMS = 'Select teams'
-export const SELECT_AREAS = 'Select areas'
+export const SELECT_TEAMS = 'Select teams';
+export const SELECT_AREAS = 'Select areas';
