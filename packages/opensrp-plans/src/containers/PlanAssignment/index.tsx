@@ -71,14 +71,17 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
   const activateMissionProps = {
     plan,
     submitCallback: (planPayload: PlanDefinition) => fetchPlansCreator([planPayload]),
-    serviceClass: OpenSRPService,
+    serviceClass: service,
+    baseURL,
   };
 
   /** Page Header routes */
   return (
     <div className="plan-detail-view">
       <PlanInfo plan={plan} planId={planId} />
-      {showActivateMission ? <ActivateMissionCard {...activateMissionProps} /> : null}
+      <div className="plan-activities_section">
+        {showActivateMission ? <ActivateMissionCard {...activateMissionProps} /> : null}
+      </div>
     </div>
   );
 };
