@@ -8,7 +8,7 @@ import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
 import { descendingOrderSort, isPlanDefinitionOfType } from '../../helpers/utils';
 
 /** the reducer name */
-export const reducerName = 'PlanDefinition';
+export const plansReducerName = 'PlanDefinition';
 
 // actions
 
@@ -104,7 +104,7 @@ const initialState: ImmutablePlanDefinitionState = SeamlessImmutable({
  * @param {object} action - plans actions
  * @returns {object} - the updated states
  */
-export default function reducer(
+export function plansReducer(
   state = initialState,
   action: PlanDefinitionActionTypes
 ): ImmutablePlanDefinitionState {
@@ -147,7 +147,7 @@ export function getPlanDefinitionsById(
   if (interventionType) {
     return keyBy(getPlanDefinitionsArray(state, interventionType), 'identifier');
   }
-  return (state as Dictionary)[reducerName].planDefinitionsById;
+  return (state as Dictionary)[plansReducerName].planDefinitionsById;
 }
 
 /** get one PlanDefinition using its
@@ -157,7 +157,7 @@ export function getPlanDefinitionsById(
  * @returns {PlanDefinition|null} a PlanDefinition object or null
  */
 export function getPlanDefinitionById(state: Partial<Store>, id: string): PlanDefinition | null {
-  return get((state as Dictionary)[reducerName].planDefinitionsById, id, null);
+  return get((state as Dictionary)[plansReducerName].planDefinitionsById, id, null);
 }
 
 /** get an array of PlanDefinition objects
@@ -172,7 +172,7 @@ export function getPlanDefinitionsArray(
   interventionType: InterventionType | null = null,
   sortField?: string
 ): PlanDefinition[] {
-  const result = values((state as Dictionary)[reducerName].planDefinitionsById);
+  const result = values((state as Dictionary)[plansReducerName].planDefinitionsById);
   if (interventionType) {
     return result.filter((e: PlanDefinition) => isPlanDefinitionOfType(e, interventionType));
   }
@@ -203,7 +203,7 @@ export interface PlanDefinitionGetters extends PlanDefinitionFilters {
 export const planDefinitionsByIdBaseSelector = (planKey?: string) => (
   state: Partial<Store>
 ): Dictionary<PlanDefinition> =>
-  (state as Dictionary)[reducerName][planKey ? planKey : 'planDefinitionsById'];
+  (state as Dictionary)[plansReducerName][planKey ? planKey : 'planDefinitionsById'];
 
 /** planDefinitionsArrayBaseSelector select an array of all plans
  *
@@ -213,7 +213,7 @@ export const planDefinitionsByIdBaseSelector = (planKey?: string) => (
 export const planDefinitionsArrayBaseSelector = (planKey?: string) => (
   state: Partial<Store>
 ): PlanDefinition[] =>
-  values((state as Dictionary)[reducerName][planKey ? planKey : 'planDefinitionsById']);
+  values((state as Dictionary)[plansReducerName][planKey ? planKey : 'planDefinitionsById']);
 
 /** Gets title from PlanFilters
  *

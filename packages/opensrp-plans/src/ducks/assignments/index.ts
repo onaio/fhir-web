@@ -7,7 +7,7 @@ import { AnyAction } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
 
 /** The reducer name */
-export const reducerName = 'assignments';
+export const assignmentReducerName = 'assignments';
 
 /** the raw assignment object as received from openSRP API */
 export interface RawAssignment {
@@ -75,7 +75,7 @@ const initialAssignmentStoreState: ImmutableAssignmentsStoreState = SeamlessImmu
  * @param {object} action - the action types
  * @returns {object} - the state
  */
-export default function reducer(
+export function assignmentsReducer(
   state = initialAssignmentStoreState,
   action: AssignmentActionTypes
 ) {
@@ -188,7 +188,7 @@ export const resetPlanAssignments = (
  * @returns {object} -
  */
 export function getAssignmentsByPlanId(state: Partial<Store>): { [key: string]: Assignment[] } {
-  return (state as Dictionary)[reducerName].assignmentsByPlanId;
+  return (state as Dictionary)[assignmentReducerName].assignmentsByPlanId;
 }
 
 /** Get all assignments as an array
