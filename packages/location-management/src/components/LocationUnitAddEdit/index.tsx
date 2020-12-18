@@ -9,8 +9,10 @@ import {
   LOCATION_UNIT_GROUP_ALL,
   ADD_LOCATION_UNIT,
   EDIT_LOCATION_UNIT,
+  LOCATION_UNIT_EXTRAFIELDS,
+  LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER,
 } from '../../constants';
-import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
+import { ExtraField, fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 
@@ -83,6 +85,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
+  const [extrafields, setExtrafields] = useState<ExtraField[] | null>(null);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
@@ -144,7 +147,26 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
     }
   }, [Treedata, accessToken, dispatch, opensrpBaseURL]);
 
-  if (!locationUnitGroup.length || !Treedata.length || (params.id && !LocationUnitDetail))
+  useEffect(() => {
+    if (!extrafields) {
+      const serve = new OpenSRPService(
+        accessToken,
+        opensrpBaseURL,
+        LOCATION_UNIT_EXTRAFIELDS + `&identifier=${LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER}`
+      );
+      serve
+        .list()
+        .then((response: ExtraField[]) => setExtrafields(response))
+        .catch(() => sendErrorNotification('An error occurred'));
+    }
+  }, [accessToken, extrafields, opensrpBaseURL]);
+
+  if (
+    extrafields === null ||
+    !locationUnitGroup.length ||
+    !Treedata.length ||
+    (params.id && !LocationUnitDetail)
+  )
     return (
       <Spin
         style={{
@@ -167,6 +189,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
 
       <Col className="bg-white p-4" span={24}>
         <Form
+          extraFields={extrafields}
           opensrpBaseURL={opensrpBaseURL}
           treedata={Treedata}
           id={params.id}
