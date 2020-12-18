@@ -11,6 +11,7 @@ import {
 } from '..';
 import * as fixtures from './fixtures';
 import { store } from '@opensrp/store';
+import { processRawAssignments } from '../utils';
 
 reducerRegistry.register(assignmentReducerName, assignmentsReducer);
 
@@ -88,5 +89,12 @@ describe('reducers/assignments', () => {
     );
     const assignments = getAssignmentsArrayByPlanId(store.getState(), fixtures.assignment1.plan);
     expect(assignments).toHaveLength(1);
+  });
+});
+
+describe('utils', () => {
+  it('parses raw assignments correctly', () => {
+    const res = processRawAssignments(fixtures.rawAssignment1);
+    expect(JSON.stringify(res)).toEqual(fixtures.expectedAssignment1);
   });
 });
