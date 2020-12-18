@@ -2,7 +2,7 @@
 import { Dictionary } from '@onaio/utils';
 import { get, uniqWith } from 'lodash';
 import moment from 'moment';
-import { createSelector } from '@reduxjs/toolkit';
+import { createSelector } from 'reselect';
 import { Store } from 'redux';
 import { AnyAction } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
