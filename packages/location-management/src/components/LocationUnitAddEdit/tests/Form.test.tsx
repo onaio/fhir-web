@@ -8,7 +8,7 @@ import { store } from '@opensrp/store';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 
-import { id, formValue, locationUnitgroups, parsedHierarchy } from './fixtures';
+import { id, formValue, locationUnitgroups, parsedHierarchy, locationSettings } from './fixtures';
 import Form, { findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
@@ -42,13 +42,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
 
     await onSubmit(
+      jest.fn,
       formValue,
       accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      jest.fn
+      locationSettings
     );
     await act(async () => {
       await flushPromises();
@@ -110,14 +111,15 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const mockNotificationError = jest.spyOn(notification, 'error');
 
     await onSubmit(
+      jest.fn,
       formValue,
       accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      jest.fn,
-      id
+      [],
+      '1'
     );
     await act(async () => {
       await flushPromises();
@@ -144,13 +146,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
     await onSubmit(
+      jest.fn,
       { ...formValue, parentId: '400e9d97-4640-44f5-af54-6f4b314384f5' },
       accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      jest.fn,
+      [],
       '1'
     );
 
@@ -213,13 +216,13 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     );
 
     await onSubmit(
+      jest.fn,
       formValue,
       accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
-      'user_test',
-      jest.fn
+      'user_test'
     );
 
     await act(async () => {
@@ -277,13 +280,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
     await onSubmit(
+      jest.fn,
       { ...formValue, parentId: 'wrong parent id' },
       accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      jest.fn,
+      [],
       '1'
     );
     await act(async () => {
@@ -303,13 +307,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     fetch.mockReject(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
     await onSubmit(
+      jest.fn,
       formValue,
       accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      jest.fn,
+      [],
       '1'
     );
 
