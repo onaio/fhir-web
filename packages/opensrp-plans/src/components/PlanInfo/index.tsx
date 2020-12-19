@@ -1,12 +1,14 @@
 import { FileDoneOutlined } from '@ant-design/icons';
-import { PlanDefinition } from '@opensrp/plan-form-core';
-import { Avatar, Divider, PageHeader } from 'antd';
-import { PlanStatusColors, PLANS_EDIT_VIEW_URL, PLANS_LIST_VIEW_URL } from '../../constants';
+import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
+import { Avatar, Divider, Breadcrumb } from 'antd';
+import { PlanStatusColors, PLANS_EDIT_VIEW_URL, PLANS_ASSIGNMENT_VIEW_URL } from '../../constants';
 import { pageTitleBuilder } from '../../containers/ListView/utils';
 import { EDIT, END_DATE, MISSIONS, START_DATE } from '../../lang';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './index.css';
+import { redirectMapping } from '../../helpers/common';
+import { Route, BreadcrumbProps } from 'antd/lib/breadcrumb/Breadcrumb';
 /** interface describing the props of PlanInfo */
 export interface PlanInfoProps {
   plan: PlanDefinition;
@@ -19,24 +21,34 @@ export interface PlanInfoProps {
  */
 const PlanInfo = (props: PlanInfoProps) => {
   const { plan, planId } = props;
+
+  const itemRender: BreadcrumbProps['itemRender'] = (route, _, routes) => {
+    const last = routes.indexOf(route) === routes.length - 1;
+    const hasPath = !!route.path;
+    return last || !hasPath ? (
+      <span>{route.breadcrumbName}</span>
+    ) : (
+      <Link to={route.path}>{route.breadcrumbName}</Link>
+    );
+  };
+
   const routes = [
     {
-      path: PLANS_LIST_VIEW_URL,
       breadcrumbName: MISSIONS,
     },
     {
-      path: `${PLANS_LIST_VIEW_URL}/${plan.status}`,
+      path: redirectMapping[plan.status as PlanStatus],
       breadcrumbName: pageTitleBuilder(plan.status, false),
     },
     {
-      path: `/plan/planid?${plan.identifier}`,
+      path: `${PLANS_ASSIGNMENT_VIEW_URL}/${plan.identifier}`,
       breadcrumbName: plan.title,
     },
-  ];
+  ] as Route[];
 
   return (
     <>
-      <PageHeader className="site-page-header" title="" breadcrumb={{ routes }} />
+      <Breadcrumb className="site-page-header" routes={routes} itemRender={itemRender}></Breadcrumb>
 
       <div className="plan-info-main">
         <Avatar

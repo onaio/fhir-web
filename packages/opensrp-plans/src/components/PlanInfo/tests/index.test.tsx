@@ -5,6 +5,7 @@ import { mount, shallow } from 'enzyme';
 import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
+import toJson from 'enzyme-to-json';
 
 describe('/components/PlanInfo', () => {
   const history = createBrowserHistory();
@@ -30,5 +31,8 @@ describe('/components/PlanInfo', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Missions/Active /EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditActive Start Date2020-11-17End Date2021-12-24 "`
     );
+    wrapper.find('.site-page-header span.ant-breadcrumb-link').forEach((span, index) => {
+      expect(toJson(span)).toMatchSnapshot(`links in breadcrumb ${index}`);
+    });
   });
 });
