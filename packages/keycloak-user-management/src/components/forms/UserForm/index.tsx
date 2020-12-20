@@ -168,14 +168,11 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 <Input id="username" name="username" disabled={initialValues.id ? true : false} />
               </Form.Item>
 
-              {!initialValues.id && !practitioner ? (
+              {!initialValues.id || !practitioner ? (
                 ''
               ) : (
                 <Form.Item name="active" label="Mark as Practitioner" valuePropName="checked">
-                  <Switch
-                    name="active"
-                    defaultChecked={practitioner ? practitioner.active : false}
-                  />
+                  <Switch name="active" defaultChecked={practitioner.active} />
                 </Form.Item>
               )}
 
