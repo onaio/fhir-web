@@ -108,4 +108,19 @@ describe('components/TeamsView/table', () => {
     expect(body.children().first().prop('rowKey')).toBe('4');
     expect(body.children().last().prop('rowKey')).toBe('1');
   });
+
+  it('Should show table pagination options', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <Table
+          setPractitionersList={() => jest.fn()}
+          setDetail={() => jest.fn()}
+          opensrpBaseURL=""
+          accessToken="hunter 2"
+          data={tableData}
+        />
+      </Router>
+    );
+    expect(wrapper.find('.ant-table-pagination')).toBeTruthy();
+  });
 });
