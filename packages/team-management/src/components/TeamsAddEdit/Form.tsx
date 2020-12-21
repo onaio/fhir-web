@@ -40,22 +40,22 @@ interface Props {
 /**
  * Handle form submission
  *
+ * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {string} accessToken Token for api calles
  * @param {object} values value of form fields
  * @param {object} initialValue initialValue of form fields
  * @param {string} id id of the team
- * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  */
 export function onSubmit(
+  setIsSubmitting: (value: boolean) => void,
   practitioner: Practitioner[],
   accessToken: string,
   values: FormField,
   initialValue: FormField,
-  id?: string,
-  setIsSubmitting?: (value: boolean) => void
+  id?: string
 ) {
-  if (setIsSubmitting) setIsSubmitting(true);
+  setIsSubmitting(true);
   const Teamid = id ?? v4();
 
   const payload: OrganizationPOST = {
@@ -81,14 +81,10 @@ export function onSubmit(
       const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
       await SetPractitioners(practitioner, toAdd, toRem, accessToken, Teamid);
-
-      if (setIsSubmitting) setIsSubmitting(false);
       history.goBack();
     })
-    .catch(() => {
-      if (setIsSubmitting) setIsSubmitting(false);
-      sendErrorNotification('An error occurred');
-    });
+    .catch(() => sendErrorNotification('An error occurred'))
+    .finally(() => setIsSubmitting(false));
 }
 
 /**
@@ -162,12 +158,12 @@ export const Form: React.FC<Props> = (props: Props) => {
       {...layout}
       onFinish={(values) =>
         onSubmit(
+          setIsSubmitting,
           props.practitioner,
           props.accessToken,
           values,
           initialValue,
-          props.id,
-          setIsSubmitting
+          props.id
         )
       }
       initialValues={initialValue}
