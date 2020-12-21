@@ -103,19 +103,21 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/organization',
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: fetch.mock.calls[0][1].body,
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer token',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: fetch.mock.calls[0][1].body,
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
         },
-        method: 'PUT',
-      },
+      ],
     ]);
   });
 
@@ -128,19 +130,21 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/organization',
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: fetch.mock.calls[0][1].body,
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer token',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: fetch.mock.calls[0][1].body,
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
         },
-        method: 'PUT',
-      },
+      ],
     ]);
   });
 
