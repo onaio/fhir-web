@@ -2,23 +2,26 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import organizationsReducer, {
+import {
   fetchOrganizationsAction as fetchOrganizations,
   getOrganizationsArray,
   Organization,
-  reducerName as organizationsReducerName,
+  organizationsReducer,
+  orgReducerName,
 } from '@opensrp/team-management';
-import assignmentReducer, {
+import {
+  assignmentsReducer,
+  assignmentReducerName,
   Assignment,
   fetchAssignments,
   getAssignmentsArrayByPlanId,
-  reducerName as assignmentReducerName,
 } from '../../ducks/assignments';
-import jurisdictionsReducer, {
+import {
+  JurisdictionsReducer,
+  jurisdictionReducerName,
   Jurisdiction,
   fetchJurisdictions,
   getJursByGeoLevel,
-  reducerName,
 } from '../../ducks/jurisdictions';
 import {
   loadAssignments,
@@ -37,9 +40,9 @@ import {
   makePlanDefinitionsArraySelector,
 } from '../../ducks/planDefinitions';
 
-reducerRegistry.register(assignmentReducerName, assignmentReducer);
-reducerRegistry.register(organizationsReducerName, organizationsReducer);
-reducerRegistry.register(reducerName, jurisdictionsReducer);
+reducerRegistry.register(assignmentReducerName, assignmentsReducer);
+reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(jurisdictionReducerName, JurisdictionsReducer);
 
 export interface AssignmentTableProps extends CommonProps {
   serviceClass: typeof OpenSRPService;
@@ -161,6 +164,7 @@ type MapDispatchToProps = Pick<
 
 const jurisdictionsSelector = getJursByGeoLevel();
 const plansSelector = makePlanDefinitionsArraySelector();
+const assignmentsByPlanId = getAssignmentsArrayByPlanId();
 
 const mapStateToProps = (
   state: Partial<Store>,
@@ -169,7 +173,7 @@ const mapStateToProps = (
   const { plan, assignAtGeoLevel } = ownProps;
   const planId = plan.identifier;
   const thePlan = plansSelector(state, { planIds: [planId] })[0] ?? plan;
-  const assignments = getAssignmentsArrayByPlanId(state, planId);
+  const assignments = assignmentsByPlanId(state, { planId });
   const organizations = getOrganizationsArray(state);
   const jurisdictions = jurisdictionsSelector(state, { geoLevel: assignAtGeoLevel });
   // const jurs = jurisdictions.filter((jur) => jur.locationTags[0].name === 'District'); // TODO: -

@@ -5,7 +5,7 @@ import { TableColumnsNamespace } from '../../constants';
 import { SelectOption } from '../AssignmentModal';
 import { Assignment, fetchAssignments } from '../../ducks/assignments';
 import { Dictionary, keyBy } from 'lodash';
-import { Organization } from '../../ducks/organizations';
+import { Organization } from '@opensrp/team-management';
 import { Jurisdiction } from '../../ducks/jurisdictions';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import { ActionColumn } from '../TableActionColumn';

@@ -11,18 +11,22 @@ import {
 import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, { reducerName, removePlanDefinitions } from '../../../ducks/planDefinitions';
+import {
+  plansReducerName,
+  plansReducer,
+  removePlanDefinitions,
+} from '../../../ducks/planDefinitions';
 import { act } from 'react-dom/test-utils';
 import { jurisdictions } from './fixtures';
 import { Jurisdiction, removeJurisdictions } from '../../../ducks/jurisdictions';
 import { removeAssignmentsAction } from '../../../ducks/assignments';
-import { Organization, removeOrganizationsAction } from '../../../ducks/organizations';
+import { Organization, removeOrganizationsAction } from '@opensrp/team-management';
 import toJson from 'enzyme-to-json';
 import { EDIT_AREAS, EDIT_TEAMS } from '../../../lang';
 import { Dictionary } from '@onaio/utils';
 import MockDate from 'mockdate';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(plansReducerName, plansReducer);
 
 // help convert jurisdictions to select options
 const jursToOptions = (jurisdictions: Jurisdiction[]) => {
@@ -51,7 +55,7 @@ describe('opensrp-plans/assignmentTable', () => {
     fetch.resetMocks();
     store.dispatch(removeJurisdictions());
     store.dispatch(removeAssignmentsAction);
-    store.dispatch(removeOrganizationsAction);
+    store.dispatch(removeOrganizationsAction());
     store.dispatch(removePlanDefinitions());
   });
 

@@ -365,7 +365,7 @@ export const expectedMergedIds1 = [
 ];
 
 export const expectedAssignment =
-  '[{"fromDate":"2019-12-30T00:00:0000:00","jurisdiction":"9b5dd829-89de-45a5-98f2-fd37787ae949","organization":"0f38856a-6e0f-5e31-bf3c-a2ad8a53210d","plan":"ae12d8c4-d2a8-53f9-b201-6cccdd42482b","toDate":"2021-01-05T00:00:0000:00"}]';
+  '[{"fromDate":"2019-12-30T00:00:00+00:00","jurisdiction":"9b5dd829-89de-45a5-98f2-fd37787ae949","organization":"0f38856a-6e0f-5e31-bf3c-a2ad8a53210d","plan":"ae12d8c4-d2a8-53f9-b201-6cccdd42482b","toDate":"2021-01-05T00:00:00+00:00"}]';
 
 export const expectedAssignment1 =
   '[{"fromDate":"2020-12-15T22:00:00+00:00","jurisdiction":"9fb0f2cf-7836-4557-a908-4b8cd628d193","organization":"0f38856a-6e0f-5e31-bf3c-a2ad8a53210d","plan":"ae12d8c4-d2a8-53f9-b201-6cccdd42482b","toDate":"2021-01-05T00:00:00+00:00"},{"fromDate":"2020-12-15T22:00:00+00:00","jurisdiction":"9b5dd829-89de-45a5-98f2-fd37787ae949","organization":"0f38856a-6e0f-5e31-bf3c-a2ad8a53210d","plan":"ae12d8c4-d2a8-53f9-b201-6cccdd42482b","toDate":"2021-01-05T00:00:00+00:00"}]';

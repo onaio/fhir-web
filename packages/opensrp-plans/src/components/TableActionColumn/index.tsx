@@ -3,7 +3,7 @@ import { EditAssignmentsModal, SelectOption } from '../AssignmentModal';
 import { Divider } from 'antd';
 import { Assignment, fetchAssignments } from '../../ducks/assignments';
 import { Jurisdiction } from '../../ducks/jurisdictions';
-import { Organization } from '../../ducks/organizations';
+import { Organization } from '@opensrp/team-management';
 import {
   getAllJursPayload,
   updateAssignments,
