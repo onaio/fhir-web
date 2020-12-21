@@ -1,0 +1,365 @@
+import { mount, shallow } from 'enzyme';
+import React from 'react';
+import { ConnectedAssignmentTable } from '..';
+import {
+  expectedAssignment,
+  expectedAssignment1,
+  organizations,
+  plan,
+  sampleRawAssignments,
+} from './fixtures';
+import { store } from '@opensrp/store';
+import { Provider } from 'react-redux';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+import reducer, { reducerName, removePlanDefinitions } from '../../../ducks/planDefinitions';
+import { act } from 'react-dom/test-utils';
+import { jurisdictions } from './fixtures';
+import { Jurisdiction, removeJurisdictions } from '../../../ducks/jurisdictions';
+import { removeAssignmentsAction } from '../../../ducks/assignments';
+import { Organization, removeOrganizationsAction } from '../../../ducks/organizations';
+import toJson from 'enzyme-to-json';
+import { EDIT_AREAS, EDIT_TEAMS } from '../../../lang';
+import { Dictionary } from '@onaio/utils';
+import MockDate from 'mockdate';
+
+reducerRegistry.register(reducerName, reducer);
+
+// help convert jurisdictions to select options
+const jursToOptions = (jurisdictions: Jurisdiction[]) => {
+  return jurisdictions.map((jur) => ({
+    key: jur.id,
+    label: jur.properties.name,
+    value: jur.id,
+  }));
+};
+
+// help convert organizations to select options
+const orgsToOptions = (organizations: Organization[]) => {
+  return organizations.map((org) => ({
+    key: org.identifier,
+    label: org.name,
+    value: org.identifier,
+  }));
+};
+
+MockDate.set('12/30/2019');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fetch = require('jest-fetch-mock');
+
+describe('opensrp-plans/assignmentTable', () => {
+  afterEach(() => {
+    fetch.resetMocks();
+    store.dispatch(removeJurisdictions());
+    store.dispatch(removeAssignmentsAction);
+    store.dispatch(removeOrganizationsAction);
+    store.dispatch(removePlanDefinitions());
+  });
+
+  it('renders without crashing', () => {
+    shallow(
+      <Provider store={store}>
+        <ConnectedAssignmentTable plan={plan} />
+      </Provider>
+    );
+  });
+
+  it('renders correctly', async () => {
+    fetch.mockResponses(JSON.stringify([]));
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedAssignmentTable plan={plan} />
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/assignedLocationsAndPlans?plan=ae12d8c4-d2a8-53f9-b201-6cccdd42482b',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+    fetch.resetMocks();
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`tr ${index}`);
+    });
+
+    // check the rendered output, will only have jurisdictions as ids that were in the plan
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Assigned areasAssigned teamsActions9b5dd829-89de-45a5-98f2-fd37787ae949, 6bb05db0-730b-409b-991d-4abfe6a59ea1, 1b14ff5b-1f24-4b50-a59a-33cef0ed7bfb, 7d150b42-11e7-4362-8d0d-1a8ef506c754, 9fb0f2cf-7836-4557-a908-4b8cd628d193Edit areasEdit teams1"`
+    );
+  });
+
+  it('renders correctly when there is data', async () => {
+    fetch
+      .once(JSON.stringify(sampleRawAssignments))
+      .once(JSON.stringify(organizations))
+      .once(JSON.stringify(jurisdictions));
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedAssignmentTable plan={plan} assignAtGeoLevel={3} />
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`tr ${index}`);
+    });
+
+    // check the rendered output
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Assigned areasAssigned teamsActionsIITANANGA, OKASHANDJAOna testOrgEdit areasEdit teamsIITANANGATest Test TeamEdit areasEdit teamsOKASHANDJANAIMA old test teamEdit areasEdit teamsIIYALA N.6, OKANKETE-2, OSHIPUMBU MAKILINDIDI NO 2-1Edit areasEdit teams1"`
+    );
+  });
+
+  it('test plan jurisdiction assignment', async () => {
+    // remove plans
+    const mission = { ...plan, jurisdiction: [] };
+    fetch
+      .once(JSON.stringify([]))
+      .once(JSON.stringify(organizations))
+      .once(JSON.stringify(jurisdictions));
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    //should have 2 rows
+    expect(wrapper.find('tr')).toHaveLength(2);
+
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`tr ${index}`);
+    });
+
+    // check the rendered output
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Assigned areasAssigned teamsActionsEdit areasEdit teams1"`
+    );
+
+    // edit teams modal button should be disabled
+    expect(toJson(wrapper.find('button.assign-modal'))).toMatchSnapshot(
+      'assignment buttons invocation'
+    );
+
+    fetch.resetMocks();
+    fetch.mockResponses();
+
+    // simulate selecting jurisdictions
+    const jurisdictionAssignmentModal = wrapper.find('EditAssignmentsModal').first();
+    // make sure its the areas one
+    expect(jurisdictionAssignmentModal.text().includes(EDIT_AREAS)).toBeTruthy();
+    const selectedJurisdiction = jursToOptions([jurisdictions[0]]);
+    (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
+
+    // what fetch calls were made:
+    // one to add the jurs to plan, the other to add assignments if there is selected organizations
+    const body = JSON.stringify({ ...mission, jurisdiction: [{ code: jurisdictions[0].id }] });
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body,
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
+        },
+      ],
+      // there are no teams in the rows scope, so the posted assignments are empty
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/assignLocationsAndPlans',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: '[]',
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'POST',
+        },
+      ],
+    ]);
+  });
+
+  it('test plan teams assignment', async () => {
+    // add just a single jurisdiction to plan
+    const mission = { ...plan, jurisdiction: [{ code: jurisdictions[0].id }] };
+    fetch
+      .once(JSON.stringify([]))
+      .once(JSON.stringify(organizations))
+      .once(JSON.stringify(jurisdictions));
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    //should have 2 rows
+    expect(wrapper.find('tr')).toHaveLength(2);
+
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`tr ${index}`);
+    });
+
+    // check the rendered output
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Assigned areasAssigned teamsActionsIITANANGAEdit areasEdit teams1"`
+    );
+
+    fetch.resetMocks();
+    fetch.mockResponses();
+
+    // simulate selecting jurisdictions
+    const teamAssignmentModal = wrapper.find('EditAssignmentsModal').last();
+    // make sure its the areas one
+    expect(teamAssignmentModal.text().includes(EDIT_TEAMS)).toBeTruthy();
+    const selectedOrgs = orgsToOptions([organizations[0]]);
+    (teamAssignmentModal.props() as Dictionary).saveHandler(selectedOrgs);
+
+    // what fetch calls were made:
+    // calls should be just about adding assignments.
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/assignLocationsAndPlans',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: expectedAssignment,
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'POST',
+        },
+      ],
+    ]);
+  });
+
+  it('test plan jurisdiction when there is already an assignment', async () => {
+    // has one jurisdiction, that goes with one assignment
+    const mission = { ...plan, jurisdiction: [{ code: '9b5dd829-89de-45a5-98f2-fd37787ae949' }] };
+    fetch
+      .once(JSON.stringify([sampleRawAssignments[0]]))
+      .once(JSON.stringify(organizations))
+      .once(JSON.stringify(jurisdictions));
+    const wrapper = mount(
+      <Provider store={store}>
+        <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    //should have 2 rows
+    expect(wrapper.find('tr')).toHaveLength(2);
+
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`tr ${index}`);
+    });
+
+    // check the rendered output
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Assigned areasAssigned teamsActionsIITANANGAOna testOrgEdit areasEdit teams1"`
+    );
+
+    fetch.resetMocks();
+    fetch.mockResponses();
+
+    // simulate selecting jurisdictions
+    const jurisdictionAssignmentModal = wrapper.find('EditAssignmentsModal').first();
+    // make sure its the areas one
+    expect(jurisdictionAssignmentModal.text().includes(EDIT_AREAS)).toBeTruthy();
+    const selectedJurisdiction = jursToOptions([jurisdictions[1], jurisdictions[0]]);
+    (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
+
+    // what fetch calls were made:
+    // calls should be just about adding assignments.
+    const body = JSON.stringify({
+      ...mission,
+      jurisdiction: [{ code: jurisdictions[1].id }, { code: jurisdictions[0].id }],
+    });
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body,
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
+        },
+      ],
+      // 2 assignments made
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/assignLocationsAndPlans',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: expectedAssignment1,
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'POST',
+        },
+      ],
+    ]);
+  });
+});
