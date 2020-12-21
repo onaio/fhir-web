@@ -4,12 +4,12 @@ import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { eusmPlans } from '../../../ducks/tests/fixtures';
+import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { PLANS_LIST_VIEW_URL } from '../../../constants';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
-import { removePlanDefinitions } from '../../../ducks';
+import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { columns, pageTitleBuilder } from '../utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -287,4 +287,5 @@ describe('List view Page', () => {
   expect(pageTitleBuilder('draft')).toEqual('Draft Missions');
   expect(pageTitleBuilder('complete')).toEqual('Complete Missions');
   expect(pageTitleBuilder('retired')).toEqual('Retired Missions');
+  expect(pageTitleBuilder()).toEqual('No Status Found');
 });

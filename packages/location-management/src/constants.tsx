@@ -1,3 +1,4 @@
+export const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 //
 // Strings
 //
@@ -18,7 +19,9 @@ export const LOGOUT = 'logout';
 export const LOCATION_UNIT_ALL = 'location/sync';
 export const LOCATION_UNIT_GET = 'location';
 export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
+export const LOCATION_UNIT_EXTRAFIELDS = 'v2/settings/?serverVersion=0';
 export const LOCATION_UNIT_FINDBYPROPERTIES = 'location/findByProperties';
+export const LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER = 'location_settings';
 // Url
 export const URL_LOCATION_UNIT = '/location/unit';
 export const URL_LOCATION_UNIT_ADD = URL_LOCATION_UNIT + '/add';

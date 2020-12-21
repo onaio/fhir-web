@@ -5,10 +5,10 @@ import { AnyAction, Store } from 'redux';
 import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
 import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
-import { descendingOrderSort, isPlanDefinitionOfType } from '../helpers/utils';
+import { descendingOrderSort, isPlanDefinitionOfType } from '../../helpers/utils';
 
 /** the reducer name */
-export const reducerName = 'PlanDefinition';
+export const plansReducerName = 'PlanDefinition';
 
 // actions
 
@@ -52,8 +52,8 @@ export type PlanDefinitionActionTypes =
 
 /**Fetch Plan Definitions action creator
  *
- * @param {PlanDefinition[]} planList - list of plan definition objects
- * @returns {FetchPlanDefinitionsAction} - returns fetch planDefinition action
+ * @param  planList - list of plan definition objects
+ * @returns - returns fetch planDefinition action
  */
 export const fetchPlanDefinitions = (
   planList: PlanDefinition[] = []
@@ -64,7 +64,7 @@ export const fetchPlanDefinitions = (
 
 /** Reset plan definitions state action creator
  *
- * @returns {object} -returns the reset plan definitions
+ * @returns -returns the reset plan definitions
  */
 export const removePlanDefinitions = () => ({
   planDefinitionsById: {},
@@ -73,8 +73,8 @@ export const removePlanDefinitions = () => ({
 
 /**Add one Plan Definition action creator
  *
- * @param {PlanDefinition} planObj - the plan definition object
- * @returns {AddPlanDefinitionAction} returns add planDefinition action
+ * @param planObj - the plan definition object
+ * @returns returns add planDefinition action
  */
 export const addPlanDefinition = (planObj: PlanDefinition): AddPlanDefinitionAction => ({
   planObj,
@@ -100,11 +100,11 @@ const initialState: ImmutablePlanDefinitionState = SeamlessImmutable({
 /**
  * the plans reducer function
  *
- * @param {object} state - plans states
- * @param {object} action - plans actions
- * @returns {object} - the updated states
+ * @param state - plans states
+ * @param action - plans actions
+ * @returns - the updated states
  */
-export default function reducer(
+export function plansReducer(
   state = initialState,
   action: PlanDefinitionActionTypes
 ): ImmutablePlanDefinitionState {
@@ -136,9 +136,9 @@ export default function reducer(
 
 /** get PlanDefinitions by id
  *
- * @param {object} state - the redux store
- * @param {InterventionType | null} interventionType - the PlanDefinition intervention Type
- * @returns {object}  PlanDefinitions by id
+ * @param state - the redux store
+ * @param interventionType - the PlanDefinition intervention Type
+ * @returns  PlanDefinitions by id
  */
 export function getPlanDefinitionsById(
   state: Partial<Store>,
@@ -147,32 +147,32 @@ export function getPlanDefinitionsById(
   if (interventionType) {
     return keyBy(getPlanDefinitionsArray(state, interventionType), 'identifier');
   }
-  return (state as Dictionary)[reducerName].planDefinitionsById;
+  return (state as Dictionary)[plansReducerName].planDefinitionsById;
 }
 
-/** get one PlanDefinition using its
+/** get one PlanDefinition using its id
  *
- * @param {object} state - the redux store
- * @param {string} id - the PlanDefinition id
- * @returns {PlanDefinition|null} a PlanDefinition object or null
+ * @param state - the redux store
+ * @param id - the PlanDefinition id
+ * @returns a PlanDefinition object or null
  */
 export function getPlanDefinitionById(state: Partial<Store>, id: string): PlanDefinition | null {
-  return get((state as Dictionary)[reducerName].planDefinitionsById, id, null);
+  return get((state as Dictionary)[plansReducerName].planDefinitionsById, id, null);
 }
 
 /** get an array of PlanDefinition objects
  *
- * @param {object} state - the redux store
- * @param {InterventionType | null} interventionType - the PlanDefinition intervention Type
- * @param {string} sortField - field to sort by
- * @returns {PlanDefinition[]} an array of PlanDefinition objects
+ * @param state - the redux store
+ * @param interventionType - the PlanDefinition intervention Type
+ * @param sortField - field to sort by
+ * @returns an array of PlanDefinition objects
  */
 export function getPlanDefinitionsArray(
   state: Partial<Store>,
   interventionType: InterventionType | null = null,
   sortField?: string
 ): PlanDefinition[] {
-  const result = values((state as Dictionary)[reducerName].planDefinitionsById);
+  const result = values((state as Dictionary)[plansReducerName].planDefinitionsById);
   if (interventionType) {
     return result.filter((e: PlanDefinition) => isPlanDefinitionOfType(e, interventionType));
   }
@@ -197,60 +197,60 @@ export interface PlanDefinitionGetters extends PlanDefinitionFilters {
 
 /** planDefinitionsByIdBaseSelector selects store slice object with of all plans
  *
- * @param {string} planKey get plans by id
- * @returns {Dictionary<PlanDefinition>} plan definition by base selector
+ * @param planKey get plans by id
+ * @returns - plan definition by base selector
  */
 export const planDefinitionsByIdBaseSelector = (planKey?: string) => (
   state: Partial<Store>
 ): Dictionary<PlanDefinition> =>
-  (state as Dictionary)[reducerName][planKey ? planKey : 'planDefinitionsById'];
+  (state as Dictionary)[plansReducerName][planKey ? planKey : 'planDefinitionsById'];
 
 /** planDefinitionsArrayBaseSelector select an array of all plans
  *
- * @param {string} planKey get plans by id
- * @returns {PlanDefinition[]} - plan definitions in an array
+ * @param planKey get plans by id
+ * @returns - plan definitions in an array
  */
 export const planDefinitionsArrayBaseSelector = (planKey?: string) => (
   state: Partial<Store>
 ): PlanDefinition[] =>
-  values((state as Dictionary)[reducerName][planKey ? planKey : 'planDefinitionsById']);
+  values((state as Dictionary)[plansReducerName][planKey ? planKey : 'planDefinitionsById']);
 
 /** Gets title from PlanFilters
  *
- * @param {object} _ - the redux store
- * @param {object} props - the plan filters object
- * @returns {string} return title
+ * @param _ - the redux store
+ * @param props - the plan filters object
+ * @returns return title
  */
 export const getTitle = (_: Partial<Store>, props: PlanDefinitionFilters) => props.title;
 
 /** Gets status from PlanFilters
  *
- * @param {object} _ - the redux store
- * @param {object} props - the plan filters object
- * @returns {string} return status
+ * @param _ - the redux store
+ * @param props - the plan filters object
+ * @returns return status
  */
 export const getStatus = (_: Partial<Store>, props: PlanDefinitionFilters) => props.status;
 
 /** sortField Getter
  *
- * @param {object} _ - the redux store
- * @param {object} props - the plan object
- * @returns {string} return sort field
+ * @param _ - the redux store
+ * @param props - the plan object
+ * @returns return sort field
  */
 export const getSortField = (_: Partial<Store>, props: PlanDefinitionGetters) => props.sortField;
 
 /** Gets planIds from PlanFilters
  *
- * @param {object} _ - the redux store
- * @param {object} props - the plan filters object
- * @returns {string} return title
+ * @param _ - the redux store
+ * @param props - the plan filters object
+ * @returns return title
  */
 export const getPlanIds = (_: Partial<Store>, props: PlanDefinitionFilters) => props.planIds;
 
 /** Gets an array of Plan objects filtered by plan title
  *
- * @param {string} planKey - plan identifier
- * @returns {Function} returns createSelector method
+ * @param planKey - plan identifier
+ * @returns returns createSelector method
  */
 export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
   createSelector([planDefinitionsArrayBaseSelector(planKey), getTitle], (plans, title) =>
@@ -258,25 +258,25 @@ export const getPlanDefinitionsArrayByTitle = (planKey?: string) =>
   );
 /** Filter plans by status
  *
- * @param {PlanDefinition[]} plans - plan definitions array
- * @param {string} status - plan status
- * @returns {PlanDefinition[]} - plan definitions array
+ * @param plans - plan definitions array
+ * @param status - plan status
+ * @returns  - plan definitions array
  */
 export const filterPlansByStatus = (plans: PlanDefinition[], status?: string | undefined) =>
   status ? plans.filter((plan) => plan.status === status) : plans;
 
 /** Gets an array of Plan objects filtered by plan title
  *
- * @param {string} planKey - plan identifier
- * @returns {Function} returns createSelector method
+ * @param planKey - plan identifier
+ * @returns returns createSelector method
  */
 export const getPlanDefinitionsArrayByStatus = (planKey?: string) =>
   createSelector([planDefinitionsArrayBaseSelector(planKey), getStatus], filterPlansByStatus);
 
 /** get plans for the given planIds
  *
- * @param {string} planKey - plan identifier
- * @returns {Function} returns createSelector method
+ * @param planKey - plan identifier
+ * @returns returns createSelector method
  */
 export const getPlanDefinitionsArrayByPlanIds = (planKey?: string) => {
   return createSelector(
@@ -292,9 +292,9 @@ export const getPlanDefinitionsArrayByPlanIds = (planKey?: string) => {
 
 /**filters plan definitions based on intervention type
  *
- * @param {PlanDefinition} plans - plans to filter
- * @param {string[]} filters - list of intervention types to filter against
- * @returns {PlanDefinition[]} - returns plans filetred by interventiontype
+ * @param plans - plans to filter
+ * @param  filters - list of intervention types to filter against
+ * @returns - returns plans filetred by interventiontype
  */
 export const FilterPlanDefinitionsByInterventionType = (
   plans: PlanDefinition[],
@@ -315,8 +315,8 @@ export const FilterPlanDefinitionsByInterventionType = (
 
 /** Gets an array of Plan objects filtered by intervention type
  *
- * @param {string} planKey - plan identifier
- * @returns {Function} returns createSelector method
+ * @param planKey - plan identifier
+ * @returns returns createSelector method
  */
 export const getPlanDefinitionsArrayByInterventionType = (planKey?: string) => {
   return createSelector(planDefinitionsArrayBaseSelector(planKey), (plans) =>
@@ -337,9 +337,9 @@ export const getPlanDefinitionsArrayByInterventionType = (planKey?: string) => {
  * To use this selector, do something like:
  *    const PlanDefinitionsArraySelector = makeIRSPlansArraySelector();
  *
- * @param {string} planKey - plan identifier
- * @param {string} sortField - sort by field
- * @returns {Function} returns createSelector method
+ * @param planKey - plan identifier
+ * @param sortField - sort by field
+ * @returns returns createSelector method
  */
 export const makePlanDefinitionsArraySelector = (
   planKey?: keyof PlanDefinitionState,

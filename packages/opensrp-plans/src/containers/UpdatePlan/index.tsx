@@ -4,11 +4,12 @@ import { RouteParams } from '../../helpers/types';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Layout, PageHeader } from 'antd';
-import planReducer, {
+import {
+  plansReducer,
   fetchPlanDefinitions,
   makePlanDefinitionsArraySelector,
-  reducerName as planReducerName,
-} from '../../ducks';
+  plansReducerName as planReducerName,
+} from '../../ducks/planDefinitions';
 import { loadSinglePlan, OpenSRPService } from '../../helpers/dataLoaders';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
@@ -35,7 +36,7 @@ import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp/pla
 import { EDIT_PLAN } from '../../lang';
 
 /** register catalogue reducer */
-reducerRegistry.register(planReducerName, planReducer);
+reducerRegistry.register(planReducerName, plansReducer);
 
 /** props for EditPlan view */
 export interface EditViewProps extends CommonProps, PropsForPlanForm {
