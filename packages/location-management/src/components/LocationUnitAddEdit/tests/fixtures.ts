@@ -1,8 +1,16 @@
 import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../../ducks/types';
 import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
-import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
+import {
+  ExtraField,
+  LocationUnit,
+  LocationUnitPayloadPUT,
+  LocationUnitStatus,
+  LocationUnitSyncStatus,
+} from '../../../ducks/location-units';
 import { generateJurisdictionTree } from '../../LocationTree/utils';
 import { FormField } from '../Form';
+
+export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
 export const locationUnitgroups: LocationUnitGroup[] = [
   { id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' },
@@ -19,6 +27,30 @@ export const formValue: FormField = {
   status: LocationUnitStatus.ACTIVE,
   locationTags: [2],
   type: 'Feature',
+};
+
+export const locationUnitPayloadPUT: LocationUnitPayloadPUT = {
+  properties: {
+    geographicLevel: 0,
+    username: 'asd',
+    externalId: null,
+    parentId: '',
+    name: 'asdsa',
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    name_en: undefined,
+    status: LocationUnitStatus.ACTIVE,
+    testa: null,
+    testb: undefined,
+    testc: [],
+  },
+  id: id,
+  syncStatus: LocationUnitSyncStatus.SYNCED,
+  type: 'test',
+  locationTags: [
+    { id: 123, name: 'asd' },
+    { id: 654, name: 'xzc' },
+  ],
+  geometry: undefined,
 };
 
 export const baseLocationUnits: LocationUnit[] = [
@@ -72,7 +104,64 @@ export const baseLocationUnits: LocationUnit[] = [
   },
 ];
 
-export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
+export const locationSettings: ExtraField[] = [
+  {
+    key: 'sample_key',
+    label: 'Sample Key',
+    description: '',
+    uuid: '4f1502f7-1a7f-499d-89bc-55e9a9cb3fd5',
+    settingsId: '1',
+    settingIdentifier: 'location_settings',
+    settingMetadataId: '1',
+    v1Settings: false,
+    resolveSettings: false,
+    documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+    serverVersion: 51,
+    type: 'text',
+  },
+  {
+    key: 'area_nick_name',
+    label: 'Area Nick name',
+    description: '',
+    uuid: '9905fcdd-f2b7-46db-b999-ea7a60d692d8',
+    settingsId: '1',
+    settingIdentifier: 'location_settings',
+    settingMetadataId: '2',
+    v1Settings: false,
+    resolveSettings: false,
+    documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+    serverVersion: 53,
+    type: 'text',
+  },
+  {
+    key: 'sample_key_two',
+    label: 'Sample Key Two',
+    description: '',
+    uuid: '27cdf577-91ce-43e6-ab04-4fd519c96085',
+    settingsId: '1',
+    settingIdentifier: 'location_settings',
+    settingMetadataId: '3',
+    v1Settings: false,
+    resolveSettings: false,
+    documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+    serverVersion: 55,
+    type: 'text',
+  },
+  {
+    key: 'area_code',
+    label: 'Area code',
+    description: '',
+    uuid: '17e91e4c-3eb2-4496-a035-3fd6823295bf',
+    settingsId: '1',
+    settingIdentifier: 'location_settings',
+    settingMetadataId: '4',
+    v1Settings: false,
+    resolveSettings: false,
+    documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+    serverVersion: 57,
+    type: 'text',
+  },
+];
 
 export const parsedHierarchy: ParsedHierarchyNode[] = [
   {

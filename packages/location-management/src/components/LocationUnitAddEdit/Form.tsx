@@ -8,6 +8,7 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import {
+  ExtraField,
   LocationUnitPayloadPOST,
   LocationUnitPayloadPUT,
   LocationUnitStatus,
@@ -21,9 +22,9 @@ import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { API_BASE_URL } from '../../configs/env';
+import { Dictionary } from '@onaio/utils';
 
-export interface FormField {
+export interface FormField extends Dictionary<string | number | number[] | undefined> {
   name: string;
   status: LocationUnitStatus;
   type: string;
@@ -43,8 +44,10 @@ const defaultFormField: FormField = {
 export interface Props {
   id?: string;
   initialValue?: FormField;
+  extraFields?: ExtraField[];
   locationUnitGroup: LocationUnitGroup[];
   treedata: ParsedHierarchyNode[];
+  opensrpBaseURL: string;
 }
 
 /** yup validations for practitioner data object from form */
@@ -69,7 +72,7 @@ const status = [
  * @param {any} obj object to remove empty keys from
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function removeEmptykeys(obj: any) {
+export function removeEmptykeys(obj: any) {
   Object.entries(obj).forEach(([key, value]) => {
     if (typeof value === 'undefined') delete obj[key];
     else if (value === '' || value === null) delete obj[key];
@@ -89,17 +92,21 @@ function removeEmptykeys(obj: any) {
  * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
+ * @param {string} opensrpBaseURL - base url
  * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
  * @param {string} username username of logged in user
  * @param {number} id location unit
+ * @param {ExtraField} extraFields extraFields to be input with location unit
  */
 export const onSubmit = async (
   setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   accessToken: string,
+  opensrpBaseURL: string,
   locationUnitgroup: LocationUnitGroup[],
   username: string,
-  id?: string
+  id?: string,
+  extraFields?: ExtraField[]
 ) => {
   const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
     (values.locationTags as number[]).includes(e.id)
@@ -112,7 +119,7 @@ export const onSubmit = async (
 
   let geographicLevel: number | undefined | void;
   if (values.parentId) {
-    geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
+    geographicLevel = await new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY)
       .read(values.parentId)
       .then((res: RawOpenSRPHierarchy) => {
         return res.locationsHierarchy.map[values.parentId as string].node.attributes
@@ -143,9 +150,14 @@ export const onSubmit = async (
     geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
   };
 
+  extraFields?.forEach(({ key }) => {
+    // assumes the data to be string or number as for now we only use input type number and text
+    payload.properties[key] = values[key] as string | number;
+  });
+
   removeEmptykeys(payload);
 
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_POST_PUT);
   if (id) {
     await serve
       .update({ ...payload })
@@ -213,9 +225,11 @@ export const Form: React.FC<Props> = (props: Props) => {
           setSubmitting,
           values,
           accessToken,
+          props.opensrpBaseURL,
           props.locationUnitGroup,
           user.username,
-          props.id
+          props.id,
+          props.extraFields
         )
       }
     >
@@ -275,6 +289,22 @@ export const Form: React.FC<Props> = (props: Props) => {
               ))}
             </Select>
           </AntForm.Item>
+
+          {props.extraFields?.map((field) => (
+            <AntForm.Item
+              key={field.key}
+              name={field.key}
+              label={field.label}
+              wrapperCol={field.label ? { span: 11 } : { offset: 8, span: 11 }}
+            >
+              <Input
+                name={field.key}
+                type={field.type}
+                defaultValue={field.value}
+                placeholder={field.description}
+              />
+            </AntForm.Item>
+          ))}
 
           <AntForm.Item name="buttons" {...offsetLayout}>
             <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
