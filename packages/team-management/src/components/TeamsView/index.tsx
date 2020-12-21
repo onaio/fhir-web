@@ -133,7 +133,7 @@ const TeamsView: React.FC<Props> = (props: Props) => {
       </Helmet>
       <h5 className="mb-3">Teams</h5>
       <Row>
-        <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
+        <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
             <h5>
               <Input
