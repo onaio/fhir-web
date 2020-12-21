@@ -214,7 +214,7 @@ const App: React.FC = () => {
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={false}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_TEAMS}
               component={TeamsView}
