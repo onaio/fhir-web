@@ -78,7 +78,9 @@ export function onSubmit(
       // Filter and seperate the practitioners uuid
       // const toBe = initialValue.practitioners.filter((val) => values.practitioners.includes(val));
       const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
-      const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
+      const toRem = initialValue.practitioners
+        .filter((val) => !values.practitioners.includes(val))
+        .filter((e) => e !== '');
 
       await SetPractitioners(practitioner, toAdd, toRem, accessToken, Teamid);
       history.goBack();
