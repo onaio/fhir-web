@@ -22,7 +22,14 @@ export const team: Organization = {
   },
 };
 
-export const practitioner: Practitioner[] = [
+export const practitioners: Practitioner[] = [
+  {
+    identifier: '24fe334a-4bbf-4698-99b8-1fa1a5a46d35',
+    active: true,
+    name: 'prac two',
+    userId: 'e09deae4-50fe-40d4-8b5a-6f59683dbdba',
+    username: 'prac2',
+  },
   {
     identifier: '718e2b7d-22d7-4c23-aaa7-62cca4b9e318',
     active: false,
@@ -31,11 +38,40 @@ export const practitioner: Practitioner[] = [
     username: 'prac_1',
   },
   {
-    identifier: '24fe334a-4bbf-4698-99b8-1fa1a5a46d35',
+    identifier: '63f82d06-5b93-4668-b25c-77ce23a6da1c',
+    active: false,
+    name: 'prac one',
+    userId:
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/ae3b12b6-a111-4c0f-b3ac-aa005dcc1459',
+    username: 'prac_one',
+  },
+  {
+    identifier: 'a7bf0992-c6e1-4946-b70a-61474f249adb',
+    active: false,
+    name: 'Practitioner Two',
+    userId: '',
+    username: 'prac_two',
+  },
+  {
+    identifier: '7a399660-e069-41f7-863c-9b52b3abd2d8',
+    active: false,
+    name: 'Practitioner One',
+    userId: '',
+    username: 'practitioner_one',
+  },
+  {
+    identifier: '030eecb4-d1d2-491b-9655-fbb869a610ff',
     active: true,
-    name: 'prac two',
-    userId: 'e09deae4-50fe-40d4-8b5a-6f59683dbdba',
-    username: 'prac2',
+    name: 'Benjamin Mulyungi',
+    userId: '97f36061-52fb-4474-88f2-fd286311ff1d',
+    username: 'mwalimu',
+  },
+  {
+    identifier: '398d28f1-85d1-4ce1-b5f1-19676e544e8f',
+    active: true,
+    name: 'test admin',
+    userId: 'bb5aa312-1e7f-4ef8-81bb-34636aa1877c',
+    username: 'admin-2',
   },
 ];
 
@@ -645,58 +681,5 @@ export const teams: Organization[] = [
         },
       ],
     },
-  },
-];
-
-export const practitioners: Practitioner[] = [
-  {
-    identifier: '24fe334a-4bbf-4698-99b8-1fa1a5a46d35',
-    active: true,
-    name: 'prac two',
-    userId: 'e09deae4-50fe-40d4-8b5a-6f59683dbdba',
-    username: 'prac2',
-  },
-  {
-    identifier: '718e2b7d-22d7-4c23-aaa7-62cca4b9e318',
-    active: false,
-    name: 'prac one',
-    userId: '7306784c-64fb-4d45-990b-306863eb478b',
-    username: 'prac_1',
-  },
-  {
-    identifier: '63f82d06-5b93-4668-b25c-77ce23a6da1c',
-    active: false,
-    name: 'prac one',
-    userId:
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/ae3b12b6-a111-4c0f-b3ac-aa005dcc1459',
-    username: 'prac_one',
-  },
-  {
-    identifier: 'a7bf0992-c6e1-4946-b70a-61474f249adb',
-    active: false,
-    name: 'Practitioner Two',
-    userId: '',
-    username: 'prac_two',
-  },
-  {
-    identifier: '7a399660-e069-41f7-863c-9b52b3abd2d8',
-    active: false,
-    name: 'Practitioner One',
-    userId: '',
-    username: 'practitioner_one',
-  },
-  {
-    identifier: '030eecb4-d1d2-491b-9655-fbb869a610ff',
-    active: true,
-    name: 'Benjamin Mulyungi',
-    userId: '97f36061-52fb-4474-88f2-fd286311ff1d',
-    username: 'mwalimu',
-  },
-  {
-    identifier: '398d28f1-85d1-4ce1-b5f1-19676e544e8f',
-    active: true,
-    name: 'test admin',
-    userId: 'bb5aa312-1e7f-4ef8-81bb-34636aa1877c',
-    username: 'admin-2',
   },
 ];

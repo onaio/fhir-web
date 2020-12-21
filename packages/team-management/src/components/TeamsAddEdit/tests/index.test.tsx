@@ -6,7 +6,7 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { accessToken, id, intialValue, practitioner, team } from './fixtures';
+import { accessToken, id, intialValue, practitioners, team } from './fixtures';
 import fetch from 'jest-fetch-mock';
 
 import TeamsAddEdit, { getPractitonerDetail, getTeamDetail } from '..';
@@ -17,7 +17,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('renders without crashing', async () => {
-    fetch.mockResponse(JSON.stringify(practitioner));
+    fetch.mockResponse(JSON.stringify(practitioners));
 
     mount(
       <Provider store={store}>
@@ -48,7 +48,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
   it('renders with id without crashing', async () => {
     fetch.mockResponse(JSON.stringify(team));
-    fetch.mockResponse(JSON.stringify(practitioner));
+    fetch.mockResponse(JSON.stringify(practitioners));
 
     mount(
       <Provider store={store}>
@@ -89,14 +89,14 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('test getPractitonerDetail', async () => {
-    fetch.mockResponse(JSON.stringify(practitioner));
+    fetch.mockResponse(JSON.stringify(practitioners));
     const response = await getPractitonerDetail(accessToken, id);
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(response).toMatchObject(practitioner);
+    expect(response).toMatchObject(practitioners);
   });
 
   it('test getTeamDetail', async () => {
@@ -104,7 +104,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       JSON.stringify({
         name: intialValue.name,
         active: intialValue.active,
-        practitioner: practitioner,
+        practitioner: practitioners,
       })
     );
     const response = await getTeamDetail(accessToken, id);
