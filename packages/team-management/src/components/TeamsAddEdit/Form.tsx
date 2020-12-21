@@ -56,7 +56,7 @@ export function onSubmit(
   setIsSubmitting?: (value: boolean) => void
 ) {
   if (setIsSubmitting) setIsSubmitting(true);
-  const Teamid = id ? id : v4();
+  const Teamid = id ?? v4();
 
   const payload: OrganizationPOST = {
     active: values.active,
@@ -154,10 +154,7 @@ export async function setTeam(accessToken: string, payload: OrganizationPOST, id
 
 export const Form: React.FC<Props> = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const initialValue = props.initialValue
-    ? props.initialValue
-    : { active: true, name: '', practitioners: [''] };
+  const initialValue = props.initialValue ?? { active: true, name: '', practitioners: [''] };
 
   return (
     <AntdForm
