@@ -1,6 +1,16 @@
 import { eusmPlans } from '../../ducks/planDefinitions/tests/fixtures';
-import { loadPlans } from '../dataLoaders';
+import {
+  loadAssignments,
+  loadOrganizations,
+  loadPlans,
+  putJurisdictionsToPlan,
+  OpenSRPService,
+  updateAssignments,
+  loadJurisdictions,
+} from '../dataLoaders';
 import * as plansDux from '../../ducks/planDefinitions';
+import { COULD_NOT_LOAD_ASSIGNMENTS } from '../../lang';
+import { Dictionary } from '@onaio/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -82,6 +92,118 @@ describe('dataLoading', () => {
         },
         method: 'GET',
       },
+    ]);
+  });
+
+  it('load assignment handles errors', () => {
+    const errMessage = 'An error has happened';
+    fetch.mockReject(new Error(errMessage));
+
+    loadAssignments(mockBaseURL, 'planId').catch((e) => {
+      expect(e.message).toEqual(errMessage);
+    });
+    fetch.resetMocks();
+    fetch.mockResponse(JSON.stringify(null));
+    loadAssignments(mockBaseURL, 'planId').catch((e) => {
+      expect(e.message).toEqual(COULD_NOT_LOAD_ASSIGNMENTS);
+    });
+  });
+
+  it('load organizations handles errors', () => {
+    const errMessage = 'An error has happened';
+    fetch.mockReject(new Error(errMessage));
+
+    loadOrganizations(mockBaseURL).catch((e) => {
+      expect(e.message).toEqual(errMessage);
+    });
+  });
+
+  it('put jurisdiction to plan works correctly', async () => {
+    fetch.mockResponse(JSON.stringify({}));
+    // with jurisdictions
+    const mockPlan = { jurisdiction: [{ code: 'code1' }] };
+    const mockPlanCreator = jest.fn();
+    putJurisdictionsToPlan(
+      mockBaseURL,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mockPlan as any,
+      ['code2'],
+      true,
+      OpenSRPService,
+      mockPlanCreator
+    ).catch(() => {
+      return;
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+    let expectedMockedPlan = {
+      ...mockPlan,
+      jurisdiction: [{ code: 'code1' }, { code: 'code2' }],
+    };
+    expect(mockPlanCreator).toHaveBeenCalledWith([expectedMockedPlan]);
+
+    jest.resetAllMocks();
+    putJurisdictionsToPlan(
+      mockBaseURL,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mockPlan as any,
+      ['code2'],
+      false,
+      OpenSRPService,
+      mockPlanCreator
+    ).catch(() => {
+      return;
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+    expectedMockedPlan = {
+      ...mockPlan,
+      jurisdiction: [{ code: 'code2' }],
+    };
+    expect(mockPlanCreator).toHaveBeenCalledWith([expectedMockedPlan]);
+
+    jest.resetAllMocks();
+    fetch.resetMocks();
+    const errMessage = 'An error has happened';
+    fetch.mockReject(new Error(errMessage));
+
+    putJurisdictionsToPlan(
+      mockBaseURL,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mockPlan as any,
+      ['code2']
+    ).catch((e) => {
+      expect(e.message).toEqual(errMessage);
+    });
+  });
+
+  it('Update assignment still works when error', () => {
+    const errMessage = 'An error has happened';
+    fetch.mockReject(new Error(errMessage));
+
+    updateAssignments(mockBaseURL, []).catch((e) => {
+      expect(e.message).toEqual(errMessage);
+    });
+  });
+
+  it('Load jurisdictions still works when error', () => {
+    const errMessage = 'An error has happened';
+    fetch.mockReject(new Error(errMessage));
+
+    loadJurisdictions(mockBaseURL, 2).catch((e) => {
+      expect(e.message).toEqual(errMessage);
+    });
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://example.com/restlocation/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:2',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
   });
 });
