@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/components/PlanInfo renders and passes props correctly): activate link 1`] = `
+Object {
+  "children": "Edit",
+  "to": "/plans/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
+}
+`;
+
+exports[`/components/PlanInfo renders and passes props correctly): avatar props 1`] = `
+Object {
+  "className": "plan-info-avatar",
+  "icon": <ForwardRef(FileDoneOutlined) />,
+  "shape": "circle",
+  "size": Object {
+    "lg": 64,
+    "md": 40,
+    "sm": 32,
+    "xl": 80,
+    "xs": 24,
+    "xxl": 100,
+  },
+  "style": Object {
+    "color": "#1CABE2",
+    "height": 82,
+    "lineHeight": 1.8,
+    "width": 80,
+  },
+}
+`;
+
+exports[`/components/PlanInfo renders and passes props correctly): edit link 1`] = `
+Object {
+  "children": "Edit",
+  "to": "/plans/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
+}
+`;
