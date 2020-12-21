@@ -78,7 +78,7 @@ export const practitioners: Practitioner[] = [
 export const intialValue: FormField = {
   name: team.name,
   active: team.active,
-  practitioners: practitioner.map((prac) => prac.identifier),
+  practitioners: practitioners.map((prac) => prac.identifier),
 };
 
 export const teamPost: OrganizationPOST = {

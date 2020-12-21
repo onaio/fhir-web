@@ -8,6 +8,7 @@ import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
 import { accessToken, id, intialValue, practitioners, team } from './fixtures';
 import fetch from 'jest-fetch-mock';
+import { notification } from 'antd';
 
 import TeamsAddEdit, { getPractitonerDetail, getTeamDetail } from '..';
 
@@ -85,6 +86,29 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
+    });
+  });
+
+  it('Fail setupInitialValue', async () => {
+    const mockNotificationError = jest.spyOn(notification, 'error');
+
+    fetch.mockReject();
+
+    mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
+          <Route path={'/:id'} component={TeamsAddEdit} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: undefined,
+      message: 'An error occurred',
     });
   });
 
