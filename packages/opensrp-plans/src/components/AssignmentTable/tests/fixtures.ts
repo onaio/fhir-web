@@ -88,6 +88,14 @@ export const sampleRawAssignments = [
   },
 ];
 
+export const sampleRawAssignment1 = {
+  organizationId: '1',
+  jurisdictionId: '1b14ff5b-1f24-4b50-a59a-33cef0ed7bfb',
+  planId: 'ae12d8c4-d2a8-53f9-b201-6cccdd42482b',
+  fromDate: 1608069600000,
+  toDate: 1609711200000,
+};
+
 export const organizations = [
   {
     id: 15,

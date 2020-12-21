@@ -25,6 +25,10 @@ import toJson from 'enzyme-to-json';
 import { EDIT_AREAS, EDIT_TEAMS } from '../../../lang';
 import { Dictionary } from '@onaio/utils';
 import MockDate from 'mockdate';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 reducerRegistry.register(plansReducerName, plansReducer);
 
@@ -62,7 +66,9 @@ describe('opensrp-plans/assignmentTable', () => {
   it('renders without crashing', () => {
     shallow(
       <Provider store={store}>
-        <ConnectedAssignmentTable plan={plan} />
+        <Router history={history}>
+          <ConnectedAssignmentTable plan={plan} />
+        </Router>
       </Provider>
     );
   });
@@ -71,7 +77,9 @@ describe('opensrp-plans/assignmentTable', () => {
     fetch.mockResponses(JSON.stringify([]));
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAssignmentTable plan={plan} />
+        <Router history={history}>
+          <ConnectedAssignmentTable plan={plan} />
+        </Router>
       </Provider>
     );
     await act(async () => {
@@ -132,7 +140,9 @@ describe('opensrp-plans/assignmentTable', () => {
       .once(JSON.stringify(jurisdictions));
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAssignmentTable plan={plan} assignAtGeoLevel={3} />
+        <Router history={history}>
+          <ConnectedAssignmentTable plan={plan} assignAtGeoLevel={3} />
+        </Router>
       </Provider>
     );
     await act(async () => {
@@ -150,6 +160,29 @@ describe('opensrp-plans/assignmentTable', () => {
     );
   });
 
+  it('renders even with errors', async () => {
+    fetch
+      .once(JSON.stringify(null))
+      .once(JSON.stringify(organizations))
+      .once(JSON.stringify(jurisdictions));
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedAssignmentTable plan={plan} assignAtGeoLevel={3} />
+        </Router>
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // check the rendered output
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"ErrorCould not load AssignmentsGo BackBack Home"`
+    );
+  });
+
   it('test plan jurisdiction assignment', async () => {
     // remove plans
     const mission = { ...plan, jurisdiction: [] };
@@ -159,7 +192,9 @@ describe('opensrp-plans/assignmentTable', () => {
       .once(JSON.stringify(jurisdictions));
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+        <Router history={history}>
+          <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+        </Router>
       </Provider>
     );
     await act(async () => {
@@ -239,7 +274,9 @@ describe('opensrp-plans/assignmentTable', () => {
       .once(JSON.stringify(jurisdictions));
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+        <Router history={history}>
+          <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+        </Router>
       </Provider>
     );
     await act(async () => {
@@ -298,7 +335,9 @@ describe('opensrp-plans/assignmentTable', () => {
       .once(JSON.stringify(jurisdictions));
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+        <Router history={history}>
+          <ConnectedAssignmentTable plan={mission} assignAtGeoLevel={3} />
+        </Router>
       </Provider>
     );
     await act(async () => {
