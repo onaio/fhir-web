@@ -10,7 +10,6 @@ import {
 } from '../dataLoaders';
 import * as plansDux from '../../ducks/planDefinitions';
 import { COULD_NOT_LOAD_ASSIGNMENTS } from '../../lang';
-import { Dictionary } from '@onaio/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');

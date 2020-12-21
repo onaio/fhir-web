@@ -66,11 +66,11 @@ export interface MappedOptions {
 /**
  * util called on compressAssignments response, adds names to the ids
  *
- * @param {object} fullyGrouped - compressed assignments object
- * @param {Organization[]} organizations - a list of all organizations
- * @param {Jurisdiction[]} jurisdictions - all jurisdictions that can be assigned
- * @param assignments
- * @param planJurisdictions
+ * @param fullyGrouped - compressed assignments object
+ * @param organizations - a list of all organizations
+ * @param jurisdictions - all jurisdictions that can be assigned
+ * @param assignments - all the assignments
+ * @param planJurisdictions - jurisdictions assigned to plan
  * @returns {object} -
  */
 export const mergeIdsWithNames = (
