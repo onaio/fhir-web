@@ -6,7 +6,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { KeycloakUser } from '../../../ducks/user';
-import { URL_ADMIN, CANCEL } from '../../../constants';
+import { URL_ADMIN, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -63,7 +63,7 @@ export const defaultProps: Partial<UserFormProps> = {
   serviceClass: KeycloakService,
 };
 
-export const userSchema = Yup.object().shape({
+const userSchema = Yup.object().shape({
   lastName: Yup.string().required('Required'),
   firstName: Yup.string().required('Required'),
   email: Yup.string().required('Required'),
@@ -128,7 +128,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   return (
     <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
-      <h5 className="mb-3">{props.initialValues.email ? 'Edit User' : 'Add User'}</h5>
+      <h5 className="mb-3">{props.initialValues.email ? EDIT_USER : ADD_USER}</h5>
       <Col className="bg-white p-3" span={24}>
         <Formik
           initialValues={initialValues}

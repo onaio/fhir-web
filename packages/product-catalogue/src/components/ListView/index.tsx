@@ -23,7 +23,7 @@ import { Helmet } from 'react-helmet';
 import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { PRODUCT_CATALOGUE } from '../../lang';
+import { ADD_PRODUCT_TO_CATALOGUE, PRODUCT_CATALOGUE } from '../../lang';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
@@ -94,7 +94,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
           <div className="main-content__header">
             <Link to={CATALOGUE_CREATE_VIEW_URL}>
               <Button type="primary" size="large">
-                {` + ${PRODUCT_CATALOGUE}`}
+                {ADD_PRODUCT_TO_CATALOGUE}
               </Button>
             </Link>
           </div>

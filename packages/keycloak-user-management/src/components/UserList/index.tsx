@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Row, Col, Button, Space, Table, Divider, Input } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import Ripple from '../Loading';
+import { Spin } from 'antd';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -94,7 +94,7 @@ const UserList = (props: Props): JSX.Element => {
   });
 
   if (isLoading) {
-    return <Ripple />;
+    return <Spin size="large" />;
   }
 
   const tableData: TableData[] = keycloakUsers.map((user: KeycloakUser, index: number) => {
@@ -107,6 +107,7 @@ const UserList = (props: Props): JSX.Element => {
       lastName: user.lastName,
     };
   });
+
   return (
     <section className="layout-content">
       <h5 className="mb-3">User Management</h5>
