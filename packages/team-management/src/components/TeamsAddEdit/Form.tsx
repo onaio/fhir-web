@@ -112,7 +112,7 @@ async function SetPractitioners(
   // Api Call to delete practitioners
   toRemove.forEach((prac) => {
     const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_DEL + prac);
-    serve.delete();
+    serve.delete().catch(() => sendErrorNotification('An error occurred'));
   });
 
   // Api Call to add practitioners
