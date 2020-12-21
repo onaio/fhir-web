@@ -10,6 +10,9 @@ import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { notification } from 'antd';
+import { baseURL } from '../../../constants';
+
+LocationUnitGroupView.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitGroupView', () => {
   beforeEach(() => {
@@ -18,7 +21,7 @@ describe('location-management/src/components/LocationUnitGroupView', () => {
   it('renders without crashing', async () => {
     shallow(
       <Router history={history}>
-        <LocationUnitGroupView />
+        <LocationUnitGroupView opensrpBaseURL={baseURL} />
       </Router>
     );
   });
@@ -28,7 +31,7 @@ describe('location-management/src/components/LocationUnitGroupView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupView />
+          <LocationUnitGroupView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -53,7 +56,7 @@ describe('location-management/src/components/LocationUnitGroupView', () => {
     mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupView />
+          <LocationUnitGroupView opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );

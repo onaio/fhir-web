@@ -4,7 +4,7 @@
 import { store, makeAPIStateSelector } from '@opensrp/store';
 import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
 import { OPENSRP_API_BASE_URL, OPENSRP_PLANS } from '../constants';
-import { fetchPlanDefinitions } from '../ducks';
+import { fetchPlanDefinitions } from '../ducks/planDefinitions';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 
 const sessionSelector = makeAPIStateSelector();
