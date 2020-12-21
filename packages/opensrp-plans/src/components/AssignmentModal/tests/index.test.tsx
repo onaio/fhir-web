@@ -11,7 +11,6 @@ describe('planAssignment modal', () => {
     shallow(<EditAssignmentsModal />);
   });
 
-  // TODO - select values
   it('renders correctly', async () => {
     const saveHandlerMock = jest.fn(() => Promise.resolve());
     const cancelHandlerMock = jest.fn();
