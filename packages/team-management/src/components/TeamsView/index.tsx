@@ -70,7 +70,7 @@ export const defaultProps = {
  * @param {Object} props - TeamsView component props
  * @returns {Function} returns team display
  */
-const TeamsView: React.FC<Props> = (props: Props) => {
+export const TeamsView: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const teamsArray = useSelector((state) => getOrganizationsArray(state));
