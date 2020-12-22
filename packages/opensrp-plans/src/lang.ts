@@ -25,3 +25,6 @@ export const EDIT_AREAS = 'Edit areas';
 export const SELECT = 'Select';
 export const SELECT_TEAMS = 'Select teams';
 export const SELECT_AREAS = 'Select areas';
+export const ACTIVATE_MISSION = 'Activate mission';
+export const SUCCESSFULLY_ACTIVATED_MISSION = 'Successfully activated mission';
+export const FAILED_TO_ACTIVATE_MISSION = 'Activating mission failed';

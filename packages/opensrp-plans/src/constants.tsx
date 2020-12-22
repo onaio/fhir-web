@@ -44,7 +44,7 @@ export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/ope
 export const OPENSRP_PLANS = 'plans';
 
 // router routes
-export const PLANS_LIST_VIEW_URL = '/plans';
+export const PLANS_ASSIGNMENT_VIEW_URL = '/plans/assignments';
 export const PLANS_CREATE_VIEW_URL = '/plans/new';
 export const PLANS_EDIT_VIEW_URL = '/plans/edit';
 export const ACTIVE_PLANS_LIST_VIEW_URL = '/plans/active';

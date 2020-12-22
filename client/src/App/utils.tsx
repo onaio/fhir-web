@@ -95,3 +95,7 @@ export const completedPlansListStatusProp = {
 export const trashPlansListStatusProp = {
   allowedPlanStatus: PlanStatus.RETIRED,
 };
+
+export const missionAssignmentProps = {
+  showActivateMission: true,
+};
