@@ -176,7 +176,6 @@ const mapStateToProps = (
   const assignments = assignmentsByPlanId(state, { planId });
   const organizations = getOrganizationsArray(state);
   const jurisdictions = jurisdictionsSelector(state, { geoLevel: assignAtGeoLevel });
-  // const jurs = jurisdictions.filter((jur) => jur.locationTags[0].name === 'District'); // TODO: -
   return {
     assignments,
     organizations,
