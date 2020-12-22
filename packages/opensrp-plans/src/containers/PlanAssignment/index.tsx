@@ -17,8 +17,7 @@ import {
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import PlanInfo from '../../components/PlanInfo';
-import { ActivateMissionCard } from '../../components/ActivateMission';
-import { ConnectedAssignmentTable } from '../../components/AssignmentTable';
+import { MissionData } from '../../components/MissionData';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(plansReducerName, plansReducer);
@@ -101,15 +100,7 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
   };
 
   /** Page Header routes */
-  return (
-    <div>
-      <PlanInfo plan={plan} planId={planId} />
-      <div className="plan-activities_section">
-        {showAssignmentTable ? <ConnectedAssignmentTable {...assignmentTableProps} /> : null}
-        {showActivateMission ? <ActivateMissionCard {...activateMissionProps} /> : null}
-      </div>
-    </div>
-  );
+  return <div className="plan-detail-view">{<MissionData baseURL={baseURL} plan={plan} />}</div>;
 };
 
 PlanAssignment.defaultProps = defaultProps;
