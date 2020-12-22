@@ -17,6 +17,7 @@ export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (reco
         style={{ padding: '4px 0px' }}
         onClick={() => {
           record.setModalVisibility(true);
+          record.setExistingAssignments(record.existingAssignments);
           record.setAssignedLocAndTeams({
             jurisdictionId: record.id,
             assignedTeams: record.assignedTeamIds,
@@ -113,7 +114,7 @@ export const getPayload = (
         jurisdiction: selectedJurisdictionId,
         organization: orgId,
         plan: selectedPlanId,
-        toDate: '',
+        toDate: now.add(10, 'year').format(), // set a future date of 10 years
       });
     }
   }
@@ -137,6 +138,5 @@ export const getPayload = (
       });
     }
   }
-
   return payload;
 };

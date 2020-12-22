@@ -33,7 +33,7 @@ import reducer, {
   getAssignments,
   reducerName as assignmentReducerName,
 } from '../../ducks/assignments';
-import { AssignLocationsAndPlans, PlanDefinition } from '../../ducks/assignments/types';
+import { PlanDefinition } from '../../ducks/assignments/types';
 
 reducerRegistry.register(teamsReducerName, teamsReducer);
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -73,6 +73,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     null
   );
   const [planLocationId, setPlanLocationId] = useState<string>('');
+  const [existingAssignments, setExistingAssignments] = useState<Assignment[]>([]);
   const planLocationIdRef = useRef(planLocationId);
   planLocationIdRef.current = planLocationId;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
@@ -199,6 +200,8 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       id: datum.id,
       key: i.toString(),
       locationName: datum.label,
+      existingAssignments: jurisdictionAssignments,
+      setExistingAssignments,
       setAssignedLocAndTeams: setAssignedLocAndTeams,
       setModalVisibility: setVisible,
       assignedTeamIds: jurisdictionOrgs.map((org) => org.identifier),
@@ -242,16 +245,13 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             name="teamAssignment"
             onFinish={(values: { assignTeams: string[] }) => {
               const { assignTeams } = values;
-              let payload: AssignLocationsAndPlans[] = [];
-              if (assignTeams.length) {
-                payload = getPayload(
-                  assignTeams,
-                  defaultPlanId,
-                  assignedLocAndTeams?.jurisdictionId as string,
-                  assignedLocAndTeams?.assignedTeams,
-                  assignmentsList
-                );
-              }
+              const payload = getPayload(
+                assignTeams,
+                defaultPlanId,
+                assignedLocAndTeams?.jurisdictionId as string,
+                assignedLocAndTeams?.assignedTeams,
+                existingAssignments
+              );
               const serve = new OpenSRPService(
                 accessToken,
                 opensrpBaseURL,

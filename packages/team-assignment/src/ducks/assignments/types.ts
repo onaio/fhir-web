@@ -25,5 +25,5 @@ export interface AssignLocationsAndPlans {
   jurisdiction: string;
   organization: string;
   plan: string;
-  toDate: string;
+  toDate: string | null;
 }
