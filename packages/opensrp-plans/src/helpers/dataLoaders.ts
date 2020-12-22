@@ -113,7 +113,9 @@ export async function loadAssignments(
         throw new Error(COULD_NOT_LOAD_ASSIGNMENTS);
       }
     })
-    .catch((e) => e);
+    .catch((e) => {
+      throw e;
+    });
 }
 
 // TODO: - create issue that effects pagination on the api
@@ -140,7 +142,9 @@ export async function loadOrganizations(
         actionCreator(response);
       }
     })
-    .catch((e) => e);
+    .catch((e) => {
+      throw e;
+    });
 }
 
 /**
@@ -318,7 +322,7 @@ export async function putJurisdictionsToPlan(
       fetchPlanCreator([payload]);
     })
     .catch((err: Error) => {
-      return err;
+      throw err;
     });
 }
 
@@ -344,7 +348,9 @@ export const updateAssignments = (
     .then(() => {
       actionCreator(payload, overwrite);
     })
-    .catch((error: Error) => error);
+    .catch((error: Error) => {
+      throw error;
+    });
 };
 
 /** load jurisdictions at a specific level of the hierarchy
@@ -383,5 +389,7 @@ export const loadJurisdictions = (
     .then((response: Jurisdiction[]) => {
       actionCreator(response);
     })
-    .catch((error: Error) => error);
+    .catch((error: Error) => {
+      throw error;
+    });
 };

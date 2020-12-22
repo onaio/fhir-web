@@ -63,18 +63,26 @@ describe('opensrp-plans/assignmentTable', () => {
     store.dispatch(removePlanDefinitions());
   });
 
-  it('renders without crashing', () => {
-    shallow(
+  it('renders without crashing', async () => {
+    fetch.mockResponse(JSON.stringify([]));
+    const wrapper = shallow(
       <Provider store={store}>
         <Router history={history}>
           <ConnectedAssignmentTable plan={plan} />
         </Router>
       </Provider>
     );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    wrapper.unmount();
   });
 
   it('renders correctly', async () => {
-    fetch.mockResponses(JSON.stringify([]));
+    fetch.mockResponse(JSON.stringify([]));
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -131,6 +139,7 @@ describe('opensrp-plans/assignmentTable', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Assigned areasAssigned teamsActions9b5dd829-89de-45a5-98f2-fd37787ae949, 6bb05db0-730b-409b-991d-4abfe6a59ea1, 1b14ff5b-1f24-4b50-a59a-33cef0ed7bfb, 7d150b42-11e7-4362-8d0d-1a8ef506c754, 9fb0f2cf-7836-4557-a908-4b8cd628d193Edit areasEdit teams1"`
     );
+    wrapper.unmount();
   });
 
   it('renders correctly when there is data', async () => {
@@ -158,6 +167,7 @@ describe('opensrp-plans/assignmentTable', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Assigned areasAssigned teamsActionsIITANANGA, OKASHANDJAOna testOrgEdit areasEdit teamsIITANANGATest Test TeamEdit areasEdit teamsOKASHANDJANAIMA old test teamEdit areasEdit teamsIIYALA N.6, OKANKETE-2, OSHIPUMBU MAKILINDIDI NO 2-1Edit areasEdit teams1"`
     );
+    wrapper.unmount();
   });
 
   it('renders even with errors', async () => {
@@ -181,6 +191,7 @@ describe('opensrp-plans/assignmentTable', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"ErrorCould not load AssignmentsGo BackBack Home"`
     );
+    wrapper.unmount();
   });
 
   it('test plan jurisdiction assignment', async () => {
@@ -220,7 +231,7 @@ describe('opensrp-plans/assignmentTable', () => {
     );
 
     fetch.resetMocks();
-    fetch.mockResponses();
+    fetch.mockResponse(JSON.stringify([]));
 
     // simulate selecting jurisdictions
     const jurisdictionAssignmentModal = wrapper.find('EditAssignmentsModal').first();
@@ -263,6 +274,7 @@ describe('opensrp-plans/assignmentTable', () => {
         },
       ],
     ]);
+    wrapper.unmount();
   });
 
   it('test plan teams assignment', async () => {
@@ -297,7 +309,7 @@ describe('opensrp-plans/assignmentTable', () => {
     );
 
     fetch.resetMocks();
-    fetch.mockResponses();
+    fetch.mockResponse(JSON.stringify([]));
 
     // simulate selecting jurisdictions
     const teamAssignmentModal = wrapper.find('EditAssignmentsModal').last();
@@ -324,6 +336,7 @@ describe('opensrp-plans/assignmentTable', () => {
         },
       ],
     ]);
+    wrapper.unmount();
   });
 
   it('test plan jurisdiction when there is already an assignment', async () => {
@@ -358,7 +371,7 @@ describe('opensrp-plans/assignmentTable', () => {
     );
 
     fetch.resetMocks();
-    fetch.mockResponses();
+    fetch.mockResponse(JSON.stringify([]));
 
     // simulate selecting jurisdictions
     const jurisdictionAssignmentModal = wrapper.find('EditAssignmentsModal').first();
@@ -404,5 +417,6 @@ describe('opensrp-plans/assignmentTable', () => {
         },
       ],
     ]);
+    wrapper.unmount();
   });
 });
