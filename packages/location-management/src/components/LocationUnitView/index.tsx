@@ -201,7 +201,9 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h5 className="mt-4">Bombali</h5>
+            <h5 className="mt-4">
+              {currentParentChildren.length ? tableData[0].name : 'Locations Unit'}
+            </h5>
             <div>
               <Link to={URL_LOCATION_UNIT_ADD}>
                 <Button type="primary">
