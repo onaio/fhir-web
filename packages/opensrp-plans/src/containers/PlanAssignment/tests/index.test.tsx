@@ -101,6 +101,8 @@ describe('PlanAssignment Page', () => {
       wrapper.update();
     });
 
+    wrapper.find('.activate-plan button').simulate('click');
+
     // activate mission is on the page
     expect(wrapper.find('.activate-plan')).toHaveLength(2);
     expect(wrapper.find('.activate-plan button')).toHaveLength(1);
