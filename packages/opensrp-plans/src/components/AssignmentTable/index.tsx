@@ -145,7 +145,7 @@ const AssignmentTable = (props: AssignmentTableProps) => {
 
   return (
     <div className="assignment-table">
-      <Table dataSource={dataSource} loading={loading} columns={columns}></Table>
+      <Table dataSource={dataSource} loading={loading} columns={columns} pagination={false}></Table>
     </div>
   );
 };
