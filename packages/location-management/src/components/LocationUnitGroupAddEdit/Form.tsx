@@ -33,9 +33,7 @@ interface FormField {
 const userSchema = Yup.object().shape({
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   active: Yup.boolean().typeError('Status must be a Boolean').required('Status is Required'),
-  description: Yup.string()
-    .typeError('Description must be a String')
-    .required('Description is Required'),
+  description: Yup.string().typeError('Description must be a String'),
 });
 
 interface Props {
