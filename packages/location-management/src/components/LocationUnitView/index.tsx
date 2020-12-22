@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Spin } from 'antd';
-import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Spin } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +21,6 @@ import {
   ADD_LOCATION_UNIT,
   LOCATION_UNIT,
   LOCATION_UNIT_MANAGEMENT,
-  LOGOUT,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
@@ -211,17 +210,6 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
                   {ADD_LOCATION_UNIT}
                 </Button>
               </Link>
-              <Divider type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="1">{LOGOUT}</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-              >
-                <Button shape="circle" icon={<SettingOutlined />} type="text" />
-              </Dropdown>
             </div>
           </div>
           <div className="bg-white p-3">
