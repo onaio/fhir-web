@@ -21,7 +21,6 @@ import { jurisdictions } from './fixtures';
 import { Jurisdiction, removeJurisdictions } from '../../../ducks/jurisdictions';
 import { removeAssignmentsAction } from '../../../ducks/assignments';
 import { Organization, removeOrganizationsAction } from '@opensrp/team-management';
-import toJson from 'enzyme-to-json';
 import { EDIT_AREAS, EDIT_TEAMS } from '../../../lang';
 import { Dictionary } from '@onaio/utils';
 import MockDate from 'mockdate';
@@ -226,9 +225,11 @@ describe('opensrp-plans/assignmentTable', () => {
     );
 
     // edit teams modal button should be disabled
-    expect(toJson(wrapper.find('button.assign-modal'))).toMatchSnapshot(
-      'assignment buttons invocation'
-    );
+    wrapper.find('button.assign-modal').forEach((button, index) => {
+      expect(button.text()).toMatchSnapshot(`${index} button`);
+    });
+    expect(wrapper.find('button.assign-modal').first().props().disabled).toBeFalsy();
+    expect(wrapper.find('button.assign-modal').last().props().disabled).toBeTruthy();
 
     fetch.resetMocks();
     fetch.mockResponse(JSON.stringify([]));
