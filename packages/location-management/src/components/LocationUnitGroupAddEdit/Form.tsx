@@ -162,7 +162,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Radio.Group>
             </AntForm.Item>
 
-            <AntForm.Item name="description" label="Type">
+            <AntForm.Item name="description" label="Description">
               <Input.TextArea name="description" rows={4} placeholder="Description" />
             </AntForm.Item>
 
