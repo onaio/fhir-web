@@ -1052,7 +1052,7 @@ export const planActivities: PlanActivities = {
           kind: 'applicability',
           expression: {
             description: 'Product exists',
-            expression: '$this.is(FHIR.Device)',
+            expression: '$this.is(FHIR.Bundle)',
           },
         },
       ],
@@ -1110,14 +1110,14 @@ export const planActivities: PlanActivities = {
         },
       ],
       definitionUri: 'product_check.json',
-      title: 'Product Check',
+      title: 'Fix Product Problem',
       trigger: [
         {
           type: 'named-event',
           name: 'event-submission',
           expression: {
             description: 'Trigger when a Fix Product event is submitted',
-            expression: "questionnaire = 'Fix_Product_Problem'",
+            expression: "questionnaire = 'flag_problem'",
           },
         },
       ],

@@ -8,6 +8,7 @@ import toJson from 'enzyme-to-json';
 import { product1 } from '../../../ducks/productCatalogue/tests/fixtures';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
+import { product2 } from './fixtures';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -58,16 +59,16 @@ describe('productForm', () => {
 
     expect(wrapper.find('#availability label').text()).toMatchInlineSnapshot(`"Is it there?"`);
     expect(wrapper.find('#condition label').text()).toMatchInlineSnapshot(
-      `"Is it in good condition?(optional)"`
+      `"Is it in good condition? (optional)"`
     );
     expect(wrapper.find('#appropriateUsage label').text()).toMatchInlineSnapshot(
-      `"Is it being used appropriately?(optional)"`
+      `"Is it being used appropriately? (optional)"`
     );
     expect(wrapper.find('#accountabilityPeriod label').text()).toMatchInlineSnapshot(
       `"Accountability period (in months)"`
     );
-    expect(wrapper.find('#productPhoto label').text()).toMatchInlineSnapshot(
-      `"Photo of the product(optional)"`
+    expect(wrapper.find('#photoURL label').text()).toMatchInlineSnapshot(
+      `"Photo of the product (optional)"`
     );
     expect(wrapper.find('#submit button').text()).toMatchInlineSnapshot(`"Submit"`);
   });
@@ -138,11 +139,9 @@ describe('productForm', () => {
       toJson((wrapper.find('FormItem#accountabilityPeriod').props() as any).help)
     ).toMatchSnapshot(`accountability period`);
 
-    expect((wrapper.find('FormItem#productPhoto').props() as any).validateStatus).toEqual(
-      undefined
-    );
-    expect(toJson((wrapper.find('FormItem#productPhoto').props() as any).help)).toMatchSnapshot(
-      `"productPhoto"`
+    expect((wrapper.find('FormItem#photoURL').props() as any).validateStatus).toEqual(undefined);
+    expect(toJson((wrapper.find('FormItem#photoURL').props() as any).help)).toMatchSnapshot(
+      `"photoURL"`
     );
 
     // fill form
@@ -189,7 +188,7 @@ describe('productForm', () => {
     );
   });
 
-  it('new form submission', async () => {
+  it('new form submission', async (done) => {
     fetch.once(JSON.stringify({ message: 'success' }));
     const div = document.createElement('div');
     document.body.appendChild(div);
@@ -244,18 +243,36 @@ describe('productForm', () => {
     const data = (Object as any).fromEntries(fd);
 
     // TODO - product photo does not update in setFieldValue call.
-    expect(data).toMatchObject({
+
+    const formFields = {
       productName: 'MotorCycle',
       materialNumber: 'MK-124',
-      isAttractiveItem: 'true',
+      isAttractiveItem: true,
       condition: 'MotorCycle',
       appropriateUsage: 'MotorCycle',
-      accountabilityPeriod: '6',
+      accountabilityPeriod: 6,
       availability: 'Is available',
+    };
+    expect(data).toMatchObject({
+      file: expect.any(File),
+      productCatalogue: expect.any(File),
+    });
+
+    const reader = new FileReader();
+    reader.readAsText(data.productCatalogue);
+
+    reader.addEventListener('load', function () {
+      try {
+        const result = reader.result;
+        expect(JSON.parse(result as string)).toEqual(formFields);
+        done();
+      } catch (error) {
+        done.fail(error);
+      }
     });
   });
 
-  it('edit form submission', async () => {
+  it('edit form submission', async (done) => {
     fetch.once(JSON.stringify({ message: 'success' }));
     const div = document.createElement('div');
     document.body.appendChild(div);
@@ -350,14 +367,95 @@ describe('productForm', () => {
 
     const data = (Object as any).fromEntries(fd);
 
-    expect(data).toMatchObject({
+    const formFields = {
       productName: 'MotorCycle',
       materialNumber: 'MK-124',
-      isAttractiveItem: 'true',
+      isAttractiveItem: true,
       condition: 'MotorCycle',
       appropriateUsage: 'MotorCycle',
-      accountabilityPeriod: '6',
+      accountabilityPeriod: 6,
       availability: 'Is available',
+      serverVersion: 123456,
+      uniqueId: 1,
+    };
+
+    expect(data).toMatchObject({
+      productCatalogue: expect.any(File),
+    });
+
+    const reader = new FileReader();
+    reader.readAsText(data.productCatalogue);
+
+    reader.addEventListener('load', function () {
+      try {
+        const result = reader.result;
+        expect(JSON.parse(result as string)).toEqual(formFields);
+        done();
+      } catch (error) {
+        done.fail(error);
+      }
+    });
+  });
+
+  it('Retest form submission formdata append error', async (done) => {
+    // investigating formData.append: argument 2 is not an object error
+    fetch.once(JSON.stringify({ message: 'success' }));
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const props = {
+      initialValues: product2,
+    };
+
+    const wrapper = mount(
+      <MemoryRouter>
+        <ProductForm {...props} />
+      </MemoryRouter>,
+      { attachTo: div }
+    );
+
+    // change is it in good condition
+    wrapper
+      .find('textarea[name="condition"]')
+      .simulate('change', { target: { name: 'condition', value: 'well maintained' } });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    const fd = fetch.mock.calls[0][1].body;
+
+    const data = (Object as any).fromEntries(fd);
+
+    const formFields = {
+      accountabilityPeriod: 2,
+      appropriateUsage: 'this should be optional',
+      availability: 'yeah',
+      condition: 'well maintained',
+      isAttractiveItem: false,
+      materialNumber: 'asd',
+      productName: 'Change name',
+      uniqueId: 4,
+    };
+
+    expect(data).toMatchObject({
+      productCatalogue: expect.any(File),
+    });
+
+    const reader = new FileReader();
+    reader.readAsText(data.productCatalogue);
+
+    reader.addEventListener('load', function () {
+      try {
+        const result = reader.result;
+        expect(JSON.parse(result as string)).toEqual(formFields);
+        done();
+      } catch (error) {
+        done.fail(error);
+      }
     });
   });
 

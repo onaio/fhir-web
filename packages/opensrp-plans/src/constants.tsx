@@ -1,3 +1,4 @@
+import { Dictionary } from '@onaio/utils';
 /** Allowed action Reason values */
 export const ROUTINE = 'Routine';
 export const INVESTIGATION = 'Investigation';
@@ -37,3 +38,41 @@ export const SERVICE_POINT_CHECK = 'Service Point Check';
 
 /** Field to sort plans by */
 export const SORT_BY_EFFECTIVE_PERIOD_START_FIELD = 'date';
+
+// opensrp api strings
+export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+export const OPENSRP_PLANS = 'plans';
+
+// router routes
+export const PLANS_ASSIGNMENT_VIEW_URL = '/plans/assignments';
+export const PLANS_CREATE_VIEW_URL = '/plans/new';
+export const PLANS_EDIT_VIEW_URL = '/plans/edit';
+export const ACTIVE_PLANS_LIST_VIEW_URL = '/plans/active';
+export const DRAFT_PLANS_LIST_VIEW_URL = '/plans/draft';
+export const COMPLETE_PLANS_LIST_VIEW_URL = '/plans/complete';
+export const TRASH_PLANS_LIST_VIEW_URL = '/plans/trash';
+export const HOME_URL = '/';
+
+// other constants
+/** namespace for the keys attached to the columns */
+export const TableColumnsNamespace = 'plans';
+
+/** route params for product-catalogue pages */
+export interface RouteParams {
+  planId?: string;
+}
+export interface PlanAssignmentRouteParams {
+  planId: string;
+}
+
+export const GREEN = '#22B509';
+export const BLACK = '#000000';
+export const ORANGE = '#DBA400';
+
+/** Enum representing the possible plan types colors*/
+export const PlanStatusColors: Dictionary = {
+  active: GREEN,
+  complete: BLACK,
+  draft: ORANGE,
+  retired: BLACK,
+};

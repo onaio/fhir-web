@@ -21,7 +21,7 @@ import {
   makeKeycloakUsersSelector,
   KeycloakUser,
 } from '../../ducks/user';
-import Ripple from '../Loading';
+import { Spin } from 'antd';
 import '../../index.css';
 import { OpenSRPService } from '@opensrp/server-service';
 
@@ -125,7 +125,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   }, [userId, practitioner, accessToken, opensrpServiceClass, opensrpBaseURL]);
 
   if (isLoading) {
-    return <Ripple />;
+    return <Spin size="large" />;
   }
 
   const userFormProps: UserFormProps = {

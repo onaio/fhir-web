@@ -118,14 +118,14 @@ describe('components/UserList', () => {
       </Provider>
     );
     // Loader should be displayed
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
     // Loader should be hiddern
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
+    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
 
     const userList = wrapper.find('UserList');
 
@@ -163,7 +163,7 @@ describe('components/UserList', () => {
     );
 
     // Loader should be displayed
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeTruthy();
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
       await flushPromises();

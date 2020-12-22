@@ -1,8 +1,14 @@
-import { SORT_BY_EFFECTIVE_PERIOD_START_FIELD } from '../../constants';
-import * as planDefinitionFixtures from '../../ducks/tests/fixtures';
-import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
-import * as fixtures from '../../ducks/tests/fixtures';
+import {
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
+  SORT_BY_EFFECTIVE_PERIOD_START_FIELD,
+  TRASH_PLANS_LIST_VIEW_URL,
+} from '../../constants';
+import * as planDefinitionFixtures from '../../ducks/planDefinitions/tests/fixtures';
+import { InterventionType, PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { descendingOrderSort, isPlanDefinitionOfType, getPlanType } from '../utils';
+import { redirectPathGetter } from '../common';
 
 describe('helpers/utils', () => {
   beforeEach(() => {
@@ -11,18 +17,18 @@ describe('helpers/utils', () => {
 
   it('sorts plans array in descending order', () => {
     const sortedPlans = descendingOrderSort(
-      fixtures.eusmPlans as PlanDefinition[],
+      planDefinitionFixtures.eusmPlans as PlanDefinition[],
       SORT_BY_EFFECTIVE_PERIOD_START_FIELD
     );
-    expect(sortedPlans).toEqual(fixtures.eusmPlans);
+    expect(sortedPlans).toEqual(planDefinitionFixtures.eusmPlans);
   });
   it('returns unsorted plans array', () => {
-    const unsortedPlans = descendingOrderSort(fixtures.plans as PlanDefinition[], '');
-    expect(unsortedPlans).toEqual(fixtures.plans);
+    const unsortedPlans = descendingOrderSort(planDefinitionFixtures.plans as PlanDefinition[], '');
+    expect(unsortedPlans).toEqual(planDefinitionFixtures.plans);
   });
 
   it('returns plan type', () => {
-    const type = getPlanType(fixtures.plans[0] as PlanDefinition);
+    const type = getPlanType(planDefinitionFixtures.plans[0] as PlanDefinition);
     expect(type).toEqual('FI');
   });
 
@@ -56,5 +62,11 @@ describe('helpers/utils', () => {
     expect(result).toBeFalsy();
     result = isPlanDefinitionOfType(sampleIRSPlan, InterventionType.IRS);
     expect(result).toBeTruthy();
+  });
+  it('tests redirectGetter util', () => {
+    expect(redirectPathGetter(PlanStatus.DRAFT)).toEqual(DRAFT_PLANS_LIST_VIEW_URL);
+    expect(redirectPathGetter(PlanStatus.ACTIVE)).toEqual(ACTIVE_PLANS_LIST_VIEW_URL);
+    expect(redirectPathGetter(PlanStatus.COMPLETE)).toEqual(COMPLETE_PLANS_LIST_VIEW_URL);
+    expect(redirectPathGetter(PlanStatus.RETIRED)).toEqual(TRASH_PLANS_LIST_VIEW_URL);
   });
 });

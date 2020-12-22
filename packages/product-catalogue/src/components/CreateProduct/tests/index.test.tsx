@@ -35,7 +35,7 @@ describe('CreateEditProduct Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual('Add Product to Catalogue');
+    expect(helmet.title).toEqual('Add product to catalogue');
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);

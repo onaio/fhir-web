@@ -33,6 +33,7 @@ exports[`productForm edit form submission: appropriateUsage 1`] = `
   onChange={[Function]}
   onKeyDown={[Function]}
   placeholder="Describe the product's intended use at the service point"
+  rows={4}
   style={Object {}}
   value="staff is trained to use it appropriately"
 />
@@ -46,6 +47,7 @@ exports[`productForm edit form submission: availability 1`] = `
   onChange={[Function]}
   onKeyDown={[Function]}
   placeholder="Describe where a supply monitor can locate this product at the service point."
+  rows={4}
   style={Object {}}
   value="available"
 />
@@ -59,6 +61,7 @@ exports[`productForm edit form submission: condition 1`] = `
   onChange={[Function]}
   onKeyDown={[Function]}
   placeholder="Describe how a supply monitor would assess whether the product is in good condition"
+  rows={4}
   style={Object {}}
   value="good condition"
 />
@@ -96,6 +99,7 @@ exports[`productForm edit form submission: materialNumber 1`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  placeholder="Enter the product's material number"
   type="text"
   value="MT-123"
 />
@@ -138,7 +142,7 @@ exports[`productForm renders correctly: radio 2 1`] = `"no"`;
 
 exports[`productForm validation works: "Product name" 1`] = `undefined`;
 
-exports[`productForm validation works: "productPhoto" 1`] = `undefined`;
+exports[`productForm validation works: "photoURL" 1`] = `undefined`;
 
 exports[`productForm validation works: accountability period 1`] = `undefined`;
 
