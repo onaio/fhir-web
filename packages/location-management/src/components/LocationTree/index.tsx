@@ -1,9 +1,14 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ParsedHierarchyNode } from '../../ducks/types';
-import reducer, { reducerName } from '../../ducks/location-hierarchy';
+import { ParsedHierarchyNode, LocationTreeState } from '../../ducks/types';
+import reducer, {
+  getLocationTreeState,
+  reducerName,
+  setLocationTreeState,
+} from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
 reducerRegistry.register(reducerName, reducer);
@@ -21,6 +26,12 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
 
+  const locationTreeState = useSelector(
+    (state) => (getLocationTreeState(state) as unknown) as LocationTreeState
+  );
+
+  const dispatch = useDispatch();
+
   /**
    * Function to to expand tree
    *
@@ -29,7 +40,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   function expandTree(value: string) {
     const expandedKeys = filterData
       .map((item) =>
-        value.length && item.label.toLocaleLowerCase().indexOf(value) > -1
+        value.length && item.label.toLocaleLowerCase().indexOf(value.toLowerCase()) > -1
           ? getParentKey(item.id, filterData)
           : null
       )
@@ -40,10 +51,10 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   }
 
   useEffect(() => {
-    const tree = localStorage.getItem('tree');
-    if (tree) {
-      const keys = JSON.parse(tree).keys;
-      const node = JSON.parse(tree).node;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (locationTreeState.keys) {
+      const keys = locationTreeState.keys;
+      const node = locationTreeState.node;
       setExpandedKeys(keys);
       OnItemClick(node);
       expandTree(node.key);
@@ -149,7 +160,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
           const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
-          localStorage.setItem('tree', JSON.stringify({ keys: allExpandedKeys, node }));
+          dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
           setExpandedKeys(allExpandedKeys);
         }}
         onExpand={onExpand}
