@@ -292,8 +292,8 @@ describe('location-management/src/components/LocationUnitView', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     wrapper.find('.more-options').first().simulate('click');
     wrapper.find('.viewdetails').first().simulate('click');
@@ -326,8 +326,8 @@ describe('location-management/src/components/LocationUnitView', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     wrapper.find('.more-options').first().simulate('click');
     wrapper.find('.viewdetails').first().simulate('click');
