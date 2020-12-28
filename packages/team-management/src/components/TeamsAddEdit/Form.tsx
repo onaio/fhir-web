@@ -118,7 +118,7 @@ async function SetPractitioners(
   const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.identifier));
   const payload: PractitionerPOST[] = toAddPractitioner.map((prac) => {
     return {
-      active: prac.active,
+      active: true,
       identifier: v4(),
       practitioner: prac.identifier,
       organization: id,
