@@ -19,7 +19,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('renders without crashing', async () => {
-    fetch.mockResponse(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     mount(
       <Provider store={store}>
@@ -49,8 +49,8 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('renders with id without crashing', async () => {
-    fetch.mockResponse(JSON.stringify(team));
-    fetch.mockResponse(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(team));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     mount(
       <Provider store={store}>
@@ -114,24 +114,19 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('test getPractitonerDetail', async () => {
-    fetch.mockResponse(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
     const response = await getPractitonerDetail(accessToken, id);
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(response).toMatchObject(practitioners);
+    expect(response).toMatchObject(practitioners.filter((e) => e.active));
   });
 
   it('test getTeamDetail', async () => {
-    fetch.mockResponse(
-      JSON.stringify({
-        name: intialValue.name,
-        active: intialValue.active,
-        practitioner: practitioners,
-      })
-    );
+    fetch.mockResponseOnce(JSON.stringify({ name: intialValue.name, active: intialValue.active }));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
     const response = await getTeamDetail(accessToken, id);
 
     await act(async () => {

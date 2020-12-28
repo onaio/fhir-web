@@ -176,7 +176,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
               code: { text: 'Community Health Worker' },
             },
             {
-              active: false,
+              active: true,
               identifier: (JSON.parse(fetch.mock.calls[1][1].body as string)[1] as PractitionerPOST)
                 .identifier,
               practitioner: '2',
@@ -186,7 +186,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
               code: { text: 'Community Health Worker' },
             },
             {
-              active: false,
+              active: true,
               identifier: (JSON.parse(fetch.mock.calls[1][1].body as string)[2] as PractitionerPOST)
                 .identifier,
               practitioner: '3',
