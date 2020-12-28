@@ -6,7 +6,13 @@ import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
-import { API_BASE_URL, PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
+import {
+  API_BASE_URL,
+  ERROR_OCCURRED,
+  PRACTITIONER_GET,
+  TEAMS_GET,
+  TEAM_PRACTITIONERS,
+} from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
@@ -61,7 +67,7 @@ function setupInitialValue(accessToken: string, id: string, setInitialValue: Fun
         practitioners: response.practitioners.map((prac) => prac.identifier),
       });
     })
-    .catch(() => sendErrorNotification('An error occurred'));
+    .catch(() => sendErrorNotification(ERROR_OCCURRED));
 }
 
 export const TeamsAddEdit: React.FC = () => {
@@ -79,7 +85,7 @@ export const TeamsAddEdit: React.FC = () => {
     serve
       .list()
       .then((response: Practitioner[]) => setPractitioner(response))
-      .catch(() => sendErrorNotification('An error occurred'));
+      .catch(() => sendErrorNotification(ERROR_OCCURRED));
   }, [accessToken]);
 
   if (!practitioner || (params.id && !initialValue))

@@ -13,6 +13,7 @@ import { accessToken, id, intialValue, practitioners } from './fixtures';
 import Form, { onSubmit } from '../Form';
 import { OrganizationPOST } from '../../../ducks/organizations';
 import { PractitionerPOST } from '../../../ducks/practitioners';
+import { ERROR_OCCURRED } from '../../../constants';
 
 describe('Team-management/TeamsAddEdit/Form', () => {
   beforeEach(() => {
@@ -114,7 +115,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURRED,
     });
   });
 

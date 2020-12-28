@@ -11,6 +11,7 @@ import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
 
 import TeamsAddEdit, { getPractitonerDetail, getTeamDetail } from '..';
+import { ERROR_OCCURRED } from '../../../constants';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   afterEach(() => {
@@ -108,7 +109,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURRED,
     });
   });
 

@@ -9,6 +9,7 @@ import {
   PRACTITIONER_POST,
   PRACTITIONER_DEL,
   TEAMS_PUT,
+  ERROR_OCCURRED,
 } from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
@@ -85,7 +86,7 @@ export function onSubmit(
       await SetPractitioners(practitioner, toAdd, toRem, accessToken, Teamid);
       history.goBack();
     })
-    .catch(() => sendErrorNotification('An error occurred'))
+    .catch(() => sendErrorNotification(ERROR_OCCURRED))
     .finally(() => setIsSubmitting(false));
 }
 
@@ -110,7 +111,7 @@ async function SetPractitioners(
   // Api Call to delete practitioners
   toRemove.forEach((prac) => {
     const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_DEL + prac);
-    serve.delete().catch(() => sendErrorNotification('An error occurred'));
+    serve.delete().catch(() => sendErrorNotification(ERROR_OCCURRED));
   });
 
   // Api Call to add practitioners
