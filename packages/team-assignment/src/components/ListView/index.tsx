@@ -34,6 +34,16 @@ import reducer, {
   reducerName as assignmentReducerName,
 } from '../../ducks/assignments';
 import { PlanDefinition } from '../../ducks/assignments/types';
+import {
+  ASSIGNMENTS_ENDPOINT,
+  CANCEL,
+  LOCATION_HIERARCHY_ENDPOINT,
+  ORGANIZATION_ENDPOINT,
+  PLANS_ENDPOINT,
+  SAVE,
+  SUCCESSFULLY_ASSIGNED_TEAMS,
+  TEAM_ASSIGNMENT_PAGE_TITLE,
+} from '../../constants';
 
 reducerRegistry.register(teamsReducerName, teamsReducer);
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -80,7 +90,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
   React.useEffect(() => {
     if (loading) {
-      const plansService = new OpenSRPService(accessToken, opensrpBaseURL, 'plans');
+      const plansService = new OpenSRPService(accessToken, opensrpBaseURL, PLANS_ENDPOINT);
       const plansPromise = plansService
         .read(defaultPlanId)
         .then((response: PlanDefinition[]) => {
@@ -94,7 +104,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       const asssignmentService = new OpenSRPService(
         accessToken,
         opensrpBaseURL,
-        'organization/assignedLocationsAndPlans'
+        ASSIGNMENTS_ENDPOINT
       );
       const assignmentsPromise = asssignmentService
         .list({ plan: defaultPlanId })
@@ -104,7 +114,11 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         .catch((e) => handleBrokenPage(e.message));
 
       // fetch all organizations
-      const organizationsService = new OpenSRPService(accessToken, opensrpBaseURL, 'organization');
+      const organizationsService = new OpenSRPService(
+        accessToken,
+        opensrpBaseURL,
+        ORGANIZATION_ENDPOINT
+      );
       const organizationsPromise = organizationsService
         .list()
         .then((response: Organization[]) => {
@@ -120,7 +134,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         const hierarchyService = new OpenSRPService(
           accessToken,
           opensrpBaseURL,
-          'location/hierarchy'
+          LOCATION_HIERARCHY_ENDPOINT
         );
         hierarchyPromise = hierarchyService
           .read(planLocationId)
@@ -209,23 +223,22 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     };
   });
 
-  const pageTitle = `Team Assignment`;
   return (
     <div className="content-section">
       <Helmet>
-        <title>{pageTitle}</title>
+        <title>{TEAM_ASSIGNMENT_PAGE_TITLE}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header"></PageHeader>
+      <PageHeader title={TEAM_ASSIGNMENT_PAGE_TITLE} className="page-header"></PageHeader>
       <Modal
         destroyOnClose={true}
         title="Title"
         visible={visible}
         onCancel={handleCancel}
-        okText={'Save'}
-        cancelText={'Cancel'}
+        okText={SAVE}
+        cancelText={CANCEL}
         footer={[
           <Button
-            id="Cancel"
+            id={CANCEL}
             key="cancel"
             onClick={() => {
               setVisible(false);
@@ -252,15 +265,11 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
                 assignedLocAndTeams?.assignedTeams,
                 existingAssignments
               );
-              const serve = new OpenSRPService(
-                accessToken,
-                opensrpBaseURL,
-                'organization/assignLocationsAndPlans'
-              );
+              const serve = new OpenSRPService(accessToken, opensrpBaseURL, ASSIGNMENTS_ENDPOINT);
               serve
                 .create(payload)
                 .then(() => {
-                  sendSuccessNotification('Successfully Assigned Teams');
+                  sendSuccessNotification(SUCCESSFULLY_ASSIGNED_TEAMS);
                   setVisible(false);
                   setLoading(true);
                 })
