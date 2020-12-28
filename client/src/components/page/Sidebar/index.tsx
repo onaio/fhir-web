@@ -37,6 +37,7 @@ import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
   ENABLE_FORM_CONFIGURATION,
   ENABLE_PLANS,
+  ENABLE_TEAMS,
   ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
 } from '../../../configs/env';
@@ -106,11 +107,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.Item>
             </Menu.SubMenu>
           )}
-          <Menu.Item key="teams">
-            <Link to={URL_TEAMS} className="admin-link">
-              {TEAMS}
-            </Link>
-          </Menu.Item>
+          {ENABLE_TEAMS && (
+            <Menu.Item key="teams">
+              <Link to={URL_TEAMS} className="admin-link">
+                {TEAMS}
+              </Link>
+            </Menu.Item>
+          )}
           {ENABLE_PRODUCT_CATALOGUE && (
             <Menu.Item key="product-catalogue">
               <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">

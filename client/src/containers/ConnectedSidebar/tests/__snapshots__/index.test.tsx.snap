@@ -58,14 +58,6 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
         to="/product-catalogue/list"
       >
         Product Catalogue
@@ -181,14 +173,6 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
         to="/product-catalogue/list"
       >
         Product Catalogue
@@ -262,14 +246,6 @@ Object {
           <MenuItem>
             <Link
               className="admin-link"
-              to="/teams"
-            >
-              Teams
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link
-              className="admin-link"
               to="/product-catalogue/list"
             >
               Product Catalogue
@@ -309,14 +285,6 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
     <MenuItem>
       <Link
         className="admin-link"
