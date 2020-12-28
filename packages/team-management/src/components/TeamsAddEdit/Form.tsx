@@ -127,7 +127,7 @@ async function SetPractitioners(
   });
 
   const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
-  await serve.create(payload);
+  await serve.create(payload).catch(() => sendErrorNotification(ERROR_OCCURRED));
 
   sendSuccessNotification('Successfully Assigned Practitioners');
 }
