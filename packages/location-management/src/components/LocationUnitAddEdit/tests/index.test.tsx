@@ -18,7 +18,7 @@ import {
 import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
 
 import { act } from 'react-dom/test-utils';
-import { baseURL } from '../../../constants';
+import { baseURL, ERROR_OCCURED } from '../../../constants';
 
 LocationUnitAddEdit.defaultProps = { opensrpBaseURL: baseURL };
 
@@ -62,7 +62,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });
@@ -88,7 +88,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });
@@ -205,7 +205,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });

@@ -17,7 +17,7 @@ import {
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { ERROR_OCCURED, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
@@ -125,7 +125,7 @@ export const onSubmit = async (
         return res.locationsHierarchy.map[values.parentId as string].node.attributes
           .geographicLevel as number;
       })
-      .catch(() => sendErrorNotification('An error occurred'));
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
@@ -167,7 +167,7 @@ export const onSubmit = async (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification('An error occurred');
+        sendErrorNotification(ERROR_OCCURED);
         setSubmitting(false);
       });
   } else {
@@ -179,7 +179,7 @@ export const onSubmit = async (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification('An error occurred');
+        sendErrorNotification(ERROR_OCCURED);
         setSubmitting(false);
       });
   }

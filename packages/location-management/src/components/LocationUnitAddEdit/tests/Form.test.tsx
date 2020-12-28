@@ -21,7 +21,7 @@ import { act } from 'react-dom/test-utils';
 import { LocationUnitStatus } from '../../../ducks/location-units';
 import { history } from '@onaio/connected-reducer-registry';
 import { rawHierarchy } from '../../LocationUnitView/tests/fixtures';
-import { baseURL } from '../../../constants';
+import { baseURL, ERROR_OCCURED } from '../../../constants';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeEach(() => {
@@ -141,7 +141,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   });
 
   it('handles error when creating new location unit', async () => {
-    fetch.mockReject(() => Promise.reject('An error occurred'));
+    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
     await onSubmit(
@@ -159,7 +159,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
   });
 
@@ -227,7 +227,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   });
 
   it('handles error when editing location unit', async () => {
-    fetch.mockReject(() => Promise.reject('An error occurred'));
+    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     await onSubmit(
       setSubmittingMock,
@@ -245,7 +245,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
   });
 

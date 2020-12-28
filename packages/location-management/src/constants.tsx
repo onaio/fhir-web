@@ -1,8 +1,10 @@
 export const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+
 //
 // Strings
 //
 
+export const ERROR_OCCURED = 'An error occurred';
 export const LOCATION_UNIT = 'Location Unit';
 export const LOCATION_UNIT_GROUP = 'Location Unit Group';
 export const LOCATION_UNIT_MANAGEMENT = 'Location Unit Management';

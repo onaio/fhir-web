@@ -11,6 +11,7 @@ import {
   EDIT_LOCATION_UNIT,
   LOCATION_UNIT_EXTRAFIELDS,
   LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER,
+  ERROR_OCCURED,
 } from '../../constants';
 import { ExtraField, fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
@@ -113,7 +114,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
             type: response.type,
           });
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, params.id, opensrpBaseURL]);
 
@@ -125,7 +126,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .then((response: LocationUnitGroup[]) => {
           setLocationUnitGroup(response);
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, locationUnitGroup.length, opensrpBaseURL]);
 
@@ -141,9 +142,9 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
                 dispatch(fetchAllHierarchies(processed.model));
               });
             })
-            .catch(() => sendErrorNotification('An error occurred'));
+            .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [Treedata, accessToken, dispatch, opensrpBaseURL]);
 
@@ -157,7 +158,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
       serve
         .list()
         .then((response: ExtraField[]) => setExtrafields(response))
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, extrafields, opensrpBaseURL]);
 

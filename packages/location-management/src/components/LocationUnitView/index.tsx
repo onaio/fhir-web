@@ -21,6 +21,7 @@ import {
   ADD_LOCATION_UNIT,
   LOCATION_UNIT,
   LOCATION_UNIT_MANAGEMENT,
+  ERROR_OCCURED,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
@@ -72,7 +73,7 @@ export function loadSingleLocation(
     .then((res: LocationUnit) => {
       setDetail(res);
     })
-    .catch(() => sendErrorNotification('An error occurred'));
+    .catch(() => sendErrorNotification(ERROR_OCCURED));
 }
 
 /** Gets all the location unit at geographicLevel 0
@@ -156,9 +157,9 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
                 dispatch(fetchAllHierarchies(processed.model));
               });
             })
-            .catch(() => sendErrorNotification('An error occurred'));
+            .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [treeData, accessToken, dispatch, opensrpBaseURL]);
 

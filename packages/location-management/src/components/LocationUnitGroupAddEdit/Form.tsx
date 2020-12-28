@@ -7,7 +7,7 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
-import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
+import { ERROR_OCCURED, LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
@@ -71,7 +71,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification('An error occurred');
+        sendErrorNotification(ERROR_OCCURED);
         setSubmitting(false);
       });
   } else {
@@ -83,7 +83,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification('An error occurred');
+        sendErrorNotification(ERROR_OCCURED);
         setSubmitting(false);
       });
   }
@@ -117,7 +117,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             });
             setIsLoading(false);
           })
-          .catch(() => sendErrorNotification('An error occurred'));
+          .catch(() => sendErrorNotification(ERROR_OCCURED));
       } else setIsLoading(false);
     }
   }, [accessToken, isLoading, props.id, opensrpBaseURL]);

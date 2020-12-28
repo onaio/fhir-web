@@ -21,6 +21,7 @@ import {
   URL_LOCATION_UNIT_GROUP_ADD,
   ADD_LOCATION_UNIT_GROUP,
   LOCATION_UNIT_GROUP_MANAGEMENT,
+  ERROR_OCCURED,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
@@ -52,7 +53,7 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
           dispatch(fetchLocationUnitGroups(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   });
 
