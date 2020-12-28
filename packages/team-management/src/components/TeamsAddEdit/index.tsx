@@ -49,7 +49,7 @@ export async function getTeamDetail(accessToken: string, id: string) {
  */
 export async function getPractitonerDetail(accessToken: string, id: string) {
   const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + id);
-  return await serve.list().then((response: Practitioner[]) => response);
+  return await serve.list().then((response: Practitioner[]) => response.filter((e) => e.active));
 }
 
 /**
