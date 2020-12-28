@@ -78,10 +78,12 @@ export default function reducer(
   }
 }
 
-/** action to remove assignments form store */
-export const removeAssignmentsAction: RemoveAssignmentsAction = {
-  assignments: [],
-  type: REMOVE_ASSIGNMENTS,
+/** action to remove assignments form store_**/
+export const removeAssignmentsAction = (): RemoveAssignmentsAction => {
+  return {
+    assignments: [],
+    type: REMOVE_ASSIGNMENTS,
+  };
 };
 
 // action creators

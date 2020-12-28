@@ -2,10 +2,9 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { FlushThunks } from 'redux-testkit';
 import reducer, {
   fetchAssignments,
-  getAssignmentsArray,
-  getAssignmentsById,
+  getAssignments,
   reducerName,
-  removeAssignments,
+  removeAssignmentsAction,
 } from '..';
 import { store } from '@opensrp/store';
 import * as fixtures from './fixtures';
@@ -15,17 +14,16 @@ describe('reducers/assignments', () => {
   beforeEach(() => {
     FlushThunks.createMiddleware();
     jest.resetAllMocks();
-    store.dispatch(removeAssignments());
+    store.dispatch(removeAssignmentsAction());
   });
 
   it('should have initial state', () => {
-    expect(getAssignmentsArray(store.getState())).toEqual([]);
-    expect(getAssignmentsById(store.getState())).toEqual({});
+    expect(getAssignments(store.getState())).toEqual([]);
   });
 
   it('should fetch Assignments', () => {
     store.dispatch(fetchAssignments(fixtures.assignments));
-    const teamAssignments = getAssignmentsArray(store.getState());
+    const teamAssignments = getAssignments(store.getState());
     expect(teamAssignments).toHaveLength(3);
   });
 });
