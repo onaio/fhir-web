@@ -35,7 +35,6 @@ export interface FormField extends Dictionary<string | number | number[] | undef
 }
 
 const defaultFormField: FormField = {
-  parentId: '',
   name: '',
   status: LocationUnitStatus.ACTIVE,
   type: '',
