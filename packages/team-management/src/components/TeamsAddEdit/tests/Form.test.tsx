@@ -291,7 +291,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
   it('fail delete Team practitioner', async () => {
     fetch.mockResponseOnce(JSON.stringify({}));
-    fetch.mockRejectOnce();
+    fetch.mockReject();
     onSubmit(
       jest.fn,
       practitioners,
