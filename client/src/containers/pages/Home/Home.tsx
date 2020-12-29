@@ -10,11 +10,13 @@ import './Home.css';
 import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
+  TEAMS,
   URL_ADMIN,
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
+  URL_TEAMS,
 } from '../../../constants';
-import { ENABLE_LOCATIONS } from '../../../configs/env';
+import { ENABLE_LOCATIONS, ENABLE_TEAMS } from '../../../configs/env';
 
 export interface HomeProps {
   extraData: Dictionary;
@@ -39,6 +41,15 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
             <Link to={URL_ADMIN} className="admin-link">
               <Button color="outline" className="btn-links">
                 Admin
+              </Button>
+            </Link>
+          </Col>
+        )}
+        {ENABLE_TEAMS && (
+          <Col className="gutter-row" span={12}>
+            <Link to={URL_TEAMS} className="admin-link">
+              <Button color="outline" className="btn-links">
+                {TEAMS}
               </Button>
             </Link>
           </Col>
