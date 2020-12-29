@@ -21,7 +21,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   it('renders without crashing', async () => {
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
-    mount(
+    const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <TeamsAddEdit />
@@ -45,14 +45,18 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
+
+    expect(wrapper.find('form')).toHaveLength(1);
   });
 
   it('renders with id without crashing', async () => {
     fetch.mockResponseOnce(JSON.stringify(team));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
 
-    mount(
+    const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
           <Route path={'/:id'} component={TeamsAddEdit} />
@@ -87,7 +91,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
+    expect(wrapper.find('form')).toHaveLength(1);
   });
 
   it('Fail setupInitialValue', async () => {
