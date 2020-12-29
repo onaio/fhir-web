@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useParams } from 'react-router';
+import { useParams, useLocation } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
@@ -12,7 +12,12 @@ import {
   LOCATION_UNIT_EXTRAFIELDS,
   LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER,
 } from '../../constants';
-import { ExtraField, fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
+import {
+  ExtraField,
+  fetchLocationUnits,
+  LocationUnit,
+  LocationUnitStatus,
+} from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 
@@ -92,8 +97,18 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   );
   const { opensrpBaseURL } = props;
   const dispatch = useDispatch();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
 
   useEffect(() => {
+    const parentId = query.get('parentId');
+    if (parentId != null)
+      setLocationUnitDetail({
+        name: '',
+        status: LocationUnitStatus.ACTIVE,
+        type: '',
+        parentId: parentId,
+      });
     if (params.id) {
       const serve = new OpenSRPService(
         accessToken,
@@ -115,7 +130,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification('An error occurred'));
     }
-  }, [accessToken, params.id, opensrpBaseURL]);
+  }, [accessToken, params.id, opensrpBaseURL, query]);
 
   useEffect(() => {
     if (!locationUnitGroup.length) {

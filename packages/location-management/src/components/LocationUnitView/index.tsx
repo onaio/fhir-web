@@ -143,6 +143,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
+  const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
@@ -192,6 +193,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
           <Tree
             data={treeData}
             OnItemClick={(node) => {
+              setCurrentClicked(node);
               if (node.children) {
                 const children = [node, ...node.children];
                 setCurrentParentChildren(children);
@@ -203,7 +205,13 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">Bombali</h5>
             <div>
-              <Link to={URL_LOCATION_UNIT_ADD}>
+              <Link
+                to={(location) => {
+                  let query = '?';
+                  if (currentClicked) query += `parentId=${currentClicked.id}`;
+                  return { ...location, pathname: URL_LOCATION_UNIT_ADD, search: query };
+                }}
+              >
                 <Button type="primary">
                   <PlusOutlined />
                   {ADD_LOCATION_UNIT}
