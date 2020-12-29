@@ -90,7 +90,10 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
         <Provider store={store}>
-          <Route path={'/:id'} component={() => <Form id="1" opensrpBaseURL={baseURL} />} />
+          <Route
+            path={'/:id'}
+            component={() => <Form setEditTitle={jest.fn} id="1" opensrpBaseURL={baseURL} />}
+          />
         </Provider>
       </MemoryRouter>
     );
