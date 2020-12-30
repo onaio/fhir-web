@@ -13,8 +13,8 @@
   "repository": "https://github.com/OpenSRP/web/",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && yarn test  packages/location-management --verbose --collectCoverage=true -u && cd packages/location-management",
-    "test:watch": "cd ../../ && yarn test  packages/location-management --verbose --watch && cd packages/location-management",
+    "test": "cd ../../ && yarn test packages/location-management --verbose --collectCoverage=true -u && cd packages/location-management",
+    "test:watch": "cd ../../ && yarn test packages/location-management --verbose --watch && cd packages/location-management",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",

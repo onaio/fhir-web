@@ -1,6 +1,6 @@
-import { eusmPlans } from '../../ducks/tests/fixtures';
+import { eusmPlans } from '../../ducks/planDefinitions/tests/fixtures';
 import { loadPlans } from '../dataLoaders';
-import * as plansDux from '../../ducks';
+import * as plansDux from '../../ducks/planDefinitions';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');

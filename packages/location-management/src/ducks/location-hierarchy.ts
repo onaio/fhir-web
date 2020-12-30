@@ -16,7 +16,6 @@ export const reducerName = 'location-hierarchy';
 
 /** action to add a tree to store */
 export const TREE_FETCHED = 'location-hierarchy/TREE_FETCHED';
-export const FETCH_CURRENT_CHILDREN = 'location-hierarchy/FETCH_CURRENT_CHILDREN';
 
 /** describes action that adds a hierarchy tree to store */
 export interface FetchedTreeAction extends AnyAction {
@@ -25,14 +24,8 @@ export interface FetchedTreeAction extends AnyAction {
   isSingleHierarchy: boolean;
 }
 
-/** describes action that adds current parent children to store  */
-export interface FetchedParentChildrenAction extends AnyAction {
-  type: typeof FETCH_CURRENT_CHILDREN;
-  currentParentChildren: TreeNode[];
-}
-
 /** combined full action types | its a union */
-export type TreeActionTypes = FetchedTreeAction | FetchedParentChildrenAction | AnyAction;
+export type TreeActionTypes = FetchedTreeAction | AnyAction;
 
 // **************************** action creators ****************************
 
@@ -52,19 +45,6 @@ export function fetchAllHierarchies(
     } as TreeNode,
     isSingleHierarchy,
     type: TREE_FETCHED,
-  };
-}
-
-/**
- * action creator when adding a tree to store
- *
- * @param {TreeNode} children - the raw hierarchy as received from opensrp
- * @returns {object} - action object
- */
-export function fetchCurrentChildren(children: TreeNode[]): FetchedParentChildrenAction {
-  return {
-    currentParentChildren: children,
-    type: FETCH_CURRENT_CHILDREN,
   };
 }
 
@@ -105,11 +85,6 @@ export function reducer(
           ? [action.hierarchyObject]
           : [...state.hierarchyArray, action.hierarchyObject],
       };
-    case FETCH_CURRENT_CHILDREN:
-      return {
-        ...state,
-        currentParentChildren: action.currentParentChildren,
-      };
     default:
       return state;
   }
@@ -122,11 +97,3 @@ export function reducer(
  */
 export const getAllHierarchiesArray = (state: Partial<Store>): Dictionary<TreeNode> =>
   (state as Dictionary)[reducerName].hierarchyArray;
-
-/** gets array of all hierarchies
- *
- * @param {Store} state - the store
- * @returns {object} - returns item from location-hierarchy reducer
- */
-export const getCurrentChildren = (state: Partial<Store>): Dictionary<TreeNode> =>
-  (state as Dictionary)[reducerName].currentParentChildren;

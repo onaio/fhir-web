@@ -1,4 +1,17 @@
-export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+export const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+//
+// Strings
+//
+
+export const LOCATION_UNIT = 'Location Unit';
+export const LOCATION_UNIT_GROUP = 'Location Unit Group';
+export const LOCATION_UNIT_MANAGEMENT = 'Location Unit Management';
+export const LOCATION_UNIT_GROUP_MANAGEMENT = 'Location Unit Group Management';
+export const ADD_LOCATION_UNIT = 'Add Location Unit';
+export const EDIT_LOCATION_UNIT = 'Edit Location Unit';
+export const ADD_LOCATION_UNIT_GROUP = 'Add Location Unit Group';
+export const EDIT_LOCATION_UNIT_GROUP = 'Edit Location Unit Group';
+export const LOGOUT = 'logout';
 
 //
 // Location Unit
@@ -6,7 +19,9 @@ export const API_BASE_URL = 'https://opensrp-stage.smartregister.org/opensrp/res
 export const LOCATION_UNIT_ALL = 'location/sync';
 export const LOCATION_UNIT_GET = 'location';
 export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
+export const LOCATION_UNIT_EXTRAFIELDS = 'v2/settings/?serverVersion=0';
 export const LOCATION_UNIT_FINDBYPROPERTIES = 'location/findByProperties';
+export const LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER = 'location_settings';
 // Url
 export const URL_LOCATION_UNIT = '/location/unit';
 export const URL_LOCATION_UNIT_ADD = URL_LOCATION_UNIT + '/add';
@@ -15,13 +30,13 @@ export const URL_LOCATION_UNIT_EDIT = URL_LOCATION_UNIT + '/edit';
 //
 // Location Tag
 //
-export const LOCATION_TAG_ALL = 'location-tag';
-export const LOCATION_TAG_GET = 'location-tag/';
-export const LOCATION_TAG_DELETE = 'location-tag/delete/';
+export const LOCATION_UNIT_GROUP_ALL = 'location-tag';
+export const LOCATION_UNIT_GROUP_GET = 'location-tag/';
+export const LOCATION_UNIT_GROUP_DELETE = 'location-tag/delete/';
 // Url
-export const URL_LOCATION_TAG = '/location/group';
-export const URL_LOCATION_TAG_ADD = URL_LOCATION_TAG + '/add';
-export const URL_LOCATION_TAG_EDIT = URL_LOCATION_TAG + '/edit';
+export const URL_LOCATION_UNIT_GROUP = '/location/group';
+export const URL_LOCATION_UNIT_GROUP_ADD = URL_LOCATION_UNIT_GROUP + '/add';
+export const URL_LOCATION_UNIT_GROUP_EDIT = URL_LOCATION_UNIT_GROUP + '/edit';
 
 //
 // Location HIERARCHY

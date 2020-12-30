@@ -1,5 +1,6 @@
 import flushPromises from 'flush-promises';
 import { mount } from 'enzyme';
+import { notification } from 'antd';
 import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
@@ -7,62 +8,106 @@ import { MemoryRouter, Route, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 
-import { id, locationtag, sampleHierarchiesList, sampleLocationUnit } from './fixtures';
-import LocationUnitAddEdit from '..';
+import {
+  baseLocationUnits,
+  rawHierarchy,
+  locationUnitgroups,
+  id,
+  locationSettings,
+} from './fixtures';
+import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
+
 import { act } from 'react-dom/test-utils';
-import { sampleHierarchy } from '../../LocationUnitView/tests/fixtures';
+import { baseURL } from '../../../constants';
+
+LocationUnitAddEdit.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
-  it('renders without crashing', async () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it('test getBaseTreeNode', async () => {
+    fetch.mockResponse(JSON.stringify(baseLocationUnits));
+
+    const response = await getBaseTreeNode('accessToken', baseURL);
+
+    expect(response).toMatchObject(baseLocationUnits);
+  });
+
+  it('test getHierarchy', async () => {
+    fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
+
+    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken', baseURL);
+
+    expect(response).toMatchObject([rawHierarchy[2]]);
+  });
+
+  it('fail loading location ', async () => {
+    const notificationErrorMock = jest.spyOn(notification, 'error');
+
+    fetch.mockReject();
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitAddEdit />
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
-    expect(wrapper.props()).toMatchSnapshot();
 
-    await act(async () => {
-      await flushPromises();
-    });
-    wrapper.unmount();
-  });
-
-  it('renders without crashing when editting', async () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={LocationUnitAddEdit} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.props()).toMatchSnapshot();
-
-    await act(async () => {
-      await flushPromises();
-    });
-    wrapper.unmount();
-  });
-
-  it('works correctly with store', async () => {
-    fetch
-      .once(JSON.stringify(sampleLocationUnit))
-      .once(JSON.stringify(locationtag))
-      .once(JSON.stringify(sampleHierarchiesList))
-      .once(JSON.stringify(sampleHierarchy));
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={LocationUnitAddEdit} />
-        </MemoryRouter>
-      </Provider>
-    );
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
-    const fetchCalls = [
+
+    expect(notificationErrorMock).toHaveBeenCalledWith({
+      message: 'An error occurred',
+      description: undefined,
+    });
+  });
+
+  it('fail loading location hierarchy', async () => {
+    const notificationErrorMock = jest.spyOn(notification, 'error');
+
+    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[0]]));
+    fetch.mockReject();
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith({
+      message: 'An error occurred',
+      description: undefined,
+    });
+  });
+
+  it('renders everything correctly', async () => {
+    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[0]]));
+    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+        </Router>
+      </Provider>
+    );
+
+    expect(fetch.mock.calls).toMatchObject([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
         {
@@ -75,7 +120,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status%3AActive%2CgeographicLevel%3A0',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
         {
           headers: {
             accept: 'application/json',
@@ -85,6 +130,40 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
           method: 'GET',
         },
       ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('form')).toHaveLength(1);
+  });
+
+  it('Fail id data fetch', async () => {
+    const notificationErrorMock = jest.spyOn(notification, 'error');
+    fetch.mockReject();
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
+          <Route path={'/:id'} component={LocationUnitAddEdit} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(fetch.mock.calls).toMatchObject([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
         {
@@ -108,7 +187,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status%3AActive%2CgeographicLevel%3A0',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
         {
           headers: {
             accept: 'application/json',
@@ -118,6 +197,35 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
           method: 'GET',
         },
       ],
+    ]);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith({
+      message: 'An error occurred',
+      description: undefined,
+    });
+  });
+
+  it('renders everything correctly with id', async () => {
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
+    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[0]]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
+          <Route path={'/:id'} component={LocationUnitAddEdit} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(fetch.mock.calls).toMatchObject([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
         {
@@ -141,7 +249,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status%3AActive%2CgeographicLevel%3A0',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
         {
           headers: {
             accept: 'application/json',
@@ -151,106 +259,13 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
           method: 'GET',
         },
       ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/5a286fc9-e985-4aa7-a843-d71f93d1f4b4',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/9feb1a4d-3020-4f1a-bbd9-0a47b54d2ae9',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/35bf4771-a404-4220-bd9e-e2916decc116',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a68d8a73-f235-4b9c-9717-41ba2546d771',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/66be3e59-5d49-4051-8ea4-dff7503d8d69',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/4f12391e-48ce-40d7-9dbb-813e93d042cb',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/c692b90d-ee20-4240-8904-8cbbbcab54f7',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-    ];
-    expect(fetch.mock.calls).toEqual(fetchCalls);
+    ]);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('form')).toHaveLength(1);
   });
 });

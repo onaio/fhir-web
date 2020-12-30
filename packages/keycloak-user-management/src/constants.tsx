@@ -30,5 +30,7 @@ export const NO_DATA_FOUND = 'No Data Found';
 
 // rendered text
 export const CREDENTIALS = 'User Credentials';
-export const RESET_PASSWORD = 'Reset Password';
+export const RESET_PASSWORD = 'Set password';
+export const EDIT_USER = 'Edit User';
+export const ADD_USER = 'Add User';
 export const CANCEL = 'Cancel';

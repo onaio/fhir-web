@@ -8,7 +8,26 @@ import {
   getItemByIdFactory,
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
+import { Dictionary } from '@onaio/utils';
 import { Geometry } from 'geojson';
+
+/** interface for extra fields in location properties **/
+
+export interface ExtraField {
+  key: string; // key with which the the payload will be sent to server
+  value?: string | number; // default value of the field
+  label?: string; // label of the field
+  description?: string; // default placeholder of the field
+  type: 'email' | 'number' | 'password' | 'text' | 'time' | 'url'; // type of the field
+  uuid: string; // received by the response thought we dont really use it
+  settingsId: string; // received by the response thought we dont really use it
+  settingIdentifier: string; // received by the response thought we dont really use it
+  settingMetadataId: string; // received by the response thought we dont really use it
+  v1Settings: boolean; // received by the response thought we dont really use it
+  resolveSettings: boolean; // received by the response thought we dont really use it
+  documentId: string; // received by the response thought we dont really use it
+  serverVersion: number; // received by the response thought we dont really use it
+}
 
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
@@ -22,7 +41,8 @@ export enum LocationUnitSyncStatus {
 }
 
 /** interface for LocationUnit.properties */
-export interface Properties {
+export interface Properties
+  extends Dictionary<string | number | LocationUnitStatus | undefined | string[] | number[]> {
   name: string;
   parentId: string;
   status: LocationUnitStatus;
@@ -42,25 +62,24 @@ export interface LocationUnitTag {
 /** location interface */
 export interface LocationUnit {
   id: string | number;
-  key?: string;
   properties: Properties;
-  syncStatus: LocationUnitSyncStatus;
   type: string;
   locationTags?: LocationUnitTag[];
-  geometry?: Geometry;
+  geometry?: Geometry; // todo : need to impliment the functionality
+  syncStatus?: LocationUnitSyncStatus;
   parentId?: string;
+  serverVersion?: number; // received by the response thought we dont really use it
 }
 
 /** interface for the POST payload */
 export interface LocationUnitPayloadPOST {
-  properties?: Properties;
-  syncStatus?: LocationUnitSyncStatus;
+  id: string | number; // todo : we will remove this later as it should be auto generated on server
+  properties: Properties;
   type: string;
   locationTags?: LocationUnitTag[];
-  geometry?: Geometry;
+  geometry?: Geometry; // todo : need to impliment its functionality
+  syncStatus: LocationUnitSyncStatus;
   textEntry?: string[];
-  // we will remove this id as it should be auto generated on server
-  id: string | number;
 }
 
 /** interface for the PUT payload */

@@ -8,52 +8,48 @@ import {
 import { cloneDeep } from 'lodash';
 import TreeModel from 'tree-model';
 
-/** mutates the structure of the children property in a single node
+/** Parse the raw child hierarchy node map
  *
- * @param {RawHierarchyNode} rawNode - single node i.e. part of rawOpensrp hierarchy
+ * @param {RawHierarchyNodeMap} rawNodeMap - Object of raw hierarchy nodes
+ * @returns {Array<ParsedHierarchyNode>} Array of Parsed hierarchy nodes
  */
-const parseChildren = (rawNode: RawHierarchyNode) => {
-  // explicitly dictating the types since we are mutating the object to a diff structure.
-  const typedRawNode = (rawNode as unknown) as ParsedHierarchyNode;
-
-  if (typedRawNode.children) {
-    typedRawNode.children = Object.entries(typedRawNode.children).map(([_, value]) => value);
-    typedRawNode.children.forEach((child) => {
-      const typedChild = (child as unknown) as RawHierarchyNode;
-      typedChild.title = child.label;
-      typedChild.key = child.label;
-      parseChildren(typedChild);
-    });
-  }
-};
-
-/** extract the root node as a flat object
- *
- * @param {RawHierarchyNodeMap} map - value of map in the rawOpenSRPHierarchy
- * @returns {object} - returns Parent jurisdiction object
- */
-const parseParent = (map: RawHierarchyNodeMap) => {
-  const parentJurisdiction = Object.entries(map).map(([_, value]) => value)[0];
-  parentJurisdiction.key = parentJurisdiction.id;
-  parentJurisdiction.title = parentJurisdiction.label;
-  return parentJurisdiction;
+const parseChildren = (rawNodeMap: RawHierarchyNodeMap) => {
+  const rawHierarchyNode: RawHierarchyNode[] = Object.entries(rawNodeMap).map(
+    ([_key, value]) => value
+  );
+  return rawHierarchyNode.map((child) => {
+    const parsedNode: ParsedHierarchyNode = {
+      ...child,
+      title: child.label,
+      key: child.label,
+      children: child.children ? parseChildren(child.children) : undefined,
+    };
+    return parsedNode;
+  });
 };
 
 /** parses the raw opensrp hierarchy to a hierarchy that we can quickly build
  * our tree model from.
  *
- * @param {RawOpenSRPHierarchy} rawOpenSRPHierarchy - the response we get from opensrp
+ * @param {RawOpenSRPHierarchy} raw - the response we get from opensrp
  * @returns {ParsedHierarchyNode} - returns Parent node with its children
  */
-const parseHierarchy = (rawOpenSRPHierarchy: RawOpenSRPHierarchy) => {
+const parseHierarchy = (raw: RawOpenSRPHierarchy) => {
   // clone the locationTree, we are going to be mutating a copy
-  const rawLocationsTreeClone = cloneDeep(rawOpenSRPHierarchy);
-  // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
-  const { map } = rawLocationsTreeClone.locationsHierarchy;
+  const rawClone: RawOpenSRPHierarchy = cloneDeep(raw);
 
-  const parentNodeWithChildren = parseParent(map);
-  parseChildren(parentNodeWithChildren);
-  return (parentNodeWithChildren as unknown) as ParsedHierarchyNode;
+  // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
+  const { map } = rawClone.locationsHierarchy;
+  // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
+  const rawNode: RawHierarchyNode = Object.entries(map).map(([_key, value]) => value)[0];
+  const parsedNode: ParsedHierarchyNode = {
+    ...rawNode,
+    title: rawNode.label,
+    key: rawNode.label,
+    children: rawNode.children ? parseChildren(rawNode.children) : undefined,
+  };
+
+  return parsedNode;
 };
 
 /** takes the raw opensrp hierarchy response and creates a tree model structure

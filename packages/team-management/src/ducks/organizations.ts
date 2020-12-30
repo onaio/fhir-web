@@ -43,20 +43,8 @@ export interface OrganizationPOST extends Partial<Organization> {
 
 // action interfaces
 
-/** action type for action that adds Organizations to store */
-export const ORGANIZATIONS_FETCHED = 'organizations/ORGANIZATIONS_FETCHED';
-/** action type for REMOVE_ORGANIZATIONS action */
-export const REMOVE_ORGANIZATIONS = 'organizations/REMOVE_ORGANIZATIONS';
-/** action type for SET_TOTAL_ORGANIZATIONSS */
-export const SET_TOTAL_ORGANIZATIONS = 'organizations/SET_TOTAL_ORGANIZATIONS';
-
 /** Item Reducer */
-export const reducer = reducerFactory<Organization>(
-  reducerName,
-  ORGANIZATIONS_FETCHED,
-  REMOVE_ORGANIZATIONS,
-  SET_TOTAL_ORGANIZATIONS
-);
+export const reducer = reducerFactory<Organization>(reducerName);
 
 // actions
 /** actionCreator returns action to add Item records to store */

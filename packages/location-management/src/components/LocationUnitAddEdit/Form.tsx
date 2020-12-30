@@ -8,6 +8,7 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import {
+  ExtraField,
   LocationUnitPayloadPOST,
   LocationUnitPayloadPUT,
   LocationUnitStatus,
@@ -16,13 +17,14 @@ import {
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { API_BASE_URL, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
-import { LocationTag } from '../../ducks/location-tags';
+import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { Dictionary } from '@onaio/utils';
 
-export interface FormField {
+export interface FormField extends Dictionary<string | number | number[] | undefined> {
   name: string;
   status: LocationUnitStatus;
   type: string;
@@ -42,8 +44,10 @@ const defaultFormField: FormField = {
 export interface Props {
   id?: string;
   initialValue?: FormField;
-  locationtag: LocationTag[];
+  extraFields?: ExtraField[];
+  locationUnitGroup: LocationUnitGroup[];
   treedata: ParsedHierarchyNode[];
+  opensrpBaseURL: string;
 }
 
 /** yup validations for practitioner data object from form */
@@ -53,8 +57,8 @@ const userSchema = Yup.object().shape({
   status: Yup.string().required('Status is Required'),
   type: Yup.string().typeError('Type must be a String').required('Type is Required'),
   externalId: Yup.string().typeError('External id must be a String'),
-  locationTags: Yup.array().typeError('location Tags must be an Array'),
-  geometry: Yup.string().typeError('location Tags must be a An String'),
+  locationTags: Yup.array().typeError('location Unit Groupss must be an Array'),
+  geometry: Yup.string().typeError('location Unit Groups must be a An String'),
 });
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -68,13 +72,17 @@ const status = [
  * @param {any} obj object to remove empty keys from
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function removeEmptykeys(obj: any) {
-  const objCopy = { ...obj };
-  Object.keys(obj).forEach(function (key) {
-    if (typeof objCopy[key] === 'object' && !objCopy[key].length) delete objCopy[key];
-    else if (typeof objCopy[key] === 'object') removeEmptykeys(objCopy[key]);
-    else if (objCopy[key] === '') delete objCopy[key];
-    else if (objCopy[key] === null || objCopy[key] === undefined) delete objCopy[key];
+export function removeEmptykeys(obj: any) {
+  Object.entries(obj).forEach(([key, value]) => {
+    if (typeof value === 'undefined') delete obj[key];
+    else if (value === '' || value === null) delete obj[key];
+    else if (typeof value === 'object') {
+      // if datatype is object this clearly means that either the value is an array or a json object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const valueObj = value as { [key: string]: any } | any[];
+      if (typeof valueObj.length !== 'undefined' && valueObj.length === 0) delete obj[key];
+      else removeEmptykeys(value);
+    }
   });
 }
 
@@ -84,30 +92,34 @@ function removeEmptykeys(obj: any) {
  * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
- * @param {Array<LocationTag>} locationtag all locationtag
+ * @param {string} opensrpBaseURL - base url
+ * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
  * @param {string} username username of logged in user
  * @param {number} id location unit
+ * @param {ExtraField} extraFields extraFields to be input with location unit
  */
 export const onSubmit = async (
   setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   accessToken: string,
-  locationtag: LocationTag[],
+  opensrpBaseURL: string,
+  locationUnitgroup: LocationUnitGroup[],
   username: string,
-  id?: string
+  id?: string,
+  extraFields?: ExtraField[]
 ) => {
-  const locationTagFiler = locationtag.filter((e) =>
+  const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
     (values.locationTags as number[]).includes(e.id)
   );
 
-  const locationTag: LocationUnitTag[] = locationTagFiler.map((tag: LocationUnitTag) => ({
+  const locationTag: LocationUnitTag[] = locationUnitGroupFiler.map((tag: LocationUnitTag) => ({
     id: tag.id,
     name: tag.name,
   }));
 
   let geographicLevel: number | undefined | void;
   if (values.parentId) {
-    geographicLevel = await new OpenSRPService(accessToken, API_BASE_URL, LOCATION_HIERARCHY)
+    geographicLevel = await new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY)
       .read(values.parentId)
       .then((res: RawOpenSRPHierarchy) => {
         return res.locationsHierarchy.map[values.parentId as string].node.attributes
@@ -138,9 +150,14 @@ export const onSubmit = async (
     geometry: values.geometry ? (JSON.parse(values.geometry) as Geometry) : undefined,
   };
 
+  extraFields?.forEach(({ key }) => {
+    // assumes the data to be string or number as for now we only use input type number and text
+    payload.properties[key] = values[key] as string | number;
+  });
+
   removeEmptykeys(payload);
 
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_POST_PUT);
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_POST_PUT);
   if (id) {
     await serve
       .update({ ...payload })
@@ -203,7 +220,18 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(setSubmitting, values, accessToken, props.locationtag, user.username, props.id)}
+      ) =>
+        onSubmit(
+          setSubmitting,
+          values,
+          accessToken,
+          props.opensrpBaseURL,
+          props.locationUnitGroup,
+          user.username,
+          props.id,
+          props.extraFields
+        )
+      }
     >
       {({ isSubmitting, handleSubmit }) => (
         <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
@@ -254,13 +282,29 @@ export const Form: React.FC<Props> = (props: Props) => {
               optionFilterProp="children"
               filterOption={filterFunction}
             >
-              {props.locationtag.map((e) => (
+              {props.locationUnitGroup.map((e) => (
                 <Select.Option key={e.id} value={e.id}>
                   {e.name}
                 </Select.Option>
               ))}
             </Select>
           </AntForm.Item>
+
+          {props.extraFields?.map((field) => (
+            <AntForm.Item
+              key={field.key}
+              name={field.key}
+              label={field.label}
+              wrapperCol={field.label ? { span: 11 } : { offset: 8, span: 11 }}
+            >
+              <Input
+                name={field.key}
+                type={field.type}
+                defaultValue={field.value}
+                placeholder={field.description}
+              />
+            </AntForm.Item>
+          ))}
 
           <AntForm.Item name="buttons" {...offsetLayout}>
             <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
