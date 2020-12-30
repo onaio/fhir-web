@@ -14,8 +14,6 @@ import locationUnitsReducer, {
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
-  LOCATION_UNIT_FINDBYPROPERTIES,
-  LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
   ADD_LOCATION_UNIT,
@@ -34,23 +32,17 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree } from '../LocationTree/utils';
+import { generateJurisdictionTree, getBaseTreeNode, getHierarchy } from '../LocationTree/utils';
 
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { ParsedHierarchyNode, Props } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
-
-const { getFilterParams } = OpenSRPService;
 
 export interface AntTreeProps {
   title: JSX.Element;
   key: string;
   children: AntTreeProps[];
-}
-
-export interface Props {
-  opensrpBaseURL: string;
 }
 
 /** Function to Load selected location unit for details
@@ -77,23 +69,6 @@ export function loadSingleLocation(
     .catch(() => sendErrorNotification('An error occurred'));
 }
 
-/** Gets all the location unit at geographicLevel 0
- *
- * @param {string} accessToken - Access token to be used for requests
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
- */
-export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
-  return await serve
-    .list({
-      is_jurisdiction: true,
-      return_geometry: false,
-      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-    })
-    .then((response: LocationUnit[]) => response);
-}
-
 /** Parse the hierarchy node into table data
  *
  * @param {Array<ParsedHierarchyNode>} hierarchy - hierarchy node to be parsed
@@ -111,28 +86,6 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
     });
   });
   return data;
-}
-
-/** Gets the hierarchy of the location units
- *
- * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
- * @param {string} accessToken - Access token to be used for requests
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
- */
-export async function getHierarchy(
-  location: LocationUnit[],
-  accessToken: string,
-  opensrpBaseURL: string
-) {
-  const hierarchy: RawOpenSRPHierarchy[] = [];
-  for await (const loc of location) {
-    const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY);
-    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
-    hierarchy.push(data);
-  }
-
-  return hierarchy;
 }
 
 export const LocationUnitView: React.FC<Props> = (props: Props) => {

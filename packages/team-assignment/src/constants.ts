@@ -4,6 +4,7 @@ export const OPENSRP_API_BASE_URL = 'https://opensrp-staging.smartregister.org/o
 export const TEAM_ASSIGNMENT_LIST_VIEW_URL = '/team-assignment';
 export const TEAM_ASSIGNMENT_EDIT_VIEW_URL = '/team-assignment/edit';
 export const TEAM_ASSIGNMENT_CREATE_VIEW_URL = 'team-assignment/new';
+export const ORGANIZATION_ENDPOINT = 'organization';
 export const HOME_URL = '/';
 export const LOCATION_HIERARCHY_ENDPOINT = 'location/hierarchy';
 export const PLANS_ENDPOINT = 'plans';

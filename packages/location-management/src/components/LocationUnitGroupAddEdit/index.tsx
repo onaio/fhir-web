@@ -6,12 +6,9 @@ import reducer, { reducerName } from '../../ducks/location-units';
 import Form from './Form';
 import { useParams } from 'react-router';
 import { ADD_LOCATION_UNIT_GROUP, EDIT_LOCATION_UNIT_GROUP } from '../../constants';
+import { Props } from '../../ducks/types';
 
 reducerRegistry.register(reducerName, reducer);
-
-export interface Props {
-  opensrpBaseURL: string;
-}
 
 export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();

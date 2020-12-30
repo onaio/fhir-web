@@ -6,16 +6,12 @@ import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import { notification } from 'antd';
 import { Router } from 'react-router';
-import LocationUnitView, {
-  loadSingleLocation,
-  getBaseTreeNode,
-  parseTableData,
-  getHierarchy,
-} from '..';
+import LocationUnitView, { loadSingleLocation, parseTableData } from '..';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 import { baseURL } from '../../../constants';
+import { getBaseTreeNode, getHierarchy } from '../../LocationTree/utils';
 
 LocationUnitView.defaultProps = { opensrpBaseURL: baseURL };
 

@@ -7,6 +7,11 @@ import {
 } from '../../ducks/types';
 import { cloneDeep } from 'lodash';
 import TreeModel from 'tree-model';
+import { OpenSRPService } from '@opensrp/server-service';
+import { LocationUnit } from '../../ducks/location-units';
+import { LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../../constants';
+
+const { getFilterParams } = OpenSRPService;
 
 /** Parse the raw child hierarchy node map
  *
@@ -63,3 +68,45 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
   const root = tree.parse<ParsedHierarchyNode>(hierarchy);
   return root;
 };
+
+/** Gets all the location unit at geographicLevel 0
+ *
+ * @param {string} accessToken - Access token to be used for requests
+ * @param {string} opensrpBaseURL - base url
+ * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
+ */
+export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
+  return await serve
+    .list({
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      is_jurisdiction: true,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      return_geometry: false,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+    })
+    .then((response: LocationUnit[]) => response);
+}
+
+/** Gets the hierarchy of the location units
+ *
+ * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
+ * @param {string} accessToken - Access token to be used for requests
+ * @param {string} opensrpBaseURL - base url
+ * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
+ */
+export async function getHierarchy(
+  location: LocationUnit[],
+  accessToken: string,
+  opensrpBaseURL: string
+) {
+  const hierarchy: RawOpenSRPHierarchy[] = [];
+  for await (const loc of location) {
+    const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY);
+    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
+    hierarchy.push(data);
+  }
+
+  return hierarchy;
+}
