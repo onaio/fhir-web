@@ -21,7 +21,7 @@ export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   return (
     <Row className="layout-content">
       <Helmet>
-        <title>{params.id ? EDIT_LOCATION_UNIT_GROUP + title : ADD_LOCATION_UNIT_GROUP}</title>
+        <title>{params.id ? EDIT_LOCATION_UNIT_GROUP : ADD_LOCATION_UNIT_GROUP}</title>
       </Helmet>
 
       <h5 className="mb-4 header-title">
