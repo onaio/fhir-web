@@ -11,7 +11,7 @@ Array [
     </title>
   </HelmetWrapper>,
   <h5
-    className="mb-4"
+    className="mb-4 header-title"
   >
     Edit Location Unit Group | 
   </h5>,
@@ -38,7 +38,7 @@ Array [
     </title>
   </HelmetWrapper>,
   <h5
-    className="mb-4"
+    className="mb-4 header-title"
   >
     Add Location Unit Group
   </h5>,

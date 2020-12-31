@@ -185,7 +185,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         <title>{params.id ? EDIT_LOCATION_UNIT : ADD_LOCATION_UNIT}</title>
       </Helmet>
 
-      <h5 className="mb-4">
+      <h5 className="mb-4 header-title">
         {params.id ? `${EDIT_LOCATION_UNIT} | ${LocationUnitDetail?.name}` : ADD_LOCATION_UNIT}
       </h5>
 
