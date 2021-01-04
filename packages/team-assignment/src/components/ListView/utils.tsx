@@ -1,6 +1,6 @@
 import React from 'react';
 import { get, keyBy } from 'lodash';
-import { Spin, Alert, Button } from 'antd';
+import { Spin, Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
@@ -63,15 +63,7 @@ export const columns: ColumnsType<any> = [
 /** util component shown when there is a pending promise */
 
 export const TeamAssignmentLoading = () => {
-  return (
-    <Spin tip="Loading...">
-      <Alert
-        message="Fetching Assigned Locations and Teams"
-        description="Please wait, as we fetch Assigned Locations and Teams."
-        type="info"
-      />
-    </Spin>
-  );
+  return <Spin size="large" />;
 };
 
 /**
