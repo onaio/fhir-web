@@ -99,9 +99,9 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
+  const parentId = query.get('parentId');
 
   useEffect(() => {
-    const parentId = query.get('parentId');
     if (parentId != null)
       setLocationUnitDetail({
         name: '',
@@ -109,6 +109,9 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         type: '',
         parentId: parentId,
       });
+  }, [parentId]);
+
+  useEffect(() => {
     if (params.id) {
       const serve = new OpenSRPService(
         accessToken,
@@ -130,7 +133,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification('An error occurred'));
     }
-  }, [accessToken, params.id, opensrpBaseURL, query]);
+  }, [accessToken, params.id, opensrpBaseURL]);
 
   useEffect(() => {
     if (!locationUnitGroup.length) {
