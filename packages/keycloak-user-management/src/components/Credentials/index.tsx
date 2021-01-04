@@ -11,7 +11,7 @@ import {
   KEYCLOAK_URL_USERS,
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
-  URL_ADMIN,
+  URL_USER,
   CREDENTIALS,
   PASSWORD_MATCH_FAILURE,
   RESET_PASSWORD,
@@ -68,7 +68,7 @@ export type CredentialsPropsTypes = CredentialsProps & RouteComponentProps<Crede
  * @param {Dictionary} genericHistory react-rouet usehistory hook
  */
 export const cancelUserHandler = (genericHistory: Dictionary): void => {
-  genericHistory.push(URL_ADMIN);
+  genericHistory.push(URL_USER);
 };
 
 /** default props for editing user component */
@@ -109,7 +109,7 @@ export const submitForm = (
     })
     .then(() => {
       sendSuccessNotification(CREDENTIALS_UPDATED_SUCCESSFULLY);
-      useHistory().push(URL_ADMIN);
+      useHistory().push(URL_USER);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);

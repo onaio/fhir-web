@@ -1,8 +1,8 @@
 // Web URLs
-export const URL_USER_EDIT = '/user/edit';
-export const URL_ADMIN = '/admin';
-export const URL_USER_CREATE = '/user/new';
-export const URL_USER_CREDENTIALS = '/user/credentials';
+export const URL_USER_EDIT = '/admin/users/edit';
+export const URL_USER = '/admin/users/list';
+export const URL_USER_CREATE = '/admin/users/new';
+export const URL_USER_CREDENTIALS = '/admin/users/credentials';
 
 // Route params
 export const ROUTE_PARAM_USER_ID = 'userId';
