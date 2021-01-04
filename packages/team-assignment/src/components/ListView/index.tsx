@@ -23,7 +23,6 @@ import {
   RawOpenSRPHierarchy,
   reducerName as hierarchyReducerName,
   reducer as hierarchyReducer,
-  getCurrentChildren,
 } from '@opensrp/location-management';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -73,9 +72,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   );
   const assignmentsList: Assignment[] = useSelector((state) => getAssignments(state));
   const allOrganizations: Organization[] = useSelector((state) => getOrganizationsArray(state));
-  const currentParentChildren = (useSelector((state) =>
-    getCurrentChildren(state)
-  ) as unknown) as ParsedHierarchyNode[];
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [visible, setVisible] = useState<boolean>(false);
@@ -83,6 +79,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     null
   );
   const [planLocationId, setPlanLocationId] = useState<string>('');
+  const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
   const [existingAssignments, setExistingAssignments] = useState<Assignment[]>([]);
   const planLocationIdRef = useRef(planLocationId);
   planLocationIdRef.current = planLocationId;
@@ -177,7 +174,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     setVisible(false);
   };
 
-  if (loading || !Treedata.length) {
+  if (loading || !Treedata.length || !assignmentsList.length) {
     return <TeamAssignmentLoading />;
   }
 
@@ -300,7 +297,16 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       </Modal>
       <Row className={'list-view'}>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={Treedata} appendParentAsChild={false} />
+          <Tree
+            data={Treedata}
+            appendParentAsChild={false}
+            OnItemClick={(node) => {
+              if (node.children) {
+                const children = [node, ...node.children];
+                setCurrentParentChildren(children);
+              }
+            }}
+          />
         </Col>
         <Col className={'main-content'}>
           <Table dataSource={tableData} columns={columns}></Table>
