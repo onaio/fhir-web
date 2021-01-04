@@ -8,7 +8,8 @@ export const ORGANIZATION_ENDPOINT = 'organization';
 export const HOME_URL = '/';
 export const LOCATION_HIERARCHY_ENDPOINT = 'location/hierarchy';
 export const PLANS_ENDPOINT = 'plans';
-export const ASSIGNMENTS_ENDPOINT = 'organization/assignLocationsAndPlans';
+export const POST_ASSIGNMENTS_ENDPOINT = 'organization/assignLocationsAndPlans';
+export const ASSIGNMENTS_ENDPOINT = 'organization/assignedLocationsAndPlans';
 export const SUCCESSFULLY_ASSIGNED_TEAMS = 'Successfully Assigned Teams';
 export const ENTER_TEAM_NAME = 'Enter a Team name';
 

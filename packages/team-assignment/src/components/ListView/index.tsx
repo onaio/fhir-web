@@ -39,6 +39,7 @@ import {
   LOCATION_HIERARCHY_ENDPOINT,
   ORGANIZATION_ENDPOINT,
   PLANS_ENDPOINT,
+  POST_ASSIGNMENTS_ENDPOINT,
   SAVE,
   SUCCESSFULLY_ASSIGNED_TEAMS,
   TEAM_ASSIGNMENT_PAGE_TITLE,
@@ -234,6 +235,9 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         okText={SAVE}
         cancelText={CANCEL}
         footer={[
+          <Button type="primary" form="teamAssignment" key="submit" htmlType="submit">
+            Save
+          </Button>,
           <Button
             id={CANCEL}
             key="cancel"
@@ -242,9 +246,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             }}
           >
             Cancel
-          </Button>,
-          <Button form="teamAssignment" key="submit" htmlType="submit">
-            Save
           </Button>,
         ]}
         okType="default"
@@ -262,7 +263,11 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
                 assignedLocAndTeams?.assignedTeams,
                 existingAssignments
               );
-              const serve = new OpenSRPService(accessToken, opensrpBaseURL, ASSIGNMENTS_ENDPOINT);
+              const serve = new OpenSRPService(
+                accessToken,
+                opensrpBaseURL,
+                POST_ASSIGNMENTS_ENDPOINT
+              );
               serve
                 .create(payload)
                 .then(() => {
