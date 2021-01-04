@@ -10,7 +10,7 @@ import './Home.css';
 import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
-  URL_ADMIN,
+  URL_USER,
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
 } from '../../../constants';
@@ -36,7 +36,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
       <Row gutter={16} className="links-box">
         {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
           <Col className="gutter-row" span={12}>
-            <Link to={URL_ADMIN} className="admin-link">
+            <Link to={URL_USER} className="admin-link">
               <Button color="outline" className="btn-links">
                 Admin
               </Button>

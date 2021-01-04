@@ -6,7 +6,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { KeycloakUser } from '../../../ducks/user';
-import { URL_ADMIN, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
+import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -203,7 +203,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 <Button type="primary" htmlType="submit" className="create-user">
                   {isSubmitting ? 'Saving' : 'Save'}
                 </Button>
-                <Button onClick={() => history.push(URL_ADMIN)} className="cancel-user">
+                <Button onClick={() => history.push(URL_USER)} className="cancel-user">
                   {CANCEL}
                 </Button>
               </Form.Item>

@@ -18,7 +18,7 @@ exports[`components/UserList/TableActions hides delete element if entry is logge
   </MenuItem>
   <MenuItem>
     <Link
-      to="/user/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+      to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
     >
       <Button
         block={false}
@@ -101,7 +101,7 @@ Object {
     </MenuItem>
     <MenuItem>
       <Link
-        to="/user/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+        to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
       >
         <Button
           block={false}
@@ -121,7 +121,7 @@ Object {
 exports[`components/UserList/TableActions renders correctly: edit 1`] = `
 Object {
   "children": "Edit",
-  "to": "/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+  "to": "/admin/users/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b",
 }
 `;
 
@@ -159,7 +159,7 @@ exports[`components/UserList/TableActions shows delete element if entry is not l
   </MenuItem>
   <MenuItem>
     <Link
-      to="/user/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+      to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
     >
       <Button
         block={false}
