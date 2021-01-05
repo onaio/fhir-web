@@ -315,7 +315,7 @@ describe('forms/UserForm', () => {
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
-    expect(history.location.pathname).toEqual('/admin');
+    expect(history.location.pathname).toEqual('/admin/users/list');
     wrapper.unmount();
   });
 });

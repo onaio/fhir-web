@@ -136,7 +136,7 @@ describe('forms/utils/submitForm', () => {
     ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User created successfully');
     expect(historyPushMock).toHaveBeenCalledWith(
-      '/user/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b'
+      '/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b'
     );
   });
 
@@ -174,7 +174,7 @@ describe('forms/utils/submitForm', () => {
       },
     ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
-    expect(historyPushMock).toHaveBeenCalledWith('/admin');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
   });
 
   it('handles error when user creation fails', async () => {
