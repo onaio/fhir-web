@@ -70,7 +70,7 @@ function setupInitialValue(accessToken: string, id: string, setInitialValue: Fun
     .catch(() => sendErrorNotification(ERROR_OCCURRED));
 }
 
-export const TeamsAddEdit: React.FC = () => {
+const TeamsAddEdit: React.FC = () => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const params: { id: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
@@ -121,4 +121,4 @@ export const TeamsAddEdit: React.FC = () => {
   );
 };
 
-export default TeamsAddEdit;
+export { TeamsAddEdit };
