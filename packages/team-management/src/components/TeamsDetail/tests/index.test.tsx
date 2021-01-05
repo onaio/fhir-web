@@ -26,6 +26,13 @@ describe('components/TeamsDetail', () => {
         userId: '7306784c-64fb-4d45-990b-306863eb478b',
         username: 'prac_1',
       },
+      {
+        active: true,
+        identifier: '718e2b7d-22d7-4c23-aaa7-62cca4b9e318',
+        name: 'prac two',
+        userId: '7306784c-64fb-4d45-990b-306863eb478b',
+        username: 'prac_2',
+      },
     ],
   };
 

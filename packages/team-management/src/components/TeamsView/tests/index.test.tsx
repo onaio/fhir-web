@@ -10,6 +10,7 @@ import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { org1, teamMember } from '../../../ducks/tests/fixtures';
 import { notification } from 'antd';
+import { ERROR_OCCURRED } from '../../../constants';
 
 describe('components/TeamsView', () => {
   beforeEach(() => {
@@ -77,7 +78,7 @@ describe('components/TeamsView', () => {
   });
 
   it('test error thrown if API is down', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const mockNotificationError = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject('API is down'));
     loadSingleTeam(
       {
@@ -104,8 +105,9 @@ describe('components/TeamsView', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: undefined,
+      message: ERROR_OCCURRED,
     });
   });
 });

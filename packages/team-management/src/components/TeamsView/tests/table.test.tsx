@@ -65,9 +65,23 @@ describe('components/TeamsView/table', () => {
         />
       </Router>
     );
-
-    wrapper.find('.viewdetails').first().simulate('click');
+    wrapper.find('.viewdetails').at(0).simulate('click');
     expect(wrapper).toHaveLength(0);
+  });
+
+  it('Test Table View Detail when onViewDetail prop is not passed', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <Table
+          setPractitionersList={() => jest.fn()}
+          setDetail={() => jest.fn()}
+          opensrpBaseURL=""
+          accessToken="hunter 2"
+          data={tableData}
+        />
+      </Router>
+    );
+    wrapper.find('.viewdetails').at(0).simulate('click');
   });
 
   it('Test Name Sorting functionality', () => {
@@ -93,5 +107,20 @@ describe('components/TeamsView/table', () => {
     const body = wrapper.find('tbody');
     expect(body.children().first().prop('rowKey')).toBe('4');
     expect(body.children().last().prop('rowKey')).toBe('1');
+  });
+
+  it('Should show table pagination options', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <Table
+          setPractitionersList={() => jest.fn()}
+          setDetail={() => jest.fn()}
+          opensrpBaseURL=""
+          accessToken="hunter 2"
+          data={tableData}
+        />
+      </Router>
+    );
+    expect(wrapper.find('.ant-table-pagination')).toBeTruthy();
   });
 });

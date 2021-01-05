@@ -40,7 +40,9 @@ const TeamsDetail = (props: TeamsDetailProps) => {
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">Team members</p>
         {teamMembers.length ? (
-          teamMembers.map((item) => <p key={item.identifier} className="mb-0">{`${item.name}`}</p>)
+          teamMembers.map((item) =>
+            item.active ? <p key={item.identifier} className="mb-0">{`${item.name}`}</p> : null
+          )
         ) : (
           <p className="no-team-members">No team members</p>
         )}

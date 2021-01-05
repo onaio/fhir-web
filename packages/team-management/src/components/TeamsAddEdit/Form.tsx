@@ -9,6 +9,7 @@ import {
   PRACTITIONER_POST,
   PRACTITIONER_DEL,
   TEAMS_PUT,
+  ERROR_OCCURRED,
 } from '../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
@@ -40,23 +41,23 @@ interface Props {
 /**
  * Handle form submission
  *
+ * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {string} accessToken Token for api calles
  * @param {object} values value of form fields
  * @param {object} initialValue initialValue of form fields
  * @param {string} id id of the team
- * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  */
 export function onSubmit(
+  setIsSubmitting: (value: boolean) => void,
   practitioner: Practitioner[],
   accessToken: string,
   values: FormField,
   initialValue: FormField,
-  id?: string,
-  setIsSubmitting?: (value: boolean) => void
+  id?: string
 ) {
-  if (setIsSubmitting) setIsSubmitting(true);
-  const Teamid = id ? id : v4();
+  setIsSubmitting(true);
+  const Teamid = id ?? v4();
 
   const payload: OrganizationPOST = {
     active: values.active,
@@ -77,20 +78,16 @@ export function onSubmit(
     .then(async () => {
       // Filter and seperate the practitioners uuid
       // const toBe = initialValue.practitioners.filter((val) => values.practitioners.includes(val));
-      const toAdd = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
-      const toRemove = values.practitioners.filter(
-        (val) => !initialValue.practitioners.includes(val)
-      );
+      const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
+      const toRem = initialValue.practitioners
+        .filter((val) => !values.practitioners.includes(val))
+        .filter((e) => e !== '');
 
-      await SetPractitioners(practitioner, toAdd, toRemove, accessToken, Teamid);
-
-      if (setIsSubmitting) setIsSubmitting(false);
+      await SetPractitioners(practitioner, toAdd, toRem, accessToken, Teamid);
       history.goBack();
     })
-    .catch(() => {
-      if (setIsSubmitting) setIsSubmitting(false);
-      sendErrorNotification('An error occurred');
-    });
+    .catch(() => sendErrorNotification(ERROR_OCCURRED))
+    .finally(() => setIsSubmitting(false));
 }
 
 /**
@@ -112,23 +109,25 @@ async function SetPractitioners(
   sendInfoNotification('Assigning Practitioners');
 
   // Api Call to delete practitioners
-  toRemove.forEach((prac) =>
-    new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_DEL + prac).delete()
-  );
+  toRemove.forEach((prac) => {
+    const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_DEL + prac);
+    serve.delete().catch(() => sendErrorNotification(ERROR_OCCURRED));
+  });
 
   // Api Call to add practitioners
   const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.identifier));
   const payload: PractitionerPOST[] = toAddPractitioner.map((prac) => {
     return {
-      active: prac.active,
+      active: true,
       identifier: v4(),
       practitioner: prac.identifier,
       organization: id,
       code: { text: 'Community Health Worker' },
     };
   });
+
   const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
-  await serve.create(payload);
+  await serve.create(payload).catch(() => sendErrorNotification(ERROR_OCCURRED));
 
   sendSuccessNotification('Successfully Assigned Practitioners');
 }
@@ -154,10 +153,7 @@ export async function setTeam(accessToken: string, payload: OrganizationPOST, id
 
 export const Form: React.FC<Props> = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const initialValue = props.initialValue
-    ? props.initialValue
-    : { active: true, name: '', practitioners: [''] };
+  const initialValue = props.initialValue ?? { active: true, name: '', practitioners: [''] };
 
   return (
     <AntdForm
@@ -165,12 +161,12 @@ export const Form: React.FC<Props> = (props: Props) => {
       {...layout}
       onFinish={(values) =>
         onSubmit(
+          setIsSubmitting,
           props.practitioner,
           props.accessToken,
           values,
           initialValue,
-          props.id,
-          setIsSubmitting
+          props.id
         )
       }
       initialValues={initialValue}
