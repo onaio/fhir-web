@@ -11,6 +11,7 @@ import reducer, {
 } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
+import { Dictionary } from '@onaio/utils';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
@@ -27,7 +28,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const filterData: ParsedHierarchyNode[] = [];
 
   const locationTreeState = useSelector(
-    (state) => (getLocationTreeState(state) as unknown) as LocationTreeState
+    (state) => (getLocationTreeState(state) as Dictionary) as LocationTreeState
   );
 
   const dispatch = useDispatch();
