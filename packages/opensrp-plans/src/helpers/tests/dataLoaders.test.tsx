@@ -117,6 +117,18 @@ describe('dataLoading', () => {
     });
   });
 
+  it('load organization where response is null', async () => {
+    fetch.once(JSON.stringify(null));
+    const mockCreator = jest.fn();
+
+    loadOrganizations(mockBaseURL, OpenSRPService, mockCreator).catch((e) => {
+      throw e;
+    });
+
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(mockCreator).not.toHaveBeenCalled();
+  });
+
   it('put jurisdiction to plan works correctly', async () => {
     fetch.mockResponse(JSON.stringify({}));
     // with jurisdictions
