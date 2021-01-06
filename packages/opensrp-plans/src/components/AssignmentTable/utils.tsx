@@ -147,8 +147,8 @@ export const getDataSource = (
 
   const dataSource = orgsAndJursOptions.map((mapping, index) => ({
     key: `${TableColumnsNamespace}-${index}`,
-    organizations: mapping.organizations.map((option) => option.label).join(', '),
-    jurisdictions: mapping.jurisdictions.map((option) => option.label).join(', '),
+    organizations: mapping.organizations.map((option) => option.label).join(', ') || ' - ',
+    jurisdictions: mapping.jurisdictions.map((option) => option.label).join(', ') || ' - ',
   }));
   if (dataSource.length < 1) {
     dataSource.push({
