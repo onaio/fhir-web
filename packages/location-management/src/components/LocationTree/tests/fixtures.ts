@@ -1,5 +1,12 @@
+/* eslint-disable @typescript-eslint/camelcase */
+import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../../ducks/types';
 import { generateJurisdictionTree } from '../utils';
+
+export const opensrpBaseURL = 'https://test-example.com/rest/';
+
+export const accessToken = 'Token';
+
 export const treedata: ParsedHierarchyNode[] = [
   {
     id: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
@@ -575,6 +582,57 @@ export const treedata: ParsedHierarchyNode[] = [
     },
     title: 'Malawi',
     key: 'Malawi',
+  },
+];
+
+export const baseLocationUnits: LocationUnit[] = [
+  {
+    type: 'Feature',
+    id: 'b652b2f4-a95d-489b-9e28-4629746db96a',
+    properties: {
+      status: LocationUnitStatus.ACTIVE,
+      parentId: '',
+      name: 'Kenya',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'Kenya',
+    },
+    serverVersion: 206,
+    locationTags: [
+      { id: 2, name: 'Sample 2' },
+      { id: 3, name: 'Sample 3' },
+    ],
+  },
+  {
+    type: 'Feature',
+    id: '6bf9c085-350b-4bb2-990f-80dc2caafb33',
+    properties: {
+      status: LocationUnitStatus.ACTIVE,
+      parentId: '',
+      name: 'Malawi',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'Malawi',
+    },
+    serverVersion: 223,
+    locationTags: [{ id: 4, name: 'Option1' }],
+  },
+  {
+    type: 'Feature',
+    id: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
+    properties: {
+      status: LocationUnitStatus.ACTIVE,
+      parentId: '',
+      name: 'Tunisiaa',
+      geographicLevel: 0,
+      version: 0,
+      username: 'web-admin',
+      name_en: 'Tunisiaa',
+    },
+    serverVersion: 231,
+    locationTags: [{ id: 2, name: 'Sample 2' }],
   },
 ];
 
