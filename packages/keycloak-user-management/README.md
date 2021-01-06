@@ -19,7 +19,7 @@ import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
-  URL_ADMIN,
+  URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
   URL_USER_CREATE,
@@ -35,7 +35,7 @@ const App = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={URL_ADMIN}
+              path={URL_USER}
               component={(props: any) => (
                 <ConnectedUserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}

@@ -378,7 +378,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/plans/active"
+        to="/missions/plans/active"
       >
         Active
       </Link>
@@ -386,7 +386,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/plans/draft"
+        to="/missions/plans/draft"
       >
         Draft
       </Link>
@@ -394,7 +394,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/plans/complete"
+        to="/missions/plans/complete"
       >
         Complete
       </Link>
@@ -402,7 +402,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/plans/trash"
+        to="/missions/plans/trash"
       >
         Trash
       </Link>
@@ -418,7 +418,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin"
+          to="/admin/users/list"
         >
           User Management
         </Link>
@@ -427,7 +427,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/teams"
+        to="/admin/teams"
       >
         Teams
       </Link>
@@ -446,7 +446,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/location/unit"
+          to="/admin/location/unit"
         >
           Locations unit
         </Link>
@@ -454,7 +454,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/location/group"
+          to="/admin/location/group"
         >
           Locations unit group
         </Link>
@@ -466,7 +466,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/releases"
+          to="/admin/releases"
         >
           Manifest Releases
         </Link>
@@ -474,7 +474,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/drafts"
+          to="/admin/drafts"
         >
           Draft Files
         </Link>
@@ -482,7 +482,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/json-validators"
+          to="/admin/json-validators"
         >
           JSON Validators
         </Link>
@@ -501,7 +501,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/plans/active"
+        to="/missions/plans/active"
       >
         Active
       </Link>
@@ -509,7 +509,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/plans/draft"
+        to="/missions/plans/draft"
       >
         Draft
       </Link>
@@ -517,7 +517,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/plans/complete"
+        to="/missions/plans/complete"
       >
         Complete
       </Link>
@@ -525,7 +525,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/plans/trash"
+        to="/missions/plans/trash"
       >
         Trash
       </Link>
@@ -541,7 +541,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin"
+          to="/admin/users/list"
         >
           User Management
         </Link>
@@ -550,7 +550,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/teams"
+        to="/admin/teams"
       >
         Teams
       </Link>
@@ -569,7 +569,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/releases"
+          to="/admin/releases"
         >
           Manifest Releases
         </Link>
@@ -577,7 +577,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/drafts"
+          to="/admin/drafts"
         >
           Draft Files
         </Link>
@@ -585,7 +585,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/json-validators"
+          to="/admin/json-validators"
         >
           JSON Validators
         </Link>
@@ -641,7 +641,7 @@ Object {
           <MenuItem>
             <Link
               className="admin-link"
-              to="/teams"
+              to="/admin/teams"
             >
               Teams
             </Link>
@@ -682,7 +682,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin"
+          to="/admin/users/list"
         >
           User Management
         </Link>
@@ -691,7 +691,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/teams"
+        to="/admin/teams"
       >
         Teams
       </Link>

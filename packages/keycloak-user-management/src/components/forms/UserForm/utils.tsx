@@ -7,7 +7,7 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { KeycloakUser } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
-  URL_ADMIN,
+  URL_USER,
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   ERROR_OCCURED,
   PRACTITIONER_UPDATED_SUCCESSFULLY,
@@ -128,7 +128,7 @@ export const submitForm = (
         );
         setSubmitting(false);
         sendSuccessNotification('User edited successfully');
-        history.push(URL_ADMIN);
+        history.push(URL_USER);
       })
       .catch((_: Error) => {
         setSubmitting(false);
