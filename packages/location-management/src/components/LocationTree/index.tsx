@@ -14,7 +14,7 @@ import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { generateJurisdictionTree } from './utils';
 import { LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../../constants';
-import { OpenSRPService } from 'opensrp-server-service';
+import { OpenSRPService } from '@opensrp/server-service';
 reducerRegistry.register(reducerName, reducer);
 
 const { getFilterParams } = OpenSRPService;
