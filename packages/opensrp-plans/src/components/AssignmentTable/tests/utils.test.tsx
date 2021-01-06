@@ -42,7 +42,11 @@ describe('team assignment table utils', () => {
   it('gets dataSource for planJurisdictions only', () => {
     const response = getDataSource([], [], [], ['9b5dd829-89de-45a5-98f2-fd37787ae94']);
     expect(response).toEqual([
-      { jurisdictions: '9b5dd829-89de-45a5-98f2-fd37787ae94', key: 'plans-0', organizations: '' },
+      {
+        jurisdictions: '9b5dd829-89de-45a5-98f2-fd37787ae94',
+        key: 'plans-0',
+        organizations: ' - ',
+      },
     ]);
   });
 });
