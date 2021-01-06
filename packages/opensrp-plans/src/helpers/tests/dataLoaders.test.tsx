@@ -7,14 +7,21 @@ import {
   OpenSRPService,
   updateAssignments,
   loadJurisdictions,
+  retireAssignmentsByJur,
+  getSingleJurisdictionPayload,
 } from '../dataLoaders';
 import * as plansDux from '../../ducks/planDefinitions';
 import { COULD_NOT_LOAD_ASSIGNMENTS } from '../../lang';
+import { helperRawAssignment1, helperRawAssignment2, helperRawAssignment3 } from './fixtures';
+import MockDate from 'mockdate';
+import { processRawAssignments } from '../../ducks/assignments/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
 const mockBaseURL = 'https://example.com/rest';
+
+MockDate.set('12/30/2019');
 
 describe('dataLoading', () => {
   afterEach(() => {
@@ -213,6 +220,211 @@ describe('dataLoading', () => {
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
+        },
+      ],
+    ]);
+  });
+});
+
+describe('helpers/dataLoaders.assignmentsPayloadCreation-retireAssignmentsByJur', () => {
+  it('retiredAssignments payload where plan is different', () => {
+    // existing assignments has an assignment that should be retired
+    const selectedJurisdictions = ['0f38856a-6e0f', 'bf3c-a2ad8a53210'];
+    const initialJurisdictions = ['0f38856a-6e0f', '9b5dd829-89de-45a5-98f2-fd37787ae949'];
+    const planId = 'notExist';
+    const existingAssignments = processRawAssignments([helperRawAssignment1, helperRawAssignment3]);
+    const response = retireAssignmentsByJur(
+      selectedJurisdictions,
+      initialJurisdictions,
+      existingAssignments,
+      [],
+      planId
+    );
+    // no assignment created de to the planId
+    expect(response).toEqual([]);
+  });
+
+  it('retiredAssignments payload where plan and selected orgs are defined', () => {
+    // existing assignments has an assignment that should be retired
+    const selectedJurisdictions = ['0f38856a-6e0f', 'bf3c-a2ad8a53210'];
+    const initialJurisdictions = ['0f38856a-6e0f', '9b5dd829-89de-45a5-98f2-fd37787ae949'];
+    const planId = 'ae12d8c4-d2a8-53f9-b201-6cccdd42482b';
+    const existingAssignments = processRawAssignments([helperRawAssignment1, helperRawAssignment3]);
+    const response = retireAssignmentsByJur(
+      selectedJurisdictions,
+      initialJurisdictions,
+      existingAssignments,
+      ['a2ad8a53210d'],
+      planId
+    );
+    // no assignment created since selectedOrgs was defined but the orgId is not assigned to the removed jurisdiction
+    expect(response).toEqual([]);
+  });
+
+  it('test payload creation for retired assignments due to jurisdictions', () => {
+    // existing assignments has an assignment that should be retired
+    const selectedJurisdictions = ['0f38856a-6e0f', 'bf3c-a2ad8a53210'];
+    const initialJurisdictions = ['0f38856a-6e0f', '9b5dd829-89de-45a5-98f2-fd37787ae949'];
+    const existingAssignments = processRawAssignments([helperRawAssignment1, helperRawAssignment3]);
+    const response = retireAssignmentsByJur(
+      selectedJurisdictions,
+      initialJurisdictions,
+      existingAssignments
+    );
+    // expect assignments with 9b5dd829-89de-45a5-98f2-fd37787ae949' to be retired, payload is one object
+    expect(response).toEqual([
+      {
+        fromDate: '2020-12-15T22:00:00+00:00',
+        jurisdiction: '9b5dd829-89de-45a5-98f2-fd37787ae949',
+        organization: '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d',
+        plan: 'ae12d8c4-d2a8-53f9-b201-6cccdd42482b',
+        toDate: '2019-12-30T00:00:00+00:00',
+      },
+    ]);
+  });
+
+  it('retiring assignments where removed jurs has several assignments', () => {
+    // existing assignments has an assignment that should be retired
+    const selectedJurisdictions = ['0f38856a-6e0f', 'bf3c-a2ad8a53210'];
+    const initialJurisdictions = ['0f38856a-6e0f', '9b5dd829-89de-45a5-98f2-fd37787ae949'];
+    const existingAssignments = processRawAssignments([
+      helperRawAssignment1,
+      helperRawAssignment2,
+      helperRawAssignment3,
+    ]);
+    const response = retireAssignmentsByJur(
+      selectedJurisdictions,
+      initialJurisdictions,
+      existingAssignments
+    );
+    // expect assignments with 9b5dd829-89de-45a5-98f2-fd37787ae949' to be retired, payload is two objects
+    expect(response).toEqual([
+      {
+        fromDate: '2020-12-15T22:00:00+00:00',
+        jurisdiction: '9b5dd829-89de-45a5-98f2-fd37787ae949',
+        organization: '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d',
+        plan: 'ae12d8c4-d2a8-53f9-b201-6cccdd42482b',
+        toDate: '2019-12-30T00:00:00+00:00',
+      },
+      {
+        fromDate: '2020-12-15T22:00:00+00:00',
+        jurisdiction: '9b5dd829-89de-45a5-98f2-fd37787ae949',
+        organization: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        plan: 'ae12d8c4-d2a8-53f9-b201-6cccdd42482b',
+        toDate: '2019-12-30T00:00:00+00:00',
+      },
+    ]);
+  });
+
+  it('retiring assignments where removed jurs has several assignments for specific org', () => {
+    // existing assignments has an assignment that should be retired
+    const selectedJurisdictions = ['0f38856a-6e0f', 'bf3c-a2ad8a53210'];
+    const initialJurisdictions = ['0f38856a-6e0f', '9b5dd829-89de-45a5-98f2-fd37787ae949'];
+    const existingAssignments = processRawAssignments([
+      helperRawAssignment1,
+      helperRawAssignment2,
+      helperRawAssignment3,
+    ]);
+    const response = retireAssignmentsByJur(
+      selectedJurisdictions,
+      initialJurisdictions,
+      existingAssignments,
+      ['0f38856a-6e0f-5e31-bf3c-a2ad8a53210d']
+    );
+    // expect assignments with 9b5dd829-89de-45a5-98f2-fd37787ae949' to be retired, payload is two objects
+    expect(response).toEqual([
+      {
+        fromDate: '2020-12-15T22:00:00+00:00',
+        jurisdiction: '9b5dd829-89de-45a5-98f2-fd37787ae949',
+        organization: '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d',
+        plan: 'ae12d8c4-d2a8-53f9-b201-6cccdd42482b',
+        toDate: '2019-12-30T00:00:00+00:00',
+      },
+    ]);
+  });
+
+  it('test payload creation for retired assignments where no assignments exist', () => {
+    // existing assignments has an assignment that should be retired
+
+    const selectedJurisdictions = ['0f38856a-6e0f', 'bf3c-a2ad8a53210'];
+    const initialJurisdictions = ['0f38856a-6e0f', '9b5dd829-89de-45a5-98f2-fd37787ae949'];
+    const response = retireAssignmentsByJur(selectedJurisdictions, initialJurisdictions, []);
+    // expect empty array
+    expect(response).toEqual([]);
+  });
+});
+
+describe('helpers/dataLoaders.assignmentsPayloadCreation-getSingleJurisdictionPayload', () => {
+  it('repeated selected organizations', () => {
+    // existing assignments has an assignment that should be retired
+    const selectedOrgs = ['0f38856a-6e0f', '0f38856a-6e0f', '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d'];
+    const mockPlan = {
+      identifier: 'planId',
+      effectivePeriod: { start: '2020-12-16', end: '2021-01-05' },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+    const selectedJurisdiction = 'jurisdictionId';
+    const existingAssignments = processRawAssignments([helperRawAssignment1, helperRawAssignment3]);
+    const response = getSingleJurisdictionPayload(
+      selectedOrgs,
+      mockPlan,
+      selectedJurisdiction,
+      ['0f38856a-6e0f-5e31-bf3c-a2ad8a53210d'],
+      existingAssignments
+    );
+
+    expect(response).toEqual([
+      {
+        fromDate: '2019-12-30T00:00:00+00:00',
+        jurisdiction: 'jurisdictionId',
+        organization: '0f38856a-6e0f',
+        plan: 'planId',
+        toDate: '2021-01-05T00:00:00+00:00',
+      },
+      {
+        fromDate: '2020-12-15T22:00:00+00:00',
+        jurisdiction: 'jurisdictionId',
+        organization: '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d',
+        plan: 'planId',
+        toDate: '2021-01-05T00:00:00+00:00',
+      },
+    ]);
+  });
+
+  it('retiring deselected organizations', () => {
+    // existing assignments has an assignment that should be retired
+    const selectedOrgs = ['0f38856a-6e0f'];
+    const mockPlan = {
+      identifier: 'planId',
+      effectivePeriod: { start: '2020-12-16', end: '2021-01-05' },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+    const selectedJurisdiction = 'jurisdictionId';
+    const existingAssignments = processRawAssignments([helperRawAssignment1, helperRawAssignment3]);
+    const response = getSingleJurisdictionPayload(
+      selectedOrgs,
+      mockPlan,
+      selectedJurisdiction,
+      ['0f38856a-6e0f-5e31-bf3c-a2ad8a53210d', '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d'],
+      existingAssignments
+    );
+
+    // the first is an assignment, the second is an un-assignment
+    expect(response).toEqual([
+      [
+        {
+          fromDate: '2019-12-30T00:00:0000:00',
+          jurisdiction: 'jurisdictionId',
+          organization: '0f38856a-6e0f',
+          plan: 'planId',
+          toDate: '2021-01-05T00:00:0000:00',
+        },
+        {
+          fromDate: '2020-12-15T22:00:0000:00',
+          jurisdiction: 'jurisdictionId',
+          organization: '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d',
+          plan: 'planId',
+          toDate: '2019-12-30T00:00:0000:00',
         },
       ],
     ]);
