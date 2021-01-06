@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Input, Tree as AntTree } from 'antd';
+import { Input, Tree as AntTree, Spin } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
@@ -192,6 +192,19 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   }, [accessToken, dispatch, opensrpBaseURL, treeData.length]);
 
   generateFilterData(treeData);
+
+  if (!treeData.length)
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
 
   return (
     <div>
