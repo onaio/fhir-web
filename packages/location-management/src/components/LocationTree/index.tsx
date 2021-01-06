@@ -1,25 +1,90 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ParsedHierarchyNode } from '../../ducks/types';
-import reducer, { reducerName } from '../../ducks/location-hierarchy';
-import { AntTreeProps } from '../LocationUnitView';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import reducer, {
+  fetchAllHierarchies,
+  getAllHierarchiesArray,
+  reducerName,
+} from '../../ducks/location-hierarchy';
 import './tree.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { generateJurisdictionTree } from './utils';
+import { LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../../constants';
+import { OpenSRPService } from 'opensrp-server-service';
 reducerRegistry.register(reducerName, reducer);
 
+const { getFilterParams } = OpenSRPService;
+
+export interface AntTreeProps {
+  title: JSX.Element;
+  key: string;
+  children: AntTreeProps[];
+}
+
 interface TreeProp {
-  data: ParsedHierarchyNode[];
+  opensrpBaseURL: string;
+  accessToken: string;
   OnItemClick: (item: ParsedHierarchyNode) => void;
 }
 
+/** Gets the hierarchy of the location units
+ *
+ * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
+ * @param {string} accessToken - Access token to be used for requests
+ * @param {string} opensrpBaseURL - base url
+ * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
+ */
+export async function getHierarchy(
+  location: LocationUnit[],
+  accessToken: string,
+  opensrpBaseURL: string
+) {
+  const hierarchy: RawOpenSRPHierarchy[] = [];
+  for await (const loc of location) {
+    const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY);
+    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
+    hierarchy.push(data);
+  }
+
+  return hierarchy;
+}
+
+/** Gets all the location unit at geographicLevel 0
+ *
+ * @param {string} accessToken - Access token to be used for requests
+ * @param {string} opensrpBaseURL - base url
+ * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
+ */
+export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
+  return await serve
+    .list({
+      /* eslint-disable-next-line @typescript-eslint/camelcase */
+      is_jurisdiction: true,
+      /* eslint-disable-next-line @typescript-eslint/camelcase */
+      return_geometry: false,
+      /* eslint-disable-next-line @typescript-eslint/camelcase */
+      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+    })
+    .then((response: LocationUnit[]) => response);
+}
+
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
-  const { data, OnItemClick } = props;
+  const { OnItemClick, accessToken, opensrpBaseURL } = props;
 
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
+  const treeData = (useSelector((state) =>
+    getAllHierarchiesArray(state)
+  ) as unknown) as ParsedHierarchyNode[];
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
+
+  const dispatch = useDispatch();
 
   /** Return the the parent key in a tree for the supplied key
    *
@@ -111,7 +176,22 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     });
   }
 
-  generateFilterData(data);
+  useEffect(() => {
+    if (!treeData.length) {
+      getBaseTreeNode(accessToken, opensrpBaseURL)
+        .then(async (response) => {
+          dispatch(fetchLocationUnits(response));
+          const hierarchy = await getHierarchy(response, accessToken, opensrpBaseURL);
+          hierarchy.forEach((hier) => {
+            const processed = generateJurisdictionTree(hier);
+            dispatch(fetchAllHierarchies(processed.model));
+          });
+        })
+        .catch(() => sendErrorNotification('An error occurred'));
+    }
+  }, [accessToken, dispatch, opensrpBaseURL, treeData.length]);
+
+  generateFilterData(treeData);
 
   return (
     <div>
@@ -133,7 +213,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
-        treeData={buildTreeData(data)}
+        treeData={buildTreeData(treeData)}
       />
     </div>
   );

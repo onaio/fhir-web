@@ -1,21 +1,17 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Menu, Dropdown, Button, Divider, Spin } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
 import locationUnitsReducer, {
-  fetchLocationUnits,
   LocationUnit,
   reducerName as locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
-  LOCATION_UNIT_FINDBYPROPERTIES,
-  LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
   ADD_LOCATION_UNIT,
@@ -30,23 +26,13 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import locationHierarchyReducer, {
   getAllHierarchiesArray,
-  fetchAllHierarchies,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree } from '../LocationTree/utils';
 
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { ParsedHierarchyNode } from '../../ducks/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
-
-const { getFilterParams } = OpenSRPService;
-
-export interface AntTreeProps {
-  title: JSX.Element;
-  key: string;
-  children: AntTreeProps[];
-}
 
 export interface Props {
   opensrpBaseURL: string;
@@ -67,30 +53,11 @@ export function loadSingleLocation(
 ): void {
   setDetail('loading');
   const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GET);
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   serve
+    // eslint-disable-next-line @typescript-eslint/camelcase
     .read(row.id, { is_jurisdiction: true })
-    .then((res: LocationUnit) => {
-      setDetail(res);
-    })
+    .then((res: LocationUnit) => setDetail(res))
     .catch(() => sendErrorNotification('An error occurred'));
-}
-
-/** Gets all the location unit at geographicLevel 0
- *
- * @param {string} accessToken - Access token to be used for requests
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
- */
-export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
-  return await serve
-    .list({
-      is_jurisdiction: true,
-      return_geometry: false,
-      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-    })
-    .then((response: LocationUnit[]) => response);
 }
 
 /** Parse the hierarchy node into table data
@@ -112,85 +79,48 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
   return data;
 }
 
-/** Gets the hierarchy of the location units
- *
- * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
- * @param {string} accessToken - Access token to be used for requests
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
- */
-export async function getHierarchy(
-  location: LocationUnit[],
-  accessToken: string,
-  opensrpBaseURL: string
-) {
-  const hierarchy: RawOpenSRPHierarchy[] = [];
-  for await (const loc of location) {
-    const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY);
-    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
-    hierarchy.push(data);
-  }
-
-  return hierarchy;
-}
-
 export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
+
   const treeData = (useSelector((state) =>
     getAllHierarchiesArray(state)
   ) as unknown) as ParsedHierarchyNode[];
-  const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
-    if (!treeData.length) {
-      getBaseTreeNode(accessToken, opensrpBaseURL)
-        .then((response) => {
-          dispatch(fetchLocationUnits(response));
-          getHierarchy(response, accessToken, opensrpBaseURL)
-            .then((hierarchy) => {
-              hierarchy.forEach((hier) => {
-                const processed = generateJurisdictionTree(hier);
-                dispatch(fetchAllHierarchies(processed.model));
-              });
-            })
-            .catch(() => sendErrorNotification('An error occurred'));
-        })
-        .catch(() => sendErrorNotification('An error occurred'));
-    }
-  }, [treeData, accessToken, dispatch, opensrpBaseURL]);
-
-  useEffect(() => {
     const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
     setTableData(data);
   }, [treeData, currentParentChildren]);
-
-  if (!tableData.length || !treeData.length)
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
 
   return (
     <section className="layout-content">
       <Helmet>
         <title>{LOCATION_UNIT}</title>
       </Helmet>
+      {(!tableData.length || !treeData.length) && (
+        // This condition will become false one the tree data is loaded from the tree component
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        <>
+          <Spin
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: '85vh',
+            }}
+            size={'large'}
+          />
+        </>
+      )}
       <h5 className="mb-3">{LOCATION_UNIT_MANAGEMENT}</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
-            data={treeData}
+            opensrpBaseURL={opensrpBaseURL}
+            accessToken={accessToken}
             OnItemClick={(node) => {
               if (node.children) {
                 const children = [node, ...node.children];
