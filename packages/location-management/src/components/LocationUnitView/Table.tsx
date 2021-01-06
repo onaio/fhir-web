@@ -68,7 +68,18 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  return <AntTable dataSource={props.data} columns={columns} />;
+  return (
+    <AntTable
+      pagination={{
+        showQuickJumper: true,
+        showSizeChanger: true,
+        defaultPageSize: 5,
+        pageSizeOptions: ['5', '10', '20', '50', '100'],
+      }}
+      dataSource={props.data}
+      columns={columns}
+    />
+  );
 };
 
 export default Table;
