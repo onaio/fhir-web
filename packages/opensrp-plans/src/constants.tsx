@@ -44,13 +44,14 @@ export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/ope
 export const OPENSRP_PLANS = 'plans';
 
 // router routes
-export const PLANS_ASSIGNMENT_VIEW_URL = '/plans/assignments';
-export const PLANS_CREATE_VIEW_URL = '/plans/new';
-export const PLANS_EDIT_VIEW_URL = '/plans/edit';
-export const ACTIVE_PLANS_LIST_VIEW_URL = '/plans/active';
-export const DRAFT_PLANS_LIST_VIEW_URL = '/plans/draft';
-export const COMPLETE_PLANS_LIST_VIEW_URL = '/plans/complete';
-export const TRASH_PLANS_LIST_VIEW_URL = '/plans/trash';
+export const URL_MISSIONS = '/missions';
+export const PLANS_ASSIGNMENT_VIEW_URL = URL_MISSIONS + '/plans/assignments';
+export const PLANS_CREATE_VIEW_URL = URL_MISSIONS + '/plans/new';
+export const PLANS_EDIT_VIEW_URL = URL_MISSIONS + '/plans/edit';
+export const ACTIVE_PLANS_LIST_VIEW_URL = URL_MISSIONS + '/plans/active';
+export const DRAFT_PLANS_LIST_VIEW_URL = URL_MISSIONS + '/plans/draft';
+export const COMPLETE_PLANS_LIST_VIEW_URL = URL_MISSIONS + '/plans/complete';
+export const TRASH_PLANS_LIST_VIEW_URL = URL_MISSIONS + '/plans/trash';
 export const HOME_URL = '/';
 
 // other constants

@@ -315,7 +315,7 @@ describe('forms/UserForm', () => {
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
-    expect(history.location.pathname).toEqual('/admin');
+    expect(history.location.pathname).toEqual('/admin/users/list');
     wrapper.unmount();
   });
 
@@ -335,5 +335,43 @@ describe('forms/UserForm', () => {
     expect(wrapper.find('.mb-3.header-title').text()).toEqual(
       `Edit User | ${fixtures.keycloakUser.username}`
     );
+  });
+
+  it('show practitioner toggle if user id and practitioner is passed', async () => {
+    const props = {
+      initialValues: { id: '123' },
+      serviceClass: KeycloakService,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      accessToken: 'access token',
+      opensrpServiceClass: OpenSRPService,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      practitioner: { active: false },
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...props} />
+      </Router>
+    );
+    expect(wrapper.find('#practitionerToggle').length).toBeGreaterThan(0);
+  });
+
+  it('hide practitioner toggle if user id or practitioner is not passed', async () => {
+    const props = {
+      serviceClass: KeycloakService,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      accessToken: 'access token',
+      opensrpServiceClass: OpenSRPService,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...props} />
+      </Router>
+    );
+    expect(wrapper.find('#practitionerToggle')).toHaveLength(0);
   });
 });
