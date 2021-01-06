@@ -92,8 +92,8 @@ const AssignmentTable = (props: AssignmentTableProps) => {
     disableAssignments,
   } = props;
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
-  const [loading, setLoading] = useState<boolean>(true); // todo: should not always start in loading state
-  const planId = plan.identifier; // what about plan?
+  const [loading, setLoading] = useState<boolean>(true);
+  const planId = plan.identifier;
 
   // todo component should re-render make the calls to get
   useEffect(() => {

@@ -12,10 +12,7 @@ import { ActionColumn } from '../TableActionColumn';
 import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
 
-/** important assumption with an applied constraint, is that the only way to have an assignment is by
- * first having the location assigned to a plan.
- */
-
+/** describes antd's table data accessors */
 export interface TableData {
   jurisdictions: string;
   organizations: string;
@@ -179,16 +176,15 @@ export const staticColumns: ColumnsType<TableData> = [
 /**
  * construct the full table columns for the plan assignment table
  *
- * @param {Assignment[]} assignments - assignments response from api per plan
- * @param {Organization[]} organizations - a list of all organizations
- * @param {Jurisdiction[]} jurisdictions - all jurisdictions that can be assigned
- * @param {OpenSRPService} serviceClass -  opensrp service class
- * @param {object} planCreator - action creator to add plans
- * @param {fetchAssignments} assignmentsCreator - action creator to add assignments
- * @param {PlanDefinition} plan - the plan
- * @param baseURL - the base url
- * @param disableAssignments - whether to enable assignments
- * @returns {object} -
+ * @param  assignments - assignments response from api per plan
+ * @param  organizations - a list of all organizations
+ * @param  jurisdictions - all jurisdictions that can be assigned
+ * @param  serviceClass -  opensrp service class
+ * @param  planCreator - action creator to add plans
+ * @param  assignmentsCreator - action creator to add assignments
+ * @param  plan - the plan
+ * @param  baseURL - the base url
+ * @param  disableAssignments - whether to enable assignments
  */
 export const getPlanAssignmentColumns = (
   assignments: Assignment[],

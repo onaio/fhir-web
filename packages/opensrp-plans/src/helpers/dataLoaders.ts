@@ -118,8 +118,6 @@ export async function loadAssignments(
     });
 }
 
-// TODO: - create issue that effects pagination on the api
-
 /**
  * load organizations for plan
  *

@@ -89,7 +89,6 @@ export const ActionColumn = (props: ActionColumnProps) => {
    * @returns {Promise<void | Error>} - promise
    */
   const areasSaveHandler = async (selected: SelectOption[]) => {
-    // TODO: removed jurisdictions are removed from plan
     // caveat - removing jurisdiction from one table row does not mean it has been removed from plan
     const selectedJurs = selected.map((option) => option.value);
     const plansPromise = putJurisdictionsToPlan(
@@ -152,7 +151,6 @@ export const ActionColumn = (props: ActionColumnProps) => {
     disabled: disableAssignments,
   };
 
-  // disable assign teams if no areas assigned for this row.
   return (
     <>
       {/* areas assignment modal */}
