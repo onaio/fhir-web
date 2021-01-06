@@ -67,13 +67,13 @@ import {
   PLANS_CREATE_VIEW_URL,
   PLANS_EDIT_VIEW_URL,
   ConnectedPlanAssignment,
-  PLANS_LIST_VIEW_URL,
+  PLANS_ASSIGNMENT_VIEW_URL,
 } from '@opensrp/plans';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
-  URL_ADMIN,
+  URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
   URL_USER_CREATE,
@@ -113,8 +113,9 @@ import {
   draftPlansListStatusProp,
   completedPlansListStatusProp,
   trashPlansListStatusProp,
+  missionAssignmentProps,
 } from './utils';
-
+import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 
 const { Content } = Layout;
@@ -209,7 +210,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={URL_ADMIN}
+              path={URL_USER}
               component={ConnectedUserList}
             />
             <PrivateComponent
@@ -267,9 +268,9 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={`${PLANS_LIST_VIEW_URL}/:planId`}
+              path={`${PLANS_ASSIGNMENT_VIEW_URL}/:planId`}
               {...plansListProps}
-              {...activePlansListStatusProp}
+              {...missionAssignmentProps}
               component={ConnectedPlanAssignment}
             />
             <PrivateComponent
