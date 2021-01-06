@@ -105,10 +105,11 @@ export const ActionColumn = (props: ActionColumnProps) => {
     const initialJurs = assignedJursOptions.map((jurs) => jurs.value);
     const selectedOrgs = assignedOrgsOptions.map((option) => option.value);
     const retiredPlansPayload = retireAssignmentsByJur(
-      selectedOrgs,
       selectedJurs,
       initialJurs,
-      assignments
+      assignments,
+      selectedOrgs,
+      plan.identifier
     );
     // if we have assignments done for this row, and we add a jurisdiction,
     // means existing assignments should also apply for new jurisdiction

@@ -218,37 +218,53 @@ export const getSingleJurisdictionPayload = (
   return payload;
 };
 
-/** retire assignments for the given jurisdictions
+/** retire all assignments pertaining to a certain jurisdiction, bound by the rules:
+ * if plan is given; retire assignments by jurisdiction for only the specified plan, otherwise retire everything for said jurisdiction
+ * if orgs are given; retire assignments by jurisdiction for only specified orgs, otherwise retire everything for said jurisdiction
+ * if both are given; retire assignments by jurisdiction that have the plan and org
  *
- * @param {string[]} selectedOrgs - an array of the selected organization ids
- * @param {string[]} selectedJurisdictions - the selected OpenSRP jurisdiction
- * @param {string[]} initialJurisdictions - the selected OpenSRP jurisdiction
- * @param {Assignment[]} existingAssignments - an array of Assignment objects that exist for this plan/jurisdiction
- * @returns {Assignment[]} -
+ * @param selectedJurisdictions - the selected OpenSRP jurisdiction
+ * @param initialJurisdictions - the selected OpenSRP jurisdiction
+ * @param existingAssignments - an array of Assignment objects that exist for this plan/jurisdiction
+ * @param selectedOrgs - an array of the selected organization ids
+ * @param planId - id of plan that set scope of retired assignments
  */
 export const retireAssignmentsByJur = (
-  selectedOrgs: string[],
   selectedJurisdictions: string[],
   initialJurisdictions: string[] = [],
-  existingAssignments: Assignment[] = []
+  existingAssignments: Assignment[] = [],
+  selectedOrgs: string[] = [],
+  planId: string | undefined = undefined
 ) => {
   const now = moment(new Date());
-  if (selectedOrgs.length === 0) {
-    return [];
-  }
+  const retireDate = now.format();
+
   const removedJurisdictions = initialJurisdictions.filter(
     (jurisdiction) => !selectedJurisdictions.includes(jurisdiction)
   );
-  const assignmentsByJur = keyBy(existingAssignments, 'jurisdiction');
-  const retireDate = now.format();
+
+  if (removedJurisdictions.length === 0) {
+    return [];
+  }
+
   const payload: Assignment[] = [];
-  removedJurisdictions.forEach((jurisdiction) => {
-    const thisAssignment = assignmentsByJur[jurisdiction];
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (thisAssignment) {
-      payload.push({ ...thisAssignment, toDate: retireDate });
+  // looped through the assignments and checked if they match the criteria for retirements
+  existingAssignments.forEach((assignment) => {
+    if (planId && assignment.plan !== planId) {
+      return;
     }
+    if (selectedOrgs.length > 0 && !selectedOrgs.includes(assignment.organization)) {
+      return;
+    }
+    if (!removedJurisdictions.includes(assignment.jurisdiction)) {
+      return;
+    }
+    payload.push({
+      ...assignment,
+      toDate: retireDate,
+    });
   });
+
   return payload;
 };
 
