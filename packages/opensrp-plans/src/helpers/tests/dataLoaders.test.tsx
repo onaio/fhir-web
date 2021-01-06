@@ -411,22 +411,20 @@ describe('helpers/dataLoaders.assignmentsPayloadCreation-getSingleJurisdictionPa
 
     // the first is an assignment, the second is an un-assignment
     expect(response).toEqual([
-      [
-        {
-          fromDate: '2019-12-30T00:00:0000:00',
-          jurisdiction: 'jurisdictionId',
-          organization: '0f38856a-6e0f',
-          plan: 'planId',
-          toDate: '2021-01-05T00:00:0000:00',
-        },
-        {
-          fromDate: '2020-12-15T22:00:0000:00',
-          jurisdiction: 'jurisdictionId',
-          organization: '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d',
-          plan: 'planId',
-          toDate: '2019-12-30T00:00:0000:00',
-        },
-      ],
+      {
+        fromDate: '2019-12-30T00:00:00+00:00',
+        jurisdiction: 'jurisdictionId',
+        organization: '0f38856a-6e0f',
+        plan: 'planId',
+        toDate: '2021-01-05T00:00:00+00:00',
+      },
+      {
+        fromDate: '2020-12-15T22:00:00+00:00',
+        jurisdiction: 'jurisdictionId',
+        organization: '0f38856a-6e0f-5e31-bf3c-a2ad8a53210d',
+        plan: 'planId',
+        toDate: '2019-12-30T00:00:00+00:00',
+      },
     ]);
   });
 });
