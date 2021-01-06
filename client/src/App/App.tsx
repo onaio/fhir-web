@@ -70,7 +70,7 @@ import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
-  URL_ADMIN,
+  URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
   URL_USER_CREATE,
@@ -206,7 +206,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={URL_ADMIN}
+              path={URL_USER}
               component={ConnectedUserList}
             />
             <PrivateComponent
