@@ -89,7 +89,8 @@ export const ActionColumn = (props: ActionColumnProps) => {
    * @returns {Promise<void | Error>} - promise
    */
   const areasSaveHandler = async (selected: SelectOption[]) => {
-    // caveat - removing jurisdiction from one table row does not mean it has been removed from plan
+    // caveat - for MVP where we have one row; we can safely assume that removing an area is akin
+    // to un-assigning it from the plan. This assumption will however fail once we have several rows
     const selectedJurs = selected.map((option) => option.value);
     const plansPromise = putJurisdictionsToPlan(
       baseURL,
