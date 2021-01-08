@@ -10,15 +10,18 @@ import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
 import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
 import { URL_HOME } from './constants';
+import * as Sentry from '@sentry/react';
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
+
+Sentry.init({ dsn: SENTRY_DSN });
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <ErrorBoundary dsn={SENTRY_DSN} homeUrl={URL_HOME}>
+      <Sentry.ErrorBoundary fallback={() => <ErrorBoundary homeUrl={URL_HOME} />}>
         <App />
-      </ErrorBoundary>
+      </Sentry.ErrorBoundary>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('opensrp-root')
