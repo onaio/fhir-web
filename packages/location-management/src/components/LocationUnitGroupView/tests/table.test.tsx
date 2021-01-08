@@ -171,4 +171,15 @@ describe('location-management/src/components/LocationTagView', () => {
       description: undefined,
     });
   });
+
+  it('Should show table pagination options', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Table data={tableData} />
+        </Router>
+      </Provider>
+    );
+    expect(wrapper.find('.ant-table-pagination')).toBeTruthy();
+  });
 });
