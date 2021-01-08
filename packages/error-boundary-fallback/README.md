@@ -12,11 +12,6 @@ yarn add @opensrp/error-boundary-fallback
 
 `error-boundary-fallback` makes use of the following options
 
-- **dsn:**(string)
-
-  - **optional**
-  - dsn uri for sentry.
-
 - **homeUrl:**(string)
   - **required**
   - URL to redirect after clicking on back to home button
@@ -25,12 +20,13 @@ yarn add @opensrp/error-boundary-fallback
 
 ```javascript
 import App from '..';
+import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
 
 ReactDOM.render(
-  <ErrorBoundary dsn={'https://something@something.org/12345'} homeUrl={'/home'}>
+  <Sentry.ErrorBoundary fallback={() => <ErrorBoundary homeUrl={'/home'} />}>
     <App />
-  </ErrorBoundary>,
+  </Sentry.ErrorBoundary>,
   document.getElementById('root')
 );
 ```
