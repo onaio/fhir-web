@@ -18,7 +18,7 @@ import {
   fetchKeycloakUsers,
   KeycloakUser,
 } from '../../../ducks/user';
-import { URL_ADMIN, ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../constants';
+import { URL_USER, ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../constants';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -267,6 +267,6 @@ describe('components/Credentials', () => {
       push: jest.fn(),
     };
     cancelUserHandler(mockUseHistory);
-    expect(mockUseHistory.push).toBeCalledWith(URL_ADMIN);
+    expect(mockUseHistory.push).toBeCalledWith(URL_USER);
   });
 });
