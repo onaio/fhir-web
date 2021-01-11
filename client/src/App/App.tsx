@@ -193,7 +193,7 @@ const App: React.FC = () => {
       <ConnectedSidebar />
       <div className="body-wrapper">
         <ConnectedHeader />
-        <Content style={{ padding: '20px' }}>
+        <Content>
           <Switch>
             {/* tslint:disable jsx-no-lambda */}
             {/* Home Page view */}
