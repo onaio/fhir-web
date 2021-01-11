@@ -1,46 +1,36 @@
 # Package
 
-<!-- package description -->
+This package has a set of components that are used for OpenSRP card support features
 
 ## Installation
 
 ```sh
-yarn add @opensrp/template
+yarn add @opensrp/card-support
 ```
-
-<!--
-Include further installation instructions, for instance if the package requires for the user
-to manually add css.
--->
-
-## Usage
-
-<!--
-
-### Props/ Configuration
-
-#### linkerField
-
-_Optional_(`string` | `undefined` = `undefined`)
-
-When the table is rendered, you can click anywhere on a row to drill down to the next level of the hierarchy. However, you may want to display some kind of indication that it is possible to drill down on a row of data. The `linkerField` prop allows you to define which field should have this indicator. By default this is set to the `id` field.
-
--->
 
 ### Code examples
 
-<!--
+#### Download Client Data
 
-A single simple, minimal, working snippet for each use-case that the package supports
+Download client data feature, enables the user to download client data in CSV format
+
+![Download Client Data](public/assets/img/download-client-data.png)
+
+To make use of the download client data feature
 
 ```tsx
-import { DrillDownTable, columnsFromObjects } from '@onaio/drill-down-table/';
+import { DownloadClientData } from '@opensrp/card-support';
 
-const props = {
-  columns: columnsFromObjects(data),
-  data
-};
-<DrillDownTable {...props} />;
+
+...
+
+<Route path="/download-client-data">
+  <DownloadClientData opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest" />
+</Route>
 ```
 
--->
+`DownloadClientData` component takes the following props:
+
+- **opensrpBaseURL:**(string)
+  - **required**
+  - Opensrp API base URL
