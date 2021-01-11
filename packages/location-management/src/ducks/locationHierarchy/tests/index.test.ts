@@ -1,9 +1,9 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { store } from '@opensrp/store';
-import { reducer, reducerName, getTreesByIds, fetchTree, deforest } from '..';
+import { hierarchyReducer, hierarchyReducerName, getTreesByIds, fetchTree, deforest } from '..';
 import { rawHierarchy } from './hierarchyFixtures';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 const treesSelector = getTreesByIds();
 
 describe('src/ducks/locationHierarchies', () => {

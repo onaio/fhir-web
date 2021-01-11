@@ -13,7 +13,7 @@ import { createSelector } from 'reselect';
 import { values } from 'lodash';
 
 /** reducer name for hierarchy reducer */
-export const reducerName = 'locationHierarchy';
+export const hierarchyReducerName = 'locationHierarchy';
 
 // **************************** actions *****************************
 
@@ -89,7 +89,7 @@ export const initialState: ImmutableTreeState = SeamlessImmutable({
  * @param {AnyAction} action - the redux action
  * @returns {object} - updated state
  */
-export function reducer(
+export function hierarchyReducer(
   state: ImmutableTreeState | Dictionary = initialState,
   action: TreeActionTypes
 ) {
@@ -128,7 +128,7 @@ export const getRootJurisdictionId = (_: Partial<Store>, props: Filters) =>
  * @param _ -  the filterProps
  */
 export const getTreesByRootId = (state: Partial<Store>, _: Filters): Dictionary<TreeNode> =>
-  (state as Dictionary)[reducerName].treeByRootId;
+  (state as Dictionary)[hierarchyReducerName].treeByRootId;
 
 /** factory that returns a selector to retrieve the tree(s) using their rootNode's ids */
 export const getTreesByIds = () =>
