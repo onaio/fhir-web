@@ -42,7 +42,6 @@ import {
   ENABLE_LOCATIONS,
   ENABLE_PLANS,
   ENABLE_PRODUCT_CATALOGUE,
-  ENABLE_TEAMS_ASSIGNMENT_MODULE,
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -111,23 +110,23 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.SubMenu>
           )}
           {ENABLE_TEAMS && (
-            <Menu.Item key="teams">
-              <Link to={URL_TEAMS} className="admin-link">
-                {TEAMS}
-              </Link>
-            </Menu.Item>
+            <Menu.SubMenu key="admin-teams" title="Teams">
+              <Menu.Item key="teams">
+                <Link to={URL_TEAMS} className="admin-link">
+                  {TEAMS}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="team-assignment">
+                <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
+                  {TEAM_ASSIGNMENT}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
           )}
           {ENABLE_PRODUCT_CATALOGUE && (
             <Menu.Item key="product-catalogue">
               <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
                 {PRODUCT_CATALOGUE}
-              </Link>
-            </Menu.Item>
-          )}
-          {ENABLE_TEAMS_ASSIGNMENT_MODULE && (
-            <Menu.Item key="team-assignment">
-              <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
-                {TEAM_ASSIGNMENT}
               </Link>
             </Menu.Item>
           )}
