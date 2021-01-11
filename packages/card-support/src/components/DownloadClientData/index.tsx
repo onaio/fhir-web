@@ -93,9 +93,9 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     },
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const disabledDate = (current: any) => {
+  const disabledDate = (current: moment.Moment) => {
     // Can not select days after
-    return current && current > moment().startOf('day');
+    return current > moment().startOf('day');
   };
 
   React.useEffect(() => {
