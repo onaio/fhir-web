@@ -9,7 +9,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/plans/active"
+        to="/missions/active"
       >
         Active
       </Link>
@@ -17,7 +17,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/plans/draft"
+        to="/missions/draft"
       >
         Draft
       </Link>
@@ -25,7 +25,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/plans/complete"
+        to="/missions/complete"
       >
         Complete
       </Link>
@@ -33,7 +33,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/plans/trash"
+        to="/missions/trash"
       >
         Trash
       </Link>
@@ -132,7 +132,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/plans/active"
+        to="/missions/active"
       >
         Active
       </Link>
@@ -140,7 +140,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/plans/draft"
+        to="/missions/draft"
       >
         Draft
       </Link>
@@ -148,7 +148,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/plans/complete"
+        to="/missions/complete"
       >
         Complete
       </Link>
@@ -156,7 +156,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/plans/trash"
+        to="/missions/trash"
       >
         Trash
       </Link>
