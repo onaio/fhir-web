@@ -17,6 +17,7 @@ import { expressAPIResponse } from './fixtures';
 import { UserList } from '@opensrp/user-management';
 import { KEYCLOAK_API_BASE_URL } from '../../configs/env';
 import NotFound from '../../components/NotFound';
+import { mount } from 'enzyme';
 
 jest.mock('../../configs/env');
 
