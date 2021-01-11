@@ -56,9 +56,9 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     if (locationTreeState.keys) {
       const keys = locationTreeState.keys;
       const node = locationTreeState.node;
-      setExpandedKeys(keys);
       OnItemClick(node);
       expandTree(node.key);
+      setExpandedKeys(keys);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -86,6 +86,14 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param {Array<React.Key>} allExpandedKeys currently expanded keys
    */
   function onExpand(allExpandedKeys: React.Key[]) {
+    if (expandedKeys.length !== 0) {
+      for (let i = 0; i < expandedKeys.length; i++) {
+        if (expandedKeys[i] !== allExpandedKeys[i]) {
+          allExpandedKeys.length = i;
+          break;
+        }
+      }
+    }
     setExpandedKeys(allExpandedKeys);
     setAutoExpandParent(true);
   }
@@ -160,9 +168,13 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
-          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
+          const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
           dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
-          setExpandedKeys(allExpandedKeys);
+          const index = expandedKeys.indexOf(node.key);
+          if (index > -1) {
+            allExpandedKeys.splice(index, 1);
+          }
+          onExpand(allExpandedKeys);
         }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
