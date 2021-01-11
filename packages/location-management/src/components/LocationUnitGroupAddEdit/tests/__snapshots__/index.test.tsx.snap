@@ -11,9 +11,9 @@ Array [
     </title>
   </HelmetWrapper>,
   <h5
-    className="mb-4"
+    className="mb-4 header-title"
   >
-    Edit Location Unit Group
+    Edit Location Unit Group | 
   </h5>,
   <Col
     className="bg-white p-4"
@@ -21,6 +21,7 @@ Array [
   >
     <Form
       id="54"
+      setEditTitle={[Function]}
     />
   </Col>,
 ]
@@ -37,7 +38,7 @@ Array [
     </title>
   </HelmetWrapper>,
   <h5
-    className="mb-4"
+    className="mb-4 header-title"
   >
     Add Location Unit Group
   </h5>,
@@ -45,7 +46,9 @@ Array [
     className="bg-white p-4"
     span={24}
   >
-    <Form />
+    <Form
+      setEditTitle={[Function]}
+    />
   </Col>,
 ]
 `;
