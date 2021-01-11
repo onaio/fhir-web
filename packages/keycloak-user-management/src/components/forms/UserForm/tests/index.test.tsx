@@ -319,6 +319,24 @@ describe('forms/UserForm', () => {
     wrapper.unmount();
   });
 
+  it('render correct user name in header', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const propEdit = {
+      ...props,
+      initialValues: fixtures.keycloakUser,
+    };
+    const wrapper = mount(<UserForm {...propEdit} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('.mb-3.header-title').text()).toEqual(
+      `Edit User | ${fixtures.keycloakUser.username}`
+    );
+  });
+
   it('show practitioner toggle if user id and practitioner is passed', async () => {
     const props = {
       initialValues: { id: '123' },
