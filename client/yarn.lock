@@ -1682,7 +1682,11 @@
     react-toastify "^6.0.5"
     reactstrap "^8.0.1"
     yup "^0.29.1"
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> 99ba9827af59f7bbddd7a1d79aa2e27ba0a856c9
+>>>>>>> d37feab4064486849a4de677c3a2ef2920cddcab
 
 "@opensrp/keycloak-service@^0.0.7":
   version "0.0.7"
