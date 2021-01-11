@@ -1,8 +1,9 @@
 // Web URLs
-export const URL_USER_EDIT = '/user/edit';
 export const URL_ADMIN = '/admin';
-export const URL_USER_CREATE = '/user/new';
-export const URL_USER_CREDENTIALS = '/user/credentials';
+export const URL_USER_EDIT = URL_ADMIN + '/users/edit';
+export const URL_USER = URL_ADMIN + '/users/list';
+export const URL_USER_CREATE = URL_ADMIN + '/users/new';
+export const URL_USER_CREDENTIALS = URL_ADMIN + '/users/credentials';
 
 // Route params
 export const ROUTE_PARAM_USER_ID = 'userId';
@@ -30,5 +31,7 @@ export const NO_DATA_FOUND = 'No Data Found';
 
 // rendered text
 export const CREDENTIALS = 'User Credentials';
-export const RESET_PASSWORD = 'Reset Password';
+export const RESET_PASSWORD = 'Set password';
+export const EDIT_USER = 'Edit User';
+export const ADD_USER = 'Add User';
 export const CANCEL = 'Cancel';

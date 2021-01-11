@@ -1,0 +1,15 @@
+.plan-activities_section {
+  margin: 0;
+  padding: 24px;
+  background: transparent;
+}
+
+.activate-plan,
+.assignment-table {
+  margin: 20px 0;
+}
+
+.assignment-table {
+  padding: 24px;
+  background: #fff;
+}

@@ -1,20 +1,19 @@
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio } from 'formik-antd';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
-import { API_BASE_URL, LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
+import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
   LocationUnitGroupPayloadPOST,
   LocationUnitGroupPayloadPUT,
 } from '../../ducks/location-unit-groups';
-import { Ripple } from '@onaio/loaders';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -41,6 +40,8 @@ const userSchema = Yup.object().shape({
 
 interface Props {
   id?: string;
+  opensrpBaseURL: string;
+  setEditTitle: Function;
 }
 
 /**
@@ -48,16 +49,18 @@ interface Props {
  *
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
+ * @param {string} opensrpBaseURL - base url
  * @param {object} props component props
  * @param {Function} setSubmitting method to set submission status
  */
 export const onSubmit = (
   values: FormField,
   accessToken: string,
+  opensrpBaseURL: string,
   props: Props,
   setSubmitting: (isSubmitting: boolean) => void
 ) => {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GROUP_ALL);
+  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
 
   const payload: LocationUnitGroupPayloadPOST | LocationUnitGroupPayloadPUT = values;
 
@@ -97,13 +100,14 @@ export const Form: React.FC<Props> = (props: Props) => {
     description: '',
     active: true,
   });
+  const { opensrpBaseURL, setEditTitle } = props;
 
   useEffect(() => {
     if (isLoading) {
       if (props.id) {
         const serve = new OpenSRPService(
           accessToken,
-          API_BASE_URL,
+          opensrpBaseURL,
           LOCATION_UNIT_GROUP_GET + props.id
         );
         serve
@@ -114,14 +118,26 @@ export const Form: React.FC<Props> = (props: Props) => {
               description: response.description,
               name: response.name,
             });
+            setEditTitle(response.name);
             setIsLoading(false);
           })
           .catch(() => sendErrorNotification('An error occurred'));
       } else setIsLoading(false);
     }
-  }, [accessToken, isLoading, props.id]);
+  }, [accessToken, isLoading, props.id, opensrpBaseURL, setEditTitle]);
 
-  if (isLoading) return <Ripple />;
+  if (isLoading)
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
   return (
     <Formik
       initialValues={initialValue}
@@ -129,7 +145,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, accessToken, props, setSubmitting)}
+      ) => onSubmit(values, accessToken, opensrpBaseURL, props, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
         return (

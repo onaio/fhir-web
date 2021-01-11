@@ -1,6 +1,7 @@
 export const ADD_PRODUCT = 'Add product to catalogue';
 export const EDIT = 'Edit';
 export const PRODUCT_CATALOGUE = 'Product Catalogue';
+export const ADD_PRODUCT_TO_CATALOGUE = ' + Add product to catalogue';
 export const PRODUCT_NAME_TH = 'Product Name';
 export const ID_TH = 'ID';
 export const ACTIONS_TH = 'Actions';

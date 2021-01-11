@@ -11,21 +11,26 @@ import { store } from '@opensrp/store';
 import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
+import { baseURL } from '../../../constants';
+import LocationUnitGroupAddEdit from '..';
 
-describe('Location-module/Form', () => {
+Form.defaultProps = { opensrpBaseURL: baseURL };
+
+describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    fetch.mockClear();
   });
 
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form />
+          <Form opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
-    expect(wrapper.props()).toMatchSnapshot();
+
+    expect(wrapper.find('form')).toHaveLength(1);
   });
 
   it('tests cancel button', () => {
@@ -35,7 +40,7 @@ describe('Location-module/Form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form />
+          <Form opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -57,7 +62,7 @@ describe('Location-module/Form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form />
+          <Form opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -86,7 +91,10 @@ describe('Location-module/Form', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
         <Provider store={store}>
-          <Route path={'/:id'} component={() => <Form id="1" />} />
+          <Route
+            path={'/:id'}
+            component={() => <Form setEditTitle={jest.fn} id="1" opensrpBaseURL={baseURL} />}
+          />
         </Provider>
       </MemoryRouter>
     );
@@ -158,7 +166,7 @@ describe('Location-module/Form', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
         <Provider store={store}>
-          <Route path={'/:id'} component={() => <Form id="1" />} />
+          <Route path={'/:id'} component={() => <Form id="1" opensrpBaseURL={baseURL} />} />
         </Provider>
       </MemoryRouter>
     );
@@ -213,7 +221,13 @@ describe('Location-module/Form', () => {
   it('Handles errors on editing tag', async () => {
     fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
     const mockNotificationError = jest.spyOn(notification, 'error');
-    onSubmit(fixtures.sampleLocationUnitGroupPayload, 'sometoken', { id: '1' }, jest.fn());
+    onSubmit(
+      fixtures.sampleLocationUnitGroupPayload,
+      'sometoken',
+      baseURL,
+      { id: '1', opensrpBaseURL: baseURL },
+      jest.fn()
+    );
 
     await act(async () => {
       await flushPromises();
@@ -223,5 +237,44 @@ describe('Location-module/Form', () => {
       description: undefined,
       message: 'An error occurred',
     });
+  });
+
+  it('render correct location unit group name in header', async () => {
+    fetch.once(JSON.stringify(fixtures.sampleLocationUnitGroupPayload));
+    const wrapperLocationUnitGroup = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/1`, hash: '', search: '', state: {} }]}>
+          <Route path="/:id" component={LocationUnitGroupAddEdit} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[`/1`]}>
+        <Provider store={store}>
+          <Route
+            path={'/:id'}
+            component={() => (
+              <Form
+                setEditTitle={jest
+                  .fn()
+                  .mockReturnValue(fixtures.sampleLocationUnitGroupPayload.description)}
+                id="1"
+                opensrpBaseURL={baseURL}
+              />
+            )}
+          />
+        </Provider>
+      </MemoryRouter>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    wrapperLocationUnitGroup.update();
+    expect(wrapperLocationUnitGroup.find('.mb-4.header-title').text()).toEqual(
+      `Edit Location Unit Group | ${fixtures.sampleLocationUnitGroupPayload.name}`
+    );
   });
 });

@@ -1,15 +1,11 @@
 import React from 'react';
-import { Table as AntTable, Menu, Dropdown, Button, Divider, Popconfirm } from 'antd';
+import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import {
-  API_BASE_URL,
-  LOCATION_UNIT_GROUP_DELETE,
-  URL_LOCATION_UNIT_GROUP_EDIT,
-} from '../../constants';
+import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
@@ -20,6 +16,7 @@ export interface TableData extends LocationUnitGroup {
 
 export interface Props {
   data: TableData[];
+  opensrpBaseURL: string;
   onViewDetails?: (locationUnit: LocationUnitGroupDetailProps) => void;
 }
 
@@ -27,11 +24,16 @@ export interface Props {
  *
  * @param {object} record - The record to delete
  * @param {string} accessToken - Access token to be used for requests
+ * @param {string} opensrpBaseURL - base url
  */
-export const onDelete = (record: LocationUnitGroup, accessToken: string) => {
+export const onDelete = (
+  record: LocationUnitGroup,
+  accessToken: string,
+  opensrpBaseURL: string
+) => {
   const clientService = new OpenSRPService(
     accessToken,
-    API_BASE_URL,
+    opensrpBaseURL,
     LOCATION_UNIT_GROUP_DELETE + record.id.toString()
   );
   clientService
@@ -41,7 +43,7 @@ export const onDelete = (record: LocationUnitGroup, accessToken: string) => {
 };
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails } = props;
+  const { onViewDetails, opensrpBaseURL } = props;
   const accessToken = useSelector((state) => getAccessToken(state) as string);
 
   const columns = [
@@ -73,13 +75,11 @@ const Table: React.FC<Props> = (props: Props) => {
                 >
                   View Details
                 </Menu.Item>
-                <Menu.Item className="delete">
-                  <Popconfirm
-                    title="Sure to Delete?"
-                    onConfirm={() => onDelete(record, accessToken)}
-                  >
-                    Delete
-                  </Popconfirm>
+                <Menu.Item
+                  className="delete"
+                  onClick={() => onDelete(record, accessToken, opensrpBaseURL)}
+                >
+                  Delete
                 </Menu.Item>
               </Menu>
             }
@@ -94,7 +94,18 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  return <AntTable dataSource={props.data} columns={columns} />;
+  return (
+    <AntTable
+      pagination={{
+        showQuickJumper: true,
+        showSizeChanger: true,
+        defaultPageSize: 5,
+        pageSizeOptions: ['5', '10', '20', '50', '100'],
+      }}
+      dataSource={props.data}
+      columns={columns}
+    />
+  );
 };
 
 export default Table;

@@ -4,7 +4,6 @@ import { mount } from 'enzyme';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 import { Provider } from 'react-redux';
 import Table, { onDelete, TableData } from '../Table';
@@ -14,9 +13,11 @@ import fetch from 'jest-fetch-mock';
 import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
+import { baseURL } from '../../../constants';
+
+Table.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationTagView', () => {
-  const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
   const endpoint = 'location-tag/delete';
   const tagId = '1';
 
@@ -49,19 +50,23 @@ describe('location-management/src/components/LocationTagView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );
 
-    expect(wrapper.props()).toMatchSnapshot();
+    expect(wrapper.find('table')).toHaveLength(1);
   });
 
   it('Test Table View Detail', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} onViewDetails={() => wrapper.unmount()} />
+          <Table
+            opensrpBaseURL={baseURL}
+            data={tableData}
+            onViewDetails={() => wrapper.unmount()}
+          />
         </Router>
       </Provider>
     );
@@ -76,7 +81,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );
@@ -87,28 +92,32 @@ describe('location-management/src/components/LocationTagView', () => {
     expect(wrapper).toHaveLength(1);
   });
 
-  it('Test Table Delete', () => {
+  it('Test Table Delete', async () => {
+    const mockNotificationSuccess = jest.spyOn(notification, 'success');
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );
 
     wrapper.find('.more-options').first().simulate('click');
-    wrapper.update();
-    wrapper.find('.delete').at(0).simulate('click');
-    wrapper.update();
-    const temp = wrapper.find('div.ant-popover-content');
-    expect(toJson(temp)).toMatchSnapshot();
+    wrapper.find('.delete').first().simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(mockNotificationSuccess).toBeCalled();
   });
 
   it('Test Name Sorting functionality', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );
@@ -127,7 +136,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const notificationSuccessMock = jest.spyOn(notification, 'success');
     fetch.mockResponse(JSON.stringify(sampleLocationUnitGroupPayload));
 
-    onDelete(sampleLocationUnitGroupPayload, 'sometoken');
+    onDelete(sampleLocationUnitGroupPayload, 'sometoken', baseURL);
 
     await act(async () => {
       await flushPromises();
@@ -151,7 +160,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject('An error occurred'));
 
-    onDelete(sampleLocationUnitGroupPayload, 'sometoken');
+    onDelete(sampleLocationUnitGroupPayload, 'sometoken', baseURL);
 
     await act(async () => {
       await flushPromises();
@@ -161,5 +170,16 @@ describe('location-management/src/components/LocationTagView', () => {
       message: 'An error occurred',
       description: undefined,
     });
+  });
+
+  it('Should show table pagination options', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Table data={tableData} />
+        </Router>
+      </Provider>
+    );
+    expect(wrapper.find('.ant-table-pagination')).toBeTruthy();
   });
 });

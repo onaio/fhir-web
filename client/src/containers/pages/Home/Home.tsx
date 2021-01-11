@@ -7,7 +7,14 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
-import { LOCATIONS_UNIT, URL_ADMIN, URL_LOCATION_UNIT } from '../../../constants';
+import {
+  LOCATIONS_UNIT,
+  LOCATIONS_UNIT_GROUP,
+  URL_USER,
+  URL_LOCATION_UNIT,
+  URL_LOCATION_UNIT_GROUP,
+} from '../../../constants';
+import { ENABLE_LOCATIONS } from '../../../configs/env';
 
 export interface HomeProps {
   extraData: Dictionary;
@@ -29,20 +36,32 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
       <Row gutter={16} className="links-box">
         {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
           <Col className="gutter-row" span={12}>
-            <Link to={URL_ADMIN} className="admin-link">
+            <Link to={URL_USER} className="admin-link">
               <Button color="outline" className="btn-links">
                 Admin
               </Button>
             </Link>
           </Col>
         )}
-        <Col className="gutter-row" span={12}>
-          <Link to={URL_LOCATION_UNIT} className="admin-link">
-            <Button color="outline" className="btn-links">
-              {LOCATIONS_UNIT}
-            </Button>
-          </Link>
-        </Col>
+        {ENABLE_LOCATIONS && (
+          <>
+            <Col className="gutter-row" span={12}>
+              <Link to={URL_LOCATION_UNIT} className="admin-link">
+                <Button color="outline" className="btn-links">
+                  {LOCATIONS_UNIT}
+                </Button>
+              </Link>
+            </Col>
+
+            <Col className="gutter-row" span={12}>
+              <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
+                <Button color="outline" className="btn-links">
+                  {LOCATIONS_UNIT_GROUP}
+                </Button>
+              </Link>
+            </Col>
+          </>
+        )}
       </Row>
     </div>
   );

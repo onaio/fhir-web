@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Input } from 'antd';
+import { Row, Col, Menu, Dropdown, Button, Divider, Input, Spin } from 'antd';
 import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
@@ -16,19 +16,25 @@ import reducer, {
 } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
-  API_BASE_URL,
   LOCATION_UNIT_GROUP_ALL,
+  LOCATION_UNIT_GROUP,
   URL_LOCATION_UNIT_GROUP_ADD,
+  LOGOUT,
+  ADD_LOCATION_UNIT_GROUP,
+  LOCATION_UNIT_GROUP_MANAGEMENT,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
-import { Ripple } from '@onaio/loaders';
 import { Link } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(reducerName, reducer);
 
-const LocationUnitGroupView: React.FC = () => {
+export interface Props {
+  opensrpBaseURL: string;
+}
+
+const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const locationsArray = useSelector((state) => getLocationUnitGroupsArray(state));
   const dispatch = useDispatch();
@@ -36,10 +42,11 @@ const LocationUnitGroupView: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState('');
   const [filter, setfilterData] = useState<TableData[] | null>(null);
+  const { opensrpBaseURL } = props;
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new OpenSRPService(accessToken, API_BASE_URL, LOCATION_UNIT_GROUP_ALL);
+      const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
       serve
         .list({ is_jurisdiction: true, serverVersion: 0 })
         .then((response: LocationUnitGroup[]) => {
@@ -73,14 +80,25 @@ const LocationUnitGroupView: React.FC = () => {
     setfilterData(filteredData as TableData[]);
   };
 
-  if (isLoading) return <Ripple />;
+  if (isLoading)
+    return (
+      <Spin
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '85vh',
+        }}
+        size={'large'}
+      />
+    );
 
   return (
     <section className="layout-content">
       <Helmet>
-        <title>Locations Unit Group</title>
+        <title>{LOCATION_UNIT_GROUP}</title>
       </Helmet>
-      <h5 className="mb-3">Location Unit Group Management</h5>
+      <h5 className="mb-3">{LOCATION_UNIT_GROUP_MANAGEMENT}</h5>
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">
@@ -97,14 +115,14 @@ const LocationUnitGroupView: React.FC = () => {
               <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
-                  Add location unit group
+                  {ADD_LOCATION_UNIT_GROUP}
                 </Button>
               </Link>
               <Divider type="vertical" />
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key="1">Logout</Menu.Item>
+                    <Menu.Item key="1">{LOGOUT}</Menu.Item>
                   </Menu>
                 }
                 placement="bottomRight"
@@ -115,6 +133,7 @@ const LocationUnitGroupView: React.FC = () => {
           </div>
           <div className="bg-white p-3">
             <Table
+              opensrpBaseURL={opensrpBaseURL}
               data={value.length < 1 ? tableData : (filter as TableData[])}
               onViewDetails={(e: LocationUnitGroupDetailProps) => setDetail(e)}
             />
@@ -131,5 +150,4 @@ const LocationUnitGroupView: React.FC = () => {
     </section>
   );
 };
-
 export default LocationUnitGroupView;

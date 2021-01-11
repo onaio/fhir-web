@@ -6,7 +6,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { KeycloakUser } from '../../../ducks/user';
-import { URL_ADMIN, CANCEL } from '../../../constants';
+import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -128,7 +128,9 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   return (
     <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
-      <h5 className="mb-3">{props.initialValues.email ? 'Edit' : 'Add'} User</h5>
+      <h5 className="mb-3 header-title">
+        {props.initialValues.id ? `${EDIT_USER} | ${initialValues.username}` : ADD_USER}
+      </h5>
       <Col className="bg-white p-3" span={24}>
         <Formik
           initialValues={initialValues}
@@ -168,14 +170,16 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 <Input id="username" name="username" disabled={initialValues.id ? true : false} />
               </Form.Item>
 
-              {!initialValues.id && !practitioner ? (
+              {!initialValues.id || !practitioner ? (
                 ''
               ) : (
-                <Form.Item name="active" label="Mark as Practitioner" valuePropName="checked">
-                  <Switch
-                    name="active"
-                    defaultChecked={practitioner ? practitioner.active : false}
-                  />
+                <Form.Item
+                  id="practitionerToggle"
+                  name="active"
+                  label="Mark as Practitioner"
+                  valuePropName="checked"
+                >
+                  <Switch name="active" defaultChecked={practitioner.active} />
                 </Form.Item>
               )}
 
@@ -203,7 +207,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 <Button type="primary" htmlType="submit" className="create-user">
                   {isSubmitting ? 'Saving' : 'Save'}
                 </Button>
-                <Button onClick={() => history.push(URL_ADMIN)} className="cancel-user">
+                <Button onClick={() => history.push(URL_USER)} className="cancel-user">
                   {CANCEL}
                 </Button>
               </Form.Item>

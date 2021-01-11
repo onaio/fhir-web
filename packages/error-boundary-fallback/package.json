@@ -1,0 +1,41 @@
+{
+  "name": "@opensrp/error-boundary-fallback",
+  "version": "0.0.0",
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "scripts": {
+    "test": " cd ../../ && pwd && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
+    "tsc": "tsc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Error boundry fallback",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "antd": "^4.6.3"
+  },
+  "devDependencies": {
+    "@types/antd": "^1.0.0"
+  },
+  "dependencies": {
+    "@sentry/react": "^5.27.4"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false
+}

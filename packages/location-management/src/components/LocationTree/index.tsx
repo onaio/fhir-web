@@ -3,28 +3,18 @@ import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ParsedHierarchyNode } from '../../ducks/types';
-import reducer, { fetchCurrentChildren, reducerName } from '../../ducks/location-hierarchy';
+import reducer, { reducerName } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
-import { Dictionary } from '@onaio/utils';
-import { useDispatch } from 'react-redux';
-
+import './tree.css';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
   data: ParsedHierarchyNode[];
-  OnItemClick?: (
-    item: ParsedHierarchyNode,
-    [expandedKeys, setExpandedKeys]: [React.Key[], (key: React.Key[]) => void]
-  ) => void;
+  OnItemClick: (item: ParsedHierarchyNode) => void;
 }
 
-const defaultProps: Partial<TreeProp> = {
-  data: [],
-};
-
 const Tree: React.FC<TreeProp> = (props: TreeProp) => {
-  const { data } = props;
-  const dispatch = useDispatch();
+  const { data, OnItemClick } = props;
 
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -81,8 +71,8 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
    */
-  function loop(data: ParsedHierarchyNode[]): AntTreeProps[] {
-    data.map((item) => {
+  function buildTreeData(data: ParsedHierarchyNode[]): AntTreeProps[] {
+    return data.map((item) => {
       const index = item.title.toLowerCase().indexOf(searchValue);
       const beforeStr = item.title.toLowerCase().substr(0, index);
       const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
@@ -99,22 +89,27 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           )}
         </span>
       );
-      if (item.children) {
-        return { title, key: item.key, children: loop(item.children) } as AntTreeProps;
-      } else {
-        return { title, key: item.key } as AntTreeProps;
-      }
-    });
 
-    return (data as unknown) as AntTreeProps[];
+      return {
+        // important : we are mixing the antTreeProps with ParsedHierarchyNode
+        data: item,
+        key: item.key,
+        title: title,
+        children: item.children ? buildTreeData(item.children) : undefined,
+      } as AntTreeProps;
+    });
   }
 
-  const generateFilterData = (data: ParsedHierarchyNode[]) => {
+  /** Generate filter data to later used to compare and filter keys on input with ant tree node
+   *
+   * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
+   */
+  function generateFilterData(data: ParsedHierarchyNode[]) {
     data.forEach((node) => {
       filterData.push({ ...node, title: node.key });
       if (node.children) generateFilterData(node.children);
     });
-  };
+  }
 
   generateFilterData(data);
 
@@ -128,23 +123,20 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(_, node: Dictionary) => {
+        onClick={(e, treenode) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
+          OnItemClick(node);
           const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
-          if (node.children) {
-            const children = [node, ...node.children];
-            dispatch(fetchCurrentChildren(children));
-          }
           setExpandedKeys(allExpandedKeys);
         }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
-        treeData={loop(data)}
+        treeData={buildTreeData(data)}
       />
     </div>
   );
 };
-
-Tree.defaultProps = defaultProps;
 
 export default Tree;

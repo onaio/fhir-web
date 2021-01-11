@@ -7,11 +7,12 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { KeycloakUser } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
-  URL_ADMIN,
+  URL_USER,
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   ERROR_OCCURED,
   PRACTITIONER_UPDATED_SUCCESSFULLY,
   PRACTITIONER_CREATED_SUCCESSFULLY,
+  URL_USER_CREDENTIALS,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/server-service';
 import { Practitioner } from '.';
@@ -68,6 +69,9 @@ export const createOrEditPractitioners = (
   const practitionersService = new serviceClass(accessToken, baseURL, 'practitioner');
   practitionersService[requestType](practitionerValues)
     .then(() => {
+      if (!isEdit) {
+        history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
+      }
       sendSuccessNotification(successMessage);
     })
     .catch((_: Error) => {
@@ -124,7 +128,7 @@ export const submitForm = (
         );
         setSubmitting(false);
         sendSuccessNotification('User edited successfully');
-        history.push(URL_ADMIN);
+        history.push(URL_USER);
       })
       .catch((_: Error) => {
         setSubmitting(false);
@@ -148,7 +152,6 @@ export const submitForm = (
         );
         setSubmitting(false);
         sendSuccessNotification('User created successfully');
-        history.push(URL_ADMIN);
       })
       .catch((_: Error) => {
         setSubmitting(false);

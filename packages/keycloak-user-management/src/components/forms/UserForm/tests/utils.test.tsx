@@ -88,6 +88,7 @@ describe('forms/utils/submitForm', () => {
     email: 'janedoe@example.com',
     requiredActions: ['UPDATE_PASSWORD'],
     identifier: '40522954-a9cb-44d4-9ea9-735674717eb3',
+    id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
   };
   const keycloakBaseURL =
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
@@ -134,7 +135,9 @@ describe('forms/utils/submitForm', () => {
       },
     ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User created successfully');
-    expect(historyPushMock).toHaveBeenCalledWith('/admin');
+    expect(historyPushMock).toHaveBeenCalledWith(
+      '/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b'
+    );
   });
 
   it('submits user edit correctly', async () => {
@@ -171,7 +174,7 @@ describe('forms/utils/submitForm', () => {
       },
     ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
-    expect(historyPushMock).toHaveBeenCalledWith('/admin');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
   });
 
   it('handles error when user creation fails', async () => {

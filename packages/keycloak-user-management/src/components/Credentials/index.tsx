@@ -11,7 +11,7 @@ import {
   KEYCLOAK_URL_USERS,
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
-  URL_ADMIN,
+  URL_USER,
   CREDENTIALS,
   PASSWORD_MATCH_FAILURE,
   RESET_PASSWORD,
@@ -68,7 +68,7 @@ export type CredentialsPropsTypes = CredentialsProps & RouteComponentProps<Crede
  * @param {Dictionary} genericHistory react-rouet usehistory hook
  */
 export const cancelUserHandler = (genericHistory: Dictionary): void => {
-  genericHistory.push(URL_ADMIN);
+  genericHistory.push(URL_USER);
 };
 
 /** default props for editing user component */
@@ -109,7 +109,7 @@ export const submitForm = (
     })
     .then(() => {
       sendSuccessNotification(CREDENTIALS_UPDATED_SUCCESSFULLY);
-      useHistory().push(URL_ADMIN);
+      useHistory().push(URL_USER);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);
@@ -117,7 +117,7 @@ export const submitForm = (
 };
 
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const { serviceClass, match, accessToken, keycloakBaseURL } = props;
+  const { serviceClass, match, accessToken, keycloakBaseURL, keycloakUser } = props;
   const userId = match.params[ROUTE_PARAM_USER_ID];
   const layout = {
     labelCol: {
@@ -139,7 +139,9 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   const history = useHistory();
   return (
     <Row className="layout-content">
-      <h5 className="mb-3">{CREDENTIALS}</h5>
+      <h5 className="mb-3">
+        {CREDENTIALS} | {keycloakUser ? keycloakUser.username : ''}
+      </h5>
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form

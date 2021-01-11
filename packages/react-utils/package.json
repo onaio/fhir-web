@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/react-utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A couple of utils that work with react",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -37,6 +37,7 @@
     "antd": "^4.6.3"
   },
   "peerDependencies": {
+    "@opensrp/store": "^0.0.7",
     "react": "^16.18.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
