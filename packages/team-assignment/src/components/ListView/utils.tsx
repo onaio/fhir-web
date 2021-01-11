@@ -19,6 +19,7 @@ export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (reco
           record.setModalVisibility(true);
           record.setExistingAssignments(record.existingAssignments);
           record.setAssignedLocAndTeams({
+            locationName: record.locationName,
             jurisdictionId: record.id,
             assignedTeams: record.assignedTeamIds,
           });

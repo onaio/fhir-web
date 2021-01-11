@@ -55,6 +55,7 @@ interface RouteParams {
 }
 
 interface AssignedLocationAndTeams {
+  locationName: string;
   jurisdictionId: string;
   assignedTeams: string[];
 }
@@ -175,7 +176,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     setVisible(false);
   };
 
-  if (loading || !Treedata.length || !assignmentsList.length) {
+  if (loading || !Treedata.length) {
     return <TeamAssignmentLoading />;
   }
 
@@ -281,7 +282,10 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             }}
             initialValues={{ assignTeams: assignedLocAndTeams?.assignedTeams }}
           >
-            <Form.Item label="Assign Teams" name="assignTeams">
+            <Form.Item
+              label={`Assign Teams | ${assignedLocAndTeams?.locationName}`}
+              name="assignTeams"
+            >
               <Select
                 mode="multiple"
                 allowClear
