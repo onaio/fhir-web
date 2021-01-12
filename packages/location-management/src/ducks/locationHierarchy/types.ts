@@ -21,12 +21,6 @@ export interface HierarchyNode<TChild> {
   children?: TChild;
   parent?: string;
 }
-/** properties that will be added to meta field */
-export interface Meta {
-  selected?: boolean;
-  actionBy?: string;
-  metaStructureCount?: number;
-}
 
 /** field that we will use to add ad-hoc information to a node
  * this field will be added to each node during parsing the raw data from the api
@@ -34,7 +28,6 @@ export interface Meta {
 export interface ExtraField {
   title: string;
   key: string;
-  meta?: Meta;
 }
 
 /** single node description after coming in from the api */
@@ -62,8 +55,3 @@ export interface RawOpenSRPHierarchy {
 
 /** helper type, shortened form */
 export type TreeNode = TreeModel.Node<ParsedHierarchyNode>;
-
-/** interface to describe URL params object */
-export interface URLParams {
-  [key: string]: string | number | boolean;
-}
