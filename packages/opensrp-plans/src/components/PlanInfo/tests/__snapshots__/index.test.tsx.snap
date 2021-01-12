@@ -3,7 +3,7 @@
 exports[`/components/PlanInfo renders and passes props correctly): activate link 1`] = `
 Object {
   "children": "Edit",
-  "to": "/plans/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
+  "to": "/missions/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
 }
 `;
 
@@ -32,7 +32,7 @@ Object {
 exports[`/components/PlanInfo renders and passes props correctly): edit link 1`] = `
 Object {
   "children": "Active ",
-  "to": "/plans/active",
+  "to": "/missions/active",
 }
 `;
 
@@ -51,14 +51,14 @@ exports[`/components/PlanInfo renders and passes props correctly): links in brea
   className="ant-breadcrumb-link"
 >
   <Link
-    to="/plans/active"
+    to="/missions/active"
   >
     <LinkAnchor
-      href="/plans/active"
+      href="/missions/active"
       navigate={[Function]}
     >
       <a
-        href="/plans/active"
+        href="/missions/active"
         onClick={[Function]}
       >
         Active 

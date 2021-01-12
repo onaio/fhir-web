@@ -6,13 +6,13 @@ import { DashboardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   LOCATIONS_UNIT,
   LOCATIONS_UNIT_GROUP,
   PRODUCT_CATALOGUE,
   TEAMS,
-  URL_ADMIN,
+  URL_USER,
   URL_HOME,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
@@ -63,6 +63,9 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
   const { extraData } = props;
   const { roles } = extraData;
+  let location = useLocation();
+  let loc = location.pathname.split('/');
+  loc.shift();
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
@@ -71,25 +74,33 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           <img src={Logo} className="img-fluid" alt="" />
         </Link>
       </div>
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" className="menu-dark">
+
+      <Menu
+        theme="dark"
+        selectedKeys={[loc[loc.length - 1]]}
+        defaultOpenKeys={loc}
+        defaultSelectedKeys={[loc[loc.length - 1]]}
+        mode="inline"
+        className="menu-dark"
+      >
         {ENABLE_PLANS && (
           <Menu.SubMenu key="missions" icon={<DashboardOutlined />} title={MISSIONS}>
-            <Menu.Item key="plans-active">
+            <Menu.Item key="active">
               <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
                 {ACTIVE}
               </Link>
             </Menu.Item>
-            <Menu.Item key="plans-draft">
+            <Menu.Item key="draft">
               <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
                 {DRAFT}
               </Link>
             </Menu.Item>
-            <Menu.Item key="plans-complete">
+            <Menu.Item key="complete">
               <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
                 {COMPLETE}
               </Link>
             </Menu.Item>
-            <Menu.Item key="plans-trash">
+            <Menu.Item key="trash">
               <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
                 {TRASH}
               </Link>
@@ -99,8 +110,8 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title={USERS}>
-              <Menu.Item key="users">
-                <Link to={URL_ADMIN} className="admin-link">
+              <Menu.Item key={'list'}>
+                <Link to={URL_USER} className="admin-link">
                   {USER_MANAGEMENT}
                 </Link>
               </Menu.Item>
@@ -119,13 +130,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           )}
           {ENABLE_LOCATIONS && (
-            <Menu.SubMenu key="admin-locations" title="Locations">
-              <Menu.Item key="locations-unit">
+            <Menu.SubMenu key="location" title="Locations">
+              <Menu.Item key="unit">
                 <Link to={URL_LOCATION_UNIT} className="admin-link">
                   {LOCATIONS_UNIT}
                 </Link>
               </Menu.Item>
-              <Menu.Item key="locations-unit-group">
+              <Menu.Item key="group">
                 <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
                   {LOCATIONS_UNIT_GROUP}
                 </Link>
@@ -133,18 +144,18 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.SubMenu>
           )}
           {ENABLE_FORM_CONFIGURATION && (
-            <Menu.SubMenu key="admin-form-config" title={FORM_CONFIGURATIONS}>
-              <Menu.Item key="admin-form-config-releases">
+            <Menu.SubMenu key="form-config" title={FORM_CONFIGURATIONS}>
+              <Menu.Item key="releases">
                 <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
                   {MANIFEST_RELEASES}
                 </Link>
               </Menu.Item>
-              <Menu.Item key="admin-form-config-drafts">
+              <Menu.Item key="drafts">
                 <Link to={URL_DRAFT_FILE_LIST} className="admin-link">
                   {DRAFT_FILES}
                 </Link>
               </Menu.Item>
-              <Menu.Item key="admin-form-config-json-validators">
+              <Menu.Item key="json-validators">
                 <Link to={URL_JSON_VALIDATOR_LIST} className="admin-link">
                   {JSON_VALIDATORS}
                 </Link>

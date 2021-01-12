@@ -39,6 +39,7 @@ const userSchema = Yup.object().shape({
 interface Props {
   id?: string;
   opensrpBaseURL: string;
+  setEditTitle: Function;
 }
 
 /**
@@ -97,7 +98,7 @@ export const Form: React.FC<Props> = (props: Props) => {
     description: '',
     active: true,
   });
-  const { opensrpBaseURL } = props;
+  const { opensrpBaseURL, setEditTitle } = props;
 
   useEffect(() => {
     if (isLoading) {
@@ -115,12 +116,13 @@ export const Form: React.FC<Props> = (props: Props) => {
               description: response.description,
               name: response.name,
             });
+            setEditTitle(response.name);
             setIsLoading(false);
           })
           .catch(() => sendErrorNotification(ERROR_OCCURED));
       } else setIsLoading(false);
     }
-  }, [accessToken, isLoading, props.id, opensrpBaseURL]);
+  }, [accessToken, isLoading, props.id, opensrpBaseURL, setEditTitle]);
 
   if (isLoading)
     return (

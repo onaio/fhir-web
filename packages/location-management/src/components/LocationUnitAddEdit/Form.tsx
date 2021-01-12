@@ -17,10 +17,10 @@ import {
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { ERROR_OCCURED, LOCATION_HIERARCHY, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { ERROR_OCCURED, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { ParsedHierarchyNode } from '../../ducks/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 
@@ -86,28 +86,47 @@ export function removeEmptykeys(obj: any) {
   });
 }
 
-/**
- * Handle form submission
+/** Function to find geolocation of a node by passing its id
+ *
+ * @param {Array<ParsedHierarchyNode>} tree Array of ParsedHierarchyNodes to find node from
+ * @param {string} id id of the node
+ * @returns {number | null} return geolocation if found else return null
+ */
+export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): number | null {
+  const map: (number | null)[] = tree.flatMap((node) => {
+    if (node.id === id) return node.node.attributes.geographicLevel;
+    else if (node.children) return findParentGeoLocation(node.children, id);
+    else return null;
+  });
+
+  const filter = map.filter((e) => e != null);
+  return filter[0];
+}
+
+/** Handle form submission
  *
  * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} accessToken api access token
  * @param {string} opensrpBaseURL - base url
  * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
+ * @param {Array<ParsedHierarchyNode>} treedata ParsedHierarchyNode nodes to get geolocation from
  * @param {string} username username of logged in user
- * @param {number} id location unit
  * @param {ExtraField} extraFields extraFields to be input with location unit
+ * @param {number} id location unit
+ * @returns {void} return nothing
  */
-export const onSubmit = async (
+export async function onSubmit(
   setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   accessToken: string,
   opensrpBaseURL: string,
   locationUnitgroup: LocationUnitGroup[],
+  treedata: ParsedHierarchyNode[],
   username: string,
-  id?: string,
-  extraFields?: ExtraField[]
-) => {
+  extraFields?: ExtraField[],
+  id?: string
+) {
   const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
     (values.locationTags as number[]).includes(e.id)
   );
@@ -117,15 +136,11 @@ export const onSubmit = async (
     name: tag.name,
   }));
 
-  let geographicLevel: number | undefined | void;
+  let geographicLevel = 0;
   if (values.parentId) {
-    geographicLevel = await new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY)
-      .read(values.parentId)
-      .then((res: RawOpenSRPHierarchy) => {
-        return res.locationsHierarchy.map[values.parentId as string].node.attributes
-          .geographicLevel as number;
-      })
-      .catch(() => sendErrorNotification(ERROR_OCCURED));
+    const parent = findParentGeoLocation(treedata, values.parentId);
+    if (parent) geographicLevel = parent + 1;
+    else return sendErrorNotification(ERROR_OCCURED); // stops execution because this is unlikely thing to happen and shouldn't send error to server
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
@@ -134,7 +149,7 @@ export const onSubmit = async (
     // eslint-disable-next-line @typescript-eslint/camelcase
     is_jurisdiction: true,
     properties: {
-      geographicLevel: geographicLevel && geographicLevel >= 0 ? geographicLevel + 1 : 0,
+      geographicLevel: geographicLevel,
       username: username,
       externalId: values.externalId,
       parentId: values.parentId ? values.parentId : '',
@@ -163,27 +178,21 @@ export const onSubmit = async (
       .update({ ...payload })
       .then(() => {
         sendSuccessNotification('Location Unit Updated successfully');
-        setSubmitting(false);
         history.goBack();
       })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-        setSubmitting(false);
-      });
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
   } else {
     await serve
       .create({ ...payload })
       .then(() => {
         sendSuccessNotification('Location Unit Created successfully');
-        setSubmitting(false);
         history.goBack();
       })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-        setSubmitting(false);
-      });
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
   }
-};
+
+  setSubmitting(false);
+}
 
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
@@ -227,9 +236,10 @@ export const Form: React.FC<Props> = (props: Props) => {
           accessToken,
           props.opensrpBaseURL,
           props.locationUnitGroup,
+          props.treedata,
           user.username,
-          props.id,
-          props.extraFields
+          props.extraFields,
+          props.id
         )
       }
     >

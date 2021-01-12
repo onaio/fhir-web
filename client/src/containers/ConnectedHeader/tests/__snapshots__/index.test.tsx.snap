@@ -110,7 +110,7 @@ Object {
           </MenuItem>
           <MenuItem>
             <Link
-              to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+              to="/admin/users/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
             >
               Manage account
             </Link>

@@ -3,6 +3,13 @@
   padding: 24px;
   background: transparent;
 }
-.activate-plan {
+
+.activate-plan,
+.assignment-table {
   margin: 20px 0;
+}
+
+.assignment-table {
+  padding: 24px;
+  background: #fff;
 }

@@ -1,5 +1,5 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { BrokenPage, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -18,6 +18,7 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import PlanInfo from '../../components/PlanInfo';
 import { ActivateMissionCard } from '../../components/ActivateMission';
+import { ConnectedAssignmentTable } from '../../components/AssignmentTable';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(plansReducerName, plansReducer);
@@ -28,6 +29,8 @@ interface PlanAssignmentProps extends CommonProps {
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
   showActivateMission: boolean;
+  showAssignmentTable: boolean;
+  assignGeoLevel: number;
 }
 
 const defaultProps = {
@@ -36,6 +39,8 @@ const defaultProps = {
   fetchPlansCreator: fetchPlanDefinitions,
   service: OpenSRPService,
   showActivateMission: false,
+  showAssignmentTable: false,
+  assignGeoLevel: 0,
 };
 
 export type PlanAssignmentTypes = PlanAssignmentProps &
@@ -44,7 +49,15 @@ export type PlanAssignmentTypes = PlanAssignmentProps &
 /** component that renders plansInfo, planTable and planData */
 
 const PlanAssignment = (props: PlanAssignmentTypes) => {
-  const { service, plan, fetchPlansCreator, baseURL, showActivateMission } = props;
+  const {
+    service,
+    plan,
+    fetchPlansCreator,
+    baseURL,
+    showActivateMission,
+    showAssignmentTable,
+    assignGeoLevel: assignAtGeoLevel,
+  } = props;
   const { planId } = props.match.params;
   const [loading, setLoading] = useState<boolean>(!plan);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
@@ -75,11 +88,24 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
     baseURL,
   };
 
+  const planISDraftActive = [PlanStatus.DRAFT, PlanStatus.ACTIVE].includes(
+    plan.status as PlanStatus
+  );
+
+  const assignmentTableProps = {
+    baseURL,
+    serviceClass: service,
+    plan,
+    assignAtGeoLevel,
+    disableAssignments: !planISDraftActive,
+  };
+
   /** Page Header routes */
   return (
     <div className="plan-detail-view">
       <PlanInfo plan={plan} planId={planId} />
       <div className="plan-activities_section">
+        {showAssignmentTable ? <ConnectedAssignmentTable {...assignmentTableProps} /> : null}
         {showActivateMission ? <ActivateMissionCard {...activateMissionProps} /> : null}
       </div>
     </div>

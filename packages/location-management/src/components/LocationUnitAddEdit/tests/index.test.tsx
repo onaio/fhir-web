@@ -210,7 +210,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
   });
 
-  it('renders everything correctly with id', async () => {
+  it('renders everything correctly with id and header name', async () => {
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
     fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
     fetch.mockResponseOnce(JSON.stringify(locationSettings));
@@ -267,5 +267,8 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
 
     expect(wrapper.find('form')).toHaveLength(1);
+    expect(wrapper.find('.mb-4.header-title').text()).toEqual(
+      `Edit Location Unit | ${baseLocationUnits[0].properties.name}`
+    );
   });
 });
