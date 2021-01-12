@@ -1,5 +1,128 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`components/ConnectedSidebar Test order of menu 1`] = `
+Array [
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Missions"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/plans/active"
+      >
+        Active
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/plans/draft"
+      >
+        Draft
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/plans/complete"
+      >
+        Complete
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/plans/trash"
+      >
+        Trash
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Admin"
+  >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/list"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <SubMenu
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Locations unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/group"
+        >
+          Locations unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <SubMenu
+      title="Form Configurations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
 exports[`components/ConnectedSidebar renders the ConnectedSidebar component 1`] = `
 Object {
   "children": Array [
@@ -41,6 +164,34 @@ Object {
               Teams
             </Link>
           </MenuItem>
+          <SubMenu
+            title="Form Configurations"
+          >
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/releases"
+              >
+                Manifest Releases
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/drafts"
+              >
+                Draft Files
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/json-validators"
+              >
+                JSON Validators
+              </Link>
+            </MenuItem>
+          </SubMenu>
         </SubMenu>
       </Menu>
     </div>,
@@ -83,6 +234,34 @@ Array [
         Teams
       </Link>
     </MenuItem>
+    <SubMenu
+      title="Form Configurations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
   </SubMenu>,
 ]
 `;

@@ -21,7 +21,6 @@ describe('components/ConnectedSidebar', () => {
       </Provider>
     );
     expect(wrapper.find('aside').props()).toMatchSnapshot();
-    wrapper.unmount();
   });
 
   it('renders user managment menu for users with appropriate role', () => {
@@ -48,7 +47,24 @@ describe('components/ConnectedSidebar', () => {
       </Provider>
     );
     expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
-    wrapper.unmount();
+  });
+
+  it('Test order of menu', () => {
+    const envModule = require('../../../configs/env');
+    envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
+    envModule.ENABLE_PLANS = 'true';
+    envModule.ENABLE_LOCATIONS = 'true';
+    envModule.ENABLE_FORM_CONFIGURATION = 'true';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find(`Menu`).last().prop('children')).toMatchSnapshot();
   });
 
   it('displays menu links for enabled Plans module', () => {
