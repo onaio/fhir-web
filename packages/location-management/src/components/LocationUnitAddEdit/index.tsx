@@ -25,18 +25,19 @@ import Form, { FormField } from './Form';
 import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import locationHierarchyReducer, {
-  getAllHierarchiesArray,
-  fetchAllHierarchies,
-  reducerName as locationHierarchyReducerName,
-} from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree } from '../LocationTree/utils';
+import {
+  hierarchyReducer,
+  getTreesByIds,
+  fetchTree,
+  hierarchyReducerName as locationHierarchyReducerName,
+} from '../../ducks/locationHierarchy';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 
 import './LocationUnitAddEdit.css';
 
-reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
+reducerRegistry.register(locationHierarchyReducerName, hierarchyReducer);
+const hierarchySelector = getTreesByIds();
 
 const { getFilterParams } = OpenSRPService;
 
@@ -93,9 +94,9 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
   const [extrafields, setExtrafields] = useState<ExtraField[] | null>(null);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
-  const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
-  );
+  const treeFilters = {};
+  const hierarchies = useSelector((state) => hierarchySelector(state, treeFilters));
+  const treeData = hierarchies.map((tree) => tree.model);
   const { opensrpBaseURL } = props;
   const dispatch = useDispatch();
   const location = useLocation();
@@ -146,22 +147,23 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   }, [accessToken, locationUnitGroup.length, opensrpBaseURL]);
 
   useEffect(() => {
-    if (!Treedata.length) {
+    if (!treeData.length) {
+      // TODO: dry out getBaseTreeNode && getHierarchy function definitions
       getBaseTreeNode(accessToken, opensrpBaseURL)
         .then((response) => {
           dispatch(fetchLocationUnits(response));
           getHierarchy(response, accessToken, opensrpBaseURL)
             .then((hierarchy) => {
               hierarchy.forEach((hier) => {
-                const processed = generateJurisdictionTree(hier);
-                dispatch(fetchAllHierarchies(processed.model));
+                dispatch(fetchTree(hier));
               });
             })
             .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [Treedata, accessToken, dispatch, opensrpBaseURL]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [treeData, accessToken, opensrpBaseURL]);
 
   useEffect(() => {
     if (!extrafields) {
@@ -180,7 +182,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   if (
     extrafields === null ||
     !locationUnitGroup.length ||
-    !Treedata.length ||
+    !treeData.length ||
     (params.id && !LocationUnitDetail)
   )
     return (
@@ -209,7 +211,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         <Form
           extraFields={extrafields}
           opensrpBaseURL={opensrpBaseURL}
-          treedata={Treedata}
+          treedata={treeData}
           id={params.id}
           locationUnitGroup={locationUnitGroup}
           initialValue={LocationUnitDetail}
