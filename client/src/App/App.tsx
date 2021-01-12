@@ -116,7 +116,9 @@ import {
   teamAssignmentProps,
 } from './utils';
 import './App.css';
-// import '@opensrp/plans/dist/index.css';
+
+import '@opensrp/plans/dist/index.css';
+import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
 // import '@opensrp/product-catalogue/dist/index.css';
