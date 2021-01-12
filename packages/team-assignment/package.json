@@ -35,11 +35,13 @@
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
+    "@opensrp/location-management": "^0.0.7",
     "@opensrp/notifications": "^0.0.1",
     "@opensrp/react-utils": "^0.0.1",
     "@opensrp/reducer-factory": "^0.0.11",
     "@opensrp/server-service": "^0.0.11",
     "@opensrp/store": "^0.0.7",
+    "@opensrp/team-management": "^0.0.1",
     "antd": "^4.8.2",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
