@@ -24,9 +24,9 @@ export const LOCATION_UNIT_FINDBYPROPERTIES = 'location/findByProperties';
 export const LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER = 'location_settings';
 // Url
 export const URL_ADMIN = '/admin';
-export const URL_LOCATION_UNIT = URL_ADMIN + '/location/unit';
-export const URL_LOCATION_UNIT_ADD = URL_LOCATION_UNIT + '/add';
-export const URL_LOCATION_UNIT_EDIT = URL_LOCATION_UNIT + '/edit';
+export const URL_LOCATION_UNIT = `${URL_ADMIN}/location/unit`;
+export const URL_LOCATION_UNIT_ADD = `${URL_LOCATION_UNIT}/add`;
+export const URL_LOCATION_UNIT_EDIT = `${URL_LOCATION_UNIT}/edit`;
 
 //
 // Location Tag
@@ -35,9 +35,9 @@ export const LOCATION_UNIT_GROUP_ALL = 'location-tag';
 export const LOCATION_UNIT_GROUP_GET = 'location-tag/';
 export const LOCATION_UNIT_GROUP_DELETE = 'location-tag/delete/';
 // Url
-export const URL_LOCATION_UNIT_GROUP = URL_ADMIN + '/location/group';
-export const URL_LOCATION_UNIT_GROUP_ADD = URL_LOCATION_UNIT_GROUP + '/add';
-export const URL_LOCATION_UNIT_GROUP_EDIT = URL_LOCATION_UNIT_GROUP + '/edit';
+export const URL_LOCATION_UNIT_GROUP = `${URL_ADMIN}/location/group`;
+export const URL_LOCATION_UNIT_GROUP_ADD = `${URL_LOCATION_UNIT_GROUP}/add`;
+export const URL_LOCATION_UNIT_GROUP_EDIT = `${URL_LOCATION_UNIT_GROUP}/edit`;
 
 //
 // Location HIERARCHY
