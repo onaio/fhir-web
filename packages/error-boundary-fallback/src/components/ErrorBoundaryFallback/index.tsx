@@ -6,7 +6,7 @@ interface Props {
   homeUrl?: string;
 }
 
-const ErrorBoundary = (props: Props) => {
+const ErrorBoundaryFallback = (props: Props) => {
   const { homeUrl } = props;
   return (
     <Result
@@ -27,4 +27,4 @@ const ErrorBoundary = (props: Props) => {
   );
 };
 
-export { ErrorBoundary };
+export { ErrorBoundaryFallback };
