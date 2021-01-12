@@ -18,7 +18,11 @@ import {
   URL_TEAM_ASSIGNMENT,
   URL_TEAMS,
 } from '../../../constants';
-import { ENABLE_LOCATIONS, ENABLE_TEAMS } from '../../../configs/env';
+import {
+  ENABLE_LOCATIONS,
+  ENABLE_TEAMS,
+  ENABLE_TEAMS_ASSIGNMENT_MODULE,
+} from '../../../configs/env';
 
 export interface HomeProps {
   extraData: Dictionary;
@@ -56,6 +60,8 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
             </Link>
           </Col>
         )}
+      </Row>
+      <Row gutter={16} className="links-box">
         {ENABLE_LOCATIONS && (
           <>
             <Col className="gutter-row" span={12}>
@@ -77,13 +83,15 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
         )}
       </Row>
       <Row gutter={16} className="links-box">
-        <Col className="gutter-row" span={12}>
-          <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
-            <Button color="outline" className="btn-links">
-              {TEAM_ASSIGNMENT}
-            </Button>
-          </Link>
-        </Col>
+        {ENABLE_TEAMS_ASSIGNMENT_MODULE && (
+          <Col className="gutter-row" span={12}>
+            <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
+              <Button color="outline" className="btn-links">
+                {TEAM_ASSIGNMENT}
+              </Button>
+            </Link>
+          </Col>
+        )}
       </Row>
     </div>
   );
