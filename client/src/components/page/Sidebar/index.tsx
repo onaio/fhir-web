@@ -13,7 +13,7 @@ import {
   PRODUCT_CATALOGUE,
   TEAMS,
   TEAM_ASSIGNMENT,
-  URL_ADMIN,
+  URL_USER,
   URL_HOME,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
@@ -103,7 +103,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title={USERS}>
               <Menu.Item key="users">
-                <Link to={URL_ADMIN} className="admin-link">
+                <Link to={URL_USER} className="admin-link">
                   {USER_MANAGEMENT}
                 </Link>
               </Menu.Item>

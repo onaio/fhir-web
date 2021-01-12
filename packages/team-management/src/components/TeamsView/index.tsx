@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
-import reducer, {
+import {
+  reducer,
   fetchOrganizationsAction,
   getOrganizationsArray,
   Organization,

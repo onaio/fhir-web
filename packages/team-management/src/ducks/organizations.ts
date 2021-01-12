@@ -53,10 +53,7 @@ export const removeOrganizationsAction = removeActionCreatorFactory(reducerName)
 export const setTotalOrganizationsAction = setTotalRecordsFactory(reducerName);
 
 // selectors
-// selectors
 export const getOrganizationsById = getItemsByIdFactory<Organization>(reducerName);
 export const getOrganizationById = getItemByIdFactory<Organization>(reducerName);
 export const getOrganizationsArray = getItemsArrayFactory<Organization>(reducerName);
 export const getTotalOrganizations = getTotalRecordsFactory(reducerName);
-
-export default reducer;

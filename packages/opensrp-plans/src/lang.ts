@@ -28,3 +28,4 @@ export const SELECT_AREAS = 'Select areas';
 export const ACTIVATE_MISSION = 'Activate mission';
 export const SUCCESSFULLY_ACTIVATED_MISSION = 'Successfully activated mission';
 export const FAILED_TO_ACTIVATE_MISSION = 'Activating mission failed';
+export const COULD_NOT_LOAD_ASSIGNMENTS = 'Could not load Assignments';

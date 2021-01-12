@@ -103,4 +103,6 @@ export const trashPlansListStatusProp = {
 
 export const missionAssignmentProps = {
   showActivateMission: true,
+  showAssignmentTable: true,
+  assignGeoLevel: 3,
 };

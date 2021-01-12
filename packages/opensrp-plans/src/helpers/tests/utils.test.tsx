@@ -65,6 +65,7 @@ describe('helpers/utils', () => {
   });
   it('tests redirectGetter util', () => {
     expect(redirectPathGetter(PlanStatus.DRAFT)).toEqual(DRAFT_PLANS_LIST_VIEW_URL);
+    expect(redirectPathGetter()).toEqual(DRAFT_PLANS_LIST_VIEW_URL);
     expect(redirectPathGetter(PlanStatus.ACTIVE)).toEqual(ACTIVE_PLANS_LIST_VIEW_URL);
     expect(redirectPathGetter(PlanStatus.COMPLETE)).toEqual(COMPLETE_PLANS_LIST_VIEW_URL);
     expect(redirectPathGetter(PlanStatus.RETIRED)).toEqual(TRASH_PLANS_LIST_VIEW_URL);
