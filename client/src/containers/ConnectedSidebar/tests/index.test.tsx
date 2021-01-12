@@ -1,14 +1,17 @@
 import { authenticateUser } from '@onaio/session-reducer';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
 import { store } from '@opensrp/store';
-
-jest.mock('../../../configs/env');
+import { MISSIONS } from '../../../constants';
 
 describe('components/ConnectedSidebar', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders the ConnectedSidebar component', () => {
     const wrapper = mount(
       <Provider store={store}>
@@ -48,10 +51,8 @@ describe('components/ConnectedSidebar', () => {
     wrapper.unmount();
   });
 
-  it('displays menu links for enabled modules', () => {
+  it('displays menu links for enabled Plans module', () => {
     const envModule = require('../../../configs/env');
-    envModule.ENABLE_FORM_CONFIGURATION = 'true';
-    envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
     envModule.ENABLE_PLANS = 'true';
 
     const wrapper = mount(
@@ -61,8 +62,29 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
-    wrapper.unmount();
+
+    expect(wrapper.find(`SubMenu[title="${MISSIONS}"]`)).toHaveLength(1);
+  });
+
+  it('displays menu links for enabled Product Cataglogue module', () => {
+    const envModule = require('../../../configs/env');
+    envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const x = (wrapper
+      .find('SubMenu[title="Admin"]')
+      .first()
+      .last()
+      .prop('children') as ReactWrapper[])[2].key;
+
+    expect(x).toMatch('product-catalogue');
   });
 
   it('displays menu links for enabled Location module', () => {
@@ -76,7 +98,34 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
-    wrapper.unmount();
+
+    const x = (wrapper
+      .find('SubMenu[title="Admin"]')
+      .first()
+      .last()
+      .prop('children') as ReactWrapper[])[3].key;
+
+    expect(x).toMatch('admin-locations');
+  });
+
+  it('displays menu links for enabled Form Configuration module', () => {
+    const envModule = require('../../../configs/env');
+    envModule.ENABLE_FORM_CONFIGURATION = 'true';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const x = (wrapper
+      .find('SubMenu[title="Admin"]')
+      .first()
+      .last()
+      .prop('children') as ReactWrapper[])[4].key;
+
+    expect(x).toMatch('admin-form-config');
   });
 });
