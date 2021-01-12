@@ -17,12 +17,14 @@ export const EDIT_LOCATION_UNIT_GROUP = 'Edit Location Unit Group';
 //
 // Location Unit
 //
+export const ACTIVE = 'Active';
 export const LOCATION_UNIT_ALL = 'location/sync';
 export const LOCATION_UNIT_GET = 'location';
 export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
 export const LOCATION_UNIT_EXTRAFIELDS = 'v2/settings/?serverVersion=0';
 export const LOCATION_UNIT_FINDBYPROPERTIES = 'location/findByProperties';
 export const LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER = 'location_settings';
+
 // Url
 export const URL_ADMIN = '/admin';
 export const URL_LOCATION_UNIT = `${URL_ADMIN}/location/unit`;
