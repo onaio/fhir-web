@@ -162,7 +162,7 @@ export const createCsv = (entries: ClientCSVEntry[], fileName: string): void => 
     header: true,
   });
   // Export csv file
-  downloadFile(csv, fileName, APPLICATION_CSV);
+  downloadFile(csv, `${fileName}.csv`, APPLICATION_CSV);
 };
 
 /**

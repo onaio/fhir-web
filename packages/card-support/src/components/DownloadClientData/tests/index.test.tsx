@@ -285,7 +285,7 @@ describe('components/DownloadClientData', () => {
     });
     // File name should be correct
     expect(mockDownload.mock.calls[0][1]).toEqual(
-      'Children_list_CSB Hopital Bouficha_18_11_2020_(01-01-2020 - 30-11-2020)'
+      'Children_list_CSB Hopital Bouficha_18_11_2020_(01-01-2020 - 30-11-2020).csv'
     );
   });
 

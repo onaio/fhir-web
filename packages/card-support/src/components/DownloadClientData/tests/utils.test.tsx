@@ -36,7 +36,7 @@ describe('components/DownloadClientData/utils/createCSV', () => {
     createCsv([fixtures.child1CsvEntry, fixtures.child2CsvEntry], fileName);
     expect(mockDownload).toBeCalled();
     // File name should be correct
-    expect(mockDownload.mock.calls[0][1]).toEqual('client_data');
+    expect(mockDownload.mock.calls[0][1]).toEqual('client_data.csv');
     // Mime type should be correct
     expect(mockDownload.mock.calls[0][2]).toEqual('application/csv');
   });
@@ -177,7 +177,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     });
     // File name should be correct
     expect(mockDownload.mock.calls[0][1]).toEqual(
-      'Children_list_CSB Hopital Bouficha_18_11_2020_(26-04-2020 - 26-12-2020)'
+      'Children_list_CSB Hopital Bouficha_18_11_2020_(26-04-2020 - 26-12-2020).csv'
     );
   });
 
@@ -376,7 +376,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       }
     );
     expect(mockDownload.mock.calls[0][1]).toEqual(
-      'Children_list__18_11_2020_(26-04-2020 - 26-12-2020)'
+      'Children_list__18_11_2020_(26-04-2020 - 26-12-2020).csv'
     );
   });
 });
