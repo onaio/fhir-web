@@ -7,15 +7,14 @@ import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnit
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import locationUnitsReducer, {
+import {
+  locationUnitsReducer,
+  locationUnitsReducerName,
   fetchLocationUnits,
   LocationUnit,
-  reducerName as locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
-  LOCATION_UNIT_FINDBYPROPERTIES,
-  LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
   ADD_LOCATION_UNIT,
@@ -28,19 +27,18 @@ import './LocationUnitView.css';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import locationHierarchyReducer, {
-  getAllHierarchiesArray,
-  fetchAllHierarchies,
-  reducerName as locationHierarchyReducerName,
-} from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree } from '../LocationTree/utils';
-
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import {
+  hierarchyReducer,
+  getTreesByIds,
+  fetchTree,
+  hierarchyReducerName,
+} from '../../ducks/locationHierarchy';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
+import { loadHierarchy, loadJurisdictions } from 'location-management/src/helpers/dataLoaders';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
-reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
-
-const { getFilterParams } = OpenSRPService;
+reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
+const hierarchySelector = getTreesByIds();
 
 export interface AntTreeProps {
   title: JSX.Element;
@@ -76,23 +74,6 @@ export function loadSingleLocation(
     .catch(() => sendErrorNotification(ERROR_OCCURED));
 }
 
-/** Gets all the location unit at geographicLevel 0
- *
- * @param {string} accessToken - Access token to be used for requests
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
- */
-export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
-  return await serve
-    .list({
-      is_jurisdiction: true,
-      return_geometry: false,
-      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-    })
-    .then((response: LocationUnit[]) => response);
-}
-
 /** Parse the hierarchy node into table data
  *
  * @param {Array<ParsedHierarchyNode>} hierarchy - hierarchy node to be parsed
@@ -112,33 +93,11 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
   return data;
 }
 
-/** Gets the hierarchy of the location units
- *
- * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
- * @param {string} accessToken - Access token to be used for requests
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
- */
-export async function getHierarchy(
-  location: LocationUnit[],
-  accessToken: string,
-  opensrpBaseURL: string
-) {
-  const hierarchy: RawOpenSRPHierarchy[] = [];
-  for await (const loc of location) {
-    const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY);
-    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
-    hierarchy.push(data);
-  }
-
-  return hierarchy;
-}
-
 export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const treeData = (useSelector((state) =>
-    getAllHierarchiesArray(state)
-  ) as unknown) as ParsedHierarchyNode[];
+  const treeFilters = {};
+  const hierarchies = useSelector((state) => hierarchySelector(state, treeFilters));
+  const treeData = hierarchies.map((tree) => tree.model);
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
@@ -147,28 +106,31 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
-    if (!treeData.length) {
-      getBaseTreeNode(accessToken, opensrpBaseURL)
-        .then((response) => {
+    const treesDispatcher = (res: RawOpenSRPHierarchy) => dispatch(fetchTree(res));
+    loadJurisdictions(undefined, undefined, undefined, opensrpBaseURL)
+      .then((response) => {
+        if (response) {
           dispatch(fetchLocationUnits(response));
-          getHierarchy(response, accessToken, opensrpBaseURL)
-            .then((hierarchy) => {
-              hierarchy.forEach((hier) => {
-                const processed = generateJurisdictionTree(hier);
-                dispatch(fetchAllHierarchies(processed.model));
-              });
-            })
-            .catch(() => sendErrorNotification(ERROR_OCCURED));
-        })
-        .catch(() => sendErrorNotification(ERROR_OCCURED));
-    }
-  }, [treeData, accessToken, dispatch, opensrpBaseURL]);
+          const promises = response
+            .map((location) => location.id.toString())
+            .map((locationId) =>
+              loadHierarchy(locationId, treesDispatcher, undefined, opensrpBaseURL)
+            );
+          Promise.all(promises).catch((error) => {
+            throw error;
+          });
+        }
+      })
+      .catch(() => sendErrorNotification('An error occurred'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [treeData, accessToken, opensrpBaseURL]);
 
   useEffect(() => {
     const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
     setTableData(data);
   }, [treeData, currentParentChildren]);
 
+  // TODO - preferably show a message that indicates there was no data to display
   if (!tableData.length || !treeData.length)
     return (
       <Spin
