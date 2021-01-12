@@ -6,8 +6,8 @@ import {
   fetchOrganizationsAction as fetchOrganizations,
   getOrganizationsArray,
   Organization,
-  organizationsReducer,
-  orgReducerName,
+  reducer as organizationsReducer,
+  reducerName as orgReducerName,
 } from '@opensrp/team-management';
 import {
   assignmentsReducer,
