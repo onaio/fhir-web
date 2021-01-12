@@ -47,7 +47,6 @@ import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import NotFound from '../components/NotFound';
-import '@opensrp/user-management/dist/index.css';
 import {
   ConnectedProductCatalogueList,
   CATALOGUE_LIST_VIEW_URL,
@@ -90,7 +89,6 @@ import {
   ROUTE_PARAM_FORM_VERSION,
 } from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
-import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
@@ -117,10 +115,11 @@ import {
   missionAssignmentProps,
   teamAssignmentProps,
 } from './utils';
+import './App.css';
 // import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
-import '@opensrp/product-catalogue/dist/index.css';
-import '@opensrp/product-catalogue/dist/index.css';
+import '@opensrp/user-management/dist/index.css';
+// import '@opensrp/product-catalogue/dist/index.css';
 
 const { Content } = Layout;
 
