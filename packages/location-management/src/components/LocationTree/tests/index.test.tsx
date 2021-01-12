@@ -95,11 +95,6 @@ describe('location-management/src/components/LocationTree', () => {
   });
 
   it('test tree search functionality', async () => {
-    // fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
-    // fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
-    // fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
-    // fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
-
     const wrapper = mount(
       <Provider store={store}>
         <Tree opensrpBaseURL={opensrpBaseURL} accessToken={accessToken} OnItemClick={jest.fn} />

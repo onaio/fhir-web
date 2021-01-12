@@ -103,17 +103,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
       {(!tableData.length || !treeData.length) && (
         // This condition will become false one the tree data is loaded from the tree component
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        <>
-          <Spin
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '85vh',
-            }}
-            size={'large'}
-          />
-        </>
+        <Spin size={'large'} />
       )}
       <h5 className="mb-3">{LOCATION_UNIT_MANAGEMENT}</h5>
       <Row>

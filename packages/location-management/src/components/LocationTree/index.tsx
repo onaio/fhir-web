@@ -193,18 +193,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   generateFilterData(treeData);
 
-  if (!treeData.length)
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+  if (!treeData.length) return <Spin size={'large'} />;
 
   return (
     <div>
