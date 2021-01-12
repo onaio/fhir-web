@@ -107,7 +107,13 @@ export const TeamsAddEdit: React.FC = () => {
         <title>{params.id ? 'Edit' : 'Create'} Team</title>
       </Helmet>
 
-      <h5 className="mb-3">{params.id ? 'Edit' : 'Create'} Team</h5>
+      <h5 className="mb-3 header-title">
+        {params.id
+          ? initialValue?.name
+            ? `Edit Team | ${initialValue.name}`
+            : `Edit Team`
+          : 'Create Team'}
+      </h5>
 
       <div className="bg-white p-5">
         <Form
