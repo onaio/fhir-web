@@ -51,13 +51,13 @@ export const OPENSRP_ACTIVE = 'Active';
 
 // router routes
 export const URL_MISSIONS = '/missions';
-export const PLANS_ASSIGNMENT_VIEW_URL = URL_MISSIONS + '/plans/assignments';
-export const PLANS_CREATE_VIEW_URL = URL_MISSIONS + '/plans/new';
-export const PLANS_EDIT_VIEW_URL = URL_MISSIONS + '/plans/edit';
-export const ACTIVE_PLANS_LIST_VIEW_URL = URL_MISSIONS + '/plans/active';
-export const DRAFT_PLANS_LIST_VIEW_URL = URL_MISSIONS + '/plans/draft';
-export const COMPLETE_PLANS_LIST_VIEW_URL = URL_MISSIONS + '/plans/complete';
-export const TRASH_PLANS_LIST_VIEW_URL = URL_MISSIONS + '/plans/trash';
+export const PLANS_ASSIGNMENT_VIEW_URL = `${URL_MISSIONS}/assignments`;
+export const PLANS_CREATE_VIEW_URL = `${URL_MISSIONS}/new`;
+export const PLANS_EDIT_VIEW_URL = `${URL_MISSIONS}/edit`;
+export const ACTIVE_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/active`;
+export const DRAFT_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/draft`;
+export const COMPLETE_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/complete`;
+export const TRASH_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/trash`;
 export const HOME_URL = '/';
 
 // other constants
