@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import reducer, { Organization, reducerName } from '../../ducks/organizations';
+import { organizationsReducer, Organization, orgReducerName } from '../../ducks/organizations';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
@@ -20,7 +20,7 @@ import { Practitioner } from '../../ducks/practitioners';
 
 import './TeamsAddEdit.css';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(orgReducerName, organizationsReducer);
 
 /**
  * Gets Team data

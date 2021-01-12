@@ -9,11 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
-import reducer, {
+import {
+  organizationsReducer,
   fetchOrganizationsAction,
   getOrganizationsArray,
   Organization,
-  reducerName,
+  orgReducerName,
 } from '../../ducks/organizations';
 import { getAccessToken } from '@onaio/session-reducer';
 import { ERROR_OCCURRED, TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
@@ -24,7 +25,7 @@ import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
 
 /** Register reducer */
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(orgReducerName, organizationsReducer);
 
 /**
  * Function to load selected Team for details

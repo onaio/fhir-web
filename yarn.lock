@@ -2626,6 +2626,14 @@
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
   integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
 
+"@opensrp/react-utils@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.1.tgz#25d0dfab92245c730141529fa389ea2833215ed2"
+  integrity sha512-vZVjYnW1MkU5pMpaIE8F73uuD2uHldS8c20sCRAhyHZcb+InljpZ/CiPD4JViAXx88Szru8BDuw54x//OzBPWg==
+  dependencies:
+    "@opensrp/notifications" "^0.0.2"
+    antd "^4.6.3"
+
 "@opensrp/reducer-factory@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.1.tgz#4a544e6ec29d97a7d8ba2d07f3a63a21ec49e723"
