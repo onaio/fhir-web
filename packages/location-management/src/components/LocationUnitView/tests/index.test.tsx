@@ -6,12 +6,7 @@ import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import { notification } from 'antd';
 import { Router } from 'react-router';
-import LocationUnitView, {
-  loadSingleLocation,
-  getBaseTreeNode,
-  parseTableData,
-  getHierarchy,
-} from '..';
+import LocationUnitView, { loadSingleLocation, parseTableData } from '..';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
@@ -69,14 +64,6 @@ describe('location-management/src/components/LocationUnitView', () => {
     });
   });
 
-  it('test getBaseTreeNode', async () => {
-    fetch.mockResponse(JSON.stringify(baseLocationUnits));
-
-    const response = await getBaseTreeNode('accessToken', baseURL);
-
-    expect(response).toMatchObject(baseLocationUnits);
-  });
-
   it('test parseTableData', () => {
     const response = parseTableData(parsedHierarchy);
 
@@ -100,14 +87,6 @@ describe('location-management/src/components/LocationUnitView', () => {
         name: parsedHierarchy[2].title,
       },
     ]);
-  });
-
-  it('test getHierarchy', async () => {
-    fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
-
-    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken', baseURL);
-
-    expect(response).toMatchObject([rawHierarchy[2]]);
   });
 
   it('fail loading location ', async () => {

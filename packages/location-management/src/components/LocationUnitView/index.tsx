@@ -34,7 +34,7 @@ import {
   hierarchyReducerName,
 } from '../../ducks/locationHierarchy';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
-import { loadHierarchy, loadJurisdictions } from 'location-management/src/helpers/dataLoaders';
+import { loadHierarchy, loadJurisdictions } from '../../helpers/dataLoaders';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
