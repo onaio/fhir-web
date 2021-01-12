@@ -14,7 +14,7 @@ import * as Sentry from '@sentry/react';
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
 
-if (SENTRY_DSN && SENTRY_DSN !== '') {
+if (SENTRY_DSN) {
   Sentry.init({ dsn: SENTRY_DSN });
 }
 
