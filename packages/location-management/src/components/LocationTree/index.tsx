@@ -1,11 +1,17 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ParsedHierarchyNode } from '../../ducks/types';
-import reducer, { reducerName } from '../../ducks/location-hierarchy';
+import { ParsedHierarchyNode, LocationTreeState } from '../../ducks/types';
+import reducer, {
+  getLocationTreeState,
+  reducerName,
+  setLocationTreeState,
+} from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
+import { Dictionary } from '@onaio/utils';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
@@ -20,6 +26,42 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
+
+  const locationTreeState = useSelector(
+    (state) => (getLocationTreeState(state) as Dictionary) as LocationTreeState
+  );
+
+  const dispatch = useDispatch();
+
+  /**
+   * Function to to expand tree
+   *
+   * @param {string} value - value to be searched and expanded
+   */
+  function expandTree(value: string) {
+    const expandedKeys = filterData
+      .map((item) =>
+        value.length && item.label.toLocaleLowerCase().indexOf(value.toLowerCase()) > -1
+          ? getParentKey(item.id, filterData)
+          : null
+      )
+      .filter((item, i, self) => item && self.indexOf(item) === i);
+    setExpandedKeys(expandedKeys as string[]);
+    setSearchValue(value);
+    setAutoExpandParent(value.length > 0);
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (locationTreeState.keys) {
+      const keys = locationTreeState.keys;
+      const node = locationTreeState.node;
+      OnItemClick(node);
+      expandTree(node.key);
+      setExpandedKeys(keys);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /** Return the the parent key in a tree for the supplied key
    *
@@ -44,6 +86,14 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param {Array<React.Key>} allExpandedKeys currently expanded keys
    */
   function onExpand(allExpandedKeys: React.Key[]) {
+    if (expandedKeys.length !== 0) {
+      for (let i = 0; i < expandedKeys.length; i++) {
+        if (expandedKeys[i] !== allExpandedKeys[i]) {
+          allExpandedKeys.length = i;
+          break;
+        }
+      }
+    }
     setExpandedKeys(allExpandedKeys);
     setAutoExpandParent(true);
   }
@@ -54,16 +104,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    */
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
-    const expandedKeys = filterData
-      .map((item) =>
-        value.length && item.label.toLocaleLowerCase().indexOf(value) > -1
-          ? getParentKey(item.id, filterData)
-          : null
-      )
-      .filter((item, i, self) => item && self.indexOf(item) === i);
-    setExpandedKeys(expandedKeys as string[]);
-    setSearchValue(value);
-    setAutoExpandParent(value.length > 0);
+    expandTree(value);
   }
 
   /** process the data before it could be displayed in tree
@@ -127,8 +168,13 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
-          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
-          setExpandedKeys(allExpandedKeys);
+          const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
+          dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
+          const index = expandedKeys.indexOf(node.key);
+          if (index > -1) {
+            allExpandedKeys.splice(index, 1);
+          }
+          onExpand(allExpandedKeys);
         }}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
