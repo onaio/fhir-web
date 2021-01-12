@@ -190,9 +190,9 @@ describe('components/DownloadClientData', () => {
         method: 'GET',
       },
     ]);
-
-    expect(wrapper.find('Title').props()).toMatchSnapshot('title');
-    expect(wrapper.find('Card').props()).toMatchSnapshot('card');
+    const content = wrapper.find('div.layout-content');
+    expect(content.find('Title').props()).toMatchSnapshot('title');
+    expect(content.find('Card').props()).toMatchSnapshot('card');
     wrapper.unmount();
   });
 

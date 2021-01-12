@@ -147,7 +147,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
   }
 
   return (
-    <>
+    <div className="layout-content">
       <Title level={3}>Download Client Data</Title>
       <Card>
         <Form
@@ -217,7 +217,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
           </Form.Item>
         </Form>
       </Card>
-    </>
+    </div>
   );
 };
 DownloadClientData.defaultProps = defaultProps;
