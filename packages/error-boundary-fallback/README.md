@@ -1,4 +1,4 @@
-# Errorboundary Fallback
+# Error Boundary Fallback
 
 This package provides a fallback component which you can use as an error boundary fallback.
 
@@ -21,10 +21,10 @@ yarn add @opensrp/error-boundary-fallback
 ```javascript
 import App from '..';
 import * as Sentry from '@sentry/react';
-import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
+import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
 
 ReactDOM.render(
-  <Sentry.ErrorBoundary fallback={() => <ErrorBoundary homeUrl={'/home'} />}>
+  <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={'/home'} />}>
     <App />
   </Sentry.ErrorBoundary>,
   document.getElementById('root')
