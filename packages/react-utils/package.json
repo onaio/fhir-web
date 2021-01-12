@@ -33,6 +33,8 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
+    "@onaio/redux-reducer-registry": "^0.0.9",
+    "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.2",
     "antd": "^4.6.3"
   },
