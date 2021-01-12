@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Row, Col, Button, Space, Table, Divider, Input } from 'antd';
+import { Row, Col, Button, Space, Table, Divider } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Spin } from 'antd';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
+import { getFilteredDataArray, SearchBar } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { PlusOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
+import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -61,6 +62,7 @@ interface TableData {
 const UserList = (props: Props): JSX.Element => {
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const filteredData = useSelector((state) => getFilteredDataArray(state));
   const {
     serviceClass,
     fetchKeycloakUsersCreator,
@@ -113,11 +115,7 @@ const UserList = (props: Props): JSX.Element => {
       <h5 className="mb-3">User Management</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>
-          <Space style={{ marginBottom: 16, float: 'left' }}>
-            <h5>
-              <Input placeholder="Search" size="large" prefix={<SearchOutlined />} />
-            </h5>
-          </Space>
+          <SearchBar data={tableData} size="small" filterField={'username'} />
           <Space style={{ marginBottom: 16, float: 'right' }}>
             <Button
               type="primary"
@@ -141,7 +139,7 @@ const UserList = (props: Props): JSX.Element => {
                   extraData,
                   sortedInfo
                 )}
-                dataSource={tableData as KeycloakUser[]}
+                dataSource={filteredData.length ? filteredData : (tableData as KeycloakUser[])}
                 pagination={{
                   showQuickJumper: true,
                   showSizeChanger: true,
