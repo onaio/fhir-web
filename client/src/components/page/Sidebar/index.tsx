@@ -2,7 +2,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
-import { DashboardOutlined } from '@ant-design/icons';
+import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
@@ -109,6 +109,15 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           </Menu.SubMenu>
         )}
+        {ENABLE_CARD_SUPPORT && (
+          <Menu.SubMenu key="card-support" title="Card Support" icon={<IdcardOutlined />}>
+            <Menu.Item key="card-support-client-data">
+              <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
+                Download Client Data
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title={USERS}>
@@ -130,15 +139,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                 {PRODUCT_CATALOGUE}
               </Link>
             </Menu.Item>
-          )}
-          {ENABLE_CARD_SUPPORT && (
-            <Menu.SubMenu key="admin-card-support" title="Card Support">
-              <Menu.Item key="admin-card-support-client-data">
-                <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-                  Download Client Data
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
           )}
           {ENABLE_LOCATIONS && (
             <Menu.SubMenu key="location" title="Locations">

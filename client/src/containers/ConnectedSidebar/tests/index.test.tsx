@@ -53,6 +53,7 @@ describe('components/ConnectedSidebar', () => {
     envModule.ENABLE_FORM_CONFIGURATION = 'true';
     envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
     envModule.ENABLE_PLANS = 'true';
+    envModule.ENABLE_CARD_SUPPORT = 'true';
 
     const wrapper = mount(
       <Provider store={store}>
