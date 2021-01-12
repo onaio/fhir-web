@@ -393,4 +393,13 @@ describe('components/DownloadClientData/utils/getLocationDetails', () => {
       null
     );
   });
+
+  it('returns location from nested hierarchy', () => {
+    expect(
+      getLocationDetails(
+        [fixtures.locationTreeNode1, fixtures.locationTreeNode3],
+        'u5b4a441-21b5-4d03-816b-09d45b17cad1'
+      )
+    ).toEqual(fixtures.locationTreeNode2);
+  });
 });

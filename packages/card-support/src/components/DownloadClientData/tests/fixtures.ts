@@ -212,6 +212,37 @@ export const locationTreeNode1 = {
   title: 'CSB Hopital Bouficha',
 };
 
+export const locationTreeNode2 = {
+  id: 'u5b4a441-21b5-4d03-816b-09d45b17cad1',
+  label: 'Hospital',
+  node: {
+    locationId: 'u5b4a441-21b5-4d03-816b-09d45b17cad1',
+    name: 'Hospital',
+    attributes: {
+      geographicLevel: 1,
+    },
+    voided: false,
+  },
+  key: 'u5b4a441-21b5-4d03-816b-09d45b17cad1',
+  title: 'Hospital',
+};
+
+export const locationTreeNode3 = {
+  id: 'a3b4a441-21b5-4d03-816b-09d45b17cad6',
+  label: 'CSB Hopital New York',
+  node: {
+    locationId: 'a3b4a441-21b5-4d03-816b-09d45b17cad6',
+    name: 'CSB Hopital New York',
+    attributes: {
+      geographicLevel: 0,
+    },
+    voided: false,
+  },
+  key: 'a3b4a441-21b5-4d03-816b-09d45b17cad6',
+  title: 'CSB Hopital New York',
+  children: [locationTreeNode2],
+};
+
 export const locations = [locationTreeNode1];
 
 export const userAssignment = {

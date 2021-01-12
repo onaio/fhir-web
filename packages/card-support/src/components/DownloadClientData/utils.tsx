@@ -183,11 +183,9 @@ export const getLocationDetails = (
   while (!found && i < locations.length) {
     const node = locations[i];
 
-    if (node.id) {
-      if (node.id === locationId) {
-        found = true;
-        location = node;
-      }
+    if (node.id && node.id === locationId) {
+      found = true;
+      location = node;
     } else if (node.children) {
       location = getLocationDetails(node.children, locationId);
 
