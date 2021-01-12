@@ -4,7 +4,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { Spin } from 'antd';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import { getFilteredDataArray, SearchBar } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -37,6 +37,8 @@ export interface Props {
   accessToken: string;
   keycloakBaseURL: string;
   extraData: Dictionary;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filteredData: any[];
 }
 
 /** default component props */
@@ -48,6 +50,7 @@ export const defaultProps = {
   keycloakUsers: [],
   keycloakBaseURL: '',
   extraData: {},
+  filteredData: [],
 };
 
 interface TableData {
@@ -62,7 +65,6 @@ interface TableData {
 const UserList = (props: Props): JSX.Element => {
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const filteredData = useSelector((state) => getFilteredDataArray(state));
   const {
     serviceClass,
     fetchKeycloakUsersCreator,
@@ -71,6 +73,7 @@ const UserList = (props: Props): JSX.Element => {
     accessToken,
     keycloakBaseURL,
     extraData,
+    filteredData,
   } = props;
 
   const isLoadingCallback = (isLoading: boolean) => {
@@ -168,14 +171,17 @@ interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
   extraData: Dictionary;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filteredData: any[];
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
   const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
   const accessToken = getAccessToken(state, { accessToken: true });
+  const filteredData = getFilteredDataArray(state);
   const extraData = getExtraData(state);
-  return { keycloakUsers, accessToken, extraData };
+  return { keycloakUsers, accessToken, extraData, filteredData };
 };
 
 /** map props to action creators */
