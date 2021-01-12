@@ -1644,25 +1644,6 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-"@opensrp/keycloak-service@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.7.tgz#be652d2dc26751fd865dc495c115437f9f7f2488"
-  integrity sha512-K+2cOadLaM/7e9QmENfXJ49HX67DDucd7DYJB2WNtKi+D4SQNvc3SX97oFB5645f73zB/pm0ZLyK3N7Hj/f9XA==
-<<<<<<< HEAD
-  dependencies:
-    "@opensrp/store" "^0.0.6"
-=======
-=======
-"@opensrp/keycloak-service@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.8.tgz#f856672a3666131e8c0b04567949483c636db9a9"
-  integrity sha512-tIfrSKOTfLJ72FupNroC3ubN1B3tXrl4iye3IVDOgeUJxNDpbVWapiCtPo6Cc4Yz7wF1zOlGHRUcxNQwYxRLvQ==
->>>>>>> 230f7d8
-  dependencies:
-    "@opensrp/store" "^0.0.7"
-=======
 "@opensrp/form-config@0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@opensrp/form-config/-/form-config-0.0.6.tgz#d9ed397defd94aa512c8bebba9c8cf218d86e1b9"
@@ -1682,11 +1663,6 @@
     react-toastify "^6.0.5"
     reactstrap "^8.0.1"
     yup "^0.29.1"
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> 99ba9827af59f7bbddd7a1d79aa2e27ba0a856c9
->>>>>>> d37feab4064486849a4de677c3a2ef2920cddcab
 
 "@opensrp/keycloak-service@^0.0.7":
   version "0.0.7"
@@ -1745,7 +1721,6 @@
     lodash "^4.17.15"
     redux "^4.0.5"
     seamless-immutable "^7.1.4"
->>>>>>> 87ad3c4
 
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
