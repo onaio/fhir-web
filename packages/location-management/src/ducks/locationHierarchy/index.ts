@@ -137,5 +137,13 @@ export const getTreesByIds = () =>
     if (rootIds === undefined) {
       return allTreesArray;
     }
-    return rootIds.map((rootId) => treesById[rootId]);
+    const treesOfInterest: TreeNode[] = [];
+    rootIds.forEach((rootId) => {
+      const treeOfInterest = treesById[rootId];
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (treeOfInterest) {
+        treesOfInterest.push(treeOfInterest);
+      }
+    });
+    return treesOfInterest;
   });

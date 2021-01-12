@@ -24,13 +24,13 @@ describe('src/ducks/locationHierarchies', () => {
     expect(treesSelector(store.getState(), { rootJurisdictionId: [null] })).toEqual([]);
     let result = treesSelector(store.getState(), {});
     expect(result).toHaveLength(1);
-    expect(result[0]).toEqual(id1);
+    expect(result[0].model.id).toEqual(id1);
 
     result = treesSelector(store.getState(), {
       rootJurisdictionId: [id1],
     });
     expect(result).toHaveLength(1);
-    expect(result[0]).toEqual(id1);
+    expect(result[0].model.id).toEqual(id1);
   });
 
   it('Adds hierarchies correctly', () => {
