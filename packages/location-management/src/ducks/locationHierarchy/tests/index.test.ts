@@ -2,6 +2,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { store } from '@opensrp/store';
 import { hierarchyReducer, hierarchyReducerName, getTreesByIds, fetchTree, deforest } from '..';
 import { rawHierarchy } from './hierarchyFixtures';
+import { serializeTree } from '../utils';
 
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 const treesSelector = getTreesByIds();
@@ -50,5 +51,10 @@ describe('src/ducks/locationHierarchies', () => {
     expect(result).toHaveLength(2);
     expect(treesSelector(store.getState(), { rootJurisdictionId: [id1] })).toHaveLength(1);
     expect(treesSelector(store.getState(), { rootJurisdictionId: [id2] })).toHaveLength(1);
+
+    const res1 = treesSelector(store.getState(), { rootJurisdictionId: [id1] });
+    const res2 = treesSelector(store.getState(), { rootJurisdictionId: [id1] });
+
+    expect(serializeTree(res1)).toEqual(serializeTree(res2));
   });
 });
