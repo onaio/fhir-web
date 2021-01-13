@@ -40,7 +40,6 @@ Object {
           },
         ]
       }
-      filterField="username"
       placeholder=""
       size="small"
     />,
@@ -52,7 +51,7 @@ Object {
         }
       }
     >
-      <ForwardRef(InternalButton)
+      <Button
         block={false}
         className="create-user"
         ghost={false}
@@ -63,7 +62,7 @@ Object {
       >
         <ForwardRef(PlusOutlined) />
         Add User
-      </ForwardRef(InternalButton)>
+      </Button>
       <Divider
         type="vertical"
       />

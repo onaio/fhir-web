@@ -64,12 +64,6 @@ describe('components/SearchBar', () => {
     expect(wrapper.find('.ant-input').props().value).toEqual('test name');
 
     expect(getFilteredDataArray(store.getState())).toHaveLength(1);
-
-    wrapper.find('.ant-input').simulate('change', { target: { value: 'test name one' } });
-
-    wrapper.update();
-
-    expect(getFilteredDataArray(store.getState())).toHaveLength(0);
     wrapper.unmount();
   });
 
