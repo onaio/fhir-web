@@ -22,7 +22,7 @@ import {
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
-  FORM_CONFIGURATIONS,
+  FORM_CONFIGURATION,
   MANIFEST_RELEASES,
   DRAFT_FILES,
   JSON_VALIDATORS,
@@ -155,7 +155,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.SubMenu>
           )}
           {ENABLE_FORM_CONFIGURATION && (
-            <Menu.SubMenu key="form-config" title={FORM_CONFIGURATIONS}>
+            <Menu.SubMenu key="form-config" title={FORM_CONFIGURATION}>
               <Menu.Item key="releases">
                 <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
                   {MANIFEST_RELEASES}
