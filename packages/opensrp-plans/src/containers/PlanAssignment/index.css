@@ -1,5 +1,5 @@
 .plan-detail-view {
   background-color: #ffffff;
-  height: 156px;
+  min-height: 156px;
   border-bottom: 1px solid #e9e9e9;
 }

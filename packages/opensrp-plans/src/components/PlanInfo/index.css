@@ -55,3 +55,18 @@
   margin-left: 31px;
   margin-bottom: 20px;
 }
+@media only screen and (max-width: 1600px) {
+  .plan-start {
+    margin-left: 74px;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .plan-start {
+    margin-left: -11px;
+  }
+}
+@media only screen and (max-width: 1107px) {
+  .plan-info-main {
+    flex-direction: column;
+  }
+}
