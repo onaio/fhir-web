@@ -19,7 +19,7 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import PlanInfo from '../../components/PlanInfo';
 import { ActivateMissionCard } from '../../components/ActivateMission';
 import { ConnectedAssignmentTable } from '../../components/AssignmentTable';
-import './index.css';
+import '../../index.css';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(plansReducerName, plansReducer);
