@@ -48,7 +48,7 @@ const PlanInfo = (props: PlanInfoProps) => {
 
   return (
     <>
-      <Breadcrumb className="site-page-header" routes={routes} itemRender={itemRender}></Breadcrumb>
+      <Breadcrumb className="site-page-header-responsive" routes={routes} itemRender={itemRender}></Breadcrumb>
 
       <div className="plan-info-main">
         <Avatar
