@@ -32,7 +32,6 @@ describe('components/SearchBar', () => {
       </Provider>
     );
     expect(wrapper.find('.ant-input')).toHaveLength(1);
-    expect(wrapper.find('AntdIcon')).toHaveLength(1);
     wrapper.unmount();
   });
 

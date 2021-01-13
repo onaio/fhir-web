@@ -2,9 +2,15 @@ import React, { ChangeEvent } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import { Input, Space } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { reducerName, filteredDataReducer, fetchFilteredDataAction } from '../../ducks';
+import {
+  reducerName,
+  filteredDataReducer,
+  fetchFilteredDataAction,
+  removeFilteredDataAction,
+} from '../../ducks';
 import { useDispatch } from 'react-redux';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import { isEqual } from 'lodash';
 
 reducerRegistry.register(reducerName, filteredDataReducer);
 
@@ -37,13 +43,17 @@ const SearchBar = (props: SearchBarProps) => {
   const customOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.target.value;
     const filteredData = [];
-    for (const x of data) {
-      const values = Object.values(x);
-      for (const y of values) {
-        if ((y as string).toLowerCase().includes(currentValue.toLowerCase())) {
-          filteredData.push(x);
+    for (const datum of data) {
+      const values = Object.values(datum);
+      for (const val of values) {
+        if ((val as string).toLowerCase().includes(currentValue.toLowerCase())) {
+          filteredData.push(datum);
         }
       }
+    }
+    if (!isEqual(filteredData, data)) {
+      // clear data from state if there are new matches
+      dispatch(removeFilteredDataAction());
     }
     dispatch(fetchFilteredDataAction([...new Set(filteredData)]));
   };
@@ -55,6 +65,7 @@ const SearchBar = (props: SearchBarProps) => {
           placeholder={placeholder}
           size={size}
           prefix={<SearchOutlined />}
+          allowClear
           onChange={onChangeHandler ?? customOnChangeHandler}
         />
       </h5>
