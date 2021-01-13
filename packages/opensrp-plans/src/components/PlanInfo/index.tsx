@@ -56,7 +56,7 @@ const PlanInfo = (props: PlanInfoProps) => {
 
       <div className="plan-info-main">
         <Avatar
-          size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
+          // size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
           /**Find the right icon */
           icon={<FileDoneOutlined />}
           className="plan-info-avatar"
@@ -65,6 +65,7 @@ const PlanInfo = (props: PlanInfoProps) => {
             height: 82,
             lineHeight: 1.8,
             color: '#1CABE2',
+            fontSize: 50,
           }}
         />
         <span className="plan-title">
