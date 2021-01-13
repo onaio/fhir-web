@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { OpenSRPService } from '@opensrp/react-utils';
+import { Dictionary } from 'cycle';
 import { ACTIVE, baseURL, LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../constants';
 import { fetchLocationUnits, LocationUnit } from '../ducks/location-units';
 import { fetchTree } from '../ducks/locationHierarchy';
@@ -7,31 +8,34 @@ import { RawOpenSRPHierarchy } from '../ducks/locationHierarchy/types';
 
 /** Abstract 2 functions; get jurisdiction at any geo-level, get hierarchy */
 
-interface LoadHierarchyParams {
+/** hierarchy params */
+export interface LoadHierarchyParams {
   return_structure_count?: boolean;
 }
+
+export const defaultHierarchyParams: LoadHierarchyParams = {
+  return_structure_count: false,
+};
 
 /** get the jurisdiction Tree given the rootJurisdiction Id
  *
  * @param rootJurisdictionId - id of top level jurisdiction
  * @param dispatcher - dispatches an action to add hierarchy to store
- * @param urlParams - parameters to add to request
  * @param openSRPBaseURL - base url
- * @param service - the opensrp service
+ * @param urlParams - parameters to add to request
+ * @param service - the openSRP service
  */
 export async function loadHierarchy(
   rootJurisdictionId: string,
   dispatcher?: typeof fetchTree,
-  urlParams: LoadHierarchyParams = {},
   openSRPBaseURL: string = baseURL,
+  urlParams: LoadHierarchyParams = defaultHierarchyParams,
   service: typeof OpenSRPService = OpenSRPService
 ) {
-  const serve = new service(openSRPBaseURL, LOCATION_HIERARCHY);
+  const serve = new service(LOCATION_HIERARCHY, openSRPBaseURL);
   const params = {
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    return_structure_count: false,
     ...urlParams,
-  };
+  } as Dictionary;
   return serve
     .read(rootJurisdictionId, params)
     .then((response: RawOpenSRPHierarchy) => {
@@ -52,39 +56,42 @@ export interface GetLocationParams {
   properties_filter?: string;
 }
 
+export const defaultGetLocationParams: GetLocationParams = {
+  is_jurisdiction: true,
+  return_geometry: false,
+};
+
 /** filter params to be added as value of properties_filter url param */
 export interface ParamFilters {
   status?: string;
   geographicLevel?: number;
 }
 
+export const defaultParamFilters: ParamFilters = {
+  status: ACTIVE,
+  geographicLevel: 0,
+};
+
 /** loader function to get jurisdictions by geographic level
  *
  * @param dispatcher - called with response, adds data to store
+ * @param openSRPBaseURL - the openSRP api base url
  * @param urlParams - search params to be added to request
  * @param filterParams - filterParams for property_filter search_param
- * @param openSRPBaseURL - the openSRP api base url
  * @param service - openSRP service class
  */
 export async function loadJurisdictions(
   dispatcher?: typeof fetchLocationUnits,
-  urlParams: GetLocationParams = {},
-  filterParams: ParamFilters = {},
   openSRPBaseURL: string = baseURL,
+  urlParams: GetLocationParams = defaultGetLocationParams,
+  filterParams: ParamFilters = defaultParamFilters,
   service: typeof OpenSRPService = OpenSRPService
 ) {
-  const serve = new service(openSRPBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
-  const filterParameters = {
-    status: ACTIVE,
-    geographicLevel: 0,
-    ...filterParams,
-  };
+  const serve = new service(LOCATION_UNIT_FINDBYPROPERTIES, openSRPBaseURL);
   const params = {
-    is_jurisdiction: true,
-    return_geometry: false,
     ...urlParams,
-    properties_filter: OpenSRPService.getFilterParams(filterParameters),
-  };
+    properties_filter: service.getFilterParams(filterParams as Dictionary),
+  } as Dictionary;
   return serve
     .list(params)
     .then((response: LocationUnit[]) => {
