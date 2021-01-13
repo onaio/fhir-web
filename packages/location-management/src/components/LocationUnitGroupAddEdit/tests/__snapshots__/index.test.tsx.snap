@@ -15,7 +15,7 @@ Array [
   >
     Edit Location Unit Group | 
   </h5>,
-  <ForwardRef
+  <Col
     className="bg-white p-4"
     span={24}
   >
@@ -23,7 +23,7 @@ Array [
       id="54"
       setEditTitle={[Function]}
     />
-  </ForwardRef>,
+  </Col>,
 ]
 `;
 
@@ -42,13 +42,13 @@ Array [
   >
     Add Location Unit Group
   </h5>,
-  <ForwardRef
+  <Col
     className="bg-white p-4"
     span={24}
   >
     <Form
       setEditTitle={[Function]}
     />
-  </ForwardRef>,
+  </Col>,
 ]
 `;
