@@ -304,7 +304,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           </Form>
         </div>
       </Modal>
-      <Row className={'list-view'}>
+      <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
             data={Treedata}
@@ -317,7 +317,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             }}
           />
         </Col>
-        <Col className={'main-content'}>
+        <Col className="bg-white p-3 border-left" span={18}>
           <Table dataSource={tableData} columns={columns}></Table>
         </Col>
       </Row>
