@@ -118,7 +118,7 @@ const UserList = (props: Props): JSX.Element => {
       <h5 className="mb-3">User Management</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>
-          <SearchBar data={tableData} size="small" />
+          <SearchBar data={tableData} size="large" />
           <Space style={{ marginBottom: 16, float: 'right' }}>
             <Button
               type="primary"
