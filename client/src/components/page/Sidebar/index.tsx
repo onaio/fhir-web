@@ -32,6 +32,7 @@ import {
   COMPLETE,
   TRASH,
   MISSIONS,
+  LOCATIONS,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -84,59 +85,59 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         className="menu-dark"
       >
         {ENABLE_PLANS && (
-          <Menu.SubMenu key="missions" icon={<DashboardOutlined />} title={MISSIONS}>
-            <Menu.Item key="active">
+          <Menu.SubMenu key={MISSIONS} icon={<DashboardOutlined />} title={MISSIONS}>
+            <Menu.Item key={`${MISSIONS}-${ACTIVE}`}>
               <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
                 {ACTIVE}
               </Link>
             </Menu.Item>
-            <Menu.Item key="draft">
+            <Menu.Item key={`${MISSIONS}-${DRAFT}`}>
               <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
                 {DRAFT}
               </Link>
             </Menu.Item>
-            <Menu.Item key="complete">
+            <Menu.Item key={`${MISSIONS}-${COMPLETE}`}>
               <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
                 {COMPLETE}
               </Link>
             </Menu.Item>
-            <Menu.Item key="trash">
+            <Menu.Item key={`${MISSIONS}-${TRASH}`}>
               <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
                 {TRASH}
               </Link>
             </Menu.Item>
           </Menu.SubMenu>
         )}
-        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
+        <Menu.SubMenu key={ADMIN} icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.SubMenu key="users" title={USERS}>
-              <Menu.Item key={'list'}>
+            <Menu.SubMenu key={`${ADMIN}${USERS}`} title={USERS}>
+              <Menu.Item key={`${ADMIN}-${USERS}-list`}>
                 <Link to={URL_USER} className="admin-link">
                   {USER_MANAGEMENT}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
           )}
-          <Menu.Item key="teams">
+          <Menu.Item key={`${ADMIN}-${TEAMS}`}>
             <Link to={URL_TEAMS} className="admin-link">
               {TEAMS}
             </Link>
           </Menu.Item>
           {ENABLE_PRODUCT_CATALOGUE && (
-            <Menu.Item key="product-catalogue">
+            <Menu.Item key={`${ADMIN}-${PRODUCT_CATALOGUE}`}>
               <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
                 {PRODUCT_CATALOGUE}
               </Link>
             </Menu.Item>
           )}
           {ENABLE_LOCATIONS && (
-            <Menu.SubMenu key="location" title="Locations">
-              <Menu.Item key="unit">
+            <Menu.SubMenu key={`${ADMIN}-${LOCATIONS}`} title={LOCATIONS}>
+              <Menu.Item key={`${ADMIN}-${LOCATIONS}-${LOCATIONS_UNIT}`}>
                 <Link to={URL_LOCATION_UNIT} className="admin-link">
                   {LOCATIONS_UNIT}
                 </Link>
               </Menu.Item>
-              <Menu.Item key="group">
+              <Menu.Item key={`${ADMIN}-${LOCATIONS}-${LOCATIONS_UNIT_GROUP}`}>
                 <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
                   {LOCATIONS_UNIT_GROUP}
                 </Link>
@@ -144,18 +145,18 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.SubMenu>
           )}
           {ENABLE_FORM_CONFIGURATION && (
-            <Menu.SubMenu key="form-config" title={FORM_CONFIGURATION}>
-              <Menu.Item key="releases">
+            <Menu.SubMenu key={`${ADMIN}-${FORM_CONFIGURATION}`} title={FORM_CONFIGURATION}>
+              <Menu.Item key={`${ADMIN}-${FORM_CONFIGURATION}-${MANIFEST_RELEASES}`}>
                 <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
                   {MANIFEST_RELEASES}
                 </Link>
               </Menu.Item>
-              <Menu.Item key="drafts">
+              <Menu.Item key={`${ADMIN}-${FORM_CONFIGURATION}-${DRAFT_FILES}`}>
                 <Link to={URL_DRAFT_FILE_LIST} className="admin-link">
                   {DRAFT_FILES}
                 </Link>
               </Menu.Item>
-              <Menu.Item key="json-validators">
+              <Menu.Item key={`${ADMIN}-${FORM_CONFIGURATION}-${JSON_VALIDATORS}`}>
                 <Link to={URL_JSON_VALIDATOR_LIST} className="admin-link">
                   {JSON_VALIDATORS}
                 </Link>
