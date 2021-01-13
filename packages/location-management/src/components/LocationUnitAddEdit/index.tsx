@@ -163,7 +163,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [treeData, accessToken, opensrpBaseURL]);
+  }, [hierarchies, accessToken, opensrpBaseURL]);
 
   useEffect(() => {
     if (!extrafields) {
