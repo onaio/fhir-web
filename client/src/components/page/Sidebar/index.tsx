@@ -111,7 +111,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         <Menu.SubMenu key={ADMIN} icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key={`${ADMIN}${USERS}`} title={USERS}>
-              <Menu.Item key={`${ADMIN}-${USERS}-list`}>
+              <Menu.Item key={`${ADMIN}-${USERS}-${USER_MANAGEMENT}`}>
                 <Link to={URL_USER} className="admin-link">
                   {USER_MANAGEMENT}
                 </Link>
