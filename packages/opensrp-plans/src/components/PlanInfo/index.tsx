@@ -6,7 +6,7 @@ import { pageTitleBuilder } from '../../containers/ListView/utils';
 import { EDIT, END_DATE, MISSIONS, START_DATE } from '../../lang';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './index.css';
+import '../../index.css';
 import { redirectMapping } from '../../helpers/common';
 import { Route, BreadcrumbProps } from 'antd/lib/breadcrumb/Breadcrumb';
 /** interface describing the props of PlanInfo */
