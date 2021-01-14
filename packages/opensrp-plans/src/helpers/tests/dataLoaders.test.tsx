@@ -108,6 +108,8 @@ describe('dataLoading', () => {
     loadAssignments(mockBaseURL, 'planId').catch((e) => {
       expect(e.message).toEqual(errMessage);
     });
+    await new Promise((resolve) => setImmediate(resolve));
+
     fetch.resetMocks();
     fetch.mockResponse(JSON.stringify(null));
     loadAssignments(mockBaseURL, 'planId').catch((e) => {
