@@ -176,6 +176,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           }
           onExpand(allExpandedKeys);
         }}
+        selectedKeys={[expandedKeys[expandedKeys.length - 1]]}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
