@@ -100,7 +100,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   /**
    * Constructor method
    *
-   * @param {function() | string } accessTokenOrCallBack - asyc fn for getting the access token
+   * @param {function() | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
    * @param {string} baseURL - the base OpenSRP API URL
    * @param {string} endpoint - the OpenSRP endpoint
    * @param {function()} getOptions - a function to get the payload
@@ -145,6 +145,11 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
       .join(',');
   }
 
+  /**
+   * process received access token
+   *
+   * @param {function() | string} accessTokenCallBack - received access token
+   */
   public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
     if (typeof accessTokenCallBack === 'string') {
       return accessTokenCallBack;
