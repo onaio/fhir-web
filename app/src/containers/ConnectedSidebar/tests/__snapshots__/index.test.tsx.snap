@@ -58,14 +58,6 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
         to="/product-catalogue/list"
       >
         Product Catalogue
@@ -92,7 +84,7 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
@@ -181,14 +173,6 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
         to="/product-catalogue/list"
       >
         Product Catalogue
@@ -215,7 +199,7 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
@@ -246,7 +230,7 @@ Array [
 ]
 `;
 
-exports[`components/ConnectedSidebar correctly expand users menu 1`] = `
+exports[`components/ConnectedSidebar correctly expand teams menu 1`] = `
 Array [
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
@@ -338,7 +322,122 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar correctly expand users menu 1`] = `
+Array [
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Missions"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/active"
+      >
+        Active
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/draft"
+      >
+        Draft
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/complete"
+      >
+        Complete
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/trash"
+      >
+        Trash
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Admin"
+  >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/list"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <SubMenu
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Locations unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/group"
+        >
+          Locations unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <SubMenu
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
@@ -453,7 +552,7 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
@@ -548,7 +647,7 @@ Array [
       </Link>
     </MenuItem>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
