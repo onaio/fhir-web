@@ -8,10 +8,10 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
-  locationUnitsReducer,
-  locationUnitsReducerName,
   fetchLocationUnits,
   LocationUnit,
+  locationUnitsReducer,
+  locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
@@ -29,18 +29,16 @@ import './LocationUnitView.css';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import {
-  hierarchyReducer,
-  getTreesByIds,
-  fetchTree,
-  hierarchyReducerName,
-} from '../../ducks/locationHierarchy';
+import locationHierarchyReducer, {
+  getAllHierarchiesArray,
+  fetchAllHierarchies,
+  reducerName as locationHierarchyReducerName,
+} from '../../ducks/location-hierarchy';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
-import { serializeTree } from '../../ducks/locationHierarchy/utils';
+import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
-reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
-const hierarchySelector = getTreesByIds();
+reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 const { getFilterParams } = OpenSRPService;
 
@@ -138,11 +136,9 @@ export async function getHierarchy(
 
 export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const hierarchies = useSelector(
-    (state) => hierarchySelector(state, {}),
-    (trees1, trees2) => serializeTree(trees1) === serializeTree(trees2)
-  );
-  const treeData = hierarchies.map((tree) => tree.model);
+  const treeData = (useSelector((state) =>
+    getAllHierarchiesArray(state)
+  ) as unknown) as ParsedHierarchyNode[];
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
@@ -158,21 +154,20 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
           getHierarchy(response, accessToken, opensrpBaseURL)
             .then((hierarchy) => {
               hierarchy.forEach((hier) => {
-                dispatch(fetchTree(hier));
+                const processed = generateJurisdictionTree(hier);
+                dispatch(fetchAllHierarchies(processed.model));
               });
             })
-            .catch(() => sendErrorNotification('An error occurred'));
+            .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken, opensrpBaseURL, hierarchies]);
+  }, [treeData, accessToken, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
     const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
     setTableData(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentParentChildren, hierarchies]);
+  }, [treeData, currentParentChildren]);
 
   if (!tableData.length || !treeData.length)
     return (
