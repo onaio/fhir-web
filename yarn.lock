@@ -2573,6 +2573,16 @@
     client-oauth2 "^4.3.3"
     query-string "^6.4.2"
 
+"@onaio/gatekeeper@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.1.1.tgz#b843ec6766f88ef295addbfa3f81f6b0d9a8b2a6"
+  integrity sha512-5H06OjEzSPiCBTrU5Ib2pYXSYOR9Ub7lsRtss93J9nFS2XSXtxcuprfH6OCy2tY8X5LxaLAdNNjEXc0Tx59dZg==
+  dependencies:
+    "@onaio/session-reducer" "^0.0.12"
+    client-oauth2 "^4.3.3"
+    query-string "^6.4.2"
+    reactstrap "^7.1.0"
+
 "@onaio/list-view@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@onaio/list-view/-/list-view-0.0.3.tgz#18cb78a0721fd30d331c9c267d242d838e58f623"
@@ -2597,13 +2607,18 @@
   resolved "https://registry.yarnpkg.com/@onaio/session-reducer/-/session-reducer-0.0.11.tgz#4e8384ef3fc48d0bb697d698b115e8fc541100ed"
   integrity sha512-vjesMXOggnFgJAwlUSFgGfU95TepDL/JwRo9mUPxqvlkQRT296xMbm62RZdvUMwzi4StdXXH/3Vyv3emMuWeqA==
 
+"@onaio/session-reducer@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@onaio/session-reducer/-/session-reducer-0.0.12.tgz#8a72bd80442a6f6c10138b3b3fac0455324042e1"
+  integrity sha512-BbsIuhMhPeM7BnbSiPUOKZFZeTQLjSqYBrWAJeA/gotH1c20csYDRfI1bhopOmVx0dbigm7saDFfOX963jpULA==
+
 "@onaio/utils@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
 "@opensrp/error-boundary-fallback@file:packages/error-boundary-fallback":
-  version "0.0.0"
+  version "0.0.1"
   dependencies:
     "@sentry/react" "^5.27.4"
 
@@ -10490,10 +10505,20 @@ lodash.isequal@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
   integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
 
+lodash.isfunction@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
+  integrity sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==
+
 lodash.ismatch@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.ismatch/-/lodash.ismatch-4.4.0.tgz#756cb5150ca3ba6f11085a78849645f188f85f37"
   integrity sha1-dWy1FQyjum8RCFp4hJZF8Yj4Xzc=
+
+lodash.isobject@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/lodash.isobject/-/lodash.isobject-3.0.2.tgz#3c8fb8d5b5bf4bf90ae06e14f2a530a4ed935e1d"
+  integrity sha1-PI+41bW/S/kK4G4U8qUwpO2TXh0=
 
 lodash.isplainobject@^4.0.6:
   version "4.0.6"
@@ -10529,6 +10554,11 @@ lodash.templatesettings@^4.0.0:
   integrity sha512-stgLz+i3Aa9mZgnjr/O+v9ruKZsPsndy7qPZOchbqk2cnTU1ZaldKK+v7m54WoKIyxiuMZTKT2H81F8BeAc3ZQ==
   dependencies:
     lodash._reinterpolate "^3.0.0"
+
+lodash.tonumber@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/lodash.tonumber/-/lodash.tonumber-4.0.3.tgz#0b96b31b35672793eb7f5a63ee791f1b9e9025d9"
+  integrity sha1-C5azGzVnJ5Prf1pj7nkfG56QJdk=
 
 lodash.uniq@^4.5.0:
   version "4.5.0"
@@ -13819,6 +13849,14 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-popper@^0.10.4:
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.10.4.tgz#af2a415ea22291edd504678d7afda8a6ee3295aa"
+  integrity sha1-rypBXqIike3VBGeNev2opu4ylao=
+  dependencies:
+    popper.js "^1.14.1"
+    prop-types "^15.6.1"
+
 react-popper@^1.3.6:
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-1.3.7.tgz#f6a3471362ef1f0d10a4963673789de1baca2324"
@@ -13989,6 +14027,21 @@ react@^16.13.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
+
+reactstrap@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-7.1.0.tgz#fd7125901737a3001c8564c0f8b40e319eec23b2"
+  integrity sha512-wtc4RkgnGn1TsZ0AxOZ2OqT+b8YmCWZj/tErPujWLepxzlEEhveZGC+uDerdaHVSAzJUP2DTk605iper7hutQQ==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    classnames "^2.2.3"
+    lodash.isfunction "^3.0.9"
+    lodash.isobject "^3.0.2"
+    lodash.tonumber "^4.0.3"
+    prop-types "^15.5.8"
+    react-lifecycles-compat "^3.0.4"
+    react-popper "^0.10.4"
+    react-transition-group "^2.3.1"
 
 reactstrap@^8.0.1, reactstrap@^8.4.1:
   version "8.7.1"
