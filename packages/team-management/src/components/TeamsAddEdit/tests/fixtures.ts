@@ -22,6 +22,21 @@ export const team: Organization = {
   },
 };
 
+export const team1: Organization = {
+  id: 1,
+  identifier: id,
+  active: true,
+  type: {
+    coding: [
+      {
+        system: 'http://terminology.hl7.org/CodeSystem/team-type',
+        code: 'team',
+        display: 'Team',
+      },
+    ],
+  },
+};
+
 export const practitioners: Practitioner[] = [
   {
     identifier: '1',
