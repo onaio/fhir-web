@@ -19,7 +19,7 @@ yarn add @opensrp/server-service
 
 `OpenSRPService` makes use of the following options
 
-- **accessTokenCallBack:**(async function)
+- **accessTokenOrCallBack:**(string | function)
   - **required**
   - an async call back function that returns access token
 - **baseURL:**(string)

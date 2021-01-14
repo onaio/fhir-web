@@ -90,7 +90,7 @@ type GetAccessTokenType = () => Promise<string | null>;
  * **To update an object**: service.update(theObject)
  */
 export class OpenSRPService<PayloadT extends object = Dictionary> {
-  public getAccessToken: GetAccessTokenType;
+  public accessTokenOrCallBack: GetAccessTokenType | string;
   public baseURL: string;
   public endpoint: string;
   public generalURL: string;
@@ -100,14 +100,14 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   /**
    * Constructor method
    *
-   * @param {function()} accessTokenCallBack - asyc fn for getting the access token
+   * @param {function() | string } accessTokenOrCallBack - asyc fn for getting the access token
    * @param {string} baseURL - the base OpenSRP API URL
    * @param {string} endpoint - the OpenSRP endpoint
    * @param {function()} getOptions - a function to get the payload
    * @param {AbortController} signal - abort signal
    */
   constructor(
-    accessTokenCallBack: GetAccessTokenType,
+    accessTokenOrCallBack: GetAccessTokenType | string,
     baseURL: string = OPENSRP_API_BASE_URL,
     endpoint: string,
     getOptions: typeof getFetchOptions = getFetchOptions,
@@ -118,7 +118,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     this.signal = signal;
     this.baseURL = baseURL;
     this.generalURL = `${this.baseURL}${this.endpoint}`;
-    this.getAccessToken = accessTokenCallBack;
+    this.accessTokenOrCallBack = accessTokenOrCallBack;
   }
 
   /** appends any query params to the url as a querystring
@@ -145,6 +145,13 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
       .join(',');
   }
 
+  public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
+    if (typeof accessTokenCallBack === 'string') {
+      return accessTokenCallBack;
+    }
+    return (await accessTokenCallBack()) as string;
+  }
+
   /** create method
    * Send a POST request to the general endpoint containing the new object data
    * Successful requests will result in a HTTP status 201 response with no body
@@ -160,7 +167,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     method: HTTPMethod = 'POST'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
-    const accessToken = (await this.getAccessToken()) as string;
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const payload = {
       ...this.getOptions<PayloadT>(this.signal, accessToken, method, data),
       'Cache-Control': 'no-cache',
@@ -195,7 +202,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = OpenSRPService.getURL(`${this.generalURL}/${id}`, params);
-    const accessToken = (await this.getAccessToken()) as string;
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
 
     if (response) {
@@ -222,7 +229,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     method: HTTPMethod = 'PUT'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
-    const accessToken = (await this.getAccessToken()) as string;
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const payload = {
       ...this.getOptions<PayloadT>(this.signal, accessToken, method, data),
       'Cache-Control': 'no-cache',
@@ -250,7 +257,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = OpenSRPService.getURL(this.generalURL, params);
-    const accessToken = (await this.getAccessToken()) as string;
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
 
     if (response) {
@@ -276,7 +283,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     method: HTTPMethod = 'DELETE'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
-    const accessToken = (await this.getAccessToken()) as string;
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const response = await fetch(url, this.getOptions(this.signal, accessToken, method));
     if (response.ok || response.status === 204 || response.status === 200) {
       return {};

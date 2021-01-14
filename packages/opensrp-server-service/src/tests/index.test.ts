@@ -25,7 +25,7 @@ describe('services/OpenSRP', () => {
   });
 
   it('OpenSRPService constructor works', async () => {
-    const planService = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'plans');
+    const planService = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'plans');
     expect(planService.baseURL).toEqual('https://opensrp-stage.smartregister.org/opensrp/rest/');
     expect(planService.endpoint).toEqual('plans');
     expect(planService.generalURL).toEqual(
@@ -40,11 +40,20 @@ describe('services/OpenSRP', () => {
     );
   });
 
+  it('processAcessToken works', async () => {
+    // token passed as string
+    let result = await OpenSRPService.processAcessToken('hunter2');
+    expect(result).toEqual('hunter2');
+    // call back passed
+    result = await OpenSRPService.processAcessToken(getAccessToken);
+    expect(result).toEqual('hunter2');
+  });
+
   // list method
 
   it('OpenSRPService list method works', async () => {
     fetch.mockResponseOnce(JSON.stringify(plansListResponse));
-    const planService = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'plans');
+    const planService = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'plans');
     const result = await planService.list();
     expect(result).toEqual(plansListResponse);
     expect(fetch.mock.calls).toEqual([
@@ -91,7 +100,7 @@ describe('services/OpenSRP', () => {
 
   it('OpenSRPService delete method works', async () => {
     fetch.mockResponseOnce(JSON.stringify({}));
-    const service = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'practitioners');
+    const service = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'practitioners');
     const result = await service.delete({ practitioner: 'someone' });
     expect(result).toEqual({});
     expect(fetch.mock.calls).toEqual([
@@ -136,7 +145,7 @@ describe('services/OpenSRP', () => {
   it('OpenSRPService delete method should handle http errors', async () => {
     const statusText = 'something happened';
     fetch.mockResponseOnce(JSON.stringify(sampleErrorObj), { status: 500, statusText });
-    const service = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'practitioners');
+    const service = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'practitioners');
     let error;
     try {
       await service.delete({});
