@@ -1,190 +1,84 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/TeamsDetail renders without crashing 1`] = `
-<TeamsDetail
-  active={true}
-  id={1}
-  identifier="fcc19470-d599-11e9-bb65-2a2ae2dbcce4"
-  name="The Luang"
-  teamMembers={
-    Array [
-      Object {
-        "active": false,
-        "identifier": "718e2b7d-22d7-4c23-aaa7-62cca4b9e318",
-        "name": "prac one",
-        "userId": "7306784c-64fb-4d45-990b-306863eb478b",
-        "username": "prac_1",
-      },
-      Object {
-        "active": true,
-        "identifier": "718e2b7d-22d7-4c23-aaa7-62cca4b9e318",
-        "name": "prac two",
-        "userId": "7306784c-64fb-4d45-990b-306863eb478b",
-        "username": "prac_2",
-      },
-    ]
-  }
-  type={
-    Object {
-      "coding": Array [
-        Object {
-          "code": "team",
-          "display": "Team",
-          "system": "http://terminology.hl7.org/CodeSystem/team-type",
-        },
-      ],
-    }
-  }
+exports[`components/TeamsDetail renders without crashing: close button 1`] = `
+Object {
+  "block": false,
+  "className": "float-right close-btn",
+  "ghost": false,
+  "htmlType": "button",
+  "icon": <ForwardRef(CloseOutlined) />,
+  "loading": false,
+  "onClick": [Function],
+  "shape": "circle",
+  "type": "text",
+}
+`;
+
+exports[`components/TeamsDetail renders without crashing: identifier 1`] = `
+<div
+  className="mb-4 small"
 >
-  <div
-    className="p-4 bg-white"
+  <p
+    className="mb-0 font-weight-bold"
   >
-    <Button
-      block={false}
-      className="float-right close-btn"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(CloseOutlined) />}
-      loading={false}
-      onClick={[Function]}
-      shape="circle"
-      type="text"
-    >
-      <button
-        className="ant-btn ant-btn-text ant-btn-circle ant-btn-icon-only float-right close-btn"
-        onClick={[Function]}
-        type="button"
-      >
-        <ForwardRef(CloseOutlined)>
-          <AntdIcon
-            icon={
-              Object {
-                "icon": Object {
-                  "attrs": Object {
-                    "focusable": "false",
-                    "viewBox": "64 64 896 896",
-                  },
-                  "children": Array [
-                    Object {
-                      "attrs": Object {
-                        "d": "M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z",
-                      },
-                      "tag": "path",
-                    },
-                  ],
-                  "tag": "svg",
-                },
-                "name": "close",
-                "theme": "outlined",
-              }
-            }
-          >
-            <span
-              aria-label="close"
-              className="anticon anticon-close"
-              role="img"
-            >
-              <IconReact
-                icon={
-                  Object {
-                    "icon": Object {
-                      "attrs": Object {
-                        "focusable": "false",
-                        "viewBox": "64 64 896 896",
-                      },
-                      "children": Array [
-                        Object {
-                          "attrs": Object {
-                            "d": "M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z",
-                          },
-                          "tag": "path",
-                        },
-                      ],
-                      "tag": "svg",
-                    },
-                    "name": "close",
-                    "theme": "outlined",
-                  }
-                }
-              >
-                <svg
-                  aria-hidden="true"
-                  data-icon="close"
-                  fill="currentColor"
-                  focusable="false"
-                  height="1em"
-                  key="svg-close"
-                  viewBox="64 64 896 896"
-                  width="1em"
-                >
-                  <path
-                    d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"
-                    key="svg-close-svg-0"
-                  />
-                </svg>
-              </IconReact>
-            </span>
-          </AntdIcon>
-        </ForwardRef(CloseOutlined)>
-      </button>
-    </Button>
-    <div
-      className="mb-4 small mt-4"
-    >
-      <p
-        className="mb-0 font-weight-bold"
-      >
-        Team name
-      </p>
-      <p
-        className="mb-0"
-      >
-        The Luang
-      </p>
-    </div>
-    <div
-      className="mb-4 small"
-    >
-      <p
-        className="mb-0 font-weight-bold"
-      >
-        Status
-      </p>
-      <p
-        className="mb-0"
-      >
-        true
-      </p>
-    </div>
-    <div
-      className="mb-4 small"
-    >
-      <p
-        className="mb-0 font-weight-bold"
-      >
-        Identifier
-      </p>
-      <p
-        className="mb-0"
-      >
-        fcc19470-d599-11e9-bb65-2a2ae2dbcce4
-      </p>
-    </div>
-    <div
-      className="mb-4 small"
-    >
-      <p
-        className="mb-0 font-weight-bold"
-      >
-        Team members
-      </p>
-      <p
-        className="mb-0"
-        key="718e2b7d-22d7-4c23-aaa7-62cca4b9e318"
-      >
-        prac two
-      </p>
-    </div>
-  </div>
-</TeamsDetail>
+    Identifier
+  </p>
+  <p
+    className="mb-0"
+  >
+    fcc19470-d599-11e9-bb65-2a2ae2dbcce4
+  </p>
+</div>
+`;
+
+exports[`components/TeamsDetail renders without crashing: status 1`] = `
+<div
+  className="mb-4 small"
+>
+  <p
+    className="mb-0 font-weight-bold"
+  >
+    Status
+  </p>
+  <p
+    className="mb-0"
+  >
+    true
+  </p>
+</div>
+`;
+
+exports[`components/TeamsDetail renders without crashing: team members 1`] = `
+<div
+  className="mb-4 small"
+>
+  <p
+    className="mb-0 font-weight-bold"
+  >
+    Team members
+  </p>
+  <p
+    className="mb-0"
+    key="718e2b7d-22d7-4c23-aaa7-62cca4b9e318"
+  >
+    prac two
+  </p>
+</div>
+`;
+
+exports[`components/TeamsDetail renders without crashing: team name 1`] = `
+<div
+  className="mb-4 small mt-4"
+>
+  <p
+    className="mb-0 font-weight-bold"
+  >
+    Team name
+  </p>
+  <p
+    className="mb-0"
+  >
+    The Luang
+  </p>
+</div>
 `;
