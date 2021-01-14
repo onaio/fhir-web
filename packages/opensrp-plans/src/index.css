@@ -20,75 +20,50 @@
   border-bottom: 1px solid #e9e9e9;
 }
 
-.plan-info-main {
-  display: inline-flex;
-  align-items: center;
-  padding-left: 29px;
-  justify-content: space-between;
-}
 .plan-detail-view .site-page-header-responsive {
   line-height: 22px;
   padding-top: 16px;
   padding-left: 36px;
 }
-.plan-title {
-  margin-left: 19px;
+
+.plan-info-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 28px;
+  flex-wrap: wrap;
 }
-.plan-title h4 {
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 20px;
-  line-height: 28px;
-  text-align: left;
+.plan-avatar-detail-section {
+  display: flex;
+  align-items: center;
 }
-.plan-title a,
-.plan-title span {
-  font-size: 14px;
-  line-height: 22px;
-  text-align: left;
+.avatar-section {
+  padding-right: 24px;
 }
-.plan-start {
-  margin-left: 474px;
+.plan-detail-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.plan-start-title {
-  margin-left: 6.9rem;
+.plan-dates {
+  display: flex;
+  flex-direction: row;
 }
-.plan-end-title {
-  margin-left: 6.9rem;
+.plan-start-date {
+  flex-direction: column;
+  display: flex;
+  padding-right: 24px;
 }
-.plan-start-title,
-.plan-end-title {
-  color: rgba(0, 0, 0, 0.45);
-  font-size: 14px;
-  line-height: 36px;
-  text-align: right;
-  margin-left: 7.9rem;
+.plan-end-date {
+  flex-direction: column;
+  display: flex;
+  padding-left: 24px;
 }
-.plan-info-main h2 {
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 30px;
-  line-height: 38px;
-  text-align: right;
+.start-date,
+.end-date {
+  display: flex;
+  justify-content: flex-end;
 }
-.plan-end {
-  margin-left: 14px;
-}
-.plan-info-main .timing-period-divider {
+.plan-detail-view .date-divider {
   height: 40px;
-  margin-left: 31px;
-  margin-bottom: 20px;
-}
-@media only screen and (max-width: 1600px) {
-  .plan-start {
-    margin-left: 74px;
-  }
-}
-@media only screen and (max-width: 1200px) {
-  .plan-start {
-    margin-left: -11px;
-  }
-}
-@media only screen and (max-width: 1107px) {
-  .plan-info-main {
-    flex-direction: column;
-  }
 }

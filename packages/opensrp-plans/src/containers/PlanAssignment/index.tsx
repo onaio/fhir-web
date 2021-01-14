@@ -19,7 +19,6 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import PlanInfo from '../../components/PlanInfo';
 import { ActivateMissionCard } from '../../components/ActivateMission';
 import { ConnectedAssignmentTable } from '../../components/AssignmentTable';
-import '../../index.css';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(plansReducerName, plansReducer);
@@ -103,7 +102,7 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
 
   /** Page Header routes */
   return (
-    <div className="plan-detail-view">
+    <div>
       <PlanInfo plan={plan} planId={planId} />
       <div className="plan-activities_section">
         {showAssignmentTable ? <ConnectedAssignmentTable {...assignmentTableProps} /> : null}
