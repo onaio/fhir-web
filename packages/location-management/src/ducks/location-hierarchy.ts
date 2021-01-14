@@ -7,7 +7,7 @@
 import { Dictionary } from '@onaio/utils';
 import { AnyAction, Store } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
-import { TreeNode } from './types';
+import { TreeNode, LocationTreeState } from './types';
 
 /** reducer name for hierarchy reducer */
 export const reducerName = 'location-hierarchy';
@@ -17,6 +17,7 @@ export const reducerName = 'location-hierarchy';
 /** action to add a tree to store */
 export const TREE_FETCHED = 'location-hierarchy/TREE_FETCHED';
 export const FETCH_SINGLE_LOCATION = 'location-hierarchy/FETCH_SINGLE_LOCATION';
+export const SET_LOCATION_TREE_STATE = 'location-hierarchy/SET_LOCATION_TREE_STATE';
 
 /** describes action that adds a hierarchy tree to store */
 export interface FetchedTreeAction extends AnyAction {
@@ -24,8 +25,14 @@ export interface FetchedTreeAction extends AnyAction {
   hierarchyObject: TreeNode;
 }
 
+/** describes action that saves a hierarchy tree to store */
+export interface SetLocationTreeStateAction extends AnyAction {
+  type: typeof SET_LOCATION_TREE_STATE;
+  hierarchyObject: LocationTreeState;
+}
+
 /** combined full action types | its a union */
-export type TreeActionTypes = FetchedTreeAction | AnyAction;
+export type TreeActionTypes = FetchedTreeAction | SetLocationTreeStateAction | AnyAction;
 
 // **************************** action creators ****************************
 
@@ -43,12 +50,27 @@ export function fetchAllHierarchies(hierarchy: TreeNode): FetchedTreeAction {
   };
 }
 
+/** action creator when adding a tree to store
+ *
+ * @param {LocationTreeState} hierarchy - the tree state to be expanded
+ * @returns {object} - action object
+ */
+export function setLocationTreeState(hierarchy: LocationTreeState): SetLocationTreeStateAction {
+  return {
+    hierarchyObject: {
+      ...hierarchy,
+    } as LocationTreeState,
+    type: SET_LOCATION_TREE_STATE,
+  };
+}
+
 // **************************** medusa ****************************
 
 /** The store's slice state */
 export interface TreeState {
   hierarchyArray: TreeNode[];
   currentParentChildren: TreeNode[];
+  locationTreeState: LocationTreeState;
 }
 
 /** Create an immutable tree state */
@@ -59,6 +81,7 @@ export const initialState: ImmutableTreeState | Dictionary = SeamlessImmutable({
   hierarchyArray: [],
   currentParentChildren: [],
   locationObject: {},
+  locationTreeState: {},
 });
 
 // the reducer function
@@ -78,6 +101,13 @@ export default function reducer(
         ...state,
         hierarchyArray: [...state.hierarchyArray, action.hierarchyObject],
       };
+
+    case SET_LOCATION_TREE_STATE:
+      return {
+        ...state,
+        locationTreeState: action.hierarchyObject,
+      };
+
     default:
       return state;
   }
@@ -90,3 +120,6 @@ export default function reducer(
  */
 export const getAllHierarchiesArray = (state: Partial<Store>): Dictionary<TreeNode> =>
   (state as Dictionary)[reducerName].hierarchyArray;
+
+export const getLocationTreeState = (state: Partial<Store>): Dictionary<LocationTreeState> =>
+  (state as Dictionary)[reducerName].locationTreeState;
