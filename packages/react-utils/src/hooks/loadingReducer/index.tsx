@@ -14,12 +14,14 @@ export interface ActionType {
 /** describes the state of the reducer */
 export type State = Dictionary<boolean>;
 
+const initialState = {};
+
 /** reducer function for useLoadingReducer hook
  *
  * @param state local reducer's state
  * @param action - action to start or stop loading
  */
-export const reducer = (state: State, action: ActionType) => {
+export const loadingReducer = (state: State = initialState, action: ActionType) => {
   switch (action.type) {
     case START_LOAD:
       return {
@@ -64,7 +66,7 @@ export const useLoadingReducer = (initialLoadingState = true) => {
   const initialLoadingStateKey = 'initialState';
   const initialState: State = { [initialLoadingStateKey]: initialLoadingState };
 
-  const [store, dispatch] = useReducer(reducer, initialState);
+  const [store, dispatch] = useReducer(loadingReducer, initialState);
 
   const changeLoading = (key: string, loadStatus: boolean) => {
     const type = loadStatus ? START_LOAD : END_LOAD;
