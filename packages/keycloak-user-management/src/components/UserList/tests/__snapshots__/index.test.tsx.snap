@@ -41,7 +41,7 @@ Object {
         ]
       }
       placeholder=""
-      size="small"
+      size="large"
     />,
     <Space
       style={
