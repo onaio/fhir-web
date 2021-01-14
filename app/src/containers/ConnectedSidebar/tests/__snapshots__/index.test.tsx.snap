@@ -92,7 +92,7 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
@@ -215,7 +215,7 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
@@ -338,7 +338,7 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
@@ -453,7 +453,7 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
@@ -548,7 +548,7 @@ Array [
       </Link>
     </MenuItem>
     <SubMenu
-      title="Form Configurations"
+      title="Form Configuration"
     >
       <MenuItem>
         <Link
