@@ -58,8 +58,8 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
       message: 'An error occurred',
@@ -84,8 +84,8 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
       message: 'An error occurred',
@@ -145,10 +145,36 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(wrapper.find('form')).toHaveLength(1);
+  });
+
+  it('test set initial value of Parentid from url', async () => {
+    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+
+    const Parentid = '654654';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: `/${id}`, hash: '', search: `parentId=${Parentid}`, state: {} },
+          ]}
+        >
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(wrapper.find('Form').first().prop('initialValue')['parentId']).toMatch(Parentid);
   });
 
   it('Fail id data fetch', async () => {
@@ -201,8 +227,8 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
       message: 'An error occurred',
@@ -263,8 +289,8 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(wrapper.find('form')).toHaveLength(1);
     expect(wrapper.find('.mb-4.header-title').text()).toEqual(
