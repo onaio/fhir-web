@@ -41,8 +41,8 @@ interface Props {
  * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {string} accessToken Token for api calles
- * @param {object} values value of form fields
  * @param {object} initialValue initialValue of form fields
+ * @param {object} values value of form fields
  * @param {string} id id of the team
  */
 export function onSubmit(
