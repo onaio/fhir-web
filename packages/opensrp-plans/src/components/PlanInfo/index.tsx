@@ -6,7 +6,6 @@ import { pageTitleBuilder } from '../../containers/ListView/utils';
 import { EDIT, END_DATE, MISSIONS, START_DATE } from '../../lang';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../index.css';
 import { redirectMapping } from '../../helpers/common';
 import { Route, BreadcrumbProps } from 'antd/lib/breadcrumb/Breadcrumb';
 /** interface describing the props of PlanInfo */
@@ -47,7 +46,7 @@ const PlanInfo = (props: PlanInfoProps) => {
   ] as Route[];
 
   return (
-    <>
+    <div className="plan-detail-view">
       <Breadcrumb
         className="site-page-header-responsive"
         routes={routes}
@@ -55,40 +54,49 @@ const PlanInfo = (props: PlanInfoProps) => {
       ></Breadcrumb>
 
       <div className="plan-info-main">
-        <Avatar
-          // size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
-          /**Find the right icon */
-          icon={<FileDoneOutlined />}
-          className="plan-info-avatar"
-          style={{
-            width: 80,
-            height: 82,
-            lineHeight: 1.8,
-            color: '#1CABE2',
-            fontSize: 50,
-          }}
-        />
-        <span className="plan-title">
-          <h4>{plan.title}</h4>
-          <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
-          <Divider type="vertical" />
-          <span style={{ color: PlanStatusColors[plan.status] }}>
-            {pageTitleBuilder(plan.status, false)}
+        <div className="plan-avatar-detail-section">
+          <span className="avatar-section">
+            <Avatar
+              /**Find the right icon */
+              icon={<FileDoneOutlined />}
+              className=""
+              style={{
+                width: 80,
+                height: 82,
+                lineHeight: 1.8,
+                color: '#1CABE2',
+                fontSize: 50,
+              }}
+            />
           </span>
-          <Divider type="vertical" />
-          <span>{plan.description}</span>
-        </span>
-        <span className="plan-start">
-          <span className="plan-start-title">{START_DATE}</span>
-          <h2>{plan.effectivePeriod.start}</h2>
-        </span>
-        <Divider className="timing-period-divider" type="vertical" />
-        <span className="plan-end">
-          <span className="plan-end-title">{END_DATE}</span>
-          <h2>{plan.effectivePeriod.end}</h2>
-        </span>
+          <div className="plan-detail-section">
+            <div>
+              <h4>{plan.title}</h4>
+            </div>
+            <div>
+              <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
+              <Divider type="vertical" />
+              <span style={{ color: PlanStatusColors[plan.status] }}>
+                {pageTitleBuilder(plan.status, false)}
+              </span>
+              <Divider type="vertical" />
+              <span>{plan.description}</span>
+            </div>
+          </div>
+        </div>
+        <div className="plan-dates">
+          <div className="plan-start-date">
+            <span className="start-date">{START_DATE}</span>
+            <h2>{plan.effectivePeriod.start}</h2>
+          </div>
+          <Divider className="date-divider" type="vertical" />
+          <div className="plan-end-date">
+            <span className="end-date">{END_DATE}</span>
+            <h2>{plan.effectivePeriod.end}</h2>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
