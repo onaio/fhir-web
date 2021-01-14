@@ -11,7 +11,7 @@ import { store } from '@opensrp/store';
 import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { baseURL } from '../../../constants';
+import { baseURL, ERROR_OCCURED } from '../../../constants';
 import LocationUnitGroupAddEdit from '..';
 
 Form.defaultProps = { opensrpBaseURL: baseURL };
@@ -161,7 +161,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   });
 
   it('Handles errors on fetching single tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
+    fetch.mockRejectOnce(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -178,14 +178,14 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
 
     wrapper.unmount();
   });
 
   it('Handles errors on creating tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
+    fetch.mockRejectOnce(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -212,14 +212,14 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
 
     wrapper.unmount();
   });
 
   it('Handles errors on editing tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
+    fetch.mockRejectOnce(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     onSubmit(
       fixtures.sampleLocationUnitGroupPayload,
@@ -235,7 +235,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
   });
 
