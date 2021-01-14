@@ -7,15 +7,8 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
-import {
-  id,
-  formValue,
-  locationUnitgroups,
-  parsedHierarchy,
-  locationSettings,
-  locationUnitPayloadPUT,
-} from './fixtures';
-import Form, { findParentGeoLocation, FormField, onSubmit, removeEmptykeys } from '../Form';
+import { id, formValue, locationUnitgroups, parsedHierarchy, locationSettings } from './fixtures';
+import Form, { findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { baseURL, ERROR_OCCURED } from '../../../constants';
