@@ -151,10 +151,10 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    * @param {function() | string} accessTokenCallBack - received access token
    */
   public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
-    if (typeof accessTokenCallBack === 'string') {
-      return accessTokenCallBack;
+    if (typeof accessTokenCallBack === 'function') {
+      return (await accessTokenCallBack()) as string;
     }
-    return (await accessTokenCallBack()) as string;
+    return accessTokenCallBack;
   }
 
   /** create method
