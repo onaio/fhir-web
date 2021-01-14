@@ -123,10 +123,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .list()
         .then((response: LocationUnit) => {
           setLocationUnitDetail({
-            name: response.properties.name,
-            parentId: response.properties.parentId,
-            status: response.properties.status,
-            externalId: response.properties.externalId,
+            ...response.properties,
             locationTags: response.locationTags?.map((loc) => loc.id),
             geometry: JSON.stringify(response.geometry),
             type: response.type,
