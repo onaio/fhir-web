@@ -21,8 +21,6 @@ import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
-const layoutFull = { labelCol: { span: 8 }, wrapperCol: { span: 16 } };
-const offsetLayoutFull = { wrapperCol: { offset: 8, span: 16 } };
 
 export interface FormField {
   name: string;

@@ -12,7 +12,6 @@ import fetch from 'jest-fetch-mock';
 import { accessToken, id, intialValue, practitioners } from './fixtures';
 import Form, { onSubmit } from '../Form';
 import { Organization, OrganizationPOST } from '../../../ducks/organizations';
-import { PractitionerPOST } from '../../../ducks/practitioners';
 import { ERROR_OCCURRED } from '../../../constants';
 
 describe('Team-management/TeamsAddEdit/Form', () => {
@@ -275,7 +274,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
             active: false,
             identifier: (JSON.parse(fetch.mock.calls[0][1].body as string) as OrganizationPOST)
               .identifier,
-            name: "new name",
+            name: 'new name',
             type: {
               coding: [
                 {
