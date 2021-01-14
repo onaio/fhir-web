@@ -11,7 +11,7 @@ import fetch from 'jest-fetch-mock';
 
 import { accessToken, id, intialValue, practitioners } from './fixtures';
 import Form, { onSubmit } from '../Form';
-import { OrganizationPOST } from '../../../ducks/organizations';
+import { Organization, OrganizationPOST } from '../../../ducks/organizations';
 import { PractitionerPOST } from '../../../ducks/practitioners';
 import { ERROR_OCCURRED } from '../../../constants';
 
@@ -66,34 +66,6 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     expect(historyback).toBeCalled();
   });
 
-  it('Add Practinier field', async () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Form accessToken={accessToken} practitioner={practitioners} />
-        </Router>
-      </Provider>
-    );
-
-    wrapper.find('button#addPractitioner').simulate('click');
-    expect(wrapper.find('List[name="practitioners"] div.practitioners_Field')).toHaveLength(2);
-  });
-
-  it('Remove Practinier field', async () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Form accessToken={accessToken} practitioner={practitioners} />
-        </Router>
-      </Provider>
-    );
-
-    wrapper.find('button#addPractitioner').simulate('click');
-    expect(wrapper.find('List[name="practitioners"] div.practitioners_Field')).toHaveLength(2);
-    wrapper.find('button.removePractitioner').last().simulate('click');
-    expect(wrapper.find('List[name="practitioners"] div.practitioners_Field')).toHaveLength(1);
-  });
-
   it('fail and test call onsubmit', async () => {
     const mockNotificationError = jest.spyOn(notification, 'error');
     fetch.mockReject();
@@ -122,8 +94,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
   it('Create Team', async () => {
     onSubmit(jest.fn, practitioners, accessToken, intialValue, {
       active: true,
-      name: '',
-      practitioners: [''],
+      name: 'New team name',
+      practitioners: [],
     });
 
     await act(async () => {
@@ -140,7 +112,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
             active: intialValue.active,
             identifier: (JSON.parse(fetch.mock.calls[0][1].body as string) as OrganizationPOST)
               .identifier,
-            name: intialValue.name,
+            name: (JSON.parse(fetch.mock.calls[0][1].body as string) as OrganizationPOST).name,
             type: {
               coding: [
                 {
@@ -160,48 +132,36 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/add/',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/1',
         {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify([
-            {
-              active: true,
-              identifier: (JSON.parse(fetch.mock.calls[1][1].body as string)[0] as PractitionerPOST)
-                .identifier,
-              practitioner: '1',
-              organization: (JSON.parse(
-                fetch.mock.calls[1][1].body as string
-              )[0] as PractitionerPOST).organization,
-              code: { text: 'Community Health Worker' },
-            },
-            {
-              active: true,
-              identifier: (JSON.parse(fetch.mock.calls[1][1].body as string)[1] as PractitionerPOST)
-                .identifier,
-              practitioner: '2',
-              organization: (JSON.parse(
-                fetch.mock.calls[1][1].body as string
-              )[1] as PractitionerPOST).organization,
-              code: { text: 'Community Health Worker' },
-            },
-            {
-              active: true,
-              identifier: (JSON.parse(fetch.mock.calls[1][1].body as string)[2] as PractitionerPOST)
-                .identifier,
-              practitioner: '3',
-              organization: (JSON.parse(
-                fetch.mock.calls[1][1].body as string
-              )[2] as PractitionerPOST).organization,
-              code: { text: 'Community Health Worker' },
-            },
-          ]),
           headers: {
             accept: 'application/json',
             authorization: 'Bearer token',
             'content-type': 'application/json;charset=UTF-8',
           },
-          method: 'POST',
+          method: 'DELETE',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/2',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'DELETE',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/3',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'DELETE',
         },
       ],
     ]);
@@ -213,7 +173,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       practitioners,
       accessToken,
       intialValue,
-      { active: false, name: '', practitioners: ['3', '4', '5'] },
+      { active: false, name: 'new name', practitioners: ['3', '4', '5'] },
       id
     );
 
@@ -228,10 +188,10 @@ describe('Team-management/TeamsAddEdit/Form', () => {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
           body: JSON.stringify({
-            active: intialValue.active,
-            identifier: (JSON.parse(fetch.mock.calls[0][1].body as string) as OrganizationPOST)
+            active: false,
+            identifier: (JSON.parse(fetch.mock.calls[0][1].body as string) as Organization)
               .identifier,
-            name: intialValue.name,
+            name: 'new name',
             type: {
               coding: [
                 {
@@ -251,7 +211,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/4',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/1',
         {
           headers: {
             accept: 'application/json',
@@ -262,7 +222,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/5',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/2',
         {
           headers: {
             accept: 'application/json',
@@ -297,7 +257,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       practitioners,
       accessToken,
       intialValue,
-      { active: false, name: '', practitioners: ['3', '4', '5'] },
+      { active: false, name: 'new name', practitioners: ['3', '4', '5'] },
       id
     );
 
@@ -312,10 +272,10 @@ describe('Team-management/TeamsAddEdit/Form', () => {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
           body: JSON.stringify({
-            active: intialValue.active,
+            active: false,
             identifier: (JSON.parse(fetch.mock.calls[0][1].body as string) as OrganizationPOST)
               .identifier,
-            name: intialValue.name,
+            name: "new name",
             type: {
               coding: [
                 {
@@ -335,7 +295,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/4',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/1',
         {
           headers: {
             accept: 'application/json',
@@ -346,7 +306,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/5',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/2',
         {
           headers: {
             accept: 'application/json',
