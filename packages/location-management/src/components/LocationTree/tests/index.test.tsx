@@ -84,10 +84,52 @@ describe('location-management/src/components/LocationTree', () => {
     });
 
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
-    expect(treeNode.children()).toHaveLength(treedata.length); // as per structure make sure we have 3 tree
+    expect(treeNode.children()).toHaveLength(treedata.length + 1); // as per structure make sure we have 4 tree
 
     const expandButton = treeNode.find('span.ant-tree-switcher').first();
     expandButton.simulate('click');
+
+    treeNode = wrapper.find('.ant-tree-list-holder-inner');
+    expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
+  });
+
+  it('expand tree child using caret click', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={treedata} OnItemClick={jest.fn()} />
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    let treeNode = wrapper.find('.ant-tree-list-holder-inner');
+
+    const expandButton = treeNode.find('span.ant-tree-switcher').first();
+    expandButton.simulate('click');
+    expandButton.simulate('click');
+
+    treeNode = wrapper.find('.ant-tree-list-holder-inner');
+    expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
+  });
+
+  it('expand tree child using title click', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={treedata} OnItemClick={jest.fn()} />
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    let treeNode = wrapper.find('.ant-tree-list-holder-inner');
+
+    const treeTitle = treeNode.find('span.ant-tree-title').first();
+    treeTitle.simulate('click');
+    treeTitle.simulate('click');
 
     treeNode = wrapper.find('.ant-tree-list-holder-inner');
     expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
