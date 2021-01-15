@@ -12,7 +12,7 @@ import reducer, {
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
 import { Dictionary } from '@onaio/utils';
-import { ParsedHierarchyNode } from 'location-management/src/ducks/locationHierarchy/types';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
