@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, PageHeader, Col, Button, Table } from 'antd';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
@@ -21,7 +21,7 @@ import { ServicePointsLoading, columns, getNodePath } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { BrokenPage, useHandleBrokenPage, useLoadingReducer } from '@opensrp/react-utils';
+import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { TableColumnsNamespace } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
@@ -71,34 +71,31 @@ const ServicePointList = (props: ServicePointsListTypes) => {
     baseURL,
   } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
-  const { startLoading, stopLoading, loading } = useLoadingReducer(
-    LocationsByGeoLevel.length === 0
+  const [loadingJurisdictions, setLoadingJurisdictions] = useState<boolean>(
+    rootLocations.length > 0
   );
+  const [loadingHierarchy, setLoadingHierarchy] = useState<boolean>(LocationsByGeoLevel.length > 0);
 
   useEffect(() => {
-    const jurisdictionsLoadingKey = 'JurisdictionLoadingKey';
-    startLoading(jurisdictionsLoadingKey, rootLocations.length === 0);
     loadJurisdictions(fetchLocationsCreator, baseURL, undefined, undefined, service)
       .catch((err: Error) => handleBrokenPage(err))
-      .finally(() => stopLoading(jurisdictionsLoadingKey));
+      .finally(() => setLoadingJurisdictions(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const hierarchyLoadingKey = 'hierarchyLoadingKey';
-    startLoading(hierarchyLoadingKey, LocationsByGeoLevel.length === 0);
     if (rootLocations.length > 0) {
       const promises = rootLocations
         .map((location) => location.id.toString())
         .map((rootId) => loadHierarchy(rootId, fetchTreesCreator, baseURL, undefined, service));
       Promise.all(promises)
         .catch((err: Error) => handleBrokenPage(err))
-        .finally(() => stopLoading(hierarchyLoadingKey));
+        .finally(() => setLoadingHierarchy(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(rootLocations)]);
 
-  if (loading()) {
+  if (loadingHierarchy || loadingJurisdictions) {
     return <ServicePointsLoading />;
   }
 
