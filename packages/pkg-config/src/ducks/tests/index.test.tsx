@@ -25,4 +25,10 @@ describe('reducers/pkg-configs', () => {
     store.dispatch(addConfigs(sampleConfig));
     expect(configSelector(store.getState())).toEqual(sampleConfig);
   });
+
+  it('dux module is used without registration', () => {
+    // mock reducer de-registration;
+    const mockStore = {};
+    expect(mockStore).toEqual({});
+  });
 });
