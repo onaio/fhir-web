@@ -1,11 +1,11 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { store } from '@opensrp/store';
 import { FlushThunks } from 'redux-testkit';
-import { reducer, addConfigs, getConfigsFactory, sliceName } from '../';
+import { configsReducer, addConfigs, getConfigsFactory, configsSliceName } from '../';
 
 const configSelector = getConfigsFactory();
 
-reducerRegistry.register(sliceName, reducer);
+reducerRegistry.register(configsSliceName, configsReducer);
 
 describe('reducers/pkg-configs', () => {
   beforeEach(() => {
