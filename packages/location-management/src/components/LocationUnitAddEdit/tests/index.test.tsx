@@ -18,7 +18,7 @@ import {
 import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
 
 import { act } from 'react-dom/test-utils';
-import { baseURL } from '../../../constants';
+import { baseURL, ERROR_OCCURED } from '../../../constants';
 
 LocationUnitAddEdit.defaultProps = { opensrpBaseURL: baseURL };
 
@@ -58,11 +58,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });
@@ -84,11 +84,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });
@@ -106,6 +106,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     expect(fetch.mock.calls).toMatchObject([
       [
@@ -141,14 +144,51 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
           method: 'GET',
         },
       ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(wrapper.find('form')).toHaveLength(1);
+  });
+
+  it('test set initial value of Parentid from url', async () => {
+    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+
+    const Parentid = '654654';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: `/${id}`, hash: '', search: `parentId=${Parentid}`, state: {} },
+          ]}
+        >
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(wrapper.find('Form').first().prop('initialValue')['parentId']).toMatch(Parentid);
   });
 
   it('Fail id data fetch', async () => {
@@ -162,6 +202,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </MemoryRouter>
       </Provider>
     );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     expect(fetch.mock.calls).toMatchObject([
       [
@@ -201,11 +244,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });
@@ -224,6 +267,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </MemoryRouter>
       </Provider>
     );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     expect(fetch.mock.calls).toMatchObject([
       [
@@ -263,8 +309,8 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(wrapper.find('form')).toHaveLength(1);
     expect(wrapper.find('.mb-4.header-title').text()).toEqual(

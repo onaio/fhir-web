@@ -3,25 +3,19 @@
 exports[`/components/PlanInfo renders and passes props correctly): activate link 1`] = `
 Object {
   "children": "Edit",
-  "to": "/missions/plans/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
+  "to": "/missions/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
 }
 `;
 
 exports[`/components/PlanInfo renders and passes props correctly): avatar props 1`] = `
 Object {
-  "className": "plan-info-avatar",
+  "className": "",
   "icon": <ForwardRef(FileDoneOutlined) />,
   "shape": "circle",
-  "size": Object {
-    "lg": 64,
-    "md": 40,
-    "sm": 32,
-    "xl": 80,
-    "xs": 24,
-    "xxl": 100,
-  },
+  "size": "default",
   "style": Object {
     "color": "#1CABE2",
+    "fontSize": 50,
     "height": 82,
     "lineHeight": 1.8,
     "width": 80,
@@ -32,7 +26,7 @@ Object {
 exports[`/components/PlanInfo renders and passes props correctly): edit link 1`] = `
 Object {
   "children": "Active ",
-  "to": "/missions/plans/active",
+  "to": "/missions/active",
 }
 `;
 
@@ -51,14 +45,14 @@ exports[`/components/PlanInfo renders and passes props correctly): links in brea
   className="ant-breadcrumb-link"
 >
   <Link
-    to="/missions/plans/active"
+    to="/missions/active"
   >
     <LinkAnchor
-      href="/missions/plans/active"
+      href="/missions/active"
       navigate={[Function]}
     >
       <a
-        href="/missions/plans/active"
+        href="/missions/active"
         onClick={[Function]}
       >
         Active 

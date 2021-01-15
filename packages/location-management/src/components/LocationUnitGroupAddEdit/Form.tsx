@@ -7,7 +7,7 @@ import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
-import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
+import { ERROR_OCCURED, LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
@@ -33,9 +33,7 @@ interface FormField {
 const userSchema = Yup.object().shape({
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   active: Yup.boolean().typeError('Status must be a Boolean').required('Status is Required'),
-  description: Yup.string()
-    .typeError('Description must be a String')
-    .required('Description is Required'),
+  description: Yup.string().typeError('Description must be a String'),
 });
 
 interface Props {
@@ -74,7 +72,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification('An error occurred');
+        sendErrorNotification(ERROR_OCCURED);
         setSubmitting(false);
       });
   } else {
@@ -86,7 +84,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification('An error occurred');
+        sendErrorNotification(ERROR_OCCURED);
         setSubmitting(false);
       });
   }
@@ -121,7 +119,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             setEditTitle(response.name);
             setIsLoading(false);
           })
-          .catch(() => sendErrorNotification('An error occurred'));
+          .catch(() => sendErrorNotification(ERROR_OCCURED));
       } else setIsLoading(false);
     }
   }, [accessToken, isLoading, props.id, opensrpBaseURL, setEditTitle]);
@@ -164,7 +162,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Radio.Group>
             </AntForm.Item>
 
-            <AntForm.Item name="description" label="Type">
+            <AntForm.Item name="description" label="Description">
               <Input.TextArea name="description" rows={4} placeholder="Description" />
             </AntForm.Item>
 
