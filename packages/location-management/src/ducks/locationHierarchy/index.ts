@@ -139,8 +139,7 @@ export const getTreesByIds = () =>
     }
     const treesOfInterest: TreeNode[] = [];
     rootIds.forEach((rootId) => {
-      const treeOfInterest = treesById[rootId];
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const treeOfInterest = treesById[rootId] as TreeNode | undefined;
       if (treeOfInterest) {
         treesOfInterest.push(treeOfInterest);
       }
