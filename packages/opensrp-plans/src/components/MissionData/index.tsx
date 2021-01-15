@@ -45,8 +45,7 @@ const MissionData = (props: MissionDataProps) => {
     codes.forEach((code, index) => {
       const thisPromise = loadTasksIndicators(baseURL, planId, code, true)
         .then((response) => {
-          const headers = (response as Response).headers;
-          setStateSequence[index](headers.get('total_records') ?? '');
+          setStateSequence[index](response.total_records ? response.total_records : '');
         })
         .catch((e) => e);
       promises.push(thisPromise);

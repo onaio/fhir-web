@@ -21,6 +21,11 @@ import { COULD_NOT_LOAD_ASSIGNMENTS } from '../lang';
 
 const sessionSelector = makeAPIStateSelector();
 
+export interface TaskCount {
+  total_records: string;
+  tasks: number[];
+}
+
 /** OpenSRP service */
 export class OpenSRPService extends GenericOpenSRPService {
   constructor(endpoint: string, baseURL: string = OPENSRP_API_BASE_URL) {
@@ -99,37 +104,17 @@ export async function loadTasksIndicators(
     code,
     returnTaskCountOnly: onlyCount,
   };
-  const endpoint = OPENSRP_TASK_SEARCH;
-  const generalURL = `${baseURL}${endpoint}`;
-  const url = OpenSRPService.getURL(generalURL, params);
-  const accessToken = sessionSelector(store.getState(), { accessToken: true });
-  const accept = 'application/json';
-  const authorizationType = 'Bearer';
-  const contentType = 'application/json;charset=UTF-8';
-  const requestOptions = {
-    headers: {
-      // accept,
-      authorization: `${authorizationType} ${accessToken}`,
-      // 'content-type': contentType,
-    },
-    method: 'GET',
-  };
-  let response: any;
-  await fetch(url, requestOptions).then((res) => {
-    response = res.clone();
-    for (const header of res.headers) {
-      console.log('***********', header);
-    }
-  });
-  console.log('Orignal response', response);
-  for (const key of response.headers) {
-    console.log('>>>', key);
-  }
 
-  if (response.ok) {
-    return response;
-  }
-
-  const defaultMessage = `OpenSRPService list on ${endpoint} failed, HTTP status ${response.status}`;
-  return throwHTTPError(response, defaultMessage);
+  const serve = new OpenSRPService(OPENSRP_TASK_SEARCH, baseURL);
+  return serve
+    .list(params)
+    .then((response: TaskCount | null) => {
+      if (response === null) {
+        return Promise.reject(new Error('No data found'));
+      }
+      return response;
+    })
+    .catch((err: Error) => {
+      throw err;
+    });
 }
