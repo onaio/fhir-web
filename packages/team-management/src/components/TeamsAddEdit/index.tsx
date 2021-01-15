@@ -88,18 +88,7 @@ export const TeamsAddEdit: React.FC = () => {
       .catch(() => sendErrorNotification(ERROR_OCCURRED));
   }, [accessToken]);
 
-  if (!practitioner || (params.id && !initialValue))
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+  if (!practitioner || (params.id && !initialValue)) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">

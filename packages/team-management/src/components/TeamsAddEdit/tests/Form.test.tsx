@@ -29,7 +29,6 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       </Provider>
     );
 
-    expect(fetch.mock.calls).toMatchObject([]);
     expect(wrapper.find('form')).toHaveLength(1);
   });
 

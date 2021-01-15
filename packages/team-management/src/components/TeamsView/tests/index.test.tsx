@@ -14,7 +14,7 @@ import { ERROR_OCCURRED } from '../../../constants';
 
 describe('components/TeamsView', () => {
   beforeEach(() => {
-    fetch.resetMocks();
+    fetch.mockClear();
   });
   it('renders without crashing', async () => {
     shallow(
