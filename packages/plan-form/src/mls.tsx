@@ -29,8 +29,8 @@ const resources = {
 };
 
 // const configurable:
-const languageCode = configs.languageCode;
-const projectLanguageCode = configs.projectLanguageCode;
+const languageCode = configs.languageCode ?? 'en';
+const projectLanguageCode = configs.projectLanguageCode ?? 'eusm';
 
 i18n
   .use(initReactI18next)
@@ -39,7 +39,6 @@ i18n
     resources,
     lng: `${languageCode}_${projectLanguageCode}`,
     fallbackLng: `${languageCode}_${projectLanguageCode}`,
-    debug: true,
     interpolation: { escapeValue: false },
     returnEmptyString: false,
   })
