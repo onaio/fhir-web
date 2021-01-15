@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 import TeamsDetail, { Props } from '..';
 
@@ -41,10 +40,10 @@ describe('components/TeamsDetail', () => {
     const content = wrapper.find('div.p-4.bg-white');
     expect(content.find('Button').props()).toMatchSnapshot('close button');
     expect(content.find('div.mb-4.small')).toHaveLength(4);
-    expect(toJson(content.find('div.mb-4.small.mt-4'))).toMatchSnapshot('team name');
-    expect(toJson(content.find('div.mb-4.small').at(1))).toMatchSnapshot('status');
-    expect(toJson(content.find('div.mb-4.small').at(2))).toMatchSnapshot('identifier');
-    expect(toJson(content.find('div.mb-4.small').at(3))).toMatchSnapshot('team members');
+    expect(wrapper.text()).toMatchSnapshot('team name');
+    expect(wrapper.text()).toMatchSnapshot('status');
+    expect(wrapper.text()).toMatchSnapshot('identifier');
+    expect(wrapper.text()).toMatchSnapshot('team members');
   });
 
   it('removes it self on close', () => {
