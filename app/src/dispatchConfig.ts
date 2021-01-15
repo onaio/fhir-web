@@ -6,5 +6,3 @@ import { store } from '@opensrp/store';
 reducerRegistry.register(configsSliceName, configsReducer);
 
 store.dispatch(addConfigs({ languageCode: 'sw', projectLanguageCode: 'eusm' }));
-
-console.log('*****************STATE', store.getState());
