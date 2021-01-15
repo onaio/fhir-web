@@ -30,6 +30,7 @@
     "@opensrp/store": "^0.0.7",
     "@opensrp/user-management": "^0.1.9",
     "@opensrp/form-config": "^0.0.6",
+    "@sentry/react": "^5.27.4",
     "antd": "^4.6.3",
     "bootstrap": "^4.5.2",
     "client-oauth2": "^4.3.3",
