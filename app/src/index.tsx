@@ -8,22 +8,17 @@ import App from './App/App';
 import { SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
-import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
+import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
 import { URL_HOME } from './constants';
-import * as Sentry from '@sentry/react';
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
-
-if (SENTRY_DSN) {
-  Sentry.init({ dsn: SENTRY_DSN });
-}
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
+      <ErrorBoundary dsn={SENTRY_DSN} homeUrl={URL_HOME}>
         <App />
-      </Sentry.ErrorBoundary>
+      </ErrorBoundary>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('opensrp-root')
