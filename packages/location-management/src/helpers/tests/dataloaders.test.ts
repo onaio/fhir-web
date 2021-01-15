@@ -35,6 +35,32 @@ describe('src/helpers/dataloaders', () => {
     ]);
   });
 
+  it('loadHierarchy with default baseURL', async () => {
+    fetch.once(JSON.stringify([]));
+    const mockRootId = 'mockRootId';
+    const mockDispatcher = jest.fn();
+
+    loadHierarchy(mockRootId, mockDispatcher).catch((_: Error) => fail());
+
+    await new Promise((resolve) => setImmediate(resolve));
+
+    expect(mockDispatcher).toHaveBeenCalledWith([]);
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/mockRootId?return_structure_count=false',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
   it('loadHierarchy returns response if dispatcher undefined', async () => {
     fetch.once(JSON.stringify([]));
     const mockRootId = 'mockRootId';
@@ -79,6 +105,31 @@ describe('src/helpers/dataloaders', () => {
     expect(fetch.mock.calls).toEqual([
       [
         'https://example.comlocation/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
+  it('loadJurisdictions with default baseURL', async () => {
+    fetch.once(JSON.stringify([]));
+    const mockDispatcher = jest.fn();
+
+    loadJurisdictions(mockDispatcher).catch((_: Error) => fail());
+
+    await new Promise((resolve) => setImmediate(resolve));
+
+    expect(mockDispatcher).toHaveBeenCalledWith([]);
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
         {
           headers: {
             accept: 'application/json',
