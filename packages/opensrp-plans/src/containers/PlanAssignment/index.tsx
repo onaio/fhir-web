@@ -102,7 +102,7 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
 
   /** Page Header routes */
   return (
-    <div className="plan-detail-view">
+    <div>
       <PlanInfo plan={plan} planId={planId} />
       <div className="plan-activities_section">
         {showAssignmentTable ? <ConnectedAssignmentTable {...assignmentTableProps} /> : null}

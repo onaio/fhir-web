@@ -240,11 +240,14 @@ describe('opensrp-plans/assignmentTable', () => {
     expect(jurisdictionAssignmentModal.text().includes(EDIT_AREAS)).toBeTruthy();
     const selectedJurisdiction = jursToOptions([jurisdictions[0]]);
     (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     // what fetch calls were made:
     // one to add the jurs to plan, the other to add assignments if there is selected organizations
     const body = JSON.stringify({ ...mission, jurisdiction: [{ code: jurisdictions[0].id }] });
-    expect(fetch.mock.calls).toEqual([
+    expect(fetch.mock.calls.slice(0, 2)).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
         {
@@ -318,6 +321,9 @@ describe('opensrp-plans/assignmentTable', () => {
     expect(teamAssignmentModal.text().includes(EDIT_TEAMS)).toBeTruthy();
     const selectedOrgs = orgsToOptions([organizations[0]]);
     (teamAssignmentModal.props() as Dictionary).saveHandler(selectedOrgs);
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     // what fetch calls were made:
     // calls should be just about adding assignments.
@@ -380,6 +386,9 @@ describe('opensrp-plans/assignmentTable', () => {
     expect(jurisdictionAssignmentModal.text().includes(EDIT_AREAS)).toBeTruthy();
     const selectedJurisdiction = jursToOptions([jurisdictions[1], jurisdictions[0]]);
     (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     // what fetch calls were made:
     // calls should be just about adding assignments.
@@ -387,7 +396,7 @@ describe('opensrp-plans/assignmentTable', () => {
       ...mission,
       jurisdiction: [{ code: jurisdictions[1].id }, { code: jurisdictions[0].id }],
     });
-    expect(fetch.mock.calls).toEqual([
+    expect(fetch.mock.calls.slice(0, 2)).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
         {
