@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import locationUnitsReducer, {
   fetchLocationUnits,
   LocationUnit,
@@ -28,9 +28,10 @@ import './LocationUnitView.css';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import locationHierarchyReducer, {
+import {
   getAllHierarchiesArray,
   fetchAllHierarchies,
+  reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { generateJurisdictionTree } from '../LocationTree/utils';
@@ -66,7 +67,7 @@ export function loadSingleLocation(
   setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
 ): void {
   setDetail('loading');
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GET);
+  const serve = new OpenSRPService(LOCATION_UNIT_GET, opensrpBaseURL);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   serve
     .read(row.id, { is_jurisdiction: true })
@@ -83,7 +84,7 @@ export function loadSingleLocation(
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
 export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
+  const serve = new OpenSRPService(LOCATION_UNIT_FINDBYPROPERTIES, opensrpBaseURL);
   return await serve
     .list({
       is_jurisdiction: true,
@@ -126,7 +127,7 @@ export async function getHierarchy(
 ) {
   const hierarchy: RawOpenSRPHierarchy[] = [];
   for await (const loc of location) {
-    const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY);
+    const serve = new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL);
     const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
     hierarchy.push(data);
   }

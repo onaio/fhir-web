@@ -26,7 +26,7 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
   }
 }
 
-/** gets access token or redirects to session info page if session is expired */
+/** gets access token or redirects to login if session is expired */
 export const handleSessionOrTokenExpiry = async () => {
   if (isTokenExpired(store.getState())) {
     try {

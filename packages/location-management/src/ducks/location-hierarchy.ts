@@ -91,7 +91,7 @@ export const initialState: ImmutableTreeState | Dictionary = SeamlessImmutable({
  * @param {AnyAction} action - the redux action
  * @returns {object} - updated state
  */
-export default function reducer(
+export function reducer(
   state: ImmutableTreeState | Dictionary = initialState,
   action: TreeActionTypes
 ) {
