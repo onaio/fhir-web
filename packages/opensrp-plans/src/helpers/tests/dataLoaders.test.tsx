@@ -101,13 +101,15 @@ describe('dataLoading', () => {
     ]);
   });
 
-  it('load assignment handles errors', () => {
+  it('load assignment handles errors', async () => {
     const errMessage = 'An error has happened';
     fetch.mockReject(new Error(errMessage));
 
     loadAssignments(mockBaseURL, 'planId').catch((e) => {
       expect(e.message).toEqual(errMessage);
     });
+    await new Promise((resolve) => setImmediate(resolve));
+
     fetch.resetMocks();
     fetch.mockResponse(JSON.stringify(null));
     loadAssignments(mockBaseURL, 'planId').catch((e) => {
@@ -202,13 +204,14 @@ describe('dataLoading', () => {
     });
   });
 
-  it('Load jurisdictions still works when error', () => {
+  it('Load jurisdictions still works when error', async () => {
     const errMessage = 'An error has happened';
     fetch.mockReject(new Error(errMessage));
 
     loadJurisdictions(mockBaseURL, 2).catch((e) => {
       expect(e.message).toEqual(errMessage);
     });
+    await new Promise((resolve) => setImmediate(resolve));
 
     expect(fetch.mock.calls).toEqual([
       [
