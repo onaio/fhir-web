@@ -1,4 +1,4 @@
-import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../../ducks/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../types';
 import { generateJurisdictionTree } from '../utils';
 export const treedata: ParsedHierarchyNode[] = [
   {
