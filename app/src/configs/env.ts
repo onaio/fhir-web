@@ -87,3 +87,7 @@ export const TASK_GENERATION_STATUS = process.env.REACT_APP_TASK_GENERATION_STAT
 
 /** Activate form configuration */
 export const ENABLE_FORM_CONFIGURATION = process.env.REACT_APP_ENABLE_FORM_CONFIGURATION === 'true';
+
+export const LANGUAGE_CODE = process.env.REACT_APP_LANGUAGE_CODE || 'en';
+
+export const PROJECT_LANGUAGE_CODE = process.env.REACT_APP_PROJECT_LANGUAGE_CODE || 'eusm';
