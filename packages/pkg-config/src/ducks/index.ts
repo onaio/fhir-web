@@ -1,5 +1,5 @@
 import { createSelector, Store, createSlice, PayloadAction } from '@reduxjs/toolkit';
-export const sliceName = 'configs';
+export const configsSliceName = 'configs';
 
 export interface ConfigState {
   [key: string]: string;
@@ -8,7 +8,7 @@ export interface ConfigState {
 export const defaultConfigState: ConfigState = {};
 
 export const configsSlice = createSlice({
-  name: sliceName,
+  name: configsSliceName,
   initialState: defaultConfigState,
   reducers: {
     addConfigs(state, action: PayloadAction<ConfigState>) {
@@ -21,10 +21,11 @@ export const configsSlice = createSlice({
 });
 
 const getConfigsState = (state: Partial<Store>) => {
-  return (state as any)[sliceName];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (state as any)[configsSliceName];
 };
 
 export const getConfigsFactory = () => createSelector(getConfigsState, (state) => state);
 
 export const { addConfigs } = configsSlice.actions;
-export const { reducer } = configsSlice;
+export const { reducer: configsReducer } = configsSlice;
