@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { configs } from './helpers/configs';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coreEnJson = require('../locales/core/en.json');
@@ -28,8 +29,8 @@ const resources = {
 };
 
 // const configurable:
-const languageCode = 'en';
-const projectLanguageCode = 'eusm';
+const languageCode = configs.languageCode;
+const projectLanguageCode = configs.projectLanguageCode;
 
 i18n
   .use(initReactI18next)
@@ -40,6 +41,7 @@ i18n
     fallbackLng: `${languageCode}_${projectLanguageCode}`,
     debug: true,
     interpolation: { escapeValue: false },
+    returnEmptyString: false,
   })
   .catch((err) => err);
 
