@@ -44,7 +44,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/plan-form-core": "^0.0.1",
-    "@opensrp/server-service": "^0.0.12",
+    "@opensrp/server-service": "^0.0.13",
     "lodash": "^4.17.20",
     "uuid": "^8.3.1"
   }
