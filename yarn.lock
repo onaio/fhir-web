@@ -2564,15 +2564,6 @@
   resolved "https://registry.yarnpkg.com/@onaio/element-map/-/element-map-0.0.5.tgz#6c8b55314d41fb76c1ea7538d4ee217a121936cb"
   integrity sha512-PxhKq2uR9j8fZkvIqiUMp8CvZTX358d3sWuLj5a7LRpTK/Y+ZS1L9XZp2Xb9pplHCSferZxzwjm/YfKqVr56lA==
 
-"@onaio/gatekeeper@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.1.0.tgz#23b45e054e69a34901a67c727079d1bbb51ac032"
-  integrity sha512-sZEV0jdYPiv4Dt/iBqBI5lgtMWZwVsFqu4kS/3oDqu1O4UorjiV4+8lZHoLoWm2iIDx4YoI6eKtE1aj/tWGXMQ==
-  dependencies:
-    "@onaio/session-reducer" "^0.0.11"
-    client-oauth2 "^4.3.3"
-    query-string "^6.4.2"
-
 "@onaio/gatekeeper@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.1.1.tgz#b843ec6766f88ef295addbfa3f81f6b0d9a8b2a6"
@@ -2612,15 +2603,10 @@
   resolved "https://registry.yarnpkg.com/@onaio/session-reducer/-/session-reducer-0.0.12.tgz#8a72bd80442a6f6c10138b3b3fac0455324042e1"
   integrity sha512-BbsIuhMhPeM7BnbSiPUOKZFZeTQLjSqYBrWAJeA/gotH1c20csYDRfI1bhopOmVx0dbigm7saDFfOX963jpULA==
 
-"@onaio/utils@^0.0.1":
+"@onaio/utils@0.0.1", "@onaio/utils@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
-
-"@opensrp/error-boundary-fallback@file:packages/error-boundary-fallback":
-  version "0.0.1"
-  dependencies:
-    "@sentry/react" "^5.27.4"
 
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
