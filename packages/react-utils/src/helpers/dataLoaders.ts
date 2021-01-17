@@ -34,7 +34,7 @@ export const handleSessionOrTokenExpiry = async () => {
       return await refreshToken('/refresh/token', store.dispatch, {});
     } catch (e) {
       history.push('/login');
-      throw new Error('Session expired');
+      throw new Error('Session Expired');
     }
   } else {
     return getAccessToken(store.getState());
