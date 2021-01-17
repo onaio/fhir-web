@@ -47,11 +47,10 @@ export interface Props {
 
 /** Gets all the location unit at geographicLevel 0
  *
- * @param {string} accessToken - Access token to be used for requests
  * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
-export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
+export async function getBaseTreeNode(opensrpBaseURL: string) {
   const serve = new OpenSRPService(LOCATION_UNIT_FINDBYPROPERTIES, opensrpBaseURL);
   return await serve
     .list({
@@ -68,15 +67,10 @@ export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: strin
 /** Gets the hierarchy of the location units
  *
  * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
- * @param {string} accessToken - Access token to be used for requests
  * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
  */
-export async function getHierarchy(
-  location: LocationUnit[],
-  accessToken: string,
-  opensrpBaseURL: string
-) {
+export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: string) {
   const hierarchy: RawOpenSRPHierarchy[] = [];
 
   for await (const loc of location) {
@@ -147,10 +141,10 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!Treedata.length) {
-      getBaseTreeNode(accessToken, opensrpBaseURL)
+      getBaseTreeNode(opensrpBaseURL)
         .then((response) => {
           dispatch(fetchLocationUnits(response));
-          getHierarchy(response, accessToken, opensrpBaseURL)
+          getHierarchy(response, opensrpBaseURL)
             .then((hierarchy) => {
               hierarchy.forEach((hier) => {
                 const processed = generateJurisdictionTree(hier);
