@@ -1,7 +1,8 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { store } from '@opensrp/store';
 import { Dictionary } from '@onaio/utils';
-import reducer, {
+import {
+  reducer,
   reducerName,
   getLocationTreeState,
   setLocationTreeState,

@@ -29,7 +29,7 @@ describe('dataLoaders/OpenSRPService', () => {
       'https://opensrp-stage.smartregister.org/opensrp/rest/organization'
     );
   });
-  it('getAcessTokenOrRedirect works correctly', async () => {
+  it('handleSessionOrTokenExpiry works correctly', async () => {
     MockDate.set('1-1-2021 19:31');
 
     // no session found
