@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Input, Spin } from 'antd';
-import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Input, Spin } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,9 +19,9 @@ import {
   LOCATION_UNIT_GROUP_ALL,
   LOCATION_UNIT_GROUP,
   URL_LOCATION_UNIT_GROUP_ADD,
-  LOGOUT,
   ADD_LOCATION_UNIT_GROUP,
   LOCATION_UNIT_GROUP_MANAGEMENT,
+  ERROR_OCCURED,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
@@ -50,7 +50,7 @@ export const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
           dispatch(fetchLocationUnitGroups(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   });
 
@@ -115,17 +115,6 @@ export const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
                   {ADD_LOCATION_UNIT_GROUP}
                 </Button>
               </Link>
-              <Divider type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="1">{LOGOUT}</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-              >
-                <Button shape="circle" icon={<SettingOutlined />} type="text" />
-              </Dropdown>
             </div>
           </div>
           <div className="bg-white p-3">

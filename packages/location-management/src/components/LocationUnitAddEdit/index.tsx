@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useParams } from 'react-router';
+import { useParams, useLocation } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/server-service';
 import {
@@ -9,11 +9,16 @@ import {
   EDIT_LOCATION_UNIT,
   LOCATION_UNIT_EXTRAFIELDS,
   LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER,
+  ERROR_OCCURED,
 } from '../../constants';
-import { ExtraField, fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
+import {
+  ExtraField,
+  fetchLocationUnits,
+  LocationUnit,
+  LocationUnitStatus,
+} from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
-
 import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -23,11 +28,15 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree, getBaseTreeNode, getHierarchy } from '../LocationTree/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ParsedHierarchyNode, Props } from '../../ducks/types';
-
+import { Props } from '../../ducks/types';
 import './LocationUnitAddEdit.css';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import {
+  generateJurisdictionTree,
+  getBaseTreeNode,
+  getHierarchy,
+} from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
@@ -42,6 +51,19 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   );
   const { opensrpBaseURL } = props;
   const dispatch = useDispatch();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const parentId = query.get('parentId');
+
+  useEffect(() => {
+    if (parentId != null)
+      setLocationUnitDetail({
+        name: '',
+        status: LocationUnitStatus.ACTIVE,
+        type: '',
+        parentId: parentId,
+      });
+  }, [parentId]);
 
   useEffect(() => {
     if (params.id) {
@@ -54,16 +76,13 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .list()
         .then((response: LocationUnit) => {
           setLocationUnitDetail({
-            name: response.properties.name,
-            parentId: response.properties.parentId,
-            status: response.properties.status,
-            externalId: response.properties.externalId,
+            ...response.properties,
             locationTags: response.locationTags?.map((loc) => loc.id),
             geometry: JSON.stringify(response.geometry),
             type: response.type,
           });
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, params.id, opensrpBaseURL]);
 
@@ -75,7 +94,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .then((response: LocationUnitGroup[]) => {
           setLocationUnitGroup(response);
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, locationUnitGroup.length, opensrpBaseURL]);
 
@@ -91,9 +110,9 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
                 dispatch(fetchAllHierarchies(processed.model));
               });
             })
-            .catch(() => sendErrorNotification('An error occurred'));
+            .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [Treedata, accessToken, dispatch, opensrpBaseURL]);
 
@@ -107,7 +126,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
       serve
         .list()
         .then((response: ExtraField[]) => setExtrafields(response))
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, extrafields, opensrpBaseURL]);
 

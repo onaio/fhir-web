@@ -10,8 +10,8 @@ import LocationUnitView, { loadSingleLocation, parseTableData } from '..';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
-import { baseURL } from '../../../constants';
-import { getBaseTreeNode, getHierarchy } from '../../LocationTree/utils';
+import { baseURL, ERROR_OCCURED } from '../../../constants';
+import { getBaseTreeNode, getHierarchy } from '../../../ducks/locationHierarchy/utils';
 
 LocationUnitView.defaultProps = { opensrpBaseURL: baseURL };
 
@@ -60,7 +60,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });
@@ -125,7 +125,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });
@@ -150,7 +150,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
       description: undefined,
     });
   });
@@ -288,8 +288,8 @@ describe('location-management/src/components/LocationUnitView', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     wrapper.find('.more-options').first().simulate('click');
     wrapper.find('.viewdetails').first().simulate('click');
@@ -322,8 +322,8 @@ describe('location-management/src/components/LocationUnitView', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     wrapper.find('.more-options').first().simulate('click');
     wrapper.find('.viewdetails').first().simulate('click');

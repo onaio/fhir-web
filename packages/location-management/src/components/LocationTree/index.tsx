@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ParsedHierarchyNode, LocationTreeState } from '../../ducks/types';
+import { LocationTreeState } from '../../ducks/types';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import {
-  reducer,
   getLocationTreeState,
   reducerName,
+  reducer,
   setLocationTreeState,
 } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
@@ -100,7 +101,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     setAutoExpandParent(true);
   }
 
-  /** Function to handle event when tree serach input changes value
+  /** Function to handle event when tree search input changes value
    *
    * @param {ChangeEvent<HTMLInputElement>} event the actual event
    */

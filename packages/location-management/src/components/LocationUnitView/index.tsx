@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Spin } from 'antd';
-import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Spin } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import locationUnitsReducer, {
+import {
   fetchLocationUnits,
   LocationUnit,
-  reducerName as locationUnitsReducerName,
+  locationUnitsReducer,
+  locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
@@ -19,7 +20,7 @@ import {
   ADD_LOCATION_UNIT,
   LOCATION_UNIT,
   LOCATION_UNIT_MANAGEMENT,
-  LOGOUT,
+  ERROR_OCCURED,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
@@ -32,9 +33,14 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree, getBaseTreeNode, getHierarchy } from '../LocationTree/utils';
 
-import { ParsedHierarchyNode, Props } from '../../ducks/types';
+import { Props } from '../../ducks/types';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import {
+  generateJurisdictionTree,
+  getBaseTreeNode,
+  getHierarchy,
+} from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -66,7 +72,7 @@ export function loadSingleLocation(
     .then((res: LocationUnit) => {
       setDetail(res);
     })
-    .catch(() => sendErrorNotification('An error occurred'));
+    .catch(() => sendErrorNotification(ERROR_OCCURED));
 }
 
 /** Parse the hierarchy node into table data
@@ -97,6 +103,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
+  const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
@@ -111,9 +118,9 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
                 dispatch(fetchAllHierarchies(processed.model));
               });
             })
-            .catch(() => sendErrorNotification('An error occurred'));
+            .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [treeData, accessToken, dispatch, opensrpBaseURL]);
 
@@ -146,6 +153,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
           <Tree
             data={treeData}
             OnItemClick={(node) => {
+              setCurrentClicked(node);
               if (node.children) {
                 const children = [node, ...node.children];
                 setCurrentParentChildren(children);
@@ -155,25 +163,22 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h5 className="mt-4">Bombali</h5>
+            <h5 className="mt-4">
+              {currentParentChildren.length ? tableData[0].name : 'Locations Unit'}
+            </h5>
             <div>
-              <Link to={URL_LOCATION_UNIT_ADD}>
+              <Link
+                to={(location) => {
+                  let query = '?';
+                  if (currentClicked) query += `parentId=${currentClicked.id}`;
+                  return { ...location, pathname: URL_LOCATION_UNIT_ADD, search: query };
+                }}
+              >
                 <Button type="primary">
                   <PlusOutlined />
                   {ADD_LOCATION_UNIT}
                 </Button>
               </Link>
-              <Divider type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="1">{LOGOUT}</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-              >
-                <Button shape="circle" icon={<SettingOutlined />} type="text" />
-              </Dropdown>
             </div>
           </div>
           <div className="bg-white p-3">

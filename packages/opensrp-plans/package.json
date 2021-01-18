@@ -51,7 +51,7 @@
     "@opensrp/plan-form": "0.0.2-1",
     "@opensrp/plan-form-core": "^0.0.1",
     "@opensrp/react-utils": "^0.0.1",
-    "@opensrp/server-service": "^0.0.12"
+    "@opensrp/server-service": "^0.0.13"
   },
   "devDependencies": {}
 }

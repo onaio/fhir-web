@@ -33,6 +33,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
+    "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/store": "^0.0.7",
     "antd": "^4.6.3"

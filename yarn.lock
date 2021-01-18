@@ -2618,6 +2618,20 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
+"@opensrp/card-support@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/card-support/-/card-support-0.0.1.tgz#d406650521f9b38c066fd4cae9a2fe0b5953f57f"
+  integrity sha512-jHNduQCXIbuuRskri0TUqDtZcuufSB3BpSX9PnRvNLwGwFZwlq95eXFDulLWT8U/KkOWzLhzoaBdD44oV8nIsQ==
+  dependencies:
+    "@ant-design/icons" "^4.2.2"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/location-management" "^0.0.7"
+    "@opensrp/notifications" "^0.0.2"
+    "@opensrp/reducer-factory" "^0.0.9"
+    "@opensrp/server-service" "^0.0.13"
+    papaparse "^5.3.0"
+
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
@@ -2640,6 +2654,16 @@
     redux "^4.0.5"
     seamless-immutable "^7.1.4"
 
+"@opensrp/reducer-factory@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.9.tgz#4dbe60dcb18cf4e744319647256bd83d9b4583ad"
+  integrity sha512-Wy8IBUwayGCkyRrGTwYuxz4dnw/elTnALUIvZgF2eiqExkSR2gwsj+j2nlWAFET4hi9ZUeLKOkTzeOGbgOPwiw==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
+    lodash "^4.17.15"
+    redux "^4.0.5"
+    seamless-immutable "^7.1.4"
+
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"
@@ -2651,6 +2675,11 @@
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
   integrity sha512-WymZntvFba3/0FKM6f2L+YT7BF+t/HFlr6A16UIBFz83+nYTIoI93MS/ocO/7MDTL9F7yzTBpjA0D1CkogFnfg==
+
+"@opensrp/server-service@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.12.tgz#3a887269384797c1b217f4e242453c1fae1805d1"
+  integrity sha512-n3bmvLRyGNG+NZXWT4NMPC2kelJL3lcWGFRYo8qX/9j5hTm6HBNJWUvnPgvg57xnC9YBfXUY/SkVOkALN0iNJw==
 
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
@@ -3085,6 +3114,13 @@
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
+
+"@types/papaparse@^5.2.4":
+  version "5.2.4"
+  resolved "https://registry.yarnpkg.com/@types/papaparse/-/papaparse-5.2.4.tgz#6aa662b08df84fd1dc34db37860005e9127457f3"
+  integrity sha512-oxwvNgW/RwtGsU/TOlV1zwBfozuyav0BotfCt0mX83nk87tePauU7N7shjI7uCBaPTEVip/F6XLfvs+Bk8M5HQ==
+  dependencies:
+    "@types/node" "*"
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -6059,6 +6095,11 @@ currently-unhandled@^0.4.1:
   integrity sha1-mI3zP+qxke95mmE2nddsF635V+o=
   dependencies:
     array-find-index "^1.0.1"
+
+cycle@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/cycle/-/cycle-1.0.3.tgz#21e80b2be8580f98b468f379430662b046c34ad2"
+  integrity sha1-IegLK+hYD5i0aPN5QwZisEbDStI=
 
 cyclist@^1.0.1:
   version "1.0.1"
@@ -11971,6 +12012,11 @@ pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==
+
+papaparse@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.3.0.tgz#ab1702feb96e79ab4309652f36db9536563ad05a"
+  integrity sha512-Lb7jN/4bTpiuGPrYy4tkKoUS8sTki8zacB5ke1p5zolhcSE4TlWgrlsxjrDTbG/dFVh07ck7X36hUf/b5V68pg==
 
 parallel-transform@^1.1.0:
   version "1.2.0"
