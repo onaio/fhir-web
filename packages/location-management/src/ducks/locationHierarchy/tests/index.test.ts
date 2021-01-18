@@ -71,15 +71,12 @@ describe('src/ducks/locationHierarchies', () => {
   it('gets locations by geographic level', () => {
     const singleRawHierarchy1 = rawHierarchy[0];
     store.dispatch(fetchTree(singleRawHierarchy1));
-    const id1 = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
-    // should have root level locations
+    // should have all locations
     const result1 = geoLevelSelector(store.getState(), {});
     const result2 = geoLevelSelector(store.getState(), { geoLevel: 0 });
-    expect(result1).toHaveLength(1);
+    expect(result1).toHaveLength(16);
     expect(result2).toEqual(result1);
-
-    expect(result1[0].model.id).toEqual(id1);
   });
 
   it('gets locations by geographic level for specific tree', () => {
@@ -88,17 +85,14 @@ describe('src/ducks/locationHierarchies', () => {
     store.dispatch(fetchTree(singleRawHierarchy1));
     store.dispatch(fetchTree(singleRawHierarchy2));
     const id2 = 'b652b2f4-a95d-489b-9e28-4629746db96a';
-    const id1 = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
-    // should have both root nodes from both trees
+    // should have all locations from both trees
     const results = geoLevelSelector(store.getState(), {});
-    expect(results).toHaveLength(2);
-    const resultsIds = results.map((tree) => tree.model.id);
-    expect(resultsIds).toEqual([id1, id2]);
+    expect(results).toHaveLength(34);
 
-    // should have root level locations only for tree with id2
+    // should have all locations only for tree with id2
     const node1 = geoLevelSelector(store.getState(), { rootJurisdictionId: [id2] });
-    expect(node1).toHaveLength(1);
+    expect(node1).toHaveLength(18);
     expect(node1[0].model.id).toEqual(id2);
   });
 });

@@ -158,17 +158,20 @@ export const getTreesByIds = () =>
 const treeSelectors = getTreesByIds();
 
 /** factory that returns a selector to retrieve the tree(s) using their rootNode's ids
- * the selector returns only the root jurisdictions if geographic level is undefined
+ * the selector will return all nodes if geographic level is undefined
  */
 export const getLocationsByLevel = () =>
   createSelector(treeSelectors, getGeoLevel, (trees, geoLevel): TreeNode[] => {
     let locationsOfInterest: TreeNode[] = [];
-    const defaultGeoLevel = 0;
-    const geographicLevel = geoLevel ? geoLevel : defaultGeoLevel;
     trees.forEach((tree) => {
       locationsOfInterest = [
         ...locationsOfInterest,
-        ...tree.all((node) => node.model.node.attributes.geographicLevel === geographicLevel),
+        ...tree.all((node) => {
+          if (geoLevel) {
+            return node.model.node.attributes.geographicLevel === geoLevel;
+          }
+          return true;
+        }),
       ];
     });
     return locationsOfInterest;
