@@ -82,4 +82,25 @@ describe('mission data download', () => {
       `"Mission dataSomething went wrongService points visited: Products checked: Number of flagged products: Download mission data"`
     );
   });
+  it('shows no data found', async () => {
+    missionDataPayload.forEach(() => {
+      fetch.once(JSON.stringify(null));
+    });
+    const wrapper = mount(<MissionData {...props} />);
+
+    /** loading view */
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Mission dataFetching mission indicators dataService points visited: Products checked: Number of flagged products: Download mission data"`
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    /** error view */
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Mission dataNo data foundService points visited: Products checked: Number of flagged products: Download mission data"`
+    );
+  });
 });
