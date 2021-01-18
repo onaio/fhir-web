@@ -15,7 +15,7 @@ import {
   PRODUCTS_CHECKED,
   SERVICE_POINTS_VISITED,
 } from '../../lang';
-import { loadTasksIndicators } from '../../helpers/dataLoaders';
+import { loadTasksIndicators, TaskCount } from '../../helpers/dataLoaders';
 import { CommonProps, defaultCommonProps } from '@opensrp/plan-form';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
 
@@ -44,8 +44,8 @@ const MissionData = (props: MissionDataProps) => {
     const setStateSequence = [setServicePoints, setProductsChecked, setFlaggedProducts];
     codes.forEach((code, index) => {
       const thisPromise = loadTasksIndicators(baseURL, planId, code, true)
-        .then((response) => {
-          setStateSequence[index](response.total_records ? response.total_records : '');
+        .then((response: TaskCount) => {
+          setStateSequence[index](response.total_records);
         })
         .catch((e) => e);
       promises.push(thisPromise);
@@ -55,7 +55,7 @@ const MissionData = (props: MissionDataProps) => {
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan]);
-
+  console.log('state', servicePoints);
   return (
     <Card className="mission-data" bordered={false} title={<Title level={5}>{MISSION_DATA}</Title>}>
       {loading ? (
