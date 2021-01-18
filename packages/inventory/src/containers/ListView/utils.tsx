@@ -24,8 +24,10 @@ export interface TableData {
   servicePointId: string;
 }
 
-/** component rendered in the action column of the table */
-
+/** component rendered in the action column of the table
+ *
+ * @param record - record to show in row
+ */
 export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (record) => {
   return (
     <>
@@ -74,8 +76,13 @@ export const columns: ColumnsType<TableData> = [
   },
 ];
 
-/** util component shown when there is a pending promise */
-
+/**
+ * util component shown when there is a pending promise
+ *
+ * @param root0 - object argument containing below args
+ * @param root0.message - message to show as title
+ * @param root0.description - description of error to show
+ */
 export const ServicePointsLoading = ({
   message = FETCHING_LOCATIONS,
   description = FETCHING_LOCATIONS_DESCRIPTION,
