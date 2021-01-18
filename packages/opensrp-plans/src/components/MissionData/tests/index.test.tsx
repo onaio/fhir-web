@@ -28,10 +28,10 @@ describe('mission data download', () => {
   afterEach(() => {
     fetch.resetMocks();
   });
+  const props = {
+    plan,
+  };
   it('renders without crashing', () => {
-    const props = {
-      plan,
-    };
     shallow(<MissionData {...props} />);
   });
   it('renders correctly', async () => {
@@ -59,5 +59,27 @@ describe('mission data download', () => {
       `"Mission dataService points visited: 13Products checked: 7Number of flagged products: 3Download mission data"`
     );
     expect(wrapper.find('Button').text()).toEqual('Download mission data');
+  });
+
+  it('shows broken page', async () => {
+    missionDataPayload.forEach((taskCount) => {
+      fetch.mockRejectOnce(new Error('Something went wrong'));
+    });
+    const wrapper = mount(<MissionData {...props} />);
+
+    /** loading view */
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Mission dataFetching mission indicators dataService points visited: Products checked: Number of flagged products: Download mission data"`
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    /** error view */
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Mission dataSomething went wrongService points visited: Products checked: Number of flagged products: Download mission data"`
+    );
   });
 });
