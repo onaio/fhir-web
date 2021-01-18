@@ -44,8 +44,8 @@ export interface Props {
   initialValue?: FormField;
   extraFields?: ExtraField[];
   locationUnitGroup: LocationUnitGroup[];
-  treedata: ParsedHierarchyNode[];
-  opensrpBaseURL: string;
+  treeData: ParsedHierarchyNode[];
+  openSRPBaseURL: string;
 }
 
 /** yup validations for practitioner data object from form */
@@ -228,9 +228,9 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(
           setSubmitting,
           values,
-          props.opensrpBaseURL,
+          props.openSRPBaseURL,
           props.locationUnitGroup,
-          props.treedata,
+          props.treeData,
           user.username,
           props.extraFields,
           props.id
@@ -246,7 +246,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder="Please select"
             >
-              {parseHierarchyNode(props.treedata)}
+              {parseHierarchyNode(props.treeData)}
             </TreeSelect>
           </AntForm.Item>
 
