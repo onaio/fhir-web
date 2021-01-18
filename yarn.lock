@@ -2603,9 +2603,7 @@
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
 "@opensrp/error-boundary-fallback@file:packages/error-boundary-fallback":
-  version "0.0.0"
-  dependencies:
-    "@sentry/react" "^5.27.4"
+  version "0.0.1"
 
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
