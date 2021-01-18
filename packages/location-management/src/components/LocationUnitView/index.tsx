@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Spin } from 'antd';
-import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Spin } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import locationUnitsReducer, {
+import {
   fetchLocationUnits,
   LocationUnit,
-  reducerName as locationUnitsReducerName,
+  locationUnitsReducer,
+  locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
@@ -21,7 +22,7 @@ import {
   ADD_LOCATION_UNIT,
   LOCATION_UNIT,
   LOCATION_UNIT_MANAGEMENT,
-  LOGOUT,
+  ERROR_OCCURED,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
@@ -33,9 +34,8 @@ import locationHierarchyReducer, {
   fetchAllHierarchies,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree } from '../LocationTree/utils';
-
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
+import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -73,7 +73,7 @@ export function loadSingleLocation(
     .then((res: LocationUnit) => {
       setDetail(res);
     })
-    .catch(() => sendErrorNotification('An error occurred'));
+    .catch(() => sendErrorNotification(ERROR_OCCURED));
 }
 
 /** Gets all the location unit at geographicLevel 0
@@ -158,9 +158,9 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
                 dispatch(fetchAllHierarchies(processed.model));
               });
             })
-            .catch(() => sendErrorNotification('An error occurred'));
+            .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [treeData, accessToken, dispatch, opensrpBaseURL]);
 
@@ -203,7 +203,9 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h5 className="mt-4">Bombali</h5>
+            <h5 className="mt-4">
+              {currentParentChildren.length ? tableData[0].name : 'Locations Unit'}
+            </h5>
             <div>
               <Link
                 to={(location) => {
@@ -217,17 +219,6 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
                   {ADD_LOCATION_UNIT}
                 </Button>
               </Link>
-              <Divider type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="1">{LOGOUT}</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-              >
-                <Button shape="circle" icon={<SettingOutlined />} type="text" />
-              </Dropdown>
             </div>
           </div>
           <div className="bg-white p-3">

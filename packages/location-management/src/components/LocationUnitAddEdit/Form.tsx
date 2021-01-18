@@ -17,10 +17,10 @@ import {
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { LOCATION_UNIT_POST_PUT } from '../../constants';
+import { ERROR_OCCURED, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
-import { ParsedHierarchyNode } from '../../ducks/types';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 
@@ -139,7 +139,7 @@ export async function onSubmit(
   if (values.parentId) {
     const parent = findParentGeoLocation(treedata, values.parentId);
     if (parent) geographicLevel = parent + 1;
-    else return sendErrorNotification('An error occurred'); // stops execution because this is unlikely thing to happen and shouldn't send error to server
+    else return sendErrorNotification(ERROR_OCCURED); // stops execution because this is unlikely thing to happen and shouldn't send error to server
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
@@ -179,8 +179,7 @@ export async function onSubmit(
         sendSuccessNotification('Location Unit Updated successfully');
         history.goBack();
       })
-      .catch(() => sendErrorNotification('An error occurred'))
-      .finally(() => setSubmitting(false));
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
   } else {
     await serve
       .create({ ...payload })
@@ -188,9 +187,10 @@ export async function onSubmit(
         sendSuccessNotification('Location Unit Created successfully');
         history.goBack();
       })
-      .catch(() => sendErrorNotification('An error occurred'))
-      .finally(() => setSubmitting(false));
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
   }
+
+  setSubmitting(false);
 }
 
 export const Form: React.FC<Props> = (props: Props) => {

@@ -11,6 +11,7 @@ import {
   EDIT_LOCATION_UNIT,
   LOCATION_UNIT_EXTRAFIELDS,
   LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER,
+  ERROR_OCCURED,
 } from '../../constants';
 import {
   ExtraField,
@@ -20,7 +21,6 @@ import {
 } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
-
 import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -29,11 +29,10 @@ import locationHierarchyReducer, {
   fetchAllHierarchies,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree } from '../LocationTree/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
-
 import './LocationUnitAddEdit.css';
+import { RawOpenSRPHierarchy, ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
@@ -122,16 +121,13 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .list()
         .then((response: LocationUnit) => {
           setLocationUnitDetail({
-            name: response.properties.name,
-            parentId: response.properties.parentId,
-            status: response.properties.status,
-            externalId: response.properties.externalId,
+            ...response.properties,
             locationTags: response.locationTags?.map((loc) => loc.id),
             geometry: JSON.stringify(response.geometry),
             type: response.type,
           });
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, params.id, opensrpBaseURL]);
 
@@ -143,7 +139,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .then((response: LocationUnitGroup[]) => {
           setLocationUnitGroup(response);
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, locationUnitGroup.length, opensrpBaseURL]);
 
@@ -159,9 +155,9 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
                 dispatch(fetchAllHierarchies(processed.model));
               });
             })
-            .catch(() => sendErrorNotification('An error occurred'));
+            .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [Treedata, accessToken, dispatch, opensrpBaseURL]);
 
@@ -175,7 +171,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
       serve
         .list()
         .then((response: ExtraField[]) => setExtrafields(response))
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [accessToken, extrafields, opensrpBaseURL]);
 

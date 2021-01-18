@@ -1,8 +1,10 @@
 export const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+
 //
 // Strings
 //
 
+export const ERROR_OCCURED = 'An error occurred';
 export const LOCATION_UNIT = 'Location Unit';
 export const LOCATION_UNIT_GROUP = 'Location Unit Group';
 export const LOCATION_UNIT_MANAGEMENT = 'Location Unit Management';
@@ -11,17 +13,18 @@ export const ADD_LOCATION_UNIT = 'Add Location Unit';
 export const EDIT_LOCATION_UNIT = 'Edit Location Unit';
 export const ADD_LOCATION_UNIT_GROUP = 'Add Location Unit Group';
 export const EDIT_LOCATION_UNIT_GROUP = 'Edit Location Unit Group';
-export const LOGOUT = 'logout';
 
 //
 // Location Unit
 //
+export const ACTIVE = 'Active';
 export const LOCATION_UNIT_ALL = 'location/sync';
 export const LOCATION_UNIT_GET = 'location';
 export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
 export const LOCATION_UNIT_EXTRAFIELDS = 'v2/settings/?serverVersion=0';
 export const LOCATION_UNIT_FINDBYPROPERTIES = 'location/findByProperties';
 export const LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER = 'location_settings';
+
 // Url
 export const URL_ADMIN = '/admin';
 export const URL_LOCATION_UNIT = `${URL_ADMIN}/location/unit`;
