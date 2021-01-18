@@ -53,10 +53,7 @@ const MissionData = (props: MissionDataProps) => {
       promises.push(thisPromise);
     });
     Promise.all(promises)
-      .catch((e) => {
-        console.log('............>>')
-        handleBrokenPage(e)
-      })
+      .catch((e) => handleBrokenPage(e))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan]);
