@@ -107,6 +107,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       message: ERROR_OCCURED,
       description: undefined,
     });
+    wrapper.unmount();
   });
 
   it('renders everything correctly', async () => {
@@ -171,17 +172,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
           method: 'GET',
         },
       ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer null',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
     ]);
 
     await act(async () => {
@@ -190,6 +180,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     wrapper.update();
 
     expect(wrapper.find('form')).toHaveLength(1);
+    wrapper.unmount();
   });
 
   it('test set initial value of Parentid from url', async () => {
