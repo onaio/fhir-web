@@ -84,3 +84,5 @@ export const PlanStatusColors: Dictionary = {
   draft: ORANGE,
   retired: BLACK,
 };
+
+export const NO_DATA_FOUND = 'No data found';

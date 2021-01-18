@@ -2,6 +2,7 @@
 import { get, keyBy, uniqBy } from 'lodash';
 import { store, makeAPIStateSelector } from '@opensrp/store';
 import {
+  NO_DATA_FOUND,
   OPENSRP_ACTIVE,
   OPENSRP_API_BASE_URL,
   OPENSRP_FIND_BY_PROPERTIES,
@@ -24,12 +25,13 @@ import {
 import { fetchJurisdictions, Jurisdiction } from '../ducks/jurisdictions';
 import { processRawAssignments } from '../ducks/assignments/utils';
 import { COULD_NOT_LOAD_ASSIGNMENTS } from '../lang';
+import { Dictionary } from '@onaio/utils';
 
 const sessionSelector = makeAPIStateSelector();
 
 export interface TaskCount {
   total_records: string;
-  tasks: number[];
+  tasks: Dictionary[];
 }
 
 /** OpenSRP service */
@@ -58,7 +60,7 @@ export async function loadPlans(
     .list(planStatus ? { status: planStatus } : null)
     .then((response: PlanDefinition[] | null) => {
       if (response === null) {
-        return Promise.reject(new Error('No data found'));
+        return Promise.reject(new Error(NO_DATA_FOUND));
       }
       actionCreator(response);
     })
