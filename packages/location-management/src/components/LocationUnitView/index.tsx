@@ -7,10 +7,11 @@ import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnit
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/react-utils';
-import locationUnitsReducer, {
+import {
   fetchLocationUnits,
   LocationUnit,
-  reducerName as locationUnitsReducerName,
+  locationUnitsReducer,
+  locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
@@ -34,9 +35,8 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree } from '../LocationTree/utils';
-
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
+import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);

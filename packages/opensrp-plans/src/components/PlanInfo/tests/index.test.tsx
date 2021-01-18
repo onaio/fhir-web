@@ -31,7 +31,7 @@ describe('/components/PlanInfo', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Missions/Active /EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditActive Start Date2020-11-17End Date2021-12-24 "`
     );
-    wrapper.find('.site-page-header span.ant-breadcrumb-link').forEach((span, index) => {
+    wrapper.find('.site-page-header-responsive span.ant-breadcrumb-link').forEach((span, index) => {
       expect(toJson(span)).toMatchSnapshot(`links in breadcrumb ${index}`);
     });
   });

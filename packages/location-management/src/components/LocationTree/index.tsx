@@ -99,7 +99,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     setAutoExpandParent(true);
   }
 
-  /** Function to handle event when tree serach input changes value
+  /** Function to handle event when tree search input changes value
    *
    * @param {ChangeEvent<HTMLInputElement>} event the actual event
    */

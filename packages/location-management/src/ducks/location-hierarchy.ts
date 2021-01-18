@@ -7,7 +7,8 @@
 import { Dictionary } from '@onaio/utils';
 import { AnyAction, Store } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
-import { TreeNode, LocationTreeState } from './types';
+import { TreeNode } from './locationHierarchy/types';
+import { LocationTreeState } from './types';
 
 /** reducer name for hierarchy reducer */
 export const reducerName = 'location-hierarchy';

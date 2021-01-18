@@ -7,7 +7,6 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
-
 import { id, formValue, locationUnitgroups, parsedHierarchy, locationSettings } from './fixtures';
 import Form, { findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form';
 import { act } from 'react-dom/test-utils';

@@ -21,7 +21,6 @@ import {
 } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
-
 import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -31,11 +30,10 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { generateJurisdictionTree } from '../LocationTree/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/types';
-
 import './LocationUnitAddEdit.css';
+import { RawOpenSRPHierarchy, ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
