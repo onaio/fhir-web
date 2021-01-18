@@ -62,7 +62,7 @@ describe('mission data download', () => {
   });
 
   it('shows broken page', async () => {
-    missionDataPayload.forEach((taskCount) => {
+    missionDataPayload.forEach(() => {
       fetch.mockRejectOnce(new Error('Something went wrong'));
     });
     const wrapper = mount(<MissionData {...props} />);
