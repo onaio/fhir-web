@@ -439,7 +439,7 @@ export async function loadTasksIndicators(
     .list(params)
     .then((response: TaskCount | null) => {
       if (response === null) {
-        return Promise.reject(new Error('No data found'));
+        return Promise.reject(new Error(NO_DATA_FOUND));
       }
       return response;
     })
