@@ -68,6 +68,12 @@ Below is a list of currently supported environment variables:
   - URL to send crash reports
   - **Required**
 
+- **REACT_APP_ENABLE_CARD_SUPPORT**
+
+  - Enables the card support module
+  - **Optional**(_string_)
+  - default: `false`
+
 - **REACT_APP_ENABLE_PRODUCT_CATALOGUE**
 
   - Enables the product-catalogue module
