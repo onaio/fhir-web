@@ -8,36 +8,6 @@ Object {
       className="bg-transparent border-0"
       ghost={false}
       htmlType="button"
-      icon={<ForwardRef(SearchOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(QuestionCircleOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(BellOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
       icon={<ForwardRef(BellOutlined) />}
       loading={false}
       type="primary"
@@ -66,36 +36,6 @@ Object {
 exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
 Object {
   "children": Array [
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(SearchOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(QuestionCircleOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(BellOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
     <Dropdown
       mouseEnterDelay={0.15}
       mouseLeaveDelay={0.1}
