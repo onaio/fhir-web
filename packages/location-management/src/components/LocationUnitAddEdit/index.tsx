@@ -4,7 +4,10 @@ import { useParams, useLocation } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
+<<<<<<< HEAD
   LOCATION_UNIT_FIND_BY_PROPERTIES,
+=======
+>>>>>>> Refactor a few varibale casing errors
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GROUP_ALL,
   LOCATION_UNIT_EXTRA_FIELDS,
@@ -32,45 +35,25 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import './LocationUnitAddEdit.css';
 import { RawOpenSRPHierarchy, ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
+import { loadJurisdictions } from 'location-management/src/helpers/dataLoaders';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-const { getFilterParams } = OpenSRPService;
-
 export interface Props {
-  opensrpBaseURL: string;
-}
-
-/** Gets all the location unit at geographicLevel 0
- *
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
- */
-export async function getBaseTreeNode(opensrpBaseURL: string) {
-  const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
-  return await serve
-    .list({
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      is_jurisdiction: true,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      return_geometry: false,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-    })
-    .then((response: LocationUnit[]) => response);
+  openSRPBaseURL: string;
 }
 
 /** Gets the hierarchy of the location units
  *
  * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
- * @param {string} opensrpBaseURL - base url
+ * @param {string} openSRPBaseURL - base url
  * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
  */
-export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: string) {
+export async function getHierarchy(location: LocationUnit[], openSRPBaseURL: string) {
   const hierarchy: RawOpenSRPHierarchy[] = [];
 
   for await (const loc of location) {
-    const serve = new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL);
+    const serve = new OpenSRPService(LOCATION_HIERARCHY, openSRPBaseURL);
     const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
     hierarchy.push(data);
   }
@@ -82,12 +65,12 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
-  const [extrafields, setExtrafields] = useState<ExtraField[] | null>(null);
+  const [extraFields, setExtraFields] = useState<ExtraField[] | null>(null);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
-  const Treedata = useSelector(
+  const treeData = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
-  const { opensrpBaseURL } = props;
+  const { openSRPBaseURL } = props;
   const dispatch = useDispatch();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -107,7 +90,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
     if (params.id) {
       const serve = new OpenSRPService(
         `location/${params.id}?is_jurisdiction=true`,
-        opensrpBaseURL
+        openSRPBaseURL
       );
       serve
         .list()
@@ -121,11 +104,11 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, params.id, opensrpBaseURL]);
+  }, [accessToken, params.id, openSRPBaseURL]);
 
   useEffect(() => {
     if (!locationUnitGroup.length) {
-      const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
+      const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, openSRPBaseURL);
       serve
         .list()
         .then((response: LocationUnitGroup[]) => {
@@ -133,43 +116,45 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, locationUnitGroup.length, opensrpBaseURL]);
+  }, [accessToken, locationUnitGroup.length, openSRPBaseURL]);
 
   useEffect(() => {
-    if (!Treedata.length) {
-      getBaseTreeNode(opensrpBaseURL)
+    if (!treeData.length) {
+      loadJurisdictions(undefined, openSRPBaseURL)
         .then((response) => {
-          dispatch(fetchLocationUnits(response));
-          getHierarchy(response, opensrpBaseURL)
-            .then((hierarchy) => {
-              hierarchy.forEach((hier) => {
-                const processed = generateJurisdictionTree(hier);
-                dispatch(fetchAllHierarchies(processed.model));
-              });
-            })
-            .catch(() => sendErrorNotification(ERROR_OCCURED));
+          if (response) {
+            dispatch(fetchLocationUnits(response));
+            getHierarchy(response, openSRPBaseURL)
+              .then((hierarchy) => {
+                hierarchy.forEach((hier) => {
+                  const processed = generateJurisdictionTree(hier);
+                  dispatch(fetchAllHierarchies(processed.model));
+                });
+              })
+              .catch(() => sendErrorNotification(ERROR_OCCURED));
+          }
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [Treedata, accessToken, dispatch, opensrpBaseURL]);
+  }, [treeData, accessToken, dispatch, openSRPBaseURL]);
 
   useEffect(() => {
-    if (!extrafields) {
+    if (!extraFields) {
       const serve = new OpenSRPService(
         LOCATION_UNIT_EXTRA_FIELDS + `&identifier=${LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER}`,
         opensrpBaseURL
       );
       serve
         .list()
-        .then((response: ExtraField[]) => setExtrafields(response))
+        .then((response: ExtraField[]) => setExtraFields(response))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, extrafields, opensrpBaseURL]);
+  }, [accessToken, extraFields, openSRPBaseURL]);
 
   if (
-    extrafields === null ||
+    extraFields === null ||
     !locationUnitGroup.length ||
-    !Treedata.length ||
+    !treeData.length ||
     (params.id && !LocationUnitDetail)
   )
     return (
@@ -196,9 +181,9 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
 
       <Col className="bg-white p-4" span={24}>
         <Form
-          extraFields={extrafields}
-          opensrpBaseURL={opensrpBaseURL}
-          treedata={Treedata}
+          extraFields={extraFields}
+          openSRPBaseURL={openSRPBaseURL}
+          treeData={treeData}
           id={params.id}
           locationUnitGroup={locationUnitGroup}
           initialValue={LocationUnitDetail}
