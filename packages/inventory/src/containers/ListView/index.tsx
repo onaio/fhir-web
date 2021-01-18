@@ -72,9 +72,11 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [loadingJurisdictions, setLoadingJurisdictions] = useState<boolean>(
-    rootLocations.length > 0
+    rootLocations.length === 0
   );
-  const [loadingHierarchy, setLoadingHierarchy] = useState<boolean>(LocationsByGeoLevel.length > 0);
+  const [loadingHierarchy, setLoadingHierarchy] = useState<boolean>(
+    LocationsByGeoLevel.length === 0
+  );
 
   useEffect(() => {
     loadJurisdictions(fetchLocationsCreator, baseURL, undefined, undefined, service)
@@ -91,6 +93,8 @@ const ServicePointList = (props: ServicePointsListTypes) => {
       Promise.all(promises)
         .catch((err: Error) => handleBrokenPage(err))
         .finally(() => setLoadingHierarchy(false));
+    } else {
+      setLoadingHierarchy(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(rootLocations)]);

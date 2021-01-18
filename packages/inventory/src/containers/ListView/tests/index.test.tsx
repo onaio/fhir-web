@@ -70,9 +70,11 @@ describe('List view Page', () => {
 
     // details view is not displayed
     expect(wrapper.find('.view-details-content')).toHaveLength(0);
+
+    wrapper.unmount();
   });
 
-  it('renders correctly when data is present', async () => {
+  it('renders when data is present', async () => {
     fetch.once(JSON.stringify([madagascar])).once(JSON.stringify(madagascarTree));
 
     const wrapper = mount(
@@ -127,9 +129,10 @@ describe('List view Page', () => {
 
     wrapper.unmount();
   });
+
   it('shows broken page', async () => {
     const errorMessage = 'Coughid';
-    fetch.mockReject(errorMessage);
+    fetch.mockReject(new Error(errorMessage));
 
     const wrapper = mount(
       <Provider store={store}>
