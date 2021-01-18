@@ -29,6 +29,6 @@ describe('reducers/pkg-configs', () => {
   it('dux module is used without registration', () => {
     // mock reducer de-registration;
     const mockStore = {};
-    expect(mockStore).toEqual({});
+    expect(configSelector(mockStore)).toEqual({});
   });
 });
