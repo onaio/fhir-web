@@ -46,7 +46,7 @@ describe('mission data download', () => {
     /** loading view */
     /* eslint-disable no-irregular-whitespace */
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Mission dataFetching mission indicators dataService points visited: Products checked: Number of flagged products: Download mission data"`
+      `"Mission dataFetching mission indicators dataService points visited: Products checked: Number of flagged products: Download mission data"`
     );
 
     await act(async () => {
