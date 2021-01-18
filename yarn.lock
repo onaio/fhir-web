@@ -2603,9 +2603,7 @@
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
 "@opensrp/error-boundary-fallback@file:packages/error-boundary-fallback":
-  version "0.0.0"
-  dependencies:
-    "@sentry/react" "^5.27.4"
+  version "0.0.1"
 
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
@@ -2635,6 +2633,11 @@
   integrity sha512-OAoXQsD/ZY9yT7q/jdjRTvsgRKudifc6Az9D/vfiUsgR6+zdK1YXP8afpXXY2OeY1VnJorMujSSolk/zv0a54Q==
   dependencies:
     "@opensrp/server-service" "^0.0.4"
+
+"@opensrp/server-service@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.12.tgz#3a887269384797c1b217f4e242453c1fae1805d1"
+  integrity sha512-n3bmvLRyGNG+NZXWT4NMPC2kelJL3lcWGFRYo8qX/9j5hTm6HBNJWUvnPgvg57xnC9YBfXUY/SkVOkALN0iNJw==
 
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
