@@ -126,7 +126,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
         <Col className={'main-content'}>
           <div className="main-content__header">
             <Link to={ADD_SERVICE_POINT}>
-              <Button type="primary" size="large">
+              <Button type="primary" size="large" disabled>
                 {ADD_SERVICE_POINT}
               </Button>
             </Link>
