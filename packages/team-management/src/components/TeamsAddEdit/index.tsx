@@ -88,18 +88,7 @@ export const TeamsAddEdit: React.FC = () => {
       .catch(() => sendErrorNotification(ERROR_OCCURRED));
   }, [accessToken]);
 
-  if (!practitioner || (params.id && !initialValue))
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+  if (!practitioner || (params.id && !initialValue)) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -108,11 +97,7 @@ export const TeamsAddEdit: React.FC = () => {
       </Helmet>
 
       <h5 className="mb-3 header-title">
-        {params.id
-          ? initialValue?.name
-            ? `Edit Team | ${initialValue.name}`
-            : `Edit Team`
-          : 'Create Team'}
+        {initialValue?.name ? `Edit Team | ${initialValue.name}` : 'Create Team'}
       </h5>
 
       <div className="bg-white p-5">
