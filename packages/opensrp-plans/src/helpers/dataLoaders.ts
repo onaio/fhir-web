@@ -12,11 +12,7 @@ import {
   OPENSRP_POST_ASSIGNMENTS_ENDPOINT,
   OPENSRP_TASK_SEARCH,
 } from '../constants';
-import {
-  customFetch,
-  OpenSRPService as GenericOpenSRPService,
-  throwHTTPError,
-} from '@opensrp/server-service';
+import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
 import { fetchPlanDefinitions } from '../ducks/planDefinitions';
 import { fetchAssignments, Assignment, RawAssignment } from '../ducks/assignments';
 import { PlanDefinition } from '@opensrp/plan-form-core';
@@ -436,7 +432,6 @@ export async function loadTasksIndicators(
     code,
     returnTaskCountOnly: onlyCount,
   };
-
   const serve = new OpenSRPService(OPENSRP_TASK_SEARCH, baseURL);
   return serve
     .list(params)
