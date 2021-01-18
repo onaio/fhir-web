@@ -28,13 +28,13 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { ADD_SERVICE_POINT, SERVICE_POINT_INVENTORY } from '../../lang';
 import { TableData } from './utils';
 
-/** make sure product catalogue reducer is registered */
+/** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
 const locationsByLevelSelector = getLocationsByLevel();
 
-/** props for the productCatalogueList view */
+/** props for the ServicePointList view */
 interface ServicePointsListProps extends CommonProps {
   LocationsByGeoLevel: TreeNode[];
   rootLocations: LocationUnit[];
@@ -58,8 +58,10 @@ const defaultProps = {
 
 export type ServicePointsListTypes = ServicePointsListProps & RouteComponentProps;
 
-/** component that renders product catalogue */
-
+/** component that renders service point list
+ *
+ * @param props - the component props
+ */
 const ServicePointList = (props: ServicePointsListTypes) => {
   const {
     service,
@@ -144,7 +146,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
 
 ServicePointList.defaultProps = defaultProps;
 
-export { ServicePointList as ProductCatalogueList };
+export { ServicePointList };
 
 export type MapStateToProps = Pick<ServicePointsListTypes, 'LocationsByGeoLevel' | 'rootLocations'>;
 export type MapDispatchToProps = Pick<

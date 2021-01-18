@@ -36,7 +36,7 @@ export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (recor
   );
 };
 
-/** product Catalogue table columns */
+/** service point list table columns */
 export const columns: ColumnsType<TableData> = [
   {
     title: SERVICE_POINT_TH,
