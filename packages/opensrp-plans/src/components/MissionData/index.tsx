@@ -55,7 +55,6 @@ const MissionData = (props: MissionDataProps) => {
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan]);
-  console.log('state', servicePoints);
   return (
     <Card className="mission-data" bordered={false} title={<Title level={5}>{MISSION_DATA}</Title>}>
       {loading ? (
