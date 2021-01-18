@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ParsedHierarchyNode, LocationTreeState } from '../../ducks/types';
+import { LocationTreeState } from '../../ducks/types';
 import {
   getLocationTreeState,
   reducerName,
   setLocationTreeState,
   reducer,
 } from '../../ducks/location-hierarchy';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
 import { Dictionary } from '@onaio/utils';

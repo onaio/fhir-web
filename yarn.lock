@@ -2603,7 +2603,7 @@
   resolved "https://registry.yarnpkg.com/@onaio/session-reducer/-/session-reducer-0.0.12.tgz#8a72bd80442a6f6c10138b3b3fac0455324042e1"
   integrity sha512-BbsIuhMhPeM7BnbSiPUOKZFZeTQLjSqYBrWAJeA/gotH1c20csYDRfI1bhopOmVx0dbigm7saDFfOX963jpULA==
 
-"@onaio/utils@0.0.1", "@onaio/utils@^0.0.1":
+"@onaio/utils@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
@@ -5996,6 +5996,11 @@ currently-unhandled@^0.4.1:
   integrity sha1-mI3zP+qxke95mmE2nddsF635V+o=
   dependencies:
     array-find-index "^1.0.1"
+
+cycle@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/cycle/-/cycle-1.0.3.tgz#21e80b2be8580f98b468f379430662b046c34ad2"
+  integrity sha1-IegLK+hYD5i0aPN5QwZisEbDStI=
 
 cyclist@^1.0.1:
   version "1.0.1"

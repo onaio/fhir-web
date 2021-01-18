@@ -38,7 +38,7 @@
     "@onaio/utils": "^0.0.1",
     "@onaio/session-reducer": "^0.0.12",
     "@opensrp/notifications": "^0.0.2",
-    "@opensrp/server-service": "^0.0.12",
+    "@opensrp/server-service": "^0.0.13",
     "antd": "^4.6.3"
   },
   "peerDependencies": {
