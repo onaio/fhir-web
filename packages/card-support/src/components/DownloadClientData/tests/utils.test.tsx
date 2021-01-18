@@ -155,6 +155,11 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       fixtures.locations,
       setSubmittingMock
     );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(fetch.mock.calls[0]).toEqual([
       `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}&attribute=card_status:${cardStatus}`,
@@ -168,9 +173,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       },
     ]);
 
-    await act(async () => {
-      await flushPromises();
-    });
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
@@ -193,6 +195,9 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       fixtures.locations,
       setSubmittingMock
     );
+    await act(async () => {
+      await flushPromises();
+    });
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(fetch.mock.calls[0]).toEqual([
       `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}&attribute=card_status:${cardStatus}`,
@@ -205,10 +210,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
         method: 'GET',
       },
     ]);
-
-    await act(async () => {
-      await flushPromises();
-    });
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
@@ -228,6 +229,9 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       fixtures.locations,
       setSubmittingMock
     );
+    await act(async () => {
+      await flushPromises();
+    });
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(fetch.mock.calls[0]).toEqual([
       `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}`,
@@ -240,10 +244,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
         method: 'GET',
       },
     ]);
-
-    await act(async () => {
-      await flushPromises();
-    });
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
@@ -263,11 +263,11 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       fixtures.locations,
       setSubmittingMock
     );
-    expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
-
     await act(async () => {
       await flushPromises();
     });
+
+    expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith('No data found');
@@ -333,13 +333,11 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       fixtures.locations,
       setSubmittingMock
     );
-    expect(setSubmittingMock).not.toHaveBeenCalled();
-    expect(fetch).not.toHaveBeenCalled();
-
     await act(async () => {
       await flushPromises();
     });
-
+    expect(setSubmittingMock).not.toHaveBeenCalled();
+    expect(fetch).not.toHaveBeenCalled();
     expect(papaparseMock).not.toHaveBeenCalled();
   });
 
