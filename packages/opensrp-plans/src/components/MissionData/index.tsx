@@ -47,7 +47,9 @@ const MissionData = (props: MissionDataProps) => {
         .then((response: TaskCount) => {
           setStateSequence[index](response.total_records);
         })
-        .catch((e) => e);
+        .catch((err: Error) => {
+          throw err;
+        });
       promises.push(thisPromise);
     });
     Promise.all(promises)
