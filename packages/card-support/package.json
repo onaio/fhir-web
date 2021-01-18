@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/card-support",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "OpenSRP card support features",
   "main": "dist/index.js",
   "types": "dist/types",
