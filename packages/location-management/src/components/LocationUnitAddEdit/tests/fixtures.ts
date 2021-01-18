@@ -1,4 +1,9 @@
-import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../../../ducks/types';
+import {
+  ParsedHierarchyNode,
+  RawOpenSRPHierarchy,
+  TreeNode,
+} from '../../../ducks/locationHierarchy/types';
+import { generateJurisdictionTree } from '../../../ducks/locationHierarchy/utils';
 import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import {
   ExtraField,
@@ -7,7 +12,6 @@ import {
   LocationUnitStatus,
   LocationUnitSyncStatus,
 } from '../../../ducks/location-units';
-import { generateJurisdictionTree } from '../../LocationTree/utils';
 import { FormField } from '../Form';
 
 export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';

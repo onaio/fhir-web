@@ -88,7 +88,7 @@ export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
 }
 
 /** reducer name for the Item module */
-export const reducerName = 'location-units';
+export const locationUnitsReducerName = 'location-units';
 
 /** Action types */
 const customfetchedActionType = 'location-units/LOCATION_UNITS_FETCHED';
@@ -96,8 +96,8 @@ const customRemoveActionType = 'location-units/REMOVE_LOCATION_UNITS';
 const customSetTotalRecordsActionType = 'location-units/SET_TOTAL_LOCATION_UNITS';
 
 /** Item Reducer */
-const reducer = reducerFactory<LocationUnit>(
-  reducerName,
+export const locationUnitsReducer = reducerFactory<LocationUnit>(
+  locationUnitsReducerName,
   customfetchedActionType,
   customRemoveActionType,
   customSetTotalRecordsActionType
@@ -105,14 +105,15 @@ const reducer = reducerFactory<LocationUnit>(
 
 // action
 /** actionCreator returns action to to add Item records to store */
-export const fetchLocationUnits = fetchActionCreatorFactory<LocationUnit>(reducerName, 'id');
-export const removeLocationUnits = removeActionCreatorFactory(reducerName);
-export const setTotalLocationUnits = setTotalRecordsFactory(reducerName);
+export const fetchLocationUnits = fetchActionCreatorFactory<LocationUnit>(
+  locationUnitsReducerName,
+  'id'
+);
+export const removeLocationUnits = removeActionCreatorFactory(locationUnitsReducerName);
+export const setTotalLocationUnits = setTotalRecordsFactory(locationUnitsReducerName);
 
 // selectors
-export const getLocationUnitsById = getItemsByIdFactory<LocationUnit>(reducerName);
-export const getLocationUnitById = getItemByIdFactory<LocationUnit>(reducerName);
-export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(reducerName);
-export const getTotalLocationUnits = getTotalRecordsFactory(reducerName);
-
-export default reducer;
+export const getLocationUnitsById = getItemsByIdFactory<LocationUnit>(locationUnitsReducerName);
+export const getLocationUnitById = getItemByIdFactory<LocationUnit>(locationUnitsReducerName);
+export const getLocationUnitsArray = getItemsArrayFactory<LocationUnit>(locationUnitsReducerName);
+export const getTotalLocationUnits = getTotalRecordsFactory(locationUnitsReducerName);
