@@ -106,6 +106,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     expect(fetch.mock.calls).toMatchObject([
       [
@@ -132,6 +135,17 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
         {
           headers: {
             accept: 'application/json',
@@ -188,6 +202,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </MemoryRouter>
       </Provider>
     );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     expect(fetch.mock.calls).toMatchObject([
       [
@@ -250,6 +267,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </MemoryRouter>
       </Provider>
     );
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
 
     expect(fetch.mock.calls).toMatchObject([
       [

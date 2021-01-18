@@ -1,5 +1,5 @@
-import * as utils from '../utils';
-import { rawHierarchy } from './fixtures';
+import * as utils from '../../../ducks/locationHierarchy/utils';
+import { rawHierarchy } from '../../../ducks/locationHierarchy/tests/hierarchyFixtures';
 
 describe('location-management/src/components/LocationTree', () => {
   it('generate treenode from raw data', async () => {
@@ -14,7 +14,7 @@ describe('location-management/src/components/LocationTree', () => {
       model: {
         children: undefined,
         id: '6bf9c085-350b-4bb2-990f-80dc2caafb33',
-        key: 'Malawi',
+        key: '6bf9c085-350b-4bb2-990f-80dc2caafb33',
         label: 'Malawi',
         node: {
           attributes: {

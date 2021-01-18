@@ -4,9 +4,10 @@ import {
   RawHierarchyNodeMap,
   RawOpenSRPHierarchy,
   TreeNode,
-} from '../../ducks/types';
+} from './types';
 import { cloneDeep } from 'lodash';
 import TreeModel from 'tree-model';
+import cycle from 'cycle';
 
 /** Parse the raw child hierarchy node map
  *
@@ -45,7 +46,7 @@ const parseHierarchy = (raw: RawOpenSRPHierarchy) => {
   const parsedNode: ParsedHierarchyNode = {
     ...rawNode,
     title: rawNode.label,
-    key: rawNode.label,
+    key: rawNode.id,
     children: rawNode.children ? parseChildren(rawNode.children) : undefined,
   };
 
@@ -62,4 +63,13 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
   const hierarchy = parseHierarchy(apiResponse);
   const root = tree.parse<ParsedHierarchyNode>(hierarchy);
   return root;
+};
+
+/**
+ * serialize tree due to circular dependencies
+ *
+ * @param trees - trees to be serialized
+ */
+export const serializeTree = (trees: TreeNode[]) => {
+  return JSON.stringify(trees.map((tree) => JSON.stringify(cycle.decycle(tree))));
 };
