@@ -3,13 +3,12 @@ import { Row, PageHeader, Col, Button, Table } from 'antd';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   TreeNode,
-  hierarchyReducer,
-  hierarchyReducerName,
-  fetchTree,
+  reducer as hierarchyReducer,
+  reducerName as hierarchyReducerName,
   locationUnitsReducer,
   locationUnitsReducerName,
-  getLocationsByLevel,
   fetchLocationUnits,
+  updatedLocationHierachyDucks,
   loadJurisdictions,
   loadHierarchy,
   LocationUnit,
@@ -28,6 +27,8 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { ADD_SERVICE_POINT, SERVICE_POINT_INVENTORY } from '../../lang';
 import { TableData } from './utils';
 
+const { fetchTree, getLocationsByLevel } = updatedLocationHierachyDucks;
+
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -41,7 +42,7 @@ interface ServicePointsListProps extends CommonProps {
   columns: ColumnsType<TableData>;
   service: typeof OpenSRPService;
   fetchLocationsCreator: typeof fetchLocationUnits;
-  fetchTreesCreator: typeof fetchTree;
+  fetchTreesCreator: any;
   geoLevel: number;
 }
 

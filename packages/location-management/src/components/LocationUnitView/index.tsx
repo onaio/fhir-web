@@ -117,7 +117,6 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         .then((hierarchy) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
           dispatch(fetchAllHierarchies(allhierarchy));
-          console.log('allhierarchy:', allhierarchy);
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }

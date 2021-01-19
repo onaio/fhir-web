@@ -163,7 +163,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
   React.useLayoutEffect(() => {
     return () => {
-      console.log('is mounted', isMounted);
       if (isMounted.current) {
         dispatch(fetchAllHierarchies([]));
       }
