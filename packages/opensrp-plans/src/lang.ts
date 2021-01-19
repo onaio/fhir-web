@@ -29,3 +29,10 @@ export const ACTIVATE_MISSION = 'Activate mission';
 export const SUCCESSFULLY_ACTIVATED_MISSION = 'Successfully activated mission';
 export const FAILED_TO_ACTIVATE_MISSION = 'Activating mission failed';
 export const COULD_NOT_LOAD_ASSIGNMENTS = 'Could not load Assignments';
+
+export const MISSION_DATA = 'Mission data';
+export const DOWNLOAD_MISSION_DATA = 'Download mission data';
+export const SERVICE_POINTS_VISITED = 'Service points visited';
+export const PRODUCTS_CHECKED = 'Products checked';
+export const NUMBER_OF_FLAGGED_PRODUCTS = 'Number of flagged products';
+export const FETCHING_MISSION_INDICATORS_DATA = 'Fetching mission indicators data';

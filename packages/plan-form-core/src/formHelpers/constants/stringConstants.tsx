@@ -52,10 +52,10 @@ export const SERVICE_POINT_CHECK_ACTIVITY_CODE = 'dynamicServicePoint';
 // task action codes
 export const BCC_CODE = 'BCC';
 export const IRS_CODE = 'IRS';
-export const PRODUCT_CHECK_CODE = 'Product Check';
-export const FIX_PRODUCT_PROBLEMS_CODE = 'Fix Product Problems';
-export const RECORD_GPS_CODE = 'Record GPS';
-export const SERVICE_POINT_CHECK_CODE = 'Service Point Check';
+export const PRODUCT_CHECK_CODE = 'product_check';
+export const FIX_PRODUCT_PROBLEMS_CODE = 'fix_product_problems';
+export const RECORD_GPS_CODE = 'record_gps';
+export const SERVICE_POINT_CHECK_CODE = 'service_point_check';
 export const BEDNET_DISTRIBUTION_CODE = 'Bednet Distribution';
 export const BLOOD_SCREENING_CODE = 'Blood Screening';
 export const CASE_CONFIRMATION_CODE = 'Case Confirmation';
