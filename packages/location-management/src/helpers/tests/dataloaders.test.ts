@@ -1,9 +1,25 @@
 import { loadHierarchy, loadJurisdictions } from '../dataLoaders';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
 describe('src/helpers/dataloaders', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
   afterEach(() => {
     fetch.resetMocks();
   });
@@ -26,7 +42,7 @@ describe('src/helpers/dataloaders', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -52,7 +68,7 @@ describe('src/helpers/dataloaders', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -108,7 +124,7 @@ describe('src/helpers/dataloaders', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -133,7 +149,7 @@ describe('src/helpers/dataloaders', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
