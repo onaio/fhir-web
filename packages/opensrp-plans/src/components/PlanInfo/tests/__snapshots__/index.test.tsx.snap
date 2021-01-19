@@ -9,19 +9,13 @@ Object {
 
 exports[`/components/PlanInfo renders and passes props correctly): avatar props 1`] = `
 Object {
-  "className": "plan-info-avatar",
+  "className": "",
   "icon": <ForwardRef(FileDoneOutlined) />,
   "shape": "circle",
-  "size": Object {
-    "lg": 64,
-    "md": 40,
-    "sm": 32,
-    "xl": 80,
-    "xs": 24,
-    "xxl": 100,
-  },
+  "size": "default",
   "style": Object {
     "color": "#1CABE2",
+    "fontSize": 50,
     "height": 82,
     "lineHeight": 1.8,
     "width": 80,

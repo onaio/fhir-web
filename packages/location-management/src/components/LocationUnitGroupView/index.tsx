@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Menu, Dropdown, Button, Divider, Input, Spin } from 'antd';
-import { SettingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Input, Spin } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, {
   fetchLocationUnitGroups,
@@ -14,14 +14,13 @@ import reducer, {
   LocationUnitGroup,
   reducerName,
 } from '../../ducks/location-unit-groups';
-import { getAccessToken } from '@onaio/session-reducer';
 import {
   LOCATION_UNIT_GROUP_ALL,
   LOCATION_UNIT_GROUP,
   URL_LOCATION_UNIT_GROUP_ADD,
-  LOGOUT,
   ADD_LOCATION_UNIT_GROUP,
   LOCATION_UNIT_GROUP_MANAGEMENT,
+  ERROR_OCCURED,
 } from '../../constants';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
@@ -35,7 +34,6 @@ export interface Props {
 }
 
 const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const locationsArray = useSelector((state) => getLocationUnitGroupsArray(state));
   const dispatch = useDispatch();
   const [detail, setDetail] = useState<LocationUnitGroupDetailProps | null>(null);
@@ -46,14 +44,14 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
+      const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
       serve
         .list({ is_jurisdiction: true, serverVersion: 0 })
         .then((response: LocationUnitGroup[]) => {
           dispatch(fetchLocationUnitGroups(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification('An error occurred'));
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   });
 
@@ -118,17 +116,6 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
                   {ADD_LOCATION_UNIT_GROUP}
                 </Button>
               </Link>
-              <Divider type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="1">{LOGOUT}</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-              >
-                <Button shape="circle" icon={<SettingOutlined />} type="text" />
-              </Dropdown>
             </div>
           </div>
           <div className="bg-white p-3">

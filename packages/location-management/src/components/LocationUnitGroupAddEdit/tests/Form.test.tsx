@@ -7,16 +7,32 @@ import { notification } from 'antd';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { baseURL } from '../../../constants';
+import { baseURL, ERROR_OCCURED } from '../../../constants';
 import LocationUnitGroupAddEdit from '..';
 
 Form.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     fetch.mockClear();
   });
@@ -109,7 +125,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -136,7 +152,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -151,7 +167,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
         body: '{"active":false,"description":"this is description","name":"Name213","id":"1"}',
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'PUT',
@@ -161,7 +177,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   });
 
   it('Handles errors on fetching single tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
+    fetch.mockRejectOnce(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -178,14 +194,14 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
 
     wrapper.unmount();
   });
 
   it('Handles errors on creating tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
+    fetch.mockRejectOnce(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -212,18 +228,17 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
 
     wrapper.unmount();
   });
 
   it('Handles errors on editing tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('An error occurred'));
+    fetch.mockRejectOnce(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     onSubmit(
       fixtures.sampleLocationUnitGroupPayload,
-      'sometoken',
       baseURL,
       { id: '1', opensrpBaseURL: baseURL },
       jest.fn()
@@ -235,7 +250,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
   });
 

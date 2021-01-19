@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/error-boundary-fallback",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
@@ -31,9 +31,6 @@
   },
   "devDependencies": {
     "@types/antd": "^1.0.0"
-  },
-  "dependencies": {
-    "@sentry/react": "^5.27.4"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",

@@ -3,11 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio } from 'formik-antd';
 import { Button, Spin } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
-import { getAccessToken } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
-import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
+import { ERROR_OCCURED, LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
@@ -33,9 +31,7 @@ interface FormField {
 const userSchema = Yup.object().shape({
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   active: Yup.boolean().typeError('Status must be a Boolean').required('Status is Required'),
-  description: Yup.string()
-    .typeError('Description must be a String')
-    .required('Description is Required'),
+  description: Yup.string().typeError('Description must be a String'),
 });
 
 interface Props {
@@ -48,19 +44,17 @@ interface Props {
  * Handle form submission
  *
  * @param {Object} values the form fields
- * @param {string} accessToken api access token
  * @param {string} opensrpBaseURL - base url
  * @param {object} props component props
  * @param {Function} setSubmitting method to set submission status
  */
 export const onSubmit = (
   values: FormField,
-  accessToken: string,
   opensrpBaseURL: string,
   props: Props,
   setSubmitting: (isSubmitting: boolean) => void
 ) => {
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
+  const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
 
   const payload: LocationUnitGroupPayloadPOST | LocationUnitGroupPayloadPUT = values;
 
@@ -74,7 +68,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification('An error occurred');
+        sendErrorNotification(ERROR_OCCURED);
         setSubmitting(false);
       });
   } else {
@@ -86,14 +80,13 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification('An error occurred');
+        sendErrorNotification(ERROR_OCCURED);
         setSubmitting(false);
       });
   }
 };
 
 export const Form: React.FC<Props> = (props: Props) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [initialValue, setInitialValue] = useState<FormField>({
     name: '',
@@ -105,11 +98,7 @@ export const Form: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (isLoading) {
       if (props.id) {
-        const serve = new OpenSRPService(
-          accessToken,
-          opensrpBaseURL,
-          LOCATION_UNIT_GROUP_GET + props.id
-        );
+        const serve = new OpenSRPService(LOCATION_UNIT_GROUP_GET + props.id, opensrpBaseURL);
         serve
           .list()
           .then((response: LocationUnitGroup) => {
@@ -121,10 +110,10 @@ export const Form: React.FC<Props> = (props: Props) => {
             setEditTitle(response.name);
             setIsLoading(false);
           })
-          .catch(() => sendErrorNotification('An error occurred'));
+          .catch(() => sendErrorNotification(ERROR_OCCURED));
       } else setIsLoading(false);
     }
-  }, [accessToken, isLoading, props.id, opensrpBaseURL, setEditTitle]);
+  }, [isLoading, props.id, opensrpBaseURL, setEditTitle]);
 
   if (isLoading)
     return (
@@ -145,7 +134,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, accessToken, opensrpBaseURL, props, setSubmitting)}
+      ) => onSubmit(values, opensrpBaseURL, props, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
         return (
@@ -164,7 +153,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Radio.Group>
             </AntForm.Item>
 
-            <AntForm.Item name="description" label="Type">
+            <AntForm.Item name="description" label="Description">
               <Input.TextArea name="description" rows={4} placeholder="Description" />
             </AntForm.Item>
 
