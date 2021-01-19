@@ -22,8 +22,6 @@ export interface LocationTree {
   node: ParsedHierarchyNode;
 }
 
-export type LocationTreeState = LocationTree;
-
 /** Object containing known API endpoints by name */
 export interface APIEndpoints {
   [key: string]: string;

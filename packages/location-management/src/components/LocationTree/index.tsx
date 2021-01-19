@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { LocationTreeState } from '../../ducks/types';
 import {
   getLocationTreeState,
   reducerName,
@@ -28,10 +27,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
-
-  const locationTreeState = useSelector(
-    (state) => (getLocationTreeState(state) as Dictionary) as LocationTreeState
-  );
+  const locationTreeState = useSelector((state) => getLocationTreeState(state));
 
   const dispatch = useDispatch();
 
