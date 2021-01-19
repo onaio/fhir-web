@@ -158,9 +158,11 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   }, [treeData, accessToken, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
-    const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
-    setTableData(data);
-  }, [treeData, currentParentChildren]);
+    if (treeData.length) {
+      const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
+      setTableData(data);
+    }
+  }, [treeData.length, currentParentChildren.length]);
 
   if (!tableData.length || !treeData.length) return <Spin size={'large'} />;
 
