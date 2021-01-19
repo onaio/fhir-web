@@ -21,7 +21,6 @@ import {
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
 import lang from '../../lang';
 
 /** make sure plans reducer is registered */

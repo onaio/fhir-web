@@ -57,7 +57,6 @@ export const isPlanDefinitionOfType = (
 };
 
 /** util component shown when there is a pending promise */
-
 export const PlanLoading = () => {
   return <Spin size="large" className="custom-spinner"></Spin>;
 };
