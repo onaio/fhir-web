@@ -9,11 +9,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   fetchLocationUnits,
+  getLocationUnitsArray,
   LocationUnit,
   locationUnitsReducer,
   locationUnitsReducerName,
 } from '../../ducks/location-units';
-import { getAccessToken } from '@onaio/session-reducer';
 import {
   LOCATION_UNIT_FINDBYPROPERTIES,
   LOCATION_HIERARCHY,
@@ -128,10 +128,8 @@ export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: str
 }
 
 export const LocationUnitView: React.FC<Props> = (props: Props) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const treeData = (useSelector((state) =>
-    getAllHierarchiesArray(state)
-  ) as unknown) as ParsedHierarchyNode[];
+  const treeData = useSelector((state) => getAllHierarchiesArray(state));
+  const locationUnits = useSelector((state) => getLocationUnitsArray(state));
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
@@ -140,22 +138,26 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
-    if (!treeData.length) {
+    if (!locationUnits.length) {
+      console.log('fetching locationUnits', locationUnits);
       getBaseTreeNode(opensrpBaseURL)
-        .then((response) => {
-          dispatch(fetchLocationUnits(response));
-          getHierarchy(response, opensrpBaseURL)
-            .then((hierarchy) => {
-              hierarchy.forEach((hier) => {
-                const processed = generateJurisdictionTree(hier);
-                dispatch(fetchAllHierarchies(processed.model));
-              });
-            })
-            .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .then((response) => dispatch(fetchLocationUnits(response)))
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
+    }
+  }, [locationUnits.length, dispatch, opensrpBaseURL]);
+
+  useEffect(() => {
+    if (!treeData.length && locationUnits.length) {
+      console.log('fetching tree', locationUnits);
+      getHierarchy(locationUnits, opensrpBaseURL)
+        .then((hierarchy) => {
+          const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
+          dispatch(fetchAllHierarchies(allhierarchy));
+          console.log('allhierarchy:', allhierarchy);
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [treeData, accessToken, dispatch, opensrpBaseURL]);
+  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
     if (treeData.length) {
