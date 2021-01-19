@@ -3,7 +3,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
 import { TeamAssignmentLoading, columns, getPayload } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { getAccessToken } from '@onaio/session-reducer';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
@@ -89,7 +89,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
   React.useEffect(() => {
     if (loading) {
-      const plansService = new OpenSRPService(accessToken, opensrpBaseURL, PLANS_ENDPOINT);
+      const plansService = new OpenSRPService(PLANS_ENDPOINT, opensrpBaseURL);
       const plansPromise = plansService
         .read(defaultPlanId)
         .then((response: PlanDefinition[]) => {
@@ -100,11 +100,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           handleBrokenPage(e.message);
         });
       // get all assignments
-      const asssignmentService = new OpenSRPService(
-        accessToken,
-        opensrpBaseURL,
-        ASSIGNMENTS_ENDPOINT
-      );
+      const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
       const assignmentsPromise = asssignmentService
         .list({ plan: defaultPlanId })
         .then((response: Assignment[]) => {
@@ -113,11 +109,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         .catch((e) => handleBrokenPage(e.message));
 
       // fetch all organizations
-      const organizationsService = new OpenSRPService(
-        accessToken,
-        opensrpBaseURL,
-        ORGANIZATION_ENDPOINT
-      );
+      const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
       const organizationsPromise = organizationsService
         .list()
         .then((response: Organization[]) => {
@@ -130,11 +122,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       // fetch plan location hierarchy
       let hierarchyPromise;
       if (planLocationIdRef.current.length) {
-        const hierarchyService = new OpenSRPService(
-          accessToken,
-          opensrpBaseURL,
-          LOCATION_HIERARCHY_ENDPOINT
-        );
+        const hierarchyService = new OpenSRPService(LOCATION_HIERARCHY_ENDPOINT, opensrpBaseURL);
         hierarchyPromise = hierarchyService
           .read(planLocationId)
           .then((response: RawOpenSRPHierarchy) => {
@@ -264,11 +252,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
                 assignedLocAndTeams?.assignedTeams,
                 existingAssignments
               );
-              const serve = new OpenSRPService(
-                accessToken,
-                opensrpBaseURL,
-                POST_ASSIGNMENTS_ENDPOINT
-              );
+              const serve = new OpenSRPService(POST_ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
               serve
                 .create(payload)
                 .then(() => {
