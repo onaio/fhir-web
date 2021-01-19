@@ -30,7 +30,7 @@ import { Dictionary } from '@onaio/utils';
 const sessionSelector = makeAPIStateSelector();
 
 export interface TaskCount {
-  total_records: string;
+  total_records: number;
   tasks: Dictionary[];
 }
 
