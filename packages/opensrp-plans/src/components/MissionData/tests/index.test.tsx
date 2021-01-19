@@ -46,7 +46,7 @@ describe('mission data download', () => {
     /** loading view */
     /* eslint-disable no-irregular-whitespace */
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Mission dataFetching mission indicators dataService points visited: Products checked: Number of flagged products: Download mission data"`
+      `"Mission dataFetching mission indicators dataService points visited: 0Products checked: 0Number of flagged products: 0Download mission data"`
     );
 
     await act(async () => {
@@ -69,7 +69,7 @@ describe('mission data download', () => {
 
     /** loading view */
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Mission dataFetching mission indicators dataService points visited: Products checked: Number of flagged products: Download mission data"`
+      `"Mission dataFetching mission indicators dataService points visited: 0Products checked: 0Number of flagged products: 0Download mission data"`
     );
 
     await act(async () => {
@@ -79,7 +79,7 @@ describe('mission data download', () => {
 
     /** error view */
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Mission dataSomething went wrongService points visited: Products checked: Number of flagged products: Download mission data"`
+      `"Mission dataSomething went wrongService points visited: 0Products checked: 0Number of flagged products: 0Download mission data"`
     );
   });
   it('shows no data found', async () => {
@@ -90,7 +90,7 @@ describe('mission data download', () => {
 
     /** loading view */
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Mission dataFetching mission indicators dataService points visited: Products checked: Number of flagged products: Download mission data"`
+      `"Mission dataFetching mission indicators dataService points visited: 0Products checked: 0Number of flagged products: 0Download mission data"`
     );
 
     await act(async () => {
@@ -100,7 +100,7 @@ describe('mission data download', () => {
 
     /** error view */
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Mission dataNo data foundService points visited: Products checked: Number of flagged products: Download mission data"`
+      `"Mission dataNo data foundService points visited: 0Products checked: 0Number of flagged products: 0Download mission data"`
     );
   });
 });
