@@ -162,18 +162,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
     setTableData(data);
   }, [treeData, currentParentChildren]);
 
-  if (!tableData.length || !treeData.length)
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+  if (!tableData.length || !treeData.length) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -227,16 +216,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
-              <Spin
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                size={'large'}
-              />
+              <Spin size={'large'} />
             ) : (
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}
