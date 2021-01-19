@@ -68,7 +68,6 @@ export function setLocationTreeState(hierarchy: LocationTree): SetLocationTreeSt
 /** The store's slice state */
 export interface TreeState {
   hierarchyArray: TreeNode[];
-  currentParentChildren: TreeNode[];
   locationTreeState: LocationTree;
 }
 
@@ -78,8 +77,6 @@ export type ImmutableTreeState = TreeState & SeamlessImmutable.ImmutableObject<T
 /** starting state */
 export const initialState: ImmutableTreeState | Dictionary = SeamlessImmutable({
   hierarchyArray: [],
-  currentParentChildren: [],
-  locationObject: {},
   locationTreeState: {},
 });
 
