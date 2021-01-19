@@ -10,6 +10,7 @@ import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { deforest, removeLocationUnits } from '@opensrp/location-management';
 import { madagascar, madagascarTree } from './fixtures';
+import { authenticateUser } from '@onaio/session-reducer';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -31,6 +32,19 @@ const props = {
     url: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
   },
 };
+
+store.dispatch(
+  authenticateUser(
+    true,
+    {
+      email: 'bob@example.com',
+      name: 'Bobbie',
+      username: 'RobertBaratheon',
+    },
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    { api_token: 'hunter2', oAuth2Data: { access_token: 'iLoveOov', state: 'abcde' } }
+  )
+);
 
 describe('List view Page', () => {
   afterEach(() => {
@@ -108,7 +122,7 @@ describe('List view Page', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer iLoveOov',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -119,7 +133,7 @@ describe('List view Page', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer iLoveOov',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
