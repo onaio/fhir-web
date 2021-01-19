@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 import TeamsDetail, { Props } from '..';
 
@@ -38,7 +37,13 @@ describe('components/TeamsDetail', () => {
 
   it('renders without crashing', () => {
     const wrapper = mount(<TeamsDetail {...props} />);
-    expect(toJson(wrapper)).toMatchSnapshot();
+    const content = wrapper.find('div.p-4.bg-white');
+    expect(content.find('Button').props()).toMatchSnapshot('close button');
+    expect(content.find('div.mb-4.small')).toHaveLength(4);
+    expect(wrapper.text()).toMatchSnapshot('team name');
+    expect(wrapper.text()).toMatchSnapshot('status');
+    expect(wrapper.text()).toMatchSnapshot('identifier');
+    expect(wrapper.text()).toMatchSnapshot('team members');
   });
 
   it('removes it self on close', () => {

@@ -30,6 +30,7 @@ export const URL_EXPRESS_LOGIN = '/login';
 export const URL_REACT_LOGIN = '/login';
 export const URL_LOGOUT = '/logout';
 export const URL_HOME = '/';
+
 export const URL_USER = `${URL_ADMIN}/users/list`;
 export const URL_USER_EDIT = `${URL_ADMIN}/users/edit`;
 export const URL_TEAMS = `${URL_ADMIN}/teams`;
