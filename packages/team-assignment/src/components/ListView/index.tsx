@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
 import { TeamAssignmentLoading, columns, getPayload } from './utils';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useLocation } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { getAccessToken } from '@onaio/session-reducer';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -68,6 +68,7 @@ interface TeamAssignmentViewProps extends RouteComponentProps<RouteParams> {
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
   const [form] = Form.useForm();
+  const isMounted = useRef<boolean>(true);
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
@@ -127,7 +128,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           .read(planLocationId)
           .then((response: RawOpenSRPHierarchy) => {
             const hierarchy = generateJurisdictionTree(response);
-            dispatch(fetchAllHierarchies(hierarchy.model, true));
+            dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
             setPlanLocationId('');
           })
           .catch((e) => {
@@ -159,6 +160,16 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   React.useEffect(() => {
     form.setFieldsValue({ assignTeams: assignedLocAndTeams?.assignedTeams });
   }, [assignedLocAndTeams, form]);
+
+  React.useLayoutEffect(() => {
+    return () => {
+      console.log('is mounted', isMounted);
+      if (isMounted.current) {
+        dispatch(fetchAllHierarchies([]));
+      }
+      isMounted.current = false;
+    };
+  });
 
   const handleCancel = () => {
     setVisible(false);
