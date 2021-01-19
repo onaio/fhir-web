@@ -9,12 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   fetchLocationUnits,
+  getLocationUnitsArray,
   LocationUnit,
   locationUnitsReducer,
   locationUnitsReducerName,
 } from '../../ducks/location-units';
-import { getAccessToken } from '@onaio/session-reducer';
 import {
+  LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
   ADD_LOCATION_UNIT,
@@ -23,7 +24,6 @@ import {
   ERROR_OCCURED,
 } from '../../constants';
 import Table, { TableData } from './Table';
-import './LocationUnitView.css';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -33,14 +33,14 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-
-import { Props } from '../../ducks/types';
-import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 import {
   generateJurisdictionTree,
   getBaseTreeNode,
   getHierarchy,
 } from '../../ducks/locationHierarchy/utils';
+import { Props } from '../../ducks/types';
+import './LocationUnitView.css';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -93,10 +93,8 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 }
 
 export const LocationUnitView: React.FC<Props> = (props: Props) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const treeData = (useSelector((state) =>
-    getAllHierarchiesArray(state)
-  ) as unknown) as ParsedHierarchyNode[];
+  const treeData = useSelector((state) => getAllHierarchiesArray(state));
+  const locationUnits = useSelector((state) => getLocationUnitsArray(state));
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
@@ -105,40 +103,34 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
-    if (!treeData.length) {
+    if (!locationUnits.length) {
       getBaseTreeNode(opensrpBaseURL)
-        .then((response) => {
-          dispatch(fetchLocationUnits(response));
-          getHierarchy(response, opensrpBaseURL)
-            .then((hierarchy) => {
-              hierarchy.forEach((hier) => {
-                const processed = generateJurisdictionTree(hier);
-                dispatch(fetchAllHierarchies(processed.model));
-              });
-            })
-            .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .then((response) => dispatch(fetchLocationUnits(response)))
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
+    }
+  }, [locationUnits.length, dispatch, opensrpBaseURL, locationUnits]);
+
+  useEffect(() => {
+    if (!treeData.length && locationUnits.length) {
+      getHierarchy(locationUnits, opensrpBaseURL)
+        .then((hierarchy) => {
+          const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
+          dispatch(fetchAllHierarchies(allhierarchy));
+          console.log('allhierarchy:', allhierarchy);
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [treeData, accessToken, dispatch, opensrpBaseURL]);
+  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL, locationUnits]);
 
   useEffect(() => {
-    const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
-    setTableData(data);
-  }, [treeData, currentParentChildren]);
+    if (treeData.length) {
+      const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
+      setTableData(data);
+    }
+  }, [treeData.length, currentParentChildren.length, treeData, currentParentChildren]);
 
-  if (!tableData.length || !treeData.length)
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+  if (!Array.isArray(treeData) || !treeData.length || !tableData.length)
+    return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -192,16 +184,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
-              <Spin
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                size={'large'}
-              />
+              <Spin size={'large'} />
             ) : (
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}

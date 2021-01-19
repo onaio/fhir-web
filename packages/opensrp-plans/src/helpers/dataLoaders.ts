@@ -1,8 +1,8 @@
 /** get the full plans data-loader */
 import { get, keyBy, uniqBy } from 'lodash';
 import { store, makeAPIStateSelector } from '@opensrp/store';
-import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
 import {
+  NO_DATA_FOUND,
   OPENSRP_ACTIVE,
   OPENSRP_API_BASE_URL,
   OPENSRP_FIND_BY_PROPERTIES,
@@ -11,7 +11,9 @@ import {
   OPENSRP_ORGANIZATION_ENDPOINT,
   OPENSRP_PLANS,
   OPENSRP_POST_ASSIGNMENTS_ENDPOINT,
+  OPENSRP_TASK_SEARCH,
 } from '../constants';
+import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
 import { fetchPlanDefinitions } from '../ducks/planDefinitions';
 import { fetchAssignments, Assignment, RawAssignment } from '../ducks/assignments';
 import { PlanDefinition } from '@opensrp/plan-form-core';
@@ -23,8 +25,14 @@ import {
 import { fetchJurisdictions, Jurisdiction } from '../ducks/jurisdictions';
 import { processRawAssignments } from '../ducks/assignments/utils';
 import { COULD_NOT_LOAD_ASSIGNMENTS } from '../lang';
+import { Dictionary } from '@onaio/utils';
 
 const sessionSelector = makeAPIStateSelector();
+
+export interface TaskCount {
+  total_records: number;
+  tasks: Dictionary[];
+}
 
 /** OpenSRP service */
 export class OpenSRPService extends GenericOpenSRPService {
@@ -52,7 +60,7 @@ export async function loadPlans(
     .list(planStatus ? { status: planStatus } : null)
     .then((response: PlanDefinition[] | null) => {
       if (response === null) {
-        return Promise.reject(new Error('No data found'));
+        return Promise.reject(new Error(NO_DATA_FOUND));
       }
       actionCreator(response);
     })
@@ -407,3 +415,35 @@ export const loadJurisdictions = (
       throw error;
     });
 };
+
+/**
+ * @param  baseURL - base url of the api
+ * @param planId - fetch tasks data for this plan
+ * @param code - activity code
+ * @param onlyCount - whether to get the count only
+ * @returns a response object
+ */
+export async function loadTasksIndicators(
+  baseURL: string,
+  planId: string,
+  code: string,
+  onlyCount: boolean
+) {
+  const params = {
+    planIdentifier: planId,
+    code,
+    returnTaskCountOnly: onlyCount,
+  };
+  const serve = new OpenSRPService(OPENSRP_TASK_SEARCH, baseURL);
+  return serve
+    .list(params)
+    .then((response: TaskCount | null) => {
+      if (response === null) {
+        return Promise.reject(new Error(NO_DATA_FOUND));
+      }
+      return response;
+    })
+    .catch((err: Error) => {
+      throw err;
+    });
+}
