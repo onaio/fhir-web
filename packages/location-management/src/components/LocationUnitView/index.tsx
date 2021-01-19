@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import {
   fetchLocationUnits,
   LocationUnit,
@@ -54,20 +54,18 @@ export interface AntTreeProps {
 /** Function to Load selected location unit for details
  *
  * @param {TableData} row data selected from the table
- * @param {string} accessToken - access token
  * @param {string} opensrpBaseURL - base url
  * @param {Function} setDetail funtion to set detail to state
  */
-export function loadSingleLocation(
+export async function loadSingleLocation(
   row: TableData,
-  accessToken: string,
   opensrpBaseURL: string,
   setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
-): void {
+) {
   setDetail('loading');
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GET);
+  const serve = new OpenSRPService(LOCATION_UNIT_GET, opensrpBaseURL);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  serve
+  return await serve
     .read(row.id, { is_jurisdiction: true })
     .then((res: LocationUnit) => {
       setDetail(res);
@@ -108,10 +106,10 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!treeData.length) {
-      getBaseTreeNode(accessToken, opensrpBaseURL)
+      getBaseTreeNode(opensrpBaseURL)
         .then((response) => {
           dispatch(fetchLocationUnits(response));
-          getHierarchy(response, accessToken, opensrpBaseURL)
+          getHierarchy(response, opensrpBaseURL)
             .then((hierarchy) => {
               hierarchy.forEach((hier) => {
                 const processed = generateJurisdictionTree(hier);
@@ -184,8 +182,8 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
           <div className="bg-white p-3">
             <Table
               data={tableData}
-              onViewDetails={(row) => {
-                loadSingleLocation(row, accessToken, opensrpBaseURL, setDetail);
+              onViewDetails={async (row) => {
+                await loadSingleLocation(row, opensrpBaseURL, setDetail);
               }}
             />
           </div>

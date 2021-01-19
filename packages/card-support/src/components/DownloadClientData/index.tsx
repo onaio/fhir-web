@@ -5,7 +5,6 @@ import { Button, Card, Typography, Form, Select, TreeSelect, DatePicker, Tooltip
 import { DownloadOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
-import { Dictionary } from '@onaio/utils';
 import {
   locationHierachyDucks,
   RawOpenSRPHierarchy,
@@ -58,7 +57,7 @@ export const initialFormValues: Partial<DownloadClientDataFormFields> = {
  * DownloadClient Data component
  * Downloads a CSV containing client data base on selection
  *
- * @param {Dictionary} props - component props
+ * @param {object} props - component props
  * @returns {Function} - DownloadClientData component
  */
 const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadClientDataProps) => {

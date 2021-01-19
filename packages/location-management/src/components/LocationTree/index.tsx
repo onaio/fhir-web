@@ -4,13 +4,13 @@ import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { LocationTreeState } from '../../ducks/types';
-import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import {
   getLocationTreeState,
   reducerName,
   reducer,
   setLocationTreeState,
 } from '../../ducks/location-hierarchy';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
 import { Dictionary } from '@onaio/utils';

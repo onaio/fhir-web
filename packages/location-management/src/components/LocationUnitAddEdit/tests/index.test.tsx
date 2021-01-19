@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 import {
   baseLocationUnits,
@@ -23,6 +24,21 @@ import { baseURL, ERROR_OCCURED } from '../../../constants';
 LocationUnitAddEdit.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fetch.mockClear();
   });
@@ -30,7 +46,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('test getBaseTreeNode', async () => {
     fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
-    const response = await getBaseTreeNode('accessToken', baseURL);
+    const response = await getBaseTreeNode(baseURL);
 
     expect(response).toMatchObject(baseLocationUnits);
   });
@@ -38,7 +54,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('test getHierarchy', async () => {
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
-    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken', baseURL);
+    const response = await getHierarchy([baseLocationUnits[2]], baseURL);
 
     expect(response).toMatchObject([rawHierarchy[2]]);
   });
@@ -91,6 +107,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       message: ERROR_OCCURED,
       description: undefined,
     });
+    wrapper.unmount();
   });
 
   it('renders everything correctly', async () => {
@@ -116,7 +133,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -127,7 +144,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -138,7 +155,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -149,7 +166,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -163,6 +180,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     wrapper.update();
 
     expect(wrapper.find('form')).toHaveLength(1);
+    wrapper.unmount();
   });
 
   it('test set initial value of Parentid from url', async () => {
@@ -212,7 +230,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -223,7 +241,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -234,7 +252,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -277,7 +295,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -288,7 +306,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -299,7 +317,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',

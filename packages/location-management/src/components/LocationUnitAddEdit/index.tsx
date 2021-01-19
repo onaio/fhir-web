@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, useLocation } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import {
   LOCATION_UNIT_GROUP_ALL,
   ADD_LOCATION_UNIT,
@@ -68,9 +68,8 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (params.id) {
       const serve = new OpenSRPService(
-        accessToken,
-        opensrpBaseURL,
-        `location/${params.id}?is_jurisdiction=true`
+        `location/${params.id}?is_jurisdiction=true`,
+        opensrpBaseURL
       );
       serve
         .list()
@@ -88,7 +87,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!locationUnitGroup.length) {
-      const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
+      const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
       serve
         .list()
         .then((response: LocationUnitGroup[]) => {
@@ -100,10 +99,10 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!Treedata.length) {
-      getBaseTreeNode(accessToken, opensrpBaseURL)
+      getBaseTreeNode(opensrpBaseURL)
         .then((response) => {
           dispatch(fetchLocationUnits(response));
-          getHierarchy(response, accessToken, opensrpBaseURL)
+          getHierarchy(response, opensrpBaseURL)
             .then((hierarchy) => {
               hierarchy.forEach((hier) => {
                 const processed = generateJurisdictionTree(hier);
@@ -119,9 +118,8 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (!extrafields) {
       const serve = new OpenSRPService(
-        accessToken,
-        opensrpBaseURL,
-        LOCATION_UNIT_EXTRAFIELDS + `&identifier=${LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER}`
+        LOCATION_UNIT_EXTRAFIELDS + `&identifier=${LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER}`,
+        opensrpBaseURL
       );
       serve
         .list()
