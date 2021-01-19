@@ -7,8 +7,7 @@ import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
 import { OpenSRPService } from '@opensrp/server-service';
-import { useSelector } from 'react-redux';
-import { getExtraData } from '@onaio/session-reducer';
+import { Dictionary } from '@onaio/utils';
 /** Interface for practitioner json object */
 export interface Practitioner {
   active: boolean;
@@ -26,6 +25,7 @@ export interface UserFormProps {
   keycloakBaseURL: string;
   opensrpBaseURL: string;
   practitioner: Practitioner | undefined;
+  extraData: Dictionary;
 }
 /** default form initial values */
 export const defaultInitialValues: KeycloakUser = {
@@ -56,6 +56,7 @@ export const defaultProps: Partial<UserFormProps> = {
   opensrpServiceClass: OpenSRPService,
   practitioner: undefined,
   serviceClass: KeycloakService,
+  extraData: {},
 };
 /**
  * Handle required actions change
@@ -78,12 +79,12 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     opensrpServiceClass,
     opensrpBaseURL,
     practitioner,
+    extraData,
   } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const history = useHistory();
-  const extraData = useSelector((state) => getExtraData(state));
   const [form] = Form.useForm();
   const layout = {
     labelCol: {
@@ -145,49 +146,67 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             );
           }}
         >
-          <Form.Item name="firstName" id="firstName" label="First Name">
+          <Form.Item
+            name="firstName"
+            id="firstName"
+            label="First Name"
+            rules={[{ required: true, message: 'First Name is required' }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="lastName" id="lastName" label="Last Name">
+          <Form.Item
+            name="lastName"
+            id="lastName"
+            label="Last Name"
+            rules={[{ required: true, message: 'Last Name is required' }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="email" id="email" label="Email">
+          <Form.Item
+            name="email"
+            id="email"
+            label="Email"
+            rules={[{ required: true, message: 'Email is required' }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="username" id="username" label="Username">
+          <Form.Item
+            name="username"
+            id="username"
+            label="Username"
+            rules={[{ required: true, message: 'Username is required' }]}
+          >
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
-          {!initialValues.id || !practitioner ? (
-            ''
-          ) : (
+          {initialValues.id || practitioner ? (
             <Form.Item
               id="practitionerToggle"
               name="active"
               label="Mark as Practitioner"
               valuePropName="checked"
             >
-              <Switch defaultChecked={practitioner.active} />
+              <Switch defaultChecked={practitioner && practitioner.active} />
             </Form.Item>
-          )}
-          <Form.Item name="requiredActions" id="requiredActions" label="Required Actions">
-            <Select
-              mode="multiple"
-              allowClear
-              placeholder="Please select"
-              onChange={(selected: string[]) =>
-                handleUserActionsChange(selected, setRequiredActions)
-              }
-              style={{ width: '100%' }}
-              disabled={initialValues.id !== extraData.user_id}
-            >
-              {userActionOptions.map((option: UserAction, index: number) => (
-                <Option key={`${index}`} value={option.alias}>
-                  {option.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-
+          ) : null}
+          {initialValues.id !== extraData.user_id ? (
+            <Form.Item name="requiredActions" id="requiredActions" label="Required Actions">
+              <Select
+                mode="multiple"
+                allowClear
+                placeholder="Please select"
+                onChange={(selected: string[]) =>
+                  handleUserActionsChange(selected, setRequiredActions)
+                }
+                style={{ width: '100%' }}
+              >
+                {userActionOptions.map((option: UserAction, index: number) => (
+                  <Option key={`${index}`} value={option.alias}>
+                    {option.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          ) : null}
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
               {isSubmitting ? 'Saving' : 'Save'}

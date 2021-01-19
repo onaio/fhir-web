@@ -24,6 +24,8 @@ import {
 import { Spin } from 'antd';
 import '../../index.css';
 import { OpenSRPService } from '@opensrp/server-service';
+import { Dictionary } from '@onaio/utils';
+import { getExtraData } from '@onaio/session-reducer';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -45,6 +47,7 @@ export interface EditUserProps {
   keycloakBaseURL: string;
   opensrpBaseURL: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
+  extraData: Dictionary;
 }
 
 /** type intersection for all types that pertain to the props */
@@ -59,6 +62,7 @@ export const defaultEditUserProps: EditUserProps = {
   keycloakBaseURL: '',
   opensrpBaseURL: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
+  extraData: {},
 };
 
 /**
@@ -77,6 +81,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     serviceClass,
     opensrpServiceClass,
     fetchKeycloakUsersCreator,
+    extraData,
   } = props;
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
   const initialValues = keycloakUser ? keycloakUser : defaultInitialValues;
@@ -136,6 +141,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     keycloakBaseURL,
     opensrpBaseURL,
     practitioner: practitioner as Practitioner,
+    extraData,
   };
 
   return (
@@ -155,6 +161,7 @@ export { CreateEditUser };
 interface DispatchedProps {
   keycloakUser: KeycloakUser | null;
   accessToken: string;
+  extraData: Dictionary;
 }
 
 // connect to store
@@ -169,7 +176,8 @@ const mapStateToProps = (state: Partial<Store>, ownProps: CreateEditPropTypes): 
   }
 
   const accessToken = getAccessToken(state, { accessToken: true });
-  return { keycloakUser, accessToken };
+  const extraData = getExtraData(state);
+  return { keycloakUser, accessToken, extraData };
 };
 
 /** map props to actions that may be dispatched by component */
