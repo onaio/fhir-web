@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import {
   fetchLocationUnits,
   LocationUnit,
@@ -29,9 +29,10 @@ import './LocationUnitView.css';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import locationHierarchyReducer, {
+import {
   getAllHierarchiesArray,
   fetchAllHierarchies,
+  reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
@@ -55,20 +56,18 @@ export interface Props {
 /** Function to Load selected location unit for details
  *
  * @param {TableData} row data selected from the table
- * @param {string} accessToken - access token
  * @param {string} opensrpBaseURL - base url
  * @param {Function} setDetail funtion to set detail to state
  */
-export function loadSingleLocation(
+export async function loadSingleLocation(
   row: TableData,
-  accessToken: string,
   opensrpBaseURL: string,
   setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
-): void {
+) {
   setDetail('loading');
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GET);
+  const serve = new OpenSRPService(LOCATION_UNIT_GET, opensrpBaseURL);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  serve
+  return await serve
     .read(row.id, { is_jurisdiction: true })
     .then((res: LocationUnit) => {
       setDetail(res);
@@ -78,12 +77,11 @@ export function loadSingleLocation(
 
 /** Gets all the location unit at geographicLevel 0
  *
- * @param {string} accessToken - Access token to be used for requests
  * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
-export async function getBaseTreeNode(accessToken: string, opensrpBaseURL: string) {
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_FINDBYPROPERTIES);
+export async function getBaseTreeNode(opensrpBaseURL: string) {
+  const serve = new OpenSRPService(LOCATION_UNIT_FINDBYPROPERTIES, opensrpBaseURL);
   return await serve
     .list({
       is_jurisdiction: true,
@@ -115,18 +113,13 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 /** Gets the hierarchy of the location units
  *
  * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
- * @param {string} accessToken - Access token to be used for requests
  * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
  */
-export async function getHierarchy(
-  location: LocationUnit[],
-  accessToken: string,
-  opensrpBaseURL: string
-) {
+export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: string) {
   const hierarchy: RawOpenSRPHierarchy[] = [];
   for await (const loc of location) {
-    const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_HIERARCHY);
+    const serve = new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL);
     const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
     hierarchy.push(data);
   }
@@ -148,10 +141,10 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!treeData.length) {
-      getBaseTreeNode(accessToken, opensrpBaseURL)
+      getBaseTreeNode(opensrpBaseURL)
         .then((response) => {
           dispatch(fetchLocationUnits(response));
-          getHierarchy(response, accessToken, opensrpBaseURL)
+          getHierarchy(response, opensrpBaseURL)
             .then((hierarchy) => {
               hierarchy.forEach((hier) => {
                 const processed = generateJurisdictionTree(hier);
@@ -224,8 +217,8 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
           <div className="bg-white p-3">
             <Table
               data={tableData}
-              onViewDetails={(row) => {
-                loadSingleLocation(row, accessToken, opensrpBaseURL, setDetail);
+              onViewDetails={async (row) => {
+                await loadSingleLocation(row, opensrpBaseURL, setDetail);
               }}
             />
           </div>
