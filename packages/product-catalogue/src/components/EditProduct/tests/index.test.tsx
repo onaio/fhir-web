@@ -54,9 +54,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching product CataloguePlease wait, as we fetch the product Catalogue."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -142,9 +140,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching product CataloguePlease wait, as we fetch the product Catalogue."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));

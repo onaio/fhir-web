@@ -57,9 +57,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -114,9 +112,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -231,9 +227,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -275,9 +269,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -285,9 +277,7 @@ describe('CreateEditProduct Page', () => {
     });
 
     /** should still be loading page */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     expect(fetch).not.toHaveBeenCalled();
   });

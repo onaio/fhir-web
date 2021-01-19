@@ -52,9 +52,7 @@ describe('PlanAssignment Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -136,9 +134,7 @@ describe('PlanAssignment Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -177,9 +173,7 @@ describe('PlanAssignment Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));

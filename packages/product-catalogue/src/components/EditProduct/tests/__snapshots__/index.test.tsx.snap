@@ -21,4 +21,4 @@ Object {
 
 exports[`CreateEditProduct Page renders correctly with store(for editing product): full text snapshot 1`] = `"Edit > ScaleProduct nameMaterial numberAttractive item?yesnoIs it there?availableIs it in good condition? (optional)good conditionIs it being used appropriately? (optional)staff is trained to use it appropriatelyAccountability period (in months)Photo of the product (optional)UploadSubmitCancel"`;
 
-exports[`CreateEditProduct Page shows broken page: full page text 1`] = `"Loading...Fetching product CataloguePlease wait, as we fetch the product Catalogue."`;
+exports[`CreateEditProduct Page shows broken page: full page text 1`] = `""`;

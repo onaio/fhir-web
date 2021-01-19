@@ -57,9 +57,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -322,9 +320,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
