@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
 import { TeamAssignmentLoading, columns, getPayload } from './utils';
-import { RouteComponentProps, useLocation } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { getAccessToken } from '@onaio/session-reducer';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -228,7 +228,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       <PageHeader title={TEAM_ASSIGNMENT_PAGE_TITLE} className="page-header"></PageHeader>
       <Modal
         destroyOnClose={true}
-        title="Title"
+        title={`Assign/Unassign Teams | ${assignedLocAndTeams?.locationName}`}
         visible={visible}
         onCancel={handleCancel}
         okText={SAVE}
@@ -276,10 +276,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             }}
             initialValues={{ assignTeams: assignedLocAndTeams?.assignedTeams }}
           >
-            <Form.Item
-              label={`Assign Teams | ${assignedLocAndTeams?.locationName}`}
-              name="assignTeams"
-            >
+            <Form.Item label={`Teams`} name="assignTeams">
               <Select
                 mode="multiple"
                 allowClear
