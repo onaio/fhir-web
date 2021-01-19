@@ -20,11 +20,7 @@ export const deleteUser = (
   userId: string,
   isLoadingCallback: (loading: boolean) => void
 ): void => {
-  const serviceDelete = new KeycloakService(
-    accessToken,
-    `${KEYCLOAK_URL_USERS}/${userId}`,
-    keycloakBaseURL
-  );
+  const serviceDelete = new KeycloakService(`${KEYCLOAK_URL_USERS}/${userId}`, keycloakBaseURL);
   serviceDelete
     .delete()
     .then(() => {

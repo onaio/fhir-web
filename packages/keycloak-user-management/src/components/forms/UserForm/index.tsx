@@ -9,7 +9,7 @@ import { KeycloakUser } from '../../../ducks/user';
 import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 
 /** Interface for practitioner json object */
 export interface Practitioner {
@@ -116,7 +116,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { Option } = Select;
 
   React.useEffect(() => {
-    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, serviceClass);
+    fetchRequiredActions(keycloakBaseURL, setUserActionOptions, serviceClass);
   }, [accessToken, keycloakBaseURL, serviceClass]);
 
   React.useEffect(() => {
@@ -141,7 +141,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 ...values,
                 requiredActions,
               },
-              accessToken,
               keycloakBaseURL,
               opensrpBaseURL,
               serviceClass,
