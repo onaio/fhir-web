@@ -31,9 +31,9 @@ const defaultProps = {
 
 const MissionData = (props: MissionDataProps) => {
   const { plan, baseURL } = props;
-  const [servicePoints, setServicePoints] = useState<string>('');
-  const [productsChecked, setProductsChecked] = useState<string>('');
-  const [flaggedProducts, setFlaggedProducts] = useState<string>('');
+  const [servicePoints, setServicePoints] = useState<number>(0);
+  const [productsChecked, setProductsChecked] = useState<number>(0);
+  const [flaggedProducts, setFlaggedProducts] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
 
