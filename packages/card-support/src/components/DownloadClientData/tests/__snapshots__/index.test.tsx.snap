@@ -149,8 +149,11 @@ Object {
         transitionName="zoom-big-fast"
       >
         <Button
+          block={false}
           disabled={true}
+          ghost={false}
           htmlType="submit"
+          loading={false}
           type="primary"
         >
           <ForwardRef(DownloadOutlined) />

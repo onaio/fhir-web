@@ -117,7 +117,11 @@ Object {
         type="select"
       >
         <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
           icon={<ForwardRef(UploadOutlined) />}
+          loading={false}
         >
           Click to Upload
         </Button>
@@ -146,7 +150,10 @@ Object {
       }
     >
       <Button
+        block={false}
+        ghost={false}
         htmlType="submit"
+        loading={false}
         type="primary"
       >
         Upload form
@@ -280,7 +287,11 @@ Object {
         type="select"
       >
         <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
           icon={<ForwardRef(UploadOutlined) />}
+          loading={false}
         >
           Click to Upload
         </Button>
@@ -309,7 +320,10 @@ Object {
       }
     >
       <Button
+        block={false}
+        ghost={false}
         htmlType="submit"
+        loading={false}
         type="primary"
       >
         Upload form

@@ -29,7 +29,11 @@ Object {
       }
     >
       <Button
+        block={false}
         className="create-user"
+        ghost={false}
+        htmlType="button"
+        loading={false}
         onClick={[Function]}
         type="primary"
       >
