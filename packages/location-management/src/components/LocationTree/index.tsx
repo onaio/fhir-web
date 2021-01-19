@@ -2,18 +2,10 @@ import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import reducerRegistry from '@onaio/redux-reducer-registry';
-import {
-  getLocationTreeState,
-  reducerName,
-  setLocationTreeState,
-  reducer,
-} from '../../ducks/location-hierarchy';
-import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { getLocationTreeState, setLocationTreeState } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
-import { Dictionary } from '@onaio/utils';
-reducerRegistry.register(reducerName, reducer);
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 
 interface TreeProp {
   data: ParsedHierarchyNode[];
@@ -130,7 +122,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       );
 
       return {
-        // important : we are mixing the antTreeProps with ParsedHierarchyNode
+        // important : we are mixing the antTreeProps with treeNode
         data: item,
         key: item.key,
         title: title,
@@ -164,7 +156,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       <AntTree
         onClick={(e, treenode) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
+          const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with treeNode
           OnItemClick(node);
           const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
           dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
