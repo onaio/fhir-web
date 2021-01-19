@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Spin, Alert } from 'antd';
+import { Divider, Spin } from 'antd';
 import { ProductCatalogue } from '../../ducks/productCatalogue';
 import {
   CATALOGUE_EDIT_VIEW_URL,
@@ -9,6 +9,8 @@ import {
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
 import { Column } from '@opensrp/react-utils';
+
+/** component rendered in the action column of the table */
 
 /**
  * component rendered in the action column of the table
@@ -58,13 +60,5 @@ export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[]
 /** util component shown when there is a pending promise */
 
 export const CatalogueLoading = () => {
-  return (
-    <Spin tip={lang.LOADING_ELLIPSIS}>
-      <Alert
-        message={lang.FETCHING_PRODUCT}
-        description={lang.FETCHING_PRODUCT_DESCRIPTION}
-        type="info"
-      />
-    </Spin>
-  );
+  return <Spin size="large" className="custom-spinner"></Spin>;
 };

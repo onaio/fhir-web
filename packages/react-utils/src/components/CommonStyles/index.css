@@ -12,3 +12,10 @@
   display: flex !important;
   justify-content: flex-end !important;
 }
+
+.custom-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 85vh;
+}
