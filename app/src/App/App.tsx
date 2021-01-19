@@ -354,20 +354,13 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_TEAMS_ADD}
-              component={TeamsView}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              exact
-              path={URL_TEAMS_ADD}
               component={TeamsAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={URL_TEAMS_EDIT}
+              path={`${URL_TEAMS_EDIT}/:id`}
               component={TeamsAddEdit}
             />
             <PrivateComponent
