@@ -172,4 +172,9 @@ const mapStateToProps = (state: Partial<Store>, ownProps: CreateEditPropTypes): 
   return { keycloakUser, accessToken };
 };
 
-export const ConnectedCreateEditUser = connect(mapStateToProps)(CreateEditUser);
+/** map props to actions that may be dispatched by component */
+const mapDispatchToProps = {
+  fetchKeycloakUsersCreator: fetchKeycloakUsers,
+};
+
+export const ConnectedCreateEditUser = connect(mapStateToProps, mapDispatchToProps)(CreateEditUser);
