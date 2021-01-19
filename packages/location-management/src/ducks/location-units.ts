@@ -90,18 +90,8 @@ export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
 /** reducer name for the Item module */
 export const locationUnitsReducerName = 'location-units';
 
-/** Action types */
-const customfetchedActionType = 'location-units/LOCATION_UNITS_FETCHED';
-const customRemoveActionType = 'location-units/REMOVE_LOCATION_UNITS';
-const customSetTotalRecordsActionType = 'location-units/SET_TOTAL_LOCATION_UNITS';
-
 /** Item Reducer */
-export const locationUnitsReducer = reducerFactory<LocationUnit>(
-  locationUnitsReducerName,
-  customfetchedActionType,
-  customRemoveActionType,
-  customSetTotalRecordsActionType
-);
+export const locationUnitsReducer = reducerFactory<LocationUnit>(locationUnitsReducerName);
 
 // action
 /** actionCreator returns action to to add Item records to store */
