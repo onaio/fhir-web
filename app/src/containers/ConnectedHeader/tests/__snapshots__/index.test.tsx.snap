@@ -4,42 +4,8 @@ exports[`components/ConnectedHeader renders the ConnectedHeader component 1`] = 
 Object {
   "children": Array [
     <Button
-      block={false}
       className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(SearchOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(QuestionCircleOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
       icon={<ForwardRef(BellOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(BellOutlined) />}
-      loading={false}
       type="primary"
     >
       <Link
@@ -49,12 +15,8 @@ Object {
       </Link>
     </Button>,
     <Button
-      block={false}
       className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
       icon={<ForwardRef(GlobalOutlined) />}
-      loading={false}
       shape="circle"
       type="primary"
     />,
@@ -66,36 +28,6 @@ Object {
 exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
 Object {
   "children": Array [
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(SearchOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(QuestionCircleOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(BellOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
     <Dropdown
       mouseEnterDelay={0.15}
       mouseLeaveDelay={0.1}
@@ -120,10 +52,7 @@ Object {
       placement="bottomRight"
     >
       <Button
-        block={false}
         className="h-auto d-flex align-items-center bg-transparent border-0 rounded-0"
-        ghost={false}
-        htmlType="button"
         icon={
           <Avatar
             className="mr-1 bg-white"
@@ -133,7 +62,6 @@ Object {
             RobertBaratheon
           </Avatar>
         }
-        loading={false}
         shape="circle"
         type="primary"
       >
@@ -141,12 +69,8 @@ Object {
       </Button>
     </Dropdown>,
     <Button
-      block={false}
       className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
       icon={<ForwardRef(GlobalOutlined) />}
-      loading={false}
       shape="circle"
       type="primary"
     />,

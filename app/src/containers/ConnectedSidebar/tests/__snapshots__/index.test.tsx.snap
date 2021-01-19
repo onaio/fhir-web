@@ -40,6 +40,19 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -155,6 +168,19 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -266,6 +292,19 @@ Array [
         to="/missions/trash"
       >
         Trash
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -393,6 +432,19 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -508,6 +560,19 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -619,6 +684,19 @@ Array [
         to="/missions/trash"
       >
         Trash
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -746,6 +824,7 @@ Object {
 
 exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
 Array [
+  undefined,
   undefined,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}

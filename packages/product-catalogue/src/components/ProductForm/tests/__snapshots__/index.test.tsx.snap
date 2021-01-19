@@ -74,6 +74,9 @@ exports[`productForm edit form submission: isAttractive radio1 1`] = `
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value={true}
 />
@@ -86,6 +89,9 @@ exports[`productForm edit form submission: isAttractive radio2 1`] = `
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value={false}
 />

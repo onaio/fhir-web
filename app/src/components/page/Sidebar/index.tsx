@@ -2,7 +2,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
-import { DashboardOutlined } from '@ant-design/icons';
+import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import Logo from '../../../assets/images/opensrp-logo-color.png';
@@ -16,6 +16,7 @@ import {
   URL_HOME,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
+  URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT,
   USER_MANAGEMENT,
   URL_JSON_VALIDATOR_LIST,
@@ -40,6 +41,7 @@ import {
   ENABLE_TEAMS,
   ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
+  ENABLE_CARD_SUPPORT,
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -104,6 +106,15 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.Item key="trash">
               <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
                 {TRASH}
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
+        {ENABLE_CARD_SUPPORT && (
+          <Menu.SubMenu key="card-support" title="Card Support" icon={<IdcardOutlined />}>
+            <Menu.Item key="card-support-client-data">
+              <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
+                Download Client Data
               </Link>
             </Menu.Item>
           </Menu.SubMenu>

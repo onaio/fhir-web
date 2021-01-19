@@ -31,6 +31,7 @@ import {
   URL_TEAM_EDIT,
   URL_TEAM_ADD,
   URL_TEAMS,
+  URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_UNIT_GROUP,
   URL_LOCATION_UNIT_GROUP_ADD,
@@ -79,6 +80,7 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
+import { DownloadClientData } from '@opensrp/card-support';
 import {
   AntdUploadForm,
   AntdFilesList,
@@ -352,6 +354,12 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={URL_DOWNLOAD_CLIENT_DATA}
+              component={DownloadClientData}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={false}
               path={URL_UPLOAD_JSON_VALIDATOR}
               component={AntdUploadForm.UploadForm}
               {...jsonValidatorFormProps}
