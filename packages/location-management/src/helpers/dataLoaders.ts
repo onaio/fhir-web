@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { OpenSRPService } from '@opensrp/react-utils';
-import { Dictionary } from 'cycle';
+import { Dictionary } from '@onaio/utils';
 import { ACTIVE, baseURL, LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../constants';
 import { fetchLocationUnits, LocationUnit } from '../ducks/location-units';
 import { fetchTree } from '../ducks/locationHierarchy';
