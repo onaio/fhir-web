@@ -318,29 +318,10 @@ describe('components/forms/UserForm', () => {
     );
   });
 
-  it('renders practitioner toggle if practitioner prop is passed', async () => {
+  it('show practitioner toggle if user id and practitioner is passed', async () => {
     const propsPractitioner = {
       ...props,
       practitioner: fixtures.practitioner1,
-    };
-
-    const wrapper = mount(
-      <Router history={history}>
-        <UserForm {...propsPractitioner} />
-      </Router>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
-  });
-
-  it('renders practioner toggle if initialValues.id is passed', async () => {
-    const propsPractitioner = {
-      ...props,
       initialValues: fixtures.keycloakUser,
     };
 
@@ -354,14 +335,39 @@ describe('components/forms/UserForm', () => {
       await flushPromises();
       wrapper.update();
     });
-
+    expect(wrapper.find('FormItemInput').at(4).prop('id')).toEqual('practitionerToggle');
     expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
   });
 
-  it('hides `practitioner` practitioner is not passed', async () => {
+  it('hide practitioner toggle if props.practitioner is null', async () => {
+    const propsPractitioner = {
+      ...props,
+      practitioner: null,
+      initialValues: fixtures.keycloakUser,
+    };
     const wrapper = mount(
       <Router history={history}>
-        <UserForm {...props} />
+        <UserForm {...propsPractitioner} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('#practitionerToggle')).toHaveLength(0);
+  });
+
+  it('hide practitioner toggle if props.initialValues.id is null', async () => {
+    const propsPractitioner = {
+      ...props,
+      practitioner: fixtures.practitioner1,
+      initialValues: defaultInitialValues,
+    };
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...propsPractitioner} />
       </Router>
     );
 

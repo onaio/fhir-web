@@ -274,42 +274,7 @@ Object {
 }
 `;
 
-exports[`components/forms/UserForm renders practioner toggle if initialValues.id is passed: practitionerToggle 1`] = `
-Object {
-  "children": <Context.Provider
-    value={
-      Object {
-        "updateItemErrors": [Function],
-      }
-    }
-  >
-    <Memo
-      update={3}
-    >
-      <Switch
-        defaultChecked={null}
-        id="active"
-        onChange={[Function]}
-      />
-    </Memo>
-  </Context.Provider>,
-  "errors": Array [],
-  "id": "practitionerToggle",
-  "label": "Mark as Practitioner",
-  "name": Array [
-    "active",
-  ],
-  "onDomErrorVisibleChange": [Function],
-  "prefixCls": "ant-form",
-  "status": "",
-  "touched": false,
-  "validateStatus": "",
-  "validating": false,
-  "valuePropName": "checked",
-}
-`;
-
-exports[`components/forms/UserForm renders practitioner toggle if practitioner prop is passed: practitionerToggle 1`] = `
+exports[`components/forms/UserForm show practitioner toggle if user id and practitioner is passed: practitionerToggle 1`] = `
 Object {
   "children": <Context.Provider
     value={
