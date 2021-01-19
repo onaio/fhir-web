@@ -14,7 +14,7 @@ import {
   LocationUnitSyncStatus,
   LocationUnitTag,
 } from '../../ducks/location-units';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
 import { ERROR_OCCURED, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
@@ -22,6 +22,8 @@ import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
+import { Dispatch } from 'redux';
+import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 
 export interface FormField extends Dictionary<string | number | number[] | undefined> {
   name: string;
@@ -114,6 +116,7 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  * @returns {void} return nothing
  */
 export async function onSubmit(
+  dispatch: Dispatch,
   setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   opensrpBaseURL: string,
@@ -174,6 +177,7 @@ export async function onSubmit(
       .update({ ...payload })
       .then(() => {
         sendSuccessNotification('Location Unit Updated successfully');
+        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
         history.goBack();
       })
       .catch(() => sendErrorNotification(ERROR_OCCURED));
@@ -182,16 +186,17 @@ export async function onSubmit(
       .create({ ...payload })
       .then(() => {
         sendSuccessNotification('Location Unit Created successfully');
+        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
         history.goBack();
       })
       .catch(() => sendErrorNotification(ERROR_OCCURED));
   }
-
   setSubmitting(false);
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
+  const dispatch = useDispatch();
 
   /** Function to parse the hierarchy tree into TreeSelect node format
    *
@@ -226,6 +231,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) =>
         onSubmit(
+          dispatch,
           setSubmitting,
           values,
           props.opensrpBaseURL,
