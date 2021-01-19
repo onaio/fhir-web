@@ -7,12 +7,7 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
-import {
-  SearchOutlined,
-  QuestionCircleOutlined,
-  BellOutlined,
-  GlobalOutlined,
-} from '@ant-design/icons';
+import { BellOutlined, GlobalOutlined } from '@ant-design/icons';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -39,24 +34,6 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { user_id } = extraData;
   return (
     <Layout.Header className="txt-white align-items-center justify-content-end px-1 layout-header">
-      <Button
-        shape="circle"
-        icon={<SearchOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
-      <Button
-        shape="circle"
-        icon={<QuestionCircleOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
-      <Button
-        shape="circle"
-        icon={<BellOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
       {authenticated ? (
         <Dropdown
           overlay={

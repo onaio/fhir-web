@@ -7,20 +7,32 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
-
 import { id, formValue, locationUnitgroups, parsedHierarchy, locationSettings } from './fixtures';
 import Form, { findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
-
-import { baseURL } from '../../../constants';
+import { authenticateUser } from '@onaio/session-reducer';
+import { baseURL, ERROR_OCCURED } from '../../../constants';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fetch.resetMocks();
   });
-
-  const accessToken = 'sometoken';
 
   it('renders without crashing', () => {
     const wrapper = mount(
@@ -44,7 +56,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await onSubmit(
       jest.fn,
       formValue,
-      accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
@@ -107,13 +118,12 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   });
 
   it('handles error when creating new location unit', async () => {
-    fetch.mockReject(() => Promise.reject('An error occurred'));
+    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
     await onSubmit(
       jest.fn,
       formValue,
-      accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
@@ -127,7 +137,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
   });
 
@@ -148,7 +158,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await onSubmit(
       jest.fn,
       { ...formValue, parentId: '400e9d97-4640-44f5-af54-6f4b314384f5' },
-      accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
@@ -215,15 +224,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
 
-    await onSubmit(
-      jest.fn,
-      formValue,
-      accessToken,
-      baseURL,
-      locationUnitgroups,
-      parsedHierarchy,
-      'user_test'
-    );
+    await onSubmit(jest.fn, formValue, baseURL, locationUnitgroups, parsedHierarchy, 'user_test');
 
     await act(async () => {
       await flushPromises();
@@ -260,11 +261,12 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
   });
 
-  it('fail geolocation fetch incase of wrong parent id passed', async () => {
+  it('handles error when editing location unit', async () => {
+    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
 
     const wrapper = mount(
@@ -282,7 +284,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await onSubmit(
       jest.fn,
       { ...formValue, parentId: 'wrong parent id' },
-      accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
@@ -299,17 +300,16 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
   });
 
-  it('handles error when editing location unit', async () => {
-    fetch.mockReject(() => Promise.reject('An error occurred'));
+  it('handle failed on submit', async () => {
+    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     await onSubmit(
       jest.fn,
       formValue,
-      accessToken,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
@@ -324,7 +324,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: 'An error occurred',
+      message: ERROR_OCCURED,
     });
   });
 

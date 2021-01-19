@@ -5,7 +5,11 @@ import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
+import {
+  ERROR_OCCURED,
+  LOCATION_UNIT_GROUP_DELETE,
+  URL_LOCATION_UNIT_GROUP_EDIT,
+} from '../../constants';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
@@ -39,7 +43,7 @@ export const onDelete = (
   clientService
     .delete()
     .then(() => sendSuccessNotification('Successfully Deleted!'))
-    .catch(() => sendErrorNotification('An error occurred'));
+    .catch(() => sendErrorNotification(ERROR_OCCURED));
 };
 
 const Table: React.FC<Props> = (props: Props) => {
