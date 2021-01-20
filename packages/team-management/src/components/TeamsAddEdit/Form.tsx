@@ -3,14 +3,13 @@ import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
 import {
-  API_BASE_URL,
   TEAMS_POST,
   PRACTITIONER_POST,
   PRACTITIONER_DEL,
   TEAMS_PUT,
   ERROR_OCCURRED,
 } from '../../constants';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import {
   sendSuccessNotification,
   sendInfoNotification,
@@ -29,26 +28,26 @@ export interface FormField {
 }
 
 interface Props {
+  opensrpBaseURL: string;
   id?: string;
   practitioner: Practitioner[];
   initialValue?: FormField | null;
-  accessToken: string;
 }
 
 /**
  * Handle form submission
  *
+ * @param {string} opensrpBaseURL - base url
  * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  * @param {Practitioner} practitioner list of practitioner to filter the selected one from
- * @param {string} accessToken Token for api calles
  * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
  * @param {string} id id of the team
  */
 export function onSubmit(
+  opensrpBaseURL: string,
   setIsSubmitting: (value: boolean) => void,
   practitioner: Practitioner[],
-  accessToken: string,
   initialValue: FormField,
   values: FormField,
   id?: string
@@ -71,14 +70,14 @@ export function onSubmit(
     },
   };
 
-  setTeam(accessToken, payload, id)
+  setTeam(opensrpBaseURL, payload, id)
     .then(async () => {
       // Filter and seperate the practitioners uuid
       // const toBe = initialValue.practitioners.filter((val) => values.practitioners.includes(val));
       const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
       const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
-      await SetPractitioners(practitioner, toAdd, toRem, accessToken, Teamid);
+      await SetPractitioners(opensrpBaseURL, practitioner, toAdd, toRem, Teamid);
       history.goBack();
     })
     .catch(() => sendErrorNotification(ERROR_OCCURRED))
@@ -88,24 +87,24 @@ export function onSubmit(
 /**
  * handle Practitioners
  *
+ * @param {string} opensrpBaseURL - base url
  * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {Array<string>} toAdd list of practitioner uuid to add
  * @param {Array<string>} toRemove list of practitioner uuid to remove
- * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
  */
 async function SetPractitioners(
+  opensrpBaseURL: string,
   practitioner: Practitioner[],
   toAdd: string[],
   toRemove: string[],
-  accessToken: string,
   id: string
 ) {
   sendInfoNotification('Assigning Practitioners');
 
   // Api Call to delete practitioners
   toRemove.forEach((prac) => {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_DEL + prac);
+    const serve = new OpenSRPService(PRACTITIONER_DEL + prac, opensrpBaseURL);
     serve.delete().catch(() => sendErrorNotification(ERROR_OCCURRED));
   });
 
@@ -121,7 +120,7 @@ async function SetPractitioners(
     };
   });
   if (toAdd.length) {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_POST);
+    const serve = new OpenSRPService(PRACTITIONER_POST, opensrpBaseURL);
     await serve.create(payload).catch(() => sendErrorNotification(ERROR_OCCURRED));
   }
 
@@ -131,17 +130,17 @@ async function SetPractitioners(
 /**
  * Function to make teams API call
  *
- * @param {string} accessToken Token for api calles
+ * @param {string} opensrpBaseURL - base url
  * @param {OrganizationPOST} payload payload To send
  * @param {string} id of the team if already created
  */
-export async function setTeam(accessToken: string, payload: OrganizationPOST, id?: string) {
+export async function setTeam(opensrpBaseURL: string, payload: OrganizationPOST, id?: string) {
   if (id) {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_PUT + id);
+    const serve = new OpenSRPService(TEAMS_PUT + id, opensrpBaseURL);
     await serve.update(payload);
     sendSuccessNotification('Successfully Updated Teams');
   } else {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_POST);
+    const serve = new OpenSRPService(TEAMS_POST, opensrpBaseURL);
     await serve.create(payload);
     sendSuccessNotification('Successfully Added Teams');
   }
@@ -157,11 +156,11 @@ export const Form: React.FC<Props> = (props: Props) => {
       {...layout}
       onFinish={(values) =>
         onSubmit(
+          props.opensrpBaseURL,
           setIsSubmitting,
           props.practitioner,
-          props.accessToken,
-          values,
           initialValue,
+          values,
           props.id
         )
       }

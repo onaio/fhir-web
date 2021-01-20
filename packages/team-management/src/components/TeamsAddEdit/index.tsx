@@ -4,16 +4,8 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { organizationsReducer, Organization, orgReducerName } from '../../ducks/organizations';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import { getAccessToken } from '@onaio/session-reducer';
-import { useSelector } from 'react-redux';
-import {
-  API_BASE_URL,
-  ERROR_OCCURRED,
-  PRACTITIONER_GET,
-  TEAMS_GET,
-  TEAM_PRACTITIONERS,
-} from '../../constants';
-import { OpenSRPService } from '@opensrp/server-service';
+import { ERROR_OCCURRED, PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioners';
@@ -25,17 +17,17 @@ reducerRegistry.register(orgReducerName, organizationsReducer);
 /**
  * Gets Team data
  *
- * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
+ * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Object>} Object Containing Team Data
  */
-export async function getTeamDetail(accessToken: string, id: string) {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAMS_GET + id);
+export async function getTeamDetail(id: string, opensrpBaseURL: string) {
+  const serve = new OpenSRPService(TEAMS_GET + id, opensrpBaseURL);
   return await serve.list().then(async (response: Organization) => {
     return {
       name: response.name,
       active: response.active,
-      practitioners: await getPractitonerDetail(accessToken, id),
+      practitioners: await getPractitonerDetail(id, opensrpBaseURL),
     };
   });
 }
@@ -43,24 +35,24 @@ export async function getTeamDetail(accessToken: string, id: string) {
 /**
  * Gets Practioners assigned to a team
  *
- * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
+ * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<Practitioner>>} list of Practitioner Assigned to a team
  */
-export async function getPractitonerDetail(accessToken: string, id: string) {
-  const serve = new OpenSRPService(accessToken, API_BASE_URL, TEAM_PRACTITIONERS + id);
+export async function getPractitonerDetail(id: string, opensrpBaseURL: string) {
+  const serve = new OpenSRPService(TEAM_PRACTITIONERS + id, opensrpBaseURL);
   return await serve.list().then((response: Practitioner[]) => response.filter((e) => e.active));
 }
 
 /**
  * Set the InitialValue in component
  *
- * @param {string} accessToken Token for api calles
  * @param {string} id id of the team
+ * @param {string} opensrpBaseURL - base url
  * @param {Function} setInitialValue Function to set intial value
  */
-function setupInitialValue(accessToken: string, id: string, setInitialValue: Function) {
-  getTeamDetail(accessToken, id)
+function setupInitialValue(id: string, opensrpBaseURL: string, setInitialValue: Function) {
+  getTeamDetail(id, opensrpBaseURL)
     .then((response) => {
       setInitialValue({
         ...response,
@@ -70,23 +62,34 @@ function setupInitialValue(accessToken: string, id: string, setInitialValue: Fun
     .catch(() => sendErrorNotification(ERROR_OCCURRED));
 }
 
-export const TeamsAddEdit: React.FC = () => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
+export interface Props {
+  opensrpBaseURL: string;
+}
+
+/** default component props */
+export const defaultProps = {
+  opensrpBaseURL: '',
+};
+
+export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
   const [practitioner, setPractitioner] = useState<Practitioner[] | null>(null);
+  const { opensrpBaseURL } = props;
 
   useEffect(() => {
-    if (params.id) setupInitialValue(accessToken, params.id, setInitialValue);
-  }, [accessToken, params.id]);
+    if (params.id) setupInitialValue(params.id, opensrpBaseURL, setInitialValue);
+  }, [params.id, opensrpBaseURL]);
 
   useEffect(() => {
-    const serve = new OpenSRPService(accessToken, API_BASE_URL, PRACTITIONER_GET);
+    const serve = new OpenSRPService(PRACTITIONER_GET, opensrpBaseURL);
     serve
       .list()
-      .then((response: Practitioner[]) => setPractitioner(response))
+      .then((response: Practitioner[]) => {
+        setPractitioner(response);
+      })
       .catch(() => sendErrorNotification(ERROR_OCCURRED));
-  }, [accessToken]);
+  }, [opensrpBaseURL]);
 
   if (!practitioner || (params.id && !initialValue)) return <Spin size={'large'} />;
 
@@ -102,7 +105,7 @@ export const TeamsAddEdit: React.FC = () => {
 
       <div className="bg-white p-5">
         <Form
-          accessToken={accessToken}
+          opensrpBaseURL={opensrpBaseURL}
           initialValue={initialValue}
           id={params.id}
           practitioner={practitioner}

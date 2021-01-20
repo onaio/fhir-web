@@ -8,6 +8,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import Table, { TableData } from '../Table';
 import { Router } from 'react-router';
+import { opensrpBaseURL } from '../../TeamsAddEdit/tests/fixtures';
 
 describe('components/TeamsView/table', () => {
   beforeAll(() => {
@@ -42,8 +43,7 @@ describe('components/TeamsView/table', () => {
           <Table
             setPractitionersList={() => jest.fn()}
             setDetail={() => jest.fn()}
-            opensrpBaseURL=""
-            accessToken="hunter 2"
+            opensrpBaseURL={opensrpBaseURL}
             data={tableData}
           />
         </Router>
@@ -58,8 +58,7 @@ describe('components/TeamsView/table', () => {
         <Table
           setPractitionersList={() => jest.fn()}
           setDetail={() => jest.fn()}
-          opensrpBaseURL=""
-          accessToken="hunter 2"
+          opensrpBaseURL={opensrpBaseURL}
           data={tableData}
           onViewDetails={() => wrapper.unmount()}
         />
@@ -75,8 +74,7 @@ describe('components/TeamsView/table', () => {
         <Table
           setPractitionersList={() => jest.fn()}
           setDetail={() => jest.fn()}
-          opensrpBaseURL=""
-          accessToken="hunter 2"
+          opensrpBaseURL={opensrpBaseURL}
           data={tableData}
         />
       </Router>
@@ -91,8 +89,7 @@ describe('components/TeamsView/table', () => {
           <Table
             setPractitionersList={() => jest.fn()}
             setDetail={() => jest.fn()}
-            opensrpBaseURL=""
-            accessToken="hunter 2"
+            opensrpBaseURL={opensrpBaseURL}
             data={tableData}
           />
         </Router>
@@ -115,8 +112,7 @@ describe('components/TeamsView/table', () => {
         <Table
           setPractitionersList={() => jest.fn()}
           setDetail={() => jest.fn()}
-          opensrpBaseURL=""
-          accessToken="hunter 2"
+          opensrpBaseURL={opensrpBaseURL}
           data={tableData}
         />
       </Router>

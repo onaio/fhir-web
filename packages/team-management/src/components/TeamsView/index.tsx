@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
@@ -16,7 +16,6 @@ import {
   Organization,
   orgReducerName,
 } from '../../ducks/organizations';
-import { getAccessToken } from '@onaio/session-reducer';
 import { ERROR_OCCURRED, TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsView.css';
@@ -31,23 +30,17 @@ reducerRegistry.register(orgReducerName, organizationsReducer);
  * Function to load selected Team for details
  *
  * @param {TableData} row data selected from the table
- * @param {string} accessToken - access token
  * @param {string} opensrpBaseURL - base url
  * @param {Function} setDetail funtion to set detail to state
  * @param {Function} setPractitionersList funtion to set detail to state
  */
 export const loadSingleTeam = (
   row: TableData,
-  accessToken: string,
   opensrpBaseURL: string,
   setDetail: (isLoading: string | Organization) => void,
   setPractitionersList: (isLoading: string | Practitioner[]) => void
 ): void => {
-  const serve = new OpenSRPService(
-    accessToken,
-    opensrpBaseURL,
-    TEAM_PRACTITIONERS + row.identifier
-  );
+  const serve = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
   serve
     .list()
     .then((response: Practitioner[]) => {
@@ -73,7 +66,6 @@ export const defaultProps = {
  */
 export const TeamsView: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const teamsArray = useSelector((state) => getOrganizationsArray(state));
   const [detail, setDetail] = useState<TeamsDetailProps | null>(null);
   const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
@@ -84,7 +76,7 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new OpenSRPService(accessToken, opensrpBaseURL, TEAMS_GET);
+      const serve = new OpenSRPService(TEAMS_GET, opensrpBaseURL);
       serve
         .list()
         .then((response: Organization[]) => {
@@ -158,7 +150,6 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
             <Table
               data={value.length < 1 ? tableData : (filter as TableData[])}
               onViewDetails={loadSingleTeam}
-              accessToken={accessToken}
               opensrpBaseURL={opensrpBaseURL}
               setPractitionersList={
                 setPractitionersList as (isLoading: string | Practitioner[]) => void
