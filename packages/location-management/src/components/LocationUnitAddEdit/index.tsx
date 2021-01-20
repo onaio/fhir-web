@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, useLocation } from 'react-router';
-import { getAccessToken } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   LOCATION_UNIT_FINDBYPROPERTIES,
@@ -82,7 +81,6 @@ export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: str
 
 export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
   const [extrafields, setExtrafields] = useState<ExtraField[] | null>(null);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
@@ -123,7 +121,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, params.id, opensrpBaseURL]);
+  }, [params.id, opensrpBaseURL]);
 
   useEffect(() => {
     if (!locationUnitGroup.length) {
@@ -135,7 +133,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, locationUnitGroup.length, opensrpBaseURL]);
+  }, [locationUnitGroup.length, opensrpBaseURL]);
 
   useEffect(() => {
     if (!Treedata.length) {
@@ -151,7 +149,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [Treedata, accessToken, dispatch, opensrpBaseURL]);
+  }, [locationUnits, Treedata.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
     if (!extrafields) {
@@ -164,7 +162,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .then((response: ExtraField[]) => setExtrafields(response))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, extrafields, opensrpBaseURL]);
+  }, [extrafields, opensrpBaseURL]);
 
   if (
     extrafields === null ||
