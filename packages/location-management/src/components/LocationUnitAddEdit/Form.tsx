@@ -179,7 +179,10 @@ export async function onSubmit(
         dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
         history.goBack();
       })
-      .catch(() => sendErrorNotification(ERROR_OCCURED));
+      .catch(() => {
+        sendErrorNotification(ERROR_OCCURED);
+        setSubmitting(false);
+      });
   } else {
     await serve
       .create({ ...payload })
@@ -188,9 +191,11 @@ export async function onSubmit(
         dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
         history.goBack();
       })
-      .catch(() => sendErrorNotification(ERROR_OCCURED));
+      .catch(() => {
+        sendErrorNotification(ERROR_OCCURED);
+        setSubmitting(false);
+      });
   }
-  setSubmitting(false);
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
