@@ -60,7 +60,7 @@ export const createOrEditPractitioners = (
     active: isEdit ? values.active : true,
     identifier: practitioner ? practitioner.identifier : v4(),
     name: `${values.firstName} ${values.lastName}`,
-    userId: values.id,
+    userId: values.userId || values.id,
     username: values.username,
   };
 
@@ -113,7 +113,10 @@ export const submitForm = (
         createOrEditPractitioners(
           opensrpBaseURL,
           opensrpServiceClass,
-          values,
+          {
+            ...values,
+            userId,
+          },
           practitioner,
           isEditing
         );
