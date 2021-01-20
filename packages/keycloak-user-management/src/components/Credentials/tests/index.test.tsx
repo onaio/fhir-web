@@ -19,6 +19,7 @@ import {
   KeycloakUser,
 } from '../../../ducks/user';
 import { URL_USER, ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../constants';
+import { history as registryHistory } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -94,6 +95,7 @@ describe('components/Credentials', () => {
 
   it('adds user credentials correctly', async () => {
     const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
+    const historyPushMock = jest.spyOn(registryHistory, 'push');
 
     const wrapper = mount(
       <Provider store={store}>
@@ -141,6 +143,7 @@ describe('components/Credentials', () => {
       },
     ]);
     expect(mockNotificationSuccess).toHaveBeenCalledWith(CREDENTIALS_UPDATED_SUCCESSFULLY);
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
     wrapper.unmount();
   });
 
