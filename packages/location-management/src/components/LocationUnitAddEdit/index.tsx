@@ -170,17 +170,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
     !Treedata.length ||
     (params.id && !LocationUnitDetail)
   )
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+    return <Spin size={'large'} />;
 
   return (
     <Row className="layout-content">
