@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '../../../constants';
 import { PlanStatus } from '@opensrp/plan-form-core';
@@ -190,5 +190,42 @@ describe('PlanAssignment Page', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
     );
+  });
+  it('renders mission data and mission table)', async () => {
+    fetch.mockResponse(JSON.stringify([eusmPlans[0]]));
+    const props = {
+      showAssignmentTable: true,
+      showMissionData: true,
+      history,
+      location: {
+        hash: '',
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}/335ef7a3-7f35-58aa-8263-4419464946d8`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: { planId: `335ef7a3-7f35-58aa-8263-4419464946d8` },
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}/335ef7a3-7f35-58aa-8263-4419464946d8`,
+      },
+    };
+
+    const wrapper = shallow(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlanAssignment {...props}></ConnectedPlanAssignment>
+        </Router>
+      </Provider>
+    );
+    // should be in loading screen
+    expect(wrapper.text()).toMatchInlineSnapshot(`"<Router />"`);
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+    expect(wrapper.find('MissionData')).not.toBeNull();
+    expect(wrapper.find('AssignmentTable')).not.toBeNull();
   });
 });

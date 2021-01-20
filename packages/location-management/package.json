@@ -36,6 +36,7 @@
   "private": false,
   "dependencies": {
     "@onaio/session-reducer": "0.0.12",
+    "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/react-utils": "^0.0.2",
     "@opensrp/reducer-factory": "^0.0.11",

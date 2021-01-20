@@ -19,6 +19,7 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import PlanInfo from '../../components/PlanInfo';
 import { ActivateMissionCard } from '../../components/ActivateMission';
 import { ConnectedAssignmentTable } from '../../components/AssignmentTable';
+import { MissionData } from '../../components/MissionData';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(plansReducerName, plansReducer);
@@ -30,6 +31,7 @@ interface PlanAssignmentProps extends CommonProps {
   fetchPlansCreator: typeof fetchPlanDefinitions;
   showActivateMission: boolean;
   showAssignmentTable: boolean;
+  showMissionData: boolean;
   assignGeoLevel: number;
 }
 
@@ -40,6 +42,7 @@ const defaultProps = {
   service: OpenSRPService,
   showActivateMission: false,
   showAssignmentTable: false,
+  showMissionData: false,
   assignGeoLevel: 0,
 };
 
@@ -56,6 +59,7 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
     baseURL,
     showActivateMission,
     showAssignmentTable,
+    showMissionData,
     assignGeoLevel: assignAtGeoLevel,
   } = props;
   const { planId } = props.match.params;
@@ -107,6 +111,7 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
       <div className="plan-activities_section">
         {showAssignmentTable ? <ConnectedAssignmentTable {...assignmentTableProps} /> : null}
         {showActivateMission ? <ActivateMissionCard {...activateMissionProps} /> : null}
+        {showMissionData ? <MissionData baseURL={baseURL} plan={plan} /> : null}
       </div>
     </div>
   );
