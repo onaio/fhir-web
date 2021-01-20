@@ -100,8 +100,10 @@ async function SetPractitioners(
 
   // Api Call to delete practitioners
   toRemove.forEach((prac) => {
-    const serve = new OpenSRPService(PRACTITIONER_DEL + prac, API_BASE_URL);
-    serve.delete().catch(() => sendErrorNotification(ERROR_OCCURRED));
+    const serve = new OpenSRPService(PRACTITIONER_DEL, API_BASE_URL);
+    serve
+      .delete({ practitioner: `${prac}`, organization: id })
+      .catch(() => sendErrorNotification(ERROR_OCCURRED));
   });
 
   // Api Call to add practitioners
@@ -150,7 +152,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       requiredMark={false}
       {...layout}
       onFinish={(values) =>
-        onSubmit(setIsSubmitting, props.practitioner, values, initialValue, props.id)
+        onSubmit(setIsSubmitting, props.practitioner, initialValue, values, props.id)
       }
       initialValues={initialValue}
     >
