@@ -99,7 +99,7 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
     else return undefined;
   });
 
-  return map.find((e) => e != undefined);
+  return map.find((e) => e !== undefined);
 }
 
 /** Handle form submission
