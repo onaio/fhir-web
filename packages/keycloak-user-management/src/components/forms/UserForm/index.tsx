@@ -178,7 +178,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           >
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
-          {initialValues.id ? (
+          {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item
               id="practitionerToggle"
               name="active"

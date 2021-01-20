@@ -362,6 +362,27 @@ describe('components/forms/UserForm', () => {
     expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
   });
 
+  it('hides practitioner toggle if user is editing their own profile', async () => {
+    const propsOwn = {
+      ...props,
+      practitioner: undefined,
+      initialValues: fixtures.keycloakUser,
+      extraData: { user_id: fixtures.keycloakUser.id },
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...propsOwn} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('#practitionerToggle')).toHaveLength(0);
+  });
+
   it('hides `requiredActions` field if user is editing their own profile', async () => {
     const propsOwn = {
       ...props,
