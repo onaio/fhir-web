@@ -144,10 +144,8 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
           dispatch(fetchLocationUnits(response));
           getHierarchy(response, opensrpBaseURL)
             .then((hierarchy) => {
-              hierarchy.forEach((hier) => {
-                const processed = generateJurisdictionTree(hier);
-                dispatch(fetchAllHierarchies(processed.model));
-              });
+              const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
+              dispatch(fetchAllHierarchies(allhierarchy));
             })
             .catch(() => sendErrorNotification(ERROR_OCCURED));
         })
