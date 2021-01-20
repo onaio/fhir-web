@@ -107,6 +107,7 @@ export const submitForm = (
   setSubmitting(true);
   const keycloakUserValues = {
     ...values,
+    enabled: true,
   };
   delete keycloakUserValues.active;
   if (userId) {
