@@ -60,6 +60,7 @@ Object {
               "mapRoles": false,
               "view": false,
             },
+            "active": false,
             "createdTimestamp": undefined,
             "disableableCredentialTypes": Array [],
             "email": "",
@@ -285,9 +286,10 @@ Object {
   >
     <Memo
       update={3}
+      value={false}
     >
       <Switch
-        defaultChecked={false}
+        checked={false}
         id="active"
         onChange={[Function]}
       />
@@ -320,9 +322,10 @@ Object {
   >
     <Memo
       update={3}
+      value={true}
     >
       <Switch
-        defaultChecked={true}
+        checked={true}
         id="active"
         onChange={[Function]}
       />
