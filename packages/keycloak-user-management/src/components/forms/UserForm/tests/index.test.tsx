@@ -318,7 +318,30 @@ describe('components/forms/UserForm', () => {
     );
   });
 
-  it('show practitioner toggle if user id and practitioner is passed', async () => {
+  it('show practitioner toggle when editing user and practitioner is null', async () => {
+    // practitioner is null
+    const propsPractitionerNull = {
+      ...props,
+      practitioner: undefined,
+      initialValues: fixtures.keycloakUser,
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...propsPractitionerNull} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('FormItemInput').at(4).prop('id')).toEqual('practitionerToggle');
+    expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
+  });
+
+  it('show practitioner toggle when editing user and practitioner is provided', async () => {
+    // practitioner is null
     const propsPractitioner = {
       ...props,
       practitioner: fixtures.practitioner1,
@@ -337,46 +360,6 @@ describe('components/forms/UserForm', () => {
     });
     expect(wrapper.find('FormItemInput').at(4).prop('id')).toEqual('practitionerToggle');
     expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
-  });
-
-  it('hide practitioner toggle if props.practitioner is null', async () => {
-    const propsPractitioner = {
-      ...props,
-      practitioner: null,
-      initialValues: fixtures.keycloakUser,
-    };
-    const wrapper = mount(
-      <Router history={history}>
-        <UserForm {...propsPractitioner} />
-      </Router>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(wrapper.find('#practitionerToggle')).toHaveLength(0);
-  });
-
-  it('hide practitioner toggle if props.initialValues.id is null', async () => {
-    const propsPractitioner = {
-      ...props,
-      practitioner: fixtures.practitioner1,
-      initialValues: defaultInitialValues,
-    };
-    const wrapper = mount(
-      <Router history={history}>
-        <UserForm {...propsPractitioner} />
-      </Router>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(wrapper.find('#practitionerToggle')).toHaveLength(0);
   });
 
   it('hides `requiredActions` field if user is editing their own profile', async () => {
