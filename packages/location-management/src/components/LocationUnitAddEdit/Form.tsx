@@ -104,7 +104,6 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
 
 /** Handle form submission
  *
- * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} opensrpBaseURL - base url
  * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
@@ -116,7 +115,6 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  */
 export async function onSubmit(
   dispatch: Dispatch,
-  setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   opensrpBaseURL: string,
   locationUnitgroup: LocationUnitGroup[],
@@ -171,31 +169,26 @@ export async function onSubmit(
   removeEmptykeys(payload);
 
   const serve = new OpenSRPService(LOCATION_UNIT_POST_PUT, opensrpBaseURL);
-  if (id) {
+  if (id)
     await serve
       .update({ ...payload })
       .then(() => {
-        sendSuccessNotification('Location Unit Updated successfully');
-        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
         history.goBack();
+        sendSuccessNotification('Location Unit Created successfully');
       })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-        setSubmitting(false);
+      .finally(() => {
+        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
       });
-  } else {
+  else
     await serve
       .create({ ...payload })
       .then(() => {
-        sendSuccessNotification('Location Unit Created successfully');
-        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
         history.goBack();
+        sendSuccessNotification('Location Unit Created successfully');
       })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-        setSubmitting(false);
+      .finally(() => {
+        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
       });
-  }
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
@@ -236,7 +229,6 @@ export const Form: React.FC<Props> = (props: Props) => {
       ) =>
         onSubmit(
           dispatch,
-          setSubmitting,
           values,
           props.opensrpBaseURL,
           props.locationUnitGroup,
@@ -244,7 +236,10 @@ export const Form: React.FC<Props> = (props: Props) => {
           user.username,
           props.extraFields,
           props.id
-        )
+        ).catch(() => {
+          sendErrorNotification(ERROR_OCCURED);
+          setSubmitting(false);
+        })
       }
     >
       {({ isSubmitting, handleSubmit }) => (

@@ -22,11 +22,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 import { Row, Col, Spin } from 'antd';
-import {
-  fetchLocationUnitGroups,
-  getLocationUnitGroupsArray,
-  LocationUnitGroup,
-} from '../../ducks/location-unit-groups';
+import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   getAllHierarchiesArray,
@@ -87,7 +83,7 @@ export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: str
 export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
-  const locationUnitGroup = useSelector((state) => getLocationUnitGroupsArray(state));
+  const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
   const Treedata = useSelector((state) => getAllHierarchiesArray(state));
   const [extrafields, setExtrafields] = useState<ExtraField[] | null>(null);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
@@ -132,14 +128,13 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
       const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
       serve
         .list()
-        .then((response: LocationUnitGroup[]) => fetchLocationUnitGroups(response))
+        .then((response: LocationUnitGroup[]) => setLocationUnitGroup(response))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [locationUnitGroup.length, opensrpBaseURL]);
 
   useEffect(() => {
     if (!locationUnits.length) {
-      console.log('fetching locationUnits', locationUnits);
       getBaseTreeNode(opensrpBaseURL)
         .then((response) => dispatch(fetchLocationUnits(response)))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
@@ -153,11 +148,10 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .then((hierarchy) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
           dispatch(fetchAllHierarchies(allhierarchy));
-          console.log('allhierarchy:', allhierarchy);
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [locationUnits, Treedata.length, dispatch, opensrpBaseURL]);
+  }, [locationUnits.length, Treedata.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
     if (!extrafields) {

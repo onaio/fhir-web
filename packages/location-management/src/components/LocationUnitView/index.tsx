@@ -128,9 +128,9 @@ export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: str
 }
 
 export const LocationUnitView: React.FC<Props> = (props: Props) => {
+  const dispatch = useDispatch();
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
-  const dispatch = useDispatch();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
@@ -139,7 +139,6 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!locationUnits.length) {
-      console.log('fetching locationUnits', locationUnits);
       getBaseTreeNode(opensrpBaseURL)
         .then((response) => dispatch(fetchLocationUnits(response)))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
@@ -148,12 +147,10 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!treeData.length && locationUnits.length) {
-      console.log('fetching tree', locationUnits);
       getHierarchy(locationUnits, opensrpBaseURL)
         .then((hierarchy) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
           dispatch(fetchAllHierarchies(allhierarchy));
-          console.log('allhierarchy:', allhierarchy);
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
@@ -164,7 +161,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
       const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
       setTableData(data);
     }
-  }, [treeData.length, currentParentChildren.length]);
+  }, [treeData, currentParentChildren]);
 
   if (!tableData.length || !treeData.length) return <Spin size={'large'} />;
 
