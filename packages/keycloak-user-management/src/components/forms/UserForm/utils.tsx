@@ -128,7 +128,10 @@ export const submitForm = (
   } else {
     const serve = new keycloakServiceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
     serve
-      .create(keycloakUserValues)
+      .create({
+        ...keycloakUserValues,
+        enabled: true,
+      })
       .then((response: Response | undefined) => {
         // workaround to get userId for newly created user
         // immediately after performing a POST

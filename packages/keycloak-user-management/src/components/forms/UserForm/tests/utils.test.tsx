@@ -125,7 +125,10 @@ describe('forms/utils/submitForm', () => {
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          enabled: true,
+        }),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer token',
