@@ -42,9 +42,15 @@ export enum LocationUnitSyncStatus {
   NOTSYNCED = 'NotSynced',
 }
 
+export interface ServiceType {
+  name: string;
+}
+
 /** interface for LocationUnit.properties */
 export interface Properties
-  extends Dictionary<string | number | LocationUnitStatus | undefined | string[] | number[]> {
+  extends Dictionary<
+    string | number | LocationUnitStatus | ServiceType[] | undefined | string[] | number[]
+  > {
   name: string;
   parentId: string;
   status: LocationUnitStatus;
@@ -53,6 +59,7 @@ export interface Properties
   version?: number;
   name_en?: string;
   externalId?: string;
+  serviceTypes?: ServiceType[];
 }
 
 /** location unit tag interface */
@@ -67,7 +74,7 @@ export interface LocationUnit {
   properties: Properties;
   type: string;
   locationTags?: LocationUnitTag[];
-  geometry?: Geometry; // todo : need to impliment the functionality
+  geometry?: Geometry; // todo : need to implement the functionality
   syncStatus?: LocationUnitSyncStatus;
   parentId?: string;
   serverVersion?: number; // received by the response thought we dont really use it

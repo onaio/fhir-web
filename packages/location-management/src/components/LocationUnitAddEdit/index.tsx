@@ -21,7 +21,7 @@ import {
   LocationUnitStatus,
 } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
-import Form, { FormField } from './Form';
+import Form, { FormFields } from './Form';
 import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -35,7 +35,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import './LocationUnitAddEdit.css';
 import { RawOpenSRPHierarchy, ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
-import { loadJurisdictions } from 'location-management/src/helpers/dataLoaders';
+import { loadJurisdictions } from '../../helpers/dataLoaders';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
@@ -66,7 +66,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
   const [extraFields, setExtraFields] = useState<ExtraField[] | null>(null);
-  const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
+  const [LocationUnitDetail, setLocationUnitDetail] = useState<FormFields | undefined>(undefined);
   const treeData = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
@@ -187,6 +187,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
           id={params.id}
           locationUnitGroup={locationUnitGroup}
           initialValue={LocationUnitDetail}
+          hiddenFields={['']}
         />
       </Col>
     </Row>
