@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { history } from '@onaio/connected-reducer-registry';
 import '../../index.css';
 import {
   KEYCLOAK_URL_USERS,
@@ -109,7 +110,7 @@ export const submitForm = (
     })
     .then(() => {
       sendSuccessNotification(CREDENTIALS_UPDATED_SUCCESSFULLY);
-      useHistory().push(URL_USER);
+      history.push(URL_USER);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);
