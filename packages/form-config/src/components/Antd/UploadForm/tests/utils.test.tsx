@@ -4,7 +4,6 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../../constants';
 
 const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
@@ -65,7 +64,10 @@ describe('components/UploadForm/utils/submitForm', () => {
   });
 
   it('handles error if form creation fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API has been hijacked by aliens'));
+    fetch.mockResponse(
+      'Unknown error. Kindly confirm that the form does not already exist on the server',
+      { status: 500 }
+    );
 
     submitForm(values, accessToken, opensrpBaseURL, false, setSubmittingMock, setIfDoneMock);
 
@@ -73,7 +75,9 @@ describe('components/UploadForm/utils/submitForm', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'Unknown error. Kindly confirm that the form does not already exist on the server'
+    );
     expect(setIfDoneMock).not.toHaveBeenCalled();
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
