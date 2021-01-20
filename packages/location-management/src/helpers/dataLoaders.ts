@@ -1,10 +1,17 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
-import { ACTIVE, baseURL, LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../constants';
+import {
+  ACTIVE,
+  baseURL,
+  LOCATION_HIERARCHY,
+  LOCATION_UNIT_FINDBYPROPERTIES,
+  OPENSRP_V2_SETTINGS,
+} from '../constants';
 import { fetchLocationUnits, LocationUnit } from '../ducks/location-units';
 import { fetchTree } from '../ducks/locationHierarchy';
 import { RawOpenSRPHierarchy } from '../ducks/locationHierarchy/types';
+import { URLParams } from '@opensrp/server-service';
 
 /** Abstract 2 functions; get jurisdiction at any geo-level, get hierarchy */
 
@@ -102,5 +109,39 @@ export async function loadJurisdictions(
     })
     .catch((e) => {
       throw e;
+    });
+}
+
+export const defaultSettingsParams = {
+  serverVersion: '0',
+};
+
+/** request to get service points from settings
+ *
+ * @param settingsIdentifier - id for settings to query from api
+ * @param serviceClass - the openSRP service
+ * @param callback - callback to call with resolved response
+ * @param params - extra params to add to request
+ */
+export async function loadSettings<T>(
+  settingsIdentifier: string,
+  serviceClass: typeof OpenSRPService,
+  callback?: (data: T[]) => void,
+  params: URLParams = defaultSettingsParams
+) {
+  const service = new serviceClass(OPENSRP_V2_SETTINGS);
+  const queryParams = {
+    ...params,
+    identifier: settingsIdentifier,
+  };
+  return service
+    .read('', queryParams)
+    .then((res: T[]) => {
+      if (callback) {
+        callback(res);
+      }
+    })
+    .catch((error: Error) => {
+      throw error;
     });
 }

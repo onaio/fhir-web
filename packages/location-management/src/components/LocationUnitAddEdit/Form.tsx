@@ -1,6 +1,14 @@
 import * as Yup from 'yup';
 import React from 'react';
-import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
+import {
+  SubmitButton,
+  Form as AntForm,
+  Input,
+  Radio,
+  Select,
+  TreeSelect,
+  FormikDebug,
+} from 'formik-antd';
 import { Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { getUser } from '@onaio/session-reducer';
@@ -22,8 +30,12 @@ import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
+import { ServiceTypeSelect } from './serviceTypesSelect';
 
-export interface FormField extends Dictionary<string | number | number[] | undefined> {
+/** describes value of location.properties.serviceTypes */
+
+/** describes known fields that the form will have */
+export interface FormFields extends Dictionary {
   name: string;
   status: LocationUnitStatus;
   type: string;
@@ -31,38 +43,57 @@ export interface FormField extends Dictionary<string | number | number[] | undef
   externalId?: string;
   locationTags?: number[];
   geometry?: string;
+  isJurisdiction?: boolean;
+  serviceTypes?: string;
 }
 
-const defaultFormField: FormField = {
+const defaultFormField: FormFields = {
   name: '',
   status: LocationUnitStatus.ACTIVE,
   type: '',
+  isJurisdiction: false,
+  serviceTypes: '',
 };
 
+/** form props   */
 export interface Props {
   id?: string;
-  initialValue?: FormField;
+  initialValue?: FormFields;
   extraFields?: ExtraField[];
   locationUnitGroup: LocationUnitGroup[];
   treeData: ParsedHierarchyNode[];
   openSRPBaseURL: string;
+  hiddenFields: string[];
+  serviceTypes: string[];
 }
 
 /** yup validations for practitioner data object from form */
 const userSchema = Yup.object().shape({
-  parentId: Yup.string().typeError('Parentid must be a String'),
+  parentId: Yup.string().typeError('Parent ID must be a String'),
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   status: Yup.string().required('Status is Required'),
   type: Yup.string().typeError('Type must be a String').required('Type is Required'),
   externalId: Yup.string().typeError('External id must be a String'),
-  locationTags: Yup.array().typeError('location Unit Groupss must be an Array'),
+  locationTags: Yup.array().typeError('location Unit Groups must be an Array'),
   geometry: Yup.string().typeError('location Unit Groups must be a An String'),
+  isJurisdiction: Yup.boolean().required('isJurisdiction is required'),
+  serviceTypes: Yup.string().when('isJurisdiction', {
+    is: false,
+    then: Yup.string().required('Service Types is required'),
+  }),
 });
+
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 const status = [
   { label: 'Active', value: LocationUnitStatus.ACTIVE },
   { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
+];
+
+// value options for isJurisdiction questions
+const locationCategoryOptions = [
+  { label: 'Service point', value: false },
+  { label: 'Jurisdiction', value: true },
 ];
 
 /** removes empty undefined and null objects before they payload is sent to server
@@ -105,9 +136,9 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  *
  * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
- * @param {string} opensrpBaseURL - base url
- * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
- * @param {Array<ParsedHierarchyNode>} treedata ParsedHierarchyNode nodes to get geolocation from
+ * @param {string} openSRPBaseURL - base url
+ * @param {Array<LocationUnitGroup>} locationUnitGroup all locationUnitgroup
+ * @param {Array<ParsedHierarchyNode>} treeData ParsedHierarchyNode nodes to get geolocation from
  * @param {string} username username of logged in user
  * @param {ExtraField} extraFields extraFields to be input with location unit
  * @param {number} id location unit
@@ -115,15 +146,15 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  */
 export async function onSubmit(
   setSubmitting: (isSubmitting: boolean) => void,
-  values: FormField,
-  opensrpBaseURL: string,
-  locationUnitgroup: LocationUnitGroup[],
-  treedata: ParsedHierarchyNode[],
+  values: FormFields,
+  openSRPBaseURL: string,
+  locationUnitGroup: LocationUnitGroup[],
+  treeData: ParsedHierarchyNode[],
   username: string,
   extraFields?: ExtraField[],
   id?: string
 ) {
-  const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
+  const locationUnitGroupFiler = locationUnitGroup.filter((e) =>
     values.locationTags?.includes(e.id)
   );
 
@@ -134,16 +165,19 @@ export async function onSubmit(
 
   let geographicLevel = 0;
   if (values.parentId) {
-    const parent = findParentGeoLocation(treedata, values.parentId);
+    const parent = findParentGeoLocation(treeData, values.parentId);
     if (parent !== undefined) geographicLevel = parent + 1;
     else throw new Error(ERROR_OCCURED); // stops execution because this is unlikely thing to happen and shouldn't send error to server
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
-    is_jurisdiction: true;
+    is_jurisdiction: boolean;
+    properties: {
+      serviceTypes?: { name: string }[];
+    };
   } = {
     // eslint-disable-next-line @typescript-eslint/camelcase
-    is_jurisdiction: true,
+    is_jurisdiction: values.isJurisdiction as boolean,
     properties: {
       geographicLevel: geographicLevel,
       username: username,
@@ -153,6 +187,7 @@ export async function onSubmit(
       // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: values.name,
       status: values.status,
+      ...(values.serviceTypes ? { serviceTypes: [{ name: values.serviceTypes }] } : {}),
     },
     id: id ? id : v4(),
     syncStatus: LocationUnitSyncStatus.SYNCED,
@@ -168,7 +203,7 @@ export async function onSubmit(
 
   removeEmptykeys(payload);
 
-  const serve = new OpenSRPService(LOCATION_UNIT_POST_PUT, opensrpBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_POST_PUT, openSRPBaseURL);
   if (id) {
     await serve
       .update({ ...payload })
@@ -217,12 +252,18 @@ export const Form: React.FC<Props> = (props: Props) => {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
+  /** helper to check if a field should be rendered
+   *
+   * @param name - name that has been bound to the field
+   */
+  const isHidden = (name: string) => props.hiddenFields.includes(name);
+
   return (
     <Formik
       initialValues={props.initialValue ? props.initialValue : defaultFormField}
       validationSchema={userSchema}
       onSubmit={(
-        values: FormField,
+        values: FormFields,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) =>
         onSubmit(
@@ -239,7 +280,8 @@ export const Form: React.FC<Props> = (props: Props) => {
     >
       {({ isSubmitting, handleSubmit }) => (
         <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
-          <AntForm.Item label="Parent" name="parentId" required>
+          <FormikDebug />
+          <AntForm.Item hidden={isHidden('parentId')} label="Parent" name="parentId" required>
             <TreeSelect
               name="parentId"
               style={{ width: '100%' }}
@@ -250,33 +292,56 @@ export const Form: React.FC<Props> = (props: Props) => {
             </TreeSelect>
           </AntForm.Item>
 
-          <AntForm.Item name="name" label="Name" required>
+          <AntForm.Item hidden={isHidden('name')} name="name" label="Name" required>
             <Input name="name" placeholder="Enter a location name" />
           </AntForm.Item>
 
-          <AntForm.Item label="Status" name="status" valuePropName="checked" required>
-            <Radio.Group name="status" defaultValue={props.initialValue?.status}>
-              {status.map((e) => (
-                <Radio name="status" key={e.label} value={e.value}>
-                  {e.label}
-                </Radio>
-              ))}
-            </Radio.Group>
+          <AntForm.Item
+            hidden={isHidden('status')}
+            label="Status"
+            name="status"
+            valuePropName="checked"
+            required
+          >
+            <Radio.Group
+              name="status"
+              defaultValue={props.initialValue?.status}
+              options={status}
+            ></Radio.Group>
           </AntForm.Item>
 
-          <AntForm.Item name="type" label="Type" required>
+          <AntForm.Item
+            hidden={isHidden('isJurisdiction')}
+            label="Location Category"
+            name="isJurisdiction"
+            id="isJurisdiction"
+          >
+            <Radio.Group name="isJurisdiction" options={locationCategoryOptions}></Radio.Group>
+          </AntForm.Item>
+
+          <AntForm.Item hidden={isHidden('type')} name="type" label="Type" required>
             <Input name="type" placeholder="Select type" />
           </AntForm.Item>
 
-          <AntForm.Item name="externalId" label="External ID">
+          <AntForm.Item
+            hidden={isHidden('serviceTypes')}
+            name="serviceTypes"
+            id="serviceTypes"
+            label="Type"
+            required
+          >
+            <ServiceTypeSelect name="serviceTypes" />
+          </AntForm.Item>
+
+          <AntForm.Item hidden={isHidden('externalId')} name="externalId" label="External ID">
             <Input name="externalId" placeholder="Select status" />
           </AntForm.Item>
 
-          <AntForm.Item name="geometry" label="geometry">
+          <AntForm.Item hidden={isHidden('geometry')} name="geometry" label="geometry">
             <Input.TextArea name="geometry" rows={4} placeholder="</> JSON" />
           </AntForm.Item>
 
-          <AntForm.Item label="Unit Group" name="locationTags">
+          <AntForm.Item hidden={isHidden('locationTags')} label="Unit Group" name="locationTags">
             <Select
               name="locationTags"
               mode="multiple"
@@ -296,6 +361,7 @@ export const Form: React.FC<Props> = (props: Props) => {
 
           {props.extraFields?.map((field) => (
             <AntForm.Item
+              hidden={isHidden('extraFields')}
               key={field.key}
               name={field.key}
               label={field.label}
