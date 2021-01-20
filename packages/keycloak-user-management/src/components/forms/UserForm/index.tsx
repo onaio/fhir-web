@@ -115,8 +115,11 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
    * the form fields initial values will not change if props.initiaValues is updated
    * **/
   React.useEffect(() => {
-    form.setFieldsValue(initialValues);
-  }, [form, initialValues]);
+    form.setFieldsValue({
+      ...initialValues,
+      active: !!practitioner && practitioner.active,
+    });
+  }, [form, initialValues, practitioner]);
 
   return (
     <Row className="layout-content">
@@ -128,7 +131,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
         <Form
           {...layout}
           form={form}
-          initialValues={initialValues}
+          initialValues={{
+            ...initialValues,
+            active: !!practitioner && practitioner.active,
+          }}
           onFinish={(values) => {
             submitForm(
               {
@@ -185,7 +191,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               label="Mark as Practitioner"
               valuePropName="checked"
             >
-              <Switch defaultChecked={!!practitioner && practitioner.active} />
+              <Switch />
             </Form.Item>
           ) : null}
           {initialValues.id !== extraData.user_id ? (
