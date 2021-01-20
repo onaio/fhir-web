@@ -107,7 +107,6 @@ export const submitForm = (
   setSubmitting(true);
   const keycloakUserValues = {
     ...values,
-    enabled: true,
   };
   delete keycloakUserValues.active;
   if (userId) {
@@ -138,7 +137,10 @@ export const submitForm = (
   } else {
     const serve = new keycloakServiceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
     serve
-      .create(keycloakUserValues)
+      .create({
+        ...keycloakUserValues,
+        enabled: true,
+      })
       .then((response: Response | undefined) => {
         // workaround to get userId for newly created user
         // immediately after performing a POST
