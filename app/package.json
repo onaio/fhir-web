@@ -20,7 +20,7 @@
     "@opensrp/card-support": "^0.0.1",
     "@opensrp/error-boundary-fallback": "0.0.1",
     "@opensrp/form-config": "^0.0.6",
-    "@opensrp/keycloak-service": "^0.0.8",
+    "@opensrp/keycloak-service": "^0.0.9",
     "@opensrp/location-management": "^0.0.7",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/plan-form": "^0.0.2-1",

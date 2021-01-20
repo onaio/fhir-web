@@ -4,9 +4,11 @@ import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { OpenSRPService } from '@opensrp/react-utils';
+import { Dictionary } from '@onaio/utils';
+import { getExtraData } from '@onaio/session-reducer';
 import { UserForm, UserFormProps, defaultInitialValues, Practitioner } from '../forms/UserForm';
 import {
   ROUTE_PARAM_USER_ID,
@@ -23,17 +25,10 @@ import {
 } from '../../ducks/user';
 import { Spin } from 'antd';
 import '../../index.css';
-import { OpenSRPService } from '@opensrp/server-service';
-import { Dictionary } from '@onaio/utils';
-import { getExtraData } from '@onaio/session-reducer';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
-// Define selector instance
-const getAccessToken = makeAPIStateSelector();
-
 /** inteface for route params */
-
 export interface RouteParams {
   userId: string;
 }
@@ -91,7 +86,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
    */
   React.useEffect(() => {
     if (userId && !keycloakUser) {
-      const serve = new serviceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
+      const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
       setIsLoading(true);
       serve
         .read(userId)
@@ -106,16 +101,12 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         })
         .finally(() => setIsLoading(false));
     }
-  }, [accessToken, fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);
+  }, [fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);
 
   React.useEffect(() => {
     if (userId && practitioner === undefined) {
       setIsLoading(true);
-      const serve = new opensrpServiceClass(
-        accessToken,
-        opensrpBaseURL,
-        OPENSRP_CREATE_PRACTITIONER_ENDPOINT
-      );
+      const serve = new opensrpServiceClass(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, opensrpBaseURL);
       serve
         .read(userId)
         .then((response: Practitioner) => {
@@ -160,7 +151,6 @@ export { CreateEditUser };
 /** Interface for connected state to props */
 interface DispatchedProps {
   keycloakUser: KeycloakUser | null;
-  accessToken: string;
   extraData: Dictionary;
 }
 
@@ -175,9 +165,8 @@ const mapStateToProps = (state: Partial<Store>, ownProps: CreateEditPropTypes): 
     keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
   }
 
-  const accessToken = getAccessToken(state, { accessToken: true });
   const extraData = getExtraData(state);
-  return { keycloakUser, accessToken, extraData };
+  return { keycloakUser, extraData };
 };
 
 /** map props to actions that may be dispatched by component */

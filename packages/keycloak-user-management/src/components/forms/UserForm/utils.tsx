@@ -14,7 +14,7 @@ import {
   PRACTITIONER_CREATED_SUCCESSFULLY,
   URL_USER_CREDENTIALS,
 } from '../../../constants';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { Practitioner } from '.';
 
 /** Utility function to set new user UUID extracted from the
@@ -39,7 +39,6 @@ export const buildUserObject = (
 
 /**
  *
- * @param {string} accessToken - access token
  * @param {string} baseURL - opensrp API base URL
  * @param {OpenSRPService} serviceClass - opensrp api service class
  * @param {Dictionary} values - form values
@@ -47,7 +46,6 @@ export const buildUserObject = (
  * @param {boolean} isEdit - boolean to show whether edit mode or not
  */
 export const createOrEditPractitioners = (
-  accessToken: string,
   baseURL: string,
   serviceClass: typeof OpenSRPService,
   values: Partial<KeycloakUser> & Partial<Practitioner>,
@@ -66,7 +64,7 @@ export const createOrEditPractitioners = (
     username: values.username,
   };
 
-  const practitionersService = new serviceClass(accessToken, baseURL, 'practitioner');
+  const practitionersService = new serviceClass('practitioner', baseURL);
   practitionersService[requestType](practitionerValues)
     .then(() => {
       if (!isEdit) {
@@ -83,7 +81,6 @@ export const createOrEditPractitioners = (
  * Handle form submission
  *
  * @param {Dictionary} values - form values
- * @param {string} accessToken - keycloak API access token
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {string} opensrpBaseURL - opensrp api base url
  * @param {KeycloakService} keycloakServiceClass - keycloak API service class
@@ -94,7 +91,6 @@ export const createOrEditPractitioners = (
  */
 export const submitForm = (
   values: Partial<KeycloakUser> & Partial<Practitioner>,
-  accessToken: string,
   keycloakBaseURL: string,
   opensrpBaseURL: string,
   keycloakServiceClass: typeof KeycloakService,
@@ -110,16 +106,11 @@ export const submitForm = (
   };
   delete keycloakUserValues.active;
   if (userId) {
-    const serve = new keycloakServiceClass(
-      accessToken,
-      `${KEYCLOAK_URL_USERS}/${userId}`,
-      keycloakBaseURL
-    );
+    const serve = new keycloakServiceClass(`${KEYCLOAK_URL_USERS}/${userId}`, keycloakBaseURL);
     serve
       .update(keycloakUserValues)
       .then(() => {
         createOrEditPractitioners(
-          accessToken,
           opensrpBaseURL,
           opensrpServiceClass,
           values,
@@ -135,7 +126,7 @@ export const submitForm = (
         sendErrorNotification(ERROR_OCCURED);
       });
   } else {
-    const serve = new keycloakServiceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
+    const serve = new keycloakServiceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
     serve
       .create(keycloakUserValues)
       .then((response: Response | undefined) => {
@@ -143,7 +134,6 @@ export const submitForm = (
         // immediately after performing a POST
         const newValues = response ? buildUserObject(response, values) : values;
         createOrEditPractitioners(
-          accessToken,
           opensrpBaseURL,
           opensrpServiceClass,
           newValues,
@@ -174,19 +164,16 @@ export interface UserAction {
 /**
  * Fetch keycloak user action options
  *
- * @param {string} accessToken - keycloak API access token
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {Function} setUserActionOptions - method to set state for selected actions
  * @param {KeycloakService} keycloakServiceClass - keycloak API service class
  */
 export const fetchRequiredActions = (
-  accessToken: string,
   keycloakBaseURL: string,
   setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>,
   keycloakServiceClass: typeof KeycloakService
 ): void => {
   const keycloakService = new keycloakServiceClass(
-    accessToken,
     KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
     keycloakBaseURL
   );

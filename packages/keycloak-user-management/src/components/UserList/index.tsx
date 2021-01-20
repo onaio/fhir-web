@@ -78,7 +78,7 @@ const UserList = (props: Props): JSX.Element => {
 
   React.useEffect(() => {
     if (isLoading) {
-      const serve = new serviceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
+      const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
       serve
         .list()
         .then((res: KeycloakUser[]) => {
