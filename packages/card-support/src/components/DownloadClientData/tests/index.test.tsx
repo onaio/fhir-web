@@ -15,7 +15,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import Papaparse from 'papaparse';
 import * as globalUtils from '../../../helpers/utils';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../../../../client/src/constants';
+import { ERROR_OCCURRED } from '../../../constants';
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();

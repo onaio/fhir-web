@@ -48,6 +48,7 @@ export const OPENSRP_POST_ASSIGNMENTS_ENDPOINT = `${OPENSRP_ORGANIZATION_ENDPOIN
 export const OPENSRP_FIND_BY_PROPERTIES = 'findByProperties';
 export const OPENSRP_LOCATION = 'location';
 export const OPENSRP_ACTIVE = 'Active';
+export const OPENSRP_TASK_SEARCH = 'task/search';
 
 // router routes
 export const URL_MISSIONS = '/missions';
@@ -83,3 +84,5 @@ export const PlanStatusColors: Dictionary = {
   draft: ORANGE,
   retired: BLACK,
 };
+
+export const NO_DATA_FOUND = 'No data found';
