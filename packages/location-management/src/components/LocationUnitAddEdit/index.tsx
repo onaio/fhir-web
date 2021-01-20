@@ -15,13 +15,18 @@ import {
 import {
   ExtraField,
   fetchLocationUnits,
+  getLocationUnitsArray,
   LocationUnit,
   LocationUnitStatus,
 } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 import { Row, Col, Spin } from 'antd';
-import { LocationUnitGroup } from '../../ducks/location-unit-groups';
+import {
+  fetchLocationUnitGroups,
+  getLocationUnitGroupsArray,
+  LocationUnitGroup,
+} from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   getAllHierarchiesArray,
@@ -31,7 +36,7 @@ import {
 } from '../../ducks/location-hierarchy';
 import { sendErrorNotification } from '@opensrp/notifications';
 import './LocationUnitAddEdit.css';
-import { RawOpenSRPHierarchy, ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -81,12 +86,11 @@ export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: str
 
 export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
-  const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
+  const locationUnits = useSelector((state) => getLocationUnitsArray(state));
+  const locationUnitGroup = useSelector((state) => getLocationUnitGroupsArray(state));
+  const Treedata = useSelector((state) => getAllHierarchiesArray(state));
   const [extrafields, setExtrafields] = useState<ExtraField[] | null>(null);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
-  const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
-  );
   const { opensrpBaseURL } = props;
   const dispatch = useDispatch();
   const location = useLocation();
@@ -128,24 +132,28 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
       const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
       serve
         .list()
-        .then((response: LocationUnitGroup[]) => {
-          setLocationUnitGroup(response);
-        })
+        .then((response: LocationUnitGroup[]) => fetchLocationUnitGroups(response))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
   }, [locationUnitGroup.length, opensrpBaseURL]);
 
   useEffect(() => {
-    if (!Treedata.length) {
+    if (!locationUnits.length) {
+      console.log('fetching locationUnits', locationUnits);
       getBaseTreeNode(opensrpBaseURL)
-        .then((response) => {
-          dispatch(fetchLocationUnits(response));
-          getHierarchy(response, opensrpBaseURL)
-            .then((hierarchy) => {
-              const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
-              dispatch(fetchAllHierarchies(allhierarchy));
-            })
-            .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .then((response) => dispatch(fetchLocationUnits(response)))
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
+    }
+  }, [locationUnits.length, dispatch, opensrpBaseURL]);
+
+  useEffect(() => {
+    if (!Treedata.length && locationUnits.length) {
+      console.log('fetching tree', locationUnits);
+      getHierarchy(locationUnits, opensrpBaseURL)
+        .then((hierarchy) => {
+          const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
+          dispatch(fetchAllHierarchies(allhierarchy));
+          console.log('allhierarchy:', allhierarchy);
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
@@ -168,7 +176,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
     extrafields === null ||
     !locationUnitGroup.length ||
     !Treedata.length ||
-    (params.id && !LocationUnitDetail)
+    (params.id && !LocationUnitDetail?.name)
   )
     return <Spin size={'large'} />;
 
