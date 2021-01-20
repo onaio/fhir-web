@@ -18,6 +18,7 @@ import {
 import { loadTasksIndicators, TaskCount } from '../../helpers/dataLoaders';
 import { CommonProps, defaultCommonProps } from '@opensrp/plan-form';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
+import { BuildDownloadUrl } from '../../helpers/utils';
 
 const { Title, Text } = Typography;
 
@@ -78,9 +79,9 @@ const MissionData = (props: MissionDataProps) => {
           <Text>{NUMBER_OF_FLAGGED_PRODUCTS}</Text>:&nbsp;
           <Text type="secondary">{flaggedProducts}</Text>
         </p>
-        <Button disabled type="primary">
-          {DOWNLOAD_MISSION_DATA}
-        </Button>
+        <a href={BuildDownloadUrl(baseURL, plan.identifier)} download>
+          <Button type="primary">{DOWNLOAD_MISSION_DATA}</Button>
+        </a>
       </Space>
     </Card>
   );

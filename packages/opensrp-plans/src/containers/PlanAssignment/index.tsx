@@ -111,7 +111,9 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
       <div className="plan-activities_section">
         {showAssignmentTable ? <ConnectedAssignmentTable {...assignmentTableProps} /> : null}
         {showActivateMission ? <ActivateMissionCard {...activateMissionProps} /> : null}
-        {showMissionData ? <MissionData baseURL={baseURL} plan={plan} /> : null}
+        {showMissionData && plan.status !== PlanStatus.DRAFT ? (
+          <MissionData baseURL={baseURL} plan={plan} />
+        ) : null}
       </div>
     </div>
   );
