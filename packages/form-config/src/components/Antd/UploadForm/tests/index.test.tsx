@@ -17,7 +17,6 @@ import { fixManifestFiles } from '../../../../ducks/tests/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../../constants';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -238,7 +237,7 @@ describe('components/UploadForm', () => {
   });
 
   it('handles error if upload fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API has been hijacked by aliens'));
+    fetch.mockResponse('API has been hijacked by aliens', { status: 500 });
 
     const wrapper = mount(
       <Provider store={store}>
@@ -265,7 +264,7 @@ describe('components/UploadForm', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith('API has been hijacked by aliens');
     wrapper.unmount();
   });
 
