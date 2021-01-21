@@ -2,6 +2,7 @@
 import {
   FIX_PRODUCT_PROBLEMS_CODE,
   PlanDefinition,
+  PlanStatus,
   PRODUCT_CHECK_CODE,
   SERVICE_POINT_CHECK_CODE,
 } from '@opensrp/plan-form-core';
@@ -58,7 +59,7 @@ const MissionData = (props: MissionDataProps) => {
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan]);
-  return (
+  return plan.status !== PlanStatus.DRAFT && plan.status !== PlanStatus.RETIRED ? (
     <Card className="mission-data" bordered={false} title={<Title level={5}>{MISSION_DATA}</Title>}>
       {loading ? (
         <p>
@@ -84,7 +85,7 @@ const MissionData = (props: MissionDataProps) => {
         </a>
       </Space>
     </Card>
-  );
+  ) : null;
 };
 
 MissionData.defaultProps = defaultProps;
