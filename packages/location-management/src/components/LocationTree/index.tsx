@@ -157,12 +157,11 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onClick={(e, treenode) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with treeNode
+          OnItemClick(node);
           const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
+          dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
           const index = expandedKeys.indexOf(node.key);
           if (index > -1) allExpandedKeys.splice(index, 1);
-
-          OnItemClick(node);
-          dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
           onExpand(allExpandedKeys);
         }}
         onExpand={onExpand}
