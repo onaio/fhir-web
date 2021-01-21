@@ -143,6 +143,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!Treedata.length && locationUnits.length) {
+      console.log('fetching tree', locationUnits);
       getHierarchy(locationUnits, opensrpBaseURL)
         .then((hierarchy) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
