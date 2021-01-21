@@ -73,3 +73,21 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
 export const serializeTree = (trees: TreeNode[]) => {
   return JSON.stringify(trees.map((tree) => JSON.stringify(cycle.decycle(tree))));
 };
+
+export function getHierarchyNode(
+  hierarchy: ParsedHierarchyNode[],
+  id: string
+): ParsedHierarchyNode | undefined {
+  const tree = new TreeModel().parse(hierarchy);
+
+  let result: ParsedHierarchyNode | undefined = undefined;
+
+  tree.walk((node) => {
+    if ((node.model as ParsedHierarchyNode).id == id) {
+      result = node.model as ParsedHierarchyNode;
+      return false;
+    } else return true;
+  });
+
+  return result;
+}
