@@ -478,7 +478,8 @@ export const eusmPlans = [
     ],
     experimental: false,
   },
-
+];
+export const retiredDraftPlans = [
   {
     identifier: '335ef7a3-7f35-58aa-8263-4419464946d9',
     version: '1',
@@ -956,7 +957,6 @@ export const eusmPlans = [
     experimental: false,
   },
 ];
-
 export const plans = JSON.parse(plansJSON);
 
 export const irsPlans = JSON.parse(irsPplansJSON);
