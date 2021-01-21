@@ -35,11 +35,11 @@
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.2",
-    "antd": "^4.6.3"
+    "@opensrp/notifications": "^0.0.2"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.7",
+    "antd": "^4.6.3",
     "react": "^16.18.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
