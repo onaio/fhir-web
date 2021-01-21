@@ -135,7 +135,7 @@ export async function onSubmit(
   let geographicLevel = 0;
   if (values.parentId) {
     const parent = findParentGeoLocation(treedata, values.parentId);
-    if (parent) geographicLevel = parent + 1;
+    if (parent !== null) geographicLevel = parent + 1;
     else return sendErrorNotification(ERROR_OCCURED); // stops execution because this is unlikely thing to happen and shouldn't send error to server
   }
 
