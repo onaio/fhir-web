@@ -4,7 +4,7 @@ import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../../constants';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW, SEARCH_QUERY_PARAM } from '../../../constants';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
@@ -82,9 +82,6 @@ describe('List view Page', () => {
       `"Service point inventory (0)+ Add service pointService pointtypeLocationService point IDActionsNo Data"`
     );
 
-    // details view is not displayed
-    expect(wrapper.find('.view-details-content')).toHaveLength(0);
-
     wrapper.unmount();
   });
 
@@ -112,9 +109,6 @@ describe('List view Page', () => {
     // has data
     expect(wrapper.text()).toMatchSnapshot('full text snapshot');
 
-    // details view is not displayed
-    expect(wrapper.find('.view-details-content')).toHaveLength(0);
-
     // check fetch calls made
     expect(fetch.mock.calls).toEqual([
       [
@@ -140,6 +134,56 @@ describe('List view Page', () => {
         },
       ],
     ]);
+
+    // look for pagination
+    expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(
+      `"12345•••5425 / pageGo to"`
+    );
+
+    wrapper.unmount();
+  });
+
+  it('filers data correctly', async () => {
+    fetch.once(JSON.stringify([madagascar])).once(JSON.stringify(madagascarTree));
+
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
+        search: `?${SEARCH_QUERY_PARAM}=03176924-6b3c-4b74-bccd-32afcceebabd`,
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
+        url: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedServicePointList {...props}></ConnectedServicePointList>
+        </Router>
+      </Provider>
+    );
+
+    /** loading view */
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Loading ...Fetching locationsPlease wait, while locations are being fetched"`
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // we should expect a single record for madagascar
+    expect(wrapper.find('tbody tr')).toHaveLength(1);
+
+    expect(wrapper.find('tbody').text()).toMatchSnapshot('full body has only one entry Madagascar');
 
     wrapper.unmount();
   });
