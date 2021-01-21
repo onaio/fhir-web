@@ -161,9 +161,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
           dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
           const index = expandedKeys.indexOf(node.key);
-          if (index > -1) {
-            allExpandedKeys.splice(index, 1);
-          }
+          if (index > -1) allExpandedKeys.splice(index, 1);
           onExpand(allExpandedKeys);
         }}
         onExpand={onExpand}
