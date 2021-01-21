@@ -94,18 +94,3 @@ export function getHierarchyNode(
   // return the result that either the node id exsity in this tree or not
   return result;
 }
-
-export function getHierarchyNodeFromArray(
-  hierarchy: ParsedHierarchyNode[],
-  id: string
-): ParsedHierarchyNode | undefined {
-  // variable to store the result of previous ParsedHierarchyNode from array
-  let result: ParsedHierarchyNode | undefined;
-  // Loop over each array and using recursion check if we have the node in this tree or not
-  (hierarchy as ParsedHierarchyNode[]).forEach((tree) => {
-    result = getHierarchyNode(tree, id);
-    if (result) return result; // if found stops the execution of loop
-  });
-
-  return result;
-}
