@@ -54,7 +54,7 @@ const SearchForm = (props: SearchFormProps) => {
 
   return (
     <div className="search-input-wrapper">
-      <Input onInput={debouncedOnChangeHandler} {...props}></Input>
+      <Input onInput={debouncedOnChangeHandler} {...passedOnProps}></Input>
     </div>
   );
 };
