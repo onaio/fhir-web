@@ -83,13 +83,15 @@ export const customFetch: CustomFetch = async (...rest) => {
 
 /** gets access token or redirects to login if session is expired */
 export const handleSessionOrTokenExpiry = async () => {
+  const { REACT_APP_BACKEND_ACTIVE } = process.env;
+  const APP_LOGIN_URL = REACT_APP_BACKEND_ACTIVE ? '/fe/login' : '/login';
   if (isTokenExpired(store.getState())) {
     try {
       // refresh token
       return await refreshToken('/refresh/token', store.dispatch, {});
     } catch (e) {
-      history.push('/login');
-      throw new Error('Session Has Expired');
+      history.push(APP_LOGIN_URL);
+      throw new Error('Session Expired');
     }
   } else {
     return getAccessToken(store.getState());
