@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { MissionData } from '..';
-import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
+import { eusmPlans, retiredDraftPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { act } from 'react-dom/test-utils';
 
@@ -111,7 +111,7 @@ describe('mission data listing & download', () => {
     missionDataPayload.forEach((taskCount) => {
       fetch.once(JSON.stringify(taskCount));
     });
-    const plan = eusmPlans[2] as PlanDefinition;
+    const plan = retiredDraftPlans[0] as PlanDefinition;
     const props = {
       plan,
     };
@@ -129,7 +129,7 @@ describe('mission data listing & download', () => {
     missionDataPayload.forEach((taskCount) => {
       fetch.once(JSON.stringify(taskCount));
     });
-    const plan = eusmPlans[3] as PlanDefinition;
+    const plan = retiredDraftPlans[1] as PlanDefinition;
     const props = {
       plan,
     };
