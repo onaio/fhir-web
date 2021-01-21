@@ -13,11 +13,8 @@ import filesReducer, {
 } from '../../../ducks/manifestFiles';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendErrorNotification } from '@opensrp/notifications';
-import {
-  ERROR_OCCURRED,
-  OPENSRP_FORM_METADATA_ENDPOINT,
-  ROUTE_PARAM_FORM_VERSION,
-} from '../../../constants';
+import { OPENSRP_FORM_METADATA_ENDPOINT, ROUTE_PARAM_FORM_VERSION } from '../../../constants';
+import { ERROR_OCCURRED, UPL0AD_FILE_LABEL } from '../../../lang';
 import { getTableColumns } from './utils';
 import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
@@ -149,7 +146,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             <>
               <Button type="primary" onClick={() => history.push(uploadFileURL)}>
                 <UploadOutlined />
-                Upload New File
+                {UPL0AD_FILE_LABEL}
               </Button>
               <Divider type="vertical" />
             </>
