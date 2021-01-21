@@ -107,4 +107,40 @@ describe('mission data listing & download', () => {
       `"Mission dataNo data foundService points visited: 0Products checked: 0Number of flagged products: 0Download mission data"`
     );
   });
+  it('hides mission data section for a draft plan', async () => {
+    missionDataPayload.forEach((taskCount) => {
+      fetch.once(JSON.stringify(taskCount));
+    });
+    const plan = eusmPlans[2] as PlanDefinition;
+    const props = {
+      plan,
+    };
+    const wrapper = shallow(<MissionData {...props} />);
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // renders null
+    expect(wrapper.isEmptyRender()).toBe(true);
+  });
+  it('hides mission data section for retired', async () => {
+    missionDataPayload.forEach((taskCount) => {
+      fetch.once(JSON.stringify(taskCount));
+    });
+    const plan = eusmPlans[3] as PlanDefinition;
+    const props = {
+      plan,
+    };
+    const wrapper = shallow(<MissionData {...props} />);
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // renders null
+    expect(wrapper.isEmptyRender()).toBe(true);
+  });
 });
