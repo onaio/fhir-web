@@ -169,12 +169,26 @@ export async function onSubmit(
   removeEmptykeys(payload);
 
   const serve = new OpenSRPService(LOCATION_UNIT_POST_PUT, opensrpBaseURL);
-  if (id) await serve.update({ ...payload });
-  else await serve.create({ ...payload });
-
-  history.goBack();
-  sendSuccessNotification('Location Unit Created successfully');
-  dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
+  if (id)
+    await serve
+      .update({ ...payload })
+      .then(() => {
+        history.goBack();
+        sendSuccessNotification('Location Unit Created successfully');
+      })
+      .finally(() => {
+        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
+      });
+  else
+    await serve
+      .create({ ...payload })
+      .then(() => {
+        history.goBack();
+        sendSuccessNotification('Location Unit Created successfully');
+      })
+      .finally(() => {
+        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
+      });
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
