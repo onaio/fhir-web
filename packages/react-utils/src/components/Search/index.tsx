@@ -4,8 +4,8 @@ import { Input } from 'antd';
 import { OnChangeType, DEBOUNCE_HANDLER_MS } from './utils';
 import { SearchOutlined } from '@ant-design/icons';
 import { InputProps } from 'antd/lib/input/';
-import { Dictionary } from '@onaio/utils/dist/types/types';
-import { SEARCH } from 'react-utils/src/lang';
+import { Dictionary } from '@onaio/utils';
+import { SEARCH } from '../../lang';
 
 /**
  * Interface for SearchForm props
