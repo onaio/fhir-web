@@ -157,10 +157,13 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (treeData.length) {
-      const data = parseTableData(
-        currentClicked?.children ? [currentClicked, ...currentClicked.children] : treeData
-      );
-      setTableData(data);
+      if (currentClicked && currentClicked.children) {
+        const data = parseTableData([currentClicked, ...currentClicked?.children]);
+        setTableData(data);
+      } else if (!currentClicked) {
+        const data = parseTableData(treeData);
+        setTableData(data);
+      }
     }
   }, [treeData, currentClicked]);
 
@@ -178,7 +181,9 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h5 className="mt-4">{currentClicked ? currentClicked.node.name : 'Locations Unit'}</h5>
+            <h5 className="mt-4">
+              {currentClicked?.children ? currentClicked.node.name : 'Locations Unit'}
+            </h5>
             <div>
               <Link
                 to={(location) => {
