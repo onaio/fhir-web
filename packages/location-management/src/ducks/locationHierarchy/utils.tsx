@@ -75,19 +75,22 @@ export const serializeTree = (trees: TreeNode[]) => {
 };
 
 export function getHierarchyNode(
-  hierarchy: ParsedHierarchyNode[],
+  hierarchy: ParsedHierarchyNode,
   id: string
 ): ParsedHierarchyNode | undefined {
+  // convert the ParsedHierarchyNode object into tree
   const tree = new TreeModel().parse(hierarchy);
-
+  // variable to store either we found node in the tree or not
   let result: ParsedHierarchyNode | undefined = undefined;
 
+  // walk through each of tree nodes and look for specific tree id
   tree.walk((node) => {
-    if ((node.model as ParsedHierarchyNode).id == id) {
+    if ((node.model as ParsedHierarchyNode).id === id) {
       result = node.model as ParsedHierarchyNode;
-      return false;
-    } else return true;
+      return false; // return false to stop the loop of tree walk
+    } else return true; // return true to keep searching
   });
 
+  // return the result that either the node id exsity in this tree or not
   return result;
 }
