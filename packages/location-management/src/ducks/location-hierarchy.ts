@@ -8,7 +8,7 @@ import { Dictionary } from '@onaio/utils';
 import { AnyAction, Store } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
 import { ParsedHierarchyNode } from './locationHierarchy/types';
-import { LocationTree } from './types';
+import { LocationTreeState } from './types';
 
 /** reducer name for hierarchy reducer */
 export const reducerName = 'location-hierarchy';
@@ -29,7 +29,7 @@ export interface FetchedTreeAction extends AnyAction {
 /** describes action that saves a hierarchy tree to store */
 export interface SetLocationTreeStateAction extends AnyAction {
   type: typeof SET_LOCATION_TREE_STATE;
-  hierarchyObject: LocationTree;
+  hierarchyObject: LocationTreeState;
 }
 
 /** combined full action types | its a union */
@@ -51,10 +51,10 @@ export function fetchAllHierarchies(hierarchy: ParsedHierarchyNode[]): FetchedTr
 
 /** action creator when adding a tree to store
  *
- * @param {LocationTree} hierarchy - the tree state to be expanded
+ * @param {LocationTreeState} hierarchy - the tree state to be expanded
  * @returns {object} - action object
  */
-export function setLocationTreeState(hierarchy: LocationTree): SetLocationTreeStateAction {
+export function setLocationTreeState(hierarchy: LocationTreeState): SetLocationTreeStateAction {
   return {
     hierarchyObject: hierarchy,
     type: SET_LOCATION_TREE_STATE,
@@ -66,7 +66,7 @@ export function setLocationTreeState(hierarchy: LocationTree): SetLocationTreeSt
 /** The store's slice state */
 export interface TreeState {
   hierarchyArray: ParsedHierarchyNode[];
-  locationTreeState: LocationTree;
+  locationTreeState: LocationTreeState;
 }
 
 /** Create an immutable tree state */
@@ -115,5 +115,5 @@ export function reducer(
 export const getAllHierarchiesArray = (state: Partial<Store>): ParsedHierarchyNode[] =>
   (state as Dictionary)[reducerName].hierarchyArray;
 
-export const getLocationTreeState = (state: Partial<Store>): LocationTree =>
+export const getLocationTreeState = (state: Partial<Store>): LocationTreeState =>
   (state as Dictionary)[reducerName].locationTreeState;
