@@ -9,7 +9,7 @@ import { act } from 'react-dom/test-utils';
 const fetch = require('jest-fetch-mock');
 const plan = eusmPlans[0] as PlanDefinition;
 
-describe('mission data download', () => {
+describe('mission data listing & download', () => {
   /* eslint-disable @typescript-eslint/camelcase */
   const missionDataPayload = [
     {
@@ -59,6 +59,10 @@ describe('mission data download', () => {
       `"Mission dataService points visited: 13Products checked: 7Number of flagged products: 3Download mission data"`
     );
     expect(wrapper.find('Button').text()).toEqual('Download mission data');
+    // downloads mission data
+    expect(wrapper.find('a').at(0).props().href).toEqual(
+      'https://opensrp-stage.smartregister.org/opensrp/rest/event/export-data?eventTypes=flag_problem,service_point_check,looks_good,record_gps,fix_problem&planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8'
+    );
   });
 
   it('shows broken page', async () => {
