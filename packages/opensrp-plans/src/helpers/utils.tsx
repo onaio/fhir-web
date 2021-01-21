@@ -68,6 +68,6 @@ export const PlanLoading = () => {
 };
 
 export const BuildDownloadUrl = (baseURL: string, planId: string) => {
-  const eventType = `${FLAG_PROBLEM_EVENT}, ${SERVICE_POINT_EVENT}, ${LOOKS_GOOD_EVENT}, ${RECORD_GPS_EVENT}, ${FIX_PROBLEM_EVENT}`;
+  const eventType = `${FLAG_PROBLEM_EVENT},${SERVICE_POINT_EVENT},${LOOKS_GOOD_EVENT},${RECORD_GPS_EVENT},${FIX_PROBLEM_EVENT}`;
   return `${baseURL}${OPENSRP_TASK_EXPORT_DATA}?eventTypes=${eventType}&planIdentifier=${planId}`;
 };
