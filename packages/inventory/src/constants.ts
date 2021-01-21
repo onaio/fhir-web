@@ -8,3 +8,6 @@ export const INVENTORY_SERVICE_POINT_PROFILE_VIEW = '/inventory/list';
 // other constants
 /** namespace for the keys attached to the columns */
 export const TableColumnsNamespace = 'inventory';
+
+// magic strings
+export const SEARCH_QUERY_PARAM = 'querySearch';

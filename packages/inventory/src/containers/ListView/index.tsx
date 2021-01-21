@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, PageHeader, Col, Button, Table } from 'antd';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { createChangeHandler, OpenSRPService, SearchForm } from '@opensrp/react-utils';
 import {
   TreeNode,
   hierarchyReducer,
@@ -23,7 +23,7 @@ import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { TableColumnsNamespace } from '../../constants';
+import { SEARCH_QUERY_PARAM, TableColumnsNamespace } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { ADD_SERVICE_POINT, SERVICE_POINT_INVENTORY } from '../../lang';
 import { TableData } from './utils';
@@ -122,6 +122,10 @@ const ServicePointList = (props: ServicePointsListTypes) => {
     return locationToDisplay;
   });
 
+  const searchFormProps = {
+    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
+  };
+
   return (
     <div className="content-section">
       <Helmet>
@@ -131,13 +135,14 @@ const ServicePointList = (props: ServicePointsListTypes) => {
       <Row className={'list-view'}>
         <Col className={'main-content'}>
           <div className="main-content__header">
+            <SearchForm {...searchFormProps} />
             <Link to={ADD_SERVICE_POINT}>
               <Button type="primary" size="large" disabled>
                 {ADD_SERVICE_POINT}
               </Button>
             </Link>
           </div>
-          <Table dataSource={dataSource} columns={columns}></Table>
+          <Table dataSource={dataSource} columns={columns} pagination={}></Table>
         </Col>
       </Row>
     </div>
