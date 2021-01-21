@@ -4,8 +4,7 @@ import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 
 import { Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { getUser } from '@onaio/session-reducer';
-import { OpenSRPService } from '@opensrp/server-service';
-import { getAccessToken } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { Formik } from 'formik';
 import {
   ExtraField,
@@ -20,7 +19,7 @@ import { Geometry } from 'geojson';
 import { ERROR_OCCURED, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
-import { ParsedHierarchyNode } from '../../ducks/types';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 
@@ -106,7 +105,6 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  *
  * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
- * @param {string} accessToken api access token
  * @param {string} opensrpBaseURL - base url
  * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
  * @param {Array<ParsedHierarchyNode>} treedata ParsedHierarchyNode nodes to get geolocation from
@@ -118,7 +116,6 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
 export async function onSubmit(
   setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
-  accessToken: string,
   opensrpBaseURL: string,
   locationUnitgroup: LocationUnitGroup[],
   treedata: ParsedHierarchyNode[],
@@ -171,7 +168,7 @@ export async function onSubmit(
 
   removeEmptykeys(payload);
 
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_POST_PUT);
+  const serve = new OpenSRPService(LOCATION_UNIT_POST_PUT, opensrpBaseURL);
   if (id) {
     await serve
       .update({ ...payload })
@@ -195,7 +192,6 @@ export async function onSubmit(
 
 export const Form: React.FC<Props> = (props: Props) => {
   const user = useSelector((state) => getUser(state));
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
 
   /** Function to parse the hierarchy tree into TreeSelect node format
    *
@@ -232,7 +228,6 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(
           setSubmitting,
           values,
-          accessToken,
           props.opensrpBaseURL,
           props.locationUnitGroup,
           props.treedata,

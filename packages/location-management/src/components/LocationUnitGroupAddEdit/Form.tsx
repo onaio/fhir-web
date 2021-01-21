@@ -3,10 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio } from 'formik-antd';
 import { Button, Spin } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
-import { getAccessToken } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
 import { ERROR_OCCURED, LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
@@ -46,19 +44,17 @@ interface Props {
  * Handle form submission
  *
  * @param {Object} values the form fields
- * @param {string} accessToken api access token
  * @param {string} opensrpBaseURL - base url
  * @param {object} props component props
  * @param {Function} setSubmitting method to set submission status
  */
 export const onSubmit = (
   values: FormField,
-  accessToken: string,
   opensrpBaseURL: string,
   props: Props,
   setSubmitting: (isSubmitting: boolean) => void
 ) => {
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
+  const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
 
   const payload: LocationUnitGroupPayloadPOST | LocationUnitGroupPayloadPUT = values;
 
@@ -91,7 +87,6 @@ export const onSubmit = (
 };
 
 export const Form: React.FC<Props> = (props: Props) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [initialValue, setInitialValue] = useState<FormField>({
     name: '',
@@ -103,11 +98,7 @@ export const Form: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (isLoading) {
       if (props.id) {
-        const serve = new OpenSRPService(
-          accessToken,
-          opensrpBaseURL,
-          LOCATION_UNIT_GROUP_GET + props.id
-        );
+        const serve = new OpenSRPService(LOCATION_UNIT_GROUP_GET + props.id, opensrpBaseURL);
         serve
           .list()
           .then((response: LocationUnitGroup) => {
@@ -122,7 +113,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           .catch(() => sendErrorNotification(ERROR_OCCURED));
       } else setIsLoading(false);
     }
-  }, [accessToken, isLoading, props.id, opensrpBaseURL, setEditTitle]);
+  }, [isLoading, props.id, opensrpBaseURL, setEditTitle]);
 
   if (isLoading)
     return (
@@ -143,7 +134,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, accessToken, opensrpBaseURL, props, setSubmitting)}
+      ) => onSubmit(values, opensrpBaseURL, props, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
         return (

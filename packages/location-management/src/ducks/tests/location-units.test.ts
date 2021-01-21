@@ -1,7 +1,8 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { store } from '@opensrp/store';
-import reducer, {
-  reducerName,
+import {
+  locationUnitsReducer,
+  locationUnitsReducerName,
   getLocationUnitsById,
   getLocationUnitById,
   getLocationUnitsArray,
@@ -13,7 +14,7 @@ import reducer, {
 } from '../location-units';
 import { locationUnit1, locationUnit2 } from './fixtures';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
 describe('src/ducks/location-units', () => {
   beforeEach(() => {
