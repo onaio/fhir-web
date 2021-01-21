@@ -124,7 +124,7 @@ export async function onSubmit(
   id?: string
 ) {
   const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
-    (values.locationTags as number[]).includes(e.id)
+    values.locationTags?.includes(e.id)
   );
 
   const locationTag: LocationUnitTag[] = locationUnitGroupFiler.map((tag: LocationUnitTag) => ({
