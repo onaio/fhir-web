@@ -2702,11 +2702,6 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
-"@opensrp/error-boundary-fallback@file:packages/error-boundary-fallback":
-  version "0.0.1"
-  dependencies:
-    "@sentry/react" "^5.27.4"
-
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
@@ -2761,10 +2756,10 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
-"@sentry/browser@5.29.0":
-  version "5.29.0"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.29.0.tgz#a8cab91729c759c456bd2254cef65bafa5cdc4ea"
-  integrity sha512-kRlt1mE2wrYjspnIupNnPxqsUrRuy02SuXhbpP7J6uu8QasoEmJ78hk0hHz4jOZRmuWwfs2zIXD4tLGgWOKq8A==
+"@sentry/browser@5.30.0":
+  version "5.30.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.30.0.tgz#c28f49d551db3172080caef9f18791a7fd39e3b3"
+  integrity sha512-rOb58ZNVJWh1VuMuBG1mL9r54nZqKeaIlwSlvzJfc89vyfd7n6tQ1UXMN383QBz/MS5H5z44Hy5eE+7pCrYAfw==
   dependencies:
     "@sentry/core" "5.30.0"
     "@sentry/types" "5.30.0"
