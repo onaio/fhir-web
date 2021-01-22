@@ -116,9 +116,12 @@ import {
   completedPlansListStatusProp,
   trashPlansListStatusProp,
   missionAssignmentProps,
+  inventoryServiceProps,
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW, ConnectedServicePointList } from '@opensrp/inventory';
+import '@opensrp/inventory/dist/index.css';
 
 const { Content } = Layout;
 
@@ -301,6 +304,14 @@ const App: React.FC = () => {
               path={PLANS_CREATE_VIEW_URL}
               {...planCreateProps}
               component={CreatePlanView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={INVENTORY_SERVICE_POINT_LIST_VIEW}
+              {...inventoryServiceProps}
+              component={ConnectedServicePointList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
