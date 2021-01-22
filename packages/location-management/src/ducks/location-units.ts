@@ -68,7 +68,7 @@ export interface LocationUnitTag {
 
 /** location interface */
 export interface LocationUnit {
-  id: string | number;
+  id: string;
   properties: Properties;
   type: string;
   locationTags?: LocationUnitTag[];
