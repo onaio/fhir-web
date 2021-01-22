@@ -1,14 +1,6 @@
 import * as Yup from 'yup';
 import React from 'react';
-import {
-  SubmitButton,
-  Form as AntForm,
-  Input,
-  Radio,
-  Select,
-  TreeSelect,
-  FormikDebug,
-} from 'formik-antd';
+import { SubmitButton, Form as AntForm, Input, Radio, Select, TreeSelect } from 'formik-antd';
 import { Button } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { getUser } from '@onaio/session-reducer';
@@ -24,18 +16,19 @@ import {
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { ERROR_OCCURED, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { baseURL, ERROR_OCCURED, LOCATION_UNIT_POST_PUT } from '../../constants';
 import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import { ServiceTypeSelect } from './serviceTypesSelect';
-
-/** describes value of location.properties.serviceTypes */
+import { ServiceTypeSelect } from './ServiceTypesSelect';
+import { FormInstances } from './utils';
 
 /** describes known fields that the form will have */
 export interface FormFields extends Dictionary {
+  instance?: FormInstances;
+  id?: string;
   name: string;
   status: LocationUnitStatus;
   type: string;
@@ -44,41 +37,52 @@ export interface FormFields extends Dictionary {
   locationTags?: number[];
   geometry?: string;
   isJurisdiction?: boolean;
-  serviceTypes?: string;
+  serviceTypes?: string[] | string;
 }
 
-const defaultFormField: FormFields = {
+export const defaultFormField: FormFields = {
+  instance: FormInstances.CORE,
   name: '',
   status: LocationUnitStatus.ACTIVE,
   type: '',
   isJurisdiction: false,
   serviceTypes: '',
+  locationTags: [],
+  externalId: '',
 };
 
 /** form props   */
-export interface Props {
-  id?: string;
-  initialValue?: FormFields;
+export interface LocationFormProps {
+  initialValues?: FormFields;
   extraFields?: ExtraField[];
   locationUnitGroup: LocationUnitGroup[];
   treeData: ParsedHierarchyNode[];
   openSRPBaseURL: string;
   hiddenFields: string[];
-  serviceTypes: string[];
 }
 
 /** yup validations for practitioner data object from form */
 const userSchema = Yup.object().shape({
+  instance: Yup.string().required(),
+  id: Yup.string(),
   parentId: Yup.string().typeError('Parent ID must be a String'),
   name: Yup.string().typeError('Name must be a String').required('Name is Required'),
   status: Yup.string().required('Status is Required'),
-  type: Yup.string().typeError('Type must be a String').required('Type is Required'),
+  type: Yup.string()
+    .typeError('Type must be a String')
+    .when('instance', {
+      is: FormInstances.CORE,
+      then: Yup.string().required('Type is Required'),
+    }),
   externalId: Yup.string().typeError('External id must be a String'),
   locationTags: Yup.array().typeError('location Unit Groups must be an Array'),
   geometry: Yup.string().typeError('location Unit Groups must be a An String'),
-  isJurisdiction: Yup.boolean().required('isJurisdiction is required'),
-  serviceTypes: Yup.string().when('isJurisdiction', {
+  isJurisdiction: Yup.boolean().when('id', {
     is: false,
+    then: Yup.string().required('Location category is required'),
+  }),
+  serviceTypes: Yup.string().when('instance', {
+    is: FormInstances.EUSM,
     then: Yup.string().required('Service Types is required'),
   }),
 });
@@ -132,6 +136,8 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
   return filter[0];
 }
 
+// TODO : break down this function, separate functions to generate payload from formvalues and
+// the dataLoader functionality into their own respective functions
 /** Handle form submission
  *
  * @param {Function} setSubmitting method to set submission status
@@ -141,7 +147,6 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  * @param {Array<ParsedHierarchyNode>} treeData ParsedHierarchyNode nodes to get geolocation from
  * @param {string} username username of logged in user
  * @param {ExtraField} extraFields extraFields to be input with location unit
- * @param {number} id location unit
  * @returns {void} return nothing
  */
 export async function onSubmit(
@@ -151,8 +156,7 @@ export async function onSubmit(
   locationUnitGroup: LocationUnitGroup[],
   treeData: ParsedHierarchyNode[],
   username: string,
-  extraFields?: ExtraField[],
-  id?: string
+  extraFields?: ExtraField[]
 ) {
   const locationUnitGroupFiler = locationUnitGroup.filter((e) =>
     values.locationTags?.includes(e.id)
@@ -164,11 +168,32 @@ export async function onSubmit(
   }));
 
   let geographicLevel = 0;
+
   if (values.parentId) {
     const parent = findParentGeoLocation(treeData, values.parentId);
     if (parent !== undefined) geographicLevel = parent + 1;
     else throw new Error(ERROR_OCCURED); // stops execution because this is unlikely thing to happen and shouldn't send error to server
   }
+
+  const serviceTypesValues = values.serviceTypes
+    ? Array.isArray(values.serviceTypes)
+      ? values.serviceTypes
+      : Array(values.serviceTypes)
+    : [];
+
+  const serviceTypesPayload =
+    serviceTypesValues.length > 0 ? serviceTypesValues.map((type) => ({ name: type })) : {};
+
+  const editMode = !!values.id;
+  /** in edit mode, we currently do not have a way to know if a location is a jurisdiction or structure
+   * so the assumption here is that for EUSM editing locations will be assumed to be structures, while for
+   * core the behavior remains where all locations edited or created are jurisdictions
+   */
+  const isJurisdiction = editMode
+    ? values.instance === FormInstances.EUSM
+      ? false
+      : true
+    : values.isJurisdiction ?? true;
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {
     is_jurisdiction: boolean;
@@ -177,7 +202,7 @@ export async function onSubmit(
     };
   } = {
     // eslint-disable-next-line @typescript-eslint/camelcase
-    is_jurisdiction: values.isJurisdiction as boolean,
+    is_jurisdiction: isJurisdiction,
     properties: {
       geographicLevel: geographicLevel,
       username: username,
@@ -187,9 +212,9 @@ export async function onSubmit(
       // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: values.name,
       status: values.status,
-      ...(values.serviceTypes ? { serviceTypes: [{ name: values.serviceTypes }] } : {}),
+      ...serviceTypesPayload,
     },
-    id: id ? id : v4(),
+    id: values.id ? values.id : v4(),
     syncStatus: LocationUnitSyncStatus.SYNCED,
     type: values.type,
     locationTags: locationTag,
@@ -204,7 +229,7 @@ export async function onSubmit(
   removeEmptykeys(payload);
 
   const serve = new OpenSRPService(LOCATION_UNIT_POST_PUT, openSRPBaseURL);
-  if (id) {
+  if (values.id) {
     await serve
       .update({ ...payload })
       .then(() => {
@@ -225,7 +250,20 @@ export async function onSubmit(
   setSubmitting(false);
 }
 
-export const Form: React.FC<Props> = (props: Props) => {
+// TODO - Form component should expose an interface that conforms to guidelines in the main comment of issue:
+// https://github.com/OpenSRP/web/issues/168, preferably all inputs that directly or indirectly translate
+// to values should be propped in as initial values, we should have hidden fields for values that we do not
+// necessarily think the user needs to know about,but are being used in creation of the payload, e.g
+// id field
+
+/** Location Form component
+ *
+ * @param props - the props
+ */
+const LocationForm = (props: LocationFormProps) => {
+  const { initialValues } = props;
+  const editMode = !!initialValues?.id;
+
   const user = useSelector((state) => getUser(state));
 
   /** Function to parse the hierarchy tree into TreeSelect node format
@@ -260,7 +298,7 @@ export const Form: React.FC<Props> = (props: Props) => {
 
   return (
     <Formik
-      initialValues={props.initialValue ? props.initialValue : defaultFormField}
+      initialValues={props.initialValues ? props.initialValues : defaultFormField}
       validationSchema={userSchema}
       onSubmit={(
         values: FormFields,
@@ -273,15 +311,22 @@ export const Form: React.FC<Props> = (props: Props) => {
           props.locationUnitGroup,
           props.treeData,
           user.username,
-          props.extraFields,
-          props.id
+          props.extraFields
         )
       }
     >
-      {({ isSubmitting, handleSubmit }) => (
+      {({ isSubmitting, handleSubmit, submitForm }) => (
         <AntForm requiredMark={'optional'} {...layout} onSubmitCapture={handleSubmit}>
-          <FormikDebug />
-          <AntForm.Item hidden={isHidden('parentId')} label="Parent" name="parentId" required>
+          <AntForm.Item hidden id="instance" name="instance" label="Instance" required>
+            <Input name="instance" />
+          </AntForm.Item>
+          <AntForm.Item
+            id="parentId"
+            hidden={isHidden('parentId')}
+            label="Parent"
+            name="parentId"
+            required
+          >
             <TreeSelect
               name="parentId"
               style={{ width: '100%' }}
@@ -292,11 +337,12 @@ export const Form: React.FC<Props> = (props: Props) => {
             </TreeSelect>
           </AntForm.Item>
 
-          <AntForm.Item hidden={isHidden('name')} name="name" label="Name" required>
+          <AntForm.Item id="name" hidden={isHidden('name')} name="name" label="Name" required>
             <Input name="name" placeholder="Enter a location name" />
           </AntForm.Item>
 
           <AntForm.Item
+            id="status"
             hidden={isHidden('status')}
             label="Status"
             name="status"
@@ -305,21 +351,24 @@ export const Form: React.FC<Props> = (props: Props) => {
           >
             <Radio.Group
               name="status"
-              defaultValue={props.initialValue?.status}
+              defaultValue={props.initialValues?.status}
               options={status}
             ></Radio.Group>
           </AntForm.Item>
 
-          <AntForm.Item
-            hidden={isHidden('isJurisdiction')}
-            label="Location Category"
-            name="isJurisdiction"
-            id="isJurisdiction"
-          >
-            <Radio.Group name="isJurisdiction" options={locationCategoryOptions}></Radio.Group>
-          </AntForm.Item>
+          {!editMode && (
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            <AntForm.Item
+              hidden={isHidden('isJurisdiction')}
+              label="Location Category"
+              name="isJurisdiction"
+              id="isJurisdiction"
+            >
+              <Radio.Group name="isJurisdiction" options={locationCategoryOptions}></Radio.Group>
+            </AntForm.Item>
+          )}
 
-          <AntForm.Item hidden={isHidden('type')} name="type" label="Type" required>
+          <AntForm.Item id="type" hidden={isHidden('type')} name="type" label="Type" required>
             <Input name="type" placeholder="Select type" />
           </AntForm.Item>
 
@@ -330,18 +379,33 @@ export const Form: React.FC<Props> = (props: Props) => {
             label="Type"
             required
           >
-            <ServiceTypeSelect name="serviceTypes" />
+            <ServiceTypeSelect name="serviceTypes" {...{ baseURL: props.openSRPBaseURL }} />
           </AntForm.Item>
 
-          <AntForm.Item hidden={isHidden('externalId')} name="externalId" label="External ID">
+          <AntForm.Item
+            id="externalId"
+            hidden={isHidden('externalId')}
+            name="externalId"
+            label="External ID"
+          >
             <Input name="externalId" placeholder="Select status" />
           </AntForm.Item>
 
-          <AntForm.Item hidden={isHidden('geometry')} name="geometry" label="geometry">
+          <AntForm.Item
+            id="geometry"
+            hidden={isHidden('geometry')}
+            name="geometry"
+            label="geometry"
+          >
             <Input.TextArea name="geometry" rows={4} placeholder="</> JSON" />
           </AntForm.Item>
 
-          <AntForm.Item hidden={isHidden('locationTags')} label="Unit Group" name="locationTags">
+          <AntForm.Item
+            id="locationTags"
+            hidden={isHidden('locationTags')}
+            label="Unit Group"
+            name="locationTags"
+          >
             <Select
               name="locationTags"
               mode="multiple"
@@ -361,6 +425,7 @@ export const Form: React.FC<Props> = (props: Props) => {
 
           {props.extraFields?.map((field) => (
             <AntForm.Item
+              className="extraFields"
               hidden={isHidden('extraFields')}
               key={field.key}
               name={field.key}
@@ -377,7 +442,9 @@ export const Form: React.FC<Props> = (props: Props) => {
           ))}
 
           <AntForm.Item name="buttons" {...offsetLayout}>
-            <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
+            <SubmitButton htmlType="submit" onClick={submitForm} id="submit">
+              {isSubmitting ? 'Saving' : 'Save'}
+            </SubmitButton>
             <Button id="cancel" onClick={() => history.goBack()} type="dashed">
               Cancel
             </Button>
@@ -388,4 +455,14 @@ export const Form: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default Form;
+const defaultProps = {
+  openSRPBaseURL: baseURL,
+  hiddenFields: [''],
+  initialValues: defaultFormField,
+  locationUnitGroup: [],
+  treeData: [],
+};
+
+LocationForm.defaultProps = defaultProps;
+
+export { LocationForm };
