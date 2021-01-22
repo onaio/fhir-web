@@ -281,22 +281,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
-    await onSubmit(
-      jest.fn,
-      { ...formValue, parentId: 'wrong parent id' },
-      baseURL,
-      locationUnitgroups,
-      parsedHierarchy,
-      'user_test',
-      [],
-      '1'
-    );
+
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
-
-    expect(fetch.mock.calls[0]).toEqual(undefined);
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
