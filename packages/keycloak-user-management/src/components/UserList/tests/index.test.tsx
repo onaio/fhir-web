@@ -110,7 +110,7 @@ describe('components/UserList', () => {
 
     expect(wrapper.find('Table')).toBeTruthy();
     expect(getAccessTokenMock).toHaveBeenCalled();
-    expect(wrapper.find('UserList').props()).toMatchSnapshot('user list props');
+    expect(wrapper.text()).toMatchSnapshot('full rendered text');
     wrapper.unmount();
   });
 
@@ -148,13 +148,10 @@ describe('components/UserList', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
 
     const userList = wrapper.find('UserList');
-
-    expect(userList.props()).toMatchSnapshot('user list props');
-
     const headerRow = userList.find('Row').at(0);
 
-    expect(headerRow.find('Col').at(0).props()).toMatchSnapshot('header actions col props');
-    expect(headerRow.find('Table').at(0).props()).toMatchSnapshot('table props');
+    expect(headerRow.find('Col').at(0).text()).toMatchSnapshot('header actions col props');
+    expect(headerRow.find('Table').first().text()).toMatchSnapshot('table text');
     wrapper.unmount();
   });
 
