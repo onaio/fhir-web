@@ -199,7 +199,6 @@ export const getLocationsByNameAndId = () =>
       node.model.label.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesId = (node: TreeNode) => node.model.id === searchQuery;
     return nodes.filter((node) => {
-      console.log('******', matchesName(node), matchesId(node));
       return matchesName(node) || matchesId(node);
     });
   });
