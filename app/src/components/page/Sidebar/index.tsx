@@ -48,6 +48,7 @@ import {
   COMPLETE_PLANS_LIST_VIEW_URL,
   TRASH_PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
+import { DOWNLOAD_CLIENT_DATA } from '../../../lang';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -113,7 +114,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           <Menu.SubMenu key="card-support" title="Card Support" icon={<IdcardOutlined />}>
             <Menu.Item key="card-support-client-data">
               <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-                Download Client Data
+                {DOWNLOAD_CLIENT_DATA}
               </Link>
             </Menu.Item>
           </Menu.SubMenu>
