@@ -28,6 +28,9 @@ import {
   URL_LOGOUT,
   URL_LOCATION_UNIT,
   URL_HOME,
+  URL_TEAM_EDIT,
+  URL_TEAM_ADD,
+  URL_TEAMS,
   URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_UNIT_GROUP,
@@ -89,6 +92,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
+import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
   LocationUnitAddEdit,
   LocationUnitView,
@@ -215,6 +219,13 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={URL_TEAMS}
+              component={TeamsView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={CATALOGUE_LIST_VIEW_URL}
               {...productCatalogueProps}
               component={ConnectedProductCatalogueList}
@@ -324,6 +335,20 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_TEAM_ADD}
+              component={TeamsAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_TEAM_EDIT}
+              component={TeamsAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
