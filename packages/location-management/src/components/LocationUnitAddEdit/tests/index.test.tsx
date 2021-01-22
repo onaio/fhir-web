@@ -8,20 +8,18 @@ import { MemoryRouter, Route, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-
 import {
   baseLocationUnits,
   rawHierarchy,
-  locationUnitgroups,
+  locationUnitgroups as locationUnitGroups,
   id,
   locationSettings,
 } from './fixtures';
-import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
+import { LocationUnitAddEdit, getHierarchy } from '..';
+import { LocationForm } from '../Form';
 
 import { act } from 'react-dom/test-utils';
 import { baseURL, ERROR_OCCURED } from '../../../constants';
-
-LocationUnitAddEdit.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeAll(() => {
@@ -43,20 +41,12 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     fetch.mockClear();
   });
 
-  it('test getBaseTreeNode', async () => {
-    fetch.mockResponse(JSON.stringify(baseLocationUnits));
-
-    const response = await getBaseTreeNode(baseURL);
-
-    expect(response).toMatchObject(baseLocationUnits);
-  });
-
   it('test getHierarchy', async () => {
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
     const response = await getHierarchy([baseLocationUnits[2]], baseURL);
 
-    expect(response).toMatchObject([rawHierarchy[2]]);
+    expect(response).toEqual([rawHierarchy[2]]);
   });
 
   it('fail loading location ', async () => {
@@ -67,7 +57,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+          <LocationUnitAddEdit openSRPBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -86,14 +76,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('fail loading location hierarchy', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
-    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify(locationUnitGroups));
     fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[0]]));
     fetch.mockReject();
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+          <LocationUnitAddEdit openSRPBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -111,7 +101,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   });
 
   it('renders everything correctly', async () => {
-    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify(locationUnitGroups));
     fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[0]]));
     fetch.mockResponseOnce(JSON.stringify(locationSettings));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
@@ -119,7 +109,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+          <LocationUnitAddEdit openSRPBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -127,7 +117,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       await new Promise((resolve) => setImmediate(resolve));
     });
 
-    expect(fetch.mock.calls).toMatchObject([
+    expect(fetch.mock.calls).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
         {
@@ -172,6 +162,17 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
           method: 'GET',
         },
       ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_types',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
 
     await act(async () => {
@@ -183,20 +184,20 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     wrapper.unmount();
   });
 
-  it('test set initial value of Parentid from url', async () => {
-    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+  it('test set initial value of Parent id from url', async () => {
+    fetch.mockResponseOnce(JSON.stringify(locationUnitGroups));
     fetch.mockResponseOnce(JSON.stringify(locationSettings));
 
-    const Parentid = '654654';
+    const parentId = '654654';
 
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: `/${id}`, hash: '', search: `parentId=${Parentid}`, state: {} },
+            { pathname: `/${id}`, hash: '', search: `parentId=${parentId}`, state: {} },
           ]}
         >
-          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+          <LocationUnitAddEdit openSRPBaseURL={baseURL} />
         </MemoryRouter>
       </Provider>
     );
@@ -206,7 +207,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
     wrapper.update();
 
-    expect(wrapper.find('Form').first().prop('initialValue')['parentId']).toMatch(Parentid);
+    expect(wrapper.find(LocationForm).first().prop('initialValues')['parentId']).toEqual(parentId);
   });
 
   it('Fail id data fetch', async () => {
@@ -224,7 +225,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       await new Promise((resolve) => setImmediate(resolve));
     });
 
-    expect(fetch.mock.calls).toMatchObject([
+    expect(fetch.mock.calls).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
         {
@@ -273,7 +274,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
   it('renders everything correctly with id and header name', async () => {
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
-    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockResponseOnce(JSON.stringify(locationUnitGroups));
     fetch.mockResponseOnce(JSON.stringify(locationSettings));
     fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[0]]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
@@ -289,7 +290,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       await new Promise((resolve) => setImmediate(resolve));
     });
 
-    expect(fetch.mock.calls).toMatchObject([
+    expect(fetch.mock.calls).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
         {
@@ -314,6 +315,17 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_types',
         {
           headers: {
             accept: 'application/json',
