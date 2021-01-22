@@ -175,10 +175,10 @@ export const getLocationsByLevel = () =>
       locationsOfInterest = [
         ...locationsOfInterest,
         ...tree.all((node) => {
-          if (geoLevel) {
-            return node.model.node.attributes.geographicLevel === geoLevel;
+          if (geoLevel === undefined) {
+            return true;
           }
-          return true;
+          return node.model.node.attributes.geographicLevel === geoLevel;
         }),
       ];
     });
