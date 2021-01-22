@@ -4,7 +4,7 @@ import i18n, { Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { getConfigsFactory } from './ducks';
 
-export type LanguageCode = 'en' | 'sw';
+export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar';
 export type ProjectLanguageCode = 'eusm' | 'core';
 
 /** interface for configs for this package */
@@ -18,10 +18,12 @@ export interface LanguageResource {
 }
 
 export interface LanguageResources {
+  ar_core?: LanguageResource;
+  fr_core?: LanguageResource;
   en_core?: LanguageResource;
-  sw_core?: LanguageResource;
   en_eusm?: LanguageResource;
   sw_eusm?: LanguageResource;
+  sw_core?: LanguageResource;
 }
 
 /** gets configs from the store */
