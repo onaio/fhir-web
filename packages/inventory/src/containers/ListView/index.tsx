@@ -28,7 +28,7 @@ import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { SEARCH_QUERY_PARAM, TableColumnsNamespace } from '../../constants';
+import { SEARCH_QUERY_PARAM, TableColumnsNamespace, tablePaginationOptions } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { ADD_SERVICE_POINT, SERVICE_POINT_INVENTORY } from '../../lang';
 import { TableData } from './utils';
@@ -151,12 +151,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
           <Table
             dataSource={dataSource}
             columns={columns}
-            pagination={{
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: 5,
-              pageSizeOptions: ['5', '10', '20', '50', '100'],
-            }}
+            pagination={tablePaginationOptions}
           ></Table>
         </Col>
       </Row>
