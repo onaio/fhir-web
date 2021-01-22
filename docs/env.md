@@ -139,3 +139,15 @@ Below is a list of currently supported environment variables:
   - Enables the form configuration module
   - **Optional**(_string_)
   - default: `"false"`
+
+- **REACT_APP_LANGUAGE_CODE**
+
+  - language resources to use for text i18next
+  - **optional**_(`string`)_
+  - default: `en`
+
+- **REACT_APP_PROJECT_LANGUAGE_CODE**
+
+  - project code to help decide where to pick the language resource files from
+  - **optional**_(`string`)_
+  - default: `core`
