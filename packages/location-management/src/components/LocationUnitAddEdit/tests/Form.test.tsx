@@ -7,12 +7,20 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
-import { id, formValue, locationUnitgroups, parsedHierarchy, locationSettings } from './fixtures';
-import Form, { findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form';
+import { formValue, locationUnitgroups, parsedHierarchy, locationSettings } from './fixtures';
+import {
+  LocationForm,
+  findParentGeoLocation,
+  onSubmit,
+  removeEmptykeys,
+  defaultFormField,
+} from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
 import { baseURL, ERROR_OCCURED } from '../../../constants';
+import toJson from 'enzyme-to-json';
+import { FormInstances } from '../utils';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeAll(() => {
@@ -34,18 +42,23 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     fetch.resetMocks();
   });
 
-  it('renders without crashing', () => {
+  it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
+          <LocationForm
+            openSRPBaseURL={baseURL}
             locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
+            treeData={parsedHierarchy}
           />
         </Router>
       </Provider>
     );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
 
     expect(wrapper.find('form')).toHaveLength(1);
   });
@@ -132,8 +145,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      [],
-      '1'
+      []
     );
     await act(async () => {
       await flushPromises();
@@ -150,27 +162,30 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            id="1"
+          <LocationForm
+            openSRPBaseURL={baseURL}
             locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
+            treeData={parsedHierarchy}
           />
         </Router>
       </Provider>
     );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
     await onSubmit(
       jest.fn,
-      { ...formValue, parentId: '400e9d97-4640-44f5-af54-6f4b314384f5' },
+      { ...formValue, parentId: '400e9d97-4640-44f5-af54-6f4b314384f5', id: '1' },
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      [],
-      '1'
+      []
     );
 
-    expect(fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[1]).toEqual([
       'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
       {
         'Cache-Control': 'no-cache',
@@ -238,11 +253,10 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            id="1"
+          <LocationForm
+            openSRPBaseURL={baseURL}
             locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
+            treeData={parsedHierarchy}
           />
         </Router>
       </Provider>
@@ -255,7 +269,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[1]).toEqual([
       'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
       {
         'Cache-Control': 'no-cache',
@@ -269,7 +283,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
             name_en: 'Tunisia',
             status: 'Active',
           },
-          id: JSON.parse(fetch.mock.calls[0][1].body as string).id,
+          id: JSON.parse(fetch.mock.calls[1][1].body as string).id,
           syncStatus: 'Synced',
           type: 'Feature',
           locationTags: [{ id: 2, name: 'Sample 2' }],
@@ -296,16 +310,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            id="1"
+          <LocationForm
+            openSRPBaseURL={baseURL}
             locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
+            treeData={parsedHierarchy}
           />
         </Router>
       </Provider>
     );
-
     await act(async () => {
       await flushPromises();
       wrapper.update();
@@ -327,8 +339,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      [],
-      '1'
+      []
     );
 
     await act(async () => {
@@ -341,20 +352,24 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
   });
 
-  it('renders without crashing with id', () => {
+  it('renders without crashing with id', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            initialValue={formValue}
-            id={id}
+          <LocationForm
+            openSRPBaseURL={baseURL}
+            initialValues={formValue}
             locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
+            treeData={parsedHierarchy}
           />
         </Router>
       </Provider>
     );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
 
     expect(wrapper.find('form input[name="name"]').prop('value')).toBe(formValue.name);
 
@@ -371,21 +386,26 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     expect(wrapper.find('form input[name="type"]').prop('value')).toBe(formValue.type);
   });
 
-  it('Cancel button', () => {
+  it('Cancel button', async () => {
     const mockBack = jest.fn();
     history.goBack = mockBack;
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
+          <LocationForm
+            openSRPBaseURL={baseURL}
             locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
+            treeData={parsedHierarchy}
           />
         </Router>
       </Provider>
     );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
 
     wrapper.find('button#cancel').simulate('click');
 
@@ -400,16 +420,16 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     expect(mockBack).toHaveBeenCalled();
   });
 
+  // TODO - review: what does this test check? where is the assertion
   it('Update LocationUnitGroupValue', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            initialValue={formValue}
-            id={id}
+          <LocationForm
+            openSRPBaseURL={baseURL}
+            initialValues={formValue}
             locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
+            treeData={parsedHierarchy}
           />
         </Router>
       </Provider>
@@ -422,15 +442,16 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
   });
 
+  // TODO - review: what does this test check? where is the assertion
   it('Create LocationUnitGroupValue', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            initialValue={formValue}
+          <LocationForm
+            openSRPBaseURL={baseURL}
+            initialValues={formValue}
             locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
+            treeData={parsedHierarchy}
           />
         </Router>
       </Provider>
@@ -441,5 +462,170 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await act(async () => {
       await flushPromises();
     });
+  });
+});
+
+describe('LocationForm', () => {
+  afterEach(() => {
+    fetch.resetMocks();
+  });
+  it('renders correctly', () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationForm />
+        </Router>
+      </Provider>,
+      { attachTo: div }
+    );
+
+    expect(toJson(wrapper.find('#instance label'))).toMatchSnapshot('instance label');
+    expect(toJson(wrapper.find('#instance input'))).toMatchSnapshot('instance field');
+
+    expect(toJson(wrapper.find('#parentId label'))).toMatchSnapshot('parentId label');
+    expect(toJson(wrapper.find('#parentId select'))).toMatchSnapshot('parentId field');
+
+    expect(toJson(wrapper.find('#name label'))).toMatchSnapshot('name label');
+    expect(toJson(wrapper.find('#name input'))).toMatchSnapshot('name field');
+
+    expect(toJson(wrapper.find('#status label').first())).toMatchSnapshot('status label');
+    expect(toJson(wrapper.find('#status input'))).toMatchSnapshot('status field');
+
+    expect(toJson(wrapper.find('#isJurisdiction label').first())).toMatchSnapshot(
+      'isJurisdiction label'
+    );
+    expect(toJson(wrapper.find('#isJurisdiction input'))).toMatchSnapshot('isJurisdiction field');
+    expect(toJson(wrapper.find('#type label'))).toMatchSnapshot('type label');
+    expect(toJson(wrapper.find('#type input'))).toMatchSnapshot('type field');
+    expect(toJson(wrapper.find('#serviceTypes label'))).toMatchSnapshot('serviceTypes label');
+    expect(toJson(wrapper.find('#serviceTypes input'))).toMatchSnapshot('serviceTypes field');
+    expect(toJson(wrapper.find('#externalId label'))).toMatchSnapshot('externalId label');
+    expect(toJson(wrapper.find('#externalId input'))).toMatchSnapshot('externalId field');
+    expect(toJson(wrapper.find('#geometry label'))).toMatchSnapshot('geometry label');
+    expect(toJson(wrapper.find('#geometry input'))).toMatchSnapshot('geometry field');
+    expect(toJson(wrapper.find('#locationTags label'))).toMatchSnapshot('locationTags label');
+    expect(toJson(wrapper.find('#locationTags input'))).toMatchSnapshot('locationTags field');
+
+    wrapper.find('.extraFields').forEach((field) => {
+      expect(toJson(field.find('label'))).toMatchSnapshot('field label');
+      expect(toJson(field.find('input'))).toMatchSnapshot('field input');
+    });
+
+    expect(toJson(wrapper.find('#submit button'))).toMatchSnapshot('submit button');
+    expect(toJson(wrapper.find('#cancel button'))).toMatchSnapshot('cancel button');
+  });
+
+  it('form validation works for core instance', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    // when instance is set to core by default, types is required, serviceTypes is not required
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationForm />
+        </Router>
+      </Provider>,
+      { attachTo: div }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.find('FormItem#instance').text()).toMatchInlineSnapshot(`"Instance"`);
+
+    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(`"ParentPlease select"`);
+
+    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
+
+    expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
+      `"Location Category(optional)Service pointJurisdiction"`
+    );
+
+    // type is required for core
+    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"TypeType is Required"`);
+
+    // not required for core
+    expect(wrapper.find('FormItem#serviceTypes').text()).toMatchInlineSnapshot(`"Type"`);
+
+    expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(
+      `"External ID(optional)"`
+    );
+
+    expect(wrapper.find('FormItem#geometry').text()).toMatchInlineSnapshot(`"geometry(optional)"`);
+
+    expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
+      'location Tags does not have error message'
+    );
+  });
+
+  it('form validation works for eusm instance', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    // when instance is set to core by default, types is required, serviceTypes is not required
+    const initialValues = { ...defaultFormField, instance: FormInstances.EUSM };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationForm initialValues={initialValues} />
+        </Router>
+      </Provider>,
+      {
+        attachTo: div,
+      }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.find('FormItem#instance').text()).toMatchInlineSnapshot(`"Instance"`);
+
+    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(`"ParentPlease select"`);
+
+    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
+
+    expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
+      `"Location Category(optional)Service pointJurisdiction"`
+    );
+
+    // type is required for core, but not required for eusm instance
+    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"Type"`);
+
+    // service types is required for eusm
+    expect(wrapper.find('FormItem#serviceTypes').text()).toMatchInlineSnapshot(
+      `"TypeService Types is required"`
+    );
+
+    expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(
+      `"External ID(optional)"`
+    );
+
+    expect(wrapper.find('FormItem#geometry').text()).toMatchInlineSnapshot(`"geometry(optional)"`);
+
+    expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
+      'location Tags does not have error message'
+    );
   });
 });
