@@ -33,6 +33,8 @@ import {
   COMPLETE,
   TRASH,
   MISSIONS,
+  SERVICE_POINT_INVENTORY,
+  INVENTORY,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -42,6 +44,7 @@ import {
   ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_CARD_SUPPORT,
+  ENABLE_INVENTORY,
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -49,6 +52,7 @@ import {
   COMPLETE_PLANS_LIST_VIEW_URL,
   TRASH_PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -115,6 +119,15 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.Item key="card-support-client-data">
               <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
                 Download Client Data
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
+        {ENABLE_INVENTORY && (
+          <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
+            <Menu.Item key="list">
+              <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
+                {SERVICE_POINT_INVENTORY}
               </Link>
             </Menu.Item>
           </Menu.SubMenu>
