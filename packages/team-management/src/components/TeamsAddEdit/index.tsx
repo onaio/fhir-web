@@ -10,8 +10,6 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioners';
 
-import './TeamsAddEdit.css';
-
 reducerRegistry.register(orgReducerName, organizationsReducer);
 
 /**
