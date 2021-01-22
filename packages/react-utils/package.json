@@ -43,6 +43,7 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.7",
+    "antd": "^4.6.3",
     "react": "^16.18.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
