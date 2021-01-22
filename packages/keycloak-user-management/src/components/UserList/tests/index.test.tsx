@@ -2,11 +2,11 @@
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
-import { history } from '@onaio/connected-reducer-registry';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { mount, shallow } from 'enzyme';
 import { ConnectedUserList, UserList } from '..';
 import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
@@ -22,7 +22,7 @@ import {
 } from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED } from '../../../constants';
+import { ERROR_OCCURED, URL_USER } from '../../../constants';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -33,6 +33,24 @@ jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
+
+const history = createBrowserHistory();
+
+const locationProps = {
+  history,
+  location: {
+    hash: '',
+    pathname: `${URL_USER}`,
+    search: '',
+    state: {},
+  },
+  match: {
+    isExact: true,
+    params: {},
+    path: `${URL_USER}`,
+    url: `${URL_USER}`,
+  },
+};
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -58,12 +76,13 @@ describe('components/UserList', () => {
   });
 
   it('renders users table without crashing', () => {
-    shallow(<UserList />);
+    shallow(<UserList {...locationProps} />);
   });
   it('works correctly with store', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
     const getAccessTokenMock = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
     const props = {
+      ...locationProps,
       accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
         accessToken: true,
       }),
@@ -98,6 +117,7 @@ describe('components/UserList', () => {
   it('renders user list correctly', async () => {
     fetch.once(JSON.stringify(keycloakUsersArray));
     const props = {
+      ...locationProps,
       accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
         accessToken: true,
       }),
@@ -142,6 +162,7 @@ describe('components/UserList', () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const props = {
+      ...locationProps,
       accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
         accessToken: true,
       }),
