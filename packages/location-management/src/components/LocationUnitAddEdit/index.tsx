@@ -21,7 +21,7 @@ import {
   LocationUnitStatus,
 } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
-import Form, { FormFields } from './Form';
+import { LocationForm, FormFields, LocationFormProps, defaultFormField } from './Form';
 import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -36,12 +36,21 @@ import './LocationUnitAddEdit.css';
 import { RawOpenSRPHierarchy, ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
 import { loadJurisdictions } from '../../helpers/dataLoaders';
+import { FormInstances, getLocationFormFields } from './utils';
 
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-export interface Props {
+/** props for the locationUnitAddEdit form HOC */
+export interface Props extends Pick<LocationFormProps, 'hiddenFields'> {
   openSRPBaseURL: string;
+  instance: FormInstances;
 }
+
+const defaultProps = {
+  openSRPBaseURL: baseURL,
+  instance: FormInstances.CORE,
+  hiddenFields: [],
+};
 
 /** Gets the hierarchy of the location units
  *
@@ -61,7 +70,11 @@ export async function getHierarchy(location: LocationUnit[], openSRPBaseURL: str
   return hierarchy;
 }
 
-export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
+/** HOC component that wraps and renders the Location Form
+ *
+ * @param props - the props
+ */
+const LocationUnitAddEdit = (props: Props) => {
   const params: { id: string } = useParams();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
@@ -70,7 +83,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const treeData = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
-  const { openSRPBaseURL } = props;
+  const { openSRPBaseURL, instance } = props;
   const dispatch = useDispatch();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -79,6 +92,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (parentId != null)
       setLocationUnitDetail({
+        ...defaultFormField,
         name: '',
         status: LocationUnitStatus.ACTIVE,
         type: '',
@@ -95,16 +109,11 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
       serve
         .list()
         .then((response: LocationUnit) => {
-          setLocationUnitDetail({
-            ...response.properties,
-            locationTags: response.locationTags?.map((loc) => loc.id),
-            geometry: JSON.stringify(response.geometry),
-            type: response.type,
-          });
+          setLocationUnitDetail(getLocationFormFields(response, instance));
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, params.id, openSRPBaseURL]);
+  }, [accessToken, params.id, openSRPBaseURL, instance]);
 
   useEffect(() => {
     if (!locationUnitGroup.length) {
@@ -180,18 +189,19 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
       </h5>
 
       <Col className="bg-white p-4" span={24}>
-        <Form
+        <LocationForm
           extraFields={extraFields}
           openSRPBaseURL={openSRPBaseURL}
           treeData={treeData}
-          id={params.id}
           locationUnitGroup={locationUnitGroup}
-          initialValue={LocationUnitDetail}
-          hiddenFields={['']}
+          initialValues={LocationUnitDetail}
+          hiddenFields={props.hiddenFields}
         />
       </Col>
     </Row>
   );
 };
 
-export default LocationUnitAddEdit;
+LocationUnitAddEdit.defaultProps = defaultProps;
+
+export { LocationUnitAddEdit };
