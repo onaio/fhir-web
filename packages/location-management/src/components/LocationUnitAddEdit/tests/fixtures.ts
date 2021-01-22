@@ -12,7 +12,7 @@ import {
   LocationUnitStatus,
   LocationUnitSyncStatus,
 } from '../../../ducks/location-units';
-import { FormField } from '../Form';
+import { FormFields } from '../Form';
 
 export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 
@@ -25,12 +25,13 @@ export const locationUnitgroups: LocationUnitGroup[] = [
   { id: 6, active: true, name: 'Demo Test', description: 'The demo unit group' },
 ];
 
-export const formValue: FormField = {
+export const formValue: FormFields = {
   name: 'Tunisia',
   parentId: '',
   status: LocationUnitStatus.ACTIVE,
   locationTags: [2],
   type: 'Feature',
+  isJurisdiction: true,
 };
 
 export const locationUnitPayloadPUT: LocationUnitPayloadPUT = {
@@ -105,6 +106,37 @@ export const baseLocationUnits: LocationUnit[] = [
     },
     serverVersion: 223,
     locationTags: [{ id: 4, name: 'Option1' }],
+  },
+];
+
+export const serviceTypesSettings = [
+  {
+    key: 'school',
+    label: 'School',
+    description: 'This service type is a school',
+    uuid: '8718e71e-af01-49aa-85dd-381d29eaf6de',
+    settingsId: '34',
+    settingIdentifier: 'service_types',
+    settingMetadataId: '34',
+    v1Settings: false,
+    resolveSettings: false,
+    documentId: 'ab85b445-baec-4f94-94fe-ec76de36f9a3',
+    serverVersion: 58,
+    type: 'Setting',
+  },
+  {
+    key: 'hospital',
+    label: 'Hospital',
+    description: 'This service type is a Hospital',
+    uuid: '7d3c2a2c-4b67-4f98-aed5-90d1b597801a',
+    settingsId: '34',
+    settingIdentifier: 'service_types',
+    settingMetadataId: '35',
+    v1Settings: false,
+    resolveSettings: false,
+    documentId: 'ab85b445-baec-4f94-94fe-ec76de36f9a3',
+    serverVersion: 58,
+    type: 'Setting',
   },
 ];
 
