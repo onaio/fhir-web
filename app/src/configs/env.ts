@@ -100,3 +100,7 @@ export const ENABLE_INVENTORY = process.env.REACT_APP_ENABLE_INVENTORY === 'true
 export const INVENTORY_LOC_OF_INTEREST_GEO_LEVEL = Number(
   process.env.REACT_APP_INVENTORY_LOC_OF_INTEREST_GEO_LEVEL || '0'
 );
+
+export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = Number(
+  process.env.REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL || '0'
+);

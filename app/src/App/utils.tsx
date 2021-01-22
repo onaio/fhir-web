@@ -17,6 +17,7 @@ import {
   DEFAULT_TIME,
   INVENTORY_LOC_OF_INTEREST_GEO_LEVEL,
   OPENSRP_API_BASE_URL,
+  PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
 } from '../configs/env';
@@ -106,5 +107,5 @@ export const missionAssignmentProps = {
   showActivateMission: true,
   showAssignmentTable: true,
   showMissionData: true,
-  assignGeoLevel: 3,
+  assignGeoLevel: PLAN_ASSIGNMENT_AT_GEO_LEVEL,
 };
