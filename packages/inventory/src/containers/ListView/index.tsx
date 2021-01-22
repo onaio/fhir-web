@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Row, PageHeader, Col, Button, Table } from 'antd';
-import { OpenSRPService } from '@opensrp/react-utils';
+import {
+  createChangeHandler,
+  getQueryParams,
+  OpenSRPService,
+  SearchForm,
+} from '@opensrp/react-utils';
 import {
   TreeNode,
   hierarchyReducer,
@@ -8,12 +13,12 @@ import {
   fetchTree,
   locationUnitsReducer,
   locationUnitsReducerName,
-  getLocationsByLevel,
   fetchLocationUnits,
   loadJurisdictions,
   loadHierarchy,
   LocationUnit,
   getLocationUnitsArray,
+  getLocationsByNameAndId,
 } from '@opensrp/location-management';
 import { connect } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
@@ -23,7 +28,7 @@ import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { TableColumnsNamespace } from '../../constants';
+import { SEARCH_QUERY_PARAM, TableColumnsNamespace, tablePaginationOptions } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { ADD_SERVICE_POINT, SERVICE_POINT_INVENTORY } from '../../lang';
 import { TableData } from './utils';
@@ -32,7 +37,7 @@ import { TableData } from './utils';
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
-const locationsByLevelSelector = getLocationsByLevel();
+const locationsBySearchSelector = getLocationsByNameAndId();
 
 /** props for the ServicePointList view */
 interface ServicePointsListProps extends CommonProps {
@@ -122,6 +127,11 @@ const ServicePointList = (props: ServicePointsListTypes) => {
     return locationToDisplay;
   });
 
+  const searchFormProps = {
+    defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
+    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
+  };
+
   return (
     <div className="content-section">
       <Helmet>
@@ -131,13 +141,18 @@ const ServicePointList = (props: ServicePointsListTypes) => {
       <Row className={'list-view'}>
         <Col className={'main-content'}>
           <div className="main-content__header">
+            <SearchForm {...searchFormProps} />
             <Link to={ADD_SERVICE_POINT}>
               <Button type="primary" size="large" disabled>
                 {ADD_SERVICE_POINT}
               </Button>
             </Link>
           </div>
-          <Table dataSource={dataSource} columns={columns}></Table>
+          <Table
+            dataSource={dataSource}
+            columns={columns}
+            pagination={tablePaginationOptions}
+          ></Table>
         </Col>
       </Row>
     </div>
@@ -158,12 +173,15 @@ export const mapStateToProps = (
   state: Partial<Store>,
   ownProps: ServicePointsListTypes
 ): MapStateToProps => {
+  // get query value
+  const searchText = getQueryParams(ownProps.location)[SEARCH_QUERY_PARAM] as string;
   const filters = {
     geoLevel: ownProps.geoLevel,
+    searchQuery: searchText,
   };
   const rootLocations = getLocationUnitsArray(state);
-  const LocationsByGeoLevel = locationsByLevelSelector(state, filters);
-  return { rootLocations, LocationsByGeoLevel };
+  const searchedLocations = locationsBySearchSelector(state, filters);
+  return { rootLocations, LocationsByGeoLevel: searchedLocations };
 };
 
 export const mapDispatchToProps: MapDispatchToProps = {
