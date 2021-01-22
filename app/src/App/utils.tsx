@@ -15,13 +15,20 @@ import {
   DEFAULT_PLAN_DURATION_DAYS,
   DEFAULT_PLAN_VERSION,
   DEFAULT_TIME,
+  INVENTORY_LOC_OF_INTEREST_GEO_LEVEL,
   OPENSRP_API_BASE_URL,
+  PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
 } from '../configs/env';
 
 export const productCatalogueProps = {
   baseURL: OPENSRP_API_BASE_URL,
+};
+
+export const inventoryServiceProps = {
+  baseURL: OPENSRP_API_BASE_URL,
+  geoLevel: INVENTORY_LOC_OF_INTEREST_GEO_LEVEL,
 };
 
 export const jsonValidatorListProps = {
@@ -100,5 +107,5 @@ export const missionAssignmentProps = {
   showActivateMission: true,
   showAssignmentTable: true,
   showMissionData: true,
-  assignGeoLevel: 3,
+  assignGeoLevel: PLAN_ASSIGNMENT_AT_GEO_LEVEL,
 };

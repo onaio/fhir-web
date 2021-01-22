@@ -54,6 +54,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -182,6 +195,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -305,6 +331,19 @@ Array [
         to="/card-support/download-client-data"
       >
         Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -446,6 +485,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -569,6 +621,19 @@ Array [
         to="/card-support/download-client-data"
       >
         Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -702,6 +767,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -797,6 +875,19 @@ Object {
       >
         <SubMenu
           icon={<ForwardRef(DashboardOutlined) />}
+          title="Inventory"
+        >
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/inventory/list"
+            >
+              Service point inventory
+            </Link>
+          </MenuItem>
+        </SubMenu>
+        <SubMenu
+          icon={<ForwardRef(DashboardOutlined) />}
           title="Admin"
         >
           <MenuItem>
@@ -826,6 +917,19 @@ exports[`components/ConnectedSidebar renders user managment menu for users with 
 Array [
   undefined,
   undefined,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
