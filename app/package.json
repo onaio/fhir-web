@@ -19,6 +19,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/card-support": "^0.0.1",
     "@opensrp/error-boundary-fallback": "^0.0.1",
+    "@opensrp/inventory": "^0.0.1",
     "@opensrp/keycloak-service": "^0.0.8",
     "@opensrp/location-management": "^0.0.7",
     "@opensrp/notifications": "^0.0.2",

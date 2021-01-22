@@ -11,6 +11,8 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
 import { URL_LOCATION_UNIT, URL_LOCATION_UNIT_GROUP, URL_TEAMS } from '../../../../constants';
 
+jest.mock('../../../../configs/env');
+
 describe('containers/pages/Home', () => {
   it('renders without crashing', () => {
     const props = {
