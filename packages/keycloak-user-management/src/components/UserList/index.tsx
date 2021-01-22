@@ -28,6 +28,7 @@ import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { ADD_USER, USER_MANAGEMENT_PAGE_HEADER } from '../../lang';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -125,7 +126,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   return (
     <section className="layout-content">
-      <h5 className="mb-3">User Management</h5>
+      <h5 className="mb-3">{USER_MANAGEMENT_PAGE_HEADER}</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>
           <SearchForm {...searchFormProps} />
@@ -136,7 +137,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               onClick={() => history.push(URL_USER_CREATE)}
             >
               <PlusOutlined />
-              Add User
+              {ADD_USER}
             </Button>
             <Divider type="vertical" />
             <SettingOutlined />
