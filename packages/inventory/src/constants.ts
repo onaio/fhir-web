@@ -11,3 +11,12 @@ export const TableColumnsNamespace = 'inventory';
 
 // magic strings
 export const SEARCH_QUERY_PARAM = 'querySearch';
+export const TABLE_PAGE_SIZE = 5;
+export const TABLE_PAGE_SIZE_OPTIONS = ['5', '10', '20', '50', '100'];
+
+export const tablePaginationOptions = {
+  showQuickJumper: true,
+  showSizeChanger: true,
+  defaultPageSize: TABLE_PAGE_SIZE,
+  pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
+};
