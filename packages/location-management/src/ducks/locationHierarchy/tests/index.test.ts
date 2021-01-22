@@ -72,7 +72,7 @@ describe('src/ducks/locationHierarchies', () => {
     expect(serializeTree(res1)).toEqual(serializeTree(res2));
   });
 
-  it('gets locations by geographic level', () => {
+  it('gets locations by geographic levels', () => {
     const singleRawHierarchy1 = rawHierarchy[0];
     store.dispatch(fetchTree(singleRawHierarchy1));
 
@@ -80,7 +80,7 @@ describe('src/ducks/locationHierarchies', () => {
     const result1 = geoLevelSelector(store.getState(), {});
     const result2 = geoLevelSelector(store.getState(), { geoLevel: 0 });
     expect(result1).toHaveLength(16);
-    expect(result2).toEqual(result1);
+    expect(result2).toHaveLength(1);
   });
 
   it('gets locations by geographic level for specific tree', () => {
@@ -111,19 +111,19 @@ describe('src/ducks/locationHierarchies', () => {
     expect(results).toHaveLength(16);
 
     // search by id
-    const node1 = geoLevelSelector(store.getState(), { searchQuery: id1 });
+    const node1 = nameIdSelector(store.getState(), { searchQuery: id1 });
 
     // should be rootNode
     expect(node1[0].model.label).toEqual('Tunisia');
 
     // search by name
-    const node2 = geoLevelSelector(store.getState(), { searchQuery: 'IROUA' });
+    const node2 = nameIdSelector(store.getState(), { searchQuery: 'IROUA' });
 
     // search by name with different case
-    const node3 = geoLevelSelector(store.getState(), { searchQuery: 'irouA' });
+    const node3 = nameIdSelector(store.getState(), { searchQuery: 'irouA' });
 
     // nodes are same searched by title but with different case
     expect(node2).toEqual(node3);
-    expect(node2[0].model.id).toEqual('a26ca9c8-1441-495a-83b6-bb5df7698996');
+    expect(node2[0].model.id).toEqual('e66a6f38-93d5-42c2-ba1d-57b6d529baa6');
   });
 });
