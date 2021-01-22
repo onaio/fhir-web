@@ -135,19 +135,14 @@ interface ComponentProps extends Partial<RouteProps> {
  * @param props - Component props object
  */
 
-export const PrivateComponent = ({ component: Component, ...rest }: ComponentProps) => {
-  return (
-    <ConnectedPrivateRoute
-      {...rest}
-      component={(props: RouteComponentProps) => (
-        <Component
-          {...props}
-          keycloakBaseURL={KEYCLOAK_API_BASE_URL}
-          opensrpBaseURL={OPENSRP_API_BASE_URL}
-        />
-      )}
-    />
-  );
+export const PrivateComponent = (props: ComponentProps) => {
+  //  props to pass on to Connected Private Route
+  const CPRProps = {
+    ...props,
+    keycloakBaseURL: KEYCLOAK_API_BASE_URL,
+    opensrpBaseURL: OPENSRP_API_BASE_URL,
+  };
+  return <ConnectedPrivateRoute {...CPRProps} />;
 };
 
 /** Util wrapper around Route for rendering components

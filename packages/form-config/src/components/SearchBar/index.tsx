@@ -1,3 +1,7 @@
+/** This component has now been added to react-utils ,
+ * we can now remove this and use the one in react-utils,
+ * https://github.com/OpenSRP/web/issues/365
+ */
 import React, { ChangeEvent } from 'react';
 import { debounce } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
