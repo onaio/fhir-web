@@ -97,7 +97,7 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
     else return undefined;
   });
 
-  const filter = map.filter((e) => e != undefined);
+  const filter = map.filter((e) => e !== undefined);
   return filter[0];
 }
 
@@ -135,7 +135,7 @@ export async function onSubmit(
   let geographicLevel = 0;
   if (values.parentId) {
     const parent = findParentGeoLocation(treedata, values.parentId);
-    if (parent != undefined) geographicLevel = parent + 1;
+    if (parent !== undefined) geographicLevel = parent + 1;
     else throw new Error(ERROR_OCCURED); // stops execution because this is unlikely thing to happen and shouldn't send error to server
   }
 
