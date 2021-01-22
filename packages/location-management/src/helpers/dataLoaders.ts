@@ -126,17 +126,19 @@ export const defaultSettingsParams = {
 /** request to get service points from settings
  *
  * @param settingsIdentifier - id for settings to query from api
+ * @param baseURL - the openSRP api base url
  * @param serviceClass - the openSRP service
  * @param callback - callback to call with resolved response
  * @param params - extra params to add to request
  */
 export async function loadSettings<T>(
   settingsIdentifier: string,
+  baseURL: string,
   serviceClass: typeof OpenSRPService,
   callback?: (data: T[]) => void,
   params: URLParams = defaultSettingsParams
 ) {
-  const service = new serviceClass(OPENSRP_V2_SETTINGS);
+  const service = new serviceClass(OPENSRP_V2_SETTINGS, baseURL);
   const queryParams = {
     ...params,
     identifier: settingsIdentifier,
