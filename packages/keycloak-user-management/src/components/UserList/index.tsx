@@ -6,27 +6,34 @@ import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import { getFilteredDataArray, SearchBar } from '@opensrp/react-utils';
+import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
-  getKeycloakUsersArray,
   removeKeycloakUsers,
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
+  makeKeycloakUsersSelector,
 } from '../../ducks/user';
-import { URL_USER_CREATE, KEYCLOAK_URL_USERS, ERROR_OCCURED, NO_DATA_FOUND } from '../../constants';
+import {
+  URL_USER_CREATE,
+  KEYCLOAK_URL_USERS,
+  ERROR_OCCURED,
+  NO_DATA_FOUND,
+  SEARCH_QUERY_PARAM,
+} from '../../constants';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
-import { useHistory } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 // Define selector instance
 const getAccessToken = makeAPIStateSelector();
+const usersSelector = makeKeycloakUsersSelector();
 
 /** interface for component props */
 export interface Props {
@@ -37,8 +44,6 @@ export interface Props {
   accessToken: string;
   keycloakBaseURL: string;
   extraData: Dictionary;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filteredData: any[];
 }
 
 /** default component props */
@@ -50,7 +55,6 @@ export const defaultProps = {
   keycloakUsers: [],
   keycloakBaseURL: '',
   extraData: {},
-  filteredData: [],
 };
 
 interface TableData {
@@ -62,7 +66,9 @@ interface TableData {
   lastName: string | undefined;
 }
 
-const UserList = (props: Props): JSX.Element => {
+export type UserListTypes = Props & RouteComponentProps;
+
+const UserList = (props: UserListTypes): JSX.Element => {
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const {
@@ -73,7 +79,6 @@ const UserList = (props: Props): JSX.Element => {
     accessToken,
     keycloakBaseURL,
     extraData,
-    filteredData,
   } = props;
 
   const isLoadingCallback = (isLoading: boolean) => {
@@ -113,12 +118,17 @@ const UserList = (props: Props): JSX.Element => {
     };
   });
 
+  const searchFormProps = {
+    defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
+    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
+  };
+
   return (
     <section className="layout-content">
       <h5 className="mb-3">User Management</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>
-          <SearchBar data={tableData} size="large" />
+          <SearchForm {...searchFormProps} />
           <Space style={{ marginBottom: 16, float: 'right' }}>
             <Button
               type="primary"
@@ -142,7 +152,7 @@ const UserList = (props: Props): JSX.Element => {
                   extraData,
                   sortedInfo
                 )}
-                dataSource={filteredData.length ? filteredData : (tableData as KeycloakUser[])}
+                dataSource={keycloakUsers}
                 pagination={{
                   showQuickJumper: true,
                   showSizeChanger: true,
@@ -171,17 +181,15 @@ interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
   accessToken: string;
   extraData: Dictionary;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filteredData: any[];
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
-  const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
+const mapStateToProps = (state: Partial<Store>, props: UserListTypes): DispatchedProps => {
+  const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
+  const keycloakUsers = usersSelector(state, { searchText: searchQuery });
   const accessToken = getAccessToken(state, { accessToken: true });
-  const filteredData = getFilteredDataArray(state);
   const extraData = getExtraData(state);
-  return { keycloakUsers, accessToken, extraData, filteredData };
+  return { keycloakUsers, accessToken, extraData };
 };
 
 /** map props to action creators */
