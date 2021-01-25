@@ -25,3 +25,5 @@ export const USERS = i18n.t('Users');
 export const ADMIN = i18n.t('Admin');
 export const MISSIONS = i18n.t('Missions');
 export const WELCOME_TO_OPENSRP = i18n.t('Welcome to OpenSRP');
+export const INVENTORY = i18n.t('Inventory');
+export const SERVICE_POINT_INVENTORY = i18n.t('Service point inventory');

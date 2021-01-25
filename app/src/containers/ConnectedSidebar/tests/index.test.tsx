@@ -122,4 +122,21 @@ describe('components/ConnectedSidebar', () => {
     expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
     wrapper.unmount();
   });
+
+  it('correctly expand teams menu', () => {
+    const envModule = require('../../../configs/env');
+    envModule.ENABLE_TEAMS = 'true';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: `/admin/teams`, hash: '', search: '', state: {} }]}
+        >
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    wrapper.unmount();
+  });
 });

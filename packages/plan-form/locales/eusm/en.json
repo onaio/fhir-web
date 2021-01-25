@@ -94,13 +94,13 @@
   "IRS": "",
   "Locations": "",
   "MDA Point": "",
-  "Plan Title": "",
-  "Plan Start Date": "",
-  "Plan End Date": "",
+  "Plan Title": "Mission name",
+  "Plan Start Date": "Mission start date",
+  "Plan End Date": "Mission end date",
   "Quantity": "",
   "Priority": "",
   "Reason": "",
-  "Save Plan": "",
+  "Save Plan": "Save mission",
   "Select %s": "",
   "Status": "",
   "Triggers": "",
@@ -115,6 +115,6 @@
   "Active date range": "",
   "Add Jurisdiction": "",
   "Cancel": "",
-  "Enter the Plan's name": "",
-  "Enter the plans Description": ""
+  "Enter the Plan's name": "Enter the mission's name",
+  "Enter the plans Description": "Enter the missions description"
 }

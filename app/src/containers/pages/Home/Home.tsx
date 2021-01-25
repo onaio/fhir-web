@@ -7,9 +7,14 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
-import { URL_USER, URL_LOCATION_UNIT, URL_LOCATION_UNIT_GROUP } from '../../../constants';
-import { ENABLE_LOCATIONS } from '../../../configs/env';
-import { LOCATIONS_UNIT, LOCATIONS_UNIT_GROUP, WELCOME_TO_OPENSRP } from '../../../lang';
+import { LOCATIONS_UNIT, LOCATIONS_UNIT_GROUP, WELCOME_TO_OPENSRP, TEAMS } from '../../../lang';
+import {
+  URL_USER,
+  URL_LOCATION_UNIT,
+  URL_LOCATION_UNIT_GROUP,
+  URL_TEAMS,
+} from '../../../constants';
+import { ENABLE_LOCATIONS, ENABLE_TEAMS } from '../../../configs/env';
 
 export interface HomeProps {
   extraData: Dictionary;
@@ -34,6 +39,15 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
             <Link to={URL_USER} className="admin-link">
               <Button color="outline" className="btn-links">
                 Admin
+              </Button>
+            </Link>
+          </Col>
+        )}
+        {ENABLE_TEAMS && (
+          <Col className="gutter-row" span={12}>
+            <Link to={URL_TEAMS} className="admin-link">
+              <Button color="outline" className="btn-links">
+                {TEAMS}
               </Button>
             </Link>
           </Col>
