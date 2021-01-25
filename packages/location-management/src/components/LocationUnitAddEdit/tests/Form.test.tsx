@@ -54,7 +54,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     const mockNotificationSuccess = jest.spyOn(notification, 'success');
 
     await onSubmit(
-      jest.fn,
       formValue,
       baseURL,
       locationUnitgroups,
@@ -66,19 +65,21 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       await flushPromises();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: fetch.mock.calls[0][1].body,
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: fetch.mock.calls[0][1].body,
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'POST',
         },
-        method: 'POST',
-      },
+      ],
     ]);
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
@@ -119,10 +120,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
   it('handles error when creating new location unit', async () => {
     fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockfn = jest.fn();
 
     await onSubmit(
-      jest.fn,
       formValue,
       baseURL,
       locationUnitgroups,
@@ -130,15 +130,13 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       'user_test',
       [],
       '1'
-    );
+    ).catch(mockfn);
+
     await act(async () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: ERROR_OCCURED,
-    });
+    expect(mockfn).toBeCalled();
   });
 
   it('edits location unit successfully', async () => {
@@ -155,8 +153,8 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
+
     await onSubmit(
-      jest.fn,
       { ...formValue, parentId: '400e9d97-4640-44f5-af54-6f4b314384f5' },
       baseURL,
       locationUnitgroups,
@@ -166,33 +164,35 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       '1'
     );
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: JSON.stringify({
-          is_jurisdiction: true,
-          properties: {
-            geographicLevel: 6,
-            username: 'user_test',
-            parentId: '400e9d97-4640-44f5-af54-6f4b314384f5',
-            name: 'Tunisia',
-            name_en: 'Tunisia',
-            status: 'Active',
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: JSON.stringify({
+            is_jurisdiction: true,
+            properties: {
+              geographicLevel: 6,
+              username: 'user_test',
+              parentId: '400e9d97-4640-44f5-af54-6f4b314384f5',
+              name: 'Tunisia',
+              name_en: 'Tunisia',
+              status: 'Active',
+            },
+            id: '1',
+            syncStatus: 'Synced',
+            type: 'Feature',
+            locationTags: [{ id: 2, name: 'Sample 2' }],
+          }),
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
           },
-          id: '1',
-          syncStatus: 'Synced',
-          type: 'Feature',
-          locationTags: [{ id: 2, name: 'Sample 2' }],
-        }),
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
+          method: 'PUT',
         },
-        method: 'PUT',
-      },
+      ],
     ]);
 
     await act(async () => {
@@ -209,7 +209,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('fail create location unit successfully', async () => {
     fetch.mockReject();
 
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockfn = jest.fn();
 
     const wrapper = mount(
       <Provider store={store}>
@@ -224,45 +224,46 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
 
-    await onSubmit(jest.fn, formValue, baseURL, locationUnitgroups, parsedHierarchy, 'user_test');
+    await onSubmit(formValue, baseURL, locationUnitgroups, parsedHierarchy, 'user_test').catch(
+      mockfn
+    );
 
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: JSON.stringify({
-          is_jurisdiction: true,
-          properties: {
-            geographicLevel: 0,
-            username: 'user_test',
-            name: 'Tunisia',
-            name_en: 'Tunisia',
-            status: 'Active',
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: JSON.stringify({
+            is_jurisdiction: true,
+            properties: {
+              geographicLevel: 0,
+              username: 'user_test',
+              name: 'Tunisia',
+              name_en: 'Tunisia',
+              status: 'Active',
+            },
+            id: JSON.parse(fetch.mock.calls[0][1].body as string).id,
+            syncStatus: 'Synced',
+            type: 'Feature',
+            locationTags: [{ id: 2, name: 'Sample 2' }],
+          }),
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
           },
-          id: JSON.parse(fetch.mock.calls[0][1].body as string).id,
-          syncStatus: 'Synced',
-          type: 'Feature',
-          locationTags: [{ id: 2, name: 'Sample 2' }],
-        }),
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
+          method: 'POST',
         },
-        method: 'POST',
-      },
+      ],
     ]);
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: ERROR_OCCURED,
-    });
+    expect(mockfn).toBeCalled();
   });
 
   it('handles error when editing location unit', async () => {
@@ -282,7 +283,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       </Provider>
     );
     await onSubmit(
-      jest.fn,
       { ...formValue, parentId: 'wrong parent id' },
       baseURL,
       locationUnitgroups,
@@ -296,7 +296,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual(undefined);
+    expect(fetch.mock.calls).toEqual([]);
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
@@ -306,9 +306,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
   it('handle failed on submit', async () => {
     fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockfn = jest.fn();
+
     await onSubmit(
-      jest.fn,
       formValue,
       baseURL,
       locationUnitgroups,
@@ -316,16 +316,13 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       'user_test',
       [],
       '1'
-    );
+    ).catch(mockfn);
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: ERROR_OCCURED,
-    });
+    expect(mockfn).toBeCalled();
   });
 
   it('renders without crashing with id', () => {

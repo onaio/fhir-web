@@ -38,7 +38,6 @@ describe('location-management/src/components/LocationUnitView', () => {
 
   beforeEach(() => {
     fetch.mockClear();
-    fetch.resetMocks();
   });
 
   it('test resolve loadSingleLocation', async () => {
@@ -64,7 +63,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test fail loadSingleLocation', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject();
 
@@ -88,7 +86,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test getBaseTreeNode', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
     const response = await getBaseTreeNode(baseURL);
@@ -123,7 +120,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test getHierarchy', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
     await flushPromises();
@@ -135,7 +131,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('fail loading location ', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
     fetch.mockReject();
@@ -160,7 +155,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('fail loading location hierarchy', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
@@ -186,8 +180,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('location unit table renders correctly', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
-    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
@@ -205,52 +197,40 @@ describe('location-management/src/components/LocationUnitView', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[1]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[2]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[3]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
+      ],
     ]);
 
     expect(wrapper.find('Table').first().props()).toMatchSnapshot();
