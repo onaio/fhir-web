@@ -12,7 +12,8 @@ import Form, { findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form'
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
-import { baseURL, ERROR_OCCURED } from '../../../constants';
+import { baseURL } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeAll(() => {

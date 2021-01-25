@@ -16,7 +16,35 @@ import {
 } from '../../ducks/location-units';
 import { useSelector } from 'react-redux';
 import { Geometry } from 'geojson';
-import { ERROR_OCCURED, LOCATION_UNIT_POST_PUT } from '../../constants';
+import { LOCATION_UNIT_POST_PUT } from '../../constants';
+import {
+  ACTIVE,
+  INACTIVE,
+  ERROR_EXTERNAL_ID_STRING,
+  ERROR_GEOMETRY_STRING,
+  ERROR_LOCATION_TAGS_ARRAY,
+  ERROR_NAME_REQUIRED,
+  ERROR_NAME_STRING,
+  ERROR_OCCURED,
+  ERROR_PARENTID_STRING,
+  ERROR_STATUS_REQUIRED,
+  ERROR_TYPE_REQUIRED,
+  ERROR_TYPE_STRING,
+  MESSAGE_LOCATION_UNIT_UPDATED,
+  MESSAGE_LOCATION_UNIT_CREATED,
+  PLEASE_SELECT,
+  NAME,
+  STATUS,
+  SAVING,
+  SAVE,
+  TYPE,
+  EXTERNAL_ID,
+  SELECT_TYPE,
+  SELECT_STATUS,
+  GEOMETRY,
+  UNIT_GROUP,
+  CANCEL,
+} from '../../lang';
 import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
@@ -50,19 +78,19 @@ export interface Props {
 
 /** yup validations for practitioner data object from form */
 const userSchema = Yup.object().shape({
-  parentId: Yup.string().typeError('Parentid must be a String'),
-  name: Yup.string().typeError('Name must be a String').required('Name is Required'),
-  status: Yup.string().required('Status is Required'),
-  type: Yup.string().typeError('Type must be a String').required('Type is Required'),
-  externalId: Yup.string().typeError('External id must be a String'),
-  locationTags: Yup.array().typeError('location Unit Groupss must be an Array'),
-  geometry: Yup.string().typeError('location Unit Groups must be a An String'),
+  parentId: Yup.string().typeError(ERROR_PARENTID_STRING),
+  name: Yup.string().typeError(ERROR_NAME_STRING).required(ERROR_NAME_REQUIRED),
+  status: Yup.string().required(ERROR_STATUS_REQUIRED),
+  type: Yup.string().typeError(ERROR_TYPE_STRING).required(ERROR_TYPE_REQUIRED),
+  externalId: Yup.string().typeError(ERROR_EXTERNAL_ID_STRING),
+  locationTags: Yup.array().typeError(ERROR_LOCATION_TAGS_ARRAY),
+  geometry: Yup.string().typeError(ERROR_GEOMETRY_STRING),
 });
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 const status = [
-  { label: 'Active', value: LocationUnitStatus.ACTIVE },
-  { label: 'Inactive', value: LocationUnitStatus.INACTIVE },
+  { label: ACTIVE, value: LocationUnitStatus.ACTIVE },
+  { label: INACTIVE, value: LocationUnitStatus.INACTIVE },
 ];
 
 /** removes empty undefined and null objects before they payload is sent to server
@@ -173,7 +201,7 @@ export async function onSubmit(
     await serve
       .update({ ...payload })
       .then(() => {
-        sendSuccessNotification('Location Unit Updated successfully');
+        sendSuccessNotification(MESSAGE_LOCATION_UNIT_UPDATED);
         history.goBack();
       })
       .catch(() => sendErrorNotification(ERROR_OCCURED));
@@ -181,7 +209,7 @@ export async function onSubmit(
     await serve
       .create({ ...payload })
       .then(() => {
-        sendSuccessNotification('Location Unit Created successfully');
+        sendSuccessNotification(MESSAGE_LOCATION_UNIT_CREATED);
         history.goBack();
       })
       .catch(() => sendErrorNotification(ERROR_OCCURED));
@@ -244,17 +272,17 @@ export const Form: React.FC<Props> = (props: Props) => {
               name="parentId"
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              placeholder="Please select"
+              placeholder={PLEASE_SELECT}
             >
               {parseHierarchyNode(props.treedata)}
             </TreeSelect>
           </AntForm.Item>
 
-          <AntForm.Item name="name" label="Name" required>
+          <AntForm.Item name="name" label={NAME} required>
             <Input name="name" placeholder="Enter a location name" />
           </AntForm.Item>
 
-          <AntForm.Item label="Status" name="status" valuePropName="checked" required>
+          <AntForm.Item label={STATUS} name="status" valuePropName="checked" required>
             <Radio.Group name="status" defaultValue={props.initialValue?.status}>
               {status.map((e) => (
                 <Radio name="status" key={e.label} value={e.value}>
@@ -264,19 +292,19 @@ export const Form: React.FC<Props> = (props: Props) => {
             </Radio.Group>
           </AntForm.Item>
 
-          <AntForm.Item name="type" label="Type" required>
-            <Input name="type" placeholder="Select type" />
+          <AntForm.Item name="type" label={TYPE} required>
+            <Input name="type" placeholder={SELECT_TYPE} />
           </AntForm.Item>
 
-          <AntForm.Item name="externalId" label="External ID">
-            <Input name="externalId" placeholder="Select status" />
+          <AntForm.Item name="externalId" label={EXTERNAL_ID}>
+            <Input name="externalId" placeholder={SELECT_STATUS} />
           </AntForm.Item>
 
-          <AntForm.Item name="geometry" label="geometry">
+          <AntForm.Item name="geometry" label={GEOMETRY}>
             <Input.TextArea name="geometry" rows={4} placeholder="</> JSON" />
           </AntForm.Item>
 
-          <AntForm.Item label="Unit Group" name="locationTags">
+          <AntForm.Item label={UNIT_GROUP} name="locationTags">
             <Select
               name="locationTags"
               mode="multiple"
@@ -311,9 +339,9 @@ export const Form: React.FC<Props> = (props: Props) => {
           ))}
 
           <AntForm.Item name="buttons" {...offsetLayout}>
-            <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
+            <SubmitButton id="submit">{isSubmitting ? SAVING : SAVE}</SubmitButton>
             <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-              Cancel
+              {CANCEL}
             </Button>
           </AntForm.Item>
         </AntForm>

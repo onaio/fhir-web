@@ -5,11 +5,8 @@ import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { getAccessToken } from '@onaio/session-reducer';
 import { useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/server-service';
-import {
-  ERROR_OCCURED,
-  LOCATION_UNIT_GROUP_DELETE,
-  URL_LOCATION_UNIT_GROUP_EDIT,
-} from '../../constants';
+import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
+import { ERROR_OCCURED, NAME, ACTIONS, EDIT, VIEW_DETAILS, DELETE } from '../../lang';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
@@ -52,12 +49,12 @@ const Table: React.FC<Props> = (props: Props) => {
 
   const columns = [
     {
-      title: 'Name',
+      title: NAME,
       dataIndex: 'name',
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
-      title: 'Actions',
+      title: ACTIONS,
       dataIndex: 'operation',
       width: '10%',
 
@@ -66,7 +63,7 @@ const Table: React.FC<Props> = (props: Props) => {
         <span className="d-flex justify-content-end align-items-center">
           <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
             <Button type="link" className="m-0 p-1">
-              Edit
+              {EDIT}
             </Button>
           </Link>
           <Divider type="vertical" />
@@ -77,13 +74,13 @@ const Table: React.FC<Props> = (props: Props) => {
                   className="viewdetails"
                   onClick={() => (onViewDetails ? onViewDetails(record) : {})}
                 >
-                  View Details
+                  {VIEW_DETAILS}
                 </Menu.Item>
                 <Menu.Item
                   className="delete"
                   onClick={() => onDelete(record, accessToken, opensrpBaseURL)}
                 >
-                  Delete
+                  {DELETE}
                 </Menu.Item>
               </Menu>
             }
