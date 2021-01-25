@@ -82,7 +82,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     extraData,
   } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
-  const [practitionerValue, setPractitionerValue] = React.useState<boolean>();
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const history = useHistory();
@@ -104,6 +103,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       lg: { offset: 6, span: 14 },
     },
   };
+  const status = [
+    { label: 'Yes', value: true },
+    { label: 'No', value: false },
+  ];
   const { Option } = Select;
   React.useEffect(() => {
     fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, serviceClass);
@@ -118,13 +121,9 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   React.useEffect(() => {
     form.setFieldsValue({
       ...initialValues,
-      active: practitionerValue,
+      active: !!practitioner && practitioner.active,
     });
-  }, [form, initialValues, practitionerValue]);
-
-  React.useEffect(() => {
-    setPractitionerValue(!!practitioner && practitioner.active);
-  }, [practitioner]);
+  }, [form, initialValues, practitioner]);
 
   return (
     <Row className="layout-content">
@@ -138,7 +137,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           form={form}
           initialValues={{
             ...initialValues,
-            active: practitionerValue,
+            active: !!practitioner && practitioner.active,
           }}
           onFinish={(values) => {
             submitForm(
@@ -185,25 +184,13 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
-            <Form.Item
-              id="practitionerToggle"
-              name="active"
-              label="Mark as Practitioner"
-              valuePropName="checked"
-            >
-              <Radio.Group
-                name="active"
-                value={practitionerValue}
-                onChange={(e) => {
-                  setPractitionerValue(e.target.value);
-                }}
-              >
-                <Radio name="active" key={'Yes'} value={true}>
-                  Yes
-                </Radio>
-                <Radio name="active" key={'No'} value={false}>
-                  No
-                </Radio>
+            <Form.Item id="practitionerToggle" name="active" label="Mark as Practitioner">
+              <Radio.Group name="active">
+                {status.map((e) => (
+                  <Radio name="active" key={e.label} value={e.value}>
+                    {e.label}
+                  </Radio>
+                ))}
               </Radio.Group>
             </Form.Item>
           ) : null}

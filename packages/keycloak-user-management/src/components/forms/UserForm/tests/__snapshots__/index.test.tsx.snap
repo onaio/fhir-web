@@ -281,7 +281,6 @@ Object {
       value={false}
     >
       <Memo
-        checked={false}
         id="active"
         name="active"
         onChange={[Function]}
@@ -312,11 +311,10 @@ Object {
   ],
   "onDomErrorVisibleChange": [Function],
   "prefixCls": "ant-form",
-  "status": "success",
-  "touched": true,
-  "validateStatus": "success",
+  "status": "",
+  "touched": false,
+  "validateStatus": "",
   "validating": false,
-  "valuePropName": "checked",
 }
 `;
 
@@ -334,7 +332,6 @@ Object {
       value={true}
     >
       <Memo
-        checked={true}
         id="active"
         name="active"
         onChange={[Function]}
@@ -365,11 +362,10 @@ Object {
   ],
   "onDomErrorVisibleChange": [Function],
   "prefixCls": "ant-form",
-  "status": "success",
-  "touched": true,
-  "validateStatus": "success",
+  "status": "",
+  "touched": false,
+  "validateStatus": "",
   "validating": false,
-  "valuePropName": "checked",
 }
 `;
 
