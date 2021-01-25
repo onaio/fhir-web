@@ -73,3 +73,39 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
 export const serializeTree = (trees: TreeNode[]) => {
   return JSON.stringify(trees.map((tree) => JSON.stringify(cycle.decycle(tree))));
 };
+
+export function getHierarchyNode(
+  hierarchy: ParsedHierarchyNode,
+  id: string
+): ParsedHierarchyNode | undefined {
+  // convert the ParsedHierarchyNode object into tree
+  const tree = new TreeModel().parse(hierarchy);
+  // variable to store either we found node in the tree or not
+  let result: ParsedHierarchyNode | undefined = undefined;
+
+  // walk through each of tree nodes and look for specific tree id
+  tree.walk((node) => {
+    if ((node.model as ParsedHierarchyNode).id === id) {
+      result = node.model as ParsedHierarchyNode;
+      return false; // return false to stop the loop of tree walk
+    } else return true; // return true to keep searching
+  });
+
+  // return the result that either the node id exsity in this tree or not
+  return result;
+}
+
+export function getHierarchyNodeFromArray(
+  hierarchy: ParsedHierarchyNode[],
+  id: string
+): ParsedHierarchyNode | undefined {
+  // variable to store the result of previous ParsedHierarchyNode from array
+  let result: ParsedHierarchyNode | undefined;
+  // Loop over each array and using recursion check if we have the node in this tree or not
+  (hierarchy as ParsedHierarchyNode[]).forEach((tree) => {
+    result = getHierarchyNode(tree, id);
+    if (result) return result; // if found stops the execution of loop
+  });
+
+  return result;
+}
