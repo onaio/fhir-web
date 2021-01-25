@@ -168,11 +168,15 @@ export async function onSubmit(
   removeEmptykeys(payload);
 
   const serve = new OpenSRPService(LOCATION_UNIT_POST_PUT, opensrpBaseURL);
-  if (id) await serve.update({ ...payload });
-  else await serve.create({ ...payload });
+  if (id) {
+    await serve.update({ ...payload });
+    sendSuccessNotification('Location Unit Updated successfully');
+  } else {
+    await serve.create({ ...payload });
+    sendSuccessNotification('Location Unit Created successfully');
+  }
 
   history.goBack();
-  sendSuccessNotification('Location Unit Created successfully');
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
