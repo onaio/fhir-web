@@ -49,6 +49,7 @@ export const OPENSRP_FIND_BY_PROPERTIES = 'findByProperties';
 export const OPENSRP_LOCATION = 'location';
 export const OPENSRP_ACTIVE = 'Active';
 export const OPENSRP_TASK_SEARCH = 'task/search';
+export const OPENSRP_TASK_EXPORT_DATA = 'event/export-data';
 
 // router routes
 export const URL_MISSIONS = '/missions';
@@ -86,3 +87,11 @@ export const PlanStatusColors: Dictionary = {
 };
 
 export const NO_DATA_FOUND = 'No data found';
+
+// event types
+
+export const FLAG_PROBLEM_EVENT = 'flag_problem';
+export const SERVICE_POINT_EVENT = 'service_point_check';
+export const LOOKS_GOOD_EVENT = 'looks_good';
+export const RECORD_GPS_EVENT = 'record_gps';
+export const FIX_PROBLEM_EVENT = 'fix_problem';

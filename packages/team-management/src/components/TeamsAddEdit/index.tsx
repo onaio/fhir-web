@@ -4,13 +4,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { reducer, Organization, reducerName } from '../../ducks/organizations';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import {
-  API_BASE_URL,
-  ERROR_OCCURRED,
-  PRACTITIONER_GET,
-  TEAMS_GET,
-  TEAM_PRACTITIONERS,
-} from '../../constants';
+import { ERROR_OCCURRED, PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
@@ -24,15 +18,16 @@ reducerRegistry.register(reducerName, reducer);
  * Gets Team data
  *
  * @param {string} id id of the team
+ * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Object>} Object Containing Team Data
  */
-export async function getTeamDetail(id: string) {
-  const serve = new OpenSRPService(TEAMS_GET + id, API_BASE_URL);
+export async function getTeamDetail(id: string, opensrpBaseURL: string) {
+  const serve = new OpenSRPService(TEAMS_GET + id, opensrpBaseURL);
   return await serve.list().then(async (response: Organization) => {
     return {
       name: response.name,
       active: response.active,
-      practitioners: await getPractitonerDetail(id),
+      practitioners: await getPractitonerDetail(id, opensrpBaseURL),
     };
   });
 }
@@ -41,10 +36,11 @@ export async function getTeamDetail(id: string) {
  * Gets Practioners assigned to a team
  *
  * @param {string} id id of the team
+ * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<Practitioner>>} list of Practitioner Assigned to a team
  */
-export async function getPractitonerDetail(id: string) {
-  const serve = new OpenSRPService(TEAM_PRACTITIONERS + id, API_BASE_URL);
+export async function getPractitonerDetail(id: string, opensrpBaseURL: string) {
+  const serve = new OpenSRPService(TEAM_PRACTITIONERS + id, opensrpBaseURL);
   return await serve.list().then((response: Practitioner[]) => response.filter((e) => e.active));
 }
 
@@ -52,10 +48,11 @@ export async function getPractitonerDetail(id: string) {
  * Set the InitialValue in component
  *
  * @param {string} id id of the team
+ * @param {string} opensrpBaseURL - base url
  * @param {Function} setInitialValue Function to set intial value
  */
-function setupInitialValue(id: string, setInitialValue: Function) {
-  getTeamDetail(id)
+function setupInitialValue(id: string, opensrpBaseURL: string, setInitialValue: Function) {
+  getTeamDetail(id, opensrpBaseURL)
     .then((response) => {
       setInitialValue({
         ...response,
@@ -65,22 +62,34 @@ function setupInitialValue(id: string, setInitialValue: Function) {
     .catch(() => sendErrorNotification(ERROR_OCCURRED));
 }
 
-const TeamsAddEdit: React.FC = () => {
+export interface Props {
+  opensrpBaseURL: string;
+}
+
+/** default component props */
+export const defaultProps = {
+  opensrpBaseURL: '',
+};
+
+export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
   const [practitioner, setPractitioner] = useState<Practitioner[] | null>(null);
+  const { opensrpBaseURL } = props;
 
   useEffect(() => {
-    if (params.id) setupInitialValue(params.id, setInitialValue);
-  }, [params.id]);
+    if (params.id) setupInitialValue(params.id, opensrpBaseURL, setInitialValue);
+  }, [params.id, opensrpBaseURL]);
 
   useEffect(() => {
-    const serve = new OpenSRPService(PRACTITIONER_GET, API_BASE_URL);
+    const serve = new OpenSRPService(PRACTITIONER_GET, opensrpBaseURL);
     serve
       .list()
-      .then((response: Practitioner[]) => setPractitioner(response))
+      .then((response: Practitioner[]) => {
+        setPractitioner(response);
+      })
       .catch(() => sendErrorNotification(ERROR_OCCURRED));
-  }, []);
+  }, [opensrpBaseURL]);
 
   if (!practitioner || (params.id && !initialValue)) return <Spin size={'large'} />;
 
@@ -95,10 +104,15 @@ const TeamsAddEdit: React.FC = () => {
       </h5>
 
       <div className="bg-white p-5">
-        <Form initialValue={initialValue} id={params.id} practitioner={practitioner} />
+        <Form
+          opensrpBaseURL={opensrpBaseURL}
+          initialValue={initialValue}
+          id={params.id}
+          practitioner={practitioner}
+        />
       </div>
     </section>
   );
 };
 
-export { TeamsAddEdit };
+export default TeamsAddEdit;

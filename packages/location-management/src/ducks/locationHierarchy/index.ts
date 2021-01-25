@@ -113,6 +113,7 @@ export function hierarchyReducer(
 export interface Filters {
   rootJurisdictionId?: string[] /** specify which tree to act upon, undefined allows all */;
   geoLevel?: number /** get locations at the specified level */;
+  searchQuery?: string /** search query to filter nodes against, by name and id */;
 }
 
 /** retrieve the rootJurisdiction value
@@ -129,6 +130,13 @@ export const getRootJurisdictionId = (_: Partial<Store>, props: Filters) =>
  * @param props -  the filterProps
  */
 export const getGeoLevel = (_: Partial<Store>, props: Filters) => props.geoLevel;
+
+/** retrieve the geoLevel value
+ *
+ * @param _ - the store
+ * @param props -  the filterProps
+ */
+export const getSearchQuery = (_: Partial<Store>, props: Filters) => props.searchQuery;
 
 /** gets all trees key'd by the rootNodes id
  *
@@ -167,12 +175,30 @@ export const getLocationsByLevel = () =>
       locationsOfInterest = [
         ...locationsOfInterest,
         ...tree.all((node) => {
-          if (geoLevel) {
-            return node.model.node.attributes.geographicLevel === geoLevel;
+          if (geoLevel === undefined) {
+            return true;
           }
-          return true;
+          return node.model.node.attributes.geographicLevel === geoLevel;
         }),
       ];
     });
     return locationsOfInterest;
+  });
+
+const geoLevelSelector = getLocationsByLevel();
+
+/** factory that returns a selector that can be used to filter the nodes by either their
+ * labels or ids
+ */
+export const getLocationsByNameAndId = () =>
+  createSelector(geoLevelSelector, getSearchQuery, (nodes, searchQuery): TreeNode[] => {
+    if (searchQuery === undefined) {
+      return nodes;
+    }
+    const matchesName = (node: TreeNode) =>
+      node.model.label.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesId = (node: TreeNode) => node.model.id === searchQuery;
+    return nodes.filter((node) => {
+      return matchesName(node) || matchesId(node);
+    });
   });

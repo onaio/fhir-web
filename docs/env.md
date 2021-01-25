@@ -139,3 +139,33 @@ Below is a list of currently supported environment variables:
   - Enables the form configuration module
   - **Optional**(_string_)
   - default: `"false"`
+
+- **REACT_APP_LANGUAGE_CODE**
+
+  - language resources to use for text i18next
+  - **optional**_(`string`)_
+  - default: `en`
+
+- **REACT_APP_PROJECT_LANGUAGE_CODE**
+
+  - project code to help decide where to pick the language resource files from
+  - **optional**_(`string`)_
+  - default: `core`
+
+- **REACT_APP_ENABLE_INVENTORY**
+
+  - Enables the inventory module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
+- **REACT_APP_INVENTORY_LOC_OF_INTEREST_GEO_LEVEL**
+
+  - used by inventory module to configure at what geo level the locations we want, sit
+  - **Optional**(`number`)
+  - default: `0`
+
+- **REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL**
+
+  - geo level to assign teams at
+  - **Optional**(`number`)
+  - default: `0`

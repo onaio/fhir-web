@@ -50,12 +50,12 @@ export const loadSingleTeam = (
     .catch(() => sendErrorNotification(ERROR_OCCURRED));
 };
 
-export interface Props {
+interface Props {
   opensrpBaseURL: string;
 }
 
 /** default component props */
-export const defaultProps = {
+const defaultProps = {
   opensrpBaseURL: '',
 };
 
@@ -64,7 +64,7 @@ export const defaultProps = {
  * @param {Object} props - TeamsView component props
  * @returns {Function} returns team display
  */
-const TeamsView: React.FC<Props> = (props: Props) => {
+export const TeamsView: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const teamsArray = useSelector((state) => getOrganizationsArray(state));
   const [detail, setDetail] = useState<TeamsDetailProps | null>(null);
@@ -176,4 +176,4 @@ const TeamsView: React.FC<Props> = (props: Props) => {
 
 TeamsView.defaultProps = defaultProps;
 
-export { TeamsView };
+export default TeamsView;

@@ -2,7 +2,6 @@
 
 exports[`components/TeamsView/table renders without crashing: Table 1`] = `
 <Table
-  accessToken="hunter 2"
   data={
     Array [
       Object {
@@ -35,7 +34,7 @@ exports[`components/TeamsView/table renders without crashing: Table 1`] = `
       },
     ]
   }
-  opensrpBaseURL=""
+  opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
   setDetail={[Function]}
   setPractitionersList={[Function]}
 />

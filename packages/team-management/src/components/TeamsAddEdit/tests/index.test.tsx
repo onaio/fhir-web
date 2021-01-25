@@ -6,7 +6,8 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { accessToken, id, intialValue, practitioners, team } from './fixtures';
+import { id, intialValue, opensrpBaseURL, practitioners, team } from './fixtures';
+import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
 
@@ -14,6 +15,21 @@ import TeamsAddEdit, { getPractitonerDetail, getTeamDetail } from '..';
 import { ERROR_OCCURRED } from '../../../constants';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fetch.mockClear();
   });
@@ -24,10 +40,15 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <TeamsAddEdit />
+          <TeamsAddEdit opensrpBaseURL={opensrpBaseURL} />
         </Router>
       </Provider>
     );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     expect(fetch.mock.calls).toMatchObject([
       [
@@ -35,18 +56,13 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
         },
       ],
     ]);
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
 
     expect(wrapper.find('form')).toHaveLength(1);
   });
@@ -64,13 +80,18 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       </Provider>
     );
 
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
     expect(fetch.mock.calls).toMatchObject([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -81,18 +102,24 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
         },
       ],
     ]);
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
     expect(wrapper.find('form')).toHaveLength(1);
   });
 
@@ -121,7 +148,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
   it('test getPractitonerDetail', async () => {
     fetch.mockResponseOnce(JSON.stringify(practitioners));
-    const response = await getPractitonerDetail(accessToken, id);
+    const response = await getPractitonerDetail(id, opensrpBaseURL);
 
     await act(async () => {
       await flushPromises();
@@ -133,7 +160,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   it('test getTeamDetail', async () => {
     fetch.mockResponseOnce(JSON.stringify({ name: intialValue.name, active: intialValue.active }));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
-    const response = await getTeamDetail(accessToken, id);
+    const response = await getTeamDetail(id, opensrpBaseURL);
 
     await act(async () => {
       await flushPromises();
@@ -158,13 +185,18 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       </Provider>
     );
 
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
     expect(fetch.mock.calls).toMatchObject([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -175,7 +207,18 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',

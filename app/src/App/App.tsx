@@ -92,6 +92,7 @@ import {
 } from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW, ConnectedServicePointList } from '@opensrp/inventory';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
   LocationUnitAddEdit,
@@ -116,6 +117,7 @@ import {
   trashPlansListStatusProp,
   missionAssignmentProps,
   teamAssignmentProps,
+  inventoryServiceProps,
 } from './utils';
 import './App.css';
 
@@ -124,6 +126,7 @@ import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
 // import '@opensrp/product-catalogue/dist/index.css';
+import '@opensrp/inventory/dist/index.css';
 
 const { Content } = Layout;
 
@@ -140,19 +143,14 @@ interface ComponentProps extends Partial<RouteProps> {
  * @param props - Component props object
  */
 
-export const PrivateComponent = ({ component: Component, ...rest }: ComponentProps) => {
-  return (
-    <ConnectedPrivateRoute
-      {...rest}
-      component={(props: RouteComponentProps) => (
-        <Component
-          {...props}
-          keycloakBaseURL={KEYCLOAK_API_BASE_URL}
-          opensrpBaseURL={OPENSRP_API_BASE_URL}
-        />
-      )}
-    />
-  );
+export const PrivateComponent = (props: ComponentProps) => {
+  //  props to pass on to Connected Private Route
+  const CPRProps = {
+    ...props,
+    keycloakBaseURL: KEYCLOAK_API_BASE_URL,
+    opensrpBaseURL: OPENSRP_API_BASE_URL,
+  };
+  return <ConnectedPrivateRoute {...CPRProps} />;
 };
 
 /** Util wrapper around Route for rendering components
@@ -319,6 +317,14 @@ const App: React.FC = () => {
               path={PLANS_CREATE_VIEW_URL}
               {...planCreateProps}
               component={CreatePlanView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={INVENTORY_SERVICE_POINT_LIST_VIEW}
+              {...inventoryServiceProps}
+              component={ConnectedServicePointList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

@@ -8,22 +8,38 @@ import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
+import { authenticateUser } from '@onaio/session-reducer';
 
-import { accessToken, id, intialValue, practitioners } from './fixtures';
+import { opensrpBaseURL, id, intialValue, practitioners } from './fixtures';
 import Form, { onSubmit } from '../Form';
 import { Organization, OrganizationPOST } from '../../../ducks/organizations';
 import { ERROR_OCCURRED } from '../../../constants';
 
 describe('Team-management/TeamsAddEdit/Form', () => {
-  beforeEach(() => {
+  afterEach(() => {
     fetch.resetMocks();
+  });
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
   });
 
   it('renders without crashing', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form accessToken={accessToken} practitioner={practitioners} />
+          <Form opensrpBaseURL={opensrpBaseURL} practitioner={practitioners} />
         </Router>
       </Provider>
     );
@@ -37,8 +53,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <Router history={history}>
           <Form
             id={id}
+            opensrpBaseURL={opensrpBaseURL}
             initialValue={intialValue}
-            accessToken={accessToken}
             practitioner={practitioners}
           />
         </Router>
@@ -54,7 +70,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form accessToken={accessToken} practitioner={practitioners} />
+          <Form opensrpBaseURL={opensrpBaseURL} practitioner={practitioners} />
         </Router>
       </Provider>
     );
@@ -71,7 +87,11 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form accessToken={accessToken} practitioner={practitioners} initialValue={intialValue} />
+          <Form
+            opensrpBaseURL={opensrpBaseURL}
+            practitioner={practitioners}
+            initialValue={intialValue}
+          />
         </Router>
       </Provider>
     );
@@ -90,7 +110,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
   });
 
   it('Create Team', async () => {
-    onSubmit(jest.fn, practitioners, accessToken, intialValue, {
+    onSubmit(opensrpBaseURL, jest.fn, practitioners, intialValue, {
       active: true,
       name: 'New team name',
       practitioners: [],
@@ -123,7 +143,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
           }),
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'POST',
@@ -134,7 +154,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'DELETE',
@@ -145,7 +165,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'DELETE',
@@ -156,7 +176,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'DELETE',
@@ -167,9 +187,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
   it('Edit Team', async () => {
     onSubmit(
+      opensrpBaseURL,
       jest.fn,
       practitioners,
-      accessToken,
       intialValue,
       { active: false, name: 'new name', practitioners: ['3', '4', '5'] },
       id
@@ -202,7 +222,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
           }),
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'PUT',
@@ -213,7 +233,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'DELETE',
@@ -224,7 +244,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'DELETE',
@@ -238,7 +258,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
           body: fetch.mock.calls[3][1].body,
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'POST',
@@ -251,9 +271,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     fetch.mockResponseOnce(JSON.stringify({}));
     fetch.mockReject();
     onSubmit(
+      opensrpBaseURL,
       jest.fn,
       practitioners,
-      accessToken,
       intialValue,
       { active: false, name: 'new name', practitioners: ['3', '4', '5'] },
       id
@@ -286,7 +306,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
           }),
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'PUT',
@@ -297,7 +317,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'DELETE',
@@ -308,7 +328,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'DELETE',
@@ -322,7 +342,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
           body: fetch.mock.calls[3][1].body,
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer token',
+            authorization: 'Bearer hunter2',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'POST',

@@ -35,3 +35,4 @@ export const RESET_PASSWORD = 'Set password';
 export const EDIT_USER = 'Edit User';
 export const ADD_USER = 'Add User';
 export const CANCEL = 'Cancel';
+export const SEARCH_QUERY_PARAM = 'searchQuery';

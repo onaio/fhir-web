@@ -8,6 +8,7 @@ import TeamsView, { defaultProps, loadSingleTeam } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
+import { authenticateUser } from '@onaio/session-reducer';
 import { org1, teamMember } from '../../../ducks/tests/fixtures';
 import { notification } from 'antd';
 import { ERROR_OCCURRED } from '../../../constants';
@@ -16,6 +17,22 @@ describe('components/TeamsView', () => {
   beforeEach(() => {
     fetch.mockClear();
   });
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   it('renders without crashing', async () => {
     shallow(
       <Router history={history}>
@@ -58,7 +75,6 @@ describe('components/TeamsView', () => {
         active: true,
         identifier: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
       },
-      'sometoken',
       '',
       jest.fn(),
       jest.fn()
@@ -88,7 +104,6 @@ describe('components/TeamsView', () => {
         active: true,
         identifier: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
       },
-      'sometoken',
       '',
       jest.fn(),
       jest.fn()

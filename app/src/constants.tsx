@@ -22,6 +22,8 @@ export const LOCATIONS = 'Locations';
 export const USERS = 'Users';
 export const ADMIN = 'Admin';
 export const MISSIONS = 'Missions';
+export const INVENTORY = 'Inventory';
+export const SERVICE_POINT_INVENTORY = 'Service point inventory';
 
 // URLs
 export const URL_ADMIN = '/admin';

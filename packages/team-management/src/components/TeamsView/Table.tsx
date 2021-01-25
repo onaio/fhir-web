@@ -1,6 +1,5 @@
 import React from 'react';
-import { Table as AntTable, Button, Divider, Dropdown, Menu } from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
+import { Table as AntTable, Button, Divider } from 'antd';
 import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
@@ -47,27 +46,17 @@ const Table: React.FC<Props> = (props: Props) => {
             </Button>
           </Link>
           <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    if (onViewDetails) {
-                      onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
-                    }
-                  }}
-                >
-                  View Details
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomRight"
-            arrow
-            trigger={['click']}
+          <Button
+            onClick={() => {
+              if (onViewDetails) {
+                onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
+              }
+            }}
+            type="link"
+            className="m-0 p-1 viewdetails"
           >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
+            View Details
+          </Button>
         </span>
       ),
     },
