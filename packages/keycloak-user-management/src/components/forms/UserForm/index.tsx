@@ -1,16 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row } from 'antd';
-import { Form, Select, Input, Switch } from 'formik-antd';
+import { Button, Col, Row, Form, Select, Switch, Input } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { KeycloakUser } from '../../../ducks/user';
 import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
 import { OpenSRPService } from '@opensrp/react-utils';
-
+import { Dictionary } from '@onaio/utils';
 /** Interface for practitioner json object */
 export interface Practitioner {
   active: boolean;
@@ -19,7 +16,6 @@ export interface Practitioner {
   userId: string;
   username: string;
 }
-
 /** props for editing a user view */
 export interface UserFormProps {
   accessToken: string;
@@ -29,8 +25,8 @@ export interface UserFormProps {
   keycloakBaseURL: string;
   opensrpBaseURL: string;
   practitioner: Practitioner | undefined;
+  extraData: Dictionary;
 }
-
 /** default form initial values */
 export const defaultInitialValues: KeycloakUser = {
   access: {
@@ -53,7 +49,6 @@ export const defaultInitialValues: KeycloakUser = {
   totp: false,
   username: '',
 };
-
 /** default props for editing user component */
 export const defaultProps: Partial<UserFormProps> = {
   accessToken: '',
@@ -61,15 +56,8 @@ export const defaultProps: Partial<UserFormProps> = {
   opensrpServiceClass: OpenSRPService,
   practitioner: undefined,
   serviceClass: KeycloakService,
+  extraData: {},
 };
-
-const userSchema = Yup.object().shape({
-  lastName: Yup.string().required('Required'),
-  firstName: Yup.string().required('Required'),
-  email: Yup.string().required('Required'),
-  username: Yup.string().required('Required'),
-});
-
 /**
  * Handle required actions change
  *
@@ -82,7 +70,6 @@ export const handleUserActionsChange = (
 ): void => {
   setRequiredActions(selected);
 };
-
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const {
     initialValues,
@@ -92,9 +79,13 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     opensrpServiceClass,
     opensrpBaseURL,
     practitioner,
+    extraData,
   } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
+  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+  const history = useHistory();
+  const [form] = Form.useForm();
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -104,7 +95,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     },
     wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
   };
-
   const tailLayout = {
     wrapperCol: {
       xs: { offset: 0, span: 16 },
@@ -114,16 +104,22 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     },
   };
   const { Option } = Select;
-
   React.useEffect(() => {
     fetchRequiredActions(keycloakBaseURL, setUserActionOptions, serviceClass);
   }, [accessToken, keycloakBaseURL, serviceClass]);
-
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
 
-  const history = useHistory();
+  /** Update form initial values when initialValues prop changes, without this
+   * the form fields initial values will not change if props.initiaValues is updated
+   * **/
+  React.useEffect(() => {
+    form.setFieldsValue({
+      ...initialValues,
+      active: !!practitioner && practitioner.active,
+    });
+  }, [form, initialValues, practitioner]);
 
   return (
     <Row className="layout-content">
@@ -132,11 +128,15 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
         {props.initialValues.id ? `${EDIT_USER} | ${initialValues.username}` : ADD_USER}
       </h5>
       <Col className="bg-white p-3" span={24}>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={userSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            return submitForm(
+        <Form
+          {...layout}
+          form={form}
+          initialValues={{
+            ...initialValues,
+            active: !!practitioner && practitioner.active,
+          }}
+          onFinish={(values) => {
+            submitForm(
               {
                 ...values,
                 requiredActions,
@@ -151,73 +151,79 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             );
           }}
         >
-          {({ isSubmitting }) => (
-            <Form className=" bg-white p-3 form-container" {...layout}>
-              <Form.Item name="firstName" label="First Name">
-                <Input id="firstName" name="firstName" />
-              </Form.Item>
-
-              <Form.Item name="lastName" label="Last Name">
-                <Input id="lastName" name="lastName" />
-              </Form.Item>
-
-              <Form.Item name="email" label="Email">
-                <Input id="email" name="email" />
-              </Form.Item>
-
-              <Form.Item name="username" label="Username">
-                <Input id="username" name="username" disabled={initialValues.id ? true : false} />
-              </Form.Item>
-
-              {!initialValues.id || !practitioner ? (
-                ''
-              ) : (
-                <Form.Item
-                  id="practitionerToggle"
-                  name="active"
-                  label="Mark as Practitioner"
-                  valuePropName="checked"
-                >
-                  <Switch name="active" defaultChecked={practitioner.active} />
-                </Form.Item>
-              )}
-
-              <Form.Item name="requiredActions" label="Required Actions">
-                <Select
-                  id="requiredActions"
-                  name="requiredActions"
-                  mode="multiple"
-                  allowClear
-                  placeholder="Please select"
-                  onChange={(selected: string[]) =>
-                    handleUserActionsChange(selected, setRequiredActions)
-                  }
-                  style={{ width: '100%' }}
-                >
-                  {userActionOptions.map((option: UserAction, index: number) => (
-                    <Option key={`${index}`} value={option.alias}>
-                      {option.name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              <Form.Item {...tailLayout} name="tail">
-                <Button type="primary" htmlType="submit" className="create-user">
-                  {isSubmitting ? 'Saving' : 'Save'}
-                </Button>
-                <Button onClick={() => history.push(URL_USER)} className="cancel-user">
-                  {CANCEL}
-                </Button>
-              </Form.Item>
-            </Form>
-          )}
-        </Formik>
+          <Form.Item
+            name="firstName"
+            id="firstName"
+            label="First Name"
+            rules={[{ required: true, message: 'First Name is required' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="lastName"
+            id="lastName"
+            label="Last Name"
+            rules={[{ required: true, message: 'Last Name is required' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            id="email"
+            label="Email"
+            rules={[{ required: true, message: 'Email is required' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="username"
+            id="username"
+            label="Username"
+            rules={[{ required: true, message: 'Username is required' }]}
+          >
+            <Input disabled={initialValues.id ? true : false} />
+          </Form.Item>
+          {initialValues.id && initialValues.id !== extraData.user_id ? (
+            <Form.Item
+              id="practitionerToggle"
+              name="active"
+              label="Mark as Practitioner"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          ) : null}
+          {initialValues.id !== extraData.user_id ? (
+            <Form.Item name="requiredActions" id="requiredActions" label="Required Actions">
+              <Select
+                mode="multiple"
+                allowClear
+                placeholder="Please select"
+                onChange={(selected: string[]) =>
+                  handleUserActionsChange(selected, setRequiredActions)
+                }
+                style={{ width: '100%' }}
+              >
+                {userActionOptions.map((option: UserAction, index: number) => (
+                  <Option key={`${index}`} value={option.alias}>
+                    {option.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          ) : null}
+          <Form.Item {...tailLayout}>
+            <Button type="primary" htmlType="submit" className="create-user">
+              {isSubmitting ? 'Saving' : 'Save'}
+            </Button>
+            <Button onClick={() => history.push(URL_USER)} className="cancel-user">
+              {CANCEL}
+            </Button>
+          </Form.Item>
+        </Form>
       </Col>
     </Row>
   );
 };
-
 UserForm.defaultProps = defaultProps;
-
 export { UserForm };

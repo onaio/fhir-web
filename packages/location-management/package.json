@@ -36,6 +36,7 @@
   "private": false,
   "dependencies": {
     "@onaio/session-reducer": "0.0.12",
+    "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/react-utils": "^0.0.2",
     "@opensrp/reducer-factory": "^0.0.11",
@@ -45,12 +46,12 @@
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@onaio/session-reducer": "^0.0.12",
     "@opensrp/store": "^0.0.7",
     "@types/geojson": "^7946.0.7",
     "@types/uuid": "8.3.0"
   },
   "peerDependencies": {
+    "@opensrp/store": "^0.0.7",
     "formik-antd": "^2.0.1",
     "react": "^16.13.1",
     "uuid": "^8.3.1"

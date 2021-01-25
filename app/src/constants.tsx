@@ -21,6 +21,8 @@ export const LOCATIONS = 'Locations';
 export const USERS = 'Users';
 export const ADMIN = 'Admin';
 export const MISSIONS = 'Missions';
+export const INVENTORY = 'Inventory';
+export const SERVICE_POINT_INVENTORY = 'Service point inventory';
 
 // URLs
 export const URL_ADMIN = '/admin';
@@ -29,9 +31,13 @@ export const URL_EXPRESS_LOGIN = '/login';
 export const URL_REACT_LOGIN = '/login';
 export const URL_LOGOUT = '/logout';
 export const URL_HOME = '/';
+
 export const URL_USER = `${URL_ADMIN}/users/list`;
 export const URL_USER_EDIT = `${URL_ADMIN}/users/edit`;
 export const URL_TEAMS = `${URL_ADMIN}/teams`;
+export const URL_TEAM_ADD = `${URL_ADMIN}/teams/add`;
+export const URL_TEAM_EDIT = `${URL_ADMIN}/teams/edit/:id`;
+
 export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';
 export const URL_LOCATION_UNIT = `${URL_ADMIN}/location/unit`;
