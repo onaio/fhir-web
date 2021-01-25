@@ -288,11 +288,28 @@ Object {
       update={3}
       value={false}
     >
-      <Switch
+      <Memo
         checked={false}
         id="active"
+        name="active"
         onChange={[Function]}
-      />
+        value={false}
+      >
+        <Radio
+          name="active"
+          type="radio"
+          value={true}
+        >
+          Yes
+        </Radio>
+        <Radio
+          name="active"
+          type="radio"
+          value={false}
+        >
+          No
+        </Radio>
+      </Memo>
     </Memo>
   </Context.Provider>,
   "errors": Array [],
@@ -303,9 +320,9 @@ Object {
   ],
   "onDomErrorVisibleChange": [Function],
   "prefixCls": "ant-form",
-  "status": "",
-  "touched": false,
-  "validateStatus": "",
+  "status": "success",
+  "touched": true,
+  "validateStatus": "success",
   "validating": false,
   "valuePropName": "checked",
 }
@@ -324,11 +341,28 @@ Object {
       update={3}
       value={true}
     >
-      <Switch
+      <Memo
         checked={true}
         id="active"
+        name="active"
         onChange={[Function]}
-      />
+        value={true}
+      >
+        <Radio
+          name="active"
+          type="radio"
+          value={true}
+        >
+          Yes
+        </Radio>
+        <Radio
+          name="active"
+          type="radio"
+          value={false}
+        >
+          No
+        </Radio>
+      </Memo>
     </Memo>
   </Context.Provider>,
   "errors": Array [],
@@ -339,9 +373,9 @@ Object {
   ],
   "onDomErrorVisibleChange": [Function],
   "prefixCls": "ant-form",
-  "status": "",
-  "touched": false,
-  "validateStatus": "",
+  "status": "success",
+  "touched": true,
+  "validateStatus": "success",
   "validating": false,
   "valuePropName": "checked",
 }
