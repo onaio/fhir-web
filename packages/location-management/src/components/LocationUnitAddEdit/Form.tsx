@@ -114,7 +114,6 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  * @returns {void} return nothing
  */
 export async function onSubmit(
-  dispatch: Dispatch,
   values: FormField,
   opensrpBaseURL: string,
   locationUnitgroup: LocationUnitGroup[],
@@ -174,7 +173,6 @@ export async function onSubmit(
 
   history.goBack();
   sendSuccessNotification('Location Unit Created successfully');
-  dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
@@ -214,7 +212,6 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) =>
         onSubmit(
-          dispatch,
           values,
           props.opensrpBaseURL,
           props.locationUnitGroup,
@@ -222,10 +219,12 @@ export const Form: React.FC<Props> = (props: Props) => {
           user.username,
           props.extraFields,
           props.id
-        ).catch(() => {
-          sendErrorNotification(ERROR_OCCURED);
-          setSubmitting(false);
-        })
+        )
+          .then(() => dispatch(fetchAllHierarchies([]))) // reset tree data to force refresh of other component
+          .catch(() => {
+            sendErrorNotification(ERROR_OCCURED);
+            setSubmitting(false);
+          })
       }
     >
       {({ isSubmitting, handleSubmit }) => (
