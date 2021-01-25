@@ -154,6 +154,8 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
+    // to avoid extra rerenders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {

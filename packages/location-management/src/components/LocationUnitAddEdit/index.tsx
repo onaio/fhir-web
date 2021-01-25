@@ -84,7 +84,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
   const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
-  const Treedata = useSelector((state) => getAllHierarchiesArray(state));
+  const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const [extrafields, setExtrafields] = useState<ExtraField[] | null>(null);
   const [LocationUnitDetail, setLocationUnitDetail] = useState<FormField | undefined>(undefined);
   const { opensrpBaseURL } = props;
@@ -142,8 +142,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   }, [locationUnits.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
-    if (!Treedata.length && locationUnits.length) {
-      console.log('fetching tree', locationUnits);
+    if (!treeData.length && locationUnits.length) {
       getHierarchy(locationUnits, opensrpBaseURL)
         .then((hierarchy) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
@@ -151,7 +150,9 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [locationUnits.length, Treedata.length, dispatch, opensrpBaseURL]);
+    // to avoid extra rerenders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locationUnits, treeData.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
     if (!extrafields) {
@@ -169,7 +170,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   if (
     extrafields === null ||
     !locationUnitGroup.length ||
-    !Treedata.length ||
+    !treeData.length ||
     (params.id && !LocationUnitDetail?.name)
   )
     return <Spin size={'large'} />;
@@ -188,7 +189,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         <Form
           extraFields={extrafields}
           opensrpBaseURL={opensrpBaseURL}
-          treedata={Treedata}
+          treedata={treeData}
           id={params.id}
           locationUnitGroup={locationUnitGroup}
           initialValue={LocationUnitDetail}
