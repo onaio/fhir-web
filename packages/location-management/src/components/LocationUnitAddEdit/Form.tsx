@@ -98,7 +98,8 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
     else return null;
   });
 
-  return map.find((e) => e !== null);
+  const filter = map.filter((e) => e != null);
+  return filter[0];
 }
 
 /** Handle form submission
