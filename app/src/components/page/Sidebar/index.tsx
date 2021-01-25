@@ -33,14 +33,18 @@ import {
   COMPLETE,
   TRASH,
   MISSIONS,
+  SERVICE_POINT_INVENTORY,
+  INVENTORY,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
   ENABLE_FORM_CONFIGURATION,
   ENABLE_PLANS,
+  ENABLE_TEAMS,
   ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_CARD_SUPPORT,
+  ENABLE_INVENTORY,
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -48,6 +52,7 @@ import {
   COMPLETE_PLANS_LIST_VIEW_URL,
   TRASH_PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -118,6 +123,15 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           </Menu.SubMenu>
         )}
+        {ENABLE_INVENTORY && (
+          <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
+            <Menu.Item key="list">
+              <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
+                {SERVICE_POINT_INVENTORY}
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title={USERS}>
@@ -128,11 +142,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.Item>
             </Menu.SubMenu>
           )}
-          <Menu.Item key="teams">
-            <Link to={URL_TEAMS} className="admin-link">
-              {TEAMS}
-            </Link>
-          </Menu.Item>
+          {ENABLE_TEAMS && (
+            <Menu.Item key="teams">
+              <Link to={URL_TEAMS} className="admin-link">
+                {TEAMS}
+              </Link>
+            </Menu.Item>
+          )}
           {ENABLE_PRODUCT_CATALOGUE && (
             <Menu.Item key="product-catalogue">
               <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">

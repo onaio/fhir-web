@@ -2,6 +2,14 @@ import { Dictionary } from '@onaio/utils';
 import { InterventionType, PlanDefinition, UseContext } from '@opensrp/plan-form-core';
 import { Alert, Spin } from 'antd';
 import React from 'react';
+import {
+  FIX_PROBLEM_EVENT,
+  FLAG_PROBLEM_EVENT,
+  LOOKS_GOOD_EVENT,
+  OPENSRP_TASK_EXPORT_DATA,
+  RECORD_GPS_EVENT,
+  SERVICE_POINT_EVENT,
+} from '../constants';
 
 /**
  * helper to retrieve the plan Type from a plan definition object
@@ -57,4 +65,9 @@ export const PlanLoading = () => {
       <Alert message="Fetching plan" description="Please wait, as we fetch the plan." type="info" />
     </Spin>
   );
+};
+
+export const BuildDownloadUrl = (baseURL: string, planId: string) => {
+  const eventType = `${FLAG_PROBLEM_EVENT},${SERVICE_POINT_EVENT},${LOOKS_GOOD_EVENT},${RECORD_GPS_EVENT},${FIX_PROBLEM_EVENT}`;
+  return `${baseURL}${OPENSRP_TASK_EXPORT_DATA}?eventTypes=${eventType}&planIdentifier=${planId}`;
 };

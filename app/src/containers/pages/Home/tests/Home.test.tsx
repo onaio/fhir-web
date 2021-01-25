@@ -9,7 +9,9 @@ import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
-import { URL_LOCATION_UNIT, URL_LOCATION_UNIT_GROUP } from '../../../../constants';
+import { URL_LOCATION_UNIT, URL_LOCATION_UNIT_GROUP, URL_TEAMS } from '../../../../constants';
+
+jest.mock('../../../../configs/env');
 
 describe('containers/pages/Home', () => {
   it('renders without crashing', () => {
@@ -89,5 +91,20 @@ describe('containers/pages/Home', () => {
 
     expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT}"]`)).toHaveLength(1);
     expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT_GROUP}"]`)).toHaveLength(1);
+  });
+
+  it('displays links for teams module', () => {
+    const envModule = require('../../../../configs/env');
+    envModule.ENABLE_TEAMS = 'true';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedHomeComponent />
+        </Router>
+      </Provider>
+    );
+
+    expect(wrapper.find(`Link[to="${URL_TEAMS}"]`)).toHaveLength(1);
   });
 });

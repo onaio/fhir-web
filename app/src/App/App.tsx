@@ -28,6 +28,9 @@ import {
   URL_LOGOUT,
   URL_LOCATION_UNIT,
   URL_HOME,
+  URL_TEAM_EDIT,
+  URL_TEAM_ADD,
+  URL_TEAMS,
   URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_UNIT_GROUP,
@@ -89,6 +92,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
+import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
   LocationUnitAddEdit,
   LocationUnitView,
@@ -112,9 +116,12 @@ import {
   completedPlansListStatusProp,
   trashPlansListStatusProp,
   missionAssignmentProps,
+  inventoryServiceProps,
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW, ConnectedServicePointList } from '@opensrp/inventory';
+import '@opensrp/inventory/dist/index.css';
 
 const { Content } = Layout;
 
@@ -131,19 +138,14 @@ interface ComponentProps extends Partial<RouteProps> {
  * @param props - Component props object
  */
 
-export const PrivateComponent = ({ component: Component, ...rest }: ComponentProps) => {
-  return (
-    <ConnectedPrivateRoute
-      {...rest}
-      component={(props: RouteComponentProps) => (
-        <Component
-          {...props}
-          keycloakBaseURL={KEYCLOAK_API_BASE_URL}
-          opensrpBaseURL={OPENSRP_API_BASE_URL}
-        />
-      )}
-    />
-  );
+export const PrivateComponent = (props: ComponentProps) => {
+  //  props to pass on to Connected Private Route
+  const CPRProps = {
+    ...props,
+    keycloakBaseURL: KEYCLOAK_API_BASE_URL,
+    opensrpBaseURL: OPENSRP_API_BASE_URL,
+  };
+  return <ConnectedPrivateRoute {...CPRProps} />;
 };
 
 /** Util wrapper around Route for rendering components
@@ -210,6 +212,13 @@ const App: React.FC = () => {
               exact
               path={URL_USER}
               component={ConnectedUserList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_TEAMS}
+              component={TeamsView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -300,6 +309,14 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={INVENTORY_SERVICE_POINT_LIST_VIEW}
+              {...inventoryServiceProps}
+              component={ConnectedServicePointList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={`${PLANS_EDIT_VIEW_URL}/:planId`}
               {...planEditProps}
               component={ConnectedEditPlanView}
@@ -324,6 +341,20 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_TEAM_ADD}
+              component={TeamsAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_TEAM_EDIT}
+              component={TeamsAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

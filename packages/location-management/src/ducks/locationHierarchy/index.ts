@@ -112,6 +112,8 @@ export function hierarchyReducer(
 /** prop filters to customize selector queries */
 export interface Filters {
   rootJurisdictionId?: string[] /** specify which tree to act upon, undefined allows all */;
+  geoLevel?: number /** get locations at the specified level */;
+  searchQuery?: string /** search query to filter nodes against, by name and id */;
 }
 
 /** retrieve the rootJurisdiction value
@@ -121,6 +123,20 @@ export interface Filters {
  */
 export const getRootJurisdictionId = (_: Partial<Store>, props: Filters) =>
   props.rootJurisdictionId;
+
+/** retrieve the geoLevel value
+ *
+ * @param _ - the store
+ * @param props -  the filterProps
+ */
+export const getGeoLevel = (_: Partial<Store>, props: Filters) => props.geoLevel;
+
+/** retrieve the geoLevel value
+ *
+ * @param _ - the store
+ * @param props -  the filterProps
+ */
+export const getSearchQuery = (_: Partial<Store>, props: Filters) => props.searchQuery;
 
 /** gets all trees key'd by the rootNodes id
  *
@@ -145,4 +161,44 @@ export const getTreesByIds = () =>
       }
     });
     return treesOfInterest;
+  });
+
+const treeSelectors = getTreesByIds();
+
+/** factory that returns a selector to retrieve the tree(s) using their rootNode's ids
+ * the selector will return all nodes if geographic level is undefined
+ */
+export const getLocationsByLevel = () =>
+  createSelector(treeSelectors, getGeoLevel, (trees, geoLevel): TreeNode[] => {
+    let locationsOfInterest: TreeNode[] = [];
+    trees.forEach((tree) => {
+      locationsOfInterest = [
+        ...locationsOfInterest,
+        ...tree.all((node) => {
+          if (geoLevel === undefined) {
+            return true;
+          }
+          return node.model.node.attributes.geographicLevel === geoLevel;
+        }),
+      ];
+    });
+    return locationsOfInterest;
+  });
+
+const geoLevelSelector = getLocationsByLevel();
+
+/** factory that returns a selector that can be used to filter the nodes by either their
+ * labels or ids
+ */
+export const getLocationsByNameAndId = () =>
+  createSelector(geoLevelSelector, getSearchQuery, (nodes, searchQuery): TreeNode[] => {
+    if (searchQuery === undefined) {
+      return nodes;
+    }
+    const matchesName = (node: TreeNode) =>
+      node.model.label.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesId = (node: TreeNode) => node.model.id === searchQuery;
+    return nodes.filter((node) => {
+      return matchesName(node) || matchesId(node);
+    });
   });
