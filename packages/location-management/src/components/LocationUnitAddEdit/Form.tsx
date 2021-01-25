@@ -22,7 +22,6 @@ import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import { Dispatch } from 'redux';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 
 export interface FormField extends Dictionary<string | number | number[] | undefined> {
