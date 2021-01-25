@@ -14,7 +14,6 @@ import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
 import { Dictionary } from '@onaio/utils';
-import { SEARCH } from '../../lang';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
@@ -161,7 +160,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     <div>
       <Input
         className="mb-3"
-        placeholder={SEARCH}
+        placeholder="Search"
         size="large"
         prefix={<SearchOutlined />}
         onChange={onChange}
