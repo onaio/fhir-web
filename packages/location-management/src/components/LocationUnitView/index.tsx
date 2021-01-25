@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -93,6 +93,7 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 
 export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
+  const isMounted = useRef<boolean>(true);
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
   const [tableData, setTableData] = useState<TableData[]>([]);
@@ -128,6 +129,15 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
       setTableData(data);
     }
   }, [treeData, currentParentChildren]);
+
+  React.useLayoutEffect(() => {
+    return () => {
+      if (isMounted.current) {
+        dispatch(fetchAllHierarchies([]));
+      }
+      isMounted.current = false;
+    };
+  });
 
   if (!Array.isArray(treeData) || !treeData.length || !tableData.length)
     return <Spin size={'large'} />;
