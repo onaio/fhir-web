@@ -9,3 +9,4 @@ export const VIEW = 'view';
 export const FETCHING_LOCATIONS = 'Fetching locations';
 export const FETCHING_LOCATIONS_DESCRIPTION = 'Please wait, while locations are being fetched';
 export const LOADING_ELLIPSIS = 'Loading ...';
+export const ADD_INVENTORY_ITEM = 'Add inventory item to';
