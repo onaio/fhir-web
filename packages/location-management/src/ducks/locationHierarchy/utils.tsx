@@ -100,12 +100,12 @@ export function getHierarchyNodeFromArray(
   id: string
 ): ParsedHierarchyNode | undefined {
   // variable to store the result of previous ParsedHierarchyNode from array
-  let result: ParsedHierarchyNode | undefined;
-  // Loop over each array and using recursion check if we have the node in this tree or not
-  (hierarchy as ParsedHierarchyNode[]).forEach((tree) => {
-    result = getHierarchyNode(tree, id);
-    if (result) return result; // if found stops the execution of loop
+  const result = hierarchy.flatMap((tree) => {
+    const found = getHierarchyNode(tree, id);
+    if (found) return found;
+    // if found stops the execution of loop
+    else return undefined;
   });
 
-  return result;
+  return result.find((e) => e != undefined);
 }
