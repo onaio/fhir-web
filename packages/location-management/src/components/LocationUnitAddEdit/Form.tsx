@@ -91,14 +91,14 @@ export function removeEmptykeys(obj: any) {
  * @param {string} id id of the node
  * @returns {number | null} return geolocation if found else return null
  */
-export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): number | undefined {
-  const map: (number | undefined)[] = tree.flatMap((node) => {
+export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): number | null {
+  const map: (number | null)[] = tree.flatMap((node) => {
     if (node.id === id) return node.node.attributes.geographicLevel;
     else if (node.children) return findParentGeoLocation(node.children, id);
-    else return undefined;
+    else return null;
   });
 
-  return map.find((e) => e !== undefined);
+  return map.find((e) => e !== null);
 }
 
 /** Handle form submission
