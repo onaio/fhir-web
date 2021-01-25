@@ -173,12 +173,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="email"
-            id="email"
-            label="Email"
-            rules={[{ required: true, message: 'Email is required' }]}
-          >
+          <Form.Item name="email" id="email" label="Email">
             <Input />
           </Form.Item>
           <Form.Item

@@ -93,7 +93,6 @@ describe('components/forms/UserForm', () => {
 
     expect(wrapper.find('FormItemInput').at(0).prop('errors')).toEqual(['First Name is required']);
     expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual(['Last Name is required']);
-    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual(['Email is required']);
     expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual(['Username is required']);
     expect(wrapper.find('FormItemInput').at(4).prop('errors')).toEqual([]);
 

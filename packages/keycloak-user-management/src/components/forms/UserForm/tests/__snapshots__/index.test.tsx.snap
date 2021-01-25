@@ -151,14 +151,6 @@ Object {
           id="email"
           label="Email"
           name="email"
-          rules={
-            Array [
-              Object {
-                "message": "Email is required",
-                "required": true,
-              },
-            ]
-          }
         >
           <Input
             type="text"
