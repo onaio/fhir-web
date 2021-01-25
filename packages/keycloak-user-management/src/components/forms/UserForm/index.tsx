@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Select, Switch, Input } from 'antd';
+import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { KeycloakUser } from '../../../ducks/user';
 import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
@@ -82,6 +82,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     extraData,
   } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
+  const [practitionerValue, setPractitionerValue] = React.useState<boolean>();
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const history = useHistory();
@@ -117,9 +118,13 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   React.useEffect(() => {
     form.setFieldsValue({
       ...initialValues,
-      active: !!practitioner && practitioner.active,
+      active: practitionerValue,
     });
-  }, [form, initialValues, practitioner]);
+  }, [form, initialValues, practitionerValue]);
+
+  React.useEffect(() => {
+    setPractitionerValue(!!practitioner && practitioner.active);
+  }, [practitioner]);
 
   return (
     <Row className="layout-content">
@@ -133,7 +138,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           form={form}
           initialValues={{
             ...initialValues,
-            active: !!practitioner && practitioner.active,
+            active: practitionerValue,
           }}
           onFinish={(values) => {
             submitForm(
@@ -191,7 +196,20 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               label="Mark as Practitioner"
               valuePropName="checked"
             >
-              <Switch />
+              <Radio.Group
+                name="active"
+                value={practitionerValue}
+                onChange={(e) => {
+                  setPractitionerValue(e.target.value);
+                }}
+              >
+                <Radio name="active" key={'Yes'} value={true}>
+                  Yes
+                </Radio>
+                <Radio name="active" key={'No'} value={false}>
+                  No
+                </Radio>
+              </Radio.Group>
             </Form.Item>
           ) : null}
           {initialValues.id !== extraData.user_id ? (
