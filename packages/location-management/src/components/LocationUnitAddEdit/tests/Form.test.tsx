@@ -220,7 +220,9 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       locationUnitgroups,
       parsedHierarchy,
       'user_test'
-    );
+    ).catch((e) => {
+      expect(e.message).toEqual(ERROR_OCCURED);
+    });
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
