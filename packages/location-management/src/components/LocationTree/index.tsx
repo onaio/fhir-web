@@ -122,7 +122,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       );
 
       return {
-        // important : we are mixing the antTreeProps with treeNode
+        // important : we are mixing the antTreeProps with ParsedHierarchyNode
         data: item,
         key: item.key,
         title: title,
@@ -133,7 +133,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   /** Generate filter data to later used to compare and filter keys on input with ant tree node
    *
-   * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
+   * @param {Array<ParsedHierarchyNode>} data the tree data to preprocess
    */
   function generateFilterData(data: ParsedHierarchyNode[]) {
     data.forEach((node) => {
@@ -154,9 +154,9 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(e, treenode) => {
+        onClick={(e, antTreeNode) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with treeNode
+          const node = (antTreeNode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
           const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
           dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
