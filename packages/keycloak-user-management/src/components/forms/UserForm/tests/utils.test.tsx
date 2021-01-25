@@ -15,6 +15,18 @@ jest.mock('@opensrp/notifications', () => ({
   ...jest.requireActual('@opensrp/notifications'),
 }));
 
+const mockV4 = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
+
+jest.mock('uuid', () => {
+  const v4 = () => mockV4;
+
+  return {
+    __esModule: true,
+    ...jest.requireActual('uuid'),
+    v4,
+  };
+});
+
 describe('forms/utils/fetchRequiredActions', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -125,7 +137,10 @@ describe('forms/utils/submitForm', () => {
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          enabled: true,
+        }),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer token',
@@ -246,6 +261,26 @@ describe('forms/utils/submitForm', () => {
     await act(async () => {
       await flushPromises();
     });
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          active: true,
+          identifier: mockV4,
+          name: 'Jane Doe',
+          userId: keycloakUser.id,
+          username: 'janedoe@example.com',
+        }),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'POST',
+      },
+    ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner created successfully');
   });
 
@@ -268,6 +303,69 @@ describe('forms/utils/submitForm', () => {
     await act(async () => {
       await flushPromises();
     });
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          active: true,
+          identifier: fixtures.practitioner1.identifier,
+          name: 'Jane Doe',
+          userId: keycloakUser.id,
+          username: 'janedoe@example.com',
+        }),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'PUT',
+      },
+    ]);
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
+  });
+
+  it('calls API with userId if present in values', async () => {
+    const valuesCopy = {
+      ...values,
+      active: true,
+      id: keycloakUser.id,
+      userId: fixtures.practitioner1.userId,
+    };
+
+    createOrEditPractitioners(
+      accessToken,
+      opensrpBaseURL,
+      opensrpServiceClass,
+      valuesCopy,
+      fixtures.practitioner1,
+      true
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          active: true,
+          identifier: fixtures.practitioner1.identifier,
+          name: 'Jane Doe',
+          userId: fixtures.practitioner1.userId,
+          username: 'janedoe@example.com',
+        }),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'PUT',
+      },
+    ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
   });
 

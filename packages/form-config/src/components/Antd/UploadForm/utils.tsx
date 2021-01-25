@@ -1,6 +1,6 @@
 import { UploadFileFieldTypes, UploadFilePropTypes } from '.';
-import { OpenSRPService } from '@opensrp/server-service';
-import { OPENSRP_FORMS_ENDPOINT, ERROR_OCCURRED } from '../../../constants';
+import { HTTPError, OpenSRPService } from '@opensrp/server-service';
+import { OPENSRP_FORMS_ENDPOINT } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 
 /**
@@ -59,8 +59,8 @@ export const submitForm = (
     .then(() => {
       setIfDoneHere(true);
     })
-    .catch((_: Error) => {
-      sendErrorNotification(ERROR_OCCURRED);
+    .catch((err: HTTPError) => {
+      sendErrorNotification(err.description);
     })
     .finally(() => {
       setSubmitting(false);

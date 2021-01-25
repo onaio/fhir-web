@@ -26,6 +26,8 @@ import { ERROR_OCCURED } from '../../../constants';
 import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { practitioner1 } from '../../forms/UserForm/tests/fixtures';
 
+/* eslint-disable @typescript-eslint/camelcase */
+
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
   ...jest.requireActual('@opensrp/store'),
@@ -61,11 +63,16 @@ describe('components/CreateEditUser', () => {
       path: `/users/edit/:id`,
       url: `/users/edit/${fixtures.keycloakUser.id}`,
     },
+    extraData: {},
   };
 
   beforeEach(() => {
     store.dispatch(removeKeycloakUsers());
     jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    fetch.resetMocks();
   });
 
   it('renders without crashing', () => {
@@ -124,6 +131,7 @@ describe('components/CreateEditUser', () => {
         path: `/users/new/`,
         url: `/users/new/`,
       },
+      extraData: {},
     };
 
     const wrapper = mount(
@@ -142,8 +150,6 @@ describe('components/CreateEditUser', () => {
   it('fetches user if page is refreshed', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUser));
 
-    const mockSelector = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
-
     opensrpStore.store.dispatch(
       authenticateUser(
         true,
@@ -159,9 +165,7 @@ describe('components/CreateEditUser', () => {
 
     const propsPageRefreshed = {
       ...props,
-      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
-        accessToken: true,
-      }),
+      accessToken: '',
       keycloakUser: null,
     };
 
@@ -180,8 +184,6 @@ describe('components/CreateEditUser', () => {
       await flushPromises();
       wrapper.update();
     });
-
-    expect(mockSelector).toHaveBeenCalled();
 
     expect(fetch.mock.calls[1]).toEqual([
       `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${fixtures.keycloakUser.id}`,
@@ -275,7 +277,68 @@ describe('components/CreateEditUser', () => {
 
     expect(wrapper.find('CreateEditUser').prop('keycloakUser')).toEqual(fixtures.keycloakUser);
     expect(wrapper.find('CreateEditUser').prop('accessToken')).toEqual('bamboocha');
+    expect(wrapper.find('CreateEditUser').prop('extraData')).toEqual({
+      api_token: 'hunter2',
+      oAuth2Data: { access_token: 'bamboocha', state: 'abcde' },
+    });
     expect(mockSelector).toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
+  it('initializes form fields with user data if page is refreshed', async () => {
+    fetch.once(JSON.stringify(fixtures.keycloakUser));
+
+    opensrpStore.store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
+      )
+    );
+
+    const propsPageRefreshed = {
+      ...props,
+      accessToken: '',
+      keycloakUser: null,
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedCreateEditUser {...propsPageRefreshed} />
+        </Router>
+      </Provider>
+    );
+
+    // Loader should be displayed
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${fixtures.keycloakUser.id}`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer bamboocha',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+
+    expect(wrapper.find('input#firstName').prop('value')).toEqual('Demo');
+    expect(wrapper.find('input#lastName').prop('value')).toEqual('kenya');
+    expect(wrapper.find('input#username').prop('value')).toEqual('opensrp');
+    expect(wrapper.find('input#email').prop('value')).toEqual('test@onatest.com');
     wrapper.unmount();
   });
 });

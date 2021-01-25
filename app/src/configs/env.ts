@@ -63,6 +63,9 @@ export const ENABLE_CARD_SUPPORT = process.env.REACT_APP_ENABLE_CARD_SUPPORT ===
 /** Activate the plans menu */
 export const ENABLE_PLANS = process.env.REACT_APP_ENABLE_PLANS === 'true';
 
+/** Activate the teams menu */
+export const ENABLE_TEAMS = process.env.REACT_APP_ENABLE_TEAMS === 'true';
+
 /** Activate the plans menu */
 export const ENABLE_LOCATIONS = process.env.REACT_APP_ENABLE_LOCATIONS === 'true';
 
@@ -87,3 +90,17 @@ export const TASK_GENERATION_STATUS = process.env.REACT_APP_TASK_GENERATION_STAT
 
 /** Activate form configuration */
 export const ENABLE_FORM_CONFIGURATION = process.env.REACT_APP_ENABLE_FORM_CONFIGURATION === 'true';
+
+export const LANGUAGE_CODE = process.env.REACT_APP_LANGUAGE_CODE || 'en';
+
+export const PROJECT_LANGUAGE_CODE = process.env.REACT_APP_PROJECT_LANGUAGE_CODE || 'eusm';
+
+export const ENABLE_INVENTORY = process.env.REACT_APP_ENABLE_INVENTORY === 'true';
+
+export const INVENTORY_LOC_OF_INTEREST_GEO_LEVEL = Number(
+  process.env.REACT_APP_INVENTORY_LOC_OF_INTEREST_GEO_LEVEL || '0'
+);
+
+export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = Number(
+  process.env.REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL || '0'
+);

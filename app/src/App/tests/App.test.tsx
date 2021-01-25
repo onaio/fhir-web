@@ -55,7 +55,7 @@ describe('App', () => {
       </Provider>
     );
     // before resolving get oauth state request, the user is logged out
-    expect(wrapper.text()).toMatchInlineSnapshot(`"AdminLogin"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"InventoryAdminLogin"`);
 
     await act(async () => {
       await new Promise<unknown>((resolve) => setImmediate(resolve));

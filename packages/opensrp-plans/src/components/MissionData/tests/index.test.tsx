@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { MissionData } from '..';
-import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
+import { eusmPlans, retiredDraftPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { act } from 'react-dom/test-utils';
 
@@ -9,7 +9,7 @@ import { act } from 'react-dom/test-utils';
 const fetch = require('jest-fetch-mock');
 const plan = eusmPlans[0] as PlanDefinition;
 
-describe('mission data download', () => {
+describe('mission data listing & download', () => {
   /* eslint-disable @typescript-eslint/camelcase */
   const missionDataPayload = [
     {
@@ -59,6 +59,10 @@ describe('mission data download', () => {
       `"Mission dataService points visited: 13Products checked: 7Number of flagged products: 3Download mission data"`
     );
     expect(wrapper.find('Button').text()).toEqual('Download mission data');
+    // downloads mission data
+    expect(wrapper.find('a').at(0).props().href).toEqual(
+      'https://opensrp-stage.smartregister.org/opensrp/rest/event/export-data?eventTypes=flag_problem,service_point_check,looks_good,record_gps,fix_problem&planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8'
+    );
   });
 
   it('shows broken page', async () => {
@@ -102,5 +106,41 @@ describe('mission data download', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Mission dataNo data foundService points visited: 0Products checked: 0Number of flagged products: 0Download mission data"`
     );
+  });
+  it('hides mission data section for a draft plan', async () => {
+    missionDataPayload.forEach((taskCount) => {
+      fetch.once(JSON.stringify(taskCount));
+    });
+    const plan = retiredDraftPlans[0] as PlanDefinition;
+    const props = {
+      plan,
+    };
+    const wrapper = shallow(<MissionData {...props} />);
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // renders null
+    expect(wrapper.isEmptyRender()).toBe(true);
+  });
+  it('hides mission data section for retired', async () => {
+    missionDataPayload.forEach((taskCount) => {
+      fetch.once(JSON.stringify(taskCount));
+    });
+    const plan = retiredDraftPlans[1] as PlanDefinition;
+    const props = {
+      plan,
+    };
+    const wrapper = shallow(<MissionData {...props} />);
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // renders null
+    expect(wrapper.isEmptyRender()).toBe(true);
   });
 });

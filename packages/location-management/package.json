@@ -46,12 +46,12 @@
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@onaio/session-reducer": "^0.0.12",
     "@opensrp/store": "^0.0.7",
     "@types/geojson": "^7946.0.7",
     "@types/uuid": "8.3.0"
   },
   "peerDependencies": {
+    "@opensrp/store": "^0.0.7",
     "formik-antd": "^2.0.1",
     "react": "^16.13.1",
     "uuid": "^8.3.1"
