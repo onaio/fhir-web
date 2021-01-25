@@ -182,6 +182,7 @@ describe('components/forms/UserForm', () => {
       lastName: 'kenya',
       email: 'test@onatest.com',
       username: 'opensrp',
+      enabled: true,
       requiredActions: [],
     };
 
@@ -336,8 +337,8 @@ describe('components/forms/UserForm', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(wrapper.find('FormItemInput').at(4).prop('id')).toEqual('practitionerToggle');
-    expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
+    expect(wrapper.find('FormItemInput').at(5).prop('id')).toEqual('practitionerToggle');
+    expect(wrapper.find('FormItemInput').at(5).props()).toMatchSnapshot('practitionerToggle');
   });
 
   it('show practitioner toggle when editing user and practitioner is provided', async () => {
@@ -358,8 +359,8 @@ describe('components/forms/UserForm', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(wrapper.find('FormItemInput').at(4).prop('id')).toEqual('practitionerToggle');
-    expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
+    expect(wrapper.find('FormItemInput').at(5).prop('id')).toEqual('practitionerToggle');
+    expect(wrapper.find('FormItemInput').at(5).props()).toMatchSnapshot('practitionerToggle');
   });
 
   it('hides practitioner toggle if user is editing their own profile', async () => {

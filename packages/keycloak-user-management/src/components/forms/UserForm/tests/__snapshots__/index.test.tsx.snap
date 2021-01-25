@@ -183,6 +183,30 @@ Object {
           />
         </FormItem>
         <FormItem
+          id="enabled"
+          label="Enable user"
+          name="enabled"
+        >
+          <Memo
+            name="enabled"
+          >
+            <Radio
+              name="enabled"
+              type="radio"
+              value={true}
+            >
+              Yes
+            </Radio>
+            <Radio
+              name="enabled"
+              type="radio"
+              value={false}
+            >
+              No
+            </Radio>
+          </Memo>
+        </FormItem>
+        <FormItem
           id="requiredActions"
           label="Required Actions"
           name="requiredActions"

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Select, Switch, Input } from 'antd';
+import { Button, Col, Row, Form, Select, Switch, Input, Radio } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { KeycloakUser } from '../../../ducks/user';
 import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
@@ -103,6 +103,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       lg: { offset: 6, span: 14 },
     },
   };
+  const status = [
+    { label: 'Yes', value: true },
+    { label: 'No', value: false },
+  ];
   const { Option } = Select;
   React.useEffect(() => {
     fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, serviceClass);
@@ -183,6 +187,15 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             rules={[{ required: true, message: 'Username is required' }]}
           >
             <Input disabled={initialValues.id ? true : false} />
+          </Form.Item>
+          <Form.Item id="enabled" name="enabled" label="Enable user">
+            <Radio.Group name="enabled">
+              {status.map((e) => (
+                <Radio name="enabled" key={e.label} value={e.value}>
+                  {e.label}
+                </Radio>
+              ))}
+            </Radio.Group>
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item
