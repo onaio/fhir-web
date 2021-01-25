@@ -59,14 +59,12 @@ describe('location-management/src/components/LocationTagView', () => {
   });
 
   it('Test Table View Detail', () => {
+    const onViewDetails = jest.fn();
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table
-            opensrpBaseURL={baseURL}
-            data={tableData}
-            onViewDetails={() => wrapper.unmount()}
-          />
+          <Table opensrpBaseURL={baseURL} data={tableData} onViewDetails={onViewDetails} />
         </Router>
       </Provider>
     );
@@ -74,7 +72,7 @@ describe('location-management/src/components/LocationTagView', () => {
     wrapper.find('.more-options').first().simulate('click');
     wrapper.find('.viewdetails').first().simulate('click');
 
-    expect(wrapper).toHaveLength(0);
+    expect(onViewDetails).toBeCalled();
   });
 
   it('Test Table when detail view prop is undefined', () => {
@@ -136,7 +134,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const notificationSuccessMock = jest.spyOn(notification, 'success');
     fetch.mockResponse(JSON.stringify(sampleLocationUnitGroupPayload));
 
-    onDelete(sampleLocationUnitGroupPayload, 'sometoken', baseURL);
+    onDelete(sampleLocationUnitGroupPayload, baseURL);
 
     await act(async () => {
       await flushPromises();
@@ -145,7 +143,7 @@ describe('location-management/src/components/LocationTagView', () => {
     expect(fetch).toHaveBeenCalledWith(`${baseURL}${endpoint}/${tagId}`, {
       headers: {
         accept: 'application/json',
-        authorization: 'Bearer sometoken',
+        authorization: 'Bearer hunter2',
         'content-type': 'application/json;charset=UTF-8',
       },
       method: 'DELETE',
@@ -160,7 +158,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
 
-    onDelete(sampleLocationUnitGroupPayload, 'sometoken', baseURL);
+    onDelete(sampleLocationUnitGroupPayload, baseURL);
 
     await act(async () => {
       await flushPromises();
@@ -176,7 +174,7 @@ describe('location-management/src/components/LocationTagView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Table data={tableData} />
+          <Table opensrpBaseURL={baseURL} data={tableData} />
         </Router>
       </Provider>
     );

@@ -113,3 +113,39 @@ export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: str
 export const serializeTree = (trees: TreeNode[]) => {
   return JSON.stringify(trees.map((tree) => JSON.stringify(cycle.decycle(tree))));
 };
+
+export function getHierarchyNode(
+  hierarchy: ParsedHierarchyNode,
+  id: string
+): ParsedHierarchyNode | undefined {
+  // convert the ParsedHierarchyNode object into tree
+  const tree = new TreeModel().parse(hierarchy);
+  // variable to store either we found node in the tree or not
+  let result: ParsedHierarchyNode | undefined = undefined;
+
+  // walk through each of tree nodes and look for specific tree id
+  tree.walk((node) => {
+    if ((node.model as ParsedHierarchyNode).id === id) {
+      result = node.model as ParsedHierarchyNode;
+      return false; // return false to stop the loop of tree walk
+    } else return true; // return true to keep searching
+  });
+
+  // return the result that either the node id exsity in this tree or not
+  return result;
+}
+
+export function getHierarchyNodeFromArray(
+  hierarchy: ParsedHierarchyNode[],
+  id: string
+): ParsedHierarchyNode | undefined {
+  // variable to store the result of previous ParsedHierarchyNode from array
+  const result = hierarchy.flatMap((tree) => {
+    const found = getHierarchyNode(tree, id);
+    if (found) return found;
+    // if found stops the execution of loop
+    else return undefined;
+  });
+
+  return result.find((e) => e != undefined);
+}

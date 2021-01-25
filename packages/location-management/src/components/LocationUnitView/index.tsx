@@ -98,7 +98,6 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
-  const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
   const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
   const { opensrpBaseURL } = props;
 
@@ -125,10 +124,15 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (treeData.length) {
-      const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
-      setTableData(data);
+      if (currentClicked && currentClicked.children) {
+        const data = parseTableData([currentClicked, ...currentClicked?.children]);
+        setTableData(data);
+      } else if (!currentClicked) {
+        const data = parseTableData(treeData);
+        setTableData(data);
+      }
     }
-  }, [treeData, currentParentChildren]);
+  }, [treeData, currentClicked]);
 
   React.useLayoutEffect(() => {
     return () => {
@@ -150,21 +154,12 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
       <h5 className="mb-3">{LOCATION_UNIT_MANAGEMENT}</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree
-            data={treeData}
-            OnItemClick={(node) => {
-              setCurrentClicked(node);
-              if (node.children) {
-                const children = [node, ...node.children];
-                setCurrentParentChildren(children);
-              }
-            }}
-          />
+          <Tree data={treeData} OnItemClick={(node) => setCurrentClicked(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">
-              {currentParentChildren.length ? tableData[0].name : 'Locations Unit'}
+              {currentClicked?.children ? currentClicked.node.name : 'Locations Unit'}
             </h5>
             <div>
               <Link

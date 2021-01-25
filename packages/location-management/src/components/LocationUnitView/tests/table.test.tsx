@@ -3,6 +3,8 @@ import React from 'react';
 import { Router } from 'react-router';
 import { history } from '@onaio/connected-reducer-registry';
 import Table, { TableData } from '../Table';
+import flushPromises from 'flush-promises';
+import { act } from 'react-dom/test-utils';
 
 describe('location-management/src/components/LocationUnitView', () => {
   const tableData: TableData[] = [];
@@ -15,26 +17,41 @@ describe('location-management/src/components/LocationUnitView', () => {
     });
   }
 
-  it('renders without crashing', () => {
+  it('renders without crashing', async () => {
     const wrapper = mount(
       <Router history={history}>
         <Table data={tableData} />
       </Router>
     );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
     expect(wrapper.prop('children')).toMatchSnapshot();
   });
 
-  it('Test Table View Detail', () => {
+  it('Test Table View Detail', async () => {
+    const onViewDetails = jest.fn();
+
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} onViewDetails={() => wrapper.unmount()} />
+        <Table data={tableData} onViewDetails={onViewDetails} />
       </Router>
     );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper).toHaveLength(1);
 
     wrapper.find('.more-options').first().simulate('click');
     wrapper.find('.viewdetails').first().simulate('click');
 
-    expect(wrapper).toHaveLength(0);
+    expect(onViewDetails).toBeCalled();
   });
 
   it('Test Table View Detai prop is undefined', () => {
