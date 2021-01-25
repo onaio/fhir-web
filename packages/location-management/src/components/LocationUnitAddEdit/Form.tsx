@@ -22,7 +22,6 @@ import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import { Dispatch } from 'redux';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 
 export interface FormField extends Dictionary<string | number | number[] | undefined> {
@@ -92,19 +91,19 @@ export function removeEmptykeys(obj: any) {
  * @param {string} id id of the node
  * @returns {number | null} return geolocation if found else return null
  */
-export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): number | undefined {
-  const map: (number | undefined)[] = tree.flatMap((node) => {
+export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): number | null {
+  const map: (number | null)[] = tree.flatMap((node) => {
     if (node.id === id) return node.node.attributes.geographicLevel;
     else if (node.children) return findParentGeoLocation(node.children, id);
-    else return undefined;
+    else return null;
   });
 
-  return map.find((e) => e != undefined);
+  const filter = map.filter((e) => e != null);
+  return filter[0];
 }
 
 /** Handle form submission
  *
- * @param {Function} setSubmitting method to set submission status
  * @param {Object} values the form fields
  * @param {string} opensrpBaseURL - base url
  * @param {Array<LocationUnitGroup>} locationUnitgroup all locationUnitgroup
@@ -115,8 +114,6 @@ export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): 
  * @returns {void} return nothing
  */
 export async function onSubmit(
-  dispatch: Dispatch,
-  setSubmitting: (isSubmitting: boolean) => void,
   values: FormField,
   opensrpBaseURL: string,
   locationUnitgroup: LocationUnitGroup[],
@@ -171,26 +168,11 @@ export async function onSubmit(
   removeEmptykeys(payload);
 
   const serve = new OpenSRPService(LOCATION_UNIT_POST_PUT, opensrpBaseURL);
-  if (id) {
-    await serve
-      .update({ ...payload })
-      .then(() => {
-        sendSuccessNotification('Location Unit Updated successfully');
-        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
-        history.goBack();
-      })
-      .catch(() => sendErrorNotification(ERROR_OCCURED));
-  } else {
-    await serve
-      .create({ ...payload })
-      .then(() => {
-        sendSuccessNotification('Location Unit Created successfully');
-        dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
-        history.goBack();
-      })
-      .catch(() => sendErrorNotification(ERROR_OCCURED));
-  }
-  setSubmitting(false);
+  if (id) await serve.update({ ...payload });
+  else await serve.create({ ...payload });
+
+  history.goBack();
+  sendSuccessNotification('Location Unit Created successfully');
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
@@ -230,8 +212,6 @@ export const Form: React.FC<Props> = (props: Props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) =>
         onSubmit(
-          dispatch,
-          setSubmitting,
           values,
           props.opensrpBaseURL,
           props.locationUnitGroup,
@@ -240,6 +220,11 @@ export const Form: React.FC<Props> = (props: Props) => {
           props.extraFields,
           props.id
         )
+          .then(() => dispatch(fetchAllHierarchies([]))) // reset tree data to force refresh of other component
+          .catch(() => {
+            sendErrorNotification(ERROR_OCCURED);
+            setSubmitting(false);
+          })
       }
     >
       {({ isSubmitting, handleSubmit }) => (

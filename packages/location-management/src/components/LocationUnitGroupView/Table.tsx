@@ -2,9 +2,7 @@ import React from 'react';
 import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
-import { getAccessToken } from '@onaio/session-reducer';
-import { useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import {
   ERROR_OCCURED,
   LOCATION_UNIT_GROUP_DELETE,
@@ -27,18 +25,12 @@ export interface Props {
 /** function to delete the record
  *
  * @param {object} record - The record to delete
- * @param {string} accessToken - Access token to be used for requests
  * @param {string} opensrpBaseURL - base url
  */
-export const onDelete = (
-  record: LocationUnitGroup,
-  accessToken: string,
-  opensrpBaseURL: string
-) => {
+export const onDelete = (record: LocationUnitGroup, opensrpBaseURL: string) => {
   const clientService = new OpenSRPService(
-    accessToken,
-    opensrpBaseURL,
-    LOCATION_UNIT_GROUP_DELETE + record.id.toString()
+    LOCATION_UNIT_GROUP_DELETE + record.id.toString(),
+    opensrpBaseURL
   );
   clientService
     .delete()
@@ -48,7 +40,6 @@ export const onDelete = (
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails, opensrpBaseURL } = props;
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
 
   const columns = [
     {
@@ -79,10 +70,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 >
                   View Details
                 </Menu.Item>
-                <Menu.Item
-                  className="delete"
-                  onClick={() => onDelete(record, accessToken, opensrpBaseURL)}
-                >
+                <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL)}>
                   Delete
                 </Menu.Item>
               </Menu>

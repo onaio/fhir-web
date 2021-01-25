@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -15,7 +15,6 @@ import {
   locationUnitsReducerName,
 } from '../../ducks/location-units';
 import {
-  LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
   ADD_LOCATION_UNIT,
@@ -33,14 +32,14 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import {
   generateJurisdictionTree,
   getBaseTreeNode,
   getHierarchy,
 } from '../../ducks/locationHierarchy/utils';
-import { Props } from '../../ducks/types';
 import './LocationUnitView.css';
+import { Props } from '../LocationUnitAddEdit/Form';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -93,10 +92,9 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 }
 
 export const LocationUnitView: React.FC<Props> = (props: Props) => {
+  const dispatch = useDispatch();
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
-  const dispatch = useDispatch();
-  const isMounted = useRef<boolean>(true);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
@@ -120,23 +118,16 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL, locationUnits]);
+    // to avoid extra rerenders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
     if (treeData.length) {
       const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
       setTableData(data);
     }
-  }, [treeData.length, currentParentChildren.length, treeData, currentParentChildren]);
-
-  React.useLayoutEffect(() => {
-    return () => {
-      if (isMounted.current) {
-        dispatch(fetchAllHierarchies([]));
-      }
-      isMounted.current = false;
-    };
-  });
+  }, [treeData, currentParentChildren]);
 
   if (!Array.isArray(treeData) || !treeData.length || !tableData.length)
     return <Spin size={'large'} />;
