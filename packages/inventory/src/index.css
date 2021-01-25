@@ -23,3 +23,14 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.content-section {
+  padding: 0 24px;
+}
+
+.inventory-form.form-container {
+  background-color: #fff;
+  padding: 24px !important;
+  min-height: 80vh;
+  margin-bottom: 24px;
+}
