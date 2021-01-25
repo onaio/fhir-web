@@ -9,11 +9,15 @@ import {
   KEYCLOAK_URL_USERS,
   URL_USER,
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
+  URL_USER_CREDENTIALS,
+} from '../../../constants';
+import {
   ERROR_OCCURED,
   PRACTITIONER_UPDATED_SUCCESSFULLY,
   PRACTITIONER_CREATED_SUCCESSFULLY,
-  URL_USER_CREDENTIALS,
-} from '../../../constants';
+  MESSAGE_USER_EDITED,
+  MESSAGE_USER_CREATED,
+} from '../../../lang';
 import { OpenSRPService } from '@opensrp/server-service';
 import { Practitioner } from '.';
 
@@ -130,7 +134,7 @@ export const submitForm = (
           isEditing
         );
         setSubmitting(false);
-        sendSuccessNotification('User edited successfully');
+        sendSuccessNotification(MESSAGE_USER_EDITED);
         history.push(URL_USER);
       })
       .catch((_: Error) => {
@@ -157,7 +161,7 @@ export const submitForm = (
           isEditing
         );
         setSubmitting(false);
-        sendSuccessNotification('User created successfully');
+        sendSuccessNotification(MESSAGE_USER_CREATED);
       })
       .catch((_: Error) => {
         setSubmitting(false);
