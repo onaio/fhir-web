@@ -3,7 +3,7 @@ export const PASSWORD_LABEL = 'Password';
 export const CONFIRM_PASSWORD_LABEL = 'Confirm Password';
 
 export const FIRST_NAME_LABEL = 'First Name';
-export const LAST_NAME_LABEL = 'Last Name ';
+export const LAST_NAME_LABEL = 'Last Name';
 export const EMAIL_LABEL = 'Email';
 export const USERNAME_LABEL = 'Username';
 export const MARK_AS_PRACTITIONER_LABEL = 'Mark as Practitioner';
