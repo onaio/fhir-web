@@ -79,7 +79,7 @@ describe('location-management/src/components/LocationTree', () => {
     );
 
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
-    expect(treeNode.children()).toHaveLength(treedata.length); // as per structure make sure we have 3 tree
+    expect(treeNode.children()).toHaveLength(treedata.length + 1); // as per structure make sure we have 4 tree
 
     const expandButton = treeNode.find('span.ant-tree-switcher').first();
     expandButton.simulate('click');
