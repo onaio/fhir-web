@@ -33,13 +33,13 @@ export const getConfigs = (): LanguageConfigs => {
   return allConfigs;
 };
 
-export const initializei18n = (opensrpResources: LanguageResources) => {
+export const initializei18n = (i18next: typeof i18n, opensrpResources: LanguageResources) => {
   // const configurable:
   const languageCode = getConfigs().languageCode ?? 'en';
   const projectLanguageCode = getConfigs().projectLanguageCode ?? 'core';
   const resources = (opensrpResources as unknown) as Resource;
 
-  i18n
+  i18next
     .use(initReactI18next)
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({

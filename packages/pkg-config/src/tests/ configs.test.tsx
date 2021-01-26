@@ -36,7 +36,7 @@ describe('configs/initializei18n', () => {
       },
     };
 
-    initializei18n(resources);
+    initializei18n(i18n, resources);
     expect(mockUse).toHaveBeenCalledWith(initReactI18next);
     expect(mockInit).toHaveBeenCalledWith({
       resources,

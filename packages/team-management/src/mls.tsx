@@ -17,6 +17,6 @@ const resources: LanguageResources = {
   },
 };
 
-initializei18n(resources);
+initializei18n(i18n, resources);
 
 export default i18n;
