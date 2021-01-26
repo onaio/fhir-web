@@ -26,8 +26,6 @@ import Form, { FormField } from './Form';
 import { Row, Col, Spin } from 'antd';
 import {
   LocationUnitGroup,
-  fetchLocationUnitGroups,
-  getLocationUnitGroupsArray,
   reducerName as LocationUnitGroupsReducerName,
   reducer as LocationUnitGroupsReducer,
 } from '../../ducks/location-unit-groups';
