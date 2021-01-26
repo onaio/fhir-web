@@ -155,7 +155,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   }, [locationUnits, treeData.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
-    if (!extrafields) {
+    if (!extrafields && locationUnitGroup.length && treeData.length) {
       const serve = new OpenSRPService(
         LOCATION_UNIT_EXTRAFIELDS + `&identifier=${LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER}`,
         opensrpBaseURL
@@ -165,7 +165,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .then((response: ExtraField[]) => setExtrafields(response))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [extrafields, opensrpBaseURL]);
+  }, [extrafields, locationUnitGroup.length, treeData.length, opensrpBaseURL]);
 
   if (
     extrafields === null ||
