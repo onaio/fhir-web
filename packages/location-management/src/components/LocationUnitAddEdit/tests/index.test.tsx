@@ -126,54 +126,52 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       await new Promise((resolve) => setImmediate(resolve));
     });
 
-    expect(fetch.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location-tag",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer hunter2",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
           },
-        ],
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer hunter2",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
           },
-        ],
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer hunter2",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
           },
-        ],
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer hunter2",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
           },
-        ],
-      ]
-    `);
+          method: 'GET',
+        },
+      ],
+    ]);
 
     await act(async () => {
       await flushPromises();
@@ -276,43 +274,41 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       await new Promise((resolve) => setImmediate(resolve));
     });
 
-    expect(fetch.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer hunter2",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
           },
-        ],
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/location-tag",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer hunter2",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
           },
-        ],
-        Array [
-          "https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings",
-          Object {
-            "headers": Object {
-              "accept": "application/json",
-              "authorization": "Bearer hunter2",
-              "content-type": "application/json;charset=UTF-8",
-            },
-            "method": "GET",
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
           },
-        ],
-      ]
-    `);
+          method: 'GET',
+        },
+      ],
+    ]);
 
     await act(async () => {
       await flushPromises();
