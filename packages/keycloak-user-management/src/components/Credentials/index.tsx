@@ -13,14 +13,6 @@ import {
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
   URL_USER,
-  CREDENTIALS,
-  PASSWORD_MATCH_FAILURE,
-  RESET_PASSWORD,
-  CANCEL,
-  INPUT_PASSWORD,
-  CONFIRM_PASSWORD,
-  CREDENTIALS_UPDATED_SUCCESSFULLY,
-  ERROR_OCCURED,
 } from '../../constants';
 import {
   reducer as keycloakUsersReducer,
@@ -31,6 +23,18 @@ import {
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
+import {
+  PASSWORD_LABEL,
+  CONFIRM_PASSWORD_LABEL,
+  RESET_PASSWORD,
+  CREDENTIALS,
+  PASSWORD_MATCH_FAILURE,
+  CANCEL,
+  INPUT_PASSWORD,
+  CONFIRM_PASSWORD,
+  CREDENTIALS_UPDATED_SUCCESSFULLY,
+  ERROR_OCCURED,
+} from '../../lang';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -153,7 +157,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
           >
             <Form.Item
               name="password"
-              label="Password"
+              label={PASSWORD_LABEL}
               rules={[
                 {
                   required: true,
@@ -167,7 +171,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
 
             <Form.Item
               name="confirm"
-              label="Confirm Password"
+              label={CONFIRM_PASSWORD_LABEL}
               dependencies={['password']}
               hasFeedback
               rules={[

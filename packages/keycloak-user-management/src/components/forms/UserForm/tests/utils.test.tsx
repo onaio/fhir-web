@@ -5,7 +5,13 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURED } from '../../../../constants';
+import {
+  ERROR_OCCURED,
+  PRACTITIONER_CREATED_SUCCESSFULLY,
+  PRACTITIONER_UPDATED_SUCCESSFULLY,
+  USER_CREATED_SUCCESSFULLY,
+  USER_EDITED_SUCCESSFULLY,
+} from '../../../../lang';
 import * as fixtures from './fixtures';
 import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { keycloakUser } from './fixtures';
@@ -149,7 +155,7 @@ describe('forms/utils/submitForm', () => {
         method: 'POST',
       },
     ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('User created successfully');
+    expect(notificationSuccessMock).toHaveBeenCalledWith(USER_CREATED_SUCCESSFULLY);
     expect(historyPushMock).toHaveBeenCalledWith(
       '/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b'
     );
@@ -188,7 +194,7 @@ describe('forms/utils/submitForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
+    expect(notificationSuccessMock).toHaveBeenCalledWith(USER_EDITED_SUCCESSFULLY);
     expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
   });
 
@@ -281,7 +287,7 @@ describe('forms/utils/submitForm', () => {
         method: 'POST',
       },
     ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner created successfully');
+    expect(notificationSuccessMock).toHaveBeenCalledWith(PRACTITIONER_CREATED_SUCCESSFULLY);
   });
 
   it('updates practitioner successfully', async () => {
@@ -323,7 +329,7 @@ describe('forms/utils/submitForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
+    expect(notificationSuccessMock).toHaveBeenCalledWith(PRACTITIONER_UPDATED_SUCCESSFULLY);
   });
 
   it('calls API with userId if present in values', async () => {
@@ -366,7 +372,7 @@ describe('forms/utils/submitForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
+    expect(notificationSuccessMock).toHaveBeenCalledWith(PRACTITIONER_UPDATED_SUCCESSFULLY);
   });
 
   it('handles errors when marking practitioner fails', async () => {
@@ -389,6 +395,6 @@ describe('forms/utils/submitForm', () => {
     await act(async () => {
       await flushPromises();
     });
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
   });
 });

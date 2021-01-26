@@ -3,7 +3,24 @@ import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Switch, Input } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { KeycloakUser } from '../../../ducks/user';
-import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
+import { URL_USER } from '../../../constants';
+import {
+  EDIT_USER,
+  ADD_USER,
+  CANCEL,
+  FIRST_NAME_LABEL,
+  LAST_NAME_LABEL,
+  EMAIL_LABEL,
+  USERNAME_LABEL,
+  MARK_AS_PRACTITIONER_LABEL,
+  SAVING,
+  SAVE,
+  FIRST_NAME_REQUIRED,
+  LAST_NAME_REQUIRED,
+  EMAIL_REQUIRED,
+  USERNAME_REQUIRED,
+  PLEASE_SELECT,
+} from '../../../lang';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -155,32 +172,32 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           <Form.Item
             name="firstName"
             id="firstName"
-            label="First Name"
-            rules={[{ required: true, message: 'First Name is required' }]}
+            label={FIRST_NAME_LABEL}
+            rules={[{ required: true, message: FIRST_NAME_REQUIRED }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="lastName"
             id="lastName"
-            label="Last Name"
-            rules={[{ required: true, message: 'Last Name is required' }]}
+            label={LAST_NAME_LABEL}
+            rules={[{ required: true, message: LAST_NAME_REQUIRED }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="email"
             id="email"
-            label="Email"
-            rules={[{ required: true, message: 'Email is required' }]}
+            label={EMAIL_LABEL}
+            rules={[{ required: true, message: EMAIL_REQUIRED }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="username"
             id="username"
-            label="Username"
-            rules={[{ required: true, message: 'Username is required' }]}
+            label={USERNAME_LABEL}
+            rules={[{ required: true, message: USERNAME_REQUIRED }]}
           >
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
@@ -188,7 +205,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             <Form.Item
               id="practitionerToggle"
               name="active"
-              label="Mark as Practitioner"
+              label={MARK_AS_PRACTITIONER_LABEL}
               valuePropName="checked"
             >
               <Switch />
@@ -199,7 +216,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               <Select
                 mode="multiple"
                 allowClear
-                placeholder="Please select"
+                placeholder={PLEASE_SELECT}
                 onChange={(selected: string[]) =>
                   handleUserActionsChange(selected, setRequiredActions)
                 }
@@ -215,7 +232,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           ) : null}
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
-              {isSubmitting ? 'Saving' : 'Save'}
+              {isSubmitting ? SAVING : SAVE}
             </Button>
             <Button onClick={() => history.push(URL_USER)} className="cancel-user">
               {CANCEL}

@@ -17,13 +17,8 @@ import {
   reducer as keycloakUsersReducer,
   makeKeycloakUsersSelector,
 } from '../../ducks/user';
-import {
-  URL_USER_CREATE,
-  KEYCLOAK_URL_USERS,
-  ERROR_OCCURED,
-  NO_DATA_FOUND,
-  SEARCH_QUERY_PARAM,
-} from '../../constants';
+import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '../../constants';
+import { ERROR_OCCURED, NO_DATA_FOUND, SEARCH_QUERY_PARAM } from '../../lang';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';

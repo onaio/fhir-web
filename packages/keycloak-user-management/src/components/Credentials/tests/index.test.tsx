@@ -18,7 +18,14 @@ import {
   fetchKeycloakUsers,
   KeycloakUser,
 } from '../../../ducks/user';
-import { URL_USER, ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../constants';
+import { URL_USER } from '../../../constants';
+import {
+  ERROR_OCCURED,
+  CREDENTIALS_UPDATED_SUCCESSFULLY,
+  INPUT_PASSWORD,
+  CONFIRM_PASSWORD,
+  PASSWORD_MATCH_FAILURE,
+} from '../../../lang';
 import { history as registryHistory } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -170,14 +177,14 @@ describe('components/Credentials', () => {
     const formContainer = wrapper.find('div.form-container');
 
     expect(formContainer.find('Row').at(0).find('FormItemInput').prop('errors')).toEqual([
-      'Please input your password!',
+      INPUT_PASSWORD,
     ]);
     expect(
       formContainer.find('Row').at(0).find('FormItemInput').find('span.ant-form-item-children-icon')
     ).toBeTruthy();
 
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
-      'Please confirm your password!',
+      CONFIRM_PASSWORD,
     ]);
     expect(
       formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')
@@ -207,7 +214,7 @@ describe('components/Credentials', () => {
     const formContainer = wrapper.find('div.form-container');
 
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
-      'The two passwords that you entered do not match!',
+      PASSWORD_MATCH_FAILURE,
     ]);
     expect(
       formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')

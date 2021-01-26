@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { removeKeycloakUsers, KeycloakUser } from '../../../ducks/user';
 import { URL_USER_CREDENTIALS, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
+import { CREDENTIALS_TEXT, DELETE, DELETE_USER_CONFIRMATION, EDIT, NO, YES } from '../../../lang';
 
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
@@ -37,9 +38,9 @@ const TableActions = (props: Props): JSX.Element => {
     <Menu>
       <Menu.Item>
         <Popconfirm
-          title="Are you sure you want to delete this user?"
-          okText="Yes"
-          cancelText="No"
+          title={DELETE_USER_CONFIRMATION}
+          okText={YES}
+          cancelText={NO}
           onConfirm={() =>
             deleteUser(
               removeKeycloakUsersCreator,
@@ -53,7 +54,7 @@ const TableActions = (props: Props): JSX.Element => {
           {user_id &&
             (record.id === user_id ? null : (
               <Button danger type="link" style={{ color: '#' }}>
-                Delete
+                {DELETE}
               </Button>
             ))}
         </Popconfirm>
@@ -61,7 +62,7 @@ const TableActions = (props: Props): JSX.Element => {
       <Menu.Item>
         {
           <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
-            <Button type="link">Credentials</Button>
+            <Button type="link">{CREDENTIALS_TEXT}</Button>
           </Link>
         }
       </Menu.Item>
@@ -70,7 +71,7 @@ const TableActions = (props: Props): JSX.Element => {
   return (
     <>
       <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-        Edit
+        {EDIT}
       </Link>
       <Divider type="vertical" />
       <Dropdown overlay={menu}>
