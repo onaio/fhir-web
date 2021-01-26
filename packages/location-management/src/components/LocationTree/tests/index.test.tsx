@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import Tree from '../';
 import { treedata } from '../../../ducks/locationHierarchy/tests/hierarchyFixtures';
-import { store } from '@onaio/redux-reducer-registry';
+import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
