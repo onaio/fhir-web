@@ -120,16 +120,9 @@ describe('components/DownloadClientData', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    /** @todo A dispatch should be made to remove all hierarchies after each test because
-     * each test adds hiearchies to existing hierarchies leading to duplicates, hence
-     * the duplicate key warning when running tests
-     *
-     * Currently, there isn't an action method to remove all hierachies. If one is made
-     * available from the package @opensrp/location-management, then it should be used here
-     */
   });
 
-  const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest';
+  const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/';
   const accessToken = 'hunter2';
   const opensrpServiceClass = OpenSRPService;
   const props = {
@@ -148,6 +141,25 @@ describe('components/DownloadClientData', () => {
         </Router>
       </Provider>
     );
+  });
+
+  it('renders spinner if no hierachies are empty', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.userAssignment));
+    fetch.mockOnce(JSON.stringify({}));
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <DownloadClientData {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+    expect(wrapper.find('.ant-spin')).toBeTruthy();
+    wrapper.unmount();
   });
 
   it('renders correctly', async () => {

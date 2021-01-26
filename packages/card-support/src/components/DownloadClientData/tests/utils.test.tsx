@@ -140,7 +140,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     cardStatus,
     cardOrderDate,
   };
-  const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest';
+  const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/';
   const accessToken = 'hunter2';
   const setSubmittingMock = jest.fn();
 
