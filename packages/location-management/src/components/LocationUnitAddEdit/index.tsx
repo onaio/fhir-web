@@ -162,7 +162,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
     }
     // to avoid extra rerenders
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationUnits, treeData.length, dispatch, opensrpBaseURL]);
+  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
     if (!extrafields && locationUnitGroup.length && treeData.length) {
