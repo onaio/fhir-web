@@ -93,7 +93,7 @@ export function reducer(
     case TREE_FETCHED:
       return {
         ...state,
-        hierarchyArray: [...state.hierarchyArray, action.hierarchyObject],
+        hierarchyArray: action.hierarchyObject,
       };
 
     case SET_LOCATION_TREE_STATE:

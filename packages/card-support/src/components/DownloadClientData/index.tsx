@@ -115,7 +115,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
           .read(defaultLocationId, { is_jurisdiction: true })
           .then((res: RawOpenSRPHierarchy) => {
             const hierarchy = generateJurisdictionTree(res);
-            dispatch(fetchAllHierarchiesActionCreator(hierarchy.model));
+            dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
           })
           .catch((_: Error) => {
             sendErrorNotification(ERROR_OCCURRED);
