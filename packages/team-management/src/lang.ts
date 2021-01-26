@@ -13,7 +13,6 @@ export const MSG_TEAMS_UPDATE_SUCCESS = i18n.t('Successfully Updated Teams');
 export const MSG_TEAMS_ADD_SUCCESS = i18n.t('Successfully Added Teams');
 
 // Rendered text
-export const COMMUNITY_HEALTH_WORKER = i18n.t('Community Health Worker');
 export const ENTER_TEAM_NAME = i18n.t('Enter a team name');
 export const TEAM_NAME = i18n.t('Team Name');
 export const STATUS = i18n.t('Status');

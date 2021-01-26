@@ -14,7 +14,6 @@ import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 import {
   ACTIVE,
   CANCEL,
-  COMMUNITY_HEALTH_WORKER,
   ENTER_TEAM_NAME,
   ERROR_OCCURRED,
   INACTIVE,
@@ -129,7 +128,7 @@ async function SetPractitioners(
       identifier: v4(),
       practitioner: prac.identifier,
       organization: id,
-      code: { text: COMMUNITY_HEALTH_WORKER },
+      code: { text: 'Community Health Worker' },
     };
   });
   if (toAdd.length) {
