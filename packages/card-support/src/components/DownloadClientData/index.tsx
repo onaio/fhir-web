@@ -65,9 +65,8 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
   const [cardOrderDate, setCardOrderDate] = React.useState<[string, string]>(['', '']);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [defaultLocationId, setDefaultLocationId] = React.useState<string>('');
-  const locationHierarchies = useSelector(
-    (state) =>
-      (locationHierachyDucks.getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
+  const locationHierarchies = useSelector((state) =>
+    locationHierachyDucks.getAllHierarchiesArray(state)
   );
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const dispatch = useDispatch();
@@ -115,7 +114,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
           .read(defaultLocationId, { is_jurisdiction: true })
           .then((res: RawOpenSRPHierarchy) => {
             const hierarchy = generateJurisdictionTree(res);
-            dispatch(fetchAllHierarchiesActionCreator(hierarchy.model));
+            dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
           })
           .catch((_: Error) => {
             sendErrorNotification(ERROR_OCCURRED);
