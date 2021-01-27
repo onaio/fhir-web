@@ -2,10 +2,12 @@ import { formatDate, downloadManifestFile } from '../utils';
 import { fixManifestFiles, downloadFile } from '../../ducks/tests/fixtures';
 import fetch from 'jest-fetch-mock';
 import { getFetchOptions } from '@opensrp/server-service';
-import { submitForm } from '../utils';
+import { submitForm, makeRelease } from '../utils';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
+import { FixManifestDraftFiles } from '../../ducks/tests/fixtures';
+import { ERROR_OCCURRED } from '../../constants';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (global as any).URL.createObjectURL = jest.fn();
@@ -90,7 +92,7 @@ describe('utils/downloadManifestFile', () => {
   });
 });
 
-describe('components/UploadForm/utils/submitForm', () => {
+describe('helpers/utils/submitForm', () => {
   afterEach(() => {
     jest.clearAllMocks();
     fetch.resetMocks();
@@ -212,5 +214,140 @@ describe('components/UploadForm/utils/submitForm', () => {
     expect(setIfDoneMock).not.toHaveBeenCalled();
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
+  });
+});
+
+describe('helpers/utils/makeRelease', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+  });
+
+  const accessToken = 'hunter2';
+  const opensrpBaseURL = 'https://test-example.com/rest';
+  const removeDraftFilesMock = jest.fn();
+  const setIfDoneHereMock = jest.fn();
+  const alertErrorMock = jest.fn();
+  const dispatchMock = jest.fn();
+  const endpoint = '/foo';
+
+  it('makes a release', async () => {
+    makeRelease(
+      FixManifestDraftFiles,
+      accessToken,
+      opensrpBaseURL,
+      removeDraftFilesMock,
+      setIfDoneHereMock,
+      alertErrorMock,
+      endpoint
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    const postData = {
+      'Cache-Control': 'no-cache',
+      Pragma: 'no-cache',
+      body:
+        '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer hunter2',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    };
+
+    expect(fetch.mock.calls[0]).toEqual(['https://test-example.com/rest/foo', postData]);
+    expect(setIfDoneHereMock).toHaveBeenCalledWith(true);
+    expect(removeDraftFilesMock).toHaveBeenCalled();
+  });
+
+  it('makes a release with the default endpoint', async () => {
+    makeRelease(
+      FixManifestDraftFiles,
+      accessToken,
+      opensrpBaseURL,
+      removeDraftFilesMock,
+      setIfDoneHereMock,
+      alertErrorMock
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    const postData = {
+      'Cache-Control': 'no-cache',
+      Pragma: 'no-cache',
+      body:
+        '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer hunter2',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    };
+
+    expect(fetch.mock.calls[0]).toEqual(['https://test-example.com/rest/manifest', postData]);
+    expect(setIfDoneHereMock).toHaveBeenCalledWith(true);
+    expect(removeDraftFilesMock).toHaveBeenCalled();
+  });
+
+  it('handles failure if make release fails', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API taking a break'));
+
+    makeRelease(
+      FixManifestDraftFiles,
+      accessToken,
+      opensrpBaseURL,
+      removeDraftFilesMock,
+      setIfDoneHereMock,
+      alertErrorMock
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(setIfDoneHereMock).not.toHaveBeenCalled();
+    expect(removeDraftFilesMock).not.toHaveBeenCalled();
+    expect(alertErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+  });
+
+  it('calls dispatch if dispatch is passed', async () => {
+    makeRelease(
+      FixManifestDraftFiles,
+      accessToken,
+      opensrpBaseURL,
+      removeDraftFilesMock,
+      setIfDoneHereMock,
+      alertErrorMock,
+      endpoint,
+      dispatchMock
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    const postData = {
+      'Cache-Control': 'no-cache',
+      Pragma: 'no-cache',
+      body:
+        '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer hunter2',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    };
+
+    expect(fetch.mock.calls[0]).toEqual(['https://test-example.com/rest/foo', postData]);
+    expect(setIfDoneHereMock).toHaveBeenCalledWith(true);
+    expect(dispatchMock).toHaveBeenCalledWith(removeDraftFilesMock());
   });
 });

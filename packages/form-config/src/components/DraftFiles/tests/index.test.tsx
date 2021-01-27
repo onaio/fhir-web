@@ -18,6 +18,7 @@ import * as helpers from '../../../helpers/fileDownload';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
+import { ERROR_OCCURRED } from '../../../constants';
 /** register the reducers */
 reducerRegistry.register(draftReducerName, draftReducer);
 
@@ -231,7 +232,7 @@ describe('components/DraftFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith('Cannot create file', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, { type: 'error' });
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

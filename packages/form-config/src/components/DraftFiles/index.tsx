@@ -27,7 +27,7 @@ import {
   UPOL0AD_FILE_LABEL,
 } from '../../constants';
 import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile } from '../../helpers/utils';
+import { formatDate, downloadManifestFile, makeRelease } from '../../helpers/utils';
 import { Link } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
 
@@ -122,33 +122,6 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     setStateData(data);
   }, [data]);
 
-  /**
-   * create a manifest file
-   *
-   * @param {MouseEvent} e - mouse event
-   */
-  const onMakeReleaseClick = (e: MouseEvent) => {
-    e.preventDefault();
-    const identifiers = data.map((form) => form.identifier);
-    const json = {
-      /* eslint-disable-next-line @typescript-eslint/camelcase */
-      forms_version: data[0].version,
-      identifiers,
-    };
-    const clientService = new OpenSRPService(accessToken, baseURL, manifestEndPoint, getPayload);
-    clientService
-      .create({ json: JSON.stringify(json) })
-      .then(() => {
-        clearDraftFiles();
-        setIfDoneHere(true);
-      })
-      .catch((err) => {
-        if (customAlert) {
-          customAlert(String(err), { type: 'error' });
-        }
-      });
-  };
-
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.toUpperCase();
     const searchResult = data.filter(
@@ -175,6 +148,12 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
         }
       }
     );
+  };
+
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
+    }
   };
 
   const columns: Array<DrillDownColumn<ManifestFilesTypes>> = [
@@ -262,7 +241,19 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
         <Button
           className="btn btn-md btn btn-primary float-right"
           color="primary"
-          onClick={onMakeReleaseClick}
+          onClick={() =>
+            makeRelease(
+              data,
+              accessToken,
+              baseURL,
+              clearDraftFiles,
+              setIfDoneHere,
+              displayAlertError,
+              manifestEndPoint,
+              undefined,
+              getPayload
+            )
+          }
         >
           {makeReleaseLabel}
         </Button>

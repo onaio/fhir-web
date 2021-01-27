@@ -1,9 +1,11 @@
 import { URLParams, OpenSRPService, getFetchOptions, HTTPError } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { UploadFileFieldTypes } from '../components/Antd/UploadForm';
-import { OPENSRP_FORMS_ENDPOINT } from '../constants';
+import { ERROR_OCCURRED, OPENSRP_FORMS_ENDPOINT, OPENSRP_MANIFEST_ENDPOINT } from '../constants';
 import { ManifestFilesTypes } from '../ducks/manifestFiles';
 import { handleDownload } from './fileDownload';
+import { removeManifestDraftFiles } from '../ducks/manifestDraftFiles';
+import { Dispatch } from 'redux';
 
 type StrNum = string | number;
 
@@ -115,5 +117,57 @@ export const submitForm = (
     })
     .finally(() => {
       setSubmitting(false);
+    });
+};
+
+/**
+ * Handle make release
+ *
+ * @param {ManifestFilesTypes[]} data draft files to make release for
+ * @param {string} accessToken  Opensrp API access token
+ * @param {string} opensrpBaseURL Opensrp API base URL
+ * @param {Function} removeDraftFiles redux action to remove draft files
+ * @param {Function} setIfDoneHere set ifDoneHere form status
+ * @param {Function} alertError - receive error description
+ * @param {string} endpoint - Opensrp endpoint
+ * @param {Dispatch} dispatch - dispatch function from redux store
+ * @param {Function} customFetchOptions custom opensrp API fetch options
+ */
+export const makeRelease = (
+  data: ManifestFilesTypes[],
+  accessToken: string,
+  opensrpBaseURL: string,
+  removeDraftFiles: typeof removeManifestDraftFiles,
+  setIfDoneHere: (ifDoneHere: boolean) => void,
+  alertError: (err: string) => void,
+  endpoint = OPENSRP_MANIFEST_ENDPOINT,
+  dispatch?: Dispatch,
+  customFetchOptions?: typeof getFetchOptions
+) => {
+  const identifiers = data.map((form) => form.identifier);
+  const json = {
+    /* eslint-disable-next-line @typescript-eslint/camelcase */
+    forms_version: data[0].version,
+    identifiers,
+  };
+  const clientService = new OpenSRPService(
+    accessToken,
+    opensrpBaseURL,
+    endpoint,
+    customFetchOptions
+  );
+  clientService
+    .create({ json: JSON.stringify(json) })
+    .then(() => {
+      if (dispatch) {
+        dispatch(removeDraftFiles());
+      } else {
+        removeDraftFiles();
+      }
+
+      setIfDoneHere(true);
+    })
+    .catch((_: Error) => {
+      alertError(ERROR_OCCURRED);
     });
 };

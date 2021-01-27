@@ -14,9 +14,14 @@ import { Dictionary } from '@onaio/utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { ManifestFilesTypes } from '../../../ducks/manifestFiles';
 import { useHistory, Redirect } from 'react-router';
-import { OPENSRP_FORM_METADATA_ENDPOINT, ERROR_OCCURRED } from '../../../constants';
+import {
+  OPENSRP_FORM_METADATA_ENDPOINT,
+  ERROR_OCCURRED,
+  OPENSRP_MANIFEST_ENDPOINT,
+} from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { getTableColumns, makeRelease } from './utils';
+import { getTableColumns } from './utils';
+import { makeRelease } from '../../../helpers/utils';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, DraftFilesReducer);
@@ -154,9 +159,11 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
                   data,
                   accessToken,
                   opensrpBaseURL,
-                  dispatch,
                   removeDraftFiles,
                   setIfDoneHere,
+                  sendErrorNotification,
+                  OPENSRP_MANIFEST_ENDPOINT,
+                  dispatch,
                   customFetchOptions
                 )
               }
