@@ -320,4 +320,55 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       `Edit Location Unit | ${baseLocationUnits[0].properties.name}`
     );
   });
+
+  it('fail Extra Setting Fetch', async () => {
+    const notificationErrorMock = jest.spyOn(notification, 'error');
+    fetch.mockResponseOnce(JSON.stringify(locationUnitgroups));
+    fetch.mockReject();
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitAddEdit opensrpBaseURL={baseURL} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(fetch.mock.calls).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "https://opensrp-stage.smartregister.org/opensrp/rest/location-tag",
+          Object {
+            "headers": Object {
+              "accept": "application/json",
+              "authorization": "Bearer hunter2",
+              "content-type": "application/json;charset=UTF-8",
+            },
+            "method": "GET",
+          },
+        ],
+        Array [
+          "https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings",
+          Object {
+            "headers": Object {
+              "accept": "application/json",
+              "authorization": "Bearer hunter2",
+              "content-type": "application/json;charset=UTF-8",
+            },
+            "method": "GET",
+          },
+        ],
+      ]
+    `);
+
+    expect(notificationErrorMock).toHaveBeenCalledWith({
+      message: ERROR_OCCURED,
+      description: undefined,
+    });
+  });
 });
