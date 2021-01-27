@@ -16,7 +16,7 @@ import {
   FORM_NAME_REQUIRED_LABEL,
 } from '../../constants';
 import { Dictionary } from '@onaio/utils';
-import { submitForm } from '../../helpers/utils';
+import { submitUploadForm } from '../../helpers/utils';
 
 /** default props interface */
 export interface UploadDefaultProps {
@@ -85,7 +85,7 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
       validationSchema={uploadValidationSchema}
       // tslint:disable-next-line: jsx-no-lambda
       onSubmit={(values, { setSubmitting }) => {
-        submitForm(
+        submitUploadForm(
           values,
           accessToken,
           baseURL,

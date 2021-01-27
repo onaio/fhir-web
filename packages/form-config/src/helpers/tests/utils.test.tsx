@@ -2,7 +2,7 @@ import { formatDate, downloadManifestFile } from '../utils';
 import { fixManifestFiles, downloadFile } from '../../ducks/tests/fixtures';
 import fetch from 'jest-fetch-mock';
 import { getFetchOptions } from '@opensrp/server-service';
-import { submitForm, makeRelease } from '../utils';
+import { submitUploadForm, makeRelease } from '../utils';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
@@ -92,7 +92,7 @@ describe('utils/downloadManifestFile', () => {
   });
 });
 
-describe('helpers/utils/submitForm', () => {
+describe('helpers/utils/submitUploadForm', () => {
   afterEach(() => {
     jest.clearAllMocks();
     fetch.resetMocks();
@@ -114,7 +114,7 @@ describe('helpers/utils/submitForm', () => {
   const endpoint = '/clientForm';
 
   it('submits', async () => {
-    submitForm(
+    submitUploadForm(
       values,
       accessToken,
       opensrpBaseURL,
@@ -139,7 +139,7 @@ describe('helpers/utils/submitForm', () => {
   });
 
   it('submits with default endpoint value', async () => {
-    submitForm(
+    submitUploadForm(
       values,
       accessToken,
       opensrpBaseURL,
@@ -163,7 +163,7 @@ describe('helpers/utils/submitForm', () => {
   });
 
   it('submits if json validator is false', async () => {
-    submitForm(
+    submitUploadForm(
       values,
       accessToken,
       opensrpBaseURL,
@@ -193,7 +193,7 @@ describe('helpers/utils/submitForm', () => {
       { status: 500 }
     );
 
-    submitForm(
+    submitUploadForm(
       values,
       accessToken,
       opensrpBaseURL,

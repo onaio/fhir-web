@@ -3,26 +3,18 @@ import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Typography, Form, Button, Input, Upload, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { submitForm } from './../../../helpers/utils';
+import { submitUploadForm } from './../../../helpers/utils';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, Redirect } from 'react-router';
 import { getManifestFilesById } from '../../../ducks/manifestFiles';
 import { ROUTE_PARAM_FORM_ID } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { UploadFileFieldTypes } from '../../../helpers/types';
 
 /** inteface for route params */
 export interface RouteParams {
   [ROUTE_PARAM_FORM_ID]: string;
-}
-
-/** form field props */
-export interface UploadFileFieldTypes {
-  form_name: string;
-  form_relation: string;
-  module: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: any;
 }
 
 /** component props */
@@ -142,7 +134,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
           {...layout}
           initialValues={formInitialValues}
           onFinish={(values) => {
-            submitForm(
+            submitUploadForm(
               {
                 ...values,
                 form: fileList[0],

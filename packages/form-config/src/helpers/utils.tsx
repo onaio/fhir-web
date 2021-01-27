@@ -1,6 +1,6 @@
 import { URLParams, OpenSRPService, getFetchOptions, HTTPError } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
-import { UploadFileFieldTypes } from '../components/Antd/UploadForm';
+import { UploadFileFieldTypes } from './types';
 import { ERROR_OCCURRED, OPENSRP_FORMS_ENDPOINT, OPENSRP_MANIFEST_ENDPOINT } from '../constants';
 import { ManifestFilesTypes } from '../ducks/manifestFiles';
 import { handleDownload } from './fileDownload';
@@ -69,7 +69,7 @@ export const downloadManifestFile = async (
  * @param {Function} alertError - receive error description
  * @param {string} endpoint - Opensrp endpoint
  */
-export const submitForm = (
+export const submitUploadForm = (
   values: UploadFileFieldTypes,
   accessToken: string,
   opensrpBaseURL: string,
