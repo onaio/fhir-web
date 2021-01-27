@@ -3,12 +3,13 @@ import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Typography, Form, Button, Input, Upload, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { submitForm } from './utils';
+import { submitForm } from './../../../helpers/utils';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, Redirect } from 'react-router';
 import { getManifestFilesById } from '../../../ducks/manifestFiles';
 import { ROUTE_PARAM_FORM_ID } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
+import { sendErrorNotification } from '@opensrp/notifications';
 
 /** inteface for route params */
 export interface RouteParams {
@@ -21,7 +22,7 @@ export interface UploadFileFieldTypes {
   form_relation: string;
   module: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: Array<any>;
+  form: any;
 }
 
 /** component props */
@@ -43,7 +44,7 @@ export const defaultInitialValues: UploadFileFieldTypes = {
   // eslint-disable-next-line @typescript-eslint/camelcase
   form_relation: '',
   module: '',
-  form: [],
+  form: '',
 };
 
 /** default component props */
@@ -144,13 +145,14 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
             submitForm(
               {
                 ...values,
-                form: fileList,
+                form: fileList[0],
               },
               accessToken,
               opensrpBaseURL,
               isJsonValidator,
               setSubmitting,
-              setIfDoneHere
+              setIfDoneHere,
+              sendErrorNotification
             );
           }}
         >

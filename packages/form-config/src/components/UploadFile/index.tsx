@@ -3,7 +3,6 @@ import { Formik } from 'formik';
 import { Button, Form, FormGroup, Input, Label, Row, Col } from 'reactstrap';
 import { uploadValidationSchema, defaultInitialValues, InitialValuesTypes } from './helpers';
 import { Redirect } from 'react-router';
-import { OpenSRPService } from '@opensrp/server-service';
 import { FormConfigProps } from '../../helpers/types';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -17,6 +16,7 @@ import {
   FORM_NAME_REQUIRED_LABEL,
 } from '../../constants';
 import { Dictionary } from '@onaio/utils';
+import { submitForm } from '../../helpers/utils';
 
 /** default props interface */
 export interface UploadDefaultProps {
@@ -69,44 +69,10 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
     }
   }, [formId]);
 
-  type SetSubmitting = (isSubmitting: boolean) => void;
-
-  /**
-   * Upload data
-   *
-   * @param {Dictionary} data - data to be uploaded
-   * @param {Function} setSubmitting - function to update isSubmitting form state
-   */
-  const uploadData = (data: InitialValuesTypes, setSubmitting: SetSubmitting) => {
-    const postData = new FormData();
-    Object.keys(data).forEach((dt) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      postData.append(dt, (data as any)[dt]);
-    });
-    if (isJsonValidator) {
-      postData.append('is_json_validator', 'true');
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
     }
-    const customOptions = () => {
-      return {
-        body: postData,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        method: 'POST',
-      };
-    };
-
-    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, customOptions);
-    clientService
-      .create(postData)
-      .then(() => setIfDoneHere(true))
-      .catch((err) => {
-        if (customAlert) {
-          customAlert(String(err), { type: 'error' });
-        }
-
-        setSubmitting(false);
-      });
   };
 
   if (ifDoneHere) {
@@ -119,7 +85,16 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
       validationSchema={uploadValidationSchema}
       // tslint:disable-next-line: jsx-no-lambda
       onSubmit={(values, { setSubmitting }) => {
-        uploadData(values, setSubmitting);
+        submitForm(
+          values,
+          accessToken,
+          baseURL,
+          isJsonValidator,
+          setSubmitting,
+          setIfDoneHere,
+          displayAlertError,
+          endpoint
+        );
       }}
     >
       {({ values, setFieldValue, handleChange, handleSubmit, errors, touched, isSubmitting }) => (

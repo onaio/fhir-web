@@ -120,7 +120,7 @@ describe('components/UploadFile', () => {
   });
 
   it('handles error if upload fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API has been hijacked by aliens'));
+    fetch.once('API has been hijacked by aliens', { status: 500 });
 
     const wrapper = mount(
       <Provider store={store}>

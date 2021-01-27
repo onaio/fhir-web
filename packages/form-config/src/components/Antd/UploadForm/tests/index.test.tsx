@@ -14,7 +14,7 @@ import filesReducer, {
   filesReducerName,
 } from '../../../../ducks/manifestFiles';
 import { fixManifestFiles } from '../../../../ducks/tests/fixtures';
-import sampleFile from './sampleFile.json';
+import sampleFile from './../../../../helpers/tests/sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
 
