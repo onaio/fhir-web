@@ -60,6 +60,19 @@ export interface SidebarProps extends RouteComponentProps {
   extraData: { [key: string]: Dictionary };
 }
 
+/** Interface for menu items */
+
+export interface MenuItems {
+  key: string;
+  enabled?: boolean;
+  url?: string;
+  otherProps: {
+    icon?: string | JSX.Element;
+    title: string;
+  };
+  children: MenuItems[];
+}
+
 /** default props for Sidebar */
 const defaultSidebarProps: Partial<SidebarProps> = {
   authenticated: false,
@@ -74,6 +87,188 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   let loc = location.pathname.split('/');
   loc.shift();
 
+  // menu items schema
+  const menus: MenuItems[] = [
+    {
+      otherProps: { icon: <DashboardOutlined />, title: `${MISSIONS}` },
+      key: 'missions',
+      enabled: ENABLE_PLANS,
+      children: [
+        {
+          otherProps: { title: `${ACTIVE}` },
+          url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+          key: 'missions-active',
+          children: [],
+        },
+        {
+          otherProps: { title: `${DRAFT}` },
+          url: `${DRAFT_PLANS_LIST_VIEW_URL}`,
+          key: 'missions-draft',
+          children: [],
+        },
+        {
+          otherProps: { title: `${COMPLETE}` },
+          url: `${COMPLETE_PLANS_LIST_VIEW_URL}`,
+          key: 'missions-complete',
+          children: [],
+        },
+        {
+          otherProps: { title: `${TRASH}` },
+          url: `${TRASH_PLANS_LIST_VIEW_URL}`,
+          key: 'missions-trash',
+          children: [],
+        },
+      ],
+    },
+    {
+      otherProps: { icon: <DashboardOutlined />, title: `${ADMIN}` },
+      key: 'admin',
+      enabled: true,
+      url: '/admin',
+      children: [
+        {
+          otherProps: { title: `${USERS}` },
+          key: 'users',
+          children: [
+            {
+              otherProps: { icon: '', title: `${USER_MANAGEMENT}` },
+              key: 'user-management',
+              url: `${URL_USER}`,
+              children: [],
+            },
+          ],
+        },
+        {
+          otherProps: { icon: '', title: 'Locations' },
+          key: 'locations',
+          enabled: ENABLE_LOCATIONS,
+          children: [
+            {
+              otherProps: { icon: '', title: `${LOCATIONS_UNIT}` },
+              url: `${URL_LOCATION_UNIT}`,
+              key: 'locations-unit',
+              children: [],
+            },
+            {
+              otherProps: { icon: '', title: `${LOCATIONS_UNIT_GROUP}` },
+              url: `${URL_LOCATION_UNIT_GROUP}`,
+              key: 'locations-group',
+              children: [],
+            },
+          ],
+        },
+        {
+          otherProps: { icon: '', title: `${PRODUCT_CATALOGUE}` },
+          key: 'product-catalogue',
+          enabled: ENABLE_PRODUCT_CATALOGUE,
+          url: `${CATALOGUE_LIST_VIEW_URL}`,
+          children: [],
+        },
+        {
+          otherProps: { icon: '', title: `${TEAMS}` },
+          key: 'teams',
+          enabled: ENABLE_TEAMS,
+          url: `${URL_TEAMS}`,
+          children: [],
+        },
+        {
+          otherProps: { icon: '', title: `${FORM_CONFIGURATION}` },
+          key: 'form-configuration',
+          enabled: ENABLE_FORM_CONFIGURATION,
+          children: [
+            {
+              otherProps: { icon: '', title: `${MANIFEST_RELEASES}` },
+              key: 'form-configuration-releases',
+              url: `${URL_MANIFEST_RELEASE_LIST}`,
+              children: [],
+            },
+            {
+              otherProps: { icon: '', title: `${DRAFT_FILES}` },
+              key: 'form-configuration-draft',
+              url: `${URL_DRAFT_FILE_LIST}`,
+              children: [],
+            },
+            {
+              otherProps: { icon: '', title: `${JSON_VALIDATORS}` },
+              key: 'form-configuration-validators',
+              url: `${URL_JSON_VALIDATOR_LIST}`,
+              children: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      otherProps: { icon: '', title: 'Card Support' },
+      key: 'card-support',
+      enabled: true,
+      children: [
+        {
+          otherProps: { icon: <IdcardOutlined />, title: 'Download Client Data' },
+          url: `${URL_DOWNLOAD_CLIENT_DATA}`,
+          key: 'plans2',
+          children: [],
+        },
+      ],
+    },
+    {
+      otherProps: { icon: '', title: `${INVENTORY}` },
+      key: 'inventory',
+      enabled: false,
+      children: [
+        {
+          otherProps: { icon: <DashboardOutlined />, title: `${SERVICE_POINT_INVENTORY}` },
+          url: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
+          key: 'inventory-list',
+          children: [],
+        },
+      ],
+    },
+  ];
+
+  let mainMenu: JSX.Element[] = [];
+
+  const mapChildren = (child: any) => {
+    if (child.children.length) {
+      return (
+        <Menu.SubMenu key={child.key} icon={<DashboardOutlined />} title={child.otherProps.title}>
+          {child.children.map(mapChildren)}
+        </Menu.SubMenu>
+      );
+    } else {
+      return (
+        <Menu.Item key={child.key}>
+          <Link className="admin-link" to={`${child.url}`}>
+            {child.otherProps.title}
+          </Link>
+        </Menu.Item>
+      );
+    }
+  };
+  const processMenu = (menus: any) => {
+    if (menus && menus.length) {
+      for (let m = 0; m < menus.length; m += 1) {
+        mainMenu.push(
+          menus[m].enabled ? (
+            <Menu.SubMenu
+              key={menus[m].key}
+              icon={<DashboardOutlined />}
+              title={menus[m].otherProps.title}
+            >
+              {menus[m].children.map(mapChildren)}
+            </Menu.SubMenu>
+          ) : (
+            <></>
+          )
+        );
+      }
+    }
+  };
+
+  processMenu(menus);
+
+  console.log('main', mainMenu);
+
   return (
     <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
@@ -84,112 +279,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
       <Menu
         theme="dark"
-        selectedKeys={[loc[loc.length - 1]]}
+        selectedKeys={[]}
         defaultOpenKeys={loc}
-        defaultSelectedKeys={[loc[loc.length - 1]]}
+        defaultSelectedKeys={[]}
         mode="inline"
         className="menu-dark"
       >
-        {ENABLE_PLANS && (
-          <Menu.SubMenu key="missions" icon={<DashboardOutlined />} title={MISSIONS}>
-            <Menu.Item key="active">
-              <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
-                {ACTIVE}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="draft">
-              <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
-                {DRAFT}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="complete">
-              <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
-                {COMPLETE}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="trash">
-              <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
-                {TRASH}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-        {ENABLE_CARD_SUPPORT && (
-          <Menu.SubMenu key="card-support" title="Card Support" icon={<IdcardOutlined />}>
-            <Menu.Item key="card-support-client-data">
-              <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-                Download Client Data
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-        {ENABLE_INVENTORY && (
-          <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
-            <Menu.Item key="list">
-              <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
-                {SERVICE_POINT_INVENTORY}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
-          {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.SubMenu key="users" title={USERS}>
-              <Menu.Item key={'list'}>
-                <Link to={URL_USER} className="admin-link">
-                  {USER_MANAGEMENT}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-          {ENABLE_TEAMS && (
-            <Menu.Item key="teams">
-              <Link to={URL_TEAMS} className="admin-link">
-                {TEAMS}
-              </Link>
-            </Menu.Item>
-          )}
-          {ENABLE_PRODUCT_CATALOGUE && (
-            <Menu.Item key="product-catalogue">
-              <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
-                {PRODUCT_CATALOGUE}
-              </Link>
-            </Menu.Item>
-          )}
-          {ENABLE_LOCATIONS && (
-            <Menu.SubMenu key="location" title="Locations">
-              <Menu.Item key="unit">
-                <Link to={URL_LOCATION_UNIT} className="admin-link">
-                  {LOCATIONS_UNIT}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="group">
-                <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
-                  {LOCATIONS_UNIT_GROUP}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-          {ENABLE_FORM_CONFIGURATION && (
-            <Menu.SubMenu key="form-config" title={FORM_CONFIGURATION}>
-              <Menu.Item key="releases">
-                <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
-                  {MANIFEST_RELEASES}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="drafts">
-                <Link to={URL_DRAFT_FILE_LIST} className="admin-link">
-                  {DRAFT_FILES}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="json-validators">
-                <Link to={URL_JSON_VALIDATOR_LIST} className="admin-link">
-                  {JSON_VALIDATORS}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-        </Menu.SubMenu>
+        {mainMenu}
       </Menu>
     </Layout.Sider>
   );
