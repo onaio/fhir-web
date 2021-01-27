@@ -2,12 +2,19 @@ import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { getLocationTreeState, setLocationTreeState } from '../../ducks/location-hierarchy';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+import {
+  getLocationTreeState,
+  reducerName,
+  setLocationTreeState,
+  reducer,
+} from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { getHierarchyNodeFromArray } from '../../ducks/locationHierarchy/utils';
 
+reducerRegistry.register(reducerName, reducer);
 interface TreeProp {
   data: ParsedHierarchyNode[];
   OnItemClick: (item: ParsedHierarchyNode) => void;

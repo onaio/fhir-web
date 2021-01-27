@@ -18,11 +18,17 @@ import {
   getLocationUnitsArray,
   LocationUnit,
   LocationUnitStatus,
+  locationUnitsReducerName,
+  locationUnitsReducer,
 } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
 import Form, { FormField } from './Form';
 import { Row, Col, Spin } from 'antd';
-import { LocationUnitGroup } from '../../ducks/location-unit-groups';
+import {
+  LocationUnitGroup,
+  reducerName as LocationUnitGroupsReducerName,
+  reducer as LocationUnitGroupsReducer,
+} from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   getAllHierarchiesArray,
@@ -35,6 +41,8 @@ import './LocationUnitAddEdit.css';
 import { RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
 
+reducerRegistry.register(LocationUnitGroupsReducerName, LocationUnitGroupsReducer);
+reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 const { getFilterParams } = OpenSRPService;
@@ -152,10 +160,10 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
     }
     // to avoid extra rerenders
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationUnits, treeData.length, dispatch, opensrpBaseURL]);
+  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
 
   useEffect(() => {
-    if (!extrafields) {
+    if (!extrafields && locationUnitGroup.length && treeData.length) {
       const serve = new OpenSRPService(
         LOCATION_UNIT_EXTRAFIELDS + `&identifier=${LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER}`,
         opensrpBaseURL
@@ -165,7 +173,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
         .then((response: ExtraField[]) => setExtrafields(response))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [extrafields, opensrpBaseURL]);
+  }, [extrafields, locationUnitGroup.length, treeData.length, opensrpBaseURL]);
 
   if (
     extrafields === null ||
