@@ -129,6 +129,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         {
           otherProps: { title: `${USERS}` },
           key: 'users',
+          enabled: roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS'),
           children: [
             {
               otherProps: { icon: '', title: `${USER_MANAGEMENT}` },
@@ -201,12 +202,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     {
       otherProps: { icon: '', title: 'Card Support' },
       key: 'card-support',
-      enabled: true,
+      enabled: ENABLE_CARD_SUPPORT,
       children: [
         {
           otherProps: { icon: <IdcardOutlined />, title: 'Download Client Data' },
           url: `${URL_DOWNLOAD_CLIENT_DATA}`,
-          key: 'plans2',
+          key: 'download-client-data',
           children: [],
         },
       ],
@@ -214,7 +215,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     {
       otherProps: { icon: '', title: `${INVENTORY}` },
       key: 'inventory',
-      enabled: false,
+      enabled: ENABLE_INVENTORY,
       children: [
         {
           otherProps: { icon: <DashboardOutlined />, title: `${SERVICE_POINT_INVENTORY}` },
@@ -226,9 +227,9 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     },
   ];
 
-  let mainMenu: JSX.Element[] = [];
+  const mainMenu: JSX.Element[] = [];
 
-  const mapChildren = (child: any) => {
+  const mapChildren = React.useCallback((child: any) => {
     if (child.children.length) {
       return (
         <Menu.SubMenu key={child.key} icon={<DashboardOutlined />} title={child.otherProps.title}>
@@ -244,8 +245,9 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         </Menu.Item>
       );
     }
-  };
-  const processMenu = (menus: any) => {
+  }, []);
+
+  const processMenu = React.useMemo(() => {
     if (menus && menus.length) {
       for (let m = 0; m < menus.length; m += 1) {
         mainMenu.push(
@@ -263,11 +265,8 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         );
       }
     }
-  };
-
-  processMenu(menus);
-
-  console.log('main', mainMenu);
+    return mainMenu;
+  }, [mainMenu, mapChildren, menus]);
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
@@ -285,7 +284,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         mode="inline"
         className="menu-dark"
       >
-        {mainMenu}
+        {processMenu}
       </Menu>
     </Layout.Sider>
   );
