@@ -73,7 +73,6 @@ export function onSubmit(
   setTeam(opensrpBaseURL, payload, id)
     .then(async () => {
       // Filter and seperate the practitioners uuid
-      // const toBe = initialValue.practitioners.filter((val) => values.practitioners.includes(val));
       const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
       const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
