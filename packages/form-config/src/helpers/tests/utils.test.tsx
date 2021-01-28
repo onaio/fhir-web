@@ -1,4 +1,4 @@
-import { formatDate, downloadManifestFile } from '../utils';
+import { formatDate, downloadManifestFile, fetchDrafts } from '../utils';
 import { fixManifestFiles, downloadFile } from '../../ducks/tests/fixtures';
 import fetch from 'jest-fetch-mock';
 import { getFetchOptions } from '@opensrp/server-service';
@@ -349,5 +349,132 @@ describe('helpers/utils/makeRelease', () => {
     expect(fetch.mock.calls[0]).toEqual(['https://test-example.com/rest/foo', postData]);
     expect(setIfDoneHereMock).toHaveBeenCalledWith(true);
     expect(dispatchMock).toHaveBeenCalledWith(removeDraftFilesMock());
+  });
+});
+
+describe('helpers/utils/fetchDrafts', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+  });
+
+  const accessToken = 'hunter2';
+  const opensrpBaseURL = 'https://test-example.com/rest';
+  const fetchDraftFilesMock = jest.fn();
+  const setLoadingMock = jest.fn();
+  const alertErrorMock = jest.fn();
+  const dispatchMock = jest.fn();
+  const endpoint = '/foo';
+
+  it('fetches drafts', async () => {
+    fetch.once(JSON.stringify(FixManifestDraftFiles));
+
+    fetchDrafts(
+      accessToken,
+      opensrpBaseURL,
+      fetchDraftFilesMock,
+      setLoadingMock,
+      alertErrorMock,
+      endpoint
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/foo?is_draft=true`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchDraftFilesMock).toHaveBeenCalledWith(FixManifestDraftFiles);
+  });
+
+  it('fetches drafts with the default endpoint', async () => {
+    fetch.once(JSON.stringify(FixManifestDraftFiles));
+
+    fetchDrafts(accessToken, opensrpBaseURL, fetchDraftFilesMock, setLoadingMock, alertErrorMock);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/clientForm/metadata?is_draft=true`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchDraftFilesMock).toHaveBeenCalledWith(FixManifestDraftFiles);
+  });
+
+  it('handles failure if fetch drafts fails', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API taking a break'));
+
+    fetchDrafts(
+      accessToken,
+      opensrpBaseURL,
+      fetchDraftFilesMock,
+      setLoadingMock,
+      alertErrorMock,
+      endpoint
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchDraftFilesMock).not.toHaveBeenCalled();
+    expect(alertErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+  });
+
+  it('calls dispatch if dispatch is passed', async () => {
+    fetch.once(JSON.stringify(FixManifestDraftFiles));
+
+    fetchDrafts(
+      accessToken,
+      opensrpBaseURL,
+      fetchDraftFilesMock,
+      setLoadingMock,
+      alertErrorMock,
+      endpoint,
+      dispatchMock
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/foo?is_draft=true`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(dispatchMock).toHaveBeenCalledWith(fetchDraftFilesMock());
   });
 });

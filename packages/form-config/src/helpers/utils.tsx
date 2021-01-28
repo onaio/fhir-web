@@ -1,10 +1,15 @@
 import { URLParams, OpenSRPService, getFetchOptions, HTTPError } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { UploadFileFieldTypes } from './types';
-import { ERROR_OCCURRED, OPENSRP_FORMS_ENDPOINT, OPENSRP_MANIFEST_ENDPOINT } from '../constants';
+import {
+  ERROR_OCCURRED,
+  OPENSRP_FORMS_ENDPOINT,
+  OPENSRP_FORM_METADATA_ENDPOINT,
+  OPENSRP_MANIFEST_ENDPOINT,
+} from '../constants';
 import { ManifestFilesTypes } from '../ducks/manifestFiles';
 import { handleDownload } from './fileDownload';
-import { removeManifestDraftFiles } from '../ducks/manifestDraftFiles';
+import { fetchManifestDraftFiles, removeManifestDraftFiles } from '../ducks/manifestDraftFiles';
 import { Dispatch } from 'redux';
 
 type StrNum = string | number;
@@ -170,4 +175,50 @@ export const makeRelease = (
     .catch((_: Error) => {
       alertError(ERROR_OCCURRED);
     });
+};
+/**
+ * Fetch manifest draft files
+ *
+ * @param {string} accessToken  Opensrp API access token
+ * @param {string} opensrpBaseURL Opensrp API base URL
+ * @param {Function} fetchDraftFiles redux action to remove draft files
+ * @param {Function} setLoading set ifDoneHere form status
+ * @param {Function} alertError - receive error description
+ * @param {string} endpoint - Opensrp endpoint
+ * @param {Dispatch} dispatch - dispatch function from redux store
+ * @param {Function} customFetchOptions custom opensrp API fetch options
+ */
+export const fetchDrafts = (
+  accessToken: string,
+  opensrpBaseURL: string,
+  fetchDraftFiles: typeof fetchManifestDraftFiles,
+  setLoading: (loading: boolean) => void,
+  alertError: (err: string) => void,
+  endpoint = OPENSRP_FORM_METADATA_ENDPOINT,
+  dispatch?: Dispatch,
+  customFetchOptions?: typeof getFetchOptions
+) => {
+  /** get manifest Draftfiles */
+  setLoading(true);
+  /* eslint-disable-next-line @typescript-eslint/camelcase */
+  const params = { is_draft: true };
+  const clientService = new OpenSRPService(
+    accessToken,
+    opensrpBaseURL,
+    endpoint,
+    customFetchOptions
+  );
+  clientService
+    .list(params)
+    .then((res: ManifestFilesTypes[]) => {
+      if (dispatch) {
+        dispatch(fetchDraftFiles(res));
+      } else {
+        fetchDraftFiles(res);
+      }
+    })
+    .catch((_: Error) => {
+      alertError(ERROR_OCCURRED);
+    })
+    .finally(() => setLoading(false));
 };

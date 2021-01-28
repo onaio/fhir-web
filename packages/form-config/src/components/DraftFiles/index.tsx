@@ -1,6 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
 import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
 import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
@@ -27,7 +26,7 @@ import {
   UPOL0AD_FILE_LABEL,
 } from '../../constants';
 import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile, makeRelease } from '../../helpers/utils';
+import { formatDate, downloadManifestFile, makeRelease, fetchDrafts } from '../../helpers/utils';
 import { Link } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
 
@@ -99,23 +98,24 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
   const [stateData, setStateData] = useState<ManifestFilesTypes[]>(data);
   const [ifDoneHere, setIfDoneHere] = useState(false);
 
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
+    }
+  };
+
   useEffect(() => {
-    /** get manifest Draftfiles */
-    setLoading(true);
-    /* eslint-disable-next-line @typescript-eslint/camelcase */
-    const params = { is_draft: true };
-    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
-    clientService
-      .list(params)
-      .then((res: ManifestFilesTypes[]) => {
-        fetchDraftFiles(res);
-      })
-      .catch((error) => {
-        if (customAlert) {
-          customAlert(String(error), { type: 'error' });
-        }
-      })
-      .finally(() => setLoading(false));
+    fetchDrafts(
+      accessToken,
+      baseURL,
+      fetchDraftFiles,
+      setLoading,
+      displayAlertError,
+      endpoint,
+      undefined,
+      getPayload
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseURL, endpoint, getPayload, customAlert, fetchDraftFiles, accessToken]);
 
   useEffect(() => {
@@ -148,12 +148,6 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
         }
       }
     );
-  };
-
-  const displayAlertError = (err: string): void => {
-    if (customAlert) {
-      customAlert(err, { type: 'error' });
-    }
   };
 
   const columns: Array<DrillDownColumn<ManifestFilesTypes>> = [

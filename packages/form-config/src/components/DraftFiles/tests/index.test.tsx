@@ -172,7 +172,7 @@ describe('components/DraftFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith('API is down', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();

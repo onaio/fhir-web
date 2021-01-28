@@ -9,19 +9,15 @@ import DraftFilesReducer, {
   getAllManifestDraftFilesArray,
   removeManifestDraftFiles,
 } from '../../../ducks/manifestDraftFiles';
-import { getFetchOptions, OpenSRPService } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { ManifestFilesTypes } from '../../../ducks/manifestFiles';
 import { useHistory, Redirect } from 'react-router';
-import {
-  OPENSRP_FORM_METADATA_ENDPOINT,
-  ERROR_OCCURRED,
-  OPENSRP_MANIFEST_ENDPOINT,
-} from '../../../constants';
+import { OPENSRP_FORM_METADATA_ENDPOINT, OPENSRP_MANIFEST_ENDPOINT } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
-import { makeRelease } from '../../../helpers/utils';
+import { makeRelease, fetchDrafts } from '../../../helpers/utils';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, DraftFilesReducer);
@@ -67,25 +63,15 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
   } = props;
 
   useEffect(() => {
-    /** get manifest Draftfiles */
-    setLoading(true);
-    /* eslint-disable-next-line @typescript-eslint/camelcase */
-    const params = { is_draft: true };
-    const clientService = new OpenSRPService(
+    fetchDrafts(
       accessToken,
       opensrpBaseURL,
+      fetchDraftFiles,
+      setLoading,
+      sendErrorNotification,
       OPENSRP_FORM_METADATA_ENDPOINT,
-      customFetchOptions
+      dispatch
     );
-    clientService
-      .list(params)
-      .then((res: ManifestFilesTypes[]) => {
-        dispatch(fetchDraftFiles(res));
-      })
-      .catch((_: Error) => {
-        sendErrorNotification(ERROR_OCCURRED);
-      })
-      .finally(() => setLoading(false));
   }, [accessToken, opensrpBaseURL, customFetchOptions, fetchDraftFiles, dispatch]);
 
   if (loading) {
