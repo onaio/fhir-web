@@ -569,6 +569,8 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
       'location Tags does not have error message'
     );
+
+    wrapper.unmount();
   });
 
   it('form validation works for eusm instance', async () => {
@@ -627,5 +629,6 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
       'location Tags does not have error message'
     );
+    wrapper.unmount();
   });
 });
