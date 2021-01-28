@@ -10,7 +10,6 @@ import { values } from 'lodash';
 import { Store } from 'redux';
 import { createSelector } from 'reselect';
 import { Dictionary } from '@onaio/utils';
-import { getItemByIdFactory } from 'opensrp-reducer-factory';
 
 /** interface inventory */
 export interface Inventory {
@@ -42,28 +41,35 @@ export const removeInventories = removeActionCreatorFactory(inventoryReducerName
 export const setTotalInventories = setTotalRecordsFactory(inventoryReducerName);
 
 // selectors
-export const getInventoryById = getItemByIdFactory<Inventory>(inventoryReducerName);
 export const getInventoriesArray = getItemsArrayFactory<Inventory>(inventoryReducerName);
 export const getTotalInventories = getTotalRecordsFactory(inventoryReducerName);
 
-export const getInventoriesByIds = (store: Partial<Store>) => {
-  return (store as Dictionary)[inventoryReducerName] as Dictionary<Inventory>;
+export const getStore = (store: Partial<Store>) => {
+  return (store as Dictionary)[inventoryReducerName].objectsById as Dictionary<Inventory>;
 };
 
 interface Filters {
   servicePointIds?: string[];
+  servicePointId?: string;
 }
 
-const getId = (store: Partial<Store>, props: Filters) => props.servicePointIds;
+const getIds = (store: Partial<Store>, props: Filters) => props.servicePointIds;
+const getId = (store: Partial<Store>, props: Filters) => props.servicePointId;
 
-export const getInventoryByIdFactory = () =>
-  createSelector(getInventoriesByIds, getId, (inventoriesByIds, ids) => {
-    if (ids === undefined) {
-      return values(inventoriesByIds);
-    }
+export const getInventoryById = createSelector(getStore, getId, (inventory, id) => {
+  if (id) {
+    return inventory[id];
+  }
+  return inventory;
+});
+
+export const getInventoriesByIds = createSelector(getStore, getIds, (inventoriesByIds, ids) => {
+  if (ids) {
     const inventoriesOfInterest: Inventory[] = [];
     ids.forEach((id) => {
       inventoriesOfInterest.push(inventoriesByIds[id]);
     });
     return inventoriesOfInterest;
-  });
+  }
+  return values(inventoriesByIds);
+});

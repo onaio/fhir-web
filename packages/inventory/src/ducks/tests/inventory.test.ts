@@ -22,8 +22,8 @@ describe('src/ducks/inventory', () => {
   });
 
   it('should have initial state', () => {
-    expect(getInventoriesByIds(store.getState())).toEqual({});
-    expect(getInventoryById(store.getState(), 'someId')).toEqual(null);
+    expect(getInventoriesByIds(store.getState(), {})).toEqual([]);
+    expect(getInventoryById(store.getState(), {})).toEqual({});
     expect(getInventoriesArray(store.getState())).toEqual([]);
     expect(getTotalInventories(store.getState())).toEqual(0);
   });
@@ -37,11 +37,14 @@ describe('src/ducks/inventory', () => {
 
   it('fetches inventory correctly', () => {
     store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
-    expect(getInventoriesByIds(store.getState())).toEqual({
-      [inventory1.servicePointId]: inventory1,
-      [inventory2.servicePointId]: inventory2,
-    });
-    expect(getInventoryById(store.getState(), inventory2.servicePointId)).toEqual(inventory2);
+    expect(
+      getInventoriesByIds(store.getState(), {
+        servicePointIds: [inventory1.servicePointId, inventory2.servicePointId],
+      })
+    ).toEqual([inventory1, inventory2]);
+    expect(
+      getInventoryById(store.getState(), { servicePointId: inventory2.servicePointId })
+    ).toEqual(inventory2);
     expect(getInventoriesArray(store.getState())).toEqual([inventory1, inventory2]);
   });
 
