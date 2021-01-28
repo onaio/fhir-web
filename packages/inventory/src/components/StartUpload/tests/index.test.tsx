@@ -7,7 +7,7 @@ describe('upload start page', () => {
   it('renders crashing', () => {
     shallow(<StartUpload />);
   });
-  it('renders and works correctly', () => {
+  it('renders and works correctly', async () => {
     const fileUploadMock = jest.fn();
 
     const props = {
@@ -20,11 +20,15 @@ describe('upload start page', () => {
 
     // simulate file upload
     const file = new File([''], 'file.csv');
-    act(() => {
+    await act(async () => {
       wrapper.find('input[type="file"]').simulate('change', { target: { files: [file] } });
       wrapper.update();
     });
 
+    await new Promise((resolve) => setImmediate(resolve));
+
     expect(fileUploadMock).toHaveBeenCalledWith(file);
+
+    wrapper.update();
   });
 });
