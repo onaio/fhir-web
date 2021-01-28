@@ -56,7 +56,6 @@ describe('helpers/dataLoader.uploadCSV', () => {
     const badRequestMock = jest.fn();
     uploadCSV(mockFile, undefined, undefined, undefined, badRequestMock).catch((err) => {
       expect(err.message).toEqual('Error');
-      fail();
     });
     await new Promise((resolve) => setImmediate(resolve));
   });
@@ -82,7 +81,6 @@ describe('helpers/dataLoader.uploadCSV', () => {
       requestCancelMock
     ).catch((err) => {
       expect(err.message).toEqual('Error');
-      fail();
     });
     await new Promise((resolve) => setImmediate(resolve));
     expect(requestCancelMock).toHaveBeenCalled();
