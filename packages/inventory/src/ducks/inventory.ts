@@ -3,12 +3,14 @@ import {
   removeActionCreatorFactory,
   setTotalRecordsFactory,
   reducerFactory,
-  getItemsByIdFactory,
   getItemsArrayFactory,
-  getItemByIdFactory,
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
-
+import { values } from 'lodash';
+import { Store } from 'redux';
+import { createSelector } from 'reselect';
+import { Dictionary } from '@onaio/utils';
+import { getItemByIdFactory } from 'opensrp-reducer-factory';
 
 /** interface inventory */
 export interface Inventory {
@@ -40,7 +42,28 @@ export const removeInventories = removeActionCreatorFactory(inventoryReducerName
 export const setTotalInventories = setTotalRecordsFactory(inventoryReducerName);
 
 // selectors
-export const getInventoriesById = getItemsByIdFactory<Inventory>(inventoryReducerName);
 export const getInventoryById = getItemByIdFactory<Inventory>(inventoryReducerName);
 export const getInventoriesArray = getItemsArrayFactory<Inventory>(inventoryReducerName);
 export const getTotalInventories = getTotalRecordsFactory(inventoryReducerName);
+
+export const getInventoriesByIds = (store: Partial<Store>) => {
+  return (store as Dictionary)[inventoryReducerName] as Dictionary<Inventory>;
+};
+
+interface Filters {
+  servicePointIds?: string[];
+}
+
+const getId = (store: Partial<Store>, props: Filters) => props.servicePointIds;
+
+export const getInventoryByIdFactory = () =>
+  createSelector(getInventoriesByIds, getId, (inventoriesByIds, ids) => {
+    if (ids === undefined) {
+      return values(inventoriesByIds);
+    }
+    const inventoriesOfInterest: Inventory[] = [];
+    ids.forEach((id) => {
+      inventoriesOfInterest.push(inventoriesByIds[id]);
+    });
+    return inventoriesOfInterest;
+  });

@@ -1,8 +1,9 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { store } from '@opensrp/store';
-import reducer, {
-  reducerName,
-  getInventoriesById,
+import {
+  inventoryReducerName,
+  inventoryReducer,
+  getInventoriesByIds,
   getInventoryById,
   getInventoriesArray,
   getTotalInventories,
@@ -13,7 +14,7 @@ import reducer, {
 } from '../inventory';
 import { inventory1, inventory2 } from './fixtures';
 
-reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(inventoryReducerName, inventoryReducer);
 
 describe('src/ducks/inventory', () => {
   beforeEach(() => {
@@ -21,7 +22,7 @@ describe('src/ducks/inventory', () => {
   });
 
   it('should have initial state', () => {
-    expect(getInventoriesById(store.getState())).toEqual({});
+    expect(getInventoriesByIds(store.getState())).toEqual({});
     expect(getInventoryById(store.getState(), 'someId')).toEqual(null);
     expect(getInventoriesArray(store.getState())).toEqual([]);
     expect(getTotalInventories(store.getState())).toEqual(0);
@@ -36,7 +37,7 @@ describe('src/ducks/inventory', () => {
 
   it('fetches inventory correctly', () => {
     store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
-    expect(getInventoriesById(store.getState())).toEqual({
+    expect(getInventoriesByIds(store.getState())).toEqual({
       [inventory1.servicePointId]: inventory1,
       [inventory2.servicePointId]: inventory2,
     });
