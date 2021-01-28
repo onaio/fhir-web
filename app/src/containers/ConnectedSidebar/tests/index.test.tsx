@@ -54,21 +54,8 @@ describe('components/ConnectedSidebar', () => {
     envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
     envModule.ENABLE_PLANS = 'true';
     envModule.ENABLE_CARD_SUPPORT = 'true';
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
-    wrapper.unmount();
-  });
-
-  it('displays menu links for enabled Location module', () => {
-    const envModule = require('../../../configs/env');
     envModule.ENABLE_LOCATIONS = 'true';
+    envModule.ENABLE_TEAMS = 'true';
 
     const wrapper = mount(
       <Provider store={store}>
@@ -99,12 +86,14 @@ describe('components/ConnectedSidebar', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/location`, hash: '', search: '', state: {} }]}>
+        <MemoryRouter
+          initialEntries={[{ pathname: `/admin/location/unit`, hash: '', search: '', state: {} }]}
+        >
           <ConnectedSidebar />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    expect(wrapper.text()).toMatchSnapshot('Locations unit');
     wrapper.unmount();
   });
 
@@ -136,7 +125,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    expect(wrapper.text()).toMatchSnapshot('Teams');
     wrapper.unmount();
   });
 });
