@@ -82,7 +82,7 @@ const userSchema = Yup.object().shape({
     then: Yup.string().required('Location category is required'),
   }),
   serviceTypes: Yup.string().when('instance', {
-    is: FormInstances.EUSM,
+    is: (val) => val === FormInstances.EUSM,
     then: Yup.string().required('Service Types is required'),
   }),
 });
