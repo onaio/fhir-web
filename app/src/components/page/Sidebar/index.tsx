@@ -78,7 +78,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
         <Link to={URL_HOME}>
-          <img src={MAIN_LOGO_SRC} alt="" />
+          <img src={MAIN_LOGO_SRC} className="img-fluid" alt="" />
         </Link>
       </div>
 

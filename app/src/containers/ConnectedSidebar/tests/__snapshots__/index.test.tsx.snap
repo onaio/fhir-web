@@ -848,6 +848,7 @@ Object {
         >
           <img
             alt=""
+            className="img-fluid"
             src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
           />
         </Link>
@@ -974,6 +975,7 @@ exports[`components/ConnectedSidebar shows the correct logg: Logo 1`] = `
       >
         <img
           alt=""
+          className="img-fluid"
           src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
         />
       </a>
