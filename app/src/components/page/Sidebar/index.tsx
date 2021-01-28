@@ -122,6 +122,19 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       ],
     },
     {
+      otherProps: { icon: <DashboardOutlined />, title: `${INVENTORY}` },
+      key: 'inventory',
+      enabled: ENABLE_INVENTORY,
+      children: [
+        {
+          otherProps: { title: `${SERVICE_POINT_INVENTORY}` },
+          url: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
+          key: 'inventory-list',
+          children: [],
+        },
+      ],
+    },
+    {
       otherProps: { icon: <DashboardOutlined />, title: `${ADMIN}` },
       key: 'admin',
       enabled: true,
@@ -213,19 +226,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         },
       ],
     },
-    {
-      otherProps: { icon: <DashboardOutlined />, title: `${INVENTORY}` },
-      key: 'inventory',
-      enabled: ENABLE_INVENTORY,
-      children: [
-        {
-          otherProps: { title: `${SERVICE_POINT_INVENTORY}` },
-          url: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
-          key: 'inventory-list',
-          children: [],
-        },
-      ],
-    },
   ];
 
   const mainMenu: JSX.Element[] = [];
@@ -298,6 +298,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       </div>
 
       <Menu
+        key="main-menu"
         theme="dark"
         selectedKeys={[getActiveKey()]}
         openKeys={(openKeys as string[]).length ? (openKeys as string[]) : activeLocationPaths}

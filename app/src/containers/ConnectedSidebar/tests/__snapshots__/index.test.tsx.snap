@@ -41,6 +41,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -132,19 +145,6 @@ Array [
         to="/card-support/download-client-data"
       >
         Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -192,6 +192,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -283,19 +296,6 @@ Array [
         to="/card-support/download-client-data"
       >
         Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -343,6 +343,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -434,19 +447,6 @@ Array [
         to="/card-support/download-client-data"
       >
         Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -494,6 +494,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -585,19 +598,6 @@ Array [
         to="/card-support/download-client-data"
       >
         Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -645,6 +645,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -736,19 +749,6 @@ Array [
         to="/card-support/download-client-data"
       >
         Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -796,6 +796,19 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -890,19 +903,6 @@ Array [
       </Link>
     </MenuItem>
   </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
 ]
 `;
 
@@ -944,6 +944,19 @@ Object {
         theme="dark"
       >
         <React.Fragment />
+        <SubMenu
+          icon={<ForwardRef(DashboardOutlined) />}
+          title="Inventory"
+        >
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/inventory/list"
+            >
+              Service point inventory
+            </Link>
+          </MenuItem>
+        </SubMenu>
         <SubMenu
           icon={<ForwardRef(DashboardOutlined) />}
           title="Admin"
@@ -1028,19 +1041,6 @@ Object {
           </SubMenu>
         </SubMenu>
         <React.Fragment />
-        <SubMenu
-          icon={<ForwardRef(DashboardOutlined) />}
-          title="Inventory"
-        >
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/inventory/list"
-            >
-              Service point inventory
-            </Link>
-          </MenuItem>
-        </SubMenu>
       </Menu>
     </div>,
     null,
@@ -1058,6 +1058,19 @@ Object {
 exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
 Array [
   <React.Fragment />,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
@@ -1142,18 +1155,5 @@ Array [
     </SubMenu>
   </SubMenu>,
   <React.Fragment />,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
 ]
 `;
