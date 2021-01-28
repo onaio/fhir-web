@@ -3,11 +3,14 @@ import {
   removeActionCreatorFactory,
   setTotalRecordsFactory,
   reducerFactory,
-  getItemsByIdFactory,
   getItemsArrayFactory,
-  getItemByIdFactory,
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
+import { values } from 'lodash';
+import { Store } from 'redux';
+import { createSelector } from 'reselect';
+import { Dictionary } from '@onaio/utils';
+import { getItemByIdFactory } from 'opensrp-reducer-factory';
 
 /** interface inventory */
 export interface Inventory {
@@ -24,31 +27,43 @@ export interface Inventory {
 }
 
 /** reducer name */
-export const reducerName = 'inventory';
-
-/** Action types */
-const customfetchedActionType = 'inventory/INVENTORIES_FETCHED';
-const customRemoveActionType = 'inventory/REMOVE_INVENTORIES';
-const customSetTotalRecordsActionType = 'inventory/SET_TOTAL_INVENTORIES';
+export const inventoryReducerName = 'inventory';
 
 /** Item Reducer */
-const reducer = reducerFactory<Inventory>(
-  reducerName,
-  customfetchedActionType,
-  customRemoveActionType,
-  customSetTotalRecordsActionType
-);
+export const inventoryReducer = reducerFactory<Inventory>(inventoryReducerName);
 
 // action
 /** actionCreator returns action to to add Item records to store */
-export const fetchInventories = fetchActionCreatorFactory<Inventory>(reducerName, 'servicePointId');
-export const removeInventories = removeActionCreatorFactory(reducerName);
-export const setTotalInventories = setTotalRecordsFactory(reducerName);
+export const fetchInventories = fetchActionCreatorFactory<Inventory>(
+  inventoryReducerName,
+  'servicePointId'
+);
+export const removeInventories = removeActionCreatorFactory(inventoryReducerName);
+export const setTotalInventories = setTotalRecordsFactory(inventoryReducerName);
 
 // selectors
-export const getInventoriesById = getItemsByIdFactory<Inventory>(reducerName);
-export const getInventoryById = getItemByIdFactory<Inventory>(reducerName);
-export const getInventoriesArray = getItemsArrayFactory<Inventory>(reducerName);
-export const getTotalInventories = getTotalRecordsFactory(reducerName);
+export const getInventoryById = getItemByIdFactory<Inventory>(inventoryReducerName);
+export const getInventoriesArray = getItemsArrayFactory<Inventory>(inventoryReducerName);
+export const getTotalInventories = getTotalRecordsFactory(inventoryReducerName);
 
-export default reducer;
+export const getInventoriesByIds = (store: Partial<Store>) => {
+  return (store as Dictionary)[inventoryReducerName] as Dictionary<Inventory>;
+};
+
+interface Filters {
+  servicePointIds?: string[];
+}
+
+const getId = (store: Partial<Store>, props: Filters) => props.servicePointIds;
+
+export const getInventoryByIdFactory = () =>
+  createSelector(getInventoriesByIds, getId, (inventoriesByIds, ids) => {
+    if (ids === undefined) {
+      return values(inventoriesByIds);
+    }
+    const inventoriesOfInterest: Inventory[] = [];
+    ids.forEach((id) => {
+      inventoriesOfInterest.push(inventoriesByIds[id]);
+    });
+    return inventoriesOfInterest;
+  });
