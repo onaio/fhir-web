@@ -5,7 +5,9 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
 import { store } from '@opensrp/store';
-import toJson from 'enzyme-to-json';
+import { act } from 'react-dom/test-utils';
+import { getActiveKey } from '../../../components/page/Sidebar/utils';
+import { MenuItems } from '../../../components/page/Sidebar';
 
 jest.mock('../../../configs/env');
 
@@ -151,8 +153,51 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(toJson(wrapper.find('Menu').at(0))).toEqual('');
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+
+    const menu = wrapper.find('Menu').at(0);
+    act(() => {
+      (menu.prop('onOpenChange') as any)(['admin', 'users']);
+      wrapper.update();
+    });
+    wrapper.update();
+    expect((wrapper.find('Menu').at(0).props() as any)['openKeys']).toEqual(['admin', 'users']);
     wrapper.unmount();
+  });
+
+  it('getActiveMenuKey works correctly', () => {
+    const menus = [
+      {
+        otherProps: { title: 'Inventory' },
+        key: 'inventory',
+        enabled: true,
+        url: 'admin/inventory',
+      },
+    ];
+    const location = ['admin', 'inventory'];
+
+    const activeKey = getActiveKey(menus as MenuItems[], location);
+    expect(activeKey).toEqual('');
+
+    // test menu with children
+    const menus2 = [
+      {
+        otherProps: { title: 'Inventory' },
+        key: 'inventory',
+        enabled: true,
+        url: 'admin/inventory',
+        children: [
+          {
+            otherProps: { title: 'active' },
+            key: 'active-inventory',
+            enabled: true,
+            url: 'admin/inventory/active',
+            children: [],
+          },
+        ],
+      },
+    ];
+    const location2 = ['admin', 'inventory', 'active'];
+    const activeKey2 = getActiveKey(menus2 as MenuItems[], location2);
+    expect(activeKey2).toEqual('active-inventory');
   });
 });

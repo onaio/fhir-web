@@ -54,6 +54,7 @@ import {
   TRASH_PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
 import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
+import { getActiveKey } from './utils';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -267,24 +268,8 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     return mainMenu;
   }, [mainMenu, mapChildren, menus]);
 
-  let activeKey = '';
-
-  const getActiveKey = () => {
-    function mapMenus(menu: MenuItems) {
-      if (menu.children) {
-        if (loc.join('/') !== menu.url) {
-          menu.children.forEach(mapMenus);
-        } else {
-          activeKey = menu.key;
-        }
-      }
-      return true;
-    }
-    menus.forEach(mapMenus);
-    return activeKey;
-  };
-
   const activeLocationPaths = loc.filter((locString: string) => locString.length);
+  const activeKey = getActiveKey(menus, loc);
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
@@ -297,10 +282,10 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       <Menu
         key="main-menu"
         theme="dark"
-        selectedKeys={[getActiveKey()]}
+        selectedKeys={[activeKey]}
         openKeys={(openKeys as string[]).length ? (openKeys as string[]) : activeLocationPaths}
         defaultOpenKeys={activeLocationPaths}
-        defaultSelectedKeys={[getActiveKey()]}
+        defaultSelectedKeys={[activeKey]}
         onOpenChange={(keys: React.ReactText[]) => {
           setOpenKeys(keys);
         }}
