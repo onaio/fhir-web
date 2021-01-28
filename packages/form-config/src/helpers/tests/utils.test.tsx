@@ -1,5 +1,5 @@
-import { formatDate, downloadManifestFile, fetchDrafts } from '../utils';
-import { fixManifestFiles, downloadFile } from '../../ducks/tests/fixtures';
+import { formatDate, downloadManifestFile, fetchDrafts, fetchReleaseFiles } from '../utils';
+import { fixManifestFiles, downloadFile, fixManifestReleases } from '../../ducks/tests/fixtures';
 import fetch from 'jest-fetch-mock';
 import { getFetchOptions } from '@opensrp/server-service';
 import { submitUploadForm, makeRelease } from '../utils';
@@ -476,5 +476,138 @@ describe('helpers/utils/fetchDrafts', () => {
     expect(setLoadingMock.mock.calls[0][0]).toBe(true);
     expect(setLoadingMock.mock.calls[1][0]).toBe(false);
     expect(dispatchMock).toHaveBeenCalledWith(fetchDraftFilesMock());
+  });
+});
+
+describe('helpers/utils/fetchReleaseFiles', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+  });
+
+  const accessToken = 'hunter2';
+  const opensrpBaseURL = 'https://test-example.com/rest';
+  const fetchReleasesMock = jest.fn();
+  const setLoadingMock = jest.fn();
+  const alertErrorMock = jest.fn();
+  const dispatchMock = jest.fn();
+  const endpoint = '/foo';
+
+  it('fetches releases', async () => {
+    fetch.once(JSON.stringify(fixManifestReleases));
+
+    fetchReleaseFiles(
+      accessToken,
+      opensrpBaseURL,
+      fetchReleasesMock,
+      setLoadingMock,
+      alertErrorMock,
+      endpoint
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/foo`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchReleasesMock).toHaveBeenCalledWith(fixManifestReleases);
+  });
+
+  it('fetches releases with the default endpoint', async () => {
+    fetch.once(JSON.stringify(fixManifestReleases));
+
+    fetchReleaseFiles(
+      accessToken,
+      opensrpBaseURL,
+      fetchReleasesMock,
+      setLoadingMock,
+      alertErrorMock
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/manifest`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchReleasesMock).toHaveBeenCalledWith(fixManifestReleases);
+  });
+
+  it('handles failure if fetch releases fails', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API taking a break'));
+
+    fetchReleaseFiles(
+      accessToken,
+      opensrpBaseURL,
+      fetchReleasesMock,
+      setLoadingMock,
+      alertErrorMock,
+      endpoint
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchReleasesMock).not.toHaveBeenCalled();
+    expect(alertErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+  });
+
+  it('calls dispatch if dispatch is passed', async () => {
+    fetch.once(JSON.stringify(FixManifestDraftFiles));
+
+    fetchReleaseFiles(
+      accessToken,
+      opensrpBaseURL,
+      fetchReleasesMock,
+      setLoadingMock,
+      alertErrorMock,
+      endpoint,
+      dispatchMock
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/foo`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(dispatchMock).toHaveBeenCalledWith(fetchReleasesMock());
   });
 });

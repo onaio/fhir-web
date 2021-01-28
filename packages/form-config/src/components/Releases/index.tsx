@@ -1,6 +1,5 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -24,7 +23,7 @@ import {
   UPDATED_AT_LABEL,
 } from '../../constants';
 import { Cell } from 'react-table';
-import { formatDate } from '../../helpers/utils';
+import { formatDate, fetchReleaseFiles } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
 
 /** Register reducer */
@@ -78,21 +77,27 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestReleasesTypes[]>(data);
 
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
+    }
+  };
+
   useEffect(() => {
     /** get manifest releases */
     if (data.length < 1) {
-      setLoading(true);
-      const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
-      clientService
-        .list()
-        .then((res: ManifestReleasesTypes[]) => fetchReleases(res))
-        .catch((error) => {
-          if (customAlert) {
-            customAlert(String(error), { type: 'error' });
-          }
-        })
-        .finally(() => setLoading(false));
+      fetchReleaseFiles(
+        accessToken,
+        baseURL,
+        fetchReleases,
+        setLoading,
+        displayAlertError,
+        endpoint,
+        undefined,
+        getPayload
+      );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseURL, endpoint, getPayload, customAlert, fetchReleases, data.length, accessToken]);
 
   useEffect(() => {

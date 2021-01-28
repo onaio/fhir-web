@@ -11,6 +11,7 @@ import { ManifestFilesTypes } from '../ducks/manifestFiles';
 import { handleDownload } from './fileDownload';
 import { fetchManifestDraftFiles, removeManifestDraftFiles } from '../ducks/manifestDraftFiles';
 import { Dispatch } from 'redux';
+import { fetchManifestReleases, ManifestReleasesTypes } from '../ducks/manifestReleases';
 
 type StrNum = string | number;
 
@@ -176,12 +177,13 @@ export const makeRelease = (
       alertError(ERROR_OCCURRED);
     });
 };
+
 /**
  * Fetch manifest draft files
  *
  * @param {string} accessToken  Opensrp API access token
  * @param {string} opensrpBaseURL Opensrp API base URL
- * @param {Function} fetchDraftFiles redux action to remove draft files
+ * @param {Function} fetchDraftFiles redux action to fetch draft files
  * @param {Function} setLoading set ifDoneHere form status
  * @param {Function} alertError - receive error description
  * @param {string} endpoint - Opensrp endpoint
@@ -215,6 +217,51 @@ export const fetchDrafts = (
         dispatch(fetchDraftFiles(res));
       } else {
         fetchDraftFiles(res);
+      }
+    })
+    .catch((_: Error) => {
+      alertError(ERROR_OCCURRED);
+    })
+    .finally(() => setLoading(false));
+};
+
+/**
+ * Fetch releases
+ *
+ * @param {string} accessToken  Opensrp API access token
+ * @param {string} opensrpBaseURL Opensrp API base URL
+ * @param {Function} fetchReleases redux action to fetch releases files
+ * @param {Function} setLoading set ifDoneHere form status
+ * @param {Function} alertError - receive error description
+ * @param {string} endpoint - Opensrp endpoint
+ * @param {Dispatch} dispatch - dispatch function from redux store
+ * @param {Function} customFetchOptions custom opensrp API fetch options
+ */
+export const fetchReleaseFiles = (
+  accessToken: string,
+  opensrpBaseURL: string,
+  fetchReleases: typeof fetchManifestReleases,
+  setLoading: (loading: boolean) => void,
+  alertError: (err: string) => void,
+  endpoint = OPENSRP_MANIFEST_ENDPOINT,
+  dispatch?: Dispatch,
+  customFetchOptions?: typeof getFetchOptions
+) => {
+  /** get manifest releases */
+  setLoading(true);
+  const clientService = new OpenSRPService(
+    accessToken,
+    opensrpBaseURL,
+    endpoint,
+    customFetchOptions
+  );
+  clientService
+    .list()
+    .then((res: ManifestReleasesTypes[]) => {
+      if (dispatch) {
+        dispatch(fetchReleases(res));
+      } else {
+        fetchReleases(res);
       }
     })
     .catch((_: Error) => {
