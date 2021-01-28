@@ -23,7 +23,7 @@ describe('pre confirmation success', () => {
     expect(wrapper.text()).toMatchSnapshot('full card snapshot');
 
     // simulate onCommit callback
-    wrapper.find('#confirm-commit').simulate('click');
+    wrapper.find('button#confirm-commit').simulate('click');
 
     wrapper.update();
 
@@ -33,7 +33,7 @@ describe('pre confirmation success', () => {
 
     // simulate cancel
 
-    wrapper.find('#cancel-commit').simulate('click');
+    wrapper.find('button#cancel-commit').simulate('click');
 
     wrapper.update();
 
