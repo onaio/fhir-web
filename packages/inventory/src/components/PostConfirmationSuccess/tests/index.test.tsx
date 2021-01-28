@@ -28,12 +28,12 @@ describe('post confirmation success card', () => {
     );
 
     // card title text
-    expect(wrapper.find('.card-title').text()).toMatchSnapshot('card title');
+    expect(wrapper.find('.card-title').first().text()).toMatchSnapshot('card title');
 
     // card body
     expect(wrapper.text()).toMatchSnapshot('full snapshot');
 
     // expect button link
-    expect(wrapper.find('button').text()).toMatchInlineSnapshot();
+    expect(wrapper.find('button').text()).toMatchInlineSnapshot(`"Upload another file"`);
   });
 });
