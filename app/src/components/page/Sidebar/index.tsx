@@ -35,6 +35,7 @@ import {
   MISSIONS,
   SERVICE_POINT_INVENTORY,
   INVENTORY,
+  URL_ADMIN,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -85,7 +86,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { roles } = extraData;
   let location = useLocation();
   let loc = location.pathname.split('/');
-  loc.shift();
+  const [openKeys, setOpenKeys] = React.useState<React.ReactText[]>([]);
 
   // menu items schema
   const menus: MenuItems[] = [
@@ -141,19 +142,19 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         },
         {
           otherProps: { icon: '', title: 'Locations' },
-          key: 'locations',
+          key: 'location',
           enabled: ENABLE_LOCATIONS,
           children: [
             {
               otherProps: { icon: '', title: `${LOCATIONS_UNIT}` },
               url: `${URL_LOCATION_UNIT}`,
-              key: 'locations-unit',
+              key: 'location-unit',
               children: [],
             },
             {
               otherProps: { icon: '', title: `${LOCATIONS_UNIT_GROUP}` },
               url: `${URL_LOCATION_UNIT_GROUP}`,
-              key: 'locations-group',
+              key: 'location-group',
               children: [],
             },
           ],
@@ -162,7 +163,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           otherProps: { icon: '', title: `${PRODUCT_CATALOGUE}` },
           key: 'product-catalogue',
           enabled: ENABLE_PRODUCT_CATALOGUE,
-          url: `${CATALOGUE_LIST_VIEW_URL}`,
+          url: `${URL_ADMIN}${CATALOGUE_LIST_VIEW_URL}`,
           children: [],
         },
         {
@@ -174,24 +175,24 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         },
         {
           otherProps: { icon: '', title: `${FORM_CONFIGURATION}` },
-          key: 'form-configuration',
+          key: 'form-config',
           enabled: ENABLE_FORM_CONFIGURATION,
           children: [
             {
               otherProps: { icon: '', title: `${MANIFEST_RELEASES}` },
-              key: 'form-configuration-releases',
+              key: 'form-config-releases',
               url: `${URL_MANIFEST_RELEASE_LIST}`,
               children: [],
             },
             {
               otherProps: { icon: '', title: `${DRAFT_FILES}` },
-              key: 'form-configuration-draft',
+              key: 'form-config-draft',
               url: `${URL_DRAFT_FILE_LIST}`,
               children: [],
             },
             {
               otherProps: { icon: '', title: `${JSON_VALIDATORS}` },
-              key: 'form-configuration-validators',
+              key: 'form-config-validators',
               url: `${URL_JSON_VALIDATOR_LIST}`,
               children: [],
             },
@@ -200,12 +201,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       ],
     },
     {
-      otherProps: { icon: '', title: 'Card Support' },
+      otherProps: { icon: <IdcardOutlined />, title: 'Card Support' },
       key: 'card-support',
       enabled: ENABLE_CARD_SUPPORT,
       children: [
         {
-          otherProps: { icon: <IdcardOutlined />, title: 'Download Client Data' },
+          otherProps: { title: 'Download Client Data' },
           url: `${URL_DOWNLOAD_CLIENT_DATA}`,
           key: 'download-client-data',
           children: [],
@@ -213,12 +214,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       ],
     },
     {
-      otherProps: { icon: '', title: `${INVENTORY}` },
+      otherProps: { icon: <DashboardOutlined />, title: `${INVENTORY}` },
       key: 'inventory',
       enabled: ENABLE_INVENTORY,
       children: [
         {
-          otherProps: { icon: <DashboardOutlined />, title: `${SERVICE_POINT_INVENTORY}` },
+          otherProps: { title: `${SERVICE_POINT_INVENTORY}` },
           url: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
           key: 'inventory-list',
           children: [],
@@ -229,10 +230,10 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
   const mainMenu: JSX.Element[] = [];
 
-  const mapChildren = React.useCallback((child: any) => {
+  const mapChildren = React.useCallback((child: MenuItems) => {
     if (child.children.length) {
       return (
-        <Menu.SubMenu key={child.key} icon={<DashboardOutlined />} title={child.otherProps.title}>
+        <Menu.SubMenu key={child.key} icon={child.otherProps.icon} title={child.otherProps.title}>
           {child.children.map(mapChildren)}
         </Menu.SubMenu>
       );
@@ -254,7 +255,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           menus[m].enabled ? (
             <Menu.SubMenu
               key={menus[m].key}
-              icon={<DashboardOutlined />}
+              icon={menus[m].otherProps.icon}
               title={menus[m].otherProps.title}
             >
               {menus[m].children.map(mapChildren)}
@@ -268,6 +269,26 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     return mainMenu;
   }, [mainMenu, mapChildren, menus]);
 
+  let activeKey = '';
+
+  const getActiveKey = () => {
+    function mapMenus(menu: MenuItems) {
+      if (menu.children) {
+        if (loc.join('/') !== menu.url) {
+          menu.children.map(mapMenus);
+        } else {
+          activeKey = menu.key;
+        }
+      } else {
+        return false;
+      }
+    }
+    menus.map(mapMenus);
+    return activeKey;
+  };
+
+  const activeLocationPaths = loc.filter((locString: string) => locString.length);
+
   return (
     <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
@@ -278,9 +299,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
       <Menu
         theme="dark"
-        selectedKeys={[]}
-        defaultOpenKeys={loc}
-        defaultSelectedKeys={[]}
+        selectedKeys={[getActiveKey()]}
+        openKeys={(openKeys as string[]).length ? (openKeys as string[]) : activeLocationPaths}
+        defaultOpenKeys={activeLocationPaths}
+        defaultSelectedKeys={[getActiveKey()]}
+        onOpenChange={(keys: React.ReactText[]) => {
+          setOpenKeys(keys);
+        }}
         mode="inline"
         className="menu-dark"
       >
