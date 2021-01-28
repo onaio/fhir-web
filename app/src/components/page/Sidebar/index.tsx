@@ -249,22 +249,20 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   }, []);
 
   const processMenu = React.useMemo(() => {
-    if (menus && menus.length) {
-      for (let m = 0; m < menus.length; m += 1) {
-        mainMenu.push(
-          menus[m].enabled ? (
-            <Menu.SubMenu
-              key={menus[m].key}
-              icon={menus[m].otherProps.icon}
-              title={menus[m].otherProps.title}
-            >
-              {menus[m].children.map(mapChildren)}
-            </Menu.SubMenu>
-          ) : (
-            <></>
-          )
-        );
-      }
+    for (let m = 0; m < menus.length; m += 1) {
+      mainMenu.push(
+        menus[m].enabled ? (
+          <Menu.SubMenu
+            key={menus[m].key}
+            icon={menus[m].otherProps.icon}
+            title={menus[m].otherProps.title}
+          >
+            {menus[m].children.map(mapChildren)}
+          </Menu.SubMenu>
+        ) : (
+          <></>
+        )
+      );
     }
     return mainMenu;
   }, [mainMenu, mapChildren, menus]);
@@ -275,15 +273,14 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     function mapMenus(menu: MenuItems) {
       if (menu.children) {
         if (loc.join('/') !== menu.url) {
-          menu.children.map(mapMenus);
+          menu.children.forEach(mapMenus);
         } else {
           activeKey = menu.key;
         }
-      } else {
-        return false;
       }
+      return true;
     }
-    menus.map(mapMenus);
+    menus.forEach(mapMenus);
     return activeKey;
   };
 

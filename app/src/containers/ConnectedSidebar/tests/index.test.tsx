@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
 import { store } from '@opensrp/store';
+import toJson from 'enzyme-to-json';
 
 jest.mock('../../../configs/env');
 
@@ -136,6 +137,21 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
+    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    wrapper.unmount();
+  });
+
+  it('correctly sets open keys', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: `/admin/users/list`, hash: '', search: '', state: {} }]}
+        >
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(toJson(wrapper.find('Menu').at(0))).toEqual('');
     expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
     wrapper.unmount();
   });
