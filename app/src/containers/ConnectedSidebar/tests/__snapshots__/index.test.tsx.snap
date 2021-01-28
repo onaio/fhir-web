@@ -40,32 +40,6 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -81,15 +55,8 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/product-catalogue/list"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
     <SubMenu
+      icon=""
       title="Locations"
     >
       <MenuItem>
@@ -109,7 +76,24 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <SubMenu
+      icon=""
       title="Form Configuration"
     >
       <MenuItem>
@@ -137,6 +121,32 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
   </SubMenu>,
 ]
 `;
@@ -181,32 +191,6 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -222,15 +206,8 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/product-catalogue/list"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
     <SubMenu
+      icon=""
       title="Locations"
     >
       <MenuItem>
@@ -250,7 +227,24 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <SubMenu
+      icon=""
       title="Form Configuration"
     >
       <MenuItem>
@@ -278,6 +272,32 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
   </SubMenu>,
 ]
 `;
@@ -322,32 +342,6 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -363,23 +357,8 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/product-catalogue/list"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
     <SubMenu
+      icon=""
       title="Locations"
     >
       <MenuItem>
@@ -399,7 +378,24 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <SubMenu
+      icon=""
       title="Form Configuration"
     >
       <MenuItem>
@@ -427,6 +423,32 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
   </SubMenu>,
 ]
 `;
@@ -471,32 +493,6 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -512,15 +508,8 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/product-catalogue/list"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
     <SubMenu
+      icon=""
       title="Locations"
     >
       <MenuItem>
@@ -540,7 +529,24 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <SubMenu
+      icon=""
       title="Form Configuration"
     >
       <MenuItem>
@@ -568,6 +574,32 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
   </SubMenu>,
 ]
 `;
@@ -612,32 +644,6 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -653,15 +659,8 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/product-catalogue/list"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
     <SubMenu
+      icon=""
       title="Locations"
     >
       <MenuItem>
@@ -681,7 +680,24 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <SubMenu
+      icon=""
       title="Form Configuration"
     >
       <MenuItem>
@@ -709,6 +725,32 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
   </SubMenu>,
 ]
 `;
@@ -753,32 +795,6 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
@@ -794,15 +810,45 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <SubMenu
+      icon=""
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Locations unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/group"
+        >
+          Locations unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
     <MenuItem>
       <Link
         className="admin-link"
-        to="/product-catalogue/list"
+        to="/admin/product-catalogue/list"
       >
         Product Catalogue
       </Link>
     </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <SubMenu
+      icon=""
       title="Form Configuration"
     >
       <MenuItem>
@@ -831,6 +877,32 @@ Array [
       </MenuItem>
     </SubMenu>
   </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(IdcardOutlined) />}
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
 ]
 `;
 
@@ -855,17 +927,15 @@ Object {
       </div>
       <Menu
         className="menu-dark"
-        defaultOpenKeys={
-          Array [
-            "",
-          ]
-        }
+        defaultOpenKeys={Array []}
         defaultSelectedKeys={
           Array [
             "",
           ]
         }
         mode="inline"
+        onOpenChange={[Function]}
+        openKeys={Array []}
         selectedKeys={
           Array [
             "",
@@ -873,6 +943,91 @@ Object {
         }
         theme="dark"
       >
+        <React.Fragment />
+        <SubMenu
+          icon={<ForwardRef(DashboardOutlined) />}
+          title="Admin"
+        >
+          <SubMenu
+            title="Users"
+          >
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/users/list"
+              >
+                User Management
+              </Link>
+            </MenuItem>
+          </SubMenu>
+          <SubMenu
+            icon=""
+            title="Locations"
+          >
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/location/unit"
+              >
+                Locations unit
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/location/group"
+              >
+                Locations unit group
+              </Link>
+            </MenuItem>
+          </SubMenu>
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/admin/product-catalogue/list"
+            >
+              Product Catalogue
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/admin/teams"
+            >
+              Teams
+            </Link>
+          </MenuItem>
+          <SubMenu
+            icon=""
+            title="Form Configuration"
+          >
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/form-config/releases"
+              >
+                Manifest Releases
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/form-config/drafts"
+              >
+                Draft Files
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/form-config/json-validators"
+              >
+                JSON Validators
+              </Link>
+            </MenuItem>
+          </SubMenu>
+        </SubMenu>
+        <React.Fragment />
         <SubMenu
           icon={<ForwardRef(DashboardOutlined) />}
           title="Inventory"
@@ -883,19 +1038,6 @@ Object {
               to="/inventory/list"
             >
               Service point inventory
-            </Link>
-          </MenuItem>
-        </SubMenu>
-        <SubMenu
-          icon={<ForwardRef(DashboardOutlined) />}
-          title="Admin"
-        >
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/product-catalogue/list"
-            >
-              Product Catalogue
             </Link>
           </MenuItem>
         </SubMenu>
@@ -915,21 +1057,7 @@ Object {
 
 exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
 Array [
-  undefined,
-  undefined,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-  </SubMenu>,
+  <React.Fragment />,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
@@ -946,12 +1074,84 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <SubMenu
+      icon=""
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Locations unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/group"
+        >
+          Locations unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
     <MenuItem>
       <Link
         className="admin-link"
-        to="/product-catalogue/list"
+        to="/admin/product-catalogue/list"
       >
         Product Catalogue
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <SubMenu
+      icon=""
+      title="Form Configuration"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+  <React.Fragment />,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
       </Link>
     </MenuItem>
   </SubMenu>,
