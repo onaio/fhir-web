@@ -45,7 +45,7 @@ describe('post confirmation Error card page', () => {
     );
 
     // card title text
-    expect(wrapper.find('.card-title').text()).toMatchSnapshot('card title');
+    expect(wrapper.find('.card-title').first().text()).toMatchSnapshot('card title');
 
     // fix csv instructions
     expect(toJson(wrapper.find('ol'))).toMatchSnapshot('fix csv instructions');
