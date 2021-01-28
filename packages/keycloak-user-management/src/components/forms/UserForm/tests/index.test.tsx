@@ -10,12 +10,7 @@ import { act } from 'react-dom/test-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
-import {
-  EMAIL_REQUIRED,
-  FIRST_NAME_REQUIRED,
-  LAST_NAME_REQUIRED,
-  USERNAME_REQUIRED,
-} from '../../../../lang';
+import { FIRST_NAME_REQUIRED, LAST_NAME_REQUIRED, USERNAME_REQUIRED } from '../../../../lang';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -99,9 +94,10 @@ describe('components/forms/UserForm', () => {
 
     expect(wrapper.find('FormItemInput').at(0).prop('errors')).toEqual([FIRST_NAME_REQUIRED]);
     expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual([LAST_NAME_REQUIRED]);
-    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual([EMAIL_REQUIRED]);
+    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual([]);
     expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual([USERNAME_REQUIRED]);
     expect(wrapper.find('FormItemInput').at(4).prop('errors')).toEqual([]);
+    expect(wrapper.find('FormItemInput').at(5).prop('errors')).toEqual([]);
 
     wrapper.unmount();
   });
