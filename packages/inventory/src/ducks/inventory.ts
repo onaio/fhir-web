@@ -9,6 +9,7 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 
+
 /** interface inventory */
 export interface Inventory {
   deliveryDate: string;
@@ -24,31 +25,22 @@ export interface Inventory {
 }
 
 /** reducer name */
-export const reducerName = 'inventory';
-
-/** Action types */
-const customfetchedActionType = 'inventory/INVENTORIES_FETCHED';
-const customRemoveActionType = 'inventory/REMOVE_INVENTORIES';
-const customSetTotalRecordsActionType = 'inventory/SET_TOTAL_INVENTORIES';
+export const inventoryReducerName = 'inventory';
 
 /** Item Reducer */
-const reducer = reducerFactory<Inventory>(
-  reducerName,
-  customfetchedActionType,
-  customRemoveActionType,
-  customSetTotalRecordsActionType
-);
+export const inventoryReducer = reducerFactory<Inventory>(inventoryReducerName);
 
 // action
 /** actionCreator returns action to to add Item records to store */
-export const fetchInventories = fetchActionCreatorFactory<Inventory>(reducerName, 'servicePointId');
-export const removeInventories = removeActionCreatorFactory(reducerName);
-export const setTotalInventories = setTotalRecordsFactory(reducerName);
+export const fetchInventories = fetchActionCreatorFactory<Inventory>(
+  inventoryReducerName,
+  'servicePointId'
+);
+export const removeInventories = removeActionCreatorFactory(inventoryReducerName);
+export const setTotalInventories = setTotalRecordsFactory(inventoryReducerName);
 
 // selectors
-export const getInventoriesById = getItemsByIdFactory<Inventory>(reducerName);
-export const getInventoryById = getItemByIdFactory<Inventory>(reducerName);
-export const getInventoriesArray = getItemsArrayFactory<Inventory>(reducerName);
-export const getTotalInventories = getTotalRecordsFactory(reducerName);
-
-export default reducer;
+export const getInventoriesById = getItemsByIdFactory<Inventory>(inventoryReducerName);
+export const getInventoryById = getItemByIdFactory<Inventory>(inventoryReducerName);
+export const getInventoriesArray = getItemsArrayFactory<Inventory>(inventoryReducerName);
+export const getTotalInventories = getTotalRecordsFactory(inventoryReducerName);
