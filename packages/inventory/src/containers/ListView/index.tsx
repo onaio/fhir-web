@@ -28,7 +28,12 @@ import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { SEARCH_QUERY_PARAM, TableColumnsNamespace, tablePaginationOptions } from '../../constants';
+import {
+  INVENTORY_ADD_SERVICE_POINT,
+  SEARCH_QUERY_PARAM,
+  TableColumnsNamespace,
+  tablePaginationOptions,
+} from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { ADD_SERVICE_POINT, SERVICE_POINT_INVENTORY } from '../../lang';
 import { TableData } from './utils';
@@ -142,8 +147,8 @@ const ServicePointList = (props: ServicePointsListTypes) => {
         <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to={ADD_SERVICE_POINT}>
-              <Button type="primary" size="large" disabled>
+            <Link to={INVENTORY_ADD_SERVICE_POINT}>
+              <Button type="primary" size="large">
                 {ADD_SERVICE_POINT}
               </Button>
             </Link>
