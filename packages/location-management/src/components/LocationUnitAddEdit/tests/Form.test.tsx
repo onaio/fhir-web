@@ -171,7 +171,12 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
     await onSubmit(
       jest.fn,
-      { ...formValue, parentId: '400e9d97-4640-44f5-af54-6f4b314384f5', id: '1' },
+      {
+        ...formValue,
+        parentId: '400e9d97-4640-44f5-af54-6f4b314384f5',
+        id: '1',
+        serviceTypes: ['Test service type'],
+      },
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
@@ -193,6 +198,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
             name: 'Tunisia',
             name_en: 'Tunisia',
             status: 'Active',
+            serviceTypes: [{ name: 'Test service type' }],
           },
           id: '1',
           syncStatus: 'Synced',
