@@ -95,4 +95,50 @@ describe('', () => {
     expect(locationFormProps.initialValues.parentId).toEqual(parentId);
     wrapper.unmount();
   });
+
+  it('only calls hierarchy if jurisdictions defined', async () => {
+    fetch.resetMocks();
+    fetch.once(JSON.stringify([]));
+    fetch.once(JSON.stringify([]));
+    fetch.once(JSON.stringify(null));
+    fetch.once(JSON.stringify(null));
+
+    const parentId = '654654';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: `/${id}`, hash: '', search: `?parentId=${parentId}`, state: {} },
+          ]}
+        >
+          <Route
+            path={'/:id'}
+            component={(props) => {
+              const allProps = {
+                ...props,
+                hiddenFields: ['name'],
+                instance: FormInstances.EUSM,
+              };
+              return <LocationUnitAddEdit {...allProps} />;
+            }}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+    wrapper.update();
+
+    expect(fetch.mock.calls.map((entry) => entry[0])).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/a26ca9c8-1441-495a-83b6-bb5df7698996?is_jurisdiction=true',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+    ]);
+
+    wrapper.unmount();
+  });
 });
