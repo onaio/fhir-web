@@ -9,7 +9,6 @@ import {
 } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import React from 'react';
-import { Dictionary } from '@onaio/utils/dist/types/types';
 
 /** props for service types select component */
 export interface ServiceTypeSelectProps extends SelectProps {
@@ -45,10 +44,11 @@ export interface ServiceTypesSetting {
 const ServiceTypeSelect = (props: ServiceTypeSelectProps) => {
   const [loading, setLoading] = useState(true);
   const [settingsData, setSettingsData] = useState<ServiceTypesSetting[]>([]);
+  const { baseURL, service, ...restProps } = props;
 
   useEffect(() => {
     // fetch service type settings
-    loadSettings(SERVICE_TYPES_SETTINGS_ID, props.baseURL, props.service, setSettingsData)
+    loadSettings(SERVICE_TYPES_SETTINGS_ID, baseURL, service, setSettingsData)
       .catch((err) => sendErrorNotification(err.message))
       .finally(() => {
         setLoading(false);
@@ -60,15 +60,11 @@ const ServiceTypeSelect = (props: ServiceTypeSelectProps) => {
     value: setting.label,
   }));
 
-  const selectProps: ServiceTypeSelectProps = {
-    ...props,
+  const selectProps: SelectProps = {
+    ...restProps,
     options: selectOptions,
     loading,
   };
-
-  // remove custom props -> will show warning if passed to component
-  delete (selectProps as Dictionary).baseURL;
-  delete (selectProps as Dictionary).service;
 
   return <Select {...selectProps}></Select>;
 };
