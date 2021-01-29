@@ -8,8 +8,11 @@ import { UserForm, defaultInitialValues } from '..';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { Router } from 'react-router';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -46,6 +49,21 @@ describe('components/forms/UserForm', () => {
     practitioner: null,
     extraData: {},
   };
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'access token', state: 'abcde' } }
+      )
+    );
+  });
 
   beforeEach(() => {
     fetch.once(JSON.stringify(fixtures.userActions));

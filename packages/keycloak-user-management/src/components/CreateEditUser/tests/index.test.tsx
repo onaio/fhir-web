@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import * as opensrpStore from '@opensrp/store';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import * as fixtures from './fixtures';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
@@ -23,7 +25,6 @@ import {
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
 import { ERROR_OCCURED } from '../../../constants';
-import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { practitioner1 } from '../../forms/UserForm/tests/fixtures';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -65,6 +66,21 @@ describe('components/CreateEditUser', () => {
     },
     extraData: {},
   };
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
 
   beforeEach(() => {
     store.dispatch(removeKeycloakUsers());

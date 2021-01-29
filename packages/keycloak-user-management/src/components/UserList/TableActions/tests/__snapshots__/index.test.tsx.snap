@@ -21,6 +21,10 @@ exports[`components/UserList/TableActions hides delete element if entry is logge
       to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
     >
       <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
         type="link"
       >
         Credentials
@@ -39,6 +43,10 @@ Object {
 exports[`components/UserList/TableActions renders correctly: dots menu 1`] = `
 Object {
   "children": <Button
+    block={false}
+    ghost={false}
+    htmlType="button"
+    loading={false}
     style={
       Object {
         "margin": 0,
@@ -75,7 +83,11 @@ Object {
         trigger="click"
       >
         <Button
+          block={false}
           danger={true}
+          ghost={false}
+          htmlType="button"
+          loading={false}
           style={
             Object {
               "color": "#",
@@ -92,6 +104,10 @@ Object {
         to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
       >
         <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
           type="link"
         >
           Credentials
@@ -125,7 +141,11 @@ exports[`components/UserList/TableActions shows delete element if entry is not l
       trigger="click"
     >
       <Button
+        block={false}
         danger={true}
+        ghost={false}
+        htmlType="button"
+        loading={false}
         style={
           Object {
             "color": "#",
@@ -142,6 +162,10 @@ exports[`components/UserList/TableActions shows delete element if entry is not l
       to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
     >
       <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
         type="link"
       >
         Credentials
