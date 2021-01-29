@@ -101,7 +101,7 @@ import {
 } from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
 import {
-  productCatalogueProps,
+  BaseProps,
   jsonValidatorListProps,
   jsonValidatorFormProps,
   draftFormProps,
@@ -120,7 +120,13 @@ import {
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW, ConnectedServicePointList } from '@opensrp/inventory';
+import {
+  INVENTORY_SERVICE_POINT_LIST_VIEW,
+  ConnectedServicePointList,
+  ServicePointsAddEdit,
+  INVENTORY_EDIT_SERVICE_POINT,
+  INVENTORY_ADD_SERVICE_POINT,
+} from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 
 const { Content } = Layout;
@@ -225,7 +231,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={CATALOGUE_LIST_VIEW_URL}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedProductCatalogueList}
             />
             <PrivateComponent
@@ -278,7 +284,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedProductCatalogueList}
             />
             <PrivateComponent
@@ -286,7 +292,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={CATALOGUE_CREATE_VIEW_URL}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={CreateProductView}
             />
             <PrivateComponent
@@ -294,7 +300,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedEditProductView}
             />
             <PrivateComponent
@@ -312,6 +318,22 @@ const App: React.FC = () => {
               path={INVENTORY_SERVICE_POINT_LIST_VIEW}
               {...inventoryServiceProps}
               component={ConnectedServicePointList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              {...BaseProps}
+              path={INVENTORY_ADD_SERVICE_POINT}
+              component={ServicePointsAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              {...BaseProps}
+              path={`${INVENTORY_EDIT_SERVICE_POINT}/:id`}
+              component={ServicePointsAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
