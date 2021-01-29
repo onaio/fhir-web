@@ -44,4 +44,21 @@ describe('upload start page', () => {
 
     wrapper.update();
   });
+
+  it('default props work correctly', async () => {
+    // execute default prop unctions
+    const props = {};
+    const wrapper = mount(<StartUpload {...props} />);
+
+    // simulate file upload
+    const file = new File([''], 'file.csv');
+    await act(async () => {
+      wrapper.find('input[type="file"]').simulate('change', { target: { files: [file] } });
+      wrapper.update();
+    });
+
+    await new Promise((resolve) => setImmediate(resolve));
+
+    wrapper.update();
+  });
 });
