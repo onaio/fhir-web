@@ -34,6 +34,30 @@ export const formValue: FormFields = {
   isJurisdiction: true,
 };
 
+export const servicePoint1 = {
+  type: 'Feature',
+  id: 'ede2c7cf-331e-497e-9c7f-2f914d734604',
+  properties: {
+    status: 'Active',
+    parentId: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
+    name: 'Sousse',
+    geographicLevel: 1,
+    version: 0,
+    serviceTypes: [
+      {
+        name: 'Test service type',
+      },
+    ],
+  },
+  serverVersion: 15,
+  locationTags: [
+    {
+      id: 3,
+      name: 'My Text',
+    },
+  ],
+} as LocationUnit;
+
 export const locationUnitPayloadPUT: LocationUnitPayloadPUT = {
   properties: {
     geographicLevel: 0,

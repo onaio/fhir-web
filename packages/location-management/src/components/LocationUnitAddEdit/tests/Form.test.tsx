@@ -8,19 +8,13 @@ import { store } from '@opensrp/store';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 import { formValue, locationUnitgroups, parsedHierarchy, locationSettings } from './fixtures';
-import {
-  LocationForm,
-  findParentGeoLocation,
-  onSubmit,
-  removeEmptykeys,
-  defaultFormField,
-} from '../Form';
+import { LocationForm, findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
 import { baseURL, ERROR_OCCURED } from '../../../constants';
 import toJson from 'enzyme-to-json';
-import { FormInstances } from '../utils';
+import { defaultFormField, FormInstances } from '../utils';
 
 describe('location-management/src/components/LocationUnitAddEdit', () => {
   beforeAll(() => {
