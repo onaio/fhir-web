@@ -39,6 +39,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       <Provider store={store}>
         <Router history={history}>
           <Form
+            extraFields={locationSettings}
             opensrpBaseURL={baseURL}
             locationUnitGroup={locationUnitgroups}
             treedata={parsedHierarchy}
@@ -46,46 +47,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
-
     expect(wrapper.find('form')).toHaveLength(1);
-  });
-
-  it('creates new location unit', async () => {
-    const mockNotificationSuccess = jest.spyOn(notification, 'success');
-
-    await onSubmit(
-      formValue,
-      baseURL,
-      locationUnitgroups,
-      parsedHierarchy,
-      'user_test',
-      locationSettings
-    );
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: fetch.mock.calls[0][1].body,
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'POST',
-        },
-      ],
-    ]);
-
-    expect(mockNotificationSuccess).toHaveBeenCalledWith({
-      description: undefined,
-      message: 'Location Unit Created successfully',
-    });
   });
 
   it('test removeEmptykeys from payload ', async () => {
@@ -103,7 +65,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       },
     };
     removeEmptykeys(obj);
-
     expect(obj).toMatchObject({
       key: 'value',
       child: { key: 'value' },
@@ -122,25 +83,85 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     expect(findParentGeoLocation(parsedHierarchy, 'test')).toEqual(undefined);
   });
 
-  it('handles error when creating new location unit', async () => {
+  it('Fail onsubmit', async () => {
+    const mockNotificationError = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
-    const mockfn = jest.fn();
 
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Form
+            initialValue={formValue}
+            opensrpBaseURL={baseURL}
+            id="1"
+            locationUnitGroup={locationUnitgroups}
+            treedata={parsedHierarchy}
+          />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.find('form').simulate('submit');
+    });
+
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: undefined,
+      message: ERROR_OCCURED,
+    });
+  });
+
+  it('Fail geoloacation get from tree onsubmit', async () => {
+    const mockNotificationError = jest.spyOn(notification, 'error');
+    await onSubmit(
+      { ...formValue, parentId: 'wrong parent id' },
+      baseURL,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test',
+      locationSettings,
+      '1'
+    );
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: undefined,
+      message: ERROR_OCCURED,
+    });
+  });
+
+  it('creates new location unit successfully', async () => {
+    const mockNotificationSuccess = jest.spyOn(notification, 'success');
     await onSubmit(
       formValue,
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
       'user_test',
-      [],
-      '1'
-    ).catch(mockfn);
-
+      locationSettings
+    );
     await act(async () => {
       await flushPromises();
     });
-
-    expect(mockfn).toBeCalled();
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: fetch.mock.calls[0][1].body,
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'POST',
+        },
+      ],
+    ]);
+    expect(mockNotificationSuccess).toHaveBeenCalledWith({
+      description: undefined,
+      message: 'Location Unit Created successfully',
+    });
   });
 
   it('edits location unit successfully', async () => {
@@ -157,7 +178,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
-
     await onSubmit(
       { ...formValue, parentId: '400e9d97-4640-44f5-af54-6f4b314384f5' },
       baseURL,
@@ -167,7 +187,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       [],
       '1'
     );
-
     expect(fetch.mock.calls).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
@@ -198,155 +217,14 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         },
       ],
     ]);
-
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
-
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
       description: undefined,
       message: 'Location Unit Updated successfully',
     });
-  });
-
-  it('fail geoloaction fetch when create location unit', async () => {
-    const mockNotificationError = jest.spyOn(notification, 'error');
-
-    await onSubmit(
-      jest.fn,
-      { ...formValue, parentId: 'test' },
-      baseURL,
-      locationUnitgroups,
-      parsedHierarchy,
-      'user_test'
-    ).catch((e) => {
-      expect(e.message).toEqual(ERROR_OCCURED);
-    });
-
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: ERROR_OCCURED,
-    });
-  });
-
-  it('fail create location unit', async () => {
-    fetch.mockReject();
-
-    const mockfn = jest.fn();
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            id="1"
-            locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
-          />
-        </Router>
-      </Provider>
-    );
-
-    await onSubmit(formValue, baseURL, locationUnitgroups, parsedHierarchy, 'user_test').catch(
-      mockfn
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify({
-            is_jurisdiction: true,
-            properties: {
-              geographicLevel: 0,
-              username: 'user_test',
-              name: 'Tunisia',
-              name_en: 'Tunisia',
-              status: 'Active',
-            },
-            id: JSON.parse(fetch.mock.calls[0][1].body as string).id,
-            syncStatus: 'Synced',
-            type: 'Feature',
-            locationTags: [{ id: 2, name: 'Sample 2' }],
-          }),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'POST',
-        },
-      ],
-    ]);
-
-    expect(mockfn).toBeCalled();
-  });
-
-  it('handles error when editing location unit', async () => {
-    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
-    const mockNotificationError = jest.spyOn(notification, 'error');
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            id="1"
-            locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
-          />
-        </Router>
-      </Provider>
-    );
-    await onSubmit(
-      { ...formValue, parentId: 'wrong parent id' },
-      baseURL,
-      locationUnitgroups,
-      parsedHierarchy,
-      'user_test',
-      [],
-      '1'
-    );
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(fetch.mock.calls).toEqual([]);
-
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: ERROR_OCCURED,
-    });
-  });
-
-  it('handle failed on submit', async () => {
-    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
-    const mockfn = jest.fn();
-
-    await onSubmit(
-      formValue,
-      baseURL,
-      locationUnitgroups,
-      parsedHierarchy,
-      'user_test',
-      [],
-      '1'
-    ).catch(mockfn);
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(mockfn).toBeCalled();
   });
 
   it('renders without crashing with id', () => {
@@ -363,13 +241,10 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
-
     expect(wrapper.find('form input[name="name"]').prop('value')).toBe(formValue.name);
-
     expect(
       wrapper.find(`form input[type="radio"][value="${formValue.status}"]`).prop('checked')
     ).toBe(true);
-
     expect(wrapper.find('form TreeSelect[className="ant-tree-select"]').prop('value')).toBe(
       formValue.parentId
     );
@@ -382,7 +257,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   it('Cancel button', () => {
     const mockBack = jest.fn();
     history.goBack = mockBack;
-
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -394,17 +268,13 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
-
     wrapper.find('button#cancel').simulate('click');
-
     // click go back
     expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Save"`);
     wrapper.find('button').first().simulate('click');
-
     // click go back
     expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Cancel"`);
     wrapper.find('button').last().simulate('click');
-
     expect(mockBack).toHaveBeenCalled();
   });
 
@@ -422,30 +292,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
-
     wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-    });
-  });
-
-  it('Create LocationUnitGroupValue', async () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Form
-            opensrpBaseURL={baseURL}
-            initialValue={formValue}
-            locationUnitGroup={locationUnitgroups}
-            treedata={parsedHierarchy}
-          />
-        </Router>
-      </Provider>
-    );
-
-    wrapper.find('form').simulate('submit');
-
     await act(async () => {
       await flushPromises();
     });

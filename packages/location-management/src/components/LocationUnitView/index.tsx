@@ -125,7 +125,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (treeData.length) {
       if (currentClicked && currentClicked.children) {
-        const data = parseTableData([currentClicked, ...currentClicked?.children]);
+        const data = parseTableData([currentClicked, ...currentClicked.children]);
         setTableData(data);
       } else if (!currentClicked) {
         const data = parseTableData(treeData);

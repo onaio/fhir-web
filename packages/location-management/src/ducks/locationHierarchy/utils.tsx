@@ -114,6 +114,13 @@ export const serializeTree = (trees: TreeNode[]) => {
   return JSON.stringify(trees.map((tree) => JSON.stringify(cycle.decycle(tree))));
 };
 
+/**
+ * Find the specifc Hierarchy node inside HierarchyTree
+ *
+ * @param {ParsedHierarchyNode} hierarchy HeirarchyTree to search in
+ * @param {string} id Id of the node to search for
+ * @returns {ParsedHierarchyNode | undefined} returns the Node if found else undefined
+ */
 export function getHierarchyNode(
   hierarchy: ParsedHierarchyNode,
   id: string
@@ -135,6 +142,13 @@ export function getHierarchyNode(
   return result;
 }
 
+/**
+ * Find the specifc Hierarchy node inside HierarchyTree Array
+ *
+ * @param {Array<ParsedHierarchyNode>} hierarchy Array of HeirarchyTree to search in
+ * @param {string} id Id of the node to search for
+ * @returns {ParsedHierarchyNode | undefined} returns the Node if found else undefined
+ */
 export function getHierarchyNodeFromArray(
   hierarchy: ParsedHierarchyNode[],
   id: string
@@ -147,5 +161,5 @@ export function getHierarchyNodeFromArray(
     else return undefined;
   });
 
-  return result.find((e) => e != undefined);
+  return result.find((e) => e !== undefined);
 }
