@@ -49,35 +49,8 @@ import { v4 } from 'uuid';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { Dictionary } from '@onaio/utils';
 import { ServiceTypeSelect } from './ServiceTypesSelect';
-import { FormInstances } from './utils';
-
-/** describes known fields that the form will have */
-export interface FormFields extends Dictionary {
-  instance?: FormInstances;
-  id?: string;
-  name: string;
-  status: LocationUnitStatus;
-  type: string;
-  parentId?: string;
-  externalId?: string;
-  locationTags?: number[];
-  geometry?: string;
-  isJurisdiction?: boolean;
-  serviceTypes?: string[] | string;
-}
-
-export const defaultFormField: FormFields = {
-  instance: FormInstances.CORE,
-  name: '',
-  status: LocationUnitStatus.ACTIVE,
-  type: '',
-  isJurisdiction: false,
-  serviceTypes: '',
-  locationTags: [],
-  externalId: '',
-};
+import { defaultFormField, FormFields, FormInstances } from './utils';
 
 /** form props   */
 export interface LocationFormProps {
