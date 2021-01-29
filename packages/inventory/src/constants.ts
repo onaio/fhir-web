@@ -4,6 +4,8 @@ export const OPENSRP_API_BASE_URL = 'https://mg-eusm-staging.smartregister.org/o
 // router routes
 export const INVENTORY_SERVICE_POINT_LIST_VIEW = '/inventory/list';
 export const INVENTORY_SERVICE_POINT_PROFILE_VIEW = '/inventory/list';
+export const INVENTORY_ADD_SERVICE_POINT = '/inventory/servicePoint/add';
+export const INVENTORY_EDIT_SERVICE_POINT = '/inventory/servicePoint/edit';
 
 // other constants
 /** namespace for the keys attached to the columns */
