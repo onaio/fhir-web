@@ -4,7 +4,6 @@ import {
   inventoryReducerName,
   inventoryReducer,
   getInventoriesByIds,
-  getInventoryById,
   getInventoriesArray,
   getTotalInventories,
   setTotalInventories,
@@ -23,7 +22,6 @@ describe('src/ducks/inventory', () => {
 
   it('should have initial state', () => {
     expect(getInventoriesByIds(store.getState(), {})).toEqual([]);
-    expect(getInventoryById(store.getState(), {})).toEqual({});
     expect(getInventoriesArray(store.getState())).toEqual([]);
     expect(getTotalInventories(store.getState())).toEqual(0);
   });
@@ -42,9 +40,6 @@ describe('src/ducks/inventory', () => {
         stockIds: [inventory1.stockId, inventory2.stockId],
       })
     ).toEqual([inventory1, inventory2]);
-    expect(getInventoryById(store.getState(), { stockIds: [inventory2.stockId] })).toEqual(
-      inventory2
-    );
     expect(getInventoriesArray(store.getState())).toEqual([inventory1, inventory2]);
   });
 

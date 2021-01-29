@@ -54,13 +54,6 @@ interface Filters {
 
 const getIds = (store: Partial<Store>, props: Filters) => props.stockIds;
 
-export const getInventoryById = createSelector(getStore, getIds, (inventory, id) => {
-  if (id) {
-    return inventory[id[0]];
-  }
-  return inventory;
-});
-
 export const getInventoriesByIds = createSelector(getStore, getIds, (inventoriesByIds, ids) => {
   if (ids) {
     const inventoriesOfInterest: Inventory[] = [];
