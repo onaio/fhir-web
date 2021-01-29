@@ -39,12 +39,12 @@ describe('src/ducks/inventory', () => {
     store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
     expect(
       getInventoriesByIds(store.getState(), {
-        servicePointIds: [inventory1.servicePointId, inventory2.servicePointId],
+        stockIds: [inventory1.stockId, inventory2.stockId],
       })
     ).toEqual([inventory1, inventory2]);
-    expect(
-      getInventoryById(store.getState(), { servicePointId: inventory2.servicePointId })
-    ).toEqual(inventory2);
+    expect(getInventoryById(store.getState(), { stockIds: [inventory2.stockId] })).toEqual(
+      inventory2
+    );
     expect(getInventoriesArray(store.getState())).toEqual([inventory1, inventory2]);
   });
 
