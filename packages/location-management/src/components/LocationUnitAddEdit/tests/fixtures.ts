@@ -12,7 +12,7 @@ import {
   LocationUnitStatus,
   LocationUnitSyncStatus,
 } from '../../../ducks/location-units';
-import { FormFields } from '../Form';
+import { FormFields } from '../utils';
 
 export const id = 'a26ca9c8-1441-495a-83b6-bb5df7698996';
 

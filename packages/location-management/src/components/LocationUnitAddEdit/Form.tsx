@@ -155,7 +155,7 @@ export async function onSubmit(
     : [];
 
   const serviceTypesPayload =
-    serviceTypesValues.length > 0 ? serviceTypesValues.map((type) => ({ name: type })) : {};
+    serviceTypesValues.length > 0 ? serviceTypesValues.map((type) => ({ name: type })) : [];
 
   const editMode = !!values.id;
   /** in edit mode, we currently do not have a way to know if a location is a jurisdiction or structure
@@ -185,7 +185,7 @@ export async function onSubmit(
       // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: values.name,
       status: values.status,
-      ...serviceTypesPayload,
+      serviceTypes: serviceTypesPayload,
     },
     id: values.id ? values.id : v4(),
     syncStatus: LocationUnitSyncStatus.SYNCED,
