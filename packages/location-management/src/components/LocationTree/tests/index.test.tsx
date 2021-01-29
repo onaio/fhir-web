@@ -153,4 +153,24 @@ describe('location-management/src/components/LocationTree', () => {
     treeNode = wrapper.find('.ant-tree-node-selected');
     expect(treeNode).toHaveLength(1);
   });
+
+  it('should highlight selected tree item', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={treedata} OnItemClick={jest.fn()} />
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    let treeNode = wrapper.find('.ant-tree-list-holder-inner');
+
+    const treeTitle = treeNode.find('span.ant-tree-title').first();
+    treeTitle.simulate('click');
+
+    treeNode = wrapper.find('.ant-tree-node-selected');
+    expect(treeNode).toHaveLength(1);
+  });
 });
