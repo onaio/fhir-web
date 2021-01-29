@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, useLocation } from 'react-router';
-import { getAccessToken } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   LOCATION_HIERARCHY,
@@ -13,14 +12,9 @@ import {
   ERROR_OCCURED,
   baseURL,
 } from '../../constants';
-import {
-  ExtraField,
-  fetchLocationUnits,
-  LocationUnit,
-  LocationUnitStatus,
-} from '../../ducks/location-units';
+import { ExtraField, fetchLocationUnits, LocationUnit } from '../../ducks/location-units';
 import { useDispatch, useSelector } from 'react-redux';
-import { LocationForm, FormFields, LocationFormProps, defaultFormField } from './Form';
+import { LocationForm, FormFields, LocationFormProps } from './Form';
 import { Row, Col, Spin } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -40,7 +34,7 @@ import { FormInstances, getLocationFormFields } from './utils';
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 /** props for the locationUnitAddEdit form HOC */
-export interface Props extends Pick<LocationFormProps, 'hiddenFields'> {
+export interface LocationUnitAddEditProps extends Pick<LocationFormProps, 'hiddenFields'> {
   openSRPBaseURL: string;
   instance: FormInstances;
 }
@@ -73,31 +67,22 @@ export async function getHierarchy(location: LocationUnit[], openSRPBaseURL: str
  *
  * @param props - the props
  */
-const LocationUnitAddEdit = (props: Props) => {
+const LocationUnitAddEdit = (props: LocationUnitAddEditProps) => {
   const params: { id: string } = useParams();
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
+  const { openSRPBaseURL, instance } = props;
   const [locationUnitGroup, setLocationUnitGroup] = useState<LocationUnitGroup[]>([]);
   const [extraFields, setExtraFields] = useState<ExtraField[] | null>(null);
-  const [LocationUnitDetail, setLocationUnitDetail] = useState<FormFields | undefined>(undefined);
   const treeData = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
-  const { openSRPBaseURL, instance } = props;
   const dispatch = useDispatch();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const parentId = query.get('parentId');
-
-  useEffect(() => {
-    if (parentId != null)
-      setLocationUnitDetail({
-        ...defaultFormField,
-        name: '',
-        status: LocationUnitStatus.ACTIVE,
-        type: '',
-        parentId: parentId,
-      });
-  }, [parentId]);
+  const parentId = query.get('parentId') ?? undefined;
+  const [LocationUnitDetail, setLocationUnitDetail] = useState<FormFields | undefined>({
+    ...getLocationFormFields(undefined, instance),
+    parentId,
+  });
 
   useEffect(() => {
     if (params.id) {
@@ -108,11 +93,14 @@ const LocationUnitAddEdit = (props: Props) => {
       serve
         .list()
         .then((response: LocationUnit) => {
-          setLocationUnitDetail(getLocationFormFields(response, instance));
+          setLocationUnitDetail({
+            ...getLocationFormFields(response, instance),
+            parentId,
+          });
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, params.id, openSRPBaseURL, instance]);
+  }, [params.id, openSRPBaseURL, instance, parentId]);
 
   useEffect(() => {
     if (!locationUnitGroup.length) {
@@ -124,7 +112,7 @@ const LocationUnitAddEdit = (props: Props) => {
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, locationUnitGroup.length, openSRPBaseURL]);
+  }, [locationUnitGroup.length, openSRPBaseURL]);
 
   useEffect(() => {
     if (!treeData.length) {
@@ -132,19 +120,21 @@ const LocationUnitAddEdit = (props: Props) => {
         .then((response) => {
           if (response) {
             dispatch(fetchLocationUnits(response));
-            getHierarchy(response, openSRPBaseURL)
+            return getHierarchy(response, openSRPBaseURL)
               .then((hierarchy) => {
                 hierarchy.forEach((hier) => {
                   const processed = generateJurisdictionTree(hier);
                   dispatch(fetchAllHierarchies(processed.model));
                 });
               })
-              .catch(() => sendErrorNotification(ERROR_OCCURED));
+              .catch((err) => Promise.reject(err));
           }
         })
-        .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .catch((_) => {
+          sendErrorNotification(ERROR_OCCURED);
+        });
     }
-  }, [treeData, accessToken, dispatch, openSRPBaseURL]);
+  }, [treeData, dispatch, openSRPBaseURL]);
 
   useEffect(() => {
     if (!extraFields) {
@@ -154,10 +144,12 @@ const LocationUnitAddEdit = (props: Props) => {
       );
       serve
         .list()
-        .then((response: ExtraField[]) => setExtraFields(response))
+        .then((response: ExtraField[]) => {
+          setExtraFields(response);
+        })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [accessToken, extraFields, openSRPBaseURL]);
+  }, [extraFields, openSRPBaseURL]);
 
   if (
     extraFields === null ||
