@@ -19,7 +19,9 @@ export interface LanguageResource {
 
 export interface LanguageResources {
   ar_core?: LanguageResource;
+  ar_eusm?: LanguageResource;
   fr_core?: LanguageResource;
+  fr_eusm?: LanguageResource;
   en_core?: LanguageResource;
   en_eusm?: LanguageResource;
   sw_eusm?: LanguageResource;
