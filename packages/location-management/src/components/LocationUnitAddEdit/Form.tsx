@@ -101,6 +101,17 @@ const locationCategoryOptions = [
   { label: 'Jurisdiction', value: true },
 ];
 
+/** function to filter options from the select or not
+ *
+ * @param {string} input value
+ * @param {any} option .
+ * @returns {boolean} return weather option will be included in the filtered set;
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function filterFunction(input: string, option: any): boolean {
+  return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+}
+
 /** removes empty undefined and null objects before they payload is sent to server
  *
  * @param {any} obj object to remove empty keys from
@@ -278,17 +289,6 @@ const LocationForm = (props: LocationFormProps) => {
         {node.children ? parseHierarchyNode(node.children) : null}
       </TreeSelect.TreeNode>
     ));
-  }
-
-  /** function to filter options from the select or not
-   *
-   * @param {string} input value
-   * @param {any} option .
-   * @returns {boolean} return weather option will be included in the filtered set;
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function filterFunction(input: string, option: any): boolean {
-    return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
   /** helper to check if a field should be rendered

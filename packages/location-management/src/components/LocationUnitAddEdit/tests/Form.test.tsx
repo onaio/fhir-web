@@ -8,7 +8,13 @@ import { store } from '@opensrp/store';
 import { notification } from 'antd';
 import fetch from 'jest-fetch-mock';
 import { formValue, locationUnitgroups, parsedHierarchy, locationSettings } from './fixtures';
-import { LocationForm, findParentGeoLocation, onSubmit, removeEmptykeys } from '../Form';
+import {
+  LocationForm,
+  findParentGeoLocation,
+  onSubmit,
+  removeEmptykeys,
+  filterFunction,
+} from '../Form';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -92,6 +98,17 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
       description: undefined,
       message: 'Location Unit Created successfully',
     });
+  });
+
+  it('test filter options', () => {
+    const sampleString = 'kel';
+    const mockOption = {
+      children: 'kel',
+    };
+    let result = filterFunction(sampleString, mockOption);
+    expect(result).toBeTruthy();
+    result = filterFunction('somethingEsle', mockOption);
+    expect(result).toBeFalsy();
   });
 
   it('test removeEmptykeys from payload ', async () => {
@@ -335,6 +352,30 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     await onSubmit(
       jest.fn,
       formValue,
+      baseURL,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test',
+      []
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: undefined,
+      message: ERROR_OCCURED,
+    });
+    mockNotificationError.mockRestore();
+  });
+
+  it('handle failed on editing', async () => {
+    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
+    const mockNotificationError = jest.spyOn(notification, 'error');
+    await onSubmit(
+      jest.fn,
+      { ...formValue, id: '1' },
       baseURL,
       locationUnitgroups,
       parsedHierarchy,
