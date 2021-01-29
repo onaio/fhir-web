@@ -45,6 +45,7 @@
     "axios": "^0.21.1"
   },
   "devDependencies": {
-    "@onaio/session-reducer": "^0.0.12"
+    "@onaio/session-reducer": "^0.0.12",
+    "nock": "^13.0.6"
   }
 }
