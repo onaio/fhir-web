@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 export const inventory1 = {
-  stockId: '5dfcaecd-430a-4284-972f-9acf87775a9b',
+  stockId: '5dfcaecd-430a-4284-972f-9acf87775a9b1',
   productName: 'Scale1',
   unicefSection: 'Health1',
   quantity: 4,
@@ -15,7 +15,7 @@ export const inventory1 = {
 };
 
 export const inventory2 = {
-  stockId: '5dfcaecd-430a-4284-972f-9acf87775a9b',
+  stockId: '5dfcaecd-430a-4284-972f-9acf87775a9b2',
   productName: 'Scale2',
   unicefSection: 'Health2',
   quantity: 4,

@@ -35,7 +35,7 @@ export const inventoryReducer = reducerFactory<Inventory>(inventoryReducerName);
 /** actionCreator returns action to to add Item records to store */
 export const fetchInventories = fetchActionCreatorFactory<Inventory>(
   inventoryReducerName,
-  'servicePointId'
+  'stockId'
 );
 export const removeInventories = removeActionCreatorFactory(inventoryReducerName);
 export const setTotalInventories = setTotalRecordsFactory(inventoryReducerName);
@@ -49,16 +49,14 @@ export const getStore = (store: Partial<Store>) => {
 };
 
 interface Filters {
-  servicePointIds?: string[];
-  servicePointId?: string;
+  stockIds?: string[];
 }
 
-const getIds = (store: Partial<Store>, props: Filters) => props.servicePointIds;
-const getId = (store: Partial<Store>, props: Filters) => props.servicePointId;
+const getIds = (store: Partial<Store>, props: Filters) => props.stockIds;
 
-export const getInventoryById = createSelector(getStore, getId, (inventory, id) => {
+export const getInventoryById = createSelector(getStore, getIds, (inventory, id) => {
   if (id) {
-    return inventory[id];
+    return inventory[id[0]];
   }
   return inventory;
 });
