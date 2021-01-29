@@ -16,9 +16,24 @@ describe('pre confirmation error card', () => {
   });
 
   it('renders correctly', () => {
+    const props = {
+      errorObj: {
+        errors: [
+          { failureReason: 'Service point ID does not exist', row: '2' },
+          {
+            failureReason:
+              'Service point ID does not exist, UNICEF section is not valid, Donor is not valid',
+            row: '3',
+          },
+          { failureReason: '', row: '' },
+        ],
+        rowsNumber: '3',
+        rowsProcessed: '0',
+      },
+    };
     const wrapper = mount(
       <Router history={history}>
-        <PreConfirmationError />
+        <PreConfirmationError {...props} />
       </Router>
     );
 
