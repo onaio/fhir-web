@@ -4,10 +4,7 @@ import { BULK_UPLOAD_PARAM, INVENTORY_BULK_UPLOAD_URL } from '../../../constants
 import { mount, shallow } from 'enzyme';
 import { BulkUpload } from '..';
 import { Helmet } from 'react-helmet';
-// import axios from 'axios';
-// import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
-// import toJson from 'enzyme-to-json';
 import { UploadStatus } from '../../../helpers/utils';
 
 jest.mock('axios');
@@ -193,47 +190,4 @@ describe('Inventory bulk upload', () => {
 
     expect(wrapper.find('PostConfirmError')).toHaveLength(1);
   });
-
-  // xit('uploading file works for file without error', async () => {
-  //   const sampleResponse = {
-  //     data: {
-  //       rowCount: 5,
-  //     },
-  //   };
-  //   (axios.post as jest.Mock).mockImplementationOnce(() => Promise.resolve(sampleResponse));
-  //   (axios.CancelToken as any) = {
-  //     source: () => {
-  //       return { token: undefined, cancel: () => undefined };
-  //     },
-  //   };
-
-  //   const wrapper = mount(
-  //     <Router history={history}>
-  //       <BulkUpload {...props} />
-  //     </Router>
-  //   );
-
-  //   // start upload page
-  //   expect(wrapper.text()).toMatchSnapshot('start upload page');
-
-  //   // simulate upload
-  //   await act(async () => {
-  //     const file = new File([''], 'file.csv');
-  //     wrapper.find('input[type="file"]').simulate('change', { target: { files: [file] } });
-  //     wrapper.update();
-  //   });
-
-  //   // should have a loading page
-  //   expect(wrapper.text()).toMatchSnapshot('uploading card');
-  //   expect(wrapper.find('StartUpload')).toHaveLength(1);
-  //   wrapper.update();
-  //   expect(toJson(wrapper)).toMatchInlineSnapshot('full snapshot');
-
-  //   await act(async () => {
-  //     await new Promise((resolve) => setImmediate(resolve));
-  //     wrapper.update();
-  //   });
-
-  //   wrapper.unmount();
-  // });
 });
