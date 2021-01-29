@@ -33,13 +33,9 @@ export const inventoryReducer = reducerFactory<Inventory>(inventoryReducerName);
 
 // action
 /** actionCreator returns action to to add Item records to store */
-export const fetchInventoriesByStockId = fetchActionCreatorFactory<Inventory>(
+export const fetchInventories = fetchActionCreatorFactory<Inventory>(
   inventoryReducerName,
   'stockId'
-);
-export const fetchInventoriesByServicePointId = fetchActionCreatorFactory<Inventory>(
-  inventoryReducerName,
-  'servicePointId'
 );
 
 export const removeInventories = removeActionCreatorFactory(inventoryReducerName);
@@ -60,6 +56,7 @@ export const getInventoriesByIds = (store: Partial<Store>) => {
 /** prop filters to customize selector queries */
 interface Filters {
   stockIds?: string[];
+  servicePointIds?: string[];
 }
 
 /** gets all trees key'd by the rootNodes id
@@ -67,17 +64,39 @@ interface Filters {
  * @param store - the store
  * @param props - the filterProps
  */
-const getIds = (store: Partial<Store>, props: Filters) => props.stockIds;
+const getStockIds = (store: Partial<Store>, props: Filters) => props.stockIds;
+const getServicePointIds = (store: Partial<Store>, props: Filters) => props.servicePointIds;
 
-/** factory that returns a selector to retrieve the inventories using stockId or servicePointId ids */
-export const getInventoriesByIdsFactory = createSelector(
+/** factory that returns a selector to retrieve the inventories using stock ids */
+export const getInventoriesByStockIdsFactory = createSelector(
   getInventoriesByIds,
-  getIds,
+  getStockIds,
   (inventoriesByIds, ids) => {
     if (ids) {
       const inventoriesOfInterest: Inventory[] = [];
       ids.forEach((id) => {
         inventoriesOfInterest.push(inventoriesByIds[id]);
+      });
+      return inventoriesOfInterest;
+    }
+    return values(inventoriesByIds);
+  }
+);
+
+/** factory that returns a selector to retrieve the inventories using servicePoint ids */
+export const getInventoriesByServicePointsIdsFactory = createSelector(
+  getInventoriesByIds,
+  getServicePointIds,
+  (inventoriesByIds, ids) => {
+    if (ids) {
+      const inventoriesOfInterest: Inventory[] = [];
+      ids.forEach((id) => {
+        Object.values(inventoriesByIds).filter((inventory) => {
+          if (id === inventory.servicePointId) {
+            inventoriesOfInterest.push(inventory);
+          }
+          return null;
+        });
       });
       return inventoriesOfInterest;
     }
