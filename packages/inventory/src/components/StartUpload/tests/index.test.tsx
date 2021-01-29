@@ -1,12 +1,9 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { StartUpload } from '..';
 
 describe('upload start page', () => {
-  it('renders crashing', () => {
-    shallow(<StartUpload />);
-  });
   it('renders and works correctly', async () => {
     const fileUploadMock = jest.fn();
 
@@ -28,6 +25,22 @@ describe('upload start page', () => {
     await new Promise((resolve) => setImmediate(resolve));
 
     expect(fileUploadMock).toHaveBeenCalledWith(file);
+
+    wrapper.update();
+  });
+
+  it('renders without crashing', async () => {
+    // execute default prop unctions
+    const props = {};
+    const wrapper = mount(<StartUpload {...props} />);
+
+    // simulate file upload
+    await act(async () => {
+      wrapper.find('input[type="file"]').simulate('change', { target: { files: [] } });
+      wrapper.update();
+    });
+
+    await new Promise((resolve) => setImmediate(resolve));
 
     wrapper.update();
   });
