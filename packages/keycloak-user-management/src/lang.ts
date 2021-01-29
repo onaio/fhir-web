@@ -4,7 +4,6 @@ import i18n from './mls';
 export const ERROR_OCCURED = i18n.t('An error occurred');
 export const FIRST_NAME_REQUIRED = i18n.t('First Name is required');
 export const LAST_NAME_REQUIRED = i18n.t('Last Name is required');
-export const EMAIL_REQUIRED = i18n.t('Email is required');
 export const USERNAME_REQUIRED = i18n.t('Username is required');
 export const ERROR_CONFIRM_PASSWORD_REQUIRED = i18n.t('Confirm Password is required');
 export const ERROR_PASSWORD_REQUIRED = i18n.t('Password is required');
