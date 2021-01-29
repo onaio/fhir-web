@@ -21,7 +21,7 @@ import {
   TASK_GENERATION_STATUS,
 } from '../configs/env';
 
-export const productCatalogueProps = {
+export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
 };
 
