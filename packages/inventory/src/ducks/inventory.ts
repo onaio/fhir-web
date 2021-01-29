@@ -91,11 +91,10 @@ export const getInventoriesByServicePointsIdsFactory = createSelector(
     if (ids) {
       const inventoriesOfInterest: Inventory[] = [];
       ids.forEach((id) => {
-        Object.values(inventoriesByIds).filter((inventory) => {
+        Object.values(inventoriesByIds).forEach((inventory) => {
           if (id === inventory.servicePointId) {
             inventoriesOfInterest.push(inventory);
           }
-          return null;
         });
       });
       return inventoriesOfInterest;
