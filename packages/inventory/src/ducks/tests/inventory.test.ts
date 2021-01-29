@@ -3,13 +3,14 @@ import { store } from '@opensrp/store';
 import {
   inventoryReducerName,
   inventoryReducer,
-  getInventoriesByIds,
+  getInventoriesByIdsFactory,
   getInventoriesArray,
   getTotalInventories,
   setTotalInventories,
   removeInventories,
-  fetchInventories,
+  fetchInventoriesByStockId,
   Inventory,
+  fetchInventoriesByServicePointId,
 } from '../inventory';
 import { inventory1, inventory2 } from './fixtures';
 
@@ -21,7 +22,7 @@ describe('src/ducks/inventory', () => {
   });
 
   it('should have initial state', () => {
-    expect(getInventoriesByIds(store.getState(), {})).toEqual([]);
+    expect(getInventoriesByIdsFactory(store.getState(), {})).toEqual([]);
     expect(getInventoriesArray(store.getState())).toEqual([]);
     expect(getTotalInventories(store.getState())).toEqual(0);
   });
@@ -33,18 +34,36 @@ describe('src/ducks/inventory', () => {
     expect(getTotalInventories(store.getState())).toEqual(10);
   });
 
-  it('fetches inventory correctly', () => {
-    store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
+  it('fetches inventory by stockId correctly', () => {
+    store.dispatch(fetchInventoriesByStockId([inventory1, inventory2] as Inventory[]));
     expect(
-      getInventoriesByIds(store.getState(), {
+      getInventoriesByIdsFactory(store.getState(), {
         stockIds: [inventory1.stockId, inventory2.stockId],
       })
     ).toEqual([inventory1, inventory2]);
     expect(getInventoriesArray(store.getState())).toEqual([inventory1, inventory2]);
   });
 
-  it('removes inventory correctly', () => {
-    store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
+  it('removes stockid inventory correctly', () => {
+    store.dispatch(fetchInventoriesByStockId([inventory1, inventory2] as Inventory[]));
+    expect(getInventoriesArray(store.getState())).toHaveLength(2);
+
+    store.dispatch(removeInventories());
+    expect(getInventoriesArray(store.getState())).toHaveLength(0);
+  });
+
+  it('fetches inventory by servicePointId correctly', () => {
+    store.dispatch(fetchInventoriesByServicePointId([inventory1, inventory2] as Inventory[]));
+    expect(
+      getInventoriesByIdsFactory(store.getState(), {
+        stockIds: [inventory1.servicePointId],
+      })
+    ).toEqual([inventory1]);
+    expect(getInventoriesArray(store.getState())).toEqual([inventory1, inventory2]);
+  });
+
+  it('removes servicePointId inventory correctly', () => {
+    store.dispatch(fetchInventoriesByServicePointId([inventory1, inventory2] as Inventory[]));
     expect(getInventoriesArray(store.getState())).toHaveLength(2);
 
     store.dispatch(removeInventories());
