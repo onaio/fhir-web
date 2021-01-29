@@ -1,10 +1,21 @@
 import { LocationUnit } from 'location-management/src/ducks/location-units';
-import { FormFields } from './Form';
+import { defaultFormField, FormFields } from './Form';
+
+export enum FormInstances {
+  CORE = 'core',
+  EUSM = 'eusm',
+}
 
 export const getLocationFormFields = (
-  location: LocationUnit,
-  instance: FormInstances
+  location?: LocationUnit,
+  instance: FormInstances = FormInstances.CORE
 ): FormFields => {
+  if (!location) {
+    return {
+      ...defaultFormField,
+      instance,
+    };
+  }
   const formFields = {
     id: location.id,
     instance,
@@ -24,8 +35,3 @@ export const getLocationFormFields = (
 
   return finalFormFields;
 };
-
-export enum FormInstances {
-  CORE = 'core',
-  EUSM = 'eusm',
-}
