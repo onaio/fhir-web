@@ -14,6 +14,7 @@ import toJson from 'enzyme-to-json';
 import * as helpers from '../../../helpers/fileDownload';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
+import { ERROR_OCCURRED } from '../../../constants';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -199,7 +200,7 @@ describe('components/manifestFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith('API is down', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();

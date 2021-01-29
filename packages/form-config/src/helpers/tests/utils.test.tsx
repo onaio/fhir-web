@@ -1,4 +1,10 @@
-import { formatDate, downloadManifestFile, fetchDrafts, fetchReleaseFiles } from '../utils';
+import {
+  formatDate,
+  downloadManifestFile,
+  fetchDrafts,
+  fetchReleaseFiles,
+  fetchManifests,
+} from '../utils';
 import { fixManifestFiles, downloadFile, fixManifestReleases } from '../../ducks/tests/fixtures';
 import fetch from 'jest-fetch-mock';
 import { getFetchOptions } from '@opensrp/server-service';
@@ -609,5 +615,184 @@ describe('helpers/utils/fetchReleaseFiles', () => {
     expect(setLoadingMock.mock.calls[0][0]).toBe(true);
     expect(setLoadingMock.mock.calls[1][0]).toBe(false);
     expect(dispatchMock).toHaveBeenCalledWith(fetchReleasesMock());
+  });
+});
+
+describe('helpers/utils/fetchManifests', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+  });
+
+  const accessToken = 'hunter2';
+  const opensrpBaseURL = 'https://test-example.com/rest';
+  const fetchFilesMock = jest.fn();
+  const removeFilesMock = jest.fn();
+  const setLoadingMock = jest.fn();
+  const alertErrorMock = jest.fn();
+  const dispatchMock = jest.fn();
+  const endpoint = '/foo';
+  const formVersion = fixManifestReleases[0].identifier;
+
+  it('fetches manifest files', async () => {
+    fetch.once(JSON.stringify(fixManifestFiles));
+
+    fetchManifests(
+      accessToken,
+      opensrpBaseURL,
+      fetchFilesMock,
+      removeFilesMock,
+      setLoadingMock,
+      alertErrorMock,
+      formVersion,
+      endpoint
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/foo?identifier=${fixManifestReleases[0].identifier}`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchFilesMock).toHaveBeenCalledWith(fixManifestFiles);
+    expect(removeFilesMock.mock.calls).toHaveLength(1);
+  });
+
+  it('fetches manifest files with the default endpoint', async () => {
+    fetch.once(JSON.stringify(fixManifestFiles));
+
+    fetchManifests(
+      accessToken,
+      opensrpBaseURL,
+      fetchFilesMock,
+      removeFilesMock,
+      setLoadingMock,
+      alertErrorMock,
+      formVersion
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/clientForm/metadata?identifier=${fixManifestReleases[0].identifier}`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchFilesMock).toHaveBeenCalledWith(fixManifestFiles);
+    expect(removeFilesMock.mock.calls).toHaveLength(1);
+  });
+
+  it('handles failure if fetch fails', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API taking a break'));
+
+    fetchManifests(
+      accessToken,
+      opensrpBaseURL,
+      fetchFilesMock,
+      removeFilesMock,
+      setLoadingMock,
+      alertErrorMock,
+      formVersion
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchFilesMock).not.toHaveBeenCalled();
+    expect(alertErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(removeFilesMock.mock.calls).toHaveLength(1);
+  });
+
+  it('calls dispatch if dispatch is passed', async () => {
+    fetch.once(JSON.stringify(fixManifestFiles));
+
+    fetchManifests(
+      accessToken,
+      opensrpBaseURL,
+      fetchFilesMock,
+      removeFilesMock,
+      setLoadingMock,
+      alertErrorMock,
+      formVersion,
+      endpoint,
+      dispatchMock
+    );
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/foo?identifier=${fixManifestReleases[0].identifier}`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(dispatchMock.mock.calls).toHaveLength(2);
+    expect(dispatchMock.mock.calls[0][0]).toBe(removeFilesMock());
+    expect(dispatchMock.mock.calls[1][0]).toBe(fetchFilesMock());
+  });
+
+  it('fetches correctly if formVersion is null', async () => {
+    fetch.once(JSON.stringify(fixManifestFiles));
+
+    fetchManifests(
+      accessToken,
+      opensrpBaseURL,
+      fetchFilesMock,
+      removeFilesMock,
+      setLoadingMock,
+      alertErrorMock,
+      null,
+      endpoint
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://test-example.com/rest/foo?is_json_validator=true`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
+    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+    expect(fetchFilesMock).toHaveBeenCalledWith(fixManifestFiles);
+    expect(removeFilesMock.mock.calls).toHaveLength(1);
   });
 });

@@ -7,7 +7,11 @@ import {
   OPENSRP_FORM_METADATA_ENDPOINT,
   OPENSRP_MANIFEST_ENDPOINT,
 } from '../constants';
-import { ManifestFilesTypes } from '../ducks/manifestFiles';
+import {
+  fetchManifestFiles,
+  ManifestFilesTypes,
+  removeManifestFiles,
+} from '../ducks/manifestFiles';
 import { handleDownload } from './fileDownload';
 import { fetchManifestDraftFiles, removeManifestDraftFiles } from '../ducks/manifestDraftFiles';
 import { Dispatch } from 'redux';
@@ -132,7 +136,7 @@ export const submitUploadForm = (
  * @param {ManifestFilesTypes[]} data draft files to make release for
  * @param {string} accessToken  Opensrp API access token
  * @param {string} opensrpBaseURL Opensrp API base URL
- * @param {Function} removeDraftFiles redux action to remove draft files
+ * @param {Function} removeFiles redux action to remove draft files
  * @param {Function} setIfDoneHere set ifDoneHere form status
  * @param {Function} alertError - receive error description
  * @param {string} endpoint - Opensrp endpoint
@@ -143,7 +147,7 @@ export const makeRelease = (
   data: ManifestFilesTypes[],
   accessToken: string,
   opensrpBaseURL: string,
-  removeDraftFiles: typeof removeManifestDraftFiles,
+  removeFiles: typeof removeManifestDraftFiles,
   setIfDoneHere: (ifDoneHere: boolean) => void,
   alertError: (err: string) => void,
   endpoint = OPENSRP_MANIFEST_ENDPOINT,
@@ -166,9 +170,9 @@ export const makeRelease = (
     .create({ json: JSON.stringify(json) })
     .then(() => {
       if (dispatch) {
-        dispatch(removeDraftFiles());
+        dispatch(removeFiles());
       } else {
-        removeDraftFiles();
+        removeFiles();
       }
 
       setIfDoneHere(true);
@@ -183,7 +187,7 @@ export const makeRelease = (
  *
  * @param {string} accessToken  Opensrp API access token
  * @param {string} opensrpBaseURL Opensrp API base URL
- * @param {Function} fetchDraftFiles redux action to fetch draft files
+ * @param {Function} fetchFiles redux action to fetch draft files
  * @param {Function} setLoading set ifDoneHere form status
  * @param {Function} alertError - receive error description
  * @param {string} endpoint - Opensrp endpoint
@@ -193,7 +197,7 @@ export const makeRelease = (
 export const fetchDrafts = (
   accessToken: string,
   opensrpBaseURL: string,
-  fetchDraftFiles: typeof fetchManifestDraftFiles,
+  fetchFiles: typeof fetchManifestDraftFiles,
   setLoading: (loading: boolean) => void,
   alertError: (err: string) => void,
   endpoint = OPENSRP_FORM_METADATA_ENDPOINT,
@@ -214,9 +218,9 @@ export const fetchDrafts = (
     .list(params)
     .then((res: ManifestFilesTypes[]) => {
       if (dispatch) {
-        dispatch(fetchDraftFiles(res));
+        dispatch(fetchFiles(res));
       } else {
-        fetchDraftFiles(res);
+        fetchFiles(res);
       }
     })
     .catch((_: Error) => {
@@ -230,7 +234,7 @@ export const fetchDrafts = (
  *
  * @param {string} accessToken  Opensrp API access token
  * @param {string} opensrpBaseURL Opensrp API base URL
- * @param {Function} fetchReleases redux action to fetch releases files
+ * @param {Function} fetchFiles redux action to fetch releases files
  * @param {Function} setLoading set ifDoneHere form status
  * @param {Function} alertError - receive error description
  * @param {string} endpoint - Opensrp endpoint
@@ -240,7 +244,7 @@ export const fetchDrafts = (
 export const fetchReleaseFiles = (
   accessToken: string,
   opensrpBaseURL: string,
-  fetchReleases: typeof fetchManifestReleases,
+  fetchFiles: typeof fetchManifestReleases,
   setLoading: (loading: boolean) => void,
   alertError: (err: string) => void,
   endpoint = OPENSRP_MANIFEST_ENDPOINT,
@@ -259,9 +263,69 @@ export const fetchReleaseFiles = (
     .list()
     .then((res: ManifestReleasesTypes[]) => {
       if (dispatch) {
-        dispatch(fetchReleases(res));
+        dispatch(fetchFiles(res));
       } else {
-        fetchReleases(res);
+        fetchFiles(res);
+      }
+    })
+    .catch((_: Error) => {
+      alertError(ERROR_OCCURRED);
+    })
+    .finally(() => setLoading(false));
+};
+
+/**
+ * Fetch manifest files
+ *
+ * @param {string} accessToken  Opensrp API access token
+ * @param {string} opensrpBaseURL Opensrp API base URL
+ * @param {Function} fetchFiles redux action to fetch manifest files
+ * @param {Function} removeFiles redux action to remove manifest files
+ * @param {Function} setLoading set ifDoneHere form status
+ * @param {Function} alertError - receive error description
+ * @param {string} formVersion form version present request is to get manifest files else get json validator files
+ * @param {string} endpoint - Opensrp endpoint
+ * @param {Dispatch} dispatch - dispatch function from redux store
+ * @param {Function} customFetchOptions custom opensrp API fetch options
+ */
+export const fetchManifests = (
+  accessToken: string,
+  opensrpBaseURL: string,
+  fetchFiles: typeof fetchManifestFiles,
+  removeFiles: typeof removeManifestFiles,
+  setLoading: (loading: boolean) => void,
+  alertError: (err: string) => void,
+  formVersion?: string | null,
+  endpoint = OPENSRP_FORM_METADATA_ENDPOINT,
+  dispatch?: Dispatch,
+  customFetchOptions?: typeof getFetchOptions
+) => {
+  /** get manifest files */
+  setLoading(true);
+  let params = null;
+  // if form version is available -  means request is to get manifest files else get json validator files
+  /* eslint-disable-next-line @typescript-eslint/camelcase */
+  params = formVersion ? { identifier: formVersion } : { is_json_validator: true };
+
+  if (dispatch) {
+    dispatch(removeFiles());
+  } else {
+    removeFiles();
+  }
+
+  const clientService = new OpenSRPService(
+    accessToken,
+    opensrpBaseURL,
+    endpoint,
+    customFetchOptions
+  );
+  clientService
+    .list(params)
+    .then((res: ManifestFilesTypes[]) => {
+      if (dispatch) {
+        dispatch(fetchFiles(res));
+      } else {
+        fetchFiles(res);
       }
     })
     .catch((_: Error) => {
