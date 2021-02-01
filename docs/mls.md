@@ -119,7 +119,7 @@ The new string will be added in each of the translation json files located in `l
 
 7. Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
 
-## Adding support for addition languages
+## Adding languages
 
 Supported languages are defined in the `i18next-parser.config.js` found at the root of the project.
 
