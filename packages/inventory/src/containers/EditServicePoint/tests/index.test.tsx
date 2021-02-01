@@ -17,14 +17,14 @@ it('passes the correct values to form', async () => {
     },
     match: {
       isExact: true,
-      params: {},
+      params: { id: '' },
       path: `${INVENTORY_ADD_SERVICE_POINT}`,
       url: `${INVENTORY_ADD_SERVICE_POINT}`,
     },
   };
   const wrapper = shallow(<ServicePointEdit {...props} />);
 
-  expect(wrapper.props().hiddenFields).toEqual([
+  expect(wrapper.props().hidden).toEqual([
     'extraFields',
     'status',
     'isJurisdiction',

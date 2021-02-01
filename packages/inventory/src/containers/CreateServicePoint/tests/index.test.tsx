@@ -24,7 +24,7 @@ it('passes the correct values to form', async () => {
   };
   const wrapper = shallow(<ServicePointsAdd {...props} />);
 
-  expect(wrapper.props().hiddenFields).toEqual([
+  expect(wrapper.props().hidden).toEqual([
     'extraFields',
     'status',
     'isJurisdiction',
