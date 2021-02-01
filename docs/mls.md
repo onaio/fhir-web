@@ -3,6 +3,14 @@
 OpenSRP Web supports mult-language using [react.i18next](https://react.i18next.com/). The configuration
 is supported at the client level and the package level
 
+## Setting the language
+
+The default language for a project if not set is english. To set a different language, configure the environmental variable `REACT_APP_LANGUAGE_CODE`
+
+```sh
+REACT_APP_LANGUAGE_CODE=fr
+```
+
 ## Adding a translatable string at the client level
 
 MLS is supported at the client level. For each translatable string, make sure you add the string in `app/src/lang.ts` e.g
@@ -251,4 +259,12 @@ module.exports = {
 
 The translations for the project will be created in `src/locales/foo/`
 
-8. Revert the changes made to `output` in `i18next-parser.config.js` and `app/i18next-parser.config.js` to `locales/core/$LOCALE.json` and `src/locales/core/$LOCALE.json` respectively.
+8. Configure the environmental variable `REACT_APP_PROJECT_LANGUAGE_CODE`
+
+```sh
+REACT_APP_PROJECT_LANGUAGE_CODE=foo
+```
+
+When you run the client, the client display the translated strings specific to project **foo**
+
+**N/B** Revert the changes made to `output` in `i18next-parser.config.js` and `app/i18next-parser.config.js` to `locales/core/$LOCALE.json` and `src/locales/core/$LOCALE.json` respectively as they were before.
