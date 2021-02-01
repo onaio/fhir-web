@@ -21,11 +21,11 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
-type RouteProps = { id: string };
+export type LocationRouteProps = { id: string };
 
 export interface EditLocationUnitProps
   extends Pick<LocationFormProps, 'redirectAfterAction' | 'hidden' | 'disabled' | 'service'>,
-    RouteComponentProps<RouteProps> {
+    RouteComponentProps<LocationRouteProps> {
   openSRPBaseURL: string;
   instance: FormInstances;
 }

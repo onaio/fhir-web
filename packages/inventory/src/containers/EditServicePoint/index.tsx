@@ -1,10 +1,10 @@
-import { FormInstances, EditLocationUnit } from '@opensrp/location-management';
+import { FormInstances, EditLocationUnit, LocationRouteProps } from '@opensrp/location-management';
 import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-type ServicePointAddTypes = CommonProps & RouteComponentProps;
+type ServicePointAddTypes = CommonProps & RouteComponentProps<LocationRouteProps>;
 
 const defaultProps = {
   ...defaultCommonProps,
