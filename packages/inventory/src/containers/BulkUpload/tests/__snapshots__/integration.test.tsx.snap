@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Inventory bulk upload.integrationTest uploading file works for file without error: start upload page 1`] = `"Add inventory via CSVUse a CSV file to add service point inventoryYou’ll get a chance to review before committing inventory updates.Select CSV file"`;
-
-exports[`Inventory bulk upload.integrationTest uploading file works for file without error: uploading card 1`] = `"Add inventory via CSVUploading  ...Do not close tab or navigate away.Cancel"`;

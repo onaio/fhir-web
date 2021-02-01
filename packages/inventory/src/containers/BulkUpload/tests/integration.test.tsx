@@ -4,11 +4,18 @@ import {
   OPENSRP_IMPORT_STOCK_ENDPOINT,
   OPENSRP_UPLOAD_STOCK_ENDPOINT,
 } from '../../../constants';
-import { mount } from 'enzyme';
 import { BulkUpload } from '..';
 import nock from 'nock';
-import { MemoryRouter, Route, RouteComponentProps } from 'react-router';
-import { act } from 'react-dom/test-utils';
+import { MemoryRouter, Route } from 'react-router';
+import {
+  PLEASE_FIX_THE_ERRORS_LISTED_BELOW,
+  RETRY,
+  UPLOAD_ANOTHER_FILE,
+  USE_CSV_TO_UPLOAD_INVENTORY,
+} from '../../../lang';
+
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('@opensrp/react-utils', () => {
   const actual = jest.requireActual('@opensrp/react-utils');
@@ -17,9 +24,13 @@ jest.mock('@opensrp/react-utils', () => {
     handleSessionOrTokenExpiry: () => Promise.resolve('Token'),
   };
 });
+const sampleErrorResponse =
+  '"Total Number of Rows in the CSV ",3\r\n"Rows processed ",0\r\n"\n"\r\nRow Number,Reason of Failure\r\n1,"[Product ID does not exist in product catalogue, Service point ID does not exist, Donor is not valid, PO Number should be a whole number]"\r\n2,[Service point ID does not exist]\r\n3,"[Service point ID does not exist, UNICEF section is not valid, Donor is not valid]"\r\n';
 
 describe('Inventory bulk upload.integrationTest', () => {
   it('uploading file works for file without error', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
     const sampleResponse = {
       rowCount: 5,
     };
@@ -36,7 +47,7 @@ describe('Inventory bulk upload.integrationTest', () => {
     nock(baseURL).post(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`).reply(200, sampleResponse);
     nock(baseURL).post(`/${OPENSRP_IMPORT_STOCK_ENDPOINT}`).reply(200, sampleResponse);
 
-    const wrapper = mount(
+    render(
       <MemoryRouter initialEntries={[INVENTORY_BULK_UPLOAD_URL]}>
         <Route
           path={INVENTORY_BULK_UPLOAD_URL}
@@ -45,28 +56,164 @@ describe('Inventory bulk upload.integrationTest', () => {
           }}
         ></Route>
       </MemoryRouter>,
-      { attachTo: div }
+      { container }
     );
-    // start upload page
-    expect(wrapper.text()).toMatchSnapshot('start upload page');
 
-    // simulate upload
-    await act(async () => {
-      const file = new File([''], 'file.csv');
-      wrapper.find('input[type="file"]').simulate('change', { target: { files: [file] } });
-      wrapper.update();
+    // expect(screen).toHaveTextContent(SELECT_CSV_FILE);
+
+    const file = new File([''], 'file.csv');
+    const uploadFileInput = container.querySelector('input[type="file"]');
+    fireEvent.change(uploadFileInput, { target: { files: [file] } });
+
+    await waitFor(() => {
+      screen.getByText('Proceed with adding inventory');
     });
 
-    // should have a loading page
-    expect(wrapper.text()).toMatchSnapshot('uploading card');
-    expect(wrapper.find('StartUpload')).toHaveLength(1);
-    wrapper.update();
+    // pre confirmation success page
+    const confirmCommitButton = container.querySelector('button#confirm-commit');
+    fireEvent.click(confirmCommitButton);
 
-    expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-      '?bulkStep=preConfirmationUpload'
+    await waitFor(() => {
+      screen.getByText('Upload another file');
+    });
+
+    // post confirmation page
+    const uploadAnotherButton = screen.queryByRole('button', { name: UPLOAD_ANOTHER_FILE });
+    uploadAnotherButton.click();
+
+    // we should be back to the start upload page
+    await waitFor(() => {
+      screen.getByText(USE_CSV_TO_UPLOAD_INVENTORY);
+    });
+  });
+
+  it('faces 400 errors during initial upload', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const sampleResponse = {
+      rowCount: 5,
+    };
+
+    const div = document.createElement('div');
+    document.body.append(div);
+
+    const baseURL = 'http://localhost/';
+
+    nock(baseURL)
+      .options(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`)
+      .reply(200, { 'Access-Control-Allow-Origin': '*' } as unknown);
+
+    nock(baseURL).post(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`).reply(400, sampleErrorResponse);
+    nock(baseURL).post(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`).reply(200, sampleResponse);
+    nock(baseURL).post(`/${OPENSRP_IMPORT_STOCK_ENDPOINT}`).reply(400, sampleErrorResponse);
+
+    render(
+      <MemoryRouter initialEntries={[INVENTORY_BULK_UPLOAD_URL]}>
+        <Route
+          path={INVENTORY_BULK_UPLOAD_URL}
+          render={(props) => {
+            return <BulkUpload {...props} baseURL={baseURL} />;
+          }}
+        ></Route>
+      </MemoryRouter>,
+      { container }
     );
 
-    // TODO : not sure why the rest of the flow here is so volatile, need to check how to make the test
-    // more deterministic in how the data flows and thus predictable card re-renders.
+    let file = new File([''], 'file.csv');
+    let uploadFileInput = container.querySelector('input[type="file"]');
+    fireEvent.change(uploadFileInput, { target: { files: [file] } });
+
+    await waitFor(() => {
+      screen.getByText(PLEASE_FIX_THE_ERRORS_LISTED_BELOW);
+    });
+
+    // find retry button and lick
+    const retryUpload = screen.queryByRole('button', { name: RETRY });
+    retryUpload.click();
+
+    // we should be back to the start upload page
+    await waitFor(() => {
+      screen.getByText(USE_CSV_TO_UPLOAD_INVENTORY);
+    });
+
+    // retry upload successfully so we can test 400 error response during confirmation
+    file = new File([''], 'file.csv');
+    uploadFileInput = container.querySelector('input[type="file"]');
+    fireEvent.change(uploadFileInput, { target: { files: [file] } });
+
+    await waitFor(() => {
+      screen.getByText('Proceed with adding inventory');
+    });
+
+    const confirmCommitButton = container.querySelector('button#confirm-commit');
+    fireEvent.click(confirmCommitButton);
+
+    // error during bulk upload confirmation page
+    await waitFor(() => {
+      screen.getByText('Processing error: inventory items failed to be added');
+    });
+  });
+
+  it('sends a notification for other types of errors', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const sampleResponse = {
+      rowCount: 5,
+    };
+
+    const div = document.createElement('div');
+    document.body.append(div);
+
+    const baseURL = 'http://localhost/';
+
+    nock(baseURL)
+      .options(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`)
+      .reply(200, { 'Access-Control-Allow-Origin': '*' } as unknown);
+
+    nock(baseURL).post(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`).reply(500, {});
+    nock(baseURL).post(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`).reply(200, sampleResponse);
+    nock(baseURL).post(`/${OPENSRP_IMPORT_STOCK_ENDPOINT}`).reply(500, {});
+
+    render(
+      <MemoryRouter initialEntries={[INVENTORY_BULK_UPLOAD_URL]}>
+        <Route
+          path={INVENTORY_BULK_UPLOAD_URL}
+          render={(props) => {
+            return <BulkUpload {...props} baseURL={baseURL} />;
+          }}
+        ></Route>
+      </MemoryRouter>,
+      { container }
+    );
+
+    const file = new File([''], 'file.csv');
+    let uploadFileInput = container.querySelector('input[type="file"]');
+    fireEvent.change(uploadFileInput, { target: { files: [file] } });
+
+    // should have reverted back to start upload
+    await waitFor(() => {
+      screen.getByText(USE_CSV_TO_UPLOAD_INVENTORY);
+      screen.getByText('Request failed with status code 500');
+    });
+
+    uploadFileInput = container.querySelector('input[type="file"]');
+    fireEvent.change(uploadFileInput, { target: { files: [file] } });
+
+    // confirmation Page
+    await waitFor(() => {
+      screen.getByText('Proceed with adding inventory');
+    });
+
+    // // now confirm, after which we get another error
+
+    // pre confirmation success page
+    const confirmCommitButton = container.querySelector('button#confirm-commit');
+    fireEvent.click(confirmCommitButton);
+
+    // error during bulk
+    await waitFor(() => {
+      screen.getByText('Use a CSV file to add service point inventory');
+      screen.getAllByText('Request failed with status code 500');
+    });
   });
 });
