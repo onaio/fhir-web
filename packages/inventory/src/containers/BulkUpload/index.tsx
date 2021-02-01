@@ -85,8 +85,10 @@ const BulkUpload = (props: CSVUploadTypes) => {
                 source.token
               )
                 .then((successData) => {
-                  setValidatedRows(successData);
-                  updateURLWithStatus(UploadStatus.PRE_CONFIRMATION_SUCCESS);
+                  if (successData) {
+                    setValidatedRows(successData);
+                    updateURLWithStatus(UploadStatus.PRE_CONFIRMATION_SUCCESS);
+                  }
                 })
                 .catch((err) => {
                   sendErrorNotification(err.message);
@@ -147,9 +149,10 @@ const BulkUpload = (props: CSVUploadTypes) => {
                   source.token
                 )
                   .then((successData) => {
-                    setImportedRows(successData);
-                    updateURLWithStatus(UploadStatus.POST_CONFIRMATION_SUCCESS);
-                    return;
+                    if (successData) {
+                      setImportedRows(successData);
+                      updateURLWithStatus(UploadStatus.POST_CONFIRMATION_SUCCESS);
+                    }
                   })
                   .catch((err) => {
                     sendErrorNotification(err.message);
