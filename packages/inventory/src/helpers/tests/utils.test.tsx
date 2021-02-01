@@ -1,6 +1,8 @@
+import { mount } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import { BULK_UPLOAD_PARAM, INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
-import { updateUrlWithStatusCreator, UploadStatus } from '../utils';
+import { updateUrlWithStatusCreator, UploadStatus, CardTitle } from '../utils';
+import React from 'react';
 const history = createBrowserHistory();
 
 const props = {
@@ -80,5 +82,13 @@ describe('utils', () => {
     updateUrl(UploadStatus.POST_CONFIRMATION_ERROR);
 
     expect(pushMock).toHaveBeenCalledWith('/inventory/list?bulkStep=postConfirmationError');
+  });
+
+  it('test default card title', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const props = {} as any;
+    const wrapper = mount(<CardTitle {...props} />);
+
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
   });
 });
