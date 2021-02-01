@@ -13,7 +13,7 @@ REACT_APP_LANGUAGE_CODE=fr
 
 ## Adding a translatable string at the client level
 
-MLS is supported at the client level. For each translatable string, make sure you add the string in `app/src/lang.ts` e.g
+For each translatable string, make sure you add the string in `app/src/lang.ts` e.g
 
 To add a new translatable string
 
