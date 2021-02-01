@@ -5,13 +5,16 @@ import {
   ACTIVE,
   baseURL,
   LOCATION_HIERARCHY,
+  LOCATION_UNIT_ENDPOINT,
   LOCATION_UNIT_FINDBYPROPERTIES,
+  LOCATION_UNIT_GROUP_ALL,
   OPENSRP_V2_SETTINGS,
 } from '../constants';
 import { fetchLocationUnits, LocationUnit } from '../ducks/location-units';
 import { fetchTree } from '../ducks/locationHierarchy';
 import { RawOpenSRPHierarchy } from '../ducks/locationHierarchy/types';
 import { URLParams } from '@opensrp/server-service';
+import { LocationUnitGroup } from '../ducks/location-unit-groups';
 
 /** Abstract 2 functions; get jurisdiction at any geo-level, get hierarchy */
 
@@ -127,7 +130,7 @@ export const defaultSettingsParams = {
 export async function loadSettings<T>(
   settingsIdentifier: string,
   baseURL: string,
-  serviceClass: typeof OpenSRPService,
+  serviceClass: typeof OpenSRPService = OpenSRPService,
   callback?: (data: T[]) => void,
   params: URLParams = defaultSettingsParams
 ) {
@@ -145,5 +148,89 @@ export async function loadSettings<T>(
     })
     .catch((error: Error) => {
       throw error;
+    });
+}
+
+/** gets location tags from the api
+ *
+ * @param baseURL - openSRP base url
+ * @param serviceClass  -  the openSRP service class
+ * @param callback - callback to call with response data
+ */
+export async function loadLocationTags(
+  baseURL: string,
+  serviceClass: typeof OpenSRPService = OpenSRPService,
+  callback?: (data: LocationUnitGroup[]) => void
+) {
+  const serve = new serviceClass(LOCATION_UNIT_GROUP_ALL, baseURL);
+  return serve
+    .list()
+    .then((response: LocationUnitGroup[]) => {
+      callback?.(response);
+    })
+    .catch((error: Error) => {
+      throw error;
+    });
+}
+
+export const defaultPostLocationParams = {
+  is_jurisdiction: true,
+};
+
+/**
+ * @param payload - the payload
+ * @param baseURL -  base url of api
+ * @param service - the opensrp service
+ * @param isEdit - help decide whether to post or put plan
+ * @param params - params to add to url
+ */
+export async function postPutLocationUnit(
+  payload: LocationUnit,
+  baseURL: string,
+  service = OpenSRPService,
+  isEdit = true,
+  params: URLParams = defaultPostLocationParams
+) {
+  const serve = new service(LOCATION_UNIT_ENDPOINT, baseURL);
+  if (isEdit) {
+    return serve.update(payload, params).catch((err: Error) => {
+      throw err;
+    });
+  }
+  return serve.create(payload, params).catch((err: Error) => {
+    throw err;
+  });
+}
+
+/**
+ * loader function to get jurisdictions by id
+ *
+ * @param locId - the string
+ * @param dispatcher - called with response, adds data to store
+ * @param openSRPBaseURL - the openSRP api base url
+ * @param urlParams - search params to be added to request
+ * @param service - openSRP service class
+ */
+export async function loadJurisdiction(
+  locId: string,
+  dispatcher?: (loc: LocationUnit | null) => void,
+  openSRPBaseURL: string = baseURL,
+  urlParams: GetLocationParams = defaultGetLocationParams,
+  service: typeof OpenSRPService = OpenSRPService
+) {
+  const serve = new service(LOCATION_UNIT_ENDPOINT, openSRPBaseURL);
+  const params = {
+    ...urlParams,
+  } as Dictionary;
+  return serve
+    .read(locId, params)
+    .then((response: LocationUnit | null) => {
+      if (dispatcher && response) {
+        dispatcher(response);
+      }
+      return response;
+    })
+    .catch((e) => {
+      throw e;
     });
 }
