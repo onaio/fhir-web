@@ -22,7 +22,7 @@ const ServicePointEdit = (props: ServicePointAddTypes) => {
     instance: FormInstances.EUSM,
     hidden: ['extraFields', 'status', 'type', 'locationTags', 'externalId'],
     redirectAfterAction: INVENTORY_SERVICE_POINT_LIST_VIEW,
-    disabled: [],
+    disabled: ['isJurisdiction'],
   };
 
   return <EditLocationUnit {...locationUnitAddEditProps} />;
