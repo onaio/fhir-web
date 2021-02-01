@@ -54,14 +54,9 @@ To configure MLS at the package level:
 2. Add the command `"extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"` to your package.json's `scripts` section
 
 ```json
-	....
-
  "scripts": {
-	 	....
 		"extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
-		....
 	}
-	....
 ```
 
 3. Create your configuration file in your package e.g `touch packages/<package-name>/src/mls.tsx` that will
@@ -88,7 +83,7 @@ export default i18n;
 
 Whoa!!! wait a minute, I do not have a `locales/core/sw.json` file. That's right, `packages/<package-name>/locales/core/sw.json` references the Swahili translation file but it does not exist yet. We are soon going to generate it.
 
-`resources` is an object that defines which language resources will be available for the package. The keys are named by the format `<languageCode>_<projectCode` where `languageCode` is the language code of the language to make available one that is supported by OpenSRP Web. `projectCode` is an alias to the the project to use or to be deployed. This is because MLS for OpenSRP can be configured at project level.
+`resources` is an object that defines which language resources will be available for the package. The keys are named by the format `<languageCode>_<projectCode` where `languageCode` is the ISO language code of the language to make available. `projectCode` is an alias to the the project to use or to be deployed. This is because MLS for OpenSRP can be configured at project level.
 
 For the most part, you should always use `core` which is the default configuration unless you would like to use translations specific to a particular project. `LanguageResources` interface specifies `<languageCode>_<projectCode` language resources supported by OpenSRP Web.
 
@@ -156,7 +151,7 @@ e.g `de.json` Do this for `app` and all packages that will support the new langu
 
 OpenSRP Web supports MLS at project level. This is helpful if a particular project would require the strings translated differently for a particular language e.g The default name for an OpenSRP plan is **Plan** but a project may want to refer to a plan as **Mission**
 
-To do extract the translations for a project named **foo**
+To extract the translations for a project named **foo**
 
 1. Open `18next-parser.config.js` and find the key `output`.
 
@@ -178,7 +173,7 @@ output: 'locales/foo/$LOCALE.json`
 
 `yarn extractTranslations`
 
-This would create the translations for each language in `<locales/foo/`
+This will create the translations for each language in `<locales/foo/`
 
 5. Edit `src/mls.tsx` file in each of the packages where translations were extracted and add include the newly
    added translation files to resources
@@ -264,6 +259,8 @@ The translations for the project will be created in `src/locales/foo/`
 ```sh
 REACT_APP_PROJECT_LANGUAGE_CODE=foo
 ```
+
+9. Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
 
 When you run the client, the client display the translated strings specific to project **foo**
 
