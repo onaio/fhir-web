@@ -5,16 +5,18 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
-import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
+import { FormInstances, getLocationFormFields, LocationFormFields } from '../LocationForm/utils';
 import { Col, Row } from 'antd';
 import { Helmet } from 'react-helmet';
 import { ADD_LOCATION_UNIT } from '../../constants';
 
+/** full props for the new location component */
 export interface NewLocationUnitProps
   extends Pick<LocationFormProps, 'redirectAfterAction' | 'hidden' | 'disabled' | 'service'>,
     RouteComponentProps {
   openSRPBaseURL: string;
   instance: FormInstances;
+  initialValuesPostProcess?: (formFields: LocationFormFields) => LocationFormFields;
 }
 
 const defaultNewLocationUnitProps = {
@@ -31,11 +33,21 @@ const defaultNewLocationUnitProps = {
  * @param props - this components props
  */
 const NewLocationUnit = (props: NewLocationUnitProps) => {
-  const { instance, hidden, disabled, service, openSRPBaseURL, redirectAfterAction } = props;
+  const {
+    instance,
+    hidden,
+    disabled,
+    service,
+    openSRPBaseURL,
+    redirectAfterAction,
+    initialValuesPostProcess,
+  } = props;
   const history = useHistory();
-  const initialValues = getLocationFormFields(undefined, instance);
   const cancelHandler = () => history.push(redirectAfterAction);
   const user = useSelector((state) => getUser(state));
+
+  const firstInitialValues = getLocationFormFields(undefined, instance);
+  const initialValues = initialValuesPostProcess?.(firstInitialValues);
 
   const locationFormProps = {
     initialValues,
