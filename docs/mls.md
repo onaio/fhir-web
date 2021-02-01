@@ -11,7 +11,7 @@ The default language for a project if not set is english. To set a different lan
 REACT_APP_LANGUAGE_CODE=fr
 ```
 
-**N/B** The language should be available in `i18next-parser.config.js` and translations extracted and updated. If you are not sure of this check the [Adding languages section](#adding-languages)
+**N/B** The language should be available in `i18next-parser.config.js` and translations extracted and updated. If you are not sure of this check the [Adding a new language section](#adding-a-new-language)
 
 ## Adding a translatable string at the client level
 
@@ -121,7 +121,7 @@ The new string will be added in each of the translation json files located in `l
 
 7. Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
 
-## Adding languages
+## Adding a new language
 
 Supported languages are defined in the `i18next-parser.config.js` found at the root of the project.
 
