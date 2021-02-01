@@ -5,11 +5,13 @@ is supported at the client level and the package level
 
 ## Setting the language
 
-The default language for a project if not set is english. To set a different language, configure the environmental variable `REACT_APP_LANGUAGE_CODE`
+The default language for a project if not set is english. To set a different language, configure the environmental variable `REACT_APP_LANGUAGE_CODE` with values of the ISO code of the language you want to use
 
 ```sh
 REACT_APP_LANGUAGE_CODE=fr
 ```
+
+**N/B** The language should be available in `i18next-parser.config.js` and translations extracted and updated. If you are not sure of this check the [Adding languages section](#adding-languages)
 
 ## Adding a translatable string at the client level
 
