@@ -121,34 +121,6 @@ The new string will be added in each of the translation json files located in `l
 
 7. Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
 
-## Adding a new language
-
-Supported languages are defined in the `i18next-parser.config.js` found at the root of the project.
-
-```js
-...
-
-locales: ['en', 'sw', 'fr', 'ar'],
-
-...
-
-```
-
-To add a language, edit the `locales` array in `i18next-parser.config.js` and add your ISO language code.
-e.g To add German
-
-```js
-...
-
-locales: ['en', 'sw', 'fr', 'ar', 'de'],
-
-...
-
-```
-
-When the command `yarn extractTranslations` is ran, a translation file for the new language will be generated
-e.g `de.json` Do this for `app` and all packages that will support the new language.
-
 ## Configuring MLS at project level
 
 OpenSRP Web supports MLS at project level. This is helpful if a particular project would require the strings translated differently for a particular language e.g The default name for an OpenSRP plan is **Plan** but a project may want to refer to a plan as **Mission**
@@ -267,3 +239,31 @@ REACT_APP_PROJECT_LANGUAGE_CODE=foo
 When you run the client, the client display the translated strings specific to project **foo**
 
 **N/B** Revert the changes made to `output` in `i18next-parser.config.js` and `app/i18next-parser.config.js` to `locales/core/$LOCALE.json` and `src/locales/core/$LOCALE.json` respectively as they were before.
+
+## Adding a new language
+
+Supported languages are defined in the `i18next-parser.config.js` found at the root of the project.
+
+```js
+...
+
+locales: ['en', 'sw', 'fr', 'ar'],
+
+...
+
+```
+
+To add a language, edit the `locales` array in `i18next-parser.config.js` and add your ISO language code.
+e.g To add German
+
+```js
+...
+
+locales: ['en', 'sw', 'fr', 'ar', 'de'],
+
+...
+
+```
+
+When the command `yarn extractTranslations` is ran, a translation file for the new language will be generated
+e.g `de.json` Do this for `app` and all packages that will support the new language.
