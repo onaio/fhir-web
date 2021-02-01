@@ -16,7 +16,7 @@ export interface NewLocationUnitProps
     RouteComponentProps {
   openSRPBaseURL: string;
   instance: FormInstances;
-  initialValuesPostProcess?: (formFields: LocationFormFields) => LocationFormFields;
+  processInitialValues?: (formFields: LocationFormFields) => LocationFormFields;
 }
 
 const defaultNewLocationUnitProps = {
@@ -40,14 +40,14 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     service,
     openSRPBaseURL,
     redirectAfterAction,
-    initialValuesPostProcess,
+    processInitialValues,
   } = props;
   const history = useHistory();
   const cancelHandler = () => history.push(redirectAfterAction);
   const user = useSelector((state) => getUser(state));
 
   const firstInitialValues = getLocationFormFields(undefined, instance);
-  const initialValues = initialValuesPostProcess?.(firstInitialValues);
+  const initialValues = processInitialValues?.(firstInitialValues);
 
   const locationFormProps = {
     initialValues,
