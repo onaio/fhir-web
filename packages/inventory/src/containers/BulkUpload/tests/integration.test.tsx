@@ -59,8 +59,6 @@ describe('Inventory bulk upload.integrationTest', () => {
       { container }
     );
 
-    // expect(screen).toHaveTextContent(SELECT_CSV_FILE);
-
     const file = new File([''], 'file.csv');
     const uploadFileInput = container.querySelector('input[type="file"]');
     fireEvent.change(uploadFileInput, { target: { files: [file] } });
@@ -214,6 +212,53 @@ describe('Inventory bulk upload.integrationTest', () => {
     await waitFor(() => {
       screen.getByText('Use a CSV file to add service point inventory');
       screen.getAllByText('Request failed with status code 500');
+    });
+  });
+  it('test cancel on pre confirmation', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const sampleResponse = {
+      rowCount: 5,
+    };
+
+    const div = document.createElement('div');
+    document.body.append(div);
+
+    const baseURL = 'http://localhost/';
+
+    nock(baseURL)
+      .options(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`)
+      .reply(200, { 'Access-Control-Allow-Origin': '*' } as unknown);
+
+    nock(baseURL).post(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`).reply(200, sampleResponse);
+    nock(baseURL).post(`/${OPENSRP_IMPORT_STOCK_ENDPOINT}`).reply(200, sampleResponse);
+
+    render(
+      <MemoryRouter initialEntries={[INVENTORY_BULK_UPLOAD_URL]}>
+        <Route
+          path={INVENTORY_BULK_UPLOAD_URL}
+          render={(props) => {
+            return <BulkUpload {...props} baseURL={baseURL} />;
+          }}
+        ></Route>
+      </MemoryRouter>,
+      { container }
+    );
+
+    const file = new File([''], 'file.csv');
+    const uploadFileInput = container.querySelector('input[type="file"]');
+    fireEvent.change(uploadFileInput, { target: { files: [file] } });
+
+    await waitFor(() => {
+      screen.getByText('Proceed with adding inventory');
+    });
+
+    // find confirm cancel button
+    const cancelCommit = container.querySelector('button#cancel-commit');
+    fireEvent.click(cancelCommit);
+
+    await waitFor(() => {
+      screen.getByText(USE_CSV_TO_UPLOAD_INVENTORY);
     });
   });
 });
