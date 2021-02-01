@@ -27,7 +27,6 @@ it('passes the correct values to form', async () => {
   expect(wrapper.props().hidden).toEqual([
     'extraFields',
     'status',
-    'isJurisdiction',
     'type',
     'locationTags',
     'externalId',
