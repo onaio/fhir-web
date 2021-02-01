@@ -147,7 +147,7 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
     expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
-      `"Location CategoryService pointJurisdiction"`
+      `"Location categoryService pointJurisdiction"`
     );
 
     // type is required for core
@@ -161,7 +161,7 @@ describe('LocationForm', () => {
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
 
-    expect(wrapper.find('FormItem#geometry').text()).toMatchInlineSnapshot(`"geometry"`);
+    expect(wrapper.find('FormItem#geometry').text()).toMatchInlineSnapshot(`"Geometry"`);
 
     expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
       'location Tags does not have error message'
@@ -206,7 +206,7 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
     expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
-      `"Location CategoryService pointJurisdiction"`
+      `"Location categoryService pointJurisdiction"`
     );
 
     // type is required for core, but not required for eusm instance
@@ -222,7 +222,7 @@ describe('LocationForm', () => {
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
 
-    expect(wrapper.find('FormItem#geometry').text()).toMatchInlineSnapshot(`"geometry"`);
+    expect(wrapper.find('FormItem#geometry').text()).toMatchInlineSnapshot(`"Geometry"`);
 
     expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
       'location Tags does not have error message'

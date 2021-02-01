@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LocationForm form validation works for core instance: location Tags does not have error message 1`] = `"Unit Group Enter a location group name"`;
+exports[`LocationForm form validation works for core instance: location Tags does not have error message 1`] = `"Unit group Enter a location group name"`;
 
-exports[`LocationForm form validation works for eusm instance: location Tags does not have error message 1`] = `"Unit Group Enter a location group name"`;
+exports[`LocationForm form validation works for eusm instance: location Tags does not have error message 1`] = `"Unit group Enter a location group name"`;
 
 exports[`LocationForm is able to edit a location unit: field input 1`] = `
 <input
@@ -181,9 +181,9 @@ exports[`LocationForm renders correctly: geometry label 1`] = `
 <label
   className=""
   htmlFor="location-form_geometry"
-  title="geometry"
+  title="Geometry"
 >
-  geometry
+  Geometry
 </label>
 `;
 
@@ -240,9 +240,9 @@ exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 <label
   className="ant-form-item-required"
   htmlFor="location-form_isJurisdiction"
-  title="Location Category"
+  title="Location category"
 >
-  Location Category
+  Location category
 </label>
 `;
 
@@ -280,9 +280,9 @@ exports[`LocationForm renders correctly: locationTags label 1`] = `
 <label
   className=""
   htmlFor="location-form_locationTags"
-  title="Unit Group"
+  title="Unit group"
 >
-  Unit Group
+  Unit group
 </label>
 `;
 
