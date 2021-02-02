@@ -7,6 +7,11 @@ import { getFilterParams, KeycloakService } from '../serviceClass';
 import { keycloakUser, OpenSRPAPIResponse } from './fixtures';
 import { HTTPError, throwHTTPError, throwNetworkError } from '../errors';
 
+const getAccessToken = (): Promise<string> =>
+  new Promise((resolve, _) => {
+    return resolve('hunter2');
+  });
+
 describe('services/keycloak', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -41,6 +46,15 @@ describe('services/keycloak', () => {
     expect(getFilterParams({ foo: 'bar', this: 1337, it: 'test' })).toEqual(
       'foo:bar,this:1337,it:test'
     );
+  });
+
+  it('processAcessToken works', async () => {
+    // token passed as string
+    let result = await KeycloakService.processAcessToken('hunter2');
+    expect(result).toEqual('hunter2');
+    // call back passed
+    result = await KeycloakService.processAcessToken(getAccessToken);
+    expect(result).toEqual('hunter2');
   });
 
   it('KeycloakService constructor works', async () => {
