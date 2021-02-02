@@ -39,10 +39,13 @@ import {
   getHierarchy,
 } from '../../ducks/locationHierarchy/utils';
 import './LocationUnitView.css';
-import { Props } from '../LocationUnitAddEdit/Form';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
+
+interface Props {
+  opensrpBaseURL: string;
+}
 
 export interface AntTreeProps {
   title: JSX.Element;
