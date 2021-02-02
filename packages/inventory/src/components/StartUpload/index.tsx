@@ -16,9 +16,7 @@ interface StartUploadProps {
 }
 
 const defaultProps = {
-  onFileUpload: () => {
-    return;
-  },
+  onFileUpload: () => void 0,
 };
 
 /** card rendered during csv upload, its shown on the first page, initiates the file upload
