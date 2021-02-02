@@ -51,7 +51,7 @@ import { TreeNode } from '../../ducks/locationHierarchy/types';
 
 const { Item: FormItem } = Form;
 
-/** props for the product Catalogue form */
+/** props for the location form */
 export interface LocationFormProps {
   initialValues: LocationFormFields;
   redirectAfterAction: string;
@@ -117,7 +117,7 @@ const tailLayout = {
   },
 };
 
-/** form component to add/edit products in the catalogue */
+/** form component to add/edit location units */
 
 const LocationForm = (props: LocationFormProps) => {
   const {
