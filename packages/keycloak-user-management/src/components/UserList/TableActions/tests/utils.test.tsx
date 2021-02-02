@@ -1,7 +1,8 @@
 import fetch from 'jest-fetch-mock';
 import { deleteUser } from '../utils';
 import * as fixtures from '../../../forms/UserForm/tests/fixtures';
-import { KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../../../constants';
+import { KEYCLOAK_URL_USERS } from '../../../../constants';
+import { ERROR_OCCURED } from '../../../../lang';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';

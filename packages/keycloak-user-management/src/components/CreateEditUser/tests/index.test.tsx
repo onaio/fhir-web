@@ -22,7 +22,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { practitioner1 } from '../../forms/UserForm/tests/fixtures';
 
