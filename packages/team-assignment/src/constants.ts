@@ -15,6 +15,7 @@ export const ENTER_TEAM_NAME = 'Enter a Team name';
 
 // other constants
 /** namespace for the keys attached to the columns */
+export const ERROR_OCCURED = 'An error occurred';
 export const TableColumnsNamespace = 'team-assignment';
 
 // Table view strings

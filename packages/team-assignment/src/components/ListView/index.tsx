@@ -4,9 +4,7 @@ import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
 import { TeamAssignmentLoading, columns, getPayload } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/react-utils';
-import { getAccessToken } from '@onaio/session-reducer';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import {
   reducer as teamsReducer,
   fetchOrganizationsAction,
@@ -36,6 +34,7 @@ import { PlanDefinition } from '../../ducks/assignments/types';
 import {
   ASSIGNMENTS_ENDPOINT,
   CANCEL,
+  ERROR_OCCURED,
   LOCATION_HIERARCHY_ENDPOINT,
   ORGANIZATION_ENDPOINT,
   PLANS_ENDPOINT,
@@ -69,7 +68,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
   const [form] = Form.useForm();
   const isMounted = useRef<boolean>(true);
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
@@ -81,81 +79,57 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const [assignedLocAndTeams, setAssignedLocAndTeams] = useState<AssignedLocationAndTeams | null>(
     null
   );
-  const [planLocationId, setPlanLocationId] = useState<string>('');
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
   const [existingAssignments, setExistingAssignments] = useState<Assignment[]>([]);
-  const planLocationIdRef = useRef(planLocationId);
-  planLocationIdRef.current = planLocationId;
-  const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
 
   React.useEffect(() => {
-    if (loading) {
-      const plansService = new OpenSRPService(PLANS_ENDPOINT, opensrpBaseURL);
-      const plansPromise = plansService
-        .read(defaultPlanId)
-        .then((response: PlanDefinition[]) => {
-          const getJurisdictionCode = response[0].jurisdiction[0].code;
-          setPlanLocationId(getJurisdictionCode);
-        })
-        .catch((e) => {
-          handleBrokenPage(e.message);
-        });
-      // get all assignments
-      const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
-      const assignmentsPromise = asssignmentService
-        .list({ plan: defaultPlanId })
-        .then((response: Assignment[]) => {
-          dispatch(fetchAssignments(response));
-        })
-        .catch((e) => handleBrokenPage(e.message));
-
-      // fetch all organizations
-      const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
-      const organizationsPromise = organizationsService
-        .list()
-        .then((response: Organization[]) => {
-          dispatch(fetchOrganizationsAction(response));
-        })
-        .catch((e) => {
-          handleBrokenPage(e.message);
-        });
-
-      // fetch plan location hierarchy
-      let hierarchyPromise;
-      if (planLocationIdRef.current.length) {
+    const plansService = new OpenSRPService(PLANS_ENDPOINT, opensrpBaseURL);
+    const plansPromise = plansService
+      .read(defaultPlanId)
+      .then((response: PlanDefinition[]) => {
+        const getJurisdictionCode = response[0].jurisdiction[0].code;
         const hierarchyService = new OpenSRPService(LOCATION_HIERARCHY_ENDPOINT, opensrpBaseURL);
-        hierarchyPromise = hierarchyService
-          .read(planLocationId)
+        hierarchyService
+          .read(getJurisdictionCode)
           .then((response: RawOpenSRPHierarchy) => {
             const hierarchy = generateJurisdictionTree(response);
             dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
-            setPlanLocationId('');
           })
-          .catch((e) => {
-            handleBrokenPage(e.message);
+          .catch(() => {
+            sendErrorNotification(ERROR_OCCURED);
           });
-      }
+      })
+      .catch(() => {
+        sendErrorNotification(ERROR_OCCURED);
+      });
+    // get all assignments
+    const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
+    const assignmentsPromise = asssignmentService
+      .list({ plan: defaultPlanId })
+      .then((response: Assignment[]) => {
+        dispatch(fetchAssignments(response));
+      })
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
 
-      Promise.all([plansPromise, assignmentsPromise, organizationsPromise, hierarchyPromise])
-        .finally(() => {
-          setLoading(false);
-          planLocationIdRef.current = '';
-        })
-        .catch((e) => {
-          handleBrokenPage(e.message);
-        });
-    }
-  }, [
-    Treedata,
-    accessToken,
-    currentParentChildren.length,
-    defaultPlanId,
-    dispatch,
-    handleBrokenPage,
-    loading,
-    opensrpBaseURL,
-    planLocationId,
-  ]);
+    // fetch all organizations
+    const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
+    const organizationsPromise = organizationsService
+      .list()
+      .then((response: Organization[]) => {
+        dispatch(fetchOrganizationsAction(response));
+      })
+      .catch(() => {
+        sendErrorNotification(ERROR_OCCURED);
+      });
+
+    Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
+      .finally(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        sendErrorNotification(ERROR_OCCURED);
+      });
+  }, [defaultPlanId, dispatch, opensrpBaseURL]);
 
   React.useEffect(() => {
     form.setFieldsValue({ assignTeams: assignedLocAndTeams?.assignedTeams });
@@ -176,10 +150,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
   if (loading || !Treedata.length) {
     return <TeamAssignmentLoading />;
-  }
-
-  if (broken) {
-    return <BrokenPage errorMessage={errorMessage} />;
   }
 
   /** function to filter options from the select or not
