@@ -28,7 +28,7 @@ export interface UploadDefaultProps {
   formRequiredLabel: string;
   moduleLabel: string;
   relatedToLabel: string;
-  accessToken: string;
+  accessToken: string | Promise<string | null>;
 }
 
 /** UploadConfigFile interface */

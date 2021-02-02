@@ -40,7 +40,7 @@ export interface ReleasesDefaultProps extends SearchBarDefaultProps {
   updatedAt: string;
   uploadFileLabel: string;
   viewFilesLabel: string;
-  accessToken: string;
+  accessToken: string | Promise<string | null>;
 }
 
 /** ManifestReleases props interface */

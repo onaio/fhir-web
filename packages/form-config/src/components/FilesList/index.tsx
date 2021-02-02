@@ -48,7 +48,7 @@ export interface FilesListDefaultProps extends SearchBarDefaultProps {
   removeFiles: typeof removeManifestFiles;
   uploadEditLabel: string;
   uploadFileLabel: string;
-  accessToken: string;
+  accessToken: string | Promise<string | null>;
 }
 
 /** manifest files list props interface */

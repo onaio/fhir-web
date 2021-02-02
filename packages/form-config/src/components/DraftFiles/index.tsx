@@ -47,7 +47,7 @@ export interface DraftsDefaultProps extends SearchBarDefaultProps {
   makeReleaseLabel: string;
   moduleLabel: string;
   uploadFileLabel: string;
-  accessToken: string;
+  accessToken: string | Promise<string | null>;
 }
 
 /** manifest Draft files props interface */
