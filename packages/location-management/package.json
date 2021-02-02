@@ -44,9 +44,7 @@
     "@opensrp/server-service": "^0.0.13",
     "cycle": "^1.0.3",
     "tree-model": "^1.0.7",
-    "i18next": "^19.8.4",
-    "i18next-conv": "^10.1.0",
-    "i18next-scanner": "^3.0.0"
+    "i18next": "^19.8.4"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",

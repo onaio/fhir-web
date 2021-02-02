@@ -51,9 +51,7 @@
     "seamless-immutable": "^7.1.4",
     "tree-model": "^1.0.7",
     "yup": "^0.29.3",
-    "i18next": "^19.8.4",
-    "i18next-conv": "^10.1.0",
-    "i18next-scanner": "^3.0.0"
+    "i18next": "^19.8.4"
   },
   "scripts": {
     "start": "react-scripts start",

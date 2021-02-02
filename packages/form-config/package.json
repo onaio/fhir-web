@@ -61,9 +61,7 @@
     "react-toastify": "^6.0.5",
     "reactstrap": "^8.0.1",
     "yup": "^0.29.1",
-    "i18next": "^19.8.4",
-    "i18next-conv": "^10.1.0",
-    "i18next-scanner": "^3.0.0"
+    "i18next": "^19.8.4"
   },
   "devDependencies": {
     "@types/react-table": "^7.0.25",

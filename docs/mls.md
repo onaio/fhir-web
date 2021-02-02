@@ -51,7 +51,7 @@ The new string will be added in each of the translation json files located in `s
 
 To configure MLS at the package level:
 
-1. Install `i18next`, `i18next-conv`, `i18next-scanner` as dependencies in your package and `i18next-parser` as a dev dependency
+1. Install `i18next` as a dependencies in your package and `i18next-parser` as a dev dependency
 
 2. Add the command `"extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"` to your package.json's `scripts` section
 
