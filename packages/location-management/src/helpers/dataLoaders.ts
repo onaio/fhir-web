@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
-import { baseURL, LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../constants';
-import { ACTIVE } from '../lang';
+import {
+  ACTIVE,
+  baseURL,
+  LOCATION_HIERARCHY,
+  LOCATION_UNIT_FIND_BY_PROPERTIES,
+} from '../constants';
 import { fetchLocationUnits, LocationUnit } from '../ducks/location-units';
 import { fetchTree } from '../ducks/locationHierarchy';
 import { RawOpenSRPHierarchy } from '../ducks/locationHierarchy/types';
@@ -88,7 +92,7 @@ export async function loadJurisdictions(
   filterParams: ParamFilters = defaultParamFilters,
   service: typeof OpenSRPService = OpenSRPService
 ) {
-  const serve = new service(LOCATION_UNIT_FINDBYPROPERTIES, openSRPBaseURL);
+  const serve = new service(LOCATION_UNIT_FIND_BY_PROPERTIES, openSRPBaseURL);
   const params = {
     ...urlParams,
     properties_filter: service.getFilterParams(filterParams as Dictionary),
