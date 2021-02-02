@@ -18,7 +18,6 @@ export interface Practitioner {
 }
 /** props for editing a user view */
 export interface UserFormProps {
-  accessToken: string;
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
   opensrpServiceClass: typeof OpenSRPService;
@@ -51,7 +50,6 @@ export const defaultInitialValues: KeycloakUser = {
 };
 /** default props for editing user component */
 export const defaultProps: Partial<UserFormProps> = {
-  accessToken: '',
   initialValues: defaultInitialValues,
   opensrpServiceClass: OpenSRPService,
   practitioner: undefined,
@@ -74,7 +72,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const {
     initialValues,
     serviceClass,
-    accessToken,
     keycloakBaseURL,
     opensrpServiceClass,
     opensrpBaseURL,
@@ -110,7 +107,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { Option } = Select;
   React.useEffect(() => {
     fetchRequiredActions(keycloakBaseURL, setUserActionOptions, serviceClass);
-  }, [accessToken, keycloakBaseURL, serviceClass]);
+  }, [keycloakBaseURL, serviceClass]);
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);

@@ -10,7 +10,6 @@ import { Dictionary } from '@onaio/utils';
 
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
-  accessToken: string;
   keycloakBaseURL: string;
   record: KeycloakUser;
   isLoadingCallback: (loading: boolean) => void;
