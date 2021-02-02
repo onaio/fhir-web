@@ -1,9 +1,6 @@
 import { IncomingHttpHeaders } from 'http';
 import queryString from 'querystring';
-import { refreshToken } from '@onaio/gatekeeper';
-import { history } from '@onaio/connected-reducer-registry';
-import { store } from '@opensrp/store';
-import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
+import { handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 
 import { throwNetworkError, throwHTTPError } from './errors';
 /** defaults */
@@ -78,21 +75,6 @@ export const customFetch: CustomFetch = async (...rest) => {
     return await fetch(...rest);
   } catch (err) {
     throwNetworkError(err);
-  }
-};
-
-/** gets access token or redirects to login if session is expired */
-export const handleSessionOrTokenExpiry = async () => {
-  if (isTokenExpired(store.getState())) {
-    try {
-      // refresh token
-      return await refreshToken('/refresh/token', store.dispatch, {});
-    } catch (e) {
-      history.push('/login');
-      throw new Error('Session Has Expired');
-    }
-  } else {
-    return getAccessToken(store.getState());
   }
 };
 
