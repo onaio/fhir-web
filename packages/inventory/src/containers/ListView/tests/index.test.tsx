@@ -8,9 +8,11 @@ import { INVENTORY_SERVICE_POINT_LIST_VIEW, SEARCH_QUERY_PARAM } from '../../../
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
-import { deforest, removeLocationUnits } from '@opensrp/location-management';
+import { updatedLocationHierachyDucks, removeLocationUnits } from '@opensrp/location-management';
 import { madagascar, madagascarTree } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
+
+const deforest = updatedLocationHierachyDucks.deforest;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -81,8 +83,6 @@ describe('List view Page', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Service point inventory (0)+ Add service pointService pointtypeLocationService point IDActionsNo Data"`
     );
-
-    wrapper.unmount();
   });
 
   it('renders when data is present', async () => {
@@ -139,8 +139,6 @@ describe('List view Page', () => {
     expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(
       `"12345•••5425 / pageGo to"`
     );
-
-    wrapper.unmount();
   });
 
   it('filers data correctly', async () => {
@@ -184,8 +182,6 @@ describe('List view Page', () => {
     expect(wrapper.find('tbody tr')).toHaveLength(1);
 
     expect(wrapper.find('tbody').text()).toMatchSnapshot('full body has only one entry Madagascar');
-
-    wrapper.unmount();
   });
 
   it('shows broken page', async () => {
