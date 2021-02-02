@@ -8,3 +8,48 @@ export const madagascar = {
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 export const madagascarTree = require('./madagascar.json');
+
+export const structures = [
+  {
+    type: 'Feature',
+    id: 'f3199af5-2eaf-46df-87c9-40d59606a2fb',
+    properties: {
+      type: 'Water Point',
+      status: 'Active',
+      parentId: '8e74d042-4a71-4694-a652-bc3ba6369101',
+      name: 'EPP Ambodisatrana 2',
+      geographicLevel: 0,
+      version: 0,
+      AdminLevelTag: 'Commune',
+    },
+    serverVersion: 18479,
+  },
+  {
+    type: 'Feature',
+    id: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+    properties: {
+      type: 'Water Point',
+      status: 'Active',
+      parentId: '663d7935-35e7-4ccf-aaf5-6e16f2042570',
+      name: 'Ambatoharanana',
+      geographicLevel: 0,
+      version: 0,
+      AdminLevelTag: 'Commune',
+    },
+    serverVersion: 18480,
+  },
+  {
+    type: 'Feature',
+    id: '45e4bd97-fe11-458b-b481-294b7d7e8270',
+    properties: {
+      type: 'Water Point',
+      status: 'Active',
+      parentId: 'c38e0c1e-3d72-424b-ac37-29e8d3e82026',
+      name: 'Ambahoabe',
+      geographicLevel: 0,
+      version: 0,
+      AdminLevelTag: 'Commune',
+    },
+    serverVersion: 18481,
+  },
+];
