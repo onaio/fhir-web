@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
@@ -47,6 +48,21 @@ jest.mock('antd', () => {
 const history = createBrowserHistory();
 
 describe('components/Credentials', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -136,7 +152,7 @@ describe('components/Credentials', () => {
         body: JSON.stringify(payload),
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer hunter2',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'PUT',

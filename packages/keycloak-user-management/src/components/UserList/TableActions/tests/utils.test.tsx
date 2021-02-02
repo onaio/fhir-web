@@ -1,4 +1,6 @@
 import fetch from 'jest-fetch-mock';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 import { deleteUser } from '../utils';
 import * as fixtures from '../../../forms/UserForm/tests/fixtures';
 import { KEYCLOAK_URL_USERS, ERROR_OCCURED } from '../../../../constants';
@@ -14,10 +16,24 @@ jest.mock('@opensrp/notifications', () => ({
 describe('components/UserList/utils/deleteUser', () => {
   const removeUsersMock = jest.fn();
   const isLoadingCallback = jest.fn();
-  const accessToken = 'sometoken';
   const keycloakBaseURL =
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
   const userId = '1';
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -29,7 +45,7 @@ describe('components/UserList/utils/deleteUser', () => {
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     fetch.mockResponse(JSON.stringify([fixtures.keycloakUser]));
 
-    deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
 
     await act(async () => {
       await flushPromises();
@@ -51,7 +67,7 @@ describe('components/UserList/utils/deleteUser', () => {
   it('handles API error when calling the deletion endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockReject(() => Promise.reject('API is down'));
-    deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
 
     await act(async () => {
       await flushPromises();
@@ -63,7 +79,7 @@ describe('components/UserList/utils/deleteUser', () => {
   it('handles API error when calling the fetch endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.once(JSON.stringify([])).mockRejectOnce(() => Promise.reject('API is down'));
-    deleteUser(removeUsersMock, accessToken, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
 
     await act(async () => {
       await flushPromises();
