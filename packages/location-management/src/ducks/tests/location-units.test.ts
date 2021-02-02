@@ -14,7 +14,7 @@ import {
   getLocationsIfJurisdiction,
   getLocationsBySearch,
 } from '../location-units';
-import { locationUnit1, locationUnit2 } from './fixtures';
+import { locationUnit1, locationUnit2, locationUnit3 } from './fixtures';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
@@ -73,20 +73,26 @@ describe('src/ducks/location-units.reselect', () => {
 
   it('jurisdiction selector work correctly on non-empty state', () => {
     store.dispatch(fetchLocationUnits([locationUnit1] as LocationUnit[], true));
-    store.dispatch(fetchLocationUnits([locationUnit2] as LocationUnit[], false));
+    store.dispatch(fetchLocationUnits([locationUnit3] as LocationUnit[], false));
     expect(isJurisdictionSelector(store.getState(), { isJurisdiction: true })).toEqual([
       { ...locationUnit1, isJurisdiction: true },
     ]);
     expect(isJurisdictionSelector(store.getState(), { isJurisdiction: false })).toEqual([
-      { ...locationUnit2, isJurisdiction: false },
+      { ...locationUnit3, isJurisdiction: false },
     ]);
   });
 
   it('By search selector work correctly on non-empty state', () => {
-    store.dispatch(fetchLocationUnits([locationUnit1, locationUnit2] as LocationUnit[], false));
+    store.dispatch(fetchLocationUnits([locationUnit1, locationUnit3] as LocationUnit[], false));
     expect(jurisdictionBySearch(store.getState(), { searchQuery: 'tango' })).toEqual([]);
-    expect(jurisdictionBySearch(store.getState(), { searchQuery: 'Thail' })).toEqual([
-      { ...locationUnit2, isJurisdiction: false },
+    expect(jurisdictionBySearch(store.getState(), { searchQuery: 'bodisatra' })).toEqual([
+      {
+        ...locationUnit3,
+        isJurisdiction: false,
+      },
+    ]);
+    expect(jurisdictionBySearch(store.getState(), { searchQuery: locationUnit3.id })).toEqual([
+      { ...locationUnit3, isJurisdiction: false },
     ]);
   });
 });

@@ -165,7 +165,9 @@ export const getLocationsBySearch = () =>
     if (searchText === undefined) {
       return locations;
     }
-    return locations.filter((loc) =>
-      loc.properties.name.toLowerCase().includes(searchText.toLowerCase())
+    return locations.filter(
+      (loc) =>
+        loc.properties.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        loc.id === searchText
     );
   });
