@@ -17,6 +17,7 @@ import {
 } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { submitUploadForm } from '../../helpers/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** default props interface */
 export interface UploadDefaultProps {
@@ -28,7 +29,7 @@ export interface UploadDefaultProps {
   formRequiredLabel: string;
   moduleLabel: string;
   relatedToLabel: string;
-  accessToken: string | Promise<string | null>;
+  accessToken: string | GetAccessTokenType;
 }
 
 /** UploadConfigFile interface */

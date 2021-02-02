@@ -25,6 +25,7 @@ import {
 import { Cell } from 'react-table';
 import { formatDate, fetchReleaseFiles } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -40,7 +41,7 @@ export interface ReleasesDefaultProps extends SearchBarDefaultProps {
   updatedAt: string;
   uploadFileLabel: string;
   viewFilesLabel: string;
-  accessToken: string | Promise<string | null>;
+  accessToken: string | GetAccessTokenType;
 }
 
 /** ManifestReleases props interface */

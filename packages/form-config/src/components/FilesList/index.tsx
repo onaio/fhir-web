@@ -29,6 +29,7 @@ import {
 import { Cell } from 'react-table';
 import { formatDate, downloadManifestFile, fetchManifests } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -48,7 +49,7 @@ export interface FilesListDefaultProps extends SearchBarDefaultProps {
   removeFiles: typeof removeManifestFiles;
   uploadEditLabel: string;
   uploadFileLabel: string;
-  accessToken: string | Promise<string | null>;
+  accessToken: string | GetAccessTokenType;
 }
 
 /** manifest files list props interface */

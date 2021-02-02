@@ -1,4 +1,10 @@
-import { URLParams, OpenSRPService, getFetchOptions, HTTPError } from '@opensrp/server-service';
+import {
+  URLParams,
+  OpenSRPService,
+  getFetchOptions,
+  HTTPError,
+  GetAccessTokenType,
+} from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { UploadFileFieldTypes } from './types';
 import {
@@ -38,7 +44,7 @@ export const formatDate = (stringDate: string): string => {
 /**
  * Handle download link click
  *
- * @param {string} accessToken - opensrp API access token
+ * @param {GetAccessTokenType} accessToken - opensrp API access token
  * @param {string} baseURL OpenSRP API base URL
  * @param {string} downloadEndPoint opensrp download URL
  * @param {ManifestFilesTypes} obj manifest object file to be downloaded
@@ -46,7 +52,7 @@ export const formatDate = (stringDate: string): string => {
  *  @param {getFetchOptions} getPayload custom fetch options
  */
 export const downloadManifestFile = async (
-  accessToken: string,
+  accessToken: GetAccessTokenType | string,
   baseURL: string,
   downloadEndPoint: string,
   obj: ManifestFilesTypes,
@@ -71,7 +77,7 @@ export const downloadManifestFile = async (
  * Handle form upload submission
  *
  * @param {Dictionary} values - submitted values
- * @param {string} accessToken  - Opensrp API access token
+ * @param {GetAccessTokenType | string} accessToken  - Opensrp API access token
  * @param {string} opensrpBaseURL - Opensrp API base URL
  * @param {boolean} isJsonValidator - boolean to confirm if the form is json validator or not
  * @param {Function} setSubmitting - set the form state for isSubmitting
@@ -81,7 +87,7 @@ export const downloadManifestFile = async (
  */
 export const submitUploadForm = (
   values: UploadFileFieldTypes,
-  accessToken: string,
+  accessToken: GetAccessTokenType | string,
   opensrpBaseURL: string,
   isJsonValidator: boolean,
   setSubmitting: (isSubmitting: boolean) => void,
@@ -134,7 +140,7 @@ export const submitUploadForm = (
  * Handle make release
  *
  * @param {ManifestFilesTypes[]} data draft files to make release for
- * @param {string} accessToken  Opensrp API access token
+ * @param {GetAccessTokenType | string} accessToken  Opensrp API access token
  * @param {string} opensrpBaseURL Opensrp API base URL
  * @param {Function} removeFiles redux action to remove draft files
  * @param {Function} setIfDoneHere set ifDoneHere form status
@@ -145,7 +151,7 @@ export const submitUploadForm = (
  */
 export const makeRelease = (
   data: ManifestFilesTypes[],
-  accessToken: string,
+  accessToken: GetAccessTokenType | string,
   opensrpBaseURL: string,
   removeFiles: typeof removeManifestDraftFiles,
   setIfDoneHere: (ifDoneHere: boolean) => void,
@@ -185,7 +191,7 @@ export const makeRelease = (
 /**
  * Fetch manifest draft files
  *
- * @param {string} accessToken  Opensrp API access token
+ * @param {GetAccessTokenType | string} accessToken  Opensrp API access token
  * @param {string} opensrpBaseURL Opensrp API base URL
  * @param {Function} fetchFiles redux action to fetch draft files
  * @param {Function} setLoading set ifDoneHere form status
@@ -195,7 +201,7 @@ export const makeRelease = (
  * @param {Function} customFetchOptions custom opensrp API fetch options
  */
 export const fetchDrafts = (
-  accessToken: string,
+  accessToken: GetAccessTokenType | string,
   opensrpBaseURL: string,
   fetchFiles: typeof fetchManifestDraftFiles,
   setLoading: (loading: boolean) => void,
@@ -232,7 +238,7 @@ export const fetchDrafts = (
 /**
  * Fetch releases
  *
- * @param {string} accessToken  Opensrp API access token
+ * @param {GetAccessTokenType | string} accessToken  Opensrp API access token
  * @param {string} opensrpBaseURL Opensrp API base URL
  * @param {Function} fetchFiles redux action to fetch releases files
  * @param {Function} setLoading set ifDoneHere form status
@@ -242,7 +248,7 @@ export const fetchDrafts = (
  * @param {Function} customFetchOptions custom opensrp API fetch options
  */
 export const fetchReleaseFiles = (
-  accessToken: string,
+  accessToken: GetAccessTokenType | string,
   opensrpBaseURL: string,
   fetchFiles: typeof fetchManifestReleases,
   setLoading: (loading: boolean) => void,
@@ -277,7 +283,7 @@ export const fetchReleaseFiles = (
 /**
  * Fetch manifest files
  *
- * @param {string} accessToken  Opensrp API access token
+ * @param {GetAccessTokenType | string} accessToken  Opensrp API access token
  * @param {string} opensrpBaseURL Opensrp API base URL
  * @param {Function} fetchFiles redux action to fetch manifest files
  * @param {Function} removeFiles redux action to remove manifest files
@@ -289,7 +295,7 @@ export const fetchReleaseFiles = (
  * @param {Function} customFetchOptions custom opensrp API fetch options
  */
 export const fetchManifests = (
-  accessToken: string,
+  accessToken: GetAccessTokenType | string,
   opensrpBaseURL: string,
   fetchFiles: typeof fetchManifestFiles,
   removeFiles: typeof removeManifestFiles,

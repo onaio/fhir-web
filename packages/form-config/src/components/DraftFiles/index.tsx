@@ -29,6 +29,7 @@ import { Cell } from 'react-table';
 import { formatDate, downloadManifestFile, makeRelease, fetchDrafts } from '../../helpers/utils';
 import { Link } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, DraftFilesReducer);
@@ -47,7 +48,7 @@ export interface DraftsDefaultProps extends SearchBarDefaultProps {
   makeReleaseLabel: string;
   moduleLabel: string;
   uploadFileLabel: string;
-  accessToken: string | Promise<string | null>;
+  accessToken: GetAccessTokenType | string;
 }
 
 /** manifest Draft files props interface */
