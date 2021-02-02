@@ -82,6 +82,8 @@ export const locationUnit2: LocationUnit = {
   type: 'Feature',
 };
 
+export const locations = [locationUnit1, locationUnit2];
+
 export const locationTree = {
   keys: ['b652b2f4-a95d-489b-9e28-4629746db96a'],
   node: {
