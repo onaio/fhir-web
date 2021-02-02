@@ -13,7 +13,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { opensrpBaseURL, id, intialValue, practitioners } from './fixtures';
 import Form, { onSubmit } from '../Form';
 import { Organization, OrganizationPOST } from '../../../ducks/organizations';
-import { ERROR_OCCURRED } from '../../../constants';
+import { ERROR_OCCURRED } from '../../../lang';
 
 describe('Team-management/TeamsAddEdit/Form', () => {
   afterEach(() => {
