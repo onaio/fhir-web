@@ -4,7 +4,7 @@ import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { KeycloakUser } from '../../../ducks/user';
 import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
-import { submitForm, fetchRequiredActions, UserAction } from './utils';
+import { submitForm, fetchRequiredActions, UserAction, fetchUserGroups, UserGroup } from './utils';
 import '../../../index.css';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
@@ -83,6 +83,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
+  const [userGroups, setUserGroups] = React.useState<UserGroup[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const history = useHistory();
   const [form] = Form.useForm();
@@ -108,12 +109,20 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     { label: 'No', value: false },
   ];
   const { Option } = Select;
+
+  // required actions
   React.useEffect(() => {
     fetchRequiredActions(keycloakBaseURL, setUserActionOptions, serviceClass);
   }, [accessToken, keycloakBaseURL, serviceClass]);
+
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
+
+  // user groups
+  React.useEffect(() => {
+    fetchUserGroups(keycloakBaseURL, setUserGroups, serviceClass);
+  }, [accessToken, keycloakBaseURL, serviceClass]);
 
   /** Update form initial values when initialValues prop changes, without this
    * the form fields initial values will not change if props.initiaValues is updated

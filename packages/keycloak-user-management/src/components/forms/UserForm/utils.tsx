@@ -13,6 +13,7 @@ import {
   PRACTITIONER_UPDATED_SUCCESSFULLY,
   PRACTITIONER_CREATED_SUCCESSFULLY,
   URL_USER_CREDENTIALS,
+  KEYCLOAK_URL_USER_GROUPS,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Practitioner } from '.';
@@ -60,7 +61,7 @@ export const createOrEditPractitioners = (
     active: isEdit ? values.active : true,
     identifier: practitioner ? practitioner.identifier : v4(),
     name: `${values.firstName} ${values.lastName}`,
-    userId: values.userId || values.id,
+    userId: values.id,
     username: values.username,
   };
 
@@ -113,10 +114,7 @@ export const submitForm = (
         createOrEditPractitioners(
           opensrpBaseURL,
           opensrpServiceClass,
-          {
-            ...values,
-            userId,
-          },
+          values,
           practitioner,
           isEditing
         );
@@ -131,10 +129,7 @@ export const submitForm = (
   } else {
     const serve = new keycloakServiceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
     serve
-      .create({
-        ...keycloakUserValues,
-        enabled: true,
-      })
+      .create(keycloakUserValues)
       .then((response: Response | undefined) => {
         // workaround to get userId for newly created user
         // immediately after performing a POST
@@ -167,6 +162,15 @@ export interface UserAction {
   config: Dictionary;
 }
 
+/** interface user group */
+
+export interface UserGroup {
+  id: string;
+  name: string;
+  path: string;
+  subGroups: string[];
+}
+
 /**
  * Fetch keycloak user action options
  *
@@ -190,6 +194,30 @@ export const fetchRequiredActions = (
       setUserActionOptions(
         response.filter((action: UserAction) => action.alias !== 'terms_and_conditions')
       );
+    })
+    .catch((_: Error) => {
+      sendErrorNotification(ERROR_OCCURED);
+    });
+};
+
+/**
+ * Fetch keycloak user action options
+ *
+ * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {Function} setUserGroups - method to set state for user groups
+ * @param {KeycloakService} keycloakServiceClass - keycloak API service class
+ */
+export const fetchUserGroups = (
+  keycloakBaseURL: string,
+  setUserGroups: Dispatch<SetStateAction<UserGroup[]>>,
+  keycloakServiceClass: typeof KeycloakService
+): void => {
+  const keycloakService = new keycloakServiceClass(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
+
+  keycloakService
+    .list()
+    .then((response: UserGroup[]) => {
+      setUserGroups(response);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);
