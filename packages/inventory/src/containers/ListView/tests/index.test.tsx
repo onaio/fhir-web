@@ -9,8 +9,16 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { deforest, removeLocationUnits } from '@opensrp/location-management';
-import { madagascar, madagascarTree, structures } from './fixtures';
+import { madagascar, madagascarTree, structure1, structures } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
+import { getNodePath } from '../utils';
+import { generateJurisdictionTree } from '@opensrp/location-management';
+import * as notifications from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -229,10 +237,12 @@ describe('List view Page', () => {
     expect(wrapper.text()).toMatchSnapshot('error broken page');
   });
 
-  it('shows error message page', async () => {
+  it('shows error message notification', async () => {
     const errorMessage = 'Coughid';
     fetch.once(JSON.stringify(structures));
     fetch.mockReject(new Error(errorMessage));
+
+    const spy = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(
       <Provider store={store}>
@@ -242,17 +252,20 @@ describe('List view Page', () => {
       </Provider>
     );
 
-    /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading ...Fetching locationsPlease wait, while locations are being fetched"`
-    );
-
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
 
-    // no data
-    expect(wrapper.text()).toMatchSnapshot('error broken page');
+    expect(spy).toHaveBeenCalledWith(errorMessage);
+  });
+
+  it('branch test for getNodePath', async () => {
+    const sampleLocation = {
+      ...structure1,
+      properties: { ...structure1.properties, parentId: undefined },
+    };
+    const res = getNodePath(sampleLocation, [generateJurisdictionTree(madagascarTree)]);
+    expect(res).toEqual('');
   });
 });
