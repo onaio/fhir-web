@@ -10,7 +10,6 @@ import { Dictionary } from '@onaio/utils';
 
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
-  accessToken: string;
   keycloakBaseURL: string;
   record: KeycloakUser;
   isLoadingCallback: (loading: boolean) => void;
@@ -27,7 +26,6 @@ const TableActions = (props: Props): JSX.Element => {
   const {
     record,
     removeKeycloakUsersCreator,
-    accessToken,
     keycloakBaseURL,
     isLoadingCallback,
     extraData,
@@ -41,13 +39,7 @@ const TableActions = (props: Props): JSX.Element => {
           okText="Yes"
           cancelText="No"
           onConfirm={() =>
-            deleteUser(
-              removeKeycloakUsersCreator,
-              accessToken,
-              keycloakBaseURL,
-              record.id,
-              isLoadingCallback
-            )
+            deleteUser(removeKeycloakUsersCreator, keycloakBaseURL, record.id, isLoadingCallback)
           }
         >
           {user_id &&
