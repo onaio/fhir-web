@@ -102,9 +102,6 @@ export const ServicePointsLoading = ({
  */
 export const getNodePath = (loc: LocationUnit, trees: TreeNode[] = []): string => {
   const { parentId } = loc.properties;
-  if (!parentId) {
-    return '';
-  }
   // find tree with node that has the given id
   let nodeOfInterest: TreeNode | undefined;
   trees.forEach((tree) => {
