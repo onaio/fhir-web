@@ -114,3 +114,7 @@ export const INVENTORY_LOC_OF_INTEREST_GEO_LEVEL = Number(
 export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = Number(
   process.env.REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL || '0'
 );
+
+export const MAIN_LOGO_SRC =
+  process.env.REACT_APP_MAIN_LOGO_SRC ||
+  'https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png';

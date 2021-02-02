@@ -16,7 +16,7 @@ import {
   id,
   locationSettings,
 } from './fixtures';
-import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
+import LocationUnitAddEdit from '..';
 
 import { act } from 'react-dom/test-utils';
 import { baseURL, ERROR_OCCURED } from '../../../constants';
@@ -41,22 +41,6 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
   beforeEach(() => {
     fetch.mockClear();
-  });
-
-  it('test getBaseTreeNode', async () => {
-    fetch.mockResponse(JSON.stringify(baseLocationUnits));
-
-    const response = await getBaseTreeNode(baseURL);
-
-    expect(response).toMatchObject(baseLocationUnits);
-  });
-
-  it('test getHierarchy', async () => {
-    fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
-
-    const response = await getHierarchy([baseLocationUnits[2]], baseURL);
-
-    expect(response).toMatchObject([rawHierarchy[2]]);
   });
 
   it('fail loading location ', async () => {

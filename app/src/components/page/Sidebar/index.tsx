@@ -5,7 +5,6 @@ import './Sidebar.css';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
-import Logo from '../../../assets/images/opensrp-logo-color.png';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LOCATIONS_UNIT,
@@ -47,6 +46,7 @@ import {
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_CARD_SUPPORT,
   ENABLE_INVENTORY,
+  MAIN_LOGO_SRC,
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -80,7 +80,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
         <Link to={URL_HOME}>
-          <img src={Logo} className="img-fluid" alt="" />
+          <img src={MAIN_LOGO_SRC} className="img-fluid" alt="" />
         </Link>
       </div>
 
