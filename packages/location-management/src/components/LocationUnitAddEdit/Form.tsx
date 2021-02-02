@@ -90,14 +90,14 @@ export function removeEmptykeys(obj: any) {
  * @param {string} id id of the node
  * @returns {number | null} return geolocation if found else return null
  */
-export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): number | null {
-  const map: (number | null)[] = tree.flatMap((node) => {
+export function findParentGeoLocation(tree: ParsedHierarchyNode[], id: string): number | undefined {
+  const map: (number | undefined)[] = tree.flatMap((node) => {
     if (node.id === id) return node.node.attributes.geographicLevel;
     else if (node.children) return findParentGeoLocation(node.children, id);
-    else return null;
+    else return undefined;
   });
 
-  const filter = map.filter((e) => e != null);
+  const filter = map.filter((e) => e !== undefined);
   return filter[0];
 }
 
@@ -124,7 +124,7 @@ export async function onSubmit(
   id?: string
 ) {
   const locationUnitGroupFiler = locationUnitgroup.filter((e) =>
-    (values.locationTags as number[]).includes(e.id)
+    values.locationTags?.includes(e.id)
   );
 
   const locationTag: LocationUnitTag[] = locationUnitGroupFiler.map((tag: LocationUnitTag) => ({
@@ -135,8 +135,8 @@ export async function onSubmit(
   let geographicLevel = 0;
   if (values.parentId) {
     const parent = findParentGeoLocation(treedata, values.parentId);
-    if (parent) geographicLevel = parent + 1;
-    else return sendErrorNotification(ERROR_OCCURED); // stops execution because this is unlikely thing to happen and shouldn't send error to server
+    if (parent !== undefined) geographicLevel = parent + 1;
+    else throw new Error(ERROR_OCCURED); // stops execution because this is unlikely thing to happen and shouldn't send error to server
   }
 
   const payload: (LocationUnitPayloadPOST | LocationUnitPayloadPUT) & {

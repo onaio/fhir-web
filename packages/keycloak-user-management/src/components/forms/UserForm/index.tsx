@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Select, Switch, Input } from 'antd';
+import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { KeycloakUser } from '../../../ducks/user';
 import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
@@ -103,6 +103,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       lg: { offset: 6, span: 14 },
     },
   };
+  const status = [
+    { label: 'Yes', value: true },
+    { label: 'No', value: false },
+  ];
   const { Option } = Select;
   React.useEffect(() => {
     fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, serviceClass);
@@ -168,12 +172,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="email"
-            id="email"
-            label="Email"
-            rules={[{ required: true, message: 'Email is required' }]}
-          >
+          <Form.Item name="email" id="email" label="Email">
             <Input />
           </Form.Item>
           <Form.Item
@@ -185,13 +184,14 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
-            <Form.Item
-              id="practitionerToggle"
-              name="active"
-              label="Mark as Practitioner"
-              valuePropName="checked"
-            >
-              <Switch />
+            <Form.Item id="practitionerToggle" name="active" label="Mark as Practitioner">
+              <Radio.Group name="active">
+                {status.map((e) => (
+                  <Radio name="active" key={e.label} value={e.value}>
+                    {e.label}
+                  </Radio>
+                ))}
+              </Radio.Group>
             </Form.Item>
           ) : null}
           {initialValues.id !== extraData.user_id ? (
