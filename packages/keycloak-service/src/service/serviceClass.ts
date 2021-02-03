@@ -116,7 +116,7 @@ export class KeycloakAPIService {
    * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
    */
   constructor(
-    accessTokenOrCallBack: typeof handleSessionOrTokenExpiry = handleSessionOrTokenExpiry,
+    accessTokenOrCallBack: string | typeof handleSessionOrTokenExpiry = handleSessionOrTokenExpiry,
     baseURL: string = KEYCLOAK_API_BASE_URL,
     endpoint: string,
     getPayload: typeof getFetchOptions = getFetchOptions,
