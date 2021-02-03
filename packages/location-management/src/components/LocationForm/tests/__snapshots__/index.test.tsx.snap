@@ -1,13 +1,113 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LocationForm form validation works for core instance: location Tags does not have error message 1`] = `"Unit Group(optional) Enter a location group name"`;
+exports[`LocationForm form validation works for core instance: location Tags does not have error message 1`] = `"Unit group Enter a location group name"`;
 
-exports[`LocationForm form validation works for eusm instance: location Tags does not have error message 1`] = `"Unit Group(optional) Enter a location group name"`;
+exports[`LocationForm form validation works for eusm instance: location Tags does not have error message 1`] = `"Unit group Enter a location group name"`;
+
+exports[`LocationForm is able to edit a location unit: field input 1`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="location-form_extraFields_0_Sample Key"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  required={true}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`LocationForm is able to edit a location unit: field input 2`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="location-form_extraFields_1_Area Nick name"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  required={true}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`LocationForm is able to edit a location unit: field input 3`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="location-form_extraFields_2_Sample Key Two"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  required={true}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`LocationForm is able to edit a location unit: field input 4`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="location-form_extraFields_3_Area code"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  required={true}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`LocationForm is able to edit a location unit: field label 1`] = `
+<label
+  className=""
+  htmlFor="location-form_extraFields_0_Sample Key"
+  title="Sample Key"
+>
+  Sample Key
+</label>
+`;
+
+exports[`LocationForm is able to edit a location unit: field label 2`] = `
+<label
+  className=""
+  htmlFor="location-form_extraFields_1_Area Nick name"
+  title="Area Nick name"
+>
+  Area Nick name
+</label>
+`;
+
+exports[`LocationForm is able to edit a location unit: field label 3`] = `
+<label
+  className=""
+  htmlFor="location-form_extraFields_2_Sample Key Two"
+  title="Sample Key Two"
+>
+  Sample Key Two
+</label>
+`;
+
+exports[`LocationForm is able to edit a location unit: field label 4`] = `
+<label
+  className=""
+  htmlFor="location-form_extraFields_3_Area code"
+  title="Area code"
+>
+  Area code
+</label>
+`;
 
 exports[`LocationForm renders correctly: cancel button 1`] = `
 <button
-  className="ant-btn ant-btn-dashed"
-  id="cancel"
+  className="ant-btn"
+  id="location-form-cancel-button"
   onClick={[Function]}
   type="button"
 >
@@ -41,7 +141,8 @@ exports[`LocationForm renders correctly: cancel button 1`] = `
 exports[`LocationForm renders correctly: externalId field 1`] = `
 <input
   className="ant-input"
-  name="externalId"
+  disabled={false}
+  id="location-form_externalId"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
@@ -54,38 +155,43 @@ exports[`LocationForm renders correctly: externalId field 1`] = `
 
 exports[`LocationForm renders correctly: externalId label 1`] = `
 <label
-  className="ant-form-item-required-mark-optional"
+  className=""
+  htmlFor="location-form_externalId"
   title="External ID"
 >
   External ID
-  <span
-    className="ant-form-item-optional"
-  >
-    (optional)
-  </span>
 </label>
 `;
 
-exports[`LocationForm renders correctly: geometry field 1`] = `null`;
+exports[`LocationForm renders correctly: geometry field 1`] = `
+<textarea
+  className="ant-input"
+  disabled={false}
+  id="location-form_geometry"
+  onChange={[Function]}
+  onKeyDown={[Function]}
+  placeholder="</> JSON"
+  rows={4}
+  style={Object {}}
+  value=""
+/>
+`;
 
 exports[`LocationForm renders correctly: geometry label 1`] = `
 <label
-  className="ant-form-item-required-mark-optional"
-  title="geometry"
+  className=""
+  htmlFor="location-form_geometry"
+  title="Geometry"
 >
-  geometry
-  <span
-    className="ant-form-item-optional"
-  >
-    (optional)
-  </span>
+  Geometry
 </label>
 `;
 
 exports[`LocationForm renders correctly: instance field 1`] = `
 <input
-  className="ant-input"
-  name="instance"
+  className="ant-input ant-input-disabled"
+  disabled={true}
+  id="location-form_instance"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
@@ -97,7 +203,8 @@ exports[`LocationForm renders correctly: instance field 1`] = `
 
 exports[`LocationForm renders correctly: instance label 1`] = `
 <label
-  className="ant-form-item-required ant-form-item-required-mark-optional"
+  className="ant-form-item-required"
+  htmlFor="location-form_instance"
   title="Instance"
 >
   Instance
@@ -109,6 +216,7 @@ Array [
   <input
     checked={true}
     className="ant-radio-input"
+    disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
@@ -118,6 +226,7 @@ Array [
   <input
     checked={false}
     className="ant-radio-input"
+    disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
@@ -129,28 +238,25 @@ Array [
 
 exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 <label
-  className="ant-form-item-required-mark-optional"
-  title="Location Category"
+  className="ant-form-item-required"
+  htmlFor="location-form_isJurisdiction"
+  title="Location category"
 >
-  Location Category
-  <span
-    className="ant-form-item-optional"
-  >
-    (optional)
-  </span>
+  Location category
 </label>
 `;
 
 exports[`LocationForm renders correctly: locationTags field 1`] = `
 <input
-  aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+  aria-activedescendant="location-form_locationTags_list_0"
   aria-autocomplete="list"
-  aria-controls="rc_select_TEST_OR_SSR_list"
+  aria-controls="location-form_locationTags_list"
   aria-haspopup="listbox"
-  aria-owns="rc_select_TEST_OR_SSR_list"
+  aria-owns="location-form_locationTags_list"
   autoComplete="off"
   className="ant-select-selection-search-input"
-  id="rc_select_TEST_OR_SSR"
+  disabled={false}
+  id="location-form_locationTags"
   onChange={[Function]}
   onCompositionEnd={[Function]}
   onCompositionStart={[Function]}
@@ -172,22 +278,19 @@ exports[`LocationForm renders correctly: locationTags field 1`] = `
 
 exports[`LocationForm renders correctly: locationTags label 1`] = `
 <label
-  className="ant-form-item-required-mark-optional"
-  title="Unit Group"
+  className=""
+  htmlFor="location-form_locationTags"
+  title="Unit group"
 >
-  Unit Group
-  <span
-    className="ant-form-item-optional"
-  >
-    (optional)
-  </span>
+  Unit group
 </label>
 `;
 
 exports[`LocationForm renders correctly: name field 1`] = `
 <input
   className="ant-input"
-  name="name"
+  disabled={false}
+  id="location-form_name"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
@@ -200,7 +303,8 @@ exports[`LocationForm renders correctly: name field 1`] = `
 
 exports[`LocationForm renders correctly: name label 1`] = `
 <label
-  className="ant-form-item-required ant-form-item-required-mark-optional"
+  className="ant-form-item-required"
+  htmlFor="location-form_name"
   title="Name"
 >
   Name
@@ -211,7 +315,8 @@ exports[`LocationForm renders correctly: parentId field 1`] = `null`;
 
 exports[`LocationForm renders correctly: parentId label 1`] = `
 <label
-  className="ant-form-item-required ant-form-item-required-mark-optional"
+  className=""
+  htmlFor="location-form_parentId"
   title="Parent"
 >
   Parent
@@ -220,14 +325,15 @@ exports[`LocationForm renders correctly: parentId label 1`] = `
 
 exports[`LocationForm renders correctly: serviceTypes field 1`] = `
 <input
-  aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+  aria-activedescendant="location-form_serviceTypes_list_0"
   aria-autocomplete="list"
-  aria-controls="rc_select_TEST_OR_SSR_list"
+  aria-controls="location-form_serviceTypes_list"
   aria-haspopup="listbox"
-  aria-owns="rc_select_TEST_OR_SSR_list"
+  aria-owns="location-form_serviceTypes_list"
   autoComplete="off"
   className="ant-select-selection-search-input"
-  id="rc_select_TEST_OR_SSR"
+  disabled={false}
+  id="location-form_serviceTypes"
   onChange={[Function]}
   onCompositionEnd={[Function]}
   onCompositionStart={[Function]}
@@ -249,7 +355,8 @@ exports[`LocationForm renders correctly: serviceTypes field 1`] = `
 
 exports[`LocationForm renders correctly: serviceTypes label 1`] = `
 <label
-  className="ant-form-item-required ant-form-item-required-mark-optional"
+  className=""
+  htmlFor="location-form_serviceTypes"
   title="Type"
 >
   Type
@@ -281,7 +388,8 @@ Array [
 
 exports[`LocationForm renders correctly: status label 1`] = `
 <label
-  className="ant-form-item-required ant-form-item-required-mark-optional"
+  className="ant-form-item-required"
+  htmlFor="location-form_status"
   title="Status"
 >
   Status
@@ -292,7 +400,7 @@ exports[`LocationForm renders correctly: submit button 1`] = `
 <button
   className="ant-btn ant-btn-primary"
   disabled={false}
-  id="submit"
+  id="location-form-submit-button"
   onClick={[Function]}
   type="submit"
 >
@@ -326,7 +434,8 @@ exports[`LocationForm renders correctly: submit button 1`] = `
 exports[`LocationForm renders correctly: type field 1`] = `
 <input
   className="ant-input"
-  name="type"
+  disabled={false}
+  id="location-form_type"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
@@ -339,7 +448,8 @@ exports[`LocationForm renders correctly: type field 1`] = `
 
 exports[`LocationForm renders correctly: type label 1`] = `
 <label
-  className="ant-form-item-required ant-form-item-required-mark-optional"
+  className="ant-form-item-required"
+  htmlFor="location-form_type"
   title="Type"
 >
   Type

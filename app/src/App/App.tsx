@@ -94,10 +94,11 @@ import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
-  LocationUnitAddEdit,
   LocationUnitView,
   LocationUnitGroupAddEdit,
   LocationUnitGroupView,
+  NewLocationUnit,
+  EditLocationUnit,
 } from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
 import {
@@ -117,15 +118,18 @@ import {
   trashPlansListStatusProp,
   missionAssignmentProps,
   inventoryServiceProps,
+  editLocationProps,
+  newLocationUnitProps,
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   ConnectedServicePointList,
-  ServicePointsAddEdit,
   INVENTORY_EDIT_SERVICE_POINT,
   INVENTORY_ADD_SERVICE_POINT,
+  ServicePointEdit,
+  ServicePointsAdd,
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 
@@ -325,7 +329,7 @@ const App: React.FC = () => {
               exact
               {...BaseProps}
               path={INVENTORY_ADD_SERVICE_POINT}
-              component={ServicePointsAddEdit}
+              component={ServicePointsAdd}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -333,7 +337,7 @@ const App: React.FC = () => {
               exact
               {...BaseProps}
               path={`${INVENTORY_EDIT_SERVICE_POINT}/:id`}
-              component={ServicePointsAddEdit}
+              component={ServicePointEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -460,14 +464,16 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_ADD}
-              component={LocationUnitAddEdit}
+              {...newLocationUnitProps}
+              component={NewLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_EDIT}
-              component={LocationUnitAddEdit}
+              {...editLocationProps}
+              component={EditLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

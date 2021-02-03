@@ -2,7 +2,16 @@ import { Button } from 'antd';
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { LocationUnit } from '../../ducks/location-units';
-import { EXTERNAL_ID, LEVEL, NAME, STATUS, SYNC_STATUS, TYPE, USERNAME, VERSION } from '../../lang';
+import {
+  EXTERNAL_ID_LABEL,
+  LEVEL,
+  NAME,
+  STATUS,
+  SYNC_STATUS,
+  TYPE,
+  USERNAME,
+  VERSION,
+} from '../../lang';
 
 export interface Props extends LocationUnit {
   onClose?: Function;
@@ -34,7 +43,7 @@ const LocationUnitDetail: React.FC<Props> = (props: Props) => {
       </div>
 
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{EXTERNAL_ID}</p>
+        <p className="mb-0 font-weight-bold">{EXTERNAL_ID_LABEL}</p>
         <p className="mb-0 loc-desc">{props.properties.externalId}</p>
       </div>
 

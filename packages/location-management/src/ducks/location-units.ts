@@ -81,22 +81,6 @@ export interface LocationUnit {
   isJurisdiction?: boolean;
 }
 
-/** interface for the POST payload */
-export interface LocationUnitPayloadPOST {
-  id: string | number; // todo : we will remove this later as it should be auto generated on server
-  properties: Properties;
-  type: string;
-  locationTags?: LocationUnitTag[];
-  geometry?: Geometry; // todo : need to impliment its functionality
-  syncStatus: LocationUnitSyncStatus;
-  textEntry?: string[];
-}
-
-/** interface for the PUT payload */
-export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
-  id: string | number;
-}
-
 /** reducer name for the Item module */
 export const locationUnitsReducerName = 'location-units';
 
