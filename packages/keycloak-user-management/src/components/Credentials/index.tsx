@@ -41,7 +41,6 @@ export interface CredentialsRouteParams {
 
 /** props for editing a user view */
 export interface CredentialsProps {
-  accessToken: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
@@ -70,7 +69,6 @@ export const cancelUserHandler = (genericHistory: Dictionary): void => {
 
 /** default props for editing user component */
 export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
-  accessToken: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
