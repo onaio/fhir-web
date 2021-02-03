@@ -32,7 +32,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     );
   });
 
-  beforeEach(() => {
+  afterEach(() => {
     fetch.mockClear();
   });
 
@@ -272,51 +272,19 @@ describe('location-management/src/components/LocationUnitView', () => {
     // test table with tree node with child
     const treeItemwithchild = wrapper.find('span.ant-tree-title').first();
     treeItemwithchild.simulate('click');
+
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
+
     expect(wrapper.find('tbody BodyRow').last().prop('record')).not.toMatchObject(tablelastrow); // table changed
   });
 
-  it('test Open view details', async () => {
-    fetch.resetMocks();
-    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
+  it('test Open and close view details', async () => {
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
-    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    wrapper.find('.more-options').first().simulate('click');
-    wrapper.find('.viewdetails').first().simulate('click');
-
-    // test out loading animation works correctly
-    expect(wrapper.find('.ant-spin')).toHaveLength(1);
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(wrapper.find('.ant-spin')).toHaveLength(0);
-    expect(wrapper.find('LocationUnitDetail')).toHaveLength(1);
-  });
-
-  it('test Close view details', async () => {
-    fetch.resetMocks();
-    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
-    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
 
     const wrapper = mount(

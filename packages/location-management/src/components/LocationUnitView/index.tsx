@@ -139,9 +139,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
 
   React.useLayoutEffect(() => {
     return () => {
-      if (isMounted.current) {
-        dispatch(fetchAllHierarchies([]));
-      }
+      if (isMounted.current) dispatch(fetchAllHierarchies([]));
       isMounted.current = false;
     };
   });
