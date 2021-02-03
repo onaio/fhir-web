@@ -68,9 +68,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
   const [form] = Form.useForm();
   const isMounted = useRef<boolean>(true);
-  const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
-  );
+  const Treedata = useSelector((state) => getAllHierarchiesArray(state));
   const assignmentsList: Assignment[] = useSelector((state) => getAssignments(state));
   const allOrganizations: Organization[] = useSelector((state) => getOrganizationsArray(state));
   const dispatch = useDispatch();
@@ -79,7 +77,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const [assignedLocAndTeams, setAssignedLocAndTeams] = useState<AssignedLocationAndTeams | null>(
     null
   );
-  const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
+  const [currentNode, setCurrentNode] = useState<ParsedHierarchyNode | null>(null);
   const [existingAssignments, setExistingAssignments] = useState<Assignment[]>([]);
 
   React.useEffect(() => {
@@ -92,43 +90,30 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         hierarchyService
           .read(getJurisdictionCode)
           .then((response: RawOpenSRPHierarchy) => {
-            const hierarchy = generateJurisdictionTree(response);
-            dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
+            const hierarchy = generateJurisdictionTree(response).model;
+            dispatch(fetchAllHierarchies([hierarchy]));
           })
-          .catch(() => {
-            sendErrorNotification(ERROR_OCCURED);
-          });
+          .catch(() => sendErrorNotification(ERROR_OCCURED));
       })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-      });
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
+
     // get all assignments
     const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
     const assignmentsPromise = asssignmentService
       .list({ plan: defaultPlanId })
-      .then((response: Assignment[]) => {
-        dispatch(fetchAssignments(response));
-      })
+      .then((response: Assignment[]) => dispatch(fetchAssignments(response)))
       .catch(() => sendErrorNotification(ERROR_OCCURED));
 
     // fetch all organizations
     const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
     const organizationsPromise = organizationsService
       .list()
-      .then((response: Organization[]) => {
-        dispatch(fetchOrganizationsAction(response));
-      })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-      });
+      .then((response: Organization[]) => dispatch(fetchOrganizationsAction(response)))
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
 
     Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
-      .finally(() => {
-        setLoading(false);
-      })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-      });
+      .finally(() => setLoading(false))
+      .catch(() => sendErrorNotification(ERROR_OCCURED));
   }, [defaultPlanId, dispatch, opensrpBaseURL]);
 
   React.useEffect(() => {
@@ -137,20 +122,16 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
   React.useLayoutEffect(() => {
     return () => {
-      if (isMounted.current) {
-        dispatch(fetchAllHierarchies([]));
-      }
+      if (isMounted.current) dispatch(fetchAllHierarchies([]));
       isMounted.current = false;
     };
   });
 
-  const handleCancel = () => {
+  function handleCancel() {
     setVisible(false);
-  };
-
-  if (loading || !Treedata.length) {
-    return <TeamAssignmentLoading />;
   }
+
+  if (loading || !Treedata.length) return <TeamAssignmentLoading />;
 
   /** function to filter options from the select or not
    *
@@ -163,7 +144,8 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
-  const dataSource = currentParentChildren.length ? currentParentChildren : Treedata;
+  const dataSource =
+    currentNode && currentNode.children ? [currentNode, ...currentNode.children] : Treedata;
 
   const tableData = dataSource.map((datum: ParsedHierarchyNode, i: number) => {
     const jurisdictionAssignments = assignmentsList.filter(
@@ -207,13 +189,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           <Button type="primary" form="teamAssignment" key="submit" htmlType="submit">
             Save
           </Button>,
-          <Button
-            id={CANCEL}
-            key="cancel"
-            onClick={() => {
-              setVisible(false);
-            }}
-          >
+          <Button id={CANCEL} key="cancel" onClick={() => setVisible(false)}>
             Cancel
           </Button>,
         ]}
@@ -240,9 +216,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
                   setVisible(false);
                   setLoading(true);
                 })
-                .catch((err: Error) => {
-                  sendErrorNotification(err.name, err.message);
-                });
+                .catch((err: Error) => sendErrorNotification(err.name, err.message));
             }}
             initialValues={{ assignTeams: assignedLocAndTeams?.assignedTeams }}
           >
@@ -270,12 +244,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           <Tree
             data={Treedata}
             appendParentAsChild={false}
-            OnItemClick={(node) => {
-              if (node.children) {
-                const children = [node, ...node.children];
-                setCurrentParentChildren(children);
-              }
-            }}
+            OnItemClick={(node) => setCurrentNode(node)}
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
