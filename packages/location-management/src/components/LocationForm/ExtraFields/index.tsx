@@ -57,7 +57,7 @@ const ExtraFields = (props: ExtraFieldProps) => {
               rules={validationRules.extraFields}
               hidden={hidden}
             >
-              <Input type="text" required={true} disabled={disabled} />
+              <Input type="text" disabled={disabled} />
             </FormItem>
           );
         })

@@ -13,7 +13,6 @@ exports[`LocationForm is able to edit a location unit: field input 1`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
-  required={true}
   type="text"
   value=""
 />
@@ -28,7 +27,6 @@ exports[`LocationForm is able to edit a location unit: field input 2`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
-  required={true}
   type="text"
   value=""
 />
@@ -43,7 +41,6 @@ exports[`LocationForm is able to edit a location unit: field input 3`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
-  required={true}
   type="text"
   value=""
 />
@@ -58,7 +55,6 @@ exports[`LocationForm is able to edit a location unit: field input 4`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
-  required={true}
   type="text"
   value=""
 />
