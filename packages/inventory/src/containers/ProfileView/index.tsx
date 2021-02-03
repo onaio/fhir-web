@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button, Table } from 'antd';
-import { getQueryParams, OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp/react-utils';
 import {
   TreeNode,
   hierarchyReducer,
@@ -8,8 +8,10 @@ import {
   locationUnitsReducer,
   locationUnitsReducerName,
   getLocationsByNameAndId,
+  getLocationUnitById,
+  LocationUnit,
 } from '@opensrp/location-management';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { connect } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { columns } from './utils';
@@ -23,7 +25,6 @@ import { Helmet } from 'react-helmet';
 import {
   GET_INVENTORY_BY_SERVICE_POINT,
   INVENTORY_SERVICE_POINT_LIST_VIEW,
-  SEARCH_QUERY_PARAM,
   tablePaginationOptions,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
@@ -44,6 +45,7 @@ import {
   inventoryReducerName,
 } from '../../ducks/inventory';
 import { inventory1, inventory2 } from '../../constants';
+import { getLocationByGeographicLevel } from './utils';
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -81,6 +83,10 @@ interface DefaultGeographyItemProp {
   value: string;
 }
 
+/** component that renders Geography Items
+ *
+ * @param props - the component props
+ */
 export const GeographyItem = (props: DefaultGeographyItemProp) => {
   const { label, value } = props;
   return (
@@ -97,16 +103,35 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
  * @param props - the component props
  */
 const ServicePointProfile = (props: ServicePointsListTypes) => {
-  const { columns, opensrpBaseURL, inventoriesArray } = props;
+  const { columns, opensrpBaseURL, inventoriesArray, geoLevel } = props;
   const { broken, errorMessage } = useHandleBrokenPage();
+  const [locationName, setlocationName] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const dispatch = useDispatch();
   const location = useLocation();
+  const loc = location.pathname.split('/');
+  const spId = loc.pop() as string;
+
+  const locationUnitById = useSelector((state) => getLocationUnitById(state, spId));
+  const [locationNodeById] = useSelector((state) =>
+    locationsBySearchSelector(state, { searchQuery: spId, geoLevel })
+  );
+
+  const locationGeographicKeys = getLocationByGeographicLevel(locationNodeById) as string[];
 
   useEffect(() => {
-    const loc = location.pathname.split('/');
-    const spId = loc.pop();
+    const getLocationById = () => {
+      const serve = new OpenSRPService('location', opensrpBaseURL);
+      serve
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        .read(spId, { is_jurisdiction: true })
+        .then((res: LocationUnit) => {
+          setlocationName(res.properties.name);
+        })
+        .catch(() => sendErrorNotification(ERROR_OCCURRED));
+    };
+
+    getLocationById();
     const serve = new OpenSRPService(`${GET_INVENTORY_BY_SERVICE_POINT}/${spId}`, opensrpBaseURL);
     serve
       .list()
@@ -115,7 +140,7 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
         setIsLoading(false);
       })
       .catch(() => sendErrorNotification(ERROR_OCCURRED));
-  }, [dispatch, location.pathname, opensrpBaseURL]);
+  }, [dispatch, location.pathname, locationUnitById, opensrpBaseURL, spId, locationNodeById]);
 
   if (isLoading) return <Spin size="large" />;
 
@@ -133,11 +158,14 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
             <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>
               <p className="go-back-text">Back to the list of service points</p>
             </Link>
-            <p className="title">Alarobia Ambatomanga CSB Inventory</p>
+            <p className="title">{locationName}</p>
             <Row>
-              <GeographyItem label="Region" value="Analamanga" />
+              <GeographyItem label="Region" value={locationGeographicKeys[1]} />
               <GeographyItem label="Type" value="CSB 1" />
-              <GeographyItem label="District" value="Manajakandriana" />
+              <GeographyItem label="District" value={locationGeographicKeys[2]} />
+              <GeographyItem label="Latitude/longitude" value={'-'} />
+              <GeographyItem label="Commune" value={locationGeographicKeys[3]} />
+              <GeographyItem label="Service point ID" value={spId} />
             </Row>
           </Col>
           <Col md={8} className="flex-center">
@@ -179,22 +207,15 @@ ServicePointProfile.defaultProps = defaultProps;
 
 export { ServicePointProfile };
 
-type MapStateToProps = Pick<ServicePointsListTypes, 'LocationsByGeoLevel' | 'inventoriesArray'>;
+type MapStateToProps = Pick<ServicePointsListTypes, 'inventoriesArray'>;
 type MapDispatchToProps = Pick<ServicePointsListTypes, 'fetchInventories'>;
 
-const mapStateToProps = (
-  state: Partial<Store>,
-  ownProps: ServicePointsListTypes
-): MapStateToProps => {
+const mapStateToProps = (state: Partial<Store>): MapStateToProps => {
   // get query value
-  const searchText = getQueryParams(ownProps.location)[SEARCH_QUERY_PARAM] as string;
-  const filters = {
-    geoLevel: ownProps.geoLevel,
-    searchQuery: searchText,
-  };
-  const searchedLocations = locationsBySearchSelector(state, filters);
   const inventoriesArray = getInventoriesArray(state);
-  return { LocationsByGeoLevel: searchedLocations, inventoriesArray };
+  return {
+    inventoriesArray,
+  };
 };
 
 const mapDispatchToProps: MapDispatchToProps = {

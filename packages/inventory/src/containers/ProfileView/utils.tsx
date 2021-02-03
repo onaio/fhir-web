@@ -2,6 +2,7 @@ import React from 'react';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
+import { TreeNode } from '@opensrp/location-management';
 import {
   ACTIONS_TH,
   PRODUCT_NAME_TH,
@@ -99,3 +100,16 @@ export const columns: ColumnsType<TableData> = [
     width: '20%',
   },
 ];
+
+/** function to get the location object by geographic level
+ *
+ * @param node - node
+ */
+export const getLocationByGeographicLevel = (node: TreeNode): string[] => {
+  const nodeOfInterest = [];
+  while (node.parent) {
+    nodeOfInterest[node.model.node.attributes.geographicLevel] = node.model.label;
+    node = node.parent;
+  }
+  return nodeOfInterest;
+};

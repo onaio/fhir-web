@@ -54,11 +54,9 @@
   font-size: 20px;
   line-height: 28px;
 }
-.geography-item {
-}
 
 .geography-item .item {
   color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
-  line-height: 22px;
+  line-height: 16px;
 }
