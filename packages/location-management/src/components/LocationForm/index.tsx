@@ -83,13 +83,13 @@ const formItemLayout = {
       span: 24,
     },
     sm: {
-      span: 24,
+      span: 4,
     },
     md: {
-      span: 24,
+      span: 4,
     },
     lg: {
-      span: 12,
+      span: 6,
     },
   },
   wrapperCol: {
@@ -97,13 +97,13 @@ const formItemLayout = {
       span: 24,
     },
     sm: {
-      span: 24,
+      span: 18,
     },
     md: {
-      span: 20,
+      span: 16,
     },
     lg: {
-      span: 12,
+      span: 14,
     },
   },
 };
