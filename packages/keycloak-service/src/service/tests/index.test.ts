@@ -3,9 +3,9 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { getDefaultHeaders, getFetchOptions } from '../../index';
 import fetch from 'jest-fetch-mock';
-import { getFilterParams, KeycloakService } from '../serviceClass';
+import { customFetch, getFilterParams, KeycloakService } from '../serviceClass';
 import { keycloakUser, OpenSRPAPIResponse } from './fixtures';
-import { HTTPError, throwHTTPError, throwNetworkError } from '../errors';
+import { HTTPError, throwHTTPError, throwNetworkError, NetworkError } from '../errors';
 
 const getAccessToken = (): Promise<string> =>
   new Promise((resolve, _) => {
@@ -82,6 +82,29 @@ describe('services/keycloak', () => {
     expect(fetch.mock.calls).toEqual([
       [
         'https://keycloak-test.smartregister.org/auth/realms/users',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
+  it('KeycloakService list method params work', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const service = new KeycloakService(
+      'users',
+      'https://keycloak-test.smartregister.org/auth/realms/'
+    );
+
+    await service.list({ first: 0, max: 20 });
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://keycloak-test.smartregister.org/auth/realms/users?first=0&max=20',
         {
           headers: {
             accept: 'application/json',
@@ -190,6 +213,32 @@ describe('services/keycloak', () => {
     );
     const result = await usersService.read(keycloakUser.id);
     expect(result).toEqual(null);
+  });
+
+  it('customFetch handles errors', async () => {
+    try {
+      await customFetch('https://keycloak-test.smartregister.org/auth/realms/users', null);
+    } catch (e) {
+      expect(e).toEqual(new NetworkError());
+    }
+  });
+
+  it('getURL works correctly', async () => {
+    // without params
+    const url = KeycloakService.getURL(
+      'https://keycloak-test.smartregister.org/auth/realms/users',
+      null
+    );
+    expect(url).toEqual('https://keycloak-test.smartregister.org/auth/realms/users');
+    // with params
+    const params = { first: 0, max: 20 };
+    const url2 = KeycloakService.getURL(
+      'https://keycloak-test.smartregister.org/auth/realms/users',
+      params
+    );
+    expect(url2).toEqual(
+      'https://keycloak-test.smartregister.org/auth/realms/users?first=0&max=20'
+    );
   });
 
   it('KeycloakService read method should handle http errors', async () => {
