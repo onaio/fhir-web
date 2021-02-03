@@ -10,12 +10,15 @@ import {
   URL_USER,
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   URL_USER_CREDENTIALS,
+} from '../../../constants';
+import { OpenSRPService } from '@opensrp/react-utils';
+import {
+  MESSAGE_USER_EDITED,
+  MESSAGE_USER_CREATED,
   ERROR_OCCURED,
   PRACTITIONER_UPDATED_SUCCESSFULLY,
   PRACTITIONER_CREATED_SUCCESSFULLY,
-} from '../../../constants';
-import { OpenSRPService } from '@opensrp/react-utils';
-import { MESSAGE_USER_EDITED, MESSAGE_USER_CREATED } from '../../../lang';
+} from '../../../lang';
 import { Practitioner } from '.';
 
 /** Utility function to set new user UUID extracted from the
