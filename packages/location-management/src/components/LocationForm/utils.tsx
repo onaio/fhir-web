@@ -159,7 +159,8 @@ export const generateLocationUnit = (
     extraFields,
     username,
   } = formValues;
-  const geographicLevel = parentNode?.model.node.geographicLevel ?? 0;
+  const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? -1;
+  const thisGeoLevel = (parentGeographicLevel as number) + 1;
 
   // transform into an array for easier processing
   const serviceTypesValues = serviceTypes
@@ -177,7 +178,7 @@ export const generateLocationUnit = (
 
   const initialPayload = {
     properties: {
-      geographicLevel,
+      geographicLevel: thisGeoLevel,
       username: uName,
       externalId: externalId,
       parentId: parentId ?? '',
