@@ -99,7 +99,7 @@ type GetAccessTokenType = () => Promise<string | null>;
  * **To update an object**: service.update(theObject)
  */
 export class KeycloakAPIService {
-  public accessTokenOrCallBack: typeof handleSessionOrTokenExpiry;
+  public accessTokenOrCallBack: string | typeof handleSessionOrTokenExpiry;
   public baseURL: string;
   public endpoint: string;
   public generalURL: string;
