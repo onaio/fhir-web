@@ -22,7 +22,8 @@ import {
 } from '../../../ducks/user';
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED, URL_USER } from '../../../constants';
+import { URL_USER } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,

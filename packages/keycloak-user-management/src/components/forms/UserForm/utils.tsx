@@ -9,12 +9,13 @@ import {
   KEYCLOAK_URL_USERS,
   URL_USER,
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
+  URL_USER_CREDENTIALS,
   ERROR_OCCURED,
   PRACTITIONER_UPDATED_SUCCESSFULLY,
   PRACTITIONER_CREATED_SUCCESSFULLY,
-  URL_USER_CREDENTIALS,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
+import { MESSAGE_USER_EDITED, MESSAGE_USER_CREATED } from '../../../lang';
 import { Practitioner } from '.';
 
 /** Utility function to set new user UUID extracted from the
@@ -121,7 +122,7 @@ export const submitForm = (
           isEditing
         );
         setSubmitting(false);
-        sendSuccessNotification('User edited successfully');
+        sendSuccessNotification(MESSAGE_USER_EDITED);
         history.push(URL_USER);
       })
       .catch((_: Error) => {
@@ -147,7 +148,7 @@ export const submitForm = (
           isEditing
         );
         setSubmitting(false);
-        sendSuccessNotification('User created successfully');
+        sendSuccessNotification(MESSAGE_USER_CREATED);
       })
       .catch((_: Error) => {
         setSubmitting(false);

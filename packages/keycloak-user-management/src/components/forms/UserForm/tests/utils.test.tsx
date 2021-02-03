@@ -9,7 +9,7 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURED } from '../../../../constants';
+import { ERROR_OCCURED } from '../../../../lang';
 import * as fixtures from './fixtures';
 import { keycloakUser } from './fixtures';
 
