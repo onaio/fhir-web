@@ -99,7 +99,7 @@ type GetAccessTokenType = () => Promise<string | null>;
  * **To update an object**: service.update(theObject)
  */
 export class KeycloakAPIService {
-  public accessTokenOrCallBack: string | typeof handleSessionOrTokenExpiry;
+  public accessTokenOrCallBack: GetAccessTokenType | string;
   public baseURL: string;
   public endpoint: string;
   public generalURL: string;
@@ -116,7 +116,7 @@ export class KeycloakAPIService {
    * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
    */
   constructor(
-    accessTokenOrCallBack: string | typeof handleSessionOrTokenExpiry = handleSessionOrTokenExpiry,
+    accessTokenOrCallBack: GetAccessTokenType | string = handleSessionOrTokenExpiry,
     baseURL: string = KEYCLOAK_API_BASE_URL,
     endpoint: string,
     getPayload: typeof getFetchOptions = getFetchOptions,
