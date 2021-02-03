@@ -24,7 +24,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 import { practitioner1 } from '../../forms/UserForm/tests/fixtures';
 
 /* eslint-disable @typescript-eslint/camelcase */

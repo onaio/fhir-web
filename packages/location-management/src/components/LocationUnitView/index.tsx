@@ -19,11 +19,13 @@ import {
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
+} from '../../constants';
+import {
   ADD_LOCATION_UNIT,
   LOCATION_UNIT,
   LOCATION_UNIT_MANAGEMENT,
   ERROR_OCCURED,
-} from '../../constants';
+} from '../../lang';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import Tree from '../LocationTree';
@@ -197,7 +199,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">
-              {currentParentChildren.length ? tableData[0].name : 'Locations Unit'}
+              {currentParentChildren.length ? tableData[0].name : LOCATION_UNIT}
             </h5>
             <div>
               <Link
