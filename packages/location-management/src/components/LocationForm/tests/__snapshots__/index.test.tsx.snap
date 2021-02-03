@@ -214,7 +214,7 @@ exports[`LocationForm renders correctly: instance label 1`] = `
 exports[`LocationForm renders correctly: isJurisdiction field 1`] = `
 Array [
   <input
-    checked={true}
+    checked={false}
     className="ant-radio-input"
     disabled={false}
     onBlur={[Function]}
@@ -224,7 +224,7 @@ Array [
     value={false}
   />,
   <input
-    checked={false}
+    checked={true}
     className="ant-radio-input"
     disabled={false}
     onBlur={[Function]}
