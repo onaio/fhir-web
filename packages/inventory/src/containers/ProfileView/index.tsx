@@ -26,6 +26,10 @@ import {
   GET_INVENTORY_BY_SERVICE_POINT,
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   tablePaginationOptions,
+  LOCATION,
+  REGION,
+  DISTRICT,
+  COMMUNE,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
@@ -34,6 +38,12 @@ import {
   EDIT_SERVICE_POINT,
   INVENTORY_ITEMS,
   ERROR_OCCURRED,
+  REGION_LABEL,
+  DISTRICT_LABEL,
+  TYPE_LABEL,
+  LAT_LONG_LABEL,
+  COMMUNE_LABEL,
+  SERVICE_POINT_ID_LABEL,
 } from '../../lang';
 import { TableData } from './utils';
 import '../../index.css';
@@ -121,7 +131,7 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
 
   useEffect(() => {
     const getLocationById = () => {
-      const serve = new OpenSRPService('location', opensrpBaseURL);
+      const serve = new OpenSRPService(LOCATION, opensrpBaseURL);
       serve
         // eslint-disable-next-line @typescript-eslint/camelcase
         .read(spId, { is_jurisdiction: true })
@@ -160,12 +170,12 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
             </Link>
             <p className="title">{locationName}</p>
             <Row>
-              <GeographyItem label="Region" value={locationGeographicKeys[1]} />
-              <GeographyItem label="Type" value="CSB 1" />
-              <GeographyItem label="District" value={locationGeographicKeys[2]} />
-              <GeographyItem label="Latitude/longitude" value={'-'} />
-              <GeographyItem label="Commune" value={locationGeographicKeys[3]} />
-              <GeographyItem label="Service point ID" value={spId} />
+              <GeographyItem label={REGION_LABEL} value={locationGeographicKeys[REGION]} />
+              <GeographyItem label={TYPE_LABEL} value="CSB 1" />
+              <GeographyItem label={DISTRICT_LABEL} value={locationGeographicKeys[DISTRICT]} />
+              <GeographyItem label={LAT_LONG_LABEL} value={'-'} />
+              <GeographyItem label={COMMUNE_LABEL} value={locationGeographicKeys[COMMUNE]} />
+              <GeographyItem label={SERVICE_POINT_ID_LABEL} value={spId} />
             </Row>
           </Col>
           <Col md={8} className="flex-center">

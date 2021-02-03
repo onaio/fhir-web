@@ -23,4 +23,11 @@ export const ACCOUNT_END_DT_TH = 'Acct. end dt.';
 export const UNICEF_SECTION_TH = 'Unicef section';
 export const DONOR_TH = 'Donor';
 
+export const REGION_LABEL = 'Region';
+export const TYPE_LABEL = 'Type';
+export const DISTRICT_LABEL = 'District';
+export const LAT_LONG_LABEL = 'Latitude/longitude';
+export const COMMUNE_LABEL = 'Commune';
+export const SERVICE_POINT_ID_LABEL = 'Service point ID';
+
 export const ERROR_OCCURRED = 'An error occurred';

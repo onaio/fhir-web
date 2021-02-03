@@ -23,6 +23,7 @@ export const tablePaginationOptions = {
 
 //endpoints
 export const GET_INVENTORY_BY_SERVICE_POINT = 'stockresource/servicePointId/';
+export const LOCATION = 'location';
 
 //payload
 export const inventory1 = {
@@ -52,3 +53,8 @@ export const inventory2 = {
   serialNumber: '1234serial2',
   providerId: 'providerId',
 };
+
+// Geographic levels
+export const REGION = 1;
+export const DISTRICT = 2;
+export const COMMUNE = 3;
