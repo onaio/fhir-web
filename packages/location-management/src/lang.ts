@@ -2,19 +2,19 @@ import i18n from './mls';
 
 // Errors
 export const ERROR_OCCURED = i18n.t('An error occurred');
-export const ERROR_PARENTID_STRING = i18n.t('Parentid must be a String');
-export const ERROR_NAME_STRING = i18n.t('Name must be a String');
-export const ERROR_NAME_REQUIRED = i18n.t('Name is Required');
-export const ERROR_STATUS_REQUIRED = i18n.t('Status is Required');
-export const ERROR_TYPE_STRING = i18n.t('Type must be a String');
-export const ERROR_TYPE_REQUIRED = i18n.t('Type is Required');
-export const ERROR_EXTERNAL_ID_STRING = i18n.t('External id must be a String');
-export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('location Unit Groupss must be an Array');
-export const ERROR_GEOMETRY_STRING = i18n.t('location Unit Groups must be a An String');
+export const ERROR_PARENTID_STRING = i18n.t('Parent ID must be a string');
+export const ERROR_NAME_STRING = i18n.t('Name must be a string');
+export const ERROR_NAME_REQUIRED = i18n.t('Name is required');
+export const ERROR_STATUS_REQUIRED = i18n.t('Status is required');
+export const ERROR_TYPE_STRING = i18n.t('Type must be a string');
+export const ERROR_TYPE_REQUIRED = i18n.t('Type is required');
+export const ERROR_EXTERNAL_ID_STRING = i18n.t('External ID must be a string');
+export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('Location Unit  must be an array');
+export const ERROR_GEOMETRY_STRING = i18n.t('Location Unit Group must be a a string');
 
 // Messages
-export const MESSAGE_LOCATION_UNIT_UPDATED = i18n.t('Location Unit Updated successfully');
-export const MESSAGE_LOCATION_UNIT_CREATED = i18n.t('Location Unit Created successfully');
+export const MESSAGE_LOCATION_UNIT_UPDATED = i18n.t('Location Unit updated successfully');
+export const MESSAGE_LOCATION_UNIT_CREATED = i18n.t('Location Unit created successfully');
 
 // Rendered text
 export const LOCATION_UNIT = i18n.t('Location Unit');
