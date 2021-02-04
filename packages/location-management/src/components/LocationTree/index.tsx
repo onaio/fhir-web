@@ -75,11 +75,9 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     let nodeKey = '';
     tree.forEach((node) => {
       if (node.children) {
-        if (node.children.some((item: ParsedHierarchyNode) => item.parent === key)) {
+        if (node.children.some((item: ParsedHierarchyNode) => item.key === key)) {
           nodeKey = key;
         } else if (getParentKey(key, node.children)) return getParentKey(key, node.children);
-      } else {
-        nodeKey = node.id;
       }
     });
     return nodeKey;
@@ -123,7 +121,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         const beforeStr = item.title.toLowerCase().substr(0, index);
         const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
         const title = (
-          <span>
+          <span key={item.id}>
             {searchValue.length > 0 && index > -1 ? (
               <>
                 {beforeStr}
@@ -139,7 +137,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         return {
           // important : we are mixing the antTreeProps with ParsedHierarchyNode
           data: item,
-          key: item.id,
+          key: item.key,
           title: title,
           children: item.children?.length ? buildTreeData(item.children) : [],
         } as AntTreeProps;
@@ -182,8 +180,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const node = (antTreeNode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
-          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
-          const index = expandedKeys.indexOf(node.id);
+          const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
+          const index = expandedKeys.indexOf(node.key);
           if (index > -1) {
             allExpandedKeys.splice(index, 1);
           }
