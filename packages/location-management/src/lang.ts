@@ -2,15 +2,21 @@ import i18n from './mls';
 
 // Errors
 export const ERROR_OCCURED = i18n.t('An error occurred');
-export const ERROR_PARENTID_STRING = i18n.t('Parent ID must be a string');
-export const ERROR_NAME_STRING = i18n.t('Name must be a string');
+export const ERROR_PARENTID_STRING = i18n.t(
+  'Parent ID can only contain letters, numbers and spaces'
+);
+export const ERROR_NAME_STRING = i18n.t('Name can only contain letters, numbers and spaces');
 export const ERROR_NAME_REQUIRED = i18n.t('Name is required');
 export const ERROR_STATUS_REQUIRED = i18n.t('Status is required');
-export const ERROR_TYPE_STRING = i18n.t('Type must be a string');
+export const ERROR_TYPE_STRING = i18n.t('Type must can only contain letters, numbers and spaces');
 export const ERROR_TYPE_REQUIRED = i18n.t('Type is required');
-export const ERROR_EXTERNAL_ID_STRING = i18n.t('External ID must be a string');
+export const ERROR_EXTERNAL_ID_STRING = i18n.t(
+  'External ID must can only contain letters, numbers and spaces'
+);
 export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('Location Unit  must be an array');
-export const ERROR_GEOMETRY_STRING = i18n.t('Location Unit Group must be a a string');
+export const ERROR_GEOMETRY_STRING = i18n.t(
+  'Location Unit Group can only contain letters, numbers and spaces'
+);
 
 // Messages
 export const MESSAGE_LOCATION_UNIT_UPDATED = i18n.t('Location Unit updated successfully');
