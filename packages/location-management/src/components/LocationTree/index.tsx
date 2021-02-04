@@ -55,11 +55,10 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (locationTreeState) {
       setExpandedKeys(locationTreeState.keys);
-
-      const newnode = getHierarchyNodeFromArray(data, locationTreeState.node.id);
+      const newnode = getHierarchyNodeFromArray(filterData, locationTreeState.node.id);
       if (newnode) {
         OnItemClick(newnode);
-        expandTree(newnode.key);
+        expandTree(newnode.id);
         return; // stops the execution of loopmail
       }
     }
@@ -77,8 +76,10 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     tree.forEach((node) => {
       if (node.children) {
         if (node.children.some((item: ParsedHierarchyNode) => item.parent === key)) {
-          nodeKey = node.key;
+          nodeKey = key;
         } else if (getParentKey(key, node.children)) return getParentKey(key, node.children);
+      } else {
+        nodeKey = node.id;
       }
     });
     return nodeKey;
@@ -115,34 +116,37 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
    */
-  function buildTreeData(data: ParsedHierarchyNode[]): AntTreeProps[] {
-    return data.map((item) => {
-      const index = item.title.toLowerCase().indexOf(searchValue);
-      const beforeStr = item.title.toLowerCase().substr(0, index);
-      const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
-      const title = (
-        <span>
-          {searchValue.length > 0 && index > -1 ? (
-            <>
-              {beforeStr}
-              <span className="searchValue">{searchValue}</span>
-              {afterStr}
-            </>
-          ) : (
-            item.title
-          )}
-        </span>
-      );
+  const buildTreeData = React.useCallback(
+    (data: ParsedHierarchyNode[]): AntTreeProps[] => {
+      return data.map((item) => {
+        const index = item.title.toLowerCase().indexOf(searchValue);
+        const beforeStr = item.title.toLowerCase().substr(0, index);
+        const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
+        const title = (
+          <span>
+            {searchValue.length > 0 && index > -1 ? (
+              <>
+                {beforeStr}
+                <span className="searchValue">{searchValue}</span>
+                {afterStr}
+              </>
+            ) : (
+              item.title
+            )}
+          </span>
+        );
 
-      return {
-        // important : we are mixing the antTreeProps with ParsedHierarchyNode
-        data: item,
-        key: item.key,
-        title: title,
-        children: item.children ? buildTreeData(item.children) : undefined,
-      } as AntTreeProps;
-    });
-  }
+        return {
+          // important : we are mixing the antTreeProps with ParsedHierarchyNode
+          data: item,
+          key: item.id,
+          title: title,
+          children: item.children?.length ? buildTreeData(item.children) : [],
+        } as AntTreeProps;
+      });
+    },
+    [searchValue]
+  );
 
   /** Generate filter data to later used to compare and filter keys on input with ant tree node
    *
@@ -178,13 +182,13 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const node = (antTreeNode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
-          const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
-          setSelectedKey([allExpandedKeys[allExpandedKeys.length - 1]]);
-          dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
-          const index = expandedKeys.indexOf(node.key);
+          const allExpandedKeys = [...new Set([...expandedKeys, node.id])];
+          const index = expandedKeys.indexOf(node.id);
           if (index > -1) {
             allExpandedKeys.splice(index, 1);
           }
+          setSelectedKey([allExpandedKeys[allExpandedKeys.length - 1]]);
+          dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
           onExpand(allExpandedKeys);
         }}
         selectedKeys={selectedKey}
