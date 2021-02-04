@@ -186,19 +186,19 @@ export const defaultPostLocationParams = {
 
 /**
  * @param payload - the payload
- * @param baseURL -  base url of api
+ * @param openSRPBaseURL -  base url of api
  * @param service - the opensrp service
  * @param isEdit - help decide whether to post or put plan
  * @param params - params to add to url
  */
 export async function postPutLocationUnit(
   payload: LocationUnit,
-  baseURL: string,
+  openSRPBaseURL: string = baseURL,
   service = OpenSRPService,
   isEdit = true,
   params: URLParams = defaultPostLocationParams
 ) {
-  const serve = new service(LOCATION_UNIT_ENDPOINT, baseURL);
+  const serve = new service(LOCATION_UNIT_ENDPOINT, openSRPBaseURL);
   if (isEdit) {
     return serve.update(payload, params).catch((err: Error) => {
       throw err;
