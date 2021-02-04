@@ -84,7 +84,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
       description: undefined,
-      message: 'Location Unit Created successfully',
+      message: 'Location Unit created successfully',
     });
   });
 
@@ -207,7 +207,7 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
 
     expect(mockNotificationSuccess).toHaveBeenCalledWith({
       description: undefined,
-      message: 'Location Unit Updated successfully',
+      message: 'Location Unit updated successfully',
     });
   });
 
