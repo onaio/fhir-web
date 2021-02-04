@@ -34,6 +34,7 @@ import {
   MISSIONS,
   SERVICE_POINT_INVENTORY,
   INVENTORY,
+  URL_INVENTORY_ITEM_ADD,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -126,7 +127,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         {ENABLE_INVENTORY && (
           <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
             <Menu.Item key="list">
-              <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
+              <Link to={URL_INVENTORY_ITEM_ADD} className="admin-link">
                 {SERVICE_POINT_INVENTORY}
               </Link>
             </Menu.Item>

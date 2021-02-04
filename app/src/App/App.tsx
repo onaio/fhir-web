@@ -42,6 +42,7 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_INVENTORY_ITEM_ADD,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -117,10 +118,15 @@ import {
   trashPlansListStatusProp,
   missionAssignmentProps,
   inventoryServiceProps,
+  inventoryItemAddEditProps,
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW, ConnectedServicePointList } from '@opensrp/inventory';
+import {
+  INVENTORY_SERVICE_POINT_LIST_VIEW,
+  ConnectedServicePointList,
+  InventoryAddEdit,
+} from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 
 const { Content } = Layout;
@@ -467,6 +473,14 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_GROUP_EDIT}
               component={LocationUnitGroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_INVENTORY_ITEM_ADD}
+              {...inventoryItemAddEditProps}
+              component={InventoryAddEdit}
             />
             <Route
               exact

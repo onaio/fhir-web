@@ -4,3 +4,4 @@ export * from './constants';
 export * from './components/ProductForm';
 export * from './components/CreateProduct';
 export * from './components/EditProduct';
+export * from './helpers/dataLoaders';

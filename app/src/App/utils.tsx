@@ -109,3 +109,8 @@ export const missionAssignmentProps = {
   showMissionData: true,
   assignGeoLevel: PLAN_ASSIGNMENT_AT_GEO_LEVEL,
 };
+
+export const inventoryItemAddEditProps = {
+  openSRPBaseURL: OPENSRP_API_BASE_URL,
+  cancelURL: '',
+};
