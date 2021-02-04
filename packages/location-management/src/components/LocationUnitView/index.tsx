@@ -15,7 +15,7 @@ import {
 } from '../../ducks/location-units';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
-  LOCATION_UNIT_FINDBYPROPERTIES,
+  LOCATION_UNIT_FIND_BY_PROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GET,
   URL_LOCATION_UNIT_ADD,
@@ -83,7 +83,7 @@ export async function loadSingleLocation(
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
 export async function getBaseTreeNode(opensrpBaseURL: string) {
-  const serve = new OpenSRPService(LOCATION_UNIT_FINDBYPROPERTIES, opensrpBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
   return await serve
     .list({
       is_jurisdiction: true,

@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
-import { baseURL, LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../constants';
-import { ACTIVE } from '../lang';
+import {
+  ACTIVE,
+  baseURL,
+  LOCATION_HIERARCHY,
+  LOCATION_UNIT_FIND_BY_PROPERTIES,
+} from '../constants';
 import { fetchLocationUnits, LocationUnit } from '../ducks/location-units';
 import { fetchTree } from '../ducks/locationHierarchy';
 import { RawOpenSRPHierarchy } from '../ducks/locationHierarchy/types';
@@ -73,25 +77,32 @@ export const defaultParamFilters: ParamFilters = {
   geographicLevel: 0,
 };
 
-/** loader function to get jurisdictions by geographic level
+/**
+ * loader function to get jurisdictions by geographic level
  *
  * @param dispatcher - called with response, adds data to store
  * @param openSRPBaseURL - the openSRP api base url
  * @param urlParams - search params to be added to request
  * @param filterParams - filterParams for property_filter search_param
  * @param service - openSRP service class
+ * @param endpoint - the openSRP endpoint
  */
 export async function loadJurisdictions(
   dispatcher?: typeof fetchLocationUnits,
   openSRPBaseURL: string = baseURL,
   urlParams: GetLocationParams = defaultGetLocationParams,
   filterParams: ParamFilters = defaultParamFilters,
-  service: typeof OpenSRPService = OpenSRPService
+  service: typeof OpenSRPService = OpenSRPService,
+  endpoint: string = LOCATION_UNIT_FIND_BY_PROPERTIES
 ) {
-  const serve = new service(LOCATION_UNIT_FINDBYPROPERTIES, openSRPBaseURL);
+  const serve = new service(endpoint, openSRPBaseURL);
+  const filterParamsObject =
+    Object.values(filterParams).length > 0
+      ? { properties_filter: service.getFilterParams(filterParams as Dictionary) }
+      : {};
   const params = {
     ...urlParams,
-    properties_filter: service.getFilterParams(filterParams as Dictionary),
+    ...filterParamsObject,
   } as Dictionary;
   return serve
     .list(params)
