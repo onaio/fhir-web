@@ -35,7 +35,7 @@ Array [
         className="admin-link"
         to="/missions/trash"
       >
-        Trash
+        Retired
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -97,7 +97,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Locations unit
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
@@ -105,7 +105,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Locations unit group
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>
@@ -176,7 +176,7 @@ Array [
         className="admin-link"
         to="/missions/trash"
       >
-        Trash
+        Retired
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -238,7 +238,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Locations unit
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
@@ -246,7 +246,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Locations unit group
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>
@@ -317,7 +317,7 @@ Array [
         className="admin-link"
         to="/missions/trash"
       >
-        Trash
+        Retired
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -387,7 +387,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Locations unit
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
@@ -395,7 +395,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Locations unit group
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>
@@ -466,7 +466,7 @@ Array [
         className="admin-link"
         to="/missions/trash"
       >
-        Trash
+        Retired
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -528,7 +528,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Locations unit
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
@@ -536,7 +536,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Locations unit group
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>
@@ -607,7 +607,7 @@ Array [
         className="admin-link"
         to="/missions/trash"
       >
-        Trash
+        Retired
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -669,7 +669,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Locations unit
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
@@ -677,7 +677,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Locations unit group
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>
@@ -748,7 +748,7 @@ Array [
         className="admin-link"
         to="/missions/trash"
       >
-        Trash
+        Retired
       </Link>
     </MenuItem>
   </SubMenu>,
