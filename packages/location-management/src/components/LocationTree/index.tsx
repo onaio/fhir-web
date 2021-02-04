@@ -148,14 +148,22 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    *
    * @param {Array<ParsedHierarchyNode>} data the tree data to preprocess
    */
-  function generateFilterData(data: ParsedHierarchyNode[]) {
-    data.forEach((node) => {
-      filterData.push({ ...node, title: node.key });
-      if (node.children) generateFilterData(node.children);
-    });
-  }
+  const generateFilterData = React.useCallback(
+    (data: ParsedHierarchyNode[]) => {
+      data.forEach((node) => {
+        filterData.push({ ...node });
+        if (node.children) {
+          generateFilterData(node.children);
+        }
+      });
+    },
+    [filterData]
+  );
 
-  generateFilterData(data);
+  React.useMemo(() => {
+    generateFilterData(data);
+  }, [data, generateFilterData]);
+
   return (
     <div>
       <Input
