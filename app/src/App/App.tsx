@@ -122,8 +122,9 @@ import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
   ConnectedServicePointList,
-  ConnectedServicePointProfile,
+  ServicePointProfile,
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 
@@ -313,9 +314,9 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={`${INVENTORY_SERVICE_POINT_LIST_VIEW}/:servicePointId`}
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:servicePointId`}
               {...inventoryServiceProps}
-              component={ConnectedServicePointProfile}
+              component={ServicePointProfile}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

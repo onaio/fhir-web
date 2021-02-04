@@ -2,7 +2,7 @@ import React from 'react';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
-import { TreeNode } from '@opensrp/location-management';
+import { LocationUnit, TreeNode } from '@opensrp/location-management';
 import {
   ACTIONS_TH,
   PRODUCT_NAME_TH,
@@ -14,6 +14,7 @@ import {
   UNICEF_SECTION_TH,
   DONOR_TH,
 } from '../../lang';
+import { GeographicLocationInterface } from '.';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
@@ -101,15 +102,28 @@ export const columns: ColumnsType<TableData> = [
   },
 ];
 
-/** function to get the location object by geographic level
+/**
+ * function to get the parent path of a location
  *
- * @param node - node
+ * @param loc - the location whose path we want
+ * @param trees - the tree nodes containing the hierarchy
  */
-export const getLocationByGeographicLevel = (node: TreeNode): string[] => {
-  const nodeOfInterest = [];
-  while (node.parent) {
-    nodeOfInterest[node.model.node.attributes.geographicLevel] = node.model.label;
-    node = node.parent;
+export const getNodePath = (
+  loc: LocationUnit,
+  trees: TreeNode[] = []
+): GeographicLocationInterface[] => {
+  const { parentId } = loc.properties;
+  // find tree with node that has the given id
+  let nodeOfInterest: TreeNode | undefined;
+  trees.forEach((tree) => {
+    nodeOfInterest = tree.first((node) => node.model.id === parentId);
+  });
+  if (!nodeOfInterest) {
+    return [];
   }
-  return nodeOfInterest;
+  // get path
+  const path = nodeOfInterest.getPath().map((node) => {
+    return { geographicLevel: node.model.node.attributes.geographicLevel, label: node.model.label };
+  });
+  return path;
 };

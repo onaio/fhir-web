@@ -51,6 +51,30 @@
 
 .inventory-profile-header .title {
   color: rgba(0, 0, 0, 0.85);
+}
+
+.full-page-card .ant-card-head-title {
+  padding: 0;
+}
+
+.card-title__icon {
+  font-size: 35px;
+}
+
+.custom-btn-success {
+  background-color: #389e0d;
+  color: #fff;
+}
+
+.custom-btn-success:hover,
+.custom-btn-success:link,
+.custom-btn-success:active,
+.custom-btn-success:visited {
+  background-color: #389e0d;
+  color: #fff;
+}
+
+.card-title__text {
   font-size: 20px;
   line-height: 28px;
 }
@@ -59,4 +83,16 @@
   color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
   line-height: 16px;
+}
+
+.full-page-card {
+  min-height: 80vh;
+}
+
+.round-button {
+  border-radius: 5px;
+}
+
+.margin-1 {
+  margin: 5px;
 }

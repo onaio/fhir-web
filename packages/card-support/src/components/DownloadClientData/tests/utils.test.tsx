@@ -15,7 +15,7 @@ import { DownloadClientDataFormFields } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../constants';
+import { ERROR_OCCURRED } from '../../../lang';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/camelcase */
 

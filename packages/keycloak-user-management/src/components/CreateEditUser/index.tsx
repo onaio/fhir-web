@@ -11,9 +11,9 @@ import { UserForm, UserFormProps, defaultInitialValues, Practitioner } from '../
 import {
   ROUTE_PARAM_USER_ID,
   KEYCLOAK_URL_USERS,
-  ERROR_OCCURED,
   OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
 } from '../../constants';
+import { ERROR_OCCURED } from '../../lang';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,

@@ -4,15 +4,13 @@ import { useParams, useLocation } from 'react-router';
 import { getAccessToken } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
-  LOCATION_UNIT_FINDBYPROPERTIES,
+  LOCATION_UNIT_FIND_BY_PROPERTIES,
   LOCATION_HIERARCHY,
   LOCATION_UNIT_GROUP_ALL,
-  ADD_LOCATION_UNIT,
-  EDIT_LOCATION_UNIT,
-  LOCATION_UNIT_EXTRAFIELDS,
-  LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER,
-  ERROR_OCCURED,
+  LOCATION_UNIT_EXTRA_FIELDS,
+  LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER,
 } from '../../constants';
+import { ADD_LOCATION_UNIT, EDIT_LOCATION_UNIT, ERROR_OCCURED } from '../../lang';
 import {
   ExtraField,
   fetchLocationUnits,
@@ -49,7 +47,7 @@ export interface Props {
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
 export async function getBaseTreeNode(opensrpBaseURL: string) {
-  const serve = new OpenSRPService(LOCATION_UNIT_FINDBYPROPERTIES, opensrpBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
   return await serve
     .list({
       // eslint-disable-next-line @typescript-eslint/camelcase
@@ -158,7 +156,7 @@ export const LocationUnitAddEdit: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (!extrafields) {
       const serve = new OpenSRPService(
-        LOCATION_UNIT_EXTRAFIELDS + `&identifier=${LOCATION_UNIT_EXTRAFIELDS_IDENTIFIER}`,
+        LOCATION_UNIT_EXTRA_FIELDS + `&identifier=${LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER}`,
         opensrpBaseURL
       );
       serve

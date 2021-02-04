@@ -13,15 +13,20 @@ import {
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
   URL_USER,
+} from '../../constants';
+import {
   CREDENTIALS,
-  PASSWORD_MATCH_FAILURE,
+  ERROR_PASSWORD_MISMATCH,
   RESET_PASSWORD,
   CANCEL,
-  INPUT_PASSWORD,
   CONFIRM_PASSWORD,
   CREDENTIALS_UPDATED_SUCCESSFULLY,
   ERROR_OCCURED,
-} from '../../constants';
+  TEMPORARY,
+  PASSWORD,
+  ERROR_CONFIRM_PASSWORD_REQUIRED,
+  ERROR_PASSWORD_REQUIRED,
+} from '../../lang';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -153,11 +158,11 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
           >
             <Form.Item
               name="password"
-              label="Password"
+              label={PASSWORD}
               rules={[
                 {
                   required: true,
-                  message: INPUT_PASSWORD,
+                  message: ERROR_PASSWORD_REQUIRED,
                 },
               ]}
               hasFeedback
@@ -167,27 +172,27 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
 
             <Form.Item
               name="confirm"
-              label="Confirm Password"
+              label={CONFIRM_PASSWORD}
               dependencies={['password']}
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: CONFIRM_PASSWORD,
+                  message: ERROR_CONFIRM_PASSWORD_REQUIRED,
                 },
                 ({ getFieldValue }) => ({
                   validator(rule, value) {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(PASSWORD_MATCH_FAILURE);
+                    return Promise.reject(ERROR_PASSWORD_MISMATCH);
                   },
                 }),
               ]}
             >
               <Input.Password />
             </Form.Item>
-            <Form.Item name="temporary" label="Temporary" valuePropName="checked">
+            <Form.Item name="temporary" label={TEMPORARY} valuePropName="checked">
               <Switch />
             </Form.Item>
             <Form.Item {...tailLayout}>

@@ -9,8 +9,16 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { deforest, removeLocationUnits } from '@opensrp/location-management';
-import { madagascar, madagascarTree } from './fixtures';
+import { madagascar, madagascarTree, structure1, structures } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
+import { getNodePath } from '../utils';
+import { generateJurisdictionTree } from '@opensrp/location-management';
+import * as notifications from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -54,7 +62,7 @@ describe('List view Page', () => {
   });
 
   it('renders correctly', async () => {
-    fetch.once(JSON.stringify([])).once(JSON.stringify({}));
+    fetch.once(JSON.stringify([])).once(JSON.stringify([])).once(JSON.stringify({}));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -86,7 +94,10 @@ describe('List view Page', () => {
   });
 
   it('renders when data is present', async () => {
-    fetch.once(JSON.stringify([madagascar])).once(JSON.stringify(madagascarTree));
+    fetch
+      .once(JSON.stringify(structures))
+      .once(JSON.stringify([madagascar]))
+      .once(JSON.stringify(madagascarTree));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -112,6 +123,17 @@ describe('List view Page', () => {
     // check fetch calls made
     expect(fetch.mock.calls).toEqual([
       [
+        'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer iLoveOov',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
         'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
         {
           headers: {
@@ -136,22 +158,23 @@ describe('List view Page', () => {
     ]);
 
     // look for pagination
-    expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(
-      `"12345•••5425 / pageGo to"`
-    );
+    expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(`"15 / page"`);
 
     wrapper.unmount();
   });
 
   it('filers data correctly', async () => {
-    fetch.once(JSON.stringify([madagascar])).once(JSON.stringify(madagascarTree));
+    fetch
+      .once(JSON.stringify(structures))
+      .once(JSON.stringify([madagascar]))
+      .once(JSON.stringify(madagascarTree));
 
     const props = {
       history,
       location: {
         hash: '',
         pathname: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
-        search: `?${SEARCH_QUERY_PARAM}=03176924-6b3c-4b74-bccd-32afcceebabd`,
+        search: `?${SEARCH_QUERY_PARAM}=mbodis`,
         state: {},
       },
       match: {
@@ -212,5 +235,37 @@ describe('List view Page', () => {
 
     // no data
     expect(wrapper.text()).toMatchSnapshot('error broken page');
+  });
+
+  it('shows error message notification', async () => {
+    const errorMessage = 'Coughid';
+    fetch.once(JSON.stringify(structures));
+    fetch.mockReject(new Error(errorMessage));
+
+    const spy = jest.spyOn(notifications, 'sendErrorNotification');
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedServicePointList {...props}></ConnectedServicePointList>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(spy).toHaveBeenCalledWith(errorMessage);
+  });
+
+  it('branch test for getNodePath', async () => {
+    const sampleLocation = {
+      ...structure1,
+      properties: { ...structure1.properties, parentId: undefined },
+    };
+    const res = getNodePath(sampleLocation, [generateJurisdictionTree(madagascarTree)]);
+    expect(res).toEqual('');
   });
 });
