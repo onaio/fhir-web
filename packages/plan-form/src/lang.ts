@@ -63,13 +63,13 @@ export const MOSQUITO_COLLECTION_GOAL_MEASURE = i18n.t(
 
 export const PRODUCT_CHECK_ACTIVITY = i18n.t('Product Check');
 export const PRODUCT_CHECK_ACTIVITY_DESCRIPTION = i18n.t(
-  'Check for all products (100% within the jurisdiction'
+  'Check for all products (100% within the jurisdiction)'
 );
 export const PRODUCT_CHECK_GOAL_MEASURE = i18n.t('Percent of products checked');
 
 export const FIX_PRODUCT_PROBLEM_ACTIVITY = i18n.t('Fix Product Problem');
 export const FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION = i18n.t(
-  'Fix problems for all products (100% within the jurisdiction'
+  'Fix problems for all products (100% within the jurisdiction)'
 );
 export const FIX_PRODUCT_PROBLEM_GOAL_MEASURE = i18n.t('Percent of product problems fixed');
 
@@ -123,7 +123,7 @@ export const ACTIVITIES_LABEL = i18n.t('Activities');
 export const ADD = i18n.t('Add');
 export const ADD_ACTIVITY = i18n.t('Add Activity');
 export const ADD_CODED_ACTIVITY = i18n.t('Add %s Activity');
-export const AN_ERROR_OCCURRED = i18n.t('An Error Ocurred');
+export const AN_ERROR_OCCURRED = i18n.t('An Error Occurred');
 export const AND = i18n.t('and');
 export const CASE_NUMBER = i18n.t('Case Number');
 export const CONDITIONS_LABEL = i18n.t('Conditions');
