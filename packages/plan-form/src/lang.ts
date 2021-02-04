@@ -71,7 +71,7 @@ export const FIX_PRODUCT_PROBLEM_ACTIVITY = i18n.t('Fix Product Problem');
 export const FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION = i18n.t(
   'Fix problems for all products (100% within the jurisdiction'
 );
-export const FIX_PRODUCT_PROBLEM_GOAL_MEASURE = i18n.t('Percent of products problems fixed');
+export const FIX_PRODUCT_PROBLEM_GOAL_MEASURE = i18n.t('Percent of product problems fixed');
 
 export const RECORD_GPS_ACTIVITY = i18n.t('Record GPS');
 export const RECORD_GPS_ACTIVITY_DESCRIPTION = i18n.t(
@@ -81,7 +81,7 @@ export const RECORD_GPS_GOAL_MEASURE = i18n.t('Percent of GPS recorded');
 
 export const SERVICE_POINT_CHECK_ACTIVITY = i18n.t('Service Point');
 export const SERVICE_POINT_CHECK_ACTIVITY_DESCRIPTION = i18n.t(
-  'Conduct checks for all service point (100% within the Jurisdiction'
+  'Conduct checks for all service points (100% within the jurisdiction)'
 );
 export const SERVICE_POINT_CHECK_GOAL_MEASURE = i18n.t('Percent of service points checked');
 
@@ -127,7 +127,6 @@ export const AN_ERROR_OCCURRED = i18n.t('An Error Ocurred');
 export const AND = i18n.t('and');
 export const CASE_NUMBER = i18n.t('Case Number');
 export const CONDITIONS_LABEL = i18n.t('Conditions');
-export const DEFINITION_URI = i18n.t('Definition Uri');
 export const DESCRIPTION_LABEL = i18n.t('Description');
 export const DYNAMIC_FI_TITLE = i18n.t('Dynamic FI');
 export const DYNAMIC_IRS_TITLE = i18n.t('Dynamic IRS');
@@ -165,5 +164,5 @@ export const SUCCESSFULLY_CREATED = i18n.t('Successfully Created');
 export const ACTIVE_DATE_RANGE_LABEL = i18n.t('Active date range');
 export const ADD_JURISDICTION = i18n.t('Add Jurisdiction');
 export const CANCEL = i18n.t('Cancel');
-export const PLAN_TITLE_PLACEHOLDER = i18n.t("Enter the Plan's name");
-export const DESCRIPTION_PLACEHOLDER = i18n.t('Enter the plans Description');
+export const PLAN_TITLE_PLACEHOLDER = i18n.t("Enter the plan's name");
+export const DESCRIPTION_PLACEHOLDER = i18n.t("Enter the plan's description");
