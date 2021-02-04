@@ -13,7 +13,7 @@ import {
   FETCHING_LOCATIONS,
   FETCHING_LOCATIONS_DESCRIPTION,
 } from '../../lang';
-import { TreeNode } from '@opensrp/location-management';
+import { LocationUnit, TreeNode } from '@opensrp/location-management';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
@@ -94,13 +94,23 @@ export const ServicePointsLoading = ({
   );
 };
 
-/** function to get the parent path of a location
+/**
+ * function to get the parent path of a location
  *
- * @param node - node
+ * @param loc - the location whose path we want
+ * @param trees - the tree nodes containing the hierarchy
  */
-export const getNodePath = (node: TreeNode): string => {
-  if (!node.parent) {
-    return node.model.label;
+export const getNodePath = (loc: LocationUnit, trees: TreeNode[] = []): string => {
+  const { parentId } = loc.properties;
+  // find tree with node that has the given id
+  let nodeOfInterest: TreeNode | undefined;
+  trees.forEach((tree) => {
+    nodeOfInterest = tree.first((node) => node.model.id === parentId);
+  });
+  if (!nodeOfInterest) {
+    return '';
   }
-  return `${getNodePath(node.parent)} > ${node.model.label}`;
+  // get path
+  const path = nodeOfInterest.getPath().map((node) => node.model.label);
+  return path.join(' > ');
 };
