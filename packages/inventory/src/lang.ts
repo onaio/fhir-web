@@ -13,3 +13,53 @@ export const FETCHING_LOCATIONS_DESCRIPTION = i18n.t(
   'Please wait, while locations are being fetched'
 );
 export const LOADING_ELLIPSIS = i18n.t('Loading ...');
+export const ADD_INVENTORY_VIA_CSV = i18n.t('Add inventory via CSV');
+export const USE_CSV_TO_UPLOAD_INVENTORY = i18n.t('Use a CSV file to add service point inventory');
+export const CHANCE_TO_REVIEW_BEFORE_COMMITTING = i18n.t(
+  'You’ll get a chance to review before committing inventory updates.'
+);
+export const SELECT_CSV_FILE = i18n.t('Select CSV file');
+export const UPLOADING_CSV = i18n.t('Uploading %s ...');
+export const VALIDATING_CSV = i18n.t('Validating %s ...');
+export const DO_NOT_CANCEL = i18n.t('Do not close tab or navigate away.');
+export const CANCEL = i18n.t('Cancel');
+export const INVENTORY_IS_BEING_ADDED_TO_SERVICE_POINTS = i18n.t(
+  'Inventory is being added to service points…'
+);
+export const INVENTORY_MAY_TAKE_A_FEW_MINUTES_TO_APPEAR = i18n.t(
+  'Inventory may take a few minutes to appear.'
+);
+export const FILE_READY = i18n.t('“%s” ready');
+export const INVENTORY_ITEMS_SUCCESSFULLY_ADDED = i18n.t('“%s” inventory items successfully added');
+export const INVENTORY_ITEMS_WILL_BE_ADDED = i18n.t(
+  '%s inventory items will be added to service points. Do you wish to proced?'
+);
+export const PROCEED_WITH_ADDING_INVENTORY = i18n.t('Proceed with adding inventory');
+export const UPLOAD_ANOTHER_FILE = i18n.t('Upload another file');
+export const FILE_HAS_ERRORS = i18n.t('"%s" has errors');
+export const ROW_NUMBER = i18n.t('Row number');
+export const ERRORS = i18n.t('Errors');
+export const INVENTORY_PROCESSING_ERROR = i18n.t(
+  'Processing error: inventory items failed to be added'
+);
+export const INVENTORY_ITEMS_FAILED_TO_BE_ADDED = i18n.t(
+  '%s inventory items failed to be added from “%s”. To add items, follow these steps: '
+);
+export const EXTRACT_THE_ROWS_LISTED = i18n.t('Extract the rows listed below from "%s"');
+export const PASTE_THE_ROWS = i18n.t('Paste the rows into a new CSV file');
+export const UPLOAD_THE_CSV_FILE = i18n.t('Upload the CSV file');
+export const INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED = i18n.t(
+  'Inventory items from “%s” that were not added'
+);
+export const RETRY = i18n.t('Retry');
+export const CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS = i18n.t(
+  'Caution: do not re-upload the successful items or duplicates will be created.'
+);
+export const INVENTORY_ITEMS_NOT_LISTED_BELOW = i18n.t(
+  'Inventory items not listed below were successfully added to the'
+);
+export const INVENTORY_ITEMS_ADDED_TO = i18n.t('inventory items added to');
+export const RETRY_CSV_UPLOAD = i18n.t('retry csv upload');
+export const PLEASE_FIX_THE_ERRORS_LISTED_BELOW = i18n.t(
+  'please fix the errors listed below, then'
+);

@@ -111,11 +111,15 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
   });
 
   it('checks geo level is calculated correctly', async () => {
-    const parentgeo = findParentGeoLocation(
-      parsedHierarchy,
-      '400e9d97-4640-44f5-af54-6f4b314384f5'
+    expect(findParentGeoLocation(parsedHierarchy, '400e9d97-4640-44f5-af54-6f4b314384f5')).toEqual(
+      5
     );
-    expect(parentgeo).toEqual(5);
+
+    expect(findParentGeoLocation(parsedHierarchy, 'a26ca9c8-1441-495a-83b6-bb5df7698996')).toEqual(
+      0
+    );
+
+    expect(findParentGeoLocation(parsedHierarchy, 'test')).toEqual(undefined);
   });
 
   it('handles error when creating new location unit', async () => {
@@ -207,7 +211,27 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
     });
   });
 
-  it('fail create location unit successfully', async () => {
+  it('fail geoloaction fetch when create location unit', async () => {
+    const mockNotificationError = jest.spyOn(notification, 'error');
+
+    await onSubmit(
+      jest.fn,
+      { ...formValue, parentId: 'test' },
+      baseURL,
+      locationUnitgroups,
+      parsedHierarchy,
+      'user_test'
+    ).catch((e) => {
+      expect(e.message).toEqual(ERROR_OCCURED);
+    });
+
+    expect(mockNotificationError).toHaveBeenCalledWith({
+      description: undefined,
+      message: ERROR_OCCURED,
+    });
+  });
+
+  it('fail create location unit', async () => {
     fetch.mockReject();
 
     const mockNotificationError = jest.spyOn(notification, 'error');
@@ -282,22 +306,11 @@ describe('location-management/src/components/LocationUnitAddEdit', () => {
         </Router>
       </Provider>
     );
-    await onSubmit(
-      jest.fn,
-      { ...formValue, parentId: 'wrong parent id' },
-      baseURL,
-      locationUnitgroups,
-      parsedHierarchy,
-      'user_test',
-      [],
-      '1'
-    );
+
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
-
-    expect(fetch.mock.calls[0]).toEqual(undefined);
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,

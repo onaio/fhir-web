@@ -165,6 +165,19 @@ export const locationSettings: ExtraField[] = [
     serverVersion: 57,
     type: 'text',
   },
+  {
+    key: 'aggree',
+    description: '',
+    uuid: '17e91e4c-3eb2-4496-a035-65a4sd654',
+    settingsId: '1',
+    settingIdentifier: 'location_settings',
+    settingMetadataId: '5',
+    v1Settings: false,
+    resolveSettings: false,
+    documentId: 'b818622a-c3c5-49cb-aaa7-c0aab8c12ba5',
+    serverVersion: 57,
+    type: 'text',
+  },
 ];
 
 export const parsedHierarchy: ParsedHierarchyNode[] = [
