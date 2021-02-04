@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { CustomSelect } from '..';
 import React from 'react';
 import * as notifications from '@opensrp/notifications';
@@ -29,7 +29,7 @@ describe('FormComponents/CustomSelect', () => {
   });
 
   it('exercise default props', async () => {
-    shallow(
+    mount(
       <Form>
         <CustomSelect />
       </Form>
