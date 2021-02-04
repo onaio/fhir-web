@@ -8,12 +8,12 @@ export const ERROR_PARENTID_STRING = i18n.t(
 export const ERROR_NAME_STRING = i18n.t('Name can only contain letters, numbers and spaces');
 export const ERROR_NAME_REQUIRED = i18n.t('Name is required');
 export const ERROR_STATUS_REQUIRED = i18n.t('Status is required');
-export const ERROR_TYPE_STRING = i18n.t('Type must can only contain letters, numbers and spaces');
+export const ERROR_TYPE_STRING = i18n.t('Type can only contain letters, numbers and spaces');
 export const ERROR_TYPE_REQUIRED = i18n.t('Type is required');
 export const ERROR_EXTERNAL_ID_STRING = i18n.t(
-  'External ID must can only contain letters, numbers and spaces'
+  'External ID can only contain letters, numbers and spaces'
 );
-export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('Location Unit  must be an array');
+export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('Location Unit must be an array');
 export const ERROR_GEOMETRY_STRING = i18n.t(
   'Location Unit Group can only contain letters, numbers and spaces'
 );
