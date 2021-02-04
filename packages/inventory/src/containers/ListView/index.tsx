@@ -89,10 +89,6 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   const [loadingStructures, setLoadingStructures] = useState<boolean>(structures.length === 0);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     // get structures, this is the most important call for this page
     const params = {
       serverVersion: 0,
