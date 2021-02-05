@@ -19,7 +19,8 @@ import {
 import LocationUnitAddEdit, { getBaseTreeNode, getHierarchy } from '..';
 
 import { act } from 'react-dom/test-utils';
-import { baseURL, ERROR_OCCURED } from '../../../constants';
+import { baseURL } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 
 LocationUnitAddEdit.defaultProps = { opensrpBaseURL: baseURL };
 

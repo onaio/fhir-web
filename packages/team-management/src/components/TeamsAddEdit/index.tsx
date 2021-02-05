@@ -4,11 +4,12 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { organizationsReducer, Organization, orgReducerName } from '../../ducks/organizations';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import { ERROR_OCCURRED, PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
+import { PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioners';
+import { CREATE, CREATE_TEAM, EDIT, EDIT_TEAM, ERROR_OCCURRED } from '../../lang';
 
 reducerRegistry.register(orgReducerName, organizationsReducer);
 
@@ -94,11 +95,11 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{params.id ? 'Edit' : 'Create'} Team</title>
+        <title>{params.id ? EDIT : CREATE} Team</title>
       </Helmet>
 
       <h5 className="mb-3 header-title">
-        {initialValue?.name ? `Edit Team | ${initialValue.name}` : 'Create Team'}
+        {initialValue?.name ? `${EDIT_TEAM} | ${initialValue.name}` : CREATE_TEAM}
       </h5>
 
       <div className="bg-white p-5">

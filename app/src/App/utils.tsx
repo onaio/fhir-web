@@ -15,7 +15,6 @@ import {
   DEFAULT_PLAN_DURATION_DAYS,
   DEFAULT_PLAN_VERSION,
   DEFAULT_TIME,
-  INVENTORY_LOC_OF_INTEREST_GEO_LEVEL,
   OPENSRP_API_BASE_URL,
   PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
@@ -28,7 +27,6 @@ export const productCatalogueProps = {
 
 export const inventoryServiceProps = {
   baseURL: OPENSRP_API_BASE_URL,
-  geoLevel: INVENTORY_LOC_OF_INTEREST_GEO_LEVEL,
 };
 
 export const jsonValidatorListProps = {

@@ -12,8 +12,9 @@ import { authenticateUser } from '@onaio/session-reducer';
 import Form, { onSubmit } from '../Form';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { baseURL, ERROR_OCCURED } from '../../../constants';
+import { baseURL } from '../../../constants';
 import LocationUnitGroupAddEdit from '..';
+import { ERROR_OCCURED } from '../../../lang';
 
 Form.defaultProps = { opensrpBaseURL: baseURL };
 

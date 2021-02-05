@@ -133,6 +133,40 @@ describe('src/helpers/dataloaders', () => {
     ]);
   });
 
+  it('loadJurisdictions with adhoc endpoint', async () => {
+    const sampleEndpoint = 'someLocationEndpoint';
+    fetch.once(JSON.stringify([]));
+    const mockDispatcher = jest.fn();
+    const mockBaseUrl = 'https://example.com';
+
+    loadJurisdictions(
+      mockDispatcher,
+      mockBaseUrl,
+      {},
+      {},
+      undefined,
+      sampleEndpoint
+    ).catch((_: Error) => fail());
+
+    await new Promise((resolve) => setImmediate(resolve));
+
+    expect(mockDispatcher).toHaveBeenCalledWith([]);
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://example.comsomeLocationEndpoint?',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
   it('loadJurisdictions with default baseURL', async () => {
     fetch.once(JSON.stringify([]));
     const mockDispatcher = jest.fn();

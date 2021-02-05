@@ -5,7 +5,17 @@ import { Button, Spin } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Formik } from 'formik';
-import { ERROR_OCCURED, LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
+import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
+import {
+  CANCEL,
+  DESCRIPTION,
+  ENTER_LOCATION_GROUP_NAME,
+  ERROR_OCCURED,
+  LOCATION_NAME,
+  SAVE,
+  SAVING,
+  STATUS,
+} from '../../lang';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
@@ -139,11 +149,11 @@ export const Form: React.FC<Props> = (props: Props) => {
       {({ isSubmitting, handleSubmit }) => {
         return (
           <AntForm requiredMark={false} {...layout} onSubmitCapture={handleSubmit}>
-            <AntForm.Item label="Location Name" name="name">
-              <Input name="name" placeholder="Enter a location group name" />
+            <AntForm.Item label={LOCATION_NAME} name="name">
+              <Input name="name" placeholder={ENTER_LOCATION_GROUP_NAME} />
             </AntForm.Item>
 
-            <AntForm.Item label="Status" name="active" valuePropName="checked">
+            <AntForm.Item label={STATUS} name="active" valuePropName="checked">
               <Radio.Group name="active" defaultValue={initialValue.active}>
                 {status.map((e) => (
                   <Radio name="active" key={e.label} value={e.value}>
@@ -153,14 +163,14 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Radio.Group>
             </AntForm.Item>
 
-            <AntForm.Item name="description" label="Description">
-              <Input.TextArea name="description" rows={4} placeholder="Description" />
+            <AntForm.Item name="description" label={DESCRIPTION}>
+              <Input.TextArea name="description" rows={4} placeholder={DESCRIPTION} />
             </AntForm.Item>
 
             <AntForm.Item name={'buttons'} {...offsetLayout}>
-              <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
+              <SubmitButton id="submit">{isSubmitting ? SAVING : SAVE}</SubmitButton>
               <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-                Cancel
+                {CANCEL}
               </Button>
             </AntForm.Item>
           </AntForm>
