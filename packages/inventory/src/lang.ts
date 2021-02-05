@@ -4,6 +4,7 @@ export const ERROR_DELIVERY_DATE_REQUIRED = 'Delivery date is required';
 export const ERROR_ACCOUNTABILITY_DATE_REQUIRED = 'Accountability end date is required';
 export const ERROR_UNICEF_SECTION_REQUIRED = 'UNICEF section is required';
 export const ERROR_PO_NUMBER_REQUIRED = 'PO number is required';
+export const ERROR_GENERIC = 'An error occurred';
 
 // Rendered text
 export const ADD_SERVICE_POINT = '+ Add service point';
@@ -28,14 +29,6 @@ export const UNICEF_SECTION = 'UNICEF section';
 export const DONOR = 'Donor';
 export const PO_NUMBER = 'PO number';
 export const SELECT = 'Select';
-export const HEALTH = 'Health';
-export const WASH = 'Wash';
-export const NUTRITION = 'Nutrition';
-export const EDUCATION = 'Education';
-export const CHILD_PROTECTION = 'Child protection';
-export const SOCIAL_POLICY = 'Social policy';
-export const C4D = 'C4D';
-export const DRR = 'DRR';
 export const ADD_INVENTORY_VIA_CSV = 'Add inventory via CSV';
 export const USE_CSV_TO_UPLOAD_INVENTORY = 'Use a CSV file to add service point inventory';
 export const CHANCE_TO_REVIEW_BEFORE_COMMITTING =
@@ -74,3 +67,4 @@ export const INVENTORY_ITEMS_NOT_LISTED_BELOW =
 export const INVENTORY_ITEMS_ADDED_TO = 'inventory items added to';
 export const RETRY_CSV_UPLOAD = 'retry csv upload';
 export const PLEASE_FIX_THE_ERRORS_LISTED_BELOW = 'please fix the errors listed below, then';
+export const PRODUCT = 'Product';

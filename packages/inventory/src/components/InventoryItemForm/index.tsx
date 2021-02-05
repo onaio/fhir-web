@@ -1,44 +1,83 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
 import { useHistory } from 'react-router';
-import { ControlledProductSelect, OpenSRPService, OptionValueProperty } from '@opensrp/react-utils';
+import { getFetchOptions } from '@opensrp/server-service';
 import {
   ACCOUNTABILITY_END_DATE,
   CANCEL,
   DELIVERY_DATE,
+  DONOR,
   ERROR_ACCOUNTABILITY_DATE_REQUIRED,
   ERROR_DELIVERY_DATE_REQUIRED,
+  ERROR_PO_NUMBER_REQUIRED,
   ERROR_PRODUCT_NAME_REQUIRED,
   ERROR_UNICEF_SECTION_REQUIRED,
   OPTIONAL,
+  PO_NUMBER,
+  PRODUCT,
   QUANTITY,
   SAVE,
   SAVING,
   SELECT,
   UNICEF_SECTION,
 } from '../../lang';
-import { Inventory } from '../../ducks/inventory';
-import { Dictionary } from '@onaio/utils';
-import { getUnicefSectionOptions } from './utils';
+import { ProductCatalogue } from '@opensrp/product-catalogue';
+
+/** interface for setting **/
+export interface Setting {
+  key: string;
+  value: string;
+  label: string;
+  description: string;
+  uuid: string;
+  settingsId: string;
+  settingIdentifier: string;
+  settingMetadataId: string;
+  v1Settings: boolean;
+  resolveSettings: boolean;
+  documentId: string;
+  serverVersion: number;
+  type: string;
+}
 
 /** component props */
 export interface InventoryItemFormProps {
-  openSRPBaseURL: string;
   cancelURL: string;
-  openSRPService: typeof OpenSRPService;
+  products: ProductCatalogue[];
+  UNICEFSections: Setting[];
+  donors: Setting[];
+  customFetchOptions?: typeof getFetchOptions;
 }
 
 /** default component props */
 export const defaultInventoryFormProps: InventoryItemFormProps = {
-  openSRPBaseURL: '',
   cancelURL: '',
-  openSRPService: OpenSRPService,
+  products: [],
+  donors: [],
+  UNICEFSections: [],
 };
 
+/** interface form fields */
+export interface InventoryItemFormFields {
+  productName: string | undefined;
+  quantity: string;
+  deliveryDate: moment.Moment | null;
+  accountabilityEndDate: moment.Moment | null;
+  unicefSection: string | undefined;
+  donor: string | undefined;
+  poNumber: string;
+}
+
 /** default form initial values */
-export const initialValues: Partial<Inventory> = {
+export const initialValues: InventoryItemFormFields = {
   productName: undefined,
+  quantity: '',
+  deliveryDate: null,
+  accountabilityEndDate: null,
+  unicefSection: undefined,
+  donor: undefined,
+  poNumber: '',
 };
 
 const layout = {
@@ -60,21 +99,52 @@ const tailLayout = {
 };
 
 const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryItemFormProps) => {
-  const { cancelURL, openSRPBaseURL, openSRPService } = props;
+  const { cancelURL, UNICEFSections, donors, products } = props;
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = React.useState<ProductCatalogue | null>(null);
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<moment.Moment | null>(
+    null
+  );
   const history = useHistory();
-  const productSelectProps = {
-    openSRPBaseURL,
-    name: 'productName',
-    id: 'productName',
-    rules: [{ required: true, message: ERROR_PRODUCT_NAME_REQUIRED }],
-    openSRPService,
-    optionValueProperty: 'productName' as OptionValueProperty,
+
+  useEffect(() => {
+    if (selectedProduct && selectedDeliveryDate) {
+      /**
+       * Auto-calculate accountability end date by adding the product
+       * accountability period (in months) to the entered delivery date
+       */
+    }
+  }, [selectedProduct, selectedDeliveryDate]);
+
+  const handleProductChange = (value: number) => {
+    const selected = products.find((product) => product.uniqueId === value);
+
+    if (selected) {
+      setSelectedProduct(selected);
+    }
+  };
+
+  const handleDeliveryDateChange = (date: moment.Moment | null, _: string) => {
+    setSelectedDeliveryDate(date);
   };
 
   return (
     <Form {...layout} initialValues={initialValues}>
-      <ControlledProductSelect {...productSelectProps} />
+      <Form.Item
+        name="productName"
+        id="productName"
+        label={PRODUCT}
+        rules={[{ required: true, message: ERROR_PRODUCT_NAME_REQUIRED }]}
+      >
+        <Select placeholder={SELECT} onChange={handleProductChange}>
+          {products.map((product: ProductCatalogue) => (
+            <Select.Option key={product.uniqueId} value={product.uniqueId}>
+              {product.productName}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+
       <Form.Item name="quantity" id="quantity" label={`${QUANTITY} (${OPTIONAL})`}>
         <Input />
       </Form.Item>
@@ -89,6 +159,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
             // Cannot select future date
             return current > moment().endOf('day');
           }}
+          onChange={handleDeliveryDateChange}
         />
       </Form.Item>
       <Form.Item
@@ -111,20 +182,35 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
         rules={[{ required: true, message: ERROR_UNICEF_SECTION_REQUIRED }]}
       >
         <Select placeholder={SELECT}>
-          {getUnicefSectionOptions().map((option: Dictionary) => (
+          {UNICEFSections.map((option: Setting) => (
             <Select.Option key={option.value} value={option.value}>
-              {option.name}
+              {option.label}
             </Select.Option>
           ))}
         </Select>
       </Form.Item>
+      <Form.Item name="donor" id="donor" label={`${DONOR} (${OPTIONAL})`}>
+        <Select placeholder={SELECT}>
+          {donors.map((option: Setting) => (
+            <Select.Option key={option.value} value={option.value}>
+              {option.label}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+      <Form.Item
+        name="poNumber"
+        id="poNumber"
+        label={PO_NUMBER}
+        rules={[{ type: 'number', required: true, message: ERROR_PO_NUMBER_REQUIRED }]}
+      >
+        <Input />
+      </Form.Item>
       <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit" className="create-user">
+        <Button type="primary" htmlType="submit">
           {isSubmitting ? SAVING : SAVE}
         </Button>
-        <Button onClick={() => history.push(cancelURL)} className="cancel-user">
-          {CANCEL}
-        </Button>
+        <Button onClick={() => history.push(cancelURL)}>{CANCEL}</Button>
       </Form.Item>
     </Form>
   );

@@ -3,6 +3,7 @@ export const OPENSRP_API_BASE_URL = 'https://mg-eusm-staging.smartregister.org/o
 export const OPENSRP_UPLOAD_STOCK_ENDPOINT = 'stockresource/inventory/validate';
 export const OPENSRP_IMPORT_STOCK_ENDPOINT = 'stockresource/import/inventory';
 export const LOCATIONS_GET_ALL_SYNC_ENDPOINT = 'location/getAll';
+export const OPENSRP_ENDPOINT_SETTINGS = 'v2/settings';
 
 // router routes
 export const INVENTORY_SERVICE_POINT_LIST_VIEW = '/inventory/list';

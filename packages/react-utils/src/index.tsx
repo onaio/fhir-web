@@ -4,5 +4,3 @@ export * from './components/UtilPageExtra';
 export * from './helpers/dataLoaders';
 export * from './components/Search';
 export * from './components/Search/utils';
-export * from './components/FormFields/ControlledProductSelect';
-export * from './components/FormFields/ProductSelect';

@@ -125,7 +125,7 @@ import '@opensrp/plan-form/dist/index.css';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   ConnectedServicePointList,
-  InventoryAddEdit,
+  ConnectedInventoryAddEdit,
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 
@@ -480,7 +480,7 @@ const App: React.FC = () => {
               exact
               path={URL_INVENTORY_ITEM_ADD}
               {...inventoryItemAddEditProps}
-              component={InventoryAddEdit}
+              component={ConnectedInventoryAddEdit}
             />
             <Route
               exact
