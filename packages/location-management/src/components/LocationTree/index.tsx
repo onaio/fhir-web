@@ -41,7 +41,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     const expandedKeys = filterData
       .map((item) =>
         value.length && item.label.toLocaleLowerCase().indexOf(value.toLowerCase()) > -1
-          ? getParentKey(item.id, filterData)
+          ? getParentKey(item.id, item.parent as string, filterData)
           : null
       )
       .filter((item, i, self) => item && self.indexOf(item) === i);
@@ -67,16 +67,20 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   /** Return the the parent key in a tree for the supplied key
    *
    * @param {string} key the key to find parent of
+   * @param {string} parentId the id of current node
    * @param {Array<ParsedHierarchyNode>} tree the orignal tree
    * @returns {string} - returns parent key
    */
-  function getParentKey(key: string, tree: ParsedHierarchyNode[]): string {
+  function getParentKey(key: string, parentId: string, tree: ParsedHierarchyNode[]): string {
     let nodeKey = '';
     tree.forEach((node) => {
       if (node.children) {
-        if (node.children.some((item: ParsedHierarchyNode) => item.key === key)) {
-          nodeKey = key;
-        } else if (getParentKey(key, node.children)) return getParentKey(key, node.children);
+        if (node.children.some((item: ParsedHierarchyNode) => item.parent === parentId)) {
+          nodeKey = node.key;
+        } else if (getParentKey(key, parentId, node.children))
+          return getParentKey(key, parentId, node.children);
+      } else {
+        nodeKey = node.parent as string;
       }
     });
     return nodeKey;
@@ -175,7 +179,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(e, antTreeNode) => {
+        onClick={(_, antTreeNode) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const node = (antTreeNode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
