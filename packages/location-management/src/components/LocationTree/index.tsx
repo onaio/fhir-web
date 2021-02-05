@@ -26,7 +26,6 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
-  const [selectedKey, setSelectedKey] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
   const locationTreeState = useSelector((state) => getLocationTreeState(state));
@@ -185,13 +184,12 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           if (index > -1) {
             allExpandedKeys.splice(index, 1);
           }
-          setSelectedKey([allExpandedKeys[allExpandedKeys.length - 1]]);
           dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
           onExpand(allExpandedKeys);
         }}
-        selectedKeys={selectedKey}
+        selectedKeys={[locationTreeState?.keys[locationTreeState.keys.length - 1]] as React.Key[]}
         onExpand={onExpand}
-        expandedKeys={expandedKeys}
+        expandedKeys={locationTreeState?.keys ?? expandedKeys}
         autoExpandParent={autoExpandParent}
         treeData={buildTreeData(data)}
       />
