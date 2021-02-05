@@ -30,6 +30,7 @@ import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import {
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
+  INVENTORY_ADD_SERVICE_POINT,
   SEARCH_QUERY_PARAM,
   TableColumnsNamespace,
   tablePaginationOptions,
@@ -169,8 +170,8 @@ const ServicePointList = (props: ServicePointsListTypes) => {
         <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to={ADD_SERVICE_POINT}>
-              <Button type="primary" size="large" disabled>
+            <Link to={INVENTORY_ADD_SERVICE_POINT}>
+              <Button type="primary" size="large">
                 {ADD_SERVICE_POINT}
               </Button>
             </Link>

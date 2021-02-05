@@ -42,9 +42,15 @@ export enum LocationUnitSyncStatus {
   NOTSYNCED = 'NotSynced',
 }
 
+export interface ServiceType {
+  name: string;
+}
+
 /** interface for LocationUnit.properties */
 export interface Properties
-  extends Dictionary<string | number | LocationUnitStatus | undefined | string[] | number[]> {
+  extends Dictionary<
+    string | number | LocationUnitStatus | ServiceType[] | undefined | string[] | number[]
+  > {
   name: string;
   parentId: string;
   status: LocationUnitStatus;
@@ -53,6 +59,7 @@ export interface Properties
   version?: number;
   name_en?: string;
   externalId?: string;
+  serviceTypes?: ServiceType[];
 }
 
 /** location unit tag interface */
@@ -67,27 +74,11 @@ export interface LocationUnit {
   properties: Properties;
   type: string;
   locationTags?: LocationUnitTag[];
-  geometry?: Geometry; // todo : need to impliment the functionality
+  geometry?: Geometry; // todo : need to implement the functionality
   syncStatus?: LocationUnitSyncStatus;
   parentId?: string;
   serverVersion?: number; // received by the response thought we dont really use it
   isJurisdiction?: boolean;
-}
-
-/** interface for the POST payload */
-export interface LocationUnitPayloadPOST {
-  id: string | number; // todo : we will remove this later as it should be auto generated on server
-  properties: Properties;
-  type: string;
-  locationTags?: LocationUnitTag[];
-  geometry?: Geometry; // todo : need to impliment its functionality
-  syncStatus: LocationUnitSyncStatus;
-  textEntry?: string[];
-}
-
-/** interface for the PUT payload */
-export interface LocationUnitPayloadPUT extends LocationUnitPayloadPOST {
-  id: string | number;
 }
 
 /** reducer name for the Item module */
