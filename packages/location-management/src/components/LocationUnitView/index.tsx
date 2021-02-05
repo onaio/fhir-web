@@ -17,7 +17,7 @@ import { getAccessToken } from '@onaio/session-reducer';
 import {
   LOCATION_UNIT_FIND_BY_PROPERTIES,
   LOCATION_HIERARCHY,
-  LOCATION_UNIT_GET,
+  LOCATION_UNIT_ENDPOINT,
   URL_LOCATION_UNIT_ADD,
 } from '../../constants';
 import {
@@ -67,7 +67,7 @@ export async function loadSingleLocation(
   setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
 ) {
   setDetail('loading');
-  const serve = new OpenSRPService(LOCATION_UNIT_GET, opensrpBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_ENDPOINT, opensrpBaseURL);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   return await serve
     .read(row.id, { is_jurisdiction: true })
