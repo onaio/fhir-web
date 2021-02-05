@@ -25,6 +25,17 @@ import {
   RECORD_GPS_CODE,
   SERVICE_POINT_CHECK_ACTIVITY_CODE,
   SERVICE_POINT_CHECK_CODE,
+  LOOKS_GOOD_ACTIVITY_CODE,
+  COMPLETE_FIX_PROBLEM_ACTIVITY_CODE,
+  COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE,
+  COMPLETE_RECORD_GPS_ACTIVITY_CODE,
+  COMPLETE_SERVICE_CHECK_ACTIVITY_CODE,
+  LOOKS_GOOD_CODE,
+  UPDATE_TYPE,
+  COMPLETE_FIX_PROBLEM_CODE,
+  COMPLETE_FLAG_PROBLEM_CODE,
+  COMPLETE_RECORD_GPS_CODE,
+  COMPLETE_SERVICE_CHECK_CODE,
 } from './constants/stringConstants';
 import {
   BCC_ACTIVITY_DESCRIPTION,
@@ -65,6 +76,23 @@ import {
   RECORD_GPS_GOAL_MEASURE,
   SERVICE_POINT_CHECK_ACTIVITY_DESCRIPTION,
   SERVICE_POINT_CHECK_GOAL_MEASURE,
+  PRODUCT_CHECK_ACTIVITY,
+  COMPLETE_LOOKS_GOOD_TITLE,
+  COMPLETE_LOOKS_GOOD_DESCRIPTION,
+  COMPLETE_FIX_PROBLEM_GOAL_DESCRIPTION,
+  COMPLETE_FIX_PROBLEM_GOAL_MEASURE,
+  COMPLETE_FIX_PROBLEM_DESCRIPTION,
+  COMPLETE_FIX_PROBLEM_TASK,
+  COMPLETE_FLAG_PROBLEM_TITLE,
+  COMPLETE_FLAG_PROBLEM_DESCRIPTION,
+  FIX_PRODUCT_PROBLEM_ACTIVITY,
+  RECORD_GPS_ACTIVITY,
+  RECORD_GPS_GOAL_DESCRIPTION,
+  COMPLETE_RECORD_GPS_DESCRIPTION,
+  COMPLETE_RECORD_GPS_TITLE,
+  COMPLETE_SERVICE_CHECK_DESCRIPTION,
+  COMPLETE_SERVICE_POINT_CHECK_TITLE,
+  COMPLETE_SERVICE_CHECK_GOAL_DESCRIPTION,
 } from './constants/lang';
 import { PlanActivities } from './types';
 import { GoalUnit } from './constants/enumsAndCodeConstants';
@@ -1035,7 +1063,8 @@ export const planActivities: PlanActivities = {
   [PRODUCT_CHECK_ACTIVITY_CODE]: {
     action: {
       identifier: '',
-      prefix: 7, // TODO :what does prefix mean
+      prefix: 10, // TODO :what does prefix mean
+      title: PRODUCT_CHECK_ACTIVITY,
       description: PRODUCT_CHECK_ACTIVITY_DESCRIPTION,
       code: PRODUCT_CHECK_CODE,
       timingPeriod: {
@@ -1043,13 +1072,19 @@ export const planActivities: PlanActivities = {
         start: '',
       },
       reason: ROUTINE,
-      goalId: 'Product_Check',
+      goalId: PRODUCT_CHECK_ACTIVITY,
       subjectCodableConcept: {
         text: 'Device',
       },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: PLAN_ACTIVATION_TRIGGER_NAME,
+        },
+      ],
       condition: [
         {
-          kind: 'applicability',
+          kind: APPLICABILITY_CONDITION_KIND,
           expression: {
             description: 'Product exists',
             expression: '$this.is(FHIR.Bundle)',
@@ -1057,18 +1092,11 @@ export const planActivities: PlanActivities = {
         },
       ],
       definitionUri: 'product_check.json',
-      title: 'Product Check',
-      trigger: [
-        {
-          type: 'named-event',
-          name: 'plan-activation',
-        },
-      ],
       type: CREATE_TYPE,
     },
     goal: {
       description: PRODUCT_CHECK_ACTIVITY_DESCRIPTION,
-      id: 'Product_Check',
+      id: PRODUCT_CHECK_CODE,
       priority: MEDIUM_PRIORITY,
       target: [
         {
@@ -1085,10 +1113,224 @@ export const planActivities: PlanActivities = {
       ],
     },
   },
+  [LOOKS_GOOD_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 11, // TODO :what does prefix mean
+      title: COMPLETE_LOOKS_GOOD_TITLE,
+      description: COMPLETE_LOOKS_GOOD_DESCRIPTION,
+      code: LOOKS_GOOD_CODE,
+      timingPeriod: {
+        end: '',
+        start: '',
+      },
+      reason: ROUTINE,
+      goalId: LOOKS_GOOD_CODE,
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Looks Good event is submitted',
+            expression: "questionnaire = 'looks_good'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'Visited'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'looks_good.json',
+      type: UPDATE_TYPE,
+    },
+    goal: {
+      id: LOOKS_GOOD_CODE,
+      description: 'Check for all products (100%) within jurisdiction',
+      priority: MEDIUM_PRIORITY,
+      target: [
+        {
+          measure: 'Percent of products in good condition',
+          detail: {
+            detailQuantity: {
+              comparator: '>',
+              unit: GoalUnit.PERCENT,
+              value: 100,
+            },
+          },
+          due: '',
+        },
+      ],
+    },
+  },
+  [COMPLETE_FIX_PROBLEM_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 12, // TODO :what does prefix mean
+      title: COMPLETE_FIX_PROBLEM_TASK,
+      description: COMPLETE_FIX_PROBLEM_DESCRIPTION,
+      code: COMPLETE_FIX_PROBLEM_CODE,
+      timingPeriod: {
+        end: '',
+        start: '',
+      },
+      reason: ROUTINE,
+      goalId: COMPLETE_FIX_PROBLEM_CODE,
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Fix Problem event is submitted',
+            expression: "questionnaire = 'fix_problem'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'Visited'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Problem Fixed',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'fix_problem.json',
+      type: UPDATE_TYPE,
+    },
+    goal: {
+      id: COMPLETE_FIX_PROBLEM_CODE,
+      description: COMPLETE_FIX_PROBLEM_GOAL_DESCRIPTION,
+      priority: MEDIUM_PRIORITY,
+      target: [
+        {
+          measure: COMPLETE_FIX_PROBLEM_GOAL_MEASURE,
+          detail: {
+            detailQuantity: {
+              comparator: '>',
+              unit: GoalUnit.PERCENT,
+              value: 100,
+            },
+          },
+          due: '',
+        },
+      ],
+    },
+  },
+  [COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 13, // TODO :what does prefix mean
+      title: COMPLETE_FLAG_PROBLEM_TITLE,
+      description: COMPLETE_FLAG_PROBLEM_DESCRIPTION,
+      code: COMPLETE_FLAG_PROBLEM_CODE,
+      timingPeriod: {
+        end: '',
+        start: '',
+      },
+      reason: ROUTINE,
+      goalId: COMPLETE_FLAG_PROBLEM_CODE,
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Flag Problem event is submitted',
+            expression: "questionnaire = 'flag_problem'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'has_problem'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Problem Flagged',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'flag_problem.json',
+      type: UPDATE_TYPE,
+    },
+    goal: {
+      id: 'complete_flag_problem',
+      description: 'Completes Flag problem form for a product within the jurisdiction',
+      priority: MEDIUM_PRIORITY,
+      target: [
+        {
+          measure: 'Percent of products problems found',
+          detail: {
+            detailQuantity: {
+              comparator: '>',
+              unit: GoalUnit.PERCENT,
+              value: 100,
+            },
+          },
+          due: '',
+        },
+      ],
+    },
+  },
   [FIX_PRODUCT_PROBLEM_ACTIVITY_CODE]: {
     action: {
       identifier: '',
-      prefix: 8, // TODO :what does prefix mean
+      prefix: 14, // TODO :what does prefix mean
+      title: FIX_PRODUCT_PROBLEM_ACTIVITY,
       description: FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION,
       code: FIX_PRODUCT_PROBLEMS_CODE,
       timingPeriod: {
@@ -1096,24 +1338,13 @@ export const planActivities: PlanActivities = {
         start: '',
       },
       reason: ROUTINE,
-      goalId: 'Fix_Product_Problem',
+      goalId: FIX_PRODUCT_PROBLEMS_CODE,
       subjectCodableConcept: {
         text: 'Device',
       },
-      condition: [
-        {
-          kind: 'applicability',
-          expression: {
-            description: 'Product exists',
-            expression: '$this.is(FHIR.QuestionnaireResponse)',
-          },
-        },
-      ],
-      definitionUri: 'product_check.json',
-      title: 'Fix Product Problem',
       trigger: [
         {
-          type: 'named-event',
+          type: NAMED_EVENT_TRIGGER_TYPE,
           name: 'event-submission',
           expression: {
             description: 'Trigger when a Fix Product event is submitted',
@@ -1121,11 +1352,74 @@ export const planActivities: PlanActivities = {
           },
         },
       ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'fix_problem.json',
       type: CREATE_TYPE,
     },
     goal: {
       description: FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION,
-      id: 'Fix_Product_Problem',
+      id: FIX_PRODUCT_PROBLEMS_CODE,
+      priority: MEDIUM_PRIORITY,
+      target: [
+        {
+          measure: FIX_PRODUCT_PROBLEM_GOAL_MEASURE,
+          detail: {
+            detailQuantity: {
+              comparator: '>',
+              unit: GoalUnit.PERCENT,
+              value: 100,
+            },
+          },
+          due: '',
+        },
+      ],
+    },
+  },
+  [RECORD_GPS_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 15, // TODO :what does prefix mean
+      title: RECORD_GPS_ACTIVITY,
+      description: RECORD_GPS_ACTIVITY_DESCRIPTION,
+      code: RECORD_GPS_CODE,
+      timingPeriod: {
+        end: '',
+        start: '',
+      },
+      reason: ROUTINE,
+      goalId: RECORD_GPS_CODE,
+      subjectCodableConcept: {
+        text: 'Location',
+      },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: 'plan-activation',
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Service point does not have geometry',
+            expression: "$this.identifier.where(system='hasGeometry').value='false'",
+          },
+        },
+      ],
+      definitionUri: 'record_gps.json',
+      type: CREATE_TYPE,
+    },
+    goal: {
+      description: RECORD_GPS_GOAL_DESCRIPTION,
+      id: RECORD_GPS_CODE,
       priority: MEDIUM_PRIORITY,
       target: [
         {
@@ -1137,48 +1431,66 @@ export const planActivities: PlanActivities = {
             },
           },
           due: '',
-          measure: FIX_PRODUCT_PROBLEM_GOAL_MEASURE,
+          measure: RECORD_GPS_GOAL_MEASURE,
         },
       ],
     },
   },
-  [RECORD_GPS_ACTIVITY_CODE]: {
+  [COMPLETE_RECORD_GPS_ACTIVITY_CODE]: {
     action: {
       identifier: '',
-      prefix: 9, // TODO :what does prefix mean
-      description: RECORD_GPS_ACTIVITY_DESCRIPTION,
-      code: RECORD_GPS_CODE,
+      prefix: 16, // TODO :what does prefix mean
+      title: COMPLETE_RECORD_GPS_TITLE,
+      description: COMPLETE_RECORD_GPS_DESCRIPTION,
+      code: COMPLETE_RECORD_GPS_CODE,
       timingPeriod: {
         end: '',
         start: '',
       },
       reason: ROUTINE,
-      goalId: 'Record_GPS',
+      goalId: COMPLETE_RECORD_GPS_CODE,
       subjectCodableConcept: {
-        text: 'Location',
+        text: 'Task',
       },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Record Gps event is submitted',
+            expression: "questionnaire = 'record_gps'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'Visited'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
       condition: [
         {
-          kind: 'applicability',
+          kind: APPLICABILITY_CONDITION_KIND,
           expression: {
-            description: 'Service point does not have geometry',
-            expression: "$this.identifier.where(id='hasGeometry').value='false'",
+            description: 'GPS recorded',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
           },
         },
       ],
       definitionUri: 'record_gps.json',
-      title: 'Record GPS',
-      trigger: [
-        {
-          type: 'named-event',
-          name: 'plan-activation',
-        },
-      ],
-      type: CREATE_TYPE,
+      type: 'update',
     },
     goal: {
-      description: RECORD_GPS_ACTIVITY_DESCRIPTION,
-      id: 'Record_GPS',
+      description: 'Complete Record GPS for a particular service point',
+      id: COMPLETE_RECORD_GPS_CODE,
       priority: MEDIUM_PRIORITY,
       target: [
         {
@@ -1198,7 +1510,7 @@ export const planActivities: PlanActivities = {
   [SERVICE_POINT_CHECK_ACTIVITY_CODE]: {
     action: {
       identifier: '',
-      prefix: 9, // TODO :what does prefix mean
+      prefix: 17, // TODO :what does prefix mean
       description: SERVICE_POINT_CHECK_ACTIVITY_DESCRIPTION,
       code: SERVICE_POINT_CHECK_CODE,
       timingPeriod: {
@@ -1206,13 +1518,13 @@ export const planActivities: PlanActivities = {
         start: '',
       },
       reason: ROUTINE,
-      goalId: 'Service_Point_Check',
+      goalId: SERVICE_POINT_CHECK_CODE,
       subjectCodableConcept: {
         text: 'Location',
       },
       condition: [
         {
-          kind: 'applicability',
+          kind: APPLICABILITY_CONDITION_KIND,
           expression: {
             description: 'All service points',
             expression: '$this.is(FHIR.Location)',
@@ -1223,7 +1535,7 @@ export const planActivities: PlanActivities = {
       title: 'Service Point Check',
       trigger: [
         {
-          type: 'named-event',
+          type: NAMED_EVENT_TRIGGER_TYPE,
           name: 'plan-activation',
         },
       ],
@@ -1231,10 +1543,11 @@ export const planActivities: PlanActivities = {
     },
     goal: {
       description: SERVICE_POINT_CHECK_ACTIVITY_DESCRIPTION,
-      id: 'Service_Point_Check',
+      id: SERVICE_POINT_CHECK_CODE,
       priority: MEDIUM_PRIORITY,
       target: [
         {
+          measure: SERVICE_POINT_CHECK_GOAL_MEASURE,
           detail: {
             detailQuantity: {
               comparator: '>',
@@ -1243,7 +1556,77 @@ export const planActivities: PlanActivities = {
             },
           },
           due: '',
-          measure: SERVICE_POINT_CHECK_GOAL_MEASURE,
+        },
+      ],
+    },
+  },
+  [COMPLETE_SERVICE_CHECK_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 18, // TODO :what does prefix mean
+      title: COMPLETE_SERVICE_POINT_CHECK_TITLE,
+      description: COMPLETE_SERVICE_CHECK_DESCRIPTION,
+      code: COMPLETE_SERVICE_CHECK_CODE,
+      timingPeriod: {
+        end: '',
+        start: '',
+      },
+      reason: ROUTINE,
+      goalId: COMPLETE_SERVICE_CHECK_CODE,
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Service Point Check event is submitted',
+            expression: "questionnaire = 'service_point_check'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'Visited'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Service Point Checked',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'service_point_check.json',
+      type: 'update',
+    },
+    goal: {
+      description: COMPLETE_SERVICE_CHECK_GOAL_DESCRIPTION,
+      id: COMPLETE_SERVICE_CHECK_CODE,
+      priority: MEDIUM_PRIORITY,
+      target: [
+        {
+          measure: 'Percent of service points checked',
+          detail: {
+            detailQuantity: {
+              comparator: '>',
+              unit: GoalUnit.PERCENT,
+              value: 100,
+            },
+          },
+          due: '',
         },
       ],
     },
