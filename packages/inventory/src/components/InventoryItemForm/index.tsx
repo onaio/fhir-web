@@ -106,6 +106,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
     null
   );
   const history = useHistory();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (selectedProduct && selectedDeliveryDate) {
@@ -113,8 +114,15 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
        * Auto-calculate accountability end date by adding the product
        * accountability period (in months) to the entered delivery date
        */
+      const accEndDate = moment(selectedDeliveryDate.format('YYYY-MM-DD')).add(
+        selectedProduct.accountabilityPeriod,
+        'months'
+      );
+      form.setFieldsValue({
+        accountabilityEndDate: accEndDate,
+      });
     }
-  }, [selectedProduct, selectedDeliveryDate]);
+  }, [selectedProduct, selectedDeliveryDate, form]);
 
   const handleProductChange = (value: number) => {
     const selected = products.find((product) => product.uniqueId === value);
@@ -129,7 +137,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
   };
 
   return (
-    <Form {...layout} initialValues={initialValues}>
+    <Form form={form} {...layout} initialValues={initialValues}>
       <Form.Item
         name="productName"
         id="productName"
