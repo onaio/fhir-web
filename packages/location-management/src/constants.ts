@@ -11,7 +11,7 @@ export const LOCATION_UNIT_EXTRA_FIELDS = 'v2/settings/?serverVersion=0';
 export const LOCATION_UNIT_FIND_BY_PROPERTIES = 'location/findByProperties';
 export const LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER = 'location_settings';
 export const OPENSRP_V2_SETTINGS = 'v2/settings';
-export const SERVICE_TYPES_SETTINGS_ID = 'service_types';
+export const SERVICE_TYPES_SETTINGS_ID = 'service_point_types';
 
 // Url
 export const URL_ADMIN = '/admin';
