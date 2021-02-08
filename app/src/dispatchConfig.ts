@@ -1,18 +1,20 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { configsSliceName, addConfigs, configsReducer } from '@opensrp/pkg-config';
 import { store } from '@opensrp/store';
-import type { LanguageConfigs } from '@opensrp/pkg-config';
-import { LANGUAGE_CODE, PROJECT_LANGUAGE_CODE } from './configs/env';
+import type { OpenSRPConfigs } from '@opensrp/pkg-config';
+import { BACKEND_ACTIVE, LANGUAGE_CODE, PROJECT_LANGUAGE_CODE } from './configs/env';
 import { Dictionary } from '@onaio/utils';
+import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from './constants';
 
 /** register catalogue reducer */
 reducerRegistry.register(configsSliceName, configsReducer);
 
-type ConfigObject = LanguageConfigs;
+export const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
 
-const configObject: ConfigObject = {
-  languageCode: LANGUAGE_CODE as any,
-  projectLanguageCode: PROJECT_LANGUAGE_CODE as any,
+const configObject: OpenSRPConfigs = {
+  languageCode: LANGUAGE_CODE,
+  projectLanguageCode: PROJECT_LANGUAGE_CODE,
+  appLoginURL: APP_LOGIN_URL,
 };
 
 store.dispatch(addConfigs(configObject as Dictionary));
