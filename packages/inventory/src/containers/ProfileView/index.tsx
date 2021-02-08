@@ -43,16 +43,16 @@ import {
   SERVICE_POINT_ID_LABEL,
   BACK_TO_SERVICE_POINT_LIST,
 } from '../../lang';
-import { TableData } from './utils';
 import '../../index.css';
 import {
   fetchInventories,
   getInventoriesArray,
   inventoryReducer,
   inventoryReducerName,
+  Inventory,
 } from '../../ducks/inventory';
-import { inventory1, inventory2 } from '../../constants';
 import { getNodePath } from './utils';
+import { ServiceType } from '@opensrp/location-management/src/ducks/location-units';
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -64,7 +64,7 @@ const treesSelector = getTreesByIds();
 /** props for the ServicePointProfile view */
 interface ServicePointsListProps extends CommonProps {
   LocationsByGeoLevel: TreeNode[];
-  columns: ColumnsType<TableData>;
+  columns: ColumnsType<Inventory>;
   fetchInventories: typeof fetchInventories;
   service: typeof OpenSRPService;
 }
@@ -95,7 +95,7 @@ export const findPath = (nodePath: any[], geoLevel: number) => {
 
 interface DefaultGeographyItemProp {
   label: string;
-  value?: string | number | string[] | number[];
+  value?: string | number | string[] | number[] | ServiceType[];
 }
 
 /** component that renders Geography Items
@@ -167,8 +167,8 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
     const serve = new OpenSRPService(`${GET_INVENTORY_BY_SERVICE_POINT}/${spId}`, opensrpBaseURL);
     serve
       .list()
-      .then(() => {
-        dispatch(fetchInventories([inventory1, inventory2]));
+      .then((res: Inventory[]) => {
+        dispatch(fetchInventories(res));
         setIsLoading(false);
       })
       .catch(() => sendErrorNotification(ERROR_OCCURRED));

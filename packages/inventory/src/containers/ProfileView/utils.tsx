@@ -15,59 +15,43 @@ import {
   DONOR_TH,
 } from '../../lang';
 import { GeographicLocationInterface } from '.';
-
-/** Describes how the data will passed to the table */
-export interface TableData {
-  deliveryDate: string;
-  donor: string;
-  poNumber: number;
-  productName: string;
-  providerId: string;
-  quantity: number;
-  serialNumber: string;
-  servicePointId: string;
-  stockId: string;
-  unicefSection: string;
-}
+import { Inventory } from '../../ducks/inventory';
 
 /** component rendered in the action column of the table
  *
  * @param record - record to show in row
  */
-export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (record) => {
-  return (
-    <>
-      <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>View</Link>
-    </>
-  );
+export const ActionsColumnCustomRender: ColumnType<Inventory>['render'] = (record) => {
+  return <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.locationId}`}>View</Link>;
 };
 
 /** service point list table columns */
-export const columns: ColumnsType<TableData> = [
+export const columns: ColumnsType<Inventory> = [
   {
     title: PRODUCT_NAME_TH,
-    dataIndex: 'productName',
-    key: `${TableColumnsNamespace}-${PRODUCT_NAME_TH}`,
-    defaultSortOrder: 'descend',
-    sorter: (rec1, rec2) => {
-      if (rec1.productName > rec2.productName) {
-        return -1;
-      } else if (rec1.productName < rec2.productName) {
-        return 1;
-      } else {
-        return 0;
-      }
-    },
+    // dataIndex: 'productName',
+    // key: `${TableColumnsNamespace}-${PRODUCT_NAME_TH}`,
+    // defaultSortOrder: 'descend',
+    // sorter: (rec1, rec2) => {
+    //   if (rec1.productName > rec2.productName) {
+    //     return -1;
+    //   } else if (rec1.productName < rec2.productName) {
+    //     return 1;
+    //   } else {
+    //     return 0;
+    //   }
+    // },
   },
   {
     title: QTY_TH,
-    dataIndex: 'quantity',
+    dataIndex: 'value',
     key: `${TableColumnsNamespace}-${QTY_TH}`,
   },
   {
     title: PO_NUMBER_TH,
-    dataIndex: 'poNumber',
+    dataIndex: 'customProperties',
     key: `${TableColumnsNamespace}-${PO_NUMBER_TH}`,
+    render: (item) => item['PO Number'],
   },
   {
     title: SERIAL_NUMBER_TH,
@@ -81,13 +65,14 @@ export const columns: ColumnsType<TableData> = [
   },
   {
     title: ACCOUNT_END_DT_TH,
-    // dataIndex: 'servicePointId',
-    // key: `${TableColumnsNamespace}-${ACCOUNT_END_DT_TH}`,
+    dataIndex: 'accountabilityEndDate',
+    key: `${TableColumnsNamespace}-${ACCOUNT_END_DT_TH}`,
   },
   {
     title: UNICEF_SECTION_TH,
-    dataIndex: 'unicefSection',
+    dataIndex: 'customProperties',
     key: `${TableColumnsNamespace}-${UNICEF_SECTION_TH}`,
+    render: (item) => item['UNICEF section'],
   },
   {
     title: DONOR_TH,

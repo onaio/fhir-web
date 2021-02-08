@@ -1,4 +1,11 @@
-import { loadHierarchy, loadJurisdictions } from '../dataLoaders';
+import {
+  loadHierarchy,
+  loadJurisdiction,
+  loadJurisdictions,
+  loadLocationTags,
+  loadSettings,
+  postPutLocationUnit,
+} from '../dataLoaders';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 
@@ -214,6 +221,58 @@ describe('src/helpers/dataloaders', () => {
     loadJurisdictions(mockDispatcher, mockBaseUrl).catch((err: Error) =>
       expect(err.message).toEqual(errorMessage)
     );
+
+    await new Promise((resolve) => setImmediate(resolve));
+  });
+
+  it('load jurisdiction dispatches when dispatcher and response', async () => {
+    fetch.once(JSON.stringify({}));
+
+    const mockDispatcher = jest.fn();
+    loadJurisdiction('id', mockDispatcher).catch((_) => fail());
+
+    await new Promise((resolve) => setImmediate(resolve));
+
+    expect(mockDispatcher).toHaveBeenCalledWith({});
+  });
+
+  it('post put errors', async () => {
+    const errorMessage = 'coughid';
+    fetch.mockReject(new Error(errorMessage));
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mockPayload = {} as any;
+    postPutLocationUnit(mockPayload, undefined, undefined, true).catch((err) => {
+      expect(err.message).toEqual(errorMessage);
+    });
+    postPutLocationUnit(mockPayload, undefined, undefined, false).catch((err) => {
+      expect(err.message).toEqual(errorMessage);
+    });
+
+    await new Promise((resolve) => setImmediate(resolve));
+  });
+
+  it('load location tags', async () => {
+    const errorMessage = 'coughid';
+    fetch.mockReject(new Error(errorMessage));
+
+    const mockURL = '';
+    loadLocationTags(mockURL).catch((err) => {
+      expect(err.message).toEqual(errorMessage);
+    });
+
+    await new Promise((resolve) => setImmediate(resolve));
+  });
+
+  it('load settings uses callback only when present', async () => {
+    fetch.mockResponse(JSON.stringify({}));
+
+    const mockURL = '';
+    loadSettings('settings endpoint', mockURL).catch((_) => {
+      fail();
+    });
+    // no assertion here intentionally, we cannot check that a callback that
+    // was not provided was called
 
     await new Promise((resolve) => setImmediate(resolve));
   });

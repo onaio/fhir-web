@@ -54,3 +54,50 @@ export const structure3 = {
   serverVersion: 18481,
 };
 export const structures = [structure1, structure2, structure3] as LocationUnit[];
+
+export const fetchCalls = [
+  [
+    'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/countAll?serverVersion=0&is_jurisdiction=false',
+    {
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer iLoveOov',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'GET',
+    },
+  ],
+  [
+    'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+    {
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer iLoveOov',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'GET',
+    },
+  ],
+  [
+    'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false&limit=3',
+    {
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer iLoveOov',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'GET',
+    },
+  ],
+  [
+    'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/hierarchy/03176924-6b3c-4b74-bccd-32afcceebabd?return_structure_count=false',
+    {
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer iLoveOov',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'GET',
+    },
+  ],
+];

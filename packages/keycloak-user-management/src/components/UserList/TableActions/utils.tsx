@@ -8,7 +8,6 @@ import { USER_DELETED_SUCCESSFULLY, ERROR_OCCURED } from '../../../lang';
  * Delete keycloak user
  *
  * @param {Function} removeKeycloakUsersCreator - remove users action creator
- * @param {string} accessToken - access token
  * @param {string} keycloakBaseURL - keycloak api base URL
  * @param {string} userId - id of user to be deleted
  * @param {Function} isLoadingCallback - callback function that sets loading state
@@ -16,16 +15,11 @@ import { USER_DELETED_SUCCESSFULLY, ERROR_OCCURED } from '../../../lang';
  */
 export const deleteUser = (
   removeKeycloakUsersCreator: typeof removeKeycloakUsers,
-  accessToken: string,
   keycloakBaseURL: string,
   userId: string,
   isLoadingCallback: (loading: boolean) => void
 ): void => {
-  const serviceDelete = new KeycloakService(
-    accessToken,
-    `${KEYCLOAK_URL_USERS}/${userId}`,
-    keycloakBaseURL
-  );
+  const serviceDelete = new KeycloakService(`${KEYCLOAK_URL_USERS}/${userId}`, keycloakBaseURL);
   serviceDelete
     .delete()
     .then(() => {

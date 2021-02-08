@@ -4,7 +4,6 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { makeAPIStateSelector } from '@opensrp/store';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
 import '../../index.css';
@@ -39,9 +38,6 @@ import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notific
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
-// Define selector instance
-const getAccessToken = makeAPIStateSelector();
-
 /** inteface for route params */
 
 export interface CredentialsRouteParams {
@@ -50,7 +46,6 @@ export interface CredentialsRouteParams {
 
 /** props for editing a user view */
 export interface CredentialsProps {
-  accessToken: string;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
@@ -79,7 +74,6 @@ export const cancelUserHandler = (genericHistory: Dictionary): void => {
 
 /** default props for editing user component */
 export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
-  accessToken: '',
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   keycloakUser: null,
   serviceClass: KeycloakService,
@@ -91,18 +85,15 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
  * @param {Dictionary} values - submitted values
  * @param {string} userId - user id
  * @param {string} serviceClass - KeycloakService
- * @param {string} accessToken - Keycloak API access token
  * @param {string} keycloakBaseURL - Keycloak API base URL
  */
 export const submitForm = (
   values: UserCredentialsFormFields,
   userId: string,
   serviceClass: typeof KeycloakService,
-  accessToken: string,
   keycloakBaseURL: string
 ): void => {
   const serve = new serviceClass(
-    accessToken,
     `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
     keycloakBaseURL
   );
@@ -123,7 +114,7 @@ export const submitForm = (
 };
 
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const { serviceClass, match, accessToken, keycloakBaseURL, keycloakUser } = props;
+  const { serviceClass, match, keycloakBaseURL, keycloakUser } = props;
   const userId = match.params[ROUTE_PARAM_USER_ID];
   const layout = {
     labelCol: {
@@ -153,7 +144,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
           <Form
             {...layout}
             onFinish={(values: UserCredentialsFormFields) =>
-              submitForm(values, userId, serviceClass, accessToken, keycloakBaseURL)
+              submitForm(values, userId, serviceClass, keycloakBaseURL)
             }
           >
             <Form.Item
@@ -217,7 +208,6 @@ export { UserCredentials };
 /** Interface for connected state to props */
 interface DispatchedProps {
   keycloakUser: KeycloakUser | null;
-  accessToken: string;
 }
 
 // connect to store
@@ -229,8 +219,7 @@ const mapStateToProps = (
   const keycloakUsersSelector = makeKeycloakUsersSelector();
   const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
   const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
-  const accessToken = getAccessToken(state, { accessToken: true });
-  return { keycloakUser, accessToken };
+  return { keycloakUser };
 };
 
 /** map props to action creators */

@@ -7,7 +7,6 @@ import { TableActions } from './TableActions';
  * Get table columns for user list
  *
  * @param {Function} removeKeycloakUsersCreator - remove users action creator
- * @param {string} accessToken - API access token
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {Function} isLoadingCallback - callback function that sets loading state
  * @param {Dictionary} extraData - user profile extra data
@@ -16,7 +15,6 @@ import { TableActions } from './TableActions';
  */
 export const getTableColumns = (
   removeKeycloakUsersCreator: typeof removeKeycloakUsers,
-  accessToken: string,
   keycloakBaseURL: string,
   isLoadingCallback: (loading: boolean) => void,
   extraData: Dictionary,
@@ -49,7 +47,6 @@ export const getTableColumns = (
     render: (_: string, record: KeycloakUser) => {
       const tableActionsProps = {
         removeKeycloakUsersCreator,
-        accessToken,
         keycloakBaseURL,
         isLoadingCallback,
         record,
