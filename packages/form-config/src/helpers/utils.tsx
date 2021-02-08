@@ -86,7 +86,7 @@ export const downloadManifestFile = async (
  * @param {Function} alertError - receive error description
  * @param {string} endpoint - Opensrp endpoint
  */
-export const submitUploadForm = (
+export const submitUploadForm = async (
   values: UploadFileFieldTypes,
   accessToken: GetAccessTokenType | string,
   opensrpBaseURL: string,
@@ -113,11 +113,13 @@ export const submitUploadForm = (
     formData.append('is_json_validator', 'true');
   }
 
+  const token = await processAcessToken(accessToken);
+
   const customOptions = () => {
     return {
       body: formData,
       headers: {
-        Authorization: `Bearer ${processAcessToken(accessToken)}`,
+        Authorization: `Bearer ${processAcessToken(token)}`,
       },
       method: 'POST',
     };
