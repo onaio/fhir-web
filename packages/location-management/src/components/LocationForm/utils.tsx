@@ -223,7 +223,19 @@ export function getServiceTypeOptions(data: Setting[]) {
 export const validationRules = {
   instance: [{ type: 'enum', enum: Object.values(FormInstances), required: true }] as Rule[],
   id: [{ type: 'string' }] as Rule[],
-  parentId: [{ type: 'string', message: 'Parent ID must be a string' }] as Rule[],
+  parentId: [
+    { type: 'string', message: 'Parent ID must be a string' },
+    ({ getFieldValue }) => {
+      const instance = getFieldValue('instance');
+      if (instance === FormInstances.EUSM)
+        return {
+          required: true,
+        };
+      return {
+        required: false,
+      };
+    },
+  ] as Rule[],
   name: [
     { type: 'string', message: 'Name must be a string' },
     { required: true, message: 'Name is required' },
