@@ -95,7 +95,7 @@ export const submitUploadForm = async (
   setIfDoneHere: (ifDoneHere: boolean) => void,
   alertError: (err: string) => void,
   endpoint = OPENSRP_FORMS_ENDPOINT
-): void => {
+) => {
   setSubmitting(true);
   const formData = new FormData();
   const { form } = values;
@@ -119,7 +119,7 @@ export const submitUploadForm = async (
     return {
       body: formData,
       headers: {
-        Authorization: `Bearer ${processAcessToken(token)}`,
+        Authorization: `Bearer ${token}`,
       },
       method: 'POST',
     };
