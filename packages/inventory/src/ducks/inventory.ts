@@ -17,6 +17,20 @@ export interface CustomProperties {
   'UNICEF section': string;
 }
 
+/** interface post inventory */
+export interface InventoryPost {
+  deliveryDate: string;
+  donor: string;
+  poNumber: number;
+  productName: string;
+  providerId: string;
+  quantity: number;
+  serialNumber: string;
+  servicePointId: string;
+  stockId: string;
+  unicefSection: string;
+}
+
 /** interface inventory */
 export interface Inventory {
   type: string;
@@ -63,7 +77,7 @@ export const getInventoriesByIds = (store: Partial<Store>) => {
 
 /** prop filters to customize selector queries */
 interface Filters {
-  _ids?: string[];
+  ids?: string[];
   servicePointIds?: string[];
 }
 
@@ -72,7 +86,7 @@ interface Filters {
  * @param store - the store
  * @param props - the filterProps
  */
-const getIds = (store: Partial<Store>, props: Filters) => props._ids;
+const getIds = (store: Partial<Store>, props: Filters) => props.ids;
 const getServicePointIds = (store: Partial<Store>, props: Filters) => props.servicePointIds;
 
 /** factory that returns a selector to retrieve the inventories using stock ids */
