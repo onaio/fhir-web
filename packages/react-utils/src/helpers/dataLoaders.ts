@@ -12,7 +12,7 @@ import {
   EXPRESS_TOKEN_REFRESH_URL,
   LOGIN_URL,
   SESSION_EXPIRED_TEXT,
-} from '../components/constants';
+} from '../constants';
 
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
