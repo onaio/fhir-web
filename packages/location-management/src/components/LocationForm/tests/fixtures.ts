@@ -181,7 +181,7 @@ export const fetchCalls1 = [
     },
   ],
   [
-    'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_types',
+    'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_point_types',
     {
       headers: {
         accept: 'application/json',
