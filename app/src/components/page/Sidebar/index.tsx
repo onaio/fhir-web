@@ -59,8 +59,8 @@ import {
   ADD_INVENTORY_VIA_CSV,
 } from '../../../lang';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
-import ArchiveOutline from '@2fd/ant-design-icons/lib/ArchiveOutline';
-import MapMarkerOutline from '@2fd/ant-design-icons/lib/MapMarkerOutline';
+import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
+import MapMarkerOutline from '@opensrp/ant-icons/lib/MapMarkerOutline';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -98,7 +98,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         className="menu-dark"
       >
         {ENABLE_PLANS && (
-          <Menu.SubMenu key="missions" icon={<MapMarkerOutline />} title={MISSIONS}>
+          <Menu.SubMenu
+            key="missions"
+            icon={<MapMarkerOutline className="sidebar-icons" />}
+            title={MISSIONS}
+          >
             <Menu.Item key="active">
               <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
                 {ACTIVE}
@@ -122,7 +126,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           </Menu.SubMenu>
         )}
         {ENABLE_CARD_SUPPORT && (
-          <Menu.SubMenu key="card-support" title={CARD_SUPPORT} icon={<IdcardOutlined />}>
+          <Menu.SubMenu
+            key="card-support"
+            title={CARD_SUPPORT}
+            icon={<IdcardOutlined className="sidebar-icons" />}
+          >
             <Menu.Item key="card-support-client-data">
               <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
                 {DOWNLOAD_CLIENT_DATA}
@@ -131,7 +139,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           </Menu.SubMenu>
         )}
         {ENABLE_INVENTORY && (
-          <Menu.SubMenu key="inventory" icon={<ArchiveOutline />} title={INVENTORY}>
+          <Menu.SubMenu
+            key="inventory"
+            icon={<ArchiveOutline className="sidebar-icons" />}
+            title={INVENTORY}
+          >
             <Menu.Item key="list">
               <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
                 {SERVICE_POINT_INVENTORY}
@@ -144,7 +156,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           </Menu.SubMenu>
         )}
-        <Menu.SubMenu key="admin" icon={<SettingOutlined />} title={ADMIN}>
+        <Menu.SubMenu
+          key="admin"
+          icon={<SettingOutlined className="sidebar-icons" />}
+          title={ADMIN}
+        >
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title={USERS}>
               <Menu.Item key={'list'}>
