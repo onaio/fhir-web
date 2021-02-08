@@ -4,6 +4,7 @@ import {
   getFetchOptions,
   HTTPError,
   GetAccessTokenType,
+  processAcessToken,
 } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { UploadFileFieldTypes } from './types';
@@ -116,7 +117,7 @@ export const submitUploadForm = (
     return {
       body: formData,
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${processAcessToken(accessToken)}`,
       },
       method: 'POST',
     };
