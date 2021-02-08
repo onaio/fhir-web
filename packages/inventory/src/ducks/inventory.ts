@@ -11,18 +11,29 @@ import { Store } from 'redux';
 import { createSelector } from 'reselect';
 import { Dictionary } from '@onaio/utils';
 
+/** interface custom properties for inventory */
+export interface CustomProperties {
+  'PO Number': string;
+  'UNICEF section': string;
+}
+
 /** interface inventory */
 export interface Inventory {
+  type: string;
+  serverVersion: number;
+  identifier: string;
+  providerid: string;
+  value: number;
+  version: number;
   deliveryDate: string;
+  accountabilityEndDate: string;
   donor: string;
-  poNumber: number;
-  productName: string;
-  providerId: string;
-  quantity: number;
   serialNumber: string;
-  servicePointId: string;
-  stockId: string;
-  unicefSection: string;
+  locationId: string;
+  customProperties: CustomProperties;
+  _id: string;
+  _rev: string;
+  transaction_type: string;
 }
 
 /** reducer name */
@@ -33,10 +44,7 @@ export const inventoryReducer = reducerFactory<Inventory>(inventoryReducerName);
 
 // action
 /** actionCreator returns action to to add Item records to store */
-export const fetchInventories = fetchActionCreatorFactory<Inventory>(
-  inventoryReducerName,
-  'stockId'
-);
+export const fetchInventories = fetchActionCreatorFactory<Inventory>(inventoryReducerName, '_id');
 
 export const removeInventories = removeActionCreatorFactory(inventoryReducerName);
 export const setTotalInventories = setTotalRecordsFactory(inventoryReducerName);
@@ -55,7 +63,7 @@ export const getInventoriesByIds = (store: Partial<Store>) => {
 
 /** prop filters to customize selector queries */
 interface Filters {
-  stockIds?: string[];
+  _ids?: string[];
   servicePointIds?: string[];
 }
 
@@ -64,13 +72,13 @@ interface Filters {
  * @param store - the store
  * @param props - the filterProps
  */
-const getStockIds = (store: Partial<Store>, props: Filters) => props.stockIds;
+const getIds = (store: Partial<Store>, props: Filters) => props._ids;
 const getServicePointIds = (store: Partial<Store>, props: Filters) => props.servicePointIds;
 
 /** factory that returns a selector to retrieve the inventories using stock ids */
-export const getInventoriesByStockIdsFactory = createSelector(
+export const getInventoriesByIdsFactory = createSelector(
   getInventoriesByIds,
-  getStockIds,
+  getIds,
   (inventoriesByIds, ids) => {
     if (ids) {
       const inventoriesOfInterest: Inventory[] = [];
@@ -92,7 +100,7 @@ export const getInventoriesByServicePointsIdsFactory = createSelector(
       const inventoriesOfInterest: Inventory[] = [];
       ids.forEach((id) => {
         Object.values(inventoriesByIds).forEach((inventory) => {
-          if (id === inventory.servicePointId) {
+          if (id === inventory.locationId) {
             inventoriesOfInterest.push(inventory);
           }
         });
