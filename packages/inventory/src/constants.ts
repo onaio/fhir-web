@@ -60,7 +60,5 @@ export const inventory2 = {
 };
 
 // Geographic levels
-export const REGION = 1;
-export const DISTRICT = 2;
-export const COMMUNE = 3;
+export const GEOGRAPHIC_LEVEL = { REGION: 1, DISTRICT: 2, COMMUNE: 3 };
 export const CSV_FILE_TYPE = '.csv';

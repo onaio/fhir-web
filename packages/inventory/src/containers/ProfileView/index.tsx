@@ -8,8 +8,6 @@ import {
   locationUnitsReducer,
   fetchLocationUnits,
   locationUnitsReducerName,
-  getLocationsByNameAndId,
-  getLocationUnitById,
   LocationUnit,
   loadJurisdictions,
   getLocationsBySearch,
@@ -20,16 +18,14 @@ import { ColumnsType } from 'antd/lib/table/interface';
 import { columns } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import { Link, RouteComponentProps, useLocation } from 'react-router-dom';
+import { Link, RouteComponentProps, useParams } from 'react-router-dom';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import {
   GET_INVENTORY_BY_SERVICE_POINT,
   INVENTORY_SERVICE_POINT_LIST_VIEW,
-  REGION,
-  DISTRICT,
-  COMMUNE,
+  GEOGRAPHIC_LEVEL,
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
@@ -62,7 +58,6 @@ reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 
-const locationsBySearchSelector = getLocationsByNameAndId();
 const structuresSelector = getLocationsBySearch();
 const treesSelector = getTreesByIds();
 
@@ -71,7 +66,6 @@ interface ServicePointsListProps extends CommonProps {
   LocationsByGeoLevel: TreeNode[];
   columns: ColumnsType<TableData>;
   fetchInventories: typeof fetchInventories;
-  geoLevel: number;
   service: typeof OpenSRPService;
 }
 
@@ -84,7 +78,6 @@ const defaultProps = {
   LocationsByGeoLevel: [],
   columns: columns,
   fetchInventories,
-  geoLevel: 0,
   opensrpBaseURL: '',
   service: OpenSRPService,
 };
@@ -125,19 +118,14 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
  * @param props - the component props
  */
 const ServicePointProfile = (props: ServicePointsListTypes) => {
-  const { columns, opensrpBaseURL, geoLevel, service } = props;
+  const { columns, opensrpBaseURL, service } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const location = useLocation();
-  const loc = location.pathname.split('/');
-  const spId = loc.pop() as string;
+  const params = useParams<{ servicePointId: string }>();
+  const spId = params.servicePointId;
 
   const inventoriesArray = useSelector((state) => getInventoriesArray(state));
-  const locationUnitById = useSelector((state) => getLocationUnitById(state, spId));
-  const [locationNodeById] = useSelector((state) =>
-    locationsBySearchSelector(state, { searchQuery: spId, geoLevel })
-  );
   const [structure] = useSelector((state) =>
     structuresSelector(state, { searchQuery: spId, isJurisdiction: false })
   );
@@ -184,7 +172,8 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
         setIsLoading(false);
       })
       .catch(() => sendErrorNotification(ERROR_OCCURRED));
-  }, [dispatch, location.pathname, locationUnitById, opensrpBaseURL, spId, locationNodeById]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opensrpBaseURL, spId]);
 
   if (isLoading) return <Spin size="large" />;
 
@@ -206,9 +195,18 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
             <p className="title">{structure.properties.name}</p>
             <Row>
               <Col md={12}>
-                <GeographyItem label={REGION_LABEL} value={findPath(nodePath, REGION)?.label} />
-                <GeographyItem label={DISTRICT_LABEL} value={findPath(nodePath, DISTRICT)?.label} />
-                <GeographyItem label={COMMUNE_LABEL} value={findPath(nodePath, COMMUNE)?.label} />
+                <GeographyItem
+                  label={REGION_LABEL}
+                  value={findPath(nodePath, GEOGRAPHIC_LEVEL.REGION)?.label}
+                />
+                <GeographyItem
+                  label={DISTRICT_LABEL}
+                  value={findPath(nodePath, GEOGRAPHIC_LEVEL.DISTRICT)?.label}
+                />
+                <GeographyItem
+                  label={COMMUNE_LABEL}
+                  value={findPath(nodePath, GEOGRAPHIC_LEVEL.COMMUNE)?.label}
+                />
               </Col>
               <Col md={12}>
                 <GeographyItem label={TYPE_LABEL} value={structure.properties.type} />
