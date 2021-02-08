@@ -2,14 +2,6 @@
 # yarn lockfile v1
 
 
-"@2fd/ant-design-icons@^2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@2fd/ant-design-icons/-/ant-design-icons-2.4.0.tgz#49c5013114d083d97fabd6535734b31043084939"
-  integrity sha512-/3M78pu6MNUv9VfuBlC2BzgRv/Rqarusiv2LF2iKKwu9bAuLhrBhW+jX8OaDz9N/Xw4lxUuoNc/gXTqnwM/2/g==
-  dependencies:
-    "@ant-design/icons" "^4.0.0"
-    react "^17.0.1"
-
 "@ant-design/colors@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@ant-design/colors/-/colors-5.0.0.tgz#46b73b4cc6935b35fc8b84555e8e42c8cfc190e6"
@@ -2721,6 +2713,14 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
+
+"@opensrp/ant-icons@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/ant-icons/-/ant-icons-0.0.1.tgz#bfe02c5356157906a1b458525b1337f66a7ab8c1"
+  integrity sha512-CGYN1RMuyRNqGzrB6DircA8M7vk0PmMtIayNB0G+Ybxrj9FsLnFw7wTyWjfH/VvP1ZbSgs+CzU4t5Iguz+KomQ==
+  dependencies:
+    "@ant-design/icons" "^4.0.0"
+    react "^16.14.0"
 
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
@@ -14538,7 +14538,7 @@ react-transition-group@^4.4.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@^16.13.1:
+react@^16.13.1, react@^16.14.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
@@ -14546,14 +14546,6 @@ react@^16.13.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-
-react@^17.0.1:
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-17.0.1.tgz#6e0600416bd57574e3f86d92edba3d9008726127"
-  integrity sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
 reactstrap@^7.1.0:
   version "7.1.0"
