@@ -357,7 +357,7 @@ describe('LocationForm', () => {
     // put this here to help guide to know how to mock the fetch calls
     expect(fetch.mock.calls.map((call) => call[0])).toEqual([
       'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_types',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_point_types',
       'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
       'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
       'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/95310ca2-02df-47ba-80fc-bf31bfaa88d7?return_structure_count=false',
