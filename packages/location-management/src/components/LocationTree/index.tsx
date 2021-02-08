@@ -48,6 +48,12 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     setExpandedKeys(expandedKeys as string[]);
     setSearchValue(value);
     setAutoExpandParent(value.length > 0);
+    dispatch(
+      setLocationTreeState({
+        keys: expandedKeys as React.Key[],
+        node: locationTreeState?.node as ParsedHierarchyNode,
+      })
+    );
   }
 
   useEffect(() => {
