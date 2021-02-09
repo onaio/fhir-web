@@ -30,6 +30,7 @@ import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import {
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
+  INVENTORY_ADD_SERVICE_POINT,
   SEARCH_QUERY_PARAM,
   TableColumnsNamespace,
   tablePaginationOptions,
@@ -38,6 +39,7 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { ADD_SERVICE_POINT, SERVICE_POINT_INVENTORY } from '../../lang';
 import { TableData } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { loadCount } from '../../helpers/dataLoaders';
 
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -89,24 +91,35 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   const [loadingStructures, setLoadingStructures] = useState<boolean>(structures.length === 0);
 
   useEffect(() => {
-    // get structures, this is the most important call for this page
-    const params = {
+    const getCountParams = {
       serverVersion: 0,
       // eslint-disable-next-line @typescript-eslint/camelcase
       is_jurisdiction: false,
     };
-    const structuresDispatcher = (locations: LocationUnit[] = []) => {
-      return fetchLocationsCreator(locations, false);
-    };
-    loadJurisdictions(
-      structuresDispatcher,
-      baseURL,
-      params,
-      {},
-      service,
-      LOCATIONS_GET_ALL_SYNC_ENDPOINT
-    )
-      .catch((err: Error) => handleBrokenPage(err))
+    loadCount(undefined, baseURL, getCountParams)
+      .then((count) => {
+        // get structures, this is the most important call for this page
+        const params = {
+          serverVersion: 0,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          is_jurisdiction: false,
+          limit: count,
+        };
+        const structuresDispatcher = (locations: LocationUnit[] = []) => {
+          return fetchLocationsCreator(locations, false);
+        };
+        return loadJurisdictions(
+          structuresDispatcher,
+          baseURL,
+          params,
+          {},
+          service,
+          LOCATIONS_GET_ALL_SYNC_ENDPOINT
+        ).catch((err: Error) => {
+          throw err;
+        });
+      })
+      .catch((err) => handleBrokenPage(err))
       .finally(() => setLoadingStructures(false));
 
     // get root Jurisdictions so we can later get the trees.
@@ -169,8 +182,8 @@ const ServicePointList = (props: ServicePointsListTypes) => {
         <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to={ADD_SERVICE_POINT}>
-              <Button type="primary" size="large" disabled>
+            <Link to={INVENTORY_ADD_SERVICE_POINT}>
+              <Button type="primary" size="large">
                 {ADD_SERVICE_POINT}
               </Button>
             </Link>

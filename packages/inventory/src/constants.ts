@@ -5,11 +5,14 @@ export const OPENSRP_IMPORT_STOCK_ENDPOINT = 'stockresource/import/inventory';
 export const LOCATIONS_GET_ALL_SYNC_ENDPOINT = 'location/getAll';
 export const OPENSRP_ENDPOINT_SETTINGS = 'v2/settings';
 export const OPENSRP_ENDPOINT_STOCK_RESOURCE = 'stockresource/';
+export const LOCATIONS_COUNT_ALL_ENDPOINT = 'location/countAll';
 
 // router routes
 export const INVENTORY_SERVICE_POINT_LIST_VIEW = '/inventory/list';
 export const INVENTORY_SERVICE_POINT_PROFILE_VIEW = '/inventory/profile';
 export const INVENTORY_BULK_UPLOAD_URL = '/inventory/upload';
+export const INVENTORY_ADD_SERVICE_POINT = '/inventory/servicePoint/add';
+export const INVENTORY_EDIT_SERVICE_POINT = '/inventory/servicePoint/edit';
 
 // other constants
 /** namespace for the keys attached to the columns */

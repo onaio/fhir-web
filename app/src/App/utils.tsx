@@ -22,8 +22,17 @@ import {
   TASK_GENERATION_STATUS,
 } from '../configs/env';
 
-export const productCatalogueProps = {
+export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
+};
+
+export const newLocationUnitProps = {
+  redirectAfterAction: URL_LOCATION_UNIT,
+  hidden: 'serviceTypes',
+};
+
+export const editLocationProps = {
+  ...newLocationUnitProps,
 };
 
 export const inventoryServiceProps = {

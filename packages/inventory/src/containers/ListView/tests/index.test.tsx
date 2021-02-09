@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { deforest, removeLocationUnits } from '@opensrp/location-management';
-import { madagascar, madagascarTree, structure1, structures } from './fixtures';
+import { fetchCalls, madagascar, madagascarTree, structure1, structures } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { getNodePath } from '../utils';
 import { generateJurisdictionTree } from '@opensrp/location-management';
@@ -62,7 +62,10 @@ describe('List view Page', () => {
   });
 
   it('renders correctly', async () => {
-    fetch.once(JSON.stringify([])).once(JSON.stringify([])).once(JSON.stringify({}));
+    fetch
+      .once(JSON.stringify({ count: 0 }))
+      .once(JSON.stringify([]))
+      .once(JSON.stringify([]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -90,13 +93,20 @@ describe('List view Page', () => {
       `"Service point inventory (0)+ Add service pointService pointtypeLocationService point IDActionsNo Data"`
     );
 
+    expect(fetch.mock.calls.map((call) => call[0])).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/countAll?serverVersion=0&is_jurisdiction=false',
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false&limit=0',
+    ]);
+
     wrapper.unmount();
   });
 
   it('renders when data is present', async () => {
     fetch
-      .once(JSON.stringify(structures))
+      .once(JSON.stringify({ count: structures.length }))
       .once(JSON.stringify([madagascar]))
+      .once(JSON.stringify(structures))
       .once(JSON.stringify(madagascarTree));
 
     const wrapper = mount(
@@ -121,41 +131,7 @@ describe('List view Page', () => {
     expect(wrapper.text()).toMatchSnapshot('full text snapshot');
 
     // check fetch calls made
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer iLoveOov',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer iLoveOov',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/hierarchy/03176924-6b3c-4b74-bccd-32afcceebabd?return_structure_count=false',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer iLoveOov',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-    ]);
+    expect(fetch.mock.calls).toEqual(fetchCalls);
 
     // look for pagination
     expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(`"15 / page"`);
@@ -165,8 +141,9 @@ describe('List view Page', () => {
 
   it('filers data correctly', async () => {
     fetch
-      .once(JSON.stringify(structures))
+      .once(JSON.stringify({ count: structures.length }))
       .once(JSON.stringify([madagascar]))
+      .once(JSON.stringify(structures))
       .once(JSON.stringify(madagascarTree));
 
     const props = {
@@ -237,9 +214,36 @@ describe('List view Page', () => {
     expect(wrapper.text()).toMatchSnapshot('error broken page');
   });
 
+  it('shows broken page when jurisdiction request errors out', async () => {
+    const errorMessage = 'Coughid';
+    fetch.once(JSON.stringify({ count: structures.length })).once(JSON.stringify([madagascar]));
+    fetch.mockReject(new Error(errorMessage));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedServicePointList {...props}></ConnectedServicePointList>
+        </Router>
+      </Provider>
+    );
+
+    /** loading view */
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Loading ...Fetching locationsPlease wait, while locations are being fetched"`
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // no data
+    expect(wrapper.text()).toMatchSnapshot('error broken page');
+  });
+
   it('shows error message notification', async () => {
     const errorMessage = 'Coughid';
-    fetch.once(JSON.stringify(structures));
+    fetch.once(JSON.stringify({ count: structures.length }));
     fetch.mockReject(new Error(errorMessage));
 
     const spy = jest.spyOn(notifications, 'sendErrorNotification');

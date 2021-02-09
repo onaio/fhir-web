@@ -16,7 +16,6 @@ import {
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
-  URL_INVENTORY_ITEM_ADD,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -58,7 +57,7 @@ import {
   SERVICE_POINT_INVENTORY,
   INVENTORY,
 } from '../../../lang';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory/dist/types';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
