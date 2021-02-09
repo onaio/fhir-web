@@ -22,7 +22,7 @@ import { Inventory } from '../../ducks/inventory';
  * @param record - record to show in row
  */
 export const ActionsColumnCustomRender: ColumnType<Inventory>['render'] = (record) => {
-  return <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.locationId}`}>View</Link>;
+  return <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.locationId}`}>Edit</Link>;
 };
 
 /** service point list table columns */

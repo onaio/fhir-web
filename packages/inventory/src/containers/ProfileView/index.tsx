@@ -148,7 +148,10 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
       {},
       service,
       LOCATIONS_GET_ALL_SYNC_ENDPOINT
-    ).catch((err: Error) => handleBrokenPage(err));
+    ).catch((err: Error) => {
+      handleBrokenPage(err);
+      setIsLoading(false);
+    });
     // get root Jurisdictions so we can later get the trees.
     const jurisdictionsDispatcher = (locations: LocationUnit[] = []) => {
       return dispatch(fetchLocationUnits(locations, true));
@@ -164,7 +167,7 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
   }, []);
 
   useEffect(() => {
-    const serve = new OpenSRPService(`${GET_INVENTORY_BY_SERVICE_POINT}/${spId}`, opensrpBaseURL);
+    const serve = new OpenSRPService(`${GET_INVENTORY_BY_SERVICE_POINT}${spId}`, opensrpBaseURL);
     serve
       .list()
       .then((res: Inventory[]) => {
