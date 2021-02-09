@@ -15,15 +15,17 @@ import {
   locationUnitsReducerName,
 } from '../../ducks/location-units';
 import {
-  LOCATION_UNIT_FINDBYPROPERTIES,
+  LOCATION_UNIT_FIND_BY_PROPERTIES,
   LOCATION_HIERARCHY,
-  LOCATION_UNIT_GET,
+  LOCATION_UNIT_ENDPOINT,
   URL_LOCATION_UNIT_ADD,
+} from '../../constants';
+import {
   ADD_LOCATION_UNIT,
   LOCATION_UNIT,
   LOCATION_UNIT_MANAGEMENT,
   ERROR_OCCURED,
-} from '../../constants';
+} from '../../lang';
 import Table, { TableData } from './Table';
 import './LocationUnitView.css';
 import Tree from '../LocationTree';
@@ -65,7 +67,7 @@ export async function loadSingleLocation(
   setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
 ) {
   setDetail('loading');
-  const serve = new OpenSRPService(LOCATION_UNIT_GET, opensrpBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_ENDPOINT, opensrpBaseURL);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   return await serve
     .read(row.id, { is_jurisdiction: true })
@@ -81,7 +83,7 @@ export async function loadSingleLocation(
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
 export async function getBaseTreeNode(opensrpBaseURL: string) {
-  const serve = new OpenSRPService(LOCATION_UNIT_FINDBYPROPERTIES, opensrpBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
   return await serve
     .list({
       is_jurisdiction: true,
@@ -184,7 +186,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">
-              {currentClicked?.children ? currentClicked.node.name : 'Locations Unit'}
+              {currentClicked?.children ? currentClicked.node.name : LOCATION_UNIT}
             </h5>
             <div>
               <Link

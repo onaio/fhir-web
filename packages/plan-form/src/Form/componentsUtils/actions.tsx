@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Dictionary } from '@onaio/utils';
 import React from 'react';
-import { DESCRIPTION_LABEL, EXPRESSION_LABEL, NAME } from '../../lang';
+import { DESCRIPTION_LABEL, EXPRESSION_LABEL, NAME, PATH_LABEL } from '../../lang';
 import { PlanActivityFormFields } from '@opensrp/plan-form-core';
 import { Form, Input } from 'antd';
 
@@ -21,6 +21,8 @@ export const getConditionAndTriggers = (
 ) => {
   const conditions: Dictionary = {};
   const triggers: Dictionary = {};
+  const dynamicValue: Dictionary = {};
+
   for (let index = 0; index < planActivities.length; index++) {
     const element = planActivities[index];
 
@@ -99,9 +101,39 @@ export const getConditionAndTriggers = (
         );
       });
     }
+    if (element.dynamicValue) {
+      dynamicValue[element.actionCode] = element.dynamicValue.map((item, mapIndex) => {
+        return (
+          <FormItem
+            className="dynamic-value-group"
+            key={`${element.actionCode}-dynamicValue-${index}-${mapIndex}`}
+          >
+            {item.path && (
+              <FormItem
+                label={PATH_LABEL}
+                name={[index, 'dynamicValue', mapIndex, 'path']}
+                id={`activities[${index}].dynamicValue[${mapIndex}].path`}
+              >
+                <Input required={true} type="text" disabled={isDisabled} />
+              </FormItem>
+            )}
+            {item.expression && (
+              <FormItem
+                label={EXPRESSION_LABEL}
+                name={[index, 'dynamicValue', mapIndex, 'expression']}
+                id={`activities[${index}].dynamicValue[${mapIndex}].expression`}
+              >
+                <Input required={true} type="text" disabled={isDisabled} />
+              </FormItem>
+            )}
+          </FormItem>
+        );
+      });
+    }
   }
   return {
     conditions,
     triggers,
+    dynamicValue,
   };
 };

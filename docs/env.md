@@ -158,14 +158,14 @@ Below is a list of currently supported environment variables:
   - **Optional**(`boolean`)
   - default: `"false"`
 
-- **REACT_APP_INVENTORY_LOC_OF_INTEREST_GEO_LEVEL**
-
-  - used by inventory module to configure at what geo level the locations we want, sit
-  - **Optional**(`number`)
-  - default: `0`
-
 - **REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL**
 
   - geo level to assign teams at
   - **Optional**(`number`)
   - default: `0`
+
+- **REACT_APP_MAIN_LOGO_SRC**
+
+  - Configures the logo src url.
+  - **Optional**(`string`)
+  - default: `https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png`

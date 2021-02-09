@@ -5,23 +5,43 @@ import './Sidebar.css';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
-import Logo from '../../../assets/images/opensrp-logo-color.png';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  LOCATIONS_UNIT,
-  LOCATIONS_UNIT_GROUP,
-  PRODUCT_CATALOGUE,
-  TEAMS,
   URL_USER,
   URL_HOME,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
   URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT,
-  USER_MANAGEMENT,
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+} from '../../../constants';
+import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
+import {
+  ENABLE_FORM_CONFIGURATION,
+  ENABLE_PLANS,
+  ENABLE_TEAMS,
+  ENABLE_LOCATIONS,
+  ENABLE_PRODUCT_CATALOGUE,
+  ENABLE_CARD_SUPPORT,
+  ENABLE_INVENTORY,
+  MAIN_LOGO_SRC,
+} from '../../../configs/env';
+import {
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  TRASH_PLANS_LIST_VIEW_URL,
+} from '@opensrp/plans';
+import {
+  CARD_SUPPORT,
+  DOWNLOAD_CLIENT_DATA,
+  USER_MANAGEMENT,
+  TEAMS,
+  LOCATIONS_UNIT,
+  LOCATIONS_UNIT_GROUP,
+  PRODUCT_CATALOGUE,
   FORM_CONFIGURATION,
   MANIFEST_RELEASES,
   DRAFT_FILES,
@@ -33,25 +53,10 @@ import {
   COMPLETE,
   TRASH,
   MISSIONS,
+  LOCATIONS,
   SERVICE_POINT_INVENTORY,
   INVENTORY,
-} from '../../../constants';
-import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
-import {
-  ENABLE_FORM_CONFIGURATION,
-  ENABLE_PLANS,
-  ENABLE_TEAMS,
-  ENABLE_LOCATIONS,
-  ENABLE_PRODUCT_CATALOGUE,
-  ENABLE_CARD_SUPPORT,
-  ENABLE_INVENTORY,
-} from '../../../configs/env';
-import {
-  ACTIVE_PLANS_LIST_VIEW_URL,
-  DRAFT_PLANS_LIST_VIEW_URL,
-  COMPLETE_PLANS_LIST_VIEW_URL,
-  TRASH_PLANS_LIST_VIEW_URL,
-} from '@opensrp/plans';
+} from '../../../lang';
 import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 
 /** interface for SidebarProps */
@@ -78,7 +83,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
         <Link to={URL_HOME}>
-          <img src={Logo} className="img-fluid" alt="" />
+          <img src={MAIN_LOGO_SRC} className="img-fluid" alt="" />
         </Link>
       </div>
 
@@ -115,10 +120,10 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           </Menu.SubMenu>
         )}
         {ENABLE_CARD_SUPPORT && (
-          <Menu.SubMenu key="card-support" title="Card Support" icon={<IdcardOutlined />}>
+          <Menu.SubMenu key="card-support" title={CARD_SUPPORT} icon={<IdcardOutlined />}>
             <Menu.Item key="card-support-client-data">
               <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-                Download Client Data
+                {DOWNLOAD_CLIENT_DATA}
               </Link>
             </Menu.Item>
           </Menu.SubMenu>
@@ -157,7 +162,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           )}
           {ENABLE_LOCATIONS && (
-            <Menu.SubMenu key="location" title="Locations">
+            <Menu.SubMenu key="location" title={LOCATIONS}>
               <Menu.Item key="unit">
                 <Link to={URL_LOCATION_UNIT} className="admin-link">
                   {LOCATIONS_UNIT}

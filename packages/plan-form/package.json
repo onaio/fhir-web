@@ -50,8 +50,6 @@
     "@opensrp/plan-form-core": "^0.0.1",
     "@opensrp/server-service": "^0.0.13",
     "i18next": "^19.8.4",
-    "i18next-conv": "^10.1.0",
-    "i18next-scanner": "^3.0.0",
     "lodash": "^4.17.20",
     "react-i18next": "^11.8.3",
     "uuid": "^8.3.1"
