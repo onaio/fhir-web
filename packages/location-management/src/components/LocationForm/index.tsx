@@ -48,7 +48,7 @@ import {
 } from '../../lang';
 import { CustomTreeSelect } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
-import { fetchAllHierarchies } from 'location-management/src/ducks/location-hierarchy';
+import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 import { useDispatch } from 'react-redux';
 
 const { Item: FormItem } = Form;
