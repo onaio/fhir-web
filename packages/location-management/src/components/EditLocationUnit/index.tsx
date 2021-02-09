@@ -152,6 +152,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     service,
     openSRPBaseURL,
     user: user.username,
+    dispatch,
     disabledTreeNodesCallback,
   };
   const pageTitle = `${EDIT_LOCATION_UNIT} | ${thisLocation?.properties.name}`;
