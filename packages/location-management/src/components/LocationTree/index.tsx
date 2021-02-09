@@ -15,7 +15,6 @@ import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { SEARCH } from '../../lang';
 reducerRegistry.register(reducerName, reducer);
 
-reducerRegistry.register(reducerName, reducer);
 interface TreeProp {
   data: ParsedHierarchyNode[];
   OnItemClick: (item: ParsedHierarchyNode) => void;
