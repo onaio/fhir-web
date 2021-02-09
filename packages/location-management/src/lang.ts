@@ -51,6 +51,7 @@ export const GEOMETRY_PLACEHOLDER = i18n.t('</> JSON');
 export const ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER = i18n.t('Enter a location group name');
 export const SAVING = i18n.t('Saving');
 export const SAVE = i18n.t('Save');
+export const SERVICE_TYPE_PLACEHOLDER = i18n.t('Select the service point type');
 
 export const NAME = i18n.t('Name');
 export const STATUS = i18n.t('Status');

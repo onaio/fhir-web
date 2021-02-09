@@ -45,6 +45,7 @@ import {
   TYPE_LABEL,
   UNIT_GROUP_LABEL,
   USERNAME_LABEL,
+  SERVICE_TYPE_PLACEHOLDER,
 } from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
@@ -289,6 +290,7 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.serviceTypes}
           >
             <CustomSelect<Setting>
+              placeholder={SERVICE_TYPE_PLACEHOLDER}
               disabled={disabled.includes('serviceTypes')}
               loadData={(setData) => {
                 return loadSettings(SERVICE_TYPES_SETTINGS_ID, openSRPBaseURL, service, setData);
