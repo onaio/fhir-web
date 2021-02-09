@@ -11,6 +11,17 @@ import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
 import { Geometry } from 'geojson';
+import {
+  ERROR_PARENTID_STRING,
+  ERROR_NAME_STRING,
+  ERROR_NAME_REQUIRED,
+  ERROR_STATUS_REQUIRED,
+  ERROR_TYPE_STRING,
+  ERROR_EXTERNAL_ID_STRING,
+  ERROR_LOCATION_TAGS_ARRAY,
+  ERROR_LOCATION_CATEGORY_REQUIRED,
+  ERROR_SERVICE_TYPES_REQUIRED,
+} from '../../lang';
 
 export enum FormInstances {
   CORE = 'core',
@@ -223,12 +234,24 @@ export function getServiceTypeOptions(data: Setting[]) {
 export const validationRules = {
   instance: [{ type: 'enum', enum: Object.values(FormInstances), required: true }] as Rule[],
   id: [{ type: 'string' }] as Rule[],
-  parentId: [{ type: 'string', message: 'Parent ID must be a string' }] as Rule[],
-  name: [
-    { type: 'string', message: 'Name must be a string' },
-    { required: true, message: 'Name is required' },
+  parentId: [
+    { type: 'string', message: ERROR_PARENTID_STRING },
+    ({ getFieldValue }) => {
+      const instance = getFieldValue('instance');
+      if (instance === FormInstances.EUSM)
+        return {
+          required: true,
+        };
+      return {
+        required: false,
+      };
+    },
   ] as Rule[],
-  status: [{ type: 'string' }, { required: true, message: 'Status is Required' }] as Rule[],
+  name: [
+    { type: 'string', message: ERROR_NAME_STRING },
+    { required: true, message: ERROR_NAME_REQUIRED },
+  ] as Rule[],
+  status: [{ type: 'string' }, { required: true, message: ERROR_STATUS_REQUIRED }] as Rule[],
   type: [
     { type: 'string' },
     ({ getFieldValue }) => {
@@ -236,16 +259,16 @@ export const validationRules = {
       if (instance === FormInstances.CORE)
         return {
           required: true,
-          message: 'Type is required',
+          message: ERROR_TYPE_STRING,
         };
       return {
         required: false,
       };
     },
   ] as Rule[],
-  externalId: [{ type: 'string', message: 'External id must be a String' }] as Rule[],
-  locationTags: [{ type: 'array', message: 'Location units must be an array' }] as Rule[],
-  geometry: [{ type: 'string', message: 'location Unit Groups must be a An String' }] as Rule[],
+  externalId: [{ type: 'string', message: ERROR_EXTERNAL_ID_STRING }] as Rule[],
+  locationTags: [{ type: 'array', message: ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
+  geometry: [{ type: 'string', message: ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
   isJurisdiction: [
     {
       type: 'boolean',
@@ -256,7 +279,7 @@ export const validationRules = {
       if (isCreateMode)
         return {
           required: true,
-          message: 'Location category is required',
+          message: ERROR_LOCATION_CATEGORY_REQUIRED,
         };
       return {
         required: false,
@@ -270,7 +293,7 @@ export const validationRules = {
       if (instance === FormInstances.EUSM)
         return {
           required: true,
-          message: 'Service Types is required',
+          message: ERROR_SERVICE_TYPES_REQUIRED,
         };
       return {
         required: false,
@@ -298,15 +321,21 @@ export const getLocationTagOptions = (tags: LocationUnitTag[]) => {
   });
 };
 
-/** generates tree select options
+/**
+ * generates tree select options
  *
  * @param trees - an array of parsed trees
+ * @param parentIdDisabledCallback - callback to help determine disabled status of nodes in treeSelect
  */
-export const treeToOptions = (trees: TreeNode[]): DataNode[] => {
+export const treeToOptions = (
+  trees: TreeNode[],
+  parentIdDisabledCallback?: (node: TreeNode) => boolean
+): DataNode[] => {
   const recurseCreateOptions = (node: TreeNode) => {
     const optionValue: Dictionary = {
       value: node.model.id,
       title: node.model.label,
+      ...(parentIdDisabledCallback ? { disabled: parentIdDisabledCallback(node) } : {}),
     };
     if (node.hasChildren()) {
       optionValue.children = node.children.map(recurseCreateOptions);
