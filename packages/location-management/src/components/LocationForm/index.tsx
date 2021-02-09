@@ -49,10 +49,7 @@ import {
 } from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
-import {
-  fetchAllHierarchies,
-  FetchedTreeAction,
-} from '../../ducks/location-hierarchy';
+import { fetchAllHierarchies, FetchedTreeAction } from '../../ducks/location-hierarchy';
 
 const { Item: FormItem } = Form;
 
