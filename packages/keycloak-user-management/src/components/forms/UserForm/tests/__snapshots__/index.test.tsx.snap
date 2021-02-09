@@ -151,14 +151,6 @@ Object {
           id="email"
           label="Email"
           name="email"
-          rules={
-            Array [
-              Object {
-                "message": "Email is required",
-                "required": true,
-              },
-            ]
-          }
         >
           <Input
             type="text"
@@ -288,11 +280,27 @@ Object {
       update={3}
       value={false}
     >
-      <Switch
-        checked={false}
+      <Memo
         id="active"
+        name="active"
         onChange={[Function]}
-      />
+        value={false}
+      >
+        <Radio
+          name="active"
+          type="radio"
+          value={true}
+        >
+          Yes
+        </Radio>
+        <Radio
+          name="active"
+          type="radio"
+          value={false}
+        >
+          No
+        </Radio>
+      </Memo>
     </Memo>
   </Context.Provider>,
   "errors": Array [],
@@ -307,7 +315,6 @@ Object {
   "touched": false,
   "validateStatus": "",
   "validating": false,
-  "valuePropName": "checked",
 }
 `;
 
@@ -324,11 +331,27 @@ Object {
       update={3}
       value={true}
     >
-      <Switch
-        checked={true}
+      <Memo
         id="active"
+        name="active"
         onChange={[Function]}
-      />
+        value={true}
+      >
+        <Radio
+          name="active"
+          type="radio"
+          value={true}
+        >
+          Yes
+        </Radio>
+        <Radio
+          name="active"
+          type="radio"
+          value={false}
+        >
+          No
+        </Radio>
+      </Memo>
     </Memo>
   </Context.Provider>,
   "errors": Array [],
@@ -343,7 +366,6 @@ Object {
   "touched": false,
   "validateStatus": "",
   "validating": false,
-  "valuePropName": "checked",
 }
 `;
 

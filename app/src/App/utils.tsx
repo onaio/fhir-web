@@ -4,6 +4,7 @@ import {
   URL_DRAFT_FILE_LIST,
   URL_UPLOAD_DRAFT_FILE,
   URL_MANIFEST_RELEASE_LIST,
+  URL_LOCATION_UNIT,
 } from '../constants';
 import { interventionType, status, activities, PlanStatus } from '@opensrp/plan-form-core';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
@@ -15,20 +16,27 @@ import {
   DEFAULT_PLAN_DURATION_DAYS,
   DEFAULT_PLAN_VERSION,
   DEFAULT_TIME,
-  INVENTORY_LOC_OF_INTEREST_GEO_LEVEL,
   OPENSRP_API_BASE_URL,
   PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
 } from '../configs/env';
 
-export const productCatalogueProps = {
+export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
+};
+
+export const newLocationUnitProps = {
+  redirectAfterAction: URL_LOCATION_UNIT,
+  hidden: 'serviceTypes',
+};
+
+export const editLocationProps = {
+  ...newLocationUnitProps,
 };
 
 export const inventoryServiceProps = {
   baseURL: OPENSRP_API_BASE_URL,
-  geoLevel: INVENTORY_LOC_OF_INTEREST_GEO_LEVEL,
 };
 
 export const jsonValidatorListProps = {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
+import { DESCRIPTION, NAME, STATUS } from '../../lang';
 
 export interface LocationUnitGroupDetailProps extends LocationUnitGroup {
   onClose?: Function;
@@ -19,15 +20,15 @@ const LocationUnitGroupDetail = (props: LocationUnitGroupDetailProps) => {
         icon={<CloseOutlined />}
       />
       <div className="mb-4 small mt-4">
-        <p className="mb-0 font-weight-bold">Name</p>
+        <p className="mb-0 font-weight-bold">{NAME}</p>
         <p className="mb-0 loc-desc">{name}</p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">Status</p>
+        <p className="mb-0 font-weight-bold">{STATUS}</p>
         <p className="mb-0 loc-desc">{`${active}`}</p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">Description</p>
+        <p className="mb-0 font-weight-bold">{DESCRIPTION}</p>
         <p className="mb-0 loc-desc">{description}</p>
       </div>
     </div>

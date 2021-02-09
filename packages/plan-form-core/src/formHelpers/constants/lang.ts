@@ -52,7 +52,7 @@ export const PRODUCT_CHECK_ACTIVITY_DESCRIPTION =
   'Check for all products (100%) within the jurisdiction';
 export const PRODUCT_CHECK_GOAL_MEASURE = 'Percent of products checked';
 
-export const FIX_PRODUCT_PROBLEM_ACTIVITY = 'Fix Product Problem';
+export const FIX_PRODUCT_PROBLEM_ACTIVITY = 'Fix Problem';
 export const FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION =
   'Fix problems for all products (100%) within the jurisdiction';
 export const FIX_PRODUCT_PROBLEM_GOAL_MEASURE = 'Percent of products problems fixed';
@@ -61,6 +61,8 @@ export const RECORD_GPS_ACTIVITY = 'Record GPS';
 export const RECORD_GPS_ACTIVITY_DESCRIPTION =
   'Record GPS for all service points (100%) without GPS within the jurisdiction';
 export const RECORD_GPS_GOAL_MEASURE = 'Percent of GPS recorded';
+export const RECORD_GPS_GOAL_DESCRIPTION =
+  'Record GPS for all service points without GPS within the jurisdiction';
 
 export const SERVICE_POINT_CHECK_ACTIVITY = 'Service Point';
 export const SERVICE_POINT_CHECK_ACTIVITY_DESCRIPTION =
@@ -74,6 +76,29 @@ export const MDA_POINT_ADVERSE_EFFECT_ACTIVITY_DESCRIPTION =
   'Report any adverse events from medication';
 export const MDA_POINT_ADVERSE_EFFECT_COLLECTION_GOAL =
   'Percent of people who reported adverse events';
+
+export const COMPLETE_LOOKS_GOOD_TITLE = 'Complete Looks Good';
+export const COMPLETE_LOOKS_GOOD_DESCRIPTION = 'Complete full check for product';
+export const COMPLETE_LOOKS_GOOD_MEASURE = 'Trigger when a Looks Good event is submitted';
+
+export const COMPLETE_RECORD_GPS_TITLE = 'Complete Record GPS';
+export const COMPLETE_RECORD_GPS_DESCRIPTION = 'Completes Record GPS activity for structure';
+export const COMPLETE_RECORD_GPS_MEASURE = 'Trigger when a Record Gps event is submitted';
+
+export const COMPLETE_SERVICE_POINT_CHECK_TITLE = 'Complete Service Point Check';
+export const COMPLETE_SERVICE_CHECK_DESCRIPTION = 'Completes Service Point Check';
+export const COMPLETE_SERVICE_CHECK_GOAL_DESCRIPTION =
+  'Complete check for a particular service point (100%) within the Jurisdiction';
+
+export const COMPLETE_FLAG_PROBLEM_TITLE = 'Complete Flag Problem';
+export const COMPLETE_FLAG_PROBLEM_DESCRIPTION = 'Completes Flag problem task';
+
+export const COMPLETE_FIX_PROBLEM_TASK = 'Complete Fix problem task';
+export const COMPLETE_FIX_PROBLEM_DESCRIPTION = 'Completes Fix problem task';
+export const COMPLETE_FIX_PROBLEM_GOAL_DESCRIPTION =
+  'Completes Fix problem for a product (100%) within the jurisdiction';
+export const COMPLETE_FIX_PROBLEM_GOAL_MEASURE = 'Percent of products problems fixed';
+
 export const GOAL_UNIT_ACTIVITY = 'activit(y|ies';
 export const GOAL_UNIT_CASE = 'case(s';
 export const GOAL_UNIT_PERCENT = 'Percent';
