@@ -201,7 +201,9 @@ describe('LocationForm', () => {
 
     expect(wrapper.find('FormItem#instance').text()).toMatchInlineSnapshot(`"Instance"`);
 
-    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(`"ParentPlease select"`);
+    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(
+      `"ParentPlease select'parentId' is required"`
+    );
 
     expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
