@@ -330,7 +330,7 @@ export const rawOpenSRPHierarchy1 = {
               locationId: '421fe9fe-e48f-4052-8491-24d1e548daee',
               name: 'bbb',
               parentLocation: { locationId: '95310ca2-02df-47ba-80fc-bf31bfaa88d7', voided: false },
-              attributes: { geographicLevel: 1 },
+              attributes: { geographicLevel: 3 },
               voided: false,
             },
             parent: '95310ca2-02df-47ba-80fc-bf31bfaa88d7',
