@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { Form, Input, Space, Button, Radio } from 'antd';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Redirect } from 'react-router';
@@ -48,8 +48,10 @@ import {
 } from '../../lang';
 import { CustomTreeSelect } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
-import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
-import { useDispatch } from 'react-redux';
+import {
+  fetchAllHierarchies,
+  FetchedTreeAction,
+} from '../../ducks/location-hierarchy';
 
 const { Item: FormItem } = Form;
 
@@ -63,6 +65,7 @@ export interface LocationFormProps {
   onCancel: () => void;
   service: typeof OpenSRPService;
   username: string;
+  dispatch: Dispatch<FetchedTreeAction>;
 }
 
 const defaultProps = {
@@ -131,8 +134,8 @@ const LocationForm = (props: LocationFormProps) => {
     hidden,
     service,
     username,
+    dispatch,
   } = props;
-  const dispatch = useDispatch();
   const isEditMode = !!initialValues.id;
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false);

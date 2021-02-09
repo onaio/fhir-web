@@ -2,7 +2,7 @@ import { getUser } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields, LocationFormFields } from '../LocationForm/utils';
@@ -42,6 +42,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     redirectAfterAction,
     processInitialValues,
   } = props;
+  const dispatch = useDispatch();
   const history = useHistory();
   const cancelHandler = () => history.push(redirectAfterAction);
   const user = useSelector((state) => getUser(state));
@@ -58,6 +59,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     service,
     openSRPBaseURL,
     username: user.username,
+    dispatch,
   };
 
   const pageTitle = ADD_LOCATION_UNIT;
