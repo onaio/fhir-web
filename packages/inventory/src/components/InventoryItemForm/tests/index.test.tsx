@@ -1,0 +1,322 @@
+import React from 'react';
+import moment from 'moment';
+import { createBrowserHistory } from 'history';
+import fetch from 'jest-fetch-mock';
+import * as notifications from '@opensrp/notifications';
+import { store } from '@opensrp/store';
+import flushPromises from 'flush-promises';
+import { authenticateUser } from '@onaio/session-reducer';
+import { mount, shallow } from 'enzyme';
+import { Router } from 'react-router';
+import { InventoryItemForm } from '..';
+import * as fixtures from './fixtures';
+import { ProductCatalogue } from '@opensrp/product-catalogue';
+import { act } from 'react-dom/test-utils';
+import toJson from 'enzyme-to-json';
+import { ERROR_GENERIC } from '../../../lang';
+
+/* eslint-disable react/prop-types */
+
+const history = createBrowserHistory();
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
+
+jest.mock('antd', () => {
+  const antd = jest.requireActual('antd');
+
+  const DatePicker = ({ children, onChange, ...otherProps }) => {
+    return (
+      <select {...otherProps} onChange={(e) => onChange(e.target.value)}>
+        {children}
+      </select>
+    );
+  };
+
+  const Select = ({ children, onChange, ...otherProps }) => {
+    return (
+      <select {...otherProps} onChange={(e) => onChange(e.target.value)}>
+        {children}
+      </select>
+    );
+  };
+
+  const Option = ({ children, ...otherProps }) => {
+    return <option {...otherProps}>{children}</option>;
+  };
+
+  Select.Option = Option;
+
+  return {
+    __esModule: true,
+    ...antd,
+    DatePicker,
+    Select,
+  };
+});
+
+describe('components/InventoryItemForm', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  const props = {
+    openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
+    cancelURL: '/inventory-items',
+    redirectURL: 'inventory-items-done',
+    products: fixtures.products as ProductCatalogue[],
+    UNICEFSections: fixtures.unicefSections,
+    donors: fixtures.donors,
+    servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+  };
+
+  it('renders without crashing', () => {
+    shallow(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+  });
+
+  it('renders correctly', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+
+    expect(wrapper.find('Card').props()).toMatchSnapshot('card');
+    wrapper.unmount();
+  });
+
+  it('form validation works for required fields', async () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(wrapper.find('FormItemInput').at(0).prop('errors')).toEqual(['Product is required']);
+    expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual([]);
+    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual([
+      'Delivery date is required',
+    ]);
+    expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual([
+      'Accountability end date is required',
+    ]);
+    expect(wrapper.find('FormItemInput').at(4).prop('errors')).toEqual([
+      'UNICEF section is required',
+    ]);
+    expect(wrapper.find('FormItemInput').at(5).prop('errors')).toEqual([]);
+    expect(wrapper.find('FormItemInput').at(6).prop('errors')).toEqual(['PO number is required']);
+
+    wrapper.unmount();
+  });
+
+  it('adds inventory item', async () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+
+    wrapper.find('select#productName').simulate('change', {
+      target: { value: fixtures.products[0].productName },
+    });
+    wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: moment('2021-02-08') },
+    });
+    wrapper.find('select#accountabilityEndDate').simulate('change', {
+      target: { value: moment('2021-04-08') },
+    });
+    wrapper.find('select#unicefSection').simulate('change', {
+      target: { value: fixtures.unicefSections[0].value },
+    });
+    wrapper.find('select#donor').simulate('change', {
+      target: { value: fixtures.donors[0].value },
+    });
+    wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    const payload = {
+      productName: 'Test optional Fields',
+      quantity: 10,
+      deliveryDate: '2021-02-08',
+      accountabilityEndDate: '2021-04-08',
+      unicefSection: 'Health',
+      donor: 'ADB',
+      poNumber: 89,
+      servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+    };
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify(payload),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'POST',
+      },
+    ]);
+    // When submitting  the submit button text changes
+    expect(wrapper.find('button').at(0).text()).toEqual('Saving');
+    // Redirect to redirect URL
+    expect(history.location.pathname).toEqual('/inventory-items-done');
+  });
+
+  it('auto-calculates accountability end date', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+    /**
+     * Auto-calculate accountability end date by adding the product
+     * accountability period (in months) to the entered delivery date
+     */
+    wrapper.find('select#productName').simulate('change', {
+      target: { value: fixtures.products[0].productName },
+    });
+    const deliveryDate = moment('2021-02-09');
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: deliveryDate },
+    });
+
+    wrapper.update();
+    const expected = moment(deliveryDate.format('YYYY-MM-DD')).add(
+      fixtures.products[0].accountabilityPeriod,
+      'months'
+    );
+    expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(expected);
+  });
+
+  it('renders serial number field if product selected is an attractive item', async () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+    expect(toJson(wrapper.find('#serialNumber'))).toBeFalsy();
+
+    wrapper.find('select#productName').simulate('change', {
+      target: { value: fixtures.products[3].productName },
+    });
+    expect(toJson(wrapper.find('#serialNumber'))).toBeTruthy();
+
+    wrapper.find('input#serialNumber').simulate('change', { target: { value: '12345' } });
+    wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: moment('2021-02-08') },
+    });
+    wrapper.find('select#accountabilityEndDate').simulate('change', {
+      target: { value: moment('2021-04-08') },
+    });
+    wrapper.find('select#unicefSection').simulate('change', {
+      target: { value: fixtures.unicefSections[0].value },
+    });
+    wrapper.find('select#donor').simulate('change', {
+      target: { value: fixtures.donors[0].value },
+    });
+    wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    const payload = {
+      productName: 'Motorbyke',
+      quantity: 10,
+      deliveryDate: '2021-02-08',
+      accountabilityEndDate: '2021-04-08',
+      unicefSection: 'Health',
+      donor: 'ADB',
+      poNumber: 89,
+      servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+      serialNumber: '12345',
+    };
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify(payload),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'POST',
+      },
+    ]);
+  });
+
+  it('handles error when adding item', async () => {
+    fetch.mockResponse('Server error here', { status: 500 });
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+
+    wrapper.find('select#productName').simulate('change', {
+      target: { value: fixtures.products[0].productName },
+    });
+    wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: moment('2021-02-08') },
+    });
+    wrapper.find('select#accountabilityEndDate').simulate('change', {
+      target: { value: moment('2021-04-08') },
+    });
+    wrapper.find('select#unicefSection').simulate('change', {
+      target: { value: fixtures.unicefSections[0].value },
+    });
+    wrapper.find('select#donor').simulate('change', {
+      target: { value: fixtures.donors[0].value },
+    });
+    wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+  });
+});

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { Form, Button, Input, DatePicker, Select } from 'antd';
+import { Form, Button, Input, DatePicker, Select, Card } from 'antd';
 import { Redirect, useHistory } from 'react-router';
 import { getFetchOptions } from '@opensrp/server-service';
 import {
@@ -25,7 +25,7 @@ import {
   UNICEF_SECTION,
 } from '../../lang';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
-import { submitForm } from './utils';
+import { InventoryItemPayloadPost, submitForm } from './utils';
 
 /** interface for setting **/
 export interface Setting {
@@ -161,22 +161,23 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
   }
 
   return (
-    <Form
-      form={form}
-      {...layout}
-      initialValues={initialValues}
-      onFinish={(values) => {
-        const {
-          poNumber,
-          productName,
-          accountabilityEndDate,
-          deliveryDate,
-          donor,
-          quantity,
-          unicefSection,
-        } = values;
-        submitForm(
-          {
+    <Card>
+      <Form
+        form={form}
+        {...layout}
+        initialValues={initialValues}
+        onFinish={(values) => {
+          const {
+            poNumber,
+            productName,
+            accountabilityEndDate,
+            deliveryDate,
+            donor,
+            quantity,
+            unicefSection,
+            serialNumber,
+          } = values;
+          let payload: InventoryItemPayloadPost = {
             productName,
             quantity: parseInt(quantity),
             deliveryDate: deliveryDate.format('YYYY-MM-DD'),
@@ -185,107 +186,111 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
             donor,
             poNumber: parseInt(poNumber),
             servicePointId,
-          },
-          openSRPBaseURL,
-          setSubmitting,
-          setIfDoneHere,
-          customFetchOptions
-        );
-      }}
-    >
-      <Form.Item
-        name="productName"
-        id="productName"
-        label={PRODUCT}
-        rules={[{ required: true, message: ERROR_PRODUCT_NAME_REQUIRED }]}
-      >
-        <Select placeholder={SELECT} onChange={handleProductChange}>
-          {products.map((product: ProductCatalogue) => (
-            <Select.Option key={product.uniqueId} value={product.productName}>
-              {product.productName}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
+          };
 
-      <Form.Item name="quantity" id="quantity" label={`${QUANTITY} (${OPTIONAL})`}>
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="deliveryDate"
-        id="deliveryDate"
-        label={DELIVERY_DATE}
-        rules={[{ required: true, message: ERROR_DELIVERY_DATE_REQUIRED }]}
+          if (serialNumber) {
+            payload = {
+              ...payload,
+              serialNumber,
+            };
+          }
+          submitForm(payload, openSRPBaseURL, setSubmitting, setIfDoneHere, customFetchOptions);
+        }}
       >
-        <DatePicker
-          disabledDate={(current: moment.Moment) => {
-            // Cannot select future date
-            return current > moment().endOf('day');
-          }}
-          onChange={handleDeliveryDateChange}
-        />
-      </Form.Item>
-      <Form.Item
-        name="accountabilityEndDate"
-        id="accountabilityEndDate"
-        label={ACCOUNTABILITY_END_DATE}
-        rules={[{ required: true, message: ERROR_ACCOUNTABILITY_DATE_REQUIRED }]}
-      >
-        <DatePicker
-          disabledDate={(current: moment.Moment) => {
-            // Only select future date
-            return current < moment().endOf('day');
-          }}
-        />
-      </Form.Item>
-      <Form.Item
-        name="unicefSection"
-        id="unicefSection"
-        label={UNICEF_SECTION}
-        rules={[{ required: true, message: ERROR_UNICEF_SECTION_REQUIRED }]}
-      >
-        <Select placeholder={SELECT}>
-          {UNICEFSections.map((option: Setting) => (
-            <Select.Option key={option.value} value={option.value}>
-              {option.label}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <Form.Item name="donor" id="donor" label={`${DONOR} (${OPTIONAL})`}>
-        <Select placeholder={SELECT}>
-          {donors.map((option: Setting) => (
-            <Select.Option key={option.value} value={option.value}>
-              {option.label}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <Form.Item
-        name="poNumber"
-        id="poNumber"
-        label={PO_NUMBER}
-        rules={[{ required: true, message: ERROR_PO_NUMBER_REQUIRED }]}
-      >
-        <Input />
-      </Form.Item>
-      {selectedProduct?.isAttractiveItem ? (
         <Form.Item
-          name="serialNumber"
-          id="serialNumber"
-          label={SERIAL_NUMBER}
-          rules={[{ required: true, message: ERROR_SERIAL_NUMBER_REQUIRED }]}
+          name="productName"
+          id="productName"
+          label={PRODUCT}
+          rules={[{ required: true, message: ERROR_PRODUCT_NAME_REQUIRED }]}
+        >
+          <Select placeholder={SELECT} onChange={handleProductChange}>
+            {products.map((product: ProductCatalogue) => (
+              <Select.Option key={product.uniqueId} value={product.productName}>
+                {product.productName}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item name="quantity" id="quantity" label={`${QUANTITY} (${OPTIONAL})`}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="deliveryDate"
+          id="deliveryDate"
+          label={DELIVERY_DATE}
+          rules={[{ required: true, message: ERROR_DELIVERY_DATE_REQUIRED }]}
+        >
+          <DatePicker
+            disabledDate={(current: moment.Moment) => {
+              // Cannot select future date
+              return current > moment().endOf('day');
+            }}
+            onChange={handleDeliveryDateChange}
+          />
+        </Form.Item>
+        <Form.Item
+          name="accountabilityEndDate"
+          id="accountabilityEndDate"
+          label={ACCOUNTABILITY_END_DATE}
+          rules={[{ required: true, message: ERROR_ACCOUNTABILITY_DATE_REQUIRED }]}
+        >
+          <DatePicker
+            disabledDate={(current: moment.Moment) => {
+              // Only select future date
+              return current < moment().endOf('day');
+            }}
+          />
+        </Form.Item>
+        <Form.Item
+          name="unicefSection"
+          id="unicefSection"
+          label={UNICEF_SECTION}
+          rules={[{ required: true, message: ERROR_UNICEF_SECTION_REQUIRED }]}
+        >
+          <Select placeholder={SELECT}>
+            {UNICEFSections.map((option: Setting) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item name="donor" id="donor" label={`${DONOR} (${OPTIONAL})`}>
+          <Select placeholder={SELECT}>
+            {donors.map((option: Setting) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="poNumber"
+          id="poNumber"
+          label={PO_NUMBER}
+          rules={[{ required: true, message: ERROR_PO_NUMBER_REQUIRED }]}
         >
           <Input />
         </Form.Item>
-      ) : null}
-      <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
-          {isSubmitting ? SAVING : SAVE}
-        </Button>
-        <Button onClick={() => history.push(cancelURL)}>{CANCEL}</Button>
-      </Form.Item>
-    </Form>
+        {selectedProduct?.isAttractiveItem ? (
+          <Form.Item
+            name="serialNumber"
+            id="serialNumber"
+            label={SERIAL_NUMBER}
+            rules={[{ required: true, message: ERROR_SERIAL_NUMBER_REQUIRED }]}
+          >
+            <Input />
+          </Form.Item>
+        ) : null}
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
+            {isSubmitting ? SAVING : SAVE}
+          </Button>
+          <Button onClick={() => history.push(cancelURL)}>{CANCEL}</Button>
+        </Form.Item>
+      </Form>
+    </Card>
   );
 };
 
