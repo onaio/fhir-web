@@ -149,27 +149,6 @@ describe('components/ConnectedSidebar', () => {
     expect(x[4].key).toMatch('form-config');
   });
 
-  it('displays menu links for enabled Card Support module', () => {
-    const envModule = require('../../../configs/env');
-    envModule.ENABLE_CARD_SUPPORT = 'true';
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const x = wrapper
-      .find('SubMenu[title="Admin"]')
-      .first()
-      .last()
-      .prop('children') as ReactWrapper[];
-
-    expect(x[1].key).toMatch('form-config');
-  });
-
   it('correctly expand users menu', () => {
     const wrapper = mount(
       <Provider store={store}>
