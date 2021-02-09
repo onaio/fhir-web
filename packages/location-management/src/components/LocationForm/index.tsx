@@ -33,7 +33,7 @@ import {
   LOCATION_STRUCTURE_LABEL,
   NAME_LABEL,
   PARENT_LABEL,
-  PLEASE_SELECT_PLACEHOLDER,
+  PARENT_ID_SELECT_PLACEHOLDER,
   SAVE,
   SAVING,
   SELECT_STATUS_LABEL,
@@ -228,7 +228,7 @@ const LocationForm = (props: LocationFormProps) => {
               baseURL={openSRPBaseURL}
               disabled={disabled.includes('parentId')}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              placeholder={PLEASE_SELECT_PLACEHOLDER}
+              placeholder={PARENT_ID_SELECT_PLACEHOLDER}
               fullDataCallback={setSelectedParentNode}
               disabledTreeNodesCallback={disabledTreeNodesCallback}
             />
