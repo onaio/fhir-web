@@ -21,7 +21,7 @@ import {
   ERROR_LOCATION_TAGS_ARRAY,
   ERROR_LOCATION_CATEGORY_REQUIRED,
   ERROR_SERVICE_TYPES_REQUIRED,
-} from 'location-management/src/lang';
+} from '../../lang';
 
 export enum FormInstances {
   CORE = 'core',
