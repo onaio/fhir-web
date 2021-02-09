@@ -64,6 +64,14 @@ Array [
         Service point inventory
       </Link>
     </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
+      </Link>
+    </MenuItem>
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
@@ -205,6 +213,14 @@ Array [
         Service point inventory
       </Link>
     </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
+      </Link>
+    </MenuItem>
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
@@ -344,6 +360,14 @@ Array [
         to="/inventory/list"
       >
         Service point inventory
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -495,6 +519,14 @@ Array [
         Service point inventory
       </Link>
     </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
+      </Link>
+    </MenuItem>
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
@@ -634,6 +666,14 @@ Array [
         to="/inventory/list"
       >
         Service point inventory
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
       </Link>
     </MenuItem>
   </SubMenu>,
@@ -777,6 +817,14 @@ Array [
         Service point inventory
       </Link>
     </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
+      </Link>
+    </MenuItem>
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
@@ -885,6 +933,14 @@ Object {
               Service point inventory
             </Link>
           </MenuItem>
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/inventory/upload"
+            >
+              Add inventory via CSV
+            </Link>
+          </MenuItem>
         </SubMenu>
         <SubMenu
           icon={<ForwardRef(DashboardOutlined) />}
@@ -927,6 +983,14 @@ Array [
         to="/inventory/list"
       >
         Service point inventory
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
       </Link>
     </MenuItem>
   </SubMenu>,
