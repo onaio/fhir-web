@@ -21,7 +21,7 @@
     "lint:windows": "eslint ./**/*.{js,jsx,ts,tsx}",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "build:windows": "yarn run tsc && yarn run transpile:windows && yarn run copy",
+    "build:windows": "yarn run tsc && yarn run transpile && yarn run copy",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
