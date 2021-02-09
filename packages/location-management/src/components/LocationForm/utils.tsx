@@ -310,15 +310,21 @@ export const getLocationTagOptions = (tags: LocationUnitTag[]) => {
   });
 };
 
-/** generates tree select options
+/**
+ * generates tree select options
  *
  * @param trees - an array of parsed trees
+ * @param parentIdDisabledCallback - callback to help determine disabled status of nodes in treeSelect
  */
-export const treeToOptions = (trees: TreeNode[]): DataNode[] => {
+export const treeToOptions = (
+  trees: TreeNode[],
+  parentIdDisabledCallback?: (node: TreeNode) => boolean
+): DataNode[] => {
   const recurseCreateOptions = (node: TreeNode) => {
     const optionValue: Dictionary = {
       value: node.model.id,
       title: node.model.label,
+      disabled: parentIdDisabledCallback?.(node) ?? false,
     };
     if (node.hasChildren()) {
       optionValue.children = node.children.map(recurseCreateOptions);

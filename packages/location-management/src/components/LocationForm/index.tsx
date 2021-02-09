@@ -46,13 +46,14 @@ import {
   UNIT_GROUP_LABEL,
   USERNAME_LABEL,
 } from '../../lang';
-import { CustomTreeSelect } from './CustomTreeSelect';
+import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
 
 const { Item: FormItem } = Form;
 
 /** props for the location form */
-export interface LocationFormProps {
+export interface LocationFormProps
+  extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
   redirectAfterAction: string;
   openSRPBaseURL: string;
@@ -129,6 +130,7 @@ const LocationForm = (props: LocationFormProps) => {
     hidden,
     service,
     username,
+    disabledTreeNodesCallback,
   } = props;
   const isEditMode = !!initialValues.id;
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
@@ -228,6 +230,7 @@ const LocationForm = (props: LocationFormProps) => {
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder={PLEASE_SELECT_PLACEHOLDER}
               fullDataCallback={setSelectedParentNode}
+              disabledTreeNodesCallback={disabledTreeNodesCallback}
             />
           </FormItem>
 

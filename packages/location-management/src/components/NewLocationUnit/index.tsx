@@ -12,7 +12,10 @@ import { ADD_LOCATION_UNIT } from '../../lang';
 
 /** full props for the new location component */
 export interface NewLocationUnitProps
-  extends Pick<LocationFormProps, 'redirectAfterAction' | 'hidden' | 'disabled' | 'service'>,
+  extends Pick<
+      LocationFormProps,
+      'redirectAfterAction' | 'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback'
+    >,
     RouteComponentProps {
   openSRPBaseURL: string;
   instance: FormInstances;
@@ -41,6 +44,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     openSRPBaseURL,
     redirectAfterAction,
     processInitialValues,
+    disabledTreeNodesCallback,
   } = props;
   const history = useHistory();
   const cancelHandler = () => history.push(redirectAfterAction);
@@ -58,6 +62,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     service,
     openSRPBaseURL,
     username: user.username,
+    disabledTreeNodesCallback,
   };
 
   const pageTitle = ADD_LOCATION_UNIT;
