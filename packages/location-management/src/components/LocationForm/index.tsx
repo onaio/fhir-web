@@ -132,7 +132,7 @@ const LocationForm = (props: LocationFormProps) => {
     service,
     username,
   } = props;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isEditMode = !!initialValues.id;
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
