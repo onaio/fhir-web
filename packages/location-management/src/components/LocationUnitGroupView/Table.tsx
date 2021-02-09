@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Dropdown, Button, Divider } from 'antd';
+import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { OpenSRPService } from '@opensrp/react-utils';
