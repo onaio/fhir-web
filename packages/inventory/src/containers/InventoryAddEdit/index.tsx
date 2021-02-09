@@ -23,11 +23,12 @@ import {
   LocationUnit,
   getBaseTreeNode,
 } from '@opensrp/location-management';
-import { ROUTE_PARAM_SERVICE_POINT_ID } from '../../constants';
+import { ROUTE_PARAM_INVENTORY_ITEM_ID, ROUTE_PARAM_SERVICE_POINT_ID } from '../../constants';
 
 /** Route params */
 interface RouteParams {
   [ROUTE_PARAM_SERVICE_POINT_ID]: string;
+  [ROUTE_PARAM_INVENTORY_ITEM_ID]: string;
 }
 
 /** interface component props */
@@ -134,6 +135,8 @@ const mapStateToProps = (
   ownProps: InventoryAddEditProps
 ): MapStateToProps => {
   const servicePointId = ownProps.match.params[ROUTE_PARAM_SERVICE_POINT_ID];
+  const inventoryItemId = ownProps.match.params[ROUTE_PARAM_INVENTORY_ITEM_ID];
+
   let servicePoint = null;
 
   if (servicePointId) {

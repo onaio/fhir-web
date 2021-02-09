@@ -43,6 +43,7 @@ import {
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
   URL_INVENTORY_ITEM_ADD,
+  URL_INVENTORY_ITEM_EDIT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -478,6 +479,13 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               path={URL_INVENTORY_ITEM_ADD}
+              {...inventoryItemAddEditProps}
+              component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              path={URL_INVENTORY_ITEM_EDIT}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
             />

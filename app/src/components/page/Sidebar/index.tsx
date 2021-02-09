@@ -58,6 +58,7 @@ import {
   SERVICE_POINT_INVENTORY,
   INVENTORY,
 } from '../../../lang';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory/dist/types';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -131,11 +132,24 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         {ENABLE_INVENTORY && (
           <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
             <Menu.Item key="list">
+              <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
+                {SERVICE_POINT_INVENTORY}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="list">
               <Link
-                to={`/service-point/03176924-6b3c-4b74-bccd-32afcceebabd/inventory-item/add`}
+                to={`/service-point/b8a7998c-5df6-49eb-98e6-f0675db71848/inventory-item/add`}
                 className="admin-link"
               >
-                {SERVICE_POINT_INVENTORY}
+                Add inventory item
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="list">
+              <Link
+                to={`/service-point/b8a7998c-5df6-49eb-98e6-f0675db71848/inventory-item/edit/69227a92-7979-490c-b149-f28669c6b760`}
+                className="admin-link"
+              >
+                Edit inventory item
               </Link>
             </Menu.Item>
           </Menu.SubMenu>

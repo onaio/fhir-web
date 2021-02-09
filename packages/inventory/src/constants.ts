@@ -31,3 +31,4 @@ export const CSV_FILE_TYPE = '.csv';
 
 // Route params
 export const ROUTE_PARAM_SERVICE_POINT_ID = 'servicePointId';
+export const ROUTE_PARAM_INVENTORY_ITEM_ID = 'inventoryItemId';
