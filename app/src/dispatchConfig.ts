@@ -1,5 +1,11 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { configsSliceName, addConfigs, configsReducer } from '@opensrp/pkg-config';
+import {
+  configsSliceName,
+  addConfigs,
+  configsReducer,
+  LanguageCode,
+  ProjectLanguageCode,
+} from '@opensrp/pkg-config';
 import { store } from '@opensrp/store';
 import type { OpenSRPConfigs } from '@opensrp/pkg-config';
 import { BACKEND_ACTIVE, LANGUAGE_CODE, PROJECT_LANGUAGE_CODE } from './configs/env';
@@ -12,8 +18,8 @@ reducerRegistry.register(configsSliceName, configsReducer);
 export const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
 
 const configObject: OpenSRPConfigs = {
-  languageCode: LANGUAGE_CODE,
-  projectLanguageCode: PROJECT_LANGUAGE_CODE,
+  languageCode: LANGUAGE_CODE as LanguageCode,
+  projectLanguageCode: PROJECT_LANGUAGE_CODE as ProjectLanguageCode,
   appLoginURL: APP_LOGIN_URL,
 };
 
