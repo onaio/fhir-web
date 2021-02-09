@@ -1,13 +1,16 @@
 import { submitForm, fetchRequiredActions, createOrEditPractitioners } from '../utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/react-utils';
 import fetch from 'jest-fetch-mock';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURED } from '../../../../constants';
+import { ERROR_OCCURED } from '../../../../lang';
 import * as fixtures from './fixtures';
-import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { keycloakUser } from './fixtures';
 
 jest.mock('@opensrp/notifications', () => ({
@@ -15,7 +18,34 @@ jest.mock('@opensrp/notifications', () => ({
   ...jest.requireActual('@opensrp/notifications'),
 }));
 
+const mockV4 = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
+
+jest.mock('uuid', () => {
+  const v4 = () => mockV4;
+
+  return {
+    __esModule: true,
+    ...jest.requireActual('uuid'),
+    v4,
+  };
+});
+
 describe('forms/utils/fetchRequiredActions', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'token', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetAllMocks();
@@ -24,14 +54,13 @@ describe('forms/utils/fetchRequiredActions', () => {
 
   const keycloakBaseURL =
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
-  const accessToken = 'token';
   const serviceClass = KeycloakService;
   const setUserActionOptionsMock = jest.fn();
 
   it('fetches required actions', async () => {
     fetch.once(JSON.stringify(fixtures.userActions));
 
-    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptionsMock, serviceClass);
+    fetchRequiredActions(keycloakBaseURL, setUserActionOptionsMock, serviceClass);
 
     await act(async () => {
       await flushPromises();
@@ -62,7 +91,7 @@ describe('forms/utils/fetchRequiredActions', () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptionsMock, serviceClass);
+    fetchRequiredActions(keycloakBaseURL, setUserActionOptionsMock, serviceClass);
 
     await act(async () => {
       await flushPromises();
@@ -94,7 +123,6 @@ describe('forms/utils/submitForm', () => {
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
   const opensrpBaseURL = OPENSRP_API_BASE_URL;
   const opensrpServiceClass = OpenSRPService;
-  const accessToken = 'token';
   const serviceClass = KeycloakService;
   const setSubmittingMock = jest.fn();
   const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
@@ -105,7 +133,6 @@ describe('forms/utils/submitForm', () => {
   it('submits user creation correctly', async () => {
     submitForm(
       values,
-      accessToken,
       keycloakBaseURL,
       opensrpBaseURL,
       serviceClass,
@@ -125,7 +152,10 @@ describe('forms/utils/submitForm', () => {
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          enabled: true,
+        }),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer token',
@@ -143,7 +173,6 @@ describe('forms/utils/submitForm', () => {
   it('submits user edit correctly', async () => {
     submitForm(
       values,
-      accessToken,
       keycloakBaseURL,
       opensrpBaseURL,
       serviceClass,
@@ -182,7 +211,6 @@ describe('forms/utils/submitForm', () => {
 
     submitForm(
       values,
-      accessToken,
       keycloakBaseURL,
       opensrpBaseURL,
       serviceClass,
@@ -207,7 +235,6 @@ describe('forms/utils/submitForm', () => {
 
     submitForm(
       values,
-      accessToken,
       keycloakBaseURL,
       opensrpBaseURL,
       serviceClass,
@@ -234,18 +261,31 @@ describe('forms/utils/submitForm', () => {
       id: keycloakUser.id,
     };
 
-    createOrEditPractitioners(
-      accessToken,
-      opensrpBaseURL,
-      opensrpServiceClass,
-      valuesCopy,
-      undefined,
-      false
-    );
+    createOrEditPractitioners(opensrpBaseURL, opensrpServiceClass, valuesCopy, undefined, false);
 
     await act(async () => {
       await flushPromises();
     });
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          active: true,
+          identifier: mockV4,
+          name: 'Jane Doe',
+          userId: keycloakUser.id,
+          username: 'janedoe@example.com',
+        }),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'POST',
+      },
+    ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner created successfully');
   });
 
@@ -257,7 +297,6 @@ describe('forms/utils/submitForm', () => {
     };
 
     createOrEditPractitioners(
-      accessToken,
       opensrpBaseURL,
       opensrpServiceClass,
       valuesCopy,
@@ -268,6 +307,68 @@ describe('forms/utils/submitForm', () => {
     await act(async () => {
       await flushPromises();
     });
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          active: true,
+          identifier: fixtures.practitioner1.identifier,
+          name: 'Jane Doe',
+          userId: keycloakUser.id,
+          username: 'janedoe@example.com',
+        }),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'PUT',
+      },
+    ]);
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
+  });
+
+  it('calls API with userId if present in values', async () => {
+    const valuesCopy = {
+      ...values,
+      active: true,
+      id: keycloakUser.id,
+      userId: fixtures.practitioner1.userId,
+    };
+
+    createOrEditPractitioners(
+      opensrpBaseURL,
+      opensrpServiceClass,
+      valuesCopy,
+      fixtures.practitioner1,
+      true
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          active: true,
+          identifier: fixtures.practitioner1.identifier,
+          name: 'Jane Doe',
+          userId: fixtures.practitioner1.userId,
+          username: 'janedoe@example.com',
+        }),
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'PUT',
+      },
+    ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
   });
 
@@ -279,14 +380,7 @@ describe('forms/utils/submitForm', () => {
       id: keycloakUser.id,
     };
 
-    createOrEditPractitioners(
-      accessToken,
-      opensrpBaseURL,
-      opensrpServiceClass,
-      valuesCopy,
-      undefined,
-      true
-    );
+    createOrEditPractitioners(opensrpBaseURL, opensrpServiceClass, valuesCopy, undefined, true);
 
     await act(async () => {
       await flushPromises();

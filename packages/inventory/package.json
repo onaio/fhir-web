@@ -33,9 +33,19 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
+    "@opensrp/store": "^0.0.7",
     "react": "^16.18.1"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "@opensrp/location-management": "^0.0.7",
+    "@opensrp/react-utils": "^0.0.2",
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "@onaio/session-reducer": "^0.0.12",
+    "nock": "^13.0.6"
+  }
 }

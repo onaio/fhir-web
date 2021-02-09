@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, {
   fetchLocationUnitGroups,
@@ -14,15 +14,14 @@ import reducer, {
   LocationUnitGroup,
   reducerName,
 } from '../../ducks/location-unit-groups';
-import { getAccessToken } from '@onaio/session-reducer';
+import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../constants';
 import {
-  LOCATION_UNIT_GROUP_ALL,
   LOCATION_UNIT_GROUP,
-  URL_LOCATION_UNIT_GROUP_ADD,
   ADD_LOCATION_UNIT_GROUP,
   LOCATION_UNIT_GROUP_MANAGEMENT,
   ERROR_OCCURED,
-} from '../../constants';
+  SEARCH,
+} from '../../lang';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
 import { Link } from 'react-router-dom';
@@ -35,7 +34,6 @@ export interface Props {
 }
 
 const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const locationsArray = useSelector((state) => getLocationUnitGroupsArray(state));
   const dispatch = useDispatch();
   const [detail, setDetail] = useState<LocationUnitGroupDetailProps | null>(null);
@@ -46,7 +44,7 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
+      const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
       serve
         .list({ is_jurisdiction: true, serverVersion: 0 })
         .then((response: LocationUnitGroup[]) => {
@@ -104,7 +102,7 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5>
               <Input
-                placeholder="Search"
+                placeholder={SEARCH}
                 size="large"
                 value={value}
                 prefix={<SearchOutlined />}

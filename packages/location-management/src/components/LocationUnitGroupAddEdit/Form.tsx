@@ -3,11 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio } from 'formik-antd';
 import { Button, Spin } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
-import { getAccessToken } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
-import { ERROR_OCCURED, LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
+import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
+import {
+  CANCEL,
+  DESCRIPTION,
+  ENTER_LOCATION_GROUP_NAME,
+  ERROR_OCCURED,
+  LOCATION_NAME,
+  SAVE,
+  SAVING,
+  STATUS,
+} from '../../lang';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
@@ -46,19 +54,17 @@ interface Props {
  * Handle form submission
  *
  * @param {Object} values the form fields
- * @param {string} accessToken api access token
  * @param {string} opensrpBaseURL - base url
  * @param {object} props component props
  * @param {Function} setSubmitting method to set submission status
  */
 export const onSubmit = (
   values: FormField,
-  accessToken: string,
   opensrpBaseURL: string,
   props: Props,
   setSubmitting: (isSubmitting: boolean) => void
 ) => {
-  const serve = new OpenSRPService(accessToken, opensrpBaseURL, LOCATION_UNIT_GROUP_ALL);
+  const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
 
   const payload: LocationUnitGroupPayloadPOST | LocationUnitGroupPayloadPUT = values;
 
@@ -91,7 +97,6 @@ export const onSubmit = (
 };
 
 export const Form: React.FC<Props> = (props: Props) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [initialValue, setInitialValue] = useState<FormField>({
     name: '',
@@ -103,11 +108,7 @@ export const Form: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (isLoading) {
       if (props.id) {
-        const serve = new OpenSRPService(
-          accessToken,
-          opensrpBaseURL,
-          LOCATION_UNIT_GROUP_GET + props.id
-        );
+        const serve = new OpenSRPService(LOCATION_UNIT_GROUP_GET + props.id, opensrpBaseURL);
         serve
           .list()
           .then((response: LocationUnitGroup) => {
@@ -122,7 +123,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           .catch(() => sendErrorNotification(ERROR_OCCURED));
       } else setIsLoading(false);
     }
-  }, [accessToken, isLoading, props.id, opensrpBaseURL, setEditTitle]);
+  }, [isLoading, props.id, opensrpBaseURL, setEditTitle]);
 
   if (isLoading)
     return (
@@ -143,16 +144,16 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, accessToken, opensrpBaseURL, props, setSubmitting)}
+      ) => onSubmit(values, opensrpBaseURL, props, setSubmitting)}
     >
       {({ isSubmitting, handleSubmit }) => {
         return (
           <AntForm requiredMark={false} {...layout} onSubmitCapture={handleSubmit}>
-            <AntForm.Item label="Location Name" name="name">
-              <Input name="name" placeholder="Enter a location group name" />
+            <AntForm.Item label={LOCATION_NAME} name="name">
+              <Input name="name" placeholder={ENTER_LOCATION_GROUP_NAME} />
             </AntForm.Item>
 
-            <AntForm.Item label="Status" name="active" valuePropName="checked">
+            <AntForm.Item label={STATUS} name="active" valuePropName="checked">
               <Radio.Group name="active" defaultValue={initialValue.active}>
                 {status.map((e) => (
                   <Radio name="active" key={e.label} value={e.value}>
@@ -162,14 +163,14 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Radio.Group>
             </AntForm.Item>
 
-            <AntForm.Item name="description" label="Description">
-              <Input.TextArea name="description" rows={4} placeholder="Description" />
+            <AntForm.Item name="description" label={DESCRIPTION}>
+              <Input.TextArea name="description" rows={4} placeholder={DESCRIPTION} />
             </AntForm.Item>
 
             <AntForm.Item name={'buttons'} {...offsetLayout}>
-              <SubmitButton id="submit">{isSubmitting ? 'Saving' : 'Save'}</SubmitButton>
+              <SubmitButton id="submit">{isSubmitting ? SAVING : SAVE}</SubmitButton>
               <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-                Cancel
+                {CANCEL}
               </Button>
             </AntForm.Item>
           </AntForm>

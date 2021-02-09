@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -18,6 +17,7 @@ import { expressAPIResponse } from './fixtures';
 import { UserList } from '@opensrp/user-management';
 import { KEYCLOAK_API_BASE_URL } from '../../configs/env';
 import NotFound from '../../components/NotFound';
+import { mount } from 'enzyme';
 
 jest.mock('../../configs/env');
 
@@ -55,7 +55,7 @@ describe('App', () => {
       </Provider>
     );
     // before resolving get oauth state request, the user is logged out
-    expect(wrapper.text()).toMatchInlineSnapshot(`"AdminLogin"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"InventoryAdminLogin"`);
 
     await act(async () => {
       await new Promise<unknown>((resolve) => setImmediate(resolve));

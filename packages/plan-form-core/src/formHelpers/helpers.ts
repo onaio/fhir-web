@@ -50,6 +50,11 @@ import {
   PRODUCT_CHECK_ACTIVITY_CODE,
   RECORD_GPS_ACTIVITY_CODE,
   SERVICE_POINT_CHECK_ACTIVITY_CODE,
+  LOOKS_GOOD_ACTIVITY_CODE,
+  COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE,
+  COMPLETE_FIX_PROBLEM_ACTIVITY_CODE,
+  COMPLETE_RECORD_GPS_ACTIVITY_CODE,
+  COMPLETE_SERVICE_CHECK_ACTIVITY_CODE,
 } from './constants/stringConstants';
 import {
   FIStatusType,
@@ -75,6 +80,7 @@ import {
   FIReasonType,
   EnvConfig,
   SubjectCodableConceptType,
+  PlanActivityDynamicValue,
 } from './types';
 import { v5 as uuidv5 } from 'uuid';
 
@@ -141,9 +147,20 @@ export function extractActivityForForm(
     }
   }
 
+  const dynamicValue: PlanActivityDynamicValue[] = [];
+  if (activityObj.action?.dynamicValue) {
+    for (const iterator of activityObj.action.dynamicValue) {
+      dynamicValue.push({
+        path: iterator.path,
+        expression: iterator.expression.expression,
+      });
+    }
+  }
+
   return {
     ...(condition.length > 0 && { condition }),
     ...(trigger.length > 0 && { trigger }),
+    ...(dynamicValue.length > 0 && { dynamicValue }),
     actionCode: activityObj.action.code,
     actionDefinitionUri: activityObj.action.definitionUri || '',
     actionDescription: activityObj.action.description || '',
@@ -211,6 +228,11 @@ export const SMActivities = pick(planActivities, [
   FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
   RECORD_GPS_ACTIVITY_CODE,
   SERVICE_POINT_CHECK_ACTIVITY_CODE,
+  LOOKS_GOOD_ACTIVITY_CODE,
+  COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE,
+  COMPLETE_FIX_PROBLEM_ACTIVITY_CODE,
+  COMPLETE_SERVICE_CHECK_ACTIVITY_CODE,
+  COMPLETE_RECORD_GPS_ACTIVITY_CODE,
 ]);
 
 export type FormActivity =
@@ -362,6 +384,21 @@ const getTriggerFromFormField = (
 };
 
 /**
+ * Get the plan definition dynamic values from form field values
+ *
+ * @param element - form field values for one plan activity
+ * @returns - dynamic values for activity
+ */
+const getDynamicValuesFromFormField = (element: PlanActivityFormFields) => {
+  return element.dynamicValue?.map((item) => ({
+    path: item.path,
+    expression: {
+      expression: item.expression,
+    },
+  }));
+};
+
+/**
  * Get action and plans from PlanForm activities
  *
  * @param {PlanActivityFormFields[]} activities - this of activities from PlanForm
@@ -418,6 +455,7 @@ export function extractActivitiesFromPlanForm(
 
       const condition = getConditionFromFormField(element);
       const trigger = getTriggerFromFormField(element);
+      const dynamicValue = getDynamicValuesFromFormField(element);
 
       const thisActionIdentifier =
         !element.actionIdentifier || element.actionIdentifier === ''
@@ -436,6 +474,7 @@ export function extractActivitiesFromPlanForm(
       const actionFields: Partial<PlanAction> = {
         ...(condition && { condition }),
         ...(trigger && { trigger }),
+        ...(dynamicValue && { dynamicValue }),
         description: element.actionDescription,
         identifier: thisActionIdentifier,
         prefix,

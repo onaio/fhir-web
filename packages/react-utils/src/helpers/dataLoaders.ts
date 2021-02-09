@@ -1,12 +1,18 @@
-import { store, makeAPIStateSelector } from '@opensrp/store';
+import { store } from '@opensrp/store';
 import {
   getFetchOptions,
   OpenSRPService as GenericOpenSRPService,
   OPENSRP_API_BASE_URL,
 } from '@opensrp/server-service';
+import { history } from '@onaio/connected-reducer-registry';
+import { refreshToken } from '@onaio/gatekeeper';
+import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
-
-const sessionSelector = makeAPIStateSelector();
+import {
+  EXPRESS_TOKEN_REFRESH_URL,
+  LOGIN_URL,
+  SESSION_EXPIRED_TEXT,
+} from '../components/constants';
 
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
@@ -21,7 +27,21 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
     baseURL: string = OPENSRP_API_BASE_URL,
     fetchOptions: typeof getFetchOptions = getFetchOptions
   ) {
-    const accessToken = sessionSelector(store.getState(), { accessToken: true });
-    super(accessToken, baseURL, endpoint, fetchOptions);
+    super(handleSessionOrTokenExpiry, baseURL, endpoint, fetchOptions);
   }
 }
+
+/** gets access token or redirects to login if session is expired */
+export const handleSessionOrTokenExpiry = async () => {
+  if (isTokenExpired(store.getState())) {
+    try {
+      // refresh token
+      return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
+    } catch (e) {
+      history.push(`${LOGIN_URL}`);
+      throw new Error(`${SESSION_EXPIRED_TEXT}`);
+    }
+  } else {
+    return getAccessToken(store.getState());
+  }
+};

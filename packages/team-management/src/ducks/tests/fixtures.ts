@@ -1,4 +1,5 @@
 import { Organization } from '../organizations';
+import { Practitioner } from '../practitioners';
 
 export const org1: Organization = {
   active: true,
@@ -38,6 +39,15 @@ export const org3: Organization = {
       },
     ],
   },
+};
+
+export const teamMember: Practitioner = {
+  identifier: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+  active: true,
+  name: 'Team',
+  userId: '1',
+  username: 'name',
+  code: { text: '' },
 };
 
 export const organizations: Organization[] = [org1, org2];

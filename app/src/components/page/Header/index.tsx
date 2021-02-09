@@ -7,12 +7,8 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
-import {
-  SearchOutlined,
-  QuestionCircleOutlined,
-  BellOutlined,
-  GlobalOutlined,
-} from '@ant-design/icons';
+import { BellOutlined, GlobalOutlined } from '@ant-design/icons';
+import { LOGIN, MANAGE_ACCOUNT } from '../../../lang';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -39,24 +35,6 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { user_id } = extraData;
   return (
     <Layout.Header className="txt-white align-items-center justify-content-end px-1 layout-header">
-      <Button
-        shape="circle"
-        icon={<SearchOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
-      <Button
-        shape="circle"
-        icon={<QuestionCircleOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
-      <Button
-        shape="circle"
-        icon={<BellOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
       {authenticated ? (
         <Dropdown
           overlay={
@@ -65,7 +43,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
                 <Link to={URL_LOGOUT}>Logout</Link>
               </Menu.Item>
               <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
-                <Link to={`${URL_USER_EDIT}/${user_id}`}>Manage account</Link>
+                <Link to={`${URL_USER_EDIT}/${user_id}`}>{MANAGE_ACCOUNT}</Link>
               </Menu.Item>
             </Menu>
           }
@@ -86,7 +64,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         </Dropdown>
       ) : (
         <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
-          <Link to={URL_REACT_LOGIN}>Login</Link>
+          <Link to={URL_REACT_LOGIN}>{LOGIN}</Link>
         </Button>
       )}
       <Button

@@ -1,31 +1,33 @@
 import * as React from 'react';
-import { Row, Col, Button, Space, Table, Divider, Input } from 'antd';
+import { Row, Col, Button, Space, Table, Divider } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Spin } from 'antd';
-import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
+import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { PlusOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
+import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
-  getKeycloakUsersArray,
   removeKeycloakUsers,
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
+  makeKeycloakUsersSelector,
 } from '../../ducks/user';
-import { URL_USER_CREATE, KEYCLOAK_URL_USERS, ERROR_OCCURED, NO_DATA_FOUND } from '../../constants';
+import { URL_USER_CREATE, KEYCLOAK_URL_USERS, SEARCH_QUERY_PARAM } from '../../constants';
+import { ERROR_OCCURED, NO_DATA_FOUND } from '../../lang';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
-import { useHistory } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { ADD_USER, USER_MANAGEMENT_PAGE_HEADER } from '../../lang';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 // Define selector instance
-const getAccessToken = makeAPIStateSelector();
+const usersSelector = makeKeycloakUsersSelector();
 
 /** interface for component props */
 export interface Props {
@@ -33,14 +35,12 @@ export interface Props {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakUsers: KeycloakUser[];
-  accessToken: string;
   keycloakBaseURL: string;
   extraData: Dictionary;
 }
 
 /** default component props */
 export const defaultProps = {
-  accessToken: '',
   serviceClass: KeycloakService,
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   removeKeycloakUsersCreator: removeKeycloakUsers,
@@ -58,7 +58,9 @@ interface TableData {
   lastName: string | undefined;
 }
 
-const UserList = (props: Props): JSX.Element => {
+export type UserListTypes = Props & RouteComponentProps;
+
+const UserList = (props: UserListTypes): JSX.Element => {
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const {
@@ -66,7 +68,6 @@ const UserList = (props: Props): JSX.Element => {
     fetchKeycloakUsersCreator,
     removeKeycloakUsersCreator,
     keycloakUsers,
-    accessToken,
     keycloakBaseURL,
     extraData,
   } = props;
@@ -78,7 +79,7 @@ const UserList = (props: Props): JSX.Element => {
 
   React.useEffect(() => {
     if (isLoading) {
-      const serve = new serviceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
+      const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
       serve
         .list()
         .then((res: KeycloakUser[]) => {
@@ -108,16 +109,17 @@ const UserList = (props: Props): JSX.Element => {
     };
   });
 
+  const searchFormProps = {
+    defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
+    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
+  };
+
   return (
     <section className="layout-content">
-      <h5 className="mb-3">User Management</h5>
+      <h5 className="mb-3">{USER_MANAGEMENT_PAGE_HEADER}</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>
-          <Space style={{ marginBottom: 16, float: 'left' }}>
-            <h5>
-              <Input placeholder="Search" size="large" prefix={<SearchOutlined />} />
-            </h5>
-          </Space>
+          <SearchForm {...searchFormProps} />
           <Space style={{ marginBottom: 16, float: 'right' }}>
             <Button
               type="primary"
@@ -125,7 +127,7 @@ const UserList = (props: Props): JSX.Element => {
               onClick={() => history.push(URL_USER_CREATE)}
             >
               <PlusOutlined />
-              Add User
+              {ADD_USER}
             </Button>
             <Divider type="vertical" />
             <SettingOutlined />
@@ -135,13 +137,12 @@ const UserList = (props: Props): JSX.Element => {
               <Table
                 columns={getTableColumns(
                   removeKeycloakUsersCreator,
-                  accessToken,
                   keycloakBaseURL,
                   isLoadingCallback,
                   extraData,
                   sortedInfo
                 )}
-                dataSource={tableData as KeycloakUser[]}
+                dataSource={keycloakUsers}
                 pagination={{
                   showQuickJumper: true,
                   showSizeChanger: true,
@@ -168,16 +169,15 @@ export { UserList };
 /** Interface for connected state to props */
 interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
-  accessToken: string;
   extraData: Dictionary;
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>, _: Props): DispatchedProps => {
-  const keycloakUsers: KeycloakUser[] = getKeycloakUsersArray(state);
-  const accessToken = getAccessToken(state, { accessToken: true });
+const mapStateToProps = (state: Partial<Store>, props: UserListTypes): DispatchedProps => {
+  const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
+  const keycloakUsers = usersSelector(state, { searchText: searchQuery });
   const extraData = getExtraData(state);
-  return { keycloakUsers, accessToken, extraData };
+  return { keycloakUsers, extraData };
 };
 
 /** map props to action creators */

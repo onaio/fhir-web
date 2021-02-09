@@ -1,3 +1,4 @@
+import './dispatchConfig'; // this needs to be imported before anything else
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { history } from '@onaio/connected-reducer-registry';
@@ -8,17 +9,22 @@ import App from './App/App';
 import { SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
-import { ErrorBoundary } from '@opensrp/error-boundary-fallback';
+import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
 import { URL_HOME } from './constants';
+import * as Sentry from '@sentry/react';
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
+
+if (SENTRY_DSN) {
+  Sentry.init({ dsn: SENTRY_DSN });
+}
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <ErrorBoundary dsn={SENTRY_DSN} homeUrl={URL_HOME}>
+      <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
         <App />
-      </ErrorBoundary>
+      </Sentry.ErrorBoundary>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('opensrp-root')

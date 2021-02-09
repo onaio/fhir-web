@@ -2,25 +2,46 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
-import { DashboardOutlined } from '@ant-design/icons';
+import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
-import Logo from '../../../assets/images/opensrp-logo-color.png';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  LOCATIONS_UNIT,
-  LOCATIONS_UNIT_GROUP,
-  PRODUCT_CATALOGUE,
-  TEAMS,
   URL_USER,
   URL_HOME,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
+  URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT,
-  USER_MANAGEMENT,
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+} from '../../../constants';
+import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
+import {
+  ENABLE_FORM_CONFIGURATION,
+  ENABLE_PLANS,
+  ENABLE_TEAMS,
+  ENABLE_LOCATIONS,
+  ENABLE_PRODUCT_CATALOGUE,
+  ENABLE_CARD_SUPPORT,
+  ENABLE_INVENTORY,
+  MAIN_LOGO_SRC,
+} from '../../../configs/env';
+import {
+  ACTIVE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
+  COMPLETE_PLANS_LIST_VIEW_URL,
+  TRASH_PLANS_LIST_VIEW_URL,
+} from '@opensrp/plans';
+import {
+  CARD_SUPPORT,
+  DOWNLOAD_CLIENT_DATA,
+  USER_MANAGEMENT,
+  TEAMS,
+  LOCATIONS_UNIT,
+  LOCATIONS_UNIT_GROUP,
+  PRODUCT_CATALOGUE,
   FORM_CONFIGURATION,
   MANIFEST_RELEASES,
   DRAFT_FILES,
@@ -32,20 +53,11 @@ import {
   COMPLETE,
   TRASH,
   MISSIONS,
-} from '../../../constants';
-import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
-import {
-  ENABLE_FORM_CONFIGURATION,
-  ENABLE_PLANS,
-  ENABLE_LOCATIONS,
-  ENABLE_PRODUCT_CATALOGUE,
-} from '../../../configs/env';
-import {
-  ACTIVE_PLANS_LIST_VIEW_URL,
-  DRAFT_PLANS_LIST_VIEW_URL,
-  COMPLETE_PLANS_LIST_VIEW_URL,
-  TRASH_PLANS_LIST_VIEW_URL,
-} from '@opensrp/plans';
+  LOCATIONS,
+  SERVICE_POINT_INVENTORY,
+  INVENTORY,
+} from '../../../lang';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -71,7 +83,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
         <Link to={URL_HOME}>
-          <img src={Logo} className="img-fluid" alt="" />
+          <img src={MAIN_LOGO_SRC} className="img-fluid" alt="" />
         </Link>
       </div>
 
@@ -107,6 +119,24 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           </Menu.SubMenu>
         )}
+        {ENABLE_CARD_SUPPORT && (
+          <Menu.SubMenu key="card-support" title={CARD_SUPPORT} icon={<IdcardOutlined />}>
+            <Menu.Item key="card-support-client-data">
+              <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
+                {DOWNLOAD_CLIENT_DATA}
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
+        {ENABLE_INVENTORY && (
+          <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
+            <Menu.Item key="list">
+              <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
+                {SERVICE_POINT_INVENTORY}
+              </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title={USERS}>
@@ -117,11 +147,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.Item>
             </Menu.SubMenu>
           )}
-          <Menu.Item key="teams">
-            <Link to={URL_TEAMS} className="admin-link">
-              {TEAMS}
-            </Link>
-          </Menu.Item>
+          {ENABLE_TEAMS && (
+            <Menu.Item key="teams">
+              <Link to={URL_TEAMS} className="admin-link">
+                {TEAMS}
+              </Link>
+            </Menu.Item>
+          )}
           {ENABLE_PRODUCT_CATALOGUE && (
             <Menu.Item key="product-catalogue">
               <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
@@ -130,7 +162,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           )}
           {ENABLE_LOCATIONS && (
-            <Menu.SubMenu key="location" title="Locations">
+            <Menu.SubMenu key="location" title={LOCATIONS}>
               <Menu.Item key="unit">
                 <Link to={URL_LOCATION_UNIT} className="admin-link">
                   {LOCATIONS_UNIT}

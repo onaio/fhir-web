@@ -48,14 +48,19 @@ export const PRODUCT_CHECK_ACTIVITY_CODE = 'dynamicProductCheck';
 export const FIX_PRODUCT_PROBLEM_ACTIVITY_CODE = 'dynamicFixProductProblem';
 export const RECORD_GPS_ACTIVITY_CODE = 'dynamicRecordGPS';
 export const SERVICE_POINT_CHECK_ACTIVITY_CODE = 'dynamicServicePoint';
+export const LOOKS_GOOD_ACTIVITY_CODE = 'dynamicLooksGood';
+export const COMPLETE_FIX_PROBLEM_ACTIVITY_CODE = 'dynamicCompleteFixProblem';
+export const COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE = 'dynamicCompleteFlagProblem';
+export const COMPLETE_RECORD_GPS_ACTIVITY_CODE = 'dynamicCompleteRecordGPS';
+export const COMPLETE_SERVICE_CHECK_ACTIVITY_CODE = 'dynamicCompleteServiceCheck';
 
 // task action codes
 export const BCC_CODE = 'BCC';
 export const IRS_CODE = 'IRS';
-export const PRODUCT_CHECK_CODE = 'Product Check';
-export const FIX_PRODUCT_PROBLEMS_CODE = 'Fix Product Problems';
-export const RECORD_GPS_CODE = 'Record GPS';
-export const SERVICE_POINT_CHECK_CODE = 'Service Point Check';
+export const PRODUCT_CHECK_CODE = 'product_check';
+export const FIX_PRODUCT_PROBLEMS_CODE = 'fix_problem';
+export const RECORD_GPS_CODE = 'record_gps';
+export const SERVICE_POINT_CHECK_CODE = 'service_point_check';
 export const BEDNET_DISTRIBUTION_CODE = 'Bednet Distribution';
 export const BLOOD_SCREENING_CODE = 'Blood Screening';
 export const CASE_CONFIRMATION_CODE = 'Case Confirmation';
@@ -65,10 +70,18 @@ export const MOSQUITO_COLLECTION_CODE = 'Mosquito Collection';
 export const MDA_POINT_DISPENSE_CODE = 'MDA Dispense';
 export const MDA_POINT_ADVERSE_EFFECTS_CODE = 'MDA Adverse Event(s)';
 export const MDA_ADHERENCE_CODE = 'MDA Adherence';
+export const LOOKS_GOOD_CODE = 'looks_good';
+export const COMPLETE_FIX_PROBLEM_CODE = 'complete_fix_problem';
+export const FLAG_PROBLEM_CODE = 'flag_problem';
+export const COMPLETE_FLAG_PROBLEM_CODE = 'complete_flag_problem';
+export const COMPLETE_RECORD_GPS_CODE = 'complete_record_gps';
+export const COMPLETE_SERVICE_CHECK_CODE = 'complete_service_point_check';
+
 export const GOAL_CONFIRMATION_GOAL_ID = 'Case_Confirmation';
 export const GOAL_ID = 'goal_id';
 
 export const CREATE_TYPE = 'create';
+export const UPDATE_TYPE = 'update';
 
 // dynamic plan activities
 export const NAMED_EVENT_TRIGGER_TYPE = 'named-event';
@@ -140,3 +153,5 @@ export const trigger = 'trigger';
 export type trigger = typeof trigger;
 export const description = 'description';
 export type description = typeof description;
+export const dynamicValue = 'dynamicValue';
+export type dynamicValue = typeof dynamicValue;

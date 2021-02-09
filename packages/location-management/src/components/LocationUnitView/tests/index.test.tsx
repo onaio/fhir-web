@@ -14,14 +14,32 @@ import LocationUnitView, {
 } from '..';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
+import { authenticateUser } from '@onaio/session-reducer';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
-import { baseURL, ERROR_OCCURED } from '../../../constants';
+import { baseURL } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 
 LocationUnitView.defaultProps = { opensrpBaseURL: baseURL };
 
 describe('location-management/src/components/LocationUnitView', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fetch.mockClear();
+    fetch.resetMocks();
   });
 
   it('test resolve loadSingleLocation', async () => {
@@ -35,7 +53,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       name: parsedHierarchy[0].title,
     };
 
-    loadSingleLocation(row, 'accessToken', baseURL, called);
+    await loadSingleLocation(row, baseURL, called);
 
     expect(called).toBeCalledWith('loading');
 
@@ -47,6 +65,7 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test fail loadSingleLocation', async () => {
+    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject();
 
@@ -57,7 +76,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       name: parsedHierarchy[0].title,
     };
 
-    loadSingleLocation(row, 'accessToken', baseURL, jest.fn());
+    await loadSingleLocation(row, baseURL, jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -70,10 +89,12 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test getBaseTreeNode', async () => {
+    fetch.mockResponse(JSON.stringify('hunter2'));
     fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
-    const response = await getBaseTreeNode('accessToken', baseURL);
+    const response = await getBaseTreeNode(baseURL);
 
+    await new Promise((resolve) => setImmediate(resolve));
     expect(response).toMatchObject(baseLocationUnits);
   });
 
@@ -103,14 +124,19 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test getHierarchy', async () => {
+    fetch.mockResponse(JSON.stringify('hunter2'));
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
-    const response = await getHierarchy([baseLocationUnits[2]], 'accessToken', baseURL);
+    await flushPromises();
+    const response = await getHierarchy([baseLocationUnits[2]], baseURL);
+
+    await flushPromises();
 
     expect(response).toMatchObject([rawHierarchy[2]]);
   });
 
   it('fail loading location ', async () => {
+    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
     fetch.mockReject();
@@ -135,6 +161,7 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('fail loading location hierarchy', async () => {
+    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
@@ -160,6 +187,7 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('location unit table renders correctly', async () => {
+    fetch.mockResponse(JSON.stringify('hunter2'));
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
@@ -183,7 +211,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer hunter2',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -195,7 +223,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer hunter2',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -207,7 +235,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer hunter2',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -219,7 +247,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer hunter2',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',

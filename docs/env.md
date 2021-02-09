@@ -68,6 +68,12 @@ Below is a list of currently supported environment variables:
   - URL to send crash reports
   - **Required**
 
+- **REACT_APP_ENABLE_CARD_SUPPORT**
+
+  - Enables the card support module
+  - **Optional**(_string_)
+  - default: `false`
+
 - **REACT_APP_ENABLE_PRODUCT_CATALOGUE**
 
   - Enables the product-catalogue module
@@ -83,6 +89,12 @@ Below is a list of currently supported environment variables:
 - **REACT_APP_ENABLE_LOCATIONS**
 
   - Enables the location module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+  - **REACT_APP_ENABLE_TEAMS**
+
+  - Enables the teams module
   - **Optional**(_string_)
   - default: `"false"`
 
@@ -127,3 +139,33 @@ Below is a list of currently supported environment variables:
   - Enables the form configuration module
   - **Optional**(_string_)
   - default: `"false"`
+
+- **REACT_APP_LANGUAGE_CODE**
+
+  - language resources to use for text i18next
+  - **optional**_(`string`)_
+  - default: `en`
+
+- **REACT_APP_PROJECT_LANGUAGE_CODE**
+
+  - project code to help decide where to pick the language resource files from
+  - **optional**_(`string`)_
+  - default: `core`
+
+- **REACT_APP_ENABLE_INVENTORY**
+
+  - Enables the inventory module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
+- **REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL**
+
+  - geo level to assign teams at
+  - **Optional**(`number`)
+  - default: `0`
+
+- **REACT_APP_MAIN_LOGO_SRC**
+
+  - Configures the logo src url.
+  - **Optional**(`string`)
+  - default: `https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png`
