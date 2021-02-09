@@ -11,19 +11,17 @@ import { Setting } from '../../components/InventoryItemForm';
  * Fetch settings
  *
  * @param openSRPBaseURL OpenSRP API base URL
- * @param openSRPService OpenRSP service class
  * @param params settings endpoint params
  * @param setSettings set settings fetch in component state
  * @param customOptions OpenSRP class custom fetch options
  */
 export const fetchSettings = (
   openSRPBaseURL: string,
-  openSRPService: typeof OpenSRPService,
   params: Dictionary,
   setSettings: Dispatch<SetStateAction<Setting[]>>,
   customOptions?: typeof getFetchOptions
 ) => {
-  const service = new openSRPService(OPENSRP_ENDPOINT_SETTINGS, openSRPBaseURL, customOptions);
+  const service = new OpenSRPService(OPENSRP_ENDPOINT_SETTINGS, openSRPBaseURL, customOptions);
   service
     .list(params)
     .then((response: Setting[]) => setSettings(response))

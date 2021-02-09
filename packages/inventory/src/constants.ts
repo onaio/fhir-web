@@ -4,6 +4,7 @@ export const OPENSRP_UPLOAD_STOCK_ENDPOINT = 'stockresource/inventory/validate';
 export const OPENSRP_IMPORT_STOCK_ENDPOINT = 'stockresource/import/inventory';
 export const LOCATIONS_GET_ALL_SYNC_ENDPOINT = 'location/getAll';
 export const OPENSRP_ENDPOINT_SETTINGS = 'v2/settings';
+export const OPENSRP_ENDPOINT_STOCK_RESOURCE = 'stockresource/';
 
 // router routes
 export const INVENTORY_SERVICE_POINT_LIST_VIEW = '/inventory/list';
@@ -27,3 +28,6 @@ export const tablePaginationOptions = {
   pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
 };
 export const CSV_FILE_TYPE = '.csv';
+
+// Route params
+export const ROUTE_PARAM_SERVICE_POINT_ID = 'servicePointId';

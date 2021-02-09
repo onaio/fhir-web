@@ -131,7 +131,10 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         {ENABLE_INVENTORY && (
           <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
             <Menu.Item key="list">
-              <Link to={URL_INVENTORY_ITEM_ADD} className="admin-link">
+              <Link
+                to={`/service-point/03176924-6b3c-4b74-bccd-32afcceebabd/inventory-item/add`}
+                className="admin-link"
+              >
                 {SERVICE_POINT_INVENTORY}
               </Link>
             </Menu.Item>

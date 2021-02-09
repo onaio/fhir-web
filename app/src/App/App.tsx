@@ -477,7 +477,6 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              exact
               path={URL_INVENTORY_ITEM_ADD}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}

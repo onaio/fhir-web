@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
 import { Form, Button, Input, DatePicker, Select } from 'antd';
-import { useHistory } from 'react-router';
+import { Redirect, useHistory } from 'react-router';
 import { getFetchOptions } from '@opensrp/server-service';
 import {
   ACCOUNTABILITY_END_DATE,
@@ -12,6 +12,7 @@ import {
   ERROR_DELIVERY_DATE_REQUIRED,
   ERROR_PO_NUMBER_REQUIRED,
   ERROR_PRODUCT_NAME_REQUIRED,
+  ERROR_SERIAL_NUMBER_REQUIRED,
   ERROR_UNICEF_SECTION_REQUIRED,
   OPTIONAL,
   PO_NUMBER,
@@ -20,9 +21,11 @@ import {
   SAVE,
   SAVING,
   SELECT,
+  SERIAL_NUMBER,
   UNICEF_SECTION,
 } from '../../lang';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
+import { submitForm } from './utils';
 
 /** interface for setting **/
 export interface Setting {
@@ -43,16 +46,22 @@ export interface Setting {
 
 /** component props */
 export interface InventoryItemFormProps {
-  cancelURL: string;
-  products: ProductCatalogue[];
-  UNICEFSections: Setting[];
-  donors: Setting[];
-  customFetchOptions?: typeof getFetchOptions;
+  openSRPBaseURL: string; // OpenSRP API base URL
+  cancelURL: string; // URL to redirect after pressing cancel button
+  redirectURL: string; // URL to redirect to after successful submission
+  products: ProductCatalogue[]; // List of products to select from
+  UNICEFSections: Setting[]; // List of UNICEF office sections to select the one which procurred the product
+  donors: Setting[]; // List of donors to select one who provided the funding
+  servicePointId: string; // Service point id to add inventory to
+  customFetchOptions?: typeof getFetchOptions; // custom OpenSRP fetch options
+  inventoryItemID?: string; // ID of inventory item to edit
 }
 
 /** default component props */
-export const defaultInventoryFormProps: InventoryItemFormProps = {
+export const defaultInventoryFormProps = {
+  openSRPBaseURL: '',
   cancelURL: '',
+  redirectURL: '',
   products: [],
   donors: [],
   UNICEFSections: [],
@@ -67,6 +76,7 @@ export interface InventoryItemFormFields {
   unicefSection: string | undefined;
   donor: string | undefined;
   poNumber: string;
+  serialNumber?: string;
 }
 
 /** default form initial values */
@@ -99,12 +109,22 @@ const tailLayout = {
 };
 
 const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryItemFormProps) => {
-  const { cancelURL, UNICEFSections, donors, products } = props;
+  const {
+    cancelURL,
+    UNICEFSections,
+    donors,
+    products,
+    openSRPBaseURL,
+    redirectURL,
+    customFetchOptions,
+    servicePointId,
+  } = props;
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = React.useState<ProductCatalogue | null>(null);
   const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<moment.Moment | null>(
     null
   );
+  const [ifDoneHere, setIfDoneHere] = React.useState(false);
   const history = useHistory();
   const [form] = Form.useForm();
 
@@ -124,8 +144,8 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
     }
   }, [selectedProduct, selectedDeliveryDate, form]);
 
-  const handleProductChange = (value: number) => {
-    const selected = products.find((product) => product.uniqueId === value);
+  const handleProductChange = (value: string) => {
+    const selected = products.find((product) => product.productName === value);
 
     if (selected) {
       setSelectedProduct(selected);
@@ -136,8 +156,43 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
     setSelectedDeliveryDate(date);
   };
 
+  if (ifDoneHere) {
+    return <Redirect to={redirectURL} />;
+  }
+
   return (
-    <Form form={form} {...layout} initialValues={initialValues}>
+    <Form
+      form={form}
+      {...layout}
+      initialValues={initialValues}
+      onFinish={(values) => {
+        const {
+          poNumber,
+          productName,
+          accountabilityEndDate,
+          deliveryDate,
+          donor,
+          quantity,
+          unicefSection,
+        } = values;
+        submitForm(
+          {
+            productName,
+            quantity: parseInt(quantity),
+            deliveryDate: deliveryDate.format('YYYY-MM-DD'),
+            accountabilityEndDate: accountabilityEndDate.format('YYYY-MM-DD'),
+            unicefSection,
+            donor,
+            poNumber: parseInt(poNumber),
+            servicePointId,
+          },
+          openSRPBaseURL,
+          setSubmitting,
+          setIfDoneHere,
+          customFetchOptions
+        );
+      }}
+    >
       <Form.Item
         name="productName"
         id="productName"
@@ -146,7 +201,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
       >
         <Select placeholder={SELECT} onChange={handleProductChange}>
           {products.map((product: ProductCatalogue) => (
-            <Select.Option key={product.uniqueId} value={product.uniqueId}>
+            <Select.Option key={product.uniqueId} value={product.productName}>
               {product.productName}
             </Select.Option>
           ))}
@@ -210,10 +265,20 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
         name="poNumber"
         id="poNumber"
         label={PO_NUMBER}
-        rules={[{ type: 'number', required: true, message: ERROR_PO_NUMBER_REQUIRED }]}
+        rules={[{ required: true, message: ERROR_PO_NUMBER_REQUIRED }]}
       >
         <Input />
       </Form.Item>
+      {selectedProduct?.isAttractiveItem ? (
+        <Form.Item
+          name="serialNumber"
+          id="serialNumber"
+          label={SERIAL_NUMBER}
+          rules={[{ required: true, message: ERROR_SERIAL_NUMBER_REQUIRED }]}
+        >
+          <Input />
+        </Form.Item>
+      ) : null}
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
           {isSubmitting ? SAVING : SAVE}

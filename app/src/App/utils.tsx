@@ -4,6 +4,7 @@ import {
   URL_DRAFT_FILE_LIST,
   URL_UPLOAD_DRAFT_FILE,
   URL_MANIFEST_RELEASE_LIST,
+  URL_LOCATION_UNIT,
 } from '../constants';
 import { interventionType, status, activities, PlanStatus } from '@opensrp/plan-form-core';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
@@ -110,5 +111,6 @@ export const missionAssignmentProps = {
 
 export const inventoryItemAddEditProps = {
   openSRPBaseURL: OPENSRP_API_BASE_URL,
-  cancelURL: '',
+  cancelURL: URL_LOCATION_UNIT,
+  redirectURL: URL_LOCATION_UNIT,
 };
