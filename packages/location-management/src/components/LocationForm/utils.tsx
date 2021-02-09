@@ -335,7 +335,7 @@ export const treeToOptions = (
     const optionValue: Dictionary = {
       value: node.model.id,
       title: node.model.label,
-      disabled: parentIdDisabledCallback?.(node) ?? false,
+      ...(parentIdDisabledCallback ? { disabled: parentIdDisabledCallback(node) } : {}),
     };
     if (node.hasChildren()) {
       optionValue.children = node.children.map(recurseCreateOptions);
