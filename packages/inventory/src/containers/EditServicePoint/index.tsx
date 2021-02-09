@@ -3,6 +3,7 @@ import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { disabledTreeNodesCallback } from '../../helpers/utils';
 
 type ServicePointAddTypes = CommonProps & RouteComponentProps<LocationRouteProps>;
 
@@ -23,6 +24,7 @@ const ServicePointEdit = (props: ServicePointAddTypes) => {
     hidden: ['extraFields', 'status', 'type', 'locationTags', 'externalId'],
     redirectAfterAction: INVENTORY_SERVICE_POINT_LIST_VIEW,
     disabled: ['isJurisdiction'],
+    disabledTreeNodesCallback,
   };
 
   return <EditLocationUnit {...locationUnitAddEditProps} />;
