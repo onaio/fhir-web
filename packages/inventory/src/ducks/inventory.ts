@@ -20,11 +20,12 @@ export interface CustomProperties {
 /** interface post inventory */
 export interface InventoryPost {
   deliveryDate: string;
+  accountabilityEndDate: string;
   donor: string;
   poNumber: number;
   productName: string;
   providerId?: string;
-  quantity: number;
+  quantity?: number;
   serialNumber?: string;
   servicePointId: string;
   stockId?: string;

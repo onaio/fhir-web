@@ -26,8 +26,9 @@ import {
   UNICEF_SECTION,
 } from '../../lang';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
-import { InventoryItemPayloadPOST, submitForm } from './utils';
+import { submitForm } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { InventoryPost } from 'inventory/src/ducks/inventory';
 
 /** interface for setting **/
 export interface Setting {
@@ -191,14 +192,13 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
             unicefSection,
             serialNumber,
           } = values;
-          let payload: InventoryItemPayloadPOST = {
+          let payload: InventoryPost = {
             productName,
-            quantity: parseInt(quantity),
             deliveryDate: deliveryDate.format('YYYY-MM-DD'),
             accountabilityEndDate: accountabilityEndDate.format('YYYY-MM-DD'),
             unicefSection,
             donor,
-            poNumber: parseInt(poNumber),
+            poNumber,
             servicePointId,
           };
 
@@ -208,6 +208,14 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
               serialNumber,
             };
           }
+
+          if (quantity) {
+            payload = {
+              ...payload,
+              quantity,
+            };
+          }
+
           submitForm(payload, openSRPBaseURL, setSubmitting, setIfDoneHere, inventoryID).catch(
             () => {
               sendErrorNotification(ERROR_GENERIC);

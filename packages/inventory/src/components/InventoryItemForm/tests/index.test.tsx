@@ -133,7 +133,6 @@ describe('components/InventoryItemForm', () => {
     ]);
     expect(wrapper.find('FormItemInput').at(5).prop('errors')).toEqual([]);
     expect(wrapper.find('FormItemInput').at(6).prop('errors')).toEqual(['PO number is required']);
-
     wrapper.unmount();
   });
 
@@ -169,13 +168,13 @@ describe('components/InventoryItemForm', () => {
 
     const payload = {
       productName: 'Test optional Fields',
-      quantity: 10,
       deliveryDate: '2021-02-08',
       accountabilityEndDate: '2021-04-08',
       unicefSection: 'Health',
       donor: 'ADB',
       poNumber: 89,
       servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+      quantity: 10,
     };
 
     expect(fetch.mock.calls[0]).toEqual([
@@ -196,6 +195,7 @@ describe('components/InventoryItemForm', () => {
     expect(wrapper.find('button').at(0).text()).toEqual('Saving');
     // Redirect to redirect URL
     expect(history.location.pathname).toEqual('/inventory-items-done');
+    wrapper.unmount();
   });
 
   it('auto-calculates accountability end date', () => {
@@ -222,6 +222,7 @@ describe('components/InventoryItemForm', () => {
       'months'
     );
     expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(expected);
+    wrapper.unmount();
   });
 
   it('renders serial number field if product selected is an attractive item', async () => {
@@ -260,7 +261,6 @@ describe('components/InventoryItemForm', () => {
 
     const payload = {
       productName: 'Motorbyke',
-      quantity: 10,
       deliveryDate: '2021-02-08',
       accountabilityEndDate: '2021-04-08',
       unicefSection: 'Health',
@@ -268,6 +268,7 @@ describe('components/InventoryItemForm', () => {
       poNumber: 89,
       servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
       serialNumber: '12345',
+      quantity: 10,
     };
 
     expect(fetch.mock.calls[0]).toEqual([
@@ -284,6 +285,7 @@ describe('components/InventoryItemForm', () => {
         method: 'POST',
       },
     ]);
+    wrapper.unmount();
   });
 
   it('handles error when adding item', async () => {
@@ -319,13 +321,14 @@ describe('components/InventoryItemForm', () => {
       await flushPromises();
     });
     expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    wrapper.unmount();
   });
 
   it('edits inventory item', async () => {
     const stockId = '69227a92-7979-490c-b149-f28669c6b760';
     const editProps = {
       ...props,
-      inventoryItemID: stockId,
+      inventoryID: stockId,
       initialValues: {
         productName: fixtures.products[0].productName,
         quantity: 78,
@@ -384,13 +387,13 @@ describe('components/InventoryItemForm', () => {
 
     const payload = {
       productName: 'Test optional Fields',
-      quantity: 10,
       deliveryDate: '2021-02-08',
       accountabilityEndDate: '2021-04-08',
       unicefSection: 'Health',
       donor: 'ADB',
       poNumber: 89,
       servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+      quantity: 10,
       stockId,
     };
 
@@ -410,6 +413,7 @@ describe('components/InventoryItemForm', () => {
     ]);
     // Redirect to redirect URL
     expect(history.location.pathname).toEqual('/inventory-items-done');
+    wrapper.unmount();
   });
 
   it('handles error when editting item', async () => {
@@ -418,7 +422,7 @@ describe('components/InventoryItemForm', () => {
     const stockId = '69227a92-7979-490c-b149-f28669c6b760';
     const editProps = {
       ...props,
-      inventoryItemID: stockId,
+      inventoryID: stockId,
       initialValues: {
         productName: fixtures.products[0].productName,
         quantity: 78,
@@ -461,13 +465,13 @@ describe('components/InventoryItemForm', () => {
 
     const payload = {
       productName: 'Test optional Fields',
-      quantity: 10,
       deliveryDate: '2021-02-08',
       accountabilityEndDate: '2021-04-08',
       unicefSection: 'Health',
       donor: 'ADB',
       poNumber: 89,
       servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+      quantity: 10,
       stockId,
     };
 
@@ -486,5 +490,62 @@ describe('components/InventoryItemForm', () => {
       },
     ]);
     expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    wrapper.unmount();
+  });
+
+  it('calls API without optional payload fields if fields are empty', async () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+
+    wrapper.find('select#productName').simulate('change', {
+      target: { value: fixtures.products[0].productName },
+    });
+    wrapper.find('input#quantity').simulate('change', { target: { value: '' } });
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: moment('2021-02-08') },
+    });
+    wrapper.find('select#accountabilityEndDate').simulate('change', {
+      target: { value: moment('2021-04-08') },
+    });
+    wrapper.find('select#unicefSection').simulate('change', {
+      target: { value: fixtures.unicefSections[0].value },
+    });
+    wrapper.find('select#donor').simulate('change', {
+      target: { value: undefined },
+    });
+    wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    // `quantity` and `donor` should not be in the payload
+    const payload = {
+      productName: 'Test optional Fields',
+      deliveryDate: '2021-02-08',
+      accountabilityEndDate: '2021-04-08',
+      unicefSection: 'Health',
+      poNumber: 89,
+      servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+    };
+
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/',
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify(payload),
+        headers: {
+          accept: '*/*',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json',
+        },
+        method: 'POST',
+      },
+    ]);
   });
 });

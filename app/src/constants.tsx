@@ -33,4 +33,4 @@ export const URL_UPLOAD_DRAFT_FILE = `${URL_ADMIN}/form-config/drafts/upload`;
 export const URL_MANIFEST_RELEASE_LIST = `${URL_ADMIN}/form-config/releases`;
 export const URL_DOWNLOAD_CLIENT_DATA = '/card-support/download-client-data';
 export const URL_INVENTORY_ITEM_ADD = `/service-point/:${ROUTE_PARAM_SERVICE_POINT_ID}/inventory-item/add`;
-export const URL_INVENTORY_ITEM_EDIT = `/service-point/:${ROUTE_PARAM_SERVICE_POINT_ID}/invetory-item/edit/${ROUTE_PARAM_INVENTORY_ITEM_ID}`;
+export const URL_INVENTORY_ITEM_EDIT = `/service-point/:${ROUTE_PARAM_SERVICE_POINT_ID}/inventory-item/edit/:${ROUTE_PARAM_INVENTORY_ITEM_ID}`;
