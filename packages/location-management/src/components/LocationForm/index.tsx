@@ -9,7 +9,7 @@ import {
   getLocationTagOptions,
   getServiceTypeOptions,
   LocationFormFields,
-  Setting,
+  ServiceTypeSetting,
   validationRules,
 } from './utils';
 import { baseURL, SERVICE_TYPES_SETTINGS_ID, URL_LOCATION_UNIT } from '../../constants';
@@ -289,7 +289,7 @@ const LocationForm = (props: LocationFormProps) => {
             label={SERVICE_TYPES_LABEL}
             rules={validationRules.serviceTypes}
           >
-            <CustomSelect<Setting>
+            <CustomSelect<ServiceTypeSetting>
               placeholder={SERVICE_TYPE_PLACEHOLDER}
               disabled={disabled.includes('serviceTypes')}
               loadData={(setData) => {

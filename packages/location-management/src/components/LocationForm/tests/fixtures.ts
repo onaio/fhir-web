@@ -1,7 +1,7 @@
 import { FormInstances } from '../../../../dist/types';
 import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
-import { LocationFormFields, Setting } from '../utils';
+import { LocationFormFields, LocationSetting } from '../utils';
 
 /* eslint-disable @typescript-eslint/camelcase */
 export const location1: LocationUnit = {
@@ -166,7 +166,7 @@ export const serviceTypesSetting2 = {
   serverVersion: 58,
   type: 'Setting',
 };
-export const serviceTypeSettings = [serviceTypeSetting1, serviceTypesSetting2] as Setting[];
+export const serviceTypeSettings = [serviceTypeSetting1, serviceTypesSetting2] as LocationSetting[];
 
 export const fetchCalls1 = [
   [

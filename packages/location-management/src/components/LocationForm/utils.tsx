@@ -1,5 +1,4 @@
 import { Dictionary } from '@onaio/utils';
-import { SETTINGS_CONFIGURATION_TYPE } from '../../constants';
 import {
   LocationUnit,
   LocationUnitStatus,
@@ -47,10 +46,8 @@ export interface LocationFormFields {
   username?: string;
 }
 
-/** describes a single settings object as received from settings api */
-export interface Setting {
+interface BaseSetting {
   key: string;
-  value: string;
   description: string;
   uuid: string;
   settingsId: string;
@@ -60,7 +57,16 @@ export interface Setting {
   resolveSettings: false;
   documentId: string;
   serverVersion: number;
-  type: typeof SETTINGS_CONFIGURATION_TYPE;
+}
+
+/** describes a single settings object as received from location settings api */
+export interface LocationSetting extends BaseSetting {
+  label: string;
+}
+
+/** describes a single settings object as received from service types settings api */
+export interface ServiceTypeSetting extends BaseSetting {
+  value: string;
 }
 
 export const defaultFormField: LocationFormFields = {
@@ -214,7 +220,7 @@ export const generateLocationUnit = (
  *
  * @param data - the settings array to convert to select options
  */
-export function getServiceTypeOptions(data: Setting[]) {
+export function getServiceTypeOptions(data: ServiceTypeSetting[]) {
   return data.map((setting) => ({
     value: setting.value,
     label: setting.value,
