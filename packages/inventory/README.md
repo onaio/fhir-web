@@ -18,6 +18,8 @@ import '@opensrp/inventory/dist/index.css';
 
 Use this component to create a view for adding a new inventory item or editting an existing inventory item
 
+![Add inventory form](public/assets/img/add-inventory.png)
+
 To add a view for adding a new inventory item:
 
 ```tsx
