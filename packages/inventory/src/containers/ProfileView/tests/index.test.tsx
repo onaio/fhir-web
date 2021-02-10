@@ -13,20 +13,11 @@ import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import {
   deforest,
-  fetchTree,
   hierarchyReducer,
   hierarchyReducerName,
   removeLocationUnits,
 } from '@opensrp/location-management';
-import {
-  fetchCalls,
-  inventories,
-  madagascar,
-  madagascarTree,
-  opensrpBaseURL,
-  structure1,
-  structures,
-} from './fixtures';
+import { fetchCalls, inventories, madagascar, opensrpBaseURL, structures } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -51,7 +42,6 @@ const history = createBrowserHistory();
 const props = {
   opensrpBaseURL,
   history,
-  structures: [structure1],
   location: {
     hash: '',
     pathname: `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}`,
@@ -113,7 +103,6 @@ describe('Profile view Page', () => {
   });
 
   it('renders when data is present', async () => {
-    store.dispatch(fetchTree(madagascarTree));
     fetch
       .once(JSON.stringify(structures))
       .once(JSON.stringify([madagascar]))

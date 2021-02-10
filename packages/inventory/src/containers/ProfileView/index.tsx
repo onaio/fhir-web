@@ -143,7 +143,7 @@ const ServiceProfile = (props: ServicePointsProfileTypes) => {
       is_jurisdiction: false,
     };
     const structuresDispatcher = (locations: LocationUnit[] = []) => {
-      return fetchLocationUnits(locations, false);
+      return dispatch(fetchLocationUnits(locations, false));
     };
     loadJurisdictions(
       structuresDispatcher,
