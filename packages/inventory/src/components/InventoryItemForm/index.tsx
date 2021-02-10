@@ -229,7 +229,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
           label={PRODUCT}
           rules={[{ required: true, message: ERROR_PRODUCT_NAME_REQUIRED }]}
         >
-          <Select placeholder={SELECT} onChange={handleProductChange}>
+          <Select placeholder={SELECT} onChange={handleProductChange} disabled={!!inventoryID}>
             {products.map((product: ProductCatalogue) => (
               <Select.Option key={product.uniqueId} value={product.productName}>
                 {product.productName}

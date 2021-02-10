@@ -90,6 +90,7 @@ Object {
       }
     >
       <Select
+        disabled={false}
         onChange={[Function]}
         placeholder="Select"
       >

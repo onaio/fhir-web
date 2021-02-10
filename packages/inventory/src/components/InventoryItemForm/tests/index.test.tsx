@@ -152,6 +152,8 @@ describe('components/InventoryItemForm', () => {
     wrapper.find('select#productName').simulate('change', {
       target: { value: fixtures.products[0].productName },
     });
+    // product should be editable when adding a new inventory item
+    expect(wrapper.find('select#productName').get(0).props.disabled).toEqual(false);
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
       target: { value: moment('2021-02-08') },
@@ -353,9 +355,8 @@ describe('components/InventoryItemForm', () => {
     );
 
     // Form is initialized with initial values
-    expect(wrapper.find('select#productName').get(0).props.value).toEqual(
-      fixtures.products[0].productName
-    );
+    // product should not be editable when editing an inventory item
+    expect(wrapper.find('select#productName').get(0).props.disabled).toEqual(true);
     expect(wrapper.find('input#quantity').get(0).props.value).toEqual(78);
     expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(moment('2021-02-02'));
     expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
@@ -379,10 +380,10 @@ describe('components/InventoryItemForm', () => {
       target: { value: moment('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
-      target: { value: fixtures.unicefSections[0].value },
+      target: { value: fixtures.unicefSections[1].value },
     });
     wrapper.find('select#donor').simulate('change', {
-      target: { value: fixtures.donors[0].value },
+      target: { value: fixtures.donors[1].value },
     });
     wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
     wrapper.find('form').simulate('submit');
@@ -395,8 +396,8 @@ describe('components/InventoryItemForm', () => {
       productName: 'Test optional Fields',
       deliveryDate: '2021-02-08',
       accountabilityEndDate: '2021-04-08',
-      unicefSection: 'Health',
-      donor: 'ADB',
+      unicefSection: 'WASH',
+      donor: 'NatCom Belgium',
       poNumber: 89,
       servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
       quantity: 10,
