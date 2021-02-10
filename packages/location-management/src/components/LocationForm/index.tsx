@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { Form, Input, Space, Button, Radio } from 'antd';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Redirect } from 'react-router';
@@ -33,7 +33,7 @@ import {
   LOCATION_STRUCTURE_LABEL,
   NAME_LABEL,
   PARENT_LABEL,
-  PLEASE_SELECT_PLACEHOLDER,
+  PARENT_ID_SELECT_PLACEHOLDER,
   SAVE,
   SAVING,
   SELECT_STATUS_LABEL,
@@ -45,16 +45,17 @@ import {
   TYPE_LABEL,
   UNIT_GROUP_LABEL,
   USERNAME_LABEL,
+  SERVICE_TYPE_PLACEHOLDER,
 } from '../../lang';
-import { CustomTreeSelect } from './CustomTreeSelect';
+import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
-import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
-import { useDispatch } from 'react-redux';
+import { fetchAllHierarchies, FetchedTreeAction } from '../../ducks/location-hierarchy';
 
 const { Item: FormItem } = Form;
 
 /** props for the location form */
-export interface LocationFormProps {
+export interface LocationFormProps
+  extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
   redirectAfterAction: string;
   openSRPBaseURL: string;
@@ -63,6 +64,7 @@ export interface LocationFormProps {
   onCancel: () => void;
   service: typeof OpenSRPService;
   username: string;
+  dispatch: Dispatch<FetchedTreeAction>;
 }
 
 const defaultProps = {
@@ -131,8 +133,9 @@ const LocationForm = (props: LocationFormProps) => {
     hidden,
     service,
     username,
+    dispatch,
+    disabledTreeNodesCallback,
   } = props;
-  const dispatch = useDispatch();
   const isEditMode = !!initialValues.id;
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
@@ -230,8 +233,9 @@ const LocationForm = (props: LocationFormProps) => {
               baseURL={openSRPBaseURL}
               disabled={disabled.includes('parentId')}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              placeholder={PLEASE_SELECT_PLACEHOLDER}
+              placeholder={PARENT_ID_SELECT_PLACEHOLDER}
               fullDataCallback={setSelectedParentNode}
+              disabledTreeNodesCallback={disabledTreeNodesCallback}
             />
           </FormItem>
 
@@ -290,6 +294,7 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.serviceTypes}
           >
             <CustomSelect<Setting>
+              placeholder={SERVICE_TYPE_PLACEHOLDER}
               disabled={disabled.includes('serviceTypes')}
               loadData={(setData) => {
                 return loadSettings(SERVICE_TYPES_SETTINGS_ID, openSRPBaseURL, service, setData);

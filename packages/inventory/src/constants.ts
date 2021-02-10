@@ -29,3 +29,4 @@ export const tablePaginationOptions = {
   pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
 };
 export const CSV_FILE_TYPE = '.csv';
+export const COMMUNE_GEOGRAPHIC_LEVEL = 3;

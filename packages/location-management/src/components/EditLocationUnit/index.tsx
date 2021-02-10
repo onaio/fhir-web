@@ -24,7 +24,10 @@ reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 export type LocationRouteProps = { id: string };
 
 export interface EditLocationUnitProps
-  extends Pick<LocationFormProps, 'redirectAfterAction' | 'hidden' | 'disabled' | 'service'>,
+  extends Pick<
+      LocationFormProps,
+      'redirectAfterAction' | 'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback'
+    >,
     RouteComponentProps<LocationRouteProps> {
   openSRPBaseURL: string;
   instance: FormInstances;
@@ -44,7 +47,15 @@ const defaultEditLocationUnitProps = {
  * @param props - this components props
  */
 const EditLocationUnit = (props: EditLocationUnitProps) => {
-  const { instance, hidden, disabled, service, openSRPBaseURL, redirectAfterAction } = props;
+  const {
+    instance,
+    hidden,
+    disabled,
+    service,
+    openSRPBaseURL,
+    redirectAfterAction,
+    disabledTreeNodesCallback,
+  } = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const [isJurisdiction, setIsJurisdiction] = useState<boolean>(true);
@@ -141,6 +152,8 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     service,
     openSRPBaseURL,
     user: user.username,
+    dispatch,
+    disabledTreeNodesCallback,
   };
   const pageTitle = `${EDIT_LOCATION_UNIT} | ${thisLocation?.properties.name}`;
 

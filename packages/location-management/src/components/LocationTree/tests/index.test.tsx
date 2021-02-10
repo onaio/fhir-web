@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Tree from '../';
+import flushPromises from 'flush-promises';
 import { treedata } from '../../../ducks/locationHierarchy/tests/hierarchyFixtures';
 import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
