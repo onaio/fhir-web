@@ -42,7 +42,7 @@ export interface LocationFormFields {
   locationTags?: number[];
   geometry?: string;
   isJurisdiction?: boolean;
-  serviceTypes?: string[] | string;
+  serviceType?: string;
   extraFields: ExtraFields[];
   username?: string;
 }
@@ -69,7 +69,7 @@ export const defaultFormField: LocationFormFields = {
   status: LocationUnitStatus.ACTIVE,
   type: '',
   isJurisdiction: true,
-  serviceTypes: '',
+  serviceType: '',
   locationTags: [],
   externalId: '',
   extraFields: [],
@@ -103,7 +103,7 @@ export const getLocationFormFields = (
     parentId,
     username,
     externalId,
-    serviceTypes,
+    type,
     ...restProperties
   } = location.properties;
   const formFields = {
@@ -118,7 +118,7 @@ export const getLocationFormFields = (
     status,
     parentId,
     externalId,
-    serviceTypes: serviceTypes?.map((type) => type.name) ?? [],
+    serviceType: type,
     extraFields: Object.entries(restProperties).map(([key, val]) => ({ [key]: val })),
   };
 
@@ -159,7 +159,7 @@ export const generateLocationUnit = (
   parentNode?: TreeNode
 ): LocationUnit => {
   const {
-    serviceTypes,
+    serviceType,
     id,
     externalId,
     parentId,
@@ -172,15 +172,6 @@ export const generateLocationUnit = (
   } = formValues;
   const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? -1;
   const thisGeoLevel = (parentGeographicLevel as number) + 1;
-
-  // transform into an array for easier processing
-  const serviceTypesValues = serviceTypes
-    ? Array.isArray(serviceTypes)
-      ? serviceTypes
-      : Array(serviceTypes)
-    : [];
-  const serviceTypesPayload =
-    serviceTypesValues.length > 0 ? serviceTypesValues.map((type) => ({ name: type })) : [];
 
   const thisLocationsId = id ? id : v4();
 
@@ -197,7 +188,7 @@ export const generateLocationUnit = (
       // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: name,
       status: status,
-      serviceTypes: serviceTypesPayload,
+      type: serviceType,
     },
     id: thisLocationsId,
     syncStatus: LocationUnitSyncStatus.SYNCED,
