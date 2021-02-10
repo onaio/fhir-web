@@ -10,6 +10,7 @@ export const ROUTE_PARAM_USER_ID = 'userId';
 
 // Keycloak API URLs
 export const KEYCLOAK_URL_USERS = '/users';
+export const KEYCLOAK_URL_USER_GROUPS = '/groups';
 export const KEYCLOAK_URL_RESET_PASSWORD = '/reset-password';
 export const KEYCLOAK_URL_REQUIRED_USER_ACTIONS = '/authentication/required-actions/';
 
