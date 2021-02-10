@@ -72,9 +72,16 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
   }
 
   const dataSource = (locationSettings as Setting[]).map((settingObject: Setting) => {
+    const value =
+      typeof settingObject.value === 'string'
+        ? settingObject.value === 'true'
+        : settingObject.value;
+    const inheritedFrom = settingObject.inheritedFrom?.trim() ?? '_';
     const settingWithKey = {
       ...settingObject,
       key: settingObject.settingMetadataId,
+      inheritedFrom,
+      value: value ? 'Yes' : 'No',
     };
     return settingWithKey;
   });
