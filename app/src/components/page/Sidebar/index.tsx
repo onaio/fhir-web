@@ -16,6 +16,7 @@ import {
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_USER_GROUPS,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -149,6 +150,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               <Menu.Item key={'list'}>
                 <Link to={URL_USER} className="admin-link">
                   {USER_MANAGEMENT}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key={'groups-list'}>
+                <Link to={URL_USER_GROUPS} className="admin-link">
+                  {'User Groups'}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
