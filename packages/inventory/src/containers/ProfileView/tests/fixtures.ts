@@ -6,7 +6,7 @@ export const opensrpBaseURL = 'https://test-example.com/rest/';
 
 export const madagascar = {
   type: 'Feature',
-  id: 'f3199af5-2eaf-46df-87c9-40d59606a2fb',
+  id: 'someOtherId',
   properties: { status: 'Active', name: 'Madagascar', geographicLevel: 0, version: 0 },
   serverVersion: 2968,
   locationTags: [{ id: 1, name: 'Country' }],

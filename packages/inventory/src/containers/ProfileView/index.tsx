@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button, Table } from 'antd';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
 import {
   TreeNode,
   hierarchyReducer,
@@ -186,6 +186,10 @@ const ServiceProfile = (props: ServicePointsProfileTypes) => {
 
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;
+  }
+
+  if (!(structure as LocationUnit | undefined) && spId) {
+    return <Resource404 />;
   }
 
   const pageTitle = `${SERVICE_POINT_INVENTORY}`;

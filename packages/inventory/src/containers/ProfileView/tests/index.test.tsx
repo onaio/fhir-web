@@ -125,6 +125,10 @@ describe('Profile view Page', () => {
 
     // check fetch calls made
     expect(fetch.mock.calls).toEqual(fetchCalls);
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Back to the list of service pointsEPP Ambodisatrana 2Region: District: Commune: Type: Water PointLatitude/longitude: Service point ID: f3199af5-2eaf-46df-87c9-40d59606a2fbEdit service pointInventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActions1101123434Jan 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1101123434Feb 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1"`
+    );
   });
 
   it('shows broken page', async () => {
