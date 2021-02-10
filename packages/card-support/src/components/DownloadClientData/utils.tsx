@@ -2,12 +2,13 @@ import Papaparse from 'papaparse';
 import { OpenSRPService } from '@opensrp/server-service';
 import { DownloadClientDataFormFields } from '../DownloadClientData';
 import { Dispatch, SetStateAction } from 'react';
-import { ERROR_OCCURRED, OPENSRP_URL_CLIENT_SEARCH, APPLICATION_CSV } from '../../constants';
+import { OPENSRP_URL_CLIENT_SEARCH, APPLICATION_CSV } from '../../constants';
 import { Client } from '../../ducks/clients';
 import { downloadFile } from '../../helpers/utils';
 import { ParsedHierarchyNode } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
+import { NO_DATA_FOUND, ERROR_OCCURRED } from '../../lang';
 /* eslint-disable @typescript-eslint/camelcase */
 
 /** interface for user assignment response */
@@ -118,7 +119,7 @@ export const submitForm = (
       if (entries.length) {
         createCsv(entries, buildCSVFileName(location ? location.title : '', startDate, endDate));
       } else {
-        sendErrorNotification('No data found');
+        sendErrorNotification(NO_DATA_FOUND);
       }
     })
     .catch((_: Error) => {

@@ -1,9 +1,6 @@
 import { IncomingHttpHeaders } from 'http';
 import queryString from 'querystring';
-import { refreshToken } from '@onaio/gatekeeper';
-import { history } from '@onaio/connected-reducer-registry';
-import { store } from '@opensrp/store';
-import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
+import { handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 
 import { throwNetworkError, throwHTTPError } from './errors';
 /** defaults */
@@ -81,23 +78,6 @@ export const customFetch: CustomFetch = async (...rest) => {
   }
 };
 
-/** gets access token or redirects to login if session is expired */
-export const handleSessionOrTokenExpiry = async () => {
-  const { REACT_APP_BACKEND_ACTIVE } = process.env;
-  const APP_LOGIN_URL = REACT_APP_BACKEND_ACTIVE ? '/fe/login' : '/login';
-  if (isTokenExpired(store.getState())) {
-    try {
-      // refresh token
-      return await refreshToken('/refresh/token', store.dispatch, {});
-    } catch (e) {
-      history.push(APP_LOGIN_URL);
-      throw new Error('Session Expired');
-    }
-  } else {
-    return getAccessToken(store.getState());
-  }
-};
-
 /** params option type */
 type paramsType = URLParams | null;
 
@@ -119,7 +99,7 @@ type GetAccessTokenType = () => Promise<string | null>;
  * **To update an object**: service.update(theObject)
  */
 export class KeycloakAPIService {
-  public accessTokenOrCallBack: typeof handleSessionOrTokenExpiry;
+  public accessTokenOrCallBack: GetAccessTokenType | string;
   public baseURL: string;
   public endpoint: string;
   public generalURL: string;
@@ -136,7 +116,7 @@ export class KeycloakAPIService {
    * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
    */
   constructor(
-    accessTokenOrCallBack: typeof handleSessionOrTokenExpiry = handleSessionOrTokenExpiry,
+    accessTokenOrCallBack: GetAccessTokenType | string = handleSessionOrTokenExpiry,
     baseURL: string = KEYCLOAK_API_BASE_URL,
     endpoint: string,
     getPayload: typeof getFetchOptions = getFetchOptions,

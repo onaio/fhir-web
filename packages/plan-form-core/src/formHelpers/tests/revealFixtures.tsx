@@ -572,6 +572,14 @@ const processActivity = (activityObj: PlanActivity) => {
         };
       }),
     }),
+    ...(activityObj.action.dynamicValue && {
+      dynamicValue: activityObj.action.dynamicValue.map((item) => {
+        return {
+          path: item.path,
+          expression: item.expression.expression,
+        };
+      }),
+    }),
     actionCode: activityObj.action.code,
     actionDefinitionUri: activityObj.action.definitionUri || '',
     actionDescription: activityObj.action.description || '',

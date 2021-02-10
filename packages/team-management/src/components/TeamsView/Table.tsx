@@ -35,7 +35,6 @@ const Table: React.FC<Props> = (props: Props) => {
     },
     {
       title: 'Actions',
-      dataIndex: 'operation',
       width: '10%',
 
       // eslint-disable-next-line react/display-name

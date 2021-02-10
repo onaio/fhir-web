@@ -92,16 +92,16 @@ import {
 } from '@opensrp/form-config';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW, ConnectedServicePointList } from '@opensrp/inventory';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
-  LocationUnitAddEdit,
   LocationUnitView,
   LocationUnitGroupAddEdit,
   LocationUnitGroupView,
+  NewLocationUnit,
+  EditLocationUnit,
 } from '@opensrp/location-management';
 import {
-  productCatalogueProps,
+  BaseProps,
   jsonValidatorListProps,
   jsonValidatorFormProps,
   draftFormProps,
@@ -118,6 +118,8 @@ import {
   missionAssignmentProps,
   teamAssignmentProps,
   inventoryServiceProps,
+  editLocationProps,
+  newLocationUnitProps,
 } from './utils';
 import './App.css';
 
@@ -126,6 +128,14 @@ import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
 // import '@opensrp/product-catalogue/dist/index.css';
+import {
+  INVENTORY_SERVICE_POINT_LIST_VIEW,
+  ConnectedServicePointList,
+  INVENTORY_EDIT_SERVICE_POINT,
+  INVENTORY_ADD_SERVICE_POINT,
+  ServicePointEdit,
+  ServicePointsAdd,
+} from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 
 const { Content } = Layout;
@@ -238,7 +248,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={CATALOGUE_LIST_VIEW_URL}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedProductCatalogueList}
             />
             <PrivateComponent
@@ -291,7 +301,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedProductCatalogueList}
             />
             <PrivateComponent
@@ -299,7 +309,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={CATALOGUE_CREATE_VIEW_URL}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={CreateProductView}
             />
             <PrivateComponent
@@ -307,7 +317,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedEditProductView}
             />
             <PrivateComponent
@@ -325,6 +335,22 @@ const App: React.FC = () => {
               path={INVENTORY_SERVICE_POINT_LIST_VIEW}
               {...inventoryServiceProps}
               component={ConnectedServicePointList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              {...BaseProps}
+              path={INVENTORY_ADD_SERVICE_POINT}
+              component={ServicePointsAdd}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              {...BaseProps}
+              path={`${INVENTORY_EDIT_SERVICE_POINT}/:id`}
+              component={ServicePointEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -451,14 +477,16 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_ADD}
-              component={LocationUnitAddEdit}
+              {...newLocationUnitProps}
+              component={NewLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_EDIT}
-              component={LocationUnitAddEdit}
+              {...editLocationProps}
+              component={EditLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

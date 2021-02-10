@@ -14,14 +14,13 @@ import {
   locationUnitsReducer,
   locationUnitsReducerName,
 } from '../../ducks/location-units';
+import { LOCATION_UNIT_ENDPOINT, URL_LOCATION_UNIT_ADD } from '../../constants';
 import {
-  LOCATION_UNIT_GET,
-  URL_LOCATION_UNIT_ADD,
   ADD_LOCATION_UNIT,
   LOCATION_UNIT,
   LOCATION_UNIT_MANAGEMENT,
   ERROR_OCCURED,
-} from '../../constants';
+} from '../../lang';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -65,7 +64,7 @@ export async function loadSingleLocation(
   setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
 ) {
   setDetail('loading');
-  const serve = new OpenSRPService(LOCATION_UNIT_GET, opensrpBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_ENDPOINT, opensrpBaseURL);
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   return await serve
     .read(row.id, { is_jurisdiction: true })
@@ -160,7 +159,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">
-              {currentClicked?.children ? currentClicked.node.name : 'Locations Unit'}
+              {currentClicked?.children?.length ? tableData[0].name : LOCATION_UNIT}
             </h5>
             <div>
               <Link

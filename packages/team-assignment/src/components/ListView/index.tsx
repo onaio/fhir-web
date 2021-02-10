@@ -6,21 +6,18 @@ import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import {
-  reducer as teamsReducer,
+  reducer as organizationsReducer,
   fetchOrganizationsAction,
   Organization,
   getOrganizationsArray,
-  reducerName as teamsReducerName,
+  reducerName as orgReducerName,
 } from '@opensrp/team-management';
 import {
   Tree,
-  fetchAllHierarchies,
   generateJurisdictionTree,
-  getAllHierarchiesArray,
+  locationHierachyDucks,
   ParsedHierarchyNode,
   RawOpenSRPHierarchy,
-  reducerName as hierarchyReducerName,
-  reducer as hierarchyReducer,
 } from '@opensrp/location-management';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,8 +41,10 @@ import {
   TEAM_ASSIGNMENT_PAGE_TITLE,
 } from '../../constants';
 
-reducerRegistry.register(teamsReducerName, teamsReducer);
-reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
+const { fetchAllHierarchies, getAllHierarchiesArray } = locationHierachyDucks;
+
+reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 reducerRegistry.register(assignmentReducerName, reducer);
 
 /** component that renders Team assignment page */
@@ -269,7 +268,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         <Col className="bg-white p-3" span={6}>
           <Tree
             data={Treedata}
-            appendParentAsChild={false}
             OnItemClick={(node) => {
               if (node.children) {
                 const children = [node, ...node.children];

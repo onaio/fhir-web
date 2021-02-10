@@ -19,7 +19,8 @@ import {
   fetchKeycloakUsers,
   KeycloakUser,
 } from '../../../ducks/user';
-import { URL_USER, ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../constants';
+import { URL_USER } from '../../../constants';
+import { ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../lang';
 import { history as registryHistory } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -58,7 +59,7 @@ describe('components/Credentials', () => {
           username: 'RobertBaratheon',
         },
         // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
   });
@@ -153,7 +154,7 @@ describe('components/Credentials', () => {
         body: JSON.stringify(payload),
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer sometoken',
+          authorization: 'Bearer hunter2',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'PUT',
@@ -187,14 +188,14 @@ describe('components/Credentials', () => {
     const formContainer = wrapper.find('div.form-container');
 
     expect(formContainer.find('Row').at(0).find('FormItemInput').prop('errors')).toEqual([
-      'Please input your password!',
+      'Password is required',
     ]);
     expect(
       formContainer.find('Row').at(0).find('FormItemInput').find('span.ant-form-item-children-icon')
     ).toBeTruthy();
 
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
-      'Please confirm your password!',
+      'Confirm Password is required',
     ]);
     expect(
       formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')

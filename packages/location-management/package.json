@@ -20,7 +20,8 @@
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__"
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__",
+    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
   },
   "jest": {
     "automock": false,
@@ -44,13 +45,15 @@
     "@opensrp/store": "^0.0.7",
     "uuid": "^8.3.1",
     "cycle": "^1.0.3",
-    "tree-model": "^1.0.7"
+    "tree-model": "^1.0.7",
+    "i18next": "^19.8.4"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@opensrp/store": "^0.0.7",
     "@types/geojson": "^7946.0.7",
-    "@types/uuid": "8.3.0"
+    "@types/uuid": "8.3.0",
+    "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.7",

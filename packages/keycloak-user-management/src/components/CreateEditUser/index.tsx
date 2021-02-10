@@ -13,9 +13,9 @@ import { UserForm, UserFormProps, defaultInitialValues, Practitioner } from '../
 import {
   ROUTE_PARAM_USER_ID,
   KEYCLOAK_URL_USERS,
-  ERROR_OCCURED,
   OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
 } from '../../constants';
+import { ERROR_OCCURED } from '../../lang';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -35,7 +35,6 @@ export interface RouteParams {
 
 /** props for editing a user view */
 export interface EditUserProps {
-  accessToken: string;
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
   opensrpServiceClass: typeof OpenSRPService;
@@ -50,7 +49,6 @@ export type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParam
 
 /** default props for editing user component */
 export const defaultEditUserProps: EditUserProps = {
-  accessToken: '',
   keycloakUser: null,
   serviceClass: KeycloakService,
   opensrpServiceClass: OpenSRPService,
@@ -70,7 +68,6 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const [practitioner, setPractitioner] = React.useState<Practitioner | undefined>(undefined);
   const {
     keycloakUser,
-    accessToken,
     keycloakBaseURL,
     opensrpBaseURL,
     serviceClass,
@@ -118,14 +115,13 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         })
         .finally(() => setIsLoading(false));
     }
-  }, [userId, practitioner, accessToken, opensrpServiceClass, opensrpBaseURL]);
+  }, [userId, practitioner, opensrpServiceClass, opensrpBaseURL]);
 
   if (isLoading) {
     return <Spin size="large" />;
   }
 
   const userFormProps: UserFormProps = {
-    accessToken,
     initialValues: initialValues as KeycloakUser,
     opensrpServiceClass,
     serviceClass,

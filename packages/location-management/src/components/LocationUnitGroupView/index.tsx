@@ -14,14 +14,14 @@ import reducer, {
   LocationUnitGroup,
   reducerName,
 } from '../../ducks/location-unit-groups';
+import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../constants';
 import {
-  LOCATION_UNIT_GROUP_ALL,
   LOCATION_UNIT_GROUP,
-  URL_LOCATION_UNIT_GROUP_ADD,
   ADD_LOCATION_UNIT_GROUP,
   LOCATION_UNIT_GROUP_MANAGEMENT,
   ERROR_OCCURED,
-} from '../../constants';
+  SEARCH,
+} from '../../lang';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupView.css';
 import { Link } from 'react-router-dom';
@@ -99,7 +99,7 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5>
               <Input
-                placeholder="Search"
+                placeholder={SEARCH}
                 size="large"
                 value={value}
                 prefix={<SearchOutlined />}

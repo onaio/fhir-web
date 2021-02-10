@@ -10,7 +10,7 @@ import cycle from 'cycle';
 import TreeModel from 'tree-model';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { LocationUnit } from '../../ducks/location-units';
-import { LOCATION_HIERARCHY, LOCATION_UNIT_FINDBYPROPERTIES } from '../../constants';
+import { LOCATION_HIERARCHY, LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
 
 const { getFilterParams } = OpenSRPService;
 
@@ -77,7 +77,7 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
 export async function getBaseTreeNode(opensrpBaseURL: string) {
-  const serve = new OpenSRPService(LOCATION_UNIT_FINDBYPROPERTIES, opensrpBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
   return await serve
     .list({
       // eslint-disable-next-line @typescript-eslint/camelcase

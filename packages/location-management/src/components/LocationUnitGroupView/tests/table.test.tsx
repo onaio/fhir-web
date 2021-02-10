@@ -13,7 +13,8 @@ import fetch from 'jest-fetch-mock';
 import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import { baseURL, ERROR_OCCURED } from '../../../constants';
+import { baseURL } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 
 Table.defaultProps = { opensrpBaseURL: baseURL };
 

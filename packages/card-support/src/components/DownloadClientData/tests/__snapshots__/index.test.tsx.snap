@@ -66,7 +66,7 @@ Object {
         }
       >
         <TreeNode
-          title="All locations"
+          title="All Locations"
           value=""
         />
         <TreeNode
@@ -90,7 +90,7 @@ Object {
         <Option
           value="needs_card"
         >
-          Needs card
+          Needs Card
         </Option>
         <Option
           value="does_not_need_card"

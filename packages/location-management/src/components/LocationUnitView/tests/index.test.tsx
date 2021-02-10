@@ -11,7 +11,8 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
-import { baseURL, ERROR_OCCURED } from '../../../constants';
+import { baseURL } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 import { getBaseTreeNode, getHierarchy } from '../../../ducks/locationHierarchy/utils';
 
 LocationUnitView.defaultProps = { opensrpBaseURL: baseURL };

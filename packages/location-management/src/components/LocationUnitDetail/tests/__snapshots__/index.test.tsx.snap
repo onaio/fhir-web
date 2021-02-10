@@ -59,7 +59,7 @@ exports[`location-management/src/components/LocationUnitDetail renders without c
     <p
       className="mb-0 font-weight-bold"
     >
-      External Id
+      External ID
     </p>
     <p
       className="mb-0 loc-desc"

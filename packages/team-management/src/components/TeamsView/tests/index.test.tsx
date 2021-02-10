@@ -11,7 +11,7 @@ import fetch from 'jest-fetch-mock';
 import { authenticateUser } from '@onaio/session-reducer';
 import { org1, teamMember } from '../../../ducks/tests/fixtures';
 import { notification } from 'antd';
-import { ERROR_OCCURRED } from '../../../constants';
+import { ERROR_OCCURRED } from '../../../lang';
 
 describe('components/TeamsView', () => {
   beforeEach(() => {

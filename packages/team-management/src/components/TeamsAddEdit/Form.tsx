@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import {
-  TEAMS_POST,
-  PRACTITIONER_POST,
-  PRACTITIONER_DEL,
-  TEAMS_PUT,
-  ERROR_OCCURRED,
-} from '../../constants';
+import { TEAMS_POST, PRACTITIONER_POST, PRACTITIONER_DEL, TEAMS_PUT } from '../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   sendSuccessNotification,
@@ -17,6 +11,24 @@ import {
 } from '@opensrp/notifications';
 import { OrganizationPOST } from '../../ducks/organizations';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
+import {
+  ACTIVE,
+  CANCEL,
+  ENTER_TEAM_NAME,
+  ERROR_OCCURRED,
+  INACTIVE,
+  MSG_ASSIGN_PRACTITIONERS,
+  MSG_ASSIGN_PRACTITONERS_SUCCESS,
+  MSG_TEAMS_ADD_SUCCESS,
+  MSG_TEAMS_UPDATE_SUCCESS,
+  SAVE,
+  SAVING,
+  SELECT_PRACTITIONER,
+  STATUS,
+  TEAM_MEMBERS,
+  TEAM_NAME,
+  TIP_REQUIRED_FIELD,
+} from '../../lang';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -73,7 +85,6 @@ export function onSubmit(
   setTeam(opensrpBaseURL, payload, id)
     .then(async () => {
       // Filter and seperate the practitioners uuid
-      // const toBe = initialValue.practitioners.filter((val) => values.practitioners.includes(val));
       const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
       const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
@@ -100,7 +111,7 @@ async function SetPractitioners(
   toRemove: string[],
   id: string
 ) {
-  sendInfoNotification('Assigning Practitioners');
+  sendInfoNotification(MSG_ASSIGN_PRACTITIONERS);
 
   // Api Call to delete practitioners
   toRemove.forEach((prac) => {
@@ -126,7 +137,7 @@ async function SetPractitioners(
     await serve.create(payload).catch(() => sendErrorNotification(ERROR_OCCURRED));
   }
 
-  sendSuccessNotification('Successfully Assigned Practitioners');
+  sendSuccessNotification(MSG_ASSIGN_PRACTITONERS_SUCCESS);
 }
 
 /**
@@ -140,11 +151,11 @@ export async function setTeam(opensrpBaseURL: string, payload: OrganizationPOST,
   if (id) {
     const serve = new OpenSRPService(TEAMS_PUT + id, opensrpBaseURL);
     await serve.update(payload);
-    sendSuccessNotification('Successfully Updated Teams');
+    sendSuccessNotification(MSG_TEAMS_UPDATE_SUCCESS);
   } else {
     const serve = new OpenSRPService(TEAMS_POST, opensrpBaseURL);
     await serve.create(payload);
-    sendSuccessNotification('Successfully Added Teams');
+    sendSuccessNotification(MSG_TEAMS_ADD_SUCCESS);
   }
 }
 
@@ -168,19 +179,19 @@ export const Form: React.FC<Props> = (props: Props) => {
       }
       initialValues={initialValue}
     >
-      <AntdForm.Item name="name" label="Team Name">
-        <Input placeholder="Enter a team name" />
+      <AntdForm.Item name="name" label={TEAM_NAME}>
+        <Input placeholder={ENTER_TEAM_NAME} />
       </AntdForm.Item>
 
-      <AntdForm.Item name="active" label="Status">
+      <AntdForm.Item name="active" label={STATUS}>
         <Radio.Group>
-          <Radio value={true}>Active</Radio>
-          <Radio value={false}>Inactive</Radio>
+          <Radio value={true}>{ACTIVE}</Radio>
+          <Radio value={false}>{INACTIVE}</Radio>
         </Radio.Group>
       </AntdForm.Item>
 
-      <AntdForm.Item name="practitioners" label="Team Members" tooltip="This is a required field">
-        <Select allowClear mode="multiple" placeholder="Select user (practitioners only)">
+      <AntdForm.Item name="practitioners" label={TEAM_MEMBERS} tooltip={TIP_REQUIRED_FIELD}>
+        <Select allowClear mode="multiple" placeholder={SELECT_PRACTITIONER}>
           {props.practitioner.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
@@ -191,10 +202,10 @@ export const Form: React.FC<Props> = (props: Props) => {
 
       <AntdForm.Item {...offsetLayout}>
         <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
-          {isSubmitting ? 'Saving' : 'Save'}
+          {isSubmitting ? SAVING : SAVE}
         </Button>
         <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-          Cancel
+          {CANCEL}
         </Button>
       </AntdForm.Item>
     </AntdForm>

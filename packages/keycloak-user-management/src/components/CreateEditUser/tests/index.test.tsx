@@ -24,7 +24,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 import { practitioner1 } from '../../forms/UserForm/tests/fixtures';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -77,7 +77,7 @@ describe('components/CreateEditUser', () => {
           username: 'RobertBaratheon',
         },
         // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
       )
     );
   });
@@ -276,12 +276,7 @@ describe('components/CreateEditUser', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedCreateEditUser
-            {...props}
-            accessToken={opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
-              accessToken: true,
-            })}
-          />
+          <ConnectedCreateEditUser {...props} />
         </Router>
       </Provider>
     );

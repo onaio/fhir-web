@@ -1,15 +1,15 @@
 import { submitForm, fetchRequiredActions, createOrEditPractitioners } from '../utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/react-utils';
 import fetch from 'jest-fetch-mock';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import { authenticateUser } from '@onaio/session-reducer';
-import { store } from '@opensrp/store';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
-import { OpenSRPService } from '@opensrp/react-utils';
-import { ERROR_OCCURED } from '../../../../constants';
+import { ERROR_OCCURED } from '../../../../lang';
 import * as fixtures from './fixtures';
 import { keycloakUser } from './fixtures';
 

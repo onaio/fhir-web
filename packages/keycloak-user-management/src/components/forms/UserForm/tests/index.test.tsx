@@ -4,6 +4,8 @@ import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 import { UserForm, defaultInitialValues } from '..';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
