@@ -183,6 +183,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       unicefSection: inventory.customProperties['UNICEF section'],
       donor: inventory.donor,
       poNumber: inventory.customProperties['PO Number'],
+      quantity: inventory.value,
     };
   }
   const inventoryItemFormProps = {

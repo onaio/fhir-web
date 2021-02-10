@@ -309,7 +309,7 @@ describe('containers/InventoryAddEdit', () => {
      * items list enpoint response
      */
     expect(wrapper.find('select#productName').get(0).props.value).toEqual(undefined);
-    expect(wrapper.find('input#quantity').get(0).props.value).toEqual('');
+    expect(wrapper.find('input#quantity').get(0).props.value).toEqual(1);
     expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(
       moment(fixtures.inventories[0].deliveryDate)
     );

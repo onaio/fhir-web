@@ -88,7 +88,7 @@ Object {
     "donor": "ADB",
     "poNumber": "101",
     "productName": undefined,
-    "quantity": "",
+    "quantity": 1,
     "unicefSection": "Health",
   },
   "inventoryID": "69227a92-7979-490c-b149-f28669c6b760",
