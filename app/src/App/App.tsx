@@ -134,6 +134,8 @@ import {
   INVENTORY_ADD_SERVICE_POINT,
   ServicePointEdit,
   ServicePointsAdd,
+  BulkUpload,
+  INVENTORY_BULK_UPLOAD_URL,
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 
@@ -334,6 +336,14 @@ const App: React.FC = () => {
               {...BaseProps}
               path={INVENTORY_ADD_SERVICE_POINT}
               component={ServicePointsAdd}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={INVENTORY_BULK_UPLOAD_URL}
+              {...inventoryServiceProps}
+              component={BulkUpload}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
