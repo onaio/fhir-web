@@ -56,8 +56,9 @@ import {
   LOCATIONS,
   SERVICE_POINT_INVENTORY,
   INVENTORY,
+  ADD_INVENTORY_VIA_CSV,
 } from '../../../lang';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
+import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -133,6 +134,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.Item key="list">
               <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
                 {SERVICE_POINT_INVENTORY}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="bulk">
+              <Link to={INVENTORY_BULK_UPLOAD_URL} className="admin-link">
+                {ADD_INVENTORY_VIA_CSV}
               </Link>
             </Menu.Item>
           </Menu.SubMenu>
