@@ -92,8 +92,8 @@ describe('LocationForm', () => {
     expect(toJson(wrapper.find('#isJurisdiction input'))).toMatchSnapshot('isJurisdiction field');
     expect(toJson(wrapper.find('#type label'))).toMatchSnapshot('type label');
     expect(toJson(wrapper.find('#type input'))).toMatchSnapshot('type field');
-    expect(toJson(wrapper.find('#serviceTypes label'))).toMatchSnapshot('serviceTypes label');
-    expect(toJson(wrapper.find('#serviceTypes input'))).toMatchSnapshot('serviceTypes field');
+    expect(toJson(wrapper.find('#serviceType label'))).toMatchSnapshot('serviceType label');
+    expect(toJson(wrapper.find('#serviceType input'))).toMatchSnapshot('serviceType field');
     expect(toJson(wrapper.find('#externalId label'))).toMatchSnapshot('externalId label');
     expect(toJson(wrapper.find('#externalId input'))).toMatchSnapshot('externalId field');
     expect(toJson(wrapper.find('#geometry label'))).toMatchSnapshot('geometry label');
@@ -120,7 +120,7 @@ describe('LocationForm', () => {
 
     fetch.mockResponse(JSON.stringify([]));
 
-    // when instance is set to core by default, types is required, serviceTypes is not required
+    // when instance is set to core by default, types is required, serviceType is not required
     const wrapper = mount(
       <Router history={history}>
         <LocationForm />
@@ -161,7 +161,7 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // not required for core
-    expect(wrapper.find('FormItem#serviceTypes').text()).toMatchInlineSnapshot(`"Type"`);
+    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(`"Type"`);
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
 
@@ -180,7 +180,7 @@ describe('LocationForm', () => {
 
     fetch.mockResponse(JSON.stringify([]));
 
-    // when instance is set to core by default, types is required, serviceTypes is not required
+    // when instance is set to core by default, types is required, serviceType is not required
     const initialValues = { ...defaultFormField, instance: FormInstances.EUSM };
     const wrapper = mount(
       <Router history={history}>
@@ -222,7 +222,7 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // service types is required for eusm
-    expect(wrapper.find('FormItem#serviceTypes').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(
       `"TypeService types is required"`
     );
 
@@ -291,7 +291,7 @@ describe('LocationForm', () => {
     // simulate service type change
     // change service types
     formInstance.setFieldsValue({
-      serviceTypes: 'School',
+      serviceType: 'School',
     });
 
     wrapper
@@ -388,7 +388,7 @@ describe('LocationForm', () => {
     // simulate service type change
     // change service types
     formInstance.setFieldsValue({
-      serviceTypes: 'School',
+      serviceType: 'School',
     });
 
     wrapper

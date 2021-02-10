@@ -1,7 +1,8 @@
 import { FormInstances } from '../../../../dist/types';
+import { ServiceTypeSetting } from '../../../../dist/types/components/LocationForm/utils';
 import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
-import { LocationFormFields, LocationSetting } from '../utils';
+import { LocationFormFields } from '../utils';
 
 /* eslint-disable @typescript-eslint/camelcase */
 export const location1: LocationUnit = {
@@ -72,7 +73,7 @@ export const generatedLocation2 = {
     name: 'Mars',
     name_en: 'The Root Location',
     status: 'InActive',
-    serviceTypes: [{ name: 'School' }],
+    type: 'School',
     'Sample Key': 'extraFields - Sample Key',
     version: 0,
     'Area Nick name': 'extraFields - Area Nick name',
@@ -97,7 +98,7 @@ export const expectedFormFields = {
   isJurisdiction: true,
   locationTags: [],
   name: '',
-  serviceTypes: '',
+  serviceType: '',
   status: 'Active',
   type: '',
   username: '',
@@ -123,7 +124,7 @@ export const expectedFormFields1: LocationFormFields = {
   locationTags: [2, 3],
   name: 'Kenya',
   parentId: '',
-  serviceTypes: [],
+  serviceType: undefined,
   status: 'Active' as LocationUnitStatus,
   type: 'Feature',
   username: 'web-admin',
@@ -166,7 +167,10 @@ export const serviceTypesSetting2 = {
   serverVersion: 58,
   type: 'Setting',
 };
-export const serviceTypeSettings = [serviceTypeSetting1, serviceTypesSetting2] as LocationSetting[];
+export const serviceTypeSettings = [
+  serviceTypeSetting1,
+  serviceTypesSetting2,
+] as ServiceTypeSetting[];
 
 export const fetchCalls1 = [
   [
@@ -223,7 +227,7 @@ export const createdLocation1 = {
     name: 'area51',
     name_en: 'area51',
     status: 'InActive',
-    serviceTypes: [{ name: 'School' }],
+    type: 'School',
   },
   id: '9b782015-8392-4847-b48c-50c11638656b',
   syncStatus: 'Synced',

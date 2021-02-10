@@ -283,15 +283,15 @@ const LocationForm = (props: LocationFormProps) => {
           </FormItem>
 
           <FormItem
-            hidden={isHidden('serviceTypes')}
-            name="serviceTypes"
-            id="serviceTypes"
+            hidden={isHidden('serviceType')}
+            name="serviceType"
+            id="serviceType"
             label={SERVICE_TYPES_LABEL}
             rules={validationRules.serviceTypes}
           >
             <CustomSelect<ServiceTypeSetting>
               placeholder={SERVICE_TYPE_PLACEHOLDER}
-              disabled={disabled.includes('serviceTypes')}
+              disabled={disabled.includes('serviceType')}
               loadData={(setData) => {
                 return loadSettings(SERVICE_TYPES_SETTINGS_ID, openSRPBaseURL, service, setData);
               }}
