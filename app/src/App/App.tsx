@@ -42,6 +42,7 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_SERVER_SETTINGS,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -89,6 +90,7 @@ import {
   AntdReleaseList,
   ROUTE_PARAM_FORM_VERSION,
 } from '@opensrp/form-config';
+import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
@@ -120,6 +122,7 @@ import {
   inventoryServiceProps,
   editLocationProps,
   newLocationUnitProps,
+  serverSettingsProps,
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
@@ -495,6 +498,14 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_GROUP_EDIT}
               component={LocationUnitGroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_SERVER_SETTINGS}
+              {...serverSettingsProps}
+              component={LocationSettingsView}
             />
             <Route
               exact
