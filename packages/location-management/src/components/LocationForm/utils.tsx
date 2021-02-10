@@ -50,7 +50,7 @@ export interface LocationFormFields {
 /** describes a single settings object as received from settings api */
 export interface Setting {
   key: string;
-  label: string;
+  value: string;
   description: string;
   uuid: string;
   settingsId: string;
@@ -225,8 +225,8 @@ export const generateLocationUnit = (
  */
 export function getServiceTypeOptions(data: Setting[]) {
   return data.map((setting) => ({
-    value: setting.label,
-    label: setting.label,
+    value: setting.value,
+    label: setting.value,
   }));
 }
 

@@ -140,7 +140,7 @@ export const locationUnitGroups: LocationUnitGroup[] = [
 
 export const serviceTypeSetting1 = {
   key: 'school',
-  label: 'School',
+  value: 'School',
   description: 'This service type is a school',
   uuid: '8718e71e-af01-49aa-85dd-381d29eaf6de',
   settingsId: '34',
@@ -154,7 +154,7 @@ export const serviceTypeSetting1 = {
 };
 export const serviceTypesSetting2 = {
   key: 'hospital',
-  label: 'Hospital',
+  value: 'Hospital',
   description: 'This service type is a Hospital',
   uuid: '7d3c2a2c-4b67-4f98-aed5-90d1b597801a',
   settingsId: '34',
