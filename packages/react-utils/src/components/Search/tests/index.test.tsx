@@ -83,6 +83,9 @@ describe('src/components/SearchForm', () => {
     wrapper.find('input').simulate('change', { target: { value: 'test' } });
     expect(history.location.search).toEqual('?randomString=test');
 
-    wrapper.unmount();
+    // simulate clear
+    wrapper.find('.ant-input-clear-icon').first().simulate('click');
+    wrapper.update();
+    expect(history.location.search).toEqual('');
   });
 });
