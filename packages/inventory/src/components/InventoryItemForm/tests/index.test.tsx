@@ -13,6 +13,7 @@ import * as fixtures from './fixtures';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
 import { act } from 'react-dom/test-utils';
 import toJson from 'enzyme-to-json';
+import * as opensrpReactUtils from '@opensrp/react-utils';
 import { ERROR_GENERIC } from '../../../lang';
 
 /* eslint-disable react/prop-types */
@@ -22,6 +23,11 @@ const history = createBrowserHistory();
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
+
+jest.mock('@opensrp/react-utils', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/react-utils')),
 }));
 
 jest.mock('antd', () => {
@@ -547,5 +553,44 @@ describe('components/InventoryItemForm', () => {
         method: 'POST',
       },
     ]);
+  });
+
+  it('handles non-API error during submission', async () => {
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+    jest
+      .spyOn(opensrpReactUtils, 'handleSessionOrTokenExpiry')
+      .mockImplementation(() => Promise.reject('Error'));
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+
+    wrapper.find('select#productName').simulate('change', {
+      target: { value: fixtures.products[0].productName },
+    });
+    wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: moment('2021-02-08') },
+    });
+    wrapper.find('select#accountabilityEndDate').simulate('change', {
+      target: { value: moment('2021-04-08') },
+    });
+    wrapper.find('select#unicefSection').simulate('change', {
+      target: { value: fixtures.unicefSections[0].value },
+    });
+    wrapper.find('select#donor').simulate('change', {
+      target: { value: fixtures.donors[0].value },
+    });
+    wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls).toHaveLength(0);
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    wrapper.unmount();
   });
 });
