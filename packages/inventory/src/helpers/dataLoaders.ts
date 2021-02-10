@@ -54,10 +54,10 @@ export const parseTextResponse = (resText: string) => {
   const errors: BadRequestError['errors'] = [];
   splitText.forEach((entry, index) => {
     if (entry.includes(rowsTotalNumberPrefix)) {
-      rowsNumber = split(entry, ',')[1];
+      rowsNumber = split(entry, ',')[1] ?? rowsNumber;
     }
     if (entry.includes(processedRowsPrefix)) {
-      rowsProcessed = split(entry, ',')[1];
+      rowsProcessed = split(entry, ',')[1] ?? rowsProcessed;
     }
     if (entry.includes(errorsHeader)) {
       errorsStartIndex = index;
@@ -128,7 +128,7 @@ export async function uploadCSV(
       },
       cancelToken,
     })
-    .then((response: AxiosResponse<SuccessfulResponse>) => {
+    .then((response: AxiosResponse<SuccessfulResponse | string>) => {
       return response.data;
     })
     .catch((err) => {
