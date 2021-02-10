@@ -39,6 +39,10 @@ export const OPENSRP_API_BASE_URL =
   process.env.REACT_APP_OPENSRP_API_BASE_URL ||
   'https://opensrp-stage.smartregister.org/opensrp/rest/';
 
+export const OPENSRP_API_V2_BASE_URL =
+  process.env.REACT_APP_OPENSRP_API_V2_BASE_URL ||
+  'https://opensrp-stage.smartregister.org/opensrp/rest/v2/';
+
 export const KEYCLOAK_API_BASE_URL =
   process.env.REACT_APP_KEYCLOAK_API_BASE_URL ||
   'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
