@@ -72,7 +72,7 @@ describe('Inventory bulk upload.integrationTest', () => {
     fireEvent.click(confirmCommitButton);
 
     await waitFor(() => {
-      screen.getByText('Upload another file');
+      screen.getByText('“file.csv” inventory items successfully added');
     });
 
     // post confirmation page
