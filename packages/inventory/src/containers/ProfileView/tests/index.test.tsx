@@ -5,7 +5,10 @@ import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../../constants';
+import {
+  INVENTORY_SERVICE_POINT_PROFILE_PARAM,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
+} from '../../../constants';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import {
@@ -21,6 +24,7 @@ import {
   madagascar,
   madagascarTree,
   opensrpBaseURL,
+  structure1,
   structures,
 } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -47,6 +51,7 @@ const history = createBrowserHistory();
 const props = {
   opensrpBaseURL,
   history,
+  structures: [structure1],
   location: {
     hash: '',
     pathname: `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}`,
@@ -55,7 +60,7 @@ const props = {
   },
   match: {
     isExact: true,
-    params: '',
+    params: { [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: 'f3199af5-2eaf-46df-87c9-40d59606a2fb' },
     path: `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}`,
     url: `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}`,
   },

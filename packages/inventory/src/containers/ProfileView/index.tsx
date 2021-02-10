@@ -64,7 +64,7 @@ const structuresSelector = getLocationsBySearch();
 const treesSelector = getTreesByIds();
 
 /** props for the ServicePointProfile view */
-interface ServicePointsListProps extends CommonProps {
+interface ServicePointsProfileProps extends CommonProps {
   LocationsByGeoLevel: TreeNode[];
   columns: ColumnsType<Inventory>;
   fetchInventories: typeof fetchInventories;
@@ -86,7 +86,7 @@ const defaultProps = {
   structures: [],
 };
 
-type ServicePointsListTypes = ServicePointsListProps & RouteComponentProps & Props;
+type ServicePointsProfileTypes = ServicePointsProfileProps & RouteComponentProps & Props;
 
 export interface GeographicLocationInterface {
   geographicLevel?: number;
@@ -121,7 +121,7 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
  *
  * @param props - the component props
  */
-const ServiceProfile = (props: ServicePointsListTypes) => {
+const ServiceProfile = (props: ServicePointsProfileTypes) => {
   const { columns, opensrpBaseURL, service, structures } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -257,11 +257,11 @@ ServiceProfile.defaultProps = defaultProps;
 
 export { ServiceProfile };
 
-type MapStateToProps = Pick<ServicePointsListTypes, 'structures'>;
+type MapStateToProps = Pick<ServicePointsProfileTypes, 'structures'>;
 
 const mapStateToProps = (
   state: Partial<Store>,
-  ownProps: ServicePointsListTypes
+  ownProps: ServicePointsProfileTypes
 ): MapStateToProps => {
   const searchText = ownProps.match.params as { [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: string };
   const filters = {
