@@ -8,7 +8,7 @@ import flushPromises from 'flush-promises';
 import { authenticateUser } from '@onaio/session-reducer';
 import { mount, shallow } from 'enzyme';
 import { Router } from 'react-router';
-import { InventoryItemForm } from '..';
+import { InventoryItemForm, defaultInitialValues } from '..';
 import * as fixtures from './fixtures';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
 import { act } from 'react-dom/test-utils';
@@ -84,6 +84,7 @@ describe('components/InventoryItemForm', () => {
     UNICEFSections: fixtures.unicefSections,
     donors: fixtures.donors,
     servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+    initialValues: defaultInitialValues,
   };
 
   it('renders without crashing', () => {
@@ -184,9 +185,9 @@ describe('components/InventoryItemForm', () => {
         Pragma: 'no-cache',
         body: JSON.stringify(payload),
         headers: {
-          accept: 'application/json',
+          accept: '*/*',
           authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+          'content-type': 'application/json',
         },
         method: 'POST',
       },
@@ -276,9 +277,9 @@ describe('components/InventoryItemForm', () => {
         Pragma: 'no-cache',
         body: JSON.stringify(payload),
         headers: {
-          accept: 'application/json',
+          accept: '*/*',
           authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+          'content-type': 'application/json',
         },
         method: 'POST',
       },
@@ -317,6 +318,173 @@ describe('components/InventoryItemForm', () => {
     await act(async () => {
       await flushPromises();
     });
+    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+  });
+
+  it('edits inventory item', async () => {
+    const stockId = '69227a92-7979-490c-b149-f28669c6b760';
+    const editProps = {
+      ...props,
+      inventoryItemID: stockId,
+      initialValues: {
+        productName: fixtures.products[0].productName,
+        quantity: 78,
+        deliveryDate: moment('2021-02-02'),
+        accountabilityEndDate: moment('2022-02-02'),
+        unicefSection: fixtures.unicefSections[0].value,
+        donor: fixtures.donors[0].value,
+        poNumber: 90,
+      },
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...editProps} />
+      </Router>
+    );
+
+    // Form is initialized with initial values
+    expect(wrapper.find('select#productName').get(0).props.value).toEqual(
+      fixtures.products[0].productName
+    );
+    expect(wrapper.find('input#quantity').get(0).props.value).toEqual(78);
+    expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(moment('2021-02-02'));
+    expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
+      moment('2022-02-02')
+    );
+    expect(wrapper.find('select#unicefSection').get(0).props.value).toEqual(
+      fixtures.unicefSections[0].value
+    );
+    expect(wrapper.find('select#donor').get(0).props.value).toEqual(fixtures.donors[0].value);
+    expect(wrapper.find('input#poNumber').get(0).props.value).toEqual(90);
+
+    // Make edits
+    wrapper.find('select#productName').simulate('change', {
+      target: { value: fixtures.products[0].productName },
+    });
+    wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: moment('2021-02-08') },
+    });
+    wrapper.find('select#accountabilityEndDate').simulate('change', {
+      target: { value: moment('2021-04-08') },
+    });
+    wrapper.find('select#unicefSection').simulate('change', {
+      target: { value: fixtures.unicefSections[0].value },
+    });
+    wrapper.find('select#donor').simulate('change', {
+      target: { value: fixtures.donors[0].value },
+    });
+    wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    const payload = {
+      productName: 'Test optional Fields',
+      quantity: 10,
+      deliveryDate: '2021-02-08',
+      accountabilityEndDate: '2021-04-08',
+      unicefSection: 'Health',
+      donor: 'ADB',
+      poNumber: 89,
+      servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+      stockId,
+    };
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/${stockId}`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify(payload),
+        headers: {
+          accept: '*/*',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json',
+        },
+        method: 'PUT',
+      },
+    ]);
+    // Redirect to redirect URL
+    expect(history.location.pathname).toEqual('/inventory-items-done');
+  });
+
+  it('handles error when editting item', async () => {
+    fetch.mockResponse('Server error here', { status: 500 });
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+    const stockId = '69227a92-7979-490c-b149-f28669c6b760';
+    const editProps = {
+      ...props,
+      inventoryItemID: stockId,
+      initialValues: {
+        productName: fixtures.products[0].productName,
+        quantity: 78,
+        deliveryDate: moment('2021-02-02'),
+        accountabilityEndDate: moment('2022-02-02'),
+        unicefSection: fixtures.unicefSections[0].value,
+        donor: fixtures.donors[0].value,
+        poNumber: 90,
+      },
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...editProps} />
+      </Router>
+    );
+
+    wrapper.find('select#productName').simulate('change', {
+      target: { value: fixtures.products[0].productName },
+    });
+    wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: moment('2021-02-08') },
+    });
+    wrapper.find('select#accountabilityEndDate').simulate('change', {
+      target: { value: moment('2021-04-08') },
+    });
+    wrapper.find('select#unicefSection').simulate('change', {
+      target: { value: fixtures.unicefSections[0].value },
+    });
+    wrapper.find('select#donor').simulate('change', {
+      target: { value: fixtures.donors[0].value },
+    });
+    wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    const payload = {
+      productName: 'Test optional Fields',
+      quantity: 10,
+      deliveryDate: '2021-02-08',
+      accountabilityEndDate: '2021-04-08',
+      unicefSection: 'Health',
+      donor: 'ADB',
+      poNumber: 89,
+      servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+      stockId,
+    };
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/${stockId}`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify(payload),
+        headers: {
+          accept: '*/*',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json',
+        },
+        method: 'PUT',
+      },
+    ]);
     expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
   });
 });

@@ -10,6 +10,7 @@ import {
   DONOR,
   ERROR_ACCOUNTABILITY_DATE_REQUIRED,
   ERROR_DELIVERY_DATE_REQUIRED,
+  ERROR_GENERIC,
   ERROR_PO_NUMBER_REQUIRED,
   ERROR_PRODUCT_NAME_REQUIRED,
   ERROR_SERIAL_NUMBER_REQUIRED,
@@ -25,7 +26,8 @@ import {
   UNICEF_SECTION,
 } from '../../lang';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
-import { InventoryItemPayloadPost, submitForm } from './utils';
+import { InventoryItemPayloadPOST, submitForm } from './utils';
+import { sendErrorNotification } from '@opensrp/notifications';
 
 /** interface for setting **/
 export interface Setting {
@@ -43,9 +45,21 @@ export interface Setting {
   serverVersion: number;
   type: string;
 }
+/** interface form fields */
+export interface InventoryItemFormFields {
+  productName: string | undefined;
+  quantity: number | string;
+  deliveryDate: moment.Moment | null;
+  accountabilityEndDate: moment.Moment | null;
+  unicefSection: string | undefined;
+  donor: string | undefined;
+  poNumber: number | string;
+  serialNumber?: string;
+}
 
 /** component props */
 export interface InventoryItemFormProps {
+  initialValues: InventoryItemFormFields;
   openSRPBaseURL: string; // OpenSRP API base URL
   cancelURL: string; // URL to redirect after pressing cancel button
   redirectURL: string; // URL to redirect to after successful submission
@@ -54,8 +68,19 @@ export interface InventoryItemFormProps {
   donors: Setting[]; // List of donors to select one who provided the funding
   servicePointId: string; // Service point id to add inventory to
   customFetchOptions?: typeof getFetchOptions; // custom OpenSRP fetch options
-  inventoryItemID?: string; // ID of inventory item to edit
+  inventoryID?: string; // ID of inventory item to edit
 }
+
+/** default form initial values */
+export const defaultInitialValues: InventoryItemFormFields = {
+  productName: undefined,
+  quantity: '',
+  deliveryDate: null,
+  accountabilityEndDate: null,
+  unicefSection: undefined,
+  donor: undefined,
+  poNumber: '',
+};
 
 /** default component props */
 export const defaultInventoryFormProps = {
@@ -65,29 +90,7 @@ export const defaultInventoryFormProps = {
   products: [],
   donors: [],
   UNICEFSections: [],
-};
-
-/** interface form fields */
-export interface InventoryItemFormFields {
-  productName: string | undefined;
-  quantity: string;
-  deliveryDate: moment.Moment | null;
-  accountabilityEndDate: moment.Moment | null;
-  unicefSection: string | undefined;
-  donor: string | undefined;
-  poNumber: string;
-  serialNumber?: string;
-}
-
-/** default form initial values */
-export const initialValues: InventoryItemFormFields = {
-  productName: undefined,
-  quantity: '',
-  deliveryDate: null,
-  accountabilityEndDate: null,
-  unicefSection: undefined,
-  donor: undefined,
-  poNumber: '',
+  initialValues: defaultInitialValues,
 };
 
 const layout = {
@@ -116,9 +119,11 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
     products,
     openSRPBaseURL,
     redirectURL,
-    customFetchOptions,
     servicePointId,
+    initialValues,
+    inventoryID,
   } = props;
+
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = React.useState<ProductCatalogue | null>(null);
   const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<moment.Moment | null>(
@@ -143,6 +148,15 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
       });
     }
   }, [selectedProduct, selectedDeliveryDate, form]);
+
+  /** Update form initial values when initialValues prop changes, without this
+   * the form fields initial values will not change if props.initiaValues is updated
+   * **/
+  React.useEffect(() => {
+    form.setFieldsValue({
+      ...initialValues,
+    });
+  }, [form, initialValues]);
 
   const handleProductChange = (value: string) => {
     const selected = products.find((product) => product.productName === value);
@@ -177,7 +191,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
             unicefSection,
             serialNumber,
           } = values;
-          let payload: InventoryItemPayloadPost = {
+          let payload: InventoryItemPayloadPOST = {
             productName,
             quantity: parseInt(quantity),
             deliveryDate: deliveryDate.format('YYYY-MM-DD'),
@@ -194,7 +208,11 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
               serialNumber,
             };
           }
-          submitForm(payload, openSRPBaseURL, setSubmitting, setIfDoneHere, customFetchOptions);
+          submitForm(payload, openSRPBaseURL, setSubmitting, setIfDoneHere, inventoryID).catch(
+            () => {
+              sendErrorNotification(ERROR_GENERIC);
+            }
+          );
         }}
       >
         <Form.Item
