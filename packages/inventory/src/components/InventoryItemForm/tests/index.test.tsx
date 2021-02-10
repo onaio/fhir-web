@@ -423,7 +423,7 @@ describe('components/InventoryItemForm', () => {
     wrapper.unmount();
   });
 
-  it('handles error when editting item', async () => {
+  it('handles error when editing item', async () => {
     fetch.mockResponse('Server error here', { status: 500 });
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     const stockId = '69227a92-7979-490c-b149-f28669c6b760';

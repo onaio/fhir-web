@@ -80,7 +80,7 @@ describe('components/InventoryItemForm/util/submitForm', () => {
     ]);
   });
 
-  it('submits when editting an inventory item', async () => {
+  it('submits when editing an inventory item', async () => {
     await submitForm(values, openSRPBaseURL, setSubmittingMock, setIfDoneHereMock, inventoryID);
 
     await act(async () => {
@@ -144,7 +144,7 @@ describe('components/InventoryItemForm/util/submitForm', () => {
     expect(setIfDoneHereMock).not.toHaveBeenCalled();
   });
 
-  it('handles error when editting item', async () => {
+  it('handles error when editing item', async () => {
     fetch.mockResponse('Server error here', { status: 500 });
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 

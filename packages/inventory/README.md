@@ -16,7 +16,7 @@ import '@opensrp/inventory/dist/index.css';
 
 ### Inventory Add/Edit form
 
-Use this component to create a view for adding a new inventory item or editting an existing inventory item
+Use this component to create a view for adding a new inventory item or editing an existing inventory item
 
 ![Add inventory form](public/assets/img/add-inventory.png)
 
@@ -39,7 +39,7 @@ const props = {
 
 **N/B** You can declare any path but make sure to include the param `ROUTE_PARAM_SERVICE_POINT_ID` in your path e.g `/foo/:${ROUTE_PARAM_SERVICE_POINT_ID}` in order to match the service point to add the inventory to
 
-To add a view for editting an existing inventory item:
+To add a view for editing an existing inventory item:
 
 ```tsx
 import {
