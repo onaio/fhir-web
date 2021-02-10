@@ -39,7 +39,7 @@ export const parseSingleErrorRow = (errorRow: string) => {
  *
  * @param resText - string response showing what lines in the uploaded csv were defective
  */
-export const parseBadResponseError = (resText: string) => {
+export const parseTextResponse = (resText: string) => {
   // divide response into lines
   const splitText = split(resText, '\n').map((text) => trim(text, '\r'));
   // find rowsProcessed
@@ -137,7 +137,7 @@ export async function uploadCSV(
         onRequestCancel?.();
       }
       if (err.response.status === 400) {
-        const parsedError = parseBadResponseError(err.response.data);
+        const parsedError = parseTextResponse(err.response.data);
         onBadRequest?.(parsedError);
         return;
       }
