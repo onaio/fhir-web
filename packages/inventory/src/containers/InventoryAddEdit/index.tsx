@@ -6,7 +6,7 @@ import { Typography, Spin } from 'antd';
 import { Helmet } from 'react-helmet';
 import { OpenSRPService } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ADD_INVENTORY_ITEM, ERROR_GENERIC, TO } from '../../lang';
+import { ADD_INVENTORY_ITEM, EDIT, EDIT_INVENTORY_ITEM, ERROR_GENERIC, TO } from '../../lang';
 import {
   ProductCatalogue,
   fetchProducts,
@@ -96,6 +96,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const [UNICEFSections, setUNICEFSections] = React.useState<Setting[]>([]);
   const [donors, setDonors] = React.useState<Setting[]>([]);
   const { Title } = Typography;
+  const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ITEM_ID];
 
   useEffect(() => {
     // Handle when servicePoint is null e.g when a user refreshes page
@@ -142,7 +143,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
 
   useEffect(() => {
     // Handle when editing an item and inventory is null e.g when user refreshes page
-    if (match.params[ROUTE_PARAM_INVENTORY_ITEM_ID] && !inventory && servicePoint) {
+    if (isEdit && !inventory && servicePoint) {
       // fetch inventories
       const service = new OpenSRPService(
         `${OPENSRP_ENDPOINT_GET_INVENTORIES}/${servicePoint.id}`,
@@ -160,7 +161,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
     }
   }, [
     customFetchOptions,
-    match.params,
+    isEdit,
     inventory,
     servicePoint,
     openSRPBaseURL,
@@ -195,8 +196,8 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
     initialValues,
     inventoryID: inventory?._id,
   };
-  const heading = `${ADD_INVENTORY_ITEM} ${TO} ${properties.name}`;
-  const title = ADD_INVENTORY_ITEM;
+  const heading = !isEdit ? `${ADD_INVENTORY_ITEM} ${TO} ${properties.name}` : `${EDIT}`;
+  const title = !isEdit ? ADD_INVENTORY_ITEM : EDIT_INVENTORY_ITEM;
 
   return (
     <div className="layout-content">

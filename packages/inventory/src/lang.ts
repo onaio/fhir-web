@@ -71,3 +71,5 @@ export const RETRY_CSV_UPLOAD = 'retry csv upload';
 export const PLEASE_FIX_THE_ERRORS_LISTED_BELOW = 'please fix the errors listed below, then';
 export const PRODUCT = 'Product';
 export const SERIAL_NUMBER = 'Serial number';
+export const EDIT_INVENTORY_ITEM = 'Edit inventory item';
+export const EDIT = 'Edit';

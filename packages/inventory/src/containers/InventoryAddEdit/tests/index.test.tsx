@@ -348,6 +348,9 @@ describe('containers/InventoryAddEdit', () => {
       await flushPromises();
     });
 
+    expect(document.title).toEqual('Edit inventory item');
+    expect(wrapper.find('Title').prop('children')).toEqual('Edit');
+
     const payload = {
       productName: 'Test optional Fields',
       quantity: 10,
