@@ -135,22 +135,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                 {SERVICE_POINT_INVENTORY}
               </Link>
             </Menu.Item>
-            <Menu.Item key="list">
-              <Link
-                to={`/service-point/b8a7998c-5df6-49eb-98e6-f0675db71848/inventory-item/add`}
-                className="admin-link"
-              >
-                Add inventory item
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="list">
-              <Link
-                to={`/service-point/b8a7998c-5df6-49eb-98e6-f0675db71848/inventory-item/edit/69227a92-7979-490c-b149-f28669c6b760`}
-                className="admin-link"
-              >
-                Edit inventory item
-              </Link>
-            </Menu.Item>
           </Menu.SubMenu>
         )}
         <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
