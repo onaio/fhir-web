@@ -23,11 +23,11 @@ export interface InventoryPost {
   donor: string;
   poNumber: number;
   productName: string;
-  providerId: string;
+  providerId?: string;
   quantity: number;
-  serialNumber: string;
+  serialNumber?: string;
   servicePointId: string;
-  stockId: string;
+  stockId?: string;
   unicefSection: string;
 }
 

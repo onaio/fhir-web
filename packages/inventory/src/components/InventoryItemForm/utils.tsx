@@ -1,25 +1,23 @@
 import { sendErrorNotification } from '@opensrp/notifications';
 import { OpenSRPService, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 import { HTTPError } from '@opensrp/server-service';
+import { InventoryPost } from '../../ducks/inventory';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_ENDPOINT_STOCK_RESOURCE } from '../../constants';
 
 import { ERROR_GENERIC } from '../../lang';
 
-export interface InventoryItemPayloadPOST {
-  productName: string;
-  quantity: number;
-  deliveryDate: string;
-  accountabilityEndDate: string;
-  unicefSection: string;
-  donor: string;
-  poNumber: number;
-  servicePointId: string;
-  serialNumber?: string;
-}
-
+/**
+ * Submit form
+ *
+ * @param values values to be submitted
+ * @param openSRPBaseURL OpenSRP API base URL
+ * @param setSubmitting set isSubmitting value in the form's state
+ * @param setIfDoneHere set ifDoneHere value in the form's state
+ * @param inventoryID ID of inventory item during editing
+ */
 export const submitForm = async (
-  values: InventoryItemPayloadPOST,
+  values: InventoryPost,
   openSRPBaseURL: string,
   setSubmitting: Dispatch<SetStateAction<boolean>>,
   setIfDoneHere: Dispatch<SetStateAction<boolean>>,
