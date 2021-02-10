@@ -25,6 +25,12 @@ export const submitForm = async (
 ) => {
   setSubmitting(true);
   const token = await handleSessionOrTokenExpiry();
+
+  /**
+   * Fetch options are overriden here because the API currently only processes the payload
+   * when the headers `accept`, and `content-type` have the values of / and application/json
+   * respectively. If this issue is resolved on the API, then this override can be removed
+   */
   const customOptions = () => {
     return {
       body: inventoryID
