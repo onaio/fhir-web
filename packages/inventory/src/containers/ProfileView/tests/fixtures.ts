@@ -6,7 +6,7 @@ export const opensrpBaseURL = 'https://test-example.com/rest/';
 
 export const madagascar = {
   type: 'Feature',
-  id: 'f3199af5-2eaf-46df-87c9-40d59606a2fb',
+  id: 'f3199af5-2eaf-46df-87c9-40d596h8734',
   properties: { status: 'Active', name: 'Madagascar', geographicLevel: 0, version: 0 },
   serverVersion: 2968,
   locationTags: [{ id: 1, name: 'Country' }],
@@ -14,6 +14,17 @@ export const madagascar = {
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 export const madagascarTree = require('./madagascar.json');
+
+export const geographicHierarchy = [
+  {
+    geographicLevel: 0,
+    label: 'Madagascar',
+  },
+  {
+    geographicLevel: 1,
+    label: 'ANALAMANGA',
+  },
+];
 
 export const inventory1 = {
   type: 'Stock',
@@ -121,7 +132,7 @@ export const fetchCalls = [
     },
   ],
   [
-    'https://test-example.com/rest/stockresource/servicePointId/f3199af5-2eaf-46df-87c9-40d59606a2fb',
+    'https://test-example.com/rest/stockresource/servicePointId/b8a7998c-5df6-49eb-98e6-f0675db71848',
     {
       headers: {
         accept: 'application/json',

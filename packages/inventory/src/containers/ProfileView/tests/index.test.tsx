@@ -13,13 +13,24 @@ import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import {
   deforest,
+  generateJurisdictionTree,
   hierarchyReducer,
   hierarchyReducerName,
   removeLocationUnits,
 } from '@opensrp/location-management';
-import { fetchCalls, inventories, madagascar, opensrpBaseURL, structures } from './fixtures';
+import {
+  fetchCalls,
+  geographicHierarchy,
+  inventories,
+  madagascar,
+  madagascarTree,
+  opensrpBaseURL,
+  structure2,
+  structures,
+} from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
+import { getNodePath } from '../utils';
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
 jest.mock('@opensrp/notifications', () => ({
@@ -30,7 +41,7 @@ jest.mock('@opensrp/notifications', () => ({
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({
-    servicePointId: 'f3199af5-2eaf-46df-87c9-40d59606a2fb',
+    servicePointId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
   }),
 }));
 
@@ -50,7 +61,7 @@ const props = {
   },
   match: {
     isExact: true,
-    params: { [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: 'f3199af5-2eaf-46df-87c9-40d59606a2fb' },
+    params: { [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: 'b8a7998c-5df6-49eb-98e6-f0675db71848' },
     path: `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}`,
     url: `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}`,
   },
@@ -73,7 +84,6 @@ describe('Profile view Page', () => {
   afterEach(() => {
     fetch.resetMocks();
     store.dispatch(deforest());
-    store.dispatch(removeLocationUnits());
   });
 
   it('renders correctly', async () => {
@@ -98,8 +108,9 @@ describe('Profile view Page', () => {
     expect(fetch.mock.calls.map((call) => call[0])).toEqual([
       'https://test-example.com/rest/location/getAll?serverVersion=0&is_jurisdiction=false',
       'https://test-example.com/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      'https://test-example.com/rest/stockresource/servicePointId/f3199af5-2eaf-46df-87c9-40d59606a2fb',
+      'https://test-example.com/rest/stockresource/servicePointId/b8a7998c-5df6-49eb-98e6-f0675db71848',
     ]);
+    store.dispatch(removeLocationUnits());
   });
 
   it('renders when data is present', async () => {
@@ -125,6 +136,24 @@ describe('Profile view Page', () => {
 
     // check fetch calls made
     expect(fetch.mock.calls).toEqual(fetchCalls);
+  });
+
+  it('branch test for getNodePath with parentId undefined', async () => {
+    const sampleLocation = {
+      ...structure2,
+      properties: { ...structure2.properties, parentId: undefined },
+    };
+    const res = getNodePath(sampleLocation, [generateJurisdictionTree(madagascarTree)]);
+    expect(res).toEqual([]);
+  });
+
+  it('branch test for getNodePath with parentId', async () => {
+    const sampleLocation = {
+      ...structure2,
+      properties: { ...structure2.properties, parentId: 'b8a7998c-5df6-49eb-98e6-f0675db71848' },
+    };
+    const res = getNodePath(sampleLocation, [generateJurisdictionTree(madagascarTree)]);
+    expect(res).toEqual(geographicHierarchy);
   });
 
   it('shows broken page', async () => {

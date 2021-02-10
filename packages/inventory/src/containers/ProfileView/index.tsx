@@ -132,7 +132,7 @@ const ServiceProfile = (props: ServicePointsProfileTypes) => {
   const inventoriesArray = useSelector((state) =>
     getInventoriesByExpiry(state, { expired: false })
   );
-  const [structure] = structures;
+  const [structure] = structures.filter((loc) => loc.id === spId);
   const trees = useSelector((state) => treesSelector(state, {}));
 
   useEffect(() => {
@@ -259,13 +259,9 @@ export { ServiceProfile };
 
 type MapStateToProps = Pick<ServicePointsProfileTypes, 'structures'>;
 
-const mapStateToProps = (
-  state: Partial<Store>,
-  ownProps: ServicePointsProfileTypes
-): MapStateToProps => {
-  const searchText = ownProps.match.params as { [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: string };
+const mapStateToProps = (state: Partial<Store>): MapStateToProps => {
   const filters = {
-    searchQuery: searchText[INVENTORY_SERVICE_POINT_PROFILE_PARAM],
+    searchQuery: undefined,
     isJurisdiction: false,
   };
   const structures = structuresSelector(state, filters);
