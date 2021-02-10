@@ -22,6 +22,7 @@
     "@opensrp/keycloak-service": "^0.0.9",
     "@opensrp/inventory": "^0.0.1",
     "@opensrp/location-management": "^0.0.7",
+    "@opensrp/location-settings": "^0.0.1",
     "@opensrp/notifications": "^0.0.2",
     "@opensrp/product-catalogue": "^0.0.2",
     "@opensrp/plans": "0.0.2",
