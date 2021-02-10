@@ -17,7 +17,7 @@ export const columns: ColumnsType<Setting> = [
     dataIndex: 'label',
     key: `productName`,
     defaultSortOrder: 'descend',
-    width: '20%',
+    width: '25%',
     sorter: (rec1: Setting, rec2: Setting) => {
       if (rec1.label > rec2.label) {
         return -1;
@@ -31,13 +31,24 @@ export const columns: ColumnsType<Setting> = [
   {
     title: 'Description',
     dataIndex: 'description',
-    width: '25%',
+    width: '35%',
     key: `description`,
+  },
+  {
+    title: 'Setting',
+    dataIndex: 'value',
+    key: `value`,
+  },
+  {
+    title: 'Inherited from',
+    dataIndex: 'inheritedFrom',
+    width: '20%',
+    key: `inheritedFrom`,
   },
   {
     title: 'Actions',
     key: `actions`,
     render: ActionsColumnCustomRender,
-    width: '20%',
+    width: '10%',
   },
 ];
