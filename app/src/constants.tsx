@@ -13,6 +13,7 @@ export const URL_HOME = '/';
 export const URL_USER = `${URL_ADMIN}/users/list`;
 export const URL_USER_EDIT = `${URL_ADMIN}/users/edit`;
 export const URL_TEAMS = `${URL_ADMIN}/teams`;
+export const URL_SERVER_SETTINGS = `${URL_ADMIN}/server-settings`;
 export const URL_TEAM_ADD = `${URL_ADMIN}/teams/add`;
 export const URL_TEAM_EDIT = `${URL_ADMIN}/teams/edit/:id`;
 
