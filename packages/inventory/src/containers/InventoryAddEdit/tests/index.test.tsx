@@ -235,13 +235,13 @@ describe('containers/InventoryAddEdit', () => {
 
     const payload = {
       productName: 'Test optional Fields',
-      quantity: 10,
       deliveryDate: '2021-02-08',
       accountabilityEndDate: '2021-04-08',
       unicefSection: 'Health',
       donor: 'ADB',
       poNumber: 89,
       servicePointId: fixtures.servicePoint2.id,
+      quantity: 10,
     };
 
     expect(fetch.mock.calls[4]).toEqual([
@@ -353,13 +353,13 @@ describe('containers/InventoryAddEdit', () => {
 
     const payload = {
       productName: 'Test optional Fields',
-      quantity: 10,
       deliveryDate: '2021-02-08',
       accountabilityEndDate: '2021-04-08',
       unicefSection: 'WASH',
       donor: 'NatCom Belgium',
       poNumber: 89,
       servicePointId: fixtures.servicePoint2.id,
+      quantity: 10,
       stockId: fixtures.inventories[0]._id,
     };
     expect(wrapper.find('InventoryItemForm').props()).toMatchSnapshot('form props');
