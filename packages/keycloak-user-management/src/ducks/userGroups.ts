@@ -32,7 +32,7 @@ export interface FetchKeycloakUserGroupsAction extends AnyAction {
 
 /** Interface for removeusersAction */
 export interface RemoveKeycloakUserGroupsAction extends AnyAction {
-  usersById: Dictionary<KeycloakUserGroup>;
+  userGroupsById: Dictionary<KeycloakUserGroup>;
   type: typeof REMOVE_USER_GROUPS;
 }
 
@@ -65,7 +65,7 @@ export const fetchKeycloakUserGroups = (
  */
 export const removeKeycloakUserGroups = (): RemoveKeycloakUserGroupsAction => {
   return {
-    usersById: {},
+    userGroupsById: {},
     type: REMOVE_USER_GROUPS,
   };
 };
