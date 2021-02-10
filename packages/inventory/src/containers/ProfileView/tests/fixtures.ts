@@ -6,7 +6,7 @@ export const opensrpBaseURL = 'https://test-example.com/rest/';
 
 export const madagascar = {
   type: 'Feature',
-  id: '03176924-6b3c-4b74-bccd-32afcceebabd',
+  id: 'f3199af5-2eaf-46df-87c9-40d59606a2fb',
   properties: { status: 'Active', name: 'Madagascar', geographicLevel: 0, version: 0 },
   serverVersion: 2968,
   locationTags: [{ id: 1, name: 'Country' }],
@@ -121,7 +121,7 @@ export const fetchCalls = [
     },
   ],
   [
-    'https://test-example.com/rest/stockresource/servicePointId/12345',
+    'https://test-example.com/rest/stockresource/servicePointId/f3199af5-2eaf-46df-87c9-40d59606a2fb',
     {
       headers: {
         accept: 'application/json',

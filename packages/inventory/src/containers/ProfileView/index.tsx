@@ -13,7 +13,7 @@ import {
   getLocationsBySearch,
   getTreesByIds,
 } from '@opensrp/location-management';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { columns } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -27,6 +27,7 @@ import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   GEOGRAPHIC_LEVEL,
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
+  INVENTORY_SERVICE_POINT_PROFILE_PARAM,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
@@ -46,13 +47,14 @@ import {
 import '../../index.css';
 import {
   fetchInventories,
-  getInventoriesArray,
+  getInventoriesByExpiry,
   inventoryReducer,
   inventoryReducerName,
   Inventory,
 } from '../../ducks/inventory';
 import { getNodePath } from './utils';
 import { ServiceType } from '@opensrp/location-management/src/ducks/location-units';
+import { Store } from 'redux';
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -67,6 +69,7 @@ interface ServicePointsListProps extends CommonProps {
   columns: ColumnsType<Inventory>;
   fetchInventories: typeof fetchInventories;
   service: typeof OpenSRPService;
+  structures: LocationUnit[];
 }
 
 export interface Props {
@@ -80,6 +83,7 @@ const defaultProps = {
   fetchInventories,
   opensrpBaseURL: '',
   service: OpenSRPService,
+  structures: [],
 };
 
 type ServicePointsListTypes = ServicePointsListProps & RouteComponentProps & Props;
@@ -89,8 +93,8 @@ export interface GeographicLocationInterface {
   label?: number;
 }
 
-export const findPath = (nodePath: any[], geoLevel: number) => {
-  return nodePath.find((x: GeographicLocationInterface) => x.geographicLevel === geoLevel);
+export const findPath = (path: GeographicLocationInterface[], geoLevel: number) => {
+  return path.find((x: GeographicLocationInterface) => x.geographicLevel === geoLevel);
 };
 
 interface DefaultGeographyItemProp {
@@ -117,18 +121,18 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
  *
  * @param props - the component props
  */
-const ServicePointProfile = (props: ServicePointsListTypes) => {
-  const { columns, opensrpBaseURL, service } = props;
+const ServiceProfile = (props: ServicePointsListTypes) => {
+  const { columns, opensrpBaseURL, service, structures } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const params = useParams<{ servicePointId: string }>();
-  const spId = params.servicePointId;
+  const params = useParams<{ [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: string }>();
+  const spId = params[INVENTORY_SERVICE_POINT_PROFILE_PARAM];
 
-  const inventoriesArray = useSelector((state) => getInventoriesArray(state));
-  const [structure] = useSelector((state) =>
-    structuresSelector(state, { searchQuery: spId, isJurisdiction: false })
+  const inventoriesArray = useSelector((state) =>
+    getInventoriesByExpiry(state, { expired: false })
   );
+  const [structure] = structures;
   const trees = useSelector((state) => treesSelector(state, {}));
 
   useEffect(() => {
@@ -249,6 +253,24 @@ const ServicePointProfile = (props: ServicePointsListTypes) => {
   );
 };
 
-ServicePointProfile.defaultProps = defaultProps;
+ServiceProfile.defaultProps = defaultProps;
 
+export { ServiceProfile };
+
+type MapStateToProps = Pick<ServicePointsListTypes, 'structures'>;
+
+const mapStateToProps = (
+  state: Partial<Store>,
+  ownProps: ServicePointsListTypes
+): MapStateToProps => {
+  const searchText = ownProps.match.params as { [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: string };
+  const filters = {
+    searchQuery: searchText[INVENTORY_SERVICE_POINT_PROFILE_PARAM],
+    isJurisdiction: false,
+  };
+  const structures = structuresSelector(state, filters);
+  return { structures };
+};
+
+const ServicePointProfile = connect(mapStateToProps)(ServiceProfile);
 export { ServicePointProfile };

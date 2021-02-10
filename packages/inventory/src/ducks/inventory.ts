@@ -132,7 +132,7 @@ export const getInventoriesByExpiry = createSelector(
   getActiveServicePoints,
   (inventories, flag) => {
     const inventoriesOfInterest: Inventory[] = [];
-    if (flag) {
+    if (!flag) {
       inventories.forEach((inventory) => {
         if (new Date(inventory.deliveryDate) < new Date(inventory.accountabilityEndDate)) {
           inventoriesOfInterest.push(inventory);
@@ -147,17 +147,5 @@ export const getInventoriesByExpiry = createSelector(
       });
       return inventoriesOfInterest;
     }
-    // if (ids) {
-    //   const inventoriesOfInterest: Inventory[] = [];
-    //   ids.forEach((id) => {
-    //     Object.values(inventoriesByIds).forEach((inventory) => {
-    //       if (id === inventory.locationId) {
-    //         inventoriesOfInterest.push(inventory);
-    //       }
-    //     });
-    //   });
-    //   return inventoriesOfInterest;
-    // }
-    // return values(inventoriesByIds);
   }
 );

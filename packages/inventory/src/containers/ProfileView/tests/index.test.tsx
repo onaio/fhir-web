@@ -1,4 +1,5 @@
 import React from 'react';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ServicePointProfile } from '..';
 import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
@@ -7,7 +8,13 @@ import { Provider } from 'react-redux';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../../constants';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
-import { deforest, removeLocationUnits } from '@opensrp/location-management';
+import {
+  deforest,
+  fetchTree,
+  hierarchyReducer,
+  hierarchyReducerName,
+  removeLocationUnits,
+} from '@opensrp/location-management';
 import {
   fetchCalls,
   inventories,
@@ -18,6 +25,7 @@ import {
 } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
+reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -27,7 +35,7 @@ jest.mock('@opensrp/notifications', () => ({
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({
-    servicePointId: '12345',
+    servicePointId: 'f3199af5-2eaf-46df-87c9-40d59606a2fb',
   }),
 }));
 
@@ -95,16 +103,16 @@ describe('Profile view Page', () => {
     expect(fetch.mock.calls.map((call) => call[0])).toEqual([
       'https://test-example.com/rest/location/getAll?serverVersion=0&is_jurisdiction=false',
       'https://test-example.com/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      'https://test-example.com/rest/stockresource/servicePointId/12345',
+      'https://test-example.com/rest/stockresource/servicePointId/f3199af5-2eaf-46df-87c9-40d59606a2fb',
     ]);
   });
 
   it('renders when data is present', async () => {
+    store.dispatch(fetchTree(madagascarTree));
     fetch
       .once(JSON.stringify(structures))
       .once(JSON.stringify([madagascar]))
-      .once(JSON.stringify(inventories))
-      .once(JSON.stringify(madagascarTree));
+      .once(JSON.stringify(inventories));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -123,9 +131,6 @@ describe('Profile view Page', () => {
 
     // check fetch calls made
     expect(fetch.mock.calls).toEqual(fetchCalls);
-    await act(async () => {
-      wrapper.update();
-    });
   });
 
   it('shows broken page', async () => {
