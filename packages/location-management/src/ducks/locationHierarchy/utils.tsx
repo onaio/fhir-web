@@ -17,9 +17,10 @@ const { getFilterParams } = OpenSRPService;
 /** Parse the raw child hierarchy node map
  *
  * @param {RawHierarchyNodeMap} rawNodeMap - Object of raw hierarchy nodes
+ * @param {string} parent - node parent id
  * @returns {Array<ParsedHierarchyNode>} Array of Parsed hierarchy nodes
  */
-const parseChildren = (rawNodeMap: RawHierarchyNodeMap) => {
+const parseChildren = (rawNodeMap: RawHierarchyNodeMap, parent: string) => {
   const rawHierarchyNode: RawHierarchyNode[] = Object.entries(rawNodeMap).map(
     ([_key, value]) => value
   );
@@ -27,8 +28,8 @@ const parseChildren = (rawNodeMap: RawHierarchyNodeMap) => {
     const parsedNode: ParsedHierarchyNode = {
       ...child,
       title: child.label,
-      key: child.label,
-      children: child.children ? parseChildren(child.children) : undefined,
+      key: `${child.id}-${parent}`,
+      children: child.children ? parseChildren(child.children, parent) : [],
     };
     return parsedNode;
   });
@@ -52,7 +53,7 @@ const parseHierarchy = (raw: RawOpenSRPHierarchy) => {
     ...rawNode,
     title: rawNode.label,
     key: rawNode.id,
-    children: rawNode.children ? parseChildren(rawNode.children) : undefined,
+    children: rawNode.children ? parseChildren(rawNode.children, rawNode.id) : [],
   };
 
   return parsedNode;
