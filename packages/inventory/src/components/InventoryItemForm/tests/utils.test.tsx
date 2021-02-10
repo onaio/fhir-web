@@ -1,10 +1,12 @@
+import MockDate from 'mockdate';
+import moment from 'moment';
 import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
 import * as notifications from '@opensrp/notifications';
-import { submitForm } from '../utils';
+import { isDateFuture, isDatePastOrToday, submitForm } from '../utils';
 import { ERROR_GENERIC } from '../../../lang';
 
 jest.mock('@opensrp/notifications', () => ({
@@ -12,7 +14,7 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-describe('components/InventoryItemForm/util/submitForm', () => {
+describe('components/InventoryItemForm/utils/submitForm', () => {
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -175,5 +177,45 @@ describe('components/InventoryItemForm/util/submitForm', () => {
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(setIfDoneHereMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('components/InventoryItemForm/utils/isDatePastOrToday', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+    MockDate.reset();
+  });
+
+  const today = '2021-02-10';
+  MockDate.set(today);
+
+  it('returns true for todays date', () => {
+    expect(isDatePastOrToday(moment(today))).toEqual(true);
+  });
+
+  it('returns true for yesterdays date', () => {
+    expect(isDatePastOrToday(moment('2021-02-09'))).toEqual(true);
+  });
+
+  it('returns false for tomorrows date', () => {
+    expect(isDatePastOrToday(moment('2021-02-11'))).toEqual(false);
+  });
+});
+
+describe('components/InventoryItemForm/utils/isDateFuture', () => {
+  const today = '2021-02-10';
+  MockDate.set(today);
+
+  it('returns false for todays date', () => {
+    expect(isDateFuture(moment(today))).toEqual(false);
+  });
+
+  it('returns false for yesterdays date', () => {
+    expect(isDateFuture(moment('2021-02-09'))).toEqual(false);
+  });
+
+  it('returns true for tomorrows date', () => {
+    expect(isDateFuture(moment('2021-02-11'))).toEqual(true);
   });
 });

@@ -26,7 +26,7 @@ import {
   UNICEF_SECTION,
 } from '../../lang';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
-import { submitForm } from './utils';
+import { isDateFuture, isDatePastOrToday, submitForm } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { InventoryPost } from 'inventory/src/ducks/inventory';
 
@@ -248,10 +248,8 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
           rules={[{ required: true, message: ERROR_DELIVERY_DATE_REQUIRED }]}
         >
           <DatePicker
-            disabledDate={(current: moment.Moment) => {
-              // Cannot select future date
-              return current > moment().endOf('day');
-            }}
+            // Cannot select future date
+            disabledDate={isDateFuture}
             onChange={handleDeliveryDateChange}
           />
         </Form.Item>
@@ -262,10 +260,8 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
           rules={[{ required: true, message: ERROR_ACCOUNTABILITY_DATE_REQUIRED }]}
         >
           <DatePicker
-            disabledDate={(current: moment.Moment) => {
-              // Only select future date
-              return current < moment().endOf('day');
-            }}
+            // Cannot select today or past dates
+            disabledDate={isDatePastOrToday}
           />
         </Form.Item>
         <Form.Item

@@ -594,4 +594,16 @@ describe('components/InventoryItemForm', () => {
     expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
     wrapper.unmount();
   });
+
+  it('returns user to cancel URL', () => {
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...props} />
+      </Router>
+    );
+
+    wrapper.find('button').at(1).simulate('click');
+    expect(history.location.pathname).toEqual('/inventory-items');
+    wrapper.unmount();
+  });
 });

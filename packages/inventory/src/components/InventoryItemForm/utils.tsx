@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { OpenSRPService, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 import { HTTPError } from '@opensrp/server-service';
@@ -86,4 +87,22 @@ export const submitForm = async (
         setSubmitting(false);
       });
   }
+};
+
+/**
+ * Return true if date is today or in the past, false otherwise
+ *
+ * @param current date
+ */
+export const isDatePastOrToday = (current: moment.Moment) => {
+  return current < moment().endOf('day');
+};
+
+/**
+ * Rteurn true if date is in the future, false othewise
+ *
+ * @param current date
+ */
+export const isDateFuture = (current: moment.Moment) => {
+  return current > moment().endOf('day');
 };
