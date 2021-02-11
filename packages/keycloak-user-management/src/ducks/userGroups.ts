@@ -172,13 +172,14 @@ export const getUserGroupByName = () =>
    *
    * @returns {Array} - groups whose name includes phrase given in name filter prop
    */
-  createSelector(getKeycloakUserGroupsArray, getGroupName, (userGroupsArray, name) =>
-    name
-      ? userGroupsArray.filter((userGroup: KeycloakUserGroup) =>
-          userGroup.name.toLowerCase().includes(name.toLowerCase())
-        )
-      : userGroupsArray
-  );
+  createSelector(getKeycloakUserGroupsArray, getGroupName, (userGroupsArray, name) => {
+    if (name === undefined) {
+      return userGroupsArray;
+    }
+    return userGroupsArray.filter((userGroup: KeycloakUserGroup) =>
+      userGroup.name.toLowerCase().includes(name.toLowerCase())
+    );
+  });
 
 export const getKeycloakUserGroupsByIds = () =>
   /**
@@ -217,11 +218,11 @@ export const makeKeycloakUserGroupsSelector = () =>
     (arr1, arr2, searchText) => {
       const unfilteredResults = intersect([arr1, arr2], JSON.stringify);
       const matchesUserName = (userGroup: KeycloakUserGroup) => {
-        if (!searchText) {
+        if (searchText === undefined) {
           return true;
         }
         return userGroup.name.toLowerCase().includes(searchText.toLowerCase());
       };
-      return unfilteredResults.filter((user) => matchesUserName(user));
+      return unfilteredResults.filter((group) => matchesUserName(group));
     }
   );
