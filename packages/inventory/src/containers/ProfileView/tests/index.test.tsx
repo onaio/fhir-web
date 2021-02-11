@@ -94,11 +94,7 @@ describe('Profile view Page', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls.map((call) => call[0])).toEqual([
-      'https://test-example.com/rest/location/getAll?serverVersion=0&is_jurisdiction=false',
-      'https://test-example.com/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      'https://test-example.com/rest/stockresource/servicePointId/b8a7998c-5df6-49eb-98e6-f0675db71848',
-    ]);
+    expect(fetch.mock.calls).toEqual(fetchCalls);
     store.dispatch(removeLocationUnits());
   });
 
