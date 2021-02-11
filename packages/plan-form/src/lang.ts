@@ -166,3 +166,5 @@ export const ADD_JURISDICTION = i18n.t('Add Jurisdiction');
 export const CANCEL = i18n.t('Cancel');
 export const PLAN_TITLE_PLACEHOLDER = i18n.t("Enter the plan's name");
 export const DESCRIPTION_PLACEHOLDER = i18n.t("Enter the plan's description");
+export const DYNAMIC_VALUE_LEGEND_TITLE = i18n.t('Dynamic Value');
+export const PATH_LABEL = i18n.t('Path');

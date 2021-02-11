@@ -81,12 +81,8 @@ describe('components/UserList', () => {
   });
   it('works correctly with store', async () => {
     fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
-    const getAccessTokenMock = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
     const props = {
       ...locationProps,
-      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
-        accessToken: true,
-      }),
       extraData: {
         user_id: fixtures.keycloakUser.id,
       },
@@ -110,7 +106,6 @@ describe('components/UserList', () => {
     });
 
     expect(wrapper.find('Table')).toBeTruthy();
-    expect(getAccessTokenMock).toHaveBeenCalled();
     expect(wrapper.text()).toMatchSnapshot('full rendered text');
     wrapper.unmount();
   });
@@ -119,9 +114,6 @@ describe('components/UserList', () => {
     fetch.once(JSON.stringify(keycloakUsersArray));
     const props = {
       ...locationProps,
-      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
-        accessToken: true,
-      }),
       extraData: {
         user_id: fixtures.keycloakUser.id,
       },
@@ -161,9 +153,6 @@ describe('components/UserList', () => {
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const props = {
       ...locationProps,
-      accessToken: opensrpStore.makeAPIStateSelector()(opensrpStore.store.getState(), {
-        accessToken: true,
-      }),
       extraData: {
         user_id: fixtures.keycloakUser.id,
       },

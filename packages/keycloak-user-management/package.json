@@ -27,6 +27,7 @@
     "dist"
   ],
   "peerDependencies": {
+    "@opensrp/store": "^0.0.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
@@ -39,13 +40,16 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "i18next": "^19.8.4",
+    "@onaio/connected-reducer-registry": "^0.0.3",
+    "@onaio/gatekeeper": "^0.1.1",
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@onaio/session-reducer": "^0.0.11",
+    "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/keycloak-service": "^0.0.8",
+    "@opensrp/keycloak-service": "^0.0.9",
+    "@opensrp/react-utils": "^0.0.2",
     "@opensrp/server-service": "^0.0.13",
-    "@opensrp/react-utils": "0.0.2",
     "@opensrp/notifications": "^0.0.1",
     "@opensrp/pkg-config": "^0.0.1",
     "antd": "^4.6.3",
@@ -57,8 +61,7 @@
     "formik-antd": "^2.0.1",
     "lodash": "^4.17.20",
     "uuid": "^8.3.1",
-    "yup": "^0.29.3",
-    "i18next": "^19.8.4"
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@opensrp/store": "^0.0.7",
