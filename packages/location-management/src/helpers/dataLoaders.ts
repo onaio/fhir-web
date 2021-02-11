@@ -162,19 +162,15 @@ export async function loadSettings<T>(
  *
  * @param baseURL - openSRP base url
  * @param serviceClass  -  the openSRP service class
- * @param callback - callback to call with response data
  */
 export async function loadLocationTags(
   baseURL: string,
-  serviceClass: typeof OpenSRPService = OpenSRPService,
-  callback?: (data: LocationUnitGroup[]) => void
+  serviceClass: typeof OpenSRPService = OpenSRPService
 ) {
   const serve = new serviceClass(LOCATION_UNIT_GROUP_ALL, baseURL);
-  return serve
+  return await serve
     .list()
-    .then((response: LocationUnitGroup[]) => {
-      callback?.(response);
-    })
+    .then((response: LocationUnitGroup[]) => response)
     .catch((error: Error) => {
       throw error;
     });
