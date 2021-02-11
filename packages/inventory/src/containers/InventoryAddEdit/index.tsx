@@ -28,6 +28,8 @@ import {
   locationUnitsReducer,
 } from '@opensrp/location-management';
 import {
+  INVENTORY_DONORS,
+  INVENTORY_UNICEF_SECTIONS,
   OPENSRP_ENDPOINT_GET_INVENTORIES,
   OPENSRP_ENDPOINT_LOCATION,
   ROUTE_PARAM_INVENTORY_ITEM_ID,
@@ -130,10 +132,10 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   }, [products.length, openSRPBaseURL, fetchProductsCreator]);
 
   useEffect(() => {
-    fetchSettings(openSRPBaseURL, { serverVersion: 0, identifier: 'inventory_donors' }, setDonors);
+    fetchSettings(openSRPBaseURL, { serverVersion: 0, identifier: INVENTORY_DONORS }, setDonors);
     fetchSettings(
       openSRPBaseURL,
-      { serverVersion: 0, identifier: 'inventory_unicef_sections' },
+      { serverVersion: 0, identifier: INVENTORY_UNICEF_SECTIONS },
       setUNICEFSections
     ); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

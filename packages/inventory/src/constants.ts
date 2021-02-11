@@ -20,6 +20,8 @@ export const INVENTORY_EDIT_SERVICE_POINT = '/inventory/servicePoint/edit';
 /** namespace for the keys attached to the columns */
 export const TableColumnsNamespace = 'inventory';
 export const errorsTableColumnsNameSpace = 'inventoryBulkUploadError';
+export const INVENTORY_DONORS = 'inventory_donors';
+export const INVENTORY_UNICEF_SECTIONS = 'inventory_unicef_sections';
 
 // magic figures
 export const SEARCH_QUERY_PARAM = 'querySearch';
