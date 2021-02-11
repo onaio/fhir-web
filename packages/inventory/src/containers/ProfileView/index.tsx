@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Button, Table } from 'antd';
+import { Row, Col, Button } from 'antd';
 import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
 import {
   hierarchyReducer,
@@ -30,14 +30,11 @@ import {
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
   INVENTORY_SERVICE_POINT_PROFILE_PARAM,
   INVENTORY_EDIT_SERVICE_POINT,
-  INVENTORY_ADD_SERVICE_POINT,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
-  ADD_NEW_INVENTORY_ITEM,
   SERVICE_POINT_INVENTORY,
   EDIT_SERVICE_POINT,
-  INVENTORY_ITEMS,
   ERROR_OCCURRED,
   REGION_LABEL,
   DISTRICT_LABEL,
@@ -56,6 +53,7 @@ import {
   Inventory,
 } from '../../ducks/inventory';
 import { getNodePath } from './utils';
+import { InventoryList } from '../../components/InventoryList';
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -111,7 +109,7 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
  * @param props - the component props
  */
 const ServicePointProfile = (props: ServicePointsProfileTypes) => {
-  const { columns, opensrpBaseURL, service } = props;
+  const { opensrpBaseURL, service } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
@@ -244,19 +242,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <Row className={'list-view'}>
-          <Col className={'main-content'}>
-            <div className="inventory-profile">
-              <h6>{INVENTORY_ITEMS}</h6>
-              <Link to={INVENTORY_ADD_SERVICE_POINT}>
-                <Button type="primary" size="large">
-                  {ADD_NEW_INVENTORY_ITEM}
-                </Button>
-              </Link>
-            </div>
-            <Table dataSource={inventoriesArray} columns={columns}></Table>
-          </Col>
-        </Row>
+        <InventoryList inventoriesArray={inventoriesArray} />
       </div>
     </>
   );
