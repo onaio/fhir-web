@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col, Row } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
@@ -81,7 +81,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   /**
    * Fetch user incase the user is not available e.g when page is refreshed
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (userId && !keycloakUser) {
       const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
       setIsLoading(true);
@@ -100,7 +100,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     }
   }, [fetchKeycloakUsersCreator, serviceClass, userId, keycloakBaseURL, keycloakUser]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userId && practitioner === undefined) {
       setIsLoading(true);
       const serve = new opensrpServiceClass(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, opensrpBaseURL);
