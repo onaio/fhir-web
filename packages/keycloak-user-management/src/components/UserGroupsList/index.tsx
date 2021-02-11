@@ -14,7 +14,14 @@ import {
   reducerName as keycloakUserGroupsReducerName,
   reducer as keycloakUserGroupsReducer,
 } from '../../ducks/userGroups';
-import { ADD_USER_GROUP, ERROR_OCCURED, USER_GROUPS_PAGE_HEADER, VIEW_DETAILS } from '../../lang';
+import {
+  ACTIONS,
+  ADD_USER_GROUP,
+  ERROR_OCCURED,
+  NAME,
+  USER_GROUPS_PAGE_HEADER,
+  VIEW_DETAILS,
+} from '../../lang';
 import { KEYCLOAK_URL_USER_GROUPS, SEARCH_QUERY_PARAM } from '../../constants';
 import {
   fetchKeycloakUserGroups,
@@ -72,18 +79,7 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
     }
   });
 
-  if (isLoading)
-    return (
-      <Spin
-        size="large"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-      />
-    );
+  if (isLoading) return <Spin size="large" />;
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
@@ -102,13 +98,13 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
 
   const columns = [
     {
-      title: 'Name',
+      title: NAME,
       dataIndex: 'name',
       editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
-      title: 'Actions',
+      title: ACTIONS,
       width: '10%',
 
       // eslint-disable-next-line react/display-name

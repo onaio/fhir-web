@@ -117,9 +117,9 @@ export function reducer(
 // Selectors
 
 export interface Filters {
-  id?: string[] /** get all users whose ids appear in this array */;
-  name?: string /** get users whose username includes text in the username field */;
-  searchText?: string /** filter user with given text */;
+  id?: string[] /** get all groups whose ids appear in this array */;
+  name?: string /** get user groups whose name includes text in the name field */;
+  searchText?: string /** filter user group with given text */;
 }
 
 /**
