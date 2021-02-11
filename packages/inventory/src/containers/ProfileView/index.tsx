@@ -27,6 +27,8 @@ import {
   GEOGRAPHIC_LEVEL,
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
   INVENTORY_SERVICE_POINT_PROFILE_PARAM,
+  INVENTORY_EDIT_SERVICE_POINT,
+  INVENTORY_ADD_SERVICE_POINT,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
@@ -218,8 +220,8 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
             </Row>
           </Col>
           <Col md={8} className="flex-center">
-            <Link to={EDIT_SERVICE_POINT}>
-              <Button type="primary" size="large" disabled>
+            <Link to={`${INVENTORY_EDIT_SERVICE_POINT}/${spId}`}>
+              <Button type="primary" size="large">
                 {EDIT_SERVICE_POINT}
               </Button>
             </Link>
@@ -234,8 +236,8 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
           <Col className={'main-content'}>
             <div className="inventory-profile">
               <h6>{INVENTORY_ITEMS}</h6>
-              <Link to={ADD_NEW_INVENTORY_ITEM}>
-                <Button type="primary" size="large" disabled>
+              <Link to={INVENTORY_ADD_SERVICE_POINT}>
+                <Button type="primary" size="large">
                   {ADD_NEW_INVENTORY_ITEM}
                 </Button>
               </Link>
