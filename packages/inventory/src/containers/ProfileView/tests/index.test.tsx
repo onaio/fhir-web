@@ -1,6 +1,6 @@
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { ServicePointProfile } from '..';
+import { findPath, ServicePointProfile } from '..';
 import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
@@ -19,7 +19,7 @@ import {
 } from '@opensrp/location-management';
 import {
   fetchCalls,
-  inventories,
+  geographicHierarchy,
   madagascar,
   madagascarTree,
   opensrpBaseURL,
@@ -84,7 +84,7 @@ describe('Profile view Page', () => {
   });
 
   it('renders correctly', async () => {
-    fetch.once(JSON.stringify([])).once(JSON.stringify([])).once(JSON.stringify([]));
+    fetch.once(JSON.stringify([])).once(JSON.stringify([]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -104,7 +104,6 @@ describe('Profile view Page', () => {
 
     expect(fetch.mock.calls[0]).toEqual(fetchCalls[0]);
     expect(fetch.mock.calls[1]).toEqual(fetchCalls[1]);
-    expect(fetch.mock.calls[2]).toEqual(fetchCalls[2]);
 
     wrapper.unmount();
   });
@@ -113,7 +112,7 @@ describe('Profile view Page', () => {
     fetch
       .once(JSON.stringify(structures))
       .once(JSON.stringify([madagascar]))
-      .once(JSON.stringify(inventories))
+      // .once(JSON.stringify(inventories))
       .once(JSON.stringify(madagascarTree));
 
     const wrapper = mount(
@@ -135,10 +134,9 @@ describe('Profile view Page', () => {
     expect(fetch.mock.calls[0]).toEqual(fetchCalls[0]);
     expect(fetch.mock.calls[1]).toEqual(fetchCalls[1]);
     expect(fetch.mock.calls[2]).toEqual(fetchCalls[2]);
-    expect(fetch.mock.calls[3]).toEqual(fetchCalls[3]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Back to the list of service pointsAmbatoharananaRegion: District: Commune: Type: Water PointLatitude/longitude: Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointInventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActions1101123434Jan 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1101123434Feb 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1"`
+      `"Back to the list of service pointsAmbatoharananaRegion: District: Commune: Type: Water PointLatitude/longitude: Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointUnable to fetch inventories for service point"`
     );
     wrapper.unmount();
   });
@@ -165,6 +163,7 @@ describe('Profile view Page', () => {
 
     // no data
     expect(wrapper.text()).toMatchSnapshot('error broken page');
+    wrapper.unmount();
   });
 
   it('shows broken page when jurisdiction request errors out', async () => {
@@ -190,5 +189,10 @@ describe('Profile view Page', () => {
 
     // no data
     expect(wrapper.text()).toMatchSnapshot('error broken page');
+    wrapper.unmount();
+  });
+
+  it('should return correct geographic location', async () => {
+    expect(findPath(geographicHierarchy, 1)).toEqual(geographicHierarchy[1]);
   });
 });

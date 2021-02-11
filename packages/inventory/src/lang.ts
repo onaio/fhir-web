@@ -70,3 +70,4 @@ export const INVENTORY_ITEMS_ADDED_TO = 'inventory items added to';
 export const RETRY_CSV_UPLOAD = 'retry csv upload';
 export const PLEASE_FIX_THE_ERRORS_LISTED_BELOW = 'please fix the errors listed below, then';
 export const BACK_TO_SERVICE_POINT_LIST = 'Back to the list of service points';
+export const ERROR_GETTING_INVENTORIES = 'Unable to fetch inventories for service point';

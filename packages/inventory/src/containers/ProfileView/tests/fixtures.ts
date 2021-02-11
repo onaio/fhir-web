@@ -132,7 +132,7 @@ export const fetchCalls = [
     },
   ],
   [
-    'https://test-example.com/rest/stockresource/servicePointId/b8a7998c-5df6-49eb-98e6-f0675db71848',
+    'https://test-example.com/rest/location/hierarchy/f3199af5-2eaf-46df-87c9-40d596h8734?return_structure_count=false',
     {
       headers: {
         accept: 'application/json',
@@ -143,7 +143,7 @@ export const fetchCalls = [
     },
   ],
   [
-    'https://test-example.com/rest/location/hierarchy/f3199af5-2eaf-46df-87c9-40d596h8734?return_structure_count=false',
+    'https://test-example.com/rest/stockresource/servicePointId/b8a7998c-5df6-49eb-98e6-f0675db71848',
     {
       headers: {
         accept: 'application/json',

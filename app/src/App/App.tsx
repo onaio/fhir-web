@@ -135,7 +135,7 @@ import {
   ServicePointsAdd,
   BulkUpload,
   INVENTORY_BULK_UPLOAD_URL,
-} from '@opensrp/inventory';
+} from '../inventory';
 import '@opensrp/inventory/dist/index.css';
 
 const { Content } = Layout;

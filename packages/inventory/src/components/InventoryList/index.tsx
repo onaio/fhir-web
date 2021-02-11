@@ -1,25 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { columns } from '../../containers/ProfileView/utils';
 import { Link } from 'react-router-dom';
-import { INVENTORY_ADD_SERVICE_POINT } from '../../constants';
+import {
+  GET_INVENTORY_BY_SERVICE_POINT,
+  INVENTORY_ADD_SERVICE_POINT,
+  TableColumnsNamespace,
+} from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { ADD_NEW_INVENTORY_ITEM, INVENTORY_ITEMS } from '../../lang';
-import { Inventory } from '../../ducks/inventory';
-
+import { ADD_NEW_INVENTORY_ITEM, ERROR_GETTING_INVENTORIES, INVENTORY_ITEMS } from '../../lang';
+import {
+  fetchInventories,
+  getInventoriesByExpiry,
+  Inventory,
+  inventoryReducer,
+  inventoryReducerName,
+} from '../../ducks/inventory';
+import { Alert } from 'antd';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
+import { OpenSRPService, useHandleBrokenPage } from '@opensrp/react-utils';
+import { useDispatch, useSelector } from 'react-redux';
 
+reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
 interface InventoryListProps extends CommonProps {
   columns: ColumnsType<Inventory>;
-  inventoriesArray: Inventory[];
+  servicePointId: string;
+  opensrpBaseURL: string;
 }
 
 const defaultProps = {
   ...defaultCommonProps,
   columns: columns,
-  inventoriesArray: [],
+  servicePointId: '',
+  opensrpBaseURL: '',
 };
 
 /** component that renders Inventory list
@@ -27,7 +43,42 @@ const defaultProps = {
  * @param props - the component props
  */
 const InventoryList = (props: InventoryListProps) => {
-  const { inventoriesArray } = props;
+  const { servicePointId, opensrpBaseURL } = props;
+  const inventoriesArray = useSelector((state) =>
+    getInventoriesByExpiry(state, { expired: false })
+  ) as Inventory[];
+  const { broken, handleBrokenPage } = useHandleBrokenPage();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // api call to get inventory by id
+    const serve = new OpenSRPService(
+      `${GET_INVENTORY_BY_SERVICE_POINT}${servicePointId}`,
+      opensrpBaseURL
+    );
+    serve
+      .list()
+      .then((res: Inventory[]) => {
+        dispatch(fetchInventories(res));
+      })
+      .catch((err: Error) => handleBrokenPage(err));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (broken) {
+    return <Alert message={ERROR_GETTING_INVENTORIES} type="error" />;
+  }
+
+  // add a key prop to the array data to be consumed by the table
+  const dataSource = inventoriesArray.map((item) => {
+    const inventoryToDisplay = {
+      key: `${TableColumnsNamespace}-${item._id}`,
+      ...item,
+    };
+    return inventoryToDisplay;
+  });
+
   return (
     <>
       <Row className={'list-view'}>
@@ -40,7 +91,7 @@ const InventoryList = (props: InventoryListProps) => {
               </Button>
             </Link>
           </div>
-          <Table dataSource={inventoriesArray} columns={columns}></Table>
+          <Table dataSource={dataSource} columns={columns}></Table>
         </Col>
       </Row>
     </>

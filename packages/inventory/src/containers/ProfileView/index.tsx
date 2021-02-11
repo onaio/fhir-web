@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
-import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
+import { OpenSRPService, Resource404, BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import {
   hierarchyReducer,
   hierarchyReducerName,
@@ -21,10 +21,8 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Link, RouteComponentProps, useParams } from 'react-router-dom';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import {
-  GET_INVENTORY_BY_SERVICE_POINT,
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   GEOGRAPHIC_LEVEL,
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
@@ -35,7 +33,6 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
   SERVICE_POINT_INVENTORY,
   EDIT_SERVICE_POINT,
-  ERROR_OCCURRED,
   REGION_LABEL,
   DISTRICT_LABEL,
   TYPE_LABEL,
@@ -45,19 +42,12 @@ import {
   BACK_TO_SERVICE_POINT_LIST,
 } from '../../lang';
 import '../../index.css';
-import {
-  fetchInventories,
-  getInventoriesByExpiry,
-  inventoryReducer,
-  inventoryReducerName,
-  Inventory,
-} from '../../ducks/inventory';
+import { fetchInventories, Inventory } from '../../ducks/inventory';
 import { getNodePath } from './utils';
 import { InventoryList } from '../../components/InventoryList';
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
-reducerRegistry.register(inventoryReducerName, inventoryReducer);
 
 const structuresSelector = getLocationsBySearch();
 const treesSelector = getTreesByIds();
@@ -119,9 +109,6 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
   const filters = {
     isJurisdiction: false,
   };
-  const inventoriesArray = useSelector((state) =>
-    getInventoriesByExpiry(state, { expired: false })
-  ) as Inventory[];
   const [structure] = useSelector((state) =>
     structuresSelector(state, { ...filters, searchQuery: spId })
   );
@@ -147,10 +134,11 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       {},
       service,
       LOCATIONS_GET_ALL_SYNC_ENDPOINT
-    ).catch((err: Error) => {
-      handleBrokenPage(err);
-      setIsLoading(false);
-    });
+    )
+      .catch((err: Error) => {
+        handleBrokenPage(err);
+      })
+      .finally(() => setIsLoading(false));
     // get root Jurisdictions so we can later get the trees.
     const jurisdictionsDispatcher = (locations: LocationUnit[] = []) => {
       return dispatch(fetchLocationUnits(locations, true));
@@ -162,16 +150,6 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       undefined,
       service
     ).catch((err: Error) => sendErrorNotification(err.message));
-
-    const serve = new OpenSRPService(`${GET_INVENTORY_BY_SERVICE_POINT}${spId}`, opensrpBaseURL);
-    serve
-      .list()
-      .then((res: Inventory[]) => {
-        dispatch(fetchInventories(res));
-        setIsLoading(false);
-      })
-      .catch(() => sendErrorNotification(ERROR_OCCURRED));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -242,7 +220,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <InventoryList inventoriesArray={inventoriesArray} />
+        <InventoryList servicePointId={spId} opensrpBaseURL={opensrpBaseURL} />
       </div>
     </>
   );
