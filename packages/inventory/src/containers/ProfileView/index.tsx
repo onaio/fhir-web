@@ -11,6 +11,8 @@ import {
   loadJurisdictions,
   getLocationsBySearch,
   getTreesByIds,
+  loadHierarchy,
+  fetchTree,
 } from '@opensrp/location-management';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
@@ -116,14 +118,16 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
   const params = useParams<{ [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: string }>();
   const spId = params[INVENTORY_SERVICE_POINT_PROFILE_PARAM];
 
+  const filters = {
+    searchQuery: undefined,
+    isJurisdiction: false,
+  };
   const inventoriesArray = useSelector((state) =>
     getInventoriesByExpiry(state, { expired: false })
   ) as Inventory[];
-  const structures = useSelector((state) =>
-    structuresSelector(state, {
-      searchQuery: undefined,
-      isJurisdiction: false,
-    })
+  const structures = useSelector((state) => structuresSelector(state, filters));
+  const rootLocations = useSelector((state) =>
+    structuresSelector(state, { ...filters, isJurisdiction: true })
   );
   const [structure] = structures.filter((loc) => loc.id === spId);
   const trees = useSelector((state) => treesSelector(state, {}));
@@ -160,10 +164,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       undefined,
       service
     ).catch((err: Error) => sendErrorNotification(err.message));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  useEffect(() => {
     const serve = new OpenSRPService(`${GET_INVENTORY_BY_SERVICE_POINT}${spId}`, opensrpBaseURL);
     serve
       .list()
@@ -172,8 +173,19 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
         setIsLoading(false);
       })
       .catch(() => sendErrorNotification(ERROR_OCCURRED));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [opensrpBaseURL, spId]);
+  }, []);
+
+  useEffect(() => {
+    if (rootLocations.length > 0) {
+      const promises = rootLocations
+        .map((location) => location.id.toString())
+        .map((rootId) => loadHierarchy(rootId, fetchTree, opensrpBaseURL, undefined, service));
+      Promise.all(promises).catch((err: Error) => sendErrorNotification(err.message));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(rootLocations)]);
 
   if (isLoading) return <Spin size="large" />;
 

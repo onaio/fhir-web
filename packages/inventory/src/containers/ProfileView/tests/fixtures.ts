@@ -142,4 +142,15 @@ export const fetchCalls = [
       method: 'GET',
     },
   ],
+  [
+    'https://test-example.com/rest/location/hierarchy/f3199af5-2eaf-46df-87c9-40d596h8734?return_structure_count=false',
+    {
+      headers: {
+        accept: 'application/json',
+        authorization: 'Bearer bamboocha',
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      method: 'GET',
+    },
+  ],
 ];

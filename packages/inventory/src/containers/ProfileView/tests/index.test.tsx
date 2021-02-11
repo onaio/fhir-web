@@ -17,7 +17,14 @@ import {
   hierarchyReducerName,
   removeLocationUnits,
 } from '@opensrp/location-management';
-import { fetchCalls, inventories, madagascar, opensrpBaseURL, structures } from './fixtures';
+import {
+  fetchCalls,
+  inventories,
+  madagascar,
+  madagascarTree,
+  opensrpBaseURL,
+  structures,
+} from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -73,6 +80,7 @@ describe('Profile view Page', () => {
   afterEach(() => {
     fetch.resetMocks();
     store.dispatch(deforest());
+    store.dispatch(removeLocationUnits());
   });
 
   it('renders correctly', async () => {
@@ -94,15 +102,19 @@ describe('Profile view Page', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls).toEqual(fetchCalls);
-    store.dispatch(removeLocationUnits());
+    expect(fetch.mock.calls[0]).toEqual(fetchCalls[0]);
+    expect(fetch.mock.calls[1]).toEqual(fetchCalls[1]);
+    expect(fetch.mock.calls[2]).toEqual(fetchCalls[2]);
+
+    wrapper.unmount();
   });
 
   it('renders when data is present', async () => {
     fetch
       .once(JSON.stringify(structures))
       .once(JSON.stringify([madagascar]))
-      .once(JSON.stringify(inventories));
+      .once(JSON.stringify(inventories))
+      .once(JSON.stringify(madagascarTree));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -120,7 +132,10 @@ describe('Profile view Page', () => {
     });
 
     // check fetch calls made
-    expect(fetch.mock.calls).toEqual(fetchCalls);
+    expect(fetch.mock.calls[0]).toEqual(fetchCalls[0]);
+    expect(fetch.mock.calls[1]).toEqual(fetchCalls[1]);
+    expect(fetch.mock.calls[2]).toEqual(fetchCalls[2]);
+    expect(fetch.mock.calls[3]).toEqual(fetchCalls[3]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Back to the list of service pointsAmbatoharananaRegion: District: Commune: Type: Water PointLatitude/longitude: Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointInventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActions1101123434Jan 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1101123434Feb 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1"`
@@ -129,6 +144,31 @@ describe('Profile view Page', () => {
 
   it('shows broken page', async () => {
     const errorMessage = 'Coughid';
+    fetch.mockReject(new Error(errorMessage));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ServicePointProfile {...props}></ServicePointProfile>
+        </Router>
+      </Provider>
+    );
+
+    /** loading view */
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // no data
+    expect(wrapper.text()).toMatchSnapshot('error broken page');
+  });
+
+  it('shows broken page when jurisdiction request errors out', async () => {
+    const errorMessage = 'Coughid';
+    fetch.once(JSON.stringify({ count: structures.length })).once(JSON.stringify([madagascar]));
     fetch.mockReject(new Error(errorMessage));
 
     const wrapper = mount(
