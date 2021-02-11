@@ -139,10 +139,14 @@ describe('components/UserGroupsList', () => {
 
     expect(headerRow.find('Col').at(0).text()).toMatchSnapshot('header actions col props');
     expect(headerRow.find('Table').first().text()).toMatchSnapshot('table text');
+    expect(userList.find('tbody tr')).toHaveLength(4);
+    expect(userList.find('tbody').text()).toMatchSnapshot(
+      'full table body has 4 user group entries'
+    );
     wrapper.unmount();
   });
 
-  it('handles user list fetch failure', async () => {
+  it('handles user group list fetch failure', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const props = {
@@ -166,5 +170,32 @@ describe('components/UserGroupsList', () => {
       wrapper.update();
     });
     expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+  });
+
+  it('shows table with no data if user groups list from api is empty', async () => {
+    fetch.once(JSON.stringify([]));
+    const props = {
+      ...locationProps,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <UserGroupsList {...props} />
+        </Router>
+      </Provider>
+    );
+    // Loader should be displayed
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    //Table should be empty
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    const userList = wrapper.find('UserGroupsList');
+    expect(userList.find('Table').first().text()).toEqual('NameActionsNo Data');
   });
 });
