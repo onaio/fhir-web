@@ -14,7 +14,7 @@ import {
 } from '@opensrp/location-management';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColumnsType } from 'antd/lib/table/interface';
-import { columns } from './utils';
+import { columns, GeographicLocationInterface } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Link, RouteComponentProps, useParams } from 'react-router-dom';
@@ -77,11 +77,6 @@ const defaultProps = {
 };
 
 type ServicePointsProfileTypes = ServicePointsProfileProps & RouteComponentProps;
-
-export interface GeographicLocationInterface {
-  geographicLevel?: number;
-  label?: number;
-}
 
 export const findPath = (path: GeographicLocationInterface[], geoLevel: number) => {
   return path.find((x: GeographicLocationInterface) => x.geographicLevel === geoLevel);

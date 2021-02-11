@@ -14,7 +14,6 @@ import {
   UNICEF_SECTION_TH,
   DONOR_TH,
 } from '../../lang';
-import { GeographicLocationInterface } from '.';
 import { Inventory } from '../../ducks/inventory';
 
 /** component rendered in the action column of the table
@@ -29,18 +28,6 @@ export const ActionsColumnCustomRender: ColumnType<Inventory>['render'] = (recor
 export const columns: ColumnsType<Inventory> = [
   {
     title: PRODUCT_NAME_TH,
-    // dataIndex: 'productName',
-    // key: `${TableColumnsNamespace}-${PRODUCT_NAME_TH}`,
-    // defaultSortOrder: 'descend',
-    // sorter: (rec1, rec2) => {
-    //   if (rec1.productName > rec2.productName) {
-    //     return -1;
-    //   } else if (rec1.productName < rec2.productName) {
-    //     return 1;
-    //   } else {
-    //     return 0;
-    //   }
-    // },
   },
   {
     title: QTY_TH,
@@ -86,6 +73,12 @@ export const columns: ColumnsType<Inventory> = [
     width: '20%',
   },
 ];
+
+/** geographic location interface */
+export interface GeographicLocationInterface {
+  geographicLevel?: number;
+  label?: number;
+}
 
 /**
  * function to get the parent path of a location
