@@ -17,6 +17,7 @@ export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
   service: typeof OpenSRPService;
   baseURL: string;
   fullDataCallback?: (node?: TreeNode) => void;
+  disabledTreeNodesCallback?: (node: TreeNode) => boolean;
 }
 
 const defaultProps = {
@@ -29,7 +30,14 @@ const defaultProps = {
  * @param props - the component props
  */
 const CustomTreeSelect = (props: CustomTreeSelectProps) => {
-  const { baseURL, service, value, fullDataCallback, ...restProps } = props;
+  const {
+    baseURL,
+    service,
+    value,
+    fullDataCallback,
+    disabledTreeNodesCallback,
+    ...restProps
+  } = props;
   const [loadingJurisdictions, setLoadingJurisdictions] = useState(true);
   const [loadingTrees, setLoadingTrees] = useState(true);
   const [rootLocations, setRootLocations] = useState<LocationUnit[]>([]);
@@ -82,7 +90,7 @@ const CustomTreeSelect = (props: CustomTreeSelectProps) => {
     fullDataCallback?.(node);
   }, [fullDataCallback, trees, value]);
 
-  const selectOptions = treeToOptions(trees);
+  const selectOptions = treeToOptions(trees, disabledTreeNodesCallback);
 
   const treeSelectProps: TreeSelectProps<DataNode> = {
     ...restProps,

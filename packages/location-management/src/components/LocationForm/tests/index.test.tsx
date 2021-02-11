@@ -92,8 +92,8 @@ describe('LocationForm', () => {
     expect(toJson(wrapper.find('#isJurisdiction input'))).toMatchSnapshot('isJurisdiction field');
     expect(toJson(wrapper.find('#type label'))).toMatchSnapshot('type label');
     expect(toJson(wrapper.find('#type input'))).toMatchSnapshot('type field');
-    expect(toJson(wrapper.find('#serviceTypes label'))).toMatchSnapshot('serviceTypes label');
-    expect(toJson(wrapper.find('#serviceTypes input'))).toMatchSnapshot('serviceTypes field');
+    expect(toJson(wrapper.find('#serviceType label'))).toMatchSnapshot('serviceType label');
+    expect(toJson(wrapper.find('#serviceType input'))).toMatchSnapshot('serviceType field');
     expect(toJson(wrapper.find('#externalId label'))).toMatchSnapshot('externalId label');
     expect(toJson(wrapper.find('#externalId input'))).toMatchSnapshot('externalId field');
     expect(toJson(wrapper.find('#geometry label'))).toMatchSnapshot('geometry label');
@@ -120,7 +120,7 @@ describe('LocationForm', () => {
 
     fetch.mockResponse(JSON.stringify([]));
 
-    // when instance is set to core by default, types is required, serviceTypes is not required
+    // when instance is set to core by default, types is required, serviceType is not required
     const wrapper = mount(
       <Router history={history}>
         <LocationForm />
@@ -142,7 +142,9 @@ describe('LocationForm', () => {
 
     expect(wrapper.find('FormItem#instance').text()).toMatchInlineSnapshot(`"Instance"`);
 
-    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(`"ParentPlease select"`);
+    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(
+      `"ParentSelect the parent location"`
+    );
 
     expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
@@ -151,13 +153,15 @@ describe('LocationForm', () => {
     );
 
     // type is required for core
-    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"TypeType is required"`);
+    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(
+      `"TypeType must be a string"`
+    );
 
     // name is required for core
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // not required for core
-    expect(wrapper.find('FormItem#serviceTypes').text()).toMatchInlineSnapshot(`"Type"`);
+    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(`"Type"`);
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
 
@@ -176,7 +180,7 @@ describe('LocationForm', () => {
 
     fetch.mockResponse(JSON.stringify([]));
 
-    // when instance is set to core by default, types is required, serviceTypes is not required
+    // when instance is set to core by default, types is required, serviceType is not required
     const initialValues = { ...defaultFormField, instance: FormInstances.EUSM };
     const wrapper = mount(
       <Router history={history}>
@@ -201,7 +205,9 @@ describe('LocationForm', () => {
 
     expect(wrapper.find('FormItem#instance').text()).toMatchInlineSnapshot(`"Instance"`);
 
-    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(`"ParentPlease select"`);
+    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(
+      `"ParentSelect the parent location'parentId' is required"`
+    );
 
     expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
@@ -216,8 +222,8 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // service types is required for eusm
-    expect(wrapper.find('FormItem#serviceTypes').text()).toMatchInlineSnapshot(
-      `"TypeService Types is required"`
+    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(
+      `"TypeService types is required"`
     );
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
@@ -285,7 +291,7 @@ describe('LocationForm', () => {
     // simulate service type change
     // change service types
     formInstance.setFieldsValue({
-      serviceTypes: 'School',
+      serviceType: 'School',
     });
 
     wrapper
@@ -357,7 +363,7 @@ describe('LocationForm', () => {
     // put this here to help guide to know how to mock the fetch calls
     expect(fetch.mock.calls.map((call) => call[0])).toEqual([
       'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_types',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_point_types',
       'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
       'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
       'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/95310ca2-02df-47ba-80fc-bf31bfaa88d7?return_structure_count=false',
@@ -382,7 +388,7 @@ describe('LocationForm', () => {
     // simulate service type change
     // change service types
     formInstance.setFieldsValue({
-      serviceTypes: 'School',
+      serviceType: 'School',
     });
 
     wrapper

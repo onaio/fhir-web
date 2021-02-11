@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
 import { LocationFormFields } from '@opensrp/location-management/dist/types/components/LocationForm/utils';
+import { disabledTreeNodesCallback } from '../../helpers/utils';
 
 type ServicePointAddTypes = CommonProps & RouteComponentProps;
 
@@ -25,6 +26,7 @@ const ServicePointsAdd = (props: ServicePointAddTypes) => {
     redirectAfterAction: INVENTORY_SERVICE_POINT_LIST_VIEW,
     disabled: ['isJurisdiction'],
     processInitialValues: (data: LocationFormFields) => ({ ...data, isJurisdiction: false }),
+    disabledTreeNodesCallback,
   };
 
   return <NewLocationUnit {...locationUnitAddEditProps} />;

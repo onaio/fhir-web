@@ -1,7 +1,8 @@
 import { FormInstances } from '../../../../dist/types';
+import { ServiceTypeSetting } from '../../../../dist/types/components/LocationForm/utils';
 import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
-import { LocationFormFields, Setting } from '../utils';
+import { LocationFormFields } from '../utils';
 
 /* eslint-disable @typescript-eslint/camelcase */
 export const location1: LocationUnit = {
@@ -72,7 +73,7 @@ export const generatedLocation2 = {
     name: 'Mars',
     name_en: 'The Root Location',
     status: 'InActive',
-    serviceTypes: [{ name: 'School' }],
+    type: 'School',
     'Sample Key': 'extraFields - Sample Key',
     version: 0,
     'Area Nick name': 'extraFields - Area Nick name',
@@ -97,7 +98,7 @@ export const expectedFormFields = {
   isJurisdiction: true,
   locationTags: [],
   name: '',
-  serviceTypes: '',
+  serviceType: '',
   status: 'Active',
   type: '',
   username: '',
@@ -123,7 +124,7 @@ export const expectedFormFields1: LocationFormFields = {
   locationTags: [2, 3],
   name: 'Kenya',
   parentId: '',
-  serviceTypes: [],
+  serviceType: undefined,
   status: 'Active' as LocationUnitStatus,
   type: 'Feature',
   username: 'web-admin',
@@ -140,7 +141,7 @@ export const locationUnitGroups: LocationUnitGroup[] = [
 
 export const serviceTypeSetting1 = {
   key: 'school',
-  label: 'School',
+  value: 'School',
   description: 'This service type is a school',
   uuid: '8718e71e-af01-49aa-85dd-381d29eaf6de',
   settingsId: '34',
@@ -154,7 +155,7 @@ export const serviceTypeSetting1 = {
 };
 export const serviceTypesSetting2 = {
   key: 'hospital',
-  label: 'Hospital',
+  value: 'Hospital',
   description: 'This service type is a Hospital',
   uuid: '7d3c2a2c-4b67-4f98-aed5-90d1b597801a',
   settingsId: '34',
@@ -166,7 +167,10 @@ export const serviceTypesSetting2 = {
   serverVersion: 58,
   type: 'Setting',
 };
-export const serviceTypeSettings = [serviceTypeSetting1, serviceTypesSetting2] as Setting[];
+export const serviceTypeSettings = [
+  serviceTypeSetting1,
+  serviceTypesSetting2,
+] as ServiceTypeSetting[];
 
 export const fetchCalls1 = [
   [
@@ -181,7 +185,7 @@ export const fetchCalls1 = [
     },
   ],
   [
-    'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_types',
+    'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_point_types',
     {
       headers: {
         accept: 'application/json',
@@ -223,7 +227,7 @@ export const createdLocation1 = {
     name: 'area51',
     name_en: 'area51',
     status: 'InActive',
-    serviceTypes: [{ name: 'School' }],
+    type: 'School',
   },
   id: '9b782015-8392-4847-b48c-50c11638656b',
   syncStatus: 'Synced',
@@ -330,7 +334,7 @@ export const rawOpenSRPHierarchy1 = {
               locationId: '421fe9fe-e48f-4052-8491-24d1e548daee',
               name: 'bbb',
               parentLocation: { locationId: '95310ca2-02df-47ba-80fc-bf31bfaa88d7', voided: false },
-              attributes: { geographicLevel: 1 },
+              attributes: { geographicLevel: 3 },
               voided: false,
             },
             parent: '95310ca2-02df-47ba-80fc-bf31bfaa88d7',

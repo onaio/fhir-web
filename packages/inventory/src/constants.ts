@@ -37,3 +37,4 @@ export const LOCATION = 'location';
 // Geographic levels
 export const GEOGRAPHIC_LEVEL = { REGION: 1, DISTRICT: 2, COMMUNE: 3 };
 export const CSV_FILE_TYPE = '.csv';
+export const COMMUNE_GEOGRAPHIC_LEVEL = 3;
