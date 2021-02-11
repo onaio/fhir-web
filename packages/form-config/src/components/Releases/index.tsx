@@ -17,11 +17,11 @@ import {
   APP_ID_LABEL,
   APP_VERSION_LABEL,
   VIEW_FILES_LABEL,
-  UPOL0AD_FILE_LABEL,
+  UPLOAD_FILE_LABEL,
   IDENTIFIER_LABEL,
   FIND_RELEASES_LABEL,
   UPDATED_AT_LABEL,
-} from '../../constants';
+} from '../../lang';
 import { Cell } from 'react-table';
 import { formatDate, fetchReleaseFiles } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
@@ -205,7 +205,7 @@ const defaultProps: ReleasesDefaultProps = {
   identifierLabel: IDENTIFIER_LABEL,
   placeholder: FIND_RELEASES_LABEL,
   updatedAt: UPDATED_AT_LABEL,
-  uploadFileLabel: UPOL0AD_FILE_LABEL,
+  uploadFileLabel: UPLOAD_FILE_LABEL,
   viewFilesLabel: VIEW_FILES_LABEL,
   accessToken: '',
 };

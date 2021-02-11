@@ -16,12 +16,13 @@ import {
   Organization,
   orgReducerName,
 } from '../../ducks/organizations';
-import { ERROR_OCCURRED, TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
+import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
+import { CREATE_TEAM, ERROR_OCCURRED, SEARCH, TEAMS } from '../../lang';
 
 /** Register reducer */
 reducerRegistry.register(orgReducerName, organizationsReducer);
@@ -122,15 +123,15 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>Teams</title>
+        <title>{TEAMS}</title>
       </Helmet>
-      <h5 className="mb-3">Teams</h5>
+      <h5 className="mb-3">{TEAMS}</h5>
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
             <h5>
               <Input
-                placeholder="Search"
+                placeholder={SEARCH}
                 size="large"
                 value={value}
                 prefix={<SearchOutlined />}
@@ -141,7 +142,7 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
               <Link to={URL_ADD_TEAM}>
                 <Button type="primary">
                   <PlusOutlined />
-                  Create Team
+                  {CREATE_TEAM}
                 </Button>
               </Link>
             </div>

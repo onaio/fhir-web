@@ -15,7 +15,7 @@ import {
   FORM_REQUIRED_LABEL,
   FORM_NAME_REQUIRED_LABEL,
   ERROR_OCCURRED,
-} from '../../constants';
+} from '../../lang';
 import { Dictionary } from '@onaio/utils';
 import { submitUploadForm } from '../../helpers/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';

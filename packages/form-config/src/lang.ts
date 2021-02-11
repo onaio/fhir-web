@@ -1,0 +1,25 @@
+import i18n from './mls';
+
+export const MAKE_RELEASE_LABEL = i18n.t('Make Release');
+export const FILE_NAME_LABEL = i18n.t('File Name');
+export const FILE_VERSION_LABEL = i18n.t('File Version');
+export const IDENTIFIER_LABEL = i18n.t('Identifier');
+export const MODULE_LABEL = i18n.t('Module');
+export const EDIT_LABEL = i18n.t('Edit');
+export const DOWNLOAD_LABEL = i18n.t('Download');
+export const UPLOAD_EDIT_LABEL = i18n.t('Upload edit');
+export const UPLOAD_FILE_LABEL = i18n.t('Upload New File');
+export const VIEW_FILES_LABEL = i18n.t('View Files');
+export const APP_ID_LABEL = i18n.t('App Id');
+export const APP_VERSION_LABEL = i18n.t('App Version');
+export const RELATED_TO_LABEL = i18n.t('Related to');
+export const FILE_UPLOAD_LABEL = i18n.t('Upload file');
+export const FORM_REQUIRED_LABEL = i18n.t('Form is required');
+export const FORM_NAME_REQUIRED_LABEL = i18n.t('Form name is required');
+export const FIND_DRAFT_RELEASES_LABEL = i18n.t('Find Draft Files');
+export const FIND_FILES_LABEL = i18n.t('Find Files');
+export const FIND_RELEASES_LABEL = i18n.t('Find Release');
+export const SEARCH_LABEL = i18n.t('Search');
+export const CREATED_AT_LABEL = i18n.t('Created at');
+export const UPDATED_AT_LABEL = i18n.t('Updated at');
+export const ERROR_OCCURRED = i18n.t('Error occurred');

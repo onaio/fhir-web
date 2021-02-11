@@ -18,6 +18,7 @@ import {
   CONDITIONS_LABEL,
   DESCRIPTION_LABEL,
   DESCRIPTION_PLACEHOLDER,
+  DYNAMIC_VALUE_LEGEND_TITLE,
   END_DATE,
   GOAL_LABEL,
   INTERVENTION_TYPE_LABEL,
@@ -168,6 +169,7 @@ const PlanForm = (props: PlanFormProps) => {
   const [activityModal, setActivityModal] = useState<boolean>(false);
   const [actionConditions, setActionConditions] = useState<Dictionary>({});
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
+  const [actionDynamicValue, setActionDynamicValue] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const {
     allFormActivities,
@@ -192,12 +194,13 @@ const PlanForm = (props: PlanFormProps) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const { conditions, triggers } = getConditionAndTriggers(
+    const { conditions, triggers, dynamicValue } = getConditionAndTriggers(
       initialValues.activities,
       disabledFields.includes('activities')
     );
     setActionConditions(conditions);
     setActionTriggers(triggers);
+    setActionDynamicValue(dynamicValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabledFields, initialValues.activities, envConfigs]);
 
@@ -352,6 +355,7 @@ const PlanForm = (props: PlanFormProps) => {
                   );
                   setActionConditions(newStuff.conditions);
                   setActionTriggers(newStuff.triggers);
+                  setActionDynamicValue(newStuff.dynamicValue);
                 }
                 form.setFieldsValue({ jurisdictions: initialJurisdictionValues });
               }}
@@ -535,6 +539,7 @@ const PlanForm = (props: PlanFormProps) => {
                                       );
                                       setActionConditions(newActivityValues.conditions);
                                       setActionTriggers(newActivityValues.triggers);
+                                      setActionDynamicValue(newActivityValues.dynamicValue);
                                     }}
                                   ></Button>
                                 )
@@ -726,6 +731,9 @@ const PlanForm = (props: PlanFormProps) => {
                                   ) ||
                                     actionConditions.hasOwnProperty(
                                       planActivities[index].actionCode
+                                    ) ||
+                                    actionDynamicValue.hasOwnProperty(
+                                      planActivities[index].actionCode
                                     )) && (
                                     <Collapse>
                                       <Panel
@@ -740,6 +748,14 @@ const PlanForm = (props: PlanFormProps) => {
                                           <fieldset className="triggers-fieldset">
                                             <legend>{TRIGGERS_LABEL}</legend>
                                             {actionTriggers[planActivities[index].actionCode]}
+                                          </fieldset>
+                                        )}
+                                        {actionDynamicValue.hasOwnProperty(
+                                          planActivities[index].actionCode
+                                        ) && (
+                                          <fieldset className="dynamic-value-fieldset">
+                                            <legend>{DYNAMIC_VALUE_LEGEND_TITLE}</legend>
+                                            {actionDynamicValue[planActivities[index].actionCode]}
                                           </fieldset>
                                         )}
                                         {actionConditions.hasOwnProperty(
@@ -804,6 +820,9 @@ const PlanForm = (props: PlanFormProps) => {
                                                 );
                                                 setActionConditions(newActivityValues.conditions);
                                                 setActionTriggers(newActivityValues.triggers);
+                                                setActionDynamicValue(
+                                                  newActivityValues.dynamicValue
+                                                );
                                               }}
                                             >
                                               {format(ADD_CODED_ACTIVITY, thisActivity.actionCode)}

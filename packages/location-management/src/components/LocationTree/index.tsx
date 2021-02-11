@@ -14,6 +14,7 @@ import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { AntTreeProps } from '../LocationUnitView';
 import './tree.css';
 import { Dictionary } from '@onaio/utils';
+import { SEARCH } from '../../lang';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
@@ -26,6 +27,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
+  const [selectedKey, setSelectedKey] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
 
@@ -61,6 +63,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       OnItemClick(node);
       expandTree(node.key);
       setExpandedKeys(keys);
+      setSelectedKey([keys[keys.length - 1]]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -160,7 +163,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     <div>
       <Input
         className="mb-3"
-        placeholder="Search"
+        placeholder={SEARCH}
         size="large"
         prefix={<SearchOutlined />}
         onChange={onChange}
@@ -171,6 +174,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
           const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
+          setSelectedKey([allExpandedKeys[allExpandedKeys.length - 1]]);
           dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
           const index = expandedKeys.indexOf(node.key);
           if (index > -1) {
@@ -178,6 +182,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           }
           onExpand(allExpandedKeys);
         }}
+        selectedKeys={selectedKey}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}

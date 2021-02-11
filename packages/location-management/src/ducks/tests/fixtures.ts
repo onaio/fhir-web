@@ -82,6 +82,38 @@ export const locationUnit2: LocationUnit = {
   type: 'Feature',
 };
 
+export const locationUnit3 = {
+  type: 'Feature',
+  id: 'f3199af5-2eaf-46df-87c9-40d59606a2fb',
+  properties: {
+    type: 'Water Point',
+    status: 'Active',
+    parentId: '8e74d042-4a71-4694-a652-bc3ba6369101',
+    name: 'EPP Ambodisatrana 2',
+    geographicLevel: 0,
+    version: 0,
+    AdminLevelTag: 'Commune',
+  },
+  serverVersion: 18479,
+};
+
+export const locationUnit4 = {
+  type: 'Feature',
+  id: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+  properties: {
+    type: 'Water Point',
+    status: 'Active',
+    parentId: '663d7935-35e7-4ccf-aaf5-6e16f2042570',
+    name: 'Ambatoharanana',
+    geographicLevel: 0,
+    version: 0,
+    AdminLevelTag: 'Commune',
+  },
+  serverVersion: 18480,
+};
+
+export const locations = [locationUnit1, locationUnit2, locationUnit3, locationUnit4];
+
 export const locationTree = {
   keys: ['b652b2f4-a95d-489b-9e28-4629746db96a'],
   node: {

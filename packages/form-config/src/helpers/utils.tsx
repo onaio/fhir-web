@@ -9,11 +9,11 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { UploadFileFieldTypes } from './types';
 import {
-  ERROR_OCCURRED,
   OPENSRP_FORMS_ENDPOINT,
   OPENSRP_FORM_METADATA_ENDPOINT,
   OPENSRP_MANIFEST_ENDPOINT,
 } from '../constants';
+import { ERROR_OCCURRED } from '../lang';
 import {
   fetchManifestFiles,
   ManifestFilesTypes,

@@ -23,8 +23,8 @@ import {
   DOWNLOAD_LABEL,
   FIND_DRAFT_RELEASES_LABEL,
   CREATED_AT_LABEL,
-  UPOL0AD_FILE_LABEL,
-} from '../../constants';
+  UPLOAD_FILE_LABEL,
+} from '../../lang';
 import { Cell } from 'react-table';
 import { formatDate, downloadManifestFile, makeRelease, fetchDrafts } from '../../helpers/utils';
 import { Link } from 'react-router-dom';
@@ -274,7 +274,7 @@ const defaultProps: DraftsDefaultProps = {
   makeReleaseLabel: MAKE_RELEASE_LABEL,
   moduleLabel: MODULE_LABEL,
   placeholder: FIND_DRAFT_RELEASES_LABEL,
-  uploadFileLabel: UPOL0AD_FILE_LABEL,
+  uploadFileLabel: UPLOAD_FILE_LABEL,
   accessToken: '',
 };
 

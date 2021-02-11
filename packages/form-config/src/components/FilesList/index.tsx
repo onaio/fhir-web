@@ -21,11 +21,11 @@ import {
   FILE_VERSION_LABEL,
   IDENTIFIER_LABEL,
   UPLOAD_EDIT_LABEL,
-  UPOL0AD_FILE_LABEL,
+  UPLOAD_FILE_LABEL,
   MODULE_LABEL,
   FIND_FILES_LABEL,
   CREATED_AT_LABEL,
-} from '../../constants';
+} from '../../lang';
 import { Cell } from 'react-table';
 import { formatDate, downloadManifestFile, fetchManifests } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
@@ -281,7 +281,7 @@ const defaultProps: FilesListDefaultProps = {
   placeholder: FIND_FILES_LABEL,
   removeFiles: removeManifestFiles,
   uploadEditLabel: UPLOAD_EDIT_LABEL,
-  uploadFileLabel: UPOL0AD_FILE_LABEL,
+  uploadFileLabel: UPLOAD_FILE_LABEL,
   accessToken: '',
 };
 
