@@ -154,7 +154,7 @@ describe('LocationForm', () => {
 
     // type is required for core
     expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(
-      `"TypeType must be a string"`
+      `"TypeType can only contain letters, numbers and spaces"`
     );
 
     // name is required for core
