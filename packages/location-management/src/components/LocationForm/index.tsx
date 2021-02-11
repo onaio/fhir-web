@@ -337,7 +337,9 @@ const LocationForm = (props: LocationFormProps) => {
               showSearch
               placeholder={ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER}
               loadData={(setData) => {
-                return loadLocationTags(openSRPBaseURL, service, setData);
+                return loadLocationTags(openSRPBaseURL, service).then((response) =>
+                  setData(response)
+                );
               }}
               getOptions={getLocationTagOptions}
               fullDataCallback={setLocationTags}
