@@ -2,6 +2,7 @@
 export const URL_ADMIN = '/admin';
 export const URL_USER_EDIT = URL_ADMIN + '/users/edit';
 export const URL_USER = URL_ADMIN + '/users/list';
+export const URL_USER_GROUPS = `${URL_ADMIN}/users/groups`;
 export const URL_USER_CREATE = URL_ADMIN + '/users/new';
 export const URL_USER_CREDENTIALS = URL_ADMIN + '/users/credentials';
 

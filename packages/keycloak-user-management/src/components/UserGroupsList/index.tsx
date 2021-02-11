@@ -14,7 +14,7 @@ import {
   reducerName as keycloakUserGroupsReducerName,
   reducer as keycloakUserGroupsReducer,
 } from '../../ducks/userGroups';
-import { ERROR_OCCURED } from '../../lang';
+import { ADD_USER_GROUP, ERROR_OCCURED, USER_GROUPS_PAGE_HEADER, VIEW_DETAILS } from '../../lang';
 import { KEYCLOAK_URL_USER_GROUPS, SEARCH_QUERY_PARAM } from '../../constants';
 import {
   fetchKeycloakUserGroups,
@@ -36,7 +36,6 @@ interface TableData {
 
 interface Props {
   keycloakBaseURL: string;
-  keycloakUserGroups: KeycloakUserGroup[];
 }
 
 /** default component props */
@@ -124,7 +123,7 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
           <Dropdown
             overlay={
               <Menu className="menu">
-                <Menu.Item className="viewdetails">{'View Details'}</Menu.Item>
+                <Menu.Item className="viewdetails">{VIEW_DETAILS}</Menu.Item>
               </Menu>
             }
             placement="bottomLeft"
@@ -141,9 +140,9 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{'User Groups'}</title>
+        <title>{USER_GROUPS_PAGE_HEADER}</title>
       </Helmet>
-      <h5 className="mb-3">{'User Groups'}</h5>
+      <h5 className="mb-3">{USER_GROUPS_PAGE_HEADER}</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>
           <div className="mb-3 d-flex justify-content-between">
@@ -152,7 +151,7 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
               <Link to="#">
                 <Button type="primary">
                   <PlusOutlined />
-                  {'New User Group'}
+                  {ADD_USER_GROUP}
                 </Button>
               </Link>
             </div>

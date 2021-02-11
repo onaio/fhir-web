@@ -152,7 +152,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                   {USER_MANAGEMENT}
                 </Link>
               </Menu.Item>
-              <Menu.Item key={'groups-list'}>
+              <Menu.Item key={'groups'}>
                 <Link to={URL_USER_GROUPS} className="admin-link">
                   {'User Groups'}
                 </Link>
