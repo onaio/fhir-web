@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu } from 'antd';
+import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
@@ -138,39 +138,36 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
   ];
 
   return (
-    <section className="layout-content">
+    <div className="content-section">
       <Helmet>
         <title>{USER_GROUPS_PAGE_HEADER}</title>
       </Helmet>
-      <h5 className="mb-3">{USER_GROUPS_PAGE_HEADER}</h5>
-      <Row>
-        <Col className="bg-white p-3" span={24}>
-          <div className="mb-3 d-flex justify-content-between">
+      <PageHeader title={USER_GROUPS_PAGE_HEADER} className="page-header" />
+      <Row className="list-view">
+        <Col className="main-content">
+          <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <div>
-              <Link to="#">
-                <Button type="primary">
-                  <PlusOutlined />
-                  {ADD_USER_GROUP}
-                </Button>
-              </Link>
-            </div>
+
+            <Link to="#">
+              <Button type="primary">
+                <PlusOutlined />
+                {ADD_USER_GROUP}
+              </Button>
+            </Link>
           </div>
-          <div className="bg-white">
-            <Table
-              dataSource={tableData}
-              columns={columns}
-              pagination={{
-                showQuickJumper: true,
-                showSizeChanger: true,
-                defaultPageSize: 5,
-                pageSizeOptions: ['5', '10', '20', '50', '100'],
-              }}
-            />
-          </div>
+          <Table
+            dataSource={tableData}
+            columns={columns}
+            pagination={{
+              showQuickJumper: true,
+              showSizeChanger: true,
+              defaultPageSize: 5,
+              pageSizeOptions: ['5', '10', '20', '50', '100'],
+            }}
+          />
         </Col>
       </Row>
-    </section>
+    </div>
   );
 };
 
