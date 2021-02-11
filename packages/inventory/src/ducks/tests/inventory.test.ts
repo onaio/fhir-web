@@ -65,6 +65,11 @@ describe('src/ducks/inventory', () => {
     ]);
   });
 
+  it('fetches inventories if expiry is not defined', () => {
+    store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
+    expect(getInventoriesByExpiry(store.getState(), {})).toEqual([inventory1, inventory2]);
+  });
+
   it('removes inventory correctly', () => {
     store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
     expect(getInventoriesArray(store.getState())).toHaveLength(2);

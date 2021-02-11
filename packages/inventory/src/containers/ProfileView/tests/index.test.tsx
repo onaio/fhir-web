@@ -136,6 +136,10 @@ describe('Profile view Page', () => {
 
     // check fetch calls made
     expect(fetch.mock.calls).toEqual(fetchCalls);
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Back to the list of service pointsAmbatoharananaRegion: District: Commune: Type: Water PointLatitude/longitude: Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointInventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActions1101123434Jan 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1101123434Feb 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1"`
+    );
   });
 
   it('branch test for getNodePath with parentId undefined', async () => {

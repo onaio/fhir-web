@@ -89,7 +89,7 @@ interface Filters {
  */
 const getIds = (store: Partial<Store>, props: Filters) => props.ids;
 const getServicePointIds = (store: Partial<Store>, props: Filters) => props.servicePointIds;
-const getActiveServicePoints = (store: Partial<Store>, props: Filters) => props.expired;
+const getServicePointsByExpiry = (store: Partial<Store>, props: Filters) => props.expired;
 
 /** factory that returns a selector to retrieve the inventories using stock ids */
 export const getInventoriesByIdsFactory = createSelector(
@@ -127,12 +127,15 @@ export const getInventoriesByServicePointsIdsFactory = createSelector(
   }
 );
 
+/** factory that returns a selector to retrieve the inventories by their expiry */
 export const getInventoriesByExpiry = createSelector(
   getInventoriesArray,
-  getActiveServicePoints,
-  (inventories, flag) => {
+  getServicePointsByExpiry,
+  (inventories, returnExpired) => {
     const inventoriesOfInterest: Inventory[] = [];
-    if (!flag) {
+    if (returnExpired === undefined) {
+      return inventories;
+    } else if (!returnExpired) {
       inventories.forEach((inventory) => {
         if (new Date(inventory.deliveryDate) < new Date(inventory.accountabilityEndDate)) {
           inventoriesOfInterest.push(inventory);
