@@ -117,17 +117,17 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
   const spId = params[INVENTORY_SERVICE_POINT_PROFILE_PARAM];
 
   const filters = {
-    searchQuery: undefined,
     isJurisdiction: false,
   };
   const inventoriesArray = useSelector((state) =>
     getInventoriesByExpiry(state, { expired: false })
   ) as Inventory[];
-  const structures = useSelector((state) => structuresSelector(state, filters));
+  const [structure] = useSelector((state) =>
+    structuresSelector(state, { ...filters, searchQuery: spId })
+  );
   const rootLocations = useSelector((state) =>
     structuresSelector(state, { ...filters, isJurisdiction: true })
   );
-  const [structure] = structures.filter((loc) => loc.id === spId);
   const trees = useSelector((state) => treesSelector(state, {}));
 
   useEffect(() => {
@@ -191,7 +191,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  if (!(structure as LocationUnit | undefined) && spId) {
+  if (!(structure as LocationUnit | undefined)) {
     return <Resource404 />;
   }
 
