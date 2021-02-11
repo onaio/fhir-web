@@ -13,7 +13,9 @@ import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { FixManifestDraftFiles } from '../../ducks/tests/fixtures';
-import { ERROR_OCCURRED } from '../../constants';
+import { ERROR_OCCURRED } from '../../lang';
+
+/** eslint-disable @typescript-eslint/no-floating-promises */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (global as any).URL.createObjectURL = jest.fn();
@@ -120,7 +122,7 @@ describe('helpers/utils/submitUploadForm', () => {
   const endpoint = '/clientForm';
 
   it('submits', async () => {
-    submitUploadForm(
+    await submitUploadForm(
       values,
       accessToken,
       opensrpBaseURL,
@@ -145,7 +147,7 @@ describe('helpers/utils/submitUploadForm', () => {
   });
 
   it('submits with default endpoint value', async () => {
-    submitUploadForm(
+    await submitUploadForm(
       values,
       accessToken,
       opensrpBaseURL,
@@ -169,7 +171,7 @@ describe('helpers/utils/submitUploadForm', () => {
   });
 
   it('submits if json validator is false', async () => {
-    submitUploadForm(
+    await submitUploadForm(
       values,
       accessToken,
       opensrpBaseURL,
@@ -199,7 +201,7 @@ describe('helpers/utils/submitUploadForm', () => {
       { status: 500 }
     );
 
-    submitUploadForm(
+    await submitUploadForm(
       values,
       accessToken,
       opensrpBaseURL,
