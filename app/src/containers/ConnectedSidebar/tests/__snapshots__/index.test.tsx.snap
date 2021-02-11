@@ -88,6 +88,14 @@ Array [
           User Management
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -237,6 +245,14 @@ Array [
           User Management
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -384,6 +400,14 @@ Array [
           to="/admin/users/list"
         >
           User Management
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
         </Link>
       </MenuItem>
     </SubMenu>
@@ -543,6 +567,14 @@ Array [
           User Management
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -692,6 +724,14 @@ Array [
           User Management
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -839,6 +879,14 @@ Array [
           to="/admin/users/list"
         >
           User Management
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
         </Link>
       </MenuItem>
     </SubMenu>
@@ -1007,6 +1055,14 @@ Array [
           to="/admin/users/list"
         >
           User Management
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
         </Link>
       </MenuItem>
     </SubMenu>

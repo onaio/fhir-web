@@ -45,6 +45,14 @@ describe('reducers/keycloak/userGroups', () => {
     expect(numberOfUserGroups).toEqual(0);
   });
 
+  it('gets correct user group by name', () => {
+    store.dispatch(fetchKeycloakUserGroups(userGroups));
+    let userGroup = userGroupsSelector(store.getState(), { name: 'Admin' });
+    expect(userGroup).toEqual([userGroups[0]]);
+    userGroup = userGroupsSelector(store.getState(), { name: 'New Group' });
+    expect(userGroup).toEqual([userGroups[1]]);
+  });
+
   it('Searches groups by search text', () => {
     store.dispatch(fetchKeycloakUserGroups(userGroups));
     const result1 = userGroupsSelector(store.getState(), { searchText: 'Ad' });

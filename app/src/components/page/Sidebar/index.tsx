@@ -58,6 +58,7 @@ import {
   SERVICE_POINT_INVENTORY,
   INVENTORY,
   ADD_INVENTORY_VIA_CSV,
+  USER_GROUPS,
 } from '../../../lang';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 
@@ -154,7 +155,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.Item>
               <Menu.Item key={'groups'}>
                 <Link to={URL_USER_GROUPS} className="admin-link">
-                  {'User Groups'}
+                  {USER_GROUPS}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
