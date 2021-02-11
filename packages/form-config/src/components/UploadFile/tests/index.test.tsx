@@ -5,18 +5,15 @@ import { UploadConfigFile, ConnectedUploadConfigFile } from '../index';
 import { getFetchOptions } from '@opensrp/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import reducerRegistry, { store } from '@onaio/redux-reducer-registry';
+import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import filesReducer, { fetchManifestFiles, filesReducerName } from '../../../ducks/manifestFiles';
+import { fetchManifestFiles } from '../../../ducks/manifestFiles';
 import { fixManifestFiles } from '../../../ducks/tests/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import * as opensrpService from '@opensrp/server-service';
-import { ERROR_OCCURRED } from '../../../constants';
-
-/** register the reducers */
-reducerRegistry.register(filesReducerName, filesReducer);
+import { ERROR_OCCURRED } from '../../../lang';
 
 const history = createBrowserHistory();
 

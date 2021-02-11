@@ -6,7 +6,11 @@ import { Redirect } from 'react-router';
 import { FormConfigProps } from '../../helpers/types';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { ManifestFilesTypes, getManifestFilesById } from '../../ducks/manifestFiles';
+import filesReducer, {
+  ManifestFilesTypes,
+  getManifestFilesById,
+  filesReducerName,
+} from '../../ducks/manifestFiles';
 import {
   MODULE_LABEL,
   RELATED_TO_LABEL,
@@ -19,6 +23,10 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { submitUploadForm } from '../../helpers/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+
+/** register the reducers */
+reducerRegistry.register(filesReducerName, filesReducer);
 
 /** default props interface */
 export interface UploadDefaultProps {

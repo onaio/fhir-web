@@ -16,7 +16,7 @@ import draftReducer, {
 } from '../../../../ducks/manifestDraftFiles';
 import * as helpers from '../../../../helpers/fileDownload';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../../constants';
+import { ERROR_OCCURRED } from '../../../../lang';
 import { DrafFileList } from '..';
 import {
   FixManifestDraftFiles,

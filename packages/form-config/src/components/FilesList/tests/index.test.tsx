@@ -5,7 +5,8 @@ import { ManifestFilesList, ConnectedManifestFilesList } from '../index';
 import { getFetchOptions } from '@opensrp/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import reducerRegistry, { store } from '@onaio/redux-reducer-registry';
+import { store } from '@opensrp/store';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import filesReducer, { filesReducerName, removeManifestFiles } from '../../../ducks/manifestFiles';
@@ -14,7 +15,7 @@ import toJson from 'enzyme-to-json';
 import * as helpers from '../../../helpers/fileDownload';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { ERROR_OCCURRED } from '../../../constants';
+import { ERROR_OCCURRED } from '../../../lang';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
