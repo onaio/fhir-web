@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
@@ -25,6 +25,7 @@ import { Spin } from 'antd';
 import '../../index.css';
 import { Dictionary } from '@onaio/utils';
 import { getExtraData } from '@onaio/session-reducer';
+import { loadLocationTags, LocationUnitTag } from '@opensrp/location-management';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -66,6 +67,7 @@ export const defaultEditUserProps: EditUserProps = {
 const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropTypes) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [practitioner, setPractitioner] = React.useState<Practitioner | undefined>(undefined);
+  const [locationTags, setLocationTags] = useState<LocationUnitTag[]>([]);
   const {
     keycloakUser,
     keycloakBaseURL,
@@ -117,6 +119,21 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     }
   }, [userId, practitioner, opensrpServiceClass, opensrpBaseURL]);
 
+  useEffect(() => {
+    if (!locationTags.length) {
+      setIsLoading(true);
+      loadLocationTags(opensrpBaseURL, opensrpServiceClass)
+        .then((response) => {
+          setIsLoading(false);
+          setLocationTags(response);
+        })
+        .catch((_: Error) => {
+          sendErrorNotification(ERROR_OCCURED);
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [userId, practitioner, opensrpServiceClass, opensrpBaseURL, locationTags.length]);
+
   if (isLoading) {
     return <Spin size="large" />;
   }
@@ -128,6 +145,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     keycloakBaseURL,
     opensrpBaseURL,
     practitioner: practitioner as Practitioner,
+    locationTags,
     extraData,
   };
 

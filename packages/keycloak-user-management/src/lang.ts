@@ -35,5 +35,6 @@ export const USERNAME = i18n.t('Username');
 export const MARK_AS_PRACTITIONER = i18n.t('Mark as Practitioner');
 export const REQUIRED_ACTIONS = i18n.t('Required Actions');
 export const PLEASE_SELECT = i18n.t('Please select');
+export const GROUP = i18n.t('Group');
 export const SAVE = i18n.t('Save');
 export const SAVING = i18n.t('Saving');

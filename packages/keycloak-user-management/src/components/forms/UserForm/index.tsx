@@ -20,11 +20,13 @@ import {
   FIRST_NAME_REQUIRED,
   LAST_NAME_REQUIRED,
   USERNAME_REQUIRED,
+  GROUP,
 } from '../../../lang';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
+import { LocationUnitTag } from '@opensrp/location-management';
 /** Interface for practitioner json object */
 export interface Practitioner {
   active: boolean;
@@ -41,6 +43,7 @@ export interface UserFormProps {
   keycloakBaseURL: string;
   opensrpBaseURL: string;
   practitioner: Practitioner | undefined;
+  locationTags: LocationUnitTag[];
   extraData: Dictionary;
 }
 /** default form initial values */
@@ -94,6 +97,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     opensrpBaseURL,
     practitioner,
     extraData,
+    locationTags,
   } = props;
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
@@ -122,9 +126,11 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     { label: 'No', value: false },
   ];
   const { Option } = Select;
+
   React.useEffect(() => {
     fetchRequiredActions(keycloakBaseURL, setUserActionOptions, serviceClass);
   }, [keycloakBaseURL, serviceClass]);
+
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
@@ -226,6 +232,20 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               </Select>
             </Form.Item>
           ) : null}
+          <Form.Item name="group" id="group" label={GROUP}>
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder={PLEASE_SELECT}
+              style={{ width: '100%' }}
+            >
+              {locationTags.map((locationTag) => (
+                <Option key={locationTag.id.toString()} value={locationTag.name}>
+                  {locationTag.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
               {isSubmitting ? SAVING : SAVE}
