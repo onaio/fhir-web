@@ -13,24 +13,13 @@ import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import {
   deforest,
-  generateJurisdictionTree,
   hierarchyReducer,
   hierarchyReducerName,
   removeLocationUnits,
 } from '@opensrp/location-management';
-import {
-  fetchCalls,
-  geographicHierarchy,
-  inventories,
-  madagascar,
-  madagascarTree,
-  opensrpBaseURL,
-  structure2,
-  structures,
-} from './fixtures';
+import { fetchCalls, inventories, madagascar, opensrpBaseURL, structures } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
-import { getNodePath } from '../utils';
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
 jest.mock('@opensrp/notifications', () => ({
@@ -140,24 +129,6 @@ describe('Profile view Page', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Back to the list of service pointsAmbatoharananaRegion: District: Commune: Type: Water PointLatitude/longitude: Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointInventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActions1101123434Jan 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1101123434Feb 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1"`
     );
-  });
-
-  it('branch test for getNodePath with parentId undefined', async () => {
-    const sampleLocation = {
-      ...structure2,
-      properties: { ...structure2.properties, parentId: undefined },
-    };
-    const res = getNodePath(sampleLocation, [generateJurisdictionTree(madagascarTree)]);
-    expect(res).toEqual([]);
-  });
-
-  it('branch test for getNodePath with parentId', async () => {
-    const sampleLocation = {
-      ...structure2,
-      properties: { ...structure2.properties, parentId: 'b8a7998c-5df6-49eb-98e6-f0675db71848' },
-    };
-    const res = getNodePath(sampleLocation, [generateJurisdictionTree(madagascarTree)]);
-    expect(res).toEqual(geographicHierarchy);
   });
 
   it('shows broken page', async () => {
