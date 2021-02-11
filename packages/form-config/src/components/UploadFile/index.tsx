@@ -14,6 +14,7 @@ import {
   FILE_UPLOAD_LABEL,
   FORM_REQUIRED_LABEL,
   FORM_NAME_REQUIRED_LABEL,
+  ERROR_OCCURRED,
 } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { submitUploadForm } from '../../helpers/utils';
@@ -95,7 +96,9 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
           setIfDoneHere,
           displayAlertError,
           endpoint
-        );
+        ).catch(() => {
+          displayAlertError(ERROR_OCCURRED);
+        });
       }}
     >
       {({ values, setFieldValue, handleChange, handleSubmit, errors, touched, isSubmitting }) => (

@@ -7,7 +7,7 @@ import { submitUploadForm } from './../../../helpers/utils';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, Redirect } from 'react-router';
 import { getManifestFilesById } from '../../../ducks/manifestFiles';
-import { ROUTE_PARAM_FORM_ID } from '../../../constants';
+import { ERROR_OCCURRED, ROUTE_PARAM_FORM_ID } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { UploadFileFieldTypes } from '../../../helpers/types';
@@ -145,7 +145,9 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
               setSubmitting,
               setIfDoneHere,
               sendErrorNotification
-            );
+            ).catch(() => {
+              sendErrorNotification(ERROR_OCCURRED);
+            });
           }}
         >
           <Form.Item

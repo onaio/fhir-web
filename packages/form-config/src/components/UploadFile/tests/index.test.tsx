@@ -12,11 +12,18 @@ import filesReducer, { fetchManifestFiles, filesReducerName } from '../../../duc
 import { fixManifestFiles } from '../../../ducks/tests/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
+import * as opensrpService from '@opensrp/server-service';
+import { ERROR_OCCURRED } from '../../../constants';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
 
 const history = createBrowserHistory();
+
+jest.mock('@opensrp/server-service', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/server-service')),
+}));
 
 const props = {
   baseURL: 'https://test-example.com/rest/',
@@ -83,6 +90,7 @@ describe('components/UploadFile', () => {
       'https://test-example.com/rest/forms/upload',
       expect.any(Object)
     );
+    wrapper.unmount();
   });
 
   it('edits form correctly', async () => {
@@ -117,6 +125,7 @@ describe('components/UploadFile', () => {
       'https://test-example.com/rest/forms/upload',
       expect.any(Object)
     );
+    wrapper.unmount();
   });
 
   it('handles error if upload fails', async () => {
@@ -185,5 +194,37 @@ describe('components/UploadFile', () => {
       'https://test-example.com/rest/forms/upload',
       expect.any(Object)
     );
+    wrapper.unmount();
+  });
+
+  it('handles non-API errors when submitting', async () => {
+    jest
+      .spyOn(opensrpService, 'processAcessToken')
+      .mockImplementationOnce(() => Promise.reject('Error'));
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedUploadConfigFile {...props} />
+        </Router>
+      </Provider>
+    );
+    wrapper
+      .find('input[name="form_name"]')
+      .simulate('change', { target: { name: 'form_name', value: 'test name' } });
+    wrapper
+      .find('input[name="module"]')
+      .simulate('change', { target: { name: 'module', value: 'test module' } });
+    wrapper
+      .find('input[name="form"]')
+      .simulate('change', { target: { name: 'form', files: sampleFile } });
+    wrapper.find('Button').simulate('submit');
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(fetch).not.toHaveBeenCalled();
+    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, {
+      type: 'error',
+    });
+    wrapper.unmount();
   });
 });
