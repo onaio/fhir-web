@@ -28,8 +28,8 @@ import {
   locationUnitsReducer,
 } from '@opensrp/location-management';
 import {
-  LOCATIONS_GET_ALL_SYNC_ENDPOINT,
   OPENSRP_ENDPOINT_GET_INVENTORIES,
+  OPENSRP_ENDPOINT_LOCATION,
   ROUTE_PARAM_INVENTORY_ITEM_ID,
   ROUTE_PARAM_SERVICE_POINT_ID,
 } from '../../constants';
@@ -101,26 +101,23 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   useEffect(() => {
     // Handle when servicePoint is null e.g when a user refreshes page
     if (!servicePoint) {
-      // fetch location units
+      // fetch the single location unit
+      const servicePointId = match.params[ROUTE_PARAM_SERVICE_POINT_ID];
       const service = new OpenSRPService(
-        LOCATIONS_GET_ALL_SYNC_ENDPOINT,
+        OPENSRP_ENDPOINT_LOCATION,
         openSRPBaseURL,
         customFetchOptions
       );
       service
-        .list({
-          serverVersion: 0,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          is_jurisdiction: false,
-        })
-        .then((response: LocationUnit[]) => {
-          fetchLocationUnitsCreator(response);
+        .read(servicePointId)
+        .then((response: LocationUnit) => {
+          fetchLocationUnitsCreator([response]);
         })
         .catch((_: HTTPError) => {
           sendErrorNotification(ERROR_GENERIC);
         });
     }
-  }, [servicePoint, fetchLocationUnitsCreator, openSRPBaseURL, customFetchOptions]);
+  }, [servicePoint, fetchLocationUnitsCreator, openSRPBaseURL, customFetchOptions, match.params]);
 
   useEffect(() => {
     if (!products.length) {

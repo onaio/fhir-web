@@ -115,7 +115,7 @@ describe('containers/InventoryAddEdit', () => {
   });
 
   it('renders correctly', async () => {
-    fetch.once(JSON.stringify(fixtures.servicePoints));
+    fetch.once(JSON.stringify(fixtures.servicePoint2));
     fetch.once(JSON.stringify(products));
     fetch.once(JSON.stringify(donors));
     fetch.once(JSON.stringify(unicefSections));
@@ -139,7 +139,7 @@ describe('containers/InventoryAddEdit', () => {
     expect(toJson(wrapper.find('Spin'))).toBeFalsy();
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false',
+      `https://mg-eusm-staging.smartregister.org/opensrp/rest/location/${fixtures.servicePoint2.id}`,
       {
         headers: {
           accept: 'application/json',
@@ -192,7 +192,7 @@ describe('containers/InventoryAddEdit', () => {
   });
 
   it('adds inventory item', async () => {
-    fetch.once(JSON.stringify(fixtures.servicePoints));
+    fetch.once(JSON.stringify(fixtures.servicePoint2));
     fetch.once(JSON.stringify(products));
     fetch.once(JSON.stringify(donors));
     fetch.once(JSON.stringify(unicefSections));
@@ -266,7 +266,7 @@ describe('containers/InventoryAddEdit', () => {
   });
 
   it('edits inventory item', async () => {
-    fetch.once(JSON.stringify(fixtures.servicePoints));
+    fetch.once(JSON.stringify(fixtures.servicePoint2));
     fetch.once(JSON.stringify(products));
     fetch.once(JSON.stringify(donors));
     fetch.once(JSON.stringify(unicefSections));

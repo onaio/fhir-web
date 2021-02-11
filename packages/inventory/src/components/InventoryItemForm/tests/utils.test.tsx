@@ -184,38 +184,56 @@ describe('components/InventoryItemForm/utils/isDatePastOrToday', () => {
   afterEach(() => {
     jest.clearAllMocks();
     fetch.resetMocks();
-    MockDate.reset();
   });
 
-  const today = '2021-02-10';
-  MockDate.set(today);
+  const today = '2020-08-10';
+
+  beforeAll(() => {
+    MockDate.set(today);
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
 
   it('returns true for todays date', () => {
     expect(isDatePastOrToday(moment(today))).toEqual(true);
   });
 
   it('returns true for yesterdays date', () => {
-    expect(isDatePastOrToday(moment('2021-02-09'))).toEqual(true);
+    expect(isDatePastOrToday(moment('2020-08-09'))).toEqual(true);
   });
 
   it('returns false for tomorrows date', () => {
-    expect(isDatePastOrToday(moment('2021-02-11'))).toEqual(false);
+    expect(isDatePastOrToday(moment('2020-08-11'))).toEqual(false);
   });
 });
 
 describe('components/InventoryItemForm/utils/isDateFuture', () => {
-  const today = '2021-02-10';
-  MockDate.set(today);
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+  });
+
+  const today = '2020-08-10';
+
+  beforeAll(() => {
+    MockDate.set(today);
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
 
   it('returns false for todays date', () => {
     expect(isDateFuture(moment(today))).toEqual(false);
   });
 
   it('returns false for yesterdays date', () => {
-    expect(isDateFuture(moment('2021-02-09'))).toEqual(false);
+    expect(isDateFuture(moment('2020-08-09'))).toEqual(false);
   });
 
   it('returns true for tomorrows date', () => {
-    expect(isDateFuture(moment('2021-02-11'))).toEqual(true);
+    expect(isDateFuture(moment('2020-08-11'))).toEqual(true);
   });
 });
