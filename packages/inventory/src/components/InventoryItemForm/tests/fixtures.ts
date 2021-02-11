@@ -1,62 +1,65 @@
-export const products = [
-  {
-    uniqueId: 8,
-    productName: 'Test optional Fields',
-    isAttractiveItem: false,
-    materialNumber: 'MT-123',
-    availability: 'Test optional Fields',
-    condition: '',
-    appropriateUsage: '',
-    accountabilityPeriod: 1,
-    photoURL: 'http://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/8',
-    serverVersion: 18,
-  },
-  {
-    uniqueId: 2,
-    productName: 'Scale',
-    isAttractiveItem: false,
-    materialNumber: 'MT-124',
-    availability:
-      'Kit composed of +/- 50 items used by midwives during labour. Supplied in a box marked. It should be located in the maternity unit of the facility.',
-    condition:
-      'The kit is designed to be used for approximately 50 births. After that, key components may be missing, its important to check with the midwife that the kit can still be used fully.',
-    appropriateUsage:
-      'Note in the comments whatever items may be missing from the kit. as well as other items which the midwife may feel are necessary',
-    accountabilityPeriod: 12,
-    photoURL: '',
-    serverVersion: 26,
-  },
-  {
-    uniqueId: 5,
-    productName: 'Scale Kit test',
-    isAttractiveItem: false,
-    materialNumber: 'MT-124',
-    availability:
-      'Kit composed of +/- 50 items used by midwives during labour. Supplied in a box marked. It should be located in the maternity unit of the facility.',
-    condition:
-      'The kit is designed to be used for approximately 50 births. After that, key components may be missing,  its important to check with the midwife that the kit can still be used fully.',
-    appropriateUsage:
-      'Note in the comments whatever items may be missing from the kit. as well as other items which the midwife may feel are necessary',
-    accountabilityPeriod: 12,
-    photoURL: 'http://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/5',
-    serverVersion: 23,
-  },
-  {
-    uniqueId: 3,
-    productName: 'Motorbyke',
-    isAttractiveItem: true,
-    materialNumber: 'MT-124',
-    availability:
-      'Kit composed of +/- 50 items used by midwives during labour. Supplied in a box marked. It should be located in the maternity unit of the facility.',
-    condition:
-      'The kit is designed to be used for approximately 50 births. After that, key components may be missing, its important to check with the midwife that the kit can still be used fully.',
-    appropriateUsage:
-      'Note in the comments whatever items may be missing from the kit. as well as other items which the midwife may feel are necessary',
-    accountabilityPeriod: 12,
-    photoURL: 'http://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/3',
-    serverVersion: 12,
-  },
-];
+export const product1 = {
+  uniqueId: 8,
+  productName: 'Test optional Fields',
+  isAttractiveItem: false,
+  materialNumber: 'MT-123',
+  availability: 'Test optional Fields',
+  condition: '',
+  appropriateUsage: '',
+  accountabilityPeriod: 1,
+  photoURL: 'http://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/8',
+  serverVersion: 18,
+};
+
+export const product2 = {
+  uniqueId: 2,
+  productName: 'Scale',
+  isAttractiveItem: false,
+  materialNumber: 'MT-124',
+  availability:
+    'Kit composed of +/- 50 items used by midwives during labour. Supplied in a box marked. It should be located in the maternity unit of the facility.',
+  condition:
+    'The kit is designed to be used for approximately 50 births. After that, key components may be missing, its important to check with the midwife that the kit can still be used fully.',
+  appropriateUsage:
+    'Note in the comments whatever items may be missing from the kit. as well as other items which the midwife may feel are necessary',
+  accountabilityPeriod: 12,
+  photoURL: '',
+  serverVersion: 26,
+};
+
+export const product3 = {
+  uniqueId: 5,
+  productName: 'Scale Kit test',
+  isAttractiveItem: false,
+  materialNumber: 'MT-124',
+  availability:
+    'Kit composed of +/- 50 items used by midwives during labour. Supplied in a box marked. It should be located in the maternity unit of the facility.',
+  condition:
+    'The kit is designed to be used for approximately 50 births. After that, key components may be missing,  its important to check with the midwife that the kit can still be used fully.',
+  appropriateUsage:
+    'Note in the comments whatever items may be missing from the kit. as well as other items which the midwife may feel are necessary',
+  accountabilityPeriod: 12,
+  photoURL: 'http://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/5',
+  serverVersion: 23,
+};
+
+export const product4 = {
+  uniqueId: 3,
+  productName: 'Motorbyke',
+  isAttractiveItem: true,
+  materialNumber: 'MT-124',
+  availability:
+    'Kit composed of +/- 50 items used by midwives during labour. Supplied in a box marked. It should be located in the maternity unit of the facility.',
+  condition:
+    'The kit is designed to be used for approximately 50 births. After that, key components may be missing, its important to check with the midwife that the kit can still be used fully.',
+  appropriateUsage:
+    'Note in the comments whatever items may be missing from the kit. as well as other items which the midwife may feel are necessary',
+  accountabilityPeriod: 12,
+  photoURL: 'http://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/3',
+  serverVersion: 12,
+};
+
+export const products = [product1, product2, product3, product4];
 
 export const donors = [
   {

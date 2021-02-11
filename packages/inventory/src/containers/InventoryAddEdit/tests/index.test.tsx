@@ -15,6 +15,10 @@ import {
   products,
   donors,
   unicefSections,
+  product4,
+  product2,
+  product3,
+  product1,
 } from '../../../components/InventoryItemForm/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
@@ -187,7 +191,25 @@ describe('containers/InventoryAddEdit', () => {
     const content = wrapper.find('div.layout-content');
     expect(document.title).toEqual('Add inventory item');
     expect(content.find('Title').props()).toMatchSnapshot('heading');
-    expect(content.find('InventoryItemForm').props()).toMatchSnapshot('form props');
+    expect(content.find('InventoryItemForm').props()).toEqual({
+      UNICEFSections: unicefSections,
+      donors: donors,
+      products: [product4, product2, product3, product1], //products should be in alpahabetical order,
+      cancelURL: '/inventory-items',
+      openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
+      redirectURL: 'inventory-items-done',
+      servicePointId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+      initialValues: {
+        accountabilityEndDate: null,
+        deliveryDate: null,
+        donor: undefined,
+        poNumber: '',
+        productName: undefined,
+        quantity: '',
+        unicefSection: undefined,
+      },
+      inventoryID: undefined,
+    });
     wrapper.unmount();
   });
 
@@ -362,7 +384,25 @@ describe('containers/InventoryAddEdit', () => {
       quantity: 10,
       stockId: fixtures.inventories[0]._id,
     };
-    expect(wrapper.find('InventoryItemForm').props()).toMatchSnapshot('form props');
+    expect(wrapper.find('InventoryItemForm').props()).toEqual({
+      UNICEFSections: unicefSections,
+      donors: donors,
+      products: [product4, product2, product3, product1], //products should be in alpahabetical order,
+      cancelURL: '/inventory-items',
+      openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
+      redirectURL: 'inventory-items-done',
+      servicePointId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+      initialValues: {
+        accountabilityEndDate: moment(fixtures.inventories[0].accountabilityEndDate),
+        deliveryDate: moment(fixtures.inventories[0].deliveryDate),
+        donor: 'ADB',
+        poNumber: '101',
+        productName: undefined,
+        quantity: 1,
+        unicefSection: 'Health',
+      },
+      inventoryID: fixtures.inventories[0]._id,
+    });
     expect(fetch.mock.calls[5]).toEqual([
       `https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/${fixtures.inventories[0]._id}`,
       {
