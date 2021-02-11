@@ -36,7 +36,7 @@ const InventoryList = (props: InventoryListProps) => {
             <h6>{INVENTORY_ITEMS}</h6>
             <Link to={INVENTORY_ADD_SERVICE_POINT}>
               <Button type="primary" size="large">
-                {ADD_NEW_INVENTORY_ITEM}
+                {`+ ${ADD_NEW_INVENTORY_ITEM}`}
               </Button>
             </Link>
           </div>

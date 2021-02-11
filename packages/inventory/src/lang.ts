@@ -13,7 +13,7 @@ export const LOADING_ELLIPSIS = 'Loading ...';
 // Service point profile
 export const INVENTORY_ITEMS = 'Inventory items';
 export const EDIT_SERVICE_POINT = 'Edit service point';
-export const ADD_NEW_INVENTORY_ITEM = '+ Add new inventory item';
+export const ADD_NEW_INVENTORY_ITEM = 'Add new inventory item';
 export const PRODUCT_NAME_TH = 'Product name';
 export const QTY_TH = 'Qty';
 export const PO_NUMBER_TH = 'PO no.';
