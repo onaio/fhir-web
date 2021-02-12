@@ -15,12 +15,12 @@ import { CardTitle } from '../../helpers/utils';
 
 export interface PostConfirmationSuccessProps {
   rowsProcessed: number | string;
-  fileName: string;
+  filename: string;
 }
 
 const defaultProps = {
   rowsProcessed: 0,
-  fileName: '',
+  filename: '',
 };
 
 /** card rendered during csv upload, its shown after validation is successful
@@ -28,12 +28,12 @@ const defaultProps = {
  * @param props this component's props
  */
 const PostConfirmationSuccess = (props: PostConfirmationSuccessProps) => {
-  const { rowsProcessed, fileName } = props;
+  const { rowsProcessed, filename } = props;
 
   const cardTitle = (
     <CardTitle
       IconRender={<CheckCircleOutlined className="card-title__icon" />}
-      text={format(INVENTORY_ITEMS_SUCCESSFULLY_ADDED, fileName)}
+      text={format(INVENTORY_ITEMS_SUCCESSFULLY_ADDED, filename)}
     />
   );
 
