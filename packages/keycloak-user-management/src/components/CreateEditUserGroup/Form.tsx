@@ -125,10 +125,10 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
             <Input />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit" className="create-user">
+            <Button type="primary" htmlType="submit" className="create-group">
               {isSubmitting ? SAVING : SAVE}
             </Button>
-            <Button onClick={() => history.push(URL_USER_GROUPS)} className="cancel-user">
+            <Button onClick={() => history.push(URL_USER_GROUPS)} className="cancel-group">
               {CANCEL}
             </Button>
           </Form.Item>

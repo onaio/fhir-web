@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { RouteComponentProps, useParams } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { defaultInitialValues, UserGroupFormProps } from './Form';
 import { ROUTE_PARAM_USER_GROUP_ID, KEYCLOAK_URL_USER_GROUPS } from '../../constants';
 import { ERROR_OCCURED } from '../../lang';
@@ -23,13 +23,18 @@ reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReduce
 // Define selector instance
 const userGroupsSelector = makeKeycloakUserGroupsSelector();
 
+// Interface for route params
+interface RouteParams {
+  userGroupId: string;
+}
+
 /** props for editing a user view */
 export interface EditUserGroupProps {
   keycloakBaseURL: string;
 }
 
 /** type intersection for all types that pertain to the props */
-export type CreateEditGroupPropTypes = EditUserGroupProps & RouteComponentProps;
+export type CreateEditGroupPropTypes = EditUserGroupProps & RouteComponentProps<RouteParams>;
 
 /** default props for editing user component */
 export const defaultEditUserGroupProps: EditUserGroupProps = {
@@ -47,8 +52,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
   const { keycloakBaseURL } = props;
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const dispatch = useDispatch();
-  const params = useParams<{ [ROUTE_PARAM_USER_GROUP_ID]: string }>();
-  const userGroupId = params[ROUTE_PARAM_USER_GROUP_ID];
+  const userGroupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID];
   const keycloakUserGroup = useSelector((state) =>
     userGroupsSelector(state, { id: [userGroupId] })
   );
