@@ -42,6 +42,7 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_USER_GROUPS,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -74,6 +75,7 @@ import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
+  UserGroupsList,
   URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
@@ -227,6 +229,13 @@ const App: React.FC = () => {
               exact
               path={URL_USER}
               component={ConnectedUserList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_USER_GROUPS}
+              component={UserGroupsList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
