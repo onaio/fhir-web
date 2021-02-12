@@ -19,6 +19,7 @@ import {
   reducerName,
   fetchKeycloakUserGroups,
   removeKeycloakUserGroups,
+  makeKeycloakUserGroupsSelector,
 } from '../../../ducks/userGroups';
 import { CreateEditUserGroup } from '..';
 import { ERROR_OCCURED } from '../../../lang';
@@ -36,6 +37,8 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 reducerRegistry.register(reducerName, reducer);
+
+const userGroupSelector = makeKeycloakUserGroupsSelector();
 
 describe('components/CreateEditUserGroup', () => {
   const props = {
@@ -116,6 +119,7 @@ describe('components/CreateEditUserGroup', () => {
   });
 
   it('renders correctly for create user group', () => {
+    jest.resetAllMocks();
     const propsCreate = {
       history,
       keycloakBaseURL:
@@ -128,7 +132,7 @@ describe('components/CreateEditUserGroup', () => {
       },
       match: {
         isExact: true,
-        params: { userId: null },
+        params: { userGroupId: null },
         path: `/users/groups/new/`,
         url: `/users/groups/new/`,
       },
@@ -141,6 +145,8 @@ describe('components/CreateEditUserGroup', () => {
         </Router>
       </Provider>
     );
+
+    wrapper.update();
 
     const row = wrapper.find('Row').at(0);
 
@@ -168,8 +174,8 @@ describe('components/CreateEditUserGroup', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[1]).toEqual([
-      `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${fixtures.userGroup.id}`,
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups/${fixtures.userGroup.id}`,
       {
         headers: {
           accept: 'application/json',
@@ -205,20 +211,6 @@ describe('components/CreateEditUserGroup', () => {
 
   it('works correctly with the store', async () => {
     store.dispatch(fetchKeycloakUserGroups([fixtures.userGroup]));
-    const mockSelector = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
-    opensrpStore.store.dispatch(
-      authenticateUser(
-        true,
-        {
-          email: 'bob@example.com',
-          name: 'Bobbie',
-          username: 'RobertBaratheon',
-        },
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
-      )
-    );
-
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -232,7 +224,10 @@ describe('components/CreateEditUserGroup', () => {
       wrapper.update();
     });
 
-    expect(mockSelector).toHaveBeenCalled();
+    expect(wrapper.find('input#name').prop('value')).toEqual('Admin');
+    expect(userGroupSelector(store.getState(), { name: fixtures.userGroup.name })).toEqual([
+      fixtures.userGroup,
+    ]);
     wrapper.unmount();
   });
 
@@ -267,7 +262,7 @@ describe('components/CreateEditUserGroup', () => {
       },
     ]);
 
-    expect(wrapper.find('input#name').prop('value')).toEqual('Demo');
+    expect(wrapper.find('input#name').prop('value')).toEqual('Admin');
     wrapper.unmount();
   });
 });
