@@ -1,0 +1,330 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/forms/UserForm edits user group: readonly username edit 1`] = `
+<input
+  className="ant-input"
+  id="name"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value="Test1"
+/>
+`;
+
+exports[`components/forms/UserForm renders correctly 1`] = `
+Object {
+  "children": Array [
+    <h5
+      className="mb-3 header-title"
+    >
+      Add User
+    </h5>,
+    <Col
+      className="bg-white p-3"
+      span={24}
+    >
+      <ForwardRef(InternalForm)
+        form={
+          Object {
+            "__INTERNAL__": Object {
+              "itemRef": [Function],
+              "name": undefined,
+            },
+            "getFieldError": [Function],
+            "getFieldInstance": [Function],
+            "getFieldValue": [Function],
+            "getFieldsError": [Function],
+            "getFieldsValue": [Function],
+            "getInternalHooks": [Function],
+            "isFieldTouched": [Function],
+            "isFieldValidating": [Function],
+            "isFieldsTouched": [Function],
+            "isFieldsValidating": [Function],
+            "resetFields": [Function],
+            "scrollToField": [Function],
+            "setFields": [Function],
+            "setFieldsValue": [Function],
+            "submit": [Function],
+            "validateFields": [Function],
+          }
+        }
+        initialValues={
+          Object {
+            "access": Object {
+              "manage": false,
+              "manageMembership": false,
+              "view": false,
+            },
+            "attributes": Object {},
+            "clientRoles": Object {},
+            "id": "",
+            "name": "",
+            "path": "",
+            "realmRoles": Array [],
+            "subGroups": Array [],
+          }
+        }
+        labelCol={
+          Object {
+            "lg": Object {
+              "offset": 0,
+              "span": 6,
+            },
+            "md": Object {
+              "offset": 0,
+              "span": 8,
+            },
+            "sm": Object {
+              "offset": 2,
+              "span": 10,
+            },
+            "xs": Object {
+              "offset": 0,
+              "span": 16,
+            },
+          }
+        }
+        onFinish={[Function]}
+        wrapperCol={
+          Object {
+            "lg": Object {
+              "span": 10,
+            },
+            "md": Object {
+              "span": 12,
+            },
+            "sm": Object {
+              "span": 14,
+            },
+            "xs": Object {
+              "span": 24,
+            },
+          }
+        }
+      >
+        <FormItem
+          id="name"
+          label="Name"
+          name="name"
+          rules={
+            Array [
+              Object {
+                "message": "Name is required",
+                "required": true,
+              },
+            ]
+          }
+        >
+          <Input
+            type="text"
+          />
+        </FormItem>
+        <FormItem
+          wrapperCol={
+            Object {
+              "lg": Object {
+                "offset": 6,
+                "span": 14,
+              },
+              "md": Object {
+                "offset": 8,
+                "span": 16,
+              },
+              "sm": Object {
+                "offset": 12,
+                "span": 24,
+              },
+              "xs": Object {
+                "offset": 0,
+                "span": 16,
+              },
+            }
+          }
+        >
+          <Button
+            block={false}
+            className="create-group"
+            ghost={false}
+            htmlType="submit"
+            loading={false}
+            type="primary"
+          >
+            Save
+          </Button>
+          <Button
+            block={false}
+            className="cancel-group"
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+          >
+            Cancel
+          </Button>
+        </FormItem>
+      </ForwardRef(InternalForm)>
+    </Col>,
+  ],
+  "className": "layout-content",
+}
+`;
+
+exports[`components/forms/UserFroupForm renders correctly 1`] = `
+Object {
+  "children": Array [
+    <h5
+      className="mb-3 header-title"
+    >
+      Add User
+    </h5>,
+    <Col
+      className="bg-white p-3"
+      span={24}
+    >
+      <ForwardRef(InternalForm)
+        form={
+          Object {
+            "__INTERNAL__": Object {
+              "itemRef": [Function],
+              "name": undefined,
+            },
+            "getFieldError": [Function],
+            "getFieldInstance": [Function],
+            "getFieldValue": [Function],
+            "getFieldsError": [Function],
+            "getFieldsValue": [Function],
+            "getInternalHooks": [Function],
+            "isFieldTouched": [Function],
+            "isFieldValidating": [Function],
+            "isFieldsTouched": [Function],
+            "isFieldsValidating": [Function],
+            "resetFields": [Function],
+            "scrollToField": [Function],
+            "setFields": [Function],
+            "setFieldsValue": [Function],
+            "submit": [Function],
+            "validateFields": [Function],
+          }
+        }
+        initialValues={
+          Object {
+            "access": Object {
+              "manage": false,
+              "manageMembership": false,
+              "view": false,
+            },
+            "attributes": Object {},
+            "clientRoles": Object {},
+            "id": "",
+            "name": "",
+            "path": "",
+            "realmRoles": Array [],
+            "subGroups": Array [],
+          }
+        }
+        labelCol={
+          Object {
+            "lg": Object {
+              "offset": 0,
+              "span": 6,
+            },
+            "md": Object {
+              "offset": 0,
+              "span": 8,
+            },
+            "sm": Object {
+              "offset": 2,
+              "span": 10,
+            },
+            "xs": Object {
+              "offset": 0,
+              "span": 16,
+            },
+          }
+        }
+        onFinish={[Function]}
+        wrapperCol={
+          Object {
+            "lg": Object {
+              "span": 10,
+            },
+            "md": Object {
+              "span": 12,
+            },
+            "sm": Object {
+              "span": 14,
+            },
+            "xs": Object {
+              "span": 24,
+            },
+          }
+        }
+      >
+        <FormItem
+          id="name"
+          label="Name"
+          name="name"
+          rules={
+            Array [
+              Object {
+                "message": "Name is required",
+                "required": true,
+              },
+            ]
+          }
+        >
+          <Input
+            type="text"
+          />
+        </FormItem>
+        <FormItem
+          wrapperCol={
+            Object {
+              "lg": Object {
+                "offset": 6,
+                "span": 14,
+              },
+              "md": Object {
+                "offset": 8,
+                "span": 16,
+              },
+              "sm": Object {
+                "offset": 12,
+                "span": 24,
+              },
+              "xs": Object {
+                "offset": 0,
+                "span": 16,
+              },
+            }
+          }
+        >
+          <Button
+            block={false}
+            className="create-group"
+            ghost={false}
+            htmlType="submit"
+            loading={false}
+            type="primary"
+          >
+            Save
+          </Button>
+          <Button
+            block={false}
+            className="cancel-group"
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+          >
+            Cancel
+          </Button>
+        </FormItem>
+      </ForwardRef(InternalForm)>
+    </Col>,
+  ],
+  "className": "layout-content",
+}
+`;
