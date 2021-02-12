@@ -113,7 +113,7 @@ describe('components/CreateEditUserGroup', () => {
 
     const row = wrapper.find('Row').at(0);
 
-    expect(row.props()).toMatchSnapshot();
+    expect(row.text()).toMatchSnapshot('full user group form');
 
     wrapper.unmount();
   });

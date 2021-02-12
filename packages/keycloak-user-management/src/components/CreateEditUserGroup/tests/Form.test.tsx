@@ -47,7 +47,7 @@ describe('components/forms/UserFroupForm', () => {
 
   it('renders correctly', async () => {
     const wrapper = mount(<UserGroupForm {...props} />);
-    expect(wrapper.find('Row').at(0).props()).toMatchSnapshot();
+    expect(wrapper.find('Row').at(0).text()).toMatchSnapshot();
     wrapper.unmount();
   });
 
