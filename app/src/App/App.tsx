@@ -42,6 +42,7 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_USER_GROUPS,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -74,6 +75,7 @@ import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
+  UserGroupsList,
   URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
@@ -125,7 +127,10 @@ import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
+  INVENTORY_SERVICE_POINT_PROFILE_PARAM,
   ConnectedServicePointList,
+  ServicePointProfile,
   INVENTORY_EDIT_SERVICE_POINT,
   INVENTORY_ADD_SERVICE_POINT,
   ServicePointEdit,
@@ -229,6 +234,13 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={URL_USER_GROUPS}
+              component={UserGroupsList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={URL_TEAMS}
               component={TeamsView}
             />
@@ -316,6 +328,14 @@ const App: React.FC = () => {
               path={PLANS_CREATE_VIEW_URL}
               {...planCreateProps}
               component={CreatePlanView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${INVENTORY_SERVICE_POINT_PROFILE_PARAM}`}
+              {...inventoryServiceProps}
+              component={ServicePointProfile}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
