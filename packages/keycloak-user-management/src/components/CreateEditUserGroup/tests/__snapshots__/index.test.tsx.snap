@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/CreateEditUser renders correctly 1`] = `
+exports[`components/CreateEditUserGroup renders correctly 1`] = `
 Object {
   "children": <Col
     span={24}
@@ -8,17 +8,9 @@ Object {
     <UserGroupForm
       initialValues={
         Object {
-          "access": Object {
-            "manage": false,
-            "manageMembership": false,
-            "view": false,
-          },
-          "attributes": Object {},
-          "clientRoles": Object {},
-          "id": "",
-          "name": "",
-          "path": "",
-          "realmRoles": Array [],
+          "id": "283c5d6e-9b83-4954-9f3b-4c2103e4370c",
+          "name": "Admin",
+          "path": "/Admin",
           "subGroups": Array [],
         }
       }
