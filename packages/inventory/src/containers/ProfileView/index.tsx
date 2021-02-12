@@ -27,6 +27,9 @@ import {
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
   INVENTORY_SERVICE_POINT_PROFILE_PARAM,
   INVENTORY_EDIT_SERVICE_POINT,
+  URL_INVENTORY_ADD,
+  URL_INVENTORY_EDIT,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
@@ -57,6 +60,8 @@ interface ServicePointsProfileProps extends CommonProps {
   opensrpBaseURL: string;
   service: typeof OpenSRPService;
   addInventoryURL: string;
+  editInventoryURL: string;
+  servicePointProfileURL: string;
 }
 
 const defaultProps = {
@@ -64,6 +69,9 @@ const defaultProps = {
   fetchInventories,
   opensrpBaseURL: '',
   service: OpenSRPService,
+  addInventoryURL: URL_INVENTORY_ADD,
+  editInventoryURL: URL_INVENTORY_EDIT,
+  servicePointProfileURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 };
 
 type ServicePointsProfileTypes = ServicePointsProfileProps & RouteComponentProps;
@@ -97,7 +105,13 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
  * @param props - the component props
  */
 const ServicePointProfile = (props: ServicePointsProfileTypes) => {
-  const { opensrpBaseURL, service, addInventoryURL } = props;
+  const {
+    opensrpBaseURL,
+    service,
+    addInventoryURL,
+    editInventoryURL,
+    servicePointProfileURL,
+  } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
@@ -173,6 +187,13 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
 
   const pageTitle = `${SERVICE_POINT_INVENTORY}`;
   const nodePath = getNodePath(structure, trees);
+  const inventoryListProps = {
+    servicePointId: spId,
+    opensrpBaseURL,
+    addInventoryURL,
+    editInventoryURL,
+    servicePointProfileURL,
+  };
 
   return (
     <>
@@ -218,11 +239,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <InventoryList
-          servicePointId={spId}
-          opensrpBaseURL={opensrpBaseURL}
-          addInventoryURL={addInventoryURL}
-        />
+        <InventoryList {...inventoryListProps} />
       </div>
     </>
   );
