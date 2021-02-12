@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { Form, Button, Input, DatePicker, Select, Card } from 'antd';
 import { Redirect, useHistory } from 'react-router';
-import { getFetchOptions, HTTPError } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp/server-service';
 import {
   ACCOUNTABILITY_END_DATE,
   CANCEL,
@@ -217,7 +217,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
           }
 
           submitForm(payload, openSRPBaseURL, setSubmitting, setIfDoneHere, inventoryID).catch(
-            (_: HTTPError) => {
+            (_: Error) => {
               sendErrorNotification(ERROR_GENERIC);
             }
           );
