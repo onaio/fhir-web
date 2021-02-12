@@ -2,9 +2,9 @@
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
-import * as fixtures from '../../forms/UserForm/tests/fixtures';
+import { authenticateUser } from '@onaio/session-reducer';
 import { mount, shallow } from 'enzyme';
-import { ConnectedUserList, UserList } from '..';
+import { UserGroupsList } from '..';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import toJson from 'enzyme-to-json';
@@ -12,22 +12,19 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import * as opensrpStore from '@opensrp/store';
 import { Provider } from 'react-redux';
-import { KeycloakService } from '@opensrp/keycloak-service';
 import * as notifications from '@opensrp/notifications';
 import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
-  fetchKeycloakUsers,
-  removeKeycloakUsers,
-} from '../../../ducks/user';
-import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
-import { authenticateUser } from '@onaio/session-reducer';
-import { URL_USER } from '../../../constants';
+  removeKeycloakUserGroups,
+} from '../../../ducks/userGroups';
+import { userGroups } from '../../../ducks/tests/fixtures';
+import { URL_USER_GROUPS } from '../../../constants';
 import { ERROR_OCCURED } from '../../../lang';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/store')),
+  ...jest.requireActual('@opensrp/store'),
 }));
 
 jest.mock('@opensrp/notifications', () => ({
@@ -41,24 +38,24 @@ const locationProps = {
   history,
   location: {
     hash: '',
-    pathname: `${URL_USER}`,
+    pathname: `${URL_USER_GROUPS}`,
     search: '',
     state: {},
   },
   match: {
     isExact: true,
     params: {},
-    path: `${URL_USER}`,
-    url: `${URL_USER}`,
+    path: `${URL_USER_GROUPS}`,
+    url: `${URL_USER_GROUPS}`,
   },
 };
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
-describe('components/UserList', () => {
+describe('components/UserGroupsList', () => {
   beforeEach(() => {
     fetch.resetMocks();
-    opensrpStore.store.dispatch(removeKeycloakUsers());
+    opensrpStore.store.dispatch(removeKeycloakUserGroups());
   });
 
   beforeAll(() => {
@@ -77,25 +74,28 @@ describe('components/UserList', () => {
   });
 
   it('renders users table without crashing', () => {
-    shallow(<UserList {...locationProps} />);
+    shallow(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <UserGroupsList
+            {...locationProps}
+            keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
+          />
+        </Router>
+      </Provider>
+    );
   });
   it('works correctly with store', async () => {
-    fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.once(JSON.stringify(userGroups));
     const props = {
       ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <Router history={history}>
-          <ConnectedUserList {...props} />
+          <UserGroupsList {...props} />
         </Router>
       </Provider>
     );
@@ -111,22 +111,16 @@ describe('components/UserList', () => {
   });
 
   it('renders user list correctly', async () => {
-    fetch.once(JSON.stringify(keycloakUsersArray));
+    fetch.once(JSON.stringify(userGroups));
     const props = {
       ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <Router history={history}>
-          <ConnectedUserList {...props} />
+          <UserGroupsList {...props} />
         </Router>
       </Provider>
     );
@@ -140,32 +134,30 @@ describe('components/UserList', () => {
     // Loader should be hiddern
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
 
-    const userList = wrapper.find('UserList');
+    const userList = wrapper.find('UserGroupsList');
     const headerRow = userList.find('Row').at(0);
 
     expect(headerRow.find('Col').at(0).text()).toMatchSnapshot('header actions col props');
     expect(headerRow.find('Table').first().text()).toMatchSnapshot('table text');
+    expect(userList.find('tbody tr')).toHaveLength(4);
+    expect(userList.find('tbody').text()).toMatchSnapshot(
+      'full table body has 4 user group entries'
+    );
     wrapper.unmount();
   });
 
-  it('handles user list fetch failure', async () => {
+  it('handles user group list fetch failure', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const props = {
       ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <Router history={history}>
-          <ConnectedUserList {...props} />
+          <UserGroupsList {...props} />
         </Router>
       </Provider>
     );
@@ -177,14 +169,33 @@ describe('components/UserList', () => {
       await flushPromises();
       wrapper.update();
     });
-
-    /**
-     * Loader should not be displayed
-     * since we've set loading to false
-     * on the final block
-     */
-    expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
-    expect(toJson(wrapper.find('Table'))).toBeFalsy();
     expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+  });
+
+  it('shows table with no data if user groups list from api is empty', async () => {
+    fetch.once(JSON.stringify([]));
+    const props = {
+      ...locationProps,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <UserGroupsList {...props} />
+        </Router>
+      </Provider>
+    );
+    // Loader should be displayed
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    //Table should be empty
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    const userList = wrapper.find('UserGroupsList');
+    expect(userList.find('Table').first().text()).toEqual('NameActionsNo Data');
   });
 });
