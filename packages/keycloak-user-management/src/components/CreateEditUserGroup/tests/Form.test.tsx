@@ -171,7 +171,7 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    // user's name
+    // usergrop name
     const nameInput = wrapper.find('input#name');
     nameInput.simulate('change', { target: { name: 'name', value: 'Test2' } });
 
