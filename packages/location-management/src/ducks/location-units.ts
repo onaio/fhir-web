@@ -193,7 +193,12 @@ export const getLocationByIds = () =>
       if (ids === undefined) {
         return locations;
       }
-      return ids.map((id) => locationsByIds[id]);
+      const locationsOfInterest: LocationUnit[] = [];
+      ids.forEach((id) => {
+        const thisLocation = locationsByIds[id] as LocationUnit | undefined;
+        if (thisLocation) locationsOfInterest.push(thisLocation);
+      });
+      return locationsOfInterest;
     }
   );
 
