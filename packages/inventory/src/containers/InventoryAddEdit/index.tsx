@@ -51,21 +51,20 @@ interface RouteParams {
 
 /** interface component props */
 export interface InventoryAddEditProps extends RouteComponentProps<RouteParams> {
-  openSRPBaseURL: string;
-  cancelURL: string;
-  redirectURL: string;
-  fetchLocationUnitsCreator: typeof fetchLocationUnits;
-  fetchInventoriesCreator: typeof fetchInventories;
-  servicePoint: LocationUnit | null;
-  inventory?: Inventory | null;
-  customFetchOptions?: typeof getFetchOptions;
+  openSRPBaseURL: string; // OpenSRP API base URL
+  servicePointProfileURL: string; // route to service point profile to redirect to after successful
+  // submission or clicking on cancel button to abort and exit
+  fetchLocationUnitsCreator: typeof fetchLocationUnits; // redux action to fetch location units
+  fetchInventoriesCreator: typeof fetchInventories; // redux action to fetch inventories
+  servicePoint: LocationUnit | null; // service point to add/edit inventory item
+  inventory?: Inventory | null; // inventory item to edit
+  customFetchOptions?: typeof getFetchOptions; // custom OpenSRPService class options
 }
 
 /** default component props */
 export const defaultInventoryAddEditProps = {
   openSRPBaseURL: '',
-  cancelURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
-  redirectURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
+  servicePointProfileURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
   fetchLocationUnitsCreator: fetchLocationUnits,
   fetchInventoriesCreator: fetchInventories,
   servicePoint: null,
@@ -74,10 +73,9 @@ export const defaultInventoryAddEditProps = {
 const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEditProps) => {
   const {
     openSRPBaseURL,
-    cancelURL,
+    servicePointProfileURL,
     fetchLocationUnitsCreator,
     fetchInventoriesCreator,
-    redirectURL,
     servicePoint,
     inventory,
     match,
@@ -193,9 +191,9 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       }
       return 0;
     }),
-    cancelURL: `${cancelURL}/${id}`,
+    cancelURL: `${servicePointProfileURL}/${id}`,
     openSRPBaseURL,
-    redirectURL: `${redirectURL}/${id}`,
+    redirectURL: `${servicePointProfileURL}/${id}`,
     servicePointId: id,
     initialValues,
     inventoryID: inventory?._id,

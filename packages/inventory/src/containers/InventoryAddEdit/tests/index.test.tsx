@@ -93,8 +93,7 @@ describe('containers/InventoryAddEdit', () => {
 
   const props = {
     openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
-    cancelURL: '/inventory/profile',
-    redirectURL: '/inventory/profile',
+    servicePointProfileURL: '/inventory/profile',
     fetchLocationUnitsCreator: fetchLocationUnits,
     fetchInventoriesCreator: fetchInventories,
     servicePoint: null,

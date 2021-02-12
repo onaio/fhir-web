@@ -69,11 +69,7 @@ const props = {
   - **required**
   - Opensrp API base URL
 
-- **cancelURL:**(string)
+- **servicePointProfileURL:**(string)
 
   - **required**
-  - URL to redirect after pressing `Cancel` button on the form to abort and exit the view
-
-- **redirectURL:**(string)
-  - **required**
-  - URL to redirect to after successful submission
+  - Route to the service point profile view to redirect to after pressing `Cancel` button on the form to abort and exit the view or after successful submission
