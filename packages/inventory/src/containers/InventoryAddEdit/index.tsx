@@ -25,7 +25,7 @@ import {
   OPENSRP_ENDPOINT_GET_INVENTORIES,
   OPENSRP_ENDPOINT_LOCATION,
   OPENSRP_PRODUCT_CATALOGUE,
-  ROUTE_PARAM_INVENTORY_ITEM_ID,
+  ROUTE_PARAM_INVENTORY_ID,
   ROUTE_PARAM_SERVICE_POINT_ID,
 } from '../../constants';
 import {
@@ -45,7 +45,7 @@ reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** Route params */
 interface RouteParams {
   [ROUTE_PARAM_SERVICE_POINT_ID]: string;
-  [ROUTE_PARAM_INVENTORY_ITEM_ID]?: string;
+  [ROUTE_PARAM_INVENTORY_ID]?: string;
 }
 
 /** interface component props */
@@ -86,7 +86,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const [donors, setDonors] = React.useState<Setting[]>([]);
   const [products, setProducts] = React.useState<ProductCatalogue[]>([]);
   const { Title } = Typography;
-  const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ITEM_ID];
+  const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ID];
 
   useEffect(() => {
     // Handle when servicePoint is null e.g when a user refreshes page
@@ -225,7 +225,7 @@ const mapStateToProps = (
 ): MapStateToProps => {
   const { match } = ownProps;
   const servicePointId = match.params[ROUTE_PARAM_SERVICE_POINT_ID];
-  const inventoryId = match.params[ROUTE_PARAM_INVENTORY_ITEM_ID];
+  const inventoryId = match.params[ROUTE_PARAM_INVENTORY_ID];
   let servicePoint = null;
   let inventory = null;
 

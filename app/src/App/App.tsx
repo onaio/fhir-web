@@ -42,8 +42,6 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
-  URL_INVENTORY_ITEM_ADD,
-  URL_INVENTORY_ITEM_EDIT,
   URL_USER_GROUPS,
 } from '../constants';
 import { providers } from '../configs/settings';
@@ -141,6 +139,10 @@ import {
   ServicePointsAdd,
   BulkUpload,
   INVENTORY_BULK_UPLOAD_URL,
+  ROUTE_PARAM_SERVICE_POINT_ID,
+  ROUTE_PARAM_INVENTORY_ID,
+  URL_INVENTORY_EDIT,
+  URL_INVENTORY_ADD,
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 
@@ -533,14 +535,14 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              path={URL_INVENTORY_ITEM_ADD}
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_ADD}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              path={URL_INVENTORY_ITEM_EDIT}
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
             />

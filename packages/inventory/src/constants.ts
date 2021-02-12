@@ -17,6 +17,8 @@ export const INVENTORY_BULK_UPLOAD_URL = '/inventory/upload';
 export const INVENTORY_ADD_SERVICE_POINT = '/inventory/servicePoint/add';
 export const INVENTORY_EDIT_SERVICE_POINT = '/inventory/servicePoint/edit';
 export const INVENTORY_SERVICE_POINT_PROFILE_PARAM = 'servicePointId';
+export const URL_INVENTORY_ADD = '/inventory/item/add';
+export const URL_INVENTORY_EDIT = '/inventory/item/edit';
 
 // other constants
 /** namespace for the keys attached to the columns */
@@ -48,4 +50,4 @@ export const COMMUNE_GEOGRAPHIC_LEVEL = 3;
 
 // Route params
 export const ROUTE_PARAM_SERVICE_POINT_ID = 'servicePointId';
-export const ROUTE_PARAM_INVENTORY_ITEM_ID = 'inventoryId';
+export const ROUTE_PARAM_INVENTORY_ID = 'inventoryId';
