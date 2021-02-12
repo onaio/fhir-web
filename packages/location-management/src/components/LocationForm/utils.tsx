@@ -9,7 +9,7 @@ import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
-import { Geometry } from 'geojson';
+import { Geometry, Point } from 'geojson';
 import {
   ERROR_PARENTID_STRING,
   ERROR_NAME_STRING,
@@ -21,6 +21,7 @@ import {
   ERROR_LOCATION_CATEGORY_REQUIRED,
   ERROR_SERVICE_TYPES_REQUIRED,
 } from '../../lang';
+import { FormInstance } from 'antd/lib/form/hooks/useForm';
 
 export enum FormInstances {
   CORE = 'core',
@@ -40,10 +41,12 @@ export interface LocationFormFields {
   externalId?: string;
   locationTags?: number[];
   geometry?: string;
-  isJurisdiction?: boolean;
-  serviceType?: string;
+  isJurisdiction: boolean;
+  serviceTypes?: string;
   extraFields: ExtraFields[];
   username?: string;
+  latitude?: string;
+  longitude?: string;
 }
 
 interface BaseSetting {
@@ -103,6 +106,7 @@ export const getLocationFormFields = (
       ...commonValues,
     };
   }
+
   const {
     name,
     status,
@@ -112,12 +116,18 @@ export const getLocationFormFields = (
     type,
     ...restProperties
   } = location.properties;
+
+  // derive latitude and longitudes for point
+  const { geometry: geoObject } = location;
+  const geoJson = JSON.stringify(geoObject);
+  const { longitude, latitude } = getPointCoordinates(geoJson);
+
   const formFields = {
     ...defaultFormField,
     ...commonValues,
     id: location.id,
     locationTags: location.locationTags?.map((loc) => loc.id),
-    geometry: JSON.stringify(location.geometry),
+    geometry: geoJson,
     type: location.type,
     name,
     username,
@@ -126,6 +136,8 @@ export const getLocationFormFields = (
     externalId,
     serviceType: type,
     extraFields: Object.entries(restProperties).map(([key, val]) => ({ [key]: val })),
+    longitude,
+    latitude,
   };
 
   return formFields;
