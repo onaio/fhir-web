@@ -93,8 +93,8 @@ describe('containers/InventoryAddEdit', () => {
 
   const props = {
     openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
-    cancelURL: '/inventory-items',
-    redirectURL: 'inventory-items-done',
+    cancelURL: '/inventory/profile',
+    redirectURL: '/inventory/profile',
     fetchLocationUnitsCreator: fetchLocationUnits,
     fetchInventoriesCreator: fetchInventories,
     servicePoint: null,
@@ -193,9 +193,9 @@ describe('containers/InventoryAddEdit', () => {
       UNICEFSections: unicefSections,
       donors: donors,
       products: [product4, product2, product3, product1], //products should be in alpahabetical order,
-      cancelURL: '/inventory-items',
+      cancelURL: `/inventory/profile/${fixtures.servicePoint2.id}`,
       openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
-      redirectURL: 'inventory-items-done',
+      redirectURL: `/inventory/profile/${fixtures.servicePoint2.id}`,
       servicePointId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
       initialValues: {
         accountabilityEndDate: null,
@@ -281,7 +281,7 @@ describe('containers/InventoryAddEdit', () => {
     // When submitting  the submit button text changes
     expect(wrapper.find('button').at(0).text()).toEqual('Saving');
     // Redirect to redirect URL
-    expect(history.location.pathname).toEqual('/inventory-items-done');
+    expect(history.location.pathname).toEqual(`/inventory/profile/${fixtures.servicePoint2.id}`);
     wrapper.unmount();
   });
 
@@ -386,9 +386,9 @@ describe('containers/InventoryAddEdit', () => {
       UNICEFSections: unicefSections,
       donors: donors,
       products: [product4, product2, product3, product1], //products should be in alpahabetical order,
-      cancelURL: '/inventory-items',
+      cancelURL: `/inventory/profile/${fixtures.servicePoint2.id}`,
       openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
-      redirectURL: 'inventory-items-done',
+      redirectURL: `/inventory/profile/${fixtures.servicePoint2.id}`,
       servicePointId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
       initialValues: {
         accountabilityEndDate: moment(fixtures.inventories[0].accountabilityEndDate),
@@ -416,7 +416,7 @@ describe('containers/InventoryAddEdit', () => {
       },
     ]);
     // Redirect to redirect URL
-    expect(history.location.pathname).toEqual('/inventory-items-done');
+    expect(history.location.pathname).toEqual(`/inventory/profile/${fixtures.servicePoint2.id}`);
 
     wrapper.unmount();
   });

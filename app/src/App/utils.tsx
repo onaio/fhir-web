@@ -21,7 +21,6 @@ import {
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
 } from '../configs/env';
-import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '@opensrp/inventory';
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
@@ -121,6 +120,4 @@ export const missionAssignmentProps = {
 
 export const inventoryItemAddEditProps = {
   openSRPBaseURL: OPENSRP_API_BASE_URL,
-  cancelURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
-  redirectURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 };

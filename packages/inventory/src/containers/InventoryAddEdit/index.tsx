@@ -21,6 +21,7 @@ import {
 } from '@opensrp/location-management';
 import {
   INVENTORY_DONORS,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
   INVENTORY_UNICEF_SECTIONS,
   OPENSRP_ENDPOINT_GET_INVENTORIES,
   OPENSRP_ENDPOINT_LOCATION,
@@ -63,8 +64,8 @@ export interface InventoryAddEditProps extends RouteComponentProps<RouteParams> 
 /** default component props */
 export const defaultInventoryAddEditProps = {
   openSRPBaseURL: '',
-  cancelURL: '',
-  redirectURL: '',
+  cancelURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
+  redirectURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
   fetchLocationUnitsCreator: fetchLocationUnits,
   fetchInventoriesCreator: fetchInventories,
   servicePoint: null,
@@ -192,9 +193,9 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       }
       return 0;
     }),
-    cancelURL,
+    cancelURL: `${cancelURL}/${id}`,
     openSRPBaseURL,
-    redirectURL,
+    redirectURL: `${redirectURL}/${id}`,
     servicePointId: id,
     initialValues,
     inventoryID: inventory?._id,
