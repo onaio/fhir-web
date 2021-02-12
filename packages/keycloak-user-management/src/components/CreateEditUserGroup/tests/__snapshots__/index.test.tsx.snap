@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/CreateEditUser renders correctly 1`] = `
+Object {
+  "children": <Col
+    span={24}
+  >
+    <UserGroupForm
+      initialValues={
+        Object {
+          "access": Object {
+            "manage": false,
+            "manageMembership": false,
+            "view": false,
+          },
+          "attributes": Object {},
+          "clientRoles": Object {},
+          "id": "",
+          "name": "",
+          "path": "",
+          "realmRoles": Array [],
+          "subGroups": Array [],
+        }
+      }
+      keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
+    />
+  </Col>,
+}
+`;
