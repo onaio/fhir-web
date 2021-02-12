@@ -2,7 +2,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
-import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
+import { IdcardOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
@@ -16,6 +16,7 @@ import {
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_USER_GROUPS,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -57,8 +58,11 @@ import {
   SERVICE_POINT_INVENTORY,
   INVENTORY,
   ADD_INVENTORY_VIA_CSV,
+  USER_GROUPS,
 } from '../../../lang';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
+import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
+import MapMarkerOutline from '@opensrp/ant-icons/lib/MapMarkerOutline';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -72,7 +76,6 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 };
 
 /** The Sidebar component */
-
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
   const { extraData } = props;
   const { roles } = extraData;
@@ -97,7 +100,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         className="menu-dark"
       >
         {ENABLE_PLANS && (
-          <Menu.SubMenu key="missions" icon={<DashboardOutlined />} title={MISSIONS}>
+          <Menu.SubMenu
+            key="missions"
+            icon={<MapMarkerOutline className="sidebar-icons" />}
+            title={MISSIONS}
+          >
             <Menu.Item key="active">
               <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
                 {ACTIVE}
@@ -121,7 +128,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           </Menu.SubMenu>
         )}
         {ENABLE_CARD_SUPPORT && (
-          <Menu.SubMenu key="card-support" title={CARD_SUPPORT} icon={<IdcardOutlined />}>
+          <Menu.SubMenu
+            key="card-support"
+            title={CARD_SUPPORT}
+            icon={<IdcardOutlined className="sidebar-icons" />}
+          >
             <Menu.Item key="card-support-client-data">
               <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
                 {DOWNLOAD_CLIENT_DATA}
@@ -130,7 +141,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           </Menu.SubMenu>
         )}
         {ENABLE_INVENTORY && (
-          <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
+          <Menu.SubMenu
+            key="inventory"
+            icon={<ArchiveOutline className="sidebar-icons" />}
+            title={INVENTORY}
+          >
             <Menu.Item key="list">
               <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
                 {SERVICE_POINT_INVENTORY}
@@ -143,12 +158,21 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.Item>
           </Menu.SubMenu>
         )}
-        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
+        <Menu.SubMenu
+          key="admin"
+          icon={<SettingOutlined className="sidebar-icons" />}
+          title={ADMIN}
+        >
           {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
             <Menu.SubMenu key="users" title={USERS}>
               <Menu.Item key={'list'}>
                 <Link to={URL_USER} className="admin-link">
                   {USER_MANAGEMENT}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key={'groups'}>
+                <Link to={URL_USER_GROUPS} className="admin-link">
+                  {USER_GROUPS}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>

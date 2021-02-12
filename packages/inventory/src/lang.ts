@@ -31,6 +31,28 @@ export const UNICEF_SECTION = 'UNICEF section';
 export const DONOR = 'Donor';
 export const PO_NUMBER = 'PO number';
 export const SELECT = 'Select';
+
+// Service point profile
+export const INVENTORY_ITEMS = 'Inventory items';
+export const EDIT_SERVICE_POINT = 'Edit service point';
+export const ADD_NEW_INVENTORY_ITEM = 'Add new inventory item';
+export const PRODUCT_NAME_TH = 'Product name';
+export const QTY_TH = 'Qty';
+export const PO_NUMBER_TH = 'PO no.';
+export const SERIAL_NUMBER_TH = 'Serial no.';
+export const DELIVERY_DT_TH = 'Delivery dt.';
+export const ACCOUNT_END_DT_TH = 'Acct. end dt.';
+export const UNICEF_SECTION_TH = 'Unicef section';
+export const DONOR_TH = 'Donor';
+
+export const REGION_LABEL = 'Region';
+export const TYPE_LABEL = 'Type';
+export const DISTRICT_LABEL = 'District';
+export const LAT_LONG_LABEL = 'Latitude/longitude';
+export const COMMUNE_LABEL = 'Commune';
+export const SERVICE_POINT_ID_LABEL = 'Service point ID';
+
+export const ERROR_OCCURRED = 'An error occurred';
 export const ADD_INVENTORY_VIA_CSV = 'Add inventory via CSV';
 export const USE_CSV_TO_UPLOAD_INVENTORY = 'Use a CSV file to add service point inventory';
 export const CHANCE_TO_REVIEW_BEFORE_COMMITTING =
@@ -73,3 +95,5 @@ export const PRODUCT = 'Product';
 export const SERIAL_NUMBER = 'Serial number';
 export const EDIT_INVENTORY_ITEM = 'Edit inventory item';
 export const EDIT = 'Edit';
+export const BACK_TO_SERVICE_POINT_LIST = 'Back to the list of service points';
+export const ERROR_GETTING_INVENTORIES = 'Unable to fetch inventories for service point';

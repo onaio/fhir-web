@@ -13,6 +13,7 @@ export const URL_LOGOUT = '/logout';
 export const URL_HOME = '/';
 
 export const URL_USER = `${URL_ADMIN}/users/list`;
+export const URL_USER_GROUPS = `${URL_ADMIN}/users/groups`;
 export const URL_USER_EDIT = `${URL_ADMIN}/users/edit`;
 export const URL_TEAMS = `${URL_ADMIN}/teams`;
 export const URL_TEAM_ADD = `${URL_ADMIN}/teams/add`;

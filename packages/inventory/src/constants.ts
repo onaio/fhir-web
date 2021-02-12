@@ -16,6 +16,7 @@ export const INVENTORY_SERVICE_POINT_PROFILE_VIEW = '/inventory/profile';
 export const INVENTORY_BULK_UPLOAD_URL = '/inventory/upload';
 export const INVENTORY_ADD_SERVICE_POINT = '/inventory/servicePoint/add';
 export const INVENTORY_EDIT_SERVICE_POINT = '/inventory/servicePoint/edit';
+export const INVENTORY_SERVICE_POINT_PROFILE_PARAM = 'servicePointId';
 
 // other constants
 /** namespace for the keys attached to the columns */
@@ -35,6 +36,13 @@ export const tablePaginationOptions = {
   defaultPageSize: TABLE_PAGE_SIZE,
   pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
 };
+
+//endpoints
+export const GET_INVENTORY_BY_SERVICE_POINT = 'stockresource/servicePointId/';
+export const LOCATION = 'location';
+
+// Geographic levels
+export const GEOGRAPHIC_LEVEL = { REGION: 1, DISTRICT: 2, COMMUNE: 3 };
 export const CSV_FILE_TYPE = '.csv';
 export const COMMUNE_GEOGRAPHIC_LEVEL = 3;
 
