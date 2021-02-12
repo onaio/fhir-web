@@ -6,7 +6,6 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { KEYCLOAK_URL_USER_GROUPS, URL_USER_GROUPS } from '../../constants';
 import {
   CANCEL,
-  ADD_USER,
   SAVE,
   SAVING,
   NAME_REQUIRED,
@@ -14,6 +13,7 @@ import {
   EDIT_USER_GROUP,
   MESSAGE_USER_GROUP_EDITED,
   MESSAGE_USER_GROUP_CREATED,
+  ADD_USER_GROUP,
 } from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 /** Interface for practitioner json object */
@@ -85,7 +85,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
     <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
       <h5 className="mb-3 header-title">
-        {props.initialValues.id ? `${EDIT_USER_GROUP} | ${initialValues.name}` : ADD_USER}
+        {props.initialValues.id ? `${EDIT_USER_GROUP} | ${initialValues.name}` : ADD_USER_GROUP}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <Form

@@ -1,21 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/CreateEditUserGroup renders correctly 1`] = `
-Object {
-  "children": <Col
-    span={24}
-  >
-    <UserGroupForm
-      initialValues={
-        Object {
-          "id": "283c5d6e-9b83-4954-9f3b-4c2103e4370c",
-          "name": "Admin",
-          "path": "/Admin",
-          "subGroups": Array [],
-        }
-      }
-      keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
-    />
-  </Col>,
-}
-`;
+exports[`components/CreateEditUserGroup renders correctly: full user group form 1`] = `"Edit User Group | AdminNameSaveCancel"`;
