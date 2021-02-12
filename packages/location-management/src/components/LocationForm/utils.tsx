@@ -295,7 +295,6 @@ export const validationRules = {
       };
     },
   ] as Rule[],
-
   serviceTypes: [
     ({ getFieldValue }) => {
       const instance = getFieldValue('instance');
@@ -309,11 +308,39 @@ export const validationRules = {
       };
     },
   ] as Rule[],
+  longitude: [
+    () => ({
+      validator(_, value) {
+        if (!value) {
+          return Promise.resolve();
+        }
+        return rejectIfNan(value, `Longitude should be a number`);
+      },
+    }),
+  ] as Rule[],
+  latitude: [
+    () => ({
+      validator(_, value) {
+        if (!value) {
+          return Promise.resolve();
+        }
+        return rejectIfNan(value, `Latitude should be a number`);
+      },
+    }),
+  ] as Rule[],
   extraFields: [
     {
       required: false,
     },
   ],
+};
+
+const rejectIfNan = (value: number, message: string) => {
+  if (isNaN(Number(value))) {
+    return Promise.reject(message);
+  } else {
+    return Promise.resolve();
+  }
 };
 
 /** gets location tag options for location form location tags select field
