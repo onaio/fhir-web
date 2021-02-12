@@ -79,6 +79,7 @@ export const getInventoriesByIds = (store: Partial<Store>) => {
 interface Filters {
   ids?: string[];
   servicePointIds?: string[];
+  expired?: boolean;
 }
 
 /** gets all trees key'd by the rootNodes id
@@ -88,6 +89,7 @@ interface Filters {
  */
 const getIds = (store: Partial<Store>, props: Filters) => props.ids;
 const getServicePointIds = (store: Partial<Store>, props: Filters) => props.servicePointIds;
+const getServicePointsByExpiry = (store: Partial<Store>, props: Filters) => props.expired;
 
 /** factory that returns a selector to retrieve the inventories using stock ids */
 export const getInventoriesByIdsFactory = createSelector(
@@ -122,5 +124,31 @@ export const getInventoriesByServicePointsIdsFactory = createSelector(
       return inventoriesOfInterest;
     }
     return values(inventoriesByIds);
+  }
+);
+
+/** factory that returns a selector to retrieve the inventories by their expiry */
+export const getInventoriesByExpiry = createSelector(
+  getInventoriesArray,
+  getServicePointsByExpiry,
+  (inventories, returnExpired) => {
+    const inventoriesOfInterest: Inventory[] = [];
+    if (returnExpired === undefined) {
+      return inventories;
+    } else if (!returnExpired) {
+      inventories.forEach((inventory) => {
+        if (new Date(inventory.deliveryDate) < new Date(inventory.accountabilityEndDate)) {
+          inventoriesOfInterest.push(inventory);
+        }
+      });
+      return inventoriesOfInterest;
+    } else {
+      inventories.forEach((inventory) => {
+        if (new Date(inventory.deliveryDate) > new Date(inventory.accountabilityEndDate)) {
+          inventoriesOfInterest.push(inventory);
+        }
+      });
+      return inventoriesOfInterest;
+    }
   }
 );

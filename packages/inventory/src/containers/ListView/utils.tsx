@@ -31,7 +31,7 @@ export interface TableData {
 export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (record) => {
   return (
     <>
-      <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.uniqueId}`}>View</Link>
+      <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>View</Link>
     </>
   );
 };
