@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Row, Col, Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table/interface';
-import { columns } from '../../containers/ProfileView/utils';
+import { columns } from '../../containers/ServicePointProfile/utils';
 import { Link } from 'react-router-dom';
 import {
   GET_INVENTORY_BY_SERVICE_POINT,
@@ -53,7 +53,7 @@ const InventoryList = (props: InventoryListProps) => {
   useEffect(() => {
     // api call to get inventory by id
     const serve = new OpenSRPService(
-      `${GET_INVENTORY_BY_SERVICE_POINT}${servicePointId}`,
+      `${GET_INVENTORY_BY_SERVICE_POINT}${servicePointId}?returnProduct=true`,
       opensrpBaseURL
     );
     serve

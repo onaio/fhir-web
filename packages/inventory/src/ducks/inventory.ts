@@ -10,6 +10,7 @@ import { values } from 'lodash';
 import { Store } from 'redux';
 import { createSelector } from 'reselect';
 import { Dictionary } from '@onaio/utils';
+import { ProductFormFields } from '@opensrp/product-catalogue/dist/types';
 
 /** interface custom properties for inventory */
 export interface CustomProperties {
@@ -34,6 +35,7 @@ export interface InventoryPost {
 /** interface inventory */
 export interface Inventory {
   type: string;
+  product: ProductFormFields;
   serverVersion: number;
   identifier: string;
   providerid: string;

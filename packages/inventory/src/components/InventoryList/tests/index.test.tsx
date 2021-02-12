@@ -7,7 +7,7 @@ import {
   fetchCalls,
   inventories,
   opensrpBaseURL,
-} from '../../../containers/ProfileView/tests/fixtures';
+} from '../../../containers/ServicePointProfile/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { InventoryList } from '..';
 import { Provider } from 'react-redux';

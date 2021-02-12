@@ -1,6 +1,6 @@
 export * from './constants';
 export * from './containers/ListView';
-export * from './containers/ProfileView';
+export * from './containers/ServicePointProfile';
 export * from './ducks/inventory';
 export * from './helpers/dataLoaders';
 export * from './containers/BulkUpload';

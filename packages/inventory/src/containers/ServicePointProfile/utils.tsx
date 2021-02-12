@@ -28,6 +28,19 @@ export const ActionsColumnCustomRender: ColumnType<Inventory>['render'] = (recor
 export const columns: ColumnsType<Inventory> = [
   {
     title: PRODUCT_NAME_TH,
+    dataIndex: 'product',
+    key: `${TableColumnsNamespace}-${PRODUCT_NAME_TH}`,
+    defaultSortOrder: 'descend',
+    render: (item) => item.productName,
+    sorter: (rec1, rec2) => {
+      if (rec1.product.productName > rec2.product.productName) {
+        return -1;
+      } else if (rec1.product.productName < rec2.product.productName) {
+        return 1;
+      } else {
+        return 0;
+      }
+    },
   },
   {
     title: QTY_TH,
