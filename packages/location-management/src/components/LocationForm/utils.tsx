@@ -380,3 +380,93 @@ export const treeToOptions = (
   };
   return trees.map(recurseCreateOptions);
 };
+
+/**
+ * validate coordinates, returns true only if coordinates belong to a point
+ *
+ * @param geoJson - the geojson object
+ */
+export const cordIsPoint = (geoJson?: Partial<Geometry>) => {
+  return (
+    geoJson?.type === 'Point' &&
+    Array.isArray(geoJson.coordinates) &&
+    geoJson.coordinates.length === 2
+  );
+};
+
+export const getPointCoordinates = (geoText: string) => {
+  let geojson: Geometry;
+  try {
+    geojson = JSON.parse(geoText);
+  } catch (err) {
+    return {};
+  }
+  const isPoint = cordIsPoint(geojson);
+  if (!isPoint) {
+    return {};
+  }
+  const lng = (geojson as Point).coordinates[0];
+  const lat = (geojson as Point).coordinates[1];
+
+  const longitude = lng ? String(lng) : undefined;
+  const latitude = lat ? String(lat) : undefined;
+
+  return { longitude, latitude };
+};
+
+export const handleGeoFieldsChangeFactory = (form: FormInstance) => {
+  return (changedValues: Partial<LocationFormFields>, allValues: LocationFormFields) => {
+    /** location fields that could possible change */
+    const { geometry, latitude, longitude } = changedValues;
+    if (geometry !== undefined) {
+      // means geometry changed
+      const { longitude, latitude } = getPointCoordinates(geometry);
+      form.setFieldsValue({
+        longitude,
+        latitude,
+      });
+    }
+
+    const { geometry: existingGeo, latitude: existingLat, longitude: ExistingLng } = allValues;
+    let currentGeoJson;
+    try {
+      currentGeoJson = JSON.parse(existingGeo ?? '{}');
+    } catch (err) {
+      currentGeoJson = {};
+    }
+
+    if (latitude !== undefined) {
+      // means latitude changed
+      const isPoint = cordIsPoint(currentGeoJson);
+      const parsedLatitude = Number(latitude);
+      if (isPoint) {
+        const currentGeometry = { ...currentGeoJson };
+        currentGeometry.coordinates[1] = parsedLatitude;
+        form.setFieldsValue({
+          geometry: JSON.stringify(currentGeometry),
+        });
+      } else {
+        form.setFieldsValue({
+          geometry: JSON.stringify({ type: 'Point', coordinates: [ExistingLng, parsedLatitude] }),
+        });
+      }
+    }
+
+    if (longitude !== undefined) {
+      // means longitude changed
+      const isPoint = cordIsPoint(currentGeoJson);
+      const parsedLongitude = Number(longitude);
+      if (isPoint) {
+        const currentGeometry = { ...currentGeoJson };
+        currentGeometry.coordinates[0] = Number(longitude);
+        form.setFieldsValue({
+          geometry: JSON.stringify(currentGeometry),
+        });
+      } else {
+        form.setFieldsValue({
+          geometry: JSON.stringify({ type: 'Point', coordinates: [parsedLongitude, existingLat] }),
+        });
+      }
+    }
+  };
+};
