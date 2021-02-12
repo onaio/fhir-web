@@ -8,6 +8,7 @@ import {
   generateLocationUnit,
   getLocationTagOptions,
   getServiceTypeOptions,
+  handleGeoFieldsChangeFactory,
   LocationFormFields,
   ServiceTypeSetting,
   validationRules,
@@ -159,6 +160,8 @@ const LocationForm = (props: LocationFormProps) => {
     return <Redirect to={redirectAfterAction} />;
   }
 
+  const geoFieldsChangeHandler = handleGeoFieldsChangeFactory(form);
+
   return (
     <div className="location-form form-container">
       <Form
@@ -167,6 +170,7 @@ const LocationForm = (props: LocationFormProps) => {
         name="location-form"
         scrollToFirstError
         initialValues={initialValues}
+        onValuesChange={geoFieldsChangeHandler}
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={(values) => {
           const payload = generateLocationUnit(
@@ -321,6 +325,26 @@ const LocationForm = (props: LocationFormProps) => {
               rows={4}
               placeholder={GEOMETRY_PLACEHOLDER}
             />
+          </FormItem>
+
+          <FormItem
+            id="latitude"
+            hidden={isHidden('latitude')}
+            name="latitude"
+            label={'Latitude'}
+            rules={validationRules.latitude}
+          >
+            <Input disabled={disabled.includes('latitude')} placeholder={''} />
+          </FormItem>
+
+          <FormItem
+            id="longitude"
+            hidden={isHidden('longitude')}
+            name="longitude"
+            label={'Longitude'}
+            rules={validationRules.longitude}
+          >
+            <Input disabled={disabled.includes('longitude')} placeholder={''} />
           </FormItem>
 
           <FormItem
