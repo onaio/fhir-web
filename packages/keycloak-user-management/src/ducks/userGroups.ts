@@ -11,9 +11,17 @@ export const reducerName = 'keycloakUserGroups';
 
 /** Interface for user group json object */
 export interface KeycloakUserGroup {
+  access?: {
+    view: boolean;
+    manage: boolean;
+    manageMembership: boolean;
+  };
+  attributes?: Dictionary;
+  clientRoles?: Dictionary;
   id: string;
   name: string;
   path: string;
+  realmRoles?: string[];
   subGroups: string[];
 }
 
