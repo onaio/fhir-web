@@ -149,6 +149,12 @@ const LocationForm = (props: LocationFormProps) => {
 
   const [form] = Form.useForm();
 
+  React.useEffect(() => {
+    form.setFieldsValue({
+      ...initialValues,
+    });
+  }, [form, initialValues]);
+
   const status = [
     { label: LOCATION_ACTIVE_STATUS_LABEL, value: LocationUnitStatus.ACTIVE },
     { label: LOCATION_INACTIVE_STATUS_LABEL, value: LocationUnitStatus.INACTIVE },
