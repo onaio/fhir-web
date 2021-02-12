@@ -8,6 +8,7 @@ export const OPENSRP_ENDPOINT_STOCK_RESOURCE = 'stockresource/';
 export const LOCATIONS_COUNT_ALL_ENDPOINT = 'location/countAll';
 export const OPENSRP_ENDPOINT_GET_INVENTORIES = 'stockresource/servicePointId';
 export const OPENSRP_ENDPOINT_LOCATION = 'location';
+export const OPENSRP_PRODUCT_CATALOGUE = 'product-catalogue';
 
 // router routes
 export const INVENTORY_SERVICE_POINT_LIST_VIEW = '/inventory/list';

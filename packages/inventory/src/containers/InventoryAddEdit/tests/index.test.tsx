@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { fetchLocationUnits, removeLocationUnits } from '@opensrp/location-management';
-import { fetchProducts, removeProducts } from '@opensrp/product-catalogue';
+import { removeProducts } from '@opensrp/product-catalogue';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
@@ -95,10 +95,8 @@ describe('containers/InventoryAddEdit', () => {
     openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
     cancelURL: '/inventory-items',
     redirectURL: 'inventory-items-done',
-    fetchProductsCreator: fetchProducts,
     fetchLocationUnitsCreator: fetchLocationUnits,
     fetchInventoriesCreator: fetchInventories,
-    products: [],
     servicePoint: null,
     location: {
       hash: '',

@@ -7,14 +7,6 @@ import { Helmet } from 'react-helmet';
 import { OpenSRPService } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ADD_INVENTORY_ITEM, EDIT, EDIT_INVENTORY_ITEM, ERROR_GENERIC, TO } from '../../lang';
-import {
-  ProductCatalogue,
-  fetchProducts,
-  getProductArray,
-  loadProductCatalogue,
-  reducerName as productCatalogueReducerName,
-  ProductCatalogueReducer,
-} from '@opensrp/product-catalogue';
 import { fetchSettings } from './utils';
 import { Setting } from '../../components/InventoryItemForm';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -32,6 +24,7 @@ import {
   INVENTORY_UNICEF_SECTIONS,
   OPENSRP_ENDPOINT_GET_INVENTORIES,
   OPENSRP_ENDPOINT_LOCATION,
+  OPENSRP_PRODUCT_CATALOGUE,
   ROUTE_PARAM_INVENTORY_ITEM_ID,
   ROUTE_PARAM_SERVICE_POINT_ID,
 } from '../../constants';
@@ -43,10 +36,10 @@ import {
   inventoryReducerName,
 } from '../../ducks/inventory';
 import { InventoryItemForm, defaultInitialValues } from '../../components/InventoryItemForm';
+import { ProductCatalogue } from '@opensrp/product-catalogue';
 
 /** register reducers */
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
-reducerRegistry.register(productCatalogueReducerName, ProductCatalogueReducer);
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 
 /** Route params */
@@ -57,11 +50,9 @@ interface RouteParams {
 
 /** interface component props */
 export interface InventoryAddEditProps extends RouteComponentProps<RouteParams> {
-  products: ProductCatalogue[];
   openSRPBaseURL: string;
   cancelURL: string;
   redirectURL: string;
-  fetchProductsCreator: typeof fetchProducts;
   fetchLocationUnitsCreator: typeof fetchLocationUnits;
   fetchInventoriesCreator: typeof fetchInventories;
   servicePoint: LocationUnit | null;
@@ -74,8 +65,6 @@ export const defaultInventoryAddEditProps = {
   openSRPBaseURL: '',
   cancelURL: '',
   redirectURL: '',
-  products: [],
-  fetchProductsCreator: fetchProducts,
   fetchLocationUnitsCreator: fetchLocationUnits,
   fetchInventoriesCreator: fetchInventories,
   servicePoint: null,
@@ -85,8 +74,6 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const {
     openSRPBaseURL,
     cancelURL,
-    products,
-    fetchProductsCreator,
     fetchLocationUnitsCreator,
     fetchInventoriesCreator,
     redirectURL,
@@ -97,6 +84,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   } = props;
   const [UNICEFSections, setUNICEFSections] = React.useState<Setting[]>([]);
   const [donors, setDonors] = React.useState<Setting[]>([]);
+  const [products, setProducts] = React.useState<ProductCatalogue[]>([]);
   const { Title } = Typography;
   const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ITEM_ID];
 
@@ -122,14 +110,21 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   }, [servicePoint, fetchLocationUnitsCreator, openSRPBaseURL, customFetchOptions, match.params]);
 
   useEffect(() => {
-    if (!products.length) {
-      loadProductCatalogue(
-        openSRPBaseURL,
-        OpenSRPService,
-        fetchProductsCreator
-      ).catch((_: HTTPError) => sendErrorNotification(ERROR_GENERIC));
-    }
-  }, [products.length, openSRPBaseURL, fetchProductsCreator]);
+    const service = new OpenSRPService(
+      OPENSRP_PRODUCT_CATALOGUE,
+      openSRPBaseURL,
+      customFetchOptions
+    );
+    service
+      .list()
+      .then((response: ProductCatalogue[]) => {
+        setProducts(response);
+      })
+      .catch((_: HTTPError) => {
+        sendErrorNotification(ERROR_GENERIC);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     fetchSettings(openSRPBaseURL, { serverVersion: 0, identifier: INVENTORY_DONORS }, setDonors);
@@ -188,7 +183,15 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const inventoryItemFormProps = {
     UNICEFSections,
     donors,
-    products,
+    products: products.sort((a, b) => {
+      if (a.productName < b.productName) {
+        return -1;
+      }
+      if (a.productName > b.productName) {
+        return 1;
+      }
+      return 0;
+    }),
     cancelURL,
     openSRPBaseURL,
     redirectURL,
@@ -214,10 +217,7 @@ InventoryAddEdit.defaultProps = defaultInventoryAddEditProps;
 
 export { InventoryAddEdit };
 
-type MapStateToProps = Pick<
-  InventoryAddEditProps,
-  'products' | 'servicePoint' | 'inventory' | 'match'
->;
+type MapStateToProps = Pick<InventoryAddEditProps, 'servicePoint' | 'inventory' | 'match'>;
 
 const mapStateToProps = (
   state: Partial<Store>,
@@ -237,26 +237,15 @@ const mapStateToProps = (
     inventory = getInventoriesByIdsFactory(state, { ids: [inventoryId] })[0];
   }
 
-  const products = getProductArray(state).sort((a, b) => {
-    if (a.productName < b.productName) {
-      return -1;
-    }
-    if (a.productName > b.productName) {
-      return 1;
-    }
-    return 0;
-  });
-
-  return { products, servicePoint, inventory, match };
+  return { servicePoint, inventory, match };
 };
 
 type MapDispatchToProps = Pick<
   InventoryAddEditProps,
-  'fetchProductsCreator' | 'fetchLocationUnitsCreator' | 'fetchInventoriesCreator'
+  'fetchLocationUnitsCreator' | 'fetchInventoriesCreator'
 >;
 
 const mapDispatchToProps: MapDispatchToProps = {
-  fetchProductsCreator: fetchProducts,
   fetchLocationUnitsCreator: fetchLocationUnits,
   fetchInventoriesCreator: fetchInventories,
 };
