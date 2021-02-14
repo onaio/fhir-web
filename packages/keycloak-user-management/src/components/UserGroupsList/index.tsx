@@ -22,7 +22,12 @@ import {
   USER_GROUPS_PAGE_HEADER,
   VIEW_DETAILS,
 } from '../../lang';
-import { KEYCLOAK_URL_USER_GROUPS, SEARCH_QUERY_PARAM } from '../../constants';
+import {
+  KEYCLOAK_URL_USER_GROUPS,
+  SEARCH_QUERY_PARAM,
+  URL_USER_GROUP_CREATE,
+  URL_USER_GROUP_EDIT,
+} from '../../constants';
 import {
   fetchKeycloakUserGroups,
   KeycloakUserGroup,
@@ -108,9 +113,9 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
       width: '10%',
 
       // eslint-disable-next-line react/display-name
-      render: () => (
+      render: (record: KeycloakUserGroup) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Link to="#">
+          <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
@@ -143,8 +148,7 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-
-            <Link to="#">
+            <Link to={URL_USER_GROUP_CREATE}>
               <Button type="primary">
                 <PlusOutlined />
                 {ADD_USER_GROUP}

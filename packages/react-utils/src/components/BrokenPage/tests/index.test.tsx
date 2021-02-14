@@ -3,7 +3,7 @@ import React from 'react';
 import { BrokenPage, useHandleBrokenPage } from '..';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { HOME_URL } from '../../constants';
+import { HOME_URL } from '../../../constants';
 
 const history = createBrowserHistory();
 
