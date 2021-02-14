@@ -1,10 +1,9 @@
 import { history } from '@onaio/connected-reducer-registry';
-import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { v4 } from 'uuid';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { KeycloakUser } from '../../../ducks/user';
+import { UserAction } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
   URL_USER,
@@ -14,71 +13,52 @@ import {
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   MESSAGE_USER_EDITED,
-  MESSAGE_USER_CREATED,
   ERROR_OCCURED,
   PRACTITIONER_UPDATED_SUCCESSFULLY,
   PRACTITIONER_CREATED_SUCCESSFULLY,
 } from '../../../lang';
-import { Practitioner } from '.';
+import { FormFields } from '.';
+import { Dictionary } from '@onaio/utils';
 
 /** Utility function to set new user UUID extracted from the
  * POST response location header
  *
  * @param {Response} response - response object from POST request
- * @param {object} values - form submit values to be POSTed
- * @returns {object} - new values object with userid set
+ * @param {FormFields} values - form submit values to be POSTed
+ * @returns {FormFields} - new values object with userid set
  *
  */
-export const buildUserObject = (
-  response: Response,
-  values: Partial<KeycloakUser> & Partial<Practitioner>
-): object => {
+export const buildUserObject = (response: Response, values: FormFields) => {
   const locationStr = response.headers.get('location')?.split('/') as string[];
   const newUUID = locationStr[locationStr.length - 1];
-  return {
-    ...values,
-    id: newUUID as string,
-  };
+  return { ...values, id: newUUID as string };
 };
 
 /**
  *
  * @param {string} baseURL - opensrp API base URL
- * @param {OpenSRPService} serviceClass - opensrp api service class
  * @param {Dictionary} values - form values
- * @param {Practitioner} practitioner - practitioner object
- * @param {boolean} isEdit - boolean to show whether edit mode or not
  */
-export const createOrEditPractitioners = (
-  baseURL: string,
-  serviceClass: typeof OpenSRPService,
-  values: Partial<KeycloakUser> & Partial<Practitioner>,
-  practitioner: Practitioner | undefined,
-  isEdit: boolean
-) => {
-  const requestType = isEdit ? 'update' : 'create';
-  const successMessage = isEdit
+export const createOrEditPractitioners = (baseURL: string, values: FormFields) => {
+  const requestType = values.practitioner ? 'update' : 'create';
+  const successMessage = values.practitioner
     ? PRACTITIONER_UPDATED_SUCCESSFULLY
     : PRACTITIONER_CREATED_SUCCESSFULLY;
   const practitionerValues = {
-    active: isEdit ? values.active : true,
-    identifier: practitioner ? practitioner.identifier : v4(),
+    active: values.practitioner ? values.active : true,
+    identifier: values.practitioner ? values.practitioner.identifier : v4(),
     name: `${values.firstName} ${values.lastName}`,
-    userId: values.userId || values.id,
+    userId: values.practitioner ? values.practitioner.userId : values.id,
     username: values.username,
   };
 
-  const practitionersService = new serviceClass('practitioner', baseURL);
+  const practitionersService = new OpenSRPService('practitioner', baseURL);
   practitionersService[requestType](practitionerValues)
     .then(() => {
-      if (!isEdit) {
-        history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
-      }
+      if (!values.practitioner) history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
       sendSuccessNotification(successMessage);
     })
-    .catch((_: Error) => {
-      sendErrorNotification(ERROR_OCCURED);
-    });
+    .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
 };
 
 /**
@@ -87,106 +67,50 @@ export const createOrEditPractitioners = (
  * @param {Dictionary} values - form values
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {string} opensrpBaseURL - opensrp api base url
- * @param {KeycloakService} keycloakServiceClass - keycloak API service class
- * @param {OpenSRPService} opensrpServiceClass - OpenSRP API service
- * @param {Function} setSubmitting - method to set submission status
- * @param {Practitioner} practitioner - single practitioner object
- * @param {string} userId - keycloak user id, required when editing a user
  */
-export const submitForm = (
-  values: Partial<KeycloakUser> & Partial<Practitioner>,
+export const submitForm = async (
+  values: FormFields,
   keycloakBaseURL: string,
-  opensrpBaseURL: string,
-  keycloakServiceClass: typeof KeycloakService,
-  opensrpServiceClass: typeof OpenSRPService,
-  setSubmitting: (isSubmitting: boolean) => void,
-  practitioner: Practitioner | undefined,
-  userId?: string
-): void => {
-  const isEditing = !!userId;
-  setSubmitting(true);
-  const keycloakUserValues = {
+  opensrpBaseURL: string
+): Promise<void> => {
+  const keycloakUserValues: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
+    Partial<FormFields> = {
     ...values,
   };
   delete keycloakUserValues.active;
-  if (userId) {
-    const serve = new keycloakServiceClass(`${KEYCLOAK_URL_USERS}/${userId}`, keycloakBaseURL);
-    serve
-      .update(keycloakUserValues)
-      .then(() => {
-        createOrEditPractitioners(
-          opensrpBaseURL,
-          opensrpServiceClass,
-          {
-            ...values,
-            userId,
-          },
-          practitioner,
-          isEditing
-        );
-        setSubmitting(false);
-        sendSuccessNotification(MESSAGE_USER_EDITED);
-        history.push(URL_USER);
-      })
-      .catch((_: Error) => {
-        setSubmitting(false);
-        sendErrorNotification(ERROR_OCCURED);
-      });
-  } else {
-    const serve = new keycloakServiceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
-    serve
-      .create({
-        ...keycloakUserValues,
-        enabled: true,
-      })
-      .then((response: Response | undefined) => {
-        // workaround to get userId for newly created user
-        // immediately after performing a POST
-        const newValues = response ? buildUserObject(response, values) : values;
-        createOrEditPractitioners(
-          opensrpBaseURL,
-          opensrpServiceClass,
-          newValues,
-          practitioner,
-          isEditing
-        );
-        setSubmitting(false);
-        sendSuccessNotification(MESSAGE_USER_CREATED);
-      })
-      .catch((_: Error) => {
-        setSubmitting(false);
-        sendErrorNotification(ERROR_OCCURED);
-      });
-  }
-};
+  delete keycloakUserValues.userGroup;
+  delete keycloakUserValues.practitioner;
 
-/** interface user action */
-export interface UserAction {
-  alias: string;
-  name: string;
-  providerId: string;
-  enabled: boolean;
-  defaultAction: boolean;
-  priority: number;
-  config: Dictionary;
-}
+  if (values.id) {
+    const serve = new KeycloakService(`${KEYCLOAK_URL_USERS}/${values.id}`, keycloakBaseURL);
+    await serve.update(keycloakUserValues);
+  } else {
+    const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
+    const response: Response | undefined = await serve.create({
+      ...keycloakUserValues,
+      enabled: true,
+    });
+    // workaround to get user Id for newly created user
+    // immediately after performing a POST
+    values = response ? buildUserObject(response, values) : values;
+  }
+
+  createOrEditPractitioners(opensrpBaseURL, values);
+  sendSuccessNotification(MESSAGE_USER_EDITED);
+  history.push(URL_USER);
+};
 
 /**
  * Fetch keycloak user action options
  *
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {Function} setUserActionOptions - method to set state for selected actions
- * @param {KeycloakService} keycloakServiceClass - keycloak API service class
  */
 export const fetchRequiredActions = (
   keycloakBaseURL: string,
-  setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>,
-  keycloakServiceClass: typeof KeycloakService
+  setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>
 ): void => {
-  const keycloakService = new keycloakServiceClass(
-    KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
-    keycloakBaseURL
-  );
+  const keycloakService = new KeycloakService(KEYCLOAK_URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
 
   keycloakService
     .list()
@@ -195,7 +119,5 @@ export const fetchRequiredActions = (
         response.filter((action: UserAction) => action.alias !== 'terms_and_conditions')
       );
     })
-    .catch((_: Error) => {
-      sendErrorNotification(ERROR_OCCURED);
-    });
+    .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
 };
