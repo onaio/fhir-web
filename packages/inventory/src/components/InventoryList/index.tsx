@@ -96,7 +96,12 @@ const InventoryList = (props: InventoryListProps) => {
               </Button>
             </Link>
           </div>
-          <Table pagination={false} dataSource={dataSource} columns={columns}></Table>
+          <Table
+            className="custom-table"
+            pagination={false}
+            dataSource={dataSource}
+            columns={columns}
+          ></Table>
         </Col>
       </Row>
     </>
