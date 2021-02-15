@@ -15,8 +15,7 @@ import {
   fetchTree,
 } from '@opensrp/location-management';
 import { useDispatch, useSelector } from 'react-redux';
-import { ColumnsType } from 'antd/lib/table/interface';
-import { columns, GeographicLocationInterface } from './utils';
+import { GeographicLocationInterface } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Link, RouteComponentProps, useParams } from 'react-router-dom';
@@ -28,6 +27,9 @@ import {
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
   INVENTORY_SERVICE_POINT_PROFILE_PARAM,
   INVENTORY_EDIT_SERVICE_POINT,
+  URL_INVENTORY_ADD,
+  URL_INVENTORY_EDIT,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
@@ -42,7 +44,7 @@ import {
   BACK_TO_SERVICE_POINT_LIST,
 } from '../../lang';
 import '../../index.css';
-import { fetchInventories, Inventory } from '../../ducks/inventory';
+import { fetchInventories } from '../../ducks/inventory';
 import { getNodePath } from './utils';
 import { InventoryList } from '../../components/InventoryList';
 /** make sure locations and hierarchy reducer is registered */
@@ -54,18 +56,22 @@ const treesSelector = getTreesByIds();
 
 /** props for the ServicePointProfile view */
 interface ServicePointsProfileProps extends CommonProps {
-  columns: ColumnsType<Inventory>;
   fetchInventories: typeof fetchInventories;
   opensrpBaseURL: string;
   service: typeof OpenSRPService;
+  addInventoryURL: string;
+  editInventoryURL: string;
+  servicePointProfileURL: string;
 }
 
 const defaultProps = {
   ...defaultCommonProps,
-  columns: columns,
   fetchInventories,
   opensrpBaseURL: '',
   service: OpenSRPService,
+  addInventoryURL: URL_INVENTORY_ADD,
+  editInventoryURL: URL_INVENTORY_EDIT,
+  servicePointProfileURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 };
 
 type ServicePointsProfileTypes = ServicePointsProfileProps & RouteComponentProps;
@@ -99,7 +105,13 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
  * @param props - the component props
  */
 const ServicePointProfile = (props: ServicePointsProfileTypes) => {
-  const { opensrpBaseURL, service } = props;
+  const {
+    opensrpBaseURL,
+    service,
+    addInventoryURL,
+    editInventoryURL,
+    servicePointProfileURL,
+  } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
@@ -175,6 +187,13 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
 
   const pageTitle = `${SERVICE_POINT_INVENTORY}`;
   const nodePath = getNodePath(structure, trees);
+  const inventoryListProps = {
+    servicePointId: spId,
+    opensrpBaseURL,
+    addInventoryURL,
+    editInventoryURL,
+    servicePointProfileURL,
+  };
 
   return (
     <>
@@ -220,7 +239,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <InventoryList servicePointId={spId} opensrpBaseURL={opensrpBaseURL} />
+        <InventoryList {...inventoryListProps} />
       </div>
     </>
   );

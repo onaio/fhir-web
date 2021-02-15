@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { HOME_URL } from '../constants';
+import { HOME_URL } from '../../constants';
 
 export interface UtilPageExtraProps {
   homeUrl: string;
