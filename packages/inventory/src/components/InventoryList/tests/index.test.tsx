@@ -127,13 +127,13 @@ describe('Inventory list Page', () => {
 
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 1');
 
-    // Sort
-    heading.find('th').at(0).children().simulate('click');
-    wrapper.update();
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 2');
-    // Sort
+    // Sort Ascending
     heading.find('th').at(0).children().simulate('click');
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 1');
+    // Sort Desending
+    heading.find('th').at(0).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 2');
   });
 });

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ColumnsType } from 'antd/lib/table/interface';
 import { TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import {
@@ -22,23 +23,29 @@ import { Dictionary } from '@onaio/utils';
  * @param servicePointProfileURL route to the service point profile
  * @param editURL route the edit invemtory item
  */
-export const getTableColumns = (servicePointProfileURL: string, editURL: string) => {
+export const getTableColumns = (
+  servicePointProfileURL: string,
+  editURL: string
+): ColumnsType<Inventory> => {
   return [
     {
       title: PRODUCT_NAME_TH,
       dataIndex: 'product',
       key: `${TableColumnsNamespace}-${PRODUCT_NAME_TH}`,
       render: (item: Dictionary) => item.productName,
-      sorter: (rec1: Inventory, rec2: Inventory) => {
+      sorter: (rec1, rec2) => {
         if (rec1.product && rec2.product) {
           if (rec1.product.productName > rec2.product.productName) {
             return -1;
-          } else if (rec1.product.productName < rec2.product.productName) {
+          }
+          if (rec1.product.productName < rec2.product.productName) {
             return 1;
           }
         }
+
         return 0;
       },
+      defaultSortOrder: 'descend',
     },
     {
       title: QTY_TH,
