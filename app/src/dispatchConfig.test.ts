@@ -6,6 +6,7 @@ jest.mock('./configs/env');
 
 it('can dispatch configs', () => {
   expect(store.getState()[configsSliceName]).toEqual({
+    appLoginURL: '/login',
     languageCode: 'en',
     projectLanguageCode: 'eusm',
   });

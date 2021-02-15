@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Inventory list Page shows broken page: error broken page 1`] = `"Unable to fetch inventories for service point"`;

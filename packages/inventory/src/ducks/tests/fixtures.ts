@@ -7,7 +7,7 @@ export const inventory1 = {
   providerid: '34615126-f515-4b31-80ee-c42227f6f0c5',
   value: 1,
   version: 1610612387610,
-  deliveryDate: 'Jan 2, 2020, 3:00:00 AM',
+  deliveryDate: 'May 3, 2021, 3:00:00 AM',
   accountabilityEndDate: 'May 2, 2021, 3:00:00 AM',
   donor: 'ADB',
   serialNumber: '123434',
