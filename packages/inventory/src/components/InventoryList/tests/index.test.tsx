@@ -106,4 +106,34 @@ describe('Inventory list Page', () => {
     expect(wrapper.text()).toMatchSnapshot('error broken page');
     wrapper.unmount();
   });
+
+  it('sorts by file product name', async () => {
+    fetch.once(JSON.stringify(inventories));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <InventoryList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+
+    wrapper.update();
+    const heading = wrapper.find('thead');
+
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 1');
+
+    // Sort
+    heading.find('th').at(0).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 2');
+    // Sort
+    heading.find('th').at(0).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 1');
+  });
 });
