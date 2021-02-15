@@ -17,14 +17,14 @@ export interface NewLocationUnitProps
       'redirectAfterAction' | 'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback'
     >,
     RouteComponentProps {
-  openSRPBaseURL: string;
+  opensrpBaseURL: string;
   instance: FormInstances;
   processInitialValues?: (formFields: LocationFormFields) => LocationFormFields;
 }
 
 const defaultNewLocationUnitProps = {
   redirectAfterAction: '',
-  openSRPBaseURL: OPENSRP_API_BASE_URL,
+  opensrpBaseURL: OPENSRP_API_BASE_URL,
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
@@ -41,7 +41,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     hidden,
     disabled,
     service,
-    openSRPBaseURL,
+    opensrpBaseURL,
     redirectAfterAction,
     processInitialValues,
     disabledTreeNodesCallback,
@@ -60,7 +60,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     disabled,
     onCancel: cancelHandler,
     service,
-    openSRPBaseURL,
+    opensrpBaseURL,
     username: user.username,
     disabledTreeNodesCallback,
   };

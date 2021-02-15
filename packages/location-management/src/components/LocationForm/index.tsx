@@ -57,7 +57,7 @@ export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
   redirectAfterAction: string;
-  openSRPBaseURL: string;
+  opensrpBaseURL: string;
   hidden: string[];
   disabled: string[];
   onCancel: () => void;
@@ -75,7 +75,7 @@ const defaultProps = {
   },
   service: OpenSRPService,
   username: '',
-  openSRPBaseURL: baseURL,
+  opensrpBaseURL: baseURL,
 };
 
 /** responsive layout for the form labels and columns */
@@ -125,7 +125,7 @@ const LocationForm = (props: LocationFormProps) => {
   const {
     initialValues,
     redirectAfterAction,
-    openSRPBaseURL,
+    opensrpBaseURL,
     disabled,
     onCancel,
     hidden,
@@ -185,7 +185,7 @@ const LocationForm = (props: LocationFormProps) => {
             is_jurisdiction: values.isJurisdiction,
           };
 
-          postPutLocationUnit(payload, openSRPBaseURL, service, isEditMode, params)
+          postPutLocationUnit(payload, opensrpBaseURL, service, isEditMode, params)
             .then(() => {
               sendSuccessNotification(successMessage);
               setAreWeDoneHere(true);
@@ -226,7 +226,7 @@ const LocationForm = (props: LocationFormProps) => {
           >
             <CustomTreeSelect
               service={service}
-              baseURL={openSRPBaseURL}
+              baseURL={opensrpBaseURL}
               disabled={disabled.includes('parentId')}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder={PARENT_ID_SELECT_PLACEHOLDER}
@@ -293,7 +293,7 @@ const LocationForm = (props: LocationFormProps) => {
               placeholder={SERVICE_TYPE_PLACEHOLDER}
               disabled={disabled.includes('serviceType')}
               loadData={(setData) => {
-                return loadSettings(SERVICE_TYPES_SETTINGS_ID, openSRPBaseURL, service, setData);
+                return loadSettings(SERVICE_TYPES_SETTINGS_ID, opensrpBaseURL, service, setData);
               }}
               getOptions={getServiceTypeOptions}
             />
@@ -337,7 +337,7 @@ const LocationForm = (props: LocationFormProps) => {
               showSearch
               placeholder={ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER}
               loadData={(setData) => {
-                return loadLocationTags(openSRPBaseURL, service, setData);
+                return loadLocationTags(opensrpBaseURL, service, setData);
               }}
               getOptions={getLocationTagOptions}
               fullDataCallback={setLocationTags}
@@ -345,7 +345,7 @@ const LocationForm = (props: LocationFormProps) => {
           </FormItem>
 
           <ExtraFields
-            baseURL={openSRPBaseURL}
+            baseURL={opensrpBaseURL}
             service={service}
             hidden={isHidden('extraFields')}
             disabled={isDisabled('extraFields')}
