@@ -34,11 +34,12 @@
 .flex-center {
   align-items: center;
   display: flex;
+  justify-content: center;
 }
 
 .inventory-profile-header {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 20px 33px;
 }
 
 .go-back-text {
@@ -51,6 +52,7 @@
 
 .inventory-profile-header .title {
   color: rgba(0, 0, 0, 0.85);
+  font-size: 20px;
 }
 
 .full-page-card .ant-card-head-title {
@@ -79,8 +81,19 @@
   line-height: 28px;
 }
 
-.geography-item .item {
+.geography-item {
+  display: flex;
+}
+
+.geography-item .label {
   color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 16px;
+  margin-right: 5px;
+}
+
+.geography-item .value {
+  color: rgba(0, 0, 0, 0.65);
   font-size: 14px;
   line-height: 16px;
 }

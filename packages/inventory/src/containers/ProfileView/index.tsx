@@ -87,9 +87,8 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
   const { label, value } = props;
   return (
     <Col md={24} className="geography-item">
-      <p className="item">
-        {label}: {value}
-      </p>
+      <p className="label">{label}:</p>
+      <p className="value"> {value}</p>
     </Col>
   );
 };
