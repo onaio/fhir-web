@@ -28,7 +28,7 @@ export const BaseProps = {
 
 export const newLocationUnitProps = {
   redirectAfterAction: URL_LOCATION_UNIT,
-  hidden: 'serviceTypes',
+  hidden: ['serviceType', 'latitude', 'longitude'],
 };
 
 export const editLocationProps = {
