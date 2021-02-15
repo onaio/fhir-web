@@ -26,6 +26,19 @@ export const getTableColumns = (servicePointProfileURL: string, editURL: string)
   return [
     {
       title: PRODUCT_NAME_TH,
+      dataIndex: 'product',
+      key: `${TableColumnsNamespace}-${PRODUCT_NAME_TH}`,
+      render: (item: Dictionary) => item.productName,
+      sorter: (rec1: Inventory, rec2: Inventory) => {
+        if (rec1.product && rec2.product) {
+          if (rec1.product.productName > rec2.product.productName) {
+            return -1;
+          } else if (rec1.product.productName < rec2.product.productName) {
+            return 1;
+          }
+        }
+        return 0;
+      },
     },
     {
       title: QTY_TH,
