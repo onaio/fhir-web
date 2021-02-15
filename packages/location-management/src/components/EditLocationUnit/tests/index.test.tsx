@@ -207,7 +207,6 @@ describe('EditLocationUnit', () => {
 
     // resource not found
     expect(wrapper.text()).toMatchInlineSnapshot(
-      'resource was not found',
       `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
     );
   });
