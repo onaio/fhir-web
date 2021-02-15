@@ -60,6 +60,10 @@ describe('locationForm.utils', () => {
     expect(res3.longitude).toBeUndefined();
     expect(res3.latitude).toBeUndefined();
   });
+  it('derives correct isJurisdiction status from location unit', () => {
+    const res = getLocationFormFields({ ...location1, isJurisdiction: false });
+    expect(res).toEqual({ ...expectedFormFields1, isJurisdiction: false });
+  });
   it('is able to generate location unit from form', () => {
     const res = generateLocationUnit(expectedFormFields1, 'ComboBox', [locationUnitGroups[0]]);
     expect(res).toEqual(generatedLocation1);
