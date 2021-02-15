@@ -40,7 +40,7 @@ export const FILE_HAS_ERRORS = i18n.t('"%s" has errors');
 export const ROW_NUMBER = i18n.t('Row number');
 export const ERRORS = i18n.t('Errors');
 export const INVENTORY_PROCESSING_ERROR = i18n.t(
-  'Processing error, inventory items failed to be added'
+  'Processing error: inventory items failed to be added'
 );
 export const INVENTORY_ITEMS_FAILED_TO_BE_ADDED = i18n.t(
   '%s inventory items failed to be added from “%s”. To add items, follow these steps: '

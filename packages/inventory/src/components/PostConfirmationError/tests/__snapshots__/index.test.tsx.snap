@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`post confirmation Error card page renders and works correctly: card title 1`] = `"Processing error, inventory items failed to be added"`;
+exports[`post confirmation Error card page renders and works correctly: card title 1`] = `"Processing error: inventory items failed to be added"`;
 
 exports[`post confirmation Error card page renders and works correctly: fix csv instructions 1`] = `
 <ol>

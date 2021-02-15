@@ -148,7 +148,7 @@ describe('Inventory bulk upload.integrationTest', () => {
 
     // error during bulk upload confirmation page
     await waitFor(() => {
-      screen.getByText('Processing error, inventory items failed to be added');
+      screen.getByText('Processing error: inventory items failed to be added');
     });
   });
 
