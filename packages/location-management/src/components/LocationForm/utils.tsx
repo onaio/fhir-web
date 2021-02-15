@@ -20,6 +20,7 @@ import {
   ERROR_LOCATION_TAGS_ARRAY,
   ERROR_LOCATION_CATEGORY_REQUIRED,
   ERROR_SERVICE_TYPES_REQUIRED,
+  LONGITUDE_LATITUDE_TYPE_ERROR,
 } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 
@@ -314,7 +315,7 @@ export const validationRules = {
         if (!value) {
           return Promise.resolve();
         }
-        return rejectIfNan(value, `Longitude should be a number`);
+        return rejectIfNan(value, LONGITUDE_LATITUDE_TYPE_ERROR);
       },
     }),
   ] as Rule[],
@@ -324,7 +325,7 @@ export const validationRules = {
         if (!value) {
           return Promise.resolve();
         }
-        return rejectIfNan(value, `Latitude should be a number`);
+        return rejectIfNan(value, LONGITUDE_LATITUDE_TYPE_ERROR);
       },
     }),
   ] as Rule[],

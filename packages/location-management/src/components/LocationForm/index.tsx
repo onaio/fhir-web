@@ -47,6 +47,10 @@ import {
   UNIT_GROUP_LABEL,
   USERNAME_LABEL,
   SERVICE_TYPE_PLACEHOLDER,
+  LONGITUDE_PLACEHOLDER,
+  LATITUDE_LABEL,
+  LATITUDE_PLACEHOLDER,
+  LONGITUDE_LABEL,
 } from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
@@ -331,20 +335,20 @@ const LocationForm = (props: LocationFormProps) => {
             id="latitude"
             hidden={isHidden('latitude')}
             name="latitude"
-            label={'Latitude'}
+            label={LATITUDE_LABEL}
             rules={validationRules.latitude}
           >
-            <Input disabled={disabled.includes('latitude')} placeholder={''} />
+            <Input disabled={disabled.includes('latitude')} placeholder={LATITUDE_PLACEHOLDER} />
           </FormItem>
 
           <FormItem
             id="longitude"
             hidden={isHidden('longitude')}
             name="longitude"
-            label={'Longitude'}
+            label={LONGITUDE_LABEL}
             rules={validationRules.longitude}
           >
-            <Input disabled={disabled.includes('longitude')} placeholder={''} />
+            <Input disabled={disabled.includes('longitude')} placeholder={LONGITUDE_PLACEHOLDER} />
           </FormItem>
 
           <FormItem
