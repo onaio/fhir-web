@@ -175,4 +175,40 @@ describe('EditLocationUnit', () => {
 
     expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorAn error happenedGo BackBack Home"`);
   });
+
+  it('renders resource404 when location is not found', async () => {
+    fetch.once(JSON.stringify(null));
+    fetch.once(JSON.stringify(location1));
+    fetch.mockResponse(JSON.stringify([]));
+
+    const props = {
+      ...locationProps,
+      match: {
+        ...locationProps.match,
+        params: { id: 'unknown' },
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <EditLocationUnit {...props} />
+        </Router>
+      </Provider>
+    );
+
+    // loading page
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // resource not found
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      'resource was not found',
+      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
+    );
+  });
 });
