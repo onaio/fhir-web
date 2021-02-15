@@ -10,25 +10,12 @@ import { values } from 'lodash';
 import { Store } from 'redux';
 import { createSelector } from 'reselect';
 import { Dictionary } from '@onaio/utils';
+import { ProductCatalogue } from '@opensrp/product-catalogue';
 
 /** interface custom properties for inventory */
 export interface CustomProperties {
   'PO Number': string;
   'UNICEF section': string;
-}
-
-/** interface product for inventory */
-export interface Product {
-  uniqueId: number;
-  productName: string;
-  isAttractiveItem: boolean;
-  materialNumber: string;
-  availability: string;
-  condition: string;
-  appropriateUsage: string;
-  accountabilityPeriod: number;
-  photoURL: string;
-  serverVersion: number;
 }
 
 /** interface post inventory */
@@ -60,7 +47,7 @@ export interface Inventory {
   serialNumber: string;
   locationId: string;
   customProperties: CustomProperties;
-  product?: Product;
+  product?: ProductCatalogue;
   _id: string;
   _rev: string;
   transaction_type: string;
