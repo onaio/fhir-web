@@ -51,8 +51,7 @@ ROUTE_PARAM_INVENTORY_ITEM_ID
 
 const props = {
 	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
-  cancelURL: '/inventory/list',
-  redirectURL: '/inventory/list',
+  servicePointProfileURL: '/inventory/service-point',
 }
 
 <Route path={`/service-point/:${ROUTE_PARAM_SERVICE_POINT_ID}/inventory-item/edit/:${ROUTE_PARAM_INVENTORY_ITEM_ID}`}>
@@ -74,3 +73,4 @@ const props = {
   - **Optional**
   - Route to the service point profile view to redirect to after pressing `Cancel` button on the form to abort and exit the view or after successful submission.
   - If not provided the default is `/inventory/profile/<id>` where `id` is the id of the service point
+  - If provided, the id of the service point will be added to the route name e.g if you passed `/inventory/service-point` as the `servicePointProfileURL`, the redirect will be to `/inventory/service-point/<id>`
