@@ -123,6 +123,7 @@ import {
   trashPlansListStatusProp,
   missionAssignmentProps,
   inventoryServiceProps,
+  inventoryItemAddEditProps,
   editLocationProps,
   newLocationUnitProps,
 } from './utils';
@@ -133,6 +134,7 @@ import {
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
   INVENTORY_SERVICE_POINT_PROFILE_PARAM,
   ConnectedServicePointList,
+  ConnectedInventoryAddEdit,
   ServicePointProfile,
   INVENTORY_EDIT_SERVICE_POINT,
   INVENTORY_ADD_SERVICE_POINT,
@@ -140,6 +142,10 @@ import {
   ServicePointsAdd,
   BulkUpload,
   INVENTORY_BULK_UPLOAD_URL,
+  ROUTE_PARAM_SERVICE_POINT_ID,
+  ROUTE_PARAM_INVENTORY_ID,
+  URL_INVENTORY_EDIT,
+  URL_INVENTORY_ADD,
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 import { APP_LOGIN_URL } from '../dispatchConfig';
@@ -542,6 +548,20 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_GROUP_EDIT}
               component={LocationUnitGroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_ADD}`}
+              {...inventoryItemAddEditProps}
+              component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
+              {...inventoryItemAddEditProps}
+              component={ConnectedInventoryAddEdit}
             />
             <Route
               exact
