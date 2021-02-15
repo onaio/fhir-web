@@ -251,7 +251,7 @@ exports[`LocationForm renders correctly: latitude field 1`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
-  placeholder=""
+  placeholder="E.g. -16.08306"
   type="text"
   value=""
 />
@@ -316,7 +316,7 @@ exports[`LocationForm renders correctly: longitude field 1`] = `
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
-  placeholder=""
+  placeholder="E.g. 49.54933"
   type="text"
   value=""
 />

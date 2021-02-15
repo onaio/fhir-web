@@ -149,7 +149,7 @@ export const generatedLocation4 = {
     name: 'MENABE',
     name_en: 'MENABE',
     status: 'Active',
-    serviceTypes: [{ name: 'School' }],
+    type: 'School',
     version: 0,
   },
   id: '38a0a19b-f91e-4044-a8db-a4b62490bf27',

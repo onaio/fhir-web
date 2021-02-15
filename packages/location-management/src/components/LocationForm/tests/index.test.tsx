@@ -216,11 +216,11 @@ describe('LocationForm', () => {
     });
 
     expect(wrapper.find('FormItem#longitude').text()).toMatchInlineSnapshot(
-      `"LongitudeLongitude should be a number"`
+      `"LongitudeOnly decimal values allowed"`
     );
 
     expect(wrapper.find('FormItem#latitude').text()).toMatchInlineSnapshot(
-      `"LatitudeLatitude should be a number"`
+      `"LatitudeOnly decimal values allowed"`
     );
 
     wrapper.unmount();
@@ -534,7 +534,7 @@ describe('LocationForm', () => {
     // simulate service type change
     // change service types
     formInstance.setFieldsValue({
-      serviceTypes: 'School',
+      serviceType: 'School',
     });
 
     wrapper.find('FormItem#latitude input').simulate('change', {
