@@ -94,7 +94,8 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             submitForm(
               { ...initialValues, ...values, requiredActions },
               keycloakBaseURL,
-              opensrpBaseURL
+              opensrpBaseURL,
+              userGroups
             ).catch((_: Error) => {
               setSubmitting(false);
               sendErrorNotification(ERROR_OCCURED);

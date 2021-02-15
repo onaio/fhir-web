@@ -3,12 +3,13 @@ import { Dispatch, SetStateAction } from 'react';
 import { v4 } from 'uuid';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { UserAction } from '../../../ducks/user';
+import { UserAction, UserGroup } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
   URL_USER,
   KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   URL_USER_CREDENTIALS,
+  KEYCLOAK_URL_USER_GROUPS,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
@@ -16,6 +17,7 @@ import {
   ERROR_OCCURED,
   PRACTITIONER_UPDATED_SUCCESSFULLY,
   PRACTITIONER_CREATED_SUCCESSFULLY,
+  MESSAGE_USER_GROUP_EDITED,
 } from '../../../lang';
 import { FormFields } from '.';
 import { Dictionary } from '@onaio/utils';
@@ -28,10 +30,10 @@ import { Dictionary } from '@onaio/utils';
  * @returns {FormFields} - new values object with userid set
  *
  */
-export const buildUserObject = (response: Response, values: FormFields) => {
+export const buildUserObject = (response: Response, values: FormFields): FormFields => {
   const locationStr = response.headers.get('location')?.split('/') as string[];
   const newUUID = locationStr[locationStr.length - 1];
-  return { ...values, id: newUUID as string };
+  return { ...values, id: newUUID };
 };
 
 /**
@@ -39,7 +41,7 @@ export const buildUserObject = (response: Response, values: FormFields) => {
  * @param {string} baseURL - opensrp API base URL
  * @param {Dictionary} values - form values
  */
-export const createOrEditPractitioners = (baseURL: string, values: FormFields) => {
+export const createOrEditPractitioners = async (baseURL: string, values: FormFields) => {
   const requestType = values.practitioner ? 'update' : 'create';
   const successMessage = values.practitioner
     ? PRACTITIONER_UPDATED_SUCCESSFULLY
@@ -53,12 +55,12 @@ export const createOrEditPractitioners = (baseURL: string, values: FormFields) =
   };
 
   const practitionersService = new OpenSRPService('practitioner', baseURL);
-  practitionersService[requestType](practitionerValues)
-    .then(() => {
-      if (!values.practitioner) history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
-      sendSuccessNotification(successMessage);
-    })
-    .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
+  await practitionersService[requestType](practitionerValues).catch((_: Error) =>
+    sendErrorNotification(ERROR_OCCURED)
+  );
+
+  if (!values.practitioner) history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
+  sendSuccessNotification(successMessage);
 };
 
 /**
@@ -67,35 +69,55 @@ export const createOrEditPractitioners = (baseURL: string, values: FormFields) =
  * @param {Dictionary} values - form values
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {string} opensrpBaseURL - opensrp api base url
+ * @param {Array<UserGroup>} userGroups - Array of Usergroups to get data from when sending payload of user groups
  */
 export const submitForm = async (
   values: FormFields,
   keycloakBaseURL: string,
-  opensrpBaseURL: string
+  opensrpBaseURL: string,
+  userGroups: UserGroup[]
 ): Promise<void> => {
-  const keycloakUserValues: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
+  const keycloakUserValue: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
     Partial<FormFields> = {
     ...values,
   };
-  delete keycloakUserValues.active;
-  delete keycloakUserValues.userGroup;
-  delete keycloakUserValues.practitioner;
+  delete keycloakUserValue.active;
+  delete keycloakUserValue.userGroup;
+  delete keycloakUserValue.practitioner;
 
   if (values.id) {
     const serve = new KeycloakService(`${KEYCLOAK_URL_USERS}/${values.id}`, keycloakBaseURL);
-    await serve.update(keycloakUserValues);
+    await serve.update(keycloakUserValue);
   } else {
     const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
     const response: Response | undefined = await serve.create({
-      ...keycloakUserValues,
+      ...keycloakUserValue,
       enabled: true,
     });
-    // workaround to get user Id for newly created user
-    // immediately after performing a POST
+    // workaround to get user Id for newly created user immediately after performing a POST
     values = response ? buildUserObject(response, values) : values;
   }
 
-  createOrEditPractitioners(opensrpBaseURL, values);
+  await createOrEditPractitioners(opensrpBaseURL, values);
+
+  // Assign User Group to user
+  const promises: Promise<void>[] = [];
+
+  values.userGroup?.forEach((groupId) => {
+    const userGroupValue = userGroups.find((group) => group.id === groupId) as UserGroup;
+
+    const serve = new KeycloakService(
+      `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
+      keycloakBaseURL
+    );
+
+    const promise = serve.update(userGroupValue);
+    promises.push(promise);
+  });
+
+  await Promise.allSettled(promises).catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
+  sendSuccessNotification(MESSAGE_USER_GROUP_EDITED);
+
   sendSuccessNotification(MESSAGE_USER_EDITED);
   history.push(URL_USER);
 };
