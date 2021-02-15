@@ -43,7 +43,7 @@ export interface LocationFormFields {
   locationTags?: number[];
   geometry?: string;
   isJurisdiction: boolean;
-  serviceTypes?: string;
+  serviceType?: string;
   extraFields: ExtraFields[];
   username?: string;
   latitude?: string;
