@@ -53,11 +53,11 @@ const InventoryList = (props: InventoryListProps) => {
   useEffect(() => {
     // api call to get inventory by id
     const serve = new OpenSRPService(
-      `${GET_INVENTORY_BY_SERVICE_POINT}${servicePointId}?returnProduct=true`,
+      `${GET_INVENTORY_BY_SERVICE_POINT}${servicePointId}`,
       opensrpBaseURL
     );
     serve
-      .list()
+      .list({ returnProduct: true })
       .then((res: Inventory[]) => {
         dispatch(fetchInventories(res));
       })
