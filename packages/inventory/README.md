@@ -71,5 +71,6 @@ const props = {
 
 - **servicePointProfileURL:**(string)
 
-  - **required**
-  - Route to the service point profile view to redirect to after pressing `Cancel` button on the form to abort and exit the view or after successful submission
+  - **Optional**
+  - Route to the service point profile view to redirect to after pressing `Cancel` button on the form to abort and exit the view or after successful submission.
+  - If not provided the default is `/inventory/profile/<id>` where `id` is the id of the service point
