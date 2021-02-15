@@ -8,9 +8,10 @@ export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar';
 export type ProjectLanguageCode = 'eusm' | 'core';
 
 /** interface for configs for this package */
-export interface LanguageConfigs {
+export interface OpenSRPConfigs {
   languageCode?: LanguageCode;
   projectLanguageCode?: ProjectLanguageCode;
+  appLoginURL?: string;
 }
 
 export interface LanguageResource {
@@ -29,7 +30,7 @@ export interface LanguageResources {
 }
 
 /** gets configs from the store */
-export const getConfigs = (): LanguageConfigs => {
+export const getConfigs = (): OpenSRPConfigs => {
   const configsSelector = getConfigsFactory();
   const allConfigs = configsSelector(store.getState());
   return allConfigs;

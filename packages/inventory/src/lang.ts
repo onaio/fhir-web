@@ -63,3 +63,27 @@ export const RETRY_CSV_UPLOAD = i18n.t('retry csv upload');
 export const PLEASE_FIX_THE_ERRORS_LISTED_BELOW = i18n.t(
   'please fix the errors listed below, then'
 );
+
+// Service point profile
+export const INVENTORY_ITEMS = i18n.t('Inventory items');
+export const EDIT_SERVICE_POINT = i18n.t('Edit service point');
+export const ADD_NEW_INVENTORY_ITEM = i18n.t('Add new inventory item');
+export const PRODUCT_NAME_TH = i18n.t('Product name');
+export const QTY_TH = i18n.t('Qty');
+export const PO_NUMBER_TH = i18n.t('PO no.');
+export const SERIAL_NUMBER_TH = i18n.t('Serial no.');
+export const DELIVERY_DT_TH = i18n.t('Delivery dt.');
+export const ACCOUNT_END_DT_TH = i18n.t('Acct. end dt.');
+export const UNICEF_SECTION_TH = i18n.t('Unicef section');
+export const DONOR_TH = i18n.t('Donor');
+
+export const REGION_LABEL = i18n.t('Region');
+export const TYPE_LABEL = i18n.t('Type');
+export const DISTRICT_LABEL = i18n.t('District');
+export const LAT_LONG_LABEL = i18n.t('Latitude/longitude');
+export const COMMUNE_LABEL = i18n.t('Commune');
+export const SERVICE_POINT_ID_LABEL = i18n.t('Service point ID');
+
+export const ERROR_OCCURRED = i18n.t('An error occurred');
+export const BACK_TO_SERVICE_POINT_LIST = i18n.t('Back to the list of service points');
+export const ERROR_GETTING_INVENTORIES = i18n.t('Unable to fetch inventories for service point');

@@ -22,7 +22,6 @@ import {
 import {
   REACT_CALLBACK_PATH,
   URL_BACKEND_CALLBACK,
-  URL_BACKEND_LOGIN,
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
@@ -42,6 +41,7 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_USER_GROUPS,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -74,11 +74,16 @@ import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
+  UserGroupsList,
   URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
+  ROUTE_PARAM_USER_GROUP_ID,
+  URL_USER_GROUP_EDIT,
+  URL_USER_GROUP_CREATE,
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
+  CreateEditUserGroup,
 } from '@opensrp/user-management';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
@@ -125,7 +130,10 @@ import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
+  INVENTORY_SERVICE_POINT_PROFILE_PARAM,
   ConnectedServicePointList,
+  ServicePointProfile,
   INVENTORY_EDIT_SERVICE_POINT,
   INVENTORY_ADD_SERVICE_POINT,
   ServicePointEdit,
@@ -134,6 +142,7 @@ import {
   INVENTORY_BULK_UPLOAD_URL,
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
+import { APP_LOGIN_URL } from '../dispatchConfig';
 
 const { Content } = Layout;
 
@@ -198,7 +207,6 @@ const App: React.FC = () => {
   const APP_CALLBACK_URL = BACKEND_ACTIVE ? URL_BACKEND_CALLBACK : URL_REACT_LOGIN;
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   return (
@@ -224,6 +232,13 @@ const App: React.FC = () => {
               exact
               path={URL_USER}
               component={ConnectedUserList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_USER_GROUPS}
+              component={UserGroupsList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -321,6 +336,14 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${INVENTORY_SERVICE_POINT_PROFILE_PARAM}`}
+              {...inventoryServiceProps}
+              component={ServicePointProfile}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={INVENTORY_SERVICE_POINT_LIST_VIEW}
               {...inventoryServiceProps}
               component={ConnectedServicePointList}
@@ -363,6 +386,20 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedCreateEditUser}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_USER_GROUP_EDIT}/:${ROUTE_PARAM_USER_GROUP_ID}`}
+              component={CreateEditUserGroup}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_USER_GROUP_CREATE}
+              component={CreateEditUserGroup}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
