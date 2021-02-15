@@ -2,7 +2,11 @@ import { mount, shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
 import { store } from '@opensrp/store';
-import { fetchLocationUnits, removeLocationUnits } from '@opensrp/location-management';
+import {
+  fetchLocationUnits,
+  removeLocationUnits,
+  LocationUnit,
+} from '@opensrp/location-management';
 import { removeProducts } from '@opensrp/product-catalogue';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
@@ -449,6 +453,102 @@ describe('containers/InventoryAddEdit', () => {
       `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
     );
 
+    wrapper.unmount();
+  });
+
+  it('renders form when data is already in the redux store', async () => {
+    store.dispatch(fetchLocationUnits([fixtures.servicePoint2] as LocationUnit[]));
+    store.dispatch(fetchInventories(fixtures.inventories));
+    fetch.once(JSON.stringify(products));
+    fetch.once(JSON.stringify(donors));
+    fetch.once(JSON.stringify(unicefSections));
+
+    const editProps = {
+      ...props,
+      location: {
+        hash: '',
+        pathname: `/service-point/${fixtures.servicePoint2.id}/inventory-item/edit/${fixtures.inventories[0]._id}`,
+        search: '',
+        state: '',
+      },
+      match: {
+        isExact: true,
+        params: {
+          servicePointId: fixtures.servicePoint2.id,
+          inventoryId: fixtures.inventories[0]._id,
+        },
+        path: `/service-point/:servicePointId/ineventory-item/edit:inventoryId`,
+        url: `/service-point/${fixtures.servicePoint2.id}/inventory-item/edit/${fixtures.inventories[0]._id}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedInventoryAddEdit {...editProps} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(fetch.mock.calls).toHaveLength(3);
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/product-catalogue',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/v2/settings?serverVersion=0&identifier=inventory_donors',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[2]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/v2/settings?serverVersion=0&identifier=inventory_unicef_sections',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+
+    expect(wrapper.find('InventoryItemForm').props()).toEqual({
+      UNICEFSections: unicefSections,
+      donors: donors,
+      products: [product4, product2, product3, product1], //products should be in alpahabetical order,
+      cancelURL: `/inventory/profile/${fixtures.servicePoint2.id}`,
+      openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
+      redirectURL: `/inventory/profile/${fixtures.servicePoint2.id}`,
+      servicePointId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+      initialValues: {
+        accountabilityEndDate: moment(fixtures.inventories[0].accountabilityEndDate),
+        deliveryDate: moment(fixtures.inventories[0].deliveryDate),
+        donor: 'ADB',
+        poNumber: '101',
+        productName: undefined,
+        quantity: 1,
+        unicefSection: 'Health',
+      },
+      inventoryID: fixtures.inventories[0]._id,
+    });
     wrapper.unmount();
   });
 });

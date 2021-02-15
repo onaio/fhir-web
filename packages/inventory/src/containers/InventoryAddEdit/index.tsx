@@ -84,7 +84,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const [UNICEFSections, setUNICEFSections] = React.useState<Setting[]>([]);
   const [donors, setDonors] = React.useState<Setting[]>([]);
   const [products, setProducts] = React.useState<ProductCatalogue[]>([]);
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const { Title } = Typography;
   const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ID];
 
@@ -92,6 +92,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
     // Handle when servicePoint is null e.g when a user refreshes page
     if (!servicePoint) {
       // fetch the single location unit
+      setIsLoading(true);
       const servicePointId = match.params[ROUTE_PARAM_SERVICE_POINT_ID];
       const service = new OpenSRPService(
         OPENSRP_ENDPOINT_LOCATION,
