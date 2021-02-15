@@ -6,6 +6,10 @@ import { createBrowserHistory } from 'history';
 import {
   fetchCalls,
   inventories,
+  inventory3,
+  inventory4,
+  inventory5,
+  inventory6,
   opensrpBaseURL,
 } from '../../../containers/ServicePointProfile/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -108,7 +112,7 @@ describe('Inventory list Page', () => {
   });
 
   it('sorts by file product name', async () => {
-    fetch.once(JSON.stringify(inventories));
+    fetch.once(JSON.stringify([inventory3, inventory4, inventory5, inventory6]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -125,15 +129,40 @@ describe('Inventory list Page', () => {
     wrapper.update();
     const heading = wrapper.find('thead');
 
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 1');
+    // Ascending is default
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual('Scale');
 
-    // Sort Ascending
+    // Cancel sorting
     heading.find('th').at(0).children().simulate('click');
     wrapper.update();
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 1');
-    // Sort Desending
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    // descending
     heading.find('th').at(0).children().simulate('click');
     wrapper.update();
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Change name 2');
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
   });
 });

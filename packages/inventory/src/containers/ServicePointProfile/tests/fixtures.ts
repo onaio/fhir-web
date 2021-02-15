@@ -84,6 +84,139 @@ export const inventory2 = {
   transaction_type: 'Inventory',
 };
 
+export const inventory3 = {
+  type: 'Stock',
+  serverVersion: 12,
+  identifier: '2',
+  providerid: '34615126-f515-4b31-80ee-c42227f6f0c5',
+  value: 1,
+  version: 1610612387610,
+  deliveryDate: 'Jan 2, 2020, 3:00:00 AM',
+  accountabilityEndDate: 'May 2, 2021, 3:00:00 AM',
+  donor: 'ADB',
+  serialNumber: '123434',
+  locationId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+  customProperties: {
+    'PO Number': '101',
+    'UNICEF section': 'Health',
+  },
+  product: {
+    uniqueId: 2,
+    productName: 'Scale',
+    isAttractiveItem: false,
+    materialNumber: 'MT-124',
+    availability:
+      'Kit composed of +/- 50 items used by midwives during labour. Supplied in a box marked. It should be located in the maternity unit of the facility.',
+    condition:
+      'The kit is designed to be used for approximately 50 births. After that, key components may be missing, its important to check with the midwife that the kit can still be used fully.',
+    appropriateUsage:
+      'Note in the comments whatever items may be missing from the kit. as well as other items which the midwife may feel are necessary',
+    accountabilityPeriod: 12,
+    photoURL: '',
+    serverVersion: 26,
+  },
+  _id: '69227a92-7979-490c-b149-f28669c6b760',
+  _rev: 'v1',
+  transaction_type: 'Inventory',
+};
+
+export const inventory4 = {
+  type: 'Stock',
+  serverVersion: 14,
+  identifier: '4',
+  providerid: '34615126-f515-4b31-80ee-c42227f6f0c5',
+  value: 1,
+  version: 1610616763881,
+  deliveryDate: 'Feb 2, 2020, 3:00:00 AM',
+  accountabilityEndDate: 'May 2, 2021, 3:00:00 AM',
+  donor: 'ADB',
+  serialNumber: '123434',
+  locationId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+  customProperties: {
+    'PO Number': '101',
+    'UNICEF section': 'Health',
+  },
+  product: {
+    uniqueId: 4,
+    productName: 'Change name Test',
+    isAttractiveItem: false,
+    materialNumber: 'asd',
+    availability: 'yeah',
+    condition: 'this should be optional',
+    appropriateUsage: 'this should be optional',
+    accountabilityPeriod: 2,
+    photoURL: '/multimedia/media/4',
+    serverVersion: 17,
+  },
+  _id: 'c2635a23-a604-48fb-9e1c-8bf1e75e6759',
+  _rev: 'v1',
+  transaction_type: 'Inventory',
+};
+
+export const inventory5 = {
+  type: 'Stock',
+  serverVersion: 22,
+  identifier: '13',
+  providerid: '821f587d-734f-4263-8d50-ec37f2e84ef4',
+  value: 10,
+  version: 1612878072240,
+  deliveryDate: 'Feb 3, 2021, 3:00:00 AM',
+  accountabilityEndDate: 'May 3, 2021, 3:00:00 AM',
+  donor: 'ADB',
+  locationId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+  customProperties: {
+    'PO Number': '57',
+    'UNICEF section': 'WASH',
+  },
+  product: {
+    uniqueId: 13,
+    productName: 'Empty product test',
+    isAttractiveItem: false,
+    materialNumber: 'Prod01',
+    availability: 'yeah',
+    condition: '',
+    appropriateUsage: '',
+    accountabilityPeriod: 3,
+    photoURL: '/multimedia/media/13',
+    serverVersion: 24,
+  },
+  _id: '508e6cf8-7856-41d0-9bb3-707ebf81c987',
+  _rev: 'v1',
+  transaction_type: 'Inventory',
+};
+
+export const inventory6 = {
+  type: 'Stock',
+  serverVersion: 22,
+  identifier: '13',
+  providerid: '821f587d-734f-4263-8d50-ec37f2e84e7u',
+  value: 10,
+  version: 1612878072240,
+  deliveryDate: 'Feb 3, 2021, 3:00:00 AM',
+  accountabilityEndDate: 'May 3, 2021, 3:00:00 AM',
+  donor: 'ADB',
+  locationId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+  customProperties: {
+    'PO Number': '57',
+    'UNICEF section': 'WASH',
+  },
+  product: {
+    uniqueId: 13,
+    productName: 'Empty product test', // Same as inventory5
+    isAttractiveItem: false,
+    materialNumber: 'Prod01',
+    availability: 'yeah',
+    condition: '',
+    appropriateUsage: '',
+    accountabilityPeriod: 3,
+    photoURL: '/multimedia/media/13',
+    serverVersion: 24,
+  },
+  _id: '508e6cf8-7856-41d0-9bb3-707ebf81c985',
+  _rev: 'v1',
+  transaction_type: 'Inventory',
+};
+
 export const inventories = [inventory1, inventory2] as Inventory[];
 
 export const structure1 = {
