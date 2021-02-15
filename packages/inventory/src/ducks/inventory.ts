@@ -10,6 +10,7 @@ import { values } from 'lodash';
 import { Store } from 'redux';
 import { createSelector } from 'reselect';
 import { Dictionary } from '@onaio/utils';
+import { ProductCatalogue } from '@opensrp/product-catalogue';
 
 /** interface custom properties for inventory */
 export interface CustomProperties {
@@ -20,14 +21,15 @@ export interface CustomProperties {
 /** interface post inventory */
 export interface InventoryPost {
   deliveryDate: string;
+  accountabilityEndDate: string;
   donor: string;
   poNumber: number;
   productName: string;
-  providerId: string;
-  quantity: number;
-  serialNumber: string;
+  providerId?: string;
+  quantity?: number;
+  serialNumber?: string;
   servicePointId: string;
-  stockId: string;
+  stockId?: string;
   unicefSection: string;
 }
 
@@ -45,6 +47,7 @@ export interface Inventory {
   serialNumber: string;
   locationId: string;
   customProperties: CustomProperties;
+  product?: ProductCatalogue;
   _id: string;
   _rev: string;
   transaction_type: string;

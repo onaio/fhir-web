@@ -63,6 +63,28 @@ export const RETRY_CSV_UPLOAD = i18n.t('retry csv upload');
 export const PLEASE_FIX_THE_ERRORS_LISTED_BELOW = i18n.t(
   'please fix the errors listed below, then'
 );
+// Error
+export const ERROR_GENERIC = i18n.t('An error occurred');
+export const ERROR_PRODUCT_NAME_REQUIRED = i18n.t('Product is required');
+export const ERROR_DELIVERY_DATE_REQUIRED = i18n.t('Delivery date is required');
+export const ERROR_ACCOUNTABILITY_DATE_REQUIRED = i18n.t('Accountability end date is required');
+export const ERROR_UNICEF_SECTION_REQUIRED = i18n.t('UNICEF section is required');
+export const ERROR_PO_NUMBER_REQUIRED = i18n.t('PO number is required');
+export const ERROR_SERIAL_NUMBER_REQUIRED = i18n.t('Serial number is required');
+
+// Rendered text
+export const ADD_INVENTORY_ITEM = i18n.t('Add inventory item');
+export const TO = i18n.t('to');
+export const SAVE = i18n.t('Save');
+export const SAVING = i18n.t('Saving');
+export const OPTIONAL = i18n.t('optional');
+export const QUANTITY = i18n.t('Quantity');
+export const DELIVERY_DATE = i18n.t('Delivery date');
+export const ACCOUNTABILITY_END_DATE = i18n.t('Accountability end date');
+export const UNICEF_SECTION = i18n.t('UNICEF section');
+export const DONOR = i18n.t('Donor');
+export const PO_NUMBER = i18n.t('PO number');
+export const SELECT = i18n.t('Select');
 
 // Service point profile
 export const INVENTORY_ITEMS = i18n.t('Inventory items');
@@ -76,14 +98,16 @@ export const DELIVERY_DT_TH = i18n.t('Delivery dt.');
 export const ACCOUNT_END_DT_TH = i18n.t('Acct. end dt.');
 export const UNICEF_SECTION_TH = i18n.t('Unicef section');
 export const DONOR_TH = i18n.t('Donor');
-
 export const REGION_LABEL = i18n.t('Region');
 export const TYPE_LABEL = i18n.t('Type');
 export const DISTRICT_LABEL = i18n.t('District');
 export const LAT_LONG_LABEL = i18n.t('Latitude/longitude');
 export const COMMUNE_LABEL = i18n.t('Commune');
 export const SERVICE_POINT_ID_LABEL = i18n.t('Service point ID');
-
 export const ERROR_OCCURRED = i18n.t('An error occurred');
+export const PRODUCT = i18n.t('Product');
+export const SERIAL_NUMBER = i18n.t('Serial number');
+export const EDIT_INVENTORY_ITEM = i18n.t('Edit inventory item');
+export const EDIT = i18n.t('Edit');
 export const BACK_TO_SERVICE_POINT_LIST = i18n.t('Back to the list of service points');
 export const ERROR_GETTING_INVENTORIES = i18n.t('Unable to fetch inventories for service point');

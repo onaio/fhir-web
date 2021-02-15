@@ -1,5 +1,6 @@
 export * from './constants';
 export * from './containers/ListView';
+export * from './containers/InventoryAddEdit';
 export * from './containers/ProfileView';
 export * from './ducks/inventory';
 export * from './helpers/dataLoaders';
