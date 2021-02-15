@@ -8,6 +8,7 @@ import {
   generateLocationUnit,
   getLocationTagOptions,
   getServiceTypeOptions,
+  handleGeoFieldsChangeFactory,
   LocationFormFields,
   ServiceTypeSetting,
   validationRules,
@@ -46,6 +47,10 @@ import {
   UNIT_GROUP_LABEL,
   USERNAME_LABEL,
   SERVICE_TYPE_PLACEHOLDER,
+  LONGITUDE_PLACEHOLDER,
+  LATITUDE_LABEL,
+  LATITUDE_PLACEHOLDER,
+  LONGITUDE_LABEL,
 } from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
@@ -159,6 +164,8 @@ const LocationForm = (props: LocationFormProps) => {
     return <Redirect to={redirectAfterAction} />;
   }
 
+  const geoFieldsChangeHandler = handleGeoFieldsChangeFactory(form);
+
   return (
     <div className="location-form form-container">
       <Form
@@ -167,6 +174,7 @@ const LocationForm = (props: LocationFormProps) => {
         name="location-form"
         scrollToFirstError
         initialValues={initialValues}
+        onValuesChange={geoFieldsChangeHandler}
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={(values) => {
           const payload = generateLocationUnit(
@@ -321,6 +329,26 @@ const LocationForm = (props: LocationFormProps) => {
               rows={4}
               placeholder={GEOMETRY_PLACEHOLDER}
             />
+          </FormItem>
+
+          <FormItem
+            id="latitude"
+            hidden={isHidden('latitude')}
+            name="latitude"
+            label={LATITUDE_LABEL}
+            rules={validationRules.latitude}
+          >
+            <Input disabled={disabled.includes('latitude')} placeholder={LATITUDE_PLACEHOLDER} />
+          </FormItem>
+
+          <FormItem
+            id="longitude"
+            hidden={isHidden('longitude')}
+            name="longitude"
+            label={LONGITUDE_LABEL}
+            rules={validationRules.longitude}
+          >
+            <Input disabled={disabled.includes('longitude')} placeholder={LONGITUDE_PLACEHOLDER} />
           </FormItem>
 
           <FormItem

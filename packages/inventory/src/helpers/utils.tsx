@@ -48,3 +48,14 @@ export const CardTitle = ({ IconRender = null, text = '' }: CardTitleProps) => (
 export const disabledTreeNodesCallback = (node: TreeNode) => {
   return node.model.node.attributes.geographicLevel !== COMMUNE_GEOGRAPHIC_LEVEL;
 };
+
+/** location form fields that are hidden for service point creation and editing in EUSM */
+export const commonHiddenFields = [
+  'extraFields',
+  'status',
+  'type',
+  'locationTags',
+  'externalId',
+  'isJurisdiction',
+  'geometry',
+];
