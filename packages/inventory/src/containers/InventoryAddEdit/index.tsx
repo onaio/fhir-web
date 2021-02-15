@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Typography, Spin } from 'antd';
 import { Helmet } from 'react-helmet';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ADD_INVENTORY_ITEM, EDIT, EDIT_INVENTORY_ITEM, ERROR_GENERIC, TO } from '../../lang';
 import { fetchSettings } from './utils';
@@ -84,6 +84,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const [UNICEFSections, setUNICEFSections] = React.useState<Setting[]>([]);
   const [donors, setDonors] = React.useState<Setting[]>([]);
   const [products, setProducts] = React.useState<ProductCatalogue[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const { Title } = Typography;
   const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ID];
 
@@ -104,6 +105,9 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
         })
         .catch((_: HTTPError) => {
           sendErrorNotification(ERROR_GENERIC);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   }, [servicePoint, fetchLocationUnitsCreator, openSRPBaseURL, customFetchOptions, match.params]);
@@ -161,8 +165,12 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
     fetchInventoriesCreator,
   ]);
 
-  if (!servicePoint) {
+  if (isLoading) {
     return <Spin size="large" />;
+  }
+
+  if (!servicePoint) {
+    return <Resource404 />;
   }
 
   const { properties, id } = servicePoint;

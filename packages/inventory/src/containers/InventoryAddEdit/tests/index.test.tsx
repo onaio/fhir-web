@@ -419,4 +419,36 @@ describe('containers/InventoryAddEdit', () => {
 
     wrapper.unmount();
   });
+
+  it('displays 404 page if sevice point is not found', async () => {
+    fetch.once('Error fetching service point', { status: 500 });
+    fetch.once(JSON.stringify(products));
+    fetch.once(JSON.stringify(donors));
+    fetch.once(JSON.stringify(unicefSections));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedInventoryAddEdit {...props} />
+        </Router>
+      </Provider>
+    );
+    // Spinner is displayed before we get the service point
+    expect(wrapper.find('Spin').prop('size')).toEqual('large');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    // Spinner has stopped
+    expect(toJson(wrapper.find('Spin'))).toBeFalsy();
+
+    // 404 page is displayed
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
+    );
+
+    wrapper.unmount();
+  });
 });
