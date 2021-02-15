@@ -13,6 +13,7 @@ export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('location unit groups must be an
 export const ERROR_GEOMETRY_STRING = i18n.t('Location unit groups must be a an string');
 export const ERROR_LOCATION_CATEGORY_REQUIRED = i18n.t('Location category is required');
 export const ERROR_SERVICE_TYPES_REQUIRED = i18n.t('Service types is required');
+export const LONGITUDE_LATITUDE_TYPE_ERROR = i18n.t('Only decimal values allowed');
 
 export const LOCATION_UNIT = i18n.t('Location Unit');
 export const LOCATION_UNIT_GROUP = i18n.t('Location Unit Group');
@@ -52,6 +53,8 @@ export const ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER = i18n.t('Enter a location 
 export const SAVING = i18n.t('Saving');
 export const SAVE = i18n.t('Save');
 export const SERVICE_TYPE_PLACEHOLDER = i18n.t('Select the service point type');
+export const LATITUDE_PLACEHOLDER = i18n.t('E.g. -16.08306');
+export const LONGITUDE_PLACEHOLDER = i18n.t('E.g. 49.54933');
 
 export const NAME = i18n.t('Name');
 export const STATUS = i18n.t('Status');
@@ -67,3 +70,5 @@ export const ACTIONS = i18n.t('Actions');
 export const EDIT = i18n.t('Edit');
 export const VIEW_DETAILS = i18n.t('View Details');
 export const DELETE = i18n.t('Delete');
+export const LATITUDE_LABEL = i18n.t('Latitude');
+export const LONGITUDE_LABEL = i18n.t('Longitude');
