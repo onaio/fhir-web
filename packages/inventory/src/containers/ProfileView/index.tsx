@@ -40,6 +40,7 @@ import {
   COMMUNE_LABEL,
   SERVICE_POINT_ID_LABEL,
   BACK_TO_SERVICE_POINT_LIST,
+  INVENTORY,
 } from '../../lang';
 import '../../index.css';
 import { fetchInventories, Inventory } from '../../ducks/inventory';
@@ -183,7 +184,9 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
             <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>
               <p className="go-back-text">{BACK_TO_SERVICE_POINT_LIST}</p>
             </Link>
-            <p className="title">{structure.properties.name}</p>
+            <p className="title">
+              {structure.properties.name} {INVENTORY}
+            </p>
             <Row>
               <Col md={12}>
                 <GeographyItem

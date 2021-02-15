@@ -11,7 +11,8 @@ export const FETCHING_LOCATIONS_DESCRIPTION = 'Please wait, while locations are 
 export const LOADING_ELLIPSIS = 'Loading ...';
 
 // Service point profile
-export const INVENTORY_ITEMS = 'Inventory items';
+export const INVENTORY = 'Inventory';
+export const INVENTORY_ITEMS = 'Inventory Items';
 export const EDIT_SERVICE_POINT = 'Edit service point';
 export const ADD_NEW_INVENTORY_ITEM = 'Add new inventory item';
 export const PRODUCT_NAME_TH = 'Product name';

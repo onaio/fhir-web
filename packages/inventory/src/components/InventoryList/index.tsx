@@ -22,6 +22,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
 import { OpenSRPService, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
+import { removeLastItem } from './utils';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
@@ -72,9 +73,13 @@ const InventoryList = (props: InventoryListProps) => {
 
   // add a key prop to the array data to be consumed by the table
   const dataSource = inventoriesArray.map((item) => {
+    const deliveryDate = removeLastItem(item.deliveryDate.split(','));
+    const accountabilityEndDate = removeLastItem(item.accountabilityEndDate.split(','));
     const inventoryToDisplay = {
       key: `${TableColumnsNamespace}-${item._id}`,
       ...item,
+      deliveryDate,
+      accountabilityEndDate,
     };
     return inventoryToDisplay;
   });
@@ -91,7 +96,7 @@ const InventoryList = (props: InventoryListProps) => {
               </Button>
             </Link>
           </div>
-          <Table dataSource={dataSource} columns={columns}></Table>
+          <Table pagination={false} dataSource={dataSource} columns={columns}></Table>
         </Col>
       </Row>
     </>
