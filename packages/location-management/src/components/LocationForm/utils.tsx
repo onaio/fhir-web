@@ -336,7 +336,12 @@ export const validationRules = {
   ],
 };
 
-const rejectIfNan = (value: number, message: string) => {
+/** given a value retrun a rejected promise if value is not parseable as number
+ *
+ * @param value - value to parse into string
+ * @param message - error message to show
+ */
+const rejectIfNan = (value: string, message: string) => {
   if (isNaN(Number(value))) {
     return Promise.reject(message);
   } else {
@@ -415,6 +420,11 @@ export const getPointCoordinates = (geoText: string) => {
   return { longitude, latitude };
 };
 
+/** handles form values change , creates a values change handler that listens for
+ * changes to geometry, latitude and longitude and syncs changes across the 3 fields
+ *
+ * @param form - the form instance
+ */
 export const handleGeoFieldsChangeFactory = (form: FormInstance) => {
   return (changedValues: Partial<LocationFormFields>, allValues: LocationFormFields) => {
     /** location fields that could possible change */
