@@ -7,7 +7,6 @@ import {
   removeLocationUnits,
   LocationUnit,
 } from '@opensrp/location-management';
-import { removeProducts } from '@opensrp/product-catalogue';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
@@ -90,7 +89,6 @@ describe('containers/InventoryAddEdit', () => {
     fetch.resetMocks();
   });
   beforeEach(() => {
-    store.dispatch(removeProducts());
     store.dispatch(removeLocationUnits());
     store.dispatch(removeInventories());
   });
@@ -266,7 +264,52 @@ describe('containers/InventoryAddEdit', () => {
       servicePointId: fixtures.servicePoint2.id,
       quantity: 10,
     };
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://mg-eusm-staging.smartregister.org/opensrp/rest/location/${fixtures.servicePoint2.id}`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
 
+    expect(fetch.mock.calls).toHaveLength(5);
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/product-catalogue',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[2]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/v2/settings?serverVersion=0&identifier=inventory_donors',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[3]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/v2/settings?serverVersion=0&identifier=inventory_unicef_sections',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
     expect(fetch.mock.calls[4]).toEqual([
       'https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/',
       {
@@ -328,10 +371,9 @@ describe('containers/InventoryAddEdit', () => {
     wrapper.update();
 
     // Form is initialized with initial values
-    /** @todo Update to initialize with product name when product name is added in the inventory
-     * items list enpoint response
-     */
-    expect(wrapper.find('select#productName').get(0).props.value).toEqual(undefined);
+    expect(wrapper.find('select#productName').get(0).props.value).toEqual(
+      fixtures.inventories[0].product.productName
+    );
     expect(wrapper.find('input#quantity').get(0).props.value).toEqual(1);
     expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(
       moment(fixtures.inventories[0].deliveryDate)
@@ -348,9 +390,6 @@ describe('containers/InventoryAddEdit', () => {
     );
 
     // Make edits
-    wrapper.find('select#productName').simulate('change', {
-      target: { value: products[0].productName },
-    });
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
       target: { value: moment('2021-02-08') },
@@ -372,10 +411,12 @@ describe('containers/InventoryAddEdit', () => {
     });
 
     expect(document.title).toEqual('Edit inventory item');
-    expect(wrapper.find('Title').prop('children')).toEqual('Edit');
+    expect(wrapper.find('Title').prop('children')).toEqual(
+      `Edit > ${fixtures.inventories[0].product.productName}`
+    );
 
     const payload = {
-      productName: 'Test optional Fields',
+      productName: fixtures.inventories[0].product.productName,
       deliveryDate: '2021-02-08',
       accountabilityEndDate: '2021-04-08',
       unicefSection: 'WASH',
@@ -398,12 +439,70 @@ describe('containers/InventoryAddEdit', () => {
         deliveryDate: moment(fixtures.inventories[0].deliveryDate),
         donor: 'ADB',
         poNumber: '101',
-        productName: undefined,
+        productName: fixtures.inventories[0].product.productName,
         quantity: 1,
         unicefSection: 'Health',
       },
       inventoryID: fixtures.inventories[0]._id,
     });
+
+    expect(fetch.mock.calls).toHaveLength(6);
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://mg-eusm-staging.smartregister.org/opensrp/rest/location/${fixtures.servicePoint2.id}`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+
+    expect(fetch.mock.calls[1]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/product-catalogue',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[2]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/v2/settings?serverVersion=0&identifier=inventory_donors',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[3]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/v2/settings?serverVersion=0&identifier=inventory_unicef_sections',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+    expect(fetch.mock.calls[4]).toEqual([
+      `https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/servicePointId/${fixtures.servicePoint2.id}?returnProduct=true`,
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
     expect(fetch.mock.calls[5]).toEqual([
       `https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/${fixtures.inventories[0]._id}`,
       {
@@ -543,12 +642,54 @@ describe('containers/InventoryAddEdit', () => {
         deliveryDate: moment(fixtures.inventories[0].deliveryDate),
         donor: 'ADB',
         poNumber: '101',
-        productName: undefined,
+        productName: fixtures.inventories[0].product.productName,
         quantity: 1,
         unicefSection: 'Health',
       },
       inventoryID: fixtures.inventories[0]._id,
     });
+    wrapper.unmount();
+  });
+
+  it('renders heading correctly when editing and product name not present', async () => {
+    fetch.once(JSON.stringify(fixtures.servicePoint2));
+    fetch.once(JSON.stringify(products));
+    fetch.once(JSON.stringify(donors));
+    fetch.once(JSON.stringify(unicefSections));
+    fetch.once(JSON.stringify([fixtures.inventoryNoProduct]));
+
+    const editProps = {
+      ...props,
+      location: {
+        hash: '',
+        pathname: `/service-point/${fixtures.servicePoint2.id}/inventory-item/edit/${fixtures.inventoryNoProduct._id}`,
+        search: '',
+        state: '',
+      },
+      match: {
+        isExact: true,
+        params: {
+          servicePointId: fixtures.servicePoint2.id,
+          inventoryId: fixtures.inventoryNoProduct._id,
+        },
+        path: `/service-point/:servicePointId/ineventory-item/edit:inventoryId`,
+        url: `/service-point/${fixtures.servicePoint2.id}/inventory-item/edit/${fixtures.inventoryNoProduct._id}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedInventoryAddEdit {...editProps} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+    expect(wrapper.find('Title').prop('children')).toEqual(`Edit`);
     wrapper.unmount();
   });
 });

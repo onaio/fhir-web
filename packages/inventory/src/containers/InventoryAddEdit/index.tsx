@@ -149,7 +149,9 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
         customFetchOptions
       );
       service
-        .list()
+        .list({
+          returnProduct: true,
+        })
         .then((response: Inventory[]) => {
           fetchInventoriesCreator(response);
         })
@@ -186,6 +188,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       donor: inventory.donor,
       poNumber: inventory.customProperties['PO Number'],
       quantity: inventory.value,
+      productName: inventory.product?.productName,
     };
   }
   const inventoryItemFormProps = {
@@ -207,7 +210,15 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
     initialValues,
     inventoryID: inventory?._id,
   };
-  const heading = !isEdit ? `${ADD_INVENTORY_ITEM} ${TO} ${properties.name}` : `${EDIT}`;
+  let heading = `${ADD_INVENTORY_ITEM} ${TO} ${properties.name}`;
+
+  if (isEdit) {
+    if (inventory?.product?.productName) {
+      heading = `${EDIT} > ${inventory.product.productName}`;
+    } else {
+      heading = EDIT;
+    }
+  }
   const title = !isEdit ? ADD_INVENTORY_ITEM : EDIT_INVENTORY_ITEM;
 
   return (

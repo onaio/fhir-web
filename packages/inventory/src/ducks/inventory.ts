@@ -17,6 +17,20 @@ export interface CustomProperties {
   'UNICEF section': string;
 }
 
+/** interface product for inventory */
+export interface Product {
+  uniqueId: number;
+  productName: string;
+  isAttractiveItem: boolean;
+  materialNumber: string;
+  availability: string;
+  condition: string;
+  appropriateUsage: string;
+  accountabilityPeriod: number;
+  photoURL: string;
+  serverVersion: number;
+}
+
 /** interface post inventory */
 export interface InventoryPost {
   deliveryDate: string;
@@ -46,6 +60,7 @@ export interface Inventory {
   serialNumber: string;
   locationId: string;
   customProperties: CustomProperties;
+  product?: Product;
   _id: string;
   _rev: string;
   transaction_type: string;
