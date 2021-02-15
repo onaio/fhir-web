@@ -3,7 +3,7 @@ import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { disabledTreeNodesCallback } from '../../helpers/utils';
+import { commonHiddenFields, disabledTreeNodesCallback } from '../../helpers/utils';
 
 type ServicePointAddTypes = CommonProps & RouteComponentProps<LocationRouteProps>;
 
@@ -21,7 +21,7 @@ const ServicePointEdit = (props: ServicePointAddTypes) => {
     ...restProps,
     openSRPBaseURL: baseURL,
     instance: FormInstances.EUSM,
-    hidden: ['extraFields', 'status', 'type', 'locationTags', 'externalId'],
+    hidden: commonHiddenFields,
     redirectAfterAction: INVENTORY_SERVICE_POINT_LIST_VIEW,
     disabled: ['isJurisdiction'],
     disabledTreeNodesCallback,
