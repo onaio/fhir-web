@@ -45,9 +45,7 @@
     "formik-antd": "2.0.1",
     "react-helmet": "^6.1.0",
     "yup": "^0.29.3",
-    "i18next": "^19.8.4",
-    "i18next-conv": "^10.1.0",
-    "i18next-scanner": "^3.0.0"
+    "i18next": "^19.8.4"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.7",
