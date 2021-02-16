@@ -26,12 +26,14 @@ const locationsSelector = getLocationsByFilters();
 export type LocationRouteProps = { id: string };
 
 export interface EditLocationUnitProps
-  extends Pick<LocationFormProps, 'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback'>,
+  extends Pick<
+      LocationFormProps,
+      'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
+    >,
     RouteComponentProps<LocationRouteProps> {
   openSRPBaseURL: string;
   instance: FormInstances;
-  successURL: string;
-  cancelURL: string;
+  cancelURLGenerator: (data: LocationUnit) => string;
 }
 
 const defaultEditLocationUnitProps = {
@@ -41,8 +43,8 @@ const defaultEditLocationUnitProps = {
   hidden: [],
   disabled: [],
   service: OpenSRPService,
-  successURL: '',
-  cancelURL: '',
+  successURLGenerator: () => '',
+  cancelURLGenerator: () => '',
 };
 
 /** renders page where user can Edit already created location unit
@@ -56,8 +58,8 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     disabled,
     service,
     openSRPBaseURL,
-    successURL,
-    cancelURL,
+    cancelURLGenerator,
+    successURLGenerator,
     disabledTreeNodesCallback,
   } = props;
   const history = useHistory();
@@ -154,11 +156,14 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   }
 
   const initialValues = getLocationFormFields(thisLocation, instance, isJurisdiction);
-  const cancelHandler = () => history.push(cancelURL);
+  const cancelHandler = () => {
+    const cancelURL = cancelURLGenerator(thisLocation);
+    history.push(cancelURL);
+  };
 
   const locationFormProps = {
     initialValues,
-    redirectAfterAction: successURL,
+    successURLGenerator,
     hidden,
     disabled,
     onCancel: cancelHandler,

@@ -104,7 +104,7 @@ describe('NewLocationUnit', () => {
         ...locationProps.match,
         params: { id: location1.id },
       },
-      cancelURL,
+      cancelURLGenerator: () => cancelURL,
     };
 
     const wrapper = mount(
