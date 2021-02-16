@@ -68,7 +68,7 @@ const InventoryList = (props: InventoryListProps) => {
       opensrpBaseURL
     );
     serve
-      .list()
+      .list({ returnProduct: true })
       .then((res: Inventory[]) => {
         dispatch(fetchInventories(res));
       })
