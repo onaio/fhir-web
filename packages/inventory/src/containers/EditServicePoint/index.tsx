@@ -1,5 +1,10 @@
-import { FormInstances, EditLocationUnit, LocationRouteProps } from '@opensrp/location-management';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
+import {
+  FormInstances,
+  EditLocationUnit,
+  LocationRouteProps,
+  LocationUnit,
+} from '@opensrp/location-management';
+import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
@@ -22,7 +27,10 @@ const ServicePointEdit = (props: ServicePointAddTypes) => {
     openSRPBaseURL: baseURL,
     instance: FormInstances.EUSM,
     hidden: commonHiddenFields,
-    redirectAfterAction: INVENTORY_SERVICE_POINT_LIST_VIEW,
+    successURLGenerator: (payload: LocationUnit) =>
+      `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${payload.id}`,
+    cancelURLGenerator: (payload: LocationUnit) =>
+      `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${payload.id}`,
     disabled: ['isJurisdiction'],
     disabledTreeNodesCallback,
   };
