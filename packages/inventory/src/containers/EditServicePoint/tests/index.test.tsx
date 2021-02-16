@@ -71,7 +71,7 @@ describe('CreateServicePoint', () => {
 
     expect(locationFormProps.hidden).toEqual(commonHiddenFields);
     expect(initialValues.instance).toEqual('eusm');
-    expect(locationFormProps.disabled).toEqual(['isJurisdiction']);
+    expect(locationFormProps.disabled).toEqual(['isJurisdiction', 'parentId']);
 
     // test re-direction url on chancel
     wrapper.find('button#location-form-cancel-button').simulate('click');

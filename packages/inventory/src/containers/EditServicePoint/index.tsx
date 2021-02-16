@@ -31,7 +31,7 @@ const ServicePointEdit = (props: ServicePointAddTypes) => {
       `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${payload.id}`,
     cancelURLGenerator: (payload: LocationUnit) =>
       `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${payload.id}`,
-    disabled: ['isJurisdiction'],
+    disabled: ['isJurisdiction', 'parentId'],
     disabledTreeNodesCallback,
   };
 
