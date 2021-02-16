@@ -40,6 +40,21 @@ reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReduce
 // Define selector instance
 const userGroupsSelector = makeKeycloakUserGroupsSelector();
 
+interface UserGroupMembers {
+  createdTimestamp: number;
+  disableableCredentialTypes?: string[];
+  email: string;
+  emailVerified: boolean;
+  enabled: boolean;
+  firstName: string;
+  id: string;
+  lastName: string;
+  notBefore: number;
+  requiredActions: string[];
+  totp: boolean;
+  username: string;
+}
+
 interface TableData {
   key: number | string;
   id: string | undefined;
@@ -55,7 +70,47 @@ const defaultProps = {
   keycloakBaseURL: '',
 };
 
-/** Function which shows the list of all groups and their details
+/** Function to fetch group members from keycloak
+ *
+ * @param {string} groupId - user group id
+ * @param {string} baseURL - keycloak base url
+ * @param {Function} callback - callback function to set group members from api to state
+ */
+export const loadGroupMembers = async (
+  groupId: string,
+  baseURL: string,
+  callback: (members: UserGroupMembers) => void
+) => {
+  const serve = new KeycloakService(`${KEYCLOAK_URL_USER_GROUPS}/${groupId}/members`, baseURL);
+  return await serve
+    .list()
+    .then((response: UserGroupMembers) => {
+      callback(response);
+    })
+    .catch((e: Error) => sendErrorNotification(`${e}`));
+};
+
+/** Function to fetch group members from keycloak
+ *
+ * @param {string} groupId - user group id
+ * @param {string} baseURL - keycloak base url
+ * @param {Function} callback - callback function to set group members from api to state
+ */
+export const loadGroupDetails = async (
+  groupId: string,
+  baseURL: string,
+  callback: (userGroup: KeycloakUserGroup) => void
+) => {
+  const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, baseURL);
+  return await serve
+    .read(groupId)
+    .then((response: KeycloakUserGroup) => {
+      callback(response);
+    })
+    .catch((e: Error) => sendErrorNotification(`${e}`));
+};
+
+/** Component which shows the list of all groups and their details
  *
  * @param {Object} props - UserGoupsList component props
  * @returns {Function} returns User Groups list display
@@ -124,7 +179,12 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
           <Dropdown
             overlay={
               <Menu className="menu">
-                <Menu.Item className="viewdetails">{VIEW_DETAILS}</Menu.Item>
+                <Menu.Item
+                  className="viewdetails"
+                  onClick={() => loadSingleUserGroup(record.id, keycloakBaseURL)}
+                >
+                  {VIEW_DETAILS}
+                </Menu.Item>
               </Menu>
             }
             placement="bottomLeft"
@@ -145,7 +205,7 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
       </Helmet>
       <PageHeader title={USER_GROUPS_PAGE_HEADER} className="page-header" />
       <Row className="list-view">
-        <Col className="main-content">
+        <Col span={24}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
             <Link to={URL_USER_GROUP_CREATE}>
