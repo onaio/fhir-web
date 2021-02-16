@@ -99,7 +99,7 @@ export const getLocationFormFields = (
 ): LocationFormFields => {
   const commonValues = {
     instance,
-    isJurisdiction,
+    isJurisdiction: location?.isJurisdiction ?? isJurisdiction,
   };
   if (!location) {
     return {

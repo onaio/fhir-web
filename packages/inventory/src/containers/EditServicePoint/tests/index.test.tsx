@@ -47,7 +47,7 @@ describe('CreateServicePoint', () => {
       },
       match: {
         isExact: true,
-        params: { id: '' },
+        params: { id: location1.id },
         path: `${INVENTORY_ADD_SERVICE_POINT}`,
         url: `${INVENTORY_ADD_SERVICE_POINT}`,
       },
