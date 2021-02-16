@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/CreateEditUser renders correctly 2`] = `
+exports[`components/CreateEditUser renders correctly 1`] = `
 Object {
   "children": <Col
     span={24}
