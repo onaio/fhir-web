@@ -199,7 +199,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     <>
       <div className="inventory-profile-header">
         <Row>
-          <Col md={16}>
+          <Col md={18}>
             <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>
               <p className="go-back-text">{BACK_TO_SERVICE_POINT_LIST}</p>
             </Link>
@@ -228,7 +228,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
               </Col>
             </Row>
           </Col>
-          <Col md={8} className="flex-center">
+          <Col md={6} className="flex-center-right">
             <Link to={`${INVENTORY_EDIT_SERVICE_POINT}/${spId}`}>
               <Button type="primary" size="large">
                 {EDIT_SERVICE_POINT}

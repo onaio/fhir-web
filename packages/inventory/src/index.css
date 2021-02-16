@@ -31,10 +31,11 @@
   justify-content: flex-end;
 }
 
-.flex-center {
+.flex-center-right {
   align-items: center;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  padding: 10px;
 }
 
 .inventory-profile-header {
