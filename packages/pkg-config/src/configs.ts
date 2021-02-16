@@ -51,7 +51,7 @@ export const initializei18n = (i18next: typeof i18n, opensrpResources: LanguageR
       fallbackLng: `${languageCode}_${projectLanguageCode}`,
       interpolation: { escapeValue: false },
       returnEmptyString: false,
-      nsSeparator: '::'
+      nsSeparator: '::',
     })
     .catch((err) => err);
 };
