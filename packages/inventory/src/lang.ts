@@ -1,3 +1,13 @@
+// Error
+export const ERROR_GENERIC = 'An error occurred';
+export const ERROR_PRODUCT_NAME_REQUIRED = 'Product is required';
+export const ERROR_DELIVERY_DATE_REQUIRED = 'Delivery date is required';
+export const ERROR_ACCOUNTABILITY_DATE_REQUIRED = 'Accountability end date is required';
+export const ERROR_UNICEF_SECTION_REQUIRED = 'UNICEF section is required';
+export const ERROR_PO_NUMBER_REQUIRED = 'PO number is required';
+export const ERROR_SERIAL_NUMBER_REQUIRED = 'Serial number is required';
+
+// Rendered text
 export const ADD_SERVICE_POINT = '+ Add service point';
 export const SERVICE_POINT_INVENTORY = 'Service point inventory';
 export const SERVICE_POINT_TH = 'Service point';
@@ -9,6 +19,18 @@ export const VIEW = 'view';
 export const FETCHING_LOCATIONS = 'Fetching locations';
 export const FETCHING_LOCATIONS_DESCRIPTION = 'Please wait, while locations are being fetched';
 export const LOADING_ELLIPSIS = 'Loading ...';
+export const ADD_INVENTORY_ITEM = 'Add inventory item';
+export const TO = 'to';
+export const SAVE = 'Save';
+export const SAVING = 'Saving';
+export const OPTIONAL = 'optional';
+export const QUANTITY = 'Quantity';
+export const DELIVERY_DATE = 'Delivery date';
+export const ACCOUNTABILITY_END_DATE = 'Accountability end date';
+export const UNICEF_SECTION = 'UNICEF section';
+export const DONOR = 'Donor';
+export const PO_NUMBER = 'PO number';
+export const SELECT = 'Select';
 
 // Service point profile
 export const INVENTORY = 'Inventory';
@@ -70,5 +92,9 @@ export const INVENTORY_ITEMS_NOT_LISTED_BELOW =
 export const INVENTORY_ITEMS_ADDED_TO = 'inventory items added to';
 export const RETRY_CSV_UPLOAD = 'retry csv upload';
 export const PLEASE_FIX_THE_ERRORS_LISTED_BELOW = 'please fix the errors listed below, then';
+export const PRODUCT = 'Product';
+export const SERIAL_NUMBER = 'Serial number';
+export const EDIT_INVENTORY_ITEM = 'Edit inventory item';
+export const EDIT = 'Edit';
 export const BACK_TO_SERVICE_POINT_LIST = 'Back to the list of service points';
 export const ERROR_GETTING_INVENTORIES = 'Unable to fetch inventories for service point';

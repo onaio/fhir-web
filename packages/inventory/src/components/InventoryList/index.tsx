@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Row, Col, Button, Table } from 'antd';
-import { ColumnsType } from 'antd/lib/table/interface';
-import { columns } from '../../containers/ProfileView/utils';
+import { getTableColumns } from './utils';
 import { Link } from 'react-router-dom';
 import {
   GET_INVENTORY_BY_SERVICE_POINT,
-  INVENTORY_ADD_SERVICE_POINT,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
+  URL_INVENTORY_ADD,
+  URL_INVENTORY_EDIT,
   TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
@@ -27,16 +28,20 @@ import { removeLastItem } from './utils';
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
 interface InventoryListProps extends CommonProps {
-  columns: ColumnsType<Inventory>;
   servicePointId: string;
   opensrpBaseURL: string;
+  addInventoryURL: string; // route add inventory
+  editInventoryURL: string; // route edit inventory
+  servicePointProfileURL: string; // route service point profile
 }
 
 const defaultProps = {
   ...defaultCommonProps,
-  columns: columns,
   servicePointId: '',
   opensrpBaseURL: '',
+  addInventoryURL: URL_INVENTORY_ADD,
+  editInventoryURL: URL_INVENTORY_EDIT,
+  servicePointProfileURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 };
 
 /** component that renders Inventory list
@@ -44,7 +49,13 @@ const defaultProps = {
  * @param props - the component props
  */
 const InventoryList = (props: InventoryListProps) => {
-  const { servicePointId, opensrpBaseURL } = props;
+  const {
+    servicePointId,
+    opensrpBaseURL,
+    servicePointProfileURL,
+    addInventoryURL,
+    editInventoryURL,
+  } = props;
   const inventoriesArray = useSelector((state) =>
     getInventoriesByExpiry(state, { expired: false })
   ) as Inventory[];
@@ -58,7 +69,7 @@ const InventoryList = (props: InventoryListProps) => {
       opensrpBaseURL
     );
     serve
-      .list()
+      .list({ returnProduct: true })
       .then((res: Inventory[]) => {
         dispatch(fetchInventories(res));
       })
@@ -90,7 +101,7 @@ const InventoryList = (props: InventoryListProps) => {
         <Col className={'main-content'}>
           <div className="inventory-profile">
             <h6>{INVENTORY_ITEMS}</h6>
-            <Link to={INVENTORY_ADD_SERVICE_POINT}>
+            <Link to={`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`}>
               <Button type="primary" size="large">
                 {`+ ${ADD_NEW_INVENTORY_ITEM}`}
               </Button>
@@ -100,7 +111,7 @@ const InventoryList = (props: InventoryListProps) => {
             className="custom-table"
             pagination={false}
             dataSource={dataSource}
-            columns={columns}
+            columns={getTableColumns(servicePointProfileURL, editInventoryURL)}
           ></Table>
         </Col>
       </Row>

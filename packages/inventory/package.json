@@ -41,6 +41,7 @@
   "private": false,
   "dependencies": {
     "@opensrp/location-management": "^0.0.7",
+    "@opensrp/product-catalogue": "0.0.2",
     "@opensrp/react-utils": "^0.0.2",
     "axios": "^0.21.1"
   },
