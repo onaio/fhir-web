@@ -84,7 +84,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   });
 
   return (
-    <div className="content-section">
+    <div className="content-section product-catalogue">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>

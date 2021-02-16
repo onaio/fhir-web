@@ -9,7 +9,7 @@ import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
-import { Geometry } from 'geojson';
+import { Geometry, Point } from 'geojson';
 import {
   ERROR_PARENTID_STRING,
   ERROR_NAME_STRING,
@@ -20,7 +20,9 @@ import {
   ERROR_LOCATION_TAGS_ARRAY,
   ERROR_LOCATION_CATEGORY_REQUIRED,
   ERROR_SERVICE_TYPES_REQUIRED,
+  LONGITUDE_LATITUDE_TYPE_ERROR,
 } from '../../lang';
+import { FormInstance } from 'antd/lib/form/hooks/useForm';
 
 export enum FormInstances {
   CORE = 'core',
@@ -40,10 +42,12 @@ export interface LocationFormFields {
   externalId?: string;
   locationTags?: number[];
   geometry?: string;
-  isJurisdiction?: boolean;
+  isJurisdiction: boolean;
   serviceType?: string;
   extraFields: ExtraFields[];
   username?: string;
+  latitude?: string;
+  longitude?: string;
 }
 
 interface BaseSetting {
@@ -95,7 +99,7 @@ export const getLocationFormFields = (
 ): LocationFormFields => {
   const commonValues = {
     instance,
-    isJurisdiction,
+    isJurisdiction: location?.isJurisdiction ?? isJurisdiction,
   };
   if (!location) {
     return {
@@ -103,6 +107,7 @@ export const getLocationFormFields = (
       ...commonValues,
     };
   }
+
   const {
     name,
     status,
@@ -112,12 +117,18 @@ export const getLocationFormFields = (
     type,
     ...restProperties
   } = location.properties;
+
+  // derive latitude and longitudes for point
+  const { geometry: geoObject } = location;
+  const geoJson = JSON.stringify(geoObject);
+  const { longitude, latitude } = getPointCoordinates(geoJson);
+
   const formFields = {
     ...defaultFormField,
     ...commonValues,
     id: location.id,
     locationTags: location.locationTags?.map((loc) => loc.id),
-    geometry: JSON.stringify(location.geometry),
+    geometry: geoJson,
     type: location.type,
     name,
     username,
@@ -126,6 +137,8 @@ export const getLocationFormFields = (
     externalId,
     serviceType: type,
     extraFields: Object.entries(restProperties).map(([key, val]) => ({ [key]: val })),
+    longitude,
+    latitude,
   };
 
   return formFields;
@@ -178,7 +191,7 @@ export const generateLocationUnit = (
   } = formValues;
 
   const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? 0;
-  const thisGeoLevel = (parentGeographicLevel as number) + 1;
+  const thisGeoLevel = parentId ? (parentGeographicLevel as number) + 1 : 0;
 
   const thisLocationsId = id ? id : v4();
 
@@ -288,7 +301,6 @@ export const validationRules = {
       };
     },
   ] as Rule[],
-
   serviceTypes: [
     ({ getFieldValue }) => {
       const instance = getFieldValue('instance');
@@ -302,11 +314,44 @@ export const validationRules = {
       };
     },
   ] as Rule[],
+  longitude: [
+    () => ({
+      validator(_, value) {
+        if (!value) {
+          return Promise.resolve();
+        }
+        return rejectIfNan(value, LONGITUDE_LATITUDE_TYPE_ERROR);
+      },
+    }),
+  ] as Rule[],
+  latitude: [
+    () => ({
+      validator(_, value) {
+        if (!value) {
+          return Promise.resolve();
+        }
+        return rejectIfNan(value, LONGITUDE_LATITUDE_TYPE_ERROR);
+      },
+    }),
+  ] as Rule[],
   extraFields: [
     {
       required: false,
     },
   ],
+};
+
+/** given a value retrun a rejected promise if value is not parseable as number
+ *
+ * @param value - value to parse into string
+ * @param message - error message to show
+ */
+const rejectIfNan = (value: string, message: string) => {
+  if (isNaN(Number(value))) {
+    return Promise.reject(message);
+  } else {
+    return Promise.resolve();
+  }
 };
 
 /** gets location tag options for location form location tags select field
@@ -345,4 +390,99 @@ export const treeToOptions = (
     return optionValue;
   };
   return trees.map(recurseCreateOptions);
+};
+
+/**
+ * validate coordinates, returns true only if coordinates belong to a point
+ *
+ * @param geoJson - the geojson object
+ */
+export const cordIsPoint = (geoJson?: Partial<Geometry>) => {
+  return (
+    geoJson?.type === 'Point' &&
+    Array.isArray(geoJson.coordinates) &&
+    geoJson.coordinates.length === 2
+  );
+};
+
+export const getPointCoordinates = (geoText: string) => {
+  let geojson: Geometry;
+  try {
+    geojson = JSON.parse(geoText);
+  } catch (err) {
+    return {};
+  }
+  const isPoint = cordIsPoint(geojson);
+  if (!isPoint) {
+    return {};
+  }
+  const lng = (geojson as Point).coordinates[0];
+  const lat = (geojson as Point).coordinates[1];
+
+  const longitude = lng ? String(lng) : undefined;
+  const latitude = lat ? String(lat) : undefined;
+
+  return { longitude, latitude };
+};
+
+/** handles form values change , creates a values change handler that listens for
+ * changes to geometry, latitude and longitude and syncs changes across the 3 fields
+ *
+ * @param form - the form instance
+ */
+export const handleGeoFieldsChangeFactory = (form: FormInstance) => {
+  return (changedValues: Partial<LocationFormFields>, allValues: LocationFormFields) => {
+    /** location fields that could possible change */
+    const { geometry, latitude, longitude } = changedValues;
+    if (geometry !== undefined) {
+      // means geometry changed
+      const { longitude, latitude } = getPointCoordinates(geometry);
+      form.setFieldsValue({
+        longitude,
+        latitude,
+      });
+    }
+
+    const { geometry: existingGeo, latitude: existingLat, longitude: ExistingLng } = allValues;
+    let currentGeoJson;
+    try {
+      currentGeoJson = JSON.parse(existingGeo ?? '{}');
+    } catch (err) {
+      currentGeoJson = {};
+    }
+
+    if (latitude !== undefined) {
+      // means latitude changed
+      const isPoint = cordIsPoint(currentGeoJson);
+      const parsedLatitude = Number(latitude);
+      if (isPoint) {
+        const currentGeometry = { ...currentGeoJson };
+        currentGeometry.coordinates[1] = parsedLatitude;
+        form.setFieldsValue({
+          geometry: JSON.stringify(currentGeometry),
+        });
+      } else {
+        form.setFieldsValue({
+          geometry: JSON.stringify({ type: 'Point', coordinates: [ExistingLng, parsedLatitude] }),
+        });
+      }
+    }
+
+    if (longitude !== undefined) {
+      // means longitude changed
+      const isPoint = cordIsPoint(currentGeoJson);
+      const parsedLongitude = Number(longitude);
+      if (isPoint) {
+        const currentGeometry = { ...currentGeoJson };
+        currentGeometry.coordinates[0] = Number(longitude);
+        form.setFieldsValue({
+          geometry: JSON.stringify(currentGeometry),
+        });
+      } else {
+        form.setFieldsValue({
+          geometry: JSON.stringify({ type: 'Point', coordinates: [parsedLongitude, existingLat] }),
+        });
+      }
+    }
+  };
 };

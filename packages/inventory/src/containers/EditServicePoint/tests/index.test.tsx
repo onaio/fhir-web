@@ -9,6 +9,7 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
+import { commonHiddenFields } from '../../../helpers/utils';
 
 const history = createBrowserHistory();
 
@@ -46,7 +47,7 @@ describe('CreateServicePoint', () => {
       },
       match: {
         isExact: true,
-        params: { id: '' },
+        params: { id: location1.id },
         path: `${INVENTORY_ADD_SERVICE_POINT}`,
         url: `${INVENTORY_ADD_SERVICE_POINT}`,
       },
@@ -68,13 +69,7 @@ describe('CreateServicePoint', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initialValues = (locationFormProps as any).initialValues;
 
-    expect(locationFormProps.hidden).toEqual([
-      'extraFields',
-      'status',
-      'type',
-      'locationTags',
-      'externalId',
-    ]);
+    expect(locationFormProps.hidden).toEqual(commonHiddenFields);
     expect(initialValues.instance).toEqual('eusm');
     expect(locationFormProps.disabled).toEqual(['isJurisdiction']);
   });
