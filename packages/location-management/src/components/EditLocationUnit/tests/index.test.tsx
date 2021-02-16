@@ -3,7 +3,7 @@ import { EditLocationUnit } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
-import { Router } from 'react-router';
+import { RouteComponentProps, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { removeLocationUnits } from '../../../ducks/location-units';
@@ -209,5 +209,43 @@ describe('EditLocationUnit', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
     );
+  });
+
+  it('cancel url is used if passed', async () => {
+    fetch.once(JSON.stringify(null));
+    fetch.once(JSON.stringify(location1));
+    fetch.mockResponse(JSON.stringify([]));
+    const cancelURL = '/canceledURL';
+
+    const props = {
+      ...locationProps,
+      match: {
+        ...locationProps.match,
+        params: { id: location1.id },
+      },
+      cancelURL,
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <EditLocationUnit {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // simulate click on cancel button
+    wrapper.find('button#location-form-cancel-button').simulate('click');
+    wrapper.update();
+
+    // check url
+    expect(
+      (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
+    ).toEqual(cancelURL);
   });
 });

@@ -12,14 +12,13 @@ import { ADD_LOCATION_UNIT } from '../../lang';
 
 /** full props for the new location component */
 export interface NewLocationUnitProps
-  extends Pick<
-      LocationFormProps,
-      'redirectAfterAction' | 'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback'
-    >,
+  extends Pick<LocationFormProps, 'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback'>,
     RouteComponentProps {
   openSRPBaseURL: string;
   instance: FormInstances;
   processInitialValues?: (formFields: LocationFormFields) => LocationFormFields;
+  successURL: string;
+  cancelURL: string;
 }
 
 const defaultNewLocationUnitProps = {
@@ -29,6 +28,8 @@ const defaultNewLocationUnitProps = {
   hidden: [],
   disabled: [],
   service: OpenSRPService,
+  successURL: '',
+  cancelURL: '',
 };
 
 /** renders page where user can create new location unit
@@ -42,12 +43,13 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     disabled,
     service,
     openSRPBaseURL,
-    redirectAfterAction,
+    successURL,
+    cancelURL,
     processInitialValues,
     disabledTreeNodesCallback,
   } = props;
   const history = useHistory();
-  const cancelHandler = () => history.push(redirectAfterAction);
+  const cancelHandler = () => history.push(cancelURL);
   const user = useSelector((state) => getUser(state));
 
   const firstInitialValues = getLocationFormFields(undefined, instance);
@@ -55,7 +57,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
 
   const locationFormProps = {
     initialValues,
-    redirectAfterAction,
+    redirectAfterAction: successURL,
     hidden,
     disabled,
     onCancel: cancelHandler,
