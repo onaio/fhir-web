@@ -92,10 +92,10 @@ describe('EditLocationUnit', () => {
     });
 
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual('Edit Location Unit | Kenya');
+    expect(helmet.title).toEqual('Edit > Kenya');
 
     // rendered page including title
-    expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Edit Location Unit | Kenya"`);
+    expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Edit > Kenya"`);
 
     expect(wrapper.find('LocationForm').text()).toMatchSnapshot('form rendered');
 

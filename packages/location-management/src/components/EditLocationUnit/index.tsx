@@ -15,7 +15,7 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
 import { getUser } from '@onaio/session-reducer';
-import { EDIT_LOCATION_UNIT } from '../../lang';
+import { EDIT } from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 
@@ -165,7 +165,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     user: user.username,
     disabledTreeNodesCallback,
   };
-  const pageTitle = `${EDIT_LOCATION_UNIT} | ${thisLocation.properties.name}`;
+  const pageTitle = `${EDIT} > ${thisLocation.properties.name}`;
 
   return (
     <Row className="layout-content">
