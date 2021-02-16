@@ -112,7 +112,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         )
         .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [userId, keycloakBaseURL, initialValues.userGroup, initialValues]);
+  }, [userId, keycloakBaseURL, initialValues]);
 
   useEffect(() => {
     if (userId && initialValues.practitioner === undefined) {
@@ -124,7 +124,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         )
         .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [userId, opensrpBaseURL, initialValues.practitioner, initialValues]);
+  }, [userId, opensrpBaseURL, initialValues]);
 
   if (!userGroups.length || (keycloakUser && !initialValues.username) || (userId && !keycloakUser))
     return <Spin size="large" />;

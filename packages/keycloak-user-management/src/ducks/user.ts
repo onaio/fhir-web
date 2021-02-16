@@ -14,6 +14,7 @@ export interface UserGroup {
   id: string;
   name: string;
   path: string;
+  subGroups?: UserGroup[];
 }
 
 /** Interface for practitioner json object */
