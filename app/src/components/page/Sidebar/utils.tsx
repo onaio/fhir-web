@@ -27,8 +27,8 @@ import {
   SERVICE_POINT_INVENTORY,
   USERS,
   USER_MANAGEMENT,
-  LOCATIONS_UNIT,
-  LOCATIONS_UNIT_GROUP,
+  LOCATION_UNIT,
+  LOCATION_UNIT_GROUP,
   PRODUCT_CATALOGUE,
   TEAMS,
   FORM_CONFIGURATION,
@@ -123,13 +123,13 @@ export const menusSchema = (roles: Dictionary): MenuItems[] => [
         enabled: ENABLE_LOCATIONS,
         children: [
           {
-            otherProps: { icon: '', title: `${LOCATIONS_UNIT}` },
+            otherProps: { icon: '', title: `${LOCATION_UNIT}` },
             url: `${URL_LOCATION_UNIT}`,
             key: 'location-unit',
             children: [],
           },
           {
-            otherProps: { icon: '', title: `${LOCATIONS_UNIT_GROUP}` },
+            otherProps: { icon: '', title: `${LOCATION_UNIT_GROUP}` },
             url: `${URL_LOCATION_UNIT_GROUP}`,
             key: 'location-group',
             children: [],
