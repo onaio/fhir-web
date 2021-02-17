@@ -180,10 +180,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
   const handleProductChange = (value: string) => {
     if (!isProductChanged) setProductChanged(true);
     const selected = products.find((product) => product.productName === value);
-
-    if (selected) {
-      setSelectedProduct(selected);
-    }
+    setSelectedProduct(selected);
   };
 
   const handleDeliveryDateChange = (date: moment.Moment | null, _: string) => {
