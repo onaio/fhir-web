@@ -169,3 +169,12 @@ export const PLAN_TITLE_PLACEHOLDER = i18n.t("Enter the Plan's name");
 export const DESCRIPTION_PLACEHOLDER = i18n.t('Enter the plans Description');
 export const DYNAMIC_VALUE_LEGEND_TITLE = i18n.t('Dynamic Value');
 export const PATH_LABEL = i18n.t('Path');
+export const YES = 'yes';
+export const NO = 'no';
+export const SETTING_STATUS_TO_DRAFT = 'Are you sure, status will be set to draft';
+export const SETTING_STATUS_TO_ACTIVE =
+  "Are you sure, you won't be able to change the status back to draft";
+export const SETTING_STATUS_TO_COMPLETE =
+  "Are you sure, you won't be able to change the status for complete plans";
+export const SETTING_STATUS_TO_RETIRED =
+  "Are you sure, you won't be able to change the status for retired plans";
