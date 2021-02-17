@@ -265,7 +265,7 @@ export const structures = [structure1, structure2, structure3] as LocationUnit[]
 
 export const fetchCalls = [
   [
-    'https://test-example.com/rest/location/getAll?serverVersion=0&is_jurisdiction=false',
+    'https://test-example.com/rest/location/getAll?serverVersion=0&is_jurisdiction=false&return_geometry=true',
     {
       headers: {
         accept: 'application/json',

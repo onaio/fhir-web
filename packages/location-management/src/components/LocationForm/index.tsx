@@ -14,7 +14,7 @@ import {
   validationRules,
 } from './utils';
 import { baseURL, SERVICE_TYPES_SETTINGS_ID, URL_LOCATION_UNIT } from '../../constants';
-import { LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
+import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
 import { CustomSelect } from './CustomSelect';
 import { loadLocationTags, loadSettings, postPutLocationUnit } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '@opensrp/react-utils';
@@ -61,7 +61,7 @@ const { Item: FormItem } = Form;
 export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
-  redirectAfterAction: string;
+  successURLGenerator: (payload: LocationUnit) => string;
   opensrpBaseURL: string;
   hidden: string[];
   disabled: string[];
@@ -72,12 +72,10 @@ export interface LocationFormProps
 
 const defaultProps = {
   initialValues: defaultFormField,
-  redirectAfterAction: URL_LOCATION_UNIT,
+  successURLGenerator: () => URL_LOCATION_UNIT,
   hidden: [],
   disabled: [],
-  onCancel: () => {
-    return;
-  },
+  onCancel: () => void 0,
   service: OpenSRPService,
   username: '',
   opensrpBaseURL: baseURL,
@@ -129,7 +127,7 @@ const tailLayout = {
 const LocationForm = (props: LocationFormProps) => {
   const {
     initialValues,
-    redirectAfterAction,
+    successURLGenerator,
     opensrpBaseURL,
     disabled,
     onCancel,
@@ -143,6 +141,7 @@ const LocationForm = (props: LocationFormProps) => {
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const [selectedLocationTags, setLocationTags] = useState<LocationUnitTag[]>([]);
   const [selectedParentNode, setSelectedParentNode] = useState<TreeNode>();
+  const [generatedPayload, setGeneratedPayload] = useState<LocationUnit>();
 
   const isHidden = (fieldName: string) => hidden.includes(fieldName);
   const isDisabled = (fieldName: string) => disabled.includes(fieldName);
@@ -167,6 +166,7 @@ const LocationForm = (props: LocationFormProps) => {
   ];
   /** if plan is updated or saved redirect to plans page */
   if (areWeDoneHere) {
+    const redirectAfterAction = successURLGenerator(generatedPayload as LocationUnit);
     return <Redirect to={redirectAfterAction} />;
   }
 
@@ -202,6 +202,7 @@ const LocationForm = (props: LocationFormProps) => {
           postPutLocationUnit(payload, opensrpBaseURL, service, isEditMode, params)
             .then(() => {
               sendSuccessNotification(successMessage);
+              setGeneratedPayload(payload);
               setAreWeDoneHere(true);
             })
             .catch((err: Error) => {

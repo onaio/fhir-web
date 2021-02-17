@@ -15,7 +15,7 @@ import {
   fetchTree,
 } from '@opensrp/location-management';
 import { useDispatch, useSelector } from 'react-redux';
-import { GeographicLocationInterface } from './utils';
+import { getCords, GeographicLocationInterface } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Link, RouteComponentProps, useParams } from 'react-router-dom';
@@ -42,6 +42,7 @@ import {
   COMMUNE_LABEL,
   SERVICE_POINT_ID_LABEL,
   BACK_TO_SERVICE_POINT_LIST,
+  INVENTORY,
 } from '../../lang';
 import '../../index.css';
 import { fetchInventories } from '../../ducks/inventory';
@@ -93,9 +94,8 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
   const { label, value } = props;
   return (
     <Col md={24} className="geography-item">
-      <p className="item">
-        {label}: {value}
-      </p>
+      <p className="label">{label}:</p>
+      <p className="value"> {value}</p>
     </Col>
   );
 };
@@ -135,6 +135,8 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       serverVersion: 0,
       // eslint-disable-next-line @typescript-eslint/camelcase
       is_jurisdiction: false,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      return_geometry: true,
     };
     const structuresDispatcher = (locations: LocationUnit[] = []) => {
       return dispatch(fetchLocationUnits(locations, false));
@@ -199,11 +201,13 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     <>
       <div className="inventory-profile-header">
         <Row>
-          <Col md={16}>
+          <Col md={18}>
             <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>
               <p className="go-back-text">{BACK_TO_SERVICE_POINT_LIST}</p>
             </Link>
-            <p className="title">{structure.properties.name}</p>
+            <p className="title">
+              {structure.properties.name} {INVENTORY}
+            </p>
             <Row>
               <Col md={12}>
                 <GeographyItem
@@ -221,12 +225,12 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
               </Col>
               <Col md={12}>
                 <GeographyItem label={TYPE_LABEL} value={structure.properties.type} />
-                <GeographyItem label={LAT_LONG_LABEL} value={''} />
+                <GeographyItem label={LAT_LONG_LABEL} value={getCords(structure.geometry)} />
                 <GeographyItem label={SERVICE_POINT_ID_LABEL} value={spId} />
               </Col>
             </Row>
           </Col>
-          <Col md={8} className="flex-center">
+          <Col md={6} className="flex-center-right">
             <Link to={`${INVENTORY_EDIT_SERVICE_POINT}/${spId}`}>
               <Button type="primary" size="large">
                 {EDIT_SERVICE_POINT}

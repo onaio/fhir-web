@@ -28,7 +28,7 @@ import {
 import { ProductCatalogue } from '@opensrp/product-catalogue';
 import { isDateFuture, isDatePastOrToday, submitForm } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { InventoryPost } from 'inventory/src/ducks/inventory';
+import { InventoryPost } from '../../ducks/inventory';
 
 /** interface for setting **/
 export interface Setting {

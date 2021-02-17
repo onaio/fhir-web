@@ -32,7 +32,8 @@ export const teamAssignmentProps = {
 };
 
 export const newLocationUnitProps = {
-  redirectAfterAction: URL_LOCATION_UNIT,
+  successURLGenerator: () => URL_LOCATION_UNIT,
+  cancelURLGenerator: () => URL_LOCATION_UNIT,
   hidden: ['serviceType', 'latitude', 'longitude'],
 };
 

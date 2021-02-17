@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { Router } from 'react-router';
+import { RouteComponentProps, Router } from 'react-router';
 import { LocationForm } from '..';
 import { defaultFormField, FormInstances, getLocationFormFields } from '../utils';
 import { createBrowserHistory } from 'history';
@@ -161,7 +161,7 @@ describe('LocationForm', () => {
 
     // type is required for core
     expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(
-      `"TypeType must be a string"`
+      `"TypeType can only contain letters, numbers and spaces"`
     );
 
     // name is required for core
@@ -380,6 +380,117 @@ describe('LocationForm', () => {
       ],
     ]);
 
+    wrapper.unmount();
+  });
+
+  it('correctly redirects on submit', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    fetch.mockResponse(JSON.stringify([]));
+
+    const someMockURL = '/someURL';
+    const successURLGeneratorMock = jest.fn(() => someMockURL);
+
+    const wrapper = mount(
+      <Router history={history}>
+        <LocationForm successURLGenerator={successURLGeneratorMock} />
+      </Router>,
+      { attachTo: container }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    // change parent Id
+    formInstance.setFieldsValue({
+      parentId: '51',
+    });
+
+    // simulate active check to be inactive
+    wrapper
+      .find('FormItem#status input')
+      .last()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // set isJurisdiction to false
+    wrapper
+      .find('FormItem#isJurisdiction input')
+      .first()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // simulate type field change
+    wrapper
+      .find('FormItem#type input')
+      .simulate('change', { target: { name: 'type', value: 'Feature' } });
+
+    // simulate name change
+    wrapper
+      .find('FormItem#name input')
+      .simulate('change', { target: { name: 'name', value: 'area51' } });
+
+    // simulate service type change
+    // change service types
+    formInstance.setFieldsValue({
+      serviceType: 'School',
+    });
+
+    wrapper
+      .find('FormItem#externalId input')
+      .simulate('change', { target: { name: 'externalId', value: 'secret' } });
+
+    wrapper.find('FormItem#geometry textarea').simulate('change', {
+      target: { value: JSON.stringify([19.92919921875, 30.135626231134587]) },
+    });
+
+    fetch.resetMocks();
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(successURLGeneratorMock).toHaveBeenCalledWith(createdLocation1);
+    expect(
+      (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
+    ).toEqual(someMockURL);
+    wrapper.unmount();
+  });
+
+  it('cancel handler is called on cancel', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    fetch.mockResponse(JSON.stringify([]));
+    const cancelMock = jest.fn();
+
+    const wrapper = mount(
+      <Router history={history}>
+        <LocationForm onCancel={cancelMock} />
+      </Router>,
+      { attachTo: container }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    wrapper.find('button#location-form-cancel-button').simulate('click');
+    wrapper.update();
+
+    expect(cancelMock).toHaveBeenCalled();
     wrapper.unmount();
   });
 

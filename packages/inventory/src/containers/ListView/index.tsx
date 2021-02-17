@@ -188,6 +188,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
             </Link>
           </div>
           <Table
+            className="custom-table"
             dataSource={dataSource}
             columns={columns}
             pagination={tablePaginationOptions}

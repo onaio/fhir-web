@@ -3,7 +3,7 @@ import { NewLocationUnit } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
-import { Router } from 'react-router';
+import { RouteComponentProps, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { removeLocationUnits } from '../../../ducks/location-units';
@@ -92,5 +92,41 @@ describe('NewLocationUnit', () => {
     expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Add Location Unit"`);
 
     expect(wrapper.find('LocationForm').text()).toMatchSnapshot('form rendered');
+  });
+
+  it('cancel url is used if passed', async () => {
+    fetch.mockResponse(JSON.stringify([]));
+    const cancelURL = '/canceledURL';
+
+    const props = {
+      ...locationProps,
+      match: {
+        ...locationProps.match,
+        params: { id: location1.id },
+      },
+      cancelURLGenerator: () => cancelURL,
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <NewLocationUnit {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // simulate click on cancel button
+    wrapper.find('button#location-form-cancel-button').simulate('click');
+    wrapper.update();
+
+    // check url
+    expect(
+      (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
+    ).toEqual(cancelURL);
   });
 });
