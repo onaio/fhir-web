@@ -116,6 +116,14 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
         to="/product-catalogue/list"
       >
         Product Catalogue
@@ -286,6 +294,14 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <MenuItem>
       <Link
         className="admin-link"
@@ -462,6 +478,14 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
         to="/product-catalogue/list"
       >
         Product Catalogue
@@ -475,7 +499,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Locations unit
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
@@ -483,7 +507,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Locations unit group
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>
@@ -522,7 +546,11 @@ Array [
 exports[`components/ConnectedSidebar correctly expand location menu 1`] = `
 Array [
   <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
+    icon={
+      <MapMarkerOutlineIcon
+        className="sidebar-icons"
+      />
+    }
     title="Missions"
   >
     <MenuItem>
@@ -554,12 +582,16 @@ Array [
         className="admin-link"
         to="/missions/trash"
       >
-        Trash
+        Retired
       </Link>
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
+    icon={
+      <ForwardRef(IdcardOutlined)
+        className="sidebar-icons"
+      />
+    }
     title="Card Support"
   >
     <MenuItem>
@@ -572,7 +604,11 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
+    icon={
+      <ArchiveOutlineIcon
+        className="sidebar-icons"
+      />
+    }
     title="Inventory"
   >
     <MenuItem>
@@ -583,9 +619,21 @@ Array [
         Service point inventory
       </Link>
     </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
+      </Link>
+    </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
     title="Admin"
   >
     <SubMenu
@@ -599,7 +647,23 @@ Array [
           User Management
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
+        </Link>
+      </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <MenuItem>
       <Link
         className="admin-link"
@@ -773,6 +837,14 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
     <MenuItem>
       <Link
         className="admin-link"
@@ -1130,6 +1202,14 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
         to="/product-catalogue/list"
       >
         Product Catalogue
@@ -1143,7 +1223,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Locations unit
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
@@ -1151,7 +1231,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Locations unit group
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>
@@ -1187,105 +1267,14 @@ Array [
 ]
 `;
 
-exports[`components/ConnectedSidebar renders the ConnectedSidebar component 1`] = `
-Object {
-  "children": Array [
-    <div
-      className="ant-layout-sider-children"
-    >
-      <div
-        className="logo"
-      >
-        <Link
-          to="/"
-        >
-          <img
-            alt=""
-            className="img-fluid"
-            src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
-          />
-        </Link>
-      </div>
-      <Menu
-        className="menu-dark"
-        defaultOpenKeys={
-          Array [
-            "",
-          ]
-        }
-        defaultSelectedKeys={
-          Array [
-            "",
-          ]
-        }
-        mode="inline"
-        selectedKeys={
-          Array [
-            "",
-          ]
-        }
-        theme="dark"
-      >
-        <SubMenu
-          icon={
-            <ArchiveOutlineIcon
-              className="sidebar-icons"
-            />
-          }
-          title="Inventory"
-        >
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/inventory/list"
-            >
-              Service point inventory
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/inventory/upload"
-            >
-              Add inventory via CSV
-            </Link>
-          </MenuItem>
-        </SubMenu>
-        <SubMenu
-          icon={
-            <ForwardRef(SettingOutlined)
-              className="sidebar-icons"
-            />
-          }
-          title="Admin"
-        >
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/product-catalogue/list"
-            >
-              Product Catalogue
-            </Link>
-          </MenuItem>
-        </SubMenu>
-      </Menu>
-    </div>,
-    null,
-  ],
-  "className": "ant-layout-sider ant-layout-sider-dark layout-sider",
-  "style": Object {
-    "flex": "0 0 275px",
-    "maxWidth": "275px",
-    "minWidth": "275px",
-    "width": "275px",
-  },
-}
-`;
-
-exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
+exports[`components/ConnectedSidebar correctly expand users menu 2`] = `
 Array [
   <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
+    icon={
+      <MapMarkerOutlineIcon
+        className="sidebar-icons"
+      />
+    }
     title="Missions"
   >
     <MenuItem>
@@ -1317,12 +1306,16 @@ Array [
         className="admin-link"
         to="/missions/trash"
       >
-        Trash
+        Retired
       </Link>
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
+    icon={
+      <ForwardRef(IdcardOutlined)
+        className="sidebar-icons"
+      />
+    }
     title="Card Support"
   >
     <MenuItem>
@@ -1390,6 +1383,14 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
         to="/product-catalogue/list"
       >
         Product Catalogue
@@ -1403,7 +1404,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Locations unit
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
@@ -1411,7 +1412,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Locations unit group
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>

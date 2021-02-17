@@ -1,11 +1,10 @@
 import { authenticateUser } from '@onaio/session-reducer';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
 import { store } from '@opensrp/store';
-import { MISSIONS } from '../../../lang';
 import toJson from 'enzyme-to-json';
 
 jest.mock('../../../configs/env');
@@ -54,11 +53,14 @@ describe('components/ConnectedSidebar', () => {
 
   it('Test order of menu', () => {
     const envModule = require('../../../configs/env');
+
     envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
+    envModule.ENABLE_CARD_SUPPORT = 'true';
     envModule.ENABLE_PLANS = 'true';
+    envModule.ENABLE_TEAMS = 'true';
     envModule.ENABLE_LOCATIONS = 'true';
     envModule.ENABLE_FORM_CONFIGURATION = 'true';
-    envModule.ENABLE_CARD_SUPPORT = 'true';
+    envModule.ENABLE_INVENTORY = 'true';
 
     const wrapper = mount(
       <Provider store={store}>
@@ -69,84 +71,6 @@ describe('components/ConnectedSidebar', () => {
     );
 
     expect(wrapper.find(`Menu`).last().prop('children')).toMatchSnapshot();
-  });
-
-  it('displays menu links for enabled Plans module', () => {
-    const envModule = require('../../../configs/env');
-    envModule.ENABLE_PLANS = 'true';
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find(`SubMenu[title="${MISSIONS}"]`)).toHaveLength(1);
-  });
-
-  it('displays menu links for enabled Product Cataglogue module', () => {
-    const envModule = require('../../../configs/env');
-    envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const submenu = wrapper
-      .find('SubMenu[title="Admin"]')
-      .first()
-      .last()
-      .prop('children') as ReactWrapper[];
-
-    expect(submenu[2].key).toMatch('product-catalogue');
-  });
-
-  it('displays menu links for enabled Location module', () => {
-    const envModule = require('../../../configs/env');
-    envModule.ENABLE_LOCATIONS = 'true';
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const submenu = wrapper
-      .find('SubMenu[title="Admin"]')
-      .first()
-      .last()
-      .prop('children') as ReactWrapper[];
-
-    expect(submenu[3].key).toMatch('location');
-  });
-
-  it('displays menu links for enabled Form Configuration module', () => {
-    const envModule = require('../../../configs/env');
-    envModule.ENABLE_FORM_CONFIGURATION = 'true';
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const submenu = wrapper
-      .find('SubMenu[title="Admin"]')
-      .first()
-      .last()
-      .prop('children') as ReactWrapper[];
-
-    expect(submenu[4].key).toMatch('form-config');
   });
 
   it('correctly expand users menu', () => {
@@ -233,17 +157,6 @@ describe('components/ConnectedSidebar', () => {
     wrapper.unmount();
   });
 
-  it('shows the correct logg', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(toJson(wrapper.find('.logo'))).toMatchSnapshot('Logo');
-  });
-
   it('correctly expand teams menu', () => {
     const envModule = require('../../../configs/env');
     envModule.ENABLE_TEAMS = 'true';
@@ -259,5 +172,16 @@ describe('components/ConnectedSidebar', () => {
     );
     expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
     wrapper.unmount();
+  });
+
+  it('shows the correct logg', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(toJson(wrapper.find('.logo'))).toMatchSnapshot('Logo');
   });
 });
