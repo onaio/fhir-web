@@ -1,11 +1,8 @@
 import React from 'react';
-import { FormInstances, LocationUnit, NewLocationUnit } from '@opensrp/location-management';
+import { FormInstances, NewLocationUnit } from '@opensrp/location-management';
 import { RouteComponentProps } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import {
-  INVENTORY_SERVICE_POINT_LIST_VIEW,
-  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
-} from '../../constants';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
 import { LocationFormFields } from '@opensrp/location-management/dist/types/components/LocationForm/utils';
 import { commonHiddenFields, disabledTreeNodesCallback } from '../../helpers/utils';
 
@@ -26,9 +23,7 @@ const ServicePointsAdd = (props: ServicePointAddTypes) => {
     openSRPBaseURL: baseURL,
     instance: FormInstances.EUSM,
     hidden: commonHiddenFields,
-    successURLGenerator: (payload?: LocationUnit) =>
-      `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${payload?.id}`, // todo if payload is missing
-    cancelURLGenerator: () => INVENTORY_SERVICE_POINT_LIST_VIEW,
+    redirectAfterAction: INVENTORY_SERVICE_POINT_LIST_VIEW,
     disabled: ['isJurisdiction'],
     processInitialValues: (data: LocationFormFields) => ({ ...data, isJurisdiction: false }),
     disabledTreeNodesCallback,

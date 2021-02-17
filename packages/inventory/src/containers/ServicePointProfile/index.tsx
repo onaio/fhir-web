@@ -25,7 +25,6 @@ import { Helmet } from 'react-helmet';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   GEOGRAPHIC_LEVEL,
-  LOCATIONS_GET_ALL_SYNC_ENDPOINT,
   INVENTORY_SERVICE_POINT_PROFILE_PARAM,
   INVENTORY_EDIT_SERVICE_POINT,
   URL_INVENTORY_ADD,
@@ -136,13 +135,22 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       serverVersion: 0,
       // eslint-disable-next-line @typescript-eslint/camelcase
       is_jurisdiction: false,
+      // eslint-disable-next-line @typescript-eslint/camelcase
       return_geometry: true,
     };
-    const structuresDispatcher = (locations: LocationUnit) => {
-      // return locations;
-      return dispatch(fetchLocationUnits(locations, false));
+
+    const loadServicePoint = async () => {
+      const structure = await loadJurisdiction(spId, undefined, opensrpBaseURL, params, service)
+        .catch((err: Error) => {
+          handleBrokenPage(err);
+        })
+        .finally(() => setIsLoading(false));
+      if (structure) {
+        const locationOfInterest: LocationUnit[] = [structure];
+        dispatch(fetchLocationUnits(locationOfInterest, false));
+      }
     };
-    loadJurisdiction(spId, structuresDispatcher, opensrpBaseURL, params, service)
+    loadServicePoint()
       .catch((err: Error) => {
         handleBrokenPage(err);
       })
