@@ -139,18 +139,14 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       return_geometry: true,
     };
 
-    const loadServicePoint = async () => {
-      const structure = await loadJurisdiction(spId, undefined, opensrpBaseURL, params, service)
-        .catch((err: Error) => {
-          handleBrokenPage(err);
-        })
-        .finally(() => setIsLoading(false));
-      if (structure) {
-        const locationOfInterest: LocationUnit[] = [structure];
-        dispatch(fetchLocationUnits(locationOfInterest, false));
+    const structuresDispatcher = (locations: LocationUnit | null) => {
+      if (locations) {
+        const locationOfInterest: LocationUnit[] = [locations];
+        return dispatch(fetchLocationUnits(locationOfInterest, false));
       }
     };
-    loadServicePoint()
+
+    loadJurisdiction(spId, structuresDispatcher, opensrpBaseURL, params, service)
       .catch((err: Error) => {
         handleBrokenPage(err);
       })
