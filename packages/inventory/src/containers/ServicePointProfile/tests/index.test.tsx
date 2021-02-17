@@ -167,7 +167,7 @@ describe('Profile view Page', () => {
 
   it('shows broken page when jurisdiction request errors out', async () => {
     const errorMessage = 'Coughid';
-    fetch.once(JSON.stringify(structure2)).once(JSON.stringify([madagascar]));
+    fetch.once(structure2).once(JSON.stringify([madagascar]));
     fetch.mockReject(new Error(errorMessage));
 
     const wrapper = mount(
@@ -188,7 +188,6 @@ describe('Profile view Page', () => {
 
     // no data
     expect(wrapper.text()).toMatchSnapshot('error broken page');
-    wrapper.unmount();
   });
 
   it('should return correct geographic location', async () => {

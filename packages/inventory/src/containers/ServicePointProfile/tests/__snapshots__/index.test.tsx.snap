@@ -1,5 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Profile view Page shows broken page when jurisdiction request errors out: error broken page 1`] = `"Back to the list of service pointsAmbatoharanana InventoryRegion: District: Commune: Type: Water PointLatitude/longitude: Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointUnable to fetch inventories for service point"`;
+exports[`Profile view Page shows broken page when jurisdiction request errors out: error broken page 1`] = `"Errorinvalid json response body at  reason: Unexpected token o in JSON at position 1Go BackBack Home"`;
 
 exports[`Profile view Page shows broken page: error broken page 1`] = `"ErrorCoughidGo BackBack Home"`;
