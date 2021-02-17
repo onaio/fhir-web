@@ -98,13 +98,13 @@ describe('components/ConnectedSidebar', () => {
       </Provider>
     );
 
-    const x = wrapper
+    const submenu = wrapper
       .find('SubMenu[title="Admin"]')
       .first()
       .last()
       .prop('children') as ReactWrapper[];
 
-    expect(x[2].key).toMatch('product-catalogue');
+    expect(submenu[2].key).toMatch('product-catalogue');
   });
 
   it('displays menu links for enabled Location module', () => {
@@ -119,13 +119,13 @@ describe('components/ConnectedSidebar', () => {
       </Provider>
     );
 
-    const x = wrapper
+    const submenu = wrapper
       .find('SubMenu[title="Admin"]')
       .first()
       .last()
       .prop('children') as ReactWrapper[];
 
-    expect(x[3].key).toMatch('location');
+    expect(submenu[3].key).toMatch('location');
   });
 
   it('displays menu links for enabled Form Configuration module', () => {
@@ -140,13 +140,13 @@ describe('components/ConnectedSidebar', () => {
       </Provider>
     );
 
-    const x = wrapper
+    const submenu = wrapper
       .find('SubMenu[title="Admin"]')
       .first()
       .last()
       .prop('children') as ReactWrapper[];
 
-    expect(x[4].key).toMatch('form-config');
+    expect(submenu[4].key).toMatch('form-config');
   });
 
   it('correctly expand users menu', () => {
