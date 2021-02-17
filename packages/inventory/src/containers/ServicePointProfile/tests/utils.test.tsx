@@ -1,5 +1,5 @@
 import { generateJurisdictionTree } from '@opensrp/location-management';
-import { getNodePath } from '../utils';
+import { getCords, getNodePath } from '../utils';
 import { geographicHierarchy, madagascarTree, structure2 } from './fixtures';
 
 it('branch test for getNodePath with parentId undefined', async () => {
@@ -18,4 +18,13 @@ it('branch test for getNodePath with parentId', async () => {
   };
   const res = getNodePath(sampleLocation, [generateJurisdictionTree(madagascarTree)]);
   expect(res).toEqual(geographicHierarchy);
+});
+
+it('test for getCords', async () => {
+  const res = getCords({
+    type: 'Point',
+    coordinates: [49.52125, -16.78147],
+  });
+  expect(res).toEqual('49.52125, -16.78147');
+  expect(getCords()).toEqual('');
 });
