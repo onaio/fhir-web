@@ -6,12 +6,11 @@ describe('components/UserList/utils/getTableColumns', () => {
   it('builds table columns correctly', () => {
     const removeUsersMock = jest.fn();
     const isLoadingCallbackMock = jest.fn();
-    const accessToken = 'sometoken';
     const keycloakBaseURL =
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
 
     expect(
-      getTableColumns(removeUsersMock, accessToken, keycloakBaseURL, isLoadingCallbackMock, {
+      getTableColumns(removeUsersMock, keycloakBaseURL, isLoadingCallbackMock, {
         user_id: fixtures.keycloakUser.id,
       })
     ).toMatchSnapshot('table columns');

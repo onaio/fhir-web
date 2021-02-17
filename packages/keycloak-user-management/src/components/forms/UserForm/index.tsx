@@ -23,7 +23,7 @@ import {
 } from '../../../lang';
 import { submitForm, fetchRequiredActions, UserAction } from './utils';
 import '../../../index.css';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
 /** Interface for practitioner json object */
 export interface Practitioner {
@@ -35,7 +35,6 @@ export interface Practitioner {
 }
 /** props for editing a user view */
 export interface UserFormProps {
-  accessToken: string;
   initialValues: KeycloakUser;
   serviceClass: typeof KeycloakService;
   opensrpServiceClass: typeof OpenSRPService;
@@ -68,7 +67,6 @@ export const defaultInitialValues: KeycloakUser = {
 };
 /** default props for editing user component */
 export const defaultProps: Partial<UserFormProps> = {
-  accessToken: '',
   initialValues: defaultInitialValues,
   opensrpServiceClass: OpenSRPService,
   practitioner: undefined,
@@ -91,7 +89,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const {
     initialValues,
     serviceClass,
-    accessToken,
     keycloakBaseURL,
     opensrpServiceClass,
     opensrpBaseURL,
@@ -126,8 +123,8 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   ];
   const { Option } = Select;
   React.useEffect(() => {
-    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, serviceClass);
-  }, [accessToken, keycloakBaseURL, serviceClass]);
+    fetchRequiredActions(keycloakBaseURL, setUserActionOptions, serviceClass);
+  }, [keycloakBaseURL, serviceClass]);
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
@@ -162,7 +159,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 ...values,
                 requiredActions,
               },
-              accessToken,
               keycloakBaseURL,
               opensrpBaseURL,
               serviceClass,

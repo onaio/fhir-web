@@ -18,7 +18,7 @@ describe('post confirmation success card', () => {
   it('works correctly', () => {
     const props = {
       rowsProcessed: 5,
-      fileName: 'processed.csv',
+      filename: 'processed.csv',
     };
 
     const wrapper = mount(

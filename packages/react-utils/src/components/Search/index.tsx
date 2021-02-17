@@ -25,6 +25,7 @@ export const defaultSearchProps: SearchFormProps = {
   size: 'large',
   addonBefore: defaultPrefix,
   placeholder: SEARCH,
+  allowClear: true,
 };
 
 /** Base SearchForm component
@@ -54,7 +55,7 @@ const SearchForm = (props: SearchFormProps) => {
 
   return (
     <div className="search-input-wrapper">
-      <Input onInput={debouncedOnChangeHandler} {...passedOnProps}></Input>
+      <Input onChange={debouncedOnChangeHandler} {...passedOnProps}></Input>
     </div>
   );
 };

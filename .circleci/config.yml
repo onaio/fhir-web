@@ -54,7 +54,7 @@ jobs:
 
       - run:
           name: Run snap linter
-          command: yarn lint-snap
+          command: yarn lint-snap --debug
 
       - run:
           name: Run test with coverage

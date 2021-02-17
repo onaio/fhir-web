@@ -22,7 +22,6 @@ import {
 import {
   REACT_CALLBACK_PATH,
   URL_BACKEND_CALLBACK,
-  URL_BACKEND_LOGIN,
   BACKEND_CALLBACK_PATH,
   URL_REACT_LOGIN,
   URL_LOGOUT,
@@ -42,6 +41,7 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_USER_GROUPS,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -74,11 +74,16 @@ import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
+  UserGroupsList,
   URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
+  ROUTE_PARAM_USER_GROUP_ID,
+  URL_USER_GROUP_EDIT,
+  URL_USER_GROUP_CREATE,
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
+  CreateEditUserGroup,
 } from '@opensrp/user-management';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
@@ -94,14 +99,15 @@ import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
-  LocationUnitAddEdit,
   LocationUnitView,
   LocationUnitGroupAddEdit,
   LocationUnitGroupView,
+  NewLocationUnit,
+  EditLocationUnit,
 } from '@opensrp/location-management';
 import '@opensrp/product-catalogue/dist/index.css';
 import {
-  productCatalogueProps,
+  BaseProps,
   jsonValidatorListProps,
   jsonValidatorFormProps,
   draftFormProps,
@@ -117,11 +123,32 @@ import {
   trashPlansListStatusProp,
   missionAssignmentProps,
   inventoryServiceProps,
+  inventoryItemAddEditProps,
+  editLocationProps,
+  newLocationUnitProps,
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW, ConnectedServicePointList } from '@opensrp/inventory';
+import {
+  INVENTORY_SERVICE_POINT_LIST_VIEW,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
+  INVENTORY_SERVICE_POINT_PROFILE_PARAM,
+  ConnectedServicePointList,
+  ConnectedInventoryAddEdit,
+  ServicePointProfile,
+  INVENTORY_EDIT_SERVICE_POINT,
+  INVENTORY_ADD_SERVICE_POINT,
+  ServicePointEdit,
+  ServicePointsAdd,
+  BulkUpload,
+  INVENTORY_BULK_UPLOAD_URL,
+  ROUTE_PARAM_SERVICE_POINT_ID,
+  ROUTE_PARAM_INVENTORY_ID,
+  URL_INVENTORY_EDIT,
+  URL_INVENTORY_ADD,
+} from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
+import { APP_LOGIN_URL } from '../dispatchConfig';
 
 const { Content } = Layout;
 
@@ -186,7 +213,6 @@ const App: React.FC = () => {
   const APP_CALLBACK_URL = BACKEND_ACTIVE ? URL_BACKEND_CALLBACK : URL_REACT_LOGIN;
   const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
-  const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   return (
@@ -217,6 +243,13 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={URL_USER_GROUPS}
+              component={UserGroupsList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={URL_TEAMS}
               component={TeamsView}
             />
@@ -225,7 +258,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={CATALOGUE_LIST_VIEW_URL}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedProductCatalogueList}
             />
             <PrivateComponent
@@ -278,7 +311,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedProductCatalogueList}
             />
             <PrivateComponent
@@ -286,7 +319,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={CATALOGUE_CREATE_VIEW_URL}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={CreateProductView}
             />
             <PrivateComponent
@@ -294,7 +327,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              {...productCatalogueProps}
+              {...BaseProps}
               component={ConnectedEditProductView}
             />
             <PrivateComponent
@@ -309,9 +342,41 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${INVENTORY_SERVICE_POINT_PROFILE_PARAM}`}
+              {...inventoryServiceProps}
+              component={ServicePointProfile}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={INVENTORY_SERVICE_POINT_LIST_VIEW}
               {...inventoryServiceProps}
               component={ConnectedServicePointList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              {...BaseProps}
+              path={INVENTORY_ADD_SERVICE_POINT}
+              component={ServicePointsAdd}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={INVENTORY_BULK_UPLOAD_URL}
+              {...inventoryServiceProps}
+              component={BulkUpload}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              {...BaseProps}
+              path={`${INVENTORY_EDIT_SERVICE_POINT}/:id`}
+              component={ServicePointEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -327,6 +392,20 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedCreateEditUser}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_USER_GROUP_EDIT}/:${ROUTE_PARAM_USER_GROUP_ID}`}
+              component={CreateEditUserGroup}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={URL_USER_GROUP_CREATE}
+              component={CreateEditUserGroup}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -438,14 +517,16 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_ADD}
-              component={LocationUnitAddEdit}
+              {...newLocationUnitProps}
+              component={NewLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_EDIT}
-              component={LocationUnitAddEdit}
+              {...editLocationProps}
+              component={EditLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -467,6 +548,20 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_GROUP_EDIT}
               component={LocationUnitGroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_ADD}`}
+              {...inventoryItemAddEditProps}
+              component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
+              {...inventoryItemAddEditProps}
+              component={ConnectedInventoryAddEdit}
             />
             <Route
               exact

@@ -1,8 +1,13 @@
 /** data loading functions */
-import { handleSessionOrTokenExpiry } from '@opensrp/react-utils';
+import { handleSessionOrTokenExpiry, OpenSRPService } from '@opensrp/react-utils';
+import { URLParams } from '@opensrp/server-service/dist/types';
 import axios, { AxiosResponse, CancelToken } from 'axios';
 import { split, trim } from 'lodash';
-import { OPENSRP_API_BASE_URL, OPENSRP_UPLOAD_STOCK_ENDPOINT } from '../constants';
+import {
+  LOCATIONS_COUNT_ALL_ENDPOINT,
+  OPENSRP_API_BASE_URL,
+  OPENSRP_UPLOAD_STOCK_ENDPOINT,
+} from '../constants';
 
 /** bad response error */
 export interface BadRequestError {
@@ -34,7 +39,7 @@ export const parseSingleErrorRow = (errorRow: string) => {
  *
  * @param resText - string response showing what lines in the uploaded csv were defective
  */
-export const parseBadResponseError = (resText: string) => {
+export const parseTextResponse = (resText: string) => {
   // divide response into lines
   const splitText = split(resText, '\n').map((text) => trim(text, '\r'));
   // find rowsProcessed
@@ -49,10 +54,10 @@ export const parseBadResponseError = (resText: string) => {
   const errors: BadRequestError['errors'] = [];
   splitText.forEach((entry, index) => {
     if (entry.includes(rowsTotalNumberPrefix)) {
-      rowsNumber = split(entry, ',')[1];
+      rowsNumber = split(entry, ',')[1] ?? rowsNumber;
     }
     if (entry.includes(processedRowsPrefix)) {
-      rowsProcessed = split(entry, ',')[1];
+      rowsProcessed = split(entry, ',')[1] ?? rowsProcessed;
     }
     if (entry.includes(errorsHeader)) {
       errorsStartIndex = index;
@@ -123,7 +128,7 @@ export async function uploadCSV(
       },
       cancelToken,
     })
-    .then((response: AxiosResponse<SuccessfulResponse>) => {
+    .then((response: AxiosResponse<SuccessfulResponse | string>) => {
       return response.data;
     })
     .catch((err) => {
@@ -132,10 +137,50 @@ export async function uploadCSV(
         onRequestCancel?.();
       }
       if (err.response.status === 400) {
-        const parsedError = parseBadResponseError(err.response.data);
+        const parsedError = parseTextResponse(err.response.data);
         onBadRequest?.(parsedError);
         return;
       }
       return Promise.reject(err);
+    });
+}
+
+/** response on doing a get count request */
+export interface CountResponse {
+  count: number;
+}
+
+const defaultCountParams = {
+  serverVersion: 0,
+};
+
+/**
+ * loader function to get count of locations
+ *
+ * @param dispatcher - called with response, adds data to store
+ * @param openSRPBaseURL - the openSRP api base url
+ * @param urlParams - search params to be added to request
+ * @param service - openSRP service class
+ * @param endpoint - the openSRP endpoint
+ */
+export async function loadCount(
+  dispatcher?: (response: number) => void,
+  openSRPBaseURL: string = OPENSRP_API_BASE_URL,
+  urlParams: URLParams = defaultCountParams,
+  service: typeof OpenSRPService = OpenSRPService,
+  endpoint: string = LOCATIONS_COUNT_ALL_ENDPOINT
+) {
+  const serve = new service(endpoint, openSRPBaseURL);
+  return serve
+    .list(urlParams)
+    .then((response: CountResponse) => {
+      const resData = response.count;
+      if (!dispatcher) {
+        return resData;
+      }
+      dispatcher(resData);
+    })
+    .catch((e) => {
+      throw e;
     });
 }
