@@ -84,7 +84,7 @@ describe('Inventory list Page', () => {
     expect(fetch.mock.calls[0]).toEqual(fetchCalls[3]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory Items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name 11101123434Jan 02, 2020May 02, 2021HealthADBEditChange name 21101123434Feb 02, 2020May 02, 2021HealthADBEdit"`
+      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name 11101123434Jan 02, 2020May 02, 2021HealthADBEditChange name 21101123434Feb 02, 2020May 02, 2021HealthADBEdit"`
     );
     wrapper.unmount();
   });
