@@ -921,7 +921,7 @@ Object {
           <img
             alt=""
             className="img-fluid"
-            src="test-file-stub"
+            src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
           />
         </Link>
       </div>
@@ -1156,4 +1156,30 @@ Array [
   </SubMenu>,
   <React.Fragment />,
 ]
+`;
+
+exports[`components/ConnectedSidebar shows the correct logg: Logo 1`] = `
+<div
+  className="logo"
+>
+  <Link
+    to="/"
+  >
+    <LinkAnchor
+      href="/"
+      navigate={[Function]}
+    >
+      <a
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt=""
+          className="img-fluid"
+          src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
+        />
+      </a>
+    </LinkAnchor>
+  </Link>
+</div>
 `;

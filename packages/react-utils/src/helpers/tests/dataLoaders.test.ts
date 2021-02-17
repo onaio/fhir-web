@@ -6,6 +6,17 @@ import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import * as fixtures from './fixtures';
 import { updateExtraData } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
+import * as registry from '@onaio/connected-reducer-registry';
+
+jest.mock('@opensrp/pkg-config', () => {
+  const actual = jest.requireActual('@opensrp/pkg-config');
+  return {
+    ...actual,
+    getConfigs: () => ({
+      appLoginURL: '/someUrl',
+    }),
+  };
+});
 
 describe('dataLoaders/OpenSRPService', () => {
   const baseURL = 'https://test.smartregister.org/opensrp/rest/';
@@ -31,6 +42,12 @@ describe('dataLoaders/OpenSRPService', () => {
   });
   it('handleSessionOrTokenExpiry works correctly', async () => {
     MockDate.set('1-1-2021 19:31');
+
+    const pushMock = jest.fn();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (registry as any).history = {
+      push: pushMock,
+    };
 
     // no session found
     await handleSessionOrTokenExpiry().catch((e) => {
@@ -62,6 +79,9 @@ describe('dataLoaders/OpenSRPService', () => {
     await handleSessionOrTokenExpiry().catch((e) => {
       expect(e.message).toEqual('Session Expired');
     });
+
+    //check redirection action
+    expect(pushMock).toHaveBeenCalledWith('/someUrl');
     MockDate.reset();
   });
 });

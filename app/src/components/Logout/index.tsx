@@ -13,7 +13,7 @@ import { store } from '@opensrp/store';
 import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { useHistory } from 'react-router';
-import { ERROR_OCCURRED } from '../../constants';
+import { ERROR_OCCURRED } from '../../lang';
 
 /** HOC function that calls function that logs out the user from both opensrp
  * and keycloak.

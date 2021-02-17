@@ -1,14 +1,14 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import './Sidebar.css';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
-import Logo from '../../../assets/images/opensrp-logo-color.png';
 import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
 
 import { getActiveKey, menusSchema } from './utils';
+import { MAIN_LOGO_SRC } from '../../../configs/env';
+import './Sidebar.css';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -35,7 +35,6 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 };
 
 /** The Sidebar component */
-
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
   const { extraData } = props;
   const { roles } = extraData;
@@ -91,7 +90,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
         <Link to={URL_HOME}>
-          <img src={Logo} className="img-fluid" alt="" />
+          <img src={MAIN_LOGO_SRC} className="img-fluid" alt="" />
         </Link>
       </div>
 

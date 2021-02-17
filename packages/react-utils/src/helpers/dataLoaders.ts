@@ -8,6 +8,10 @@ import { history } from '@onaio/connected-reducer-registry';
 import { refreshToken } from '@onaio/gatekeeper';
 import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
+import { EXPRESS_TOKEN_REFRESH_URL, SESSION_EXPIRED_TEXT } from '../constants';
+import { getConfigs } from '@opensrp/pkg-config';
+
+const configs = getConfigs();
 
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
@@ -31,10 +35,10 @@ export const handleSessionOrTokenExpiry = async () => {
   if (isTokenExpired(store.getState())) {
     try {
       // refresh token
-      return await refreshToken('/refresh/token', store.dispatch, {});
+      return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
     } catch (e) {
-      history.push('/login');
-      throw new Error('Session Expired');
+      history.push(`${configs.appLoginURL}`);
+      throw new Error(`${SESSION_EXPIRED_TEXT}`);
     }
   } else {
     return getAccessToken(store.getState());

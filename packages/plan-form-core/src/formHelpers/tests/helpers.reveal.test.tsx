@@ -282,9 +282,14 @@ describe('containers/forms/PlanForm/helpers', () => {
       GoalUnit.PERCENT, // MDA Dispense
       GoalUnit.PERCENT, // MDA Adverse events
       GoalUnit.PERCENT, // PRODUCT_CHECK_CODE,
-      GoalUnit.PERCENT, // FIX_PRODUCT_PROBLEMS_CODE,
-      GoalUnit.PERCENT, // RECORD_GPS_CODE,
-      GoalUnit.PERCENT, // SERVICE_POINT_CHECK_CODE
+      GoalUnit.PERCENT, // FIX_PROBLEMS_CODE,
+      GoalUnit.PERCENT, // RECORD_GPS,
+      GoalUnit.PERCENT, // SERVICE_POINT,
+      GoalUnit.PERCENT, // LOOKS GOOD,
+      GoalUnit.PERCENT, // COMPLETE_FIX_PROBLEM,
+      GoalUnit.PERCENT, // COMPLETE_FLAG_PROBLEM,
+      GoalUnit.PERCENT, // COMPLETE_RECORD_GPS,
+      GoalUnit.PERCENT, // COMPLETE_SERVICE_POINT_CHECK_CODE
     ];
     for (let index = 0; index < 11; index++) {
       expect(getGoalUnitFromActionCode(PlanActionCodes[index])).toEqual(expectedUnits[index]);

@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/keycloak-service",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Keycloak Admin API service",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -36,5 +36,8 @@
   "private": false,
   "devDependencies": {
     "@opensrp/store": "^0.0.7"
+  },
+  "dependencies": {
+    "@opensrp/react-utils": "^0.0.2"
   }
 }

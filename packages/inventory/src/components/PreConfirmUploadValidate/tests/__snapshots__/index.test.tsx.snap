@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`upload validation loader card works correctly: full card snapshot 1`] = `"Validating loading.csv ...Do not close tab or navigate away.Cancel"`;

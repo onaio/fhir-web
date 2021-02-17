@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`post confirmation Error card page renders and works correctly: card title 1`] = `"Processing error: inventory items failed to be added"`;
+
+exports[`post confirmation Error card page renders and works correctly: fix csv instructions 1`] = `
+<ol>
+  <li>
+    Extract the rows listed below from "defective.csv"
+  </li>
+  <li>
+    Paste the rows into a new CSV file
+  </li>
+  <li>
+    <Link
+      to="/inventory/upload"
+    >
+      <LinkAnchor
+        href="/inventory/upload"
+        navigate={[Function]}
+      >
+        <a
+          href="/inventory/upload"
+          onClick={[Function]}
+        >
+          Upload the CSV file
+        </a>
+      </LinkAnchor>
+    </Link>
+  </li>
+</ol>
+`;
+
+exports[`post confirmation Error card page renders and works correctly: tr 1`] = `"Row numberErrors"`;
+
+exports[`post confirmation Error card page renders and works correctly: tr 2`] = `"1Product ID does not exist in product catalogue, Service point ID does not exist, Donor is not valid, PO Number should be a whole number"`;
+
+exports[`post confirmation Error card page renders and works correctly: tr 3`] = `"2Service point ID does not exist"`;
+
+exports[`post confirmation Error card page renders and works correctly: tr 4`] = `"3Service point ID does not exist, UNICEF section is not valid, Donor is not valid"`;
+
+exports[`post confirmation Error card page renders and works correctly: tr 5`] = `""`;

@@ -1,14 +1,14 @@
 import React from 'react';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory/dist/types';
+import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
   DRAFT_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,
   TRASH_PLANS_LIST_VIEW_URL,
-} from '@opensrp/plans/dist/types';
-import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue/dist/types';
+} from '@opensrp/plans';
+import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import { MenuItems } from '.';
 import {
   ENABLE_PLANS,
@@ -27,26 +27,29 @@ import {
   SERVICE_POINT_INVENTORY,
   USERS,
   USER_MANAGEMENT,
-  URL_USER,
   LOCATIONS_UNIT,
-  URL_LOCATION_UNIT,
   LOCATIONS_UNIT_GROUP,
-  URL_LOCATION_UNIT_GROUP,
   PRODUCT_CATALOGUE,
-  URL_ADMIN,
   TEAMS,
-  URL_TEAMS,
   FORM_CONFIGURATION,
   MANIFEST_RELEASES,
-  URL_MANIFEST_RELEASE_LIST,
   DRAFT_FILES,
-  URL_DRAFT_FILE_LIST,
   JSON_VALIDATORS,
-  URL_JSON_VALIDATOR_LIST,
-  URL_DOWNLOAD_CLIENT_DATA,
   MISSIONS,
   ADMIN,
   INVENTORY,
+} from '../../../lang';
+
+import {
+  URL_USER,
+  URL_LOCATION_UNIT,
+  URL_LOCATION_UNIT_GROUP,
+  URL_ADMIN,
+  URL_TEAMS,
+  URL_MANIFEST_RELEASE_LIST,
+  URL_DRAFT_FILE_LIST,
+  URL_JSON_VALIDATOR_LIST,
+  URL_DOWNLOAD_CLIENT_DATA,
 } from '../../../constants';
 
 // menu items schema
