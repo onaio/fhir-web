@@ -1,8 +1,8 @@
-import { BrokenPage, OpenSRPService, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, OpenSRPService, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import {
   fetchLocationUnits,
-  getLocationUnitById,
+  getLocationsByFilters,
   LocationUnit,
   locationUnitsReducer,
   locationUnitsReducerName,
@@ -15,19 +15,25 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
 import { getUser } from '@onaio/session-reducer';
-import { EDIT_LOCATION_UNIT } from '../../lang';
+import { EDIT } from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
+const locationsSelector = getLocationsByFilters();
+
 export type LocationRouteProps = { id: string };
 
 export interface EditLocationUnitProps
-  extends Pick<LocationFormProps, 'redirectAfterAction' | 'hidden' | 'disabled' | 'service'>,
+  extends Pick<
+      LocationFormProps,
+      'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
+    >,
     RouteComponentProps<LocationRouteProps> {
   openSRPBaseURL: string;
   instance: FormInstances;
+  cancelURLGenerator: (data: LocationUnit) => string;
 }
 
 const defaultEditLocationUnitProps = {
@@ -37,6 +43,8 @@ const defaultEditLocationUnitProps = {
   hidden: [],
   disabled: [],
   service: OpenSRPService,
+  successURLGenerator: () => '',
+  cancelURLGenerator: () => '',
 };
 
 /** renders page where user can Edit already created location unit
@@ -44,7 +52,16 @@ const defaultEditLocationUnitProps = {
  * @param props - this components props
  */
 const EditLocationUnit = (props: EditLocationUnitProps) => {
-  const { instance, hidden, disabled, service, openSRPBaseURL, redirectAfterAction } = props;
+  const {
+    instance,
+    hidden,
+    disabled,
+    service,
+    openSRPBaseURL,
+    cancelURLGenerator,
+    successURLGenerator,
+    disabledTreeNodesCallback,
+  } = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const [isJurisdiction, setIsJurisdiction] = useState<boolean>(true);
@@ -54,8 +71,13 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   // location being edited id
   const { id: locId } = props.match.params;
 
-  const thisLocation = useSelector((state) => getLocationUnitById(state, locId)) ?? undefined;
-  const [loading, setLoading] = useState<boolean>(!thisLocation);
+  const thisLocation = useSelector((state) => {
+    const filters = {
+      ids: [locId],
+    };
+    return locationsSelector(state, filters);
+  })[0] as LocationUnit | undefined;
+  const [loading, setLoading] = useState<boolean>(true);
 
   React.useEffect(() => {
     // get location; we are making 2 calls to know if location is a jurisdiction or a structure
@@ -74,10 +96,10 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       is_jurisdiction: true,
     };
 
-    const locationsDispatcher = (location: LocationUnit | null) => {
+    const locationsDispatcher = (location: LocationUnit | null, isJurisdiction: boolean) => {
       if (location) {
         const locations = [location];
-        dispatch(fetchLocationUnits(locations));
+        dispatch(fetchLocationUnits(locations, isJurisdiction));
       }
     };
     // asynchronously get jurisdiction as structure and jurisdiction, depending on the resolved
@@ -91,7 +113,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     )
       .then((res) => {
         if (res) {
-          locationsDispatcher(res);
+          locationsDispatcher(res, true);
         }
       })
       .catch((err) => {
@@ -107,7 +129,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       .then((res) => {
         if (res) {
           setIsJurisdiction(false);
-          locationsDispatcher(res);
+          locationsDispatcher(res, false);
         }
       })
       .catch((err) => {
@@ -129,20 +151,28 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
+  if (!thisLocation) {
+    return <Resource404 />;
+  }
+
   const initialValues = getLocationFormFields(thisLocation, instance, isJurisdiction);
-  const cancelHandler = () => history.push(redirectAfterAction);
+  const cancelHandler = () => {
+    const cancelURL = cancelURLGenerator(thisLocation);
+    history.push(cancelURL);
+  };
 
   const locationFormProps = {
     initialValues,
-    redirectAfterAction,
+    successURLGenerator,
     hidden,
     disabled,
     onCancel: cancelHandler,
     service,
     openSRPBaseURL,
     user: user.username,
+    disabledTreeNodesCallback,
   };
-  const pageTitle = `${EDIT_LOCATION_UNIT} | ${thisLocation?.properties.name}`;
+  const pageTitle = `${EDIT} > ${thisLocation.properties.name}`;
 
   return (
     <Row className="layout-content">

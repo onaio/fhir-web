@@ -5,10 +5,11 @@ import { createBrowserHistory } from 'history';
 import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
 import { location1 } from './fixtures';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { RouteComponentProps, Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
+import { commonHiddenFields } from '../../../helpers/utils';
 
 const history = createBrowserHistory();
 
@@ -46,7 +47,7 @@ describe('CreateServicePoint', () => {
       },
       match: {
         isExact: true,
-        params: { id: '' },
+        params: { id: location1.id },
         path: `${INVENTORY_ADD_SERVICE_POINT}`,
         url: `${INVENTORY_ADD_SERVICE_POINT}`,
       },
@@ -68,14 +69,16 @@ describe('CreateServicePoint', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initialValues = (locationFormProps as any).initialValues;
 
-    expect(locationFormProps.hidden).toEqual([
-      'extraFields',
-      'status',
-      'type',
-      'locationTags',
-      'externalId',
-    ]);
+    expect(locationFormProps.hidden).toEqual(commonHiddenFields);
     expect(initialValues.instance).toEqual('eusm');
-    expect(locationFormProps.disabled).toEqual(['isJurisdiction']);
+    expect(locationFormProps.disabled).toEqual(['isJurisdiction', 'parentId']);
+
+    // test re-direction url on chancel
+    wrapper.find('button#location-form-cancel-button').simulate('click');
+    wrapper.update();
+
+    expect(
+      (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
+    ).toEqual('/inventory/profile/b652b2f4-a95d-489b-9e28-4629746db96a');
   });
 });

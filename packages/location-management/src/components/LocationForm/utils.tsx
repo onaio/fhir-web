@@ -1,5 +1,4 @@
 import { Dictionary } from '@onaio/utils';
-import { SETTINGS_CONFIGURATION_TYPE } from '../../constants';
 import {
   LocationUnit,
   LocationUnitStatus,
@@ -10,7 +9,20 @@ import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
-import { Geometry } from 'geojson';
+import { Geometry, Point } from 'geojson';
+import {
+  ERROR_PARENTID_STRING,
+  ERROR_NAME_STRING,
+  ERROR_NAME_REQUIRED,
+  ERROR_STATUS_REQUIRED,
+  ERROR_TYPE_STRING,
+  ERROR_EXTERNAL_ID_STRING,
+  ERROR_LOCATION_TAGS_ARRAY,
+  ERROR_LOCATION_CATEGORY_REQUIRED,
+  ERROR_SERVICE_TYPES_REQUIRED,
+  LONGITUDE_LATITUDE_TYPE_ERROR,
+} from '../../lang';
+import { FormInstance } from 'antd/lib/form/hooks/useForm';
 
 export enum FormInstances {
   CORE = 'core',
@@ -30,16 +42,16 @@ export interface LocationFormFields {
   externalId?: string;
   locationTags?: number[];
   geometry?: string;
-  isJurisdiction?: boolean;
-  serviceTypes?: string[] | string;
+  isJurisdiction: boolean;
+  serviceType?: string;
   extraFields: ExtraFields[];
   username?: string;
+  latitude?: string;
+  longitude?: string;
 }
 
-/** describes a single settings object as received from settings api */
-export interface Setting {
+interface BaseSetting {
   key: string;
-  label: string;
   description: string;
   uuid: string;
   settingsId: string;
@@ -49,7 +61,16 @@ export interface Setting {
   resolveSettings: false;
   documentId: string;
   serverVersion: number;
-  type: typeof SETTINGS_CONFIGURATION_TYPE;
+}
+
+/** describes a single settings object as received from location settings api */
+export interface LocationSetting extends BaseSetting {
+  label: string;
+}
+
+/** describes a single settings object as received from service types settings api */
+export interface ServiceTypeSetting extends BaseSetting {
+  value: string;
 }
 
 export const defaultFormField: LocationFormFields = {
@@ -58,7 +79,7 @@ export const defaultFormField: LocationFormFields = {
   status: LocationUnitStatus.ACTIVE,
   type: '',
   isJurisdiction: true,
-  serviceTypes: '',
+  serviceType: '',
   locationTags: [],
   externalId: '',
   extraFields: [],
@@ -78,7 +99,7 @@ export const getLocationFormFields = (
 ): LocationFormFields => {
   const commonValues = {
     instance,
-    isJurisdiction,
+    isJurisdiction: location?.isJurisdiction ?? isJurisdiction,
   };
   if (!location) {
     return {
@@ -86,29 +107,38 @@ export const getLocationFormFields = (
       ...commonValues,
     };
   }
+
   const {
     name,
     status,
     parentId,
     username,
     externalId,
-    serviceTypes,
+    type,
     ...restProperties
   } = location.properties;
+
+  // derive latitude and longitudes for point
+  const { geometry: geoObject } = location;
+  const geoJson = JSON.stringify(geoObject);
+  const { longitude, latitude } = getPointCoordinates(geoJson);
+
   const formFields = {
     ...defaultFormField,
     ...commonValues,
     id: location.id,
     locationTags: location.locationTags?.map((loc) => loc.id),
-    geometry: JSON.stringify(location.geometry),
+    geometry: geoJson,
     type: location.type,
     name,
     username,
     status,
     parentId,
     externalId,
-    serviceTypes: serviceTypes?.map((type) => type.name) ?? [],
+    serviceType: type,
     extraFields: Object.entries(restProperties).map(([key, val]) => ({ [key]: val })),
+    longitude,
+    latitude,
   };
 
   return formFields;
@@ -148,7 +178,7 @@ export const generateLocationUnit = (
   parentNode?: TreeNode
 ): LocationUnit => {
   const {
-    serviceTypes,
+    serviceType,
     id,
     externalId,
     parentId,
@@ -161,15 +191,6 @@ export const generateLocationUnit = (
   } = formValues;
   const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? -1;
   const thisGeoLevel = (parentGeographicLevel as number) + 1;
-
-  // transform into an array for easier processing
-  const serviceTypesValues = serviceTypes
-    ? Array.isArray(serviceTypes)
-      ? serviceTypes
-      : Array(serviceTypes)
-    : [];
-  const serviceTypesPayload =
-    serviceTypesValues.length > 0 ? serviceTypesValues.map((type) => ({ name: type })) : [];
 
   const thisLocationsId = id ? id : v4();
 
@@ -186,7 +207,7 @@ export const generateLocationUnit = (
       // eslint-disable-next-line @typescript-eslint/camelcase
       name_en: name,
       status: status,
-      serviceTypes: serviceTypesPayload,
+      type: serviceType,
     },
     id: thisLocationsId,
     syncStatus: LocationUnitSyncStatus.SYNCED,
@@ -212,10 +233,10 @@ export const generateLocationUnit = (
  *
  * @param data - the settings array to convert to select options
  */
-export function getServiceTypeOptions(data: Setting[]) {
+export function getServiceTypeOptions(data: ServiceTypeSetting[]) {
   return data.map((setting) => ({
-    value: setting.label,
-    label: setting.label,
+    value: setting.value,
+    label: setting.value,
   }));
 }
 
@@ -223,12 +244,24 @@ export function getServiceTypeOptions(data: Setting[]) {
 export const validationRules = {
   instance: [{ type: 'enum', enum: Object.values(FormInstances), required: true }] as Rule[],
   id: [{ type: 'string' }] as Rule[],
-  parentId: [{ type: 'string', message: 'Parent ID must be a string' }] as Rule[],
-  name: [
-    { type: 'string', message: 'Name must be a string' },
-    { required: true, message: 'Name is required' },
+  parentId: [
+    { type: 'string', message: ERROR_PARENTID_STRING },
+    ({ getFieldValue }) => {
+      const instance = getFieldValue('instance');
+      if (instance === FormInstances.EUSM)
+        return {
+          required: true,
+        };
+      return {
+        required: false,
+      };
+    },
   ] as Rule[],
-  status: [{ type: 'string' }, { required: true, message: 'Status is Required' }] as Rule[],
+  name: [
+    { type: 'string', message: ERROR_NAME_STRING },
+    { required: true, message: ERROR_NAME_REQUIRED },
+  ] as Rule[],
+  status: [{ type: 'string' }, { required: true, message: ERROR_STATUS_REQUIRED }] as Rule[],
   type: [
     { type: 'string' },
     ({ getFieldValue }) => {
@@ -236,16 +269,16 @@ export const validationRules = {
       if (instance === FormInstances.CORE)
         return {
           required: true,
-          message: 'Type is required',
+          message: ERROR_TYPE_STRING,
         };
       return {
         required: false,
       };
     },
   ] as Rule[],
-  externalId: [{ type: 'string', message: 'External id must be a String' }] as Rule[],
-  locationTags: [{ type: 'array', message: 'Location units must be an array' }] as Rule[],
-  geometry: [{ type: 'string', message: 'location Unit Groups must be a An String' }] as Rule[],
+  externalId: [{ type: 'string', message: ERROR_EXTERNAL_ID_STRING }] as Rule[],
+  locationTags: [{ type: 'array', message: ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
+  geometry: [{ type: 'string', message: ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
   isJurisdiction: [
     {
       type: 'boolean',
@@ -256,32 +289,64 @@ export const validationRules = {
       if (isCreateMode)
         return {
           required: true,
-          message: 'Location category is required',
+          message: ERROR_LOCATION_CATEGORY_REQUIRED,
         };
       return {
         required: false,
       };
     },
   ] as Rule[],
-
   serviceTypes: [
     ({ getFieldValue }) => {
       const instance = getFieldValue('instance');
       if (instance === FormInstances.EUSM)
         return {
           required: true,
-          message: 'Service Types is required',
+          message: ERROR_SERVICE_TYPES_REQUIRED,
         };
       return {
         required: false,
       };
     },
   ] as Rule[],
+  longitude: [
+    () => ({
+      validator(_, value) {
+        if (!value) {
+          return Promise.resolve();
+        }
+        return rejectIfNan(value, LONGITUDE_LATITUDE_TYPE_ERROR);
+      },
+    }),
+  ] as Rule[],
+  latitude: [
+    () => ({
+      validator(_, value) {
+        if (!value) {
+          return Promise.resolve();
+        }
+        return rejectIfNan(value, LONGITUDE_LATITUDE_TYPE_ERROR);
+      },
+    }),
+  ] as Rule[],
   extraFields: [
     {
       required: false,
     },
   ],
+};
+
+/** given a value retrun a rejected promise if value is not parseable as number
+ *
+ * @param value - value to parse into string
+ * @param message - error message to show
+ */
+const rejectIfNan = (value: string, message: string) => {
+  if (isNaN(Number(value))) {
+    return Promise.reject(message);
+  } else {
+    return Promise.resolve();
+  }
 };
 
 /** gets location tag options for location form location tags select field
@@ -298,15 +363,21 @@ export const getLocationTagOptions = (tags: LocationUnitTag[]) => {
   });
 };
 
-/** generates tree select options
+/**
+ * generates tree select options
  *
  * @param trees - an array of parsed trees
+ * @param parentIdDisabledCallback - callback to help determine disabled status of nodes in treeSelect
  */
-export const treeToOptions = (trees: TreeNode[]): DataNode[] => {
+export const treeToOptions = (
+  trees: TreeNode[],
+  parentIdDisabledCallback?: (node: TreeNode) => boolean
+): DataNode[] => {
   const recurseCreateOptions = (node: TreeNode) => {
     const optionValue: Dictionary = {
       value: node.model.id,
       title: node.model.label,
+      ...(parentIdDisabledCallback ? { disabled: parentIdDisabledCallback(node) } : {}),
     };
     if (node.hasChildren()) {
       optionValue.children = node.children.map(recurseCreateOptions);
@@ -314,4 +385,99 @@ export const treeToOptions = (trees: TreeNode[]): DataNode[] => {
     return optionValue;
   };
   return trees.map(recurseCreateOptions);
+};
+
+/**
+ * validate coordinates, returns true only if coordinates belong to a point
+ *
+ * @param geoJson - the geojson object
+ */
+export const cordIsPoint = (geoJson?: Partial<Geometry>) => {
+  return (
+    geoJson?.type === 'Point' &&
+    Array.isArray(geoJson.coordinates) &&
+    geoJson.coordinates.length === 2
+  );
+};
+
+export const getPointCoordinates = (geoText: string) => {
+  let geojson: Geometry;
+  try {
+    geojson = JSON.parse(geoText);
+  } catch (err) {
+    return {};
+  }
+  const isPoint = cordIsPoint(geojson);
+  if (!isPoint) {
+    return {};
+  }
+  const lng = (geojson as Point).coordinates[0];
+  const lat = (geojson as Point).coordinates[1];
+
+  const longitude = lng ? String(lng) : undefined;
+  const latitude = lat ? String(lat) : undefined;
+
+  return { longitude, latitude };
+};
+
+/** handles form values change , creates a values change handler that listens for
+ * changes to geometry, latitude and longitude and syncs changes across the 3 fields
+ *
+ * @param form - the form instance
+ */
+export const handleGeoFieldsChangeFactory = (form: FormInstance) => {
+  return (changedValues: Partial<LocationFormFields>, allValues: LocationFormFields) => {
+    /** location fields that could possible change */
+    const { geometry, latitude, longitude } = changedValues;
+    if (geometry !== undefined) {
+      // means geometry changed
+      const { longitude, latitude } = getPointCoordinates(geometry);
+      form.setFieldsValue({
+        longitude,
+        latitude,
+      });
+    }
+
+    const { geometry: existingGeo, latitude: existingLat, longitude: ExistingLng } = allValues;
+    let currentGeoJson;
+    try {
+      currentGeoJson = JSON.parse(existingGeo ?? '{}');
+    } catch (err) {
+      currentGeoJson = {};
+    }
+
+    if (latitude !== undefined) {
+      // means latitude changed
+      const isPoint = cordIsPoint(currentGeoJson);
+      const parsedLatitude = Number(latitude);
+      if (isPoint) {
+        const currentGeometry = { ...currentGeoJson };
+        currentGeometry.coordinates[1] = parsedLatitude;
+        form.setFieldsValue({
+          geometry: JSON.stringify(currentGeometry),
+        });
+      } else {
+        form.setFieldsValue({
+          geometry: JSON.stringify({ type: 'Point', coordinates: [ExistingLng, parsedLatitude] }),
+        });
+      }
+    }
+
+    if (longitude !== undefined) {
+      // means longitude changed
+      const isPoint = cordIsPoint(currentGeoJson);
+      const parsedLongitude = Number(longitude);
+      if (isPoint) {
+        const currentGeometry = { ...currentGeoJson };
+        currentGeometry.coordinates[0] = Number(longitude);
+        form.setFieldsValue({
+          geometry: JSON.stringify(currentGeometry),
+        });
+      } else {
+        form.setFieldsValue({
+          geometry: JSON.stringify({ type: 'Point', coordinates: [parsedLongitude, existingLat] }),
+        });
+      }
+    }
+  };
 };

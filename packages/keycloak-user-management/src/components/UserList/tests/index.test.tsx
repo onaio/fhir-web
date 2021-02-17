@@ -27,7 +27,7 @@ import { ERROR_OCCURED } from '../../../lang';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
-  ...jest.requireActual('@opensrp/store'),
+  ...Object.assign({}, jest.requireActual('@opensrp/store')),
 }));
 
 jest.mock('@opensrp/notifications', () => ({

@@ -1,4 +1,4 @@
-import { parseBadResponseError, parseSingleErrorRow, uploadCSV } from '../dataLoaders';
+import { parseTextResponse, parseSingleErrorRow, uploadCSV } from '../dataLoaders';
 import axios from 'axios';
 
 jest.mock('axios');
@@ -103,7 +103,7 @@ describe('helpers/dataLoader.parseBadResponseError', () => {
   it('parses full data correctly', () => {
     const sampleResponse =
       '"Total Number of Rows in the CSV ",3\r\n"Rows processed ",0\r\n"\n"\r\nRow Number,Reason of Failure\r\n1,"[Product ID does not exist in product catalogue, Service point ID does not exist, Donor is not valid, PO Number should be a whole number]"\r\n2,[Service point ID does not exist]\r\n3,"[Service point ID does not exist, UNICEF section is not valid, Donor is not valid]"\r\n';
-    const result = parseBadResponseError(sampleResponse);
+    const result = parseTextResponse(sampleResponse);
     expect(result).toEqual({
       errors: [
         {

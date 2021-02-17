@@ -2,16 +2,30 @@ import i18n from './mls';
 
 // Errors
 export const ERROR_OCCURED = i18n.t('An error occurred');
-export const ERROR_PARENTID_STRING = i18n.t('Parentid must be a String');
-export const ERROR_NAME_STRING = i18n.t('Name must be a String');
-export const ERROR_NAME_REQUIRED = i18n.t('Name is Required');
-export const ERROR_STATUS_REQUIRED = i18n.t('Status is Required');
-export const ERROR_TYPE_STRING = i18n.t('Type must be a String');
-export const ERROR_TYPE_REQUIRED = i18n.t('Type is Required');
-export const ERROR_EXTERNAL_ID_STRING = i18n.t('External id must be a String');
-export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('location Unit Groupss must be an Array');
-export const ERROR_GEOMETRY_STRING = i18n.t('location Unit Groups must be a An String');
+export const ERROR_PARENTID_STRING = i18n.t(
+  'Parent ID can only contain letters, numbers and spaces'
+);
+export const ERROR_NAME_STRING = i18n.t('Name can only contain letters, numbers and spaces');
+export const ERROR_NAME_REQUIRED = i18n.t('Name is required');
+export const ERROR_STATUS_REQUIRED = i18n.t('Status is required');
+export const ERROR_TYPE_STRING = i18n.t('Type can only contain letters, numbers and spaces');
+export const ERROR_TYPE_REQUIRED = i18n.t('Type is required');
+export const ERROR_EXTERNAL_ID_STRING = i18n.t(
+  'External ID can only contain letters, numbers and spaces'
+);
+export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('Location Unit must be an array');
+export const ERROR_GEOMETRY_STRING = i18n.t(
+  'Location Unit Group can only contain letters, numbers and spaces'
+);
+export const ERROR_LOCATION_CATEGORY_REQUIRED = i18n.t('Location category is required');
+export const ERROR_SERVICE_TYPES_REQUIRED = i18n.t('Service types is required');
+export const LONGITUDE_LATITUDE_TYPE_ERROR = i18n.t('Only decimal values allowed');
 
+// Messages
+export const MESSAGE_LOCATION_UNIT_UPDATED = i18n.t('Location Unit updated successfully');
+export const MESSAGE_LOCATION_UNIT_CREATED = i18n.t('Location Unit created successfully');
+
+// Rendered text
 export const LOCATION_UNIT = i18n.t('Location Unit');
 export const LOCATION_UNIT_GROUP = i18n.t('Location Unit Group');
 export const LOCATION_UNIT_MANAGEMENT = i18n.t('Location Unit Management');
@@ -41,7 +55,7 @@ export const SERVICE_TYPES_LABEL = i18n.t('Type');
 export const EXTERNAL_ID_LABEL = i18n.t('External ID');
 export const GEOMETRY_LABEL = i18n.t('Geometry');
 export const UNIT_GROUP_LABEL = i18n.t('Unit group');
-export const PLEASE_SELECT_PLACEHOLDER = i18n.t('Please select');
+export const PARENT_ID_SELECT_PLACEHOLDER = i18n.t('Select the parent location');
 export const ENTER_LOCATION_NAME_PLACEHOLDER = i18n.t('Enter a location name');
 export const SELECT_TYPE_LABEL = i18n.t('Select type');
 export const SELECT_STATUS_LABEL = i18n.t('Select status');
@@ -49,6 +63,9 @@ export const GEOMETRY_PLACEHOLDER = i18n.t('</> JSON');
 export const ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER = i18n.t('Enter a location group name');
 export const SAVING = i18n.t('Saving');
 export const SAVE = i18n.t('Save');
+export const SERVICE_TYPE_PLACEHOLDER = i18n.t('Select the service point type');
+export const LATITUDE_PLACEHOLDER = i18n.t('E.g. -16.08306');
+export const LONGITUDE_PLACEHOLDER = i18n.t('E.g. 49.54933');
 
 export const NAME = i18n.t('Name');
 export const STATUS = i18n.t('Status');
@@ -64,3 +81,5 @@ export const ACTIONS = i18n.t('Actions');
 export const EDIT = i18n.t('Edit');
 export const VIEW_DETAILS = i18n.t('View Details');
 export const DELETE = i18n.t('Delete');
+export const LATITUDE_LABEL = i18n.t('Latitude');
+export const LONGITUDE_LABEL = i18n.t('Longitude');
