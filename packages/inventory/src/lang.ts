@@ -87,6 +87,7 @@ export const PO_NUMBER = i18n.t('PO number');
 export const SELECT = i18n.t('Select');
 
 // Service point profile
+export const INVENTORY = i18n.t('Inventory');
 export const INVENTORY_ITEMS = i18n.t('Inventory items');
 export const EDIT_SERVICE_POINT = i18n.t('Edit service point');
 export const ADD_NEW_INVENTORY_ITEM = i18n.t('Add new inventory item');

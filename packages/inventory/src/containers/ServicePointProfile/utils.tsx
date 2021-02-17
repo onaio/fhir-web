@@ -1,4 +1,5 @@
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
+import { Geometry } from 'geojson';
 
 /** geographic location interface */
 export interface GeographicLocationInterface {
@@ -30,4 +31,21 @@ export const getNodePath = (
     return { geographicLevel: node.model.node.attributes.geographicLevel, label: node.model.label };
   });
   return path;
+};
+
+/**
+ * validate coordinates, returns coma separated coordinates
+ *
+ * @param geoJson - the geojson object
+ */
+export const getCords = (geoJson?: Partial<Geometry>) => {
+  if (
+    geoJson?.type === 'Point' &&
+    Array.isArray(geoJson.coordinates) &&
+    geoJson.coordinates.length === 2
+  ) {
+    return geoJson.coordinates.join(', ');
+  } else {
+    return '';
+  }
 };
