@@ -81,7 +81,10 @@ describe('components/InventoryItemForm', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    fetch.resetMocks();
+    jest.restoreAllMocks();
   });
+
   const props = {
     openSRPBaseURL: 'https://mg-eusm-staging.smartregister.org/opensrp/rest/',
     cancelURL: '/inventory-items',
@@ -357,6 +360,9 @@ describe('components/InventoryItemForm', () => {
     // Form is initialized with initial values
     // product should not be editable when editing an inventory item
     expect(wrapper.find('select#productName').get(0).props.disabled).toEqual(true);
+    expect(wrapper.find('select#productName').get(0).props.value).toEqual(
+      fixtures.products[0].productName
+    );
     expect(wrapper.find('input#quantity').get(0).props.value).toEqual(78);
     expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(moment('2021-02-02'));
     expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
@@ -554,6 +560,7 @@ describe('components/InventoryItemForm', () => {
         method: 'POST',
       },
     ]);
+    wrapper.unmount();
   });
 
   it('handles non-API error during submission', async () => {
@@ -604,6 +611,116 @@ describe('components/InventoryItemForm', () => {
 
     wrapper.find('button').at(1).simulate('click');
     expect(history.location.pathname).toEqual('/inventory-items');
+    wrapper.unmount();
+  });
+
+  it('edits an attractive product', async () => {
+    const stockId = '69227a92-7979-490c-b149-f28669c6b760';
+    const editProps = {
+      ...props,
+      inventoryID: stockId,
+      initialValues: {
+        productName: fixtures.product4.productName,
+        quantity: 78,
+        deliveryDate: moment('2021-02-16'),
+        accountabilityEndDate: moment('2022-02-17'),
+        unicefSection: fixtures.unicefSections[0].value,
+        donor: fixtures.donors[0].value,
+        poNumber: 90,
+        serialNumber: '1245',
+      },
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <InventoryItemForm {...editProps} />
+      </Router>
+    );
+
+    // Form is initialized with initial values
+    // product should not be editable when editing an inventory item
+    expect(wrapper.find('select#productName').get(0).props.disabled).toEqual(true);
+    expect(wrapper.find('select#productName').get(0).props.value).toEqual(
+      fixtures.product4.productName
+    );
+    expect(wrapper.find('input#quantity').get(0).props.value).toEqual(78);
+    expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(moment('2021-02-16'));
+    expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
+      moment('2022-02-17')
+    );
+    expect(wrapper.find('select#unicefSection').get(0).props.value).toEqual(
+      fixtures.unicefSections[0].value
+    );
+    expect(wrapper.find('select#donor').get(0).props.value).toEqual(fixtures.donors[0].value);
+    expect(wrapper.find('input#poNumber').get(0).props.value).toEqual(90);
+    expect(wrapper.find('input#serialNumber').get(0).props.value).toEqual('1245');
+
+    // It autocalculates accountability end date if delivery date is touched
+    const deliveryDate = moment('2021-02-14');
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: deliveryDate },
+    });
+
+    wrapper.update();
+    const expected = moment(deliveryDate.format('YYYY-MM-DD')).add(
+      fixtures.product4.accountabilityPeriod,
+      'months'
+    );
+    expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(expected);
+
+    // Make edits
+    wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
+    wrapper.find('select#deliveryDate').simulate('change', {
+      target: { value: moment('2021-02-08') },
+    });
+    wrapper.find('select#accountabilityEndDate').simulate('change', {
+      target: { value: moment('2021-04-08') },
+    });
+    wrapper.find('select#unicefSection').simulate('change', {
+      target: { value: fixtures.unicefSections[1].value },
+    });
+    wrapper.find('select#donor').simulate('change', {
+      target: { value: fixtures.donors[1].value },
+    });
+    wrapper.find('input#poNumber').simulate('change', { target: { value: 89 } });
+    wrapper.find('input#serialNumber').simulate('change', { target: { value: 9999 } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+
+    const payload = {
+      productName: fixtures.product4.productName,
+      deliveryDate: '2021-02-08',
+      accountabilityEndDate: '2021-04-08',
+      unicefSection: 'WASH',
+      donor: 'NatCom Belgium',
+      poNumber: 89,
+      servicePointId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+      serialNumber: 9999,
+      quantity: 10,
+      stockId,
+    };
+
+    expect(fetch.mock.calls[0]).toEqual([
+      `https://mg-eusm-staging.smartregister.org/opensrp/rest/stockresource/${stockId}`,
+      {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify(payload),
+        headers: {
+          accept: '*/*',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json',
+        },
+        method: 'PUT',
+      },
+    ]);
+    // Redirect to redirect URL
+    expect(history.location.pathname).toEqual('/inventory-items-done');
     wrapper.unmount();
   });
 });

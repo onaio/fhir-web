@@ -206,6 +206,7 @@ describe('containers/InventoryAddEdit', () => {
         productName: undefined,
         quantity: '',
         unicefSection: undefined,
+        serialNumber: undefined,
       },
       inventoryID: undefined,
     });
@@ -437,11 +438,12 @@ describe('containers/InventoryAddEdit', () => {
       initialValues: {
         accountabilityEndDate: moment(fixtures.inventories[0].accountabilityEndDate),
         deliveryDate: moment(fixtures.inventories[0].deliveryDate),
-        donor: 'ADB',
-        poNumber: '101',
+        donor: fixtures.inventories[0].donor,
+        poNumber: fixtures.inventories[0].customProperties['PO Number'],
         productName: fixtures.inventories[0].product.productName,
         quantity: 1,
-        unicefSection: 'Health',
+        serialNumber: fixtures.inventories[0].serialNumber,
+        unicefSection: fixtures.inventories[0].customProperties['UNICEF section'],
       },
       inventoryID: fixtures.inventories[0]._id,
     });
@@ -640,11 +642,12 @@ describe('containers/InventoryAddEdit', () => {
       initialValues: {
         accountabilityEndDate: moment(fixtures.inventories[0].accountabilityEndDate),
         deliveryDate: moment(fixtures.inventories[0].deliveryDate),
-        donor: 'ADB',
-        poNumber: '101',
+        donor: fixtures.inventories[0].donor,
+        poNumber: fixtures.inventories[0].customProperties['PO Number'],
         productName: fixtures.inventories[0].product.productName,
         quantity: 1,
-        unicefSection: 'Health',
+        serialNumber: fixtures.inventories[0].serialNumber,
+        unicefSection: fixtures.inventories[0].customProperties['UNICEF section'],
       },
       inventoryID: fixtures.inventories[0]._id,
     });
