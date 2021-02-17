@@ -13,6 +13,7 @@ import {
   getTreesByIds,
   loadHierarchy,
   fetchTree,
+  loadJurisdiction,
 } from '@opensrp/location-management';
 import { useDispatch, useSelector } from 'react-redux';
 import { GeographicLocationInterface } from './utils';
@@ -135,18 +136,13 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       serverVersion: 0,
       // eslint-disable-next-line @typescript-eslint/camelcase
       is_jurisdiction: false,
+      return_geometry: true,
     };
-    const structuresDispatcher = (locations: LocationUnit[] = []) => {
+    const structuresDispatcher = (locations: LocationUnit) => {
+      // return locations;
       return dispatch(fetchLocationUnits(locations, false));
     };
-    loadJurisdictions(
-      structuresDispatcher,
-      opensrpBaseURL,
-      params,
-      {},
-      service,
-      LOCATIONS_GET_ALL_SYNC_ENDPOINT
-    )
+    loadJurisdiction(spId, structuresDispatcher, opensrpBaseURL, params, service)
       .catch((err: Error) => {
         handleBrokenPage(err);
       })
@@ -155,6 +151,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     const jurisdictionsDispatcher = (locations: LocationUnit[] = []) => {
       return dispatch(fetchLocationUnits(locations, true));
     };
+
     loadJurisdictions(
       jurisdictionsDispatcher,
       opensrpBaseURL,
