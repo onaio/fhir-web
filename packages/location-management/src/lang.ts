@@ -2,19 +2,30 @@ import i18n from './mls';
 
 // Errors
 export const ERROR_OCCURED = i18n.t('An error occurred');
-export const ERROR_PARENTID_STRING = i18n.t('Parent id must be a string');
-export const ERROR_NAME_STRING = i18n.t('Name must be a string');
+export const ERROR_PARENTID_STRING = i18n.t(
+  'Parent ID can only contain letters, numbers and spaces'
+);
+export const ERROR_NAME_STRING = i18n.t('Name can only contain letters, numbers and spaces');
 export const ERROR_NAME_REQUIRED = i18n.t('Name is required');
 export const ERROR_STATUS_REQUIRED = i18n.t('Status is required');
-export const ERROR_TYPE_STRING = i18n.t('Type must be a string');
+export const ERROR_TYPE_STRING = i18n.t('Type can only contain letters, numbers and spaces');
 export const ERROR_TYPE_REQUIRED = i18n.t('Type is required');
-export const ERROR_EXTERNAL_ID_STRING = i18n.t('External id must be a string');
-export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('location unit groups must be an Array');
-export const ERROR_GEOMETRY_STRING = i18n.t('Location unit groups must be a an string');
+export const ERROR_EXTERNAL_ID_STRING = i18n.t(
+  'External ID can only contain letters, numbers and spaces'
+);
+export const ERROR_LOCATION_TAGS_ARRAY = i18n.t('Location Unit must be an array');
+export const ERROR_GEOMETRY_STRING = i18n.t(
+  'Location Unit Group can only contain letters, numbers and spaces'
+);
 export const ERROR_LOCATION_CATEGORY_REQUIRED = i18n.t('Location category is required');
 export const ERROR_SERVICE_TYPES_REQUIRED = i18n.t('Service types is required');
 export const LONGITUDE_LATITUDE_TYPE_ERROR = i18n.t('Only decimal values allowed');
 
+// Messages
+export const MESSAGE_LOCATION_UNIT_UPDATED = i18n.t('Location Unit updated successfully');
+export const MESSAGE_LOCATION_UNIT_CREATED = i18n.t('Location Unit created successfully');
+
+// Rendered text
 export const LOCATION_UNIT = i18n.t('Location Unit');
 export const LOCATION_UNIT_GROUP = i18n.t('Location Unit Group');
 export const LOCATION_UNIT_MANAGEMENT = i18n.t('Location Unit Management');
