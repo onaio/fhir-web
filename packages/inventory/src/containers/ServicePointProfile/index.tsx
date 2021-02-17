@@ -123,7 +123,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
   };
   const [structure] = useSelector((state) =>
     structuresSelector(state, { ...filters, searchQuery: spId })
-  ) as LocationUnit[];
+  );
   const rootLocations = useSelector((state) =>
     structuresSelector(state, { ...filters, isJurisdiction: true })
   );
@@ -135,6 +135,8 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       serverVersion: 0,
       // eslint-disable-next-line @typescript-eslint/camelcase
       is_jurisdiction: false,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      return_geometry: true,
     };
     const structuresDispatcher = (locations: LocationUnit[] = []) => {
       return dispatch(fetchLocationUnits(locations, false));
