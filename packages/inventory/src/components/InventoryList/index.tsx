@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Row, Col, Button, Table } from 'antd';
 import { getTableColumns } from './utils';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import {
   GET_INVENTORY_BY_SERVICE_POINT,
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
@@ -23,7 +24,6 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
 import { OpenSRPService, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeLastItem } from './utils';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
@@ -84,8 +84,8 @@ const InventoryList = (props: InventoryListProps) => {
 
   // add a key prop to the array data to be consumed by the table
   const dataSource = inventoriesArray.map((item) => {
-    const deliveryDate = removeLastItem(item.deliveryDate.split(','));
-    const accountabilityEndDate = removeLastItem(item.accountabilityEndDate.split(','));
+    const deliveryDate = format(new Date(item.deliveryDate), 'MMM dd, yyyy');
+    const accountabilityEndDate = format(new Date(item.accountabilityEndDate), 'MMM dd, yyyy');
     const inventoryToDisplay = {
       key: `${TableColumnsNamespace}-${item._id}`,
       ...item,
