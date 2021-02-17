@@ -15,7 +15,7 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
 import { getUser } from '@onaio/session-reducer';
-import { EDIT_LOCATION_UNIT } from '../../lang';
+import { EDIT } from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 
@@ -28,11 +28,12 @@ export type LocationRouteProps = { id: string };
 export interface EditLocationUnitProps
   extends Pick<
       LocationFormProps,
-      'redirectAfterAction' | 'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback'
+      'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps<LocationRouteProps> {
   openSRPBaseURL: string;
   instance: FormInstances;
+  cancelURLGenerator: (data: LocationUnit) => string;
 }
 
 const defaultEditLocationUnitProps = {
@@ -42,6 +43,8 @@ const defaultEditLocationUnitProps = {
   hidden: [],
   disabled: [],
   service: OpenSRPService,
+  successURLGenerator: () => '',
+  cancelURLGenerator: () => '',
 };
 
 /** renders page where user can Edit already created location unit
@@ -55,7 +58,8 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     disabled,
     service,
     openSRPBaseURL,
-    redirectAfterAction,
+    cancelURLGenerator,
+    successURLGenerator,
     disabledTreeNodesCallback,
   } = props;
   const history = useHistory();
@@ -152,11 +156,14 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   }
 
   const initialValues = getLocationFormFields(thisLocation, instance, isJurisdiction);
-  const cancelHandler = () => history.push(redirectAfterAction);
+  const cancelHandler = () => {
+    const cancelURL = cancelURLGenerator(thisLocation);
+    history.push(cancelURL);
+  };
 
   const locationFormProps = {
     initialValues,
-    redirectAfterAction,
+    successURLGenerator,
     hidden,
     disabled,
     onCancel: cancelHandler,
@@ -165,7 +172,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     user: user.username,
     disabledTreeNodesCallback,
   };
-  const pageTitle = `${EDIT_LOCATION_UNIT} | ${thisLocation.properties.name}`;
+  const pageTitle = `${EDIT} > ${thisLocation.properties.name}`;
 
   return (
     <Row className="layout-content">

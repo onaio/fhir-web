@@ -6,7 +6,7 @@ import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
 import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { RouteComponentProps, Router } from 'react-router';
 import { act } from 'react-dom/test-utils';
 import { commonHiddenFields } from '../../../helpers/utils';
 
@@ -69,5 +69,13 @@ describe('CreateServicePoint', () => {
     expect(locationFormProps.hidden).toEqual(commonHiddenFields);
     expect(initialValues.instance).toEqual('eusm');
     expect(locationFormProps.disabled).toEqual(['isJurisdiction']);
+
+    // test re-direction url on chancel
+    wrapper.find('button#location-form-cancel-button').simulate('click');
+    wrapper.update();
+
+    expect(
+      (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
+    ).toEqual('/inventory/list');
   });
 });
