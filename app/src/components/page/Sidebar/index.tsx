@@ -40,8 +40,8 @@ import {
   DOWNLOAD_CLIENT_DATA,
   USER_MANAGEMENT,
   TEAMS,
-  LOCATIONS_UNIT,
-  LOCATIONS_UNIT_GROUP,
+  LOCATION_UNIT,
+  LOCATION_UNIT_GROUP,
   PRODUCT_CATALOGUE,
   FORM_CONFIGURATION,
   MANIFEST_RELEASES,
@@ -195,12 +195,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.SubMenu key="location" title={LOCATIONS}>
               <Menu.Item key="unit">
                 <Link to={URL_LOCATION_UNIT} className="admin-link">
-                  {LOCATIONS_UNIT}
+                  {LOCATION_UNIT}
                 </Link>
               </Menu.Item>
               <Menu.Item key="group">
                 <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
-                  {LOCATIONS_UNIT_GROUP}
+                  {LOCATION_UNIT_GROUP}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
