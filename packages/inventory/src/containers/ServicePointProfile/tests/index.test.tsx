@@ -23,7 +23,7 @@ import {
   madagascar,
   madagascarTree,
   opensrpBaseURL,
-  structures,
+  structure2,
 } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
@@ -84,7 +84,7 @@ describe('Profile view Page', () => {
   });
 
   it('renders correctly', async () => {
-    fetch.once(JSON.stringify([])).once(JSON.stringify([]));
+    fetch.once(null).once(JSON.stringify([]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -110,9 +110,8 @@ describe('Profile view Page', () => {
 
   it('renders when data is present', async () => {
     fetch
-      .once(JSON.stringify(structures))
+      .once(JSON.stringify(structure2))
       .once(JSON.stringify([madagascar]))
-      // .once(JSON.stringify(inventories))
       .once(JSON.stringify(madagascarTree));
 
     const wrapper = mount(
@@ -168,7 +167,7 @@ describe('Profile view Page', () => {
 
   it('shows broken page when jurisdiction request errors out', async () => {
     const errorMessage = 'Coughid';
-    fetch.once(JSON.stringify({ count: structures.length })).once(JSON.stringify([madagascar]));
+    fetch.once(JSON.stringify(structure2)).once(JSON.stringify([madagascar]));
     fetch.mockReject(new Error(errorMessage));
 
     const wrapper = mount(
