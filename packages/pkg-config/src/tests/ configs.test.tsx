@@ -44,6 +44,7 @@ describe('configs/initializei18n', () => {
       fallbackLng: ['fr_core'],
       interpolation: { escapeValue: false },
       returnEmptyString: false,
+      nsSeparator: '::',
     });
   });
 });
