@@ -9,6 +9,8 @@ import {
   TRASH_PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
+import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
+import MapMarkerOutline from '@opensrp/ant-icons/lib/MapMarkerOutline';
 import { MenuItems } from '.';
 import {
   ENABLE_PLANS,
@@ -55,7 +57,7 @@ import {
 // menu items schema
 export const menusSchema = (roles: Dictionary): MenuItems[] => [
   {
-    otherProps: { icon: <DashboardOutlined />, title: `${MISSIONS}` },
+    otherProps: { icon: <MapMarkerOutline className="sidebar-icons" />, title: `${MISSIONS}` },
     key: 'missions',
     enabled: ENABLE_PLANS,
     children: [
@@ -86,7 +88,7 @@ export const menusSchema = (roles: Dictionary): MenuItems[] => [
     ],
   },
   {
-    otherProps: { icon: <DashboardOutlined />, title: `${INVENTORY}` },
+    otherProps: { icon: <ArchiveOutline className="sidebar-icons" />, title: `${INVENTORY}` },
     key: 'inventory',
     enabled: ENABLE_INVENTORY,
     children: [
