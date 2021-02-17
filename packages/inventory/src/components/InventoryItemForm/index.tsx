@@ -157,7 +157,8 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
         accountabilityEndDate: accEndDate,
       });
     }
-  }, [selectedProduct, selectedDeliveryDate, form, isProductChanged, isDeliveryDateChanged]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProduct, selectedDeliveryDate, form]);
 
   /** Update form initial values when initialValues prop changes, without this
    * the form fields initial values will not change if props.initiaValues is updated
