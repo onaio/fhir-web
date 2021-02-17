@@ -16,12 +16,7 @@ import reducer, {
   fetchAssignments,
   reducerName as assignmentReducerName,
 } from '../../../ducks/assignments';
-import {
-  reducerName as hierarchyReducerName,
-  reducer as hierarchyReducer,
-  generateJurisdictionTree,
-  fetchAllHierarchies,
-} from '@opensrp/location-management';
+import { generateJurisdictionTree, locationHierachyDucks } from '@opensrp/location-management';
 import {
   fetchOrganizationsAction,
   reducer as teamsReducer,
@@ -31,8 +26,11 @@ import { OPENSRP_API_BASE_URL } from '../../../constants';
 import { assignments, sampleHierarchy, samplePlan } from './fixtures';
 import { organizations } from '@opensrp/team-management/src/ducks/tests/fixtures';
 
+const { fetchAllHierarchies } = locationHierachyDucks;
+
 // register reducers
-reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
+// reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
+reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 reducerRegistry.register(teamsReducerName, teamsReducer);
 reducerRegistry.register(assignmentReducerName, reducer);
 

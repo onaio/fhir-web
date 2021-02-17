@@ -259,7 +259,6 @@ describe('components/CreateEditUser', () => {
 
   it('works correctly with the store', async () => {
     store.dispatch(fetchKeycloakUsers([fixtures.keycloakUser]));
-    const mockSelector = jest.spyOn(opensrpStore, 'makeAPIStateSelector');
     opensrpStore.store.dispatch(
       authenticateUser(
         true,
@@ -287,12 +286,10 @@ describe('components/CreateEditUser', () => {
     });
 
     expect(wrapper.find('CreateEditUser').prop('keycloakUser')).toEqual(fixtures.keycloakUser);
-    expect(wrapper.find('CreateEditUser').prop('accessToken')).toEqual('bamboocha');
     expect(wrapper.find('CreateEditUser').prop('extraData')).toEqual({
       api_token: 'hunter2',
       oAuth2Data: { access_token: 'bamboocha', state: 'abcde' },
     });
-    expect(mockSelector).toHaveBeenCalled();
     wrapper.unmount();
   });
 

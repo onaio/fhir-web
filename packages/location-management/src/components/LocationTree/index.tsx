@@ -60,12 +60,12 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (locationTreeState) {
+    if (locationTreeState?.node) {
       setExpandedKeys(locationTreeState.keys);
       const newnode = getHierarchyNodeFromArray(filterData, locationTreeState.node.id);
       if (newnode) {
         OnItemClick(newnode);
-        expandTree(newnode.id);
+        expandTree(newnode.title);
         return; // stops the execution of loopmail
       }
     }
@@ -128,7 +128,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const buildTreeData = React.useCallback(
     (data: ParsedHierarchyNode[]): AntTreeProps[] => {
       return data.map((item) => {
-        const index = item.title.toLowerCase().indexOf(searchValue);
+        const index = item.title.toLowerCase().indexOf(searchValue.toLowerCase());
         const beforeStr = item.title.toLowerCase().substr(0, index);
         const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
         const title = (

@@ -13,8 +13,6 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Router } from 'react-router';
-import { store } from '@opensrp/store';
-import { authenticateUser } from '@onaio/session-reducer';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
