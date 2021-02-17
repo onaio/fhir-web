@@ -16,10 +16,11 @@ import {
   PRODUCTS_CHECKED,
   SERVICE_POINTS_VISITED,
 } from '../../lang';
-import { loadTasksIndicators, TaskCount } from '../../helpers/dataLoaders';
+import { loadTasksIndicators, TaskCount, TaskParams } from '../../helpers/dataLoaders';
 import { CommonProps, defaultCommonProps } from '@opensrp/plan-form';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
 import { BuildDownloadUrl } from '../../helpers/utils';
+import { OPENSRP_BUSINESS_STATUS_VISITED } from '../../constants';
 
 const { Title, Text } = Typography;
 
@@ -44,8 +45,11 @@ const MissionData = (props: MissionDataProps) => {
     const promises: Promise<void | Response>[] = [];
     const codes = [SERVICE_POINT_CHECK_CODE, PRODUCT_CHECK_CODE, FIX_PRODUCT_PROBLEMS_CODE];
     const setStateSequence = [setServicePoints, setProductsChecked, setFlaggedProducts];
+    const otherParams: TaskParams = {
+      businessStatus: OPENSRP_BUSINESS_STATUS_VISITED,
+    };
     codes.forEach((code, index) => {
-      const thisPromise = loadTasksIndicators(baseURL, planId, code, true)
+      const thisPromise = loadTasksIndicators(baseURL, planId, code, true, otherParams)
         .then((response: TaskCount) => {
           setStateSequence[index](response.total_records);
         })
