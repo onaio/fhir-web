@@ -15,7 +15,7 @@ import {
   fetchTree,
 } from '@opensrp/location-management';
 import { useDispatch, useSelector } from 'react-redux';
-import { GeographicLocationInterface } from './utils';
+import { getCords, GeographicLocationInterface } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Link, RouteComponentProps, useParams } from 'react-router-dom';
@@ -123,7 +123,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
   };
   const [structure] = useSelector((state) =>
     structuresSelector(state, { ...filters, searchQuery: spId })
-  );
+  ) as LocationUnit[];
   const rootLocations = useSelector((state) =>
     structuresSelector(state, { ...filters, isJurisdiction: true })
   );
@@ -223,7 +223,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
               </Col>
               <Col md={12}>
                 <GeographyItem label={TYPE_LABEL} value={structure.properties.type} />
-                <GeographyItem label={LAT_LONG_LABEL} value={''} />
+                <GeographyItem label={LAT_LONG_LABEL} value={getCords(structure.geometry)} />
                 <GeographyItem label={SERVICE_POINT_ID_LABEL} value={spId} />
               </Col>
             </Row>
