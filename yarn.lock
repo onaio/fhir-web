@@ -2670,7 +2670,7 @@
   resolved "https://registry.yarnpkg.com/@onaio/element-map/-/element-map-0.0.5.tgz#6c8b55314d41fb76c1ea7538d4ee217a121936cb"
   integrity sha512-PxhKq2uR9j8fZkvIqiUMp8CvZTX358d3sWuLj5a7LRpTK/Y+ZS1L9XZp2Xb9pplHCSferZxzwjm/YfKqVr56lA==
 
-"@onaio/gatekeeper@^0.1.1":
+"@onaio/gatekeeper@^0.1.0", "@onaio/gatekeeper@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.1.1.tgz#b843ec6766f88ef295addbfa3f81f6b0d9a8b2a6"
   integrity sha512-5H06OjEzSPiCBTrU5Ib2pYXSYOR9Ub7lsRtss93J9nFS2XSXtxcuprfH6OCy2tY8X5LxaLAdNNjEXc0Tx59dZg==
@@ -2732,6 +2732,20 @@
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.2.tgz#c2821b5934b4f0f944ca3ad65a38274ec448cb13"
   integrity sha512-hQIQCqVMv0c26tY42YlSFbdyIdhcG710Wn5gTRwTvF6wiiWHpDnD+vuwhF+2LGSJu3c0rRRW0VFoJ9jPNBKUZg==
 
+"@opensrp/product-catalogue@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/product-catalogue/-/product-catalogue-0.0.2.tgz#9bec221c711bff3226e4bbebb79b39f3fddc90bc"
+  integrity sha512-FtGs31pRLXKEyV7QlmEz3QzP+3iLutqVMF8eEuDMlX9uPM/Ste6KyzwV6fPriKqb3jFr/0Zby8ZgKUqJiW/B5Q==
+  dependencies:
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@opensrp/notifications" "^0.0.1"
+    "@opensrp/react-utils" "^0.0.1"
+    "@opensrp/reducer-factory" "^0.0.7"
+    "@opensrp/server-service" "^0.0.11"
+    "@opensrp/store" "^0.0.6"
+    formik-antd "2.0.1"
+    yup "^0.29.3"
+
 "@opensrp/react-utils@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.1.tgz#25d0dfab92245c730141529fa389ea2833215ed2"
@@ -2745,6 +2759,16 @@
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.1.tgz#4a544e6ec29d97a7d8ba2d07f3a63a21ec49e723"
   integrity sha512-aCOpVbl+giAvydaAnuy2zGca2fqrwuJqsfk3S9+nLI4DNT0IZWbwk1uFY2UgKvDNkSM2M1G+hSqUShBIkm80SA==
   dependencies:
+    lodash "^4.17.15"
+    redux "^4.0.5"
+    seamless-immutable "^7.1.4"
+
+"@opensrp/reducer-factory@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.7.tgz#f4509f6bff3e9481730110d3fea96bf14cf53749"
+  integrity sha512-s4RsHA0r1SrJK4o4WCHCUrWRWA3oe/YnLPFT/p+mThdougFc3P+e42rPQSuLMNJdH7cze8ZlutT3t7R5pvBiIg==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
     lodash "^4.17.15"
     redux "^4.0.5"
     seamless-immutable "^7.1.4"
@@ -2766,10 +2790,32 @@
   dependencies:
     "@opensrp/server-service" "^0.0.4"
 
+"@opensrp/server-service@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
+  integrity sha512-WymZntvFba3/0FKM6f2L+YT7BF+t/HFlr6A16UIBFz83+nYTIoI93MS/ocO/7MDTL9F7yzTBpjA0D1CkogFnfg==
+
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
+
+"@opensrp/store@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.6.tgz#074d18e98414190a2cd79aa53399dcf7e80b4a1e"
+  integrity sha512-qwfl99FxfRX9Iol0nG4YgCiiD9hdhNu7rqANb+vahAY9hGgFK1L3NnG92Zw8WbEd7JHT50b/1bGYLOAZYjipiA==
+  dependencies:
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.0"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/session-reducer" "^0.0.11"
+    "@onaio/utils" "^0.0.1"
+    connected-react-router "^6.8.0"
+    fast_array_intersect "^1.1.0"
+    lodash "^4.17.20"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
+    seamless-immutable "^7.1.4"
 
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
