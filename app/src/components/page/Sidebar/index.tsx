@@ -16,6 +16,7 @@ import {
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_USER_GROUPS,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -39,8 +40,8 @@ import {
   DOWNLOAD_CLIENT_DATA,
   USER_MANAGEMENT,
   TEAMS,
-  LOCATIONS_UNIT,
-  LOCATIONS_UNIT_GROUP,
+  LOCATION_UNIT,
+  LOCATION_UNIT_GROUP,
   PRODUCT_CATALOGUE,
   FORM_CONFIGURATION,
   MANIFEST_RELEASES,
@@ -57,6 +58,7 @@ import {
   SERVICE_POINT_INVENTORY,
   INVENTORY,
   ADD_INVENTORY_VIA_CSV,
+  USER_GROUPS,
 } from '../../../lang';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
@@ -168,6 +170,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                   {USER_MANAGEMENT}
                 </Link>
               </Menu.Item>
+              <Menu.Item key={'groups'}>
+                <Link to={URL_USER_GROUPS} className="admin-link">
+                  {USER_GROUPS}
+                </Link>
+              </Menu.Item>
             </Menu.SubMenu>
           )}
           {ENABLE_TEAMS && (
@@ -188,12 +195,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.SubMenu key="location" title={LOCATIONS}>
               <Menu.Item key="unit">
                 <Link to={URL_LOCATION_UNIT} className="admin-link">
-                  {LOCATIONS_UNIT}
+                  {LOCATION_UNIT}
                 </Link>
               </Menu.Item>
               <Menu.Item key="group">
                 <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
-                  {LOCATIONS_UNIT_GROUP}
+                  {LOCATION_UNIT_GROUP}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
