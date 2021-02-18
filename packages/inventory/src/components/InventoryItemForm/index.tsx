@@ -28,7 +28,7 @@ import {
 import { ProductCatalogue } from '@opensrp/product-catalogue';
 import { isDateFuture, isDatePastOrToday, submitForm } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { InventoryPost } from 'inventory/src/ducks/inventory';
+import { InventoryPost } from '../../ducks/inventory';
 
 /** interface for setting **/
 export interface Setting {
@@ -55,7 +55,7 @@ export interface InventoryItemFormFields {
   unicefSection: string | undefined;
   donor: string | undefined;
   poNumber: number | string;
-  serialNumber?: string;
+  serialNumber?: string | number;
 }
 
 /** component props */
@@ -126,16 +126,25 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
   } = props;
 
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const [selectedProduct, setSelectedProduct] = React.useState<ProductCatalogue | null>(null);
+  const [selectedProduct, setSelectedProduct] = React.useState<ProductCatalogue | undefined>(
+    undefined
+  );
   const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<moment.Moment | null>(
     null
   );
-  const [ifDoneHere, setIfDoneHere] = React.useState(false);
+  const [ifDoneHere, setIfDoneHere] = React.useState<boolean>(false);
+  const [isProductChanged, setProductChanged] = React.useState<boolean>(false);
+  const [isDeliveryDateChanged, setDeliveryDateChanged] = React.useState<boolean>(false);
   const history = useHistory();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (selectedProduct && selectedDeliveryDate) {
+    if (
+      selectedProduct &&
+      selectedDeliveryDate &&
+      // Make sure we do not update accountabilityEndDate during form initialization
+      (isProductChanged || isDeliveryDateChanged)
+    ) {
       /**
        * Auto-calculate accountability end date by adding the product
        * accountability period (in months) to the entered delivery date
@@ -148,6 +157,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
         accountabilityEndDate: accEndDate,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProduct, selectedDeliveryDate, form]);
 
   /** Update form initial values when initialValues prop changes, without this
@@ -157,17 +167,24 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
     form.setFieldsValue({
       ...initialValues,
     });
+    const { productName, deliveryDate } = initialValues;
+    // When props.initialValues change, update selected product
+    const selected = products.find((product) => product.productName === productName);
+    setSelectedProduct(selected);
+
+    // when props.initialValues change, updated selected date
+    setSelectedDeliveryDate(deliveryDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, initialValues]);
 
   const handleProductChange = (value: string) => {
+    if (!isProductChanged) setProductChanged(true);
     const selected = products.find((product) => product.productName === value);
-
-    if (selected) {
-      setSelectedProduct(selected);
-    }
+    setSelectedProduct(selected);
   };
 
   const handleDeliveryDateChange = (date: moment.Moment | null, _: string) => {
+    if (!isDeliveryDateChanged) setDeliveryDateChanged(true);
     setSelectedDeliveryDate(date);
   };
 
