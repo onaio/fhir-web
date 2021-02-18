@@ -36,7 +36,6 @@ import {
   makeKeycloakUserGroupsSelector,
 } from '../../ducks/userGroups';
 import { ViewDetails } from '../UserGroupDetailView';
-import { loadGroupDetails, loadGroupMembers } from './utils';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -93,8 +92,6 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     userGroupsSelector(state, { searchText: searchQuery })
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [userGroupMembers, setUserGroupMembers] = useState<UserGroupMembers[] | null>(null);
-  const [singleUserGroup, setSingleUserGroup] = useState<KeycloakUserGroup | null>(null);
   const history = useHistory();
   const { keycloakBaseURL } = props;
   const groupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID] ?? '';
@@ -111,17 +108,6 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         .finally(() => setIsLoading(false));
     }
   });
-
-  useEffect(() => {
-    if (groupId) {
-      const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers);
-      const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup);
-      Promise.all([membersPromise, userGroupPromise])
-        .catch((e) => sendErrorNotification(`${e}`))
-        .finally(() => setIsLoading(false));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupId]);
 
   if (isLoading) return <Spin size="large" />;
 
@@ -212,11 +198,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
             }}
           />
         </Col>
-        <ViewDetails
-          userGroupMembers={userGroupMembers}
-          singleUserGroupDetails={singleUserGroup}
-          groupId={groupId}
-        />
+        <ViewDetails keycloakBaseURL={keycloakBaseURL} groupId={groupId} />
       </Row>
     </div>
   );
