@@ -9,7 +9,7 @@ import {
   SETTING_STATUS_TO_DRAFT,
   SETTING_STATUS_TO_RETIRED,
   YES,
-} from 'plan-form/src/lang';
+} from '../../lang';
 
 interface PlanStatusRendererProps {
   disabledFields: string[];
@@ -35,7 +35,7 @@ const popUpConfirmationMessageLookup = {
 export const PlanStatusRenderer = (props: PlanStatusRendererProps) => {
   const { disabledFields, disAllowedStatusChoices, setFieldsValue, ...rest } = props;
   return (
-    <Radio.Group {...rest} disabled={disabledFields.includes(status)}>
+    <Radio.Group className="plan-form-status" {...rest} disabled={disabledFields.includes(status)}>
       {Object.entries(PlanStatus)
         .filter((e) => !disAllowedStatusChoices.includes(e[1]))
         .map((e) => {
