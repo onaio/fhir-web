@@ -25,6 +25,6 @@ it('test for getCords', async () => {
     type: 'Point',
     coordinates: [49.52125, -16.78147],
   });
-  expect(res).toEqual('-16.78147, 49.52125');
-  expect(getCords()).toEqual('');
+  expect(res).toEqual({ lat: -16.78147, lng: 49.52125 });
+  expect(getCords()).toEqual({});
 });

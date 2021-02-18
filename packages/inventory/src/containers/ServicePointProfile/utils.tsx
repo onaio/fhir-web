@@ -34,7 +34,7 @@ export const getNodePath = (
 };
 
 /**
- * validate coordinates, returns coma separated coordinates
+ * validate coordinates, returns coordinates
  *
  * @param geoJson - the geojson object
  */
@@ -44,9 +44,11 @@ export const getCords = (geoJson?: Partial<Geometry>) => {
     Array.isArray(geoJson.coordinates) &&
     geoJson.coordinates.length === 2
   ) {
-    const coordinatesOfInterest = [...geoJson.coordinates].reverse();
-    return coordinatesOfInterest.join(', ');
+    return {
+      lat: geoJson.coordinates[1],
+      lng: geoJson.coordinates[0],
+    };
   } else {
-    return '';
+    return {};
   }
 };
