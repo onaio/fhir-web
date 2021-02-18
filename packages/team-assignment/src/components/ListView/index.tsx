@@ -6,21 +6,19 @@ import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import {
-  reducer as teamsReducer,
   fetchOrganizationsAction,
   Organization,
   getOrganizationsArray,
-  reducerName as teamsReducerName,
+  orgReducerName,
+  organizationsReducer,
 } from '@opensrp/team-management';
 import {
   Tree,
-  fetchAllHierarchies,
   generateJurisdictionTree,
-  getAllHierarchiesArray,
   ParsedHierarchyNode,
   RawOpenSRPHierarchy,
-  reducerName as hierarchyReducerName,
-  reducer as hierarchyReducer,
+  locationHierachyDucks,
+  TreeNode,
 } from '@opensrp/location-management';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,8 +42,10 @@ import {
   TEAM_ASSIGNMENT_PAGE_TITLE,
 } from '../../constants';
 
-reducerRegistry.register(teamsReducerName, teamsReducer);
-reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
+const { fetchAllHierarchies, getAllHierarchiesArray } = locationHierachyDucks;
+
+reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 reducerRegistry.register(assignmentReducerName, reducer);
 
 /** component that renders Team assignment page */
@@ -68,7 +68,9 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
   const [form] = Form.useForm();
   const isMounted = useRef<boolean>(true);
-  const Treedata = useSelector((state) => getAllHierarchiesArray(state));
+  const Treedata = (useSelector((state) =>
+    getAllHierarchiesArray(state)
+  ) as unknown) as ParsedHierarchyNode[];
   const assignmentsList: Assignment[] = useSelector((state) => getAssignments(state));
   const allOrganizations: Organization[] = useSelector((state) => getOrganizationsArray(state));
   const dispatch = useDispatch();
@@ -84,16 +86,14 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     const plansService = new OpenSRPService(PLANS_ENDPOINT, opensrpBaseURL);
     const plansPromise = plansService
       .read(defaultPlanId)
-      .then((response: PlanDefinition[]) => {
-        const getJurisdictionCode = response[0].jurisdiction[0].code;
+      .then(async (planDefinition: PlanDefinition[]) => {
+        const getJurisdictionCode = planDefinition[0].jurisdiction[0].code;
         const hierarchyService = new OpenSRPService(LOCATION_HIERARCHY_ENDPOINT, opensrpBaseURL);
-        hierarchyService
+        const response: RawOpenSRPHierarchy = await hierarchyService
           .read(getJurisdictionCode)
-          .then((response: RawOpenSRPHierarchy) => {
-            const hierarchy = generateJurisdictionTree(response).model;
-            dispatch(fetchAllHierarchies([hierarchy]));
-          })
           .catch(() => sendErrorNotification(ERROR_OCCURED));
+        const hierarchy = ([generateJurisdictionTree(response).model] as unknown) as TreeNode;
+        dispatch(fetchAllHierarchies(hierarchy));
       })
       .catch(() => sendErrorNotification(ERROR_OCCURED));
 
@@ -122,11 +122,14 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
   React.useLayoutEffect(() => {
     return () => {
-      if (isMounted.current) dispatch(fetchAllHierarchies([]));
+      if (isMounted.current) dispatch(fetchAllHierarchies(([] as unknown) as TreeNode));
       isMounted.current = false;
     };
   });
 
+  /**
+   *
+   */
   function handleCancel() {
     setVisible(false);
   }
@@ -241,11 +244,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       </Modal>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree
-            data={Treedata}
-            appendParentAsChild={false}
-            OnItemClick={(node) => setCurrentNode(node)}
-          />
+          <Tree data={Treedata} OnItemClick={(node) => setCurrentNode(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
           <Table dataSource={tableData} columns={columns}></Table>
