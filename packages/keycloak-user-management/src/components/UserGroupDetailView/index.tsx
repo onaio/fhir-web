@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, Space, Typography } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
+import { Resource404 } from '@opensrp/react-utils';
 import { Button } from 'antd';
 import { URL_USER_GROUPS } from '../../constants';
 import { UserGroupMembers } from '../UserGroupsList';
@@ -39,30 +40,34 @@ const ViewDetails = (props: ViewDetailsProps) => {
           onClick={() => history.push(URL_USER_GROUPS)}
         />
       </div>
-      <Space direction="vertical">
-        <Text strong={true} className="display-block">
-          Name
-        </Text>
-        <Text type="secondary" className="display-block">
-          {singleUserGroupDetails?.name}
-        </Text>
-        <Text strong={true} className="display-block">
-          Roles
-        </Text>
-        {singleUserGroupDetails?.realmRoles?.map((role: string) => (
-          <Text key={role} type="secondary" className="display-block">
-            {role}
+      {groupId && (!singleUserGroupDetails || !userGroupMembers) ? (
+        <Resource404 />
+      ) : (
+        <Space direction="vertical">
+          <Text strong={true} className="display-block">
+            Name
           </Text>
-        ))}
-        <Text strong={true} className="display-block">
-          Members
-        </Text>
-        {userGroupMembers?.map((object: UserGroupMembers) => (
-          <Text key={object.id} type="secondary" className="display-block">
-            {object.username}
+          <Text type="secondary" className="display-block">
+            {singleUserGroupDetails?.name}
           </Text>
-        ))}
-      </Space>
+          <Text strong={true} className="display-block">
+            Roles
+          </Text>
+          {singleUserGroupDetails?.realmRoles?.map((role: string) => (
+            <Text key={role} type="secondary" className="display-block">
+              {role}
+            </Text>
+          ))}
+          <Text strong={true} className="display-block">
+            Members
+          </Text>
+          {userGroupMembers?.map((object: UserGroupMembers) => (
+            <Text key={object.id} type="secondary" className="display-block">
+              {object.username}
+            </Text>
+          ))}
+        </Space>
+      )}
     </Col>
   );
 };
