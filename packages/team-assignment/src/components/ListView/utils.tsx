@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { TableColumnsNamespace } from '../../constants';
-import { AssignLocationsAndPlans } from 'team-assignment/src/ducks/assignments/types';
+import { AssignLocationsAndPlans } from '../../ducks/assignments/types';
 
 /** component rendered in the action column of the table */
 
@@ -32,6 +32,7 @@ export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (reco
 };
 
 /** product Catalogue table columns */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const columns: ColumnsType<any> = [
   {
     title: 'Name',
@@ -39,13 +40,9 @@ export const columns: ColumnsType<any> = [
     key: `${TableColumnsNamespace}-locationName`,
     defaultSortOrder: 'descend',
     sorter: (rec1, rec2) => {
-      if (rec1.label > rec2.label) {
-        return -1;
-      } else if (rec1.label < rec2.label) {
-        return 1;
-      } else {
-        return 0;
-      }
+      if (rec1.label > rec2.label) return -1;
+      else if (rec1.label < rec2.label) return 1;
+      else return 0;
     },
   },
   {
@@ -63,9 +60,7 @@ export const columns: ColumnsType<any> = [
 
 /** util component shown when there is a pending promise */
 
-export const TeamAssignmentLoading = () => {
-  return <Spin size="large" />;
-};
+export const TeamAssignmentLoading = () => <Spin size="large" />;
 
 /**
  * Get assignments payload
@@ -78,7 +73,7 @@ export const TeamAssignmentLoading = () => {
  * @param {string} selectedJurisdictionId - the selected OpenSRP jurisdiction
  * @param {string[]} initialOrgs - an array of initial (existing) organization ids
  * @param {Assignment[]} existingAssignments - an array of Assignment objects that exist for this plan/jurisdiction
- * @returns {Assignment[]} - returns payload array to be POSTed
+ * @returns {AssignLocationsAndPlans[]} - returns payload array to be POSTed
  */
 export const getPayload = (
   selectedOrgs: string[],
@@ -97,10 +92,8 @@ export const getPayload = (
     if (!payload.map((obj) => obj.organization).includes(orgId)) {
       if (initialOrgs.includes(orgId)) {
         // we should not change the fromDate, ever (the API will reject it)
-        const thisAssignment = get(assignmentsByOrgId, orgId);
-        if (thisAssignment) {
-          startDate = thisAssignment.fromDate;
-        }
+        const thisAssignment = get(assignmentsByOrgId, orgId) as Assignment | undefined;
+        if (thisAssignment) startDate = thisAssignment.fromDate;
       }
       payload.push({
         fromDate: startDate,
@@ -118,10 +111,8 @@ export const getPayload = (
   for (const retiredOrgId of initialOrgs.filter((orgId) => !selectedOrgs.includes(orgId))) {
     if (!payload.map((obj) => obj.organization).includes(retiredOrgId)) {
       // we should not change the fromDate, ever (the API will reject it)
-      const thisAssignment = get(assignmentsByOrgId, retiredOrgId);
-      if (thisAssignment) {
-        startDate = thisAssignment.fromDate;
-      }
+      const thisAssignment = get(assignmentsByOrgId, retiredOrgId) as Assignment | undefined;
+      if (thisAssignment) startDate = thisAssignment.fromDate;
       payload.push({
         fromDate: startDate,
         jurisdiction: selectedJurisdictionId,
