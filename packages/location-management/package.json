@@ -42,7 +42,7 @@
     "@opensrp/react-utils": "^0.0.3",
     "@opensrp/reducer-factory": "^0.0.12",
     "@opensrp/server-service": "^0.0.14",
-    "@opensrp/pkg-config": "^0.0.1",
+    "@opensrp/pkg-config": "^0.0.2",
     "cycle": "^1.0.3",
     "fast_array_intersect": "^1.1.0",
     "i18next": "^19.8.4",
