@@ -4,9 +4,10 @@ import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { Resource404 } from '@opensrp/react-utils';
 import { Button } from 'antd';
-import { URL_USER_GROUPS } from '../../constants';
+import { URL_USER_EDIT, URL_USER_GROUPS } from '../../constants';
 import { UserGroupMembers } from '../UserGroupsList';
 import { KeycloakUserGroup } from 'keycloak-user-management/src/ducks/userGroups';
+import { Link } from 'react-router-dom';
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -62,9 +63,9 @@ const ViewDetails = (props: ViewDetailsProps) => {
             Members
           </Text>
           {userGroupMembers?.map((object: UserGroupMembers) => (
-            <Text key={object.id} type="secondary" className="display-block">
+            <Link key={object.id} to={`${URL_USER_EDIT}/${object.id}`}>
               {object.username}
-            </Text>
+            </Link>
           ))}
         </Space>
       )}

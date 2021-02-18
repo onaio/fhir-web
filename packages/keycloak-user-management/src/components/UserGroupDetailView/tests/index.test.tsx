@@ -17,8 +17,13 @@ describe('View User Group Details', () => {
       userGroupMembers: fixtures.members,
       singleUserGroupDetails: fixtures.userGroup1,
     };
-    const wrapper = mount(<ViewDetails {...props} />);
+    const wrapper = mount(
+      <Router history={history}>
+        <ViewDetails {...props} />
+      </Router>
+    );
     expect(wrapper.text()).toMatchSnapshot('nominal display');
+    wrapper.unmount();
   });
 
   it('detail view without groupId', () => {
@@ -27,8 +32,13 @@ describe('View User Group Details', () => {
       userGroupMembers: fixtures.members,
       singleUserGroupDetails: fixtures.userGroup1,
     };
-    const wrapper = mount(<ViewDetails {...props} />);
-    expect(toJson(wrapper)).toMatchSnapshot('Should be null');
+    const wrapper = mount(
+      <Router history={history}>
+        <ViewDetails {...props} />
+      </Router>
+    );
+    expect(toJson(wrapper.find('.view-details-content'))).toMatchSnapshot('Should be null');
+    wrapper.unmount();
   });
 
   it('works when GroupId is present but user group members/details isnt', () => {
@@ -45,6 +55,7 @@ describe('View User Group Details', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
     );
+    wrapper.unmount();
   });
 
   it('Closes on clicking cancel (X) ', () => {
@@ -65,5 +76,6 @@ describe('View User Group Details', () => {
     });
 
     expect(wrapper.props().history.location.pathname).toEqual(URL_USER_GROUPS);
+    wrapper.unmount();
   });
 });
