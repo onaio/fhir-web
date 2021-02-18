@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/form-config",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "OpenSrp form configuration components",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -52,7 +52,7 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.3",
-    "@opensrp/pkg-config": "^0.0.2",
+    "@opensrp/pkg-config": "^0.0.3",
     "@opensrp/reducer-factory": "^0.0.1",
     "@opensrp/server-service": "^0.0.14",
     "antd": "^4.6.3",
