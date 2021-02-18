@@ -16,26 +16,26 @@ import reducer, {
   fetchAssignments,
   reducerName as assignmentReducerName,
 } from '../../../ducks/assignments';
-import {
-  reducerName as hierarchyReducerName,
-  reducer as hierarchyReducer,
-  generateJurisdictionTree,
-  fetchAllHierarchies,
-} from '@opensrp/location-management';
-import {
-  fetchOrganizationsAction,
-  reducer as teamsReducer,
-  reducerName as teamsReducerName,
-} from '@opensrp/team-management';
 import { OPENSRP_API_BASE_URL } from '../../../constants';
 import { assignments, sampleHierarchy, samplePlan } from './fixtures';
 import { organizations } from '@opensrp/team-management/src/ducks/tests/fixtures';
+import {
+  fetchOrganizationsAction,
+  orgReducerName,
+  organizationsReducer,
+} from '@opensrp/team-management';
+import {
+  generateJurisdictionTree,
+  locationHierachyDucks,
+  TreeNode,
+} from '@opensrp/location-management';
 
 // register reducers
-reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
-reducerRegistry.register(teamsReducerName, teamsReducer);
-reducerRegistry.register(assignmentReducerName, reducer);
+const { fetchAllHierarchies } = locationHierachyDucks;
 
+reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
+reducerRegistry.register(assignmentReducerName, reducer);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 jest.mock('@opensrp/notifications', () => ({
@@ -65,7 +65,7 @@ describe('List view Page', () => {
   });
 
   afterEach(() => {
-    store.dispatch(fetchAllHierarchies([]));
+    store.dispatch(fetchAllHierarchies(([] as unknown) as TreeNode));
   });
 
   it('works as expected', async () => {
@@ -77,8 +77,8 @@ describe('List view Page', () => {
       [JSON.stringify(organizations), { status: 200 }]
     );
 
-    const hierarchy = generateJurisdictionTree(sampleHierarchy);
-    store.dispatch(fetchAllHierarchies([hierarchy.model]));
+    const hierarchy = ([generateJurisdictionTree(sampleHierarchy).model] as unknown) as TreeNode;
+    store.dispatch(fetchAllHierarchies(hierarchy));
 
     const props = {
       history,
@@ -129,7 +129,7 @@ describe('List view Page', () => {
     store.dispatch(fetchAssignments(assignments));
     store.dispatch(fetchOrganizationsAction(organizations));
     const hierarchy = generateJurisdictionTree(sampleHierarchy);
-    store.dispatch(fetchAllHierarchies([hierarchy.model]));
+    store.dispatch(fetchAllHierarchies(([hierarchy.model] as unknown) as TreeNode));
 
     const props = {
       history,
