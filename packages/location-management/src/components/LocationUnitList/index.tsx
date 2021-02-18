@@ -27,7 +27,7 @@ import {
   ERROR_OCCURED,
 } from '../../lang';
 import Table, { TableData } from './Table';
-import './LocationUnitView.css';
+import './LocationUnitList.css';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -129,7 +129,7 @@ export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: str
   return hierarchy;
 }
 
-export const LocationUnitView: React.FC<Props> = (props: Props) => {
+export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
@@ -229,4 +229,4 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default LocationUnitView;
+export default LocationUnitList;

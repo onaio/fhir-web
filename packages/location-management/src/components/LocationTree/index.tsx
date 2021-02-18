@@ -9,7 +9,7 @@ import {
   setLocationTreeState,
   reducer,
 } from '../../ducks/location-hierarchy';
-import { AntTreeProps } from '../LocationUnitView';
+import { AntTreeProps } from '../LocationUnitList';
 import './tree.css';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { SEARCH } from '../../lang';
