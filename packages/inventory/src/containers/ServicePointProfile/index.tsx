@@ -82,13 +82,14 @@ export const findPath = (path: GeographicLocationInterface[], geoLevel: number) 
 };
 
 interface DefaultLatLongInterface {
-  label: string;
-  value?: { lat?: number; lng?: number };
+  lat?: number;
+  lng?: number;
 }
 
 interface DefaultGeographyItemProp {
   label: string;
   value?: string | number | string[] | number[];
+  coordinates?: DefaultLatLongInterface;
 }
 
 /** component that renders Geography Items
@@ -96,25 +97,15 @@ interface DefaultGeographyItemProp {
  * @param props - the component props
  */
 export const GeographyItem = (props: DefaultGeographyItemProp) => {
-  const { label, value } = props;
+  const { label, value, coordinates } = props;
   return (
     <Col md={24} className="geography-item">
       <p className="label">{label}:</p>
-      <p className="value"> {value}</p>
-    </Col>
-  );
-};
-
-/** component that renders Geography Items Lat long
- *
- * @param props - the component props
- */
-export const GeographyItemLatLong = (props: DefaultLatLongInterface) => {
-  const { label, value } = props;
-  return (
-    <Col md={24} className="geography-item">
-      <p className="label">{label}:</p>
-      <p className="value"> {`${value?.lat}, ${value?.lng}`}</p>
+      {coordinates ? (
+        <p className="value"> {`${coordinates?.lat}, ${coordinates?.lng}`}</p>
+      ) : (
+        <p className="value"> {value}</p>
+      )}
     </Col>
   );
 };
@@ -244,7 +235,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
               </Col>
               <Col md={12}>
                 <GeographyItem label={TYPE_LABEL} value={structure.properties.type} />
-                <GeographyItemLatLong label={LAT_LONG_LABEL} value={getCords(structure.geometry)} />
+                <GeographyItem label={LAT_LONG_LABEL} coordinates={getCords(structure.geometry)} />
                 <GeographyItem label={SERVICE_POINT_ID_LABEL} value={spId} />
               </Col>
             </Row>
