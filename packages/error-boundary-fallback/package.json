@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/error-boundary-fallback",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
@@ -26,8 +26,8 @@
     ]
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "antd": "^4.6.3"
+    "antd": "^4.6.3",
+    "react": "^16.13.1"
   },
   "devDependencies": {
     "@types/antd": "^1.0.0"

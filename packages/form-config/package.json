@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/form-config",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "OpenSrp form configuration components",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -42,7 +42,6 @@
     "redux": "^4.0.4"
   },
   "dependencies": {
-    "antd": "^4.6.3",
     "@ant-design/icons": "^4.3.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.20",
     "@fortawesome/free-brands-svg-icons": "^5.10.0",
@@ -50,18 +49,19 @@
     "@fortawesome/free-solid-svg-icons": "^5.10.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@onaio/drill-down-table": "^1.0.2",
-    "@onaio/utils": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
+    "@onaio/utils": "^0.0.1",
+    "@opensrp/notifications": "^0.0.3",
+    "@opensrp/pkg-config": "^0.0.2",
     "@opensrp/reducer-factory": "^0.0.1",
-    "@opensrp/server-service": "^0.0.13",
-    "@opensrp/notifications": "^0.0.2",
-    "@opensrp/pkg-config": "^0.0.1",
+    "@opensrp/server-service": "^0.0.14",
+    "antd": "^4.6.3",
     "formik": "^2.1.4",
+    "i18next": "^19.8.4",
     "lodash": "^4.17.15",
     "react-toastify": "^6.0.5",
     "reactstrap": "^8.0.1",
-    "yup": "^0.29.1",
-    "i18next": "^19.8.4"
+    "yup": "^0.29.1"
   },
   "devDependencies": {
     "@types/react-table": "^7.0.25",

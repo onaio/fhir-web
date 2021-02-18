@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.14 (2021-02-18)
+
+**Note:** Version bump only for package @opensrp/server-service
+
 ## 0.0.12 (2020-11-12)
 
 **Note:** Version bump only for package @opensrp/server-service

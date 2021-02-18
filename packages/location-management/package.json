@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -38,17 +38,17 @@
   "dependencies": {
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.2",
-    "@opensrp/react-utils": "^0.0.2",
-    "@opensrp/reducer-factory": "^0.0.11",
-    "@opensrp/server-service": "^0.0.13",
+    "@opensrp/notifications": "^0.0.3",
+    "@opensrp/react-utils": "^0.0.3",
+    "@opensrp/reducer-factory": "^0.0.12",
+    "@opensrp/server-service": "^0.0.14",
     "cycle": "^1.0.3",
-    "tree-model": "^1.0.7",
-    "i18next": "^19.8.4"
+    "i18next": "^19.8.4",
+    "tree-model": "^1.0.7"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@opensrp/store": "^0.0.7",
+    "@opensrp/store": "^0.0.8",
     "@types/geojson": "^7946.0.7",
     "@types/uuid": "8.3.0",
     "i18next-parser": "^3.5.0"

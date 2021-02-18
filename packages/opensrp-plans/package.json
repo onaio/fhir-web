@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/plans",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Opensrp plans",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -48,11 +48,10 @@
   "private": false,
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@opensrp/plan-form": "^0.0.2-1",
-    "@opensrp/plan-form-core": "^0.0.1",
-    "@opensrp/react-utils": "^0.0.2",
-    "@opensrp/server-service": "^0.0.13",
-    "@opensrp/team-management": "^0.0.1"
-  },
-  "devDependencies": {}
+    "@opensrp/plan-form": "^0.0.2-2",
+    "@opensrp/plan-form-core": "^0.0.2",
+    "@opensrp/react-utils": "^0.0.3",
+    "@opensrp/server-service": "^0.0.14",
+    "@opensrp/team-management": "^0.0.2"
+  }
 }
