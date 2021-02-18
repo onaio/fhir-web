@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
+import { Redirect, RouteComponentProps, useHistory } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -24,7 +24,9 @@ import {
 } from '../../lang';
 import {
   KEYCLOAK_URL_USER_GROUPS,
+  ROUTE_PARAM_USER_GROUP_ID,
   SEARCH_QUERY_PARAM,
+  URL_USER_GROUPS,
   URL_USER_GROUP_CREATE,
   URL_USER_GROUP_EDIT,
 } from '../../constants';
@@ -33,6 +35,7 @@ import {
   KeycloakUserGroup,
   makeKeycloakUserGroupsSelector,
 } from '../../ducks/userGroups';
+import { ViewDetails } from '../UserGroupDetailView';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -40,10 +43,15 @@ reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReduce
 // Define selector instance
 const userGroupsSelector = makeKeycloakUserGroupsSelector();
 
-interface UserGroupMembers {
+// route params for user group pages
+interface RouteParams {
+  userGroupId: string | undefined;
+}
+
+export interface UserGroupMembers {
   createdTimestamp: number;
   disableableCredentialTypes?: string[];
-  email: string;
+  email?: string;
   emailVerified: boolean;
   enabled: boolean;
   firstName: string;
@@ -79,15 +87,16 @@ const defaultProps = {
 export const loadGroupMembers = async (
   groupId: string,
   baseURL: string,
-  callback: (members: UserGroupMembers) => void
+  callback: (members: UserGroupMembers[]) => void
 ) => {
   const serve = new KeycloakService(`${KEYCLOAK_URL_USER_GROUPS}/${groupId}/members`, baseURL);
   return await serve
     .list()
-    .then((response: UserGroupMembers) => {
+    .then((response: UserGroupMembers[]) => {
       callback(response);
     })
-    .catch((e: Error) => sendErrorNotification(`${e}`));
+    .catch((e: Error) => sendErrorNotification(`${e}`))
+    .finally(() => <Redirect to={`${URL_USER_GROUPS}/${groupId}`} />);
 };
 
 /** Function to fetch group members from keycloak
@@ -99,7 +108,7 @@ export const loadGroupMembers = async (
 export const loadGroupDetails = async (
   groupId: string,
   baseURL: string,
-  callback: (userGroup: KeycloakUserGroup) => void
+  callback: (userGroups: KeycloakUserGroup) => void
 ) => {
   const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, baseURL);
   return await serve
@@ -110,21 +119,25 @@ export const loadGroupDetails = async (
     .catch((e: Error) => sendErrorNotification(`${e}`));
 };
 
+export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
+
 /** Component which shows the list of all groups and their details
  *
  * @param {Object} props - UserGoupsList component props
  * @returns {Function} returns User Groups list display
  */
-export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
-  props: Props & RouteComponentProps
-) => {
+export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupListTypes) => {
   const dispatch = useDispatch();
   const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
   const getUserGroupsList = useSelector((state) =>
     userGroupsSelector(state, { searchText: searchQuery })
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [userGroupMembers, setUserGroupMembers] = useState<UserGroupMembers[] | null>(null);
+  const [singleUserGroup, setSingleUserGroup] = useState<KeycloakUserGroup | null>(null);
+  const history = useHistory();
   const { keycloakBaseURL } = props;
+  const groupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID] ?? '';
 
   useEffect(() => {
     if (isLoading) {
@@ -138,6 +151,17 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
         .finally(() => setIsLoading(false));
     }
   });
+
+  useEffect(() => {
+    if (groupId) {
+      const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers);
+      const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup);
+      Promise.all([membersPromise, userGroupPromise])
+        .catch((e) => sendErrorNotification(`${e}`))
+        .finally(() => setIsLoading(false));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupId]);
 
   if (isLoading) return <Spin size="large" />;
 
@@ -181,7 +205,9 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
               <Menu className="menu">
                 <Menu.Item
                   className="viewdetails"
-                  onClick={() => loadSingleUserGroup(record.id, keycloakBaseURL)}
+                  onClick={() => {
+                    history.push(`${URL_USER_GROUPS}/${record.id}`);
+                  }}
                 >
                   {VIEW_DETAILS}
                 </Menu.Item>
@@ -199,13 +225,13 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
   ];
 
   return (
-    <div className="content-section">
+    <div className="content-section user-group">
       <Helmet>
         <title>{USER_GROUPS_PAGE_HEADER}</title>
       </Helmet>
       <PageHeader title={USER_GROUPS_PAGE_HEADER} className="page-header" />
       <Row className="list-view">
-        <Col span={24}>
+        <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
             <Link to={URL_USER_GROUP_CREATE}>
@@ -226,6 +252,11 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
             }}
           />
         </Col>
+        <ViewDetails
+          userGroupMembers={userGroupMembers}
+          singleUserGroupDetails={singleUserGroup}
+          groupId={groupId}
+        />
       </Row>
     </div>
   );
