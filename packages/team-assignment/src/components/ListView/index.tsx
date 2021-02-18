@@ -68,9 +68,9 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
   const [form] = Form.useForm();
   const isMounted = useRef<boolean>(true);
-  const Treedata = (useSelector((state) =>
-    getAllHierarchiesArray(state)
-  ) as unknown) as ParsedHierarchyNode[];
+  const Treedata = useSelector(
+    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
+  );
   const assignmentsList: Assignment[] = useSelector((state) => getAssignments(state));
   const allOrganizations: Organization[] = useSelector((state) => getOrganizationsArray(state));
   const dispatch = useDispatch();
@@ -127,12 +127,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     };
   });
 
-  /**
-   *
-   */
-  function handleCancel() {
-    setVisible(false);
-  }
+  const handleCancel = () => setVisible(false);
 
   if (loading || !Treedata.length) return <TeamAssignmentLoading />;
 

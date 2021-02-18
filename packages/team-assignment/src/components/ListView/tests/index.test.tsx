@@ -30,12 +30,13 @@ import {
   TreeNode,
 } from '@opensrp/location-management';
 
-// register reducers
 const { fetchAllHierarchies } = locationHierachyDucks;
 
+// register reducers
 reducerRegistry.register(orgReducerName, organizationsReducer);
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 reducerRegistry.register(assignmentReducerName, reducer);
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 jest.mock('@opensrp/notifications', () => ({

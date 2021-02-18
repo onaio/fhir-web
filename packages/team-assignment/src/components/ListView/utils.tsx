@@ -5,29 +5,27 @@ import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { TableColumnsNamespace } from '../../constants';
-import { AssignLocationsAndPlans } from '../../ducks/assignments/types';
+import { AssignLocationsAndPlans } from 'team-assignment/src/ducks/assignments/types';
 
 /** component rendered in the action column of the table */
 
 export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (record) => {
   return (
-    <>
-      <Button
-        type="link"
-        style={{ padding: '4px 0px' }}
-        onClick={() => {
-          record.setModalVisibility(true);
-          record.setExistingAssignments(record.existingAssignments);
-          record.setAssignedLocAndTeams({
-            locationName: record.locationName,
-            jurisdictionId: record.id,
-            assignedTeams: record.assignedTeamIds,
-          });
-        }}
-      >
-        Edit
-      </Button>
-    </>
+    <Button
+      type="link"
+      style={{ padding: '4px 0px' }}
+      onClick={() => {
+        record.setModalVisibility(true);
+        record.setExistingAssignments(record.existingAssignments);
+        record.setAssignedLocAndTeams({
+          locationName: record.locationName,
+          jurisdictionId: record.id,
+          assignedTeams: record.assignedTeamIds,
+        });
+      }}
+    >
+      Edit
+    </Button>
   );
 };
 
@@ -59,7 +57,6 @@ export const columns: ColumnsType<any> = [
 ];
 
 /** util component shown when there is a pending promise */
-
 export const TeamAssignmentLoading = () => <Spin size="large" />;
 
 /**
@@ -81,7 +78,7 @@ export const getPayload = (
   selectedJurisdictionId: string,
   initialOrgs: string[] = [],
   existingAssignments: Assignment[] = []
-): AssignLocationsAndPlans[] => {
+) => {
   const now = moment(new Date());
   let startDate = now.format();
 
@@ -113,6 +110,7 @@ export const getPayload = (
       // we should not change the fromDate, ever (the API will reject it)
       const thisAssignment = get(assignmentsByOrgId, retiredOrgId) as Assignment | undefined;
       if (thisAssignment) startDate = thisAssignment.fromDate;
+
       payload.push({
         fromDate: startDate,
         jurisdiction: selectedJurisdictionId,
