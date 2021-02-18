@@ -44,7 +44,7 @@ const locationProps = {
   },
   match: {
     isExact: true,
-    params: {},
+    params: { userGroupId: null },
     path: `${URL_USER_GROUPS}`,
     url: `${URL_USER_GROUPS}`,
   },
@@ -55,6 +55,7 @@ reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 describe('components/UserGroupsList', () => {
   beforeEach(() => {
     fetch.resetMocks();
+    jest.clearAllMocks();
     opensrpStore.store.dispatch(removeKeycloakUserGroups());
   });
 
