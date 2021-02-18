@@ -59,7 +59,7 @@ export interface Props {
  *
  * @param {TableData} row data selected from the table
  * @param {string} opensrpBaseURL - base url
- * @param {Function} setDetail funtion to set detail to state
+ * @param {Function} setDetail function to set detail to state
  */
 export async function loadSingleLocation(
   row: TableData,
@@ -159,15 +159,15 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
 
+  // Function used to parse data from ParsedHierarchyNode to Tree Data
   useEffect(() => {
     if (treeData.length) {
-      if (currentClicked && currentClicked.children) {
-        const data = parseTableData([currentClicked, ...currentClicked.children]);
-        setTableData(data);
-      } else if (!currentClicked) {
-        const data = parseTableData(treeData);
-        setTableData(data);
-      }
+      let data: TableData[] = [];
+      // if have selected some in tree and that selected have some child then only show data from selected node in table
+      if (currentClicked && currentClicked.children)
+        data = parseTableData([currentClicked, ...currentClicked.children]);
+      else if (!currentClicked) data = parseTableData(treeData);
+      setTableData(data);
     }
   }, [treeData, currentClicked]);
 
