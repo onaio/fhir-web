@@ -6,6 +6,7 @@ import { createBrowserHistory } from 'history';
 import {
   fetchCalls,
   inventories,
+  inventory1,
   inventory3,
   inventory4,
   inventory5,
@@ -64,6 +65,28 @@ describe('Inventory list Page', () => {
     wrapper.unmount();
   });
 
+  it('renders correctly when no data is present', async () => {
+    fetch.once(JSON.stringify([inventory1]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <InventoryList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo Data"`
+    );
+    wrapper.unmount();
+  });
+
   it('renders when data is present', async () => {
     fetch.once(JSON.stringify(inventories));
 
@@ -84,7 +107,7 @@ describe('Inventory list Page', () => {
     expect(fetch.mock.calls[0]).toEqual(fetchCalls[3]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo Data"`
+      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name Test1101123434Feb 02, 2020May 02, 2021HealthADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditScale1101123434Jan 02, 2020May 02, 2021HealthADBEdit"`
     );
     wrapper.unmount();
   });

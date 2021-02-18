@@ -217,7 +217,14 @@ export const inventory6 = {
   transaction_type: 'Inventory',
 };
 
-export const inventories = [inventory1, inventory2] as Inventory[];
+export const inventories = [
+  inventory1,
+  inventory2,
+  inventory3,
+  inventory4,
+  inventory5,
+  inventory6,
+] as Inventory[];
 
 export const structure1 = {
   type: 'Feature',
