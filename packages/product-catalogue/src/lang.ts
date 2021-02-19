@@ -40,3 +40,6 @@ export const AVAILABILITY_LABEL = i18n.t('Is it there?');
 export const ATTRACTIVE_ITEM_LABEL = i18n.t('Attractive item?');
 export const MATERIAL_NUMBER_PLACEHOLDER = "Enter the product's material number";
 export const SUBMIT = i18n.t('Submit');
+
+// Errors
+export const ERROR_IMAGE_LOAD = 'Image could not be loaded';

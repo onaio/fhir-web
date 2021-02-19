@@ -20,6 +20,7 @@ import {
   CONDITION_PLACEHOLDER,
   DESCRIBE_THE_PRODUCTS_USE,
   ENTER_PRODUCTS_NAME,
+  ERROR_IMAGE_LOAD,
   MATERIAL_NUMBER,
   MATERIAL_NUMBER_PLACEHOLDER,
   NO,
@@ -32,6 +33,8 @@ import {
   USED_APPROPRIATELY,
   YES,
 } from '../../lang';
+import { HTTPError } from '@opensrp/server-service';
+import { fetchProtectedImage } from '@opensrp/react-utils';
 
 /** type describing the fields in the product catalogue form */
 export interface ProductFormFields {
@@ -129,8 +132,7 @@ const tailLayout = {
 const ProductForm = (props: ProductFormProps) => {
   const { initialValues, redirectAfterAction, baseURL } = props;
   const isEditMode = !!initialValues.uniqueId;
-  const defaultImageUrl = isEditMode ? props.initialValues.photoURL : '';
-  const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>(defaultImageUrl as string);
+  const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>('');
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const history = useHistory();
 
@@ -183,6 +185,18 @@ const ProductForm = (props: ProductFormProps) => {
     readURL(file);
     setFieldValue('photoURL', file.originFileObj);
   };
+
+  React.useEffect(() => {
+    if (isEditMode) {
+      fetchProtectedImage((initialValues.photoURL as string).replace('http', 'https'))
+        .then((url: string | null) => {
+          if (url) {
+            setImageUrl(url);
+          }
+        })
+        .catch((_: HTTPError) => sendErrorNotification(ERROR_IMAGE_LOAD));
+    }
+  }, [isEditMode, baseURL, initialValues.photoURL]);
 
   /** if plan is updated or saved redirect to plans page */
   if (areWeDoneHere) {
