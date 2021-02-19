@@ -17,6 +17,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { InventoryList } from '..';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -108,6 +109,10 @@ describe('Inventory list Page', () => {
 
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name Test1101123434Feb 02, 2020May 02, 2021HealthADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditScale1101123434Jan 02, 2020May 02, 2021HealthADBEdit"`
+    );
+
+    expect(toJson(wrapper.find('.inventory-profile a'))).toMatchSnapshot(
+      'link to add new inventory item'
     );
     wrapper.unmount();
   });
