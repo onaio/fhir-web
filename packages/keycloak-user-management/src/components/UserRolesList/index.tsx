@@ -107,7 +107,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
       title: DESCRIPTION,
       dataIndex: 'description',
       editable: true,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      sorter: (a: TableData, b: TableData) => a.description.localeCompare(b.description),
     },
   ];
 
