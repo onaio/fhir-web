@@ -3,6 +3,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { KEYCLOAK_URL_USER_GROUPS } from '../../constants';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 import { UserGroupMembers } from '.';
+import { ERROR_OCCURED } from '../../lang';
 
 // data loader utils for user group detail view
 
@@ -23,7 +24,7 @@ export const loadGroupMembers = async (
     .then((response: UserGroupMembers[]) => {
       callback(response);
     })
-    .catch((e: Error) => sendErrorNotification(`${e}`));
+    .catch(() => sendErrorNotification(ERROR_OCCURED));
 };
 
 /** Function to fetch single group details from keycloak
@@ -43,5 +44,5 @@ export const loadGroupDetails = async (
     .then((response: KeycloakUserGroup) => {
       callback(response);
     })
-    .catch((e: Error) => sendErrorNotification(`${e}`));
+    .catch(() => sendErrorNotification(ERROR_OCCURED));
 };
