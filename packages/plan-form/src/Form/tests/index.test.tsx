@@ -130,9 +130,11 @@ describe('containers/forms/PlanForm', () => {
         `conditions inputs ${index}`
       );
     });
+    wrapper.unmount();
   });
 
   it('Form validation works', async () => {
+    jest.setTimeout(10000);
     const container = document.createElement('div');
     document.body.appendChild(container);
 
@@ -149,7 +151,7 @@ describe('containers/forms/PlanForm', () => {
     let fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // No errors are shown initially
-    expect(fieldsWithErrors).toMatchSnapshot(' Initial Errors');
+    expect(fieldsWithErrors).toMatchSnapshot('Initial Errors, no errors shown initially');
 
     wrapper.find('form').simulate('submit');
 
@@ -179,7 +181,7 @@ describe('containers/forms/PlanForm', () => {
     // description is required
     expect(
       (wrapper.find('FormItem[name="description"] FormItemInput').props() as any).errors
-    ).toMatchSnapshot('title error');
+    ).toMatchSnapshot('description error');
 
     // let us cause errors for other required fields and ascertain that they are indeed validated
 
@@ -204,7 +206,7 @@ describe('containers/forms/PlanForm', () => {
     fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // we now have some more errors
-    expect(fieldsWithErrors).toMatchSnapshot('more Errors');
+    expect(fieldsWithErrors).toMatchSnapshot('more Errors, dateRange, interventionType, date');
 
     // date is required
     expect(
@@ -245,7 +247,9 @@ describe('containers/forms/PlanForm', () => {
     fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // we now have some more errors
-    expect(fieldsWithErrors).toMatchSnapshot('invalid data type Errors');
+    expect(fieldsWithErrors).toMatchSnapshot(
+      'invalid data type Errors, we should have some errors'
+    );
   });
 
   it('Auto-setting name and title field values works', async () => {
@@ -261,6 +265,7 @@ describe('containers/forms/PlanForm', () => {
 
     // expect name is set the same to plan title
     expect(wrapper.find('#name input').props().value).toEqual('Plan Name');
+    wrapper.unmount();
   });
 
   it('Form submission for new plans works', async () => {
@@ -325,6 +330,7 @@ describe('containers/forms/PlanForm', () => {
         method: 'POST',
       },
     ]);
+    wrapper.unmount();
   });
 
   it('Form submission for editing plans works', async () => {
@@ -372,6 +378,7 @@ describe('containers/forms/PlanForm', () => {
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
 
     expect(afterSubmitMock).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('Checking disabled fields for draft plans', async () => {
@@ -411,6 +418,7 @@ describe('containers/forms/PlanForm', () => {
       await new Promise<any>((resolve) => setImmediate(resolve));
       wrapper.update();
     });
+    wrapper.unmount();
   });
 
   it('Notifies on errors during submission', async () => {
@@ -453,6 +461,7 @@ describe('containers/forms/PlanForm', () => {
 
     expect(errorNotificationSMock).toHaveBeenCalledWith('Error', errorMessage);
     (sendErrorNotification as jest.Mock).mockReset();
+    wrapper.unmount();
   });
 
   it('Can add and remove jurisdictions', async () => {
@@ -487,6 +496,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('.jurisdiction-fields__delete').first().simulate('click');
 
     expect(wrapper.find('.jurisdiction-fields')).toHaveLength(5);
+    wrapper.unmount();
   });
 
   it('removing dynamic activities works correctly', async () => {
@@ -640,6 +650,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.update();
 
     expect(cancelMock).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('test redirectPath getter', async () => {

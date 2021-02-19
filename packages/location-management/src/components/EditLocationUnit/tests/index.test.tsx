@@ -173,7 +173,7 @@ describe('EditLocationUnit', () => {
       wrapper.update();
     });
 
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorAn error happenedGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorAn error happenedGo backGo home"`);
   });
 
   it('renders resource404 when location is not found', async () => {
@@ -207,7 +207,7 @@ describe('EditLocationUnit', () => {
 
     // resource not found
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
+      `"404Sorry, the resource you requested for, does not existGo backGo home"`
     );
   });
 
