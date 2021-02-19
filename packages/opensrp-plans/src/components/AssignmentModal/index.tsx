@@ -124,5 +124,5 @@ export { EditAssignmentsModal };
  * @param option - a single option
  */
 export const optionFilter = (input: string, option: SelectOption) => {
-  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+  return option.label.toLowerCase().includes(input.toLowerCase());
 };

@@ -54,7 +54,7 @@ describe('planAssignment modal', () => {
 
     // filter props works correctly
     expect(
-      (wrapper.find('Modal Select').props() as Dictionary).filterOption('lue2', {
+      (wrapper.find('Modal Select').props() as Dictionary).filterOption('abel2', {
         label: 'label2',
         value: 'value2',
       })
