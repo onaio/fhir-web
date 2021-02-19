@@ -8,8 +8,9 @@ import { history } from '@onaio/connected-reducer-registry';
 import { refreshToken } from '@onaio/gatekeeper';
 import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
-import { EXPRESS_TOKEN_REFRESH_URL, SESSION_EXPIRED_TEXT } from '../constants';
+import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
 import { getConfigs } from '@opensrp/pkg-config';
+import { SESSION_EXPIRED_TEXT } from '../lang';
 
 const configs = getConfigs();
 
