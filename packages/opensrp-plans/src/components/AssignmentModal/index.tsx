@@ -106,6 +106,8 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
           defaultValue={defaultValue}
           onChange={handleChange as SelectProps<Dictionary[], string[]>['onChange']}
           options={options}
+          showSearch={true}
+          filterOption={optionFilter as SelectProps<Dictionary[], string[]>['filterOption']}
         />
       </Modal>
     </>
@@ -115,3 +117,12 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
 EditAssignmentsModal.defaultProps = defaultProps;
 
 export { EditAssignmentsModal };
+
+/** filters what options to show depending on the string input
+ *
+ * @param input - the string input
+ * @param option - a single option
+ */
+export const optionFilter = (input: string, option: SelectOption) => {
+  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+};

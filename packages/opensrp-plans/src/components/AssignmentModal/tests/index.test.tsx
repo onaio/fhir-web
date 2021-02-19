@@ -49,6 +49,24 @@ describe('planAssignment modal', () => {
       wrapper.update();
     });
 
+    // show search is true
+    expect((wrapper.find('Modal Select').props() as Dictionary).showSearch).toBeTruthy();
+
+    // filter props works correctly
+    expect(
+      (wrapper.find('Modal Select').props() as Dictionary).filterOption('lue2', {
+        label: 'label2',
+        value: 'value2',
+      })
+    ).toBeTruthy();
+
+    expect(
+      (wrapper.find('Modal Select').props() as Dictionary).filterOption('lube2', {
+        label: 'label2',
+        value: 'value2',
+      })
+    ).toBeFalsy();
+
     // try saving
     const saveButton = wrapper.find('button').at(3);
     expect(saveButton.text()).toEqual(SAVE);
