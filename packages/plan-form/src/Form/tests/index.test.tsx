@@ -71,7 +71,6 @@ describe('containers/forms/PlanForm', () => {
       expect(radio.find('label').text()).toMatchSnapshot('status label');
       expect(toJson(radio.find('input'))).toMatchSnapshot('status input');
     });
-    expect(toJson(wrapper.find('#status'))).toMatchSnapshot('status field');
     expect(toJson(wrapper.find('#dateRange label'))).toMatchSnapshot('date range label');
     expect(toJson(wrapper.find('#dateRange input'))).toMatchSnapshot('start field');
     expect(wrapper.find('#date label')).toHaveLength(0);
