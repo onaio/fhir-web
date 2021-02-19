@@ -10,6 +10,7 @@ import { UserGroupMembers } from '../UserGroupsList';
 import { KeycloakUserGroup } from 'keycloak-user-management/src/ducks/userGroups';
 import { Link } from 'react-router-dom';
 import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
+import { ERROR_OCCURED, MEMBERS, NAME, ROLES } from '../../lang';
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -38,13 +39,13 @@ const ViewDetails = (props: ViewDetailsProps) => {
       const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers);
       const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup);
       Promise.all([membersPromise, userGroupPromise])
-        .catch((e) => sendErrorNotification(`${e}`))
+        .catch(() => sendErrorNotification(ERROR_OCCURED))
         .finally(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId]);
 
-  if (groupId === '') {
+  if (!groupId) {
     return null;
   }
 
@@ -65,13 +66,13 @@ const ViewDetails = (props: ViewDetailsProps) => {
       ) : (
         <Space direction="vertical">
           <Text strong={true} className="display-block">
-            Name
+            {NAME}
           </Text>
           <Text type="secondary" className="display-block">
             {singleUserGroup?.name}
           </Text>
           <Text strong={true} className="display-block">
-            Roles
+            {ROLES}
           </Text>
           {singleUserGroup?.realmRoles?.map((role: string) => (
             <Text key={role} type="secondary" className="display-block">
@@ -79,7 +80,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
             </Text>
           ))}
           <Text strong={true} className="display-block">
-            Members
+            {MEMBERS}
           </Text>
           {userGroupMembers?.map((object: UserGroupMembers) => (
             <Link key={object.id} to={`${URL_USER_EDIT}/${object.id}`}>
