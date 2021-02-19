@@ -81,11 +81,6 @@ export const findPath = (path: GeographicLocationInterface[], geoLevel: number) 
   return path.find((x: GeographicLocationInterface) => x.geographicLevel === geoLevel);
 };
 
-interface DefaultLatLongInterface {
-  lat?: number;
-  lng?: number;
-}
-
 interface DefaultGeographyItemProp {
   label: string;
   value?: string | number | string[] | number[];
