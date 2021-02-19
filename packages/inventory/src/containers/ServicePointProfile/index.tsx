@@ -33,7 +33,6 @@ import {
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
-  SERVICE_POINT_INVENTORY,
   EDIT_SERVICE_POINT,
   REGION_LABEL,
   DISTRICT_LABEL,
@@ -186,7 +185,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     return <Resource404 />;
   }
 
-  const pageTitle = `${SERVICE_POINT_INVENTORY}`;
+  const pageTitle = `${structure.properties.name} ${INVENTORY}`;
   const nodePath = getNodePath(structure, trees);
   const inventoryListProps = {
     servicePointId: spId,
@@ -204,9 +203,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
             <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>
               <p className="go-back-text">{BACK_TO_SERVICE_POINT_LIST}</p>
             </Link>
-            <p className="title">
-              {structure.properties.name} {INVENTORY}
-            </p>
+            <p className="title">{pageTitle}</p>
             <Row>
               <Col md={12}>
                 <GeographyItem
