@@ -42,4 +42,4 @@ export const MATERIAL_NUMBER_PLACEHOLDER = "Enter the product's material number"
 export const SUBMIT = i18n.t('Submit');
 
 // Errors
-export const ERROR_IMAGE_LOAD = 'Image could not be loaded';
+export const ERROR_IMAGE_LOAD = i18n.t('Image could not be loaded');
