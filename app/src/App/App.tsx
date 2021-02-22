@@ -250,6 +250,13 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
+              path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
+              component={UserGroupsList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
               path={URL_TEAMS}
               component={TeamsView}
             />
