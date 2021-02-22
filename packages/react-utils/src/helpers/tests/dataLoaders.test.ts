@@ -89,11 +89,6 @@ describe('helpers/dataLoaders/fetchProtectedImage', () => {
     );
 
     await flushPromises();
-    /***
-     * @todo Most appropriate test case would be to assert
-     * expect((global as any).URL.createObjectURL).toHaveBeenCalledWith(blob);
-     * but mocking a blob response was a challenge
-     */
     expect(objectURL).toEqual(null);
   });
 });
