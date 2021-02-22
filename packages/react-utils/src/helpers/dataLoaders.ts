@@ -53,7 +53,6 @@ export const handleSessionOrTokenExpiry = async () => {
  */
 export const fetchProtectedImage = async (imageURL: string) => {
   const token = await handleSessionOrTokenExpiry();
-
   const response = await customFetch(imageURL, {
     headers: {
       authorization: `Bearer ${token}`,
@@ -62,7 +61,8 @@ export const fetchProtectedImage = async (imageURL: string) => {
   });
 
   if (response) {
-    return URL.createObjectURL(await response.blob());
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
   }
 
   return null;

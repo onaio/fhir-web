@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { handleSessionOrTokenExpiry, OpenSRPService } from '../dataLoaders';
+import { fetchProtectedImage, handleSessionOrTokenExpiry, OpenSRPService } from '../dataLoaders';
 import fetch from 'jest-fetch-mock';
 import MockDate from 'mockdate';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import * as opensrpService from '@opensrp/server-service';
 import * as fixtures from './fixtures';
-import { updateExtraData } from '@onaio/session-reducer';
+import { authenticateUser, updateExtraData } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import * as registry from '@onaio/connected-reducer-registry';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/pkg-config', () => {
   const actual = jest.requireActual('@opensrp/pkg-config');
@@ -18,11 +19,90 @@ jest.mock('@opensrp/pkg-config', () => {
   };
 });
 
+jest.mock('@opensrp/server-service', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/server-service')),
+}));
+
+describe('helpers/dataLoaders/fetchProtectedImage', () => {
+  (global as any).URL.createObjectURL = jest.fn().mockReturnValue('hello');
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    fetch.resetMocks();
+    jest.restoreAllMocks();
+  });
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
+  it('returns the url of the protected image', async () => {
+    const bytes = new Uint8Array(59);
+
+    for (let i = 0; i < 59; i++) {
+      bytes[i] = 32 + i;
+    }
+
+    fetch.mockResponseOnce(JSON.stringify([bytes.buffer]));
+
+    const objectURL = await fetchProtectedImage(
+      'https://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4'
+    );
+
+    await flushPromises();
+    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4',
+      {
+        headers: {
+          authorization: 'Bearer hunter2',
+        },
+        method: 'GET',
+      },
+    ]);
+    /***
+     * @todo Most appropriate test case would be to assert
+     * expect((global as any).URL.createObjectURL).toHaveBeenCalledWith(blob);
+     * but mocking a blob response was a challenge
+     */
+    expect(objectURL).toEqual('hello');
+  });
+
+  it('returns null if response is null', async () => {
+    jest.spyOn(opensrpService, 'customFetch').mockReturnValue(null);
+
+    const objectURL = await fetchProtectedImage(
+      'https://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4'
+    );
+
+    await flushPromises();
+    /***
+     * @todo Most appropriate test case would be to assert
+     * expect((global as any).URL.createObjectURL).toHaveBeenCalledWith(blob);
+     * but mocking a blob response was a challenge
+     */
+    expect(objectURL).toEqual(null);
+  });
+});
+
 describe('dataLoaders/OpenSRPService', () => {
   const baseURL = 'https://test.smartregister.org/opensrp/rest/';
   beforeEach(() => {
     jest.resetAllMocks();
     fetch.resetMocks();
+    jest.restoreAllMocks();
   });
 
   it('OpenSRPService generic class constructor works', async () => {
@@ -34,7 +114,7 @@ describe('dataLoaders/OpenSRPService', () => {
 
   it('works with default base url', async () => {
     const planService = new OpenSRPService('organization');
-    expect(planService.baseURL).toEqual(OPENSRP_API_BASE_URL);
+    expect(planService.baseURL).toEqual(opensrpService.OPENSRP_API_BASE_URL);
     expect(planService.endpoint).toEqual('organization');
     expect(planService.generalURL).toEqual(
       'https://opensrp-stage.smartregister.org/opensrp/rest/organization'
