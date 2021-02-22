@@ -152,7 +152,7 @@ describe('View User Group Details', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
+      `"404Sorry, the resource you requested for, does not existGo backGo home"`
     );
     wrapper.unmount();
   });
