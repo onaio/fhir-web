@@ -198,6 +198,8 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
   };
 
   const coordinates = getCords(structure.geometry);
+  const latLong = [coordinates.lat, coordinates.lng];
+  const latLongString = latLong.some((el) => el) ? latLong.join(',') : '';
 
   return (
     <>
@@ -227,10 +229,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
               </Col>
               <Col md={12}>
                 <GeographyItem label={TYPE_LABEL} value={structure.properties.type} />
-                <GeographyItem
-                  label={LAT_LONG_LABEL}
-                  value={`${coordinates.lat}, ${coordinates.lng}`}
-                />
+                <GeographyItem label={LAT_LONG_LABEL} value={latLongString} />
                 <GeographyItem label={SERVICE_POINT_ID_LABEL} value={spId} />
               </Col>
             </Row>
