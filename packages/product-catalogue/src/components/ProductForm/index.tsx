@@ -187,7 +187,7 @@ const ProductForm = (props: ProductFormProps) => {
   };
 
   React.useEffect(() => {
-    if (isEditMode) {
+    if (isEditMode && initialValues.photoURL) {
       fetchProtectedImage((initialValues.photoURL as string).replace('http', 'https'))
         .then((url: string | null) => {
           if (url) {
