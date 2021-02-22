@@ -8,9 +8,10 @@ export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar';
 export type ProjectLanguageCode = 'eusm' | 'core';
 
 /** interface for configs for this package */
-export interface LanguageConfigs {
+export interface OpenSRPConfigs {
   languageCode?: LanguageCode;
   projectLanguageCode?: ProjectLanguageCode;
+  appLoginURL?: string;
 }
 
 export interface LanguageResource {
@@ -19,7 +20,9 @@ export interface LanguageResource {
 
 export interface LanguageResources {
   ar_core?: LanguageResource;
+  ar_eusm?: LanguageResource;
   fr_core?: LanguageResource;
+  fr_eusm?: LanguageResource;
   en_core?: LanguageResource;
   en_eusm?: LanguageResource;
   sw_eusm?: LanguageResource;
@@ -27,7 +30,7 @@ export interface LanguageResources {
 }
 
 /** gets configs from the store */
-export const getConfigs = (): LanguageConfigs => {
+export const getConfigs = (): OpenSRPConfigs => {
   const configsSelector = getConfigsFactory();
   const allConfigs = configsSelector(store.getState());
   return allConfigs;
@@ -48,6 +51,7 @@ export const initializei18n = (i18next: typeof i18n, opensrpResources: LanguageR
       fallbackLng: `${languageCode}_${projectLanguageCode}`,
       interpolation: { escapeValue: false },
       returnEmptyString: false,
+      nsSeparator: '::',
     })
     .catch((err) => err);
 };

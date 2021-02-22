@@ -3,16 +3,17 @@ import {
   getFetchOptions,
   OpenSRPService as GenericOpenSRPService,
   OPENSRP_API_BASE_URL,
+  customFetch,
 } from '@opensrp/server-service';
 import { history } from '@onaio/connected-reducer-registry';
 import { refreshToken } from '@onaio/gatekeeper';
 import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
-import {
-  EXPRESS_TOKEN_REFRESH_URL,
-  LOGIN_URL,
-  SESSION_EXPIRED_TEXT,
-} from '../components/constants';
+import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
+import { getConfigs } from '@opensrp/pkg-config';
+import { SESSION_EXPIRED_TEXT } from '../lang';
+
+const configs = getConfigs();
 
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
@@ -38,10 +39,33 @@ export const handleSessionOrTokenExpiry = async () => {
       // refresh token
       return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
     } catch (e) {
-      history.push(`${LOGIN_URL}`);
+      history.push(`${configs.appLoginURL}`);
       throw new Error(`${SESSION_EXPIRED_TEXT}`);
     }
   } else {
     return getAccessToken(store.getState());
   }
+};
+
+/**
+ * Fetch an image that requires authentication and returns an
+ * object URL from URL.createObjectURL
+ *
+ * @param imageURL the image source url
+ */
+export const fetchProtectedImage = async (imageURL: string) => {
+  const token = await handleSessionOrTokenExpiry();
+  const response = await customFetch(imageURL, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+    method: 'GET',
+  });
+
+  if (response) {
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  }
+
+  return null;
 };

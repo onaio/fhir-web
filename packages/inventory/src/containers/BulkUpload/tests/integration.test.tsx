@@ -26,6 +26,8 @@ jest.mock('@opensrp/react-utils', () => {
 });
 const sampleErrorResponse =
   '"Total Number of Rows in the CSV ",3\r\n"Rows processed ",0\r\n"\n"\r\nRow Number,Reason of Failure\r\n1,"[Product ID does not exist in product catalogue, Service point ID does not exist, Donor is not valid, PO Number should be a whole number]"\r\n2,[Service point ID does not exist]\r\n3,"[Service point ID does not exist, UNICEF section is not valid, Donor is not valid]"\r\n';
+const sampleGoodResponse =
+  '"Total Number of Rows in the CSV ",3\r\n"Rows processed ",3\r\n"\n"\r\nRow Number,Reason of Failure\r\n';
 
 describe('Inventory bulk upload.integrationTest', () => {
   it('uploading file works for file without error', async () => {
@@ -45,7 +47,7 @@ describe('Inventory bulk upload.integrationTest', () => {
       .reply(200, { 'Access-Control-Allow-Origin': '*' } as unknown);
 
     nock(baseURL).post(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`).reply(200, sampleResponse);
-    nock(baseURL).post(`/${OPENSRP_IMPORT_STOCK_ENDPOINT}`).reply(200, sampleResponse);
+    nock(baseURL).post(`/${OPENSRP_IMPORT_STOCK_ENDPOINT}`).reply(200, sampleGoodResponse);
 
     render(
       <MemoryRouter initialEntries={[INVENTORY_BULK_UPLOAD_URL]}>
@@ -72,7 +74,7 @@ describe('Inventory bulk upload.integrationTest', () => {
     fireEvent.click(confirmCommitButton);
 
     await waitFor(() => {
-      screen.getByText('Upload another file');
+      screen.getByText('“file.csv” inventory items successfully added');
     });
 
     // post confirmation page
@@ -231,7 +233,7 @@ describe('Inventory bulk upload.integrationTest', () => {
       .reply(200, { 'Access-Control-Allow-Origin': '*' } as unknown);
 
     nock(baseURL).post(`/${OPENSRP_UPLOAD_STOCK_ENDPOINT}`).reply(200, sampleResponse);
-    nock(baseURL).post(`/${OPENSRP_IMPORT_STOCK_ENDPOINT}`).reply(200, sampleResponse);
+    nock(baseURL).post(`/${OPENSRP_IMPORT_STOCK_ENDPOINT}`).reply(200, sampleGoodResponse);
 
     render(
       <MemoryRouter initialEntries={[INVENTORY_BULK_UPLOAD_URL]}>

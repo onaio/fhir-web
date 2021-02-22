@@ -1,7 +1,8 @@
 import { FormInstances } from '../../../../dist/types';
+import { ServiceTypeSetting } from '../../../../dist/types/components/LocationForm/utils';
 import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
-import { LocationFormFields, Setting } from '../utils';
+import { LocationFormFields } from '../utils';
 
 /* eslint-disable @typescript-eslint/camelcase */
 export const location1: LocationUnit = {
@@ -49,6 +50,57 @@ export const location2 = ({
   // parentId is missing
 } as unknown) as LocationUnit;
 
+export const location3 = {
+  type: 'Feature',
+  id: '45e4bd97-fe11-458b-b481-294b7d7e8270',
+  geometry: {
+    type: 'Point',
+    coordinates: [49.52125, -16.78147],
+  },
+  properties: {
+    type: 'Water Point',
+    status: 'Active',
+    parentId: 'c38e0c1e-3d72-424b-ac37-29e8d3e82026',
+    name: 'Ambahoabe',
+    geographicLevel: 0,
+    version: 0,
+    AdminLevelTag: 'Commune',
+  },
+  serverVersion: 18481,
+} as LocationUnit;
+
+export const location4 = {
+  type: 'Feature',
+  id: '38a0a19b-f91e-4044-a8db-a4b62490bf27',
+  geometry: {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [17.4298095703125, 29.897805610155874],
+        [17.215576171875, 29.750070930806785],
+        [17.4957275390625, 29.3965337391284],
+        [17.9901123046875, 29.54000879252545],
+        [18.006591796874996, 29.79298413547051],
+        [17.4298095703125, 29.897805610155874],
+      ],
+    ],
+  },
+  properties: {
+    status: 'Active',
+    parentId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+    name: 'MENABE',
+    geographicLevel: 1,
+    version: 0,
+  },
+  serverVersion: 2984,
+  locationTags: [
+    {
+      id: 2,
+      name: 'Region',
+    },
+  ],
+} as LocationUnit;
+
 export const generatedLocation1 = {
   id: 'b652b2f4-a95d-489b-9e28-4629746db96a',
   locationTags: [{ active: false, description: 'Sample description 2', id: 2, name: 'Sample 2' }],
@@ -72,7 +124,7 @@ export const generatedLocation2 = {
     name: 'Mars',
     name_en: 'The Root Location',
     status: 'InActive',
-    serviceTypes: [{ name: 'School' }],
+    type: 'School',
     'Sample Key': 'extraFields - Sample Key',
     version: 0,
     'Area Nick name': 'extraFields - Area Nick name',
@@ -87,7 +139,24 @@ export const generatedLocation2 = {
   syncStatus: 'Synced',
   type: 'Feature',
   locationTags: [{ id: 7, active: true, name: 'CHW ', description: 'The chw tags ' }],
-  geometry: [19.92919921875, 30.135626231134587],
+  geometry: { type: 'Point', coordinates: [19.92919921875, 30.135626231134587] },
+};
+
+export const generatedLocation4 = {
+  properties: {
+    geographicLevel: 1,
+    parentId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+    name: 'MENABE',
+    name_en: 'MENABE',
+    status: 'Active',
+    type: 'School',
+    version: 0,
+  },
+  id: '38a0a19b-f91e-4044-a8db-a4b62490bf27',
+  syncStatus: 'Synced',
+  type: 'Feature',
+  locationTags: [{ id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' }],
+  geometry: { type: 'Point', coordinates: [19.56, 34.56] },
 };
 
 export const expectedFormFields = {
@@ -97,7 +166,7 @@ export const expectedFormFields = {
   isJurisdiction: true,
   locationTags: [],
   name: '',
-  serviceTypes: '',
+  serviceType: '',
   status: 'Active',
   type: '',
   username: '',
@@ -123,7 +192,7 @@ export const expectedFormFields1: LocationFormFields = {
   locationTags: [2, 3],
   name: 'Kenya',
   parentId: '',
-  serviceTypes: [],
+  serviceType: undefined,
   status: 'Active' as LocationUnitStatus,
   type: 'Feature',
   username: 'web-admin',
@@ -140,7 +209,7 @@ export const locationUnitGroups: LocationUnitGroup[] = [
 
 export const serviceTypeSetting1 = {
   key: 'school',
-  label: 'School',
+  value: 'School',
   description: 'This service type is a school',
   uuid: '8718e71e-af01-49aa-85dd-381d29eaf6de',
   settingsId: '34',
@@ -154,7 +223,7 @@ export const serviceTypeSetting1 = {
 };
 export const serviceTypesSetting2 = {
   key: 'hospital',
-  label: 'Hospital',
+  value: 'Hospital',
   description: 'This service type is a Hospital',
   uuid: '7d3c2a2c-4b67-4f98-aed5-90d1b597801a',
   settingsId: '34',
@@ -166,7 +235,10 @@ export const serviceTypesSetting2 = {
   serverVersion: 58,
   type: 'Setting',
 };
-export const serviceTypeSettings = [serviceTypeSetting1, serviceTypesSetting2] as Setting[];
+export const serviceTypeSettings = [
+  serviceTypeSetting1,
+  serviceTypesSetting2,
+] as ServiceTypeSetting[];
 
 export const fetchCalls1 = [
   [
@@ -223,7 +295,7 @@ export const createdLocation1 = {
     name: 'area51',
     name_en: 'area51',
     status: 'InActive',
-    serviceTypes: [{ name: 'School' }],
+    type: 'School',
   },
   id: '9b782015-8392-4847-b48c-50c11638656b',
   syncStatus: 'Synced',

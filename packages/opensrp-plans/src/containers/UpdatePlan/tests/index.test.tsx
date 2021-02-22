@@ -200,7 +200,7 @@ describe('CreateEditProduct Page', () => {
     });
 
     // should be in error page
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorCould not pull dataGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorCould not pull dataGo backGo home"`);
   });
 
   it('handles missing plan', async () => {
@@ -242,7 +242,7 @@ describe('CreateEditProduct Page', () => {
 
     /** resource404 info page */
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
+      `"404Sorry, the resource you requested for, does not existGo backGo home"`
     );
   });
 

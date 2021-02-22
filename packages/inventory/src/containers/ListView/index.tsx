@@ -121,7 +121,6 @@ const ServicePointList = (props: ServicePointsListTypes) => {
       })
       .catch((err) => handleBrokenPage(err))
       .finally(() => setLoadingStructures(false));
-
     // get root Jurisdictions so we can later get the trees.
     const jurisdictionsDispatcher = (locations: LocationUnit[] = []) => {
       return fetchLocationsCreator(locations, true);
@@ -189,6 +188,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
             </Link>
           </div>
           <Table
+            className="custom-table"
             dataSource={dataSource}
             columns={columns}
             pagination={tablePaginationOptions}
