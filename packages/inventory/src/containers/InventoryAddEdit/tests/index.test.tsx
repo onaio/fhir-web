@@ -551,7 +551,7 @@ describe('containers/InventoryAddEdit', () => {
 
     // 404 page is displayed
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"404Sorry, the resource you requested for, does not existGo backGo home"`
+      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
     );
 
     wrapper.unmount();
