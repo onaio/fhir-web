@@ -17,6 +17,7 @@ import {
 } from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 import { fetchAssignedRoles, fetchAvailableRoles } from './utils';
+import { KeycloakUserRole } from 'keycloak-user-management/src/ducks/userRoles';
 /** Interface for practitioner json object */
 export interface Practitioner {
   active: boolean;
@@ -53,8 +54,8 @@ export const defaultProps: Partial<UserGroupFormProps> = {
 const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) => {
   const { initialValues, keycloakBaseURL } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [availableRoles, setAvailableRoles] = useState(null);
-  const [assignedRoles, setAssignedRoles] = useState(null);
+  const [availableRoles, setAvailableRoles] = useState<KeycloakUserRole[] | null>(null);
+  const [assignedRoles, setAssignedRoles] = useState<KeycloakUserRole[] | null>(null);
   const history = useHistory();
   const [form] = Form.useForm();
   const layout = {
