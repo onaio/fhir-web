@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchProtectedImage, handleSessionOrTokenExpiry, OpenSRPService } from '../dataLoaders';
 import fetch from 'jest-fetch-mock';
 import MockDate from 'mockdate';
