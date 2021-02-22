@@ -52,7 +52,8 @@ const ViewDetails = (props: ViewDetailsProps) => {
       <div className="flex-right">
         <Button
           icon={<CloseOutlined />}
-          className="display-block"
+          shape="circle"
+          type="text"
           onClick={() => history.push(URL_USER_GROUPS)}
         />
       </div>
