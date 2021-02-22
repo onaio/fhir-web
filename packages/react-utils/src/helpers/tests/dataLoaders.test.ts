@@ -74,9 +74,10 @@ describe('helpers/dataLoaders/fetchProtectedImage', () => {
       },
     ]);
     /***
-     * @todo Most appropriate test case would be to assert
+     * @todo Most appropriate test case would be to also assert
      * expect((global as any).URL.createObjectURL).toHaveBeenCalledWith(blob);
-     * but mocking a blob response was a challenge
+     * but mocking a blob response was a challenge. Hence URL.createOjectURL was mocked
+     * above as (global as any).URL.createObjectURL = jest.fn().mockReturnValue('hello');
      */
     expect(objectURL).toEqual('hello');
   });
