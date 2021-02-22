@@ -61,6 +61,8 @@ describe('View User Group Details', () => {
     });
 
     expect(wrapper.text()).toMatchSnapshot('nominal display');
+    // att test case to capture space element props snapshot
+    expect(wrapper.find('ViewDetails Space').props()).toMatchSnapshot('space element');
     wrapper.unmount();
   });
 
