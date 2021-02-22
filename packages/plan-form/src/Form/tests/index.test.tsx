@@ -67,8 +67,10 @@ describe('containers/forms/PlanForm', () => {
     expect(toJson(wrapper.find('#taskGenerationStatus input'))).toMatchSnapshot(
       'taskGenerationStatus field'
     );
-    expect(toJson(wrapper.find('#status label'))).toMatchSnapshot('status label');
-    expect(toJson(wrapper.find('#status select'))).toMatchSnapshot('status field');
+    wrapper.find('#status Radio').forEach((radio) => {
+      expect(radio.find('label').text()).toMatchSnapshot('status label');
+      expect(toJson(radio.find('input'))).toMatchSnapshot('status input');
+    });
     expect(toJson(wrapper.find('#dateRange label'))).toMatchSnapshot('date range label');
     expect(toJson(wrapper.find('#dateRange input'))).toMatchSnapshot('start field');
     expect(wrapper.find('#date label')).toHaveLength(0);
@@ -356,6 +358,14 @@ describe('containers/forms/PlanForm', () => {
       .find('#description textarea')
       .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
 
+    // try changing the status to retired
+    wrapper.find('input[value="retired"]').simulate('click');
+    // look for popup to confirm
+    expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
+      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+    );
+    wrapper.find('.plan-form-status button').last().simulate('click');
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -363,6 +373,66 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
 
+    const payload = {
+      ...generatePlanDefinition(initialValues),
+      version: 2,
+      status: PlanStatus.RETIRED,
+      description: 'Mission plan description',
+    };
+
+    // expect(payload.status).toEqual(PlanStatus.RETIRED);
+
+    // the last request should be the one that is sent to OpenSRP
+    expect(fetch.mock.calls[0][0]).toEqual(
+      'https://opensrp-stage.smartregister.org/opensrp/rest/plans'
+    );
+
+    // the last request should be the one that is sent to OpenSRP
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
+
+    expect(afterSubmitMock).toHaveBeenCalled();
+  });
+
+  it('clicking no in popup during status change', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const initialValues = getPlanFormValues(mission1);
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const afterSubmitMock = jest.fn();
+
+    const props = {
+      initialValues,
+      afterSubmit: afterSubmitMock,
+    };
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: container }
+    );
+
+    wrapper
+      .find('#description textarea')
+      .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
+
+    // try changing the status to retired
+    wrapper.find('input[value="retired"]').simulate('click');
+    // look for popup to confirm
+    expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
+      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+    );
+    // cancel status change
+    wrapper.find('.plan-form-status button').first().simulate('click');
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise<any>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // no status change
     const payload = {
       ...generatePlanDefinition(initialValues),
       version: 2,

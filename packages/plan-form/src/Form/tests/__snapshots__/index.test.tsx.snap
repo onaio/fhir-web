@@ -299,17 +299,69 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm renders correctly: status field 1`] = `null`;
-
-exports[`containers/forms/PlanForm renders correctly: status label 1`] = `
-<label
-  className="ant-form-item-required"
-  htmlFor="planForm_status"
-  title="Status"
->
-  Status
-</label>
+exports[`containers/forms/PlanForm renders correctly: status input 1`] = `
+<input
+  checked={false}
+  className="ant-radio-input"
+  disabled={false}
+  onBlur={[Function]}
+  onChange={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  type="radio"
+  value="active"
+/>
 `;
+
+exports[`containers/forms/PlanForm renders correctly: status input 2`] = `
+<input
+  checked={false}
+  className="ant-radio-input"
+  disabled={false}
+  onBlur={[Function]}
+  onChange={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  type="radio"
+  value="complete"
+/>
+`;
+
+exports[`containers/forms/PlanForm renders correctly: status input 3`] = `
+<input
+  checked={true}
+  className="ant-radio-input"
+  disabled={false}
+  onBlur={[Function]}
+  onChange={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  type="radio"
+  value="draft"
+/>
+`;
+
+exports[`containers/forms/PlanForm renders correctly: status input 4`] = `
+<input
+  checked={false}
+  className="ant-radio-input"
+  disabled={false}
+  onBlur={[Function]}
+  onChange={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  type="radio"
+  value="retired"
+/>
+`;
+
+exports[`containers/forms/PlanForm renders correctly: status label 1`] = `"active"`;
+
+exports[`containers/forms/PlanForm renders correctly: status label 2`] = `"complete"`;
+
+exports[`containers/forms/PlanForm renders correctly: status label 3`] = `"draft"`;
+
+exports[`containers/forms/PlanForm renders correctly: status label 4`] = `"retired"`;
 
 exports[`containers/forms/PlanForm renders correctly: submit button 1`] = `
 <button
