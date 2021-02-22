@@ -50,6 +50,57 @@ export const location2 = ({
   // parentId is missing
 } as unknown) as LocationUnit;
 
+export const location3 = {
+  type: 'Feature',
+  id: '45e4bd97-fe11-458b-b481-294b7d7e8270',
+  geometry: {
+    type: 'Point',
+    coordinates: [49.52125, -16.78147],
+  },
+  properties: {
+    type: 'Water Point',
+    status: 'Active',
+    parentId: 'c38e0c1e-3d72-424b-ac37-29e8d3e82026',
+    name: 'Ambahoabe',
+    geographicLevel: 0,
+    version: 0,
+    AdminLevelTag: 'Commune',
+  },
+  serverVersion: 18481,
+} as LocationUnit;
+
+export const location4 = {
+  type: 'Feature',
+  id: '38a0a19b-f91e-4044-a8db-a4b62490bf27',
+  geometry: {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [17.4298095703125, 29.897805610155874],
+        [17.215576171875, 29.750070930806785],
+        [17.4957275390625, 29.3965337391284],
+        [17.9901123046875, 29.54000879252545],
+        [18.006591796874996, 29.79298413547051],
+        [17.4298095703125, 29.897805610155874],
+      ],
+    ],
+  },
+  properties: {
+    status: 'Active',
+    parentId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+    name: 'MENABE',
+    geographicLevel: 1,
+    version: 0,
+  },
+  serverVersion: 2984,
+  locationTags: [
+    {
+      id: 2,
+      name: 'Region',
+    },
+  ],
+} as LocationUnit;
+
 export const generatedLocation1 = {
   id: 'b652b2f4-a95d-489b-9e28-4629746db96a',
   locationTags: [{ active: false, description: 'Sample description 2', id: 2, name: 'Sample 2' }],
@@ -88,7 +139,24 @@ export const generatedLocation2 = {
   syncStatus: 'Synced',
   type: 'Feature',
   locationTags: [{ id: 7, active: true, name: 'CHW ', description: 'The chw tags ' }],
-  geometry: [19.92919921875, 30.135626231134587],
+  geometry: { type: 'Point', coordinates: [19.92919921875, 30.135626231134587] },
+};
+
+export const generatedLocation4 = {
+  properties: {
+    geographicLevel: 1,
+    parentId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+    name: 'MENABE',
+    name_en: 'MENABE',
+    status: 'Active',
+    type: 'School',
+    version: 0,
+  },
+  id: '38a0a19b-f91e-4044-a8db-a4b62490bf27',
+  syncStatus: 'Synced',
+  type: 'Feature',
+  locationTags: [{ id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' }],
+  geometry: { type: 'Point', coordinates: [19.56, 34.56] },
 };
 
 export const expectedFormFields = {

@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { Result } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
+import { ERROR, SOMETHING_WENT_WRONG } from '../../lang';
 
 /** props for the broken page component */
 export interface BrokenPageProps extends UtilPageExtraProps {
@@ -14,8 +15,8 @@ export interface BrokenPageProps extends UtilPageExtraProps {
 
 export const defaultProps = {
   ...extraLinksDefault,
-  errorMessage: 'Something went wrong',
-  title: 'Error',
+  errorMessage: SOMETHING_WENT_WRONG,
+  title: ERROR,
 };
 
 /** the component that renders a 500 view */

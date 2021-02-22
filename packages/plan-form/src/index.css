@@ -32,3 +32,13 @@
   overflow: visible;
   white-space: normal;
 }
+
+.status-radio {
+  display: block;
+  height: 30px;
+  line-height: 30px;
+}
+
+.popup-width {
+  width: 250px;
+}

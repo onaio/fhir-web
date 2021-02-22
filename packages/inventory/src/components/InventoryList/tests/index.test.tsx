@@ -6,8 +6,12 @@ import { createBrowserHistory } from 'history';
 import {
   fetchCalls,
   inventories,
+  inventory3,
+  inventory4,
+  inventory5,
+  inventory6,
   opensrpBaseURL,
-} from '../../../containers/ProfileView/tests/fixtures';
+} from '../../../containers/ServicePointProfile/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { InventoryList } from '..';
 import { Provider } from 'react-redux';
@@ -80,7 +84,7 @@ describe('Inventory list Page', () => {
     expect(fetch.mock.calls[0]).toEqual(fetchCalls[3]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActions1101123434Jan 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1101123434Feb 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1"`
+      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name 11101123434Jan 02, 2020May 02, 2021HealthADBEditChange name 21101123434Feb 02, 2020May 02, 2021HealthADBEdit"`
     );
     wrapper.unmount();
   });
@@ -105,5 +109,60 @@ describe('Inventory list Page', () => {
     // no data
     expect(wrapper.text()).toMatchSnapshot('error broken page');
     wrapper.unmount();
+  });
+
+  it('sorts by file product name', async () => {
+    fetch.once(JSON.stringify([inventory3, inventory4, inventory5, inventory6]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <InventoryList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+
+    wrapper.update();
+    const heading = wrapper.find('thead');
+
+    // Ascending is default
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual('Scale');
+
+    // Cancel sorting
+    heading.find('th').at(0).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    // descending
+    heading.find('th').at(0).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
   });
 });
