@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Space, Button, Radio } from 'antd';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Redirect } from 'react-router';
@@ -49,7 +49,6 @@ import {
 } from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
-import { fetchAllHierarchies, FetchedTreeAction } from '../../ducks/location-hierarchy';
 
 const { Item: FormItem } = Form;
 
@@ -64,7 +63,7 @@ export interface LocationFormProps
   onCancel: () => void;
   service: typeof OpenSRPService;
   username: string;
-  dispatch: Dispatch<FetchedTreeAction>;
+  afterSubmit: Function;
 }
 
 const defaultProps = {
@@ -78,6 +77,9 @@ const defaultProps = {
   service: OpenSRPService,
   username: '',
   openSRPBaseURL: baseURL,
+  afterSubmit: () => {
+    return;
+  },
 };
 
 /** responsive layout for the form labels and columns */
@@ -133,7 +135,7 @@ const LocationForm = (props: LocationFormProps) => {
     hidden,
     service,
     username,
-    dispatch,
+    afterSubmit,
     disabledTreeNodesCallback,
   } = props;
   const isEditMode = !!initialValues.id;
@@ -190,7 +192,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           postPutLocationUnit(payload, openSRPBaseURL, service, isEditMode, params)
             .then(() => {
-              dispatch(fetchAllHierarchies([])); // reset tree data to force refresh of other component
+              afterSubmit();
               sendSuccessNotification(successMessage);
               setAreWeDoneHere(true);
             })

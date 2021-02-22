@@ -18,6 +18,7 @@ import { getUser } from '@onaio/session-reducer';
 import { EDIT_LOCATION_UNIT } from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { fetchAllHierarchies } from 'location-management/src/ducks/location-hierarchy';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
@@ -152,7 +153,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     service,
     openSRPBaseURL,
     user: user.username,
-    dispatch,
+    afterSubmit: () => dispatch(fetchAllHierarchies([])),
     disabledTreeNodesCallback,
   };
   const pageTitle = `${EDIT_LOCATION_UNIT} | ${thisLocation?.properties.name}`;
