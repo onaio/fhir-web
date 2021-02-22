@@ -3,6 +3,7 @@ import {
   getFetchOptions,
   OpenSRPService as GenericOpenSRPService,
   OPENSRP_API_BASE_URL,
+  customFetch,
 } from '@opensrp/server-service';
 import { history } from '@onaio/connected-reducer-registry';
 import { refreshToken } from '@onaio/gatekeeper';
@@ -44,4 +45,27 @@ export const handleSessionOrTokenExpiry = async () => {
   } else {
     return getAccessToken(store.getState());
   }
+};
+
+/**
+ * Fetch an image that requires authentication and returns an
+ * object URL from URL.createObjectURL
+ *
+ * @param imageURL the image source url
+ */
+export const fetchProtectedImage = async (imageURL: string) => {
+  const token = await handleSessionOrTokenExpiry();
+  const response = await customFetch(imageURL, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+    method: 'GET',
+  });
+
+  if (response) {
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  }
+
+  return null;
 };
