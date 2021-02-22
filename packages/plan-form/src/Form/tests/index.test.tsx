@@ -433,8 +433,6 @@ describe('containers/forms/PlanForm', () => {
       description: 'Mission plan description',
     };
 
-    // expect(payload.status).toEqual(PlanStatus.RETIRED);
-
     // the last request should be the one that is sent to OpenSRP
     expect(fetch.mock.calls[0][0]).toEqual(
       'https://opensrp-stage.smartregister.org/opensrp/rest/plans'
