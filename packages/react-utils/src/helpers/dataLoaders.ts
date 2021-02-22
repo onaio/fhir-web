@@ -47,7 +47,8 @@ export const handleSessionOrTokenExpiry = async () => {
 };
 
 /**
- * Fetch an image that requires authentication
+ * Fetch an image that requires authentication and returns an
+ * object URL from URL.createObjectURL
  *
  * @param imageURL the image source url
  */

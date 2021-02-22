@@ -187,15 +187,24 @@ const ProductForm = (props: ProductFormProps) => {
   };
 
   React.useEffect(() => {
+    let objectURL: string | null = null;
+
     if (isEditMode && initialValues.photoURL) {
       fetchProtectedImage((initialValues.photoURL as string).replace('http', 'https'))
         .then((url: string | null) => {
           if (url) {
+            objectURL = url;
             setImageUrl(url);
           }
         })
         .catch((_: HTTPError) => sendErrorNotification(ERROR_IMAGE_LOAD));
     }
+    return () => {
+      if (objectURL) {
+        // For optimal performance and memeory usage, release object URL on unmount
+        URL.revokeObjectURL(objectURL);
+      }
+    };
   }, [isEditMode, baseURL, initialValues.photoURL]);
 
   /** if plan is updated or saved redirect to plans page */

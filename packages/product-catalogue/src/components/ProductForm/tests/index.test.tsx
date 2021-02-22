@@ -24,6 +24,8 @@ jest.mock('@opensrp/react-utils', () => ({
 const fetch = require('jest-fetch-mock');
 
 describe('productForm', () => {
+  global.URL.revokeObjectURL = jest.fn();
+
   afterEach(() => {
     fetch.resetMocks();
     jest.clearAllMocks();
@@ -582,8 +584,8 @@ describe('productForm', () => {
       'https://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4'
     );
     expect(wrapper.find('img').get(0).props.src).toEqual('hello');
-
     wrapper.unmount();
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('hello');
   });
 
   it('does not display image if fetch image fails', async () => {
