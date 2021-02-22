@@ -18,9 +18,7 @@ export interface ViewDetailsProps {
   groupId: string;
   keycloakBaseURL: string;
 }
-export const defaultProps = {
-  groupId: '',
-};
+
 /** component that renders the details view to the right side
  * of list view
  *
@@ -92,5 +90,5 @@ const ViewDetails = (props: ViewDetailsProps) => {
     </Col>
   );
 };
-ViewDetails.defaultProps = defaultProps;
+
 export { ViewDetails };
