@@ -6,19 +6,20 @@ import {
   KEYCLOAK_URL_AVAILABLE_ROLES,
   KEYCLOAK_URL_USER_GROUPS,
 } from '../../constants';
+import { KeycloakUserRole } from 'keycloak-user-management/src/ducks/userRoles';
 
 /**
  * Fetch available roles
  *
  * @param {string} groupId - user group id
  * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {Function} setAvailableRolesAction method to set state for selected actions
+ * @param {Function} setRolesAction method to set state for selected actions
  * @param {KeycloakService} keycloakServiceClass - keycloak API service class
  */
 export const fetchAvailableRoles = (
   groupId: string,
   keycloakBaseURL: string,
-  setAvailableRolesAction: any,
+  setRolesAction: (role: KeycloakUserRole[]) => void,
   keycloakServiceClass: typeof KeycloakService = KeycloakService
 ): void => {
   const keycloakService = new keycloakServiceClass(
@@ -28,8 +29,8 @@ export const fetchAvailableRoles = (
 
   keycloakService
     .list()
-    .then((response: any) => {
-      setAvailableRolesAction(response);
+    .then((response: KeycloakUserRole[]) => {
+      setRolesAction(response);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);
@@ -41,13 +42,13 @@ export const fetchAvailableRoles = (
  *
  * @param {string} groupId - user group id
  * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {Function} setAvailableRolesAction method to set state for selected actions
+ * @param {Function} setRolesAction method to set state for selected actions
  * @param {KeycloakService} keycloakServiceClass - keycloak API service class
  */
 export const fetchAssignedRoles = (
   groupId: string,
   keycloakBaseURL: string,
-  setAvailableRolesAction: any,
+  setRolesAction: (role: KeycloakUserRole[]) => void,
   keycloakServiceClass: typeof KeycloakService = KeycloakService
 ): void => {
   const keycloakService = new keycloakServiceClass(
@@ -57,8 +58,8 @@ export const fetchAssignedRoles = (
 
   keycloakService
     .list()
-    .then((response: any) => {
-      setAvailableRolesAction(response);
+    .then((response: KeycloakUserRole[]) => {
+      setRolesAction(response);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);
@@ -70,13 +71,13 @@ export const fetchAssignedRoles = (
  *
  * @param {string} groupId - user group id
  * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {Function} setAvailableRolesAction method to set state for selected actions
+ * @param {Function} setRolesAction method to set state for selected actions
  * @param {KeycloakService} keycloakServiceClass - keycloak API service class
  */
 export const fetchEffectiveRoles = (
   groupId: string,
   keycloakBaseURL: string,
-  setAvailableRolesAction: any,
+  setRolesAction: (role: KeycloakUserRole[]) => void,
   keycloakServiceClass: typeof KeycloakService = KeycloakService
 ): void => {
   const keycloakService = new keycloakServiceClass(
@@ -86,8 +87,8 @@ export const fetchEffectiveRoles = (
 
   keycloakService
     .list()
-    .then((response: any) => {
-      setAvailableRolesAction(response);
+    .then((response: KeycloakUserRole[]) => {
+      setRolesAction(response);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);
