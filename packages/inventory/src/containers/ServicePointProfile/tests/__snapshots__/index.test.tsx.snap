@@ -65,4 +65,4 @@ exports[`Profile view Page renders correctly when data is present: contains butt
 
 exports[`Profile view Page shows broken page when jurisdiction request errors out: error broken page 1`] = `"Errorinvalid json response body at  reason: Unexpected token o in JSON at position 1Go BackBack Home"`;
 
-exports[`Profile view Page shows broken page: error broken page 1`] = `"ErrorCoughidGo BackBack Home"`;
+exports[`Profile view Page shows broken page: error broken page 1`] = `"ErrorCoughidGo backGo home"`;

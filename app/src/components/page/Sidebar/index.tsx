@@ -17,6 +17,7 @@ import {
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
   URL_USER_GROUPS,
+  URL_USER_ROLES,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -59,6 +60,7 @@ import {
   INVENTORY,
   ADD_INVENTORY_VIA_CSV,
   USER_GROUPS,
+  USER_ROLES,
 } from '../../../lang';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
@@ -173,6 +175,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               <Menu.Item key={'groups'}>
                 <Link to={URL_USER_GROUPS} className="admin-link">
                   {USER_GROUPS}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key={'roles'}>
+                <Link to={URL_USER_ROLES} className="admin-link">
+                  {USER_ROLES}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>

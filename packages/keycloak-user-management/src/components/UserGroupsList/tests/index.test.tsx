@@ -18,7 +18,7 @@ import {
   reducer as keycloakUsersReducer,
   removeKeycloakUserGroups,
 } from '../../../ducks/userGroups';
-import { userGroups } from '../../../ducks/tests/fixtures';
+import { unsortedUserGroups, userGroups } from '../../../ducks/tests/fixtures';
 import { URL_USER_GROUPS } from '../../../constants';
 import { ERROR_OCCURED } from '../../../lang';
 
@@ -44,7 +44,7 @@ const locationProps = {
   },
   match: {
     isExact: true,
-    params: {},
+    params: { userGroupId: null },
     path: `${URL_USER_GROUPS}`,
     url: `${URL_USER_GROUPS}`,
   },
@@ -55,6 +55,7 @@ reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 describe('components/UserGroupsList', () => {
   beforeEach(() => {
     fetch.resetMocks();
+    jest.clearAllMocks();
     opensrpStore.store.dispatch(removeKeycloakUserGroups());
   });
 
@@ -197,5 +198,86 @@ describe('components/UserGroupsList', () => {
 
     const userList = wrapper.find('UserGroupsList');
     expect(userList.find('Table').first().text()).toEqual('NameActionsNo Data');
+    wrapper.unmount();
+  });
+
+  it('sorts by group name', async () => {
+    fetch.once(JSON.stringify(unsortedUserGroups));
+    const props = {
+      ...locationProps,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <UserGroupsList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+
+    wrapper.update();
+
+    // Default order
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('New Group');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual('Admin');
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Test User Group'
+    );
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual('Super User');
+
+    // Ascending
+    wrapper.find('thead th').at(0).simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Admin');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual('New Group');
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual('Super User');
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual(
+      'Test User Group'
+    );
+
+    //Descending
+    wrapper.find('thead th').at(0).simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual(
+      'Test User Group'
+    );
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual('Super User');
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual('New Group');
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual('Admin');
+    wrapper.unmount();
+  });
+
+  it('correctly redirects to user group detail view url', async () => {
+    fetch.once(JSON.stringify(userGroups));
+    const props = {
+      ...locationProps,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <UserGroupsList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+
+    wrapper.update();
+
+    wrapper.find('Dropdown').at(0).simulate('click');
+    wrapper.update();
+    wrapper.find('.viewdetails').at(0).simulate('click');
+    wrapper.update();
+    // Redirect to user group detail view
+    expect(history.location.pathname).toEqual(`${URL_USER_GROUPS}/${userGroups[0].id}`);
   });
 });

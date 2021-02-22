@@ -187,9 +187,7 @@ describe('opensrp-plans/assignmentTable', () => {
     });
 
     // check the rendered output
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"ErrorCould not load AssignmentsGo BackBack Home"`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorCould not load AssignmentsGo backGo home"`);
     wrapper.unmount();
   });
 
