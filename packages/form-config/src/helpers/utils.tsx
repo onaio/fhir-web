@@ -23,6 +23,7 @@ import { handleDownload } from './fileDownload';
 import { fetchManifestDraftFiles, removeManifestDraftFiles } from '../ducks/manifestDraftFiles';
 import { Dispatch } from 'redux';
 import { fetchManifestReleases, ManifestReleasesTypes } from '../ducks/manifestReleases';
+import { format } from 'date-fns';
 
 type StrNum = string | number;
 
@@ -33,13 +34,7 @@ type StrNum = string | number;
  * @returns {string} - string of date in YYY-mm-dd format
  */
 export const formatDate = (stringDate: string): string => {
-  const date = new Date(stringDate);
-  let dd: StrNum = date.getDate();
-  let mm: StrNum = date.getMonth() + 1;
-  const yyy = date.getFullYear();
-  if (dd < 10) dd = `0${dd}`;
-  if (mm < 10) mm = `0${mm}`;
-  return `${yyy}-${mm}-${dd}`;
+  return format(new Date(stringDate), 'yyyy-MM-dd');
 };
 
 /**
