@@ -1072,7 +1072,7 @@ export const planActivities: PlanActivities = {
         start: '',
       },
       reason: ROUTINE,
-      goalId: PRODUCT_CHECK_ACTIVITY,
+      goalId: PRODUCT_CHECK_CODE,
       subjectCodableConcept: {
         text: 'Device',
       },
