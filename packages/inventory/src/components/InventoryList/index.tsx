@@ -57,7 +57,7 @@ const InventoryList = (props: InventoryListProps) => {
     editInventoryURL,
   } = props;
   const inventoriesArray = useSelector((state) =>
-    getInventoriesByExpiry(state, { expired: false })
+    getInventoriesByExpiry(state, { servicePointIds: [servicePointId], expired: false })
   ) as Inventory[];
   const { broken, handleBrokenPage } = useHandleBrokenPage();
   const dispatch = useDispatch();
