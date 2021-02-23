@@ -1091,6 +1091,14 @@ export const planActivities: PlanActivities = {
           },
         },
       ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
+          },
+        },
+      ],
       definitionUri: 'product_check.json',
       type: CREATE_TYPE,
     },

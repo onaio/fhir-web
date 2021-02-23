@@ -878,6 +878,14 @@ export const generatedMission1 = {
       ],
       definitionUri: 'product_check.json',
       description: 'Check for all products (100%) within the jurisdiction',
+      dynamicValue: [
+        {
+          expression: {
+            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
+          },
+          path: 'structureId',
+        },
+      ],
       goalId: 'product_check',
       identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
       prefix: 1,
