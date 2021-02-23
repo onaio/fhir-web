@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/react-utils",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A couple of utils that work with react",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -41,7 +41,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.3",
     "@opensrp/pkg-config": "0.0.3",
-    "@opensrp/server-service": "^0.0.14",
+    "@opensrp/server-service": "^0.0.15",
     "antd": "^4.6.3"
   },
   "peerDependencies": {
