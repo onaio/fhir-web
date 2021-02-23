@@ -167,9 +167,13 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
 
   useEffect(() => {
     if (rootLocations.length > 0) {
+      const customTreeDispatcher: typeof fetchTree = (response, treeId) =>
+        dispatch(fetchTree(response, treeId));
       const promises = rootLocations
         .map((location) => location.id.toString())
-        .map((rootId) => loadHierarchy(rootId, fetchTree, opensrpBaseURL, undefined, service));
+        .map((rootId) =>
+          loadHierarchy(rootId, customTreeDispatcher, opensrpBaseURL, undefined, service)
+        );
       Promise.all(promises).catch((err: Error) => sendErrorNotification(err.message));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
