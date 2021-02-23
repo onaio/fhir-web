@@ -16,7 +16,7 @@ import releasesReducer, {
 } from '../../../../ducks/manifestReleases';
 import { fixManifestReleases, manifestRelease4 } from '../../../../ducks/tests/fixtures';
 import { ReleaseList } from '..';
-import { ERROR_OCCURRED } from '../../../../constants';
+import { ERROR_OCCURRED } from '../../../../lang';
 
 const history = createBrowserHistory();
 const mockHistoryPush = jest.fn();

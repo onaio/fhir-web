@@ -69,11 +69,18 @@ export const customFetch: CustomFetch = async (...rest) => {
   }
 };
 
+export const processAcessToken = async (accessTokenCallBack: GetAccessTokenType | string) => {
+  if (typeof accessTokenCallBack === 'function') {
+    return (await accessTokenCallBack()) as string;
+  }
+  return accessTokenCallBack;
+};
+
 /** params option type */
 type paramsType = URLParams | null;
 
 /** get acess token call back fn type */
-type GetAccessTokenType = () => Promise<string | null>;
+export type GetAccessTokenType = () => Promise<string | null>;
 
 /** The OpenSRP service class
  *
@@ -151,10 +158,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    * @param {function() | string} accessTokenCallBack - received access token
    */
   public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
-    if (typeof accessTokenCallBack === 'function') {
-      return (await accessTokenCallBack()) as string;
-    }
-    return accessTokenCallBack;
+    return processAcessToken(accessTokenCallBack);
   }
 
   /** create method

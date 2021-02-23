@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/server-service",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "Wrapper around OpenSRP Server REST API",
   "publishConfig": {
     "access": "public"

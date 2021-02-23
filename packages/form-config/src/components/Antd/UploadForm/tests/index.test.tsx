@@ -14,9 +14,11 @@ import filesReducer, {
   filesReducerName,
 } from '../../../../ducks/manifestFiles';
 import { fixManifestFiles } from '../../../../ducks/tests/fixtures';
-import sampleFile from './sampleFile.json';
+import sampleFile from './../../../../helpers/tests/sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
+import * as opensrpService from '@opensrp/server-service';
+import { ERROR_OCCURRED } from '../../../../lang';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -28,6 +30,11 @@ const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification')
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
+
+jest.mock('@opensrp/server-service', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/server-service')),
 }));
 
 const props = {
@@ -149,6 +156,7 @@ describe('components/UploadForm', () => {
       'https://test-example.com/rest/clientForm',
       expect.any(Object)
     );
+    wrapper.unmount();
   });
 
   it('uploads file if isJsonValidator is true', async () => {
@@ -185,6 +193,7 @@ describe('components/UploadForm', () => {
       'https://test-example.com/rest/clientForm',
       expect.any(Object)
     );
+    wrapper.unmount();
   });
 
   it('edits form correctly', async () => {
@@ -234,6 +243,7 @@ describe('components/UploadForm', () => {
       'https://test-example.com/rest/clientForm',
       expect.any(Object)
     );
+    wrapper.unmount();
   });
 
   it('handles error if upload fails', async () => {
@@ -307,6 +317,40 @@ describe('components/UploadForm', () => {
 
     expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual(['Form is required']);
 
+    wrapper.unmount();
+  });
+
+  it('handles non-API errors when submitting', async () => {
+    jest
+      .spyOn(opensrpService, 'processAcessToken')
+      .mockImplementationOnce(() => Promise.reject('Error'));
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <UploadForm {...props} />
+        </Router>
+      </Provider>
+    );
+
+    wrapper
+      .find('input#form_name')
+      .simulate('change', { target: { name: 'form_name', value: 'test name' } });
+    wrapper
+      .find('input#module')
+      .simulate('change', { target: { name: 'module', value: 'test module' } });
+    wrapper
+      .find('input#form_relation')
+      .simulate('change', { target: { name: 'form_relation', value: 'bar' } });
+    wrapper.find('input#form').simulate('change', { target: { name: 'form', files: sampleFile } });
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(fetch).not.toHaveBeenCalled();
+    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
     wrapper.unmount();
   });
 });
