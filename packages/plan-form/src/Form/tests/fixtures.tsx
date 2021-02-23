@@ -587,7 +587,7 @@ export const mission1 = {
 export const newPayload1 = {
   action: [
     {
-      identifier: 'dea48a43-0af4-5822-be39-81256f53b16c',
+      identifier: '0c8f5b3a-6023-5917-b944-acbfba254efe',
       prefix: 1,
       title: 'Product Check',
       description: 'Check for all products (100%) within the jurisdiction',
@@ -602,7 +602,7 @@ export const newPayload1 = {
       code: 'product_check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
-      goalId: 'Product Check',
+      goalId: 'product_check',
       subjectCodableConcept: { text: 'Device' },
       trigger: [{ name: 'plan-activation', type: 'named-event' }],
       condition: [
