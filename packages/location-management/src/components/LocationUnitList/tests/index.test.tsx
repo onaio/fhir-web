@@ -265,15 +265,6 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow);
 
-    // test table with tree node without any child
-    const treeItemwithoutchild = wrapper.find('span.ant-tree-title').last();
-    treeItemwithoutchild.simulate('click');
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow); // table didn't change
-
     // test table with tree node with child
     const treeItemwithchild = wrapper.find('span.ant-tree-title').first();
     treeItemwithchild.simulate('click');
