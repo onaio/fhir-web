@@ -358,7 +358,7 @@ describe('components/forms/UserForm', () => {
     });
     const toggleWrapper = wrapper.find('#practitionerToggle');
     expect(toggleWrapper).toBeTruthy();
-    expect(wrapper.find('#practitionerToggle').at(0).props()).toMatchSnapshot('practitionerToggle');
+    expect(toggleWrapper.at(0).props()).toMatchSnapshot('practitionerToggle');
   });
 
   it('show practitioner toggle when editing user and practitioner is provided', async () => {
@@ -381,7 +381,7 @@ describe('components/forms/UserForm', () => {
     });
     const toggleWrapper = wrapper.find('#practitionerToggle');
     expect(toggleWrapper).toBeTruthy();
-    expect(wrapper.find('#practitionerToggle').at(0).props()).toMatchSnapshot('practitionerToggle');
+    expect(toggleWrapper.at(0).props()).toMatchSnapshot('practitionerToggle');
   });
 
   it('hides practitioner toggle if user is editing their own profile', async () => {
