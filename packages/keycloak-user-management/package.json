@@ -49,7 +49,7 @@
     "@opensrp/keycloak-service": "^0.0.12",
     "@opensrp/notifications": "^0.0.1",
     "@opensrp/pkg-config": "^0.0.3",
-    "@opensrp/react-utils": "^0.0.3",
+    "@opensrp/react-utils": "^0.0.5",
     "@opensrp/server-service": "^0.0.15",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
