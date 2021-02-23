@@ -7,10 +7,8 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
+import { LOCATION_UNIT, LOCATION_UNIT_GROUP, WELCOME_TO_OPENSRP, TEAMS } from '../../../lang';
 import {
-  LOCATIONS_UNIT,
-  LOCATIONS_UNIT_GROUP,
-  TEAMS,
   URL_USER,
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
@@ -32,7 +30,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
       </Helmet>
       <Row justify="center" className="weclome-box">
         <Col span={6}>
-          <h3>Welcome to OpenSRP</h3>
+          <h3>{WELCOME_TO_OPENSRP}</h3>
         </Col>
       </Row>
       <Row gutter={16} className="links-box">
@@ -59,7 +57,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
             <Col className="gutter-row" span={12}>
               <Link to={URL_LOCATION_UNIT} className="admin-link">
                 <Button color="outline" className="btn-links">
-                  {LOCATIONS_UNIT}
+                  {LOCATION_UNIT}
                 </Button>
               </Link>
             </Col>
@@ -67,7 +65,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
             <Col className="gutter-row" span={12}>
               <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
                 <Button color="outline" className="btn-links">
-                  {LOCATIONS_UNIT_GROUP}
+                  {LOCATION_UNIT_GROUP}
                 </Button>
               </Link>
             </Col>

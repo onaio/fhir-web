@@ -45,7 +45,7 @@ describe('src/components/SearchForm', () => {
       </Router>
     );
 
-    wrapper.find('input').simulate('input', { target: { value: 'test' } });
+    wrapper.find('input').simulate('change', { target: { value: 'test' } });
 
     expect(onChangeHandlerMock.mock.calls[0][0].target.value).toEqual('test');
     wrapper.unmount();
@@ -80,9 +80,12 @@ describe('src/components/SearchForm', () => {
       </Router>
     );
 
-    wrapper.find('input').simulate('input', { target: { value: 'test' } });
+    wrapper.find('input').simulate('change', { target: { value: 'test' } });
     expect(history.location.search).toEqual('?randomString=test');
 
-    wrapper.unmount();
+    // simulate clear
+    wrapper.find('.ant-input-clear-icon').first().simulate('click');
+    wrapper.update();
+    expect(history.location.search).toEqual('');
   });
 });

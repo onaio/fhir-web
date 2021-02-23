@@ -10,6 +10,8 @@ import * as opensrpStore from '@opensrp/store';
 import * as fixtures from './fixtures';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import * as notifications from '@opensrp/notifications';
 import fetch from 'jest-fetch-mock';
@@ -22,8 +24,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED } from '../../../constants';
-import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { ERROR_OCCURED } from '../../../lang';
 import { practitioner1 } from '../../forms/UserForm/tests/fixtures';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -65,6 +66,21 @@ describe('components/CreateEditUser', () => {
     },
     extraData: {},
   };
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
+      )
+    );
+  });
 
   beforeEach(() => {
     store.dispatch(removeKeycloakUsers());

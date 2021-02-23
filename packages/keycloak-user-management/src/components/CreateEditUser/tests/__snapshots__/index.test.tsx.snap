@@ -6,7 +6,6 @@ Object {
     span={24}
   >
     <UserForm
-      accessToken="access token"
       extraData={Object {}}
       initialValues={
         Object {
