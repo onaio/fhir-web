@@ -195,6 +195,10 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     servicePointProfileURL,
   };
 
+  const coordinates = getCords(structure.geometry);
+  const latLong = [coordinates.lat, coordinates.lng];
+  const latLongString = latLong.some((el) => el) ? latLong.join(', ') : '';
+
   return (
     <>
       <div className="inventory-profile-header">
@@ -221,7 +225,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
               </Col>
               <Col md={12}>
                 <GeographyItem label={TYPE_LABEL} value={structure.properties.type} />
-                <GeographyItem label={LAT_LONG_LABEL} value={getCords(structure.geometry)} />
+                <GeographyItem label={LAT_LONG_LABEL} value={latLongString} />
                 <GeographyItem label={SERVICE_POINT_ID_LABEL} value={spId} />
               </Col>
             </Row>

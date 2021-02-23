@@ -243,6 +243,10 @@ export const structure1 = {
 export const structure2 = {
   type: 'Feature',
   id: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+  geometry: {
+    type: 'Point',
+    coordinates: [49.52125, -16.78147],
+  },
   properties: {
     type: 'Water Point',
     status: 'Active',
