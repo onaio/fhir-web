@@ -136,7 +136,7 @@ describe('Profile view Page', () => {
     expect(fetch.mock.calls[2]).toEqual(fetchCalls[2]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Back to the list of service pointsAmbatoharanana InventoryRegion: District: Commune: Type: Water PointLatitude/longitude: Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointUnable to fetch inventories for service point"`
+      `"Back to the list of service pointsAmbatoharanana InventoryRegion: District: Commune: Type: Water PointLatitude/longitude: -16.78147, 49.52125Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointUnable to fetch inventories for service point"`
     );
     expect(wrapper.find('.title').text()).toEqual('Ambatoharanana Inventory');
 
@@ -202,5 +202,33 @@ describe('Profile view Page', () => {
 
   it('should return correct geographic location', async () => {
     expect(findPath(geographicHierarchy, 1)).toEqual(geographicHierarchy[1]);
+  });
+
+  it('render correct formatted value with lat long', async () => {
+    fetch
+      .once(JSON.stringify(structure2))
+      .once(JSON.stringify([madagascar]))
+      .once(JSON.stringify(madagascarTree));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ServicePointProfile {...props}></ServicePointProfile>
+        </Router>
+      </Provider>
+    );
+
+    /** loading view */
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.find('.geography-item').at(8).text()).toEqual(
+      'Latitude/longitude: -16.78147, 49.52125'
+    );
+
+    wrapper.unmount();
   });
 });
