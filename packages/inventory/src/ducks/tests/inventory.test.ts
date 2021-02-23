@@ -58,8 +58,18 @@ describe('src/ducks/inventory', () => {
 
   it('fetches inventories by expiry', () => {
     store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
-    expect(getInventoriesByExpiry(store.getState(), { expired: true })).toEqual([inventory1]);
-    expect(getInventoriesByExpiry(store.getState(), { expired: false })).toEqual([inventory2]);
+    expect(
+      getInventoriesByExpiry(store.getState(), {
+        servicePointIds: [inventory1.locationId],
+        expired: true,
+      })
+    ).toEqual([inventory1]);
+    expect(
+      getInventoriesByExpiry(store.getState(), {
+        servicePointIds: [inventory2.locationId],
+        expired: false,
+      })
+    ).toEqual([inventory2]);
   });
 
   it('fetches inventories if expiry is not defined', () => {

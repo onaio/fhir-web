@@ -27,7 +27,9 @@ export const SERVER_VERSION = i18n.t('Server version');
 export const CANCEL = i18n.t('Cancel');
 export const PHOTO_OF_THE_PRODUCT = i18n.t('Photo of the product (optional)');
 export const ACCOUNTABILITY_PERIOD = i18n.t('Accountability period (in months)');
-export const DESCRIBE_THE_PRODUCTS_USE = "Describe the product's intended use at the service point";
+export const DESCRIBE_THE_PRODUCTS_USE = i18n.t(
+  "Describe the product's intended use at the service point"
+);
 export const USED_APPROPRIATELY = i18n.t('Is it being used appropriately? (optional)');
 export const CONDITION_PLACEHOLDER = i18n.t(
   'Describe how a supply monitor would assess whether the product is in good condition'
@@ -38,5 +40,8 @@ export const AVAILABILITY_PLACEHOLDER = i18n.t(
 );
 export const AVAILABILITY_LABEL = i18n.t('Is it there?');
 export const ATTRACTIVE_ITEM_LABEL = i18n.t('Attractive item?');
-export const MATERIAL_NUMBER_PLACEHOLDER = "Enter the product's material number";
+export const MATERIAL_NUMBER_PLACEHOLDER = i18n.t("Enter the product's material number");
 export const SUBMIT = i18n.t('Submit');
+
+// Errors
+export const ERROR_IMAGE_LOAD = i18n.t('Image could not be loaded');

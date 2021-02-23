@@ -4,7 +4,7 @@ import { Geometry } from 'geojson';
 /** geographic location interface */
 export interface GeographicLocationInterface {
   geographicLevel?: number;
-  label?: number;
+  label?: string;
 }
 
 /**
