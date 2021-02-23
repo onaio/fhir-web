@@ -197,7 +197,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
 
   const coordinates = getCords(structure.geometry);
   const latLong = [coordinates.lat, coordinates.lng];
-  const latLongString = latLong.some((el) => el) ? latLong.join(',') : '';
+  const latLongString = latLong.some((el) => el) ? latLong.join(', ') : '';
 
   return (
     <>
