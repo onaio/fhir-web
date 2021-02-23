@@ -18,7 +18,7 @@ import { getUser } from '@onaio/session-reducer';
 import { EDIT } from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { fetchAllHierarchies } from 'location-management/src/ducks/location-hierarchy';
+import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
