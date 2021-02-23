@@ -197,13 +197,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
           <Form.Item id="enabled" name="enabled" label="Enable user">
-            <Radio.Group name="enabled">
-              {status.map((e) => (
-                <Radio name="enabled" key={e.label} value={e.value}>
-                  {e.label}
-                </Radio>
-              ))}
-            </Radio.Group>
+            <Radio.Group options={status} name="enabled"></Radio.Group>
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item id="practitionerToggle" name="active" label={MARK_AS_PRACTITIONER}>
