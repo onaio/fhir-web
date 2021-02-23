@@ -70,7 +70,7 @@
   padding-right: 0;
 }
 
-.main-content__header {
+.product-catalogue .main-content__header {
   display: flex;
   justify-content: flex-end;
   align-items: center;

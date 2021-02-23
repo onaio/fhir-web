@@ -5,7 +5,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/location-units';
 import Form from './Form';
 import { useParams } from 'react-router';
-import { ADD_LOCATION_UNIT_GROUP, EDIT_LOCATION_UNIT_GROUP } from '../../constants';
+import { ADD_LOCATION_UNIT_GROUP, EDIT_LOCATION_UNIT_GROUP } from '../../lang';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 

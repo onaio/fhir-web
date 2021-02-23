@@ -4,11 +4,14 @@ import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 import { UserForm, defaultInitialValues } from '..';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { Router } from 'react-router';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -46,6 +49,21 @@ describe('components/forms/UserForm', () => {
     practitioner: null,
     extraData: {},
   };
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'access token', state: 'abcde' } }
+      )
+    );
+  });
 
   beforeEach(() => {
     fetch.once(JSON.stringify(fixtures.userActions));
@@ -93,9 +111,10 @@ describe('components/forms/UserForm', () => {
 
     expect(wrapper.find('FormItemInput').at(0).prop('errors')).toEqual(['First Name is required']);
     expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual(['Last Name is required']);
-    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual(['Email is required']);
+    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual([]);
     expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual(['Username is required']);
     expect(wrapper.find('FormItemInput').at(4).prop('errors')).toEqual([]);
+    expect(wrapper.find('FormItemInput').at(5).prop('errors')).toEqual([]);
 
     wrapper.unmount();
   });

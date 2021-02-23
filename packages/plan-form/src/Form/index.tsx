@@ -18,6 +18,7 @@ import {
   CONDITIONS_LABEL,
   DESCRIPTION_LABEL,
   DESCRIPTION_PLACEHOLDER,
+  DYNAMIC_VALUE_LEGEND_TITLE,
   END_DATE,
   GOAL_LABEL,
   INTERVENTION_TYPE_LABEL,
@@ -45,7 +46,6 @@ import {
   goalPrioritiesDisplay,
   goalUnitDisplay,
   planActivities,
-  planStatusDisplay,
   PlanStatus,
   InterventionType,
   PlanActionCodesType,
@@ -94,6 +94,7 @@ import {
   PlanFormFieldsKeys,
 } from '../helpers/types';
 import { postPutPlan } from '../helpers/dataloaders';
+import { PlanStatusRenderer } from './componentsUtils/status';
 
 const { Panel } = Collapse;
 const { List, Item: FormItem } = Form;
@@ -168,6 +169,7 @@ const PlanForm = (props: PlanFormProps) => {
   const [activityModal, setActivityModal] = useState<boolean>(false);
   const [actionConditions, setActionConditions] = useState<Dictionary>({});
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
+  const [actionDynamicValue, setActionDynamicValue] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const {
     allFormActivities,
@@ -192,12 +194,13 @@ const PlanForm = (props: PlanFormProps) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const { conditions, triggers } = getConditionAndTriggers(
+    const { conditions, triggers, dynamicValue } = getConditionAndTriggers(
       initialValues.activities,
       disabledFields.includes('activities')
     );
     setActionConditions(conditions);
     setActionTriggers(triggers);
+    setActionDynamicValue(dynamicValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabledFields, initialValues.activities, envConfigs]);
 
@@ -352,6 +355,7 @@ const PlanForm = (props: PlanFormProps) => {
                   );
                   setActionConditions(newStuff.conditions);
                   setActionTriggers(newStuff.triggers);
+                  setActionDynamicValue(newStuff.dynamicValue);
                 }
                 form.setFieldsValue({ jurisdictions: initialJurisdictionValues });
               }}
@@ -407,16 +411,15 @@ const PlanForm = (props: PlanFormProps) => {
             rules={validationRules.status}
             hidden={isHidden(status)}
             id="status"
+            getValueFromEvent={() => {
+              return form.getFieldsValue()[status];
+            }}
           >
-            <Select disabled={disabledFields.includes(status)}>
-              {Object.entries(PlanStatus)
-                .filter((e) => !disAllowedStatusChoices.includes(e[1]))
-                .map((e) => (
-                  <Option key={e[0]} value={e[1]}>
-                    {planStatusDisplay[e[1]]}
-                  </Option>
-                ))}
-            </Select>
+            <PlanStatusRenderer
+              setFieldsValue={form.setFieldsValue}
+              disabledFields={disabledFields}
+              disAllowedStatusChoices={disAllowedStatusChoices}
+            />
           </FormItem>
           <FormItem
             rules={validationRules.dateRange}
@@ -535,6 +538,7 @@ const PlanForm = (props: PlanFormProps) => {
                                       );
                                       setActionConditions(newActivityValues.conditions);
                                       setActionTriggers(newActivityValues.triggers);
+                                      setActionDynamicValue(newActivityValues.dynamicValue);
                                     }}
                                   ></Button>
                                 )
@@ -726,6 +730,9 @@ const PlanForm = (props: PlanFormProps) => {
                                   ) ||
                                     actionConditions.hasOwnProperty(
                                       planActivities[index].actionCode
+                                    ) ||
+                                    actionDynamicValue.hasOwnProperty(
+                                      planActivities[index].actionCode
                                     )) && (
                                     <Collapse>
                                       <Panel
@@ -740,6 +747,14 @@ const PlanForm = (props: PlanFormProps) => {
                                           <fieldset className="triggers-fieldset">
                                             <legend>{TRIGGERS_LABEL}</legend>
                                             {actionTriggers[planActivities[index].actionCode]}
+                                          </fieldset>
+                                        )}
+                                        {actionDynamicValue.hasOwnProperty(
+                                          planActivities[index].actionCode
+                                        ) && (
+                                          <fieldset className="dynamic-value-fieldset">
+                                            <legend>{DYNAMIC_VALUE_LEGEND_TITLE}</legend>
+                                            {actionDynamicValue[planActivities[index].actionCode]}
                                           </fieldset>
                                         )}
                                         {actionConditions.hasOwnProperty(
@@ -804,6 +819,9 @@ const PlanForm = (props: PlanFormProps) => {
                                                 );
                                                 setActionConditions(newActivityValues.conditions);
                                                 setActionTriggers(newActivityValues.triggers);
+                                                setActionDynamicValue(
+                                                  newActivityValues.dynamicValue
+                                                );
                                               }}
                                             >
                                               {format(ADD_CODED_ACTIVITY, thisActivity.actionCode)}

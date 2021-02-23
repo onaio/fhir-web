@@ -11,7 +11,8 @@ import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { notification } from 'antd';
-import { baseURL, ERROR_OCCURED } from '../../../constants';
+import { baseURL } from '../../../constants';
+import { ERROR_OCCURED } from '../../../lang';
 
 LocationUnitGroupView.defaultProps = { opensrpBaseURL: baseURL };
 

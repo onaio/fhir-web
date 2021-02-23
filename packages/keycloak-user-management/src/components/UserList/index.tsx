@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Row, Col, Button, Space, Table, Divider } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Spin } from 'antd';
-import { makeAPIStateSelector } from '@opensrp/store';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
@@ -17,13 +16,8 @@ import {
   reducer as keycloakUsersReducer,
   makeKeycloakUsersSelector,
 } from '../../ducks/user';
-import {
-  URL_USER_CREATE,
-  KEYCLOAK_URL_USERS,
-  ERROR_OCCURED,
-  NO_DATA_FOUND,
-  SEARCH_QUERY_PARAM,
-} from '../../constants';
+import { URL_USER_CREATE, KEYCLOAK_URL_USERS, SEARCH_QUERY_PARAM } from '../../constants';
+import { ERROR_OCCURED, NO_DATA_FOUND } from '../../lang';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
@@ -33,7 +27,6 @@ import { ADD_USER, USER_MANAGEMENT_PAGE_HEADER } from '../../lang';
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 // Define selector instance
-const getAccessToken = makeAPIStateSelector();
 const usersSelector = makeKeycloakUsersSelector();
 
 /** interface for component props */
@@ -42,14 +35,12 @@ export interface Props {
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakUsers: KeycloakUser[];
-  accessToken: string;
   keycloakBaseURL: string;
   extraData: Dictionary;
 }
 
 /** default component props */
 export const defaultProps = {
-  accessToken: '',
   serviceClass: KeycloakService,
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
   removeKeycloakUsersCreator: removeKeycloakUsers,
@@ -78,7 +69,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
     fetchKeycloakUsersCreator,
     removeKeycloakUsersCreator,
     keycloakUsers,
-    accessToken,
     keycloakBaseURL,
     extraData,
   } = props;
@@ -90,7 +80,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   React.useEffect(() => {
     if (isLoading) {
-      const serve = new serviceClass(accessToken, KEYCLOAK_URL_USERS, keycloakBaseURL);
+      const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
       serve
         .list()
         .then((res: KeycloakUser[]) => {
@@ -149,7 +139,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
               <Table
                 columns={getTableColumns(
                   removeKeycloakUsersCreator,
-                  accessToken,
                   keycloakBaseURL,
                   isLoadingCallback,
                   extraData,
@@ -182,7 +171,6 @@ export { UserList };
 /** Interface for connected state to props */
 interface DispatchedProps {
   keycloakUsers: KeycloakUser[];
-  accessToken: string;
   extraData: Dictionary;
 }
 
@@ -190,9 +178,8 @@ interface DispatchedProps {
 const mapStateToProps = (state: Partial<Store>, props: UserListTypes): DispatchedProps => {
   const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
   const keycloakUsers = usersSelector(state, { searchText: searchQuery });
-  const accessToken = getAccessToken(state, { accessToken: true });
   const extraData = getExtraData(state);
-  return { keycloakUsers, accessToken, extraData };
+  return { keycloakUsers, extraData };
 };
 
 /** map props to action creators */
