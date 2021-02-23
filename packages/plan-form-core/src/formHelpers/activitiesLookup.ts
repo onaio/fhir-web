@@ -1072,7 +1072,7 @@ export const planActivities: PlanActivities = {
         start: '',
       },
       reason: ROUTINE,
-      goalId: PRODUCT_CHECK_ACTIVITY,
+      goalId: PRODUCT_CHECK_CODE,
       subjectCodableConcept: {
         text: 'Device',
       },
@@ -1088,6 +1088,14 @@ export const planActivities: PlanActivities = {
           expression: {
             description: 'Product exists',
             expression: '$this.is(FHIR.Bundle)',
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
           },
         },
       ],
