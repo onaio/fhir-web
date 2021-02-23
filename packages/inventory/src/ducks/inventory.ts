@@ -132,7 +132,7 @@ export const getInventoriesByServicePointsIdsFactory = createSelector(
 
 /** factory that returns a selector to retrieve the inventories by their expiry */
 export const getInventoriesByExpiry = createSelector(
-  getInventoriesArray,
+  getInventoriesByServicePointsIdsFactory,
   getServicePointsByExpiry,
   (inventories, returnExpired) => {
     const inventoriesOfInterest: Inventory[] = [];

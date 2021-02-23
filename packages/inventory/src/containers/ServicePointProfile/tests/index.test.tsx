@@ -23,10 +23,11 @@ import {
   madagascar,
   madagascarTree,
   opensrpBaseURL,
-  structures,
+  structure2,
 } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
+import { Helmet } from 'react-helmet';
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
 jest.mock('@opensrp/notifications', () => ({
@@ -84,7 +85,7 @@ describe('Profile view Page', () => {
   });
 
   it('renders correctly', async () => {
-    fetch.once(JSON.stringify([])).once(JSON.stringify([]));
+    fetch.once(null).once(JSON.stringify([]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -108,11 +109,10 @@ describe('Profile view Page', () => {
     wrapper.unmount();
   });
 
-  it('renders when data is present', async () => {
+  it('renders correctly when data is present', async () => {
     fetch
-      .once(JSON.stringify(structures))
+      .once(JSON.stringify(structure2))
       .once(JSON.stringify([madagascar]))
-      // .once(JSON.stringify(inventories))
       .once(JSON.stringify(madagascarTree));
 
     const wrapper = mount(
@@ -138,6 +138,15 @@ describe('Profile view Page', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Back to the list of service pointsAmbatoharanana InventoryRegion: District: Commune: Type: Water PointLatitude/longitude: Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointUnable to fetch inventories for service point"`
     );
+    expect(wrapper.find('.title').text()).toEqual('Ambatoharanana Inventory');
+
+    expect(toJson(wrapper.find('div.flex-center-right'))).toMatchSnapshot(
+      'contains button to edit service point'
+    );
+
+    const helmet = Helmet.peek();
+    expect(helmet.title).toEqual('Ambatoharanana Inventory');
+
     wrapper.unmount();
   });
 
@@ -168,7 +177,7 @@ describe('Profile view Page', () => {
 
   it('shows broken page when jurisdiction request errors out', async () => {
     const errorMessage = 'Coughid';
-    fetch.once(JSON.stringify({ count: structures.length })).once(JSON.stringify([madagascar]));
+    fetch.once(structure2).once(JSON.stringify([madagascar]));
     fetch.mockReject(new Error(errorMessage));
 
     const wrapper = mount(
@@ -189,7 +198,6 @@ describe('Profile view Page', () => {
 
     // no data
     expect(wrapper.text()).toMatchSnapshot('error broken page');
-    wrapper.unmount();
   });
 
   it('should return correct geographic location', async () => {

@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "publishConfig": {
     "access": "public"
@@ -38,9 +39,9 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.1",
     "@opensrp/pkg-config": "^0.0.3",
-    "@opensrp/react-utils": "^0.0.1",
     "@opensrp/reducer-factory": "^0.0.12",
     "@opensrp/server-service": "^0.0.14",
+    "@opensrp/react-utils": "^0.0.3",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
     "i18next": "^19.8.4",
