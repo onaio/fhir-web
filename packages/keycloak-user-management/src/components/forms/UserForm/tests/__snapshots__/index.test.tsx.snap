@@ -181,22 +181,19 @@ Object {
         >
           <Memo
             name="enabled"
-          >
-            <Radio
-              name="enabled"
-              type="radio"
-              value={true}
-            >
-              Yes
-            </Radio>
-            <Radio
-              name="enabled"
-              type="radio"
-              value={false}
-            >
-              No
-            </Radio>
-          </Memo>
+            options={
+              Array [
+                Object {
+                  "label": "Yes",
+                  "value": true,
+                },
+                Object {
+                  "label": "No",
+                  "value": false,
+                },
+              ]
+            }
+          />
         </FormItem>
         <FormItem
           id="requiredActions"
@@ -293,103 +290,53 @@ Object {
 
 exports[`components/forms/UserForm show practitioner toggle when editing user and practitioner is null: practitionerToggle 1`] = `
 Object {
-  "children": <Context.Provider
-    value={
-      Object {
-        "updateItemErrors": [Function],
-      }
-    }
+  "children": <Memo
+    name="active"
   >
-    <Memo
-      update={3}
+    <Radio
+      name="active"
+      type="radio"
+      value={true}
+    >
+      Yes
+    </Radio>
+    <Radio
+      name="active"
+      type="radio"
       value={false}
     >
-      <Memo
-        id="active"
-        name="active"
-        onChange={[Function]}
-        value={false}
-      >
-        <Radio
-          name="active"
-          type="radio"
-          value={true}
-        >
-          Yes
-        </Radio>
-        <Radio
-          name="active"
-          type="radio"
-          value={false}
-        >
-          No
-        </Radio>
-      </Memo>
-    </Memo>
-  </Context.Provider>,
-  "errors": Array [],
+      No
+    </Radio>
+  </Memo>,
   "id": "practitionerToggle",
   "label": "Mark as Practitioner",
-  "name": Array [
-    "active",
-  ],
-  "onDomErrorVisibleChange": [Function],
-  "prefixCls": "ant-form",
-  "status": "",
-  "touched": false,
-  "validateStatus": "",
-  "validating": false,
+  "name": "active",
 }
 `;
 
 exports[`components/forms/UserForm show practitioner toggle when editing user and practitioner is provided: practitionerToggle 1`] = `
 Object {
-  "children": <Context.Provider
-    value={
-      Object {
-        "updateItemErrors": [Function],
-      }
-    }
+  "children": <Memo
+    name="active"
   >
-    <Memo
-      update={3}
+    <Radio
+      name="active"
+      type="radio"
       value={true}
     >
-      <Memo
-        id="active"
-        name="active"
-        onChange={[Function]}
-        value={true}
-      >
-        <Radio
-          name="active"
-          type="radio"
-          value={true}
-        >
-          Yes
-        </Radio>
-        <Radio
-          name="active"
-          type="radio"
-          value={false}
-        >
-          No
-        </Radio>
-      </Memo>
-    </Memo>
-  </Context.Provider>,
-  "errors": Array [],
+      Yes
+    </Radio>
+    <Radio
+      name="active"
+      type="radio"
+      value={false}
+    >
+      No
+    </Radio>
+  </Memo>,
   "id": "practitionerToggle",
   "label": "Mark as Practitioner",
-  "name": Array [
-    "active",
-  ],
-  "onDomErrorVisibleChange": [Function],
-  "prefixCls": "ant-form",
-  "status": "",
-  "touched": false,
-  "validateStatus": "",
-  "validating": false,
+  "name": "active",
 }
 `;
 
