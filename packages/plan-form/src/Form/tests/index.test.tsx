@@ -317,13 +317,15 @@ describe('containers/forms/PlanForm', () => {
 
     expect(fetch).toHaveBeenCalled();
 
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(newPayload1);
+
     // the last request should be the one that is sent to OpenSRP
-    expect(fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[0]).toMatchObject([
       'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: JSON.stringify(newPayload1),
+        body: expect.any(String),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer null',
