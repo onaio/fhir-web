@@ -136,7 +136,7 @@ describe('Profile view Page', () => {
     expect(fetch.mock.calls[2]).toEqual(fetchCalls[2]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Back to the list of service pointsAmbatoharanana InventoryRegion: District: Commune: Type: Water PointLatitude/longitude: -16.78147, 49.52125Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointUnable to fetch inventories for service point"`
+      `"Back to the list of service pointsAmbatoharanana InventoryRegion: ANALANJIROFODistrict: MANANARA AVARATRACommune: AMBATOHARANANAType: Water PointLatitude/longitude: -16.78147, 49.52125Service point ID: b8a7998c-5df6-49eb-98e6-f0675db71848Edit service pointUnable to fetch inventories for service point"`
     );
     expect(wrapper.find('.title').text()).toEqual('Ambatoharanana Inventory');
 

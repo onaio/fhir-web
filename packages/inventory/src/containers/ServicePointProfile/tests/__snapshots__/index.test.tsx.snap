@@ -186,7 +186,7 @@ exports[`Profile view Page renders correctly when data is present: geographic it
 exports[`Profile view Page renders correctly when data is present: geographic item key value 5`] = `
 <GeographyItem
   label="Latitude/longitude"
-  value=""
+  value="-16.78147, 49.52125"
 >
   <Col
     className="geography-item"
@@ -206,6 +206,7 @@ exports[`Profile view Page renders correctly when data is present: geographic it
         className="value"
       >
          
+        -16.78147, 49.52125
       </p>
     </div>
   </Col>

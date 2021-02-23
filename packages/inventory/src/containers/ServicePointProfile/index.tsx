@@ -167,7 +167,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
 
   useEffect(() => {
     if (rootLocations.length > 0) {
-      const customTreeDispatcher: typeof fetchTree = (response, treeId?) =>
+      const customTreeDispatcher: typeof fetchTree = (response, treeId) =>
         dispatch(fetchTree(response, treeId));
       const promises = rootLocations
         .map((location) => location.id.toString())
