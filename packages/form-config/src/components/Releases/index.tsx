@@ -1,6 +1,5 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -18,14 +17,15 @@ import {
   APP_ID_LABEL,
   APP_VERSION_LABEL,
   VIEW_FILES_LABEL,
-  UPOL0AD_FILE_LABEL,
+  UPLOAD_FILE_LABEL,
   IDENTIFIER_LABEL,
   FIND_RELEASES_LABEL,
   UPDATED_AT_LABEL,
-} from '../../constants';
+} from '../../lang';
 import { Cell } from 'react-table';
-import { formatDate } from '../../helpers/utils';
+import { formatDate, fetchReleaseFiles } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -41,7 +41,7 @@ export interface ReleasesDefaultProps extends SearchBarDefaultProps {
   updatedAt: string;
   uploadFileLabel: string;
   viewFilesLabel: string;
-  accessToken: string;
+  accessToken: string | GetAccessTokenType;
 }
 
 /** ManifestReleases props interface */
@@ -78,21 +78,27 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestReleasesTypes[]>(data);
 
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
+    }
+  };
+
   useEffect(() => {
     /** get manifest releases */
     if (data.length < 1) {
-      setLoading(true);
-      const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
-      clientService
-        .list()
-        .then((res: ManifestReleasesTypes[]) => fetchReleases(res))
-        .catch((error) => {
-          if (customAlert) {
-            customAlert(String(error), { type: 'error' });
-          }
-        })
-        .finally(() => setLoading(false));
+      fetchReleaseFiles(
+        accessToken,
+        baseURL,
+        fetchReleases,
+        setLoading,
+        displayAlertError,
+        endpoint,
+        undefined,
+        getPayload
+      );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseURL, endpoint, getPayload, customAlert, fetchReleases, data.length, accessToken]);
 
   useEffect(() => {
@@ -199,7 +205,7 @@ const defaultProps: ReleasesDefaultProps = {
   identifierLabel: IDENTIFIER_LABEL,
   placeholder: FIND_RELEASES_LABEL,
   updatedAt: UPDATED_AT_LABEL,
-  uploadFileLabel: UPOL0AD_FILE_LABEL,
+  uploadFileLabel: UPLOAD_FILE_LABEL,
   viewFilesLabel: VIEW_FILES_LABEL,
   accessToken: '',
 };

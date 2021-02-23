@@ -24,7 +24,7 @@ import * as helpers from '../../../../helpers/fileDownload';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../../constants';
+import { ERROR_OCCURRED } from '../../../../lang';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,

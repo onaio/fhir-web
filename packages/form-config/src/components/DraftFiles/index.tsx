@@ -1,6 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
 import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
 import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
@@ -24,12 +23,13 @@ import {
   DOWNLOAD_LABEL,
   FIND_DRAFT_RELEASES_LABEL,
   CREATED_AT_LABEL,
-  UPOL0AD_FILE_LABEL,
-} from '../../constants';
+  UPLOAD_FILE_LABEL,
+} from '../../lang';
 import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile } from '../../helpers/utils';
+import { formatDate, downloadManifestFile, makeRelease, fetchDrafts } from '../../helpers/utils';
 import { Link } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, DraftFilesReducer);
@@ -48,7 +48,7 @@ export interface DraftsDefaultProps extends SearchBarDefaultProps {
   makeReleaseLabel: string;
   moduleLabel: string;
   uploadFileLabel: string;
-  accessToken: string;
+  accessToken: GetAccessTokenType | string;
 }
 
 /** manifest Draft files props interface */
@@ -99,55 +99,29 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
   const [stateData, setStateData] = useState<ManifestFilesTypes[]>(data);
   const [ifDoneHere, setIfDoneHere] = useState(false);
 
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
+    }
+  };
+
   useEffect(() => {
-    /** get manifest Draftfiles */
-    setLoading(true);
-    /* eslint-disable-next-line @typescript-eslint/camelcase */
-    const params = { is_draft: true };
-    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
-    clientService
-      .list(params)
-      .then((res: ManifestFilesTypes[]) => {
-        fetchDraftFiles(res);
-      })
-      .catch((error) => {
-        if (customAlert) {
-          customAlert(String(error), { type: 'error' });
-        }
-      })
-      .finally(() => setLoading(false));
+    fetchDrafts(
+      accessToken,
+      baseURL,
+      fetchDraftFiles,
+      setLoading,
+      displayAlertError,
+      endpoint,
+      undefined,
+      getPayload
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseURL, endpoint, getPayload, customAlert, fetchDraftFiles, accessToken]);
 
   useEffect(() => {
     setStateData(data);
   }, [data]);
-
-  /**
-   * create a manifest file
-   *
-   * @param {MouseEvent} e - mouse event
-   */
-  const onMakeReleaseClick = (e: MouseEvent) => {
-    e.preventDefault();
-    const identifiers = data.map((form) => form.identifier);
-    const json = {
-      /* eslint-disable-next-line @typescript-eslint/camelcase */
-      forms_version: data[0].version,
-      identifiers,
-    };
-    const clientService = new OpenSRPService(accessToken, baseURL, manifestEndPoint, getPayload);
-    clientService
-      .create({ json: JSON.stringify(json) })
-      .then(() => {
-        clearDraftFiles();
-        setIfDoneHere(true);
-      })
-      .catch((err) => {
-        if (customAlert) {
-          customAlert(String(err), { type: 'error' });
-        }
-      });
-  };
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.toUpperCase();
@@ -262,7 +236,19 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
         <Button
           className="btn btn-md btn btn-primary float-right"
           color="primary"
-          onClick={onMakeReleaseClick}
+          onClick={() =>
+            makeRelease(
+              data,
+              accessToken,
+              baseURL,
+              clearDraftFiles,
+              setIfDoneHere,
+              displayAlertError,
+              manifestEndPoint,
+              undefined,
+              getPayload
+            )
+          }
         >
           {makeReleaseLabel}
         </Button>
@@ -288,7 +274,7 @@ const defaultProps: DraftsDefaultProps = {
   makeReleaseLabel: MAKE_RELEASE_LABEL,
   moduleLabel: MODULE_LABEL,
   placeholder: FIND_DRAFT_RELEASES_LABEL,
-  uploadFileLabel: UPOL0AD_FILE_LABEL,
+  uploadFileLabel: UPLOAD_FILE_LABEL,
   accessToken: '',
 };
 
