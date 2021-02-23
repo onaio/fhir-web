@@ -140,6 +140,10 @@ describe('Profile view Page', () => {
     );
     expect(wrapper.find('.title').text()).toEqual('Ambatoharanana Inventory');
 
+    wrapper.find('GeographyItem').forEach((item) => {
+      expect(toJson(item)).toMatchSnapshot('geographic item key value');
+    });
+
     expect(toJson(wrapper.find('div.flex-center-right'))).toMatchSnapshot(
       'contains button to edit service point'
     );
