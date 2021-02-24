@@ -136,27 +136,36 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="roles"
-            id="roles"
-            label="Realm Roles"
-            rules={[{ required: true, message: 'Role Required' }]}
-          >
-            <Transfer
-              dataSource={[]}
-              titles={['Source', 'Target']}
-              targetKeys={[]}
-              selectedKeys={[]}
-              render={() => <div>Test</div>}
-              disabled={false}
-              locale={{
-                itemUnit: 'article',
-                itemsUnit: 'articles',
-                notFoundContent: 'The list is empty',
-                searchPlaceholder: 'Search here',
-              }}
-            />
-          </Form.Item>
+          {initialValues.id ? (
+            <Form.Item
+              name="roles"
+              id="roles"
+              label="Realm Roles"
+              rules={[{ required: true, message: 'Role Required' }]}
+            >
+              <Transfer
+                dataSource={data}
+                titles={['Available Roles', 'Assigned Roles']}
+                listStyle={{ flexGrow: 'inherit' }}
+                targetKeys={
+                  targetKeys.length
+                    ? targetKeys
+                    : assignedRoles.map((role: KeycloakUserRole) => role.id)
+                }
+                selectedKeys={[...sourceSelectedKeys, ...targetSelectedKeys]}
+                render={(item) => <div>{item.title}</div>}
+                disabled={false}
+                onChange={onChange}
+                onSelectChange={onSelectChange}
+                locale={{
+                  notFoundContent: 'The list is empty',
+                  searchPlaceholder: 'Search here',
+                }}
+              />
+            </Form.Item>
+          ) : (
+            ''
+          )}
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-group">
               {isSubmitting ? SAVING : SAVE}
