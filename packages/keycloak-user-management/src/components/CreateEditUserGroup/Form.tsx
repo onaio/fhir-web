@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Transfer } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -16,23 +15,17 @@ import {
   MESSAGE_USER_GROUP_EDITED,
   MESSAGE_USER_GROUP_CREATED,
   ADD_USER_GROUP,
-  ERROR_OCCURED,
 } from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
-import { assignRoles, fetchAssignedRoles, fetchAvailableRoles, removeAssignedRoles } from './utils';
+import { assignRoles, removeAssignedRoles } from './utils';
 import {
   reducerName as keycloakUserRolesReducerName,
   reducer as keycloakUserRolesReducer,
   KeycloakUserRole,
-  makeKeycloakUserRolesSelector,
 } from '../../ducks/userRoles';
-import { fetchAllRoles } from '../UserRolesList/utils';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserRolesReducerName, keycloakUserRolesReducer);
-
-// Define selector instance
-const userRolesSelector = makeKeycloakUserRolesSelector();
 
 /** Interface for practitioner json object */
 export interface Practitioner {
@@ -44,6 +37,9 @@ export interface Practitioner {
 }
 /** props for editing a user view */
 export interface UserGroupFormProps {
+  allRoles: KeycloakUserRole[];
+  assignedRoles: KeycloakUserRole[];
+  availableRoles: KeycloakUserRole[];
   initialValues: KeycloakUserGroup;
   keycloakBaseURL: string;
 }
@@ -64,6 +60,9 @@ export const defaultInitialValues: KeycloakUserGroup = {
 };
 /** default props for editing user component */
 export const defaultProps: Partial<UserGroupFormProps> = {
+  allRoles: [],
+  assignedRoles: [],
+  availableRoles: [],
   initialValues: defaultInitialValues,
   keycloakBaseURL: '',
 };
@@ -95,12 +94,8 @@ export const handleTransferChange = async (
  * @param {object} props - component props
  */
 const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) => {
-  const { initialValues, keycloakBaseURL } = props;
-  const dispatch = useDispatch();
-  const getUserRolesList = useSelector((state) => userRolesSelector(state, {}));
+  const { initialValues, keycloakBaseURL, assignedRoles, availableRoles, allRoles } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [availableRoles, setAvailableRoles] = useState<KeycloakUserRole[]>([]);
-  const [assignedRoles, setAssignedRoles] = useState<KeycloakUserRole[]>([]);
   const [sourceSelectedKeys, setSourceSelectedKeys] = useState<string[]>([]);
   const [targetSelectedKeys, setTargetSelectedKeys] = useState<string[]>([]);
   const [targetKeys, setTargetKeys] = useState<string[]>([]);
@@ -133,26 +128,6 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
     });
   }, [form, initialValues]);
 
-  React.useEffect(() => {
-    if (initialValues.id) {
-      const allRolesPromise = fetchAllRoles(keycloakBaseURL, dispatch);
-      const availableRolesPromise = fetchAvailableRoles(
-        initialValues.id,
-        keycloakBaseURL,
-        setAvailableRoles
-      );
-      const assignedRolesPromise = fetchAssignedRoles(
-        initialValues.id,
-        keycloakBaseURL,
-        setAssignedRoles
-      );
-      Promise.all([allRolesPromise, availableRolesPromise, assignedRolesPromise]).catch(() =>
-        sendErrorNotification(ERROR_OCCURED)
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialValues.id]);
-
   const onChange = async (nextTargetKeys: string[]) => {
     // only add finally block since catch has already
     // been handled in function definition
@@ -161,7 +136,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
       targetSelectedKeys,
       sourceSelectedKeys,
       keycloakBaseURL,
-      getUserRolesList
+      allRoles
     ).finally(() => setTargetKeys(nextTargetKeys));
   };
 
@@ -219,12 +194,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
             <Input />
           </Form.Item>
           {initialValues.id ? (
-            <Form.Item
-              name="roles"
-              id="roles"
-              label="Realm Roles"
-              rules={[{ required: true, message: 'Role Required' }]}
-            >
+            <Form.Item name="roles" id="roles" label="Realm Roles">
               <Transfer
                 dataSource={data}
                 titles={['Available Roles', 'Assigned Roles']}
