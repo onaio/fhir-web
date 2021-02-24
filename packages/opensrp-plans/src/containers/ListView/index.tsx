@@ -86,13 +86,11 @@ const PlansList = (props: PlansListTypes) => {
         <title>{pageTitle}</title>
       </Helmet>
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
-      <Row className={'list-view'}>
+      <Row className={'list-view mission-view'}>
         <Col className={'main-content'}>
-          <div className="main-content__header">
+          <div className="main-content__header mission-header">
             <Link to={PLANS_CREATE_VIEW_URL}>
-              <Button type="primary" size="large">
-                {NEW_MISSION}
-              </Button>
+              <Button type="primary">{NEW_MISSION}</Button>
             </Link>
           </div>
           <Table dataSource={dataSource} columns={columns}></Table>
