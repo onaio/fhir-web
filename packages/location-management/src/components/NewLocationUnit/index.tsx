@@ -9,6 +9,7 @@ import { FormInstances, getLocationFormFields, LocationFormFields } from '../Loc
 import { Col, Row } from 'antd';
 import { Helmet } from 'react-helmet';
 import { ADD_LOCATION_UNIT } from '../../lang';
+import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 
 /** full props for the new location component */
 export interface NewLocationUnitProps
@@ -61,17 +62,17 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
   const firstInitialValues = getLocationFormFields(undefined, instance);
   const initialValues = processInitialValues?.(firstInitialValues);
 
-  const locationFormProps = {
-    initialValues,
-    successURLGenerator,
-    hidden,
-    disabled,
+  const locationFormProps: LocationFormProps = {
+    initialValues: initialValues,
+    successURLGenerator: successURLGenerator,
+    hidden: hidden,
+    disabled: disabled,
     onCancel: cancelHandler,
-    service,
-    openSRPBaseURL,
+    service: service,
+    openSRPBaseURL: openSRPBaseURL,
     username: user.username,
-    dispatch,
-    disabledTreeNodesCallback,
+    afterSubmit: () => dispatch(fetchAllHierarchies([])),
+    disabledTreeNodesCallback: disabledTreeNodesCallback,
   };
 
   const pageTitle = ADD_LOCATION_UNIT;

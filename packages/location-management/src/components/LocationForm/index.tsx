@@ -60,7 +60,7 @@ const { Item: FormItem } = Form;
 /** props for the location form */
 export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
-  initialValues: LocationFormFields;
+  initialValues: LocationFormFields | undefined;
   successURLGenerator: (payload: LocationUnit) => string;
   openSRPBaseURL: string;
   hidden: string[];
@@ -141,7 +141,7 @@ const LocationForm = (props: LocationFormProps) => {
     afterSubmit,
     disabledTreeNodesCallback,
   } = props;
-  const isEditMode = !!initialValues.id;
+  const isEditMode = !!initialValues?.id;
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const [selectedLocationTags, setLocationTags] = useState<LocationUnitTag[]>([]);
@@ -154,9 +154,7 @@ const LocationForm = (props: LocationFormProps) => {
   const [form] = Form.useForm();
 
   React.useEffect(() => {
-    form.setFieldsValue({
-      ...initialValues,
-    });
+    form.setFieldsValue({ ...initialValues });
   }, [form, initialValues]);
 
   const status = [
