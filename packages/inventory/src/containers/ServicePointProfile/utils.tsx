@@ -4,7 +4,7 @@ import { Geometry } from 'geojson';
 /** geographic location interface */
 export interface GeographicLocationInterface {
   geographicLevel?: number;
-  label?: number;
+  label?: string;
 }
 
 /**
@@ -34,7 +34,7 @@ export const getNodePath = (
 };
 
 /**
- * validate coordinates, returns coma separated coordinates
+ * validate coordinates, returns coordinates
  *
  * @param geoJson - the geojson object
  */
@@ -44,8 +44,11 @@ export const getCords = (geoJson?: Partial<Geometry>) => {
     Array.isArray(geoJson.coordinates) &&
     geoJson.coordinates.length === 2
   ) {
-    return geoJson.coordinates.join(', ');
+    return {
+      lat: geoJson.coordinates[1],
+      lng: geoJson.coordinates[0],
+    };
   } else {
-    return '';
+    return {};
   }
 };

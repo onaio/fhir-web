@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -24,7 +24,9 @@ import {
 } from '../../lang';
 import {
   KEYCLOAK_URL_USER_GROUPS,
+  ROUTE_PARAM_USER_GROUP_ID,
   SEARCH_QUERY_PARAM,
+  URL_USER_GROUPS,
   URL_USER_GROUP_CREATE,
   URL_USER_GROUP_EDIT,
 } from '../../constants';
@@ -33,12 +35,33 @@ import {
   KeycloakUserGroup,
   makeKeycloakUserGroupsSelector,
 } from '../../ducks/userGroups';
+import { ViewDetails } from '../UserGroupDetailView';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
 
 // Define selector instance
 const userGroupsSelector = makeKeycloakUserGroupsSelector();
+
+// route params for user group pages
+interface RouteParams {
+  userGroupId: string | undefined;
+}
+
+export interface UserGroupMembers {
+  createdTimestamp: number;
+  disableableCredentialTypes?: string[];
+  email?: string;
+  emailVerified: boolean;
+  enabled: boolean;
+  firstName: string;
+  id: string;
+  lastName: string;
+  notBefore: number;
+  requiredActions: string[];
+  totp: boolean;
+  username: string;
+}
 
 interface TableData {
   key: number | string;
@@ -55,21 +78,23 @@ const defaultProps = {
   keycloakBaseURL: '',
 };
 
-/** Function which shows the list of all groups and their details
+export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
+
+/** Component which shows the list of all groups and their details
  *
  * @param {Object} props - UserGoupsList component props
  * @returns {Function} returns User Groups list display
  */
-export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
-  props: Props & RouteComponentProps
-) => {
+export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupListTypes) => {
   const dispatch = useDispatch();
   const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
   const getUserGroupsList = useSelector((state) =>
     userGroupsSelector(state, { searchText: searchQuery })
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const history = useHistory();
   const { keycloakBaseURL } = props;
+  const groupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID] ?? '';
 
   useEffect(() => {
     if (isLoading) {
@@ -124,7 +149,14 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
           <Dropdown
             overlay={
               <Menu className="menu">
-                <Menu.Item className="viewdetails">{VIEW_DETAILS}</Menu.Item>
+                <Menu.Item
+                  className="viewdetails"
+                  onClick={() => {
+                    history.push(`${URL_USER_GROUPS}/${record.id}`);
+                  }}
+                >
+                  {VIEW_DETAILS}
+                </Menu.Item>
               </Menu>
             }
             placement="bottomLeft"
@@ -139,13 +171,13 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
   ];
 
   return (
-    <div className="content-section">
+    <div className="content-section user-group">
       <Helmet>
         <title>{USER_GROUPS_PAGE_HEADER}</title>
       </Helmet>
       <PageHeader title={USER_GROUPS_PAGE_HEADER} className="page-header" />
       <Row className="list-view">
-        <Col className="main-content">
+        <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
             <Link to={URL_USER_GROUP_CREATE}>
@@ -166,6 +198,7 @@ export const UserGroupsList: React.FC<Props & RouteComponentProps> = (
             }}
           />
         </Col>
+        <ViewDetails keycloakBaseURL={keycloakBaseURL} groupId={groupId} />
       </Row>
     </div>
   );

@@ -189,6 +189,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       poNumber: inventory.customProperties['PO Number'],
       quantity: inventory.value,
       productName: inventory.product?.productName,
+      serialNumber: inventory.serialNumber,
     };
   }
   const inventoryItemFormProps = {
