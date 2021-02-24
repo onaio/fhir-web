@@ -378,385 +378,7 @@ Array [
 ]
 `;
 
-exports[`components/ConnectedSidebar correctly expand form-config menu 1`] = `
-Array [
-  <SubMenu
-    icon={
-      <MapMarkerOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Missions"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/active"
-      >
-        Active
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/draft"
-      >
-        Draft
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/complete"
-      >
-        Complete
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/trash"
-      >
-        Retired
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ForwardRef(IdcardOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ArchiveOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/upload"
-      >
-        Add inventory via CSV
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Admin"
-  >
-    <SubMenu
-      title="Users"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/list"
-        >
-          User Management
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/product-catalogue/list"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
-    <SubMenu
-      title="Locations"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Location unit
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/group"
-        >
-          Location unit group
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Form Configuration"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/releases"
-        >
-          Manifest Releases
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/drafts"
-        >
-          Draft Files
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/json-validators"
-        >
-          JSON Validators
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
-]
-`;
-
 exports[`components/ConnectedSidebar correctly expand location menu 1`] = `
-Array [
-  <SubMenu
-    icon={
-      <MapMarkerOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Missions"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/active"
-      >
-        Active
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/draft"
-      >
-        Draft
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/complete"
-      >
-        Complete
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/trash"
-      >
-        Retired
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ForwardRef(IdcardOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ArchiveOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/list"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/upload"
-      >
-        Add inventory via CSV
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Admin"
-  >
-    <SubMenu
-      title="Users"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/list"
-        >
-          User Management
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/product-catalogue/list"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
-    <SubMenu
-      title="Locations"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Location unit
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/group"
-        >
-          Location unit group
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Form Configuration"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/releases"
-        >
-          Manifest Releases
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/drafts"
-        >
-          Draft Files
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/json-validators"
-        >
-          JSON Validators
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
-]
-`;
-
-exports[`components/ConnectedSidebar correctly expand location menu 2`] = `
 Array [
   <SubMenu
     icon={
@@ -1246,6 +868,14 @@ Array [
           User Groups
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -1504,7 +1134,196 @@ Array [
 ]
 `;
 
-exports[`components/ConnectedSidebar shows the correct logg: Logo 1`] = `
+exports[`components/ConnectedSidebar displays menu links for enabled Location module 1`] = `
+Array [
+  <SubMenu
+    icon={
+      <MapMarkerOutlineIcon
+        className="sidebar-icons"
+      />
+    }
+    title="Missions"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/active"
+      >
+        Active
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/draft"
+      >
+        Draft
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/complete"
+      >
+        Complete
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/trash"
+      >
+        Retired
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={
+      <ForwardRef(IdcardOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={
+      <ArchiveOutlineIcon
+        className="sidebar-icons"
+      />
+    }
+    title="Inventory"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/list"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/inventory/upload"
+      >
+        Add inventory via CSV
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Admin"
+  >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/list"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <SubMenu
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Location unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/group"
+        >
+          Location unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <SubMenu
+      title="Form Configuration"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar shows the correct logo: Logo 1`] = `
 <div
   className="logo"
 >
