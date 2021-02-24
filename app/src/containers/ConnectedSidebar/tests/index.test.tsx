@@ -23,6 +23,7 @@ describe('components/ConnectedSidebar', () => {
       </Provider>
     );
     expect(wrapper.find('aside')).toHaveLength(1);
+    wrapper.unmount();
   });
 
   it('renders user managment menu for users with appropriate role', () => {
@@ -49,6 +50,7 @@ describe('components/ConnectedSidebar', () => {
       </Provider>
     );
     expect(wrapper.find('aside')).toHaveLength(1);
+    wrapper.unmount();
   });
 
   it('Test order of menu', () => {
@@ -71,6 +73,7 @@ describe('components/ConnectedSidebar', () => {
     );
 
     expect(wrapper.find(`Menu`).last().prop('children')).toMatchSnapshot();
+    wrapper.unmount();
   });
 
   it('correctly expand users menu', () => {
@@ -85,28 +88,13 @@ describe('components/ConnectedSidebar', () => {
     wrapper.unmount();
   });
 
-  it('correctly expand location menu', () => {
+  it('displays menu links for enabled Location module', () => {
     const envModule = require('../../../configs/env');
     envModule.ENABLE_LOCATIONS = 'true';
 
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/location`, hash: '', search: '', state: {} }]}>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
-    wrapper.unmount();
-  });
-
-  it('correctly expand form-config menu', () => {
-    const envModule = require('../../../configs/env');
-    envModule.ENABLE_LOCATIONS = 'true';
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
+        <MemoryRouter>
           <ConnectedSidebar />
         </MemoryRouter>
       </Provider>
@@ -174,7 +162,7 @@ describe('components/ConnectedSidebar', () => {
     wrapper.unmount();
   });
 
-  it('shows the correct logg', () => {
+  it('shows the correct logo', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
