@@ -17,11 +17,17 @@ import {
   KeycloakUserGroup,
 } from '../../ducks/userGroups';
 import { UserGroupForm } from './Form';
+import { fetchAllRoles } from '../UserRolesList/utils';
+import { fetchAssignedRoles, fetchAvailableRoles } from './utils';
+import { KeycloakUserRole, makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
 
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
 
-// Define selector instance
+// Define user groups selector instance
 const userGroupsSelector = makeKeycloakUserGroupsSelector();
+
+// Define user roles selector instance
+const userRolesSelector = makeKeycloakUserRolesSelector();
 
 // Interface for route params
 interface RouteParams {
@@ -51,11 +57,14 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
 ) => {
   const { keycloakBaseURL } = props;
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [availableRoles, setAvailableRoles] = React.useState<KeycloakUserRole[]>([]);
+  const [assignedRoles, setAssignedRoles] = React.useState<KeycloakUserRole[]>([]);
   const dispatch = useDispatch();
   const userGroupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID];
   const keycloakUserGroup = useSelector((state) =>
     userGroupsSelector(state, { id: [userGroupId] })
   );
+  const allRoles = useSelector((state) => userRolesSelector(state, {}));
   const initialValues = keycloakUserGroup.length ? keycloakUserGroup[0] : defaultInitialValues;
 
   /**
@@ -78,11 +87,34 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  React.useEffect(() => {
+    if (userGroupId) {
+      const allRolesPromise = fetchAllRoles(keycloakBaseURL, dispatch);
+      const availableRolesPromise = fetchAvailableRoles(
+        initialValues.id,
+        keycloakBaseURL,
+        setAvailableRoles
+      );
+      const assignedRolesPromise = fetchAssignedRoles(
+        initialValues.id,
+        keycloakBaseURL,
+        setAssignedRoles
+      );
+      Promise.all([allRolesPromise, availableRolesPromise, assignedRolesPromise]).catch(() =>
+        sendErrorNotification(ERROR_OCCURED)
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialValues.id]);
+
   if (isLoading) {
     return <Spin size="large" />;
   }
 
   const userGroupFormProps: UserGroupFormProps = {
+    allRoles,
+    assignedRoles,
+    availableRoles,
     initialValues: initialValues as KeycloakUserGroup,
     keycloakBaseURL,
   };
