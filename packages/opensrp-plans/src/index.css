@@ -67,3 +67,9 @@
 .plan-detail-view .date-divider {
   height: 40px;
 }
+.mission-header {
+  justify-content: flex-end;
+}
+.mission-view {
+  padding-top: 0px !important;
+}

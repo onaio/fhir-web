@@ -46,6 +46,14 @@ export const columns: ColumnsType<PlanDefinition> = [
     title: DATE,
     dataIndex: 'date',
     key: `${TableColumnsNamespace}-date`,
+    sorter: (rec1, rec2) => {
+      if (rec1.date > rec2.date) {
+        return -1;
+      } else if (rec1.date < rec2.date) {
+        return 1;
+      }
+      return 0;
+    },
   },
   {
     title: ACTIONS,
