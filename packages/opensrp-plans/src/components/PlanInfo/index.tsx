@@ -73,7 +73,7 @@ const PlanInfo = (props: PlanInfoProps) => {
             <div>
               <h4>{plan.title}</h4>
             </div>
-            <div>
+            <div className="plan-description">
               <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
               <Divider type="vertical" />
               <span style={{ color: PlanStatusColors[plan.status] }}>
