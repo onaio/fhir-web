@@ -7,7 +7,12 @@ import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as fixtures from './fixtures';
-import { userRoles, assignedRoles, availableRoles } from '../../../ducks/tests/fixtures';
+import {
+  userRoles,
+  assignedRoles,
+  availableRoles,
+  effectiveRoles,
+} from '../../../ducks/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
 import { UserGroupForm, defaultInitialValues } from '../Form';
@@ -24,6 +29,7 @@ describe('components/forms/UserFroupForm', () => {
     allRoles: userRoles,
     availableRoles,
     assignedRoles,
+    effectiveRoles,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
   };
 
@@ -44,6 +50,7 @@ describe('components/forms/UserFroupForm', () => {
 
   afterEach(() => {
     fetch.resetMocks();
+    jest.resetAllMocks();
   });
 
   it('renders without crashing', () => {
@@ -243,6 +250,143 @@ describe('components/forms/UserFroupForm', () => {
     });
 
     expect(toJson(wrapper.find('Transfer'))).toBeTruthy();
+    wrapper.unmount();
+  });
+
+  it('Test transfering role from source to target', async () => {
+    const propEdit = {
+      ...props,
+      initialValues: fixtures.userGroup,
+    };
+    const wrapper = mount(<UserGroupForm {...propEdit} />);
+
+    const transferComponent = wrapper.find('Transfer');
+    const transferSource = transferComponent.find('TransferList').at(0);
+    const transferTarget = transferComponent.find('TransferList').at(1);
+
+    // check length of source and target choice boxes
+    expect(toJson(transferSource.find('.ant-transfer-list-content-item'))).toHaveLength(2);
+    expect(toJson(transferTarget.find('.ant-transfer-list-content-item'))).toHaveLength(6);
+
+    // check labels for source transfer box
+    expect(transferSource.find('.ant-transfer-list-content-item').at(0).text()).toEqual(
+      'EDIT_KEYCLOAK_USERS'
+    );
+    expect(transferSource.find('.ant-transfer-list-content-item').at(1).text()).toEqual(
+      'VIEW_KEYCLOAK_USERS'
+    );
+
+    // check labels for target transfer box
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(0).text()).toEqual('OPENMRS');
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(1).text()).toEqual(
+      'ALL_EVENTS'
+    );
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(2).text()).toEqual(
+      'PLANS_FOR_USER'
+    );
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(3).text()).toEqual(
+      'realm-admin'
+    );
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(4).text()).toEqual(
+      'offline_access'
+    );
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(5).text()).toEqual(
+      'uma_authorization'
+    );
+
+    // trigger change on source transfer box
+    wrapper
+      .find('.ant-checkbox-input')
+      .at(0)
+      .simulate('change', { target: { checked: true } });
+    wrapper.update();
+    // move role to target transfer box
+    expect(toJson(wrapper.find('.ant-transfer-operation button'))).toHaveLength(2);
+    wrapper.find('.ant-transfer-operation button').at(0).simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+    // const source = wrapper.find('Transfer').find('TransferList').at(0);
+    // const target = wrapper.find('Transfer').find('TransferList').at(1);
+
+    // confirm that the roles have been transfered to target box
+    expect(
+      wrapper.find('Transfer').find('TransferList').at(0).find('.ant-transfer-list-content-item')
+    ).toHaveLength(0);
+    // check length of target choice box
+    expect(
+      wrapper.find('Transfer').find('TransferList').at(1).find('.ant-transfer-list-content-item')
+    ).toHaveLength(8);
+    wrapper.unmount();
+  });
+
+  it('Test trasnfering role from target to source', async () => {
+    const propEdit = {
+      ...props,
+      initialValues: fixtures.userGroup,
+    };
+    const wrapper = mount(<UserGroupForm {...propEdit} />);
+
+    const transferComponent = wrapper.find('Transfer');
+    const transferSource = transferComponent.find('TransferList').at(0);
+    const transferTarget = transferComponent.find('TransferList').at(1);
+
+    // check length of source and target choice boxes
+    expect(toJson(transferSource.find('.ant-transfer-list-content-item'))).toHaveLength(2);
+    expect(toJson(transferTarget.find('.ant-transfer-list-content-item'))).toHaveLength(6);
+
+    // check labels for source transfer box
+    expect(transferSource.find('.ant-transfer-list-content-item').at(0).text()).toEqual(
+      'EDIT_KEYCLOAK_USERS'
+    );
+    expect(transferSource.find('.ant-transfer-list-content-item').at(1).text()).toEqual(
+      'VIEW_KEYCLOAK_USERS'
+    );
+
+    // check labels for target transfer box
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(0).text()).toEqual('OPENMRS');
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(1).text()).toEqual(
+      'ALL_EVENTS'
+    );
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(2).text()).toEqual(
+      'PLANS_FOR_USER'
+    );
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(3).text()).toEqual(
+      'realm-admin'
+    );
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(4).text()).toEqual(
+      'offline_access'
+    );
+    expect(transferTarget.find('.ant-transfer-list-content-item').at(5).text()).toEqual(
+      'uma_authorization'
+    );
+
+    // trigger change on targer transfer box
+    wrapper
+      .find('.ant-checkbox-input')
+      .at(3)
+      .simulate('change', { target: { checked: true } });
+    wrapper.update();
+    // move role to target transfer box
+    wrapper.find('.ant-transfer-operation .ant-btn').at(1).simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+    expect(
+      toJson(
+        wrapper.find('Transfer').find('TransferList').at(0).find('.ant-transfer-list-content-item')
+      )
+    ).toHaveLength(2);
+    // check length of target choice box
+    expect(
+      wrapper.find('Transfer').find('TransferList').at(1).find('.ant-transfer-list-content-item')
+    ).toHaveLength(6);
     wrapper.unmount();
   });
 

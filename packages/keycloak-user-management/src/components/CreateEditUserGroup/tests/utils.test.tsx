@@ -143,7 +143,7 @@ describe('dataLoading', () => {
     });
     await new Promise((resolve) => setImmediate(resolve));
     expect(fetch.mock.calls[0]).toEqual([
-      'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm',
+      'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm/composite',
       {
         headers: {
           accept: 'application/json',

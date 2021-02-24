@@ -40,6 +40,7 @@ export interface UserGroupFormProps {
   allRoles: KeycloakUserRole[];
   assignedRoles: KeycloakUserRole[];
   availableRoles: KeycloakUserRole[];
+  effectiveRoles: KeycloakUserRole[];
   initialValues: KeycloakUserGroup;
   keycloakBaseURL: string;
 }
@@ -63,6 +64,7 @@ export const defaultProps: Partial<UserGroupFormProps> = {
   allRoles: [],
   assignedRoles: [],
   availableRoles: [],
+  effectiveRoles: [],
   initialValues: defaultInitialValues,
   keycloakBaseURL: '',
 };
@@ -94,7 +96,14 @@ export const handleTransferChange = async (
  * @param {object} props - component props
  */
 const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) => {
-  const { initialValues, keycloakBaseURL, assignedRoles, availableRoles, allRoles } = props;
+  const {
+    initialValues,
+    keycloakBaseURL,
+    assignedRoles,
+    availableRoles,
+    effectiveRoles,
+    allRoles,
+  } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [sourceSelectedKeys, setSourceSelectedKeys] = useState<string[]>([]);
   const [targetSelectedKeys, setTargetSelectedKeys] = useState<string[]>([]);
@@ -151,7 +160,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
   }));
 
   return (
-    <Row className="layout-content">
+    <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
       <h5 className="mb-3 header-title">
         {props.initialValues.id ? `${EDIT_USER_GROUP} | ${initialValues.name}` : ADD_USER_GROUP}
@@ -175,13 +184,15 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
               serve
                 .update(values)
                 .then(() => sendSuccessNotification(MESSAGE_USER_GROUP_EDITED))
-                .catch((error: Error) => sendErrorNotification(`${error}`));
+                .catch((error: Error) => sendErrorNotification(`${error}`))
+                .finally(() => setIsSubmitting(false));
             } else {
               const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
               serve
                 .create({ name: values.name })
                 .then(() => sendSuccessNotification(MESSAGE_USER_GROUP_CREATED))
-                .catch((error: Error) => sendErrorNotification(`${error}`));
+                .catch((error: Error) => sendErrorNotification(`${error}`))
+                .finally(() => setIsSubmitting(false));
             }
           }}
         >
@@ -214,6 +225,38 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
                   searchPlaceholder: 'Search here',
                 }}
               />
+              {/** custom transfer to list effective roles */}
+              <div className="ant-transfer">
+                <div className="ant-transfer-list">
+                  <div className="ant-transfer-list-header">
+                    <span className="ant-transfer-list-header-title">Effective Roles</span>
+                  </div>
+                  <div className="ant-transfer-list-body">
+                    {!effectiveRoles.length ? (
+                      <div className="ant-transfer-list-body-not-found">The list is empty</div>
+                    ) : (
+                      <ul className="ant-transfer-list-content">
+                        {effectiveRoles.map((role: KeycloakUserRole) => (
+                          <li
+                            key={role.id}
+                            className="ant-transfer-list-content-item ant-transfer-list-content-item-disabled"
+                          >
+                            <label className="ant-checkbox-wrapper">
+                              <span className="ant-checkbox">
+                                <input type="checkbox" className="ant-checkbox-input" />
+                                <span className="ant-checkbox-inner" />
+                              </span>
+                            </label>
+                            <span className="ant-transfer-list-content-item-text">
+                              <div>{role.name}</div>
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              </div>
             </Form.Item>
           ) : (
             ''
