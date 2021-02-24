@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import { KeycloakUser } from '../user';
 import { KeycloakUserGroup } from '../userGroups';
 
@@ -224,5 +225,75 @@ export const unsortedUserGroups: KeycloakUserGroup[] = [
     name: 'Super User',
     path: '/Super User',
     subGroups: [],
+  },
+];
+
+export const availableRoles = [
+  {
+    id: '27239907-97ee-4ef7-a5f6-10faeb6a2f25',
+    name: 'EDIT_KEYCLOAK_USERS',
+    description: 'The role allows one to edit other keycloak users',
+    composite: true,
+    clientRole: false,
+    containerId: 'opensrp-web-stage',
+  },
+  {
+    id: '2492045d-69c7-4aee-8172-15151ca5902d',
+    name: 'VIEW_KEYCLOAK_USERS',
+    description: 'Role allows one to view keycloak users',
+    composite: true,
+    clientRole: false,
+    containerId: 'opensrp-web-stage',
+  },
+];
+
+export const assignedRoles = [
+  {
+    id: '6a796c5f-eb44-4198-a403-dc73912d3515',
+    name: 'OPENMRS',
+    description: 'Basic Role for users, To be changed to User Or Provider',
+    composite: false,
+    clientRole: false,
+    containerId: 'opensrp-web-stage',
+  },
+  {
+    id: '6e54eff8-2a1d-4271-9e51-475cc7bf100c',
+    name: 'ALL_EVENTS',
+    description: 'Allows on to Download all Events',
+    composite: false,
+    clientRole: false,
+    containerId: 'opensrp-web-stage',
+  },
+  {
+    id: 'c51387a9-cdf6-42c9-af47-c87239fbc771',
+    name: 'PLANS_FOR_USER',
+    description: 'Allows on to view plans for user',
+    composite: false,
+    clientRole: false,
+    containerId: 'opensrp-web-stage',
+  },
+  {
+    id: '7753e3a6-b950-43ce-b164-ebf8138b3c36',
+    name: 'realm-admin',
+    description: 'Realm Administrator',
+    composite: false,
+    clientRole: false,
+    containerId: 'opensrp-web-stage',
+  },
+  {
+    id: '80f5812e-f653-4b8f-9de3-f25e46be7fcc',
+    name: 'offline_access',
+    description: '${role_offline-access}',
+    composite: false,
+    clientRole: false,
+    containerId: 'opensrp-web-stage',
+  },
+  {
+    id: 'a8f4205b-0518-4371-8b9a-f29217dfb935',
+    name: 'uma_authorization',
+    description: '${role_uma_authorization}',
+    composite: false,
+    clientRole: false,
+    containerId: 'opensrp-web-stage',
   },
 ];

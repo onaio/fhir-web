@@ -7,9 +7,11 @@ import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as fixtures from './fixtures';
+import { userRoles, assignedRoles, availableRoles } from '../../../ducks/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
 import { UserGroupForm, defaultInitialValues } from '../Form';
+import toJson from 'enzyme-to-json';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -19,6 +21,9 @@ jest.mock('@opensrp/notifications', () => ({
 describe('components/forms/UserFroupForm', () => {
   const props = {
     initialValues: defaultInitialValues,
+    allRoles: userRoles,
+    availableRoles,
+    assignedRoles,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
   };
 
@@ -222,5 +227,34 @@ describe('components/forms/UserFroupForm', () => {
     expect(wrapper.find('.mb-3.header-title').text()).toEqual(
       `Edit User Group | ${fixtures.userGroup.name}`
     );
+    wrapper.unmount();
+  });
+
+  it('renders transfer component on edit', async () => {
+    const propEdit = {
+      ...props,
+      initialValues: fixtures.userGroup,
+    };
+    const wrapper = mount(<UserGroupForm {...propEdit} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(toJson(wrapper.find('Transfer'))).toBeTruthy();
+    wrapper.unmount();
+  });
+
+  it('doesnt show transfer component on new user group creation', async () => {
+    const wrapper = mount(<UserGroupForm {...props} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(toJson(wrapper.find('Transfer'))).toBeFalsy();
+    wrapper.unmount();
   });
 });
