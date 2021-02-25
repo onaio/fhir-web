@@ -1056,15 +1056,96 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions i
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 15 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 15 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 15 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_5_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="structureId"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_5_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="$this.id"
+  />,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 16 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 16 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 16 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_5_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="structureId"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_5_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="$this.id"
+  />,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 17 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 17 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 17 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_5_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="structureId"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_5_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="$this.id"
+  />,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 18 1`] = `null`;
 
@@ -1233,15 +1314,96 @@ Array [
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 21 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 21 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 21 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_7_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="structureId"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_7_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="$this.id"
+  />,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 22 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 22 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 22 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_7_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="structureId"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_7_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="$this.id"
+  />,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 23 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 23 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 23 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_7_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="structureId"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_7_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="$this.id"
+  />,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 24 1`] = `null`;
 
@@ -2072,7 +2234,24 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 15 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 15 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_5_dynamicValue_0_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 16 1`] = `
 Array [
@@ -2093,7 +2272,24 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 16 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 16 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_5_dynamicValue_0_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 17 1`] = `
 Array [
@@ -2114,7 +2310,24 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 17 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 17 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_5_dynamicValue_0_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 18 1`] = `
 Array [
@@ -2291,7 +2504,24 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 21 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 21 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_7_dynamicValue_0_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 22 1`] = `
 Array [
@@ -2312,7 +2542,24 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 22 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 22 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_7_dynamicValue_0_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 23 1`] = `
 Array [
@@ -2333,7 +2580,24 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 23 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 23 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_7_dynamicValue_0_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+]
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 24 1`] = `
 Array [
@@ -2665,7 +2929,11 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 15 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 15 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 16 1`] = `
 <legend>
@@ -2673,7 +2941,11 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 16 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 16 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 17 1`] = `
 <legend>
@@ -2681,7 +2953,11 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 17 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 17 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 18 1`] = `
 <legend>
@@ -2725,7 +3001,11 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 21 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 21 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 22 1`] = `
 <legend>
@@ -2733,7 +3013,11 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 22 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 22 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 23 1`] = `
 <legend>
@@ -2741,7 +3025,11 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 23 2`] = `null`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 23 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 24 1`] = `
 <legend>
