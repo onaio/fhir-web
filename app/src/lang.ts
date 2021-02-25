@@ -9,6 +9,7 @@ export const LOGIN_PROMPT = i18n.t('Please log in with one of the following prov
 export const USER_MANAGEMENT = i18n.t('User Management');
 export const TEAM_ASSIGNMENT = i18n.t('Team Assignment');
 export const USER_GROUPS = i18n.t('User Groups');
+export const USER_ROLES = i18n.t('User Roles');
 export const TEAMS = i18n.t('Teams');
 export const LOCATION_UNIT = i18n.t('Location unit');
 export const LOCATION_UNIT_GROUP = i18n.t('Location unit group');

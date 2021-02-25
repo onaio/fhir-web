@@ -1,6 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
 import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
 import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
@@ -22,14 +21,15 @@ import {
   FILE_VERSION_LABEL,
   IDENTIFIER_LABEL,
   UPLOAD_EDIT_LABEL,
-  UPOL0AD_FILE_LABEL,
+  UPLOAD_FILE_LABEL,
   MODULE_LABEL,
   FIND_FILES_LABEL,
   CREATED_AT_LABEL,
-} from '../../constants';
+} from '../../lang';
 import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile } from '../../helpers/utils';
+import { formatDate, downloadManifestFile, fetchManifests } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -49,7 +49,7 @@ export interface FilesListDefaultProps extends SearchBarDefaultProps {
   removeFiles: typeof removeManifestFiles;
   uploadEditLabel: string;
   uploadFileLabel: string;
-  accessToken: string;
+  accessToken: string | GetAccessTokenType;
 }
 
 /** manifest files list props interface */
@@ -101,36 +101,29 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestFilesTypes[]>(data);
 
-  useEffect(() => {
-    /** get manifest files */
-    setLoading(true);
-    let params = null;
-    // if form version is available -  means request is to get manifest files else get json validator files
-    /* eslint-disable-next-line @typescript-eslint/camelcase */
-    params = formVersion ? { identifier: formVersion } : { is_json_validator: true };
-    removeFiles();
-    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
-    clientService
-      .list(params)
-      .then((res: ManifestFilesTypes[]) => {
-        fetchFiles(res);
-      })
-      .catch((error) => {
-        if (customAlert) {
-          customAlert(String(error), { type: 'error' });
-        }
-      })
-      .finally(() => setLoading(false));
-  }, [
-    baseURL,
-    customAlert,
-    endpoint,
-    removeFiles,
-    fetchFiles,
-    formVersion,
-    getPayload,
-    accessToken,
-  ]);
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
+    }
+  };
+
+  useEffect(
+    () => {
+      fetchManifests(
+        accessToken,
+        baseURL,
+        fetchFiles,
+        removeFiles,
+        setLoading,
+        displayAlertError,
+        formVersion,
+        endpoint,
+        undefined,
+        getPayload
+      );
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [baseURL, customAlert, endpoint, removeFiles, fetchFiles, formVersion, getPayload, accessToken]
+  );
 
   useEffect(() => {
     setStateData(data);
@@ -288,7 +281,7 @@ const defaultProps: FilesListDefaultProps = {
   placeholder: FIND_FILES_LABEL,
   removeFiles: removeManifestFiles,
   uploadEditLabel: UPLOAD_EDIT_LABEL,
-  uploadFileLabel: UPOL0AD_FILE_LABEL,
+  uploadFileLabel: UPLOAD_FILE_LABEL,
   accessToken: '',
 };
 

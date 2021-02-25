@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { getFetchOptions, OpenSRPService } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { getAccessToken } from '@onaio/session-reducer';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
@@ -13,9 +13,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { Card, Typography, Spin, Table, Space, Button, Divider, Input } from 'antd';
-import { OPENSRP_MANIFEST_ENDPOINT, ERROR_OCCURRED } from '../../../constants';
+import { OPENSRP_MANIFEST_ENDPOINT } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
+import { fetchReleaseFiles } from '../../../helpers/utils';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -63,21 +64,16 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   } = props;
 
   useEffect(() => {
-    /** get manifest releases */
-    setLoading(true);
-    const clientService = new OpenSRPService(
+    fetchReleaseFiles(
       accessToken,
       opensrpBaseURL,
+      fetchReleases,
+      setLoading,
+      sendErrorNotification,
       OPENSRP_MANIFEST_ENDPOINT,
+      dispatch,
       customFetchOptions
     );
-    clientService
-      .list()
-      .then((res: ManifestReleasesTypes[]) => dispatch(fetchReleases(res)))
-      .catch((_: Error) => {
-        sendErrorNotification(ERROR_OCCURRED);
-      })
-      .finally(() => setLoading(false));
   }, [accessToken, opensrpBaseURL, customFetchOptions, dispatch, fetchReleases]);
 
   if (loading) {

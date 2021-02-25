@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/team-management",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Team management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -34,18 +34,18 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "uuid": "^8.3.1",
-    "@opensrp/reducer-factory": "^0.0.11",
-    "@opensrp/server-service": "^0.0.13",
-    "@opensrp/notifications": "^0.0.2",
-    "@opensrp/react-utils": "^0.0.2",
-    "@opensrp/pkg-config": "^0.0.1",
-    "i18next": "^19.8.4"
+    "@opensrp/notifications": "^0.0.4",
+    "@opensrp/pkg-config": "^0.0.4",
+    "@opensrp/react-utils": "^0.0.6",
+    "@opensrp/reducer-factory": "^0.0.13",
+    "@opensrp/server-service": "^0.0.16",
+    "i18next": "^19.8.4",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
-    "@types/uuid": "8.3.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@opensrp/store": "^0.0.7",
+    "@opensrp/store": "^0.0.9",
+    "@types/uuid": "8.3.0",
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {

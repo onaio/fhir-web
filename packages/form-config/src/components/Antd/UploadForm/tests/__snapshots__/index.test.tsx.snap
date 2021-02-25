@@ -5,7 +5,7 @@ Object {
   "children": <ForwardRef(InternalForm)
     initialValues={
       Object {
-        "form": Array [],
+        "form": "",
         "form_name": "test publish",
         "form_relation": "",
         "module": "",
@@ -175,7 +175,7 @@ Object {
   "children": <ForwardRef(InternalForm)
     initialValues={
       Object {
-        "form": Array [],
+        "form": "",
         "form_name": "",
         "form_relation": "",
         "module": "",

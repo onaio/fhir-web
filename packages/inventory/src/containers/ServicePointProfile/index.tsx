@@ -13,6 +13,7 @@ import {
   getTreesByIds,
   loadHierarchy,
   fetchTree,
+  loadJurisdiction,
 } from '@opensrp/location-management';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCords, GeographicLocationInterface } from './utils';
@@ -24,7 +25,6 @@ import { Helmet } from 'react-helmet';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   GEOGRAPHIC_LEVEL,
-  LOCATIONS_GET_ALL_SYNC_ENDPOINT,
   INVENTORY_SERVICE_POINT_PROFILE_PARAM,
   INVENTORY_EDIT_SERVICE_POINT,
   URL_INVENTORY_ADD,
@@ -33,7 +33,6 @@ import {
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
-  SERVICE_POINT_INVENTORY,
   EDIT_SERVICE_POINT,
   REGION_LABEL,
   DISTRICT_LABEL,
@@ -138,17 +137,15 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       // eslint-disable-next-line @typescript-eslint/camelcase
       return_geometry: true,
     };
-    const structuresDispatcher = (locations: LocationUnit[] = []) => {
-      return dispatch(fetchLocationUnits(locations, false));
+
+    const structuresDispatcher = (locations: LocationUnit | null) => {
+      if (locations) {
+        const locationOfInterest: LocationUnit[] = [locations];
+        return dispatch(fetchLocationUnits(locationOfInterest, false));
+      }
     };
-    loadJurisdictions(
-      structuresDispatcher,
-      opensrpBaseURL,
-      params,
-      {},
-      service,
-      LOCATIONS_GET_ALL_SYNC_ENDPOINT
-    )
+
+    loadJurisdiction(spId, structuresDispatcher, opensrpBaseURL, params, service)
       .catch((err: Error) => {
         handleBrokenPage(err);
       })
@@ -157,6 +154,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     const jurisdictionsDispatcher = (locations: LocationUnit[] = []) => {
       return dispatch(fetchLocationUnits(locations, true));
     };
+
     loadJurisdictions(
       jurisdictionsDispatcher,
       opensrpBaseURL,
@@ -169,9 +167,13 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
 
   useEffect(() => {
     if (rootLocations.length > 0) {
+      const customTreeDispatcher: typeof fetchTree = (response, treeId) =>
+        dispatch(fetchTree(response, treeId));
       const promises = rootLocations
         .map((location) => location.id.toString())
-        .map((rootId) => loadHierarchy(rootId, fetchTree, opensrpBaseURL, undefined, service));
+        .map((rootId) =>
+          loadHierarchy(rootId, customTreeDispatcher, opensrpBaseURL, undefined, service)
+        );
       Promise.all(promises).catch((err: Error) => sendErrorNotification(err.message));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -187,7 +189,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     return <Resource404 />;
   }
 
-  const pageTitle = `${SERVICE_POINT_INVENTORY}`;
+  const pageTitle = `${structure.properties.name} ${INVENTORY}`;
   const nodePath = getNodePath(structure, trees);
   const inventoryListProps = {
     servicePointId: spId,
@@ -197,6 +199,10 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     servicePointProfileURL,
   };
 
+  const coordinates = getCords(structure.geometry);
+  const latLong = [coordinates.lat, coordinates.lng];
+  const latLongString = latLong.some((el) => el) ? latLong.join(', ') : '';
+
   return (
     <>
       <div className="inventory-profile-header">
@@ -205,9 +211,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
             <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>
               <p className="go-back-text">{BACK_TO_SERVICE_POINT_LIST}</p>
             </Link>
-            <p className="title">
-              {structure.properties.name} {INVENTORY}
-            </p>
+            <p className="title">{pageTitle}</p>
             <Row>
               <Col md={12}>
                 <GeographyItem
@@ -225,7 +229,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
               </Col>
               <Col md={12}>
                 <GeographyItem label={TYPE_LABEL} value={structure.properties.type} />
-                <GeographyItem label={LAT_LONG_LABEL} value={getCords(structure.geometry)} />
+                <GeographyItem label={LAT_LONG_LABEL} value={latLongString} />
                 <GeographyItem label={SERVICE_POINT_ID_LABEL} value={spId} />
               </Col>
             </Row>

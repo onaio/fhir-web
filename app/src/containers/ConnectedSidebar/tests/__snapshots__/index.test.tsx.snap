@@ -112,6 +112,14 @@ Array [
           User Groups
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -285,6 +293,14 @@ Array [
           User Groups
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -456,6 +472,14 @@ Array [
           to="/admin/users/groups"
         >
           User Groups
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
         </Link>
       </MenuItem>
     </SubMenu>
@@ -651,6 +675,14 @@ Array [
           User Groups
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -824,6 +856,14 @@ Array [
           User Groups
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -995,6 +1035,14 @@ Array [
           to="/admin/users/groups"
         >
           User Groups
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
         </Link>
       </MenuItem>
     </SubMenu>
@@ -1187,6 +1235,14 @@ Array [
           to="/admin/users/groups"
         >
           User Groups
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
         </Link>
       </MenuItem>
     </SubMenu>
