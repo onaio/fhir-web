@@ -1,9 +1,10 @@
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import React from 'react';
-import { Card, Button, Typography } from 'antd';
+import { Card, Button, Typography, Tooltip } from 'antd';
 import {
   ACTIVATE_MISSION,
+  CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS,
   FAILED_TO_ACTIVATE_MISSION,
   SUCCESSFULLY_ACTIVATED_MISSION,
 } from '../../lang';
@@ -40,6 +41,8 @@ const ActivateMissionCard = (props: ActivateMissionProps) => {
   if (!plan || !planIsDraft) {
     return null;
   }
+  const planHasJurisdictions = plan.jurisdiction.length > 0;
+  const isActivateButtonDisabled = !planHasJurisdictions;
 
   /** post the plan with a new status of active */
   const clickHandler = () => {
@@ -57,15 +60,23 @@ const ActivateMissionCard = (props: ActivateMissionProps) => {
       });
   };
 
+  const ActivateButton = (
+    <Button onClick={clickHandler} type="primary" disabled={isActivateButtonDisabled}>
+      {ACTIVATE_MISSION}
+    </Button>
+  );
+
   return (
     <Card
       className="activate-plan"
       bordered={false}
       title={<Title level={5}>{ACTIVATE_MISSION}</Title>}
     >
-      <Button onClick={clickHandler} type="primary">
-        {ACTIVATE_MISSION}
-      </Button>
+      {planHasJurisdictions ? (
+        ActivateButton
+      ) : (
+        <Tooltip title={CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS}>{ActivateButton}</Tooltip>
+      )}
     </Card>
   );
 };
