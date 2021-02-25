@@ -13,6 +13,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Router } from 'react-router';
+import { Form } from 'antd';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -231,6 +232,62 @@ describe('components/forms/UserForm', () => {
         method: 'PUT',
       },
     ]);
+    wrapper.unmount();
+  });
+
+  it('render correct value for enabled when set to true', async () => {
+    const wrapper = mount(<UserForm {...props} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    await act(async () => {
+      wrapper
+        .find('input[name="enabled"]')
+        .first()
+        .simulate('change', { target: { name: 'enabled', checked: true } });
+    });
+    wrapper.update();
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    expect(formInstance.getFieldsValue().enabled).toEqual(true);
+    wrapper.unmount();
+  });
+
+  it('render correct value for enabled when set to false', async () => {
+    const wrapper = mount(<UserForm {...props} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    await act(async () => {
+      wrapper
+        .find('input[name="enabled"]')
+        .last()
+        .simulate('change', { target: { name: 'enabled', checked: false } });
+    });
+    wrapper.update();
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    expect(formInstance.getFieldsValue().enabled).toEqual(false);
     wrapper.unmount();
   });
 
