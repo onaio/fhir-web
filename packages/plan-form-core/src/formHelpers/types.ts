@@ -214,17 +214,11 @@ export interface PlanActionCondition {
   kind: Readonly<'applicability'>;
 }
 
-export type DynamicValueExpression =
-  | "'Visited'"
-  | "'Completed'"
-  | "'has_problem'"
-  | '$this.entry.resource.as(Device).location.reference.substring(9)';
-
 /** Plan action dynamic value */
 export interface PlanActionDynamicValue {
   path: string;
   expression: {
-    expression: DynamicValueExpression;
+    expression: string;
   };
 }
 
