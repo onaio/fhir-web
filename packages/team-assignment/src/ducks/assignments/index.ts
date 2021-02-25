@@ -91,7 +91,7 @@ export const removeAssignmentsAction = (): RemoveAssignmentsAction => {
 /** creates action to add fetched assignments to store
  *
  * @param {Array} assignments - array of assignments to be added to store
- * @returns {FetchAssignmentsAction} - action with assignments payload that is added to store
+ * @returns {AnyAction} - action with assignments payload that is added to store
  */
 export const fetchAssignments = (assignments: Assignment[]): FetchAssignmentsAction => {
   return {
