@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 import fetch from 'jest-fetch-mock';
 import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import { notification } from 'antd';
 import { Router } from 'react-router';
 import LocationUnitView, { loadSingleLocation, parseTableData } from '..';
@@ -13,7 +14,21 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 import { baseURL } from '../../../constants';
 import { ERROR_OCCURED } from '../../../lang';
-import { getBaseTreeNode, getHierarchy } from '../../../ducks/locationHierarchy/utils';
+import {
+  generateJurisdictionTree,
+  getBaseTreeNode,
+  getHierarchy,
+} from '../../../ducks/locationHierarchy/utils';
+import {
+  fetchAllHierarchies,
+  reducer as locationHierarchyReducer,
+  reducerName as locationHierarchyReducerName,
+} from '../../../ducks/location-hierarchy';
+import { locationUnitsReducer, locationUnitsReducerName } from '../../../ducks/location-units';
+import toJson from 'enzyme-to-json';
+
+reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
+reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
 LocationUnitView.defaultProps = { opensrpBaseURL: baseURL };
 
@@ -31,6 +46,11 @@ describe('location-management/src/components/LocationUnitView', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
+    jest.spyOn(React, 'useLayoutEffect').mockImplementation(() => false);
+  });
+
+  beforeEach(() => {
+    store.dispatch(fetchAllHierarchies([]));
   });
 
   afterEach(() => {
@@ -57,6 +77,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     });
 
     expect(called).toBeCalledWith(baseLocationUnits[0]);
+    fetch.resetMocks();
   });
 
   it('test fail loadSingleLocation', async () => {
@@ -80,6 +101,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       message: ERROR_OCCURED,
       description: undefined,
     });
+    fetch.resetMocks();
   });
 
   it('test getBaseTreeNode', async () => {
@@ -89,6 +111,7 @@ describe('location-management/src/components/LocationUnitView', () => {
 
     await new Promise((resolve) => setImmediate(resolve));
     expect(response).toMatchObject(baseLocationUnits);
+    fetch.resetMocks();
   });
 
   it('test parseTableData', () => {
@@ -125,6 +148,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     await flushPromises();
 
     expect(response).toMatchObject([rawHierarchy[2]]);
+    fetch.resetMocks();
   });
 
   it('fail loading location ', async () => {
@@ -149,6 +173,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       message: ERROR_OCCURED,
       description: undefined,
     });
+    wrapper.unmount();
   });
 
   it('fail loading location hierarchy', async () => {
@@ -174,6 +199,7 @@ describe('location-management/src/components/LocationUnitView', () => {
       message: ERROR_OCCURED,
       description: undefined,
     });
+    wrapper.unmount();
   });
 
   it('location unit table renders correctly', async () => {
@@ -231,13 +257,14 @@ describe('location-management/src/components/LocationUnitView', () => {
     ]);
 
     expect(wrapper.find('Table').first().props()).toMatchSnapshot();
+    wrapper.unmount();
   });
 
   it('change table view when clicked on tree node', async () => {
-    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
-    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
-    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
-    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
+    fetch.once(JSON.stringify(baseLocationUnits));
+    fetch.once(JSON.stringify(rawHierarchy[0]));
+    fetch.once(JSON.stringify(rawHierarchy[1]));
+    fetch.once(JSON.stringify(rawHierarchy[2]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -247,10 +274,23 @@ describe('location-management/src/components/LocationUnitView', () => {
       </Provider>
     );
 
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+
+    wrapper.update();
+
+    const hierarchy1 = generateJurisdictionTree(rawHierarchy[0]).model;
+    const hierarchy2 = generateJurisdictionTree(rawHierarchy[1]).model;
+    const hierarchy3 = generateJurisdictionTree(rawHierarchy[2]).model;
+    store.dispatch(fetchAllHierarchies([hierarchy1, hierarchy2, hierarchy3]));
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
 
     const tablelastrow = {
       geographicLevel: baseLocationUnits[2].properties.geographicLevel,
@@ -268,7 +308,10 @@ describe('location-management/src/components/LocationUnitView', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow); // table didn't change
+    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject({
+      ...tablelastrow,
+      key: '0',
+    }); // table didn't change
 
     // test table with tree node with child
     const treeItemwithchild = wrapper.find('span.ant-tree-title').first();
@@ -283,10 +326,10 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test Open and close view details', async () => {
-    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
-    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
-    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
-    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits[0]));
+    fetch.once(JSON.stringify(baseLocationUnits));
+    fetch.once(JSON.stringify(rawHierarchy[0]));
+    fetch.once(JSON.stringify(rawHierarchy[1]));
+    fetch.once(JSON.stringify(rawHierarchy[2]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -296,16 +339,31 @@ describe('location-management/src/components/LocationUnitView', () => {
       </Provider>
     );
 
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
 
+    wrapper.update();
+
+    const hierarchy1 = generateJurisdictionTree(rawHierarchy[0]).model;
+    const hierarchy2 = generateJurisdictionTree(rawHierarchy[1]).model;
+    const hierarchy3 = generateJurisdictionTree(rawHierarchy[2]).model;
+    store.dispatch(fetchAllHierarchies([hierarchy1, hierarchy2, hierarchy3]));
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
     wrapper.find('.more-options').first().simulate('click');
+    wrapper.update();
     wrapper.find('.viewdetails').first().simulate('click');
 
     // test out loading animation works correctly
     expect(wrapper.find('.ant-spin')).toHaveLength(1);
+    fetch.once(JSON.stringify(baseLocationUnits[0]));
 
     await act(async () => {
       await flushPromises();
