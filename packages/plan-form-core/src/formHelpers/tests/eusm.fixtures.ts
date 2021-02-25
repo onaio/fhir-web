@@ -316,6 +316,15 @@ export const mission1 = ({
           },
         },
       ],
+      dynamicValue: [
+        {
+          expression: {
+            expression: '$this.id',
+          },
+          path: 'structureId',
+        },
+      ],
+
       definitionUri: 'record_gps.json',
       type: 'create',
     },
@@ -373,6 +382,14 @@ export const mission1 = ({
             description: 'All service points',
             expression: '$this.is(FHIR.Location)',
           },
+        },
+      ],
+      dynamicValue: [
+        {
+          expression: {
+            expression: '$this.id',
+          },
+          path: 'structureId',
         },
       ],
       definitionUri: 'service_point_check.json',
@@ -592,6 +609,12 @@ export const generatedMissionForm1 = {
           subjectCodableConceptText: '',
         },
       ],
+      dynamicValue: [
+        {
+          expression: '$this.id',
+          path: 'structureId',
+        },
+      ],
       goalDescription: 'Record GPS for all service points without GPS within the jurisdiction',
       goalDue: parseISO('2021-03-02T00:00:00.000Z'),
       goalPriority: 'medium-priority',
@@ -644,6 +667,12 @@ export const generatedMissionForm1 = {
           description: 'All service points',
           expression: '$this.is(FHIR.Location)',
           subjectCodableConceptText: '',
+        },
+      ],
+      dynamicValue: [
+        {
+          expression: '$this.id',
+          path: 'structureId',
         },
       ],
       goalDescription: 'Conduct checks for all service point (100%) within the Jurisdiction',
