@@ -94,7 +94,7 @@ export interface PlanActivityTrigger {
 /** interface for plan Activity form fields dynamicValue */
 export interface PlanActivityDynamicValue {
   path: string;
-  expression: DynamicValueExpression;
+  expression: string;
 }
 
 /** Plan activity form fields interface */
