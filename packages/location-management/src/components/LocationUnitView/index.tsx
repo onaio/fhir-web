@@ -98,6 +98,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   const isMounted = useRef<boolean>(true);
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
+  const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
@@ -118,7 +119,8 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
           dispatch(fetchAllHierarchies(allhierarchy));
         })
-        .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .catch(() => sendErrorNotification(ERROR_OCCURED))
+        .finally(() => setLoading(false));
     }
     // to avoid extra rerenders
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,8 +145,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
     };
   });
 
-  if (!Array.isArray(treeData) || !treeData.length || !tableData.length)
-    return <Spin size={'large'} />;
+  if (loading) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">

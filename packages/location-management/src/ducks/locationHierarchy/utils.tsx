@@ -98,7 +98,7 @@ export async function getBaseTreeNode(opensrpBaseURL: string) {
  */
 export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: string) {
   const hierarchy: RawOpenSRPHierarchy[] = [];
-  for await (const loc of location) {
+  for (const loc of location) {
     const serve = new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL);
     const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
     hierarchy.push(data);
