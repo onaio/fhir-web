@@ -4,6 +4,7 @@ import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { PLANS_ASSIGNMENT_VIEW_URL, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
+import moment from 'moment';
 import {
   NAME,
   DATE,
@@ -46,14 +47,7 @@ export const columns: ColumnsType<PlanDefinition> = [
     title: DATE,
     dataIndex: 'date',
     key: `${TableColumnsNamespace}-date`,
-    sorter: (rec1, rec2) => {
-      if (rec1.date > rec2.date) {
-        return -1;
-      } else if (rec1.date < rec2.date) {
-        return 1;
-      }
-      return 0;
-    },
+    sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
   },
   {
     title: ACTIONS,
