@@ -1422,6 +1422,14 @@ export const planActivities: PlanActivities = {
           },
         },
       ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.id',
+          },
+        },
+      ],
       definitionUri: 'record_gps.json',
       type: CREATE_TYPE,
     },
@@ -1536,6 +1544,14 @@ export const planActivities: PlanActivities = {
           expression: {
             description: 'All service points',
             expression: '$this.is(FHIR.Location)',
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.id',
           },
         },
       ],
