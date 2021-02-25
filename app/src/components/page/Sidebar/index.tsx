@@ -17,6 +17,7 @@ import {
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
   URL_USER_GROUPS,
+  URL_TEAM_ASSIGNMENT,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
@@ -59,6 +60,7 @@ import {
   INVENTORY,
   ADD_INVENTORY_VIA_CSV,
   USER_GROUPS,
+  TEAM_ASSIGNMENT,
 } from '../../../lang';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
@@ -178,11 +180,18 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             </Menu.SubMenu>
           )}
           {ENABLE_TEAMS && (
-            <Menu.Item key="teams">
-              <Link to={URL_TEAMS} className="admin-link">
-                {TEAMS}
-              </Link>
-            </Menu.Item>
+            <Menu.SubMenu key="admin-teams" title="Teams">
+              <Menu.Item key="teams">
+                <Link to={URL_TEAMS} className="admin-link">
+                  {TEAMS}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="team-assignment">
+                <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
+                  {TEAM_ASSIGNMENT}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
           )}
           {ENABLE_PRODUCT_CATALOGUE && (
             <Menu.Item key="product-catalogue">
