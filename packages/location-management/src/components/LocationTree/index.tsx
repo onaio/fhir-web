@@ -12,6 +12,7 @@ import {
 import { AntTreeProps } from '../LocationUnitList';
 import './tree.css';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { getHierarchyNodeFromArray } from '../../ducks/locationHierarchy/utils';
 import { SEARCH } from '../../lang';
 reducerRegistry.register(reducerName, reducer);
 
@@ -52,13 +53,15 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (locationTreeState.keys) {
-      const keys = locationTreeState.keys;
-      const node = locationTreeState.node;
-      OnItemClick(node);
-      expandTree(node.key);
-      setExpandedKeys(keys);
-      setSelectedKey([keys[keys.length - 1]]);
+    if (locationTreeState) {
+      setExpandedKeys(locationTreeState.keys);
+
+      const newnode = getHierarchyNodeFromArray(data, locationTreeState.node.id);
+      if (newnode) {
+        OnItemClick(newnode);
+        expandTree(newnode.key);
+        return; // stops the execution of loopmail
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

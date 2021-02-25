@@ -66,7 +66,7 @@ export function setLocationTreeState(hierarchy: LocationTreeState): SetLocationT
 /** The store's slice state */
 export interface TreeState {
   hierarchyArray: ParsedHierarchyNode[];
-  locationTreeState: LocationTreeState;
+  locationTreeState: LocationTreeState | null;
 }
 
 /** Create an immutable tree state */
@@ -75,7 +75,7 @@ export type ImmutableTreeState = TreeState & SeamlessImmutable.ImmutableObject<T
 /** starting state */
 export const initialState: ImmutableTreeState | Dictionary = SeamlessImmutable({
   hierarchyArray: [],
-  locationTreeState: {},
+  locationTreeState: null,
 });
 
 // the reducer function
@@ -115,5 +115,5 @@ export function reducer(
 export const getAllHierarchiesArray = (state: Partial<Store>): ParsedHierarchyNode[] =>
   (state as Dictionary)[reducerName].hierarchyArray;
 
-export const getLocationTreeState = (state: Partial<Store>): LocationTreeState =>
+export const getLocationTreeState = (state: Partial<Store>): LocationTreeState | null =>
   (state as Dictionary)[reducerName].locationTreeState;
