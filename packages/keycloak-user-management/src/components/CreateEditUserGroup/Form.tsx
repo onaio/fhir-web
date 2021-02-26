@@ -15,6 +15,7 @@ import {
   MESSAGE_USER_GROUP_EDITED,
   MESSAGE_USER_GROUP_CREATED,
   ADD_USER_GROUP,
+  ERROR_OCCURED,
 } from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 import { assignRoles, removeAssignedRoles } from './utils';
@@ -184,14 +185,14 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
               serve
                 .update(values)
                 .then(() => sendSuccessNotification(MESSAGE_USER_GROUP_EDITED))
-                .catch((error: Error) => sendErrorNotification(`${error}`))
+                .catch((_: Error) => sendErrorNotification(ERROR_OCCURED))
                 .finally(() => setIsSubmitting(false));
             } else {
               const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
               serve
                 .create({ name: values.name })
                 .then(() => sendSuccessNotification(MESSAGE_USER_GROUP_CREATED))
-                .catch((error: Error) => sendErrorNotification(`${error}`))
+                .catch((_: Error) => sendErrorNotification(ERROR_OCCURED))
                 .finally(() => setIsSubmitting(false));
             }
           }}
