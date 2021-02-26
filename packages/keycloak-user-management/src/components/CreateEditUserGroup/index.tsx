@@ -6,7 +6,12 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps } from 'react-router-dom';
 import { defaultInitialValues, UserGroupFormProps } from './Form';
-import { ROUTE_PARAM_USER_GROUP_ID } from '../../constants';
+import {
+  KEYCLOAK_URL_ASSIGNED_ROLES,
+  KEYCLOAK_URL_AVAILABLE_ROLES,
+  KEYCLOAK_URL_EFFECTIVE_ROLES,
+  ROUTE_PARAM_USER_GROUP_ID,
+} from '../../constants';
 import { ERROR_OCCURED } from '../../lang';
 import {
   reducer as keycloakUserGroupsReducer,
@@ -16,12 +21,7 @@ import {
 } from '../../ducks/userGroups';
 import { UserGroupForm } from './Form';
 import { fetchAllRoles } from '../UserRolesList/utils';
-import {
-  fetchAssignedRoles,
-  fetchAvailableRoles,
-  fetchEffectiveRoles,
-  fetchSingleGroup,
-} from './utils';
+import { fetchRoleMappings, fetchSingleGroup } from './utils';
 import { KeycloakUserRole, makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
 
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -80,19 +80,22 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
       setIsLoading(true);
       const groupPromise = fetchSingleGroup(userGroupId, keycloakBaseURL, dispatch);
       const allRolesPromise = fetchAllRoles(keycloakBaseURL, dispatch);
-      const availableRolesPromise = fetchAvailableRoles(
+      const availableRolesPromise = fetchRoleMappings(
         initialValues.id,
         keycloakBaseURL,
+        KEYCLOAK_URL_AVAILABLE_ROLES,
         setAvailableRoles
       );
-      const assignedRolesPromise = fetchAssignedRoles(
+      const assignedRolesPromise = fetchRoleMappings(
         initialValues.id,
         keycloakBaseURL,
+        KEYCLOAK_URL_ASSIGNED_ROLES,
         setAssignedRoles
       );
-      const effectiveRolesPromise = fetchEffectiveRoles(
+      const effectiveRolesPromise = fetchRoleMappings(
         initialValues.id,
         keycloakBaseURL,
+        KEYCLOAK_URL_EFFECTIVE_ROLES,
         setEffectiveRoles
       );
       Promise.all([

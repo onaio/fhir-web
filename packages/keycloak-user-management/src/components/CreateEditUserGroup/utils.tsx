@@ -1,84 +1,27 @@
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { store } from '@opensrp/store';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { ERROR_OCCURED } from '../../lang';
-import {
-  KEYCLOAK_URL_ASSIGNED_ROLES,
-  KEYCLOAK_URL_AVAILABLE_ROLES,
-  KEYCLOAK_URL_EFFECTIVE_ROLES,
-  KEYCLOAK_URL_USER_GROUPS,
-} from '../../constants';
+import { ERROR_OCCURED, ROLES_UPDATED_SUCCESSFULLY } from '../../lang';
+import { KEYCLOAK_URL_ASSIGNED_ROLES, KEYCLOAK_URL_USER_GROUPS } from '../../constants';
 import { KeycloakUserRole } from '../../ducks/userRoles';
 import { fetchKeycloakUserGroups, KeycloakUserGroup } from '../../ducks/userGroups';
 
 /**
- * Fetch available roles
+ * Fetch available, assigned or effective roles
  *
  * @param {string} groupId - user group id
  * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {string} roleMappingEndpoint - keycloak endpoint for fetching assigned, available or effective roles
  * @param {Function} setRolesAction method to set state for selected actions
  */
-export const fetchAvailableRoles = async (
+export const fetchRoleMappings = async (
   groupId: string,
   keycloakBaseURL: string,
+  roleMappingEndpoint: string,
   setRolesAction: (role: KeycloakUserRole[]) => void
 ) => {
   const keycloakService = new KeycloakService(
-    `${KEYCLOAK_URL_USER_GROUPS}/${groupId}${KEYCLOAK_URL_AVAILABLE_ROLES}`,
-    keycloakBaseURL
-  );
-
-  return await keycloakService
-    .list()
-    .then((response: KeycloakUserRole[]) => {
-      setRolesAction(response);
-    })
-    .catch((_: Error) => {
-      sendErrorNotification(ERROR_OCCURED);
-    });
-};
-
-/**
- * Fetch assigned roles
- *
- * @param {string} groupId - user group id
- * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {Function} setRolesAction method to set state for selected actions
- */
-export const fetchAssignedRoles = async (
-  groupId: string,
-  keycloakBaseURL: string,
-  setRolesAction: (role: KeycloakUserRole[]) => void
-) => {
-  const keycloakService = new KeycloakService(
-    `${KEYCLOAK_URL_USER_GROUPS}/${groupId}${KEYCLOAK_URL_ASSIGNED_ROLES}`,
-    keycloakBaseURL
-  );
-
-  return await keycloakService
-    .list()
-    .then((response: KeycloakUserRole[]) => {
-      setRolesAction(response);
-    })
-    .catch((_: Error) => {
-      sendErrorNotification(ERROR_OCCURED);
-    });
-};
-
-/**
- * Fetch effective roles
- *
- * @param {string} groupId - user group id
- * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {Function} setRolesAction method to set state for selected actions
- */
-export const fetchEffectiveRoles = async (
-  groupId: string,
-  keycloakBaseURL: string,
-  setRolesAction: (role: KeycloakUserRole[]) => void
-) => {
-  const keycloakService = new KeycloakService(
-    `${KEYCLOAK_URL_USER_GROUPS}/${groupId}${KEYCLOAK_URL_EFFECTIVE_ROLES}`,
+    `${KEYCLOAK_URL_USER_GROUPS}/${groupId}${roleMappingEndpoint}`,
     keycloakBaseURL
   );
 
@@ -119,7 +62,7 @@ export const removeAssignedRoles = async (
   return await keycloakService
     .update(data, null, 'DELETE')
     .then(() => {
-      sendSuccessNotification('Role Unassigned Successfully');
+      sendSuccessNotification(ROLES_UPDATED_SUCCESSFULLY);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);
@@ -153,7 +96,7 @@ export const assignRoles = async (
   return await keycloakService
     .create(data)
     .then(() => {
-      sendSuccessNotification('Roles Assigned Successfully');
+      sendSuccessNotification(ROLES_UPDATED_SUCCESSFULLY);
     })
     .catch((_: Error) => {
       sendErrorNotification(ERROR_OCCURED);

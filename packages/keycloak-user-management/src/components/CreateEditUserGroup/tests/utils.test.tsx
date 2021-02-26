@@ -2,17 +2,15 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as notifications from '@opensrp/notifications';
 import * as fixtures from '../../UserGroupDetailView/tests/fixtures';
-import {
-  fetchSingleGroup,
-  fetchAssignedRoles,
-  fetchAvailableRoles,
-  removeAssignedRoles,
-  assignRoles,
-  fetchEffectiveRoles,
-} from '../utils';
+import { fetchSingleGroup, removeAssignedRoles, assignRoles, fetchRoleMappings } from '../utils';
 import fetch from 'jest-fetch-mock';
 import { ERROR_OCCURED } from '../../../lang';
 import { userRoles } from '../../../ducks/tests/fixtures';
+import {
+  KEYCLOAK_URL_ASSIGNED_ROLES,
+  KEYCLOAK_URL_AVAILABLE_ROLES,
+  KEYCLOAK_URL_EFFECTIVE_ROLES,
+} from '../../../constants';
 
 const mockBaseURL = 'https://example.com/rest';
 
@@ -136,67 +134,14 @@ describe('dataLoading', () => {
     expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
   });
 
-  it('fetchEffectiveRoles works correctly', async () => {
+  it('fetchRoleMappings fetches available roles', async () => {
     fetch.once(JSON.stringify(userRoles));
-    fetchEffectiveRoles(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
-      throw e;
-    });
-    await new Promise((resolve) => setImmediate(resolve));
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm/composite',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-  });
-
-  it('fetchEffectiveRoles handles errors', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    fetchEffectiveRoles(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
-      throw e;
-    });
-    await new Promise((resolve) => setImmediate(resolve));
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
-  });
-
-  it('fetchAssignedRoles works correctly', async () => {
-    fetch.once(JSON.stringify(userRoles));
-    fetchAssignedRoles(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
-      throw e;
-    });
-    await new Promise((resolve) => setImmediate(resolve));
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-  });
-
-  it('fetchAssignedRoles handles errors', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    fetchAssignedRoles(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
-      throw e;
-    });
-    await new Promise((resolve) => setImmediate(resolve));
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
-  });
-
-  it('fetchAvailableRoles works correctly', async () => {
-    fetch.once(JSON.stringify(userRoles));
-    fetchAvailableRoles(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
+    fetchRoleMappings(
+      fixtures.userGroup1.id,
+      mockBaseURL,
+      KEYCLOAK_URL_AVAILABLE_ROLES,
+      jest.fn()
+    ).catch((e) => {
       throw e;
     });
     await new Promise((resolve) => setImmediate(resolve));
@@ -213,10 +158,63 @@ describe('dataLoading', () => {
     ]);
   });
 
-  it('fetchAvailableRoles handles errors', async () => {
+  it('fetchRoleMappings fetches assigned roles', async () => {
+    fetch.once(JSON.stringify(userRoles));
+    fetchRoleMappings(
+      fixtures.userGroup1.id,
+      mockBaseURL,
+      KEYCLOAK_URL_ASSIGNED_ROLES,
+      jest.fn()
+    ).catch((e) => {
+      throw e;
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+  });
+
+  it('fetchRoleMappings fetches effective roles', async () => {
+    fetch.once(JSON.stringify(userRoles));
+    fetchRoleMappings(
+      fixtures.userGroup1.id,
+      mockBaseURL,
+      KEYCLOAK_URL_EFFECTIVE_ROLES,
+      jest.fn()
+    ).catch((e) => {
+      throw e;
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm/composite',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer sometoken',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
+  });
+
+  it('fetchRoleMappings handles errors', async () => {
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    fetchAvailableRoles(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
+    fetchRoleMappings(
+      fixtures.userGroup1.id,
+      mockBaseURL,
+      KEYCLOAK_URL_ASSIGNED_ROLES,
+      jest.fn()
+    ).catch((e) => {
       throw e;
     });
     await new Promise((resolve) => setImmediate(resolve));
