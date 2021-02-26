@@ -2,7 +2,7 @@ import MockDate from 'mockdate';
 import { getPayload } from '../utils';
 import { assignments, samplePlan } from './fixtures';
 
-describe('PlanAssignment/helpers', () => {
+describe('Assignment/helpers', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     MockDate.set('12/30/2020');

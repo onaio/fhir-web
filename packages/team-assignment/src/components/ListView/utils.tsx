@@ -32,7 +32,7 @@ export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (reco
 };
 
 /** product Catalogue table columns */
-export const columns: ColumnsType<any> = [
+export const columns: ColumnsType<Assignment & { label: string }> = [
   {
     title: 'Name',
     dataIndex: 'locationName',
@@ -98,6 +98,7 @@ export const getPayload = (
       if (initialOrgs.includes(orgId)) {
         // we should not change the fromDate, ever (the API will reject it)
         const thisAssignment = get(assignmentsByOrgId, orgId);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (thisAssignment) {
           startDate = thisAssignment.fromDate;
         }
@@ -119,6 +120,7 @@ export const getPayload = (
     if (!payload.map((obj) => obj.organization).includes(retiredOrgId)) {
       // we should not change the fromDate, ever (the API will reject it)
       const thisAssignment = get(assignmentsByOrgId, retiredOrgId);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (thisAssignment) {
         startDate = thisAssignment.fromDate;
       }
