@@ -16,6 +16,12 @@ import {
   MESSAGE_USER_GROUP_CREATED,
   ADD_USER_GROUP,
   ERROR_OCCURED,
+  REALM_ROLES,
+  AVAILABLE_ROLES,
+  ASSIGNED_ROLES,
+  EFFECTIVE_ROLES,
+  LIST_IS_EMPTY,
+  SEARCH,
 } from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 import { assignRoles, removeAssignedRoles } from './utils';
@@ -206,10 +212,10 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
             <Input />
           </Form.Item>
           {initialValues.id ? (
-            <Form.Item name="roles" id="roles" label="Realm Roles">
+            <Form.Item name="roles" id="roles" label={REALM_ROLES}>
               <Transfer
                 dataSource={data}
-                titles={['Available Roles', 'Assigned Roles']}
+                titles={[AVAILABLE_ROLES, ASSIGNED_ROLES]}
                 listStyle={{ flexGrow: 'inherit' }}
                 targetKeys={
                   targetKeys.length
@@ -222,19 +228,19 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
                 onChange={onChange}
                 onSelectChange={onSelectChange}
                 locale={{
-                  notFoundContent: 'The list is empty',
-                  searchPlaceholder: 'Search here',
+                  notFoundContent: LIST_IS_EMPTY,
+                  searchPlaceholder: SEARCH,
                 }}
               />
               {/** custom transfer to list effective roles */}
               <div className="ant-transfer">
                 <div className="ant-transfer-list">
                   <div className="ant-transfer-list-header">
-                    <span className="ant-transfer-list-header-title">Effective Roles</span>
+                    <span className="ant-transfer-list-header-title">{EFFECTIVE_ROLES}</span>
                   </div>
                   <div className="ant-transfer-list-body">
                     {!effectiveRoles.length ? (
-                      <div className="ant-transfer-list-body-not-found">The list is empty</div>
+                      <div className="ant-transfer-list-body-not-found">{LIST_IS_EMPTY}</div>
                     ) : (
                       <ul className="ant-transfer-list-content">
                         {effectiveRoles.map((role: KeycloakUserRole) => (
