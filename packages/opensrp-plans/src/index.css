@@ -48,6 +48,7 @@
 .plan-dates {
   display: flex;
   flex-direction: row;
+  align-items: flex-end;
 }
 .plan-description {
   padding-left: 104px;
@@ -66,7 +67,12 @@
 .end-date {
   display: flex;
   justify-content: flex-end;
+  color: #999999;
+  font-size: 14px;
 }
 .plan-detail-view .date-divider {
   height: 40px;
+}
+.plan-description {
+  font-size: 14px;
 }
