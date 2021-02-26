@@ -6,7 +6,7 @@ import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import { notification } from 'antd';
 import { Router } from 'react-router';
-import LocationUnitView, {
+import LocationUnitList, {
   loadSingleLocation,
   getBaseTreeNode,
   parseTableData,
@@ -19,9 +19,9 @@ import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 import { baseURL } from '../../../constants';
 import { ERROR_OCCURED } from '../../../lang';
 
-LocationUnitView.defaultProps = { opensrpBaseURL: baseURL };
+LocationUnitList.defaultProps = { opensrpBaseURL: baseURL };
 
-describe('location-management/src/components/LocationUnitView', () => {
+describe('location-management/src/components/LocationUnitList', () => {
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -39,7 +39,6 @@ describe('location-management/src/components/LocationUnitView', () => {
 
   beforeEach(() => {
     fetch.mockClear();
-    fetch.resetMocks();
   });
 
   it('test resolve loadSingleLocation', async () => {
@@ -65,7 +64,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test fail loadSingleLocation', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject();
 
@@ -89,7 +87,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test getBaseTreeNode', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
     const response = await getBaseTreeNode(baseURL);
@@ -124,7 +121,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('test getHierarchy', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
 
     await flushPromises();
@@ -136,7 +132,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('fail loading location ', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
     fetch.mockReject();
@@ -144,7 +139,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -161,7 +156,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('fail loading location hierarchy', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
@@ -170,7 +164,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -187,8 +181,6 @@ describe('location-management/src/components/LocationUnitView', () => {
   });
 
   it('location unit table renders correctly', async () => {
-    fetch.mockResponse(JSON.stringify('hunter2'));
-    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
@@ -196,7 +188,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -206,52 +198,40 @@ describe('location-management/src/components/LocationUnitView', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[1]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/a26ca9c8-1441-495a-83b6-bb5df7698996',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[2]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[3]).toMatchObject([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/6bf9c085-350b-4bb2-990f-80dc2caafb33',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
+      ],
     ]);
 
     expect(wrapper.find('Table').first().props()).toMatchSnapshot();
@@ -266,7 +246,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -284,15 +264,6 @@ describe('location-management/src/components/LocationUnitView', () => {
     };
 
     expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow);
-
-    // test table with tree node without any child
-    const treeItemwithoutchild = wrapper.find('span.ant-tree-title').last();
-    treeItemwithoutchild.simulate('click');
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow); // table didn't change
 
     // test table with tree node with child
     const treeItemwithchild = wrapper.find('span.ant-tree-title').first();
@@ -313,7 +284,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -347,7 +318,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
