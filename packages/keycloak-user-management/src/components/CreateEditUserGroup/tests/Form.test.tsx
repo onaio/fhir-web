@@ -17,6 +17,7 @@ import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
 import { UserGroupForm, defaultInitialValues } from '../Form';
 import toJson from 'enzyme-to-json';
+import { ERROR_OCCURRED } from '../../../../../../app/src/lang';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -165,7 +166,7 @@ describe('components/forms/UserFroupForm', () => {
 
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith('API is down');
+    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
     wrapper.unmount();
   });
 
@@ -194,7 +195,7 @@ describe('components/forms/UserFroupForm', () => {
     });
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith('API is down');
+    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
     wrapper.unmount();
   });
 
