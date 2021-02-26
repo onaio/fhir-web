@@ -60,7 +60,7 @@ const { Item: FormItem } = Form;
 /** props for the location form */
 export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
-  initialValues: LocationFormFields;
+  initialValues: LocationFormFields | undefined;
   successURLGenerator: (payload: LocationUnit) => string;
   openSRPBaseURL: string;
   hidden: string[];
@@ -68,6 +68,7 @@ export interface LocationFormProps
   onCancel: () => void;
   service: typeof OpenSRPService;
   username: string;
+  afterSubmit: Function;
 }
 
 const defaultProps = {
@@ -79,6 +80,9 @@ const defaultProps = {
   service: OpenSRPService,
   username: '',
   openSRPBaseURL: baseURL,
+  afterSubmit: () => {
+    return;
+  },
 };
 
 /** responsive layout for the form labels and columns */
@@ -134,9 +138,10 @@ const LocationForm = (props: LocationFormProps) => {
     hidden,
     service,
     username,
+    afterSubmit,
     disabledTreeNodesCallback,
   } = props;
-  const isEditMode = !!initialValues.id;
+  const isEditMode = !!initialValues?.id;
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const [selectedLocationTags, setLocationTags] = useState<LocationUnitTag[]>([]);
@@ -149,9 +154,7 @@ const LocationForm = (props: LocationFormProps) => {
   const [form] = Form.useForm();
 
   React.useEffect(() => {
-    form.setFieldsValue({
-      ...initialValues,
-    });
+    form.setFieldsValue({ ...initialValues });
   }, [form, initialValues]);
 
   const status = [
@@ -201,6 +204,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           postPutLocationUnit(payload, openSRPBaseURL, service, isEditMode, params)
             .then(() => {
+              afterSubmit();
               sendSuccessNotification(successMessage);
               setGeneratedPayload(payload);
               setAreWeDoneHere(true);

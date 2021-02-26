@@ -23,7 +23,7 @@ import {
   SEARCH,
 } from '../../lang';
 import Table, { TableData } from './Table';
-import './LocationUnitGroupView.css';
+import './LocationUnitGroupList.css';
 import { Link } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
 
@@ -33,7 +33,7 @@ export interface Props {
   opensrpBaseURL: string;
 }
 
-const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
+const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   const locationsArray = useSelector((state) => getLocationUnitGroupsArray(state));
   const dispatch = useDispatch();
   const [detail, setDetail] = useState<LocationUnitGroupDetailProps | null>(null);
@@ -137,4 +137,4 @@ const LocationUnitGroupView: React.FC<Props> = (props: Props) => {
     </section>
   );
 };
-export default LocationUnitGroupView;
+export default LocationUnitGroupList;
