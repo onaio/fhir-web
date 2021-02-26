@@ -205,6 +205,7 @@ exports[`containers/forms/PlanForm renders correctly: date field 2`] = `
   className="ant-input"
   disabled={false}
   id="planForm_description"
+  maxLength={200}
   onChange={[Function]}
   onKeyDown={[Function]}
   placeholder="Enter the plan's description"

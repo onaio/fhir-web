@@ -49,6 +49,9 @@
   display: flex;
   flex-direction: row;
 }
+.plan-description {
+  padding-left: 104px;
+}
 .plan-start-date {
   flex-direction: column;
   display: flex;
