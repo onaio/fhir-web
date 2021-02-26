@@ -53,6 +53,8 @@ describe('components/TeamsView/table', () => {
   });
 
   it('Test Table View Detail', () => {
+    const onViewDetails = jest.fn();
+
     const wrapper = mount(
       <Router history={history}>
         <Table
@@ -60,12 +62,12 @@ describe('components/TeamsView/table', () => {
           setDetail={() => jest.fn()}
           opensrpBaseURL={opensrpBaseURL}
           data={tableData}
-          onViewDetails={() => wrapper.unmount()}
+          onViewDetails={onViewDetails}
         />
       </Router>
     );
     wrapper.find('.viewdetails').at(0).simulate('click');
-    expect(wrapper).toHaveLength(0);
+    expect(onViewDetails).toBeCalled();
   });
 
   it('Test Table View Detail when onViewDetail prop is not passed', () => {
