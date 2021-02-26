@@ -5,7 +5,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Router } from 'react-router';
 import React from 'react';
-import LocationUnitGroupView from '..';
+import LocationUnitGroupList from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
@@ -14,9 +14,9 @@ import { notification } from 'antd';
 import { baseURL } from '../../../constants';
 import { ERROR_OCCURED } from '../../../lang';
 
-LocationUnitGroupView.defaultProps = { opensrpBaseURL: baseURL };
+LocationUnitGroupList.defaultProps = { opensrpBaseURL: baseURL };
 
-describe('location-management/src/components/LocationUnitGroupView', () => {
+describe('location-management/src/components/LocationUnitGroupList', () => {
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -38,7 +38,7 @@ describe('location-management/src/components/LocationUnitGroupView', () => {
   it('renders without crashing', async () => {
     shallow(
       <Router history={history}>
-        <LocationUnitGroupView opensrpBaseURL={baseURL} />
+        <LocationUnitGroupList opensrpBaseURL={baseURL} />
       </Router>
     );
   });
@@ -48,7 +48,7 @@ describe('location-management/src/components/LocationUnitGroupView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupView opensrpBaseURL={baseURL} />
+          <LocationUnitGroupList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -73,7 +73,7 @@ describe('location-management/src/components/LocationUnitGroupView', () => {
     mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitGroupView opensrpBaseURL={baseURL} />
+          <LocationUnitGroupList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );

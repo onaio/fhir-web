@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`location-management/src/components/LocationUnitView location unit table renders correctly 1`] = `
+exports[`location-management/src/components/LocationUnitList location unit table renders correctly 1`] = `
 Object {
   "data": Array [
     Object {
