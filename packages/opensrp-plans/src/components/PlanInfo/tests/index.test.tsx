@@ -29,7 +29,7 @@ describe('/components/PlanInfo', () => {
     expect(planInfo.find('Divider')).toHaveLength(3);
     expect(planInfo.find('Avatar').props()).toMatchSnapshot('avatar props');
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Missions/Active /EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditActive Start Date2020-11-17End Date2021-12-24 "`
+      `"Missions/Active/EUSM Mission 2020-11-17/EUSM Mission 2020-11-17EditActiveStart Date2020-11-17End Date2021-12-24 "`
     );
     wrapper.find('.site-page-header-responsive span.ant-breadcrumb-link').forEach((span, index) => {
       expect(toJson(span)).toMatchSnapshot(`links in breadcrumb ${index}`);

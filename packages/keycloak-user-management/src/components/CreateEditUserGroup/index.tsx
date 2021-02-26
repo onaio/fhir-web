@@ -3,25 +3,34 @@ import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Spin } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps } from 'react-router-dom';
 import { defaultInitialValues, UserGroupFormProps } from './Form';
-import { ROUTE_PARAM_USER_GROUP_ID, KEYCLOAK_URL_USER_GROUPS } from '../../constants';
+import {
+  KEYCLOAK_URL_ASSIGNED_ROLES,
+  KEYCLOAK_URL_AVAILABLE_ROLES,
+  KEYCLOAK_URL_EFFECTIVE_ROLES,
+  ROUTE_PARAM_USER_GROUP_ID,
+} from '../../constants';
 import { ERROR_OCCURED } from '../../lang';
 import {
   reducer as keycloakUserGroupsReducer,
   reducerName as keycloakUserGroupsReducerName,
-  fetchKeycloakUserGroups,
   makeKeycloakUserGroupsSelector,
   KeycloakUserGroup,
 } from '../../ducks/userGroups';
 import { UserGroupForm } from './Form';
+import { fetchAllRoles } from '../UserRolesList/utils';
+import { fetchRoleMappings, fetchSingleGroup } from './utils';
+import { KeycloakUserRole, makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
 
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
 
-// Define selector instance
+// Define user groups selector instance
 const userGroupsSelector = makeKeycloakUserGroupsSelector();
+
+// Define user roles selector instance
+const userRolesSelector = makeKeycloakUserRolesSelector();
 
 // Interface for route params
 interface RouteParams {
@@ -51,38 +60,66 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
 ) => {
   const { keycloakBaseURL } = props;
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [availableRoles, setAvailableRoles] = React.useState<KeycloakUserRole[]>([]);
+  const [assignedRoles, setAssignedRoles] = React.useState<KeycloakUserRole[]>([]);
+  const [effectiveRoles, setEffectiveRoles] = React.useState<KeycloakUserRole[]>([]);
   const dispatch = useDispatch();
   const userGroupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID];
   const keycloakUserGroup = useSelector((state) =>
     userGroupsSelector(state, { id: [userGroupId] })
   );
+  const allRoles = useSelector((state) => userRolesSelector(state, {}));
   const initialValues = keycloakUserGroup.length ? keycloakUserGroup[0] : defaultInitialValues;
 
   /**
    * Fetch group incase the user group is not available e.g when page is refreshed
+   * also fetches all roles, available and assigned roles during edit mode
    */
   React.useEffect(() => {
     if (userGroupId) {
-      const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
       setIsLoading(true);
-      serve
-        .read(userGroupId)
-        .then((response: KeycloakUserGroup) => {
-          dispatch(fetchKeycloakUserGroups([response]));
-        })
-        .catch((_: Error) => {
-          sendErrorNotification(ERROR_OCCURED);
-        })
+      const groupPromise = fetchSingleGroup(userGroupId, keycloakBaseURL, dispatch);
+      const allRolesPromise = fetchAllRoles(keycloakBaseURL, dispatch);
+      const availableRolesPromise = fetchRoleMappings(
+        initialValues.id,
+        keycloakBaseURL,
+        KEYCLOAK_URL_AVAILABLE_ROLES,
+        setAvailableRoles
+      );
+      const assignedRolesPromise = fetchRoleMappings(
+        initialValues.id,
+        keycloakBaseURL,
+        KEYCLOAK_URL_ASSIGNED_ROLES,
+        setAssignedRoles
+      );
+      const effectiveRolesPromise = fetchRoleMappings(
+        initialValues.id,
+        keycloakBaseURL,
+        KEYCLOAK_URL_EFFECTIVE_ROLES,
+        setEffectiveRoles
+      );
+      Promise.all([
+        groupPromise,
+        allRolesPromise,
+        availableRolesPromise,
+        assignedRolesPromise,
+        effectiveRolesPromise,
+      ])
+        .catch(() => sendErrorNotification(ERROR_OCCURED))
         .finally(() => setIsLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialValues.id]);
 
   if (isLoading) {
     return <Spin size="large" />;
   }
 
   const userGroupFormProps: UserGroupFormProps = {
+    allRoles,
+    assignedRoles,
+    availableRoles,
+    effectiveRoles,
     initialValues: initialValues as KeycloakUserGroup,
     keycloakBaseURL,
   };
