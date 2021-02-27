@@ -1,37 +1,31 @@
-import { createSelector, Store, createSlice, PayloadAction } from '@reduxjs/toolkit';
-export const configsSliceName = 'configs';
-
-export interface ConfigState {
+interface Dictionary {
   [key: string]: string;
 }
 
-export const defaultConfigState: ConfigState = {};
-
-export const configsSlice = createSlice({
-  name: configsSliceName,
-  initialState: defaultConfigState,
-  reducers: {
-    addConfigs(state, action: PayloadAction<ConfigState>) {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    },
-  },
-});
-
-const getConfigsState = (state: Partial<Store>) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sliceOfInterest = (state as any)[configsSliceName];
-  if (sliceOfInterest === undefined) {
-    // From intricate way this dux is included, I think it would be helpful
-    // to show a warning if module is used without registration
-    return {};
+class ConfigSingleton {
+  #config: Dictionary;
+  constructor() {
+    this.#config = {};
+    this.#config.key = `${Math.random()}`;
   }
-  return sliceOfInterest;
-};
 
-export const getConfigsFactory = () => createSelector(getConfigsState, (state) => state);
+  addConfig(obj: Dictionary) {
+    this.#config = {
+      ...this.#config,
+      ...obj,
+    };
+  }
 
-export const { addConfigs } = configsSlice.actions;
-export const { reducer: configsReducer } = configsSlice;
+  getConfig(key?: string) {
+    if (!key) {
+      return { ...this.#config };
+    }
+    return this.#config[key];
+  }
+}
+
+const configStore = new ConfigSingleton();
+
+Object.freeze(configStore);
+
+export { configStore };
