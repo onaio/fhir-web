@@ -1,8 +1,7 @@
-import { store } from '@opensrp/store';
 import { Dictionary } from '@onaio/utils';
 import i18n, { Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { getConfigsFactory } from './ducks';
+import { configStore } from './ducks';
 
 export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
 export type ProjectLanguageCode = 'eusm' | 'core';
@@ -34,9 +33,8 @@ export interface LanguageResources {
 
 /** gets configs from the store */
 export const getConfigs = (): OpenSRPConfigs => {
-  const configsSelector = getConfigsFactory();
-  const allConfigs = configsSelector(store.getState());
-  return allConfigs;
+  const allConfigs = configStore.getConfig();
+  return allConfigs as OpenSRPConfigs;
 };
 
 export const initializei18n = (i18next: typeof i18n, opensrpResources: LanguageResources) => {
