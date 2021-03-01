@@ -6,7 +6,7 @@ import React, { ChangeEvent } from 'react';
 import { debounce } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../../styles/index.css';
-import { SEARCH_LABEL } from '../../lang';
+import { SEARCH } from '../../lang';
 
 /** SearchBar props interface  */
 export interface SearchBarDefaultProps {
@@ -62,7 +62,7 @@ export const SearchBar = (props: SearchBarProps) => {
 
 /** default props */
 const defaultProps: SearchBarDefaultProps = {
-  placeholder: SEARCH_LABEL,
+  placeholder: SEARCH,
   debounceTime: 1000,
 };
 
