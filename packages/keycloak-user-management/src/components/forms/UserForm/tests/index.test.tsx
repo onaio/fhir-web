@@ -97,6 +97,7 @@ describe('components/forms/UserForm', () => {
       },
     ]);
     expect(wrapper.find('Row').at(0).props()).toMatchSnapshot();
+    wrapper.unmount();
   });
 
   it('form validation works for required fields', async () => {
@@ -115,6 +116,7 @@ describe('components/forms/UserForm', () => {
     expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual(['Username is required']);
     expect(wrapper.find('FormItemInput').at(4).prop('errors')).toEqual([]);
     expect(wrapper.find('FormItemInput').at(5).prop('errors')).toEqual([]);
+    wrapper.unmount();
   });
 
   it('adds user', async () => {
