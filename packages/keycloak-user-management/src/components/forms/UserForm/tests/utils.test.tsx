@@ -154,7 +154,6 @@ describe('forms/utils/submitForm', () => {
         Pragma: 'no-cache',
         body: JSON.stringify({
           ...values,
-          enabled: true,
         }),
         headers: {
           accept: 'application/json',
