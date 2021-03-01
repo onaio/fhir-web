@@ -17,7 +17,7 @@ import { fixManifestFiles } from '../../../../ducks/tests/fixtures';
 import sampleFile from './../../../../helpers/tests/sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
-import * as opensrpService from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/server-service';
 import { ERROR_OCCURRED } from '../../../../lang';
 
 /** register the reducers */
@@ -322,7 +322,7 @@ describe('components/UploadForm', () => {
 
   it('handles non-API errors when submitting', async () => {
     jest
-      .spyOn(opensrpService, 'processAcessToken')
+      .spyOn(OpenSRPService, 'processAcessToken')
       .mockImplementationOnce(() => Promise.reject('Error'));
     const wrapper = mount(
       <Provider store={store}>
