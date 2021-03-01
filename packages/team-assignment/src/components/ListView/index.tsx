@@ -47,6 +47,18 @@ reducerRegistry.register(orgReducerName, organizationsReducer);
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 reducerRegistry.register(assignmentReducerName, reducer);
 
+export interface TableData {
+  id: string;
+  key: string;
+  locationName: string;
+  existingAssignments: Assignment[];
+  setExistingAssignments: (assignments: Assignment[]) => void;
+  setAssignedLocAndTeams: (assignments: AssignedLocationAndTeams) => void;
+  setModalVisibility: (visible: true) => void;
+  assignedTeamIds: string[];
+  assignedTeams: string;
+}
+
 /** component that renders Team assignment page */
 interface RouteParams {
   id?: string;
@@ -159,7 +171,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function filterFunction(input: string, option: any): boolean {
-    return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   }
 
   const dataSource = currentParentChildren.length ? currentParentChildren : Treedata;
@@ -210,7 +222,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             id={CANCEL}
             key="cancel"
             onClick={() => {
-              setVisible(false);
+              handleCancel();
             }}
           >
             Cancel

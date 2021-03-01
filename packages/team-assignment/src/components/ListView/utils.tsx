@@ -5,11 +5,12 @@ import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { TableColumnsNamespace } from '../../constants';
+import { TableData } from '.';
 import { AssignLocationsAndPlans } from 'team-assignment/src/ducks/assignments/types';
 
 /** component rendered in the action column of the table */
 
-export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (record) => {
+export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (record) => {
   return (
     <>
       <Button
@@ -32,16 +33,16 @@ export const ActionsColumnCustomRender: ColumnType<Assignment>['render'] = (reco
 };
 
 /** product Catalogue table columns */
-export const columns: ColumnsType<Assignment & { label: string }> = [
+export const columns: ColumnsType<TableData> = [
   {
     title: 'Name',
     dataIndex: 'locationName',
     key: `${TableColumnsNamespace}-locationName`,
     defaultSortOrder: 'descend',
     sorter: (rec1, rec2) => {
-      if (rec1.label > rec2.label) {
+      if (rec1.locationName > rec2.locationName) {
         return -1;
-      } else if (rec1.label < rec2.label) {
+      } else if (rec1.locationName < rec2.locationName) {
         return 1;
       } else {
         return 0;
