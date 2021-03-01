@@ -185,9 +185,9 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h5 className="mt-4">
+            <h6 className="mt-4">
               {currentClicked?.children ? currentClicked.node.name : LOCATION_UNIT}
-            </h5>
+            </h6>
             <div>
               <Link
                 to={(location) => {
