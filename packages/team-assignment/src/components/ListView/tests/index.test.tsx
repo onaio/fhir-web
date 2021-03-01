@@ -25,6 +25,8 @@ import {
 import { OPENSRP_API_BASE_URL } from '../../../constants';
 import { assignments, sampleHierarchy, samplePlan } from './fixtures';
 import { organizations } from '@opensrp/team-management/src/ducks/tests/fixtures';
+import toJson from 'enzyme-to-json';
+import { Dictionary } from '@onaio/utils';
 
 const { fetchAllHierarchies } = locationHierachyDucks;
 
@@ -55,11 +57,11 @@ describe('List view Page', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
-    jest.spyOn(React, 'useLayoutEffect').mockImplementation(() => false);
   });
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    fetch.mockClear();
+    jest.spyOn(React, 'useLayoutEffect').mockImplementation(() => false);
   });
 
   afterEach(() => {
@@ -106,8 +108,11 @@ describe('List view Page', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+
+    wrapper.update();
+
+    // expect(toJson(wrapper.find('TeamAssignmentView'))).toEqual('');
 
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Team AssignmentKenyaNameAssigned TeamsActionsKenya-Edit1"`
@@ -199,6 +204,270 @@ describe('List view Page', () => {
     });
     expect(notificationErrorMock).toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    wrapper.unmount();
+  });
+
+  it('on submit works correctly', async () => {
+    fetch.mockResponses(
+      /** Get plan hierarchy */
+      [JSON.stringify(samplePlan), { status: 200 }],
+      /** These calls are made by PlanAssignment */
+      [JSON.stringify(assignments), { status: 200 }],
+      [JSON.stringify(organizations), { status: 200 }]
+    );
+
+    const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
+
+    store.dispatch(fetchAssignments(assignments));
+    store.dispatch(fetchOrganizationsAction(organizations));
+    const hierarchy = generateJurisdictionTree(sampleHierarchy);
+    store.dispatch(fetchAllHierarchies([hierarchy.model]));
+
+    const props = {
+      history,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
+      location: {
+        hash: '',
+        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <TeamAssignmentView {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    // simulate to open modal
+    wrapper.find('button').at(0).simulate('click');
+    wrapper.update();
+    // modal text: save button, cancel button, placeholder and header text
+    expect(wrapper.find('Modal').text()).toMatchInlineSnapshot(
+      // eslint-disable-next-line no-irregular-whitespace
+      `"Assign/Unassign Teams | KenyaTeams Enter a Team nameSaveCancel"`
+    );
+
+    // mock multi select on change event
+    (wrapper.find('Modal Select').props() as Dictionary).onChange(
+      ['fcc19470-d599-11e9-bb65-2a2ae2dbcce4'],
+      [{ label: 'The Luang', value: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4' }]
+    );
+    wrapper.update();
+    // filter props works correctly
+    expect(
+      (wrapper.find('Modal Select').props() as Dictionary).filterOption('luang', {
+        label: 'The Luang',
+        value: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4',
+      })
+    ).toBeTruthy();
+
+    expect(
+      (wrapper.find('Modal Select').props() as Dictionary).filterOption('anglu', {
+        label: 'The Luang',
+        value: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4',
+      })
+    ).toBeFalsy();
+
+    // save assignment successfully
+    expect(wrapper.find('button').at(1).text()).toEqual('Save');
+    (wrapper.find('Modal Select').props() as Dictionary).onChange(
+      ['4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4'],
+      [{ label: 'Demo Team', value: '4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4' }]
+    );
+    fetch.once(JSON.stringify([assignments[0]]));
+    wrapper.find('form').simulate('submit');
+    await flushPromises();
+    wrapper.update();
+    expect(mockNotificationSuccess).toHaveBeenCalledWith('Successfully Assigned Teams');
+    wrapper.unmount();
+  });
+
+  it('closes modal on cancel button click', async () => {
+    fetch.mockResponses(
+      /** Get plan hierarchy */
+      [JSON.stringify(samplePlan), { status: 200 }],
+      /** These calls are made by PlanAssignment */
+      [JSON.stringify(assignments), { status: 200 }],
+      [JSON.stringify(organizations), { status: 200 }]
+    );
+
+    store.dispatch(fetchAssignments(assignments));
+    store.dispatch(fetchOrganizationsAction(organizations));
+    const hierarchy = generateJurisdictionTree(sampleHierarchy);
+    store.dispatch(fetchAllHierarchies([hierarchy.model]));
+
+    const props = {
+      history,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
+      location: {
+        hash: '',
+        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <TeamAssignmentView {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // simulate to open modal
+    wrapper.find('button').at(0).simulate('click');
+    wrapper.update();
+    expect(toJson(wrapper.find('Modal'))).toBeTruthy();
+    expect(wrapper.find('Modal').props()['visible']).toBeTruthy();
+    expect(wrapper.find('button').at(2).text()).toEqual('Cancel');
+    wrapper.find('button').at(2).simulate('click');
+    wrapper.update();
+    // check visibility is set to false
+    expect(wrapper.find('Modal').props()['visible']).toBeFalsy();
+  });
+
+  it('updates table when clicking on tree node', async () => {
+    fetch.mockResponses(
+      /** Get plan hierarchy */
+      [JSON.stringify(samplePlan), { status: 200 }],
+      /** These calls are made by PlanAssignment */
+      [JSON.stringify(assignments), { status: 200 }],
+      [JSON.stringify(organizations), { status: 200 }]
+    );
+
+    store.dispatch(fetchAssignments(assignments));
+    store.dispatch(fetchOrganizationsAction(organizations));
+    const hierarchy = generateJurisdictionTree(sampleHierarchy);
+    store.dispatch(fetchAllHierarchies([hierarchy.model]));
+
+    const props = {
+      history,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
+      location: {
+        hash: '',
+        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <TeamAssignmentView {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    // click parent node
+    expect(wrapper.find('span.ant-tree-title')).toHaveLength(1);
+    wrapper.find('span.ant-tree-title').simulate('click');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    // length should be 3 children
+    expect(toJson(wrapper.find('span.ant-tree-title'))).toHaveLength(3);
+    wrapper.unmount();
+  });
+
+  it('handles save error', async () => {
+    fetch.mockResponses(
+      /** Get plan hierarchy */
+      [JSON.stringify(samplePlan), { status: 200 }],
+      /** These calls are made by PlanAssignment */
+      [JSON.stringify(assignments), { status: 200 }],
+      [JSON.stringify(organizations), { status: 200 }]
+    );
+
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
+
+    store.dispatch(fetchAssignments(assignments));
+    store.dispatch(fetchOrganizationsAction(organizations));
+    const hierarchy = generateJurisdictionTree(sampleHierarchy);
+    store.dispatch(fetchAllHierarchies([hierarchy.model]));
+
+    const props = {
+      history,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
+      location: {
+        hash: '',
+        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <TeamAssignmentView {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    // simulate to open modal
+    wrapper.find('button').at(0).simulate('click');
+    wrapper.update();
+    (wrapper.find('Modal Select').props() as Dictionary).onChange(
+      ['4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4'],
+      [{ label: 'Demo Team', value: '4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4' }]
+    );
+    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    wrapper.find('form').simulate('submit');
+    await flushPromises();
+    wrapper.update();
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
     wrapper.unmount();
   });
 });
