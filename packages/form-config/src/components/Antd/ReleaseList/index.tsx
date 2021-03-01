@@ -17,6 +17,7 @@ import { OPENSRP_MANIFEST_ENDPOINT } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import { fetchReleaseFiles } from '../../../helpers/utils';
+import { RELEASES, UPLOAD_NEW_FILE } from '../../../lang';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -94,7 +95,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>Releases</Title>
+      <Title level={3}>{RELEASES}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
@@ -109,7 +110,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
-            Upload New File
+            {UPLOAD_NEW_FILE}
           </Button>
           <Divider type="vertical" />
           <SettingOutlined />

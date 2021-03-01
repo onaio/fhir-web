@@ -18,6 +18,7 @@ import { OPENSRP_FORM_METADATA_ENDPOINT, OPENSRP_MANIFEST_ENDPOINT } from '../..
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import { makeRelease, fetchDrafts } from '../../../helpers/utils';
+import { SEARCH, UPLOAD_NEW_FILE, MAKE_RELEASE, DRAFT_FILES } from '../../../lang';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, DraftFilesReducer);
@@ -96,12 +97,12 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>Draft Files</Title>
+      <Title level={3}>{DRAFT_FILES}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
             id="search"
-            placeholder="Search"
+            placeholder={SEARCH}
             size="large"
             value={value}
             prefix={<SearchOutlined />}
@@ -111,7 +112,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
-            Upload New File
+            {UPLOAD_NEW_FILE}
           </Button>
           <Divider type="vertical" />
           <SettingOutlined />
@@ -154,7 +155,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
                 )
               }
             >
-              Make Release
+              {MAKE_RELEASE}
             </Button>
           </Space>
         )}

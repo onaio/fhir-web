@@ -16,9 +16,9 @@ import { FormConfigProps, DrillDownProps } from '../../helpers/types';
 import {
   APP_ID_LABEL,
   APP_VERSION_LABEL,
-  VIEW_FILES_LABEL,
-  UPLOAD_FILE_LABEL,
-  IDENTIFIER_LABEL,
+  VIEW_FILES,
+  UPLOAD_NEW_FILE,
+  IDENTIFIER,
   FIND_RELEASES_LABEL,
   UPDATED_AT_LABEL,
 } from '../../lang';
@@ -202,11 +202,11 @@ const defaultProps: ReleasesDefaultProps = {
     paginate: false,
   },
   fetchReleases: fetchManifestReleases,
-  identifierLabel: IDENTIFIER_LABEL,
+  identifierLabel: IDENTIFIER,
   placeholder: FIND_RELEASES_LABEL,
   updatedAt: UPDATED_AT_LABEL,
-  uploadFileLabel: UPLOAD_FILE_LABEL,
-  viewFilesLabel: VIEW_FILES_LABEL,
+  uploadFileLabel: UPLOAD_NEW_FILE,
+  viewFilesLabel: VIEW_FILES,
   accessToken: '',
 };
 

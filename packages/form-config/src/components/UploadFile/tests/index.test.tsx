@@ -65,7 +65,7 @@ describe('components/UploadFile', () => {
     });
     wrapper.update();
     // we have errors
-    expect(wrapper.find('.text-danger').at(0).text()).toEqual('Form name is required');
+    expect(wrapper.find('.text-danger').at(0).text()).toEqual('Form Name is required');
     expect(wrapper.find('.text-danger').at(1).text()).toEqual('Form is required');
 
     wrapper

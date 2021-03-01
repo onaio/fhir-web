@@ -4,6 +4,7 @@ import { ManifestFilesTypes } from '../../../ducks/manifestFiles';
 import { TableActions } from './TableActions';
 import { getFetchOptions } from '@opensrp/server-service';
 import { formatDate } from '../../../helpers/utils';
+import { MODULE, IDENTIFIER, FILE_NAME, FILE_VERSION, CREATED_AT, ACTION } from '../../../lang';
 
 /**
  * Return table columns
@@ -25,7 +26,7 @@ export const getTableColumns = (
   customFetchOptions?: typeof getFetchOptions
 ): Dictionary[] => {
   const columns: Dictionary[] = [];
-  const headerItems: string[] = ['Identifier', 'File Name', 'File Version', 'Created At'];
+  const headerItems: string[] = [IDENTIFIER, FILE_NAME, FILE_VERSION, CREATED_AT];
   const fields: string[] = ['identifier', 'label', 'version', 'createdAt'];
 
   fields.forEach((field: string, index: number) => {
@@ -52,14 +53,14 @@ export const getTableColumns = (
 
   if (!isJsonValidator) {
     columns.push({
-      title: 'Module',
+      title: MODULE,
       dataIndex: 'module',
       key: 'module',
     });
   }
 
   columns.push({
-    title: 'Action',
+    title: ACTION,
     key: 'action',
     // eslint-disable-next-line react/display-name
     render: (_: string, file: ManifestFilesTypes) => {

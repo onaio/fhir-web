@@ -14,7 +14,7 @@ import filesReducer, {
 import { useSelector, useDispatch } from 'react-redux';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { OPENSRP_FORM_METADATA_ENDPOINT, ROUTE_PARAM_FORM_VERSION } from '../../../constants';
-import { UPLOAD_FILE_LABEL } from '../../../lang';
+import { JSON_VALIDATORS, RELEASES, UPLOAD_NEW_FILE } from '../../../lang';
 import { getTableColumns } from './utils';
 import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
@@ -76,7 +76,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   const formVersion = match.params[ROUTE_PARAM_FORM_VERSION];
   const dispatch = useDispatch();
   const history = useHistory();
-  const title = formVersion ? `Releases: ${formVersion}` : 'JSON Validators';
+  const title = formVersion ? `${RELEASES}: ${formVersion}` : JSON_VALIDATORS;
 
   useEffect(
     () => {
@@ -140,7 +140,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             <>
               <Button type="primary" onClick={() => history.push(uploadFileURL)}>
                 <UploadOutlined />
-                {UPLOAD_FILE_LABEL}
+                {UPLOAD_NEW_FILE}
               </Button>
               <Divider type="vertical" />
             </>
