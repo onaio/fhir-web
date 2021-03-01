@@ -3,6 +3,7 @@ import { FormInstances, LocationUnit, NewLocationUnit } from '@opensrp/location-
 import { RouteComponentProps } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
+  GEOJSON_TYPE_STRING,
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 } from '../../constants';
@@ -30,7 +31,11 @@ const ServicePointsAdd = (props: ServicePointAddTypes) => {
       `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${payload?.id}`, // todo if payload is missing
     cancelURLGenerator: () => INVENTORY_SERVICE_POINT_LIST_VIEW,
     disabled: ['isJurisdiction'],
-    processInitialValues: (data: LocationFormFields) => ({ ...data, isJurisdiction: false }),
+    processInitialValues: (data: LocationFormFields) => ({
+      ...data,
+      isJurisdiction: false,
+      type: GEOJSON_TYPE_STRING,
+    }),
     disabledTreeNodesCallback,
   };
 
