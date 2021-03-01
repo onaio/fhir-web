@@ -417,7 +417,7 @@ export const loadJurisdictions = (
 };
 
 export interface TaskParams extends URLParams {
-  businessStatus: string;
+  status: string;
 }
 
 /**
