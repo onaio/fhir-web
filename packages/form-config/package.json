@@ -35,6 +35,7 @@
     "url": "https://github.com/opensrp/opensrp-web/issues"
   },
   "peerDependencies": {
+    "@opensrp/store": "^0.0.9",
     "react": "^16.8.6",
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
@@ -55,7 +56,6 @@
     "@opensrp/pkg-config": "^0.0.4",
     "@opensrp/reducer-factory": "^0.0.1",
     "@opensrp/server-service": "^0.0.16",
-    "@opensrp/store": "^0.0.9",
     "antd": "^4.6.3",
     "date-fns": "^2.17.0",
     "formik": "^2.1.4",
