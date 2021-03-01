@@ -12,7 +12,7 @@ import { fetchManifestFiles } from '../../../ducks/manifestFiles';
 import { fixManifestFiles } from '../../../ducks/tests/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
-import * as opensrpService from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/server-service';
 import { ERROR_OCCURRED } from '../../../lang';
 
 const history = createBrowserHistory();
@@ -196,7 +196,7 @@ describe('components/UploadFile', () => {
 
   it('handles non-API errors when submitting', async () => {
     jest
-      .spyOn(opensrpService, 'processAcessToken')
+      .spyOn(OpenSRPService, 'processAcessToken')
       .mockImplementationOnce(() => Promise.reject('Error'));
     const wrapper = mount(
       <Provider store={store}>
