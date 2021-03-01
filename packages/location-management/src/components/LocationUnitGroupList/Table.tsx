@@ -88,8 +88,8 @@ const Table: React.FC<Props> = (props: Props) => {
       pagination={{
         showQuickJumper: true,
         showSizeChanger: true,
-        defaultPageSize: 5,
-        pageSizeOptions: ['5', '10', '20', '50', '100'],
+        defaultPageSize: 20,
+        pageSizeOptions: ['10', '20', '50', '100'],
       }}
       dataSource={props.data}
       columns={columns}
