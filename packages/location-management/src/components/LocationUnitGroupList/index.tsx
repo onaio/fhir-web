@@ -100,15 +100,14 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h5>
-              <Input
-                placeholder={SEARCH}
-                size="large"
-                value={value}
-                prefix={<SearchOutlined />}
-                onChange={onChange}
-              />
-            </h5>
+            <Input
+              className="w-auto"
+              placeholder={SEARCH}
+              size="large"
+              value={value}
+              prefix={<SearchOutlined />}
+              onChange={onChange}
+            />
             <div>
               <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
                 <Button type="primary">
