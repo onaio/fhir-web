@@ -94,53 +94,56 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const [existingAssignments, setExistingAssignments] = useState<Assignment[]>([]);
 
   React.useEffect(() => {
-    const plansService = new OpenSRPService(PLANS_ENDPOINT, opensrpBaseURL);
-    const plansPromise = plansService
-      .read(defaultPlanId)
-      .then((response: PlanDefinition[]) => {
-        const getJurisdictionCode = response[0].jurisdiction[0].code;
-        const hierarchyService = new OpenSRPService(LOCATION_HIERARCHY_ENDPOINT, opensrpBaseURL);
-        hierarchyService
-          .read(getJurisdictionCode)
-          .then((response: RawOpenSRPHierarchy) => {
-            const hierarchy = generateJurisdictionTree(response);
-            dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
-          })
-          .catch(() => {
-            sendErrorNotification(ERROR_OCCURED);
-          });
-      })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-      });
-    // get all assignments
-    const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
-    const assignmentsPromise = asssignmentService
-      .list({ plan: defaultPlanId })
-      .then((response: Assignment[]) => {
-        dispatch(fetchAssignments(response));
-      })
-      .catch(() => sendErrorNotification(ERROR_OCCURED));
+    if (loading) {
+      const plansService = new OpenSRPService(PLANS_ENDPOINT, opensrpBaseURL);
+      const plansPromise = plansService
+        .read(defaultPlanId)
+        .then((response: PlanDefinition[]) => {
+          const getJurisdictionCode = response[0].jurisdiction[0].code;
+          const hierarchyService = new OpenSRPService(LOCATION_HIERARCHY_ENDPOINT, opensrpBaseURL);
+          hierarchyService
+            .read(getJurisdictionCode)
+            .then((response: RawOpenSRPHierarchy) => {
+              const hierarchy = generateJurisdictionTree(response);
+              dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
+            })
+            .catch(() => {
+              sendErrorNotification(ERROR_OCCURED);
+            });
+        })
+        .catch(() => {
+          sendErrorNotification(ERROR_OCCURED);
+        });
+      // get all assignments
+      const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
+      const assignmentsPromise = asssignmentService
+        .list({ plan: defaultPlanId })
+        .then((response: Assignment[]) => {
+          dispatch(fetchAssignments(response));
+        })
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
 
-    // fetch all organizations
-    const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
-    const organizationsPromise = organizationsService
-      .list()
-      .then((response: Organization[]) => {
-        dispatch(fetchOrganizationsAction(response));
-      })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-      });
+      // fetch all organizations
+      const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
+      const organizationsPromise = organizationsService
+        .list()
+        .then((response: Organization[]) => {
+          dispatch(fetchOrganizationsAction(response));
+        })
+        .catch(() => {
+          sendErrorNotification(ERROR_OCCURED);
+        });
 
-    Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
-      .finally(() => {
-        setLoading(false);
-      })
-      .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
-      });
-  }, [defaultPlanId, dispatch, opensrpBaseURL]);
+      Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
+        .catch(() => {
+          sendErrorNotification(ERROR_OCCURED);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
   React.useEffect(() => {
     form.setFieldsValue({ assignTeams: assignedLocAndTeams?.assignedTeams });
@@ -159,7 +162,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     setVisible(false);
   };
 
-  if (loading || !Treedata.length) {
+  if (loading) {
     return <TeamAssignmentLoading />;
   }
 

@@ -101,9 +101,9 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
-  LocationUnitView,
+  LocationUnitList,
   LocationUnitGroupAddEdit,
-  LocationUnitGroupView,
+  LocationUnitGroupList,
   NewLocationUnit,
   EditLocationUnit,
 } from '@opensrp/location-management';
@@ -539,7 +539,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT}
-              component={LocationUnitView}
+              component={LocationUnitList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -562,7 +562,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_LOCATION_UNIT_GROUP}
-              component={LocationUnitGroupView}
+              component={LocationUnitGroupList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

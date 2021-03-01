@@ -6,7 +6,7 @@ import Table, { TableData } from '../Table';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 
-describe('location-management/src/components/LocationUnitView', () => {
+describe('location-management/src/components/LocationUnitList', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
     tableData.push({

@@ -7,7 +7,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { notification } from 'antd';
 import { Router } from 'react-router';
-import LocationUnitView, { loadSingleLocation, parseTableData } from '..';
+import LocationUnitList, { loadSingleLocation, parseTableData } from '..';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -30,9 +30,9 @@ import toJson from 'enzyme-to-json';
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-LocationUnitView.defaultProps = { opensrpBaseURL: baseURL };
+LocationUnitList.defaultProps = { opensrpBaseURL: baseURL };
 
-describe('location-management/src/components/LocationUnitView', () => {
+describe('location-management/src/components/LocationUnitList', () => {
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -159,7 +159,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -185,7 +185,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -210,7 +210,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -269,7 +269,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );
@@ -334,7 +334,7 @@ describe('location-management/src/components/LocationUnitView', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <LocationUnitView opensrpBaseURL={baseURL} />
+          <LocationUnitList opensrpBaseURL={baseURL} />
         </Router>
       </Provider>
     );

@@ -68,6 +68,7 @@ describe('CreateServicePoint', () => {
 
     expect(locationFormProps.hidden).toEqual(commonHiddenFields);
     expect(initialValues.instance).toEqual('eusm');
+    expect(initialValues.type).toEqual('Feature');
     expect(locationFormProps.disabled).toEqual(['isJurisdiction']);
 
     // test re-direction url on chancel

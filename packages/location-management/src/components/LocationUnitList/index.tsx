@@ -37,7 +37,7 @@ import {
   getBaseTreeNode,
   getHierarchy,
 } from '../../ducks/locationHierarchy/utils';
-import './LocationUnitView.css';
+import './LocationUnitList.css';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -56,7 +56,7 @@ export interface AntTreeProps {
  *
  * @param {TableData} row data selected from the table
  * @param {string} opensrpBaseURL - base url
- * @param {Function} setDetail funtion to set detail to state
+ * @param {Function} setDetail function to set detail to state
  */
 export async function loadSingleLocation(
   row: TableData,
@@ -93,7 +93,7 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
   return data;
 }
 
-export const LocationUnitView: React.FC<Props> = (props: Props) => {
+export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const isMounted = useRef<boolean>(true);
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
@@ -112,6 +112,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
     }
   }, [locationUnits.length, dispatch, opensrpBaseURL, locationUnits]);
 
+  // Function used to parse data from ParsedHierarchyNode to Tree Data
   useEffect(() => {
     if (!treeData.length && locationUnits.length) {
       getHierarchy(locationUnits, opensrpBaseURL)
@@ -203,4 +204,4 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default LocationUnitView;
+export default LocationUnitList;

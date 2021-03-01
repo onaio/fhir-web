@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`location-management/src/components/LocationUnitView renders without crashing 1`] = `
+exports[`location-management/src/components/LocationUnitList renders without crashing 1`] = `
 <Table
   data={
     Array [
