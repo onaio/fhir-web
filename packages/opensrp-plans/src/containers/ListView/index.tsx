@@ -24,6 +24,7 @@ import {
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { NEW_MISSION } from '../../lang';
+import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(PlansReducerName, plansReducer);
@@ -86,11 +87,13 @@ const PlansList = (props: PlansListTypes) => {
         <title>{pageTitle}</title>
       </Helmet>
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
-      <Row className={'list-view mission-view'}>
+      <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
           <div className="main-content__header mission-header">
             <Link to={PLANS_CREATE_VIEW_URL}>
-              <Button type="primary">{NEW_MISSION}</Button>
+              <Button type="primary" className="mr-0">
+                {NEW_MISSION}
+              </Button>
             </Link>
           </div>
           <Table dataSource={dataSource} columns={columns}></Table>

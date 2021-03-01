@@ -2,13 +2,14 @@ import { getUser } from '@onaio/session-reducer';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields, LocationFormFields } from '../LocationForm/utils';
 import { Col, Row } from 'antd';
 import { Helmet } from 'react-helmet';
 import { ADD_LOCATION_UNIT } from '../../lang';
+import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 
 /** full props for the new location component */
 export interface NewLocationUnitProps
@@ -50,6 +51,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     processInitialValues,
     disabledTreeNodesCallback,
   } = props;
+  const dispatch = useDispatch();
   const history = useHistory();
   const cancelHandler = () => {
     const cancelURL = cancelURLGenerator();
@@ -60,16 +62,17 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
   const firstInitialValues = getLocationFormFields(undefined, instance);
   const initialValues = processInitialValues?.(firstInitialValues);
 
-  const locationFormProps = {
-    initialValues,
-    successURLGenerator,
-    hidden,
-    disabled,
+  const locationFormProps: LocationFormProps = {
+    initialValues: initialValues,
+    successURLGenerator: successURLGenerator,
+    hidden: hidden,
+    disabled: disabled,
     onCancel: cancelHandler,
-    service,
-    openSRPBaseURL,
+    service: service,
+    openSRPBaseURL: openSRPBaseURL,
     username: user.username,
-    disabledTreeNodesCallback,
+    afterSubmit: () => dispatch(fetchAllHierarchies([])),
+    disabledTreeNodesCallback: disabledTreeNodesCallback,
   };
 
   const pageTitle = ADD_LOCATION_UNIT;

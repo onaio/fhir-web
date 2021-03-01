@@ -774,6 +774,14 @@ export const newPayload1 = {
           kind: 'applicability',
         },
       ],
+      dynamicValue: [
+        {
+          expression: {
+            expression: '$this.id',
+          },
+          path: 'structureId',
+        },
+      ],
       definitionUri: 'record_gps.json',
       type: 'create',
     },
@@ -828,6 +836,15 @@ export const newPayload1 = {
           kind: 'applicability',
         },
       ],
+      dynamicValue: [
+        {
+          expression: {
+            expression: '$this.id',
+          },
+          path: 'structureId',
+        },
+      ],
+
       definitionUri: 'service_point_check.json',
       title: 'Service Point Check',
       trigger: [{ name: 'plan-activation', type: 'named-event' }],
