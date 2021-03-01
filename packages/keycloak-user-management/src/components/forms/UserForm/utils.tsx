@@ -137,7 +137,6 @@ export const submitForm = (
     serve
       .create({
         ...keycloakUserValues,
-        enabled: true,
       })
       .then((response: Response | undefined) => {
         // workaround to get userId for newly created user
