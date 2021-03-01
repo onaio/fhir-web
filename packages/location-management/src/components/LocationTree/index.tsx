@@ -3,17 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { LocationTreeState } from '../../ducks/types';
 import {
   getLocationTreeState,
   reducerName,
   setLocationTreeState,
   reducer,
 } from '../../ducks/location-hierarchy';
-import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
-import { AntTreeProps } from '../LocationUnitView';
+import { AntTreeProps } from '../LocationUnitList';
 import './tree.css';
-import { Dictionary } from '@onaio/utils';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { getHierarchyNodeFromArray } from '../../ducks/locationHierarchy/utils';
 import { SEARCH } from '../../lang';
 reducerRegistry.register(reducerName, reducer);
 
@@ -30,10 +29,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [selectedKey, setSelectedKey] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
-
-  const locationTreeState = useSelector(
-    (state) => (getLocationTreeState(state) as Dictionary) as LocationTreeState
-  );
+  const locationTreeState = useSelector((state) => getLocationTreeState(state));
 
   const dispatch = useDispatch();
 
@@ -57,13 +53,15 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (locationTreeState.keys) {
-      const keys = locationTreeState.keys;
-      const node = locationTreeState.node;
-      OnItemClick(node);
-      expandTree(node.key);
-      setExpandedKeys(keys);
-      setSelectedKey([keys[keys.length - 1]]);
+    if (locationTreeState) {
+      setExpandedKeys(locationTreeState.keys);
+
+      const newnode = getHierarchyNodeFromArray(data, locationTreeState.node.id);
+      if (newnode) {
+        OnItemClick(newnode);
+        expandTree(newnode.key);
+        return; // stops the execution of loopmail
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -148,7 +146,7 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   /** Generate filter data to later used to compare and filter keys on input with ant tree node
    *
-   * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
+   * @param {Array<ParsedHierarchyNode>} data the tree data to preprocess
    */
   function generateFilterData(data: ParsedHierarchyNode[]) {
     data.forEach((node) => {
@@ -169,9 +167,9 @@ const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(e, treenode) => {
+        onClick={(e, antTreeNode) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const node = (treenode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
+          const node = (antTreeNode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
           const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
           setSelectedKey([allExpandedKeys[allExpandedKeys.length - 1]]);

@@ -17,12 +17,10 @@ export interface OpenSRPJurisdiction {
   type: 'Feature';
 }
 
-export interface LocationTree {
+export interface LocationTreeState {
   keys: React.Key[];
   node: ParsedHierarchyNode;
 }
-
-export type LocationTreeState = LocationTree;
 
 /** Object containing known API endpoints by name */
 export interface APIEndpoints {

@@ -5,7 +5,8 @@ import { ManifestDraftFiles, ConnectedManifestDraftFiles } from '../index';
 import { getFetchOptions } from '@opensrp/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import reducerRegistry, { store } from '@onaio/redux-reducer-registry';
+import { store } from '@opensrp/store';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import flushPromises from 'flush-promises';
 import draftReducer, {
   draftReducerName,
@@ -18,6 +19,7 @@ import * as helpers from '../../../helpers/fileDownload';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
+import { ERROR_OCCURRED } from '../../../lang';
 /** register the reducers */
 reducerRegistry.register(draftReducerName, draftReducer);
 
@@ -171,7 +173,7 @@ describe('components/DraftFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith('API is down', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();
@@ -231,7 +233,7 @@ describe('components/DraftFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith('Cannot create file', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, { type: 'error' });
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

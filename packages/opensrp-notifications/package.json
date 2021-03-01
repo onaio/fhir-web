@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/notifications",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Utility functions for dispaying OpenSRP web notifications",
   "main": "dist/index.js",
   "types": "dist/types",
