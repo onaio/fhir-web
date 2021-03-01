@@ -94,7 +94,7 @@ export interface PlanActivityTrigger {
 /** interface for plan Activity form fields dynamicValue */
 export interface PlanActivityDynamicValue {
   path: string;
-  expression: DynamicValueExpression;
+  expression: string;
 }
 
 /** Plan activity form fields interface */
@@ -214,13 +214,11 @@ export interface PlanActionCondition {
   kind: Readonly<'applicability'>;
 }
 
-export type DynamicValueExpression = "'Visited'" | "'Completed'" | "'has_problem'";
-
 /** Plan action dynamic value */
 export interface PlanActionDynamicValue {
   path: string;
   expression: {
-    expression: DynamicValueExpression;
+    expression: string;
   };
 }
 

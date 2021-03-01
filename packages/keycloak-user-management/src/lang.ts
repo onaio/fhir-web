@@ -19,6 +19,13 @@ export const MESSAGE_USER_GROUP_CREATED = i18n.t('User Group created successfull
 export const CREDENTIALS_UPDATED_SUCCESSFULLY = i18n.t('Credentials updated successfully');
 export const PRACTITIONER_CREATED_SUCCESSFULLY = i18n.t('Practitioner created successfully');
 export const PRACTITIONER_UPDATED_SUCCESSFULLY = i18n.t('Practitioner updated successfully');
+export const ROLES_UPDATED_SUCCESSFULLY = i18n.t('Role Mappings Updated Successfully');
+export const REALM_ROLES = i18n.t('Realm Roles');
+export const AVAILABLE_ROLES = i18n.t('Available Roles');
+export const ASSIGNED_ROLES = i18n.t('Assigned Roles');
+export const EFFECTIVE_ROLES = i18n.t('Effective Roles');
+export const LIST_IS_EMPTY = i18n.t('The list is empty');
+export const SEARCH = i18n.t('Search');
 export const NO_DATA_FOUND = i18n.t('No Data Found');
 
 // rendered text

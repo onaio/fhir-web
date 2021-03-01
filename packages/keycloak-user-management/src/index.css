@@ -2,6 +2,19 @@
   position: relative;
   top: 20px;
 }
+
+.user-group .ant-form-item-control-input-content {
+  display: flex;
+}
+
+.ant-transfer:last-child {
+  margin-left: 35px;
+}
+
+.ant-transfer:last-child .ant-transfer-list-header-title {
+  text-align: center;
+}
+
 .lds-ripple-parent {
   display: flex;
   justify-content: center;

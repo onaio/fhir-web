@@ -7,18 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
-import { KeycloakService } from '@opensrp/keycloak-service';
 import {
   reducerName as keycloakUserRolesReducerName,
   reducer as keycloakUserRolesReducer,
 } from '../../ducks/userRoles';
 import { COMPOSITE, DESCRIPTION, ERROR_OCCURED, NAME, USER_ROLES_PAGE_HEADER } from '../../lang';
-import { KEYCLOAK_URL_USER_ROLES, SEARCH_QUERY_PARAM } from '../../constants';
-import {
-  fetchKeycloakUserRoles,
-  KeycloakUserRole,
-  makeKeycloakUserRolesSelector,
-} from '../../ducks/userRoles';
+import { SEARCH_QUERY_PARAM } from '../../constants';
+import { KeycloakUserRole, makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
+import { fetchAllRoles } from './utils';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserRolesReducerName, keycloakUserRolesReducer);
@@ -61,12 +57,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
 
   useEffect(() => {
     if (isLoading) {
-      const serve = new KeycloakService(KEYCLOAK_URL_USER_ROLES, keycloakBaseURL);
-      serve
-        .list()
-        .then((response: KeycloakUserRole[]) => {
-          dispatch(fetchKeycloakUserRoles(response));
-        })
+      fetchAllRoles(keycloakBaseURL, dispatch)
         .catch(() => sendErrorNotification(ERROR_OCCURED))
         .finally(() => setIsLoading(false));
     }

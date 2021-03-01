@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/pkg-config",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "stores packages' configs",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -32,10 +32,8 @@
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
-  "peerDependencies": {
-    "@reduxjs/toolkit": "^1.5.0"
-  },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.5.0",
     "i18next": "^19.8.4",
     "react-i18next": "^11.8.3"
   },
@@ -43,6 +41,6 @@
   "license": "Apache-2.0",
   "private": false,
   "devDependencies": {
-    "@opensrp/store": "^0.0.7"
+    "@opensrp/store": "^0.0.9"
   }
 }

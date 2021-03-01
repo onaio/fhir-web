@@ -16,7 +16,7 @@ import draftReducer, {
 } from '../../../../ducks/manifestDraftFiles';
 import * as helpers from '../../../../helpers/fileDownload';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../../constants';
+import { ERROR_OCCURRED } from '../../../../lang';
 import { DrafFileList } from '..';
 import {
   FixManifestDraftFiles,
@@ -409,5 +409,33 @@ describe('components/Antd/DraftFileList', () => {
     expect(mockHistoryPush).toHaveBeenCalledWith('/form-upload');
 
     wrapper.unmount();
+  });
+
+  it('sorts by file name', async () => {
+    fetch.once(JSON.stringify([draftFile1, draftFile2, draftFile3]));
+    fetch.once(JSON.stringify(downloadFile));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <DrafFileList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+    const heading = wrapper.find('thead');
+
+    // Ascending
+    heading.find('th').at(1).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(1).text()).toEqual('foo');
+    // Descending
+    heading.find('th').at(1).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(1).text()).toEqual('test publish');
   });
 });

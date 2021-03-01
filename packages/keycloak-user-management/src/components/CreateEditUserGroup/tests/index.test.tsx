@@ -21,8 +21,23 @@ import {
   removeKeycloakUserGroups,
   makeKeycloakUserGroupsSelector,
 } from '../../../ducks/userGroups';
+import {
+  reducer as rolesReducer,
+  reducerName as rolesReducername,
+  removeKeycloakUserRoles,
+} from '../../../ducks/userRoles';
 import { CreateEditUserGroup } from '..';
 import { ERROR_OCCURED } from '../../../lang';
+import {
+  assignedRoles,
+  availableRoles,
+  effectiveRoles,
+  userRoles,
+} from '../../../ducks/tests/fixtures';
+import { fetchKeycloakUserRoles, makeKeycloakUserRolesSelector } from '../../../ducks/userRoles';
+
+reducerRegistry.register(reducerName, reducer);
+reducerRegistry.register(rolesReducername, rolesReducer);
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -36,9 +51,8 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-reducerRegistry.register(reducerName, reducer);
-
 const userGroupSelector = makeKeycloakUserGroupsSelector();
+const userRolesSelector = makeKeycloakUserRolesSelector();
 
 describe('components/CreateEditUserGroup', () => {
   const props = {
@@ -46,15 +60,15 @@ describe('components/CreateEditUserGroup', () => {
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     location: {
       hash: '',
-      pathname: '/users/groups/edit',
+      pathname: '/users/group/edit',
       search: '',
       state: '',
     },
     match: {
       isExact: true,
       params: { userGroupId: fixtures.userGroup.id },
-      path: `/users/groups/edit/:userGroupId`,
-      url: `/users/groups/edit/${fixtures.userGroup.id}`,
+      path: `/users/group/edit/:userGroupId`,
+      url: `/users/group/edit/${fixtures.userGroup.id}`,
     },
   };
 
@@ -79,7 +93,8 @@ describe('components/CreateEditUserGroup', () => {
 
   afterEach(() => {
     store.dispatch(removeKeycloakUserGroups());
-    fetch.resetMocks();
+    store.dispatch(removeKeycloakUserRoles());
+    fetch.mockClear();
   });
 
   it('renders without crashing', () => {
@@ -95,7 +110,14 @@ describe('components/CreateEditUserGroup', () => {
   });
 
   it('renders correctly', async () => {
-    fetch.once(JSON.stringify(fixtures.userGroup));
+    fetch
+      .once(JSON.stringify(fixtures.userGroup))
+      .once(JSON.stringify(userRoles))
+      .once(JSON.stringify(availableRoles))
+      .once(JSON.stringify(assignedRoles))
+      .once(JSON.stringify(effectiveRoles));
+
+    store.dispatch(fetchKeycloakUserGroups([fixtures.userGroup]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -105,11 +127,15 @@ describe('components/CreateEditUserGroup', () => {
       </Provider>
     );
 
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
     await act(async () => {
       await flushPromises();
     });
 
     wrapper.update();
+
+    // expect(fetch.mock.calls).toEqual('');
 
     const row = wrapper.find('Row').at(0);
 
@@ -126,15 +152,15 @@ describe('components/CreateEditUserGroup', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       location: {
         hash: '',
-        pathname: '/users/groups/new',
+        pathname: '/users/group/new',
         search: '',
         state: '',
       },
       match: {
         isExact: true,
-        params: { userGroupId: null },
-        path: `/users/groups/new/`,
-        url: `/users/groups/new/`,
+        params: { userGroupId: '' },
+        path: `/users/group/new/`,
+        url: `/users/group/new/`,
       },
     };
 
@@ -156,7 +182,12 @@ describe('components/CreateEditUserGroup', () => {
   });
 
   it('fetches user group if page is refreshed', async () => {
-    fetch.once(JSON.stringify(fixtures.userGroup));
+    fetch
+      .once(JSON.stringify(fixtures.userGroup))
+      .once(JSON.stringify(userRoles))
+      .once(JSON.stringify(availableRoles))
+      .once(JSON.stringify(assignedRoles))
+      .once(JSON.stringify(effectiveRoles));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -207,10 +238,12 @@ describe('components/CreateEditUserGroup', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    wrapper.unmount();
   });
 
   it('works correctly with the store', async () => {
     store.dispatch(fetchKeycloakUserGroups([fixtures.userGroup]));
+    store.dispatch(fetchKeycloakUserRoles([userRoles[0]]));
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -228,11 +261,21 @@ describe('components/CreateEditUserGroup', () => {
     expect(userGroupSelector(store.getState(), { name: fixtures.userGroup.name })).toEqual([
       fixtures.userGroup,
     ]);
+    expect(userRolesSelector(store.getState(), { name: userRoles[0].name })).toEqual([
+      userRoles[0],
+    ]);
     wrapper.unmount();
   });
 
   it('initializes form field with data if page is refreshed', async () => {
-    fetch.once(JSON.stringify(fixtures.userGroup));
+    fetch
+      .once(JSON.stringify(fixtures.userGroup))
+      .once(JSON.stringify(userRoles))
+      .once(JSON.stringify(availableRoles))
+      .once(JSON.stringify(assignedRoles))
+      .once(JSON.stringify(effectiveRoles));
+
+    store.dispatch(fetchKeycloakUserGroups([fixtures.userGroup]));
 
     const wrapper = mount(
       <Provider store={store}>
