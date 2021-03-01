@@ -71,7 +71,9 @@ export const PlansLoading = () => {
 
 export const pageTitleBuilder = (status?: string, appendMissions = true) => {
   if (status) {
-    return `${status.charAt(0).toUpperCase()}${status.slice(1)} ${appendMissions ? MISSIONS : ''}`;
+    return `${status.charAt(0).toUpperCase()}${status.slice(1)}${
+      appendMissions ? ` ${MISSIONS}` : ''
+    }`;
   }
   return NO_STATUS_FOUND;
 };

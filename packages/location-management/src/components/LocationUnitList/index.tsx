@@ -9,11 +9,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   fetchLocationUnits,
+  getLocationUnitsArray,
   LocationUnit,
   locationUnitsReducer,
   locationUnitsReducerName,
 } from '../../ducks/location-units';
-import { getAccessToken } from '@onaio/session-reducer';
 import {
   LOCATION_UNIT_FIND_BY_PROPERTIES,
   LOCATION_HIERARCHY,
@@ -27,7 +27,7 @@ import {
   ERROR_OCCURED,
 } from '../../lang';
 import Table, { TableData } from './Table';
-import './LocationUnitView.css';
+import './LocationUnitList.css';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -59,7 +59,7 @@ export interface Props {
  *
  * @param {TableData} row data selected from the table
  * @param {string} opensrpBaseURL - base url
- * @param {Function} setDetail funtion to set detail to state
+ * @param {Function} setDetail function to set detail to state
  */
 export async function loadSingleLocation(
   row: TableData,
@@ -129,53 +129,49 @@ export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: str
   return hierarchy;
 }
 
-export const LocationUnitView: React.FC<Props> = (props: Props) => {
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
-  const treeData = (useSelector((state) =>
-    getAllHierarchiesArray(state)
-  ) as unknown) as ParsedHierarchyNode[];
+export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
+  const treeData = useSelector((state) => getAllHierarchiesArray(state));
+  const locationUnits = useSelector((state) => getLocationUnitsArray(state));
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
-  const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
   const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
-    if (!treeData.length) {
+    if (!locationUnits.length) {
       getBaseTreeNode(opensrpBaseURL)
-        .then((response) => {
-          dispatch(fetchLocationUnits(response));
-          getHierarchy(response, opensrpBaseURL)
-            .then((hierarchy) => {
-              hierarchy.forEach((hier) => {
-                const processed = generateJurisdictionTree(hier);
-                dispatch(fetchAllHierarchies(processed.model));
-              });
-            })
-            .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .then((response) => dispatch(fetchLocationUnits(response)))
+        .catch(() => sendErrorNotification(ERROR_OCCURED));
+    }
+  }, [locationUnits.length, dispatch, opensrpBaseURL]);
+
+  useEffect(() => {
+    if (!treeData.length && locationUnits.length) {
+      getHierarchy(locationUnits, opensrpBaseURL)
+        .then((hierarchy) => {
+          const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
+          dispatch(fetchAllHierarchies(allhierarchy));
         })
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [treeData, accessToken, dispatch, opensrpBaseURL]);
+    // to avoid extra rerenders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
 
+  // Function used to parse data from ParsedHierarchyNode to Tree Data
   useEffect(() => {
-    const data = parseTableData(currentParentChildren.length ? currentParentChildren : treeData);
-    setTableData(data);
-  }, [treeData, currentParentChildren]);
+    if (treeData.length) {
+      let data: TableData[] = [];
+      // if have selected some in tree and that selected have some child then only show data from selected node in table
+      if (currentClicked && currentClicked.children)
+        data = parseTableData([currentClicked, ...currentClicked.children]);
+      else if (!currentClicked) data = parseTableData(treeData);
+      setTableData(data);
+    }
+  }, [treeData, currentClicked]);
 
-  if (!tableData.length || !treeData.length)
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+  if (!tableData.length || !treeData.length) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -185,21 +181,12 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
       <h5 className="mb-3">{LOCATION_UNIT_MANAGEMENT}</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree
-            data={treeData}
-            OnItemClick={(node) => {
-              setCurrentClicked(node);
-              if (node.children) {
-                const children = [node, ...node.children];
-                setCurrentParentChildren(children);
-              }
-            }}
-          />
+          <Tree data={treeData} OnItemClick={(node) => setCurrentClicked(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">
-              {currentParentChildren.length ? tableData[0].name : LOCATION_UNIT}
+              {currentClicked?.children ? currentClicked.node.name : LOCATION_UNIT}
             </h5>
             <div>
               <Link
@@ -229,16 +216,7 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
         {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
-              <Spin
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                size={'large'}
-              />
+              <Spin size={'large'} />
             ) : (
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}
@@ -251,4 +229,4 @@ export const LocationUnitView: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default LocationUnitView;
+export default LocationUnitList;
