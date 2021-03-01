@@ -178,7 +178,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{LOCATION_UNIT}</title>
       </Helmet>
-      <h5 className="mb-3">{LOCATION_UNIT_MANAGEMENT}</h5>
+      <h1 className="mb-3 fs-5">{LOCATION_UNIT_MANAGEMENT}</h1>
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree data={treeData} OnItemClick={(node) => setCurrentClicked(node)} />

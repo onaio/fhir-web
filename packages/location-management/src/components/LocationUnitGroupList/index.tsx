@@ -96,7 +96,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{LOCATION_UNIT_GROUP}</title>
       </Helmet>
-      <h5 className="mb-3">{LOCATION_UNIT_GROUP_MANAGEMENT}</h5>
+      <h1 className="mb-3 fs-5">{LOCATION_UNIT_GROUP_MANAGEMENT}</h1>
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">
