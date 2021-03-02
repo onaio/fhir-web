@@ -93,9 +93,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
         <Col className={'main-content'}>
           <div className="main-content__header">
             <Link to={CATALOGUE_CREATE_VIEW_URL}>
-              <Button type="primary" size="large">
-                {ADD_PRODUCT_TO_CATALOGUE}
-              </Button>
+              <Button type="primary">{ADD_PRODUCT_TO_CATALOGUE}</Button>
             </Link>
           </div>
           <Table dataSource={dataSource} columns={columns}></Table>
