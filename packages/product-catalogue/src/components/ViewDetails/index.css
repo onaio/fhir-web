@@ -1,0 +1,13 @@
+.font-weight-bold {
+  font-weight: bold;
+}
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+.small {
+  font-size: 80%;
+  font-weight: 400;
+}
+.p-4 {
+  padding: 1.5rem;
+}
