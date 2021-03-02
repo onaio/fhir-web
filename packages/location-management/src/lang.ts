@@ -80,6 +80,6 @@ export const ENTER_LOCATION_GROUP_NAME = i18n.t('Enter a location group name');
 export const ACTIONS = i18n.t('Actions');
 export const EDIT = i18n.t('Edit');
 export const VIEW_DETAILS = i18n.t('View Details');
-export const DELETE = i18n.t('Delete');
+export const DEACTIVATE = i18n.t('Deactivate');
 export const LATITUDE_LABEL = i18n.t('Latitude');
 export const LONGITUDE_LABEL = i18n.t('Longitude');

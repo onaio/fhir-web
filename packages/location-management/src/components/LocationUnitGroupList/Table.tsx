@@ -4,7 +4,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
-import { ERROR_OCCURED, NAME, ACTIONS, EDIT, VIEW_DETAILS, DELETE } from '../../lang';
+import { ERROR_OCCURED, NAME, ACTIONS, EDIT, VIEW_DETAILS, DEACTIVATE } from '../../lang';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
@@ -77,7 +77,7 @@ const Table: React.FC<Props> = (props: Props) => {
                     {VIEW_DETAILS}
                   </Menu.Item>
                   <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL)}>
-                    {DELETE}
+                    {DEACTIVATE}
                   </Menu.Item>
                 </Menu>
               }
