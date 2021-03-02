@@ -50,7 +50,7 @@ export const OPENSRP_LOCATION = 'location';
 export const OPENSRP_ACTIVE = 'Active';
 export const OPENSRP_TASK_SEARCH = 'task/search';
 export const OPENSRP_TASK_EXPORT_DATA = 'event/export-data';
-export const OPENSRP_BUSINESS_STATUS_VISITED = 'Visited';
+export const OPENSRP_TASK_STATUS_COMPLETED = 'Completed';
 
 // router routes
 export const URL_MISSIONS = '/missions';
