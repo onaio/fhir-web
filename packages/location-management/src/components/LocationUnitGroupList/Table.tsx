@@ -38,51 +38,6 @@ export const onDelete = (record: LocationUnitGroup, opensrpBaseURL: string) => {
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails, opensrpBaseURL } = props;
 
-  const columns = [
-    {
-      title: NAME,
-      dataIndex: 'name',
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
-    },
-    {
-      title: ACTIONS,
-      dataIndex: 'operation',
-      width: '10%',
-
-      // eslint-disable-next-line react/display-name
-      render: (_: unknown, record: TableData) => (
-        <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
-            <Button type="link" className="m-0 p-1">
-              {EDIT}
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => (onViewDetails ? onViewDetails(record) : {})}
-                >
-                  {VIEW_DETAILS}
-                </Menu.Item>
-                <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL)}>
-                  {DELETE}
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomLeft"
-            arrow
-            trigger={['click']}
-          >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
-        </span>
-      ),
-    },
-  ];
-
   return (
     <AntTable
       pagination={{
@@ -92,8 +47,50 @@ const Table: React.FC<Props> = (props: Props) => {
         pageSizeOptions: ['10', '20', '50', '100'],
       }}
       dataSource={props.data}
-      columns={columns}
-    />
+    >
+      <AntTable.Column
+        defaultSortOrder="ascend"
+        title={NAME}
+        dataIndex="name"
+        sorter={(a: TableData, b: TableData) => a.name.localeCompare(b.name)}
+      />
+      <AntTable.Column
+        title={ACTIONS}
+        width="10%"
+        dataIndex="operation"
+        sorter={(a: TableData, b: TableData) => a.name.localeCompare(b.name)}
+        render={(_: unknown, record: TableData) => (
+          <span className="d-flex justify-content-end align-items-center">
+            <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
+              <Button type="link" className="m-0 p-1">
+                {EDIT}
+              </Button>
+            </Link>
+            <Divider type="vertical" />
+            <Dropdown
+              overlay={
+                <Menu className="menu">
+                  <Menu.Item
+                    className="viewdetails"
+                    onClick={() => (onViewDetails ? onViewDetails(record) : {})}
+                  >
+                    {VIEW_DETAILS}
+                  </Menu.Item>
+                  <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL)}>
+                    {DELETE}
+                  </Menu.Item>
+                </Menu>
+              }
+              placement="bottomLeft"
+              arrow
+              trigger={['click']}
+            >
+              <MoreOutlined className="more-options" />
+            </Dropdown>
+          </span>
+        )}
+      />
+    </AntTable>
   );
 };
 

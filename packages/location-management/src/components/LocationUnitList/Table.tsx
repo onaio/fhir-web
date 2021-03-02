@@ -18,43 +18,6 @@ export interface Props {
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails } = props;
-  const columns = [
-    {
-      title: NAME,
-      dataIndex: 'name',
-      editable: false,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
-    },
-    {
-      title: LEVEL,
-      dataIndex: 'geographicLevel',
-      editable: false,
-      sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
-    },
-    {
-      title: ACTIONS,
-      dataIndex: 'operation',
-      width: '10%',
-      // eslint-disable-next-line react/display-name
-      render: (value: boolean, record: TableData) => (
-        <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
-            <Button type="link" className="m-0 p-1">
-              Edit
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Button
-            type="link"
-            className="m-0 p-1"
-            onClick={() => onViewDetails && onViewDetails(record)}
-          >
-            {VIEW_DETAILS}
-          </Button>
-        </span>
-      ),
-    },
-  ];
 
   return (
     <AntTable
@@ -65,8 +28,44 @@ const Table: React.FC<Props> = (props: Props) => {
         pageSizeOptions: ['10', '20', '50', '100'],
       }}
       dataSource={props.data}
-      columns={columns}
-    />
+    >
+      <AntTable.Column
+        defaultSortOrder="ascend"
+        title={NAME}
+        dataIndex="name"
+        sorter={(a: TableData, b: TableData) => a.name.localeCompare(b.name)}
+      />
+      <AntTable.Column
+        title={LEVEL}
+        dataIndex="geographicLevel"
+        sorter={(a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel}
+      />
+      <AntTable.Column
+        title={ACTIONS}
+        dataIndex="operation"
+        width="10%"
+        // eslint-disable-next-line react/display-name
+        render={(value: boolean, record: TableData) => (
+          <span className="d-flex justify-content-end align-items-center">
+            <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
+              <Button type="link" className="m-0 p-1">
+                Edit
+              </Button>
+            </Link>
+            <Divider type="vertical" />
+            <Button
+              type="link"
+              className="m-0 p-1"
+              onClick={() => {
+                if (onViewDetails) onViewDetails(record);
+              }}
+            >
+              {VIEW_DETAILS}
+            </Button>
+          </span>
+        )}
+      />
+    </AntTable>
   );
 };
 
