@@ -1,4 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { getExtraData } from '@onaio/session-reducer';
+import { UnauthorizedPage } from '@opensrp/react-utils';
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
@@ -18,6 +21,7 @@ import {
   KEYCLOAK_API_BASE_URL,
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_API_BASE_URL,
+  OPENSRP_ROLES,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -128,6 +132,7 @@ import {
   inventoryItemAddEditProps,
   editLocationProps,
   newLocationUnitProps,
+  isAuthorized,
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
@@ -159,6 +164,7 @@ interface ComponentProps extends Partial<RouteProps> {
   redirectPath: string;
   disableLoginProtection: boolean;
   path: string;
+  activeRoles?: string[];
 }
 
 /** Util wrapper around ConnectedPrivateRoute to render components
@@ -174,7 +180,14 @@ export const PrivateComponent = (props: ComponentProps) => {
     keycloakBaseURL: KEYCLOAK_API_BASE_URL,
     opensrpBaseURL: OPENSRP_API_BASE_URL,
   };
-  return <ConnectedPrivateRoute {...CPRProps} />;
+  const extraData = useSelector((state) => getExtraData(state));
+  const { roles } = extraData;
+  const { activeRoles } = props;
+  return activeRoles && roles && isAuthorized(roles, activeRoles) ? (
+    <ConnectedPrivateRoute {...CPRProps} />
+  ) : (
+    <UnauthorizedPage />
+  );
 };
 
 /** Util wrapper around Route for rendering components
@@ -217,6 +230,7 @@ const App: React.FC = () => {
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
+  const activeRoles = OPENSRP_ROLES;
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -237,6 +251,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER}
               component={ConnectedUserList}
@@ -244,6 +259,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_GROUPS}
               component={UserGroupsList}
@@ -253,6 +269,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_USER_ROLES}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               component={UserRolesList}
             />
             <PrivateComponent
@@ -260,11 +277,13 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               component={UserGroupsList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS}
               component={TeamsView}
@@ -272,6 +291,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
+              }
               exact
               path={CATALOGUE_LIST_VIEW_URL}
               {...BaseProps}
@@ -280,6 +302,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
               path={ACTIVE_PLANS_LIST_VIEW_URL}
               {...plansListProps}
@@ -289,6 +312,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
               path={DRAFT_PLANS_LIST_VIEW_URL}
               {...plansListProps}
@@ -298,6 +322,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
               path={COMPLETE_PLANS_LIST_VIEW_URL}
               {...plansListProps}
@@ -307,6 +332,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
               path={TRASH_PLANS_LIST_VIEW_URL}
               {...plansListProps}
@@ -316,6 +342,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
               path={`${PLANS_ASSIGNMENT_VIEW_URL}/:planId`}
               {...plansListProps}
@@ -325,6 +352,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
+              }
               exact
               path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
               {...BaseProps}
@@ -333,6 +363,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
+              }
               exact
               path={CATALOGUE_CREATE_VIEW_URL}
               {...BaseProps}
@@ -341,6 +374,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
+              }
               exact
               path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
               {...BaseProps}
@@ -349,6 +385,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
               path={PLANS_CREATE_VIEW_URL}
               {...planCreateProps}
@@ -357,6 +394,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
               exact
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${INVENTORY_SERVICE_POINT_PROFILE_PARAM}`}
               {...inventoryServiceProps}
@@ -365,6 +403,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
               exact
               path={INVENTORY_SERVICE_POINT_LIST_VIEW}
               {...inventoryServiceProps}
@@ -373,6 +412,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
               exact
               {...BaseProps}
               path={INVENTORY_ADD_SERVICE_POINT}
@@ -381,6 +421,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
               exact
               path={INVENTORY_BULK_UPLOAD_URL}
               {...inventoryServiceProps}
@@ -389,6 +430,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
               exact
               {...BaseProps}
               path={`${INVENTORY_EDIT_SERVICE_POINT}/:id`}
@@ -397,6 +439,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
               path={`${PLANS_EDIT_VIEW_URL}/:planId`}
               {...planEditProps}
@@ -405,6 +448,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedCreateEditUser}
@@ -412,6 +456,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_GROUP_EDIT}/:${ROUTE_PARAM_USER_GROUP_ID}`}
               component={CreateEditUserGroup}
@@ -419,6 +464,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_GROUP_CREATE}
               component={CreateEditUserGroup}
@@ -426,6 +472,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_CREATE}
               component={ConnectedCreateEditUser}
@@ -433,6 +480,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
@@ -440,6 +488,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAM_ADD}
               component={TeamsAddEdit}
@@ -447,6 +496,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAM_EDIT}
               component={TeamsAddEdit}
@@ -454,6 +504,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.CARD_SUPPORT && activeRoles.CARD_SUPPORT.split(',')}
               exact
               path={URL_DOWNLOAD_CLIENT_DATA}
               component={DownloadClientData}
@@ -461,6 +512,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}
+              activeRoles={
+                activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
+              }
               path={URL_UPLOAD_JSON_VALIDATOR}
               component={AntdUploadForm.UploadForm}
               {...jsonValidatorFormProps}
@@ -468,6 +522,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
+              }
               exact
               path={`${URL_UPLOAD_JSON_VALIDATOR}/:${ROUTE_PARAM_FORM_ID}`}
               component={AntdUploadForm.UploadForm}
@@ -476,6 +533,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
+              }
               exact
               path={URL_JSON_VALIDATOR_LIST}
               component={AntdFilesList.FileList}
@@ -484,6 +544,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
+              }
               exact
               path={URL_UPLOAD_DRAFT_FILE}
               component={AntdUploadForm.UploadForm}
@@ -492,6 +555,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
+              }
               exact
               path={`${URL_UPLOAD_DRAFT_FILE}/:${ROUTE_PARAM_FORM_ID}`}
               component={AntdUploadForm.UploadForm}
@@ -500,6 +566,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
+              }
               exact
               path={URL_DRAFT_FILE_LIST}
               component={AntdDraftFileList.DrafFileList}
@@ -508,6 +577,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
+              }
               exact
               path={URL_MANIFEST_RELEASE_LIST}
               component={AntdReleaseList.ReleaseList}
@@ -516,6 +588,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
+              }
               exact
               path={`${URL_MANIFEST_RELEASE_LIST}/:${ROUTE_PARAM_FORM_VERSION}`}
               component={AntdFilesList.FileList}
@@ -524,6 +599,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
               exact
               path={URL_LOCATION_UNIT}
               component={LocationUnitList}
@@ -531,6 +607,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
               exact
               path={URL_LOCATION_UNIT_ADD}
               {...newLocationUnitProps}
@@ -539,6 +616,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
               exact
               path={URL_LOCATION_UNIT_EDIT}
               {...editLocationProps}
@@ -547,6 +625,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
               exact
               path={URL_LOCATION_UNIT_GROUP}
               component={LocationUnitGroupList}
@@ -554,6 +633,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
               exact
               path={URL_LOCATION_UNIT_GROUP_ADD}
               component={LocationUnitGroupAddEdit}
@@ -561,6 +641,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
               exact
               path={URL_LOCATION_UNIT_GROUP_EDIT}
               component={LocationUnitGroupAddEdit}
@@ -568,6 +649,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_ADD}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
@@ -575,6 +657,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
