@@ -2,7 +2,7 @@
 export interface PlanDefinition {
   action?: [];
   date: string;
-  effectivePeriod: {
+  effectivePeriod?: {
     end: string;
     start: string;
   };

@@ -122,12 +122,13 @@ describe('List view Page', () => {
 
   it('works correctly with store', async () => {
     fetch.mockResponses(
-      /** Get plan hierarchy */
-      [JSON.stringify(samplePlan), { status: 200 }],
-      /** These calls are made by PlanAssignment */
+      /** Get plan */
+      [JSON.stringify([samplePlan]), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
+
+    fetch.once(JSON.stringify(sampleHierarchy));
 
     store.dispatch(fetchAssignments(assignments));
     store.dispatch(fetchOrganizationsAction(organizations));
@@ -170,7 +171,12 @@ describe('List view Page', () => {
   });
 
   it('handles errors', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockResponses(
+      /** Get plan */
+      [JSON.stringify([]), { status: 500 }],
+      [JSON.stringify(null), { status: 500 }],
+      [JSON.stringify(null), { status: 500 }]
+    );
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     const props = {
@@ -209,9 +215,9 @@ describe('List view Page', () => {
 
   it('on submit works correctly', async () => {
     fetch.mockResponses(
-      /** Get plan hierarchy */
+      /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
-      /** These calls are made by PlanAssignment */
+      /** These calls are made by TeamAssignment */
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -299,9 +305,9 @@ describe('List view Page', () => {
 
   it('closes modal on cancel button click', async () => {
     fetch.mockResponses(
-      /** Get plan hierarchy */
+      /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
-      /** These calls are made by PlanAssignment */
+      /** These calls are made by TeamAssignment */
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -356,9 +362,9 @@ describe('List view Page', () => {
 
   it('updates table when clicking on tree node', async () => {
     fetch.mockResponses(
-      /** Get plan hierarchy */
+      /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
-      /** These calls are made by PlanAssignment */
+      /** These calls are made by TeamAssignment */
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -406,15 +412,15 @@ describe('List view Page', () => {
       wrapper.update();
     });
     // length should be 3 children
-    expect(toJson(wrapper.find('span.ant-tree-title'))).toHaveLength(3);
+    expect(toJson(wrapper.find('span.ant-tree-title'))).toHaveLength(8);
     wrapper.unmount();
   });
 
   it('handles save error', async () => {
     fetch.mockResponses(
-      /** Get plan hierarchy */
+      /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
-      /** These calls are made by PlanAssignment */
+      /** These calls are made by TeamAssignment */
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );

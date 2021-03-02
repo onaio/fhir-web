@@ -153,8 +153,8 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     return () => {
       if (isMounted.current) {
         dispatch(fetchAllHierarchies([]));
+        isMounted.current = false;
       }
-      isMounted.current = false;
     };
   });
 
