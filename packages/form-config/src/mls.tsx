@@ -9,6 +9,9 @@ const coreFrJson = require('../locales/core/fr.json');
 const coreEnJson = require('../locales/core/en.json');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+const coreThJson = require('../locales/core/th.json');
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const coreArJson = require('../locales/core/ar.json');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -39,6 +42,9 @@ const resources: LanguageResources = {
   },
   en_eusm: {
     translation: eusmEnJson,
+  },
+  th_core: {
+    translation: coreThJson,
   },
 };
 

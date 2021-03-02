@@ -33,7 +33,7 @@ Array [
     "render": [Function],
     "sortOrder": undefined,
     "sorter": [Function],
-    "title": "Created At",
+    "title": "Created at",
   },
   Object {
     "dataIndex": "module",
@@ -81,7 +81,7 @@ Array [
     "render": [Function],
     "sortOrder": undefined,
     "sorter": [Function],
-    "title": "Created At",
+    "title": "Created at",
   },
   Object {
     "key": "action",
