@@ -8,7 +8,18 @@ import { useSelector } from 'react-redux';
 import { RouteComponentProps, Redirect } from 'react-router';
 import { getManifestFilesById } from '../../../ducks/manifestFiles';
 import { ROUTE_PARAM_FORM_ID } from '../../../constants';
-import { ERROR_OCCURRED } from '../../../lang';
+import {
+  ERROR_OCCURRED,
+  UPLOAD_FORM,
+  ERROR_FORM_NAME_REQUIRED,
+  ERROR_FORM_REQUIRED,
+  FORM_NAME,
+  MODULE,
+  RELATED_TO,
+  FORM,
+  UPLOADING,
+  CLICK_TO_UPLOAD,
+} from '../../../lang';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { UploadFileFieldTypes } from '../../../helpers/types';
@@ -129,7 +140,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>Upload Form</Title>
+      <Title level={3}>{UPLOAD_FORM}</Title>
       <Card>
         <Form
           {...layout}
@@ -154,32 +165,32 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
           <Form.Item
             id="form_name"
             name="form_name"
-            label="Form Name"
-            rules={[{ required: true, message: 'Form Name is required' }]}
+            label={FORM_NAME}
+            rules={[{ required: true, message: ERROR_FORM_NAME_REQUIRED }]}
           >
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item id="module" name="module" label="Module">
+          <Form.Item id="module" name="module" label={MODULE}>
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item id="form_relation" name="form_relation" label="Related to">
+          <Form.Item id="form_relation" name="form_relation" label={RELATED_TO}>
             <Input disabled={isEditMode} />
           </Form.Item>
           <Form.Item
             id="form"
             name="form"
-            label="Form"
+            label={FORM}
             valuePropName="fileList"
             getValueFromEvent={normFile}
-            rules={[{ required: true, message: 'Form is required' }]}
+            rules={[{ required: true, message: ERROR_FORM_REQUIRED }]}
           >
             <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              <Button icon={<UploadOutlined />}>{CLICK_TO_UPLOAD}</Button>
             </Upload>
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              {isSubmitting ? 'Uploading....' : 'Upload form'}
+              {isSubmitting ? `${UPLOADING}....` : UPLOAD_FORM}
             </Button>
           </Form.Item>
         </Form>
