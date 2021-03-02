@@ -76,7 +76,6 @@ export const defaultFormField: LocationFormFields = {
   instance: FormInstances.CORE,
   name: '',
   status: LocationUnitStatus.ACTIVE,
-  type: '',
   isJurisdiction: true,
   serviceType: '',
   locationTags: [],
