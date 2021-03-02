@@ -1279,13 +1279,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.9.0":
-  version "7.13.9"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.9.tgz#97dbe2116e2630c489f22e0656decd60aaa1fcee"
-  integrity sha512-aY2kU+xgJ3dJ1eU6FMB9EH8dIe8dmusF1xEku52joLvw6eAFN0AI+WxCLDnpev2LEejWBAy2sBvBOBAjI3zmvA==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
 "@babel/template@^7.10.4", "@babel/template@^7.4.0", "@babel/template@^7.8.6":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.10.4.tgz#3251996c4200ebc71d1a8fc405fba940f36ba278"
@@ -2867,25 +2860,6 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
     seamless-immutable "^7.1.4"
-
-"@react-keycloak/core@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@react-keycloak/core/-/core-2.2.1.tgz#c09fbf8e22f6e2646781f59a1cfa2f4411911c63"
-  integrity sha512-MKoawiLMamhCrcEQ79svZZV8lw+ojkcz4LMGeCzHULlZB8sTDY3uBg7S8NxhpdPdyAjQoQ5ExKL4Il75OBIamg==
-  dependencies:
-    "@babel/runtime" "^7.9.0"
-    prop-types "^15.7.2"
-    react-fast-compare "^3.0.1"
-
-"@react-keycloak/web@^2.1.1":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@react-keycloak/web/-/web-2.1.4.tgz#bdd6836748b5f8165fc79deeb8f6ba2cc631085c"
-  integrity sha512-HZry6/UIeStGc2reqYhRFAkmVGCb4fQfOdOK2bJ6RCatN5uuJ+sDu5w5L97JtGNirTqP2eKsTUM3Dx1EvgJ4ng==
-  dependencies:
-    "@babel/runtime" "^7.9.0"
-    "@react-keycloak/core" "^2.2.1"
-    hoist-non-react-statics "^3.3.2"
-    prop-types "^15.7.2"
 
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
@@ -4742,11 +4716,6 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
-
-base64-js@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
-  integrity sha512-mLQ4i2QO1ytvGWFWmcngKO//JXAQueZvwEKtjgQFM4jIK0kU+ytMfplL8j+n5mspOfjHwoAg+9yhb7BwAHm36g==
 
 base64-js@^1.0.2:
   version "1.5.1"
@@ -10628,11 +10597,6 @@ jest@24.9.0, jest@25.3.0:
     import-local "^3.0.2"
     jest-cli "^25.3.0"
 
-js-sha256@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/js-sha256/-/js-sha256-0.9.0.tgz#0b89ac166583e91ef9123644bd3c5334ce9d0966"
-  integrity sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==
-
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -10890,14 +10854,6 @@ jsx-ast-utils@^2.2.1, jsx-ast-utils@^2.2.3:
   dependencies:
     array-includes "^3.1.1"
     object.assign "^4.1.1"
-
-keycloak-js@^10.0.2:
-  version "10.0.2"
-  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-10.0.2.tgz#f0cf5b942627c5221f1466552c40e4624503b77b"
-  integrity sha512-7nkg4Ob1khHGcNbuK36AMndKUEuIQFpNlWU9ygWs7nSBPCI9VZ8dJjjXfKJHm0ewgcqLFGPIJ6bxxRlfcQ6sLg==
-  dependencies:
-    base64-js "1.3.1"
-    js-sha256 "0.9.0"
 
 keyv@^3.0.0:
   version "3.1.0"
@@ -14601,7 +14557,7 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-fast-compare@^3.0.1, react-fast-compare@^3.1.1:
+react-fast-compare@^3.1.1:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
@@ -15652,16 +15608,6 @@ seamless-immutable@^7.1.4:
   version "7.1.4"
   resolved "https://registry.yarnpkg.com/seamless-immutable/-/seamless-immutable-7.1.4.tgz#6e9536def083ddc4dea0207d722e0e80d0f372f8"
   integrity sha512-XiUO1QP4ki4E2PHegiGAlu6r82o5A+6tRh7IkGGTVg/h+UoeX4nFBeCGPOhb4CYjvkqsfm/TUtvOMYC1xmV30A==
-
-secure-react-keycloak@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/secure-react-keycloak/-/secure-react-keycloak-1.0.2.tgz#3b304f0370328f012b8c220f1633e67c275341aa"
-  integrity sha512-UFfHkbbYYOPn5EE76sxddkNE9ywevzS+2i7U02rczcBRVbX/d9nvA4V46fLa5zcP8Hs5rA2VBz+kR136ptCNzg==
-  dependencies:
-    "@react-keycloak/web" "^2.1.1"
-    "@types/react-router-dom" "^5.1.5"
-    keycloak-js "^10.0.2"
-    react-router-dom "^5.2.0"
 
 select-hose@^2.0.0:
   version "2.0.0"
