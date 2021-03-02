@@ -3,7 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { history } from '@onaio/connected-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
+import { KeycloakProvider } from 'secure-react-keycloak';
 import { Provider } from 'react-redux';
+import Keycloak from 'keycloak-js';
 import './index.css';
 import App from './App/App';
 import { SENTRY_DSN } from './configs/env';
@@ -19,14 +21,18 @@ if (SENTRY_DSN) {
   Sentry.init({ dsn: SENTRY_DSN });
 }
 
+const keycloak = new (Keycloak as any)();
+
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
-        <App />
-      </Sentry.ErrorBoundary>
-    </ConnectedRouter>
-  </Provider>,
+  <KeycloakProvider keycloak={keycloak}>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
+          <App />
+        </Sentry.ErrorBoundary>
+      </ConnectedRouter>
+    </Provider>
+  </KeycloakProvider>,
   document.getElementById('opensrp-root')
 );
 

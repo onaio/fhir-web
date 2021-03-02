@@ -3,6 +3,7 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
 import { IdcardOutlined, SettingOutlined } from '@ant-design/icons';
+import { useKeycloak, AuthorizedElement, AuthorizedFunction } from 'secure-react-keycloak';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
@@ -79,8 +80,11 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 
 /** The Sidebar component */
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
+  const [keycloak, initialized] = useKeycloak();
   const { extraData } = props;
   const { roles } = extraData;
+  console.log('roles', roles);
+  console.log('auth function', AuthorizedFunction(roles));
   let location = useLocation();
   let loc = location.pathname.split('/');
   loc.shift();
