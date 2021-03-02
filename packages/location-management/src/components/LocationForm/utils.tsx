@@ -37,7 +37,6 @@ export interface LocationFormFields {
   id?: string;
   name: string;
   status: LocationUnitStatus;
-  type: string;
   parentId?: string;
   externalId?: string;
   locationTags?: number[];
@@ -184,7 +183,6 @@ export const generateLocationUnit = (
     parentId,
     name,
     status,
-    type,
     geometry,
     extraFields,
     username,
@@ -211,7 +209,7 @@ export const generateLocationUnit = (
     },
     id: thisLocationsId,
     syncStatus: LocationUnitSyncStatus.SYNCED,
-    type: type,
+    type: 'Feature',
     locationTags: selectedTags,
     geometry: geometry ? (JSON.parse(geometry) as Geometry) : undefined,
   };

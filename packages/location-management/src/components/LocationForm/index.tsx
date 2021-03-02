@@ -38,12 +38,10 @@ import {
   SAVE,
   SAVING,
   SELECT_STATUS_LABEL,
-  SELECT_TYPE_LABEL,
   SERVICE_TYPES_LABEL,
   STATUS_LABEL,
   SUCCESSFULLY_CREATED_LOCATION,
   SUCCESSFULLY_UPDATED_LOCATION,
-  TYPE_LABEL,
   UNIT_GROUP_LABEL,
   USERNAME_LABEL,
   SERVICE_TYPE_PLACEHOLDER,
@@ -289,16 +287,6 @@ const LocationForm = (props: LocationFormProps) => {
               disabled={disabled.includes('isJurisdiction')}
               options={locationCategoryOptions}
             ></Radio.Group>
-          </FormItem>
-
-          <FormItem
-            id="type"
-            rules={validationRules.type}
-            hidden={isHidden('type')}
-            name="type"
-            label={TYPE_LABEL}
-          >
-            <Input disabled={disabled.includes('type')} placeholder={SELECT_TYPE_LABEL} />
           </FormItem>
 
           <FormItem
