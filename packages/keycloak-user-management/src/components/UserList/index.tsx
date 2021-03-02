@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Col, Button, Space, Table, Divider } from 'antd';
+import { Row, Col, Button, Space, Table } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Spin } from 'antd';
 import { Store } from 'redux';
@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -119,7 +119,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       <h5 className="mb-3">{USER_MANAGEMENT_PAGE_HEADER}</h5>
       <Row>
         <Col className="bg-white p-3" span={24}>
-          <SearchForm {...searchFormProps} />
+          <SearchForm {...searchFormProps} size={'middle'} />
           <Space style={{ marginBottom: 16, float: 'right' }}>
             <Button
               type="primary"
@@ -129,8 +129,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
               <PlusOutlined />
               {ADD_USER}
             </Button>
-            <Divider type="vertical" />
-            <SettingOutlined />
           </Space>
           <Space>
             {tableData.length > 0 ? (
