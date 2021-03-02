@@ -124,5 +124,5 @@ export const inventoryItemAddEditProps = {
 };
 
 export const isAuthorized = (roles: string[], activeRoles: string[]) => {
-  return roles.some((r: string) => activeRoles?.includes(r));
+  return activeRoles.some((r: string) => roles.includes(r));
 };
