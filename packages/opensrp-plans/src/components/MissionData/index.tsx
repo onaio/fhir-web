@@ -20,7 +20,7 @@ import { loadTasksIndicators, TaskCount, TaskParams } from '../../helpers/dataLo
 import { CommonProps, defaultCommonProps } from '@opensrp/plan-form';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
 import { BuildDownloadUrl } from '../../helpers/utils';
-import { OPENSRP_BUSINESS_STATUS_VISITED } from '../../constants';
+import { OPENSRP_TASK_STATUS_COMPLETED } from '../../constants';
 
 const { Title, Text } = Typography;
 
@@ -46,7 +46,7 @@ const MissionData = (props: MissionDataProps) => {
     const codes = [SERVICE_POINT_CHECK_CODE, PRODUCT_CHECK_CODE, FIX_PRODUCT_PROBLEMS_CODE];
     const setStateSequence = [setServicePoints, setProductsChecked, setFlaggedProducts];
     const otherParams: TaskParams = {
-      businessStatus: OPENSRP_BUSINESS_STATUS_VISITED,
+      status: OPENSRP_TASK_STATUS_COMPLETED,
     };
     codes.forEach((code, index) => {
       const thisPromise = loadTasksIndicators(baseURL, planId, code, true, otherParams)

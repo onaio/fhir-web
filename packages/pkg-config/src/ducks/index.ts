@@ -1,5 +1,4 @@
 import { createSelector, Store, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SLICE_NOT_REGISTERED } from '../constants';
 export const configsSliceName = 'configs';
 
 export interface ConfigState {
@@ -27,7 +26,6 @@ const getConfigsState = (state: Partial<Store>) => {
   if (sliceOfInterest === undefined) {
     // From intricate way this dux is included, I think it would be helpful
     // to show a warning if module is used without registration
-    process.emitWarning(SLICE_NOT_REGISTERED);
     return {};
   }
   return sliceOfInterest;

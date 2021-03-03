@@ -123,7 +123,7 @@ Object {
           icon={<ForwardRef(UploadOutlined) />}
           loading={false}
         >
-          Click to Upload
+          Click to upload
         </Button>
       </Upload>
     </FormItem>
@@ -156,7 +156,7 @@ Object {
         loading={false}
         type="primary"
       >
-        Upload form
+        Upload Form
       </Button>
     </FormItem>
   </ForwardRef(InternalForm)>,
@@ -293,7 +293,7 @@ Object {
           icon={<ForwardRef(UploadOutlined) />}
           loading={false}
         >
-          Click to Upload
+          Click to upload
         </Button>
       </Upload>
     </FormItem>
@@ -326,7 +326,7 @@ Object {
         loading={false}
         type="primary"
       >
-        Upload form
+        Upload Form
       </Button>
     </FormItem>
   </ForwardRef(InternalForm)>,

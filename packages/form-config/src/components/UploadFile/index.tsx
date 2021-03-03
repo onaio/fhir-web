@@ -12,12 +12,12 @@ import filesReducer, {
   filesReducerName,
 } from '../../ducks/manifestFiles';
 import {
-  MODULE_LABEL,
-  RELATED_TO_LABEL,
-  FILE_NAME_LABEL,
-  FILE_UPLOAD_LABEL,
-  FORM_REQUIRED_LABEL,
-  FORM_NAME_REQUIRED_LABEL,
+  MODULE,
+  RELATED_TO,
+  FILE_NAME,
+  UPLOAD_FILE,
+  ERROR_FORM_REQUIRED,
+  ERROR_FORM_NAME_REQUIRED,
   ERROR_OCCURRED,
 } from '../../lang';
 import { Dictionary } from '@onaio/utils';
@@ -214,14 +214,14 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
 
 /**default props */
 const defaultProps: UploadDefaultProps = {
-  fileNameLabel: FILE_NAME_LABEL,
-  fileUploadLabel: FILE_UPLOAD_LABEL,
+  fileNameLabel: FILE_NAME,
+  fileUploadLabel: UPLOAD_FILE,
   formData: null,
   formInitialValues: defaultInitialValues,
-  formNameRequiredLable: FORM_NAME_REQUIRED_LABEL,
-  formRequiredLabel: FORM_REQUIRED_LABEL,
-  moduleLabel: MODULE_LABEL,
-  relatedToLabel: RELATED_TO_LABEL,
+  formNameRequiredLable: ERROR_FORM_NAME_REQUIRED,
+  formRequiredLabel: ERROR_FORM_REQUIRED,
+  moduleLabel: MODULE,
+  relatedToLabel: RELATED_TO,
   accessToken: '',
 };
 
