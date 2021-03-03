@@ -4,6 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
 import { IdcardOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
+import { isAuthorized } from '@opensrp/react-utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -66,7 +67,6 @@ import {
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
 import MapMarkerOutline from '@opensrp/ant-icons/lib/MapMarkerOutline';
-import { isAuthorized } from '../../../App/utils';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
