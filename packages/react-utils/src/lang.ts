@@ -1,5 +1,6 @@
 import i18n from './mls';
 export const SEARCH = i18n.t('Search');
+export const FORBIDDEN_PAGE_STATUS = i18n.t('403');
 export const SOMETHING_WENT_WRONG = i18n.t('Something went wrong');
 export const YOU_ARE_UNAUTHORIZED = i18n.t('Sorry, you are not authorized to access this page');
 export const ERROR = i18n.t('Error');
