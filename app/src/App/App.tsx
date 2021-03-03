@@ -1,7 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { getExtraData } from '@onaio/session-reducer';
-import { UnauthorizedPage } from '@opensrp/react-utils';
+import { Resource404, PrivateComponent, PublicComponent } from '@opensrp/react-utils';
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
@@ -12,15 +10,13 @@ import {
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
-import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router';
+import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
 import { Spin } from 'antd';
 import { CustomLogout } from '../components/Logout';
 import {
   WEBSITE_NAME,
   BACKEND_ACTIVE,
-  KEYCLOAK_API_BASE_URL,
   DISABLE_LOGIN_PROTECTION,
-  OPENSRP_API_BASE_URL,
   OPENSRP_ROLES,
 } from '../configs/env';
 import {
@@ -51,7 +47,6 @@ import {
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
-import NotFound from '../components/NotFound';
 import '@opensrp/user-management/dist/index.css';
 import {
   ConnectedProductCatalogueList,
@@ -132,7 +127,6 @@ import {
   inventoryItemAddEditProps,
   editLocationProps,
   newLocationUnitProps,
-  isAuthorized,
 } from './utils';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/plan-form/dist/index.css';
@@ -156,50 +150,8 @@ import {
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 import { APP_LOGIN_URL } from '../dispatchConfig';
-import { FORBIDDEN_PAGE_STATUS } from '../lang';
 
 const { Content } = Layout;
-
-interface ComponentProps extends Partial<RouteProps> {
-  component: any;
-  redirectPath: string;
-  disableLoginProtection: boolean;
-  path: string;
-  activeRoles?: string[];
-}
-
-/** Util wrapper around ConnectedPrivateRoute to render components
- *  that use private routes/ require authentication
- *
- * @param props - Component props object
- */
-
-export const PrivateComponent = (props: ComponentProps) => {
-  //  props to pass on to Connected Private Route
-  const CPRProps = {
-    ...props,
-    keycloakBaseURL: KEYCLOAK_API_BASE_URL,
-    opensrpBaseURL: OPENSRP_API_BASE_URL,
-  };
-  const extraData = useSelector((state) => getExtraData(state));
-  const { roles } = extraData;
-  const { activeRoles } = props;
-  return activeRoles && roles && isAuthorized(roles, activeRoles) ? (
-    <ConnectedPrivateRoute {...CPRProps} />
-  ) : (
-    <UnauthorizedPage title={FORBIDDEN_PAGE_STATUS} />
-  );
-};
-
-/** Util wrapper around Route for rendering components
- *  that use public routes/ dont require authentication
- *
- * @param props - Component props object
- */
-
-export const PublicComponent = ({ component: Component, ...rest }: Partial<ComponentProps>) => {
-  return <Route {...rest} component={(props: RouteComponentProps) => <Component {...props} />} />;
-};
 
 /** Util function that renders Oauth2 callback components
  *
@@ -681,7 +633,7 @@ const App: React.FC = () => {
               // tslint:disable-next-line: jsx-no-lambda
               component={CustomLogout}
             />
-            <Route exact component={NotFound} />
+            <Route exact component={Resource404} />
           </Switch>
         </Content>
       </div>
