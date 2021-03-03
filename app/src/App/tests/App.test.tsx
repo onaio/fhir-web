@@ -6,20 +6,10 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, RouteComponentProps, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
-import App, {
-  PrivateComponent,
-  PublicComponent,
-  CallbackComponent,
-  LoadingComponent,
-  SuccessfulLoginComponent,
-} from '../App';
+import App, { CallbackComponent, LoadingComponent, SuccessfulLoginComponent } from '../App';
 import { expressAPIResponse } from './fixtures';
-import { UserList } from '@opensrp/user-management';
-import { KEYCLOAK_API_BASE_URL } from '../../configs/env';
-import NotFound from '../../components/NotFound';
 import { mount } from 'enzyme';
 import { authenticateUser } from '@onaio/session-reducer';
-import toJson from 'enzyme-to-json';
 
 jest.mock('../../configs/env');
 
@@ -70,21 +60,6 @@ describe('App - unauthenticated', () => {
         pathname: '/login',
       },
     });
-    wrapper.unmount();
-  });
-
-  it('PublicComponent Renders correctly', () => {
-    const MockComponent = () => {
-      return <NotFound />;
-    };
-    const props = { exact: true, path: '/unknown', authenticated: false };
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/unknown`, hash: '', search: '', state: {} }]}>
-        <PublicComponent {...props} component={MockComponent} />
-      </MemoryRouter>
-    );
-
-    expect(wrapper.exists(MockComponent)).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -202,67 +177,6 @@ describe('App - authenticated', () => {
         pathname: '/',
       },
     });
-    wrapper.unmount();
-  });
-
-  it('PrivateComponent Renders correctly', async () => {
-    const MockComponent = (props: any) => {
-      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;
-    };
-    const props = {
-      exact: true,
-      redirectPath: '/login',
-      disableLoginProtection: false,
-      path: '/admin',
-      authenticated: true,
-    };
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-          <PrivateComponent
-            {...props}
-            component={MockComponent}
-            activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-    expect(wrapper.exists(MockComponent)).toBeTruthy();
-    wrapper.unmount();
-  });
-
-  it('Show Unauthorized Page if role doesnt have sufficient permissions', async () => {
-    const MockComponent = (props: any) => {
-      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;
-    };
-    const props = {
-      exact: true,
-      redirectPath: '/login',
-      disableLoginProtection: false,
-      path: '/admin',
-      authenticated: true,
-    };
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-          <PrivateComponent {...props} component={MockComponent} activeRoles={['unauthorized']} />
-        </MemoryRouter>
-      </Provider>
-    );
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-    expect(wrapper.exists(MockComponent)).toBeFalsy();
-    // test if UnauthorizedPage is rendered
-    expect(wrapper.find('UnauthorizedPage').text()).toMatchInlineSnapshot(
-      `"403Sorry, you are not authorized to access this pageGo backGo home"`
-    );
-    expect(toJson(wrapper.find('UnauthorizedPage'))).toBeTruthy();
     wrapper.unmount();
   });
 });

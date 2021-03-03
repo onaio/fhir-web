@@ -1,4 +1,6 @@
 export const OPENSRP_API_BASE_URL = 'https://test.smartregister.org/opensrp/rest/';
+export const KEYCLOAK_API_BASE_URL =
+  'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
 export const ENABLE_PRODUCT_CATALOGUE = true;
 export const ENABLE_INVENTORY = true;
 export const LANGUAGE_CODE = 'en';
