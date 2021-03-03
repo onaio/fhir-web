@@ -89,11 +89,3 @@ export const PlanStatusColors: Dictionary = {
 };
 
 export const NO_DATA_FOUND = 'No data found';
-
-// event types
-
-export const FLAG_PROBLEM_EVENT = 'flag_problem';
-export const SERVICE_POINT_EVENT = 'service_point_check';
-export const LOOKS_GOOD_EVENT = 'looks_good';
-export const RECORD_GPS_EVENT = 'record_gps';
-export const FIX_PROBLEM_EVENT = 'fix_problem';
