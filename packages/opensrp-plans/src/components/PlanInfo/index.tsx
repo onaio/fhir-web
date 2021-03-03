@@ -71,7 +71,7 @@ const PlanInfo = (props: PlanInfoProps) => {
           </span>
           <div className="plan-detail-section">
             <div>
-              <h4>{plan.title}</h4>
+              <span className="ant-page-header-heading-title">{plan.title}</span>
             </div>
             <div className="plan-description">
               <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
