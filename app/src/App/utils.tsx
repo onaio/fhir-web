@@ -122,7 +122,3 @@ export const missionAssignmentProps = {
 export const inventoryItemAddEditProps = {
   openSRPBaseURL: OPENSRP_API_BASE_URL,
 };
-
-export const isAuthorized = (roles: string[], activeRoles: string[]) => {
-  return activeRoles.some((r: string) => roles.includes(r));
-};
