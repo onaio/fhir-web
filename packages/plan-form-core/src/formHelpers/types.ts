@@ -45,6 +45,7 @@ import {
   trigger,
   version,
   description,
+  dynamicValue,
 } from './constants/stringConstants';
 
 export type DateType = Moment | Date;
@@ -90,6 +91,12 @@ export interface PlanActivityTrigger {
   name: string;
 }
 
+/** interface for plan Activity form fields dynamicValue */
+export interface PlanActivityDynamicValue {
+  path: string;
+  expression: string;
+}
+
 /** Plan activity form fields interface */
 export interface PlanActivityFormFields {
   [actionCode]: string;
@@ -106,6 +113,7 @@ export interface PlanActivityFormFields {
   [timingPeriodEnd]: DateType;
   [timingPeriodStart]: DateType;
   [trigger]?: PlanActivityTrigger[];
+  [dynamicValue]?: PlanActivityDynamicValue[];
 }
 
 /** Plan jurisdictions form fields interface */
@@ -176,7 +184,8 @@ export type SubjectCodableConceptType =
   | 'Person'
   | 'Location'
   | 'Jurisdiction'
-  | 'Device';
+  | 'Device'
+  | 'Task';
 
 /** Plan Action subjectCodableConcept */
 export interface PlanActionSubjectCodableConcept {
@@ -205,6 +214,14 @@ export interface PlanActionCondition {
   kind: Readonly<'applicability'>;
 }
 
+/** Plan action dynamic value */
+export interface PlanActionDynamicValue {
+  path: string;
+  expression: {
+    expression: string;
+  };
+}
+
 /** Plan Action */
 export interface PlanAction {
   code: PlanActionCodesType;
@@ -220,6 +237,7 @@ export interface PlanAction {
   timingPeriod: PlanActionTimingPeriod;
   title: string;
   trigger?: PlanActionTrigger[];
+  dynamicValue?: PlanActionDynamicValue[];
   type?: string;
 }
 

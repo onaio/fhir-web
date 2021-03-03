@@ -4,11 +4,18 @@ import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
-import { UserForm, defaultInitialValues } from '..';
-import * as fixtures from './fixtures';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
+import { UserForm, UserFormProps } from '..';
+import {
+  keycloakUser,
+  defaultInitialValue,
+  practitioner1,
+  requiredActions,
+  userGroup,
+} from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { OpenSRPService, OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -36,19 +43,31 @@ jest.mock('antd', () => {
 });
 
 describe('components/forms/UserForm', () => {
-  const props = {
-    initialValues: defaultInitialValues,
-    serviceClass: KeycloakService,
+  const props: UserFormProps = {
+    initialValues: defaultInitialValue,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    accessToken: 'access token',
-    opensrpServiceClass: OpenSRPService,
     opensrpBaseURL: OPENSRP_API_BASE_URL,
-    practitioner: null,
     extraData: {},
+    userGroups: userGroup,
   };
 
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'access token', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
-    fetch.once(JSON.stringify(fixtures.userActions));
+    fetch.once(JSON.stringify(requiredActions));
   });
 
   afterEach(() => {
@@ -93,10 +112,10 @@ describe('components/forms/UserForm', () => {
 
     expect(wrapper.find('FormItemInput').at(0).prop('errors')).toEqual(['First Name is required']);
     expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual(['Last Name is required']);
-    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual(['Email is required']);
+    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual([]);
     expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual(['Username is required']);
     expect(wrapper.find('FormItemInput').at(4).prop('errors')).toEqual([]);
-
+    expect(wrapper.find('FormItemInput').at(5).prop('errors')).toEqual([]);
     wrapper.unmount();
   });
 
@@ -124,11 +143,10 @@ describe('components/forms/UserForm', () => {
     emailInput.simulate('change', { target: { name: 'email', value: 'testone@gmail.com' } });
 
     const actionSelect = wrapper.find('select');
-    actionSelect.simulate('change', {
+    actionSelect.first().simulate('change', {
       target: { value: ['UPDATE_PASSWORD'] },
     });
     wrapper.find('form').simulate('submit');
-    wrapper.update();
 
     await act(async () => {
       await flushPromises();
@@ -146,13 +164,12 @@ describe('components/forms/UserForm', () => {
         method: 'GET',
       },
     ]);
-    wrapper.unmount();
   });
 
   it('edits user', async () => {
     const propEdit = {
       ...props,
-      initialValues: fixtures.keycloakUser,
+      initialValues: keycloakUser,
     };
     const wrapper = mount(<UserForm {...propEdit} />);
 
@@ -177,14 +194,6 @@ describe('components/forms/UserForm', () => {
 
     await new Promise<unknown>((resolve) => setImmediate(resolve));
 
-    const payload = {
-      firstName: 'Test2',
-      lastName: 'kenya',
-      email: 'test@onatest.com',
-      username: 'opensrp',
-      requiredActions: [],
-    };
-
     expect(fetch.mock.calls[0]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
       {
@@ -202,7 +211,7 @@ describe('components/forms/UserForm', () => {
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...keycloakUser, firstName: 'Test2' }),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer access token',
@@ -211,7 +220,6 @@ describe('components/forms/UserForm', () => {
         method: 'PUT',
       },
     ]);
-    wrapper.unmount();
   });
 
   it('user is not created if api is down', async () => {
@@ -247,14 +255,13 @@ describe('components/forms/UserForm', () => {
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
-    wrapper.unmount();
   });
 
   it('user is not edited if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const propEdit = {
       ...props,
-      initialValues: fixtures.keycloakUser,
+      initialValues: keycloakUser,
     };
     const wrapper = mount(<UserForm {...propEdit} />);
 
@@ -277,7 +284,6 @@ describe('components/forms/UserForm', () => {
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
-    wrapper.unmount();
   });
 
   it('cancel button returns user to admin page', async () => {
@@ -297,14 +303,13 @@ describe('components/forms/UserForm', () => {
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
     expect(history.location.pathname).toEqual('/admin/users/list');
-    wrapper.unmount();
   });
 
   it('render correct user name in header', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const propEdit = {
       ...props,
-      initialValues: fixtures.keycloakUser,
+      initialValues: keycloakUser,
     };
     const wrapper = mount(<UserForm {...propEdit} />);
 
@@ -314,7 +319,7 @@ describe('components/forms/UserForm', () => {
     });
 
     expect(wrapper.find('.mb-3.header-title').text()).toEqual(
-      `Edit User | ${fixtures.keycloakUser.username}`
+      `Edit User | ${keycloakUser.username}`
     );
   });
 
@@ -323,7 +328,7 @@ describe('components/forms/UserForm', () => {
     const propsPractitionerNull = {
       ...props,
       practitioner: undefined,
-      initialValues: fixtures.keycloakUser,
+      initialValues: keycloakUser,
     };
 
     const wrapper = mount(
@@ -344,8 +349,8 @@ describe('components/forms/UserForm', () => {
     // practitioner is null
     const propsPractitioner = {
       ...props,
-      practitioner: fixtures.practitioner1,
-      initialValues: fixtures.keycloakUser,
+      practitioner: practitioner1,
+      initialValues: keycloakUser,
     };
 
     const wrapper = mount(
@@ -366,8 +371,8 @@ describe('components/forms/UserForm', () => {
     const propsOwn = {
       ...props,
       practitioner: undefined,
-      initialValues: fixtures.keycloakUser,
-      extraData: { user_id: fixtures.keycloakUser.id },
+      initialValues: keycloakUser,
+      extraData: { user_id: keycloakUser.id },
     };
 
     const wrapper = mount(
@@ -386,8 +391,8 @@ describe('components/forms/UserForm', () => {
   it('hides `requiredActions` field if user is editing their own profile', async () => {
     const propsOwn = {
       ...props,
-      initialValues: fixtures.keycloakUser,
-      extraData: { user_id: fixtures.keycloakUser.id },
+      initialValues: keycloakUser,
+      extraData: { user_id: keycloakUser.id },
     };
 
     const wrapper = mount(

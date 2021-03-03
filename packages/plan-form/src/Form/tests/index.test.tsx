@@ -67,8 +67,10 @@ describe('containers/forms/PlanForm', () => {
     expect(toJson(wrapper.find('#taskGenerationStatus input'))).toMatchSnapshot(
       'taskGenerationStatus field'
     );
-    expect(toJson(wrapper.find('#status label'))).toMatchSnapshot('status label');
-    expect(toJson(wrapper.find('#status select'))).toMatchSnapshot('status field');
+    wrapper.find('#status Radio').forEach((radio) => {
+      expect(radio.find('label').text()).toMatchSnapshot('status label');
+      expect(toJson(radio.find('input'))).toMatchSnapshot('status input');
+    });
     expect(toJson(wrapper.find('#dateRange label'))).toMatchSnapshot('date range label');
     expect(toJson(wrapper.find('#dateRange input'))).toMatchSnapshot('start field');
     expect(wrapper.find('#date label')).toHaveLength(0);
@@ -78,7 +80,7 @@ describe('containers/forms/PlanForm', () => {
     expect(toJson(wrapper.find('#planform-submit-button button'))).toMatchSnapshot('submit button');
 
     // should have triggers or conditions
-    expect(wrapper.find('.triggers-conditions')).toHaveLength(12);
+    expect(wrapper.find('.triggers-conditions')).toHaveLength(27);
 
     wrapper.unmount();
   });
@@ -118,10 +120,23 @@ describe('containers/forms/PlanForm', () => {
       expect(toJson(wrap.find('.conditions-fieldset textarea'))).toMatchSnapshot(
         `conditions textareas ${index}`
       );
+
+      expect(toJson(wrap.find('.dynamic-value-fieldset legend'))).toMatchSnapshot(
+        `conditions legends ${index}`
+      );
+
+      expect(toJson(wrap.find('.dynamic-value-group label'))).toMatchSnapshot(
+        `conditions labels ${index}`
+      );
+      expect(toJson(wrap.find('.dynamic-value-group input'))).toMatchSnapshot(
+        `conditions inputs ${index}`
+      );
     });
+    wrapper.unmount();
   });
 
   it('Form validation works', async () => {
+    jest.setTimeout(10000);
     const container = document.createElement('div');
     document.body.appendChild(container);
 
@@ -138,7 +153,7 @@ describe('containers/forms/PlanForm', () => {
     let fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // No errors are shown initially
-    expect(fieldsWithErrors).toMatchSnapshot(' Initial Errors');
+    expect(fieldsWithErrors).toMatchSnapshot('Initial Errors, no errors shown initially');
 
     wrapper.find('form').simulate('submit');
 
@@ -168,7 +183,7 @@ describe('containers/forms/PlanForm', () => {
     // description is required
     expect(
       (wrapper.find('FormItem[name="description"] FormItemInput').props() as any).errors
-    ).toMatchSnapshot('title error');
+    ).toMatchSnapshot('description error');
 
     // let us cause errors for other required fields and ascertain that they are indeed validated
 
@@ -193,7 +208,7 @@ describe('containers/forms/PlanForm', () => {
     fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // we now have some more errors
-    expect(fieldsWithErrors).toMatchSnapshot('more Errors');
+    expect(fieldsWithErrors).toMatchSnapshot('more Errors, dateRange, interventionType, date');
 
     // date is required
     expect(
@@ -234,7 +249,9 @@ describe('containers/forms/PlanForm', () => {
     fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // we now have some more errors
-    expect(fieldsWithErrors).toMatchSnapshot('invalid data type Errors');
+    expect(fieldsWithErrors).toMatchSnapshot(
+      'invalid data type Errors, we should have some errors'
+    );
   });
 
   it('Auto-setting name and title field values works', async () => {
@@ -250,6 +267,7 @@ describe('containers/forms/PlanForm', () => {
 
     // expect name is set the same to plan title
     expect(wrapper.find('#name input').props().value).toEqual('Plan Name');
+    wrapper.unmount();
   });
 
   it('Form submission for new plans works', async () => {
@@ -299,13 +317,15 @@ describe('containers/forms/PlanForm', () => {
 
     expect(fetch).toHaveBeenCalled();
 
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(newPayload1);
+
     // the last request should be the one that is sent to OpenSRP
-    expect(fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[0]).toMatchObject([
       'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: JSON.stringify(newPayload1),
+        body: expect.any(String),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer null',
@@ -314,6 +334,7 @@ describe('containers/forms/PlanForm', () => {
         method: 'POST',
       },
     ]);
+    wrapper.unmount();
   });
 
   it('Form submission for editing plans works', async () => {
@@ -339,6 +360,14 @@ describe('containers/forms/PlanForm', () => {
       .find('#description textarea')
       .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
 
+    // try changing the status to retired
+    wrapper.find('input[value="retired"]').simulate('click');
+    // look for popup to confirm
+    expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
+      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+    );
+    wrapper.find('.plan-form-status button').last().simulate('click');
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -346,6 +375,66 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
 
+    const payload = {
+      ...generatePlanDefinition(initialValues),
+      version: 2,
+      status: PlanStatus.RETIRED,
+      description: 'Mission plan description',
+    };
+
+    // expect(payload.status).toEqual(PlanStatus.RETIRED);
+
+    // the last request should be the one that is sent to OpenSRP
+    expect(fetch.mock.calls[0][0]).toEqual(
+      'https://opensrp-stage.smartregister.org/opensrp/rest/plans'
+    );
+
+    // the last request should be the one that is sent to OpenSRP
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
+
+    expect(afterSubmitMock).toHaveBeenCalled();
+  });
+
+  it('clicking no in popup during status change', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const initialValues = getPlanFormValues(mission1);
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const afterSubmitMock = jest.fn();
+
+    const props = {
+      initialValues,
+      afterSubmit: afterSubmitMock,
+    };
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: container }
+    );
+
+    wrapper
+      .find('#description textarea')
+      .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
+
+    // try changing the status to retired
+    wrapper.find('input[value="retired"]').simulate('click');
+    // look for popup to confirm
+    expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
+      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+    );
+    // cancel status change
+    wrapper.find('.plan-form-status button').first().simulate('click');
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise<any>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // no status change
     const payload = {
       ...generatePlanDefinition(initialValues),
       version: 2,
@@ -361,6 +450,7 @@ describe('containers/forms/PlanForm', () => {
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
 
     expect(afterSubmitMock).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('Checking disabled fields for draft plans', async () => {
@@ -400,6 +490,7 @@ describe('containers/forms/PlanForm', () => {
       await new Promise<any>((resolve) => setImmediate(resolve));
       wrapper.update();
     });
+    wrapper.unmount();
   });
 
   it('Notifies on errors during submission', async () => {
@@ -442,6 +533,7 @@ describe('containers/forms/PlanForm', () => {
 
     expect(errorNotificationSMock).toHaveBeenCalledWith('Error', errorMessage);
     (sendErrorNotification as jest.Mock).mockReset();
+    wrapper.unmount();
   });
 
   it('Can add and remove jurisdictions', async () => {
@@ -476,6 +568,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('.jurisdiction-fields__delete').first().simulate('click');
 
     expect(wrapper.find('.jurisdiction-fields')).toHaveLength(5);
+    wrapper.unmount();
   });
 
   it('removing dynamic activities works correctly', async () => {
@@ -494,7 +587,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // there are initially 4 activities
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(4);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(9);
     // lets get the form input values of the triggers
     const expectedTriggerInputValues = wrapper
       .find('.triggers-fieldset input')
@@ -530,7 +623,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // 1 less activity
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(3);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(8);
     // the slice values are determined by the type of activity that was removed
     // the meaning is that we should be left with ALL the triggers excluding the ones removed
     expect(wrapper.find(`.triggers-fieldset input`).map((e) => e.props().value)).toEqual(
@@ -580,7 +673,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // we should have 6 activities again
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(4);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(9);
     // and now we come full circle.  The inputs should be what we had on initial load,
     // with those of the first activity moved to the end of the arrays
     expect(wrapper.find(`.triggers-fieldset input`).map((e) => e.props().value)).toEqual(
@@ -629,6 +722,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.update();
 
     expect(cancelMock).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('test redirectPath getter', async () => {

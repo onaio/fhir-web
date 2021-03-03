@@ -5,6 +5,8 @@ export const mission1 = {
   version: '1',
   name: 'EUSM Mission 2020-11-17',
   title: 'EUSM Mission 2020-11-17',
+  description:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse egestas lorem non nunc tincidunt fermentum. Praesent vitae commodo est. Phasellus.',
   status: 'active',
   date: '2020-11-17',
   effectivePeriod: {
@@ -19,13 +21,12 @@ export const mission1 = {
   ],
   jurisdiction: [
     {
-      code: '8a26a7ea-b820-4c9a-9811-07b1c38b51fa',
+      code: 'ad56bb3b-66c5-4a29-8003-0a60582540a6',
     },
   ],
-  serverVersion: 1599112764477,
   goal: [
     {
-      id: 'Product_Check',
+      id: 'product_check',
       description: 'Check for all products (100%) within the jurisdiction',
       priority: 'medium-priority',
       target: [
@@ -43,7 +44,25 @@ export const mission1 = {
       ],
     },
     {
-      id: 'Fix_Product_Problem',
+      id: 'looks_good',
+      description: 'Check for all products (100%) within the jurisdiction',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of products in good condition',
+          detail: {
+            detailQuantity: {
+              value: 100,
+              comparator: '>',
+              unit: 'Percent',
+            },
+          },
+          due: '2020-12-24',
+        },
+      ],
+    },
+    {
+      id: 'fix_problem',
       description: 'Fix problems for all products (100%) within the jurisdiction',
       priority: 'medium-priority',
       target: [
@@ -61,7 +80,43 @@ export const mission1 = {
       ],
     },
     {
-      id: 'Record_GPS',
+      id: 'complete_fix_problem',
+      description: 'Completes Fix problem for a product (100%) within the jurisdiction',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of products problems fixed',
+          detail: {
+            detailQuantity: {
+              value: 100,
+              comparator: '>',
+              unit: 'Percent',
+            },
+          },
+          due: '2020-12-24',
+        },
+      ],
+    },
+    {
+      id: 'complete_flag_problem',
+      description: 'Completes Flag problem form for a product within the jurisdiction',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of products problems found',
+          detail: {
+            detailQuantity: {
+              value: 100,
+              comparator: '>',
+              unit: 'Percent',
+            },
+          },
+          due: '2020-12-24',
+        },
+      ],
+    },
+    {
+      id: 'record_gps',
       description: 'Record GPS for all service points without GPS within the jurisdiction',
       priority: 'medium-priority',
       target: [
@@ -79,8 +134,44 @@ export const mission1 = {
       ],
     },
     {
-      id: 'Service_Point_Check',
+      id: 'complete_record_gps',
+      description: 'Complete Record GPS for a particular service point',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of GPS recorded',
+          detail: {
+            detailQuantity: {
+              value: 100,
+              comparator: '>',
+              unit: 'Percent',
+            },
+          },
+          due: '2020-12-24',
+        },
+      ],
+    },
+    {
+      id: 'service_point_check',
       description: 'Conduct checks for all service point (100%) within the Jurisdiction',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of service points checked',
+          detail: {
+            detailQuantity: {
+              value: 100,
+              comparator: '>',
+              unit: 'Percent',
+            },
+          },
+          due: '2020-12-24',
+        },
+      ],
+    },
+    {
+      id: 'complete_service_point_check',
+      description: 'Complete check for a particular service point (100%) within the Jurisdiction',
       priority: 'medium-priority',
       target: [
         {
@@ -109,7 +200,7 @@ export const mission1 = {
         end: '2020-12-24',
       },
       reason: 'Routine',
-      goalId: 'Product_Check',
+      goalId: 'product_check',
       subjectCodableConcept: {
         text: 'Device',
       },
@@ -124,7 +215,7 @@ export const mission1 = {
           kind: 'applicability',
           expression: {
             description: 'Product exists',
-            expression: '$this.is(FHIR.Device)',
+            expression: '$this.is(FHIR.Bundle)',
           },
         },
       ],
@@ -134,15 +225,15 @@ export const mission1 = {
     {
       identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
       prefix: 2,
-      title: 'Fix Product Problem',
-      description: 'Fix problems for all products (100%) within the jurisdiction',
-      code: 'fix_product_problems',
+      title: 'Fix Problem',
+      description: 'Fix problem for all products (100%) within the jurisdiction',
+      code: 'fix_problem',
       timingPeriod: {
         start: '2020-11-17',
         end: '2020-12-24',
       },
       reason: 'Routine',
-      goalId: 'Fix_Product_Problem',
+      goalId: 'fix_problem',
       subjectCodableConcept: {
         text: 'Device',
       },
@@ -151,8 +242,8 @@ export const mission1 = {
           type: 'named-event',
           name: 'event-submission',
           expression: {
-            description: 'Trigger when a Fix Product event is submitted',
-            expression: "questionnaire = 'Fix_Product_Problem'",
+            description: 'Trigger when a Flag Problem event is submitted',
+            expression: "questionnaire = 'flag_problem'",
           },
         },
       ],
@@ -165,7 +256,7 @@ export const mission1 = {
           },
         },
       ],
-      definitionUri: 'product_check.json',
+      definitionUri: 'fix_problem.json',
       type: 'create',
     },
     {
@@ -179,7 +270,7 @@ export const mission1 = {
         end: '2020-12-24',
       },
       reason: 'Routine',
-      goalId: 'Record_GPS',
+      goalId: 'record_gps',
       subjectCodableConcept: {
         text: 'Location',
       },
@@ -194,7 +285,7 @@ export const mission1 = {
           kind: 'applicability',
           expression: {
             description: 'Service point does not have geometry',
-            expression: "$this.identifier.where(id='hasGeometry').value='false'",
+            expression: "$this.identifier.where(system='hasGeometry').value='false'",
           },
         },
       ],
@@ -205,14 +296,14 @@ export const mission1 = {
       identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
       prefix: 3,
       title: 'Service Point Check',
-      description: 'Conduct checkfor all service points (100%) within the jurisdiction',
+      description: 'Conduct check for all service points (100%) within the jurisdiction',
       code: 'service_point_check',
       timingPeriod: {
         start: '2020-11-17',
         end: '2020-12-24',
       },
       reason: 'Routine',
-      goalId: 'Service_Point_Check',
+      goalId: 'service_point_check',
       subjectCodableConcept: {
         text: 'Location',
       },
@@ -234,6 +325,261 @@ export const mission1 = {
       definitionUri: 'service_point_check.json',
       type: 'create',
     },
+    {
+      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
+      prefix: 3,
+      title: 'Complete Looks Good',
+      description: 'Complete full check for product',
+      code: 'looks_good',
+      timingPeriod: {
+        start: '2020-11-17',
+        end: '2020-12-24',
+      },
+      reason: 'Routine',
+      goalId: 'looks_good',
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: 'named-event',
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Looks Good event is submitted',
+            expression: "questionnaire = 'looks_good'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'Visited'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: 'applicability',
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'looks_good.json',
+      type: 'update',
+    },
+    {
+      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
+      prefix: 3,
+      title: 'Complete Record GPS',
+      description: 'Completes Record GPS activity for structure',
+      code: 'complete_record_gps',
+      timingPeriod: {
+        start: '2020-11-17',
+        end: '2020-12-24',
+      },
+      reason: 'Routine',
+      goalId: 'complete_record_gps',
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: 'named-event',
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Record Gps event is submitted',
+            expression: "questionnaire = 'record_gps'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'Visited'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: 'applicability',
+          expression: {
+            description: 'GPS recorded',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'record_gps.json',
+      type: 'update',
+    },
+    {
+      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
+      prefix: 3,
+      title: 'Complete Service Point Check',
+      description: 'Completes Service Point Check',
+      code: 'complete_service_point_check',
+      timingPeriod: {
+        start: '2020-11-17',
+        end: '2020-12-24',
+      },
+      reason: 'Routine',
+      goalId: 'complete_service_point_check',
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: 'named-event',
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Service Point Check event is submitted',
+            expression: "questionnaire = 'service_point_check'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'Visited'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: 'applicability',
+          expression: {
+            description: 'Service Point Checked',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'service_point_check.json',
+      type: 'update',
+    },
+    {
+      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
+      prefix: 3,
+      title: 'Complete Flag Problem',
+      description: 'Completes Flag problem task',
+      code: 'complete_flag_problem',
+      timingPeriod: {
+        start: '2020-11-17',
+        end: '2020-12-24',
+      },
+      reason: 'Routine',
+      goalId: 'complete_flag_problem',
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: 'named-event',
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Flag Problem event is submitted',
+            expression: "questionnaire = 'flag_problem'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'has_problem'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: 'applicability',
+          expression: {
+            description: 'Problem Flagged',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'flag_problem.json',
+      type: 'update',
+    },
+    {
+      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
+      prefix: 3,
+      title: 'Complete Fix problem task',
+      description: 'Completes Fix problem task',
+      code: 'complete_fix_problem',
+      timingPeriod: {
+        start: '2020-11-17',
+        end: '2020-12-24',
+      },
+      reason: 'Routine',
+      goalId: 'complete_fix_problem',
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      trigger: [
+        {
+          type: 'named-event',
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Fix Problem event is submitted',
+            expression: "questionnaire = 'fix_problem'",
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'businessStatus',
+          expression: {
+            expression: "'Visited'",
+          },
+        },
+        {
+          path: 'status',
+          expression: {
+            expression: "'Completed'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: 'applicability',
+          expression: {
+            description: 'Problem Fixed',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'fix_problem.json',
+      type: 'update',
+    },
   ],
   experimental: false,
 } as PlanDefinition;
@@ -241,14 +587,24 @@ export const mission1 = {
 export const newPayload1 = {
   action: [
     {
-      identifier: '7d5a9652-0d1c-583d-9d98-ab2f9e9979ca',
+      identifier: '0c8f5b3a-6023-5917-b944-acbfba254efe',
       prefix: 1,
+      title: 'Product Check',
       description: 'Check for all products (100%) within the jurisdiction',
+      dynamicValue: [
+        {
+          expression: {
+            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
+          },
+          path: 'structureId',
+        },
+      ],
       code: 'product_check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
-      goalId: 'Product_Check',
+      goalId: 'product_check',
       subjectCodableConcept: { text: 'Device' },
+      trigger: [{ name: 'plan-activation', type: 'named-event' }],
       condition: [
         {
           expression: { description: 'Product exists', expression: '$this.is(FHIR.Bundle)' },
@@ -256,19 +612,32 @@ export const newPayload1 = {
         },
       ],
       definitionUri: 'product_check.json',
-      title: 'Product Check',
-      trigger: [{ name: 'plan-activation', type: 'named-event' }],
       type: 'create',
     },
     {
-      identifier: '936d4dbc-d803-56c9-888d-280810d1aa36',
+      identifier: 'e1252828-447f-553a-ae82-960c5973d29e',
       prefix: 2,
-      description: 'Fix problems for all products (100%) within the jurisdiction',
-      code: 'fix_product_problems',
+      title: 'Complete Looks Good',
+      description: 'Complete full check for product',
+      code: 'looks_good',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
-      goalId: 'Fix_Product_Problem',
-      subjectCodableConcept: { text: 'Device' },
+      goalId: 'looks_good',
+      subjectCodableConcept: { text: 'Task' },
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Looks Good event is submitted',
+            expression: "questionnaire = 'looks_good'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      dynamicValue: [
+        { path: 'businessStatus', expression: { expression: "'Visited'" } },
+        { path: 'status', expression: { expression: "'Completed'" } },
+      ],
       condition: [
         {
           expression: {
@@ -278,8 +647,91 @@ export const newPayload1 = {
           kind: 'applicability',
         },
       ],
-      definitionUri: 'product_check.json',
-      title: 'Fix Product Problem',
+      definitionUri: 'looks_good.json',
+      type: 'update',
+    },
+    {
+      identifier: '956ba81a-57c3-5074-a112-10e945a64a82',
+      prefix: 3,
+      title: 'Complete Fix problem task',
+      description: 'Completes Fix problem task',
+      code: 'complete_fix_problem',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'complete_fix_problem',
+      subjectCodableConcept: { text: 'Task' },
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Fix Problem event is submitted',
+            expression: "questionnaire = 'fix_problem'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      dynamicValue: [
+        { path: 'businessStatus', expression: { expression: "'Visited'" } },
+        { path: 'status', expression: { expression: "'Completed'" } },
+      ],
+      condition: [
+        {
+          expression: {
+            description: 'Problem Fixed',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'fix_problem.json',
+      type: 'update',
+    },
+    {
+      identifier: 'b5a4fdee-8db9-5ab4-b20c-f19ae93f8a33',
+      prefix: 4,
+      title: 'Complete Flag Problem',
+      description: 'Completes Flag problem task',
+      code: 'complete_flag_problem',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'complete_flag_problem',
+      subjectCodableConcept: { text: 'Task' },
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Flag Problem event is submitted',
+            expression: "questionnaire = 'flag_problem'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      dynamicValue: [
+        { path: 'businessStatus', expression: { expression: "'has_problem'" } },
+        { path: 'status', expression: { expression: "'Completed'" } },
+      ],
+      condition: [
+        {
+          expression: {
+            description: 'Problem Flagged',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'flag_problem.json',
+      type: 'update',
+    },
+    {
+      identifier: '24f02243-19d4-57de-a205-22a14205627a',
+      prefix: 5,
+      title: 'Fix Problem',
+      description: 'Fix problems for all products (100%) within the jurisdiction',
+      code: 'fix_problem',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'fix_problem',
+      subjectCodableConcept: { text: 'Device' },
       trigger: [
         {
           expression: {
@@ -290,39 +742,93 @@ export const newPayload1 = {
           type: 'named-event',
         },
       ],
+      condition: [
+        {
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'fix_problem.json',
       type: 'create',
     },
     {
-      identifier: 'b920b277-6927-5d75-9862-b87e1968a0c4',
-      prefix: 3,
+      identifier: 'e5c7a70b-11b1-5c0b-80b3-6df681e27fa6',
+      prefix: 6,
+      title: 'Record GPS',
       description: 'Record GPS for all service points (100%) without GPS within the jurisdiction',
       code: 'record_gps',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
-      goalId: 'Record_GPS',
+      goalId: 'record_gps',
       subjectCodableConcept: { text: 'Location' },
+      trigger: [{ name: 'plan-activation', type: 'named-event' }],
       condition: [
         {
           expression: {
             description: 'Service point does not have geometry',
-            expression: "$this.identifier.where(id='hasGeometry').value='false'",
+            expression: "$this.identifier.where(system='hasGeometry').value='false'",
+          },
+          kind: 'applicability',
+        },
+      ],
+      dynamicValue: [
+        {
+          expression: {
+            expression: '$this.id',
+          },
+          path: 'structureId',
+        },
+      ],
+      definitionUri: 'record_gps.json',
+      type: 'create',
+    },
+    {
+      identifier: 'b527bc28-71d9-596c-b03b-acbae41898e9',
+      prefix: 7,
+      title: 'Complete Record GPS',
+      description: 'Completes Record GPS activity for structure',
+      code: 'complete_record_gps',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'complete_record_gps',
+      subjectCodableConcept: { text: 'Task' },
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Record Gps event is submitted',
+            expression: "questionnaire = 'record_gps'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      dynamicValue: [
+        { path: 'businessStatus', expression: { expression: "'Visited'" } },
+        { path: 'status', expression: { expression: "'Completed'" } },
+      ],
+      condition: [
+        {
+          expression: {
+            description: 'GPS recorded',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
           },
           kind: 'applicability',
         },
       ],
       definitionUri: 'record_gps.json',
-      title: 'Record GPS',
-      trigger: [{ name: 'plan-activation', type: 'named-event' }],
-      type: 'create',
+      type: 'update',
     },
     {
-      identifier: '527c9afd-ca37-56bc-a035-7be8a3da79f4',
-      prefix: 4,
+      identifier: '117644ec-920f-57bb-8746-4c2641c571ab',
+      prefix: 8,
       description: 'Conduct checks for all service point (100%) within the Jurisdiction',
       code: 'service_point_check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
-      goalId: 'Service_Point_Check',
+      goalId: 'service_point_check',
       subjectCodableConcept: { text: 'Location' },
       condition: [
         {
@@ -330,16 +836,61 @@ export const newPayload1 = {
           kind: 'applicability',
         },
       ],
+      dynamicValue: [
+        {
+          expression: {
+            expression: '$this.id',
+          },
+          path: 'structureId',
+        },
+      ],
+
       definitionUri: 'service_point_check.json',
       title: 'Service Point Check',
       trigger: [{ name: 'plan-activation', type: 'named-event' }],
       type: 'create',
     },
+    {
+      identifier: 'f4aa75b0-77db-5f7a-9b2e-e9f4490a5611',
+      prefix: 9,
+      title: 'Complete Service Point Check',
+      description: 'Completes Service Point Check',
+      code: 'complete_service_point_check',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'complete_service_point_check',
+      subjectCodableConcept: { text: 'Task' },
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Service Point Check event is submitted',
+            expression: "questionnaire = 'service_point_check'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      dynamicValue: [
+        { path: 'businessStatus', expression: { expression: "'Visited'" } },
+        { path: 'status', expression: { expression: "'Completed'" } },
+      ],
+      condition: [
+        {
+          expression: {
+            description: 'Service Point Checked',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'service_point_check.json',
+      type: 'update',
+    },
   ],
   goal: [
     {
       description: 'Check for all products (100%) within the jurisdiction',
-      id: 'Product_Check',
+      id: 'product_check',
       priority: 'medium-priority',
       target: [
         {
@@ -350,20 +901,68 @@ export const newPayload1 = {
       ],
     },
     {
+      id: 'looks_good',
+      description: 'Check for all products (100%) within jurisdiction',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of products in good condition',
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+        },
+      ],
+    },
+    {
+      id: 'complete_fix_problem',
+      description: 'Completes Fix problem for a product (100%) within the jurisdiction',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of products problems fixed',
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+        },
+      ],
+    },
+    {
+      id: 'complete_flag_problem',
+      description: 'Completes Flag problem form for a product within the jurisdiction',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of products problems found',
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+        },
+      ],
+    },
+    {
       description: 'Fix problems for all products (100%) within the jurisdiction',
-      id: 'Fix_Product_Problem',
+      id: 'fix_problem',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of products problems fixed',
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+        },
+      ],
+    },
+    {
+      description: 'Record GPS for all service points without GPS within the jurisdiction',
+      id: 'record_gps',
       priority: 'medium-priority',
       target: [
         {
           detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
           due: '2017-07-20',
-          measure: 'Percent of products problems fixed',
+          measure: 'Percent of GPS recorded',
         },
       ],
     },
     {
-      description: 'Record GPS for all service points (100%) without GPS within the jurisdiction',
-      id: 'Record_GPS',
+      description: 'Complete Record GPS for a particular service point',
+      id: 'complete_record_gps',
       priority: 'medium-priority',
       target: [
         {
@@ -375,13 +974,25 @@ export const newPayload1 = {
     },
     {
       description: 'Conduct checks for all service point (100%) within the Jurisdiction',
-      id: 'Service_Point_Check',
+      id: 'service_point_check',
       priority: 'medium-priority',
       target: [
         {
+          measure: 'Percent of service points checked',
           detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
           due: '2017-07-20',
+        },
+      ],
+    },
+    {
+      description: 'Complete check for a particular service point (100%) within the Jurisdiction',
+      id: 'complete_service_point_check',
+      priority: 'medium-priority',
+      target: [
+        {
           measure: 'Percent of service points checked',
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
         },
       ],
     },

@@ -3,25 +3,30 @@ import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { Typography, Form, Button, Input, Upload, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { submitForm } from './utils';
+import { submitUploadForm } from './../../../helpers/utils';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, Redirect } from 'react-router';
 import { getManifestFilesById } from '../../../ducks/manifestFiles';
 import { ROUTE_PARAM_FORM_ID } from '../../../constants';
+import {
+  ERROR_OCCURRED,
+  UPLOAD_FORM,
+  ERROR_FORM_NAME_REQUIRED,
+  ERROR_FORM_REQUIRED,
+  FORM_NAME,
+  MODULE,
+  RELATED_TO,
+  FORM,
+  UPLOADING,
+  CLICK_TO_UPLOAD,
+} from '../../../lang';
 import { Dictionary } from '@onaio/utils';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { UploadFileFieldTypes } from '../../../helpers/types';
 
 /** inteface for route params */
 export interface RouteParams {
   [ROUTE_PARAM_FORM_ID]: string;
-}
-
-/** form field props */
-export interface UploadFileFieldTypes {
-  form_name: string;
-  form_relation: string;
-  module: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: Array<any>;
 }
 
 /** component props */
@@ -43,7 +48,7 @@ export const defaultInitialValues: UploadFileFieldTypes = {
   // eslint-disable-next-line @typescript-eslint/camelcase
   form_relation: '',
   module: '',
-  form: [],
+  form: '',
 };
 
 /** default component props */
@@ -135,54 +140,57 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>Upload Form</Title>
+      <Title level={3}>{UPLOAD_FORM}</Title>
       <Card>
         <Form
           {...layout}
           initialValues={formInitialValues}
           onFinish={(values) => {
-            submitForm(
+            submitUploadForm(
               {
                 ...values,
-                form: fileList,
+                form: fileList[0],
               },
               accessToken,
               opensrpBaseURL,
               isJsonValidator,
               setSubmitting,
-              setIfDoneHere
-            );
+              setIfDoneHere,
+              sendErrorNotification
+            ).catch(() => {
+              sendErrorNotification(ERROR_OCCURRED);
+            });
           }}
         >
           <Form.Item
             id="form_name"
             name="form_name"
-            label="Form Name"
-            rules={[{ required: true, message: 'Form Name is required' }]}
+            label={FORM_NAME}
+            rules={[{ required: true, message: ERROR_FORM_NAME_REQUIRED }]}
           >
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item id="module" name="module" label="Module">
+          <Form.Item id="module" name="module" label={MODULE}>
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item id="form_relation" name="form_relation" label="Related to">
+          <Form.Item id="form_relation" name="form_relation" label={RELATED_TO}>
             <Input disabled={isEditMode} />
           </Form.Item>
           <Form.Item
             id="form"
             name="form"
-            label="Form"
+            label={FORM}
             valuePropName="fileList"
             getValueFromEvent={normFile}
-            rules={[{ required: true, message: 'Form is required' }]}
+            rules={[{ required: true, message: ERROR_FORM_REQUIRED }]}
           >
             <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              <Button icon={<UploadOutlined />}>{CLICK_TO_UPLOAD}</Button>
             </Upload>
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              {isSubmitting ? 'Uploading....' : 'Upload form'}
+              {isSubmitting ? `${UPLOADING}....` : UPLOAD_FORM}
             </Button>
           </Form.Item>
         </Form>

@@ -1,91 +1,54 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Select, Switch, Input } from 'antd';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { KeycloakUser } from '../../../ducks/user';
-import { URL_USER, CANCEL, EDIT_USER, ADD_USER } from '../../../constants';
-import { submitForm, fetchRequiredActions, UserAction } from './utils';
-import '../../../index.css';
-import { OpenSRPService } from '@opensrp/server-service';
+import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
+import { KeycloakUser, Practitioner, UserAction, UserGroup } from '../../../ducks/user';
+import { URL_USER } from '../../../constants';
+import {
+  CANCEL,
+  EDIT_USER,
+  ADD_USER,
+  FIRST_NAME,
+  LAST_NAME,
+  EMAIL,
+  USERNAME,
+  MARK_AS_PRACTITIONER,
+  REQUIRED_ACTIONS,
+  PLEASE_SELECT,
+  SAVE,
+  SAVING,
+  FIRST_NAME_REQUIRED,
+  LAST_NAME_REQUIRED,
+  USERNAME_REQUIRED,
+  GROUP,
+  ERROR_OCCURED,
+} from '../../../lang';
+import { submitForm, fetchRequiredActions } from './utils';
 import { Dictionary } from '@onaio/utils';
-/** Interface for practitioner json object */
-export interface Practitioner {
-  active: boolean;
-  identifier: string;
-  name: string;
-  userId: string;
-  username: string;
-}
+import { sendErrorNotification } from '@opensrp/notifications';
+import '../../../index.css';
+
 /** props for editing a user view */
 export interface UserFormProps {
-  accessToken: string;
-  initialValues: KeycloakUser;
-  serviceClass: typeof KeycloakService;
-  opensrpServiceClass: typeof OpenSRPService;
+  initialValues: FormFields;
   keycloakBaseURL: string;
   opensrpBaseURL: string;
-  practitioner: Practitioner | undefined;
+  userGroups: UserGroup[];
   extraData: Dictionary;
 }
-/** default form initial values */
-export const defaultInitialValues: KeycloakUser = {
-  access: {
-    manageGroupMembership: false,
-    view: false,
-    mapRoles: false,
-    impersonate: false,
-    manage: false,
-  },
-  createdTimestamp: undefined,
-  disableableCredentialTypes: [],
-  email: '',
-  emailVerified: false,
-  enabled: true,
-  firstName: '',
-  id: '',
-  lastName: '',
-  notBefore: 0,
-  requiredActions: [],
-  totp: false,
-  username: '',
-};
-/** default props for editing user component */
-export const defaultProps: Partial<UserFormProps> = {
-  accessToken: '',
-  initialValues: defaultInitialValues,
-  opensrpServiceClass: OpenSRPService,
-  practitioner: undefined,
-  serviceClass: KeycloakService,
-  extraData: {},
-};
-/**
- * Handle required actions change
- *
- * @param {string} selected - selected action
- * @param {Dispatch<SetStateAction<string[]>>} setRequiredActions - selected action dispatcher
- */
-export const handleUserActionsChange = (
-  selected: string[],
-  setRequiredActions: Dispatch<SetStateAction<string[]>>
-): void => {
-  setRequiredActions(selected);
-};
+
+export interface FormFields extends KeycloakUser {
+  active?: boolean;
+  userGroup?: string[];
+  practitioner?: Practitioner;
+}
+
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
-  const {
-    initialValues,
-    serviceClass,
-    accessToken,
-    keycloakBaseURL,
-    opensrpServiceClass,
-    opensrpBaseURL,
-    practitioner,
-    extraData,
-  } = props;
+  const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
+
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const history = useHistory();
-  const [form] = Form.useForm();
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -103,23 +66,18 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       lg: { offset: 6, span: 14 },
     },
   };
-  const { Option } = Select;
+  const status = [
+    { label: 'Yes', value: true },
+    { label: 'No', value: false },
+  ];
+
   React.useEffect(() => {
-    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, serviceClass);
-  }, [accessToken, keycloakBaseURL, serviceClass]);
+    fetchRequiredActions(keycloakBaseURL, setUserActionOptions);
+  }, [keycloakBaseURL]);
+
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
-
-  /** Update form initial values when initialValues prop changes, without this
-   * the form fields initial values will not change if props.initiaValues is updated
-   * **/
-  React.useEffect(() => {
-    form.setFieldsValue({
-      ...initialValues,
-      active: !!practitioner && practitioner.active,
-    });
-  }, [form, initialValues, practitioner]);
 
   return (
     <Row className="layout-content">
@@ -130,92 +88,92 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       <Col className="bg-white p-3" span={24}>
         <Form
           {...layout}
-          form={form}
-          initialValues={{
-            ...initialValues,
-            active: !!practitioner && practitioner.active,
-          }}
+          initialValues={initialValues}
           onFinish={(values) => {
+            setSubmitting(true);
             submitForm(
-              {
-                ...values,
-                requiredActions,
-              },
-              accessToken,
+              { ...initialValues, ...values, requiredActions },
               keycloakBaseURL,
               opensrpBaseURL,
-              serviceClass,
-              opensrpServiceClass,
-              setSubmitting,
-              practitioner,
-              initialValues.id
-            );
+              userGroups
+            ).catch((_: Error) => {
+              setSubmitting(false);
+              sendErrorNotification(ERROR_OCCURED);
+            });
           }}
         >
           <Form.Item
             name="firstName"
             id="firstName"
-            label="First Name"
-            rules={[{ required: true, message: 'First Name is required' }]}
+            label={FIRST_NAME}
+            rules={[{ required: true, message: FIRST_NAME_REQUIRED }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="lastName"
             id="lastName"
-            label="Last Name"
-            rules={[{ required: true, message: 'Last Name is required' }]}
+            label={LAST_NAME}
+            rules={[{ required: true, message: LAST_NAME_REQUIRED }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="email"
-            id="email"
-            label="Email"
-            rules={[{ required: true, message: 'Email is required' }]}
-          >
+          <Form.Item name="email" id="email" label={EMAIL}>
             <Input />
           </Form.Item>
           <Form.Item
             name="username"
             id="username"
-            label="Username"
-            rules={[{ required: true, message: 'Username is required' }]}
+            label={USERNAME}
+            rules={[{ required: true, message: USERNAME_REQUIRED }]}
           >
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
-            <Form.Item
-              id="practitionerToggle"
-              name="active"
-              label="Mark as Practitioner"
-              valuePropName="checked"
-            >
-              <Switch />
+            <Form.Item id="practitionerToggle" name="active" label={MARK_AS_PRACTITIONER}>
+              <Radio.Group name="active">
+                {status.map((e) => (
+                  <Radio name="active" key={e.label} value={e.value}>
+                    {e.label}
+                  </Radio>
+                ))}
+              </Radio.Group>
             </Form.Item>
           ) : null}
           {initialValues.id !== extraData.user_id ? (
-            <Form.Item name="requiredActions" id="requiredActions" label="Required Actions">
+            <Form.Item name="requiredActions" id="requiredActions" label={REQUIRED_ACTIONS}>
               <Select
                 mode="multiple"
                 allowClear
-                placeholder="Please select"
-                onChange={(selected: string[]) =>
-                  handleUserActionsChange(selected, setRequiredActions)
-                }
+                placeholder={PLEASE_SELECT}
+                onChange={(selected: string[]) => setRequiredActions(selected)}
                 style={{ width: '100%' }}
               >
                 {userActionOptions.map((option: UserAction, index: number) => (
-                  <Option key={`${index}`} value={option.alias}>
+                  <Select.Option key={`${index}`} value={option.alias}>
                     {option.name}
-                  </Option>
+                  </Select.Option>
                 ))}
               </Select>
             </Form.Item>
           ) : null}
+          <Form.Item name="userGroup" id="userGroup" label={GROUP}>
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder={PLEASE_SELECT}
+              style={{ width: '100%' }}
+            >
+              {userGroups.map((group) => (
+                <Select.Option key={group.id} value={group.id}>
+                  {group.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
-              {isSubmitting ? 'Saving' : 'Save'}
+              {isSubmitting ? SAVING : SAVE}
             </Button>
             <Button onClick={() => history.push(URL_USER)} className="cancel-user">
               {CANCEL}
@@ -226,5 +184,5 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     </Row>
   );
 };
-UserForm.defaultProps = defaultProps;
+
 export { UserForm };

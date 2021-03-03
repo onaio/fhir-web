@@ -3,6 +3,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Organization } from '../../ducks/organizations';
 import { Practitioner } from '../../ducks/practitioners';
+import { IDENTIFIER, NO_TEAM_MEMBERS, STATUS, TEAM_MEMBERS, TEAM_NAME } from '../../lang';
 
 export interface TeamsDetailProps extends Organization {
   onClose?: Function;
@@ -26,25 +27,25 @@ const TeamsDetail = (props: TeamsDetailProps) => {
         icon={<CloseOutlined />}
       />
       <div className="mb-4 small mt-4">
-        <p className="mb-0 font-weight-bold">Team name</p>
+        <p className="mb-0 font-weight-bold">{TEAM_NAME}</p>
         <p className="mb-0">{name}</p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">Status</p>
+        <p className="mb-0 font-weight-bold">{STATUS}</p>
         <p className="mb-0">{`${active}`}</p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">Identifier</p>
+        <p className="mb-0 font-weight-bold">{IDENTIFIER}</p>
         <p className="mb-0">{`${identifier}`}</p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">Team members</p>
+        <p className="mb-0 font-weight-bold">{TEAM_MEMBERS}</p>
         {teamMembers.length ? (
           teamMembers.map((item) =>
             item.active ? <p key={item.identifier} className="mb-0">{`${item.name}`}</p> : null
           )
         ) : (
-          <p className="no-team-members">No team members</p>
+          <p className="no-team-members">{NO_TEAM_MEMBERS}</p>
         )}
       </div>
     </div>

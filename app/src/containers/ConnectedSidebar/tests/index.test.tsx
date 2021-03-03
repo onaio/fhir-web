@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
 import { store } from '@opensrp/store';
+import toJson from 'enzyme-to-json';
 
 jest.mock('../../../configs/env');
 
@@ -110,6 +111,17 @@ describe('components/ConnectedSidebar', () => {
     );
     expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
     wrapper.unmount();
+  });
+
+  it('shows the correct logg', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(toJson(wrapper.find('.logo'))).toMatchSnapshot('Logo');
   });
 
   it('correctly expand teams menu', () => {

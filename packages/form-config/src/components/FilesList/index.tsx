@@ -1,6 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
 import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
 import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
@@ -16,20 +15,21 @@ import filesReducer, {
 } from '../../ducks/manifestFiles';
 import { Row, Col } from 'reactstrap';
 import {
-  DOWNLOAD_LABEL,
-  EDIT_LABEL,
-  FILE_NAME_LABEL,
-  FILE_VERSION_LABEL,
-  IDENTIFIER_LABEL,
-  UPLOAD_EDIT_LABEL,
-  UPOL0AD_FILE_LABEL,
-  MODULE_LABEL,
-  FIND_FILES_LABEL,
-  CREATED_AT_LABEL,
-} from '../../constants';
+  DOWNLOAD,
+  EDIT,
+  FILE_NAME,
+  FILE_VERSION,
+  IDENTIFIER,
+  UPLOAD_EDIT,
+  UPLOAD_NEW_FILE,
+  MODULE,
+  FIND_FILES,
+  CREATED_AT,
+} from '../../lang';
 import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile } from '../../helpers/utils';
+import { formatDate, downloadManifestFile, fetchManifests } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -49,7 +49,7 @@ export interface FilesListDefaultProps extends SearchBarDefaultProps {
   removeFiles: typeof removeManifestFiles;
   uploadEditLabel: string;
   uploadFileLabel: string;
-  accessToken: string;
+  accessToken: string | GetAccessTokenType;
 }
 
 /** manifest files list props interface */
@@ -101,36 +101,29 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestFilesTypes[]>(data);
 
-  useEffect(() => {
-    /** get manifest files */
-    setLoading(true);
-    let params = null;
-    // if form version is available -  means request is to get manifest files else get json validator files
-    /* eslint-disable-next-line @typescript-eslint/camelcase */
-    params = formVersion ? { identifier: formVersion } : { is_json_validator: true };
-    removeFiles();
-    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
-    clientService
-      .list(params)
-      .then((res: ManifestFilesTypes[]) => {
-        fetchFiles(res);
-      })
-      .catch((error) => {
-        if (customAlert) {
-          customAlert(String(error), { type: 'error' });
-        }
-      })
-      .finally(() => setLoading(false));
-  }, [
-    baseURL,
-    customAlert,
-    endpoint,
-    removeFiles,
-    fetchFiles,
-    formVersion,
-    getPayload,
-    accessToken,
-  ]);
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
+    }
+  };
+
+  useEffect(
+    () => {
+      fetchManifests(
+        accessToken,
+        baseURL,
+        fetchFiles,
+        removeFiles,
+        setLoading,
+        displayAlertError,
+        formVersion,
+        endpoint,
+        undefined,
+        getPayload
+      );
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [baseURL, customAlert, endpoint, removeFiles, fetchFiles, formVersion, getPayload, accessToken]
+  );
 
   useEffect(() => {
     setStateData(data);
@@ -272,23 +265,23 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
 
 /** declear default props */
 const defaultProps: FilesListDefaultProps = {
-  createdAt: CREATED_AT_LABEL,
+  createdAt: CREATED_AT,
   data: [],
   debounceTime: 1000,
-  downloadLabel: DOWNLOAD_LABEL,
+  downloadLabel: DOWNLOAD,
   drillDownProps: {
     paginate: false,
   },
-  editLabel: EDIT_LABEL,
+  editLabel: EDIT,
   fetchFiles: fetchManifestFiles,
-  fileNameLabel: FILE_NAME_LABEL,
-  fileVersionLabel: FILE_VERSION_LABEL,
-  identifierLabel: IDENTIFIER_LABEL,
-  moduleLabel: MODULE_LABEL,
-  placeholder: FIND_FILES_LABEL,
+  fileNameLabel: FILE_NAME,
+  fileVersionLabel: FILE_VERSION,
+  identifierLabel: IDENTIFIER,
+  moduleLabel: MODULE,
+  placeholder: FIND_FILES,
   removeFiles: removeManifestFiles,
-  uploadEditLabel: UPLOAD_EDIT_LABEL,
-  uploadFileLabel: UPOL0AD_FILE_LABEL,
+  uploadEditLabel: UPLOAD_EDIT,
+  uploadFileLabel: UPLOAD_NEW_FILE,
   accessToken: '',
 };
 

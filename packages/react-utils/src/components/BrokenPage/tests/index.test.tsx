@@ -3,7 +3,7 @@ import React from 'react';
 import { BrokenPage, useHandleBrokenPage } from '..';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { HOME_URL } from '../../constants';
+import { HOME_URL } from '../../../constants';
 
 const history = createBrowserHistory();
 
@@ -17,16 +17,16 @@ describe('broken page', () => {
       </Router>
     );
 
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
 
     // click go back
-    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Go Back"`);
+    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Go back"`);
     wrapper.find('button').first().simulate('click');
 
     expect(mockBack).toHaveBeenCalled();
 
     // click go home
-    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Back Home"`);
+    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Go home"`);
     wrapper.find('button').last().simulate('click');
 
     expect(history.location.pathname).toEqual(HOME_URL);

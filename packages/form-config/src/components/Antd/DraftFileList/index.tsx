@@ -9,14 +9,16 @@ import DraftFilesReducer, {
   getAllManifestDraftFilesArray,
   removeManifestDraftFiles,
 } from '../../../ducks/manifestDraftFiles';
-import { getFetchOptions, OpenSRPService } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { ManifestFilesTypes } from '../../../ducks/manifestFiles';
 import { useHistory, Redirect } from 'react-router';
-import { OPENSRP_FORM_METADATA_ENDPOINT, ERROR_OCCURRED } from '../../../constants';
+import { OPENSRP_FORM_METADATA_ENDPOINT, OPENSRP_MANIFEST_ENDPOINT } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { getTableColumns, makeRelease } from './utils';
+import { getTableColumns } from './utils';
+import { makeRelease, fetchDrafts } from '../../../helpers/utils';
+import { SEARCH, UPLOAD_NEW_FILE, MAKE_RELEASE, DRAFT_FILES } from '../../../lang';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, DraftFilesReducer);
@@ -62,25 +64,15 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
   } = props;
 
   useEffect(() => {
-    /** get manifest Draftfiles */
-    setLoading(true);
-    /* eslint-disable-next-line @typescript-eslint/camelcase */
-    const params = { is_draft: true };
-    const clientService = new OpenSRPService(
+    fetchDrafts(
       accessToken,
       opensrpBaseURL,
+      fetchDraftFiles,
+      setLoading,
+      sendErrorNotification,
       OPENSRP_FORM_METADATA_ENDPOINT,
-      customFetchOptions
+      dispatch
     );
-    clientService
-      .list(params)
-      .then((res: ManifestFilesTypes[]) => {
-        dispatch(fetchDraftFiles(res));
-      })
-      .catch((_: Error) => {
-        sendErrorNotification(ERROR_OCCURRED);
-      })
-      .finally(() => setLoading(false));
   }, [accessToken, opensrpBaseURL, customFetchOptions, fetchDraftFiles, dispatch]);
 
   if (loading) {
@@ -105,12 +97,12 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>Draft Files</Title>
+      <Title level={3}>{DRAFT_FILES}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
             id="search"
-            placeholder="Search"
+            placeholder={SEARCH}
             size="large"
             value={value}
             prefix={<SearchOutlined />}
@@ -120,7 +112,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
-            Upload New File
+            {UPLOAD_NEW_FILE}
           </Button>
           <Divider type="vertical" />
           <SettingOutlined />
@@ -154,14 +146,16 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
                   data,
                   accessToken,
                   opensrpBaseURL,
-                  dispatch,
                   removeDraftFiles,
                   setIfDoneHere,
+                  sendErrorNotification,
+                  OPENSRP_MANIFEST_ENDPOINT,
+                  dispatch,
                   customFetchOptions
                 )
               }
             >
-              Make Release
+              {MAKE_RELEASE}
             </Button>
           </Space>
         )}

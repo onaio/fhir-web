@@ -5,7 +5,8 @@ import { ManifestFilesTypes } from '../../../../ducks/manifestFiles';
 import { getFetchOptions } from '@opensrp/server-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { MoreOutlined } from '@ant-design/icons';
-import { ERROR_OCCURRED, OPENSRP_FORMS_ENDPOINT } from '../../../../constants';
+import { OPENSRP_FORMS_ENDPOINT } from '../../../../constants';
+import { DOWNLOAD, ERROR_OCCURRED, EDIT } from '../../../../lang';
 import { downloadManifestFile } from '../../../../helpers/utils';
 
 /** interface for component props */
@@ -56,7 +57,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
             onDownloadClick(file, accessToken, opensrpBaseURL, isJsonValidator, customFetchOptions)
           }
         >
-          Download
+          {DOWNLOAD}
         </Button>
       </Menu.Item>
     </Menu>
@@ -65,7 +66,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
   return (
     <>
       <Link to={`${uploadFileURL}/${file.id}`} key="actions">
-        Edit
+        {EDIT}
       </Link>
       <Divider type="vertical" />
       <Dropdown overlay={menu}>

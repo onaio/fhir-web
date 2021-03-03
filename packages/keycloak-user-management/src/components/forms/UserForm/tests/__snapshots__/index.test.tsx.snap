@@ -27,51 +27,14 @@ Object {
       span={24}
     >
       <ForwardRef(InternalForm)
-        form={
-          Object {
-            "__INTERNAL__": Object {
-              "itemRef": [Function],
-              "name": undefined,
-            },
-            "getFieldError": [Function],
-            "getFieldInstance": [Function],
-            "getFieldValue": [Function],
-            "getFieldsError": [Function],
-            "getFieldsValue": [Function],
-            "getInternalHooks": [Function],
-            "isFieldTouched": [Function],
-            "isFieldValidating": [Function],
-            "isFieldsTouched": [Function],
-            "isFieldsValidating": [Function],
-            "resetFields": [Function],
-            "scrollToField": [Function],
-            "setFields": [Function],
-            "setFieldsValue": [Function],
-            "submit": [Function],
-            "validateFields": [Function],
-          }
-        }
         initialValues={
           Object {
-            "access": Object {
-              "impersonate": false,
-              "manage": false,
-              "manageGroupMembership": false,
-              "mapRoles": false,
-              "view": false,
-            },
             "active": false,
-            "createdTimestamp": undefined,
-            "disableableCredentialTypes": Array [],
-            "email": "",
-            "emailVerified": false,
-            "enabled": true,
             "firstName": "",
             "id": "",
             "lastName": "",
-            "notBefore": 0,
-            "requiredActions": Array [],
-            "totp": false,
+            "practitioner": undefined,
+            "userGroup": undefined,
             "username": "",
           }
         }
@@ -151,14 +114,6 @@ Object {
           id="email"
           label="Email"
           name="email"
-          rules={
-            Array [
-              Object {
-                "message": "Email is required",
-                "required": true,
-              },
-            ]
-          }
         >
           <Input
             type="text"
@@ -226,6 +181,38 @@ Object {
           </Select>
         </FormItem>
         <FormItem
+          id="userGroup"
+          label="Group"
+          name="userGroup"
+        >
+          <Select
+            allowClear={true}
+            mode="multiple"
+            placeholder="Please select"
+            style={
+              Object {
+                "width": "100%",
+              }
+            }
+          >
+            <Option
+              value="283c5d6e-9b83-4954-9f3b-4c2103e4370c"
+            >
+              Admin
+            </Option>
+            <Option
+              value="a55f0b02-950f-4c6a-9857-667ffbba1dd5"
+            >
+              Admin 2
+            </Option>
+            <Option
+              value="4dd15e66-7132-429b-8939-d1e601611464"
+            >
+              New Group
+            </Option>
+          </Select>
+        </FormItem>
+        <FormItem
           wrapperCol={
             Object {
               "lg": Object {
@@ -286,13 +273,27 @@ Object {
   >
     <Memo
       update={3}
-      value={false}
     >
-      <Switch
-        checked={false}
+      <Memo
         id="active"
+        name="active"
         onChange={[Function]}
-      />
+      >
+        <Radio
+          name="active"
+          type="radio"
+          value={true}
+        >
+          Yes
+        </Radio>
+        <Radio
+          name="active"
+          type="radio"
+          value={false}
+        >
+          No
+        </Radio>
+      </Memo>
     </Memo>
   </Context.Provider>,
   "errors": Array [],
@@ -307,7 +308,6 @@ Object {
   "touched": false,
   "validateStatus": "",
   "validating": false,
-  "valuePropName": "checked",
 }
 `;
 
@@ -322,13 +322,27 @@ Object {
   >
     <Memo
       update={3}
-      value={true}
     >
-      <Switch
-        checked={true}
+      <Memo
         id="active"
+        name="active"
         onChange={[Function]}
-      />
+      >
+        <Radio
+          name="active"
+          type="radio"
+          value={true}
+        >
+          Yes
+        </Radio>
+        <Radio
+          name="active"
+          type="radio"
+          value={false}
+        >
+          No
+        </Radio>
+      </Memo>
     </Memo>
   </Context.Provider>,
   "errors": Array [],
@@ -343,7 +357,6 @@ Object {
   "touched": false,
   "validateStatus": "",
   "validating": false,
-  "valuePropName": "checked",
 }
 `;
 

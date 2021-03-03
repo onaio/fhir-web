@@ -1,11 +1,11 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Tree from '../';
+import flushPromises from 'flush-promises';
 import { treedata } from '../../../ducks/locationHierarchy/tests/hierarchyFixtures';
-import { store } from '@onaio/redux-reducer-registry';
+import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { act } from 'react-dom/test-utils';
-import flushPromises from 'flush-promises';
 
 describe('location-management/src/components/LocationTree', () => {
   it('renders without crashing', async () => {
@@ -16,7 +16,7 @@ describe('location-management/src/components/LocationTree', () => {
     );
 
     await act(async () => {
-      await flushPromises();
+      wrapper.update();
     });
 
     expect(wrapper.find('.ant-tree')).toHaveLength(1);
@@ -33,7 +33,7 @@ describe('location-management/src/components/LocationTree', () => {
     search.simulate('change', { target: { value: 'kairouan' } });
 
     await act(async () => {
-      await flushPromises();
+      wrapper.update();
     });
 
     expect(wrapper.find('.searchValue')).toHaveLength(1);
@@ -48,12 +48,12 @@ describe('location-management/src/components/LocationTree', () => {
       </Provider>
     );
 
-    await act(async () => {
-      await flushPromises();
-    });
-
     const treeItem = wrapper.find('span.ant-tree-title').last();
     treeItem.simulate('click');
+
+    await act(async () => {
+      wrapper.update();
+    });
 
     expect(mockfn).toBeCalledWith({
       children: undefined,
@@ -79,15 +79,15 @@ describe('location-management/src/components/LocationTree', () => {
       </Provider>
     );
 
-    await act(async () => {
-      await flushPromises();
-    });
-
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
-    expect(treeNode.children()).toHaveLength(treedata.length + 1); // as per structure make sure we have 4 tree
+    expect(treeNode.children()).toHaveLength(treedata.length); // as per structure make sure we have 3 tree
 
     const expandButton = treeNode.find('span.ant-tree-switcher').first();
     expandButton.simulate('click');
+
+    await act(async () => {
+      wrapper.update();
+    });
 
     treeNode = wrapper.find('.ant-tree-list-holder-inner');
     expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
@@ -100,21 +100,42 @@ describe('location-management/src/components/LocationTree', () => {
       </Provider>
     );
 
-    await act(async () => {
-      await flushPromises();
-    });
-
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
 
     const expandButton = treeNode.find('span.ant-tree-switcher').first();
     expandButton.simulate('click');
     expandButton.simulate('click');
 
+    await act(async () => {
+      wrapper.update();
+    });
+
     treeNode = wrapper.find('.ant-tree-list-holder-inner');
     expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
   });
 
   it('expand tree child using title click', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={treedata} OnItemClick={jest.fn()} />
+      </Provider>
+    );
+
+    let treeNode = wrapper.find('.ant-tree-list-holder-inner');
+
+    const treeTitle = treeNode.find('span.ant-tree-title').first();
+    treeTitle.simulate('click');
+    treeTitle.simulate('click');
+
+    await act(async () => {
+      wrapper.update();
+    });
+
+    treeNode = wrapper.find('.ant-tree-list-holder-inner');
+    expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
+  });
+
+  it('should highlight selected tree item', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Tree data={treedata} OnItemClick={jest.fn()} />
@@ -129,9 +150,8 @@ describe('location-management/src/components/LocationTree', () => {
 
     const treeTitle = treeNode.find('span.ant-tree-title').first();
     treeTitle.simulate('click');
-    treeTitle.simulate('click');
 
-    treeNode = wrapper.find('.ant-tree-list-holder-inner');
-    expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
+    treeNode = wrapper.find('.ant-tree-node-selected');
+    expect(treeNode).toHaveLength(1);
   });
 });

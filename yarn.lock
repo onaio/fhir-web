@@ -19,6 +19,18 @@
   resolved "https://registry.yarnpkg.com/@ant-design/icons-svg/-/icons-svg-4.1.0.tgz#480b025f4b20ef7fe8f47d4a4846e4fee84ea06c"
   integrity sha512-Fi03PfuUqRs76aI3UWYpP864lkrfPo0hluwGqh7NJdLhvH4iRDc3jbJqZIvRDLHKbXrvAfPPV3+zjUccfFvWOQ==
 
+"@ant-design/icons@^4.0.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-4.4.0.tgz#d4e4ba5910454e1d3f67a802d2aad9ee75a51dea"
+  integrity sha512-+X44IouK56JbP3r7zM+Zoykv5wQlXBlxY0NTaFXGpiyYSS/Bh6HIo9aTF62QkSuDTqA3UpeNVTRFioKKRmkWDQ==
+  dependencies:
+    "@ant-design/colors" "^5.0.0"
+    "@ant-design/icons-svg" "^4.0.0"
+    "@babel/runtime" "^7.11.2"
+    classnames "^2.2.6"
+    insert-css "^2.0.0"
+    rc-util "^5.0.1"
+
 "@ant-design/icons@^4.2.2", "@ant-design/icons@^4.3.0":
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-4.3.0.tgz#420e0cd527486c0fe57f81310d681950fc4cfacf"
@@ -2658,7 +2670,7 @@
   resolved "https://registry.yarnpkg.com/@onaio/element-map/-/element-map-0.0.5.tgz#6c8b55314d41fb76c1ea7538d4ee217a121936cb"
   integrity sha512-PxhKq2uR9j8fZkvIqiUMp8CvZTX358d3sWuLj5a7LRpTK/Y+ZS1L9XZp2Xb9pplHCSferZxzwjm/YfKqVr56lA==
 
-"@onaio/gatekeeper@^0.1.1":
+"@onaio/gatekeeper@^0.1.0", "@onaio/gatekeeper@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.1.1.tgz#b843ec6766f88ef295addbfa3f81f6b0d9a8b2a6"
   integrity sha512-5H06OjEzSPiCBTrU5Ib2pYXSYOR9Ub7lsRtss93J9nFS2XSXtxcuprfH6OCy2tY8X5LxaLAdNNjEXc0Tx59dZg==
@@ -2702,10 +2714,74 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
+"@opensrp/ant-icons@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@opensrp/ant-icons/-/ant-icons-0.0.1.tgz#bfe02c5356157906a1b458525b1337f66a7ab8c1"
+  integrity sha512-CGYN1RMuyRNqGzrB6DircA8M7vk0PmMtIayNB0G+Ybxrj9FsLnFw7wTyWjfH/VvP1ZbSgs+CzU4t5Iguz+KomQ==
+  dependencies:
+    "@ant-design/icons" "^4.0.0"
+    react "^16.14.0"
+
+"@opensrp/form-config@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@opensrp/form-config/-/form-config-0.0.11.tgz#22c50055b984d85cd2ab8f6e0d80411cc6886a69"
+  integrity sha512-Tk0NkKXZg7uWWliyUqHPFOngf6CXdaEmcxFGHxlyokxf5r/Z7JrYWiic7V1flWb8MqgNc6Naggylv1+RCNaF9g==
+  dependencies:
+    "@ant-design/icons" "^4.3.0"
+    "@fortawesome/fontawesome-svg-core" "^1.2.20"
+    "@fortawesome/free-brands-svg-icons" "^5.10.0"
+    "@fortawesome/free-regular-svg-icons" "^5.10.0"
+    "@fortawesome/free-solid-svg-icons" "^5.10.0"
+    "@fortawesome/react-fontawesome" "^0.1.4"
+    "@onaio/drill-down-table" "^1.0.2"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.4"
+    "@opensrp/pkg-config" "^0.0.4"
+    "@opensrp/reducer-factory" "^0.0.1"
+    "@opensrp/server-service" "^0.0.16"
+    "@opensrp/store" "^0.0.9"
+    antd "^4.6.3"
+    date-fns "^2.17.0"
+    formik "^2.1.4"
+    i18next "^19.8.4"
+    lodash "^4.17.15"
+    react-toastify "^6.0.5"
+    reactstrap "^8.0.1"
+    yup "^0.29.1"
+
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
   integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
+
+"@opensrp/notifications@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.2.tgz#c2821b5934b4f0f944ca3ad65a38274ec448cb13"
+  integrity sha512-hQIQCqVMv0c26tY42YlSFbdyIdhcG710Wn5gTRwTvF6wiiWHpDnD+vuwhF+2LGSJu3c0rRRW0VFoJ9jPNBKUZg==
+
+"@opensrp/pkg-config@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@opensrp/pkg-config/-/pkg-config-0.0.4.tgz#4e5e47cf8c35a56981c9e91c3655ebce612565ae"
+  integrity sha512-+binqpj7l/zmUFJ6O+5YugmE9xlppOXy4trW9KjI/me/qO5ew1v8EXTdtLjGhkbnKkD5cFsn93F+7qtp9idPgQ==
+  dependencies:
+    "@reduxjs/toolkit" "^1.5.0"
+    i18next "^19.8.4"
+    react-i18next "^11.8.3"
+
+"@opensrp/product-catalogue@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@opensrp/product-catalogue/-/product-catalogue-0.0.2.tgz#9bec221c711bff3226e4bbebb79b39f3fddc90bc"
+  integrity sha512-FtGs31pRLXKEyV7QlmEz3QzP+3iLutqVMF8eEuDMlX9uPM/Ste6KyzwV6fPriKqb3jFr/0Zby8ZgKUqJiW/B5Q==
+  dependencies:
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@opensrp/notifications" "^0.0.1"
+    "@opensrp/react-utils" "^0.0.1"
+    "@opensrp/reducer-factory" "^0.0.7"
+    "@opensrp/server-service" "^0.0.11"
+    "@opensrp/store" "^0.0.6"
+    formik-antd "2.0.1"
+    yup "^0.29.3"
 
 "@opensrp/react-utils@^0.0.1":
   version "0.0.1"
@@ -2720,6 +2796,16 @@
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.1.tgz#4a544e6ec29d97a7d8ba2d07f3a63a21ec49e723"
   integrity sha512-aCOpVbl+giAvydaAnuy2zGca2fqrwuJqsfk3S9+nLI4DNT0IZWbwk1uFY2UgKvDNkSM2M1G+hSqUShBIkm80SA==
   dependencies:
+    lodash "^4.17.15"
+    redux "^4.0.5"
+    seamless-immutable "^7.1.4"
+
+"@opensrp/reducer-factory@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.7.tgz#f4509f6bff3e9481730110d3fea96bf14cf53749"
+  integrity sha512-s4RsHA0r1SrJK4o4WCHCUrWRWA3oe/YnLPFT/p+mThdougFc3P+e42rPQSuLMNJdH7cze8ZlutT3t7R5pvBiIg==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
     lodash "^4.17.15"
     redux "^4.0.5"
     seamless-immutable "^7.1.4"
@@ -2741,10 +2827,39 @@
   dependencies:
     "@opensrp/server-service" "^0.0.4"
 
+"@opensrp/server-service@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.11.tgz#dd7ce78fa755361a587e0dc1f62b6b03ccda18cb"
+  integrity sha512-WymZntvFba3/0FKM6f2L+YT7BF+t/HFlr6A16UIBFz83+nYTIoI93MS/ocO/7MDTL9F7yzTBpjA0D1CkogFnfg==
+
+"@opensrp/server-service@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.16.tgz#0e045993370b3dfcd3219670be72f6af12addd04"
+  integrity sha512-nLgDHnu3zCBi+tKHc+5G4ESSrZinzzlpV1N/pbquGTyKZu072it4mwXX86gH32+TBOTuYw2m9hCfd8Ytau0/ng==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
+
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
+
+"@opensrp/store@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.6.tgz#074d18e98414190a2cd79aa53399dcf7e80b4a1e"
+  integrity sha512-qwfl99FxfRX9Iol0nG4YgCiiD9hdhNu7rqANb+vahAY9hGgFK1L3NnG92Zw8WbEd7JHT50b/1bGYLOAZYjipiA==
+  dependencies:
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.0"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/session-reducer" "^0.0.11"
+    "@onaio/utils" "^0.0.1"
+    connected-react-router "^6.8.0"
+    fast_array_intersect "^1.1.0"
+    lodash "^4.17.20"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
+    seamless-immutable "^7.1.4"
 
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
@@ -3700,9 +3815,9 @@ acorn-walk@^7.1.1:
   integrity sha512-OPdCF6GsMIP+Az+aWfAAOEt2/+iVDKE7oy6lJ098aoe59oAmK76qV6Gw60SbZ8jHuG2wH058GF4pLFbYamYrVA==
 
 acorn-walk@^8.0.0:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.0.1.tgz#d265d35db6940a656c715806a448456ee4fa3b7f"
-  integrity sha512-zn/7dYtoTVkG4EoMU55QlQU4F+m+T7Kren6Vj3C2DapWPnakG/DL9Ns5aPAPW5Ixd3uxXrV/BoMKKVFIazPcdg==
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.0.2.tgz#d4632bfc63fd93d0f15fd05ea0e984ffd3f5a8c3"
+  integrity sha512-+bpA9MJsHdZ4bgfDcpk0ozQyhhVct7rzOmO0s1IIr0AGGgKBljss8n2zp11rRP2wid5VGeh04CgeKzgat5/25A==
 
 acorn@^6.0.1, acorn@^6.0.4, acorn@^6.2.1:
   version "6.4.2"
@@ -3715,9 +3830,9 @@ acorn@^7.1.0, acorn@^7.1.1:
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
 acorn@^8.0.4:
-  version "8.0.4"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.0.4.tgz#7a3ae4191466a6984eee0fe3407a4f3aa9db8354"
-  integrity sha512-XNP0PqF1XD19ZlLKvB7cMmnZswW4C/03pRHgirB30uSJTaS3A3V1/P4sS3HPvFmjoriPCJQs+JDSbm4bL1TxGQ==
+  version "8.0.5"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.0.5.tgz#a3bfb872a74a6a7f661bc81b9849d9cac12601b7"
+  integrity sha512-v+DieK/HJkJOpFBETDJioequtc3PfxsWMaxIdIwujtF7FEV/MAyDQLlm6/zPvr7Mix07mLh6ccVwIsloceodlg==
 
 add-dom-event-listener@^1.1.0:
   version "1.1.0"
@@ -3725,6 +3840,11 @@ add-dom-event-listener@^1.1.0:
   integrity sha512-WCxx1ixHT0GQU9hb0KI/mhgRQhnU+U3GvwY6ZvVjYq8rsihIGoaIOUbY0yMPBxLH5MDtr0kz3fisWGNcbWW7Jw==
   dependencies:
     object-assign "4.x"
+
+add@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
+  integrity sha1-JI8Kn25aUo7yKV2+7DBTITCuIjU=
 
 address@1.1.2, address@^1.0.1:
   version "1.1.2"
@@ -4300,6 +4420,13 @@ aws4@^1.8.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
+
+axios@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
+  dependencies:
+    follow-redirects "^1.10.0"
 
 axobject-query@^2.0.2:
   version "2.2.0"
@@ -6341,6 +6468,11 @@ date-fns@^2.15.0:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
   integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
 
+date-fns@^2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.17.0.tgz#afa55daea539239db0a64e236ce716ef3d681ba1"
+  integrity sha512-ZEhqxUtEZeGgg9eHNSOAJ8O9xqSgiJdrL0lzSSfMF54x6KXWJiOH/xntSJ9YomJPrYH/p08t6gWjGWq1SDJlSA==
+
 dateformat@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
@@ -8001,6 +8133,11 @@ follow-redirects@^1.0.0:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
 
+follow-redirects@^1.10.0:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.2.tgz#dd73c8effc12728ba5cf4259d760ea5fb83e3147"
+  integrity sha512-6mPTgLxYm3r6Bkkg0vNM0HTjfGrOEtsfbhagQvbxDEsEkpNhw582upBaoRZylzen6krEmxXJgt9Ju6HiI4O7BA==
+
 for-in@^0.1.3:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-0.1.8.tgz#d8773908e31256109952b1fdb9b3fa867d2775e1"
@@ -9039,7 +9176,14 @@ i18next-scanner@^3.0.0:
     vinyl "^2.2.0"
     vinyl-fs "^3.0.1"
 
-i18next@*, i18next@^19.0.1, i18next@^19.8.4:
+i18next@*:
+  version "19.8.7"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.8.7.tgz#ef023e353974d1b1453e8b6331bd9fb7cba427df"
+  integrity sha512-ezo1gb7QO4OQ5gQCdZMUxopwQSoqpRp6whdEjm1grxMSmkGj1NJ+kYS0UQd4NnpPIVqsgqTQ2L2eqSQYQ+U3Fw==
+  dependencies:
+    "@babel/runtime" "^7.12.0"
+
+i18next@^19.0.1, i18next@^19.8.4:
   version "19.8.4"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.8.4.tgz#447718f2a26319b8debdbcc6fbc1a9761be7316b"
   integrity sha512-FfVPNWv+felJObeZ6DSXZkj9QM1Ivvh7NcFCgA8XPtJWHz0iXVa9BUy+QY8EPrCLE+vWgDfV/sc96BgXVo6HAA==
@@ -11808,6 +11952,16 @@ no-case@^3.0.3:
     lower-case "^2.0.1"
     tslib "^1.10.0"
 
+nock@^13.0.6:
+  version "13.0.6"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-13.0.6.tgz#9f90573ea6e84883b94eeac374d1c73460afed56"
+  integrity sha512-W81UZ1Tv21SWDZcA8Lu9LXYVl2gO9ADY5GadC6gFV9690h4TXz0oCkEoMckN/sPMHkDA79Ka9dXga9Mt1+j+Sg==
+  dependencies:
+    debug "^4.1.0"
+    json-stringify-safe "^5.0.1"
+    lodash.set "^4.3.2"
+    propagate "^2.0.0"
+
 node-fetch-npm@^2.0.2:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/node-fetch-npm/-/node-fetch-npm-2.0.4.tgz#6507d0e17a9ec0be3bec516958a497cec54bf5a4"
@@ -13685,6 +13839,11 @@ prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.1, prop-types@^15.6.2,
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
+propagate@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/propagate/-/propagate-2.0.1.tgz#40cdedab18085c792334e64f0ac17256d38f9a45"
+  integrity sha512-vGrhOavPSTz4QVNuBNdcNXePNdNMaO1xj9yBeH1ScQPjk/rhg9sSlCXPhMkFuaNNW/syTvYqsnbIJxMBfRbbag==
+
 property-expr@^2.0.2:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/property-expr/-/property-expr-2.0.4.tgz#37b925478e58965031bb612ec5b3260f8241e910"
@@ -14606,7 +14765,7 @@ react-transition-group@^4.4.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@^16.13.1:
+react@^16.13.1, react@^16.14.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
@@ -17990,6 +18149,11 @@ yargs@^15.3.1:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
+
+yarn@^1.22.10:
+  version "1.22.10"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.22.10.tgz#c99daa06257c80f8fa2c3f1490724e394c26b18c"
+  integrity sha512-IanQGI9RRPAN87VGTF7zs2uxkSyQSrSPsju0COgbsKQOOXr5LtcVPeyXWgwVa0ywG3d8dg6kSYKGBuYK021qeA==
 
 yup@^0.29.1, yup@^0.29.3:
   version "0.29.3"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { getFetchOptions, OpenSRPService } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Card, Typography, Spin, Table, Space, Button, Divider, Input } from 'antd';
@@ -13,14 +13,12 @@ import filesReducer, {
 } from '../../../ducks/manifestFiles';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendErrorNotification } from '@opensrp/notifications';
-import {
-  ERROR_OCCURRED,
-  OPENSRP_FORM_METADATA_ENDPOINT,
-  ROUTE_PARAM_FORM_VERSION,
-} from '../../../constants';
+import { OPENSRP_FORM_METADATA_ENDPOINT, ROUTE_PARAM_FORM_VERSION } from '../../../constants';
+import { JSON_VALIDATORS, RELEASES, UPLOAD_NEW_FILE } from '../../../lang';
 import { getTableColumns } from './utils';
 import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
+import { fetchManifests } from '../../../helpers/utils';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -78,40 +76,33 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   const formVersion = match.params[ROUTE_PARAM_FORM_VERSION];
   const dispatch = useDispatch();
   const history = useHistory();
-  const title = formVersion ? `Releases: ${formVersion}` : 'JSON Validators';
+  const title = formVersion ? `${RELEASES}: ${formVersion}` : JSON_VALIDATORS;
 
-  useEffect(() => {
-    /** get manifest files */
-    setLoading(true);
-    let params = null;
-    // if form version is available -  means request is to get manifest files else get json validator files
-    /* eslint-disable-next-line @typescript-eslint/camelcase */
-    params = formVersion ? { identifier: formVersion } : { is_json_validator: true };
-    dispatch(removeFiles());
-    const clientService = new OpenSRPService(
-      accessToken,
+  useEffect(
+    () => {
+      fetchManifests(
+        accessToken,
+        opensrpBaseURL,
+        fetchFiles,
+        removeFiles,
+        setLoading,
+        sendErrorNotification,
+        formVersion,
+        OPENSRP_FORM_METADATA_ENDPOINT,
+        dispatch,
+        customFetchOptions
+      );
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
       opensrpBaseURL,
-      OPENSRP_FORM_METADATA_ENDPOINT,
-      customFetchOptions
-    );
-    clientService
-      .list(params)
-      .then((res: ManifestFilesTypes[]) => {
-        dispatch(fetchFiles(res));
-      })
-      .catch((_: Error) => {
-        sendErrorNotification(ERROR_OCCURRED);
-      })
-      .finally(() => setLoading(false));
-  }, [
-    opensrpBaseURL,
-    accessToken,
-    customFetchOptions,
-    fetchFiles,
-    removeFiles,
-    formVersion,
-    dispatch,
-  ]);
+      accessToken,
+      customFetchOptions,
+      fetchFiles,
+      removeFiles,
+      formVersion,
+      dispatch,
+    ]
+  );
 
   if (loading) {
     return <Spin />;
@@ -149,7 +140,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             <>
               <Button type="primary" onClick={() => history.push(uploadFileURL)}>
                 <UploadOutlined />
-                Upload New File
+                {UPLOAD_NEW_FILE}
               </Button>
               <Divider type="vertical" />
             </>

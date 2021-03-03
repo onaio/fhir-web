@@ -1,20 +1,16 @@
-import LocationUnitAddEdit from './components/LocationUnitAddEdit';
-import LocationUnitView from './components/LocationUnitView';
-import LocationUnitGroupView from './components/LocationUnitGroupView';
+import LocationUnitList from './components/LocationUnitList';
+import LocationUnitGroupList from './components/LocationUnitGroupList';
 import LocationUnitGroupAddEdit from './components/LocationUnitGroupAddEdit';
 import Tree from './components/LocationTree';
+import { FormInstances } from './components/LocationForm/utils';
 
 export * as locationHierachyDucks from './ducks/location-hierarchy';
 export * from './ducks/types';
+export { LocationUnitList, LocationUnitGroupList, LocationUnitGroupAddEdit, Tree, FormInstances };
 
-export {
-  LocationUnitView,
-  LocationUnitAddEdit,
-  LocationUnitGroupView,
-  LocationUnitGroupAddEdit,
-  Tree,
-};
-
+export * from './components/EditLocationUnit';
+export * from './components/NewLocationUnit';
+export * from './components/LocationForm';
 export * from './ducks/locationHierarchy';
 export * from './ducks/locationHierarchy/utils';
 export * from './helpers/dataLoaders';

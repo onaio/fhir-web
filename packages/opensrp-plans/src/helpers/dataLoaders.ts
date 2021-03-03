@@ -13,7 +13,7 @@ import {
   OPENSRP_POST_ASSIGNMENTS_ENDPOINT,
   OPENSRP_TASK_SEARCH,
 } from '../constants';
-import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService as GenericOpenSRPService, URLParams } from '@opensrp/server-service';
 import { fetchPlanDefinitions } from '../ducks/planDefinitions';
 import { fetchAssignments, Assignment, RawAssignment } from '../ducks/assignments';
 import { PlanDefinition } from '@opensrp/plan-form-core';
@@ -416,23 +416,30 @@ export const loadJurisdictions = (
     });
 };
 
+export interface TaskParams extends URLParams {
+  status: string;
+}
+
 /**
- * @param  baseURL - base url of the api
+ * @param baseURL - base url of the api
  * @param planId - fetch tasks data for this plan
  * @param code - activity code
  * @param onlyCount - whether to get the count only
+ * @param otherParams - other adhoc params to add to request
  * @returns a response object
  */
 export async function loadTasksIndicators(
   baseURL: string,
   planId: string,
   code: string,
-  onlyCount: boolean
+  onlyCount: boolean,
+  otherParams: TaskParams
 ) {
   const params = {
     planIdentifier: planId,
     code,
     returnTaskCountOnly: onlyCount,
+    ...otherParams,
   };
   const serve = new OpenSRPService(OPENSRP_TASK_SEARCH, baseURL);
   return serve

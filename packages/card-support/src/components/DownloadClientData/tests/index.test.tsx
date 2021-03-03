@@ -15,7 +15,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import Papaparse from 'papaparse';
 import * as globalUtils from '../../../helpers/utils';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../constants';
+import { ERROR_OCCURRED } from '../../../lang';
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();
@@ -167,28 +167,29 @@ describe('components/DownloadClientData', () => {
     });
     wrapper.update();
 
-    expect(fetch.mock.calls[0]).toEqual([
-      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/user-assignment`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toEqual([
+      [
+        `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/user-assignment`,
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[1]).toEqual([
-      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/${fixtures.userAssignment.jurisdictions[0]}?is_jurisdiction=true`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
+      ],
+      [
+        `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/${fixtures.userAssignment.jurisdictions[0]}?is_jurisdiction=true`,
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
-        method: 'GET',
-      },
+      ],
     ]);
     const content = wrapper.find('div.layout-content');
     expect(content.find('Title').props()).toMatchSnapshot('title');

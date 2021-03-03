@@ -1,0 +1,23 @@
+{
+  "An error occurred": "An error occurred",
+  "Login": "Login",
+  "Manage account": "Manage account",
+  "Please log in with one of the following providers": "Please log in with one of the following providers",
+  "User Management": "User Management",
+  "Teams": "Teams",
+  "Location unit": "Location unit",
+  "Location unit group": "Location unit group",
+  "Manifest Releases": "Manifest Releases",
+  "Draft Files": "Draft Files",
+  "JSON Validators": "JSON Validators",
+  "Form Configuration": "Form Configuration",
+  "Plans": "Plans",
+  "Active": "Active",
+  "Draft": "Draft",
+  "Complete": "Complete",
+  "Retired": "Retired",
+  "Locations": "Locations",
+  "Users": "Users",
+  "Admin": "Admin",
+  "Welcome to OpenSRP": "Welcome to OpenSRP"
+}

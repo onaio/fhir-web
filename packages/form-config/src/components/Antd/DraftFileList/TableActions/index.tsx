@@ -3,7 +3,8 @@ import { Button } from 'antd';
 import { ManifestFilesTypes } from '../../../../ducks/manifestFiles';
 import { getFetchOptions } from '@opensrp/server-service';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ERROR_OCCURRED, OPENSRP_FORMS_ENDPOINT } from '../../../../constants';
+import { OPENSRP_FORMS_ENDPOINT } from '../../../../constants';
+import { ERROR_OCCURRED, DOWNLOAD } from '../../../../lang';
 import { downloadManifestFile } from '../../../../helpers/utils';
 
 /** interface for component props */
@@ -44,7 +45,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
           onDownloadClick(file, accessToken, opensrpBaseURL, isJsonValidator, customFetchOptions)
         }
       >
-        Download
+        {DOWNLOAD}
       </Button>
     </>
   );
