@@ -38,7 +38,10 @@ import {
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
-import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
+import {
+  generateJurisdictionTree,
+  sortBaseParsedHierarchy,
+} from '../../ducks/locationHierarchy/utils';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -164,9 +167,13 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     if (treeData.length) {
       let data: TableData[] = [];
       // if have selected some in tree and that selected have some child then only show data from selected node in table
-      if (currentClicked && currentClicked.children)
-        data = parseTableData([currentClicked, ...currentClicked.children]);
-      else if (!currentClicked) data = parseTableData(treeData);
+      if (currentClicked && currentClicked.children) {
+        const sorteddata = sortBaseParsedHierarchy(currentClicked.children);
+        data = parseTableData([currentClicked, ...sorteddata]);
+      } else if (!currentClicked) {
+        const sorteddata = sortBaseParsedHierarchy(treeData);
+        data = parseTableData(sorteddata);
+      }
       setTableData(data);
     }
   }, [treeData, currentClicked]);

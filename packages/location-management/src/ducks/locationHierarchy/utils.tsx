@@ -8,6 +8,7 @@ import {
 import { cloneDeep } from 'lodash';
 import TreeModel from 'tree-model';
 import cycle from 'cycle';
+import { quickSort } from '../../utils';
 
 /** Parse the raw child hierarchy node map
  *
@@ -122,4 +123,16 @@ export function getHierarchyNodeFromArray(
   });
 
   return result.find((e) => e !== undefined);
+}
+
+/**
+ * Sort the Base ParsedHierarchyNode by name
+ *
+ * @param {Array<ParsedHierarchyNode>} hierarchy Array of ParsedHierarchyNode
+ * @returns {Array<ParsedHierarchyNode>} returns Sorted ParsedHierarchyNode
+ */
+export function sortBaseParsedHierarchy(hierarchy: ParsedHierarchyNode[]) {
+  const names = hierarchy.map((e) => e.title);
+  quickSort(names);
+  return names.map((title) => hierarchy.find((e) => title === e.title) as ParsedHierarchyNode);
 }
