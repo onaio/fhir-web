@@ -60,7 +60,7 @@ const Table: React.FC<Props> = (props: Props) => {
         dataIndex="operation"
         sorter={(a: TableData, b: TableData) => a.name.localeCompare(b.name)}
         render={(_: unknown, record: TableData) => (
-          <span className="d-flex justify-content-end align-items-center">
+          <span className="d-flex justify-content-end align-items-center Actions">
             <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
               <Button type="link" className="m-0 p-1">
                 {EDIT}

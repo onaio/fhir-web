@@ -10,7 +10,7 @@ import {
   getLocationsByNameAndId,
 } from '..';
 import { parsedHierarchy, rawHierarchy } from './hierarchyFixtures';
-import { serializeTree, sortBaseParsedHierarchyNode } from '../utils';
+import { serializeTree, sortBaseParsedHierarchy } from '../utils';
 
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 const treesSelector = getTreesByIds();
@@ -127,8 +127,8 @@ describe('src/ducks/locationHierarchies', () => {
     expect(node2[0].model.id).toEqual('e66a6f38-93d5-42c2-ba1d-57b6d529baa6');
   });
 
-  it('Sort ParsedHierarchy Data', async () => {
-    const result = sortBaseParsedHierarchyNode(parsedHierarchy);
+  it('Sort Base ParsedHierarchy', async () => {
+    const result = sortBaseParsedHierarchy(parsedHierarchy);
     expect(result).toMatchObject([parsedHierarchy[1], parsedHierarchy[2], parsedHierarchy[0]]);
   });
 });

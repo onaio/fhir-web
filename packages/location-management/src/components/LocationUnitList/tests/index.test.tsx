@@ -256,11 +256,12 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
+    // using index 0 cuz after sorting by name that is the last one
     const tablelastrow = {
-      geographicLevel: baseLocationUnits[2].properties.geographicLevel,
-      id: baseLocationUnits[2].id,
+      geographicLevel: baseLocationUnits[0].properties.geographicLevel,
+      id: baseLocationUnits[0].id,
       key: '2',
-      name: baseLocationUnits[2].properties.name,
+      name: baseLocationUnits[0].properties.name,
     };
 
     expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow);
@@ -294,8 +295,8 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    wrapper.find('.more-options').first().simulate('click');
-    wrapper.find('.viewdetails').first().simulate('click');
+    const firstAction = wrapper.find('.Actions').first();
+    firstAction.find('button').last().simulate('click');
 
     // test out loading animation works correctly
     expect(wrapper.find('.ant-spin')).toHaveLength(1);
@@ -328,8 +329,8 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    wrapper.find('.more-options').first().simulate('click');
-    wrapper.find('.viewdetails').first().simulate('click');
+    const firstAction = wrapper.find('.Actions').first();
+    firstAction.find('button').last().simulate('click');
 
     // test out loading animation works correctly
     expect(wrapper.find('.ant-spin')).toHaveLength(1);

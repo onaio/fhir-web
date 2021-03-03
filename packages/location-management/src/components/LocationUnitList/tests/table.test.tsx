@@ -46,10 +46,10 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    expect(wrapper).toHaveLength(1);
+    expect(wrapper.find('table')).toHaveLength(1);
 
-    wrapper.find('.more-options').first().simulate('click');
-    wrapper.find('.viewdetails').first().simulate('click');
+    const firstAction = wrapper.find('.Actions').first();
+    firstAction.find('button').last().simulate('click');
 
     expect(onViewDetails).toBeCalled();
   });
@@ -61,8 +61,8 @@ describe('location-management/src/components/LocationUnitList', () => {
       </Router>
     );
 
-    wrapper.find('.more-options').first().simulate('click');
-    wrapper.find('.viewdetails').first().simulate('click');
+    const firstAction = wrapper.find('.Actions').first();
+    firstAction.find('button').last().simulate('click');
 
     expect(wrapper).toHaveLength(1);
   });
@@ -73,8 +73,9 @@ describe('location-management/src/components/LocationUnitList', () => {
         <Table data={tableData} />
       </Router>
     );
-    const firstAction = wrapper.find('.d-flex.justify-content-end.align-items-center').first();
-    firstAction.find('button').simulate('click');
+
+    const firstAction = wrapper.find('.Actions').first();
+    firstAction.find('button').first().simulate('click');
   });
 
   it('Test Name Sorting functionality', () => {

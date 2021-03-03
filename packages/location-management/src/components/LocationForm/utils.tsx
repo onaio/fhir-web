@@ -95,16 +95,8 @@ export const getLocationFormFields = (
   instance: FormInstances = FormInstances.CORE,
   isJurisdiction = true
 ): LocationFormFields => {
-  const commonValues = {
-    instance,
-    isJurisdiction: location?.isJurisdiction ?? isJurisdiction,
-  };
-  if (!location) {
-    return {
-      ...defaultFormField,
-      ...commonValues,
-    };
-  }
+  const commonValues = { instance, isJurisdiction: location?.isJurisdiction ?? isJurisdiction };
+  if (!location) return { ...defaultFormField, ...commonValues };
 
   const {
     name,
@@ -121,13 +113,12 @@ export const getLocationFormFields = (
   const geoJson = JSON.stringify(geoObject);
   const { longitude, latitude } = getPointCoordinates(geoJson);
 
-  const formFields = {
+  const formFields: LocationFormFields = {
     ...defaultFormField,
     ...commonValues,
     id: location.id,
     locationTags: location.locationTags?.map((loc) => loc.id),
     geometry: geoJson,
-    type: location.type,
     name,
     username,
     status,
