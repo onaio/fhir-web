@@ -85,7 +85,7 @@ const PlanInfo = (props: PlanInfoProps) => {
               </div>
             </div>
           </Col>
-          <Col md={12}>
+          <Col md={12} className="d-flex">
             <div className="plan-dates">
               <div className="plan-start-date">
                 <span className="start-date">{START_DATE}</span>

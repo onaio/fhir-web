@@ -73,6 +73,9 @@
 .plan-detail-view .date-divider {
   height: 40px;
 }
+.mission-header {
+  justify-content: flex-end;
+}
 .plan-description {
   font-size: 14px;
 }
