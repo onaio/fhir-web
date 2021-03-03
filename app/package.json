@@ -27,7 +27,7 @@
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/plans": "^0.0.6",
     "@opensrp/product-catalogue": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.16",
