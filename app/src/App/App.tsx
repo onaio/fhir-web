@@ -156,6 +156,7 @@ import {
 } from '@opensrp/inventory';
 import '@opensrp/inventory/dist/index.css';
 import { APP_LOGIN_URL } from '../dispatchConfig';
+import { UNFORBIDDEN_PAGE_STATUS } from '../lang';
 
 const { Content } = Layout;
 
@@ -186,7 +187,7 @@ export const PrivateComponent = (props: ComponentProps) => {
   return activeRoles && roles && isAuthorized(roles, activeRoles) ? (
     <ConnectedPrivateRoute {...CPRProps} />
   ) : (
-    <UnauthorizedPage />
+    <UnauthorizedPage title={UNFORBIDDEN_PAGE_STATUS} />
   );
 };
 
