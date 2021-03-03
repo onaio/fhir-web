@@ -38,6 +38,7 @@ export const tablePaginationOptions = {
   defaultPageSize: TABLE_PAGE_SIZE,
   pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
 };
+export const GEOJSON_TYPE_STRING = 'Feature';
 
 //endpoints
 export const GET_INVENTORY_BY_SERVICE_POINT = 'stockresource/servicePointId/';
