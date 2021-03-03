@@ -260,7 +260,7 @@ describe('App - authenticated', () => {
     expect(wrapper.exists(MockComponent)).toBeFalsy();
     // test if UnauthorizedPage is rendered
     expect(wrapper.find('UnauthorizedPage').text()).toMatchInlineSnapshot(
-      `"ErrorSorry, you are not authorized to access this pageGo backGo home"`
+      `"403Sorry, you are not authorized to access this pageGo backGo home"`
     );
     expect(toJson(wrapper.find('UnauthorizedPage'))).toBeTruthy();
     wrapper.unmount();
