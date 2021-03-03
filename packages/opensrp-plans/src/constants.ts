@@ -51,6 +51,7 @@ export const OPENSRP_ACTIVE = 'Active';
 export const OPENSRP_TASK_SEARCH = 'task/search';
 export const OPENSRP_TASK_EXPORT_DATA = 'event/export-data';
 export const OPENSRP_TASK_STATUS_COMPLETED = 'Completed';
+export const OPENSRP_BUSINESS_STATUS_HAS_PROBLEM = 'has_problem';
 
 // router routes
 export const URL_MISSIONS = '/missions';
