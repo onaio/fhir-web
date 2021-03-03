@@ -65,7 +65,7 @@ describe('mission data listing & download', () => {
     );
     expect(fetch.mock.calls).toEqual([
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=service_point_check&returnTaskCountOnly=true&businessStatus=Visited',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=service_point_check&returnTaskCountOnly=true&status=Completed',
         {
           headers: {
             accept: 'application/json',
@@ -76,7 +76,7 @@ describe('mission data listing & download', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=product_check&returnTaskCountOnly=true&businessStatus=Visited',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=product_check&returnTaskCountOnly=true&status=Completed',
         {
           headers: {
             accept: 'application/json',
@@ -87,7 +87,7 @@ describe('mission data listing & download', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=fix_problem&returnTaskCountOnly=true&businessStatus=Visited',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=fix_problem&returnTaskCountOnly=true&status=Completed',
         {
           headers: {
             accept: 'application/json',
