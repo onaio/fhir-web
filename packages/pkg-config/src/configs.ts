@@ -12,6 +12,8 @@ export interface OpenSRPConfigs {
   languageCode?: LanguageCode;
   projectLanguageCode?: ProjectLanguageCode;
   appLoginURL?: string;
+  keycloakBaseURL?: string;
+  opensrpBaseURL?: string;
 }
 
 export interface LanguageResource {
