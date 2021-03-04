@@ -35,7 +35,7 @@
   "private": false,
   "dependencies": {
     "@opensrp/notifications": "^0.0.4",
-    "@opensrp/pkg-config": "^0.0.4",
+    "@opensrp/pkg-config": "^0.0.6",
     "@opensrp/react-utils": "^0.0.6",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",

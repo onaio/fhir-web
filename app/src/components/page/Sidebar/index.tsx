@@ -4,6 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
 import { IdcardOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
+import { isAuthorized } from '@opensrp/react-utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -30,6 +31,7 @@ import {
   ENABLE_CARD_SUPPORT,
   ENABLE_INVENTORY,
   MAIN_LOGO_SRC,
+  OPENSRP_ROLES,
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -83,6 +85,7 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
   const { extraData } = props;
   const { roles } = extraData;
+  const activeRoles = OPENSRP_ROLES;
   let location = useLocation();
   let loc = location.pathname.split('/');
   loc.shift();
@@ -103,143 +106,166 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         mode="inline"
         className="menu-dark"
       >
-        {ENABLE_PLANS && (
-          <Menu.SubMenu
-            key="missions"
-            icon={<MapMarkerOutline className="sidebar-icons" />}
-            title={MISSIONS}
-          >
-            <Menu.Item key="active">
-              <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
-                {ACTIVE}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="draft">
-              <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
-                {DRAFT}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="complete">
-              <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
-                {COMPLETE}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="trash">
-              <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
-                {TRASH}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-        {ENABLE_CARD_SUPPORT && (
-          <Menu.SubMenu
-            key="card-support"
-            title={CARD_SUPPORT}
-            icon={<IdcardOutlined className="sidebar-icons" />}
-          >
-            <Menu.Item key="card-support-client-data">
-              <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-                {DOWNLOAD_CLIENT_DATA}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-        {ENABLE_INVENTORY && (
-          <Menu.SubMenu
-            key="inventory"
-            icon={<ArchiveOutline className="sidebar-icons" />}
-            title={INVENTORY}
-          >
-            <Menu.Item key="list">
-              <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
-                {SERVICE_POINT_INVENTORY}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="bulk">
-              <Link to={INVENTORY_BULK_UPLOAD_URL} className="admin-link">
-                {ADD_INVENTORY_VIA_CSV}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
+        {ENABLE_PLANS &&
+          roles &&
+          activeRoles.PLANS &&
+          isAuthorized(roles as string[], activeRoles.PLANS.split(',')) && (
+            <Menu.SubMenu
+              key="missions"
+              icon={<MapMarkerOutline className="sidebar-icons" />}
+              title={MISSIONS}
+            >
+              <Menu.Item key="active">
+                <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
+                  {ACTIVE}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="draft">
+                <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
+                  {DRAFT}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="complete">
+                <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
+                  {COMPLETE}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="trash">
+                <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
+                  {TRASH}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}
+        {ENABLE_CARD_SUPPORT &&
+          roles &&
+          activeRoles.CARD_SUPPORT &&
+          isAuthorized(roles as string[], activeRoles.CARD_SUPPORT.split(',')) && (
+            <Menu.SubMenu
+              key="card-support"
+              title={CARD_SUPPORT}
+              icon={<IdcardOutlined className="sidebar-icons" />}
+            >
+              <Menu.Item key="card-support-client-data">
+                <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
+                  {DOWNLOAD_CLIENT_DATA}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}
+        {ENABLE_INVENTORY &&
+          roles &&
+          activeRoles.INVENTORY &&
+          isAuthorized(roles as string[], activeRoles.INVENTORY.split(',')) && (
+            <Menu.SubMenu
+              key="inventory"
+              icon={<ArchiveOutline className="sidebar-icons" />}
+              title={INVENTORY}
+            >
+              <Menu.Item key="list">
+                <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
+                  {SERVICE_POINT_INVENTORY}
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="bulk">
+                <Link to={INVENTORY_BULK_UPLOAD_URL} className="admin-link">
+                  {ADD_INVENTORY_VIA_CSV}
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}
         <Menu.SubMenu
           key="admin"
           icon={<SettingOutlined className="sidebar-icons" />}
           title={ADMIN}
         >
-          {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.SubMenu key="users" title={USERS}>
-              <Menu.Item key={'list'}>
-                <Link to={URL_USER} className="admin-link">
-                  {USER_MANAGEMENT}
+          {roles &&
+            activeRoles.USERS &&
+            isAuthorized(roles as string[], activeRoles.USERS.split(',')) && (
+              <Menu.SubMenu key="users" title={USERS}>
+                <Menu.Item key={'list'}>
+                  <Link to={URL_USER} className="admin-link">
+                    {USER_MANAGEMENT}
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key={'groups'}>
+                  <Link to={URL_USER_GROUPS} className="admin-link">
+                    {USER_GROUPS}
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key={'roles'}>
+                  <Link to={URL_USER_ROLES} className="admin-link">
+                    {USER_ROLES}
+                  </Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
+          {ENABLE_TEAMS &&
+            roles &&
+            activeRoles.TEAMS &&
+            isAuthorized(roles as string[], activeRoles.TEAMS.split(',')) && (
+              <Menu.SubMenu key="teams" title={TEAMS}>
+                <Menu.Item key="teams-list">
+                  <Link to={URL_TEAMS} className="admin-link">
+                    {TEAMS}
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="team-assignment">
+                  <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
+                    {TEAM_ASSIGNMENT}
+                  </Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
+          {ENABLE_PRODUCT_CATALOGUE &&
+            roles &&
+            activeRoles.PRODUCT_CATALOGUE &&
+            isAuthorized(roles as string[], activeRoles.PRODUCT_CATALOGUE.split(',')) && (
+              <Menu.Item key="product-catalogue">
+                <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
+                  {PRODUCT_CATALOGUE}
                 </Link>
               </Menu.Item>
-              <Menu.Item key={'groups'}>
-                <Link to={URL_USER_GROUPS} className="admin-link">
-                  {USER_GROUPS}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key={'roles'}>
-                <Link to={URL_USER_ROLES} className="admin-link">
-                  {USER_ROLES}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-          {ENABLE_TEAMS && (
-            <Menu.SubMenu key="admin-teams" title="Teams">
-              <Menu.Item key="teams">
-                <Link to={URL_TEAMS} className="admin-link">
-                  {TEAMS}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="team-assignment">
-                <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
-                  {TEAM_ASSIGNMENT}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-          {ENABLE_PRODUCT_CATALOGUE && (
-            <Menu.Item key="product-catalogue">
-              <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
-                {PRODUCT_CATALOGUE}
-              </Link>
-            </Menu.Item>
-          )}
-          {ENABLE_LOCATIONS && (
-            <Menu.SubMenu key="location" title={LOCATIONS}>
-              <Menu.Item key="unit">
-                <Link to={URL_LOCATION_UNIT} className="admin-link">
-                  {LOCATION_UNIT}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="group">
-                <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
-                  {LOCATION_UNIT_GROUP}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-          {ENABLE_FORM_CONFIGURATION && (
-            <Menu.SubMenu key="form-config" title={FORM_CONFIGURATION}>
-              <Menu.Item key="releases">
-                <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
-                  {MANIFEST_RELEASES}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="drafts">
-                <Link to={URL_DRAFT_FILE_LIST} className="admin-link">
-                  {DRAFT_FILES}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="json-validators">
-                <Link to={URL_JSON_VALIDATOR_LIST} className="admin-link">
-                  {JSON_VALIDATORS}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
+            )}
+          {ENABLE_LOCATIONS &&
+            roles &&
+            activeRoles.LOCATIONS &&
+            isAuthorized(roles as string[], activeRoles.LOCATIONS.split(',')) && (
+              <Menu.SubMenu key="location" title={LOCATIONS}>
+                <Menu.Item key="unit">
+                  <Link to={URL_LOCATION_UNIT} className="admin-link">
+                    {LOCATION_UNIT}
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="group">
+                  <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
+                    {LOCATION_UNIT_GROUP}
+                  </Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
+          {ENABLE_FORM_CONFIGURATION &&
+            roles &&
+            activeRoles.FORM_CONFIGURATION &&
+            isAuthorized(roles as string[], activeRoles.FORM_CONFIGURATION.split(',')) && (
+              <Menu.SubMenu key="form-config" title={FORM_CONFIGURATION}>
+                <Menu.Item key="releases">
+                  <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
+                    {MANIFEST_RELEASES}
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="drafts">
+                  <Link to={URL_DRAFT_FILE_LIST} className="admin-link">
+                    {DRAFT_FILES}
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="json-validators">
+                  <Link to={URL_JSON_VALIDATOR_LIST} className="admin-link">
+                    {JSON_VALIDATORS}
+                  </Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
         </Menu.SubMenu>
       </Menu>
     </Layout.Sider>

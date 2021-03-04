@@ -2802,6 +2802,20 @@
     "@opensrp/notifications" "^0.0.2"
     antd "^4.6.3"
 
+"@opensrp/react-utils@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.6.tgz#f3580f1a13edd9227e69fda09d3b3cbf0d21cbba"
+  integrity sha512-laBk8WxROXnYnpu/bEXSYAv1haz7PaTYpLfQ1OY+fGnltdFz0s/VXDO6uTUWevzoTBgsGmleESq4ADLmg21QcA==
+  dependencies:
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.1"
+    "@onaio/session-reducer" "^0.0.12"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.4"
+    "@opensrp/pkg-config" "^0.0.4"
+    "@opensrp/server-service" "^0.0.16"
+    antd "^4.6.3"
+
 "@opensrp/reducer-factory@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.1.tgz#4a544e6ec29d97a7d8ba2d07f3a63a21ec49e723"
