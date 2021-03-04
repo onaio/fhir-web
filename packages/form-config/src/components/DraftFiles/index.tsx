@@ -15,15 +15,15 @@ import { Button, Row, Col } from 'reactstrap';
 import { ManifestFilesTypes } from '../../ducks/manifestFiles';
 import { Redirect } from 'react-router';
 import {
-  MAKE_RELEASE_LABEL,
-  FILE_NAME_LABEL,
-  FILE_VERSION_LABEL,
-  IDENTIFIER_LABEL,
-  MODULE_LABEL,
-  DOWNLOAD_LABEL,
-  FIND_DRAFT_RELEASES_LABEL,
-  CREATED_AT_LABEL,
-  UPLOAD_FILE_LABEL,
+  MAKE_RELEASE,
+  FILE_NAME,
+  FILE_VERSION,
+  IDENTIFIER,
+  MODULE,
+  DOWNLOAD,
+  FIND_DRAFT_FILES,
+  CREATED_AT,
+  UPLOAD_NEW_FILE,
 } from '../../lang';
 import { Cell } from 'react-table';
 import { formatDate, downloadManifestFile, makeRelease, fetchDrafts } from '../../helpers/utils';
@@ -260,21 +260,21 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
 /** declear default props */
 const defaultProps: DraftsDefaultProps = {
   clearDraftFiles: removeManifestDraftFiles,
-  createdAt: CREATED_AT_LABEL,
+  createdAt: CREATED_AT,
   data: [],
   debounceTime: 1000,
-  downloadLabel: DOWNLOAD_LABEL,
+  downloadLabel: DOWNLOAD,
   drillDownProps: {
     paginate: false,
   },
   fetchDraftFiles: fetchManifestDraftFiles,
-  fileNameLabel: FILE_NAME_LABEL,
-  fileVersionLabel: FILE_VERSION_LABEL,
-  identifierLabel: IDENTIFIER_LABEL,
-  makeReleaseLabel: MAKE_RELEASE_LABEL,
-  moduleLabel: MODULE_LABEL,
-  placeholder: FIND_DRAFT_RELEASES_LABEL,
-  uploadFileLabel: UPLOAD_FILE_LABEL,
+  fileNameLabel: FILE_NAME,
+  fileVersionLabel: FILE_VERSION,
+  identifierLabel: IDENTIFIER,
+  makeReleaseLabel: MAKE_RELEASE,
+  moduleLabel: MODULE,
+  placeholder: FIND_DRAFT_FILES,
+  uploadFileLabel: UPLOAD_NEW_FILE,
   accessToken: '',
 };
 

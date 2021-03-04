@@ -15,16 +15,16 @@ import filesReducer, {
 } from '../../ducks/manifestFiles';
 import { Row, Col } from 'reactstrap';
 import {
-  DOWNLOAD_LABEL,
-  EDIT_LABEL,
-  FILE_NAME_LABEL,
-  FILE_VERSION_LABEL,
-  IDENTIFIER_LABEL,
-  UPLOAD_EDIT_LABEL,
-  UPLOAD_FILE_LABEL,
-  MODULE_LABEL,
-  FIND_FILES_LABEL,
-  CREATED_AT_LABEL,
+  DOWNLOAD,
+  EDIT,
+  FILE_NAME,
+  FILE_VERSION,
+  IDENTIFIER,
+  UPLOAD_EDIT,
+  UPLOAD_NEW_FILE,
+  MODULE,
+  FIND_FILES,
+  CREATED_AT,
 } from '../../lang';
 import { Cell } from 'react-table';
 import { formatDate, downloadManifestFile, fetchManifests } from '../../helpers/utils';
@@ -265,23 +265,23 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
 
 /** declear default props */
 const defaultProps: FilesListDefaultProps = {
-  createdAt: CREATED_AT_LABEL,
+  createdAt: CREATED_AT,
   data: [],
   debounceTime: 1000,
-  downloadLabel: DOWNLOAD_LABEL,
+  downloadLabel: DOWNLOAD,
   drillDownProps: {
     paginate: false,
   },
-  editLabel: EDIT_LABEL,
+  editLabel: EDIT,
   fetchFiles: fetchManifestFiles,
-  fileNameLabel: FILE_NAME_LABEL,
-  fileVersionLabel: FILE_VERSION_LABEL,
-  identifierLabel: IDENTIFIER_LABEL,
-  moduleLabel: MODULE_LABEL,
-  placeholder: FIND_FILES_LABEL,
+  fileNameLabel: FILE_NAME,
+  fileVersionLabel: FILE_VERSION,
+  identifierLabel: IDENTIFIER,
+  moduleLabel: MODULE,
+  placeholder: FIND_FILES,
   removeFiles: removeManifestFiles,
-  uploadEditLabel: UPLOAD_EDIT_LABEL,
-  uploadFileLabel: UPLOAD_FILE_LABEL,
+  uploadEditLabel: UPLOAD_EDIT,
+  uploadFileLabel: UPLOAD_NEW_FILE,
   accessToken: '',
 };
 
