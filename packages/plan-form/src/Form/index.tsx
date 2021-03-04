@@ -171,6 +171,7 @@ const PlanForm = (props: PlanFormProps) => {
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
   const [actionDynamicValue, setActionDynamicValue] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [dates, setDates] = useState<Moment[]>([]);
   const {
     allFormActivities,
     disabledActivityFields,
@@ -430,6 +431,31 @@ const PlanForm = (props: PlanFormProps) => {
             id="dateRange"
           >
             <DatePicker.RangePicker
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              onCalendarChange={(val: any) => {
+                setDates(val);
+              }}
+              onOpenChange={(open: boolean) => {
+                if (open) {
+                  if (form.getFieldValue('dateRange')) {
+                    setDates(
+                      form.getFieldValue('dateRange')[0] && form.getFieldValue('dateRange')[1]
+                        ? form.getFieldValue('dateRange')
+                        : []
+                    );
+                  } else {
+                    setDates([]);
+                  }
+                }
+              }}
+              disabledDate={(current: Moment) => {
+                if (!dates || dates.length === 0) {
+                  return false;
+                }
+                return (
+                  current.valueOf() < Date.now() || (dates[1] && dates[1].valueOf() < Date.now())
+                );
+              }}
               disabled={disabledFields.includes('dateRange')}
               format={configs.dateFormat}
             />
