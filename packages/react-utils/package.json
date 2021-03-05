@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/react-utils",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A couple of utils that work with react",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -35,12 +35,13 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
+    "@onaio/connected-private-route": "^0.0.11",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/gatekeeper": "^0.1.1",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.4",
-    "@opensrp/pkg-config": "^0.0.4",
+    "@opensrp/pkg-config": "^0.0.6",
     "@opensrp/server-service": "^0.0.16",
     "antd": "^4.6.3"
   },
@@ -48,6 +49,7 @@
     "@opensrp/store": "^0.0.7",
     "antd": "^4.6.3",
     "react": "^16.18.1",
+    "react-redux": "^7.2.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },
