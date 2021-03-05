@@ -6,11 +6,16 @@ import { Redirect } from 'react-router';
 import { FormConfigProps } from '../../helpers/types';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import filesReducer, {
+import {
+  filesReducer,
   ManifestFilesTypes,
   getManifestFilesById,
   filesReducerName,
-} from '../../ducks/manifestFiles';
+  submitUploadForm,
+} from '@opensrp/form-config-core';
+import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   MODULE,
   RELATED_TO,
@@ -20,10 +25,6 @@ import {
   ERROR_FORM_NAME_REQUIRED,
   ERROR_OCCURRED,
 } from '../../lang';
-import { Dictionary } from '@onaio/utils';
-import { submitUploadForm } from '../../helpers/utils';
-import { GetAccessTokenType } from '@opensrp/server-service';
-import reducerRegistry from '@onaio/redux-reducer-registry';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
