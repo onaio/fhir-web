@@ -4,7 +4,6 @@ import {
   getFetchOptions,
   HTTPError,
   GetAccessTokenType,
-  processAcessToken,
 } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { UploadFileFieldTypes } from './types';
@@ -108,7 +107,7 @@ export const submitUploadForm = async (
     formData.append('is_json_validator', 'true');
   }
 
-  const token = await processAcessToken(accessToken);
+  const token = await OpenSRPService.processAcessToken(accessToken);
 
   const customOptions = () => {
     return {

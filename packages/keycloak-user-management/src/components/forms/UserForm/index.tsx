@@ -1,8 +1,7 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { KeycloakUser } from '../../../ducks/user';
+import { KeycloakUser, Practitioner, UserAction, UserGroup } from '../../../ducks/user';
 import { URL_USER } from '../../../constants';
 import {
   CANCEL,
@@ -20,86 +19,36 @@ import {
   FIRST_NAME_REQUIRED,
   LAST_NAME_REQUIRED,
   USERNAME_REQUIRED,
+  GROUP,
+  ERROR_OCCURED,
 } from '../../../lang';
-import { submitForm, fetchRequiredActions, UserAction } from './utils';
-import '../../../index.css';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { submitForm, fetchRequiredActions } from './utils';
 import { Dictionary } from '@onaio/utils';
-/** Interface for practitioner json object */
-export interface Practitioner {
-  active: boolean;
-  identifier: string;
-  name: string;
-  userId: string;
-  username: string;
-}
+import { sendErrorNotification } from '@opensrp/notifications';
+import '../../../index.css';
+
 /** props for editing a user view */
 export interface UserFormProps {
-  initialValues: KeycloakUser;
-  serviceClass: typeof KeycloakService;
-  opensrpServiceClass: typeof OpenSRPService;
+  initialValues: FormFields;
   keycloakBaseURL: string;
   opensrpBaseURL: string;
-  practitioner: Practitioner | undefined;
+  userGroups: UserGroup[];
   extraData: Dictionary;
 }
-/** default form initial values */
-export const defaultInitialValues: KeycloakUser = {
-  access: {
-    manageGroupMembership: false,
-    view: false,
-    mapRoles: false,
-    impersonate: false,
-    manage: false,
-  },
-  createdTimestamp: undefined,
-  disableableCredentialTypes: [],
-  email: '',
-  emailVerified: false,
-  enabled: true,
-  firstName: '',
-  id: '',
-  lastName: '',
-  notBefore: 0,
-  requiredActions: [],
-  totp: false,
-  username: '',
-};
-/** default props for editing user component */
-export const defaultProps: Partial<UserFormProps> = {
-  initialValues: defaultInitialValues,
-  opensrpServiceClass: OpenSRPService,
-  practitioner: undefined,
-  serviceClass: KeycloakService,
-  extraData: {},
-};
-/**
- * Handle required actions change
- *
- * @param {string} selected - selected action
- * @param {Dispatch<SetStateAction<string[]>>} setRequiredActions - selected action dispatcher
- */
-export const handleUserActionsChange = (
-  selected: string[],
-  setRequiredActions: Dispatch<SetStateAction<string[]>>
-): void => {
-  setRequiredActions(selected);
-};
+
+export interface FormFields extends KeycloakUser {
+  active?: boolean;
+  userGroup?: string[];
+  practitioner?: Practitioner;
+}
+
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
-  const {
-    initialValues,
-    serviceClass,
-    keycloakBaseURL,
-    opensrpServiceClass,
-    opensrpBaseURL,
-    practitioner,
-    extraData,
-  } = props;
+  const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
+
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const history = useHistory();
-  const [form] = Form.useForm();
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -121,23 +70,14 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     { label: 'Yes', value: true },
     { label: 'No', value: false },
   ];
-  const { Option } = Select;
+
   React.useEffect(() => {
-    fetchRequiredActions(keycloakBaseURL, setUserActionOptions, serviceClass);
-  }, [keycloakBaseURL, serviceClass]);
+    fetchRequiredActions(keycloakBaseURL, setUserActionOptions);
+  }, [keycloakBaseURL]);
+
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
-
-  /** Update form initial values when initialValues prop changes, without this
-   * the form fields initial values will not change if props.initiaValues is updated
-   * **/
-  React.useEffect(() => {
-    form.setFieldsValue({
-      ...initialValues,
-      active: !!practitioner && practitioner.active,
-    });
-  }, [form, initialValues, practitioner]);
 
   return (
     <Row className="layout-content">
@@ -148,25 +88,18 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       <Col className="bg-white p-3" span={24}>
         <Form
           {...layout}
-          form={form}
-          initialValues={{
-            ...initialValues,
-            active: !!practitioner && practitioner.active,
-          }}
+          initialValues={initialValues}
           onFinish={(values) => {
+            setSubmitting(true);
             submitForm(
-              {
-                ...values,
-                requiredActions,
-              },
+              { ...initialValues, ...values, requiredActions },
               keycloakBaseURL,
               opensrpBaseURL,
-              serviceClass,
-              opensrpServiceClass,
-              setSubmitting,
-              practitioner,
-              initialValues.id
-            );
+              userGroups
+            ).catch((_: Error) => {
+              setSubmitting(false);
+              sendErrorNotification(ERROR_OCCURED);
+            });
           }}
         >
           <Form.Item
@@ -216,19 +149,31 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
                 mode="multiple"
                 allowClear
                 placeholder={PLEASE_SELECT}
-                onChange={(selected: string[]) =>
-                  handleUserActionsChange(selected, setRequiredActions)
-                }
+                onChange={(selected: string[]) => setRequiredActions(selected)}
                 style={{ width: '100%' }}
               >
                 {userActionOptions.map((option: UserAction, index: number) => (
-                  <Option key={`${index}`} value={option.alias}>
+                  <Select.Option key={`${index}`} value={option.alias}>
                     {option.name}
-                  </Option>
+                  </Select.Option>
                 ))}
               </Select>
             </Form.Item>
           ) : null}
+          <Form.Item name="userGroup" id="userGroup" label={GROUP}>
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder={PLEASE_SELECT}
+              style={{ width: '100%' }}
+            >
+              {userGroups.map((group) => (
+                <Select.Option key={group.id} value={group.id}>
+                  {group.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
               {isSubmitting ? SAVING : SAVE}
@@ -242,5 +187,5 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     </Row>
   );
 };
-UserForm.defaultProps = defaultProps;
+
 export { UserForm };

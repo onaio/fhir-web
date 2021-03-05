@@ -56,7 +56,7 @@ exports[`components/Antd/FileList renders correctly for view file: table 1`] = `
         "render": [Function],
         "sortOrder": undefined,
         "sorter": [Function],
-        "title": "Created At",
+        "title": "Created at",
       },
       Object {
         "dataIndex": "module",
@@ -193,7 +193,7 @@ exports[`components/Antd/FileList renders correctly: table 1`] = `
         "render": [Function],
         "sortOrder": undefined,
         "sorter": [Function],
-        "title": "Created At",
+        "title": "Created at",
       },
       Object {
         "key": "action",
