@@ -44,7 +44,7 @@ export interface FormFields extends KeycloakUser {
 
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
-
+  const [form] = Form.useForm();
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
@@ -88,6 +88,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       <Col className="bg-white p-3" span={24}>
         <Form
           {...layout}
+          form={form}
           initialValues={initialValues}
           onFinish={(values) => {
             setSubmitting(true);
