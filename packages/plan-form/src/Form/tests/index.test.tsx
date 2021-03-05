@@ -364,7 +364,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('input[value="retired"]').simulate('click');
     // look for popup to confirm
     expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
-      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+      `"Are you sure? you won't be able to change the status for retired plansnoyes"`
     );
     wrapper.find('.plan-form-status button').last().simulate('click');
 
@@ -422,7 +422,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('input[value="retired"]').simulate('click');
     // look for popup to confirm
     expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
-      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+      `"Are you sure? you won't be able to change the status for retired plansnoyes"`
     );
     // cancel status change
     wrapper.find('.plan-form-status button').first().simulate('click');

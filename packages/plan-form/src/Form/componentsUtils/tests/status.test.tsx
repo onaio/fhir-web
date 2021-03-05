@@ -26,7 +26,7 @@ describe('status Renderer', () => {
     wrapper.find('input[value="complete"]').simulate('click');
     // look for popup to confirm
     expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
-      `"Are you sure, you won't be able to change the status for complete plansnoyes"`
+      `"Are you sure? you won't be able to change the status for complete plansnoyes"`
     );
 
     // simulate click on deny button
@@ -54,7 +54,7 @@ describe('status Renderer', () => {
     wrapper.find('input[value="active"]').simulate('click');
     // look for popup to confirm
     expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
-      `"Are you sure, you won't be able to change the status back to draftnoyes"`
+      `"Are you sure? you won't be able to change the status back to draftnoyes"`
     );
 
     // simulate click on deny button
@@ -79,7 +79,7 @@ describe('status Renderer', () => {
     wrapper.find('input[value="draft"]').simulate('click');
     // look for popup to confirm
     expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
-      `"Are you sure, status will be set to draftnoyes"`
+      `"Are you sure? status will be set to draftnoyes"`
     );
 
     // simulate click on deny button
@@ -104,7 +104,7 @@ describe('status Renderer', () => {
     wrapper.find('input[value="retired"]').simulate('click');
     // look for popup to confirm
     expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
-      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+      `"Are you sure? you won't be able to change the status for retired plansnoyes"`
     );
 
     // simulate click on deny button
