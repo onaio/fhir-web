@@ -12,8 +12,20 @@ import { store } from '@opensrp/store';
 import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
 import { URL_HOME } from './constants';
 import * as Sentry from '@sentry/react';
-// tslint:disable-next-line: ordered-imports
+// import { configStore } from '@opensrp/pkg-config';
+// import { ConfigProvider } from 'antd';
+// import frFR from 'antd/lib/locale/fr_FR';
+// import { Dictionary } from '@onaio/utils';
+// import { Locale } from 'antd/lib/locale-provider';
 import './styles/css/index.css';
+
+// const languageCode: any = configStore.getConfig('LANGUAGE_CODE');
+
+// const antdLocalesLookup: Dictionary<Locale> = {
+//   fr: frFR,
+// };
+
+// const currentAntdLocale = antdLocalesLookup[languageCode];
 
 if (SENTRY_DSN) {
   Sentry.init({ dsn: SENTRY_DSN });
@@ -23,7 +35,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
+        {/* <ConfigProvider locale={currentAntdLocale}> */}
         <App />
+        {/* </ConfigProvider> */}
       </Sentry.ErrorBoundary>
     </ConnectedRouter>
   </Provider>,
