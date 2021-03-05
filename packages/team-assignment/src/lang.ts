@@ -16,6 +16,7 @@ export const TEAM_ASSIGNMENT_PAGE_TITLE = i18n.t('Team Assignment');
 export const TEAM_ASSIGNMENT_MODAL_TITLE = i18n.t('Assign/Unassign Teams');
 export const NAME = i18n.t('Name');
 export const ACTIONS = i18n.t('Actions');
+export const EDIT = i18n.t('Edit');
 export const ASSIGN_TEAMS = i18n.t('Assigned Teams');
 export const SAVE = i18n.t('Save');
 export const CANCEL = i18n.t('Cancel');

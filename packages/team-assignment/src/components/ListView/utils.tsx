@@ -4,7 +4,7 @@ import { Spin, Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import { ACTIONS, ASSIGN_TEAMS, NAME, TableColumnsNamespace } from '../../lang';
+import { ACTIONS, ASSIGN_TEAMS, NAME, EDIT, TableColumnsNamespace } from '../../lang';
 import { TableData } from '.';
 import { AssignLocationsAndPlans } from 'team-assignment/src/ducks/assignments/types';
 
@@ -28,7 +28,7 @@ export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (recor
           });
         }}
       >
-        Edit
+        {EDIT}
       </Button>
     </>
   );
