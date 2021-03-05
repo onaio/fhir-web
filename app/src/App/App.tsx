@@ -129,12 +129,6 @@ import {
   newLocationUnitProps,
 } from './utils';
 import './App.css';
-
-import '@opensrp/plans/dist/index.css';
-import '@opensrp/team-assignment/dist/index.css';
-import '@opensrp/plan-form/dist/index.css';
-import '@opensrp/user-management/dist/index.css';
-// import '@opensrp/product-catalogue/dist/index.css';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
@@ -153,7 +147,14 @@ import {
   URL_INVENTORY_EDIT,
   URL_INVENTORY_ADD,
 } from '@opensrp/inventory';
+
+import '@opensrp/plans/dist/index.css';
+import '@opensrp/team-assignment/dist/index.css';
+import '@opensrp/plan-form/dist/index.css';
+import '@opensrp/user-management/dist/index.css';
+import '@opensrp/product-catalogue/dist/index.css';
 import '@opensrp/inventory/dist/index.css';
+
 import { APP_LOGIN_URL } from '../dispatchConfig';
 
 const { Content } = Layout;

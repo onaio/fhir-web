@@ -11,8 +11,6 @@ import { Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioners';
 import { CREATE, CREATE_TEAM, EDIT, EDIT_TEAM, ERROR_OCCURRED } from '../../lang';
 
-import './TeamsAddEdit.css';
-
 reducerRegistry.register(reducerName, reducer);
 
 /**

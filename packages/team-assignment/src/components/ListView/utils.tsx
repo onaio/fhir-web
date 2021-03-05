@@ -4,12 +4,14 @@ import { Spin, Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import { TableColumnsNamespace } from '../../constants';
+import { ACTIONS, ASSIGN_TEAMS, NAME, TableColumnsNamespace } from '../../lang';
 import { TableData } from '.';
 import { AssignLocationsAndPlans } from 'team-assignment/src/ducks/assignments/types';
 
-/** component rendered in the action column of the table */
-
+/** component rendered in the action column of the table
+ *
+ * @param record - table row record
+ */
 export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (record) => {
   return (
     <>
@@ -32,10 +34,10 @@ export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (recor
   );
 };
 
-/** product Catalogue table columns */
+/** team assignment table columns */
 export const columns: ColumnsType<TableData> = [
   {
-    title: 'Name',
+    title: NAME,
     dataIndex: 'locationName',
     key: `${TableColumnsNamespace}-locationName`,
     defaultSortOrder: 'descend',
@@ -50,12 +52,12 @@ export const columns: ColumnsType<TableData> = [
     },
   },
   {
-    title: 'Assigned Teams',
+    title: ASSIGN_TEAMS,
     dataIndex: 'assignedTeams',
     key: `${TableColumnsNamespace}-assignedTeams`,
   },
   {
-    title: 'Actions',
+    title: ACTIONS,
     key: `${TableColumnsNamespace}-actions`,
     render: ActionsColumnCustomRender,
     width: '20%',

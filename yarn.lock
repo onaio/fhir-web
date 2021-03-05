@@ -2771,6 +2771,11 @@
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.2.tgz#c2821b5934b4f0f944ca3ad65a38274ec448cb13"
   integrity sha512-hQIQCqVMv0c26tY42YlSFbdyIdhcG710Wn5gTRwTvF6wiiWHpDnD+vuwhF+2LGSJu3c0rRRW0VFoJ9jPNBKUZg==
 
+"@opensrp/notifications@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.5.tgz#b8047b9738c4e2d3d16d45c5bbc976dde8c2bd1e"
+  integrity sha512-N3Fi/0Kis7hN6EqbxTvS786+ZKOz6jEsSVq+t5Mtd1pPPHcqZjLvsa6aTSEcGzJDs2aY5NKSsDKY944EUfv/bg==
+
 "@opensrp/pkg-config@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/pkg-config/-/pkg-config-0.0.4.tgz#4e5e47cf8c35a56981c9e91c3655ebce612565ae"

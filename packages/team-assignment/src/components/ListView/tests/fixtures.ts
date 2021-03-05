@@ -1,5 +1,5 @@
-import { RawOpenSRPHierarchy } from '@opensrp/location-management/dist/types';
-import { PlanDefinition } from '../../../ducks/assignments/types';
+import { RawOpenSRPHierarchy } from '@opensrp/location-management';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 
 export const samplePlan: PlanDefinition = {
   identifier: '27362060-0309-411a-910c-64f55ede3758',
@@ -464,7 +464,7 @@ export const sampleHierarchy: RawOpenSRPHierarchy = {
         'd1fb5ef2-3bf3-4073-a26c-ce6b1298ca68',
       ],
       'b63cdf12-93b5-475e-8b20-851727e2870c': [
-        'd5a952de-9b4d-40f0-8e93-4cb04b79cef9',
+        'd5a952de-9b4d-40f0-8e93-4cbp[04b79cef9',
         '07a040ba-38f5-4d33-91b3-399e6e8a7604',
         'c930f2cf-9efd-4519-842f-848ffde9bb32',
         'c99a26f4-46e6-460a-bc88-88bf8462632f',

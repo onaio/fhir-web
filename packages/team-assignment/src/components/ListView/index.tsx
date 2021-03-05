@@ -19,6 +19,7 @@ import {
   ParsedHierarchyNode,
   RawOpenSRPHierarchy,
 } from '@opensrp/location-management';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import reducer, {
@@ -27,19 +28,20 @@ import reducer, {
   getAssignments,
   reducerName as assignmentReducerName,
 } from '../../ducks/assignments';
-import { PlanDefinition } from '../../ducks/assignments/types';
 import {
   ASSIGNMENTS_ENDPOINT,
-  CANCEL,
-  ERROR_OCCURED,
   LOCATION_HIERARCHY_ENDPOINT,
   ORGANIZATION_ENDPOINT,
   PLANS_ENDPOINT,
   POST_ASSIGNMENTS_ENDPOINT,
+} from '../../constants';
+import {
+  CANCEL,
+  ERROR_OCCURED,
   SAVE,
   SUCCESSFULLY_ASSIGNED_TEAMS,
   TEAM_ASSIGNMENT_PAGE_TITLE,
-} from '../../constants';
+} from '../../lang';
 
 const { fetchAllHierarchies, getAllHierarchiesArray } = locationHierachyDucks;
 
