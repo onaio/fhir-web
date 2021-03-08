@@ -625,7 +625,7 @@ const App: React.FC = () => {
             />
             <PublicComponent exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
             {/* tslint:enable jsx-no-lambda */}
-            <PublicComponent
+            <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
