@@ -16,6 +16,7 @@ import moment, { Moment } from 'moment';
 import { PlanFormFields } from './types';
 import { Dictionary } from '@onaio/utils';
 import { cloneDeep } from 'lodash';
+import { PLAN_NAME_CANNOT_CONTAIN_SLASHES } from '../lang';
 
 export const validationRules = {
   activities: {
@@ -43,7 +44,17 @@ export const validationRules = {
     id: [{ type: 'string' }] as Rule[],
     name: [{ type: 'string' }] as Rule[],
   },
-  name: [{ type: 'string', required: true }] as Rule[],
+  name: [
+    { type: 'string', required: true },
+    () => ({
+      validator(_, value) {
+        if (value.includes('/')) {
+          return Promise.reject(PLAN_NAME_CANNOT_CONTAIN_SLASHES);
+        }
+        return Promise.resolve();
+      },
+    }),
+  ] as Rule[],
   taskGenerationStatus: [
     {
       type: 'enum',
