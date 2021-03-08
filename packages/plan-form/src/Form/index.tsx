@@ -157,6 +157,13 @@ export interface PlanFormProps extends CommonProps {
   ) => string /** callback to get the path to redirect after successfully form submission */;
 }
 
+export const disableDate = (current: Moment, dates: Moment[]) => {
+  if (!dates || dates.length === 0) {
+    return false;
+  }
+  return current.valueOf() < Date.now() || (dates[1] && dates[1].valueOf() < Date.now());
+};
+
 /**
  * Plan Form component
  *
@@ -448,14 +455,7 @@ const PlanForm = (props: PlanFormProps) => {
                   }
                 }
               }}
-              disabledDate={(current: Moment) => {
-                if (!dates || dates.length === 0) {
-                  return false;
-                }
-                return (
-                  current.valueOf() < Date.now() || (dates[1] && dates[1].valueOf() < Date.now())
-                );
-              }}
+              disabledDate={(current: Moment) => disableDate(current, dates)}
               disabled={disabledFields.includes('dateRange')}
               format={configs.dateFormat}
             />
