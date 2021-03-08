@@ -72,7 +72,7 @@ Array [
       "Plan name cannot contain '/'",
     ],
     "name": Array [
-      "name",
+      "title",
     ],
   },
   Object {
