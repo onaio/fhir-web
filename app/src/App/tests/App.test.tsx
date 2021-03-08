@@ -10,6 +10,7 @@ import App, { CallbackComponent, LoadingComponent, SuccessfulLoginComponent } fr
 import { expressAPIResponse } from './fixtures';
 import { mount } from 'enzyme';
 import { authenticateUser } from '@onaio/session-reducer';
+import * as serverLogout from '@opensrp/server-logout';
 
 jest.mock('../../configs/env');
 
@@ -178,5 +179,21 @@ describe('App - authenticated', () => {
       },
     });
     wrapper.unmount();
+  });
+
+  it('correctly logs out user', async () => {
+    const mock = jest.spyOn(serverLogout, 'logout');
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/logout` }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+    expect(mock).toHaveBeenCalled();
   });
 });

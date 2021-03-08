@@ -2733,34 +2733,6 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
-"@opensrp/form-config@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@opensrp/form-config/-/form-config-0.0.11.tgz#22c50055b984d85cd2ab8f6e0d80411cc6886a69"
-  integrity sha512-Tk0NkKXZg7uWWliyUqHPFOngf6CXdaEmcxFGHxlyokxf5r/Z7JrYWiic7V1flWb8MqgNc6Naggylv1+RCNaF9g==
-  dependencies:
-    "@ant-design/icons" "^4.3.0"
-    "@fortawesome/fontawesome-svg-core" "^1.2.20"
-    "@fortawesome/free-brands-svg-icons" "^5.10.0"
-    "@fortawesome/free-regular-svg-icons" "^5.10.0"
-    "@fortawesome/free-solid-svg-icons" "^5.10.0"
-    "@fortawesome/react-fontawesome" "^0.1.4"
-    "@onaio/drill-down-table" "^1.0.2"
-    "@onaio/redux-reducer-registry" "^0.0.9"
-    "@onaio/utils" "^0.0.1"
-    "@opensrp/notifications" "^0.0.4"
-    "@opensrp/pkg-config" "^0.0.4"
-    "@opensrp/reducer-factory" "^0.0.1"
-    "@opensrp/server-service" "^0.0.16"
-    "@opensrp/store" "^0.0.9"
-    antd "^4.6.3"
-    date-fns "^2.17.0"
-    formik "^2.1.4"
-    i18next "^19.8.4"
-    lodash "^4.17.15"
-    react-toastify "^6.0.5"
-    reactstrap "^8.0.1"
-    yup "^0.29.1"
-
 "@opensrp/notifications@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
@@ -2771,10 +2743,12 @@
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.2.tgz#c2821b5934b4f0f944ca3ad65a38274ec448cb13"
   integrity sha512-hQIQCqVMv0c26tY42YlSFbdyIdhcG710Wn5gTRwTvF6wiiWHpDnD+vuwhF+2LGSJu3c0rRRW0VFoJ9jPNBKUZg==
 
-"@opensrp/notifications@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.5.tgz#b8047b9738c4e2d3d16d45c5bbc976dde8c2bd1e"
-  integrity sha512-N3Fi/0Kis7hN6EqbxTvS786+ZKOz6jEsSVq+t5Mtd1pPPHcqZjLvsa6aTSEcGzJDs2aY5NKSsDKY944EUfv/bg==
+"@opensrp/notifications@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.4.tgz#c97b991ed7f820f1b6d2b9d447ec9169772c29ab"
+  integrity sha512-7Gv+7x9OMc8nlAGnxid3fapU4vnpF4Dei64xZdxyWDvKRXVDzuP9a58E1UvDyfqTh/7F20YB9/f2YXutDVQprw==
+  dependencies:
+    antd "^4.6.3"
 
 "@opensrp/pkg-config@^0.0.4":
   version "0.0.4"
@@ -3435,6 +3409,13 @@
   dependencies:
     redux "*"
     redux-thunk "*"
+
+"@types/redux@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@types/redux/-/redux-3.6.0.tgz#f1ebe1e5411518072e4fdfca5c76e16e74c1399a"
+  integrity sha1-8evh5UEVGAcuT9/KXHbhbnTBOZo=
+  dependencies:
+    redux "*"
 
 "@types/seamless-immutable@^7.1.13":
   version "7.1.15"
