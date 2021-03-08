@@ -44,7 +44,15 @@ export const validationRules = {
     id: [{ type: 'string' }] as Rule[],
     name: [{ type: 'string' }] as Rule[],
   },
-  name: [
+  name: [{ type: 'string', required: true }] as Rule[],
+  taskGenerationStatus: [
+    {
+      type: 'enum',
+      enum: Object.values(taskGenerationStatuses),
+    },
+  ] as Rule[],
+  teamAssignmentStatus: [{ type: 'string' }] as Rule[],
+  title: [
     { type: 'string', required: true },
     () => ({
       validator(_, value) {
@@ -55,14 +63,6 @@ export const validationRules = {
       },
     }),
   ] as Rule[],
-  taskGenerationStatus: [
-    {
-      type: 'enum',
-      enum: Object.values(taskGenerationStatuses),
-    },
-  ] as Rule[],
-  teamAssignmentStatus: [{ type: 'string' }] as Rule[],
-  title: [{ type: 'string', required: true }] as Rule[],
   version: [{ type: 'string' }] as Rule[],
   status: [
     {
