@@ -1,7 +1,7 @@
 /**
  * Find the pivot/mid index of an array
  *
- * @param {number[] | string[]} array Array of ParsedHierarchyNode
+ * @param {number[] | string[]} array Array of number[] | string[]
  * @param {number} start stating index to look for pivot
  * @returns {number} returns the pivot/mid index of an array
  */
@@ -22,12 +22,12 @@ function pivot(array: number[] | string[], start = 0) {
 }
 
 /**
- * Sort the Base ParsedHierarchyNode by name
+ * Sort the Array
  *
- * @param {number[] | string[]} array Array of ParsedHierarchyNode
+ * @param {number[] | string[]} array Array of number[] | string[]
  * @param {number} start starting index for array
  * @param {number} end ending index for array
- * @returns {number} returns Sorted ParsedHierarchyNode
+ * @returns {number[] | string[]} returns Sorted Array
  */
 export function quickSort(array: number[] | string[], start = 0, end: number = array.length) {
   const pivotIndex = pivot(array, start);
