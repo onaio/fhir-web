@@ -23,7 +23,7 @@ import {
   reducerName as teamsReducerName,
 } from '@opensrp/team-management';
 import { OPENSRP_API_BASE_URL } from '../../../constants';
-import { assignments, sampleHierarchy, samplePlan } from './fixtures';
+import { assignments, sampleHierarchy, sampleHierarchy2, samplePlan } from './fixtures';
 import { organizations } from '@opensrp/team-management/src/ducks/tests/fixtures';
 import toJson from 'enzyme-to-json';
 import { Dictionary } from '@onaio/utils';
@@ -167,6 +167,58 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.find('TeamAssignmentView').props()).toMatchSnapshot();
+    wrapper.unmount();
+  });
+
+  it('hierarchy store is reset if hierarchies are more than 1', async () => {
+    fetch.mockResponses(
+      /** Get plan */
+      [JSON.stringify([samplePlan]), { status: 200 }],
+      [JSON.stringify(assignments), { status: 200 }],
+      [JSON.stringify(organizations), { status: 200 }]
+    );
+
+    store.dispatch(fetchAssignments(assignments));
+    store.dispatch(fetchOrganizationsAction(organizations));
+    const hierarchy = generateJurisdictionTree(sampleHierarchy);
+    const hierarchy2 = generateJurisdictionTree(sampleHierarchy2);
+    store.dispatch(fetchAllHierarchies([hierarchy.model, hierarchy2.model]));
+
+    // hierarch array length should be 2
+    expect(store.getState()[locationHierachyDucks.reducerName].hierarchyArray).toHaveLength(2);
+
+    const props = {
+      history,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
+      location: {
+        hash: '',
+        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <TeamAssignmentView {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    // hierarchy array should be empty
+    expect(store.getState()[locationHierachyDucks.reducerName].hierarchyArray).toHaveLength(0);
     wrapper.unmount();
   });
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
 import { TeamAssignmentLoading, columns, getPayload } from './utils';
@@ -37,9 +37,11 @@ import {
 } from '../../constants';
 import {
   CANCEL,
+  ENTER_TEAM_NAME,
   ERROR_OCCURED,
   SAVE,
   SUCCESSFULLY_ASSIGNED_TEAMS,
+  TEAMS,
   TEAM_ASSIGNMENT_PAGE_TITLE,
 } from '../../lang';
 
@@ -80,7 +82,6 @@ interface TeamAssignmentViewProps extends RouteComponentProps<RouteParams> {
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
   const [form] = Form.useForm();
-  const isMounted = useRef<boolean>(true);
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
@@ -151,13 +152,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     form.setFieldsValue({ assignTeams: assignedLocAndTeams?.assignedTeams });
   }, [assignedLocAndTeams, form]);
 
-  React.useLayoutEffect(() => {
-    return () => {
-      if (isMounted.current) {
-        dispatch(fetchAllHierarchies([]));
-        isMounted.current = false;
-      }
-    };
+  React.useEffect(() => {
+    // team assignment only needs one hierarchy
+    // i.e when user switches from location unit module
+    if (Treedata.length > 1) {
+      dispatch(fetchAllHierarchies([]));
+    }
   });
 
   const handleCancel = () => {
@@ -180,6 +180,10 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   }
 
   const dataSource = currentParentChildren.length ? currentParentChildren : Treedata;
+
+  if (!dataSource.length) {
+    return null;
+  }
 
   const tableData = dataSource.map((datum: ParsedHierarchyNode, i: number) => {
     const jurisdictionAssignments = assignmentsList.filter(
@@ -221,7 +225,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         cancelText={CANCEL}
         footer={[
           <Button type="primary" form="teamAssignment" key="submit" htmlType="submit">
-            Save
+            {SAVE}
           </Button>,
           <Button
             id={CANCEL}
@@ -230,7 +234,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
               handleCancel();
             }}
           >
-            Cancel
+            {CANCEL}
           </Button>,
         ]}
         okType="default"
@@ -262,12 +266,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             }}
             initialValues={{ assignTeams: assignedLocAndTeams?.assignedTeams }}
           >
-            <Form.Item label={`Teams`} name="assignTeams">
+            <Form.Item label={TEAMS} name="assignTeams">
               <Select
                 mode="multiple"
                 allowClear
                 showSearch
-                placeholder="Enter a Team name"
+                placeholder={ENTER_TEAM_NAME}
                 optionFilterProp="children"
                 filterOption={filterFunction}
               >

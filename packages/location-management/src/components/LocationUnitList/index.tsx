@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -95,7 +95,6 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
-  const isMounted = useRef<boolean>(true);
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
   const [loading, setLoading] = useState<boolean>(true);
@@ -106,11 +105,16 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (!locationUnits.length) {
+      // clear heirarchies from previous modules
+      if (treeData.length) {
+        dispatch(fetchAllHierarchies([]));
+      }
       getBaseTreeNode(opensrpBaseURL)
         .then((response) => dispatch(fetchLocationUnits(response)))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [locationUnits.length, dispatch, opensrpBaseURL, locationUnits]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locationUnits.length, treeData.length]);
 
   // Function used to parse data from ParsedHierarchyNode to Tree Data
   useEffect(() => {
@@ -138,13 +142,6 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       }
     }
   }, [treeData, currentClicked]);
-
-  React.useLayoutEffect(() => {
-    return () => {
-      if (isMounted.current) dispatch(fetchAllHierarchies([]));
-      isMounted.current = false;
-    };
-  });
 
   if (loading) return <Spin size={'large'} />;
 
