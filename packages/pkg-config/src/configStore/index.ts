@@ -17,9 +17,12 @@ const initialConfigs = {
   appLoginURL: undefined,
 };
 
-const { useGlobalState, getGlobalState, setGlobalState } = createGlobalState<ConfigState>(
-  initialConfigs
-);
+const {
+  useGlobalState,
+  getGlobalState,
+  setGlobalState,
+  ...unexposedGettersSetters
+} = createGlobalState<ConfigState>(initialConfigs);
 
 /** hook to get and update values in the config store
  *
@@ -51,4 +54,33 @@ const getConfig = getGlobalState;
  */
 const setConfig = setGlobalState;
 
-export { useGlobalConfigs, getConfig, setConfig };
+/** these properties are part of useGlobalState but the exposed type interface does not include them */
+const otherGettersSetters = (unexposedGettersSetters as unknown) as {
+  getState: () => ConfigState;
+  setState: (nextGlobalState: ConfigState) => void;
+};
+
+/** function to get all config values outside of React
+ *
+ * @example
+ * import {getAllConfigs} from `'@opensrp/pkg-config'`;
+ *
+ * const allConfigs = getAllConfigs();;
+ */
+const getAllConfigs = otherGettersSetters.getState;
+
+/** function to get all config values outside of React
+ *
+ * @example
+ * import {setAllConfigs} from `'@opensrp/pkg-config'`;
+ *
+ * const configs = {
+ *  languageCode: 'en',
+ *  projectLanguageCode: 'core',
+ * }
+ *
+ * const allConfigs = setAllConfigs(configs);
+ */
+const setAllConfigs = otherGettersSetters.setState;
+
+export { useGlobalConfigs, getConfig, setConfig, getAllConfigs, setAllConfigs };
