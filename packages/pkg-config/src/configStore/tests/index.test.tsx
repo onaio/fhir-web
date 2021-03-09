@@ -1,5 +1,5 @@
 import { SetStateAction } from 'react';
-import { getConfig, LanguageCode, setConfig } from '../';
+import { ConfigState, getAllConfigs, getConfig, LanguageCode, setAllConfigs, setConfig } from '../';
 
 describe('pkg-configs/configStore', () => {
   beforeEach(() => {
@@ -17,5 +17,15 @@ describe('pkg-configs/configStore', () => {
     };
     setConfig('languageCode', sampleConfig.languageCode as SetStateAction<LanguageCode>);
     getConfig('languageCode');
+  });
+
+  it('bulk stores and gets configuration correctly', () => {
+    // action creators dispatch
+    const sampleConfig: ConfigState = {
+      languageCode: 'sw',
+      projectLanguageCode: 'eusm',
+    };
+    setAllConfigs(sampleConfig);
+    expect(getAllConfigs()).toEqual(sampleConfig);
   });
 });
