@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
@@ -18,7 +19,9 @@ import {
   fetchKeycloakUsers,
   KeycloakUser,
 } from '../../../ducks/user';
-import { URL_ADMIN, ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../constants';
+import { URL_USER } from '../../../constants';
+import { ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../lang';
+import { history as registryHistory } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -46,6 +49,21 @@ jest.mock('antd', () => {
 const history = createBrowserHistory();
 
 describe('components/Credentials', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -94,6 +112,7 @@ describe('components/Credentials', () => {
 
   it('adds user credentials correctly', async () => {
     const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
+    const historyPushMock = jest.spyOn(registryHistory, 'push');
 
     const wrapper = mount(
       <Provider store={store}>
@@ -134,13 +153,14 @@ describe('components/Credentials', () => {
         body: JSON.stringify(payload),
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer hunter2',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'PUT',
       },
     ]);
     expect(mockNotificationSuccess).toHaveBeenCalledWith(CREDENTIALS_UPDATED_SUCCESSFULLY);
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
     wrapper.unmount();
   });
 
@@ -167,14 +187,14 @@ describe('components/Credentials', () => {
     const formContainer = wrapper.find('div.form-container');
 
     expect(formContainer.find('Row').at(0).find('FormItemInput').prop('errors')).toEqual([
-      'Please input your password!',
+      'Password is required',
     ]);
     expect(
       formContainer.find('Row').at(0).find('FormItemInput').find('span.ant-form-item-children-icon')
     ).toBeTruthy();
 
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
-      'Please confirm your password!',
+      'Confirm Password is required',
     ]);
     expect(
       formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')
@@ -267,6 +287,6 @@ describe('components/Credentials', () => {
       push: jest.fn(),
     };
     cancelUserHandler(mockUseHistory);
-    expect(mockUseHistory.push).toBeCalledWith(URL_ADMIN);
+    expect(mockUseHistory.push).toBeCalledWith(URL_USER);
   });
 });

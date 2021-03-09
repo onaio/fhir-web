@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List view Page filers data correctly: full body has only one entry Madagascar 1`] = `"EPP Ambodisatrana 2Water Pointf3199af5-2eaf-46df-87c9-40d59606a2fbView"`;
+
+exports[`List view Page renders when data is present: full text snapshot 1`] = `"Service point inventory (3)+ Add service pointService pointtypeLocationService point IDActionsAmbahoabeWater PointMadagascar > ANALANJIROFO > SOANIERANA IVONGO > AMBAHOABE45e4bd97-fe11-458b-b481-294b7d7e8270ViewAmbatoharananaWater PointMadagascar > ANALANJIROFO > MANANARA AVARATRA > AMBATOHARANANAb8a7998c-5df6-49eb-98e6-f0675db71848ViewEPP Ambodisatrana 2Water PointMadagascar > ANALANJIROFO > MANANARA AVARATRA > AMBODIAMPANAf3199af5-2eaf-46df-87c9-40d59606a2fbView120 / page"`;
+
+exports[`List view Page shows broken page when jurisdiction request errors out: error broken page 1`] = `"ErrorCoughidGo backGo home"`;
+
+exports[`List view Page shows broken page: error broken page 1`] = `"ErrorCoughidGo backGo home"`;

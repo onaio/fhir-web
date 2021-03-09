@@ -3,11 +3,39 @@ import { Dictionary } from '@onaio/utils';
 import { keyBy, values } from 'lodash';
 import intersect from 'fast_array_intersect';
 import { AnyAction, Store } from 'redux';
-import { createSelector, OutputParametricSelector } from 'reselect';
+import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
 
 /** The reducer name */
 export const reducerName = 'keycloakUsers';
+
+/** Interface for UserGroup json object */
+export interface UserGroup {
+  id: string;
+  name: string;
+  path: string;
+  subGroups?: UserGroup[];
+}
+
+/** Interface for practitioner json object */
+export interface Practitioner {
+  active: boolean;
+  identifier: string;
+  name: string;
+  userId: string;
+  username: string;
+}
+
+/** interface user action */
+export interface UserAction {
+  alias: string;
+  name: string;
+  providerId: string;
+  enabled: boolean;
+  defaultAction: boolean;
+  priority: number;
+  config: Dictionary;
+}
 
 /** Interface for user json object */
 export interface KeycloakUser {
@@ -130,30 +158,34 @@ export function reducer(
 // Selectors
 
 export interface KeycloakUsersFilters {
-  id: string[] /** get all users whose ids appear in this array */;
+  id?: string[] /** get all users whose ids appear in this array */;
   username?: string /** get users whose username includes text in the username field */;
+  searchText?: string /** filter user with given text */;
 }
-
-// NON MEMOIZED SELECTORS
 
 /**
  * Gets id from KeycloakUsersFilters
  *
- * @param {any} _ - the redux store
- * @param {Array} props - the keycloak users filters object
- * @returns {string} - the keycloak user id
+ * @param _ - the redux store
+ * @param props - the keycloak users filters object
  */
-export const getUserIds = (_: Partial<Store>, props: KeycloakUsersFilters): string[] => props.id;
+export const getUserIds = (_: Partial<Store>, props: KeycloakUsersFilters) => props.id;
 
 /**
  * Gets name from KeycloakUsersFilters
  *
- * @param {any} _ - the redux store
- * @param {object} props - the users filters object
- * @returns {string} - the keycloak user name
+ * @param _ - the redux store
+ * @param props - the users filters object
  */
-export const getUsername = (_: Partial<Store>, props: KeycloakUsersFilters): string | undefined =>
-  props.username;
+export const getUsername = (_: Partial<Store>, props: KeycloakUsersFilters) => props.username;
+
+/**
+ * Gets searchText from filter props
+ *
+ * @param _ - the redux store
+ * @param props - the users filters object
+ */
+export const getSearchText = (_: Partial<Store>, props: KeycloakUsersFilters) => props.searchText;
 
 /** returns all users in the store as values whose keys are their respective ids
  *
@@ -173,17 +205,12 @@ export function getKeycloakUsersArray(state: Partial<Store>): KeycloakUser[] {
   return values(getKeycloakUsersById(state));
 }
 
-/**
- * Gets all practitioners whose name includes phrase given in name filter prop
- *
- * @returns {Array} - practitioners whose name includes phrase given in name filter prop
- */
-export const getUsersByUsername = (): OutputParametricSelector<
-  Partial<Store>,
-  KeycloakUsersFilters,
-  KeycloakUser[],
-  (res1: KeycloakUser[], res2: string | undefined) => KeycloakUser[]
-> =>
+export const getUsersByUsername = () =>
+  /**
+   * Gets all practitioners whose name includes phrase given in name filter prop
+   *
+   * @returns {Array} - practitioners whose name includes phrase given in name filter prop
+   */
   createSelector(getKeycloakUsersArray, getUsername, (usersArray, username) =>
     username
       ? usersArray.filter((user: KeycloakUser) =>
@@ -192,25 +219,12 @@ export const getUsersByUsername = (): OutputParametricSelector<
       : usersArray
   );
 
-// MEMOIZED SELECTORS
-
-/**
- * Gets all users whose identifiers appear in ids filter prop value
- *
- * @returns {Array} - users whose identifiers appear in ids filter prop value
- */
-export const getKeycloakUsersByIds = (): OutputParametricSelector<
-  Partial<Store>,
-  KeycloakUsersFilters,
-  KeycloakUser[],
-  (
-    res1: {
-      [key: string]: KeycloakUser;
-    },
-    res2: string[],
-    res3: KeycloakUser[]
-  ) => KeycloakUser[]
-> =>
+export const getKeycloakUsersByIds = () =>
+  /**
+   * Gets all users whose identifiers appear in ids filter prop value
+   *
+   * @returns {Array} - users whose identifiers appear in ids filter prop value
+   */
   createSelector(
     getKeycloakUsersById,
     getUserIds,
@@ -226,17 +240,28 @@ export const getKeycloakUsersByIds = (): OutputParametricSelector<
     }
   );
 
-/** practitioner array selector factory
- * aggregates response from all applied filters and returns results
- *
- * @returns {Array} - aggregates response from all applied filters and returns results
- */
-export const makeKeycloakUsersSelector = (): OutputParametricSelector<
-  Partial<Store>,
-  KeycloakUsersFilters,
-  KeycloakUser[],
-  (res1: KeycloakUser[], res2: KeycloakUser[]) => KeycloakUser[]
-> =>
-  createSelector(getKeycloakUsersByIds(), getUsersByUsername(), (arr1, arr2) => {
-    return intersect([arr1, arr2], JSON.stringify);
-  });
+const usersByIdsSelector = getKeycloakUsersByIds();
+const usersByNameSelector = getUsersByUsername();
+
+export const makeKeycloakUsersSelector = () =>
+  /** practitioner array selector factory
+   * aggregates response from all applied filters and returns results
+   *
+   * @returns {Array} - aggregates response from all applied filters and returns results
+   */
+  createSelector(
+    usersByIdsSelector,
+    usersByNameSelector,
+    getSearchText,
+    (arr1, arr2, searchText) => {
+      const unfilteredResults = intersect([arr1, arr2], JSON.stringify);
+      const matchesUserName = (user: KeycloakUser) => {
+        const fullName = `${user.firstName} ${user.lastName}`;
+        if (!searchText) {
+          return true;
+        }
+        return fullName.toLowerCase().includes(searchText.toLowerCase());
+      };
+      return unfilteredResults.filter((user) => matchesUserName(user));
+    }
+  );

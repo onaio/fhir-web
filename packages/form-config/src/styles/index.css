@@ -1,0 +1,18 @@
+.search-input-wrapper {
+  position: relative;
+  max-width: 300px;
+  top: 4px;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.jumbotron {
+  text-align: center;
+}
+
+.cancel-icon {
+  border-radius: 50%;
+  color: #ff0000;
+  border: 1.5px solid #ff0000;
+  text-decoration: none !important;
+}
