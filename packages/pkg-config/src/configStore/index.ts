@@ -1,33 +1,50 @@
+/** stores configuration for any other package */
+import { createGlobalState } from 'react-hooks-global-state';
 
+export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
+export type ProjectLanguageCode = 'eusm' | 'core';
 
-interface Dictionary {
-  [key: string]: string;
+/** interface for configs for this package */
+export interface ConfigState {
+  languageCode?: LanguageCode;
+  projectLanguageCode?: ProjectLanguageCode;
+  appLoginURL?: string;
 }
 
-class ConfigSingleton {
-  #config: Dictionary;
-  constructor() {
-    this.#config = {};
-    this.#config.key = `${Math.random()}`;
-  }
+const initialConfigs = {};
 
-  addConfig(obj: Dictionary) {
-    this.#config = {
-      ...this.#config,
-      ...obj,
-    };
-  }
+const { useGlobalState, getGlobalState, setGlobalState } = createGlobalState<ConfigState>(
+  initialConfigs
+);
 
-  getConfig(key?: string) {
-    if (!key) {
-      return { ...this.#config };
-    }
-    return this.#config[key];
-  }
-}
+/** hook to get and update values in the config store
+ *
+ * @example
+ * import { useGlobalConfigs } from `'@opensrp/pkg-config'`;
+ *
+ * const Component = () => {
+ *   const [language, setLanguage] = useGlobalConfigs('languageCode');
+ *   ...
+ * };
+ */
+const useGlobalConfigs = useGlobalState;
 
-const configStore = new ConfigSingleton();
+/** function to get config values outside of React
+ *
+ * @example
+ * import {getConfig} from `"@opensrp/pkg-config"`;
+ *
+ * const language = getConfig('languageCode');
+ */
+const getConfig = getGlobalState;
 
-Object.freeze(configStore);
+/** function to set config values outside of React
+ *
+ * @example
+ * import {setConfig} from `'@opensrp/pkg-config'`;
+ *
+ * const language = getConfigs('languageCode');
+ */
+const setConfig = setGlobalState;
 
-export { configStore };
+export { useGlobalConfigs, getConfig, setConfig };

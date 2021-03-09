@@ -1,19 +1,7 @@
 import { Dictionary } from '@onaio/utils';
 import i18n, { Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { configStore } from './configStore';
-
-export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
-export type ProjectLanguageCode = 'eusm' | 'core';
-
-/** interface for configs for this package */
-export interface OpenSRPConfigs {
-  languageCode?: LanguageCode;
-  projectLanguageCode?: ProjectLanguageCode;
-  appLoginURL?: string;
-  keycloakBaseURL?: string;
-  opensrpBaseURL?: string;
-}
+import { getConfig } from './configStore';
 
 export interface LanguageResource {
   translation: Dictionary;
@@ -31,16 +19,9 @@ export interface LanguageResources {
   th_core?: LanguageResource;
 }
 
-/** gets configs from the store */
-export const getConfigs = (): OpenSRPConfigs => {
-  const allConfigs = configStore.getConfig();
-  return allConfigs as OpenSRPConfigs;
-};
-
 export const initializei18n = (i18next: typeof i18n, opensrpResources: LanguageResources) => {
-  // const configurable:
-  const languageCode = getConfigs().languageCode ?? 'en';
-  const projectLanguageCode = getConfigs().projectLanguageCode ?? 'core';
+  const languageCode = getConfig('languageCode') ?? 'en';
+  const projectLanguageCode = getConfig('projectLanguageCode') ?? 'core';
   const resources = (opensrpResources as unknown) as Resource;
 
   i18next
