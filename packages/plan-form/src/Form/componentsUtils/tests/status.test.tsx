@@ -117,4 +117,30 @@ describe('status Renderer', () => {
     // nothing should change
     expect(setFieldMock).toHaveBeenCalledWith({ status: 'retired' });
   });
+  it('shows popup when trying to click activate but assigned Jurisdictions is null', () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const setFieldMock = jest.fn();
+    const props = {
+      disabledFields: [],
+      disAllowedStatusChoices: [],
+      setFieldsValue: setFieldMock,
+      assignedJurisdictions: [],
+    };
+    const wrapper = mount(<PlanStatusRenderer {...props} />, { attachTo: container });
+
+    // attempt simulating confirm on active radio button
+    wrapper.find('input[value="active"]').simulate('click');
+    // look for popup with info that require activating plan
+    expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
+      `"Assign jurisdictions to the Plan, to enable activating itCancelOK"`
+    );
+
+    // simulate click on both accept deny button
+    wrapper.find('button').first().simulate('click');
+    wrapper.find('button').last().simulate('click');
+
+    // nothing should change
+    expect(setFieldMock).not.toHaveBeenCalled();
+  });
 });
