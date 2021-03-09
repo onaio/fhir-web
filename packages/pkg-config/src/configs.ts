@@ -22,7 +22,7 @@ export interface LanguageResources {
 export const initializei18n = (i18next: typeof i18n, opensrpResources: LanguageResources) => {
   const languageCode = getConfig('languageCode');
   const projectLanguageCode = getConfig('projectLanguageCode');
-  const resources = (opensrpResources as unknown) as Resource;
+  const resources = opensrpResources as Resource;
 
   i18next
     .use(initReactI18next)
