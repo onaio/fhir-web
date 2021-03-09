@@ -1,7 +1,7 @@
 import { Dictionary } from '@onaio/utils';
 import i18n, { Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { configStore } from './ducks';
+import { configStore } from './configStore';
 
 export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
 export type ProjectLanguageCode = 'eusm' | 'core';
