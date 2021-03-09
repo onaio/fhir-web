@@ -78,6 +78,7 @@ import {
   goalDescription,
   status,
   title,
+  jurisdictions,
 } from '@opensrp/plan-form-core';
 import moment, { Moment } from 'moment';
 import { Select, Input, DatePicker } from 'antd';
@@ -419,6 +420,7 @@ const PlanForm = (props: PlanFormProps) => {
               setFieldsValue={form.setFieldsValue}
               disabledFields={disabledFields}
               disAllowedStatusChoices={disAllowedStatusChoices}
+              assignedJurisdictions={form.getFieldsValue()[jurisdictions]}
             />
           </FormItem>
           <FormItem

@@ -88,13 +88,13 @@ import {
 } from '@opensrp/user-management';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
-  AntdUploadForm,
-  AntdFilesList,
+  UploadForm,
+  FileList,
   ROUTE_PARAM_FORM_ID,
-  AntdDraftFileList,
-  AntdReleaseList,
+  DrafFileList,
+  ReleaseList,
   ROUTE_PARAM_FORM_VERSION,
-} from '@opensrp/form-config';
+} from '@opensrp/form-config-antd';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
@@ -469,7 +469,7 @@ const App: React.FC = () => {
                 activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
               }
               path={URL_UPLOAD_JSON_VALIDATOR}
-              component={AntdUploadForm.UploadForm}
+              component={UploadForm}
               {...jsonValidatorFormProps}
             />
             <PrivateComponent
@@ -480,7 +480,7 @@ const App: React.FC = () => {
               }
               exact
               path={`${URL_UPLOAD_JSON_VALIDATOR}/:${ROUTE_PARAM_FORM_ID}`}
-              component={AntdUploadForm.UploadForm}
+              component={UploadForm}
               {...jsonValidatorFormProps}
             />
             <PrivateComponent
@@ -491,7 +491,7 @@ const App: React.FC = () => {
               }
               exact
               path={URL_JSON_VALIDATOR_LIST}
-              component={AntdFilesList.FileList}
+              component={FileList}
               {...jsonValidatorListProps}
             />
             <PrivateComponent
@@ -502,7 +502,7 @@ const App: React.FC = () => {
               }
               exact
               path={URL_UPLOAD_DRAFT_FILE}
-              component={AntdUploadForm.UploadForm}
+              component={UploadForm}
               {...draftFormProps}
             />
             <PrivateComponent
@@ -513,7 +513,7 @@ const App: React.FC = () => {
               }
               exact
               path={`${URL_UPLOAD_DRAFT_FILE}/:${ROUTE_PARAM_FORM_ID}`}
-              component={AntdUploadForm.UploadForm}
+              component={UploadForm}
               {...draftFormProps}
             />
             <PrivateComponent
@@ -524,7 +524,7 @@ const App: React.FC = () => {
               }
               exact
               path={URL_DRAFT_FILE_LIST}
-              component={AntdDraftFileList.DrafFileList}
+              component={DrafFileList}
               {...draftListProps}
             />
             <PrivateComponent
@@ -535,7 +535,7 @@ const App: React.FC = () => {
               }
               exact
               path={URL_MANIFEST_RELEASE_LIST}
-              component={AntdReleaseList.ReleaseList}
+              component={ReleaseList}
               {...releaseListProps}
             />
             <PrivateComponent
@@ -546,7 +546,7 @@ const App: React.FC = () => {
               }
               exact
               path={`${URL_MANIFEST_RELEASE_LIST}/:${ROUTE_PARAM_FORM_VERSION}`}
-              component={AntdFilesList.FileList}
+              component={FileList}
               {...releaseViewProps}
             />
             <PrivateComponent
@@ -625,7 +625,7 @@ const App: React.FC = () => {
             />
             <PublicComponent exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
             {/* tslint:enable jsx-no-lambda */}
-            <PrivateComponent
+            <ConnectedPrivateRoute
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
