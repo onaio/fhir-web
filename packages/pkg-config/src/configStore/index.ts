@@ -9,12 +9,16 @@ export interface ConfigState {
   languageCode?: LanguageCode;
   projectLanguageCode?: ProjectLanguageCode;
   appLoginURL?: string;
+  keycloakBaseURL?: string;
+  opensrpBaseURL?: string;
 }
 
 const initialConfigs = {
   languageCode: 'en' as LanguageCode,
   projectLanguageCode: 'core' as ProjectLanguageCode,
   appLoginURL: undefined,
+  keycloakBaseURL: undefined,
+  opensrpBaseURL: undefined,
 };
 
 const {
