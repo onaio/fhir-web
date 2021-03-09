@@ -8,6 +8,7 @@ describe('pkg-configs/configStore', () => {
 
   it('should have initial state', () => {
     expect(getConfig('languageCode')).toEqual('en');
+    expect(getConfig('opensrpBaseURL')).toBeUndefined();
     expect(getAllConfigs()).toEqual({
       appLoginURL: undefined,
       keycloakBaseURL: undefined,
