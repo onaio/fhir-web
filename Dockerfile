@@ -18,10 +18,7 @@ RUN cp /app/client/.env.sample /app/client/.env \
 USER root
 RUN chown -R node .
 USER node
-RUN yarn lerna:prepublish \
-      && cd ./client \
-      && yarn \
-      && yarn build
+RUN yarn lerna:prepublish
 
 FROM node:14.9.0-alpine as nodejsbuild
 COPY --from=sources /usr/src/express-server /usr/src/express-server
