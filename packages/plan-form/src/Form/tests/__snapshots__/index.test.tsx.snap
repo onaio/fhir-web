@@ -69,18 +69,10 @@ Array [
   },
   Object {
     "errors": Array [
-      "'title' is required",
+      "Plan name cannot contain '/'",
     ],
     "name": Array [
       "title",
-    ],
-  },
-  Object {
-    "errors": Array [
-      "'name' is required",
-    ],
-    "name": Array [
-      "name",
     ],
   },
   Object {
