@@ -11,7 +11,11 @@ export interface ConfigState {
   appLoginURL?: string;
 }
 
-const initialConfigs = {};
+const initialConfigs = {
+  languageCode: 'en' as LanguageCode,
+  projectLanguageCode: 'core' as ProjectLanguageCode,
+  appLoginURL: undefined,
+};
 
 const { useGlobalState, getGlobalState, setGlobalState } = createGlobalState<ConfigState>(
   initialConfigs
