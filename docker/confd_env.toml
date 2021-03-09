@@ -18,4 +18,6 @@ keys = [
     "/react/app/opensrp/logout/url",
     "/react/app/opensrp/user/url",
     "/react/app/website/name",
+    "/react/app/action/uuid/namespace",
+    "/react/app/plan/uuid/namespace"
 ]
