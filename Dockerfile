@@ -4,16 +4,16 @@ RUN git clone --depth=1 --branch=config-sessions https://github.com/onaio/expres
 
 FROM node:14.9.0-alpine as build
 
-COPY ./ /app
+COPY ./ /project
 
-WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
+WORKDIR /project
+ENV PATH /project/node_modules/.bin:$PATH
 
 RUN chown -R node .
 USER node
 
-RUN cp /app/client/.env.sample /app/client/.env \
-      && yarn install
+RUN cp /project/app/.env.sample /project/app/.env \
+      && yarn
 
 USER root
 RUN chown -R node .
@@ -47,7 +47,7 @@ RUN chmod +x /usr/local/bin/app.sh
 
 WORKDIR /usr/src/web
 
-COPY --from=build /app/client/build /usr/src/web
+COPY --from=build /project/app/build /usr/src/web
 
 RUN chown -R node /usr/src/web
 
