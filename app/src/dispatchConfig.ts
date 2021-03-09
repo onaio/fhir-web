@@ -1,5 +1,4 @@
-import { configStore, LanguageCode, ProjectLanguageCode } from '@opensrp/pkg-config';
-import type { OpenSRPConfigs } from '@opensrp/pkg-config';
+import { ConfigState, LanguageCode, ProjectLanguageCode, setAllConfigs } from '@opensrp/pkg-config';
 import {
   BACKEND_ACTIVE,
   KEYCLOAK_API_BASE_URL,
@@ -7,12 +6,11 @@ import {
   OPENSRP_API_BASE_URL,
   PROJECT_LANGUAGE_CODE,
 } from './configs/env';
-import { Dictionary } from '@onaio/utils';
 import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from './constants';
 
 export const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
 
-const configObject: OpenSRPConfigs = {
+const configObject: ConfigState = {
   languageCode: LANGUAGE_CODE as LanguageCode,
   projectLanguageCode: PROJECT_LANGUAGE_CODE as ProjectLanguageCode,
   appLoginURL: APP_LOGIN_URL,
@@ -20,4 +18,4 @@ const configObject: OpenSRPConfigs = {
   opensrpBaseURL: OPENSRP_API_BASE_URL,
 };
 
-configStore.addConfig(configObject as Dictionary);
+setAllConfigs(configObject);
