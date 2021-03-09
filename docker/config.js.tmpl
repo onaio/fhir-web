@@ -15,4 +15,6 @@ window._env_ = {
   REACT_APP_OPENSRP_LOGOUT_URL: "{{ getv "/react/app/opensrp/logout/url" "https://opensrp-stage.smartregister.org/opensrp/logout.do" }}",
   REACT_APP_OPENSRP_USER_URL: "{{ getv "/react/app/opensrp/user/url" }}",
   REACT_APP_WEBSITE_NAME: "{{ getv "/react/app/website/name" }}",
+  REACT_APP_ACTION_UUID_NAMESPACE: "{{ getv "/react/app/action/uuid/namespace", "85f7dbbf-07d0-4c92-aa2d-d50d141dde00"}}",
+  REACT_APP_PLAN_UUID_NAMESPACE: "{{ getv "/react/app/plan/uuid/namespace", "35968df5-f335-44ae-8ae5-25804caa2d86"}}"
 };
