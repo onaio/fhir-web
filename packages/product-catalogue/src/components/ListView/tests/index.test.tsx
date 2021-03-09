@@ -60,8 +60,9 @@ describe('List view Page', () => {
       wrapper.update();
     });
 
+    // no data
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"ErrorNo products found in the catalogueGo BackBack Home"`
+      `"Product Catalogue (0) + Add product to catalogueProduct NameIDActionsNo Data"`
     );
 
     // details view is not displayed
@@ -207,6 +208,6 @@ describe('List view Page', () => {
     });
 
     /** error view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/store",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "App Store initializer for OpennSRP web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -13,8 +13,8 @@
   "repository": "https://github.com/opensrp/web",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/keycloak-service --verbose --collectCoverage=true && cd packages/keycloak-service",
-    "test:watch": "cd ../../ && jest test  packages/keycloak-service --verbose --watch && cd packages/keycloak-service",
+    "test": "cd ../../ && yarn test packages/keycloak-service --verbose --collectCoverage=true && cd packages/keycloak-service",
+    "test:watch": "cd ../../ && yarn test packages/keycloak-service --verbose --watch && cd packages/keycloak-service",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@onaio/connected-reducer-registry": "^0.0.3",
-    "@onaio/gatekeeper": "^0.1.0",
+    "@onaio/gatekeeper": "^0.1.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",

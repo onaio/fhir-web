@@ -5,6 +5,8 @@ import { Router } from 'react-router';
 import { ViewDetails } from '..';
 import { product1 } from '../../../ducks/productCatalogue/tests/fixtures';
 import { createBrowserHistory } from 'history';
+import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
+import { act } from 'react-dom/test-utils';
 
 const history = createBrowserHistory();
 
@@ -29,7 +31,23 @@ describe('View Details', () => {
       </Router>
     );
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"404Sorry, the resource you requested for, does not existGo BackBack Home"`
+      `"404Sorry, the resource you requested for, does not existGo backGo home"`
     );
+  });
+
+  it('Closes on clicking cancle ', () => {
+    const props = { objectId: '1', object: product1 };
+    const wrapper = mount(
+      <Router history={history}>
+        <ViewDetails {...props} />
+      </Router>
+    );
+
+    // simulate clicking on close button
+    act(() => {
+      wrapper.find('.flex-right button').simulate('click');
+    });
+
+    expect(wrapper.props().history.location.pathname).toEqual(CATALOGUE_LIST_VIEW_URL);
   });
 });

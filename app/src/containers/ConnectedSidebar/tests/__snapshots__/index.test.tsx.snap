@@ -1,0 +1,431 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/ConnectedSidebar correctly expand admin-form-config menu 1`] = `
+Array [
+  undefined,
+  undefined,
+  undefined,
+  <SubMenu
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Admin"
+  >
+    <SubMenu
+      title="Form Configuration"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar correctly expand location menu 1`] = `
+Array [
+  undefined,
+  undefined,
+  undefined,
+  <SubMenu
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Admin"
+  >
+    <SubMenu
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Location unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/group"
+        >
+          Location unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar correctly expand teams menu 1`] = `
+Array [
+  undefined,
+  undefined,
+  undefined,
+  <SubMenu
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Admin"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/teams"
+      >
+        Teams
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar correctly expand users menu 1`] = `
+Array [
+  undefined,
+  undefined,
+  undefined,
+  <SubMenu
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Admin"
+  >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/list"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar displays menu links for enabled Location module 1`] = `
+Array [
+  undefined,
+  undefined,
+  undefined,
+  <SubMenu
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Admin"
+  >
+    <SubMenu
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Location unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/group"
+        >
+          Location unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar displays menu links for enabled modules 1`] = `
+Array [
+  <SubMenu
+    icon={
+      <MapMarkerOutlineIcon
+        className="sidebar-icons"
+      />
+    }
+    title="Missions"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/active"
+      >
+        Active
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/draft"
+      >
+        Draft
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/complete"
+      >
+        Complete
+      </Link>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/missions/trash"
+      >
+        Retired
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={
+      <ForwardRef(IdcardOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Card Support"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/card-support/download-client-data"
+      >
+        Download Client Data
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  undefined,
+  <SubMenu
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Admin"
+  >
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/product-catalogue/list"
+      >
+        Product Catalogue
+      </Link>
+    </MenuItem>
+    <SubMenu
+      title="Form Configuration"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/releases"
+        >
+          Manifest Releases
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/drafts"
+        >
+          Draft Files
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/form-config/json-validators"
+        >
+          JSON Validators
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar renders the ConnectedSidebar component 1`] = `
+Object {
+  "children": Array [
+    <div
+      className="ant-layout-sider-children"
+    >
+      <div
+        className="logo"
+      >
+        <Link
+          to="/"
+        >
+          <img
+            alt=""
+            className="img-fluid"
+            src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
+          />
+        </Link>
+      </div>
+      <Menu
+        className="menu-dark"
+        defaultOpenKeys={
+          Array [
+            "",
+          ]
+        }
+        defaultSelectedKeys={
+          Array [
+            "",
+          ]
+        }
+        mode="inline"
+        selectedKeys={
+          Array [
+            "",
+          ]
+        }
+        theme="dark"
+      >
+        <SubMenu
+          icon={
+            <ForwardRef(SettingOutlined)
+              className="sidebar-icons"
+            />
+          }
+          title="Admin"
+        />
+      </Menu>
+    </div>,
+    null,
+  ],
+  "className": "ant-layout-sider ant-layout-sider-dark layout-sider",
+  "style": Object {
+    "flex": "0 0 275px",
+    "maxWidth": "275px",
+    "minWidth": "275px",
+    "width": "275px",
+  },
+}
+`;
+
+exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
+Array [
+  undefined,
+  undefined,
+  false,
+  <SubMenu
+    icon={
+      <ForwardRef(SettingOutlined)
+        className="sidebar-icons"
+      />
+    }
+    title="Admin"
+  >
+    <SubMenu
+      title="Users"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/list"
+        >
+          User Management
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/groups"
+        >
+          User Groups
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
+    </SubMenu>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar shows the correct logo: Logo 1`] = `
+<div
+  className="logo"
+>
+  <Link
+    to="/"
+  >
+    <LinkAnchor
+      href="/"
+      navigate={[Function]}
+    >
+      <a
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt=""
+          className="img-fluid"
+          src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
+        />
+      </a>
+    </LinkAnchor>
+  </Link>
+</div>
+`;
