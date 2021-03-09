@@ -44,7 +44,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
   const mainMenu: JSX.Element[] = [];
 
-  const menus = menusSchema(roles);
+  const menus = menusSchema(roles as string[]);
 
   const mapChildren = React.useCallback((child: MenuItems) => {
     if (child.children.length) {

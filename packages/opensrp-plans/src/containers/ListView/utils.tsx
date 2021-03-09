@@ -4,6 +4,7 @@ import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { PLANS_ASSIGNMENT_VIEW_URL, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
+import moment from 'moment';
 import {
   NAME,
   DATE,
@@ -46,6 +47,7 @@ export const columns: ColumnsType<PlanDefinition> = [
     title: DATE,
     dataIndex: 'date',
     key: `${TableColumnsNamespace}-date`,
+    sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
   },
   {
     title: ACTIONS,
@@ -69,7 +71,9 @@ export const PlansLoading = () => {
 
 export const pageTitleBuilder = (status?: string, appendMissions = true) => {
   if (status) {
-    return `${status.charAt(0).toUpperCase()}${status.slice(1)} ${appendMissions ? MISSIONS : ''}`;
+    return `${status.charAt(0).toUpperCase()}${status.slice(1)}${
+      appendMissions ? ` ${MISSIONS}` : ''
+    }`;
   }
   return NO_STATUS_FOUND;
 };

@@ -217,7 +217,14 @@ export const inventory6 = {
   transaction_type: 'Inventory',
 };
 
-export const inventories = [inventory1, inventory2] as Inventory[];
+export const inventories = [
+  inventory1,
+  inventory2,
+  inventory3,
+  inventory4,
+  inventory5,
+  inventory6,
+] as Inventory[];
 
 export const structure1 = {
   type: 'Feature',
@@ -236,6 +243,10 @@ export const structure1 = {
 export const structure2 = {
   type: 'Feature',
   id: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
+  geometry: {
+    type: 'Point',
+    coordinates: [49.52125, -16.78147],
+  },
   properties: {
     type: 'Water Point',
     status: 'Active',
@@ -265,7 +276,7 @@ export const structures = [structure1, structure2, structure3] as LocationUnit[]
 
 export const fetchCalls = [
   [
-    'https://test-example.com/rest/location/getAll?serverVersion=0&is_jurisdiction=false&return_geometry=true',
+    'https://test-example.com/rest/location/b8a7998c-5df6-49eb-98e6-f0675db71848?serverVersion=0&is_jurisdiction=false&return_geometry=true',
     {
       headers: {
         accept: 'application/json',

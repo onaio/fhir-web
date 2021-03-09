@@ -46,7 +46,6 @@ import {
   goalPrioritiesDisplay,
   goalUnitDisplay,
   planActivities,
-  planStatusDisplay,
   PlanStatus,
   InterventionType,
   PlanActionCodesType,
@@ -79,6 +78,7 @@ import {
   goalDescription,
   status,
   title,
+  jurisdictions,
 } from '@opensrp/plan-form-core';
 import moment, { Moment } from 'moment';
 import { Select, Input, DatePicker } from 'antd';
@@ -95,6 +95,7 @@ import {
   PlanFormFieldsKeys,
 } from '../helpers/types';
 import { postPutPlan } from '../helpers/dataloaders';
+import { PlanStatusRenderer } from './componentsUtils/status';
 
 const { Panel } = Collapse;
 const { List, Item: FormItem } = Form;
@@ -411,16 +412,16 @@ const PlanForm = (props: PlanFormProps) => {
             rules={validationRules.status}
             hidden={isHidden(status)}
             id="status"
+            getValueFromEvent={() => {
+              return form.getFieldsValue()[status];
+            }}
           >
-            <Select disabled={disabledFields.includes(status)}>
-              {Object.entries(PlanStatus)
-                .filter((e) => !disAllowedStatusChoices.includes(e[1]))
-                .map((e) => (
-                  <Option key={e[0]} value={e[1]}>
-                    {planStatusDisplay[e[1]]}
-                  </Option>
-                ))}
-            </Select>
+            <PlanStatusRenderer
+              setFieldsValue={form.setFieldsValue}
+              disabledFields={disabledFields}
+              disAllowedStatusChoices={disAllowedStatusChoices}
+              assignedJurisdictions={form.getFieldsValue()[jurisdictions]}
+            />
           </FormItem>
           <FormItem
             rules={validationRules.dateRange}

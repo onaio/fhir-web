@@ -604,8 +604,11 @@ Array [
 ]
 `;
 
-exports[`components/ConnectedSidebar displays menu links for enabled Location module 1`] = `
+exports[`components/ConnectedSidebar correctly expand location menu 1`] = `
 Array [
+  undefined,
+  undefined,
+  undefined,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Missions"
@@ -656,6 +659,14 @@ Array [
       </Link>
     </MenuItem>
   </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar correctly expand users menu 1`] = `
+Array [
+  undefined,
+  undefined,
+  undefined,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
@@ -687,9 +698,9 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin/location/group"
+          to="/admin/users/roles"
         >
-          Location unit group
+          User Roles
         </Link>
       </MenuItem>
     </SubMenu>
@@ -716,25 +727,17 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin/form-config/releases"
+          to="/admin/location/unit"
         >
-          Manifest Releases
+          Location unit
         </Link>
       </MenuItem>
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin/form-config/drafts"
+          to="/admin/location/group"
         >
-          Draft Files
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/json-validators"
-        >
-          JSON Validators
+          Location unit group
         </Link>
       </MenuItem>
     </SubMenu>
@@ -807,15 +810,6 @@ Array [
       </Link>
     </MenuItem>
   </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Admin"
-  >
-    <SubMenu
-      title="Users"
-    >
-      <MenuItem>
-        <Link
           className="admin-link"
           to="/admin/users/list"
         >
@@ -844,6 +838,8 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+=======
+>>>>>>> master
     <MenuItem>
       <Link
         className="admin-link"
@@ -1107,6 +1103,14 @@ Array [
           Locations unit group
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/users/roles"
+        >
+          User Roles
+        </Link>
+      </MenuItem>
     </SubMenu>
     <MenuItem>
       <Link
@@ -1158,7 +1162,7 @@ Array [
 ]
 `;
 
-exports[`components/ConnectedSidebar shows the correct logg: Logo 1`] = `
+exports[`components/ConnectedSidebar shows the correct logo: Logo 1`] = `
 <div
   className="logo"
 >
