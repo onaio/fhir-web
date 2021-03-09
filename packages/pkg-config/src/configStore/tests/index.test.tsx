@@ -7,7 +7,7 @@ describe('pkg-configs/configStore', () => {
   });
 
   it('should have initial state', () => {
-    expect(getConfig('languageCode')).toEqual({});
+    expect(getConfig('languageCode')).toEqual('en');
   });
 
   it('stores and gets configuration correctly', () => {
