@@ -29,8 +29,3 @@ export interface APIEndpoints {
 
 /** Convenient type for either an array of jurisdictions or of tree nodes */
 export type TreeNodeType = OpenSRPJurisdiction | TreeNode;
-
-/** default component props */
-export interface Props {
-  opensrpBaseURL: string;
-}

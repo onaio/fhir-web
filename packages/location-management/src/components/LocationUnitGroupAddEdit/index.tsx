@@ -6,7 +6,7 @@ import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/loca
 import Form from './Form';
 import { useParams } from 'react-router';
 import { ADD_LOCATION_UNIT_GROUP, EDIT_LOCATION_UNIT_GROUP } from '../../lang';
-import { Props } from '../../ducks/types';
+import { Props } from '../../helpers/common';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 

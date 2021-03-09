@@ -150,7 +150,6 @@ import {
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
-import '@opensrp/plan-form/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
 import '@opensrp/product-catalogue/dist/index.css';
 import '@opensrp/inventory/dist/index.css';

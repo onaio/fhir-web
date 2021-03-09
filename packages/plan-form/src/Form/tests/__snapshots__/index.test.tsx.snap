@@ -308,6 +308,9 @@ exports[`containers/forms/PlanForm renders correctly: status input 1`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value="active"
 />
@@ -322,6 +325,9 @@ exports[`containers/forms/PlanForm renders correctly: status input 2`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value="complete"
 />
@@ -336,6 +342,9 @@ exports[`containers/forms/PlanForm renders correctly: status input 3`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value="draft"
 />
@@ -350,6 +359,9 @@ exports[`containers/forms/PlanForm renders correctly: status input 4`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value="retired"
 />

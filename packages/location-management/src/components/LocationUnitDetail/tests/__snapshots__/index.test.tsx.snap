@@ -5,12 +5,8 @@ exports[`location-management/src/components/LocationUnitDetail renders without c
   className="p-4 bg-white"
 >
   <Button
-    block={false}
     className="float-right"
-    ghost={false}
-    htmlType="button"
     icon={<ForwardRef(CloseOutlined) />}
-    loading={false}
     onClick={[Function]}
     shape="circle"
     type="text"

@@ -26,7 +26,7 @@ import Table, { TableData } from './Table';
 import './LocationUnitGroupList.css';
 import { Link } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { Props } from '../../ducks/types';
+import { Props } from '../../helpers/common';
 
 reducerRegistry.register(reducerName, reducer);
 
