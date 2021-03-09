@@ -284,6 +284,20 @@ describe('containers/forms/PlanForm', () => {
     expect(disableDate(current, dates)).toBeTruthy();
   });
 
+  it('renders correcty when dates are passed', async () => {
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm />
+      </MemoryRouter>
+    );
+
+    const instance = wrapper.find('#dateRange RangePicker').at(0).props();
+    instance.onCalendarChange(['2022-07-13', '2022-07-14']);
+    instance.onOpenChange(true);
+    expect(instance.disabledDate(moment('2017-07-13'))).toBeFalsy();
+    wrapper.unmount();
+  });
+
   it('Form submission for new plans works', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 201 });
 
