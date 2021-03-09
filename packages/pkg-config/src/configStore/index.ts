@@ -54,7 +54,7 @@ const getConfig = getGlobalState;
  * @example
  * import {setConfig} from `'@opensrp/pkg-config'`;
  *
- * const language = getConfigs('languageCode');
+ * const language = setConfig('languageCode', 'fr');
  */
 const setConfig = setGlobalState;
 
