@@ -8,3 +8,7 @@
 .d-flex {
   display: flex;
 }
+.flex-right {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -27,11 +27,7 @@
 }
 
 .plan-info-main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   padding: 16px 28px;
-  flex-wrap: wrap;
 }
 .plan-avatar-detail-section {
   display: flex;
