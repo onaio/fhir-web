@@ -6,14 +6,21 @@ import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { connect } from 'react-redux';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
 import { Link } from 'react-router-dom';
-import filesReducer, {
+import {
+  filesReducer,
   fetchManifestFiles,
   filesReducerName,
   ManifestFilesTypes,
   getAllManifestFilesArray,
   removeManifestFiles,
-} from '../../ducks/manifestFiles';
+  formatDate,
+  downloadManifestFile,
+  fetchManifests,
+} from '@opensrp/form-config-core';
 import { Row, Col } from 'reactstrap';
+import { Cell } from 'react-table';
+import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 import {
   DOWNLOAD,
   EDIT,
@@ -26,10 +33,6 @@ import {
   FIND_FILES,
   CREATED_AT,
 } from '../../lang';
-import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile, fetchManifests } from '../../helpers/utils';
-import { Dictionary } from '@onaio/utils';
-import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
