@@ -52,58 +52,56 @@ const PlanInfo = (props: PlanInfoProps) => {
         routes={routes}
         itemRender={itemRender}
       ></Breadcrumb>
-      <Row>
-        <div className="plan-info-main">
-          <Col md={12}>
-            <div className="plan-avatar-detail-section">
-              <span className="avatar-section">
-                <Avatar
-                  /**Find the right icon */
-                  icon={<FileDoneOutlined />}
-                  className=""
-                  style={{
-                    width: 80,
-                    height: 82,
-                    lineHeight: 1.8,
-                    color: '#1CABE2',
-                    fontSize: 50,
-                  }}
-                />
-              </span>
-              <div className="plan-detail-section">
-                <div>
-                  <h4>{plan.title}</h4>
-                </div>
-                <div>
-                  <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
-                  <Divider type="vertical" />
-                  <span style={{ color: PlanStatusColors[plan.status] }}>
-                    {pageTitleBuilder(plan.status, false)}
-                  </span>
-                  <Divider type="vertical" />
-                </div>
+      <Row className="plan-info-main">
+        <Col md={12}>
+          <div className="plan-avatar-detail-section">
+            <span className="avatar-section">
+              <Avatar
+                /**Find the right icon */
+                icon={<FileDoneOutlined />}
+                className=""
+                style={{
+                  width: 80,
+                  height: 82,
+                  lineHeight: 1.8,
+                  color: '#1CABE2',
+                  fontSize: 50,
+                }}
+              />
+            </span>
+            <div className="plan-detail-section">
+              <div>
+                <h4>{plan.title}</h4>
+              </div>
+              <div>
+                <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
+                <Divider type="vertical" />
+                <span style={{ color: PlanStatusColors[plan.status] }}>
+                  {pageTitleBuilder(plan.status, false)}
+                </span>
+                <Divider type="vertical" />
               </div>
             </div>
-          </Col>
-          <Col md={12} className="d-flex">
-            <div className="plan-dates">
-              <div className="plan-start-date">
-                <span className="start-date">{START_DATE}</span>
-                <h2>{plan.effectivePeriod.start}</h2>
-              </div>
-              <Divider className="date-divider" type="vertical" />
-              <div className="plan-end-date">
-                <span className="end-date">{END_DATE}</span>
-                <h2>{plan.effectivePeriod.end}</h2>
-              </div>
+          </div>
+        </Col>
+        <Col md={12} className="flex-right">
+          <div className="plan-dates">
+            <div className="plan-start-date">
+              <span className="start-date">{START_DATE}</span>
+              <h2>{plan.effectivePeriod.start}</h2>
             </div>
-          </Col>
-          <Col md={24}>
-            <div className="plan-description">
-              <span>{plan.description}</span>
+            <Divider className="date-divider" type="vertical" />
+            <div className="plan-end-date">
+              <span className="end-date">{END_DATE}</span>
+              <h2>{plan.effectivePeriod.end}</h2>
             </div>
-          </Col>
-        </div>
+          </div>
+        </Col>
+        <Col md={24}>
+          <div className="plan-description">
+            <span>{plan.description}</span>
+          </div>
+        </Col>
       </Row>
     </div>
   );
