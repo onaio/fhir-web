@@ -26,13 +26,13 @@ export const OPENSRP_ROLES =
  * @param defaultValue - The default value to return the value is not defined in process.env and window._env_.
  */
 export const setEnv = (name: string, defaultValue: any) => {
-  let { [name]: envValue } = process.env;
-  let value = envValue === undefined ? defaultValue : envValue;
+  const { [name]: envValue } = process.env;
+  const value = typeof envValue === 'undefined' ? defaultValue : envValue;
 
   if (typeof (window as any)._env_ === 'undefined') {
     return value;
   }
-  let { [name]: confValue } = (window as any)._env_;
+  const { [name]: confValue } = (window as any)._env_;
 
   return confValue === undefined ? value : confValue;
 };
@@ -123,7 +123,6 @@ export const OPENSRP_API_BASE_URL = setEnv(
   'REACT_APP_OPENSRP_API_BASE_URL',
   'https://opensrp-stage.smartregister.org/opensrp/rest/'
 );
-export type OPENSRP_API_BASE_URL = typeof OPENSRP_API_BASE_URL;
 
 export const KEYCLOAK_API_BASE_URL = setEnv(
   'REACT_APP_KEYCLOAK_API_BASE_URL',
