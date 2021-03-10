@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import i18n from 'i18next';
-import { initializei18n, LanguageResources } from '@opensrp/pkg-config';
+import { getConfig } from '@opensrp/pkg-config';
+import { loadLanguageResources } from './helpers/utils';
+
+const i18n = getConfig('i18n');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coreFrJson = require('../locales/core/fr.json');
@@ -9,13 +11,25 @@ const coreFrJson = require('../locales/core/fr.json');
 const coreEnJson = require('../locales/core/en.json');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+const coreArJson = require('../locales/core/ar.json');
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const eusmEnJson = require('../locales/eusm/en.json');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const eusmFrJson = require('../locales/eusm/fr.json');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const eusmArJson = require('../locales/eusm/ar.json');
+
 // the format to load the resource files: <languageCode>_<projectCode>. in small
-const resources: LanguageResources = {
+const resources = {
+  ar_core: {
+    translation: coreArJson,
+  },
+  ar_eusm: {
+    translation: eusmArJson,
+  },
   fr_core: {
     translation: coreFrJson,
   },
@@ -30,6 +44,6 @@ const resources: LanguageResources = {
   },
 };
 
-initializei18n(i18n, resources);
+loadLanguageResources(i18n, resources);
 
 export default i18n;
