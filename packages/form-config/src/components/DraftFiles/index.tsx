@@ -5,15 +5,24 @@ import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { connect } from 'react-redux';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
-import DraftFilesReducer, {
+import {
+  draftReducer,
   fetchManifestDraftFiles,
   draftReducerName,
   getAllManifestDraftFilesArray,
   removeManifestDraftFiles,
-} from '../../ducks/manifestDraftFiles';
+  ManifestFilesTypes,
+  formatDate,
+  downloadManifestFile,
+  makeRelease,
+  fetchDrafts,
+} from '@opensrp/form-config-core';
 import { Button, Row, Col } from 'reactstrap';
-import { ManifestFilesTypes } from '../../ducks/manifestFiles';
 import { Redirect } from 'react-router';
+import { Cell } from 'react-table';
+import { Link } from 'react-router-dom';
+import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 import {
   MAKE_RELEASE,
   FILE_NAME,
@@ -25,14 +34,9 @@ import {
   CREATED_AT,
   UPLOAD_NEW_FILE,
 } from '../../lang';
-import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile, makeRelease, fetchDrafts } from '../../helpers/utils';
-import { Link } from 'react-router-dom';
-import { Dictionary } from '@onaio/utils';
-import { GetAccessTokenType } from '@opensrp/server-service';
 
 /** Register reducer */
-reducerRegistry.register(draftReducerName, DraftFilesReducer);
+reducerRegistry.register(draftReducerName, draftReducer);
 
 /** default props interface */
 export interface DraftsDefaultProps extends SearchBarDefaultProps {
