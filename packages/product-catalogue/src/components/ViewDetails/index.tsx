@@ -8,6 +8,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { Button } from 'antd';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
+import './index.css';
 
 /**
  * helper function that creates a list of key,value pairs.
@@ -62,12 +63,12 @@ const ViewDetails = (props: ViewDetailsProps) => {
       {objectId && !object ? (
         <Resource404></Resource404>
       ) : (
-        <div className="p-4">
+        <div className="p-10">
           {extractViewDetails(object as ProductCatalogue).map(([key, val]) => {
             return (
-              <div key={`${key}-${val}`} className="mb-4 small">
-                <p className="mb-0 font-weight-bold">{key}</p>
-                <p className="mb-0">{`${val}`}</p>
+              <div key={`${key}-${val}`} className="mb-3">
+                <p className="panel-label">{key}</p>
+                <p className="mb-0 panel-value">{`${val}`}</p>
               </div>
             );
           })}
