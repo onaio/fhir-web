@@ -7,8 +7,10 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
-import { BellOutlined, GlobalOutlined } from '@ant-design/icons';
+import { BellOutlined } from '@ant-design/icons';
 import { LOGIN, MANAGE_ACCOUNT } from '../../../lang';
+import { LanguageSwitcher } from '../LanguageSwitcher';
+import { ENABLE_LANGUAGE_SWITCHER } from '../../../configs/__mocks__/env';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -67,12 +69,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Link to={URL_REACT_LOGIN}>{LOGIN}</Link>
         </Button>
       )}
-      <Button
-        shape="circle"
-        icon={<GlobalOutlined />}
-        className="bg-transparent border-0"
-        type="primary"
-      />
+      {ENABLE_LANGUAGE_SWITCHER && <LanguageSwitcher />}
     </Layout.Header>
   );
 };
