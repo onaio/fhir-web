@@ -284,6 +284,13 @@ describe('containers/forms/PlanForm', () => {
     expect(disableDate(current, dates)).toBeTruthy();
   });
 
+  it('disableDate should return true if start and end date is same', async () => {
+    const dates = [moment('2017-07-10'), moment('2017-07-10')];
+    const current = moment('2017-07-13');
+    // date today is 2017-07-13
+    expect(disableDate(current, dates)).toBeTruthy();
+  });
+
   it('renders correcty when dates are passed', async () => {
     const wrapper = mount(
       <MemoryRouter>
