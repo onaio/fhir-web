@@ -3,12 +3,12 @@ import React from 'react';
 import { Route, RouteProps, RouteComponentProps } from 'react-router';
 import { useSelector } from 'react-redux';
 import { getExtraData } from '@onaio/session-reducer';
-import { getConfigs } from '@opensrp/pkg-config';
+import { getAllConfigs } from '@opensrp/pkg-config';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { UnauthorizedPage } from '../components/UnauthorizedPage';
 import { FORBIDDEN_PAGE_STATUS } from '../lang';
 
-const configs = getConfigs();
+const configs = getAllConfigs();
 
 /** Private/Public component props */
 interface ComponentProps extends Partial<RouteProps> {
