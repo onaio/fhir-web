@@ -64,7 +64,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Active Missions + New MissionNameDateEnd DateActionsNo Data"`
+      `"Active Missions + New MissionNameDate createdEnd DateActionsNo Data"`
     );
   });
   it('renders Draft Missions Title', async () => {
@@ -98,7 +98,7 @@ describe('List view Page', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Draft Missions + New MissionNameDateEnd DateActionsDraft Plan2020-11-172021-12-24View1"`
+      `"Draft Missions + New MissionNameDate createdEnd DateActionsDraft Plan2020-11-172021-12-24View1"`
     );
   });
   it('renders Complete Missions Title', async () => {
@@ -139,7 +139,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Complete Missions + New MissionNameDateEnd DateActionsComplete Plan2020-11-172021-12-24View1"`
+      `"Complete Missions + New MissionNameDate createdEnd DateActionsComplete Plan2020-11-172021-12-24View1"`
     );
   });
 
@@ -176,7 +176,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Retired Missions + New MissionNameDateEnd DateActionsRetired Plan2020-11-172021-12-24View1"`
+      `"Retired Missions + New MissionNameDate createdEnd DateActionsRetired Plan2020-11-172021-12-24View1"`
     );
   });
 
