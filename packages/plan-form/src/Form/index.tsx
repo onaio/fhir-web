@@ -162,7 +162,11 @@ export const disableDate = (current: Moment, dates: Moment[]) => {
   if (!dates || dates.length === 0) {
     return false;
   }
-  return current.valueOf() < Date.now() || (dates[1] && dates[1].valueOf() < Date.now());
+  return (
+    current.valueOf() <= Date.now() ||
+    current.format('L') <= (dates[0] && dates[0].format('L')) ||
+    (dates[1] && dates[1].valueOf() <= Date.now())
+  );
 };
 
 /**
