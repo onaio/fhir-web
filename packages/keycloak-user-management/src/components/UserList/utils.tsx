@@ -2,6 +2,7 @@ import * as React from 'react';
 import { KeycloakUser, removeKeycloakUsers } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { TableActions } from './TableActions';
+import { EMAIL, FIRST_NAME, LAST_NAME, USERNAME } from '../../lang';
 
 /**
  * Get table columns for user list
@@ -20,21 +21,24 @@ export const getTableColumns = (
   extraData: Dictionary,
   sortedInfo?: Dictionary
 ): Dictionary[] => {
-  const headerItems: string[] = ['Username', 'Email', 'First Name', 'Last Name'];
+  const headerItems: string[] = [USERNAME, EMAIL, FIRST_NAME, LAST_NAME];
   const dataElements = [];
   const fields: string[] = ['username', 'email', 'firstName', 'lastName'];
 
   fields.forEach((field: string, index: number) => {
     dataElements.push({
       title: headerItems[index],
-      dataIndex: fields[index],
-      key: fields[index],
+      dataIndex: field,
+      key: field,
       sorter: (a: Dictionary, b: Dictionary) => {
-        if (b[fields[index]]) {
-          return a[fields[index]].length - b[fields[index]].length;
+        if (a[field] > b[field]) {
+          return -1;
+        } else if (a[field] < b[field]) {
+          return 1;
         }
+        return 0;
       },
-      sortOrder: sortedInfo && sortedInfo.columnKey === fields[index] && sortedInfo.order,
+      sortOrder: sortedInfo && sortedInfo.columnKey === field && sortedInfo.order,
       ellipsis: true,
     });
   });
