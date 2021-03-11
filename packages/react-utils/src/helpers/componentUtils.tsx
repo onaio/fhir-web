@@ -6,7 +6,7 @@ import { getExtraData } from '@onaio/session-reducer';
 import { getAllConfigs } from '@opensrp/pkg-config';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { UnauthorizedPage } from '../components/UnauthorizedPage';
-import { FORBIDDEN_PAGE_STATUS } from '../lang';
+import lang from '../lang';
 
 const configs = getAllConfigs();
 
@@ -40,7 +40,7 @@ export const PrivateComponent = (props: ComponentProps) => {
   return activeRoles && roles && isAuthorized(roles, activeRoles) ? (
     <ConnectedPrivateRoute {...CPRProps} />
   ) : (
-    <UnauthorizedPage title={FORBIDDEN_PAGE_STATUS} />
+    <UnauthorizedPage title={lang.FORBIDDEN_PAGE_STATUS} />
   );
 };
 
