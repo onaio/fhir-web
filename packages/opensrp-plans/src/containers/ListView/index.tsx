@@ -22,8 +22,8 @@ import {
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import { useTranslation } from 'react-i18next';
 import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
+import lang from '../../lang';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(PlansReducerName, plansReducer);
@@ -52,8 +52,6 @@ const PlansList = (props: PlansListTypes) => {
   const { service, data, fetchPlansCreator, baseURL, allowedPlanStatus } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
-
-  const { t } = useTranslation();
 
   useEffect(() => {
     loadPlans(baseURL, service, fetchPlansCreator, allowedPlanStatus)
@@ -93,7 +91,7 @@ const PlansList = (props: PlansListTypes) => {
           <div className="main-content__header mission-header">
             <Link to={PLANS_CREATE_VIEW_URL}>
               <Button type="primary" className="mr-0">
-                {t(' + New Mission')}
+                {lang.NEW_MISSION}
               </Button>
             </Link>
           </div>
