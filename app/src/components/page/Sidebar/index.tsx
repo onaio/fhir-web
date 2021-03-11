@@ -28,7 +28,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { roles } = extraData;
   let location = useLocation();
   let loc = location.pathname.split('/');
-  const [openKeys, setOpenKeys] = React.useState<React.ReactText[]>([]);
+  const [openKeys, setOpenKeys] = React.useState<React.Key[]>([]);
 
   const routes = getRoutes(roles as string[]);
 
@@ -71,12 +71,10 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         key="main-menu"
         theme="dark"
         selectedKeys={[activeKey]}
-        openKeys={(openKeys as string[]).length ? (openKeys as string[]) : activeLocationPaths}
+        openKeys={openKeys.length ? (openKeys as string[]) : activeLocationPaths}
         defaultOpenKeys={activeLocationPaths}
         defaultSelectedKeys={[activeKey]}
-        onOpenChange={(keys: React.ReactText[]) => {
-          setOpenKeys(keys);
-        }}
+        onOpenChange={(keys) => setOpenKeys(keys)}
         mode="inline"
         className="menu-dark"
       >
