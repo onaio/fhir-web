@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { getConfig } from '@opensrp/pkg-config';
 import { loadLanguageResources } from '@opensrp/react-utils';
+import type { i18nInstance } from 'i18next';
 
-const i18n = getConfig('i18n');
+const i18n = getConfig('i18n') as i18nInstance;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coreFrJson = require('../locales/core/fr.json');
