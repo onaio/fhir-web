@@ -7,10 +7,12 @@ import MockDate from 'mockdate';
 import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/camelcase */
 import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
 const configuredLanguage = `en_core`;
 
 i18n
+  .use(initReactI18next)
   .init({
     lng: configuredLanguage,
     fallbackLng: configuredLanguage,
@@ -18,7 +20,9 @@ i18n
     returnEmptyString: false,
     nsSeparator: '::',
     keySeparator: false,
-    useSuspense: false,
+    react: {
+      useSuspense: false,
+    },
   })
   .catch((err) => err);
 
