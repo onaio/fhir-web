@@ -6,7 +6,8 @@ import { ProductForm } from '../ProductForm';
 import { Layout, PageHeader } from 'antd';
 import Helmet from 'react-helmet';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { ADD_PRODUCT } from '../../lang';
+import lang from '../../lang';
+import { useTranslation } from 'react-i18next';
 
 type CreateProductViewProps = CommonProps;
 
@@ -22,7 +23,8 @@ const defaultProps = {
 
 const CreateProductView = (props: CreateProductViewProps) => {
   const { baseURL } = props;
-  const pageTitle = ADD_PRODUCT;
+  useTranslation();
+  const pageTitle = lang.ADD_PRODUCT;
 
   return (
     <Layout className="content-section">
