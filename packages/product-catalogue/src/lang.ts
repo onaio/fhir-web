@@ -12,7 +12,7 @@ export const FETCHING_PRODUCT = i18n.t('Fetching product Catalogue');
 export const FETCHING_PRODUCT_DESCRIPTION = i18n.t(
   'Please wait, as we fetch the product Catalogue.'
 );
-export const REQUIRED = i18n.t('Required');
+// export const REQUIRED = i18n.t('Required');
 export const YES = i18n.t('yes');
 export const NO = i18n.t('no');
 export const SUCCESSFULLY_UPDATED = i18n.t('Successfully Updated');
