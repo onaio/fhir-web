@@ -31,7 +31,6 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 };
 
 /** The Header component */
-
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id } = extraData;
