@@ -184,7 +184,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.text()).toMatchSnapshot('Locations unit');
+    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
     wrapper.unmount();
   });
 
@@ -261,7 +261,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.text()).toMatchSnapshot('Teams');
+    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
     wrapper.unmount();
   });
 });
