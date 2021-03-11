@@ -5,13 +5,13 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
-import { ACTIVE_PLANS_LIST_VIEW_URL, PLANS_LIST_VIEW_URL } from '../../../constants';
+import { ACTIVE_PLANS_LIST_VIEW_URL } from '../../../constants';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
-import { EDIT_PLAN } from '../../../lang';
+import lang from '../../../lang';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -36,15 +36,15 @@ describe('CreateEditProduct Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: { planId: mission1.identifier },
-        path: `${PLANS_LIST_VIEW_URL}/:planId`,
-        url: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
       },
     };
 
@@ -70,7 +70,7 @@ describe('CreateEditProduct Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual(EDIT_PLAN);
+    expect(helmet.title).toEqual(lang.EDIT_PLAN);
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
@@ -93,15 +93,15 @@ describe('CreateEditProduct Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: { planId: mission1.identifier },
-        path: `${PLANS_LIST_VIEW_URL}/:planId`,
-        url: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
       },
     };
 
@@ -128,7 +128,7 @@ describe('CreateEditProduct Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual(EDIT_PLAN);
+    expect(helmet.title).toEqual(lang.EDIT_PLAN);
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
@@ -169,15 +169,15 @@ describe('CreateEditProduct Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: { planId: mission1.identifier },
-        path: `${PLANS_LIST_VIEW_URL}/:planId`,
-        url: `${PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}/${mission1.identifier}`,
       },
     };
 
@@ -208,15 +208,15 @@ describe('CreateEditProduct Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}/${'missingPlan'}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}/${'missingPlan'}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: { planId: 'missingPlan' },
-        path: `${PLANS_LIST_VIEW_URL}/:planId`,
-        url: `${PLANS_LIST_VIEW_URL}/${'missingPlan'}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}/${'missingPlan'}`,
       },
     };
 
@@ -252,15 +252,15 @@ describe('CreateEditProduct Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: {},
-        path: `${PLANS_LIST_VIEW_URL}`,
-        url: `${PLANS_LIST_VIEW_URL}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
       },
     };
 

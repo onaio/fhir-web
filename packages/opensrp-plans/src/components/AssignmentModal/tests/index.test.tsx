@@ -2,7 +2,7 @@
 import { mount, shallow } from 'enzyme';
 import { EditAssignmentsModal } from '..';
 import React from 'react';
-import { CANCEL, SAVE } from '../../../lang';
+import lang from '../../../lang';
 import { act } from 'react-dom/test-utils';
 import { Dictionary } from '@onaio/utils';
 
@@ -69,7 +69,7 @@ describe('planAssignment modal', () => {
 
     // try saving
     const saveButton = wrapper.find('button').at(3);
-    expect(saveButton.text()).toEqual(SAVE);
+    expect(saveButton.text()).toEqual(lang.SAVE);
     await act(async () => {
       saveButton.simulate('click');
       wrapper.update();
@@ -107,7 +107,7 @@ describe('planAssignment modal', () => {
 
     // try saving
     const saveButton = wrapper.find('button').at(3);
-    expect(saveButton.text()).toEqual(SAVE);
+    expect(saveButton.text()).toEqual(lang.SAVE);
     await act(async () => {
       saveButton.simulate('click');
       wrapper.update();
@@ -143,7 +143,7 @@ describe('planAssignment modal', () => {
 
     // try canceling
     const cancelButton = wrapper.find('button').at(2);
-    expect(cancelButton.text()).toEqual(CANCEL);
+    expect(cancelButton.text()).toEqual(lang.CANCEL);
     act(() => {
       cancelButton.simulate('click');
       wrapper.update();
