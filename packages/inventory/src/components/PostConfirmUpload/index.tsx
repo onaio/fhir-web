@@ -1,25 +1,24 @@
 import React from 'react';
 import { Card, Spin } from 'antd';
-import {
-  INVENTORY_IS_BEING_ADDED_TO_SERVICE_POINTS,
-  INVENTORY_MAY_TAKE_A_FEW_MINUTES_TO_APPEAR,
-} from '../../lang';
+import lang from '../../lang';
 import { CardTitle } from '../../helpers/utils';
+import { useTranslation } from 'react-i18next';
 
 /** shown during csv bulk upload when waiting for data to be committed to database
  * after user confirms validation
  */
 const PostConfirmationUpload = () => {
+  useTranslation();
   const cardTitle = (
     <CardTitle
       IconRender={<Spin size="large"></Spin>}
-      text={INVENTORY_IS_BEING_ADDED_TO_SERVICE_POINTS}
+      text={lang.INVENTORY_IS_BEING_ADDED_TO_SERVICE_POINTS}
     />
   );
 
   return (
     <Card className="full-page-card" title={cardTitle}>
-      <p>{INVENTORY_MAY_TAKE_A_FEW_MINUTES_TO_APPEAR}</p>
+      <p>{lang.INVENTORY_MAY_TAKE_A_FEW_MINUTES_TO_APPEAR}</p>
     </Card>
   );
 };

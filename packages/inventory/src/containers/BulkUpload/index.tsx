@@ -4,7 +4,7 @@ import { getQueryParams } from '@opensrp/react-utils';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { ADD_INVENTORY_VIA_CSV } from '../../lang';
+import lang from '../../lang';
 import { updateUrlWithStatusCreator, UploadStatus } from '../../helpers/utils';
 import { StartUpload } from '../../components/StartUpload';
 import {
@@ -27,6 +27,7 @@ import { PostConfirmationUpload } from '../../components/PostConfirmUpload';
 import { PostConfirmationSuccess } from '../../components/PostConfirmationSuccess';
 import { PreConfirmationError } from '../../components/PreConfirmationError';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { useTranslation } from 'react-i18next';
 
 export type CSVUploadTypes = CommonProps & RouteComponentProps;
 
@@ -51,8 +52,9 @@ const BulkUpload = (props: CSVUploadTypes) => {
   const [file, selectFile] = useState<File>();
   const [requestErrors, setRequestErrors] = useState<BadRequestError>();
   const [importRequestError, setImportRequestError] = useState<BadRequestError>();
+  useTranslation();
 
-  const pageTitle = ADD_INVENTORY_VIA_CSV;
+  const pageTitle = lang.ADD_INVENTORY_VIA_CSV;
   return (
     <div className="content-section">
       <Helmet>
