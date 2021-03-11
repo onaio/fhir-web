@@ -14,6 +14,7 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
 import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
 import lang from '../../lang';
+import { useTranslation } from 'react-i18next';
 
 interface ActionColumnProps {
   assignments: Assignment[];
@@ -48,6 +49,7 @@ export const ActionColumn = (props: ActionColumnProps) => {
     baseURL,
     disableAssignments,
   } = props;
+  useTranslation();
 
   const allOrganizationOptions = organizations.map((org) => ({
     key: org.identifier,
