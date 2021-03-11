@@ -4,8 +4,29 @@
 import enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import MockDate from 'mockdate';
-global.fetch = require('jest-fetch-mock');
+import { setAllConfigs } from '@opensrp/pkg-config';
+/* eslint-disable @typescript-eslint/camelcase */
+import i18n from 'i18next';
 
+const configuredLanguage = `en_core`;
+
+i18n
+  .init({
+    lng: configuredLanguage,
+    fallbackLng: configuredLanguage,
+    interpolation: { escapeValue: false },
+    returnEmptyString: false,
+    nsSeparator: '::',
+    keySeparator: false,
+    useSuspense: false,
+  })
+  .catch((err) => err);
+
+setAllConfigs({
+  i18n: i18n,
+});
+
+global.fetch = require('jest-fetch-mock');
 MockDate.set('2017-07-13T19:31:00.000Z'); // 7-13-17 19:31 => Mersenne primes :)
 
 enzyme.configure({ adapter: new Adapter() });
