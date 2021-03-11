@@ -16,6 +16,7 @@ import {
   OPENSRP_BUSINESS_STATUS_HAS_PROBLEM,
   OPENSRP_TASK_STATUS_COMPLETED,
 } from '../../constants';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
@@ -34,6 +35,7 @@ const MissionData = (props: MissionDataProps) => {
   const [flaggedProducts, setFlaggedProducts] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
+  useTranslation();
 
   useEffect(() => {
     const { identifier: planId } = plan;

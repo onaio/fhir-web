@@ -6,6 +6,7 @@ import lang from '../../lang';
 import { CommonProps, postPutPlan } from '@opensrp/plan-form';
 import { defaultCommonProps } from '../../helpers/common';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 
@@ -32,6 +33,7 @@ const defaultProps = {
 const ActivateMissionCard = (props: ActivateMissionProps) => {
   const { plan, serviceClass, baseURL, submitCallback } = props;
   const planIsDraft = plan?.status === PlanStatus.DRAFT;
+  useTranslation();
 
   if (!plan || !planIsDraft) {
     return null;

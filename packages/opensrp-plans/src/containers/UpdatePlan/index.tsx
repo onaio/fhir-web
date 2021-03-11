@@ -34,6 +34,7 @@ import {
 import { PlanLoading } from '../../helpers/utils';
 import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp/plan-form';
 import lang from '../../lang';
+import { useTranslation } from 'react-i18next';
 
 /** register catalogue reducer */
 reducerRegistry.register(planReducerName, plansReducer);
@@ -67,6 +68,7 @@ const EditPlanView = (props: EditViewTypes) => {
   const { planId } = props.match.params;
   const [loading, setLoading] = useState<boolean>(!plan);
   const history = useHistory();
+  useTranslation();
 
   const { errorMessage, broken, handleBrokenPage } = useHandleBrokenPage();
 

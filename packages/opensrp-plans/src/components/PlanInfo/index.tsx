@@ -8,6 +8,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { redirectMapping } from '../../helpers/common';
 import { Route, BreadcrumbProps } from 'antd/lib/breadcrumb/Breadcrumb';
+import { useTranslation } from 'react-i18next';
+
 /** interface describing the props of PlanInfo */
 export interface PlanInfoProps {
   plan: PlanDefinition;
@@ -20,6 +22,7 @@ export interface PlanInfoProps {
  */
 const PlanInfo = (props: PlanInfoProps) => {
   const { plan, planId } = props;
+  useTranslation();
 
   const itemRender: BreadcrumbProps['itemRender'] = (route, _, routes) => {
     const last = routes.indexOf(route) === routes.length - 1;
