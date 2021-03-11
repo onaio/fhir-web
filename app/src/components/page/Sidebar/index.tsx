@@ -6,7 +6,8 @@ import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
 
-import { getActiveKey, menusSchema } from './utils';
+import { Route, getRoutes } from '../../../routes';
+import { getActiveKey } from './utils';
 import { MAIN_LOGO_SRC } from '../../../configs/env';
 import './Sidebar.css';
 
@@ -14,19 +15,6 @@ import './Sidebar.css';
 export interface SidebarProps extends RouteComponentProps {
   authenticated: boolean;
   extraData: { [key: string]: Dictionary };
-}
-
-/** Interface for menu items */
-
-export interface MenuItems {
-  key: string;
-  enabled?: boolean;
-  url?: string;
-  otherProps: {
-    icon?: string | JSX.Element;
-    title: string;
-  };
-  children: MenuItems[];
 }
 
 /** default props for Sidebar */
@@ -42,49 +30,34 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   let loc = location.pathname.split('/');
   const [openKeys, setOpenKeys] = React.useState<React.ReactText[]>([]);
 
-  const mainMenu: JSX.Element[] = [];
+  const routes = getRoutes(roles as string[]);
 
-  const menus = menusSchema(roles as string[]);
-
-  const mapChildren = React.useCallback((child: MenuItems) => {
-    if (child.children.length) {
+  const mapChildren = React.useCallback((route: Route) => {
+    if (route.children) {
       return (
-        <Menu.SubMenu key={child.key} icon={child.otherProps.icon} title={child.otherProps.title}>
-          {child.children.map(mapChildren)}
+        <Menu.SubMenu key={route.key} icon={route.otherProps?.icon} title={route.title}>
+          {route.children.map(mapChildren)}
         </Menu.SubMenu>
       );
-    } else {
+    } else if (route.url) {
       return (
-        <Menu.Item key={child.key}>
-          <Link className="admin-link" to={`${child.url}`}>
-            {child.otherProps.title}
+        <Menu.Item key={route.key}>
+          <Link className="admin-link" to={route.url}>
+            {route.title}
           </Link>
         </Menu.Item>
       );
+    } else {
+      return <Menu.Item key={route.key}>{route.title}</Menu.Item>;
     }
   }, []);
 
-  const processMenu = React.useMemo(() => {
-    for (let m = 0; m < menus.length; m += 1) {
-      mainMenu.push(
-        menus[m].enabled ? (
-          <Menu.SubMenu
-            key={menus[m].key}
-            icon={menus[m].otherProps.icon}
-            title={menus[m].otherProps.title}
-          >
-            {menus[m].children.map(mapChildren)}
-          </Menu.SubMenu>
-        ) : (
-          <></>
-        )
-      );
-    }
-    return mainMenu;
-  }, [mainMenu, mapChildren, menus]);
+  const sidebaritems: JSX.Element[] = React.useMemo(() => {
+    return routes.filter((route) => route.enabled).map(mapChildren);
+  }, [mapChildren, routes]);
 
   const activeLocationPaths = loc.filter((locString: string) => locString.length);
-  const activeKey = getActiveKey(menus, loc);
+  const activeKey = getActiveKey(routes, loc);
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
@@ -107,7 +80,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         mode="inline"
         className="menu-dark"
       >
-        {processMenu}
+        {sidebaritems}
       </Menu>
     </Layout.Sider>
   );
