@@ -2,12 +2,7 @@ import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import React from 'react';
 import { Card, Button, Typography, Tooltip } from 'antd';
-import {
-  ACTIVATE_MISSION,
-  CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS,
-  FAILED_TO_ACTIVATE_MISSION,
-  SUCCESSFULLY_ACTIVATED_MISSION,
-} from '../../lang';
+import lang from '../../lang';
 import { CommonProps, postPutPlan } from '@opensrp/plan-form';
 import { defaultCommonProps } from '../../helpers/common';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -52,17 +47,17 @@ const ActivateMissionCard = (props: ActivateMissionProps) => {
     };
     postPutPlan(planPayload, baseURL, true, serviceClass)
       .then(() => {
-        sendSuccessNotification(SUCCESSFULLY_ACTIVATED_MISSION);
+        sendSuccessNotification(lang.SUCCESSFULLY_ACTIVATED_MISSION);
         submitCallback(planPayload);
       })
       .catch(() => {
-        sendErrorNotification(FAILED_TO_ACTIVATE_MISSION);
+        sendErrorNotification(lang.FAILED_TO_ACTIVATE_MISSION);
       });
   };
 
   const ActivateButton = (
     <Button onClick={clickHandler} type="primary" disabled={isActivateButtonDisabled}>
-      {ACTIVATE_MISSION}
+      {lang.ACTIVATE_MISSION}
     </Button>
   );
 
@@ -70,12 +65,12 @@ const ActivateMissionCard = (props: ActivateMissionProps) => {
     <Card
       className="activate-plan"
       bordered={false}
-      title={<Title level={5}>{ACTIVATE_MISSION}</Title>}
+      title={<Title level={5}>{lang.ACTIVATE_MISSION}</Title>}
     >
       {planHasJurisdictions ? (
         ActivateButton
       ) : (
-        <Tooltip title={CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS}>{ActivateButton}</Tooltip>
+        <Tooltip title={lang.CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS}>{ActivateButton}</Tooltip>
       )}
     </Card>
   );

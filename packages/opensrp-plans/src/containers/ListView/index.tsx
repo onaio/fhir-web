@@ -7,8 +7,7 @@ import {
   makePlanDefinitionsArraySelector,
 } from '../../ducks/planDefinitions';
 import { connect } from 'react-redux';
-import { ColumnsType } from 'antd/lib/table/interface';
-import { PlansLoading, columns, pageTitleBuilder } from './utils';
+import { PlansLoading, getColumns, pageTitleBuilder } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -32,7 +31,6 @@ reducerRegistry.register(PlansReducerName, plansReducer);
 /** props for the PlansList view */
 interface Props<T = PlanDefinition> extends CommonProps {
   data: T[];
-  columns: ColumnsType<T>;
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
   allowedPlanStatus: string;
@@ -41,7 +39,6 @@ interface Props<T = PlanDefinition> extends CommonProps {
 const defaultProps = {
   ...defaultCommonProps,
   data: [],
-  columns: columns,
   fetchPlansCreator: fetchPlanDefinitions,
   service: OpenSRPService,
   allowedPlanStatus: PlanStatus.ACTIVE,
@@ -52,7 +49,7 @@ export type PlansListTypes = Props<PlanDefinition> & RouteComponentProps<RoutePa
 /** component that renders plans */
 
 const PlansList = (props: PlansListTypes) => {
-  const { service, data, columns, fetchPlansCreator, baseURL, allowedPlanStatus } = props;
+  const { service, data, fetchPlansCreator, baseURL, allowedPlanStatus } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
 
@@ -82,6 +79,8 @@ const PlansList = (props: PlansListTypes) => {
     };
     return planWithKey;
   });
+
+  const columns = getColumns();
 
   return (
     <div className="content-section">
