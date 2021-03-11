@@ -14,7 +14,7 @@ jest.mock('@opensrp/pkg-config', () => {
   const actual = jest.requireActual('@opensrp/pkg-config');
   return {
     ...actual,
-    getConfigs: () => ({
+    getAllConfigs: () => ({
       appLoginURL: '/someUrl',
     }),
   };

@@ -232,6 +232,11 @@ describe('containers/forms/PlanForm', () => {
 
     // next we set wrong values for fields that expect specific values
 
+    // Set title for the plan with forward slash
+    wrapper
+      .find('#title input')
+      .simulate('change', { target: { name: 'title', value: 'Plan / Name' } });
+
     // Set wrong interventionType field value
     formInstance.setFieldsValue({
       interventionType: 'Oov',
@@ -364,7 +369,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('input[value="retired"]').simulate('click');
     // look for popup to confirm
     expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
-      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+      `"Are you sure? you won't be able to change the status for retired plansnoyes"`
     );
     wrapper.find('.plan-form-status button').last().simulate('click');
 
@@ -422,7 +427,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('input[value="retired"]').simulate('click');
     // look for popup to confirm
     expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
-      `"Are you sure, you won't be able to change the status for retired plansnoyes"`
+      `"Are you sure? you won't be able to change the status for retired plansnoyes"`
     );
     // cancel status change
     wrapper.find('.plan-form-status button').first().simulate('click');
