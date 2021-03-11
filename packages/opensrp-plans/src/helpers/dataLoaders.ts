@@ -96,6 +96,7 @@ export async function loadSinglePlan(
 
 /**
  * get all the assignments for plan
+ *
  * @param {string} baseURL -  base url of api
  * @param {string} planId - id of the product to be fetched
  * @param {OpenSRPService} service - the opensrp service
