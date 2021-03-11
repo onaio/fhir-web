@@ -45,11 +45,12 @@
     "@opensrp/pkg-config": "^0.0.6",
     "@opensrp/reducer-factory": "^0.0.1",
     "@opensrp/server-service": "^0.0.17",
-    "date-fns": "^2.17.0",
+    "date-fns": "^2.19.0",
     "i18next": "^19.8.4"
   },
   "devDependencies": {
     "@types/redux": "^3.6.0",
-    "i18next-parser": "^3.5.0"
+    "i18next-parser": "^3.5.0",
+    "@types/date-fns": "2.6.0"
   }
 }

@@ -47,12 +47,13 @@
     "@opensrp/react-utils": "^0.0.7",
     "@opensrp/store": "^0.0.9",
     "axios": "^0.21.1",
-    "date-fns": "2.11.1",
+    "date-fns": "^2.19.0",
     "i18next": "^19.8.4"
   },
   "devDependencies": {
     "@onaio/session-reducer": "^0.0.12",
     "i18next-parser": "^3.5.0",
-    "nock": "^13.0.6"
+    "nock": "^13.0.6",
+    "@types/date-fns": "2.6.0"
   }
 }
