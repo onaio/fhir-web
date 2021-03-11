@@ -1,14 +1,10 @@
 import React from 'react';
 import { Card, Space, Button } from 'antd';
-import {
-  CANCEL,
-  FILE_READY,
-  INVENTORY_ITEMS_WILL_BE_ADDED,
-  PROCEED_WITH_ADDING_INVENTORY,
-} from '../../lang';
+import lang from '../../lang';
 import { RightCircleOutlined } from '@ant-design/icons';
 import { format } from 'util';
 import { CardTitle } from '../../helpers/utils';
+import { useTranslation } from 'react-i18next';
 
 /** describes this component's props */
 interface PreConfirmationSuccessProps {
@@ -29,27 +25,28 @@ const defaultProps = {
  */
 const PreConfirmationSuccess = (props: PreConfirmationSuccessProps) => {
   const { onCancel, onCommitInventory, rowsProcessed, filename } = props;
+  useTranslation();
 
   const cardTitle = (
     <CardTitle
       IconRender={<RightCircleOutlined className="card-title__icon" />}
-      text={format(FILE_READY, filename)}
+      text={format(lang.FILE_READY, filename)}
     />
   );
 
   return (
     <Card title={cardTitle} className="full-page-card">
-      <p>{format(INVENTORY_ITEMS_WILL_BE_ADDED, rowsProcessed)}</p>
+      <p>{format(lang.INVENTORY_ITEMS_WILL_BE_ADDED, rowsProcessed)}</p>
       <Space>
         <Button
           id="confirm-commit"
           className="custom-btn-success round-button"
           onClick={onCommitInventory}
         >
-          {PROCEED_WITH_ADDING_INVENTORY}
+          {lang.PROCEED_WITH_ADDING_INVENTORY}
         </Button>
         <Button id="cancel-commit" className="round-button" onClick={onCancel}>
-          {CANCEL}
+          {lang.CANCEL}
         </Button>
       </Space>
     </Card>

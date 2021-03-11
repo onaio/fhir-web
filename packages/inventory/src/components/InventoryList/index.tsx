@@ -11,7 +11,7 @@ import {
   TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { ADD_NEW_INVENTORY_ITEM, ERROR_GETTING_INVENTORIES, INVENTORY_ITEMS } from '../../lang';
+import lang from '../../lang';
 import {
   fetchInventories,
   getInventoriesByExpiry,
@@ -24,6 +24,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
 import { OpenSRPService, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
@@ -61,6 +62,7 @@ const InventoryList = (props: InventoryListProps) => {
   ) as Inventory[];
   const { broken, handleBrokenPage } = useHandleBrokenPage();
   const dispatch = useDispatch();
+  useTranslation();
 
   useEffect(() => {
     // api call to get inventory by id
@@ -79,7 +81,7 @@ const InventoryList = (props: InventoryListProps) => {
   }, []);
 
   if (broken) {
-    return <Alert message={ERROR_GETTING_INVENTORIES} type="error" />;
+    return <Alert message={lang.ERROR_GETTING_INVENTORIES} type="error" />;
   }
 
   // add a key prop to the array data to be consumed by the table
@@ -100,10 +102,10 @@ const InventoryList = (props: InventoryListProps) => {
       <Row className={'list-view'}>
         <Col className={'main-content'}>
           <div className="inventory-profile">
-            <h6>{INVENTORY_ITEMS}</h6>
+            <h6>{lang.INVENTORY_ITEMS}</h6>
             <Link to={`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`}>
               <Button type="primary" size="large">
-                {`+ ${ADD_NEW_INVENTORY_ITEM}`}
+                {`+ ${lang.ADD_NEW_INVENTORY_ITEM}`}
               </Button>
             </Link>
           </div>

@@ -15,7 +15,7 @@ Object {
       <Link
         to="/login"
       >
-        Login
+        Login 
       </Link>
     </Button>,
     <Button

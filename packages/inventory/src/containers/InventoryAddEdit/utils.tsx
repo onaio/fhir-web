@@ -4,7 +4,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_ENDPOINT_SETTINGS } from '../../constants';
-import { ERROR_GENERIC } from '../../lang';
+import lang, { Lang } from '../../lang';
 import { Setting } from '../../components/InventoryItemForm';
 
 /**
@@ -14,16 +14,18 @@ import { Setting } from '../../components/InventoryItemForm';
  * @param params settings endpoint params
  * @param setSettings set settings fetch in component state
  * @param customOptions OpenSRP class custom fetch options
+ * @param langObj - the language translations look up
  */
 export const fetchSettings = (
   openSRPBaseURL: string,
   params: Dictionary,
   setSettings: Dispatch<SetStateAction<Setting[]>>,
-  customOptions?: typeof getFetchOptions
+  customOptions?: typeof getFetchOptions,
+  langObj: Lang = lang
 ) => {
   const service = new OpenSRPService(OPENSRP_ENDPOINT_SETTINGS, openSRPBaseURL, customOptions);
   service
     .list(params)
     .then((response: Setting[]) => setSettings(response))
-    .catch(() => sendErrorNotification(ERROR_GENERIC));
+    .catch(() => sendErrorNotification(langObj.ERROR_GENERIC));
 };
