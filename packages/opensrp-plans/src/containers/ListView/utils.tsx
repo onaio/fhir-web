@@ -5,6 +5,7 @@ import { PLANS_ASSIGNMENT_VIEW_URL, TableColumnsNamespace } from '../../constant
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import moment from 'moment';
+import { Dictionary } from '@onaio/utils';
 import {
   NAME,
   DATE,
@@ -14,6 +15,7 @@ import {
   DESCRIPTION,
   MISSIONS,
   NO_STATUS_FOUND,
+  END_DATE,
 } from '../../lang';
 
 /** component rendered in the action column of the table */
@@ -41,13 +43,19 @@ export const columns: ColumnsType<PlanDefinition> = [
       }
       return 0;
     },
-    width: '60%',
+    width: '50%',
   },
   {
     title: DATE,
     dataIndex: 'date',
     key: `${TableColumnsNamespace}-date`,
     sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+  },
+  {
+    title: END_DATE,
+    dataIndex: 'effectivePeriod',
+    key: `${TableColumnsNamespace}-date`,
+    render: (item: Dictionary) => item.end,
   },
   {
     title: ACTIONS,
