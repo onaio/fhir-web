@@ -12,7 +12,7 @@ function fill() {
   lang.NEW_MISSION = i18n.t(' + New Mission');
 
   // plans table columns
-  lang.DATE = i18n.t('Date');
+  lang.DATE = i18n.t('Date created');
   lang.ACTIONS = i18n.t('Actions');
 
   //loader texts
