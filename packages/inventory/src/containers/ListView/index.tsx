@@ -8,10 +8,12 @@ import {
 } from '@opensrp/react-utils';
 import {
   TreeNode,
+  fetchTree,
+  hierarchyReducer,
+  hierarchyReducerName,
   locationUnitsReducer,
   locationUnitsReducerName,
   fetchLocationUnits,
-  updatedLocationHierachyDucks,
   loadJurisdictions,
   loadHierarchy,
   LocationUnit,
@@ -39,8 +41,6 @@ import { TableData } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { loadCount } from '../../helpers/dataLoaders';
 
-const { fetchTree, hierarchyReducer, hierarchyReducerName } = updatedLocationHierachyDucks;
-
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -55,7 +55,7 @@ interface ServicePointsListProps extends CommonProps {
   columns: ColumnsType<TableData>;
   service: typeof OpenSRPService;
   fetchLocationsCreator: typeof fetchLocationUnits;
-  fetchTreesCreator: typeof updatedLocationHierachyDucks.fetchTree;
+  fetchTreesCreator: typeof fetchTree;
   structures: LocationUnit[];
 }
 
