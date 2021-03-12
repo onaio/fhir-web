@@ -7,7 +7,7 @@ import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
 import * as notifications from '@opensrp/notifications';
 import { isDateFuture, isDatePastOrToday, submitForm } from '../utils';
-import { ERROR_GENERIC } from '../../../lang';
+import lang from '../../../lang';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -139,7 +139,7 @@ describe('components/InventoryItemForm/utils/submitForm', () => {
         method: 'POST',
       },
     ]);
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_GENERIC);
     expect(setSubmittingMock.mock.calls).toHaveLength(2);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
@@ -172,7 +172,7 @@ describe('components/InventoryItemForm/utils/submitForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_GENERIC);
     expect(setSubmittingMock.mock.calls).toHaveLength(2);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);

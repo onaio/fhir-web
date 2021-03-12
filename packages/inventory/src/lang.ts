@@ -14,7 +14,7 @@ function fill() {
   lang.LOCATION_TH = i18n.t('Location');
   lang.SERVICE_POINT_ID_TH = i18n.t('Service point ID');
   lang.ACTIONS_TH = i18n.t('Actions');
-  lang.VIEW = i18n.t('view');
+  lang.VIEW = i18n.t('View');
   lang.FETCHING_LOCATIONS = i18n.t('Fetching locations');
   lang.FETCHING_LOCATIONS_DESCRIPTION = i18n.t('Please wait, while locations are being fetched');
   lang.LOADING_ELLIPSIS = i18n.t('Loading ...');
