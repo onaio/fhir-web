@@ -24,7 +24,11 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../../ducks/location-hierarchy';
-import { locationUnitsReducer, locationUnitsReducerName } from '../../../ducks/location-units';
+import {
+  locationUnitsReducer,
+  locationUnitsReducerName,
+  fetchLocationUnits,
+} from '../../../ducks/location-units';
 import toJson from 'enzyme-to-json';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -51,6 +55,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
   beforeEach(() => {
     store.dispatch(fetchAllHierarchies([]));
+    store.dispatch(fetchLocationUnits());
   });
 
   afterEach(() => {
@@ -260,6 +265,35 @@ describe('location-management/src/components/LocationUnitList', () => {
     wrapper.unmount();
   });
 
+  it('resets tree store if they exist in previous module with single hierarchy', async () => {
+    store.dispatch(fetchLocationUnits(baseLocationUnits));
+    const hierarchy1 = generateJurisdictionTree(rawHierarchy[0]).model;
+    store.dispatch(fetchAllHierarchies([hierarchy1]));
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(store.getState()['location-hierarchy'].hierarchyArray).toHaveLength(1);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitList opensrpBaseURL={baseURL} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+
+    expect(store.getState()['location-hierarchy'].hierarchyArray).toHaveLength(0);
+    wrapper.unmount();
+  });
+
   it('change table view when clicked on tree node', async () => {
     fetch.once(JSON.stringify(baseLocationUnits));
     fetch.once(JSON.stringify(rawHierarchy[0]));
@@ -376,5 +410,6 @@ describe('location-management/src/components/LocationUnitList', () => {
     // close LocationUnitDetail
     wrapper.find('LocationUnitDetail button').simulate('click');
     expect(wrapper.find('LocationUnitDetail')).toHaveLength(0);
+    wrapper.unmount();
   });
 });

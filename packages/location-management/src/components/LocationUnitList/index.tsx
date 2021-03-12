@@ -31,7 +31,7 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 import {
   generateJurisdictionTree,
   getBaseTreeNode,
@@ -104,13 +104,19 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
+    // clear tree data and location units if
+    // user switches to location management module
+    // from a module that needs only one hierarchy i.e teams assignment
+    if (treeData.length && treeData.length !== locationUnits.length) {
+      dispatch(fetchLocationUnits([]));
+      dispatch(fetchAllHierarchies([]));
+    }
+  });
+
+  useEffect(() => {
     if (!locationUnits.length) {
-      // clear heirarchies from previous modules
-      if (treeData.length) {
-        dispatch(fetchAllHierarchies([]));
-      }
       getBaseTreeNode(opensrpBaseURL)
-        .then((response) => dispatch(fetchLocationUnits(response)))
+        .then((response: LocationUnit[]) => dispatch(fetchLocationUnits(response)))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,7 +126,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (!treeData.length && locationUnits.length) {
       getHierarchy(locationUnits, opensrpBaseURL)
-        .then((hierarchy) => {
+        .then((hierarchy: RawOpenSRPHierarchy[]) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
           dispatch(fetchAllHierarchies(allhierarchy));
         })
