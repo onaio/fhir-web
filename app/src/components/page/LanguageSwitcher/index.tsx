@@ -42,7 +42,7 @@ const languageChangeHandler: MenuClickEventHandler = ({ key }) => {
   i18n.changeLanguage(newLanguage);
 };
 
-const menu = (
+export const LangMenu = (
   <Menu onClick={languageChangeHandler}>
     {Object.entries(supportedLanguageOptions).map(([languageCode, label]) => {
       return <Menu.Item key={languageCode}>{label}</Menu.Item>;
@@ -52,7 +52,7 @@ const menu = (
 
 const LanguageSwitcher = () => {
   return (
-    <Dropdown overlay={menu} placement="bottomRight">
+    <Dropdown overlay={LangMenu} placement="bottomRight">
       <Button
         onClick={(e) => e.preventDefault()}
         shape="circle"

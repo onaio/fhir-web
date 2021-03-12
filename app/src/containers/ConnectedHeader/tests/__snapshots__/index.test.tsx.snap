@@ -18,16 +18,7 @@ Object {
         Login 
       </Link>
     </Button>,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(GlobalOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
+    <LanguageSwitcher />,
   ],
   "className": "txt-white align-items-center justify-content-end px-1 layout-header",
 }
@@ -80,16 +71,7 @@ Object {
         RobertBaratheon
       </Button>
     </Dropdown>,
-    <Button
-      block={false}
-      className="bg-transparent border-0"
-      ghost={false}
-      htmlType="button"
-      icon={<ForwardRef(GlobalOutlined) />}
-      loading={false}
-      shape="circle"
-      type="primary"
-    />,
+    <LanguageSwitcher />,
   ],
   "className": "txt-white align-items-center justify-content-end px-1 layout-header",
 }
