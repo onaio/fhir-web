@@ -258,6 +258,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
+              }
               exact
               path={CATALOGUE_LIST_VIEW_URL}
               {...BaseProps}
