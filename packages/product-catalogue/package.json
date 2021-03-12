@@ -44,11 +44,11 @@
     "@opensrp/server-service": "^0.0.16",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
-    "i18next": "^19.8.4",
     "react-helmet": "^6.1.0",
     "yup": "^0.29.3"
   },
   "peerDependencies": {
+    "i18next": "^19.8.4",
     "@opensrp/store": "^0.0.7",
     "antd": "^4.8.2",
     "react": "^16.18.1",

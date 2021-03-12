@@ -40,7 +40,8 @@
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "redux": "^4.0.4"
+    "redux": "^4.0.4",
+    "i18next": "^19.8.4"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.20",
@@ -51,11 +52,11 @@
     "@onaio/drill-down-table": "^1.0.2",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
+    "@opensrp/react-utils": "0.0.7",
     "@opensrp/form-config-core": "^0.0.1",
     "@opensrp/pkg-config": "^0.0.6",
     "@opensrp/server-service": "^0.0.17",
     "formik": "^2.1.4",
-    "i18next": "^19.8.4",
     "lodash": "^4.17.15",
     "react-toastify": "^6.0.5",
     "reactstrap": "^8.0.1",

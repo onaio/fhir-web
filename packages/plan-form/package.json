@@ -37,6 +37,7 @@
   "peerDependencies": {
     "@opensrp/store": "^0.0.7",
     "antd": "^4.6.3",
+    "i18next": "^19.8.4",
     "react": "^16.18.1"
   },
   "author": "OpenSRP Engineering",
@@ -47,9 +48,9 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7",
     "@opensrp/plan-form-core": "^0.0.3",
     "@opensrp/server-service": "^0.0.16",
-    "i18next": "^19.8.4",
     "lodash": "^4.17.20",
     "react-i18next": "^11.8.3",
     "uuid": "^8.3.1"

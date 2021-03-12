@@ -35,7 +35,8 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.9",
-    "react": "^16.18.1"
+    "react": "^16.18.1",
+    "i18next": "^19.8.4"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
@@ -47,8 +48,7 @@
     "@opensrp/react-utils": "^0.0.7",
     "@opensrp/store": "^0.0.9",
     "axios": "^0.21.1",
-    "date-fns": "2.11.1",
-    "i18next": "^19.8.4"
+    "date-fns": "2.11.1"
   },
   "devDependencies": {
     "@onaio/session-reducer": "^0.0.12",
