@@ -3,16 +3,22 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import releasesReducer, {
+import {
+  releasesReducer,
   fetchManifestReleases,
   releasesReducerName,
   getAllManifestReleasesArray,
   ManifestReleasesTypes,
-} from '../../ducks/manifestReleases';
+  formatDate,
+  fetchReleaseFiles,
+} from '@opensrp/form-config-core';
 import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
 import { Link } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
+import { Cell } from 'react-table';
+import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
 import {
   APP_ID_LABEL,
   APP_VERSION_LABEL,
@@ -22,11 +28,6 @@ import {
   FIND_RELEASES_LABEL,
   UPDATED_AT_LABEL,
 } from '../../lang';
-import { Cell } from 'react-table';
-import { formatDate, fetchReleaseFiles } from '../../helpers/utils';
-import { Dictionary } from '@onaio/utils';
-import { GetAccessTokenType } from '@opensrp/server-service';
-
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
 

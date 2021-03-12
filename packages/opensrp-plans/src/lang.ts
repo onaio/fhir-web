@@ -5,7 +5,7 @@ export const NEW_MISSION = i18n.t(' + New Mission');
 
 // plans table columns
 export const NAME = i18n.t('Name');
-export const DATE = i18n.t('Date');
+export const DATE = i18n.t('Date created');
 export const ACTIONS = i18n.t('Actions');
 
 //loader texts
@@ -38,3 +38,6 @@ export const SERVICE_POINTS_VISITED = i18n.t('Service points visited');
 export const PRODUCTS_CHECKED = i18n.t('Products checked');
 export const NUMBER_OF_FLAGGED_PRODUCTS = i18n.t('Number of flagged products');
 export const FETCHING_MISSION_INDICATORS_DATA = i18n.t('Fetching mission indicators data');
+export const CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS = i18n.t(
+  'Assign jurisdictions to the Plan, to enable activating it'
+);
