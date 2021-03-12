@@ -6,6 +6,10 @@ exports[`Inventory list Page renders when data is present: link to add new inven
   onClick={[Function]}
 >
   <Button
+    block={false}
+    ghost={false}
+    htmlType="button"
+    loading={false}
     size="large"
     type="primary"
   >

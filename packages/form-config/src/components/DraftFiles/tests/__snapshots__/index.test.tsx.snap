@@ -61,7 +61,6 @@ Object {
       "version": "1.0.26",
     },
   ],
-  "drillDownFilter": [Function],
   "hasChildren": [Function],
   "identifierField": "id",
   "linkerField": "id",

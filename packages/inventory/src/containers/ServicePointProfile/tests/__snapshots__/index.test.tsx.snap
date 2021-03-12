@@ -17,6 +17,10 @@ exports[`Profile view Page renders correctly when data is present: contains butt
         onClick={[Function]}
       >
         <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
           size="large"
           type="primary"
         >

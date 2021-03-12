@@ -37,14 +37,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
     >
       <div
         className="ant-row ant-row-center weclome-box"
-        style={
-          Object {
-            "marginBottom": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginTop": undefined,
-          }
-        }
+        style={Object {}}
       >
         <Col
           span={6}
@@ -68,10 +61,8 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
         className="ant-row links-box"
         style={
           Object {
-            "marginBottom": undefined,
             "marginLeft": -8,
             "marginRight": -8,
-            "marginTop": undefined,
           }
         }
       >
@@ -103,8 +94,12 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                   onClick={[Function]}
                 >
                   <Button
+                    block={false}
                     className="btn-links"
                     color="outline"
+                    ghost={false}
+                    htmlType="button"
+                    loading={false}
                   >
                     <Wave>
                       <button
@@ -155,10 +150,8 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
         className="ant-row links-box"
         style={
           Object {
-            "marginBottom": undefined,
             "marginLeft": -8,
             "marginRight": -8,
-            "marginTop": undefined,
           }
         }
       />
@@ -171,10 +164,8 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
         className="ant-row links-box"
         style={
           Object {
-            "marginBottom": undefined,
             "marginLeft": -8,
             "marginRight": -8,
-            "marginTop": undefined,
           }
         }
       />

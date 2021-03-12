@@ -216,9 +216,6 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={false}
   />,
@@ -229,9 +226,6 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={true}
   />,
@@ -423,9 +417,6 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value="Active"
   />,
@@ -435,9 +426,6 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value="InActive"
   />,

@@ -34,7 +34,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
+    "@opensrp/store": "^0.0.9",
     "react": "^16.18.1"
   },
   "author": "OpenSRP Engineering",

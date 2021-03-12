@@ -9,9 +9,6 @@ exports[`status Renderer renderers correctly: radio button input 1`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
-  onKeyDown={[Function]}
-  onKeyPress={[Function]}
-  onKeyUp={[Function]}
   type="radio"
   value="active"
 />
@@ -26,9 +23,6 @@ exports[`status Renderer renderers correctly: radio button input 2`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
-  onKeyDown={[Function]}
-  onKeyPress={[Function]}
-  onKeyUp={[Function]}
   type="radio"
   value="complete"
 />
@@ -43,9 +37,6 @@ exports[`status Renderer renderers correctly: radio button input 3`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
-  onKeyDown={[Function]}
-  onKeyPress={[Function]}
-  onKeyUp={[Function]}
   type="radio"
   value="draft"
 />
@@ -60,9 +51,6 @@ exports[`status Renderer renderers correctly: radio button input 4`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
-  onKeyDown={[Function]}
-  onKeyPress={[Function]}
-  onKeyUp={[Function]}
   type="radio"
   value="retired"
 />
