@@ -43,10 +43,16 @@ export const getColumns = (langObj: Dictionary<string> = lang) => {
       width: '60%',
     },
     {
-      title: langObj.DATE,
+      title: lang.DATE,
       dataIndex: 'date',
       key: `${TableColumnsNamespace}-date`,
       sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+    },
+    {
+      title: lang.END_DATE,
+      dataIndex: 'effectivePeriod',
+      key: `${TableColumnsNamespace}-date`,
+      render: (item: Dictionary) => item.end,
     },
     {
       title: langObj.ACTIONS,
