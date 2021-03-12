@@ -28,7 +28,8 @@
   },
   "peerDependencies": {
     "antd": "^4.6.3",
-    "react": "^16.13.1"
+    "react": "^16.13.1",
+    "i18next": "^19.8.4"
   },
   "dependencies": {
     "@opensrp/pkg-config": "^0.0.6",

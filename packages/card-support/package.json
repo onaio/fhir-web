@@ -37,7 +37,8 @@
   "peerDependencies": {
     "@opensrp/store": "^0.0.5",
     "antd": "^4.6.3",
-    "react": "^16.18.1"
+    "react": "^16.18.1",
+    "i18next": "^19.8.4"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
@@ -47,7 +48,7 @@
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/reducer-factory": "^0.0.9",
     "@opensrp/server-service": "^0.0.16",
-    "i18next": "^19.8.4",
+    "@opensrp/react-utils": "0.0.7",
     "papaparse": "^5.3.0"
   },
   "devDependencies": {

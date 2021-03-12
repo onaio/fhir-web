@@ -38,7 +38,8 @@
   "license": "Apache-2.0",
   "private": false,
   "peerDependencies": {
-    "react": "^16.18.1"
+    "react": "^16.18.1",
+    "i18next": "^19.8.4"
   },
   "dependencies": {
     "@onaio/utils": "^0.0.1",
@@ -46,8 +47,7 @@
     "@opensrp/react-utils": "^0.0.7",
     "@opensrp/reducer-factory": "^0.0.1",
     "@opensrp/server-service": "^0.0.17",
-    "date-fns": "^2.17.0",
-    "i18next": "^19.8.4"
+    "date-fns": "^2.17.0"
   },
   "devDependencies": {
     "@types/redux": "^3.6.0",
