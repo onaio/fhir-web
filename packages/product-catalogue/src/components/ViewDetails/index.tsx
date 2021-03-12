@@ -1,6 +1,6 @@
 import { ProductCatalogue } from '../../ducks/productCatalogue';
 import React from 'react';
-import { Col, Typography, Space } from 'antd';
+import { Col } from 'antd';
 import { Resource404 } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
 import { PRODUCT_NAME, UNIQUE_ID, MATERIAL_NUMBER, SERVER_VERSION } from '../../lang';
@@ -8,8 +8,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { Button } from 'antd';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
-
-const { Text } = Typography;
+import './index.css';
 
 /**
  * helper function that creates a list of key,value pairs.
@@ -64,20 +63,16 @@ const ViewDetails = (props: ViewDetailsProps) => {
       {objectId && !object ? (
         <Resource404></Resource404>
       ) : (
-        <Space direction="vertical">
+        <div className="p-10">
           {extractViewDetails(object as ProductCatalogue).map(([key, val]) => {
             return (
-              <span key={`${key}-${val}`}>
-                <Text strong={true} className="display-block">
-                  {key}
-                </Text>
-                <Text type="secondary" className="display-block">
-                  {val}
-                </Text>
-              </span>
+              <div key={`${key}-${val}`} className="mb-3">
+                <p className="panel-label">{key}</p>
+                <p className="mb-0 panel-value">{`${val}`}</p>
+              </div>
             );
           })}
-        </Space>
+        </div>
       )}
     </Col>
   );
