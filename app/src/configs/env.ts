@@ -51,15 +51,9 @@ export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') ==
 
 export const DEFAULT_ACTIVITY_DURATION_DAYS = setEnv('REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS', 7);
 
-export const PLAN_UUID_NAMESPACE = setEnv(
-  'REACT_APP_PLAN_UUID_NAMESPACE',
-  '85f7dbbf-07d0-4c92-aa2d-d50d141dde00'
-);
+export const PLAN_UUID_NAMESPACE = setEnv('REACT_APP_PLAN_UUID_NAMESPACE', '');
 
-export const ACTION_UUID_NAMESPACE = setEnv(
-  'REACT_APP_ACTION_UUID_NAMESPACE',
-  '35968df5-f335-44ae-8ae5-25804caa2d86'
-);
+export const ACTION_UUID_NAMESPACE = setEnv('REACT_APP_ACTION_UUID_NAMESPACE', '');
 
 export const DEFAULT_PLAN_VERSION = setEnv('REACT_APP_DEFAULT_PLAN_VERSION', '1');
 
@@ -90,13 +84,13 @@ export const ENABLE_OPENSRP_OAUTH = setEnv('REACT_APP_ENABLE_OPENSRP_OAUTH', 'fa
 // notice the ending is NOT / here
 export const OPENSRP_ACCESS_TOKEN_URL = setEnv(
   'REACT_APP_OPENSRP_ACCESS_TOKEN_URL',
-  'https://reveal-stage.smartregister.org/opensrp/oauth/token'
+  'https://opensrp-stage.smartregister.org/opensrp/oauth/token'
 );
 
 // notice the ending is NOT / here
 export const OPENSRP_AUTHORIZATION_URL = setEnv(
   'REACT_APP_OPENSRP_AUTHORIZATION_URL',
-  'https://reveal-stage.smartregister.org/opensrp/oauth/authorize'
+  'https://opensrp-stage.smartregister.org/opensrp/oauth/authorize'
 );
 
 export const OPENSRP_CLIENT_ID = setEnv('REACT_APP_OPENSRP_CLIENT_ID', '');
@@ -106,7 +100,7 @@ export const DOMAIN_NAME = setEnv('REACT_APP_DOMAIN_NAME', 'http://localhost:300
 
 export const OPENSRP_USER_URL = setEnv(
   'REACT_APP_OPENSRP_USER_URL',
-  'https://reveal-stage.smartregister.org/opensrp/user-details'
+  'https://opensrp-stage.smartregister.org/opensrp/user-details'
 );
 
 export const NAVBAR_BRAND_IMG_SRC = setEnv(
