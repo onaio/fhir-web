@@ -36,7 +36,6 @@ i18n
     interpolation: { escapeValue: false },
     returnEmptyString: false,
     nsSeparator: '::',
-    debug: true,
     keySeparator: false,
   })
   .catch((err) => err);
