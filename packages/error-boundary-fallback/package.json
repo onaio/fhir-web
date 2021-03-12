@@ -31,7 +31,8 @@
     "react": "^16.13.1"
   },
   "dependencies": {
-    "@opensrp/pkg-config": "^0.0.6"
+    "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7"
   },
   "devDependencies": {
     "@types/antd": "^1.0.0",
