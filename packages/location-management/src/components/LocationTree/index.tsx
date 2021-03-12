@@ -16,7 +16,6 @@ import { getHierarchyNodeFromArray } from '../../ducks/locationHierarchy/utils';
 import { SEARCH } from '../../lang';
 reducerRegistry.register(reducerName, reducer);
 
-reducerRegistry.register(reducerName, reducer);
 interface TreeProp {
   appendParentAsChild?: boolean;
   data: ParsedHierarchyNode[];
