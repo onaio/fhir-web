@@ -48,7 +48,8 @@
     "@opensrp/react-utils": "^0.0.7",
     "@opensrp/store": "^0.0.9",
     "axios": "^0.21.1",
-    "date-fns": "2.11.1"
+    "date-fns": "2.11.1",
+    "react-i18next": "^11.8.10"
   },
   "devDependencies": {
     "@onaio/session-reducer": "^0.0.12",

@@ -28,12 +28,13 @@
   },
   "peerDependencies": {
     "antd": "^4.6.3",
-    "react": "^16.13.1",
-    "i18next": "^19.8.4"
+    "i18next": "^19.8.4",
+    "react": "^16.13.1"
   },
   "dependencies": {
     "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.7"
+    "@opensrp/react-utils": "^0.0.7",
+    "react-i18next": "^11.8.10"
   },
   "devDependencies": {
     "@types/antd": "^1.0.0",
