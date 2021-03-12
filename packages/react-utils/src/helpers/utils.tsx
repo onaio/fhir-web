@@ -1,5 +1,5 @@
 import { Dictionary } from '@onaio/utils/dist/types/types';
-import type { i18nInstance } from 'i18next';
+import type { i18n as i18nInstance } from 'i18next';
 
 /**
  * Abstraction to add language resources to the i18n instance
