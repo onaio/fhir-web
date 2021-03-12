@@ -1,6 +1,5 @@
 /** renders card that shows mission indicators info and mission data csv export */
 import {
-  FIX_PRODUCT_PROBLEMS_CODE,
   PlanDefinition,
   PlanStatus,
   PRODUCT_CHECK_CODE,
@@ -20,7 +19,10 @@ import { loadTasksIndicators, TaskCount, TaskParams } from '../../helpers/dataLo
 import { CommonProps, defaultCommonProps } from '@opensrp/plan-form';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
 import { BuildDownloadUrl } from '../../helpers/utils';
-import { OPENSRP_TASK_STATUS_COMPLETED } from '../../constants';
+import {
+  OPENSRP_BUSINESS_STATUS_HAS_PROBLEM,
+  OPENSRP_TASK_STATUS_COMPLETED,
+} from '../../constants';
 
 const { Title, Text } = Typography;
 
@@ -43,8 +45,8 @@ const MissionData = (props: MissionDataProps) => {
   useEffect(() => {
     const { identifier: planId } = plan;
     const promises: Promise<void | Response>[] = [];
-    const codes = [SERVICE_POINT_CHECK_CODE, PRODUCT_CHECK_CODE, FIX_PRODUCT_PROBLEMS_CODE];
-    const setStateSequence = [setServicePoints, setProductsChecked, setFlaggedProducts];
+    const codes = [SERVICE_POINT_CHECK_CODE, PRODUCT_CHECK_CODE];
+    const setStateSequence = [setServicePoints, setProductsChecked];
     const otherParams: TaskParams = {
       status: OPENSRP_TASK_STATUS_COMPLETED,
     };
@@ -58,6 +60,21 @@ const MissionData = (props: MissionDataProps) => {
         });
       promises.push(thisPromise);
     });
+    // curate promise for flag_problems
+    const flaggedProblemsParams = {
+      ...otherParams,
+      businessStatus: OPENSRP_BUSINESS_STATUS_HAS_PROBLEM,
+    };
+    const flaggedPromisesPromise = loadTasksIndicators(
+      baseURL,
+      planId,
+      PRODUCT_CHECK_CODE,
+      true,
+      flaggedProblemsParams
+    ).then((response: TaskCount) => {
+      setFlaggedProducts(response.total_records);
+    });
+    promises.push(flaggedPromisesPromise);
     Promise.all(promises)
       .catch((e) => handleBrokenPage(e))
       .finally(() => setLoading(false));

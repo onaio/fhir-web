@@ -34,7 +34,7 @@ import {
   SUCCESSFULLY_UPDATED,
   TRIGGERS_LABEL,
 } from '../lang';
-import { PLAN_LIST_URL } from '../constants';
+import { PLAN_DESCRIPTION_WORD_LIMIT, PLAN_LIST_URL } from '../constants';
 import { getConditionAndTriggers } from './componentsUtils/actions';
 import { processActivitiesDates, processToBasePlanForm, validationRules } from '../helpers/utils';
 import {
@@ -78,6 +78,7 @@ import {
   goalDescription,
   status,
   title,
+  jurisdictions,
 } from '@opensrp/plan-form-core';
 import moment, { Moment } from 'moment';
 import { Select, Input, DatePicker } from 'antd';
@@ -419,6 +420,7 @@ const PlanForm = (props: PlanFormProps) => {
               setFieldsValue={form.setFieldsValue}
               disabledFields={disabledFields}
               disAllowedStatusChoices={disAllowedStatusChoices}
+              assignedJurisdictions={form.getFieldsValue()[jurisdictions]}
             />
           </FormItem>
           <FormItem
@@ -449,6 +451,8 @@ const PlanForm = (props: PlanFormProps) => {
           >
             <TextArea
               rows={4}
+              showCount
+              maxLength={PLAN_DESCRIPTION_WORD_LIMIT}
               placeholder={DESCRIPTION_PLACEHOLDER}
               disabled={disabledFields.includes(description)}
             />
