@@ -97,7 +97,13 @@ describe('components/forms/UserForm', () => {
         method: 'GET',
       },
     ]);
-    expect(wrapper.find('Row').at(0).props()).toMatchSnapshot();
+    expect(wrapper.find('FormItem').at(0).prop('name')).toEqual('firstName');
+    expect(wrapper.find('FormItem').at(1).prop('name')).toEqual('lastName');
+    expect(wrapper.find('FormItem').at(2).prop('name')).toEqual('email');
+    expect(wrapper.find('FormItem').at(3).prop('name')).toEqual('username');
+    expect(wrapper.find('FormItem').at(4).prop('name')).toEqual('enabled');
+    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('requiredActions');
+    expect(wrapper.find('FormItem').at(6).prop('name')).toEqual('userGroup');
     wrapper.unmount();
   });
 
