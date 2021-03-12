@@ -2774,15 +2774,6 @@
   dependencies:
     antd "^4.6.3"
 
-"@opensrp/pkg-config@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@opensrp/pkg-config/-/pkg-config-0.0.4.tgz#4e5e47cf8c35a56981c9e91c3655ebce612565ae"
-  integrity sha512-+binqpj7l/zmUFJ6O+5YugmE9xlppOXy4trW9KjI/me/qO5ew1v8EXTdtLjGhkbnKkD5cFsn93F+7qtp9idPgQ==
-  dependencies:
-    "@reduxjs/toolkit" "^1.5.0"
-    i18next "^19.8.4"
-    react-i18next "^11.8.3"
-
 "@opensrp/product-catalogue@0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@opensrp/product-catalogue/-/product-catalogue-0.0.2.tgz#9bec221c711bff3226e4bbebb79b39f3fddc90bc"
@@ -2803,20 +2794,6 @@
   integrity sha512-vZVjYnW1MkU5pMpaIE8F73uuD2uHldS8c20sCRAhyHZcb+InljpZ/CiPD4JViAXx88Szru8BDuw54x//OzBPWg==
   dependencies:
     "@opensrp/notifications" "^0.0.2"
-    antd "^4.6.3"
-
-"@opensrp/react-utils@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.6.tgz#f3580f1a13edd9227e69fda09d3b3cbf0d21cbba"
-  integrity sha512-laBk8WxROXnYnpu/bEXSYAv1haz7PaTYpLfQ1OY+fGnltdFz0s/VXDO6uTUWevzoTBgsGmleESq4ADLmg21QcA==
-  dependencies:
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.1"
-    "@onaio/session-reducer" "^0.0.12"
-    "@onaio/utils" "^0.0.1"
-    "@opensrp/notifications" "^0.0.4"
-    "@opensrp/pkg-config" "^0.0.4"
-    "@opensrp/server-service" "^0.0.16"
     antd "^4.6.3"
 
 "@opensrp/reducer-factory@^0.0.1":
@@ -14828,6 +14805,11 @@ react-helmet@^6.1.0:
     prop-types "^15.7.2"
     react-fast-compare "^3.1.1"
     react-side-effect "^2.1.0"
+
+react-hooks-global-state@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-hooks-global-state/-/react-hooks-global-state-1.0.1.tgz#3e4e1009f3e8a6fd001cd507808b4f1b289e9b27"
+  integrity sha512-GFe/7KOdf8toByd8eF5LBhogMn65XSyghIzInsnA1e8vqIxGdT2Ohs2Ohdclp8CX0QU9xNj72ZIt+WD/SQEh9Q==
 
 react-i18next@^11.8.3:
   version "11.8.5"
