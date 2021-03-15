@@ -10,11 +10,11 @@ import { OpenSRPService } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
-  organizationsReducer,
+  reducer,
   fetchOrganizationsAction,
   getOrganizationsArray,
   Organization,
-  orgReducerName,
+  reducerName,
 } from '../../ducks/organizations';
 import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
@@ -25,7 +25,7 @@ import { Practitioner } from '../../ducks/practitioners';
 import { CREATE_TEAM, ERROR_OCCURRED, SEARCH, TEAMS } from '../../lang';
 
 /** Register reducer */
-reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(reducerName, reducer);
 
 /**
  * Function to load selected Team for details
@@ -51,12 +51,12 @@ export const loadSingleTeam = (
     .catch(() => sendErrorNotification(ERROR_OCCURRED));
 };
 
-export interface Props {
+interface Props {
   opensrpBaseURL: string;
 }
 
 /** default component props */
-export const defaultProps = {
+const defaultProps = {
   opensrpBaseURL: '',
 };
 

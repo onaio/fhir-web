@@ -230,7 +230,6 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       await flushPromises();
       wrapper.update();
     });
-
     expect(wrapper.find('.mb-3.header-title').text()).toEqual(`Edit Team | ${team.name}`);
   });
 });
