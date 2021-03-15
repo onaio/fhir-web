@@ -189,8 +189,9 @@ export const generateLocationUnit = (
     extraFields,
     username,
   } = formValues;
-  const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? -1;
-  const thisGeoLevel = (parentGeographicLevel as number) + 1;
+
+  const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? 0;
+  const thisGeoLevel = parentId ? (parentGeographicLevel as number) + 1 : 0;
 
   const thisLocationsId = id ? id : v4();
 
@@ -219,7 +220,11 @@ export const generateLocationUnit = (
   extraFields.forEach((obj) => {
     // assumes the data to be string or number as for now we only use input type number and text
     Object.keys(obj).forEach((key) => {
-      (initialPayload.properties as Dictionary)[key] = obj[key];
+      if (key === 'geographicLevel') {
+        (initialPayload.properties as Dictionary)[key] = thisGeoLevel;
+      } else {
+        (initialPayload.properties as Dictionary)[key] = obj[key];
+      }
     });
   });
 
