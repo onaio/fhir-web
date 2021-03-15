@@ -17,15 +17,16 @@ import {
   URL_JSON_VALIDATOR_LIST,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
 } from '../../../constants';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
 import {
   ENABLE_FORM_CONFIGURATION,
-  ENABLE_PLANS,
   ENABLE_TEAMS,
   ENABLE_LOCATIONS,
+  ENABLE_PLANS,
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_CARD_SUPPORT,
   ENABLE_INVENTORY,
@@ -34,8 +35,8 @@ import {
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
-  DRAFT_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,
+  DRAFT_PLANS_LIST_VIEW_URL,
   TRASH_PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
 import {
@@ -60,6 +61,7 @@ import {
   LOCATIONS,
   SERVICE_POINT_INVENTORY,
   INVENTORY,
+  TEAM_ASSIGNMENT,
   ADD_INVENTORY_VIA_CSV,
   USER_GROUPS,
   USER_ROLES,
@@ -202,11 +204,18 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             roles &&
             activeRoles.TEAMS &&
             isAuthorized(roles as string[], activeRoles.TEAMS.split(',')) && (
-              <Menu.Item key="teams">
-                <Link to={URL_TEAMS} className="admin-link">
-                  {TEAMS}
-                </Link>
-              </Menu.Item>
+              <Menu.SubMenu key="teams" title={TEAMS}>
+                <Menu.Item key="teams-list">
+                  <Link to={URL_TEAMS} className="admin-link">
+                    {TEAMS}
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="team-assignment">
+                  <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
+                    {TEAM_ASSIGNMENT}
+                  </Link>
+                </Menu.Item>
+              </Menu.SubMenu>
             )}
           {ENABLE_PRODUCT_CATALOGUE &&
             roles &&

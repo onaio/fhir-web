@@ -18,7 +18,7 @@ export interface NewLocationUnitProps
       'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps {
-  openSRPBaseURL: string;
+  opensrpBaseURL: string;
   instance: FormInstances;
   processInitialValues?: (formFields: LocationFormFields) => LocationFormFields;
   cancelURLGenerator: () => string;
@@ -26,7 +26,7 @@ export interface NewLocationUnitProps
 
 const defaultNewLocationUnitProps = {
   redirectAfterAction: '',
-  openSRPBaseURL: OPENSRP_API_BASE_URL,
+  opensrpBaseURL: OPENSRP_API_BASE_URL,
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
@@ -45,7 +45,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     hidden,
     disabled,
     service,
-    openSRPBaseURL,
+    opensrpBaseURL,
     successURLGenerator,
     cancelURLGenerator,
     processInitialValues,
@@ -68,8 +68,8 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     hidden: hidden,
     disabled: disabled,
     onCancel: cancelHandler,
-    service: service,
-    openSRPBaseURL: openSRPBaseURL,
+    service,
+    opensrpBaseURL,
     username: user.username,
     afterSubmit: () => dispatch(fetchAllHierarchies([])),
     disabledTreeNodesCallback: disabledTreeNodesCallback,
