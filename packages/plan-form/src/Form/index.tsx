@@ -158,6 +158,13 @@ export interface PlanFormProps extends CommonProps {
   ) => string /** callback to get the path to redirect after successfully form submission */;
 }
 
+/**
+ * Plan Form component
+ *
+ * @param {Moment} current - current selected/hovered date (date picker)
+ * @param {Moment[]} dates - start and end date
+ * @returns {boolean} - returns true if disabled and viseversa
+ */
 export const disableDate = (current: Moment, dates: Moment[]) => {
   if (!dates || dates.length === 0) {
     return false;
