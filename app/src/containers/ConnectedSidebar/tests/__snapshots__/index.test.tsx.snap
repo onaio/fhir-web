@@ -46,65 +46,33 @@ Array [
 `;
 
 exports[`components/ConnectedSidebar correctly expand location menu 1`] = `
+<Link
+  className="admin-link"
+  to="/admin/location/unit"
+>
+  Location unit
+</Link>
+`;
+
+exports[`components/ConnectedSidebar correctly expand location menu 2`] = `
 Array [
   undefined,
-  undefined,
-  undefined,
-  <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Admin"
+  <Link
+    className="admin-link"
+    to="/admin/location/unit"
   >
-    <SubMenu
-      title="Locations"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Location unit
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/group"
-        >
-          Location unit group
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
+    Location unit
+  </Link>,
 ]
 `;
 
 exports[`components/ConnectedSidebar correctly expand teams menu 1`] = `
-Array [
-  undefined,
-  undefined,
-  undefined,
-  <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Admin"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-]
+<Link
+  className="admin-link"
+  to="/admin/teams"
+>
+  Teams
+</Link>
 `;
 
 exports[`components/ConnectedSidebar correctly expand users menu 1`] = `

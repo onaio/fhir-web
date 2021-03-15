@@ -184,7 +184,8 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    expect(wrapper.find('MenuItem').at(0)?.prop('children')).toMatchSnapshot();
+    expect(wrapper.find('MenuItem').at(1)?.prop('children')).toMatchSnapshot();
     wrapper.unmount();
   });
 
@@ -261,7 +262,8 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    expect(wrapper.find('MenuItem').at(0)?.prop('children')).toMatchSnapshot();
+    expect(wrapper.find('MenuItem Link').at(0)?.prop('to')).toEqual('/admin/teams');
     wrapper.unmount();
   });
 });
