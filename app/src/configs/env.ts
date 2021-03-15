@@ -75,6 +75,16 @@ export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROT
 /** Activate the product-catalogue menu */
 export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CATALOGUE === 'true';
 
+/** Activate teams menu */
+export const ENABLE_TEAMS_MODULE = process.env.REACT_APP_ENABLE_TEAMS_MODULE === 'true';
+
+/** Activate teams assignment menu */
+export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
+  process.env.REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE === 'true';
+
+/** Default plan id */
+export const DEFAULT_PLAN_ID =
+  process.env.REACT_APP_DEFAULT_PLAN_ID || '27362060-0309-411a-910c-64f55ede3758';
 /** Activate card support menu */
 export const ENABLE_CARD_SUPPORT = process.env.REACT_APP_ENABLE_CARD_SUPPORT === 'true';
 /** Activate the plans menu */

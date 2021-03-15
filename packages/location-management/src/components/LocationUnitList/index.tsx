@@ -14,12 +14,7 @@ import {
   locationUnitsReducer,
   locationUnitsReducerName,
 } from '../../ducks/location-units';
-import {
-  LOCATION_UNIT_FIND_BY_PROPERTIES,
-  LOCATION_HIERARCHY,
-  LOCATION_UNIT_ENDPOINT,
-  URL_LOCATION_UNIT_ADD,
-} from '../../constants';
+import { LOCATION_UNIT_ENDPOINT, URL_LOCATION_UNIT_ADD } from '../../constants';
 import {
   ADD_LOCATION_UNIT,
   LOCATION_UNIT,
@@ -27,7 +22,6 @@ import {
   ERROR_OCCURED,
 } from '../../lang';
 import Table, { TableData } from './Table';
-import './LocationUnitList.css';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -38,21 +32,24 @@ import {
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
-import { generateJurisdictionTree } from '../../ducks/locationHierarchy/utils';
+import {
+  generateJurisdictionTree,
+  getBaseTreeNode,
+  getHierarchy,
+} from '../../ducks/locationHierarchy/utils';
+import './LocationUnitList.css';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
 
-const { getFilterParams } = OpenSRPService;
+interface Props {
+  opensrpBaseURL: string;
+}
 
 export interface AntTreeProps {
   title: JSX.Element;
   key: string;
   children: AntTreeProps[];
-}
-
-export interface Props {
-  opensrpBaseURL: string;
 }
 
 /** Function to Load selected location unit for details
@@ -77,22 +74,6 @@ export async function loadSingleLocation(
     .catch(() => sendErrorNotification(ERROR_OCCURED));
 }
 
-/** Gets all the location unit at geographicLevel 0
- *
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
- */
-export async function getBaseTreeNode(opensrpBaseURL: string) {
-  const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
-  return await serve
-    .list({
-      is_jurisdiction: true,
-      return_geometry: false,
-      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-    })
-    .then((response: LocationUnit[]) => response);
-}
-
 /** Parse the hierarchy node into table data
  *
  * @param {Array<ParsedHierarchyNode>} hierarchy - hierarchy node to be parsed
@@ -112,66 +93,63 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
   return data;
 }
 
-/** Gets the hierarchy of the location units
- *
- * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
- */
-export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: string) {
-  const hierarchy: RawOpenSRPHierarchy[] = [];
-  for await (const loc of location) {
-    const serve = new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL);
-    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
-    hierarchy.push(data);
-  }
-
-  return hierarchy;
-}
-
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
+  const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
+    // clear tree data and location units if
+    // user switches to location management module
+    // from a module that needs only one hierarchy i.e teams assignment
+    if (treeData.length && treeData.length !== locationUnits.length) {
+      dispatch(fetchLocationUnits([]));
+      dispatch(fetchAllHierarchies([]));
+    }
+  });
+
+  useEffect(() => {
     if (!locationUnits.length) {
       getBaseTreeNode(opensrpBaseURL)
-        .then((response) => dispatch(fetchLocationUnits(response)))
+        .then((response: LocationUnit[]) => dispatch(fetchLocationUnits(response)))
         .catch(() => sendErrorNotification(ERROR_OCCURED));
     }
-  }, [locationUnits.length, dispatch, opensrpBaseURL]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locationUnits.length, treeData.length]);
 
+  // Function used to parse data from ParsedHierarchyNode to Tree Data
   useEffect(() => {
     if (!treeData.length && locationUnits.length) {
       getHierarchy(locationUnits, opensrpBaseURL)
-        .then((hierarchy) => {
+        .then((hierarchy: RawOpenSRPHierarchy[]) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
           dispatch(fetchAllHierarchies(allhierarchy));
         })
-        .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .catch(() => sendErrorNotification(ERROR_OCCURED))
+        .finally(() => setLoading(false));
     }
     // to avoid extra rerenders
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
 
-  // Function used to parse data from ParsedHierarchyNode to Tree Data
   useEffect(() => {
     if (treeData.length) {
-      let data: TableData[] = [];
-      // if have selected some in tree and that selected have some child then only show data from selected node in table
-      if (currentClicked && currentClicked.children)
-        data = parseTableData([currentClicked, ...currentClicked.children]);
-      else if (!currentClicked) data = parseTableData(treeData);
-      setTableData(data);
+      if (currentClicked && currentClicked.children) {
+        const data = parseTableData([currentClicked, ...currentClicked.children]);
+        setTableData(data);
+      } else if (!currentClicked) {
+        const data = parseTableData(treeData);
+        setTableData(data);
+      }
     }
   }, [treeData, currentClicked]);
 
-  if (!tableData.length || !treeData.length) return <Spin size={'large'} />;
+  if (loading) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -186,7 +164,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">
-              {currentClicked?.children ? currentClicked.node.name : LOCATION_UNIT}
+              {currentClicked?.children?.length ? tableData[0].name : LOCATION_UNIT}
             </h5>
             <div>
               <Link

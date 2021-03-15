@@ -117,21 +117,23 @@ const UserList = (props: UserListTypes): JSX.Element => {
   return (
     <section className="layout-content">
       <h5 className="mb-3">{USER_MANAGEMENT_PAGE_HEADER}</h5>
-      <Row>
-        <Col className="bg-white p-3" span={24}>
-          <SearchForm {...searchFormProps} />
-          <Space style={{ marginBottom: 16, float: 'right' }}>
-            <Button
-              type="primary"
-              className="create-user"
-              onClick={() => history.push(URL_USER_CREATE)}
-            >
-              <PlusOutlined />
-              {ADD_USER}
-            </Button>
-            <Divider type="vertical" />
-            <SettingOutlined />
-          </Space>
+      <Row className="list-view">
+        <Col className="main-content" span={24}>
+          <div className="main-content__header">
+            <SearchForm {...searchFormProps} />
+            <Space style={{ marginBottom: 16, float: 'right' }}>
+              <Button
+                type="primary"
+                className="create-user"
+                onClick={() => history.push(URL_USER_CREATE)}
+              >
+                <PlusOutlined />
+                {ADD_USER}
+              </Button>
+              <Divider type="vertical" />
+              <SettingOutlined />
+            </Space>
+          </div>
           <Space>
             {tableData.length > 0 ? (
               <Table

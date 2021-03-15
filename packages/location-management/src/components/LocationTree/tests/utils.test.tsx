@@ -12,7 +12,7 @@ describe('location-management/src/components/LocationTree', () => {
         modelComparatorFn: undefined,
       },
       model: {
-        children: undefined,
+        children: [],
         id: '6bf9c085-350b-4bb2-990f-80dc2caafb33',
         key: '6bf9c085-350b-4bb2-990f-80dc2caafb33',
         label: 'Malawi',
