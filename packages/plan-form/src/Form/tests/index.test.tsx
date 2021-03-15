@@ -233,6 +233,11 @@ describe('containers/forms/PlanForm', () => {
 
     // next we set wrong values for fields that expect specific values
 
+    // Set title for the plan with forward slash
+    wrapper
+      .find('#title input')
+      .simulate('change', { target: { name: 'title', value: 'Plan / Name' } });
+
     // Set wrong interventionType field value
     formInstance.setFieldsValue({
       interventionType: 'Oov',

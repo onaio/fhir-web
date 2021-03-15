@@ -1,29 +1,23 @@
-import { store } from '@opensrp/store';
-import reducerRegistry from '@onaio/redux-reducer-registry';
 import i18n from 'i18next';
+import { SetStateAction } from 'react';
 import { initReactI18next } from 'react-i18next';
-import { getConfigs, initializei18n } from '../configs';
-import { addConfigs, configsReducer, configsSliceName } from '../ducks';
+import { initializei18n } from '../configs';
+import { LanguageCode, ProjectLanguageCode, setConfig } from '../configStore';
 /* eslint-disable @typescript-eslint/camelcase */
 
-reducerRegistry.register(configsSliceName, configsReducer);
-
-describe('configs/getConfigs', () => {
+describe('configs/initializei18n', () => {
   const languageConfigs = {
     languageCode: 'fr',
     projectLanguageCode: 'core',
   };
-
   beforeAll(() => {
-    store.dispatch(addConfigs(languageConfigs));
+    setConfig('languageCode', languageConfigs.languageCode as SetStateAction<LanguageCode>);
+    setConfig(
+      'projectLanguageCode',
+      languageConfigs.projectLanguageCode as SetStateAction<ProjectLanguageCode>
+    );
   });
 
-  it('gets language configs from store', () => {
-    expect(getConfigs()).toEqual(languageConfigs);
-  });
-});
-
-describe('configs/initializei18n', () => {
   it('initializes i18n', () => {
     const mockUse = jest.spyOn(i18n, 'use');
     const mockInit = jest.spyOn(i18n, 'init');

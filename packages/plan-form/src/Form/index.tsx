@@ -34,7 +34,7 @@ import {
   SUCCESSFULLY_UPDATED,
   TRIGGERS_LABEL,
 } from '../lang';
-import { PLAN_LIST_URL } from '../constants';
+import { PLAN_DESCRIPTION_WORD_LIMIT, PLAN_LIST_URL } from '../constants';
 import { getConditionAndTriggers } from './componentsUtils/actions';
 import { processActivitiesDates, processToBasePlanForm, validationRules } from '../helpers/utils';
 import {
@@ -481,6 +481,8 @@ const PlanForm = (props: PlanFormProps) => {
           >
             <TextArea
               rows={4}
+              showCount
+              maxLength={PLAN_DESCRIPTION_WORD_LIMIT}
               placeholder={DESCRIPTION_PLACEHOLDER}
               disabled={disabledFields.includes(description)}
             />

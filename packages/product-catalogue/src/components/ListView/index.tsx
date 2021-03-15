@@ -89,13 +89,11 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
         <title>{pageTitle}</title>
       </Helmet>
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
-      <Row className={'list-view'}>
+      <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
           <div className="main-content__header">
             <Link to={CATALOGUE_CREATE_VIEW_URL}>
-              <Button type="primary" size="large">
-                {ADD_PRODUCT_TO_CATALOGUE}
-              </Button>
+              <Button type="primary">{ADD_PRODUCT_TO_CATALOGUE}</Button>
             </Link>
           </div>
           <Table dataSource={dataSource} columns={columns}></Table>
