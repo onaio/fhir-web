@@ -1072,7 +1072,7 @@ export const planActivities: PlanActivities = {
         start: '',
       },
       reason: ROUTINE,
-      goalId: PRODUCT_CHECK_ACTIVITY,
+      goalId: PRODUCT_CHECK_CODE,
       subjectCodableConcept: {
         text: 'Device',
       },
@@ -1088,6 +1088,14 @@ export const planActivities: PlanActivities = {
           expression: {
             description: 'Product exists',
             expression: '$this.is(FHIR.Bundle)',
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
           },
         },
       ],
@@ -1414,6 +1422,14 @@ export const planActivities: PlanActivities = {
           },
         },
       ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.id',
+          },
+        },
+      ],
       definitionUri: 'record_gps.json',
       type: CREATE_TYPE,
     },
@@ -1528,6 +1544,14 @@ export const planActivities: PlanActivities = {
           expression: {
             description: 'All service points',
             expression: '$this.is(FHIR.Location)',
+          },
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.id',
           },
         },
       ],

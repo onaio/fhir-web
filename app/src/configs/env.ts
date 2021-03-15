@@ -1,3 +1,20 @@
+/** enum representing the keycloak roles */
+export enum Roles {
+  ROLE_EDIT_KEYCLOAK_USERS = 'ROLE_EDIT_KEYCLOAK_USERS',
+  ROLE_VIEW_KEYCLOAK_USERS = 'ROLE_VIEW_KEYCLOAK_USERS',
+}
+
+const defaultRoles = {
+  USERS: `${Roles.ROLE_EDIT_KEYCLOAK_USERS},${Roles.ROLE_VIEW_KEYCLOAK_USERS}`,
+  PLANS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  LOCATIONS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  CARD_SUPPORT: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  INVENTORY: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  TEAMS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+};
+
 export const WEBSITE_NAME = process.env.REACT_APP_WEBSITE_NAME || 'OpenSRP Web';
 
 export const BACKEND_ACTIVE = process.env.REACT_APP_BACKEND_ACTIVE === 'true';
@@ -58,6 +75,16 @@ export const DISABLE_LOGIN_PROTECTION = process.env.REACT_APP_DISABLE_LOGIN_PROT
 /** Activate the product-catalogue menu */
 export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CATALOGUE === 'true';
 
+/** Activate teams menu */
+export const ENABLE_TEAMS_MODULE = process.env.REACT_APP_ENABLE_TEAMS_MODULE === 'true';
+
+/** Activate teams assignment menu */
+export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
+  process.env.REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE === 'true';
+
+/** Default plan id */
+export const DEFAULT_PLAN_ID =
+  process.env.REACT_APP_DEFAULT_PLAN_ID || '27362060-0309-411a-910c-64f55ede3758';
 /** Activate card support menu */
 export const ENABLE_CARD_SUPPORT = process.env.REACT_APP_ENABLE_CARD_SUPPORT === 'true';
 /** Activate the plans menu */
@@ -77,6 +104,11 @@ export const DEFAULT_PLAN_DURATION_DAYS = process.env.REACT_APP_DEFAULT_PLAN_DUR
 
 export const DEFAULT_ACTIVITY_DURATION_DAYS =
   process.env.REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS || 7;
+
+export const OPENSRP_ROLES =
+  (process.env.REACT_APP_OPENSRP_ROLES &&
+    JSON.parse(process.env.REACT_APP_OPENSRP_ROLES as string)) ||
+  defaultRoles;
 
 export const PLAN_UUID_NAMESPACE =
   process.env.REACT_APP_PLAN_UUID_NAMESPACE || '85f7dbbf-07d0-4c92-aa2d-d50d141dde00';

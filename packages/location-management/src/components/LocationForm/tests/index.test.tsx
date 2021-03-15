@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { Router } from 'react-router';
+import { RouteComponentProps, Router } from 'react-router';
 import { LocationForm } from '..';
 import { defaultFormField, FormInstances, getLocationFormFields } from '../utils';
 import { createBrowserHistory } from 'history';
@@ -13,7 +13,9 @@ import {
   createdLocation1,
   fetchCalls1,
   generatedLocation2,
+  generatedLocation4,
   location2,
+  location4,
   locationSettings,
   locationTags,
   rawOpenSRPHierarchy1,
@@ -98,6 +100,10 @@ describe('LocationForm', () => {
     expect(toJson(wrapper.find('#externalId input'))).toMatchSnapshot('externalId field');
     expect(toJson(wrapper.find('#geometry label'))).toMatchSnapshot('geometry label');
     expect(toJson(wrapper.find('#geometry textarea'))).toMatchSnapshot('geometry field');
+    expect(toJson(wrapper.find('#longitude label'))).toMatchSnapshot('longitude label');
+    expect(toJson(wrapper.find('#longitude input'))).toMatchSnapshot('longitude field');
+    expect(toJson(wrapper.find('#latitude label'))).toMatchSnapshot('latitude label');
+    expect(toJson(wrapper.find('#latitude input'))).toMatchSnapshot('latitude field');
     expect(toJson(wrapper.find('#locationTags label'))).toMatchSnapshot('locationTags label');
     expect(toJson(wrapper.find('#locationTags input'))).toMatchSnapshot('locationTags field');
 
@@ -112,6 +118,7 @@ describe('LocationForm', () => {
     expect(toJson(wrapper.find('#location-form-cancel-button button'))).toMatchSnapshot(
       'cancel button'
     );
+    wrapper.unmount();
   });
 
   it('form validation works for core instance', async () => {
@@ -154,7 +161,7 @@ describe('LocationForm', () => {
 
     // type is required for core
     expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(
-      `"TypeType must be a string"`
+      `"TypeType can only contain letters, numbers and spaces"`
     );
 
     // name is required for core
@@ -169,6 +176,51 @@ describe('LocationForm', () => {
 
     expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
       'location Tags does not have error message'
+    );
+
+    wrapper.unmount();
+  });
+
+  it('form validation works for wrong data types', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    fetch.mockResponse(JSON.stringify([]));
+
+    const wrapper = mount(
+      <Router history={history}>
+        <LocationForm />
+      </Router>,
+      { attachTo: div }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // set longitude, and latitude to invalid values
+    wrapper
+      .find('FormItem#longitude input')
+      .simulate('change', { target: { value: '432dsff', name: 'longitude' } });
+
+    wrapper
+      .find('FormItem#latitude input')
+      .simulate('change', { target: { value: '43f', name: 'latitude' } });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.find('FormItem#longitude').text()).toMatchInlineSnapshot(
+      `"LongitudeOnly decimal values allowed"`
+    );
+
+    expect(wrapper.find('FormItem#latitude').text()).toMatchInlineSnapshot(
+      `"LatitudeOnly decimal values allowed"`
     );
 
     wrapper.unmount();
@@ -327,6 +379,119 @@ describe('LocationForm', () => {
         },
       ],
     ]);
+
+    wrapper.unmount();
+  });
+
+  it('correctly redirects on submit', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    fetch.mockResponse(JSON.stringify([]));
+
+    const someMockURL = '/someURL';
+    const successURLGeneratorMock = jest.fn(() => someMockURL);
+
+    const wrapper = mount(
+      <Router history={history}>
+        <LocationForm successURLGenerator={successURLGeneratorMock} />
+      </Router>,
+      { attachTo: container }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    // change parent Id
+    formInstance.setFieldsValue({
+      parentId: '51',
+    });
+
+    // simulate active check to be inactive
+    wrapper
+      .find('FormItem#status input')
+      .last()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // set isJurisdiction to false
+    wrapper
+      .find('FormItem#isJurisdiction input')
+      .first()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // simulate type field change
+    wrapper
+      .find('FormItem#type input')
+      .simulate('change', { target: { name: 'type', value: 'Feature' } });
+
+    // simulate name change
+    wrapper
+      .find('FormItem#name input')
+      .simulate('change', { target: { name: 'name', value: 'area51' } });
+
+    // simulate service type change
+    // change service types
+    formInstance.setFieldsValue({
+      serviceType: 'School',
+    });
+
+    wrapper
+      .find('FormItem#externalId input')
+      .simulate('change', { target: { name: 'externalId', value: 'secret' } });
+
+    wrapper.find('FormItem#geometry textarea').simulate('change', {
+      target: { value: JSON.stringify([19.92919921875, 30.135626231134587]) },
+    });
+
+    fetch.resetMocks();
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(successURLGeneratorMock).toHaveBeenCalledWith(createdLocation1);
+    expect(
+      (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
+    ).toEqual(someMockURL);
+    wrapper.unmount();
+  });
+
+  it('cancel handler is called on cancel', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    fetch.mockResponse(JSON.stringify([]));
+    const cancelMock = jest.fn();
+
+    const wrapper = mount(
+      <Router history={history}>
+        <LocationForm onCancel={cancelMock} />
+      </Router>,
+      { attachTo: container }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    wrapper.find('button#location-form-cancel-button').simulate('click');
+    wrapper.update();
+
+    expect(cancelMock).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('is able to edit a location unit', async () => {
@@ -347,11 +512,9 @@ describe('LocationForm', () => {
     };
 
     const wrapper = mount(
-      // <Provider store={store}>
       <Router history={history}>
         <LocationForm {...locationFormProps} />
       </Router>,
-      // </Provider>,
       { attachTo: container }
     );
 
@@ -395,8 +558,13 @@ describe('LocationForm', () => {
       .find('FormItem#externalId input')
       .simulate('change', { target: { name: 'externalId', value: 'alien' } });
 
+    const geometry = {
+      type: 'Point',
+      coordinates: [19.92919921875, 30.135626231134587],
+    };
+
     wrapper.find('FormItem#geometry textarea').simulate('change', {
-      target: { value: JSON.stringify([19.92919921875, 30.135626231134587]) },
+      target: { value: JSON.stringify(geometry) },
     });
 
     // extra fields
@@ -437,5 +605,82 @@ describe('LocationForm', () => {
         },
       ],
     ]);
+
+    wrapper.unmount();
+  });
+
+  it('Editing latitude and longitudes works fine', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    fetch
+      .once(JSON.stringify([location2]))
+      .once(JSON.stringify(serviceTypeSettings))
+      .once(JSON.stringify(locationTags))
+      .once(JSON.stringify(locationSettings))
+      .once(JSON.stringify(rawOpenSRPHierarchy1));
+
+    const initialValues = getLocationFormFields(location4);
+
+    const locationFormProps = {
+      initialValues,
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <LocationForm {...locationFormProps} />
+      </Router>,
+
+      { attachTo: container }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    // simulate service type change
+    // change service types
+    formInstance.setFieldsValue({
+      serviceType: 'School',
+    });
+
+    wrapper.find('FormItem#latitude input').simulate('change', {
+      target: { value: '34.56' },
+    });
+
+    wrapper.find('FormItem#longitude input').simulate('change', {
+      target: { value: '19.56' },
+    });
+
+    fetch.resetMocks();
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: JSON.stringify(generatedLocation4),
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
+        },
+      ],
+    ]);
+    wrapper.unmount();
   });
 });

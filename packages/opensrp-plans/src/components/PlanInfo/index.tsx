@@ -1,6 +1,6 @@
 import { FileDoneOutlined } from '@ant-design/icons';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import { Avatar, Divider, Breadcrumb } from 'antd';
+import { Avatar, Divider, Breadcrumb, Row, Col } from 'antd';
 import { PlanStatusColors, PLANS_EDIT_VIEW_URL, PLANS_ASSIGNMENT_VIEW_URL } from '../../constants';
 import { pageTitleBuilder } from '../../containers/ListView/utils';
 import { EDIT, END_DATE, MISSIONS, START_DATE } from '../../lang';
@@ -52,50 +52,57 @@ const PlanInfo = (props: PlanInfoProps) => {
         routes={routes}
         itemRender={itemRender}
       ></Breadcrumb>
-
-      <div className="plan-info-main">
-        <div className="plan-avatar-detail-section">
-          <span className="avatar-section">
-            <Avatar
-              /**Find the right icon */
-              icon={<FileDoneOutlined />}
-              className=""
-              style={{
-                width: 80,
-                height: 82,
-                lineHeight: 1.8,
-                color: '#1CABE2',
-                fontSize: 50,
-              }}
-            />
-          </span>
-          <div className="plan-detail-section">
-            <div>
-              <h4>{plan.title}</h4>
+      <Row className="plan-info-main">
+        <Col md={12}>
+          <div className="plan-avatar-detail-section">
+            <span className="avatar-section">
+              <Avatar
+                /**Find the right icon */
+                icon={<FileDoneOutlined />}
+                className=""
+                style={{
+                  width: 80,
+                  height: 82,
+                  lineHeight: 1.8,
+                  color: '#1CABE2',
+                  fontSize: 50,
+                }}
+              />
+            </span>
+            <div className="plan-detail-section">
+              <div>
+                <h4>{plan.title}</h4>
+              </div>
+              <div>
+                <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
+                <Divider type="vertical" />
+                <span style={{ color: PlanStatusColors[plan.status] }}>
+                  {pageTitleBuilder(plan.status, false)}
+                </span>
+                <Divider type="vertical" />
+              </div>
             </div>
-            <div>
-              <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
-              <Divider type="vertical" />
-              <span style={{ color: PlanStatusColors[plan.status] }}>
-                {pageTitleBuilder(plan.status, false)}
-              </span>
-              <Divider type="vertical" />
-              <span>{plan.description}</span>
+          </div>
+        </Col>
+        <Col md={12} className="flex-right">
+          <div className="plan-dates">
+            <div className="plan-start-date">
+              <span className="start-date">{START_DATE}</span>
+              <h2>{plan.effectivePeriod.start}</h2>
+            </div>
+            <Divider className="date-divider" type="vertical" />
+            <div className="plan-end-date">
+              <span className="end-date">{END_DATE}</span>
+              <h2>{plan.effectivePeriod.end}</h2>
             </div>
           </div>
-        </div>
-        <div className="plan-dates">
-          <div className="plan-start-date">
-            <span className="start-date">{START_DATE}</span>
-            <h2>{plan.effectivePeriod.start}</h2>
+        </Col>
+        <Col md={24}>
+          <div className="plan-description">
+            <span>{plan.description}</span>
           </div>
-          <Divider className="date-divider" type="vertical" />
-          <div className="plan-end-date">
-            <span className="end-date">{END_DATE}</span>
-            <h2>{plan.effectivePeriod.end}</h2>
-          </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 };

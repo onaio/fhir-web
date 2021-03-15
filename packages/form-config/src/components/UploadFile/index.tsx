@@ -3,20 +3,31 @@ import { Formik } from 'formik';
 import { Button, Form, FormGroup, Input, Label, Row, Col } from 'reactstrap';
 import { uploadValidationSchema, defaultInitialValues, InitialValuesTypes } from './helpers';
 import { Redirect } from 'react-router';
-import { OpenSRPService } from '@opensrp/server-service';
 import { FormConfigProps } from '../../helpers/types';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { ManifestFilesTypes, getManifestFilesById } from '../../ducks/manifestFiles';
 import {
-  MODULE_LABEL,
-  RELATED_TO_LABEL,
-  FILE_NAME_LABEL,
-  FILE_UPLOAD_LABEL,
-  FORM_REQUIRED_LABEL,
-  FORM_NAME_REQUIRED_LABEL,
-} from '../../constants';
+  filesReducer,
+  ManifestFilesTypes,
+  getManifestFilesById,
+  filesReducerName,
+  submitUploadForm,
+} from '@opensrp/form-config-core';
 import { Dictionary } from '@onaio/utils';
+import { GetAccessTokenType } from '@opensrp/server-service';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+import {
+  MODULE,
+  RELATED_TO,
+  FILE_NAME,
+  UPLOAD_FILE,
+  ERROR_FORM_REQUIRED,
+  ERROR_FORM_NAME_REQUIRED,
+  ERROR_OCCURRED,
+} from '../../lang';
+
+/** register the reducers */
+reducerRegistry.register(filesReducerName, filesReducer);
 
 /** default props interface */
 export interface UploadDefaultProps {
@@ -28,7 +39,7 @@ export interface UploadDefaultProps {
   formRequiredLabel: string;
   moduleLabel: string;
   relatedToLabel: string;
-  accessToken: string;
+  accessToken: string | GetAccessTokenType;
 }
 
 /** UploadConfigFile interface */
@@ -69,44 +80,10 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
     }
   }, [formId]);
 
-  type SetSubmitting = (isSubmitting: boolean) => void;
-
-  /**
-   * Upload data
-   *
-   * @param {Dictionary} data - data to be uploaded
-   * @param {Function} setSubmitting - function to update isSubmitting form state
-   */
-  const uploadData = (data: InitialValuesTypes, setSubmitting: SetSubmitting) => {
-    const postData = new FormData();
-    Object.keys(data).forEach((dt) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      postData.append(dt, (data as any)[dt]);
-    });
-    if (isJsonValidator) {
-      postData.append('is_json_validator', 'true');
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
     }
-    const customOptions = () => {
-      return {
-        body: postData,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        method: 'POST',
-      };
-    };
-
-    const clientService = new OpenSRPService(accessToken, baseURL, endpoint, customOptions);
-    clientService
-      .create(postData)
-      .then(() => setIfDoneHere(true))
-      .catch((err) => {
-        if (customAlert) {
-          customAlert(String(err), { type: 'error' });
-        }
-
-        setSubmitting(false);
-      });
   };
 
   if (ifDoneHere) {
@@ -119,7 +96,18 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
       validationSchema={uploadValidationSchema}
       // tslint:disable-next-line: jsx-no-lambda
       onSubmit={(values, { setSubmitting }) => {
-        uploadData(values, setSubmitting);
+        submitUploadForm(
+          values,
+          accessToken,
+          baseURL,
+          isJsonValidator,
+          setSubmitting,
+          setIfDoneHere,
+          displayAlertError,
+          endpoint
+        ).catch(() => {
+          displayAlertError(ERROR_OCCURRED);
+        });
       }}
     >
       {({ values, setFieldValue, handleChange, handleSubmit, errors, touched, isSubmitting }) => (
@@ -227,14 +215,14 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
 
 /**default props */
 const defaultProps: UploadDefaultProps = {
-  fileNameLabel: FILE_NAME_LABEL,
-  fileUploadLabel: FILE_UPLOAD_LABEL,
+  fileNameLabel: FILE_NAME,
+  fileUploadLabel: UPLOAD_FILE,
   formData: null,
   formInitialValues: defaultInitialValues,
-  formNameRequiredLable: FORM_NAME_REQUIRED_LABEL,
-  formRequiredLabel: FORM_REQUIRED_LABEL,
-  moduleLabel: MODULE_LABEL,
-  relatedToLabel: RELATED_TO_LABEL,
+  formNameRequiredLable: ERROR_FORM_NAME_REQUIRED,
+  formRequiredLabel: ERROR_FORM_REQUIRED,
+  moduleLabel: MODULE,
+  relatedToLabel: RELATED_TO,
   accessToken: '',
 };
 

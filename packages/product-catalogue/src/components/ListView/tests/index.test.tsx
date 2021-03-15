@@ -208,6 +208,6 @@ describe('List view Page', () => {
     });
 
     /** error view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
   });
 });

@@ -18,13 +18,13 @@ describe('ExtraLinks util component', () => {
     );
 
     // click go back
-    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Go Back"`);
+    expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Go back"`);
     wrapper.find('button').first().simulate('click');
 
     expect(mockBack).toHaveBeenCalled();
 
     // click go back
-    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Back Home"`);
+    expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Go home"`);
     wrapper.find('button').last().simulate('click');
 
     expect(history.location.pathname).toEqual(HOME_URL);
