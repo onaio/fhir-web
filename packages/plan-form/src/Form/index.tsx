@@ -6,6 +6,7 @@ import { xor } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { format } from 'util';
+import { RangePickerSharedProps } from 'rc-picker/lib/RangePicker';
 import {
   ACTION,
   ACTIVE_DATE_RANGE_LABEL,
@@ -451,10 +452,11 @@ const PlanForm = (props: PlanFormProps) => {
             id="dateRange"
           >
             <DatePicker.RangePicker
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onCalendarChange={(val: any) => {
-                setDates(val);
-              }}
+              onCalendarChange={
+                ((val: Moment[]) => {
+                  setDates(val);
+                }) as RangePickerSharedProps<Moment>['onCalendarChange']
+              }
               onOpenChange={(open: boolean) => {
                 if (open) {
                   if (form.getFieldValue('dateRange')) {
