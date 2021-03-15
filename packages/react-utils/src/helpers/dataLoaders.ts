@@ -10,10 +10,10 @@ import { refreshToken } from '@onaio/gatekeeper';
 import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
 import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
-import { getConfigs } from '@opensrp/pkg-config';
+import { getAllConfigs } from '@opensrp/pkg-config';
 import { SESSION_EXPIRED_TEXT } from '../lang';
 
-const configs = getConfigs();
+const configs = getAllConfigs();
 
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {

@@ -184,3 +184,4 @@ export const OK = i18n.t('OK');
 export const CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS = i18n.t(
   'Assign jurisdictions to the Plan, to enable activating it'
 );
+export const PLAN_NAME_CANNOT_CONTAIN_SLASHES = i18n.t("Plan name cannot contain '/'");
