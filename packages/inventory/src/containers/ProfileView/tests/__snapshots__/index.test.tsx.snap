@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Profile view Page shows broken page when jurisdiction request errors out: error broken page 1`] = `"Errorlocations.map is not a functionGo BackBack Home"`;
-
-exports[`Profile view Page shows broken page: error broken page 1`] = `"ErrorCoughidGo BackBack Home"`;

@@ -6,8 +6,9 @@ import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
 import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { RouteComponentProps, Router } from 'react-router';
 import { act } from 'react-dom/test-utils';
+import { commonHiddenFields } from '../../../helpers/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -65,14 +66,17 @@ describe('CreateServicePoint', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initialValues = (locationFormProps as any).initialValues;
 
-    expect(locationFormProps.hidden).toEqual([
-      'extraFields',
-      'status',
-      'type',
-      'locationTags',
-      'externalId',
-    ]);
+    expect(locationFormProps.hidden).toEqual(commonHiddenFields);
     expect(initialValues.instance).toEqual('eusm');
+    expect(initialValues.type).toEqual('Feature');
     expect(locationFormProps.disabled).toEqual(['isJurisdiction']);
+
+    // test re-direction url on chancel
+    wrapper.find('button#location-form-cancel-button').simulate('click');
+    wrapper.update();
+
+    expect(
+      (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
+    ).toEqual('/inventory/list');
   });
 });

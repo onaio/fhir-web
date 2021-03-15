@@ -45,10 +45,10 @@ module.exports = {
   lineEnding: 'auto',
   // Control the line ending. See options at https://github.com/ryanve/eol
 
-  locales: ['en', 'sw', 'fr', 'ar'],
+  locales: ['en', 'sw', 'fr', 'ar', 'th'],
   // An array of the locales in your applications
 
-  namespaceSeparator: '~',
+  namespaceSeparator: '::',
   // Namespace separator used in your translation keys
   // If you want to use plain english keys, separators such as `.` and `:` will conflict. You might want to set `keySeparator: false` and `namespaceSeparator: false`. That way, `t('Status: Loading...')` will not think that there are a namespace and three separator dots for instance.
 
@@ -65,7 +65,7 @@ module.exports = {
   // For react file, extract the defaultNamespace - https://react.i18next.com/components/translate-hoc.html
   // Ignored when parsing a `.jsx` file and namespace is extracted from that file.
 
-  sort: false,
+  sort: true,
   // Whether or not to sort the catalog
 
   useKeysAsDefaultValue: false,

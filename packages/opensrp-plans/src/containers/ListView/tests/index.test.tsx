@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { columns, pageTitleBuilder } from '../utils';
+import { DATE } from '../../../lang';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -63,7 +64,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Active Missions + New MissionNameDateActionsNo Data"`
+      `"Active Missions + New MissionNameDate createdEnd DateActionsNo Data"`
     );
   });
   it('renders Draft Missions Title', async () => {
@@ -97,7 +98,7 @@ describe('List view Page', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Draft Missions + New MissionNameDateActionsDraft Plan2020-11-17View1"`
+      `"Draft Missions + New MissionNameDate createdEnd DateActionsDraft Plan2020-11-172021-12-24View1"`
     );
   });
   it('renders Complete Missions Title', async () => {
@@ -138,7 +139,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Complete Missions + New MissionNameDateActionsComplete Plan2020-11-17View1"`
+      `"Complete Missions + New MissionNameDate createdEnd DateActionsComplete Plan2020-11-172021-12-24View1"`
     );
   });
 
@@ -175,7 +176,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Retired Missions + New MissionNameDateActionsRetired Plan2020-11-17View1"`
+      `"Retired Missions + New MissionNameDate createdEnd DateActionsRetired Plan2020-11-172021-12-24View1"`
     );
   });
 
@@ -234,6 +235,63 @@ describe('List view Page', () => {
     });
   });
 
+  it('sort works on date', async () => {
+    const plan3 = { ...eusmPlans[0], title: 'Simple Plan', identifier: '300' };
+    fetch.mockResponse(JSON.stringify([...eusmPlans, plan3]));
+    const props = {
+      history,
+      location: {
+        hash: '',
+        pathname: `${PLANS_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${PLANS_LIST_VIEW_URL}`,
+        url: `${PLANS_LIST_VIEW_URL}`,
+      },
+      allowedPlanStatus: 'active',
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedPlansList {...props}></ConnectedPlansList>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // check if page title is correct
+    const helmet = Helmet.peek();
+    expect(helmet.title).toEqual('Active Missions');
+
+    // find ant table
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`table rows ${index}`);
+    });
+
+    // click on sort twice to change the order if its date col
+    expect(wrapper.find('thead tr th').at(1).text()).toEqual(DATE);
+
+    wrapper.find('thead tr th').at(1).simulate('click');
+    wrapper.update();
+
+    // click on sort twice to change the order
+    wrapper.find('thead tr th').at(1).simulate('click');
+    wrapper.update();
+
+    // check new sort order
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`sorted table rows ${index}`);
+    });
+  });
+
   it('shows broken page', async () => {
     fetch.mockReject(new Error('Something went wrong'));
     const props = {
@@ -271,7 +329,7 @@ describe('List view Page', () => {
     });
 
     /** error view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
   });
 
   // test column sorter method

@@ -6,12 +6,18 @@ import { createBrowserHistory } from 'history';
 import {
   fetchCalls,
   inventories,
+  inventory1,
+  inventory3,
+  inventory4,
+  inventory5,
+  inventory6,
   opensrpBaseURL,
-} from '../../../containers/ProfileView/tests/fixtures';
+} from '../../../containers/ServicePointProfile/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { InventoryList } from '..';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -60,6 +66,28 @@ describe('Inventory list Page', () => {
     wrapper.unmount();
   });
 
+  it('renders correctly when no data is present', async () => {
+    fetch.once(JSON.stringify([inventory1]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <InventoryList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo Data"`
+    );
+    wrapper.unmount();
+  });
+
   it('renders when data is present', async () => {
     fetch.once(JSON.stringify(inventories));
 
@@ -80,7 +108,11 @@ describe('Inventory list Page', () => {
     expect(fetch.mock.calls[0]).toEqual(fetchCalls[3]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActions1101123434Jan 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1101123434Feb 2, 2020, 3:00:00 AMMay 2, 2021, 3:00:00 AMHealthADBEdit1"`
+      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name Test1101123434Feb 02, 2020May 02, 2021HealthADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditScale1101123434Jan 02, 2020May 02, 2021HealthADBEdit"`
+    );
+
+    expect(toJson(wrapper.find('.inventory-profile a'))).toMatchSnapshot(
+      'link to add new inventory item'
     );
     wrapper.unmount();
   });
@@ -105,5 +137,60 @@ describe('Inventory list Page', () => {
     // no data
     expect(wrapper.text()).toMatchSnapshot('error broken page');
     wrapper.unmount();
+  });
+
+  it('sorts by file product name', async () => {
+    fetch.once(JSON.stringify([inventory3, inventory4, inventory5, inventory6]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <InventoryList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+
+    wrapper.update();
+    const heading = wrapper.find('thead');
+
+    // Ascending is default
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual('Scale');
+
+    // Cancel sorting
+    heading.find('th').at(0).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    // descending
+    heading.find('th').at(0).children().simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual(
+      'Empty product test'
+    );
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual(
+      'Change name Test'
+    );
   });
 });

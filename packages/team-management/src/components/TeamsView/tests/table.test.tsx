@@ -53,22 +53,8 @@ describe('components/TeamsView/table', () => {
   });
 
   it('Test Table View Detail', () => {
-    const wrapper = mount(
-      <Router history={history}>
-        <Table
-          setPractitionersList={() => jest.fn()}
-          setDetail={() => jest.fn()}
-          opensrpBaseURL={opensrpBaseURL}
-          data={tableData}
-          onViewDetails={() => wrapper.unmount()}
-        />
-      </Router>
-    );
-    wrapper.find('.viewdetails').at(0).simulate('click');
-    expect(wrapper).toHaveLength(0);
-  });
+    const onViewDetails = jest.fn();
 
-  it('Test Table View Detail when onViewDetail prop is not passed', () => {
     const wrapper = mount(
       <Router history={history}>
         <Table
@@ -76,10 +62,17 @@ describe('components/TeamsView/table', () => {
           setDetail={() => jest.fn()}
           opensrpBaseURL={opensrpBaseURL}
           data={tableData}
+          onViewDetails={onViewDetails}
         />
       </Router>
     );
+    const dropdown = wrapper.find('Dropdown').at(0);
+    dropdown.simulate('click');
+    wrapper.update();
     wrapper.find('.viewdetails').at(0).simulate('click');
+    wrapper.update();
+    expect(onViewDetails).toBeCalled();
+    wrapper.unmount();
   });
 
   it('Test Name Sorting functionality', () => {
