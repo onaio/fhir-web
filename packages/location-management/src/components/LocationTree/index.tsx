@@ -14,6 +14,7 @@ import './tree.css';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { getHierarchyNodeFromArray } from '../../ducks/locationHierarchy/utils';
 import { SEARCH } from '../../lang';
+import { Key } from 'rc-tree/lib/interface';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
@@ -25,7 +26,7 @@ interface TreeProp {
 export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const { data, OnItemClick } = props;
 
-  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
+  const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
@@ -95,9 +96,9 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   /** Function to handle event when a tree is expanded
    *
-   * @param {Array<React.Key>} allExpandedKeys currently expanded keys
+   * @param allExpandedKeys currently expanded keys
    */
-  function onExpand(allExpandedKeys: React.Key[]) {
+  function onExpand(allExpandedKeys: Key[]) {
     if (expandedKeys.length !== 0) {
       for (let i = 0; i < expandedKeys.length; i++) {
         if (expandedKeys[i] !== allExpandedKeys[i]) {
@@ -176,6 +177,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     generateFilterData(data);
   }, [data, generateFilterData]);
 
+  // se we want to support a usecase where a node is selected but can be collapsed
   return (
     <div>
       <Input
@@ -200,7 +202,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         }}
         selectedKeys={[locationTreeState?.keys[locationTreeState.keys.length - 1]] as React.Key[]}
         onExpand={onExpand}
-        expandedKeys={locationTreeState?.keys ?? expandedKeys}
+        expandedKeys={expandedKeys}
         autoExpandParent={autoExpandParent}
         treeData={buildTreeData(data)}
       />
