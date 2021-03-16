@@ -1,3 +1,4 @@
+import '@opensrp/plan-form/dist/index.css';
 export * from './constants';
 export * from './components/PlanInfo';
 export * from './ducks/planDefinitions';

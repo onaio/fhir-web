@@ -184,8 +184,6 @@ describe('List view Page', () => {
     expect(wrapper.find('tbody tr')).toHaveLength(1);
 
     expect(wrapper.find('tbody').text()).toMatchSnapshot('full body has only one entry Madagascar');
-
-    wrapper.unmount();
   });
 
   it('shows broken page', async () => {

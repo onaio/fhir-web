@@ -27,11 +27,7 @@
 }
 
 .plan-info-main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   padding: 16px 28px;
-  flex-wrap: wrap;
 }
 .plan-avatar-detail-section {
   display: flex;
@@ -74,5 +70,11 @@
   justify-content: flex-end;
 }
 .plan-description {
-  font-size: 14px;
+  padding-left: 0px;
+}
+@media only screen and (min-width: 768px) {
+  .plan-description {
+    padding-left: 104px;
+    font-size: 14px;
+  }
 }

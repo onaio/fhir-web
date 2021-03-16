@@ -76,6 +76,7 @@ describe('components/Credentials', () => {
     accessToken: 'hunter 2',
     keycloakUser: null,
     serviceClass: KeycloakService,
+    cancelUserHandler: jest.fn(),
     history,
     location: {
       hash: '',

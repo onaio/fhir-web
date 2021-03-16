@@ -7,11 +7,9 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import * as opensrpStore from '@opensrp/store';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
-import { OpenSRPService } from '@opensrp/react-utils';
-import { KeycloakService } from '@opensrp/keycloak-service';
 import * as notifications from '@opensrp/notifications';
 import fetch from 'jest-fetch-mock';
 import toJson from 'enzyme-to-json';
@@ -50,12 +48,9 @@ describe('components/CreateEditUser', () => {
     history,
     keycloakUser: keycloakUser,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    serviceClass: KeycloakService,
     practitioner: undefined,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
     opensrpBaseURL: OPENSRP_API_BASE_URL,
-    opensrpServiceClass: OpenSRPService,
-    accessToken: 'bamboocha',
     location: {
       hash: '',
       pathname: '/users/edit',
@@ -75,11 +70,8 @@ describe('components/CreateEditUser', () => {
     history,
     keycloakUser: null,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    serviceClass: KeycloakService,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
     opensrpBaseURL: OPENSRP_API_BASE_URL,
-    opensrpServiceClass: OpenSRPService,
-    accessToken: 'bamboocha',
     location: {
       hash: '',
       pathname: '/users/new',
@@ -391,7 +383,6 @@ describe('components/CreateEditUser', () => {
     });
 
     expect(wrapper.find('CreateEditUser').prop('keycloakUser')).toEqual(keycloakUser);
-    expect(wrapper.find('CreateEditUser').prop('accessToken')).toEqual('bamboocha');
     expect(wrapper.find('CreateEditUser').prop('extraData')).toEqual({
       api_token: 'hunter2',
       oAuth2Data: { access_token: 'bamboocha', state: 'abcde' },
