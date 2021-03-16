@@ -155,4 +155,42 @@ describe('location-management/src/components/LocationTree', () => {
     expect(treeNode).toHaveLength(1);
     wrapper.unmount();
   });
+
+  it('issue #474 Selecting nodes and caret collapsing/expanding works', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+    const tunisiaTree = treedata[0];
+    const wrapper = mount(
+      <Provider store={store}>
+        <Tree data={[tunisiaTree]} OnItemClick={jest.fn()} />
+      </Provider>,
+      { attachTo: div }
+    );
+
+    await act(async () => {
+      await new Promise((r) => setImmediate(r));
+    });
+
+    const rootNode = wrapper.find('.ant-tree-title');
+    // rootNode is one and belongs to Tunisia
+    expect(rootNode.text()).toMatchInlineSnapshot(`"Tunisia"`);
+    // simulate click on rootNode
+    rootNode.simulate('click');
+    wrapper.update();
+
+    // check the expandedKeys prop in tree.
+    expect(wrapper.find('Tree').last().prop('expandedKeys')).toEqual(['Tunisia']);
+
+    // now find the caret next to Tunisia and click to simulate collapsing Tunisia
+    // that did not work so we will call the expand prop on the ant tree component directly
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (wrapper.find('Tree').last().prop('onExpand') as any)?.([]);
+    wrapper.update();
+
+    // check again the list of expanded keys, should be empty
+    expect(wrapper.find('Tree').last().prop('expandedKeys')).toEqual([]);
+
+    wrapper.unmount();
+  });
 });
