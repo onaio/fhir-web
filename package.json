@@ -119,6 +119,8 @@
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
     "redux-thunk": "^2.3.0",
+    "typedoc": "^0.20.32",
+    "typedoc-plugin-markdown": "^3.6.0",
     "typescript": "~3.8.3"
   },
   "resolutions": {
