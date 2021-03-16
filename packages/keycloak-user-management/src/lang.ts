@@ -55,6 +55,7 @@ export const LAST_NAME = i18n.t('Last Name');
 export const EMAIL = i18n.t('Email');
 export const USERNAME = i18n.t('Username');
 export const MARK_AS_PRACTITIONER = i18n.t('Mark as Practitioner');
+export const ENABLE_USER = i18n.t('Enable user');
 export const REQUIRED_ACTIONS = i18n.t('Required Actions');
 export const PLEASE_SELECT = i18n.t('Please select');
 export const GROUP = i18n.t('Group');

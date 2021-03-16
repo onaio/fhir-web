@@ -21,6 +21,7 @@ import {
   USERNAME_REQUIRED,
   GROUP,
   ERROR_OCCURED,
+  ENABLE_USER,
 } from '../../../lang';
 import { submitForm, fetchRequiredActions } from './utils';
 import { Dictionary } from '@onaio/utils';
@@ -130,7 +131,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           >
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
-          <Form.Item id="enabled" name="enabled" label="Enable user">
+          <Form.Item id="enabled" name="enabled" label={ENABLE_USER}>
             <Radio.Group options={status} name="enabled"></Radio.Group>
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
