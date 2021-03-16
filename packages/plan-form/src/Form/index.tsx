@@ -160,7 +160,8 @@ export interface PlanFormProps extends CommonProps {
 }
 
 /**
- * Plan Form component
+ * Plan Form Date range picker
+ * Function checks end date to be greater than start date and today date
  *
  * @param {Moment} current - current selected/hovered date (date picker)
  * @param {Moment[]} dates - start and end date
