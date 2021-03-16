@@ -43,7 +43,7 @@ reducerRegistry.register(rolesReducername, rolesReducer);
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
-  ...jest.requireActual('@opensrp/store'),
+  ...Object.assign({}, jest.requireActual('@opensrp/store')),
 }));
 
 jest.mock('@opensrp/notifications', () => ({
@@ -145,7 +145,6 @@ describe('components/CreateEditUserGroup', () => {
   });
 
   it('renders correctly for create user group', () => {
-    jest.resetAllMocks();
     const propsCreate = {
       history,
       keycloakBaseURL:

@@ -46,7 +46,8 @@
     "cycle": "^1.0.3",
     "fast_array_intersect": "^1.1.0",
     "i18next": "^19.8.4",
-    "tree-model": "^1.0.7"
+    "tree-model": "^1.0.7",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
@@ -56,7 +57,7 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
+    "@opensrp/store": "^0.0.9",
     "formik-antd": "^2.0.1",
     "react": "^16.13.1",
     "uuid": "^8.3.1"

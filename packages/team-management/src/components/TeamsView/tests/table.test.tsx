@@ -66,22 +66,13 @@ describe('components/TeamsView/table', () => {
         />
       </Router>
     );
+    const dropdown = wrapper.find('Dropdown').at(0);
+    dropdown.simulate('click');
+    wrapper.update();
     wrapper.find('.viewdetails').at(0).simulate('click');
+    wrapper.update();
     expect(onViewDetails).toBeCalled();
-  });
-
-  it('Test Table View Detail when onViewDetail prop is not passed', () => {
-    const wrapper = mount(
-      <Router history={history}>
-        <Table
-          setPractitionersList={() => jest.fn()}
-          setDetail={() => jest.fn()}
-          opensrpBaseURL={opensrpBaseURL}
-          data={tableData}
-        />
-      </Router>
-    );
-    wrapper.find('.viewdetails').at(0).simulate('click');
+    wrapper.unmount();
   });
 
   it('Test Name Sorting functionality', () => {
