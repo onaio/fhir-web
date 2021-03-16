@@ -7,6 +7,7 @@ import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { act } from 'react-dom/test-utils';
 import toJson from 'enzyme-to-json';
+import { setLocationTreeState } from '../../../ducks/location-hierarchy';
 
 describe('location-management/src/components/LocationTree', () => {
   beforeEach(() => {
@@ -85,7 +86,7 @@ describe('location-management/src/components/LocationTree', () => {
     );
 
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
-    expect(treeNode.children().length).toBeGreaterThan(treedata.length); // as per structure make sure we have 3 tree
+    expect(treeNode.children()).toHaveLength(3); // as per structure make sure we have 3 tree
 
     const expandButton = treeNode.find('span.ant-tree-switcher').first();
     expandButton.simulate('click');
@@ -108,7 +109,7 @@ describe('location-management/src/components/LocationTree', () => {
     wrapper.find('span.ant-tree-switcher').first().simulate('click');
     wrapper.update();
 
-    expect(toJson(wrapper.find('.ant-tree-list-holder-inner').children())).toHaveLength(3);
+    expect(toJson(wrapper.find('.ant-tree-list-holder-inner').children())).toHaveLength(4);
     expect(wrapper.find('.ant-tree-treenode').children().length).toBeGreaterThan(treedata.length); // as per structure make sure the parent tree is expended i.e more child
     wrapper.unmount();
   });
@@ -157,6 +158,7 @@ describe('location-management/src/components/LocationTree', () => {
   });
 
   it('issue #474 Selecting nodes and caret collapsing/expanding works', async () => {
+    store.dispatch(setLocationTreeState({ keys: [], node: undefined }));
     const div = document.createElement('div');
     document.body.appendChild(div);
     const tunisiaTree = treedata[0];
