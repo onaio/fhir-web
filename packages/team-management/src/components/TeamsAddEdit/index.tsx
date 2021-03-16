@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { organizationsReducer, Organization, orgReducerName } from '../../ducks/organizations';
+import { reducer, Organization, reducerName } from '../../ducks/organizations';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import { PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
@@ -11,7 +11,7 @@ import { Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioners';
 import { CREATE, CREATE_TEAM, EDIT, EDIT_TEAM, ERROR_OCCURRED } from '../../lang';
 
-reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(reducerName, reducer);
 
 /**
  * Gets Team data

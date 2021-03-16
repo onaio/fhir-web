@@ -8,9 +8,9 @@ import {
 } from '@opensrp/react-utils';
 import {
   TreeNode,
+  fetchTree,
   hierarchyReducer,
   hierarchyReducerName,
-  fetchTree,
   locationUnitsReducer,
   locationUnitsReducerName,
   fetchLocationUnits,
