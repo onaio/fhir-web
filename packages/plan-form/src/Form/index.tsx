@@ -6,6 +6,7 @@ import { xor } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { format } from 'util';
+import { RangePickerSharedProps } from 'rc-picker/lib/RangePicker';
 import {
   ACTION,
   ACTIVE_DATE_RANGE_LABEL,
@@ -159,6 +160,25 @@ export interface PlanFormProps extends CommonProps {
 }
 
 /**
+ * Plan Form Date range picker
+ * Function checks end date to be greater than start date and today date
+ *
+ * @param {Moment} current - current selected/hovered date (date picker)
+ * @param {Moment[]} dates - start and end date
+ * @returns {boolean} - returns true if disabled and viseversa
+ */
+export const disableDate = (current: Moment, dates: Moment[]) => {
+  if (!dates || dates.length === 0) {
+    return false;
+  }
+  return (
+    current.valueOf() <= Date.now() ||
+    current.format('L') <= (dates[0] && dates[0].format('L')) ||
+    (dates[1] && dates[1].valueOf() <= Date.now())
+  );
+};
+
+/**
  * Plan Form component
  *
  * @param {object} props - props
@@ -172,6 +192,7 @@ const PlanForm = (props: PlanFormProps) => {
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
   const [actionDynamicValue, setActionDynamicValue] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [dates, setDates] = useState<Moment[]>([]);
   const {
     allFormActivities,
     disabledActivityFields,
@@ -432,6 +453,25 @@ const PlanForm = (props: PlanFormProps) => {
             id="dateRange"
           >
             <DatePicker.RangePicker
+              onCalendarChange={
+                ((val: Moment[]) => {
+                  setDates(val);
+                }) as RangePickerSharedProps<Moment>['onCalendarChange']
+              }
+              onOpenChange={(open: boolean) => {
+                if (open) {
+                  if (form.getFieldValue('dateRange')) {
+                    setDates(
+                      form.getFieldValue('dateRange')[0] && form.getFieldValue('dateRange')[1]
+                        ? form.getFieldValue('dateRange')
+                        : []
+                    );
+                  } else {
+                    setDates([]);
+                  }
+                }
+              }}
+              disabledDate={(current: Moment) => disableDate(current, dates)}
               disabled={disabledFields.includes('dateRange')}
               format={configs.dateFormat}
             />
