@@ -50,7 +50,6 @@
   },
   "devDependencies": {
     "@types/redux": "^3.6.0",
-    "i18next-parser": "^3.5.0",
-    "@types/date-fns": "2.6.0"
+    "i18next-parser": "^3.5.0"
   }
 }
