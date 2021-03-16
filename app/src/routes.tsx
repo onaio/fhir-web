@@ -36,6 +36,7 @@ import {
   FORM_CONFIGURATION,
   MANIFEST_RELEASES,
   DRAFT_FILES,
+  TEAM_ASSIGNMENT,
   JSON_VALIDATORS,
   MISSIONS,
   ADMIN,
@@ -50,6 +51,7 @@ import {
   URL_TEAMS,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
+  URL_TEAM_ASSIGNMENT,
   URL_JSON_VALIDATOR_LIST,
   URL_DOWNLOAD_CLIENT_DATA,
 } from './constants';
@@ -151,7 +153,14 @@ export const getRoutes = (roles: string[]): Route[] => {
             roles &&
             activeRoles.TEAMS &&
             isAuthorized(roles, activeRoles.TEAMS.split(',')),
-          url: `${URL_TEAMS}`,
+          children: [
+            { title: `${TEAMS}`, url: `${URL_TEAMS}`, key: 'teams-list' },
+            {
+              title: `${TEAM_ASSIGNMENT}`,
+              url: `${URL_TEAM_ASSIGNMENT}`,
+              key: 'team-assignment',
+            },
+          ],
         },
         {
           title: `${FORM_CONFIGURATION}`,
