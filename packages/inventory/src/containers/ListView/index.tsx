@@ -8,9 +8,9 @@ import {
 } from '@opensrp/react-utils';
 import {
   TreeNode,
+  fetchTree,
   hierarchyReducer,
   hierarchyReducerName,
-  fetchTree,
   locationUnitsReducer,
   locationUnitsReducerName,
   fetchLocationUnits,
@@ -177,7 +177,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
         <title>{pageTitle}</title>
       </Helmet>
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
-      <Row className={'list-view'}>
+      <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} size="middle" />

@@ -32,14 +32,14 @@ export interface EditLocationUnitProps
       'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps<LocationRouteProps> {
-  openSRPBaseURL: string;
+  opensrpBaseURL: string;
   instance: FormInstances;
   cancelURLGenerator: (data: LocationUnit) => string;
 }
 
 const defaultEditLocationUnitProps = {
   redirectAfterAction: '',
-  openSRPBaseURL: OPENSRP_API_BASE_URL,
+  opensrpBaseURL: OPENSRP_API_BASE_URL,
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
@@ -58,7 +58,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     hidden,
     disabled,
     service,
-    openSRPBaseURL,
+    opensrpBaseURL,
     cancelURLGenerator,
     successURLGenerator,
     disabledTreeNodesCallback,
@@ -108,7 +108,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     const firstPromise = loadJurisdiction(
       locId,
       undefined,
-      openSRPBaseURL,
+      opensrpBaseURL,
       jurisdictionParams,
       service
     )
@@ -123,7 +123,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     const secondPromise = loadJurisdiction(
       locId,
       undefined,
-      openSRPBaseURL,
+      opensrpBaseURL,
       structureParams,
       service
     )
@@ -169,7 +169,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     disabled,
     onCancel: cancelHandler,
     service,
-    openSRPBaseURL,
+    opensrpBaseURL,
     user: user.username,
     afterSubmit: () => dispatch(fetchAllHierarchies([])),
     disabledTreeNodesCallback,

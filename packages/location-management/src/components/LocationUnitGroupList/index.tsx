@@ -26,12 +26,9 @@ import Table, { TableData } from './Table';
 import './LocationUnitGroupList.css';
 import { Link } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { Props } from '../../helpers/common';
 
 reducerRegistry.register(reducerName, reducer);
-
-export interface Props {
-  opensrpBaseURL: string;
-}
 
 const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   const locationsArray = useSelector((state) => getLocationUnitGroupsArray(state));

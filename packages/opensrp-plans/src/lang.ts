@@ -5,7 +5,7 @@ export const NEW_MISSION = i18n.t(' + New Mission');
 
 // plans table columns
 export const NAME = i18n.t('Name');
-export const DATE = i18n.t('Date');
+export const DATE = i18n.t('Date created');
 export const ACTIONS = i18n.t('Actions');
 
 //loader texts
