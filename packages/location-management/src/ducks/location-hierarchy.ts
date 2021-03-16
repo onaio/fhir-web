@@ -99,7 +99,10 @@ export function reducer(
     case SET_LOCATION_TREE_STATE:
       return {
         ...state,
-        locationTreeState: action.hierarchyObject,
+        locationTreeState: {
+          node: action.hierarchyObject.node as ParsedHierarchyNode,
+          keys: action.hierarchyObject.keys as React.Key[],
+        },
       };
 
     default:
