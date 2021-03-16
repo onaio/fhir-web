@@ -21,6 +21,12 @@
     "declarationMap": false,
     "listEmittedFiles": true
   },
+  "typedocOptions": {
+    "entryPoints": ["src/index.tsx"],
+    "out": "docs",
+    "exclude": "**/*+(index|.spec|.e2e|.test).ts",
+    "includeVersion": true
+  },
   "include": [
     "packages/",
     "app/src",
