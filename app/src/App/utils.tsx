@@ -20,10 +20,15 @@ import {
   PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
+  DEFAULT_PLAN_ID,
 } from '../configs/env';
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
+};
+
+export const teamAssignmentProps = {
+  defaultPlanId: DEFAULT_PLAN_ID,
 };
 
 export const newLocationUnitProps = {

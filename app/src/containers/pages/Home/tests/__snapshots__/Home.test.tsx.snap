@@ -142,6 +142,34 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
         </Col>
       </div>
     </Row>
+    <Row
+      className="links-box"
+      gutter={16}
+    >
+      <div
+        className="ant-row links-box"
+        style={
+          Object {
+            "marginLeft": -8,
+            "marginRight": -8,
+          }
+        }
+      />
+    </Row>
+    <Row
+      className="links-box"
+      gutter={16}
+    >
+      <div
+        className="ant-row links-box"
+        style={
+          Object {
+            "marginLeft": -8,
+            "marginRight": -8,
+          }
+        }
+      />
+    </Row>
   </div>
 </Home>
 `;
