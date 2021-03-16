@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`location-management/src/components/LocationTree issue #474 Selecting nodes and caret collapsing/expanding works: ass 1`] = `
+<span
+  className="ant-tree-switcher ant-tree-switcher_open"
+  onClick={[Function]}
+>
+  <ForwardRef(CaretDownFilled)
+    className="ant-tree-switcher-icon"
+  >
+    <AntdIcon
+      className="ant-tree-switcher-icon"
+      icon={
+        Object {
+          "icon": Object {
+            "attrs": Object {
+              "focusable": "false",
+              "viewBox": "0 0 1024 1024",
+            },
+            "children": Array [
+              Object {
+                "attrs": Object {
+                  "d": "M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z",
+                },
+                "tag": "path",
+              },
+            ],
+            "tag": "svg",
+          },
+          "name": "caret-down",
+          "theme": "filled",
+        }
+      }
+    >
+      <span
+        aria-label="caret-down"
+        className="anticon anticon-caret-down ant-tree-switcher-icon"
+        role="img"
+      >
+        <IconReact
+          icon={
+            Object {
+              "icon": Object {
+                "attrs": Object {
+                  "focusable": "false",
+                  "viewBox": "0 0 1024 1024",
+                },
+                "children": Array [
+                  Object {
+                    "attrs": Object {
+                      "d": "M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z",
+                    },
+                    "tag": "path",
+                  },
+                ],
+                "tag": "svg",
+              },
+              "name": "caret-down",
+              "theme": "filled",
+            }
+          }
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="caret-down"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            key="svg-caret-down"
+            viewBox="0 0 1024 1024"
+            width="1em"
+          >
+            <path
+              d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+              key="svg-caret-down-svg-0"
+            />
+          </svg>
+        </IconReact>
+      </span>
+    </AntdIcon>
+  </ForwardRef(CaretDownFilled)>
+</span>
+`;
