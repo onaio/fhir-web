@@ -17,7 +17,13 @@ describe('components/ConnectedHeader', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Header').props()).toMatchSnapshot();
+    expect(wrapper.find('.app-header')).toHaveLength(3);
+    expect(wrapper.find('LanguageSwitcher')).toHaveLength(1);
+    expect(wrapper.find('Header').props().children).toHaveLength(2);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"Login"`);
+    (wrapper.find('Header').props().children as any).forEach((child: any) => {
+      expect(child).toMatchSnapshot('child');
+    });
     wrapper.unmount();
   });
 
@@ -44,7 +50,10 @@ describe('components/ConnectedHeader', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Header').props()).toMatchSnapshot();
+    expect(wrapper.find('.app-header')).toHaveLength(3);
+    expect(wrapper.find('LanguageSwitcher')).toHaveLength(1);
+    expect(wrapper.find('Header').props().children).toHaveLength(2);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"RobertBaratheonRobertBaratheon"`);
     wrapper.unmount();
   });
 });
