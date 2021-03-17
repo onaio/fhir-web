@@ -62,7 +62,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
     supportedLanguages: SUPPORTED_LANGUAGES as LanguageCode[],
   };
   return (
-    <Layout.Header className="txt-white align-items-center justify-content-end px-1 layout-header">
+    <Layout.Header className="app-header txt-white align-items-center justify-content-end px-1 layout-header">
       {authenticated ? (
         <Dropdown
           overlay={
