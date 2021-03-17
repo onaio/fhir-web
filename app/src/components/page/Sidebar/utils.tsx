@@ -2,21 +2,26 @@ import { Route } from '../../../routes';
 
 /**
  *
- * @param menus - menu schema
- * @param loc - an array of menu location paths
+ * @param routes - The routes to get search the active route from
+ * @param pathname - an array of menu location path
  */
-export const getActiveKey = (menus: Route[], loc: string[]) => {
-  let activeKey = '';
+export function getActiveKey(pathname: string[], routes: Route[]) {
+  const url = '/' + pathname.join('/');
+  let activeKey: string | undefined;
+
   function mapMenus(menu: Route) {
-    if (menu.children) {
-      if (loc.join('/') !== menu.url) {
-        menu.children.forEach(mapMenus);
-      } else {
-        activeKey = menu.key;
-      }
-    }
-    return true;
+    // We only check if the menu enable is not set to false i.e undefined value is considered true
+    if (menu.enabled === false) return;
+
+    // Matching Url
+    if (menu.url && url.includes(menu.url)) activeKey = menu.key;
+
+    // Exact Match
+    if (url === menu.url) activeKey = menu.key;
+    // Trying to Match with Children
+    else if (menu.children && url !== menu.url) menu.children.forEach(mapMenus);
   }
-  menus.forEach(mapMenus);
+  routes.forEach(mapMenus);
+
   return activeKey;
-};
+}

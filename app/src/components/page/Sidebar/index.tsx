@@ -57,7 +57,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   }, [mapChildren, routes]);
 
   const activeLocationPaths = loc.filter((locString: string) => locString.length);
-  const activeKey = getActiveKey(routes, loc);
+  const activeKey = getActiveKey(loc, routes);
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
@@ -70,10 +70,10 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       <Menu
         key="main-menu"
         theme="dark"
-        selectedKeys={[activeKey]}
+        selectedKeys={[activeKey ?? '']}
         openKeys={openKeys.length ? (openKeys as string[]) : activeLocationPaths}
         defaultOpenKeys={activeLocationPaths}
-        defaultSelectedKeys={[activeKey]}
+        defaultSelectedKeys={[activeKey ?? '']}
         onOpenChange={(keys) => setOpenKeys(keys)}
         mode="inline"
         className="menu-dark"
