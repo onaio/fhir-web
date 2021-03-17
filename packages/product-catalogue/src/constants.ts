@@ -5,7 +5,7 @@ export const PRODUCT_ID_ROUTE_PARAM = 'productId';
 
 // router routes
 export const URL_ADMIN = '/admin';
-export const CATALOGUE_LIST_VIEW_URL = `${URL_ADMIN}/product-catalogue`;
+export const CATALOGUE_LIST_VIEW_URL = `${URL_ADMIN}/product-catalogue/view`;
 export const CATALOGUE_EDIT_VIEW_URL = `${URL_ADMIN}/product-catalogue/edit`;
 export const CATALOGUE_CREATE_VIEW_URL = `${URL_ADMIN}/product-catalogue/new`;
 export const HOME_URL = '/';

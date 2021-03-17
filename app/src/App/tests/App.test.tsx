@@ -11,6 +11,14 @@ import { expressAPIResponse } from './fixtures';
 import { mount } from 'enzyme';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as serverLogout from '@opensrp/server-logout';
+import {
+  CATALOGUE_CREATE_VIEW_URL,
+  CATALOGUE_EDIT_VIEW_URL,
+  CATALOGUE_LIST_VIEW_URL,
+  ConnectedProductCatalogueList,
+  CreateProductView,
+  EditProductView,
+} from '@opensrp/product-catalogue';
 
 jest.mock('../../configs/env');
 
@@ -195,5 +203,46 @@ describe('App - authenticated', () => {
       wrapper.update();
     });
     expect(mock).toHaveBeenCalled();
+  });
+
+  it('product catalogue routes are correctly registered', async () => {
+    // redirecting to certain routes renders the correct page
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `${CATALOGUE_LIST_VIEW_URL}` }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // start with the catalogue list component
+    expect(wrapper.find(ConnectedProductCatalogueList)).toHaveLength(1);
+
+    // go to the product profile view
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${CATALOGUE_LIST_VIEW_URL}/1`
+    );
+    wrapper.update();
+    expect(wrapper.find('ViewDetails')).toHaveLength(1);
+
+    // go to new product page
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${CATALOGUE_CREATE_VIEW_URL}`
+    );
+
+    wrapper.update();
+    expect(wrapper.find(CreateProductView)).toHaveLength(1);
+
+    // go to edit product page
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${CATALOGUE_EDIT_VIEW_URL}/1`
+    );
+    wrapper.update();
+    expect(wrapper.find(EditProductView)).toHaveLength(1);
+    wrapper.unmount();
   });
 });
