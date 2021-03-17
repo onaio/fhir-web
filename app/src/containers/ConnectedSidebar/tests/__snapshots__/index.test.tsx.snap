@@ -41,7 +41,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue/list"
+        to="/admin/admin/product-catalogue"
       >
         Product Catalogue
       </Link>
@@ -139,7 +139,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue/list"
+        to="/admin/admin/product-catalogue"
       >
         Product Catalogue
       </Link>
@@ -237,7 +237,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue/list"
+        to="/admin/admin/product-catalogue"
       >
         Product Catalogue
       </Link>
@@ -335,7 +335,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue/list"
+        to="/admin/admin/product-catalogue"
       >
         Product Catalogue
       </Link>
@@ -433,7 +433,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue/list"
+        to="/admin/admin/product-catalogue"
       >
         Product Catalogue
       </Link>
@@ -572,7 +572,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue/list"
+        to="/admin/admin/product-catalogue"
       >
         Product Catalogue
       </Link>
@@ -718,7 +718,7 @@ Object {
           <MenuItem>
             <Link
               className="admin-link"
-              to="/admin/product-catalogue/list"
+              to="/admin/admin/product-catalogue"
             >
               Product Catalogue
             </Link>
@@ -827,7 +827,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue/list"
+        to="/admin/admin/product-catalogue"
       >
         Product Catalogue
       </Link>
