@@ -30,7 +30,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   let loc = location.pathname.split('/');
   const [openKeys, setOpenKeys] = React.useState<React.Key[]>([]);
 
-  const routes = getRoutes(roles as string[]);
+  const routes = React.useMemo(() => getRoutes(roles as string[]), [roles]);
 
   const mapChildren = React.useCallback((route: Route) => {
     if (route.children) {
