@@ -9,8 +9,11 @@ import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import { BellOutlined } from '@ant-design/icons';
 import { LOGIN, MANAGE_ACCOUNT } from '../../../lang';
-import { LanguageSwitcher } from '../LanguageSwitcher';
-import { ENABLE_LANGUAGE_SWITCHER } from '../../../configs/__mocks__/env';
+import { LanguageOptions, LanguageSwitcher } from '@opensrp/react-utils';
+import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/env';
+import i18n from '../../../mls';
+import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
+import { SetStateAction } from 'react';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -30,10 +33,34 @@ const defaultHeaderProps: Partial<HeaderProps> = {
   extraData: {},
 };
 
+const languageOptions: LanguageOptions = {
+  en: 'English',
+  fr: 'Français',
+};
+
+/** handler called when language is changed
+ *
+ * @param languageCode - contains the languageOption.key of the selected language option
+ */
+const languageChangeHandler = (languageCode: string | number) => {
+  const projectLanguageCode = getConfig('projectLanguageCode');
+  const newLanguage = `${languageCode}_${projectLanguageCode}`;
+  setConfig('languageCode', languageCode as SetStateAction<LanguageCode | undefined>);
+  i18n.changeLanguage(newLanguage);
+};
+
 /** The Header component */
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id } = extraData;
+
+  /** default enum of all possible language options */
+
+  const languageSwitcherProps = {
+    onLanguageChange: languageChangeHandler,
+    allLanguageOptions: languageOptions,
+    supportedLanguages: SUPPORTED_LANGUAGES as LanguageCode[],
+  };
   return (
     <Layout.Header className="txt-white align-items-center justify-content-end px-1 layout-header">
       {authenticated ? (
@@ -68,7 +95,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           <Link to={URL_REACT_LOGIN}>{LOGIN}</Link>
         </Button>
       )}
-      {ENABLE_LANGUAGE_SWITCHER && <LanguageSwitcher />}
+      {ENABLE_LANGUAGE_SWITCHER && <LanguageSwitcher {...languageSwitcherProps} />}
     </Layout.Header>
   );
 };
