@@ -184,11 +184,11 @@ export function extractActivityForForm(
       1,
     timingPeriodEnd:
       activityObj.action.timingPeriod.end && activityObj.action.timingPeriod.end !== ''
-        ? parseISO(`${activityObj.action.timingPeriod.end}${configs.defaultTime}`)
+        ? parseISO(`${activityObj.action.timingPeriod.end}`)
         : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     timingPeriodStart:
       activityObj.action.timingPeriod.start && activityObj.action.timingPeriod.start !== ''
-        ? parseISO(`${activityObj.action.timingPeriod.start}${configs.defaultTime}`)
+        ? parseISO(`${activityObj.action.timingPeriod.start}`)
         : moment().toDate(),
   };
 }
