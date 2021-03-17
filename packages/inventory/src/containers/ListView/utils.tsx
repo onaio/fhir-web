@@ -72,7 +72,7 @@ export const columns: ColumnsType<TableData> = [
     title: ACTIONS_TH,
     key: `${TableColumnsNamespace}-actions`,
     render: ActionsColumnCustomRender,
-    width: '20%',
+    width: '10%',
   },
 ];
 
