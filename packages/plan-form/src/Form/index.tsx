@@ -73,7 +73,6 @@ import {
 } from '../helpers/types';
 import { postPutPlan } from '../helpers/dataloaders';
 import { PlanStatusRenderer } from './componentsUtils/status';
-import { useTranslation } from 'react-i18next';
 
 const { Panel } = Collapse;
 const { List, Item: FormItem } = Form;
@@ -183,7 +182,6 @@ const PlanForm = (props: PlanFormProps) => {
   } = props;
   const [newPlanStatus, setNewPlanStatus] = useState<PlanStatus>(initialValues.status);
   const validationRules = validationRulesFactory();
-  useTranslation();
 
   const configs = {
     ...defaultEnvConfig,

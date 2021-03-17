@@ -155,6 +155,7 @@ import '@opensrp/product-catalogue/dist/index.css';
 import '@opensrp/inventory/dist/index.css';
 
 import { APP_LOGIN_URL } from '../dispatchConfig';
+import { useTranslation } from 'react-i18next';
 
 const { Content } = Layout;
 
@@ -189,6 +190,7 @@ const App: React.FC = () => {
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   const activeRoles = OPENSRP_ROLES;
+  useTranslation();
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />

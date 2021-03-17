@@ -37,7 +37,6 @@ import '../../index.css';
 import { fetchInventories } from '../../ducks/inventory';
 import { getNodePath } from './utils';
 import { InventoryList } from '../../components/InventoryList';
-import { useTranslation } from 'react-i18next';
 
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -108,7 +107,6 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
   const dispatch = useDispatch();
   const params = useParams<{ [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: string }>();
   const spId = params[INVENTORY_SERVICE_POINT_PROFILE_PARAM];
-  useTranslation();
 
   const filters = {
     isJurisdiction: false,

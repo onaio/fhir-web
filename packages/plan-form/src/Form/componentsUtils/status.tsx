@@ -5,7 +5,6 @@ import { FormInstance } from 'antd/lib/form';
 import lang from '../../lang';
 import { PlanFormFields } from '../../helpers/types';
 import { PopconfirmProps } from 'antd/lib/popconfirm';
-import { useTranslation } from 'react-i18next';
 
 interface PlanStatusRendererProps {
   disabledFields: string[];
@@ -30,7 +29,6 @@ export const PlanStatusRenderer = (props: PlanStatusRendererProps) => {
     assignedJurisdictions,
     ...rest
   } = props;
-  useTranslation();
 
   const popUpConfirmationMessageLookup = {
     [PlanStatus.DRAFT]: lang.SETTING_STATUS_TO_DRAFT,

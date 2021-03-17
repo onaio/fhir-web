@@ -9,7 +9,6 @@ import {
 } from '../../constants';
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
-import { useTranslation } from 'react-i18next';
 
 /**
  * component rendered in the action column of the table
@@ -17,7 +16,6 @@ import { useTranslation } from 'react-i18next';
  * @param record - represent row as records
  */
 export const ActionsColumnCustomRender: ColumnType<ProductCatalogue>['render'] = (record) => {
-  useTranslation();
   return (
     <>
       <Link to={`${CATALOGUE_EDIT_VIEW_URL}/${record.uniqueId}`}>{lang.EDIT}</Link>
@@ -66,7 +64,6 @@ export const columnsFactory = (langObj: Lang = lang) => {
 /** util component shown when there is a pending promise */
 
 export const CatalogueLoading = () => {
-  useTranslation();
   return (
     <Spin tip={lang.LOADING_ELLIPSIS}>
       <Alert

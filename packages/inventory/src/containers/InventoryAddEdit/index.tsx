@@ -38,7 +38,6 @@ import {
 } from '../../ducks/inventory';
 import { InventoryItemForm, defaultInitialValues } from '../../components/InventoryItemForm';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
-import { useTranslation } from 'react-i18next';
 
 /** register reducers */
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -88,7 +87,6 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const { Title } = Typography;
   const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ID];
-  useTranslation();
 
   useEffect(() => {
     // Handle when servicePoint is null e.g when a user refreshes page

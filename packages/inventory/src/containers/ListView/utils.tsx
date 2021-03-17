@@ -5,7 +5,6 @@ import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
-import { useTranslation } from 'react-i18next';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
@@ -21,7 +20,6 @@ export interface TableData {
  * @param record - record to show in row
  */
 export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (record) => {
-  useTranslation();
   return (
     <>
       <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>
@@ -88,7 +86,6 @@ export const ServicePointsLoading = ({
   message = lang.FETCHING_LOCATIONS,
   description = lang.FETCHING_LOCATIONS_DESCRIPTION,
 }) => {
-  useTranslation();
   return (
     <Spin tip={lang.LOADING_ELLIPSIS}>
       <Alert message={message} description={description} type="info" />

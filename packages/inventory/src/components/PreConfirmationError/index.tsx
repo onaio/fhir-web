@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
-import { useTranslation } from 'react-i18next';
 
 type TableData = BadRequestError['errors'][0];
 
@@ -23,7 +22,6 @@ interface PreConfirmationErrorProps {
  */
 const PreConfirmationError = (props: PreConfirmationErrorProps) => {
   const { errorObj } = props;
-  useTranslation();
 
   const columns: ColumnsType<TableData> = [
     {
