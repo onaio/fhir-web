@@ -38,7 +38,6 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { loadCount } from '../../helpers/dataLoaders';
-import { useTranslation } from 'react-i18next';
 
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -85,7 +84,6 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [loadingStructures, setLoadingStructures] = useState<boolean>(structures.length === 0);
-  useTranslation();
 
   const columns = columnsFactory(lang);
 

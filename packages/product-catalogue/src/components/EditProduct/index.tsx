@@ -24,7 +24,6 @@ import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Resource404 } from '@opensrp/react-utils';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
-import { useTranslation } from 'react-i18next';
 
 /** register catalogue reducer */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
@@ -56,7 +55,7 @@ const EditProductView = (props: EditProductViewTypes) => {
   const { product, fetchProducts, serviceClass, baseURL } = props;
   const { productId } = props.match.params;
   const [loading, setLoading] = useState<boolean>(!product);
-  useTranslation();
+
   const { errorMessage, broken, handleBrokenPage } = useHandleBrokenPage();
 
   useEffect(() => {

@@ -23,7 +23,6 @@ import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '.
 import { ViewDetails } from '../ViewDetails';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
-import { useTranslation } from 'react-i18next';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
@@ -52,7 +51,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   const { service, data, productUnderView, fetchProductsCreator, baseURL } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
-  useTranslation();
+
   const columns = columnsFactory();
 
   // see if we have a view-details product

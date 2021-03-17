@@ -4,7 +4,6 @@ import lang from '../../lang';
 import { RightCircleOutlined } from '@ant-design/icons';
 import { format } from 'util';
 import { CardTitle } from '../../helpers/utils';
-import { useTranslation } from 'react-i18next';
 
 /** describes this component's props */
 interface PreConfirmationSuccessProps {
@@ -25,7 +24,6 @@ const defaultProps = {
  */
 const PreConfirmationSuccess = (props: PreConfirmationSuccessProps) => {
   const { onCancel, onCommitInventory, rowsProcessed, filename } = props;
-  useTranslation();
 
   const cardTitle = (
     <CardTitle

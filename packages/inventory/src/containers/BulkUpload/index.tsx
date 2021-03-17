@@ -27,7 +27,6 @@ import { PostConfirmationUpload } from '../../components/PostConfirmUpload';
 import { PostConfirmationSuccess } from '../../components/PostConfirmationSuccess';
 import { PreConfirmationError } from '../../components/PreConfirmationError';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { useTranslation } from 'react-i18next';
 
 export type CSVUploadTypes = CommonProps & RouteComponentProps;
 
@@ -52,7 +51,6 @@ const BulkUpload = (props: CSVUploadTypes) => {
   const [file, selectFile] = useState<File>();
   const [requestErrors, setRequestErrors] = useState<BadRequestError>();
   const [importRequestError, setImportRequestError] = useState<BadRequestError>();
-  useTranslation();
 
   const pageTitle = lang.ADD_INVENTORY_VIA_CSV;
   return (

@@ -8,7 +8,6 @@ import { ProductCatalogue } from '@opensrp/product-catalogue';
 import { isDateFuture, isDatePastOrToday, submitForm } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { InventoryPost } from '../../ducks/inventory';
-import { useTranslation } from 'react-i18next';
 
 /** interface for setting **/
 export interface Setting {
@@ -117,7 +116,6 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
   const [isDeliveryDateChanged, setDeliveryDateChanged] = React.useState<boolean>(false);
   const history = useHistory();
   const [form] = Form.useForm();
-  useTranslation();
 
   useEffect(() => {
     if (

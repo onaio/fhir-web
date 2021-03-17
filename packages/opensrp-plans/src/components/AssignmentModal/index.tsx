@@ -5,7 +5,6 @@ import { useHandleBrokenPage } from '@opensrp/react-utils';
 import lang from '../../lang';
 import { SelectProps } from 'rc-select/lib/generate';
 import { Dictionary } from '@onaio/utils';
-import { useTranslation } from 'react-i18next';
 
 /** describes how options should be formatted when passed to EditAssignment modals */
 export interface SelectOption {
@@ -54,7 +53,6 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
   const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(existingOptions);
-  useTranslation();
 
   const showModal = () => {
     setIsModalVisible(true);

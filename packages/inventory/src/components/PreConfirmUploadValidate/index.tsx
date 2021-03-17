@@ -3,7 +3,6 @@ import { Card, Button, Spin } from 'antd';
 import lang from '../../lang';
 import { CardTitle, UploadStatus } from '../../helpers/utils';
 import { format } from 'util';
-import { useTranslation } from 'react-i18next';
 
 /** this component's props' interface */
 interface UploadValidatingCardProps {
@@ -23,7 +22,6 @@ const defaultProps = {
  */
 const UploadValidateCard = (props: UploadValidatingCardProps) => {
   const { onCancel, uploadStatus, filename } = props;
-  useTranslation();
 
   const cardTitle = (
     <CardTitle

@@ -24,7 +24,6 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
 import { OpenSRPService, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
@@ -62,7 +61,6 @@ const InventoryList = (props: InventoryListProps) => {
   ) as Inventory[];
   const { broken, handleBrokenPage } = useHandleBrokenPage();
   const dispatch = useDispatch();
-  useTranslation();
 
   useEffect(() => {
     // api call to get inventory by id

@@ -2,13 +2,11 @@ import React from 'react';
 import { Card, Spin } from 'antd';
 import lang from '../../lang';
 import { CardTitle } from '../../helpers/utils';
-import { useTranslation } from 'react-i18next';
 
 /** shown during csv bulk upload when waiting for data to be committed to database
  * after user confirms validation
  */
 const PostConfirmationUpload = () => {
-  useTranslation();
   const cardTitle = (
     <CardTitle
       IconRender={<Spin size="large"></Spin>}

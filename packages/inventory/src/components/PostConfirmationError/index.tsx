@@ -10,7 +10,6 @@ import { ColumnsType } from 'antd/lib/table/interface';
 import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
 import { format } from 'util';
-import { useTranslation } from 'react-i18next';
 
 type TableData = BadRequestError['errors'][0];
 
@@ -30,7 +29,6 @@ const defaultProps = {
  */
 const PostConfirmError = (props: PostConfirmErrorProps) => {
   const { errorObj, filename } = props;
-  useTranslation();
 
   const columns: ColumnsType<TableData> = [
     {

@@ -21,7 +21,6 @@ import {
 } from '@opensrp/plan-form-core';
 import { useHistory } from 'react-router';
 import lang from '../../lang';
-import { useTranslation } from 'react-i18next';
 
 type CreatePlanViewProps = CommonProps & PropsForPlanForm;
 
@@ -40,7 +39,6 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
   const { envConfigs, baseURL, hiddenFields } = props;
   const pageTitle = lang.CREATE_PLAN;
   const history = useHistory();
-  useTranslation();
 
   const configs = {
     ...defaultEnvConfig,

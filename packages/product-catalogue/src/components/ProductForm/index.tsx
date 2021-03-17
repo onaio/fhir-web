@@ -13,7 +13,6 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang, { Lang } from '../../lang';
 import { HTTPError } from '@opensrp/server-service';
 import { fetchProtectedImage } from '@opensrp/react-utils';
-import { useTranslation } from 'react-i18next';
 
 /** type describing the fields in the product catalogue form */
 export interface ProductFormFields {
@@ -119,7 +118,7 @@ const ProductForm = (props: ProductFormProps) => {
   const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>('');
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const history = useHistory();
-  useTranslation();
+
   const ProductFormValidationSchema = ProductFormValidationSchemaFactory(lang);
 
   /** options for the isAttractive form field radio buttons */

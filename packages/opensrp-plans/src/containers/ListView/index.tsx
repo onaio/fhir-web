@@ -24,7 +24,6 @@ import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
 import lang from '../../lang';
-import { useTranslation } from 'react-i18next';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(PlansReducerName, plansReducer);
@@ -53,7 +52,6 @@ const PlansList = (props: PlansListTypes) => {
   const { service, data, fetchPlansCreator, baseURL, allowedPlanStatus } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
-  useTranslation();
 
   useEffect(() => {
     loadPlans(baseURL, service, fetchPlansCreator, allowedPlanStatus)
