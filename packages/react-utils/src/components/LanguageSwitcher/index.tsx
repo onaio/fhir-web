@@ -1,10 +1,9 @@
 /** globe icon with a dropdown where users can select language */
-import React, { SetStateAction } from 'react';
+import React from 'react';
 import { Menu, Dropdown, Button } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
-import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
+import { LanguageCode } from '@opensrp/pkg-config';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
-import type { i18n as i18nInstance } from 'i18next';
 
 /** describes object representation of language options */
 export type LanguageOptions = {
@@ -12,28 +11,27 @@ export type LanguageOptions = {
 };
 
 interface LanguageSwitcherProps {
-  fullLanguageOptions: LanguageOptions;
+  allLanguageOptions: LanguageOptions;
   supportedLanguages: LanguageCode[];
-  i18n: i18nInstance;
+  onLanguageChange?: (languageOptionKey: string | number) => void;
 }
 
-/** default enum of all possible language options */
-export const languageOptions: LanguageOptions = {
-  en: 'English',
-  fr: 'Français',
+const defaultProps = {
+  allLanguageOptions: {},
+  supportedLanguages: [],
 };
 
 /** returns section of all the options that will be rendered as option in the ui
- * 
+ *
  * @param languageOptions - a map of all allowed language options
  * @param supportedLanguages - an array of the keys for options that will be displayed
-*/
-function getSupportedLanguageOptions  (
+ */
+function getSupportedLanguageOptions(
   languageOptions: LanguageOptions,
   supportedLanguages?: LanguageCode[]
 ) {
   const supported: LanguageOptions = {};
-  const supportedLangIsDefined = supportedLanguages;
+  const supportedLangIsDefined = supportedLanguages?.length;
   if (!supportedLangIsDefined) {
     return languageOptions;
   }
@@ -44,21 +42,22 @@ function getSupportedLanguageOptions  (
     }
   });
   return supported;
-};
+}
 
+/** globe icon ui that can be used to change the language of the application
+ *
+ * @param props - component props
+ */
 const LanguageSwitcher = (props: LanguageSwitcherProps) => {
-  const { i18n, fullLanguageOptions, supportedLanguages } = props;
+  const { onLanguageChange, allLanguageOptions: fullLanguageOptions, supportedLanguages } = props;
 
-  const supportedLanguageOptions = getSupportedLanguageOptions(fullLanguageOptions, supportedLanguages);
+  const supportedLanguageOptions = getSupportedLanguageOptions(
+    fullLanguageOptions,
+    supportedLanguages
+  );
 
-  /** handler for when language changes
-   * changes the configs and changes the language on the i18n instance
-   */
   const languageChangeHandler: MenuClickEventHandler = ({ key }) => {
-    const projectLanguageCode = getConfig('projectLanguageCode');
-    const newLanguage = `${key}_${projectLanguageCode}`;
-    setConfig('languageCode', key as SetStateAction<LanguageCode | undefined>);
-    i18n.changeLanguage(newLanguage);
+    onLanguageChange?.(key);
   };
 
   const LangMenu = (
@@ -84,5 +83,7 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
     </Dropdown>
   );
 };
+
+LanguageSwitcher.defaultProps = defaultProps;
 
 export { LanguageSwitcher };
