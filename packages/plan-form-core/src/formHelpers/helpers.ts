@@ -172,7 +172,7 @@ export function extractActivityForForm(
       activityObj.goal.target &&
       activityObj.goal.target[0].due &&
       activityObj.goal.target[0].due !== ''
-        ? parseISO(`${activityObj.goal.target[0].due}${configs.defaultTime}`)
+        ? parseISO(`${activityObj.goal.target[0].due}`)
         : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     goalPriority: activityObj.goal.priority || goalPriorities[1],
     goalValue:
