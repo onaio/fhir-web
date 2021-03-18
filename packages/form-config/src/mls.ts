@@ -26,28 +26,30 @@ const eusmFrJson = require('../locales/eusm/fr.json');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const eusmArJson = require('../locales/eusm/ar.json');
 
+export const namespace = 'form-config';
+
 // the format to load the resource files: <languageCode>_<projectCode>. in small
 const resources = {
   ar_core: {
-    translation: coreArJson,
+    [namespace]: coreArJson,
   },
   ar_eusm: {
-    translation: eusmArJson,
+    [namespace]: eusmArJson,
   },
   fr_core: {
-    translation: coreFrJson,
+    [namespace]: coreFrJson,
   },
   fr_eusm: {
-    translation: eusmFrJson,
+    [namespace]: eusmFrJson,
   },
   en_core: {
-    translation: coreEnJson,
+    [namespace]: coreEnJson,
   },
   en_eusm: {
-    translation: eusmEnJson,
+    [namespace]: eusmEnJson,
   },
   th_core: {
-    translation: coreThJson,
+    [namespace]: coreThJson,
   },
 };
 
