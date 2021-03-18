@@ -5,24 +5,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { KEYCLOAK_URL_USER_GROUPS, URL_USER_GROUPS } from '../../constants';
-import {
-  CANCEL,
-  SAVE,
-  SAVING,
-  NAME_REQUIRED,
-  NAME,
-  EDIT_USER_GROUP,
-  MESSAGE_USER_GROUP_EDITED,
-  MESSAGE_USER_GROUP_CREATED,
-  ADD_USER_GROUP,
-  ERROR_OCCURED,
-  REALM_ROLES,
-  AVAILABLE_ROLES,
-  ASSIGNED_ROLES,
-  EFFECTIVE_ROLES,
-  LIST_IS_EMPTY,
-  SEARCH,
-} from '../../lang';
+import lang from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 import { assignRoles, removeAssignedRoles } from './utils';
 import {
@@ -170,7 +153,9 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
     <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
       <h5 className="mb-3 header-title">
-        {props.initialValues.id ? `${EDIT_USER_GROUP} | ${initialValues.name}` : ADD_USER_GROUP}
+        {props.initialValues.id
+          ? `${lang.EDIT_USER_GROUP} | ${initialValues.name}`
+          : lang.ADD_USER_GROUP}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <Form
@@ -190,15 +175,15 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
               );
               serve
                 .update(values)
-                .then(() => sendSuccessNotification(MESSAGE_USER_GROUP_EDITED))
-                .catch((_: Error) => sendErrorNotification(ERROR_OCCURED))
+                .then(() => sendSuccessNotification(lang.MESSAGE_USER_GROUP_EDITED))
+                .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
                 .finally(() => setIsSubmitting(false));
             } else {
               const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
               serve
                 .create({ name: values.name })
-                .then(() => sendSuccessNotification(MESSAGE_USER_GROUP_CREATED))
-                .catch((_: Error) => sendErrorNotification(ERROR_OCCURED))
+                .then(() => sendSuccessNotification(lang.MESSAGE_USER_GROUP_CREATED))
+                .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
                 .finally(() => setIsSubmitting(false));
             }
           }}
@@ -206,16 +191,16 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
           <Form.Item
             name="name"
             id="name"
-            label={NAME}
-            rules={[{ required: true, message: NAME_REQUIRED }]}
+            label={lang.NAME}
+            rules={[{ required: true, message: lang.NAME_REQUIRED }]}
           >
             <Input />
           </Form.Item>
           {initialValues.id ? (
-            <Form.Item name="roles" id="roles" label={REALM_ROLES}>
+            <Form.Item name="roles" id="roles" label={lang.REALM_ROLES}>
               <Transfer
                 dataSource={data}
-                titles={[AVAILABLE_ROLES, ASSIGNED_ROLES]}
+                titles={[lang.AVAILABLE_ROLES, lang.ASSIGNED_ROLES]}
                 listStyle={{ flexGrow: 'inherit' }}
                 targetKeys={
                   targetKeys.length
@@ -228,19 +213,19 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
                 onChange={onChange}
                 onSelectChange={onSelectChange}
                 locale={{
-                  notFoundContent: LIST_IS_EMPTY,
-                  searchPlaceholder: SEARCH,
+                  notFoundContent: lang.LIST_IS_EMPTY,
+                  searchPlaceholder: lang.SEARCH,
                 }}
               />
               {/** custom transfer to list effective roles */}
               <div className="ant-transfer">
                 <div className="ant-transfer-list">
                   <div className="ant-transfer-list-header">
-                    <span className="ant-transfer-list-header-title">{EFFECTIVE_ROLES}</span>
+                    <span className="ant-transfer-list-header-title">{lang.EFFECTIVE_ROLES}</span>
                   </div>
                   <div className="ant-transfer-list-body">
                     {!effectiveRoles.length ? (
-                      <div className="ant-transfer-list-body-not-found">{LIST_IS_EMPTY}</div>
+                      <div className="ant-transfer-list-body-not-found">{lang.LIST_IS_EMPTY}</div>
                     ) : (
                       <ul className="ant-transfer-list-content">
                         {effectiveRoles.map((role: KeycloakUserRole) => (
@@ -270,10 +255,10 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
           )}
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-group">
-              {isSubmitting ? SAVING : SAVE}
+              {isSubmitting ? lang.SAVING : lang.SAVE}
             </Button>
             <Button onClick={() => history.push(URL_USER_GROUPS)} className="cancel-group">
-              {CANCEL}
+              {lang.CANCEL}
             </Button>
           </Form.Item>
         </Form>
