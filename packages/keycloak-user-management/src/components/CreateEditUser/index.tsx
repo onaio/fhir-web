@@ -41,6 +41,7 @@ export interface EditUserProps {
   keycloakBaseURL: string;
   opensrpBaseURL: string;
   extraData: Dictionary;
+  fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
 }
 
 /** type intersection for all types that pertain to the props */
@@ -62,8 +63,27 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     practitioner: undefined,
   });
 
-  const { keycloakUser, keycloakBaseURL, opensrpBaseURL, extraData } = props;
+  const {
+    keycloakUser,
+    keycloakBaseURL,
+    opensrpBaseURL,
+    extraData,
+    fetchKeycloakUsersCreator,
+  } = props;
+
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
+
+  useEffect(() => {
+    if (keycloakUser) {
+      /** only update the object diff */
+      setInitialValues((prevState) => {
+        return {
+          ...prevState,
+          ...keycloakUser,
+        };
+      });
+    }
+  }, [keycloakUser]);
 
   useEffect(() => {
     if (keycloakUser && !initialValues.username) {
@@ -90,11 +110,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .read(userId)
         .then((response: KeycloakUser | null | undefined) => {
-          if (response) fetchKeycloakUsers([response]);
+          if (response) fetchKeycloakUsersCreator([response]);
         })
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
-  }, [userId, keycloakBaseURL, keycloakUser]);
+  }, [userId, keycloakBaseURL, keycloakUser, fetchKeycloakUsersCreator]);
 
   /**
    * Fetch User group of the user
