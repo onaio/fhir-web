@@ -1,6 +1,6 @@
 import React from 'react';
 import { Result, Button } from 'antd';
-import { PAGE_TITLE, PAGE_SUB_TITLE, BUTTON_TITLE } from '../../lang';
+import lang from '../../lang';
 
 interface Props {
   homeUrl?: string;
@@ -11,8 +11,8 @@ const ErrorBoundaryFallback = (props: Props) => {
   return (
     <Result
       status="error"
-      title={PAGE_TITLE}
-      subTitle={PAGE_SUB_TITLE}
+      title={lang.PAGE_TITLE}
+      subTitle={lang.PAGE_SUB_TITLE}
       extra={
         <Button
           id="backHome"
@@ -20,7 +20,7 @@ const ErrorBoundaryFallback = (props: Props) => {
           onClick={() => (window.location.href = homeUrl ? homeUrl : '/')}
           type="primary"
         >
-          {BUTTON_TITLE}
+          {lang.BUTTON_TITLE}
         </Button>
       }
     />
