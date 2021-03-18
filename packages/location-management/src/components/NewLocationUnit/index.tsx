@@ -8,7 +8,7 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields, LocationFormFields } from '../LocationForm/utils';
 import { Col, Row } from 'antd';
 import { Helmet } from 'react-helmet';
-import { ADD_LOCATION_UNIT } from '../../lang';
+import lang from '../../lang';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 
 /** full props for the new location component */
@@ -75,7 +75,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     disabledTreeNodesCallback: disabledTreeNodesCallback,
   };
 
-  const pageTitle = ADD_LOCATION_UNIT;
+  const pageTitle = lang.ADD_LOCATION_UNIT;
   return (
     <Row className="layout-content">
       <Helmet>
