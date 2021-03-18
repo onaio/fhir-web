@@ -10,3 +10,7 @@ export const LOCATION_HIERARCHY_ENDPOINT = 'location/hierarchy';
 export const PLANS_ENDPOINT = 'plans';
 export const POST_ASSIGNMENTS_ENDPOINT = 'organization/assignLocationsAndPlans';
 export const ASSIGNMENTS_ENDPOINT = 'organization/assignedLocationsAndPlans';
+
+// other constants
+/** namespace for the keys attached to the columns */
+export const TableColumnsNamespace = 'team-assignment';
