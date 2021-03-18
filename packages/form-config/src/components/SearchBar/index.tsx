@@ -6,7 +6,7 @@ import React, { ChangeEvent } from 'react';
 import { debounce } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../../styles/index.css';
-import { SEARCH } from '../../lang';
+import lang from '../../lang';
 
 /** SearchBar props interface  */
 export interface SearchBarDefaultProps {
@@ -22,7 +22,7 @@ export interface SearchBarProps extends SearchBarDefaultProps {
   onChangeHandler: OnChangeType;
 }
 
-export const SearchBar = (props: SearchBarProps) => {
+const SearchBar = (props: SearchBarProps) => {
   const { placeholder, debounceTime, onChangeHandler } = props;
 
   /** inbuilt default onChangeHandler that debounces the passed changeHandler
@@ -62,7 +62,7 @@ export const SearchBar = (props: SearchBarProps) => {
 
 /** default props */
 const defaultProps: SearchBarDefaultProps = {
-  placeholder: SEARCH,
+  placeholder: lang.SEARCH,
   debounceTime: 1000,
 };
 

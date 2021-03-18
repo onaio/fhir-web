@@ -19,15 +19,7 @@ import { FormConfigProps, DrillDownProps } from '../../helpers/types';
 import { Cell } from 'react-table';
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
-import {
-  APP_ID_LABEL,
-  APP_VERSION_LABEL,
-  VIEW_FILES,
-  UPLOAD_NEW_FILE,
-  IDENTIFIER,
-  FIND_RELEASES_LABEL,
-  UPDATED_AT_LABEL,
-} from '../../lang';
+import lang from '../../lang';
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
 
@@ -195,19 +187,19 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
 
 /** populate default props for ManifestReleases */
 const defaultProps: ReleasesDefaultProps = {
-  appIdLabel: APP_ID_LABEL,
-  appVersionLabel: APP_VERSION_LABEL,
+  appIdLabel: lang.APP_ID_LABEL,
+  appVersionLabel: lang.APP_VERSION_LABEL,
   data: [],
   debounceTime: 1000,
   drillDownProps: {
     paginate: false,
   },
   fetchReleases: fetchManifestReleases,
-  identifierLabel: IDENTIFIER,
-  placeholder: FIND_RELEASES_LABEL,
-  updatedAt: UPDATED_AT_LABEL,
-  uploadFileLabel: UPLOAD_NEW_FILE,
-  viewFilesLabel: VIEW_FILES,
+  identifierLabel: lang.IDENTIFIER,
+  placeholder: lang.FIND_RELEASES_LABEL,
+  updatedAt: lang.UPDATED_AT_LABEL,
+  uploadFileLabel: lang.UPLOAD_NEW_FILE,
+  viewFilesLabel: lang.VIEW_FILES,
   accessToken: '',
 };
 
