@@ -8,7 +8,7 @@ import { downloadFile } from '../../helpers/utils';
 import { ParsedHierarchyNode } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import { NO_DATA_FOUND, ERROR_OCCURRED } from '../../lang';
+import lang, { Lang } from '../../lang';
 /* eslint-disable @typescript-eslint/camelcase */
 
 /** interface for user assignment response */
@@ -47,12 +47,13 @@ export const handleCardOrderDateChange = (
 /**
  * Handle download client data form submission
  *
- * @param {DownloadClientDataFormFields} values - sumitted form values
- * @param {string} accessToken - OPENSRP API access token
- * @param {string} opensrpBaseURL - OPENSRP API base URL
- * @param {string} serviceClass - OPENSRP service class
- * @param {ParsedHierarchyNode} locations location hierarchy
- * @param {Function} setSubmitting - method to set form `isSubmitting` status
+ * @param values - sumitted form values
+ * @param accessToken - OPENSRP API access token
+ * @param opensrpBaseURL - OPENSRP API base URL
+ * @param serviceClass - OPENSRP service class
+ * @param locations location hierarchy
+ * @param setSubmitting - method to set form `isSubmitting` status
+ * @param langObj - tthe lang object
  */
 export const submitForm = (
   values: DownloadClientDataFormFields,
@@ -60,7 +61,8 @@ export const submitForm = (
   opensrpBaseURL: string,
   serviceClass: typeof OpenSRPService,
   locations: ParsedHierarchyNode[],
-  setSubmitting: (isSubmitting: boolean) => void
+  setSubmitting: (isSubmitting: boolean) => void,
+  langObj: Lang = lang
 ): void => {
   const { clientLocation, cardStatus, cardOrderDate } = values;
 
@@ -119,12 +121,12 @@ export const submitForm = (
       if (entries.length) {
         createCsv(entries, buildCSVFileName(location ? location.title : '', startDate, endDate));
       } else {
-        sendErrorNotification(NO_DATA_FOUND);
+        sendErrorNotification(langObj.NO_DATA_FOUND);
       }
     })
     .catch((_: Error) => {
       setSubmitting(false);
-      sendErrorNotification(ERROR_OCCURRED);
+      sendErrorNotification(langObj.ERROR_OCCURRED);
     });
 };
 
