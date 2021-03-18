@@ -13,7 +13,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { opensrpBaseURL, id, intialValue, practitioners } from './fixtures';
 import Form, { onSubmit } from '../Form';
 import { Organization, OrganizationPOST } from '../../../ducks/organizations';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 const mockV4 = 'b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a';
 
@@ -117,7 +117,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: ERROR_OCCURRED,
+      message: lang.ERROR_OCCURRED,
     });
   });
 
