@@ -21,7 +21,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, Redirect } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
-import { SEARCH, UPLOAD_NEW_FILE, MAKE_RELEASE, DRAFT_FILES } from '../../lang';
+import lang from '../../lang';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, draftReducer);
@@ -100,12 +100,12 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>{DRAFT_FILES}</Title>
+      <Title level={3}>{lang.DRAFT_FILES}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
             id="search"
-            placeholder={SEARCH}
+            placeholder={lang.SEARCH}
             size="large"
             value={value}
             prefix={<SearchOutlined />}
@@ -115,7 +115,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
-            {UPLOAD_NEW_FILE}
+            {lang.UPLOAD_NEW_FILE}
           </Button>
           <Divider type="vertical" />
           <SettingOutlined />
@@ -158,7 +158,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
                 )
               }
             >
-              {MAKE_RELEASE}
+              {lang.MAKE_RELEASE}
             </Button>
           </Space>
         )}

@@ -22,7 +22,7 @@ import * as helpers from '@opensrp/form-config-core';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -389,7 +389,7 @@ describe('components/Antd/FileList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
     expect(wrapper.find('tbody').find('tr').find('td').find('div.ant-empty-image')).toHaveLength(1);
 
     wrapper.unmount();
@@ -426,7 +426,7 @@ describe('components/Antd/FileList', () => {
     });
 
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
     expect(downloadSpy).not.toHaveBeenCalled();
     wrapper.unmount();
   });

@@ -1,36 +1,54 @@
-import i18n from './mls';
+import i18n, { namespace } from './mls';
+import { Dictionary } from '@onaio/utils';
 
-// Errors
-export const ERROR_FORM_REQUIRED = i18n.t('Form is required');
-export const ERROR_FORM_NAME_REQUIRED = i18n.t('Form Name is required');
+export type Lang = Dictionary<string>;
+const lang: Lang = {};
 
-export const MAKE_RELEASE = i18n.t('Make Release');
-export const FILE_NAME = i18n.t('File Name');
-export const FILE_VERSION = i18n.t('File Version');
-export const IDENTIFIER = i18n.t('Identifier');
-export const MODULE = i18n.t('Module');
-export const EDIT = i18n.t('Edit');
-export const DOWNLOAD = i18n.t('Download');
-export const UPLOAD_EDIT = i18n.t('Upload edit');
-export const UPLOAD_NEW_FILE = i18n.t('Upload New File');
-export const VIEW_FILES = i18n.t('View Files');
-export const APP_ID_LABEL = i18n.t('App ID');
-export const APP_VERSION_LABEL = i18n.t('App Version');
-export const RELATED_TO = i18n.t('Related to');
-export const UPLOAD_FILE = i18n.t('Upload file');
-export const FIND_DRAFT_FILES = i18n.t('Find Draft Files');
-export const FIND_FILES = i18n.t('Find Files');
-export const FIND_RELEASES_LABEL = i18n.t('Find Release');
-export const SEARCH = i18n.t('Search');
-export const CREATED_AT = i18n.t('Created at');
-export const UPDATED_AT_LABEL = i18n.t('Updated at');
-export const ERROR_OCCURRED = i18n.t('Error occurred');
-export const DRAFT_FILES = i18n.t('Draft Files');
-export const RELEASES = i18n.t('Releases');
-export const JSON_VALIDATORS = i18n.t('JSON Validators');
-export const ACTION = i18n.t('Action');
-export const UPLOAD_FORM = i18n.t('Upload Form');
-export const FORM_NAME = i18n.t('Form Name');
-export const FORM = i18n.t('Form');
-export const UPLOADING = i18n.t('Uploading');
-export const CLICK_TO_UPLOAD = i18n.t('Click to upload');
+/** recompute values */
+function fill() {
+  // Errors
+  lang.ERROR_FORM_REQUIRED = i18n.t(`${namespace}::Form is required`);
+  lang.ERROR_FORM_NAME_REQUIRED = i18n.t(`${namespace}::Form Name is required`);
+
+  lang.MAKE_RELEASE = i18n.t(`${namespace}::Make Release`);
+  lang.FILE_NAME = i18n.t(`${namespace}::File Name`);
+  lang.FILE_VERSION = i18n.t(`${namespace}::File Version`);
+  lang.IDENTIFIER = i18n.t(`${namespace}::Identifier`);
+  lang.MODULE = i18n.t(`${namespace}::Module`);
+  lang.EDIT = i18n.t(`${namespace}::Edit`);
+  lang.DOWNLOAD = i18n.t(`${namespace}::Download`);
+  lang.UPLOAD_EDIT = i18n.t(`${namespace}::Upload edit`);
+  lang.UPLOAD_NEW_FILE = i18n.t(`${namespace}::Upload New File`);
+  lang.VIEW_FILES = i18n.t(`${namespace}::View Files`);
+  lang.APP_ID_LABEL = i18n.t(`${namespace}::App ID`);
+  lang.APP_VERSION_LABEL = i18n.t(`${namespace}::App Version`);
+  lang.RELATED_TO = i18n.t(`${namespace}::Related to`);
+  lang.UPLOAD_FILE = i18n.t(`${namespace}::Upload file`);
+  lang.FIND_DRAFT_FILES = i18n.t(`${namespace}::Find Draft Files`);
+  lang.FIND_FILES = i18n.t(`${namespace}::Find Files`);
+  lang.FIND_RELEASES_LABEL = i18n.t(`${namespace}::Find Release`);
+  lang.SEARCH = i18n.t(`${namespace}::Search`);
+  lang.CREATED_AT = i18n.t(`${namespace}::Created at`);
+  lang.UPDATED_AT_LABEL = i18n.t(`${namespace}::Updated at`);
+  lang.ERROR_OCCURRED = i18n.t(`${namespace}::Error occurred`);
+  lang.DRAFT_FILES = i18n.t(`${namespace}::Draft Files`);
+  lang.RELEASES = i18n.t(`${namespace}::Releases`);
+  lang.JSON_VALIDATORS = i18n.t(`${namespace}::JSON Validators`);
+  lang.ACTION = i18n.t(`${namespace}::Action`);
+  lang.UPLOAD_FORM = i18n.t(`${namespace}::Upload Form`);
+  lang.FORM_NAME = i18n.t(`${namespace}::Form Name`);
+  lang.FORM = i18n.t(`${namespace}::Form`);
+  lang.UPLOADING = i18n.t(`${namespace}::Uploading`);
+  lang.CLICK_TO_UPLOAD = i18n.t(`${namespace}::Click to upload`);
+}
+
+// run it initial
+fill();
+
+// bind some events and fill values again (doing the magic you expect to happen magically)
+i18n.on(`languageChanged`, () => {
+  fill();
+});
+
+// export the const
+export default lang;
