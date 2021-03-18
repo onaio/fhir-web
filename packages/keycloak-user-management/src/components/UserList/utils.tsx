@@ -2,7 +2,7 @@ import * as React from 'react';
 import { KeycloakUser, removeKeycloakUsers } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { TableActions } from './TableActions';
-import { EMAIL, FIRST_NAME, LAST_NAME, USERNAME } from '../../lang';
+import lang, { Lang } from '../../lang';
 
 /**
  * Get table columns for user list
@@ -12,6 +12,7 @@ import { EMAIL, FIRST_NAME, LAST_NAME, USERNAME } from '../../lang';
  * @param {Function} isLoadingCallback - callback function that sets loading state
  * @param {Dictionary} extraData - user profile extra data
  * @param {Dictionary} sortedInfo - applied sort
+ * @param {Lang} langObj - translations object lookup
  * @returns {Dictionary[]} - an array of table columns
  */
 export const getTableColumns = (
@@ -19,9 +20,15 @@ export const getTableColumns = (
   keycloakBaseURL: string,
   isLoadingCallback: (loading: boolean) => void,
   extraData: Dictionary,
-  sortedInfo?: Dictionary
+  sortedInfo?: Dictionary,
+  langObj: Lang = lang
 ): Dictionary[] => {
-  const headerItems: string[] = [USERNAME, EMAIL, FIRST_NAME, LAST_NAME];
+  const headerItems: string[] = [
+    langObj.USERNAME,
+    langObj.EMAIL,
+    langObj.FIRST_NAME,
+    langObj.LAST_NAME,
+  ];
   const dataElements = [];
   const fields: string[] = ['username', 'email', 'firstName', 'lastName'];
 
