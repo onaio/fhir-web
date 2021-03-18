@@ -308,6 +308,39 @@ describe('components/CreateEditUser', () => {
           method: 'GET',
         },
       ],
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer bamboocha',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer bamboocha',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer bamboocha',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
     wrapper.unmount();
   });
