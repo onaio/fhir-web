@@ -8,20 +8,20 @@ const lang: Dictionary<string> = {};
 /** recompute values */
 function fill() {
   // Errors
-  lang.ERROR_OCCURED = i18n.t(`${namespace}::An error occurred`);
-  lang.ENTER_TEAM_NAME = i18n.t(`${namespace}::Enter a Team name`);
-  lang.TEAMS = i18n.t(`${namespace}::Teams`);
+  lang.ERROR_OCCURED = i18n.t(`An error occurred`, { ns: namespace });
+  lang.ENTER_TEAM_NAME = i18n.t(`Enter a Team name`, { ns: namespace });
+  lang.TEAMS = i18n.t(`Teams`, { ns: namespace });
   lang.SUCCESSFULLY_ASSIGNED_TEAMS = `Successfully Assigned Teams`;
 
   // Table view strings
-  lang.TEAM_ASSIGNMENT_PAGE_TITLE = i18n.t(`${namespace}::Team Assignment`);
-  lang.TEAM_ASSIGNMENT_MODAL_TITLE = i18n.t(`${namespace}::Assign/Unassign Teams`);
-  lang.NAME = i18n.t(`${namespace}::Name`);
-  lang.ACTIONS = i18n.t(`${namespace}::Actions`);
-  lang.EDIT = i18n.t(`${namespace}::Edit`);
-  lang.ASSIGN_TEAMS = i18n.t(`${namespace}::Assigned Teams`);
-  lang.SAVE = i18n.t(`${namespace}::Save`);
-  lang.CANCEL = i18n.t(`${namespace}::Cancel`);
+  lang.TEAM_ASSIGNMENT_PAGE_TITLE = i18n.t(`Team Assignment`, { ns: namespace });
+  lang.TEAM_ASSIGNMENT_MODAL_TITLE = i18n.t(`Assign/Unassign Teams`, { ns: namespace });
+  lang.NAME = i18n.t(`Name`, { ns: namespace });
+  lang.ACTIONS = i18n.t(`Actions`, { ns: namespace });
+  lang.EDIT = i18n.t(`Edit`, { ns: namespace });
+  lang.ASSIGN_TEAMS = i18n.t(`Assigned Teams`, { ns: namespace });
+  lang.SAVE = i18n.t(`Save`, { ns: namespace });
+  lang.CANCEL = i18n.t(`Cancel`, { ns: namespace });
 }
 
 // run it initial

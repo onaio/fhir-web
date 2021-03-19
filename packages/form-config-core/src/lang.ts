@@ -6,7 +6,7 @@ const lang: Lang = {};
 
 /** recompute values */
 function fill() {
-  lang.ERROR_OCCURRED = i18n.t(`${namespace}::Error occurred`);
+  lang.ERROR_OCCURRED = i18n.t(`Error occurred`, { ns: namespace });
 }
 
 // run it initial
