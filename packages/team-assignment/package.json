@@ -45,7 +45,6 @@
     "antd": "^4.8.2",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
-    "i18next": "^19.8.4",
     "react-helmet": "^6.1.0",
     "yup": "^0.29.3"
   },
@@ -54,6 +53,7 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
+    "i18next": "^19.8.4",
     "@opensrp/store": "^0.0.9",
     "react": "^16.18.1",
     "react-redux": "^7.2.2",

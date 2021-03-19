@@ -32,21 +32,12 @@ import {
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import {
-  EDIT_SERVICE_POINT,
-  REGION_LABEL,
-  DISTRICT_LABEL,
-  TYPE_LABEL,
-  LAT_LONG_LABEL,
-  COMMUNE_LABEL,
-  SERVICE_POINT_ID_LABEL,
-  BACK_TO_SERVICE_POINT_LIST,
-  INVENTORY,
-} from '../../lang';
+import lang from '../../lang';
 import '../../index.css';
 import { fetchInventories } from '../../ducks/inventory';
 import { getNodePath } from './utils';
 import { InventoryList } from '../../components/InventoryList';
+
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -189,7 +180,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     return <Resource404 />;
   }
 
-  const pageTitle = `${structure.properties.name} ${INVENTORY}`;
+  const pageTitle = `${structure.properties.name} ${lang.INVENTORY}`;
   const nodePath = getNodePath(structure, trees);
   const inventoryListProps = {
     servicePointId: spId,
@@ -209,35 +200,35 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
         <Row>
           <Col md={18}>
             <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>
-              <p className="go-back-text">{BACK_TO_SERVICE_POINT_LIST}</p>
+              <p className="go-back-text">{lang.BACK_TO_SERVICE_POINT_LIST}</p>
             </Link>
             <p className="title">{pageTitle}</p>
             <Row>
               <Col md={12}>
                 <GeographyItem
-                  label={REGION_LABEL}
+                  label={lang.REGION_LABEL}
                   value={findPath(nodePath, GEOGRAPHIC_LEVEL.REGION)?.label}
                 />
                 <GeographyItem
-                  label={DISTRICT_LABEL}
+                  label={lang.DISTRICT_LABEL}
                   value={findPath(nodePath, GEOGRAPHIC_LEVEL.DISTRICT)?.label}
                 />
                 <GeographyItem
-                  label={COMMUNE_LABEL}
+                  label={lang.COMMUNE_LABEL}
                   value={findPath(nodePath, GEOGRAPHIC_LEVEL.COMMUNE)?.label}
                 />
               </Col>
               <Col md={12}>
-                <GeographyItem label={TYPE_LABEL} value={structure.properties.type} />
-                <GeographyItem label={LAT_LONG_LABEL} value={latLongString} />
-                <GeographyItem label={SERVICE_POINT_ID_LABEL} value={spId} />
+                <GeographyItem label={lang.TYPE_LABEL} value={structure.properties.type} />
+                <GeographyItem label={lang.LAT_LONG_LABEL} value={latLongString} />
+                <GeographyItem label={lang.SERVICE_POINT_ID_LABEL} value={spId} />
               </Col>
             </Row>
           </Col>
           <Col md={6} className="flex-center-right">
             <Link to={`${INVENTORY_EDIT_SERVICE_POINT}/${spId}`}>
               <Button type="primary" size="large">
-                {EDIT_SERVICE_POINT}
+                {lang.EDIT_SERVICE_POINT}
               </Button>
             </Link>
           </Col>

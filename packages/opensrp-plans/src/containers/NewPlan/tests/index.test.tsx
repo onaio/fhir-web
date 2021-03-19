@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
-import { CREATE_PLAN } from '../../../lang';
+import lang from '../../../lang';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import { DRAFT_PLANS_LIST_VIEW_URL } from '../../../constants';
 
@@ -37,7 +37,7 @@ describe('Create Plan Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual(CREATE_PLAN);
+    expect(helmet.title).toEqual(lang.CREATE_PLAN);
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
@@ -66,7 +66,7 @@ describe('Create Plan Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual(CREATE_PLAN);
+    expect(helmet.title).toEqual(lang.CREATE_PLAN);
 
     // testing implementation details at its best.
     // date range field has not initial value

@@ -11,7 +11,7 @@ import {
   getSingleJurisdictionPayload,
 } from '../dataLoaders';
 import * as plansDux from '../../ducks/planDefinitions';
-import { COULD_NOT_LOAD_ASSIGNMENTS } from '../../lang';
+import lang from '../../lang';
 import { helperRawAssignment1, helperRawAssignment2, helperRawAssignment3 } from './fixtures';
 import MockDate from 'mockdate';
 import { processRawAssignments } from '../../ducks/assignments/utils';
@@ -113,7 +113,7 @@ describe('dataLoading', () => {
     fetch.resetMocks();
     fetch.mockResponse(JSON.stringify(null));
     loadAssignments(mockBaseURL, 'planId').catch((e) => {
-      expect(e.message).toEqual(COULD_NOT_LOAD_ASSIGNMENTS);
+      expect(e.message).toEqual(lang.COULD_NOT_LOAD_ASSIGNMENTS);
     });
   });
 

@@ -1,4 +1,5 @@
 {
+  "403": "",
   "404": "",
   "Error": "",
   "Go back": "",
@@ -6,5 +7,6 @@
   "Search": "",
   "Session Expired": "",
   "Something went wrong": "",
-  "Sorry, the resource you requested for, does not exist": ""
+  "Sorry, the resource you requested for, does not exist": "",
+  "Sorry, you are not authorized to access this page": ""
 }

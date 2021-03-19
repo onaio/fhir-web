@@ -1,114 +1,141 @@
-import i18n from './mls';
+import i18n, { namespace } from './mls';
+import { Dictionary } from '@onaio/utils';
 
-export const ADD_SERVICE_POINT = i18n.t('+ Add service point');
-export const SERVICE_POINT_INVENTORY = i18n.t('Service point inventory');
-export const SERVICE_POINT_TH = i18n.t('Service point');
-export const TYPE_TH = i18n.t('type');
-export const LOCATION_TH = i18n.t('Location');
-export const SERVICE_POINT_ID_TH = i18n.t('Service point ID');
-export const ACTIONS_TH = i18n.t('Actions');
-export const VIEW = i18n.t('view');
-export const FETCHING_LOCATIONS = i18n.t('Fetching locations');
-export const FETCHING_LOCATIONS_DESCRIPTION = i18n.t(
-  'Please wait, while locations are being fetched'
-);
-export const LOADING_ELLIPSIS = i18n.t('Loading ...');
-export const ADD_INVENTORY_VIA_CSV = i18n.t('Add inventory via CSV');
-export const USE_CSV_TO_UPLOAD_INVENTORY = i18n.t('Use a CSV file to add service point inventory');
-export const CHANCE_TO_REVIEW_BEFORE_COMMITTING = i18n.t(
-  'You’ll get a chance to review before committing inventory updates.'
-);
-export const SELECT_CSV_FILE = i18n.t('Select CSV file');
-export const UPLOADING_CSV = i18n.t('Uploading %s ...');
-export const VALIDATING_CSV = i18n.t('Validating %s ...');
-export const DO_NOT_CANCEL = i18n.t('Do not close tab or navigate away.');
-export const CANCEL = i18n.t('Cancel');
-export const INVENTORY_IS_BEING_ADDED_TO_SERVICE_POINTS = i18n.t(
-  'Inventory is being added to service points…'
-);
-export const INVENTORY_MAY_TAKE_A_FEW_MINUTES_TO_APPEAR = i18n.t(
-  'Inventory may take a few minutes to appear.'
-);
-export const FILE_READY = i18n.t('“%s” ready');
-export const INVENTORY_ITEMS_SUCCESSFULLY_ADDED = i18n.t('“%s” inventory items successfully added');
-export const INVENTORY_ITEMS_WILL_BE_ADDED = i18n.t(
-  '%s inventory items will be added to service points. Do you wish to proced?'
-);
-export const PROCEED_WITH_ADDING_INVENTORY = i18n.t('Proceed with adding inventory');
-export const UPLOAD_ANOTHER_FILE = i18n.t('Upload another file');
-export const FILE_HAS_ERRORS = i18n.t('"%s" has errors');
-export const ROW_NUMBER = i18n.t('Row number');
-export const ERRORS = i18n.t('Errors');
-export const INVENTORY_PROCESSING_ERROR = i18n.t(
-  'Processing error: inventory items failed to be added'
-);
-export const INVENTORY_ITEMS_FAILED_TO_BE_ADDED = i18n.t(
-  '%s inventory items failed to be added from “%s”. To add items, follow these steps: '
-);
-export const EXTRACT_THE_ROWS_LISTED = i18n.t('Extract the rows listed below from "%s"');
-export const PASTE_THE_ROWS = i18n.t('Paste the rows into a new CSV file');
-export const UPLOAD_THE_CSV_FILE = i18n.t('Upload the CSV file');
-export const INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED = i18n.t(
-  'Inventory items from “%s” that were not added'
-);
-export const RETRY = i18n.t('Retry');
-export const CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS = i18n.t(
-  'Caution: do not re-upload the successful items or duplicates will be created.'
-);
-export const INVENTORY_ITEMS_NOT_LISTED_BELOW = i18n.t(
-  'Inventory items not listed below were successfully added to the'
-);
-export const INVENTORY_ITEMS_ADDED_TO = i18n.t('inventory items added to');
-export const RETRY_CSV_UPLOAD = i18n.t('retry csv upload');
-export const PLEASE_FIX_THE_ERRORS_LISTED_BELOW = i18n.t(
-  'please fix the errors listed below, then'
-);
-// Error
-export const ERROR_GENERIC = i18n.t('An error occurred');
-export const ERROR_PRODUCT_NAME_REQUIRED = i18n.t('Product is required');
-export const ERROR_DELIVERY_DATE_REQUIRED = i18n.t('Delivery date is required');
-export const ERROR_ACCOUNTABILITY_DATE_REQUIRED = i18n.t('Accountability end date is required');
-export const ERROR_UNICEF_SECTION_REQUIRED = i18n.t('UNICEF section is required');
-export const ERROR_PO_NUMBER_REQUIRED = i18n.t('PO number is required');
-export const ERROR_SERIAL_NUMBER_REQUIRED = i18n.t('Serial number is required');
+export type Lang = Dictionary<string>;
 
-// Rendered text
-export const ADD_INVENTORY_ITEM = i18n.t('Add inventory item');
-export const TO = i18n.t('to');
-export const SAVE = i18n.t('Save');
-export const SAVING = i18n.t('Saving');
-export const OPTIONAL = i18n.t('optional');
-export const QUANTITY = i18n.t('Quantity');
-export const DELIVERY_DATE = i18n.t('Delivery date');
-export const ACCOUNTABILITY_END_DATE = i18n.t('Accountability end date');
-export const UNICEF_SECTION = i18n.t('UNICEF section');
-export const DONOR = i18n.t('Donor');
-export const PO_NUMBER = i18n.t('PO number');
-export const SELECT = i18n.t('Select');
+const lang: Lang = {};
 
-// Service point profile
-export const INVENTORY = i18n.t('Inventory');
-export const INVENTORY_ITEMS = i18n.t('Inventory items');
-export const EDIT_SERVICE_POINT = i18n.t('Edit service point');
-export const ADD_NEW_INVENTORY_ITEM = i18n.t('Add new inventory item');
-export const PRODUCT_NAME_TH = i18n.t('Product name');
-export const QTY_TH = i18n.t('Qty');
-export const PO_NUMBER_TH = i18n.t('PO no.');
-export const SERIAL_NUMBER_TH = i18n.t('Serial no.');
-export const DELIVERY_DT_TH = i18n.t('Delivery dt.');
-export const ACCOUNT_END_DT_TH = i18n.t('Acct. end dt.');
-export const UNICEF_SECTION_TH = i18n.t('Unicef section');
-export const DONOR_TH = i18n.t('Donor');
-export const REGION_LABEL = i18n.t('Region');
-export const TYPE_LABEL = i18n.t('Type');
-export const DISTRICT_LABEL = i18n.t('District');
-export const LAT_LONG_LABEL = i18n.t('Latitude/longitude');
-export const COMMUNE_LABEL = i18n.t('Commune');
-export const SERVICE_POINT_ID_LABEL = i18n.t('Service point ID');
-export const ERROR_OCCURRED = i18n.t('An error occurred');
-export const PRODUCT = i18n.t('Product');
-export const SERIAL_NUMBER = i18n.t('Serial number');
-export const EDIT_INVENTORY_ITEM = i18n.t('Edit inventory item');
-export const EDIT = i18n.t('Edit');
-export const BACK_TO_SERVICE_POINT_LIST = i18n.t('Back to the list of service points');
-export const ERROR_GETTING_INVENTORIES = i18n.t('Unable to fetch inventories for service point');
+/** recompute values */
+function fill() {
+  lang.ADD_SERVICE_POINT = i18n.t(`${namespace}::+ Add service point`);
+  lang.SERVICE_POINT_INVENTORY = i18n.t(`${namespace}::Service point inventory`);
+  lang.SERVICE_POINT_TH = i18n.t(`${namespace}::Service point`);
+  lang.TYPE_TH = i18n.t(`${namespace}::type`);
+  lang.LOCATION_TH = i18n.t(`${namespace}::Location`);
+  lang.SERVICE_POINT_ID_TH = i18n.t(`${namespace}::Service point ID`);
+  lang.ACTIONS_TH = i18n.t(`${namespace}::Actions`);
+  lang.VIEW = i18n.t(`${namespace}::View`);
+  lang.FETCHING_LOCATIONS = i18n.t(`${namespace}::Fetching locations`);
+  lang.FETCHING_LOCATIONS_DESCRIPTION = i18n.t(
+    `${namespace}::Please wait, while locations are being fetched`
+  );
+  lang.LOADING_ELLIPSIS = i18n.t(`${namespace}::Loading ...`);
+  lang.ADD_INVENTORY_VIA_CSV = i18n.t(`${namespace}::Add inventory via CSV`);
+  lang.USE_CSV_TO_UPLOAD_INVENTORY = i18n.t(
+    `${namespace}::Use a CSV file to add service point inventory`
+  );
+  lang.CHANCE_TO_REVIEW_BEFORE_COMMITTING = i18n.t(
+    `${namespace}::You’ll get a chance to review before committing inventory updates.`
+  );
+  lang.SELECT_CSV_FILE = i18n.t(`${namespace}::Select CSV file`);
+  lang.UPLOADING_CSV = i18n.t(`${namespace}::Uploading %s ...`);
+  lang.VALIDATING_CSV = i18n.t(`${namespace}::Validating %s ...`);
+  lang.DO_NOT_CANCEL = i18n.t(`${namespace}::Do not close tab or navigate away.`);
+  lang.CANCEL = i18n.t(`${namespace}::Cancel`);
+  lang.INVENTORY_IS_BEING_ADDED_TO_SERVICE_POINTS = i18n.t(
+    `${namespace}::Inventory is being added to service points…`
+  );
+  lang.INVENTORY_MAY_TAKE_A_FEW_MINUTES_TO_APPEAR = i18n.t(
+    `${namespace}::Inventory may take a few minutes to appear.`
+  );
+  lang.FILE_READY = i18n.t(`${namespace}::“%s” ready`);
+  lang.INVENTORY_ITEMS_SUCCESSFULLY_ADDED = i18n.t(
+    `${namespace}::“%s” inventory items successfully added`
+  );
+  lang.INVENTORY_ITEMS_WILL_BE_ADDED = i18n.t(
+    `${namespace}::%s inventory items will be added to service points. Do you wish to proceed?`
+  );
+  lang.PROCEED_WITH_ADDING_INVENTORY = i18n.t(`${namespace}::Proceed with adding inventory`);
+  lang.UPLOAD_ANOTHER_FILE = i18n.t(`${namespace}::Upload another file`);
+  lang.FILE_HAS_ERRORS = i18n.t(`${namespace}::"%s" has errors`);
+  lang.ROW_NUMBER = i18n.t(`${namespace}::Row number`);
+  lang.ERRORS = i18n.t(`${namespace}::Errors`);
+  lang.INVENTORY_PROCESSING_ERROR = i18n.t(
+    `${namespace}::Processing error: inventory items failed to be added`
+  );
+  lang.INVENTORY_ITEMS_FAILED_TO_BE_ADDED = i18n.t(
+    `${namespace}::%s inventory items failed to be added from “%s”. To add items, follow these steps: `
+  );
+  lang.EXTRACT_THE_ROWS_LISTED = i18n.t(`${namespace}::Extract the rows listed below from "%s"`);
+  lang.PASTE_THE_ROWS = i18n.t(`${namespace}::Paste the rows into a new CSV file`);
+  lang.UPLOAD_THE_CSV_FILE = i18n.t(`${namespace}::Upload the CSV file`);
+  lang.INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED = i18n.t(
+    `${namespace}::Inventory items from “%s” that were not added`
+  );
+  lang.RETRY = i18n.t(`${namespace}::Retry`);
+  lang.CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS = i18n.t(
+    `${namespace}::Caution: do not re-upload the successful items or duplicates will be created.`
+  );
+  lang.INVENTORY_ITEMS_NOT_LISTED_BELOW = i18n.t(
+    `${namespace}::Inventory items not listed below were successfully added to the`
+  );
+  lang.INVENTORY_ITEMS_ADDED_TO = i18n.t(`${namespace}::inventory items added to`);
+  lang.RETRY_CSV_UPLOAD = i18n.t(`${namespace}::retry csv upload`);
+  lang.PLEASE_FIX_THE_ERRORS_LISTED_BELOW = i18n.t(
+    `${namespace}::please fix the errors listed below, then`
+  );
+  // Error
+  lang.ERROR_GENERIC = i18n.t(`${namespace}::An error occurred`);
+  lang.ERROR_PRODUCT_NAME_REQUIRED = i18n.t(`${namespace}::Product is required`);
+  lang.ERROR_DELIVERY_DATE_REQUIRED = i18n.t(`${namespace}::Delivery date is required`);
+  lang.ERROR_ACCOUNTABILITY_DATE_REQUIRED = i18n.t(
+    `${namespace}::Accountability end date is required`
+  );
+  lang.ERROR_UNICEF_SECTION_REQUIRED = i18n.t(`${namespace}::UNICEF section is required`);
+  lang.ERROR_PO_NUMBER_REQUIRED = i18n.t(`${namespace}::PO number is required`);
+  lang.ERROR_SERIAL_NUMBER_REQUIRED = i18n.t(`${namespace}::Serial number is required`);
+
+  // Rendered text
+  lang.ADD_INVENTORY_ITEM = i18n.t(`${namespace}::Add inventory item`);
+  lang.TO = i18n.t(`${namespace}::to`);
+  lang.SAVE = i18n.t(`${namespace}::Save`);
+  lang.SAVING = i18n.t(`${namespace}::Saving`);
+  lang.OPTIONAL = i18n.t(`${namespace}::optional`);
+  lang.QUANTITY = i18n.t(`${namespace}::Quantity`);
+  lang.DELIVERY_DATE = i18n.t(`${namespace}::Delivery date`);
+  lang.ACCOUNTABILITY_END_DATE = i18n.t(`${namespace}::Accountability end date`);
+  lang.UNICEF_SECTION = i18n.t(`${namespace}::UNICEF section`);
+  lang.DONOR = i18n.t(`${namespace}::Donor`);
+  lang.PO_NUMBER = i18n.t(`${namespace}::PO number`);
+  lang.SELECT = i18n.t(`${namespace}::Select`);
+
+  // Service point profile
+  lang.INVENTORY = i18n.t(`${namespace}::Inventory`);
+  lang.INVENTORY_ITEMS = i18n.t(`${namespace}::Inventory items`);
+  lang.EDIT_SERVICE_POINT = i18n.t(`${namespace}::Edit service point`);
+  lang.ADD_NEW_INVENTORY_ITEM = i18n.t(`${namespace}::Add new inventory item`);
+  lang.PRODUCT_NAME_TH = i18n.t(`${namespace}::Product name`);
+  lang.QTY_TH = i18n.t(`${namespace}::Qty`);
+  lang.PO_NUMBER_TH = i18n.t(`${namespace}::PO no.`);
+  lang.SERIAL_NUMBER_TH = i18n.t(`${namespace}::Serial no.`);
+  lang.DELIVERY_DT_TH = i18n.t(`${namespace}::Delivery dt.`);
+  lang.ACCOUNT_END_DT_TH = i18n.t(`${namespace}::Acct. end dt.`);
+  lang.UNICEF_SECTION_TH = i18n.t(`${namespace}::Unicef section`);
+  lang.DONOR_TH = i18n.t(`${namespace}::Donor`);
+  lang.REGION_LABEL = i18n.t(`${namespace}::Region`);
+  lang.TYPE_LABEL = i18n.t(`${namespace}::Type`);
+  lang.DISTRICT_LABEL = i18n.t(`${namespace}::District`);
+  lang.LAT_LONG_LABEL = i18n.t(`${namespace}::Latitude/longitude`);
+  lang.COMMUNE_LABEL = i18n.t(`${namespace}::Commune`);
+  lang.SERVICE_POINT_ID_LABEL = i18n.t(`${namespace}::Service point ID`);
+  lang.ERROR_OCCURRED = i18n.t(`${namespace}::An error occurred`);
+  lang.PRODUCT = i18n.t(`${namespace}::Product`);
+  lang.SERIAL_NUMBER = i18n.t(`${namespace}::Serial number`);
+  lang.EDIT_INVENTORY_ITEM = i18n.t(`${namespace}::Edit inventory item`);
+  lang.EDIT = i18n.t(`${namespace}::Edit`);
+  lang.BACK_TO_SERVICE_POINT_LIST = i18n.t(`${namespace}::Back to the list of service points`);
+  lang.ERROR_GETTING_INVENTORIES = i18n.t(
+    `${namespace}::Unable to fetch inventories for service point`
+  );
+}
+
+// run it initial
+fill();
+
+// bind some events and fill values again (doing the magic you expect to happen magically)
+i18n.on(`languageChanged`, () => {
+  fill();
+});
+
+// the const
+export default lang;

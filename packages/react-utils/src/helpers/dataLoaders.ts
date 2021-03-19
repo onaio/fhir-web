@@ -11,7 +11,7 @@ import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
 import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
 import { getAllConfigs } from '@opensrp/pkg-config';
-import { SESSION_EXPIRED_TEXT } from '../lang';
+import lang, { Lang } from '../lang';
 
 const configs = getAllConfigs();
 
@@ -32,15 +32,19 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
   }
 }
 
-/** gets access token or redirects to login if session is expired */
-export const handleSessionOrTokenExpiry = async () => {
+/**
+ * gets access token or redirects to login if session is expired
+ *
+ * @param langObject - look up of translations
+ */
+export const handleSessionOrTokenExpiry = async (langObject: Lang = lang) => {
   if (isTokenExpired(store.getState())) {
     try {
       // refresh token
       return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
     } catch (e) {
       history.push(`${configs.appLoginURL}`);
-      throw new Error(`${SESSION_EXPIRED_TEXT}`);
+      throw new Error(`${langObject.SESSION_EXPIRED_TEXT}`);
     }
   } else {
     return getAccessToken(store.getState());

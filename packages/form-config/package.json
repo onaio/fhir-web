@@ -36,6 +36,7 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.9",
+    "i18next": "^19.8.4",
     "react": "^16.8.6",
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
@@ -53,10 +54,11 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/form-config-core": "^0.0.1",
     "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "0.0.7",
     "@opensrp/server-service": "^0.0.17",
     "formik": "^2.1.4",
-    "i18next": "^19.8.4",
     "lodash": "^4.17.15",
+    "react-i18next": "^11.8.10",
     "react-toastify": "^6.0.5",
     "reactstrap": "^8.0.1",
     "yup": "^0.29.1"
