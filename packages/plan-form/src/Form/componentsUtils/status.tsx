@@ -2,16 +2,7 @@ import React from 'react';
 import { Radio, Popconfirm } from 'antd';
 import { PlanStatus, planStatusDisplay, status } from '@opensrp/plan-form-core';
 import { FormInstance } from 'antd/lib/form';
-import {
-  CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS,
-  NO,
-  OK,
-  SETTING_STATUS_TO_ACTIVE,
-  SETTING_STATUS_TO_COMPLETE,
-  SETTING_STATUS_TO_DRAFT,
-  SETTING_STATUS_TO_RETIRED,
-  YES,
-} from '../../lang';
+import lang from '../../lang';
 import { PlanFormFields } from '../../helpers/types';
 import { PopconfirmProps } from 'antd/lib/popconfirm';
 
@@ -21,13 +12,6 @@ interface PlanStatusRendererProps {
   setFieldsValue: FormInstance['setFieldsValue'];
   assignedJurisdictions?: PlanFormFields['jurisdictions'];
 }
-
-const popUpConfirmationMessageLookup = {
-  [PlanStatus.DRAFT]: SETTING_STATUS_TO_DRAFT,
-  [PlanStatus.ACTIVE]: SETTING_STATUS_TO_ACTIVE,
-  [PlanStatus.COMPLETE]: SETTING_STATUS_TO_COMPLETE,
-  [PlanStatus.RETIRED]: SETTING_STATUS_TO_RETIRED,
-};
 
 /** renders the status fields on the planForm
  * Wraps the radio buttons in a pop up confirmation box, this means
@@ -45,6 +29,14 @@ export const PlanStatusRenderer = (props: PlanStatusRendererProps) => {
     assignedJurisdictions,
     ...rest
   } = props;
+
+  const popUpConfirmationMessageLookup = {
+    [PlanStatus.DRAFT]: lang.SETTING_STATUS_TO_DRAFT,
+    [PlanStatus.ACTIVE]: lang.SETTING_STATUS_TO_ACTIVE,
+    [PlanStatus.COMPLETE]: lang.SETTING_STATUS_TO_COMPLETE,
+    [PlanStatus.RETIRED]: lang.SETTING_STATUS_TO_RETIRED,
+  };
+
   return (
     <Radio.Group className="plan-form-status" {...rest} disabled={disabledFields.includes(status)}>
       {Object.entries(PlanStatus)
@@ -61,16 +53,16 @@ export const PlanStatusRenderer = (props: PlanStatusRendererProps) => {
               setFieldsValue({ [status]: e[1] });
             },
             onCancel: () => void 0,
-            okText: YES,
-            cancelText: NO,
+            okText: lang.YES,
+            cancelText: lang.NO,
           };
           let additionalRadioClassName = '';
 
           if (e[1] === PlanStatus.ACTIVE && assignedJurisdictions?.length === 0) {
             // change onConfirm to do nothing, and hide cancelButton, change popup title
             popConfirmProps = {
-              title: CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS,
-              okText: OK,
+              title: lang.CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS,
+              okText: lang.OK,
               cancelButtonProps: {
                 style: { display: 'none' },
               },

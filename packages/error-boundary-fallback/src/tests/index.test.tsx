@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import { ErrorBoundaryFallback } from '..';
-import { PAGE_SUB_TITLE, PAGE_TITLE } from '../lang';
+import lang from '../lang';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router', () => ({
@@ -19,8 +19,8 @@ describe('/components/Fallback', () => {
     const wrapper = shallow(<ErrorBoundaryFallback />);
     expect(wrapper.find('Result')).toHaveLength(1);
     expect(wrapper.find('Result').prop('status')).toBe('error');
-    expect(wrapper.find('Result').prop('title')).toBe(PAGE_TITLE);
-    expect(wrapper.find('Result').prop('subTitle')).toBe(PAGE_SUB_TITLE);
+    expect(wrapper.find('Result').prop('title')).toBe(lang.PAGE_TITLE);
+    expect(wrapper.find('Result').prop('subTitle')).toBe(lang.PAGE_SUB_TITLE);
   });
 
   it('correctly redirects to home', () => {

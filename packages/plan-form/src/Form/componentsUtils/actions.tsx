@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Dictionary } from '@onaio/utils';
 import React from 'react';
-import { DESCRIPTION_LABEL, EXPRESSION_LABEL, NAME, PATH_LABEL } from '../../lang';
+import lang from '../../lang';
 import { PlanActivityFormFields } from '@opensrp/plan-form-core';
 import { Form, Input } from 'antd';
 
@@ -43,7 +43,7 @@ export const getConditionAndTriggers = (
             )}
             {item.expression && (
               <FormItem
-                label={EXPRESSION_LABEL}
+                label={lang.EXPRESSION_LABEL}
                 name={[index, 'condition', mapIndex, 'expression']}
                 id={`activities[${index}].condition[${mapIndex}].expression`}
               >
@@ -52,7 +52,7 @@ export const getConditionAndTriggers = (
             )}
             {item.description && (
               <FormItem
-                label={DESCRIPTION_LABEL}
+                label={lang.DESCRIPTION_LABEL}
                 name={[index, 'condition', mapIndex, 'description']}
                 id={`activities[${index}].condition[${mapIndex}].description`}
               >
@@ -72,7 +72,7 @@ export const getConditionAndTriggers = (
           >
             {item.name && (
               <FormItem
-                label={NAME}
+                label={lang.NAME}
                 name={[index, 'trigger', mapIndex, 'name']}
                 id={`activities[${index}].trigger[${mapIndex}].name`}
               >
@@ -81,7 +81,7 @@ export const getConditionAndTriggers = (
             )}
             {item.expression && (
               <FormItem
-                label={EXPRESSION_LABEL}
+                label={lang.EXPRESSION_LABEL}
                 name={[index, 'trigger', mapIndex, 'expression']}
                 id={`activities[${index}].trigger[${mapIndex}].expression`}
               >
@@ -90,7 +90,7 @@ export const getConditionAndTriggers = (
             )}
             {item.description && (
               <FormItem
-                label={DESCRIPTION_LABEL}
+                label={lang.DESCRIPTION_LABEL}
                 name={[index, 'trigger', mapIndex, 'description']}
                 id={`activities[${index}].trigger[${mapIndex}].description`}
               >
@@ -110,7 +110,7 @@ export const getConditionAndTriggers = (
           >
             {item.path && (
               <FormItem
-                label={PATH_LABEL}
+                label={lang.PATH_LABEL}
                 name={[index, 'dynamicValue', mapIndex, 'path']}
                 id={`activities[${index}].dynamicValue[${mapIndex}].path`}
               >
@@ -119,7 +119,7 @@ export const getConditionAndTriggers = (
             )}
             {item.expression && (
               <FormItem
-                label={EXPRESSION_LABEL}
+                label={lang.EXPRESSION_LABEL}
                 name={[index, 'dynamicValue', mapIndex, 'expression']}
                 id={`activities[${index}].dynamicValue[${mapIndex}].expression`}
               >

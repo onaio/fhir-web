@@ -10,29 +10,7 @@ import * as Yup from 'yup';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import {
-  ACCOUNTABILITY_PERIOD,
-  ATTRACTIVE_ITEM_LABEL,
-  AVAILABILITY_LABEL,
-  AVAILABILITY_PLACEHOLDER,
-  CANCEL,
-  CONDITION_LABEL,
-  CONDITION_PLACEHOLDER,
-  DESCRIBE_THE_PRODUCTS_USE,
-  ENTER_PRODUCTS_NAME,
-  ERROR_IMAGE_LOAD,
-  MATERIAL_NUMBER,
-  MATERIAL_NUMBER_PLACEHOLDER,
-  NO,
-  PHOTO_OF_THE_PRODUCT,
-  PRODUCT_NAME,
-  REQUIRED,
-  SUBMIT,
-  SUCCESSFULLY_ADDED,
-  SUCCESSFULLY_UPDATED,
-  USED_APPROPRIATELY,
-  YES,
-} from '../../lang';
+import lang, { Lang } from '../../lang';
 import { HTTPError } from '@opensrp/server-service';
 import { fetchProtectedImage } from '@opensrp/react-utils';
 
@@ -73,18 +51,23 @@ const defaultProps = {
   redirectAfterAction: CATALOGUE_LIST_VIEW_URL,
 };
 
-/** yup validation schema for productForm fields */
-const ProductFormValidationSchema = Yup.object().shape({
-  uniqueId: Yup.number(),
-  productName: Yup.string().required(REQUIRED),
-  materialNumber: Yup.string().required(REQUIRED),
-  isAttractiveItem: Yup.boolean().required(REQUIRED),
-  condition: Yup.string(),
-  appropriateUsage: Yup.string(),
-  accountabilityPeriod: Yup.number().required(REQUIRED),
-  availability: Yup.string().required(REQUIRED),
-  photoURL: Yup.mixed(),
-});
+/**
+ * yup validation schema for productForm fields
+ *
+ * @param langObj - the language objects
+ */
+const ProductFormValidationSchemaFactory = (langObj: Lang = lang) =>
+  Yup.object().shape({
+    uniqueId: Yup.number(),
+    productName: Yup.string().required(langObj.REQUIRED),
+    materialNumber: Yup.string().required(langObj.REQUIRED),
+    isAttractiveItem: Yup.boolean().required(langObj.REQUIRED),
+    condition: Yup.string(),
+    appropriateUsage: Yup.string(),
+    accountabilityPeriod: Yup.number().required(langObj.REQUIRED),
+    availability: Yup.string().required(langObj.REQUIRED),
+    photoURL: Yup.mixed(),
+  });
 
 /** responsive layout for the form labels and columns */
 const formItemLayout = {
@@ -136,10 +119,12 @@ const ProductForm = (props: ProductFormProps) => {
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const history = useHistory();
 
+  const ProductFormValidationSchema = ProductFormValidationSchemaFactory(lang);
+
   /** options for the isAttractive form field radio buttons */
   const attractiveOptions = [
-    { label: YES, value: true },
-    { label: NO, value: false },
+    { label: lang.YES, value: true },
+    { label: lang.NO, value: false },
   ];
 
   /** component used by antd Upload, to upload the product photo */
@@ -197,7 +182,7 @@ const ProductForm = (props: ProductFormProps) => {
             setImageUrl(url);
           }
         })
-        .catch((_: HTTPError) => sendErrorNotification(ERROR_IMAGE_LOAD));
+        .catch((_: HTTPError) => sendErrorNotification(lang.ERROR_IMAGE_LOAD));
     }
     return () => {
       if (objectURL) {
@@ -222,7 +207,7 @@ const ProductForm = (props: ProductFormProps) => {
           if (isEditMode) {
             putProduct(baseURL, payload)
               .then(() => {
-                sendSuccessNotification(SUCCESSFULLY_UPDATED);
+                sendSuccessNotification(lang.SUCCESSFULLY_UPDATED);
                 // the reason this is not in a finally block, it should be called before setAreWeDoneHere
                 // to avoid updating an unmounted component.
                 actions.setSubmitting(false);
@@ -235,7 +220,7 @@ const ProductForm = (props: ProductFormProps) => {
           } else {
             postProduct(baseURL, payload)
               .then(() => {
-                sendSuccessNotification(SUCCESSFULLY_ADDED);
+                sendSuccessNotification(lang.SUCCESSFULLY_ADDED);
                 actions.setSubmitting(false);
                 setAreWeDoneHere(true);
               })
@@ -250,8 +235,13 @@ const ProductForm = (props: ProductFormProps) => {
           return (
             <>
               <Form {...formItemLayout} colon={true} requiredMark={false}>
-                <Form.Item id="productName" name="productName" label={PRODUCT_NAME} required={true}>
-                  <Input name="productName" placeholder={ENTER_PRODUCTS_NAME} />
+                <Form.Item
+                  id="productName"
+                  name="productName"
+                  label={lang.PRODUCT_NAME}
+                  required={true}
+                >
+                  <Input name="productName" placeholder={lang.ENTER_PRODUCTS_NAME} />
                 </Form.Item>
 
                 <Form.Item id="uniqueId" name="uniqueId" hidden={true} required={true}>
@@ -261,16 +251,16 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="materialNumber"
                   name="materialNumber"
-                  label={MATERIAL_NUMBER}
+                  label={lang.MATERIAL_NUMBER}
                   required={true}
                 >
-                  <Input name="materialNumber" placeholder={MATERIAL_NUMBER_PLACEHOLDER} />
+                  <Input name="materialNumber" placeholder={lang.MATERIAL_NUMBER_PLACEHOLDER} />
                 </FormItem>
 
                 <FormItem
                   id="isAttractiveItem"
                   name="isAttractiveItem"
-                  label={ATTRACTIVE_ITEM_LABEL}
+                  label={lang.ATTRACTIVE_ITEM_LABEL}
                   required={true}
                 >
                   <Radio.Group name="isAttractiveItem" options={attractiveOptions} />
@@ -279,35 +269,43 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="availability"
                   name="availability"
-                  label={AVAILABILITY_LABEL}
+                  label={lang.AVAILABILITY_LABEL}
                   required={true}
                 >
                   <Input.TextArea
                     rows={4}
                     name="availability"
-                    placeholder={AVAILABILITY_PLACEHOLDER}
+                    placeholder={lang.AVAILABILITY_PLACEHOLDER}
                   />
                 </FormItem>
-                <FormItem id="condition" name="condition" label={CONDITION_LABEL}>
-                  <Input.TextArea rows={4} name="condition" placeholder={CONDITION_PLACEHOLDER} />
+                <FormItem id="condition" name="condition" label={lang.CONDITION_LABEL}>
+                  <Input.TextArea
+                    rows={4}
+                    name="condition"
+                    placeholder={lang.CONDITION_PLACEHOLDER}
+                  />
                 </FormItem>
-                <FormItem id="appropriateUsage" name="appropriateUsage" label={USED_APPROPRIATELY}>
+                <FormItem
+                  id="appropriateUsage"
+                  name="appropriateUsage"
+                  label={lang.USED_APPROPRIATELY}
+                >
                   <Input.TextArea
                     rows={4}
                     name="appropriateUsage"
-                    placeholder={DESCRIBE_THE_PRODUCTS_USE}
+                    placeholder={lang.DESCRIBE_THE_PRODUCTS_USE}
                   />
                 </FormItem>
                 <FormItem
                   id="accountabilityPeriod"
                   name="accountabilityPeriod"
-                  label={ACCOUNTABILITY_PERIOD}
+                  label={lang.ACCOUNTABILITY_PERIOD}
                   required={true}
                 >
                   <InputNumber name="accountabilityPeriod" min={0} />
                 </FormItem>
 
-                <FormItem id="photoURL" name="photoURL" label={PHOTO_OF_THE_PRODUCT}>
+                <FormItem id="photoURL" name="photoURL" label={lang.PHOTO_OF_THE_PRODUCT}>
                   <Upload
                     customRequest={async () => {
                       return;
@@ -329,7 +327,7 @@ const ProductForm = (props: ProductFormProps) => {
 
                 <FormItem {...tailLayout} name="submitCancel">
                   <Space>
-                    <SubmitButton id="submit">{SUBMIT}</SubmitButton>
+                    <SubmitButton id="submit">{lang.SUBMIT}</SubmitButton>
 
                     <Button
                       id="cancel"
@@ -337,7 +335,7 @@ const ProductForm = (props: ProductFormProps) => {
                         history.push(CATALOGUE_LIST_VIEW_URL);
                       }}
                     >
-                      {CANCEL}
+                      {lang.CANCEL}
                     </Button>
                   </Space>
                 </FormItem>
