@@ -73,6 +73,6 @@ describe('components/pages/languageSwitcher', () => {
     const wrapper = mount(<LanguageSwitcher {...props} />);
     expect(wrapper.find('button')).toHaveLength(1);
 
-    expect(wrapper.text()).toMatchInlineSnapshot(`"EnglishFrançaisArabic"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
   });
 });
