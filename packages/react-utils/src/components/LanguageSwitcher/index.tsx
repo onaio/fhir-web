@@ -31,9 +31,9 @@ function getSupportedLanguageOptions(
   supportedLanguages?: LanguageCode[]
 ) {
   const supported: LanguageOptions = {};
-  const supportedLangIsDefined = supportedLanguages?.length;
+  const supportedLangIsDefined = supportedLanguages && supportedLanguages.length > 0;
   if (!supportedLangIsDefined) {
-    return languageOptions;
+    return supported;
   }
   Object.keys(languageOptions).forEach((languageCode) => {
     if (supportedLanguages?.includes(languageCode as LanguageCode)) {
