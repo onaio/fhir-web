@@ -76,20 +76,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   useEffect(() => {
     if (keycloakUser) {
       /** only update the object diff */
-      setInitialValues((prevState) => {
-        return {
-          ...prevState,
-          ...keycloakUser,
-        };
-      });
+      setInitialValues((prevState) => ({ ...prevState, ...keycloakUser }));
     }
   }, [keycloakUser]);
-
-  useEffect(() => {
-    if (keycloakUser && !initialValues.username) {
-      setInitialValues({ ...initialValues, ...keycloakUser });
-    }
-  }, [keycloakUser, initialValues]);
 
   useEffect(() => {
     if (!userGroups.length) {
