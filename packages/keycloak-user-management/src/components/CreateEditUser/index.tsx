@@ -59,8 +59,14 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     lastName: '',
     username: '',
     active: false,
-    userGroup: undefined,
-    practitioner: undefined,
+    userGroup: [],
+    practitioner: {
+      active: false,
+      identifier: '',
+      name: '',
+      userId: '',
+      username: '',
+    },
   });
 
   const {
@@ -81,13 +87,18 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   }, [keycloakUser]);
 
   useEffect(() => {
+    const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
     if (!userGroups.length) {
-      const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
       serve
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
+
+    return () => {
+      const controller = serve.controller;
+      controller.abort();
+    };
   }, [keycloakBaseURL, opensrpBaseURL, userGroups.length]);
 
   /**
@@ -109,11 +120,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
    * Fetch User group of the user
    */
   useEffect(() => {
+    const serve = new KeycloakService(
+      KEYCLOAK_URL_USERS + '/' + userId + KEYCLOAK_URL_USER_GROUPS,
+      keycloakBaseURL
+    );
     if (userId && initialValues.userGroup === undefined) {
-      const serve = new KeycloakService(
-        KEYCLOAK_URL_USERS + '/' + userId + KEYCLOAK_URL_USER_GROUPS,
-        keycloakBaseURL
-      );
       serve
         .list()
         .then((response: UserGroup[]) =>
@@ -121,6 +132,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         )
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
+    return () => {
+      const controller = serve.controller;
+      controller.abort();
+    };
   }, [userId, keycloakBaseURL, initialValues]);
 
   useEffect(() => {
@@ -135,7 +150,22 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     }
   }, [userId, opensrpBaseURL, initialValues]);
 
-  if (!userGroups.length || (keycloakUser && !initialValues.username) || (userId && !keycloakUser))
+  if (
+    // editing an existing user
+    (userId &&
+      (!(userGroups.length > 0) ||
+        !keycloakUser ||
+        initialValues.username === '' ||
+        initialValues.id === '' ||
+        // !initialValues.userGroup?.length ||
+        (Object.keys(extraData).length > 0 && extraData.user_id === ''))) ||
+    // // creating a new user
+    (!userId &&
+      initialValues.username === '' &&
+      initialValues.id === '' &&
+      Object.keys(extraData).length > 0 &&
+      extraData.user_id === '')
+  )
     return <Spin size="large" />;
 
   return (
