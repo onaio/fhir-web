@@ -122,9 +122,6 @@
     "redux-thunk": "^2.3.0",
     "typescript": "~3.8.3"
   },
-  "resolutions": {
-    "react-scripts/jest": "25.3.0"
-  },
   "workspaces": [
     "app",
     "packages/*"
