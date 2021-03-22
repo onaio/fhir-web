@@ -2,21 +2,21 @@
 
 OpenSRP Web supports multi-language using [react.i18next](https://react.i18next.com/). This document is divided into 2 sections
 
-1. Usage - contains instructions on how consumers of the packages, can tweak mls.
-2. Contributors - Targets people with the intent of either adding packages that should support MlS or maintining packages that aleardy support MLS
+1. Usage - contains instructions on how people can configure MLS when using packages.
+2. Contributors - Targets developers with the intent of either adding packages that should support MlS or maintaining packages that already support MLS
 
 ## Usage
 
 **Package's MLS contract**:
 
 - Packages here-in are configured by using the `setAllConfigs` or `setConfig` methods in `@opensrp/pkg-config`.
-- They also get the `18next`-`i18n` instance from the configs, this means to use MLS, you will need to init an `i18next` instance and pass it to `@opensrp/pkg-config` configs.
+- They also get the `18next`-`i18n` instance from the configs, to use MLS, you will need to add an initialized `i18next` instance to the configs.
 - For the i18n configuration to work right of the bat, it needs to be dispatched to the configs before any code in the packages is run(i.e. before actually importing the packages themselves, that is of-course exempting the `@opensrp/pkg-config`)
 - Packages will have the locales needed. Where the locales are missing or not what you want; you could load your own resource files into the configured `i18n` instance that you pass to the configs
 
 **Configuration**
 
-Opensrp-web packages uses 2 configuration options to fully configure MLS: `configs.languageCode` and `configs.projectLanguageCode`.
+Opensrp-web packages uses 2 configuration options to fully configure MLS i.e. `configs.languageCode` and `configs.projectLanguageCode`.
 
 The default language is english. To set a different language, configure the config option `languageCode` with values of the ISO code of the language you want to use e.g
 
@@ -28,9 +28,9 @@ setConfig('languageCode', 'fr');
 
 **N/B** The language should be internally available in the package of interest. If you are not sure of this check the [Adding a new language section](#adding-a-new-language)
 
-consider where you have a certain key e.g. `Plans` that should translate to `Plans` for a certain use-case implementation but display as `Missions` in another implementation. How do we configure that in the packages. In other words how can we support different translation values for the same language
+consider where you have a certain key e.g. `Plans` that should translate to `Plans` for a certain use-case implementation but display as `Missions` in another implementation. In other words how can we support different translation values for the same language
 
-This is where the `projectLanguageCode` comes in, helpes further define what set of translations for a certain language should be used
+This is where the `projectLanguageCode` comes in, helps further define what set of translations for a certain language should be used
 
 **Why not use namespaces?**
 
@@ -46,7 +46,7 @@ Things to cover(in no particular order):
 - How the translation keys are used in the components
 - Updating the locales files
 
-the translation workflow in each package requires 2 files:
+there are 2 important files that contains the bulk of the translation workflow:
 
 - the `src/mls`. this file is responsible for loading the locale .json files, creating a resource object and adding them to the configured `i18n` instance
 - the `src/lang`. this file contains constant declarations of translatable strings. This file is a remnant of our previous MLS workflows and we might remove it in the future, by having the strings written inside the components. _Do we really need this file?_
