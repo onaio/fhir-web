@@ -12,7 +12,7 @@ import {
   OPENSRP_FORM_METADATA_ENDPOINT,
   OPENSRP_MANIFEST_ENDPOINT,
 } from '../constants';
-import { ERROR_OCCURRED } from '../lang';
+import lang, { Lang } from '../lang';
 import {
   fetchManifestFiles,
   ManifestFilesTypes,
@@ -145,6 +145,7 @@ export const submitUploadForm = async (
  * @param {string} endpoint - Opensrp endpoint
  * @param {Dispatch} dispatch - dispatch function from redux store
  * @param {Function} customFetchOptions custom opensrp API fetch options
+ * @param {Lang} langObj - the translation's string lookup
  */
 export const makeRelease = (
   data: ManifestFilesTypes[],
@@ -155,7 +156,8 @@ export const makeRelease = (
   alertError: (err: string) => void,
   endpoint = OPENSRP_MANIFEST_ENDPOINT,
   dispatch?: Dispatch,
-  customFetchOptions?: typeof getFetchOptions
+  customFetchOptions?: typeof getFetchOptions,
+  langObj: Lang = lang
 ) => {
   const identifiers = data.map((form) => form.identifier);
   const json = {
@@ -181,7 +183,7 @@ export const makeRelease = (
       setIfDoneHere(true);
     })
     .catch((_: Error) => {
-      alertError(ERROR_OCCURRED);
+      alertError(langObj.ERROR_OCCURRED);
     });
 };
 
@@ -196,6 +198,7 @@ export const makeRelease = (
  * @param {string} endpoint - Opensrp endpoint
  * @param {Dispatch} dispatch - dispatch function from redux store
  * @param {Function} customFetchOptions custom opensrp API fetch options
+ * @param {Lang} langObj - the translation's string lookup
  */
 export const fetchDrafts = (
   accessToken: GetAccessTokenType | string,
@@ -205,7 +208,8 @@ export const fetchDrafts = (
   alertError: (err: string) => void,
   endpoint = OPENSRP_FORM_METADATA_ENDPOINT,
   dispatch?: Dispatch,
-  customFetchOptions?: typeof getFetchOptions
+  customFetchOptions?: typeof getFetchOptions,
+  langObj: Lang = lang
 ) => {
   /** get manifest Draftfiles */
   setLoading(true);
@@ -227,7 +231,7 @@ export const fetchDrafts = (
       }
     })
     .catch((_: Error) => {
-      alertError(ERROR_OCCURRED);
+      alertError(langObj.ERROR_OCCURRED);
     })
     .finally(() => setLoading(false));
 };
@@ -243,6 +247,7 @@ export const fetchDrafts = (
  * @param {string} endpoint - Opensrp endpoint
  * @param {Dispatch} dispatch - dispatch function from redux store
  * @param {Function} customFetchOptions custom opensrp API fetch options
+ * @param {Lang} langObj - the translation's string lookup
  */
 export const fetchReleaseFiles = (
   accessToken: GetAccessTokenType | string,
@@ -252,7 +257,8 @@ export const fetchReleaseFiles = (
   alertError: (err: string) => void,
   endpoint = OPENSRP_MANIFEST_ENDPOINT,
   dispatch?: Dispatch,
-  customFetchOptions?: typeof getFetchOptions
+  customFetchOptions?: typeof getFetchOptions,
+  langObj: Lang = lang
 ) => {
   /** get manifest releases */
   setLoading(true);
@@ -272,7 +278,7 @@ export const fetchReleaseFiles = (
       }
     })
     .catch((_: Error) => {
-      alertError(ERROR_OCCURRED);
+      alertError(langObj.ERROR_OCCURRED);
     })
     .finally(() => setLoading(false));
 };
@@ -290,6 +296,7 @@ export const fetchReleaseFiles = (
  * @param {string} endpoint - Opensrp endpoint
  * @param {Dispatch} dispatch - dispatch function from redux store
  * @param {Function} customFetchOptions custom opensrp API fetch options
+ * @param {Lang} langObj - the translation's string lookup
  */
 export const fetchManifests = (
   accessToken: GetAccessTokenType | string,
@@ -301,7 +308,8 @@ export const fetchManifests = (
   formVersion?: string | null,
   endpoint = OPENSRP_FORM_METADATA_ENDPOINT,
   dispatch?: Dispatch,
-  customFetchOptions?: typeof getFetchOptions
+  customFetchOptions?: typeof getFetchOptions,
+  langObj: Lang = lang
 ) => {
   /** get manifest files */
   setLoading(true);
@@ -332,7 +340,7 @@ export const fetchManifests = (
       }
     })
     .catch((_: Error) => {
-      alertError(ERROR_OCCURRED);
+      alertError(langObj.ERROR_OCCURRED);
     })
     .finally(() => setLoading(false));
 };

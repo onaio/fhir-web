@@ -39,36 +39,11 @@ import {
   DRAFT_PLANS_LIST_VIEW_URL,
   TRASH_PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
-import {
-  CARD_SUPPORT,
-  DOWNLOAD_CLIENT_DATA,
-  USER_MANAGEMENT,
-  TEAMS,
-  LOCATION_UNIT,
-  LOCATION_UNIT_GROUP,
-  PRODUCT_CATALOGUE,
-  FORM_CONFIGURATION,
-  MANIFEST_RELEASES,
-  DRAFT_FILES,
-  JSON_VALIDATORS,
-  USERS,
-  ADMIN,
-  ACTIVE,
-  DRAFT,
-  COMPLETE,
-  TRASH,
-  MISSIONS,
-  LOCATIONS,
-  SERVICE_POINT_INVENTORY,
-  INVENTORY,
-  TEAM_ASSIGNMENT,
-  ADD_INVENTORY_VIA_CSV,
-  USER_GROUPS,
-  USER_ROLES,
-} from '../../../lang';
+import lang from '../../../lang';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
 import MapMarkerOutline from '@opensrp/ant-icons/lib/MapMarkerOutline';
+import { useTranslation } from 'react-i18next';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -89,6 +64,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   let location = useLocation();
   let loc = location.pathname.split('/');
   loc.shift();
+  useTranslation();
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
@@ -113,26 +89,26 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.SubMenu
               key="missions"
               icon={<MapMarkerOutline className="sidebar-icons" />}
-              title={MISSIONS}
+              title={lang.MISSIONS}
             >
               <Menu.Item key="active">
                 <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
-                  {ACTIVE}
+                  {lang.ACTIVE}
                 </Link>
               </Menu.Item>
               <Menu.Item key="draft">
                 <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
-                  {DRAFT}
+                  {lang.DRAFT}
                 </Link>
               </Menu.Item>
               <Menu.Item key="complete">
                 <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
-                  {COMPLETE}
+                  {lang.COMPLETE}
                 </Link>
               </Menu.Item>
               <Menu.Item key="trash">
                 <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
-                  {TRASH}
+                  {lang.TRASH}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
@@ -143,12 +119,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           isAuthorized(roles as string[], activeRoles.CARD_SUPPORT.split(',')) && (
             <Menu.SubMenu
               key="card-support"
-              title={CARD_SUPPORT}
+              title={lang.CARD_SUPPORT}
               icon={<IdcardOutlined className="sidebar-icons" />}
             >
               <Menu.Item key="card-support-client-data">
                 <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-                  {DOWNLOAD_CLIENT_DATA}
+                  {lang.DOWNLOAD_CLIENT_DATA}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
@@ -160,16 +136,16 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             <Menu.SubMenu
               key="inventory"
               icon={<ArchiveOutline className="sidebar-icons" />}
-              title={INVENTORY}
+              title={lang.INVENTORY}
             >
               <Menu.Item key="list">
                 <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
-                  {SERVICE_POINT_INVENTORY}
+                  {lang.SERVICE_POINT_INVENTORY}
                 </Link>
               </Menu.Item>
               <Menu.Item key="bulk">
                 <Link to={INVENTORY_BULK_UPLOAD_URL} className="admin-link">
-                  {ADD_INVENTORY_VIA_CSV}
+                  {lang.ADD_INVENTORY_VIA_CSV}
                 </Link>
               </Menu.Item>
             </Menu.SubMenu>
@@ -177,25 +153,25 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         <Menu.SubMenu
           key="admin"
           icon={<SettingOutlined className="sidebar-icons" />}
-          title={ADMIN}
+          title={lang.ADMIN}
         >
           {roles &&
             activeRoles.USERS &&
             isAuthorized(roles as string[], activeRoles.USERS.split(',')) && (
-              <Menu.SubMenu key="users" title={USERS}>
+              <Menu.SubMenu key="users" title={lang.USERS}>
                 <Menu.Item key={'list'}>
                   <Link to={URL_USER} className="admin-link">
-                    {USER_MANAGEMENT}
+                    {lang.USER_MANAGEMENT}
                   </Link>
                 </Menu.Item>
                 <Menu.Item key={'groups'}>
                   <Link to={URL_USER_GROUPS} className="admin-link">
-                    {USER_GROUPS}
+                    {lang.USER_GROUPS}
                   </Link>
                 </Menu.Item>
                 <Menu.Item key={'roles'}>
                   <Link to={URL_USER_ROLES} className="admin-link">
-                    {USER_ROLES}
+                    {lang.USER_ROLES}
                   </Link>
                 </Menu.Item>
               </Menu.SubMenu>
@@ -204,15 +180,15 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             roles &&
             activeRoles.TEAMS &&
             isAuthorized(roles as string[], activeRoles.TEAMS.split(',')) && (
-              <Menu.SubMenu key="teams" title={TEAMS}>
+              <Menu.SubMenu key="teams" title={lang.TEAMS}>
                 <Menu.Item key="teams-list">
                   <Link to={URL_TEAMS} className="admin-link">
-                    {TEAMS}
+                    {lang.TEAMS}
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="team-assignment">
                   <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
-                    {TEAM_ASSIGNMENT}
+                    {lang.TEAM_ASSIGNMENT}
                   </Link>
                 </Menu.Item>
               </Menu.SubMenu>
@@ -223,7 +199,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             isAuthorized(roles as string[], activeRoles.PRODUCT_CATALOGUE.split(',')) && (
               <Menu.Item key="product-catalogue">
                 <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
-                  {PRODUCT_CATALOGUE}
+                  {lang.PRODUCT_CATALOGUE}
                 </Link>
               </Menu.Item>
             )}
@@ -231,15 +207,15 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             roles &&
             activeRoles.LOCATIONS &&
             isAuthorized(roles as string[], activeRoles.LOCATIONS.split(',')) && (
-              <Menu.SubMenu key="location" title={LOCATIONS}>
+              <Menu.SubMenu key="location" title={lang.LOCATIONS}>
                 <Menu.Item key="unit">
                   <Link to={URL_LOCATION_UNIT} className="admin-link">
-                    {LOCATION_UNIT}
+                    {lang.LOCATION_UNIT}
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="group">
                   <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
-                    {LOCATION_UNIT_GROUP}
+                    {lang.LOCATION_UNIT_GROUP}
                   </Link>
                 </Menu.Item>
               </Menu.SubMenu>
@@ -248,20 +224,20 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
             roles &&
             activeRoles.FORM_CONFIGURATION &&
             isAuthorized(roles as string[], activeRoles.FORM_CONFIGURATION.split(',')) && (
-              <Menu.SubMenu key="form-config" title={FORM_CONFIGURATION}>
+              <Menu.SubMenu key="form-config" title={lang.FORM_CONFIGURATION}>
                 <Menu.Item key="releases">
                   <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
-                    {MANIFEST_RELEASES}
+                    {lang.MANIFEST_RELEASES}
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="drafts">
                   <Link to={URL_DRAFT_FILE_LIST} className="admin-link">
-                    {DRAFT_FILES}
+                    {lang.DRAFT_FILES}
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="json-validators">
                   <Link to={URL_JSON_VALIDATOR_LIST} className="admin-link">
-                    {JSON_VALIDATORS}
+                    {lang.JSON_VALIDATORS}
                   </Link>
                 </Menu.Item>
               </Menu.SubMenu>

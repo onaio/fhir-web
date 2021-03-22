@@ -8,7 +8,7 @@ import './Header.css';
 import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import { BellOutlined } from '@ant-design/icons';
-import { LOGIN, MANAGE_ACCOUNT } from '../../../lang';
+import lang from '../../../lang';
 import { LanguageOptions, LanguageSwitcher } from '@opensrp/react-utils';
 import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/env';
 import i18n from '../../../mls';
@@ -71,7 +71,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
                 <Link to={URL_LOGOUT}>Logout</Link>
               </Menu.Item>
               <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
-                <Link to={`${URL_USER_EDIT}/${user_id}`}>{MANAGE_ACCOUNT}</Link>
+                <Link to={`${URL_USER_EDIT}/${user_id}`}>{lang.MANAGE_ACCOUNT}</Link>
               </Menu.Item>
             </Menu>
           }
@@ -92,7 +92,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         </Dropdown>
       ) : (
         <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
-          <Link to={URL_REACT_LOGIN}>{LOGIN}</Link>
+          <Link to={URL_REACT_LOGIN}>{lang.LOGIN}</Link>
         </Button>
       )}
       {ENABLE_LANGUAGE_SWITCHER && <LanguageSwitcher {...languageSwitcherProps} />}
