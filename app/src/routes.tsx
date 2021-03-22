@@ -71,7 +71,12 @@ export interface Route {
 // menu items schema
 export const getRoutes = (roles: string[]): Route[] => {
   const activeRoles = OPENSRP_ROLES;
-  return [
+
+  console.warn(
+    ENABLE_PLANS && roles && activeRoles.PLANS && isAuthorized(roles, activeRoles.PLANS.split(','))
+  );
+
+  const routes = [
     {
       otherProps: { icon: <MapMarkerOutline className="sidebar-icons" /> },
       title: `${MISSIONS}`,
@@ -204,4 +209,14 @@ export const getRoutes = (roles: string[]): Route[] => {
       ],
     },
   ];
+
+  function filterfalsy(route: Route[]): Route[] {
+    return route
+      .filter((e) => e.enabled !== false)
+      .map((e) => {
+        return { ...e, children: e.children ? filterfalsy(e.children) : undefined };
+      });
+  }
+
+  return filterfalsy(routes);
 };

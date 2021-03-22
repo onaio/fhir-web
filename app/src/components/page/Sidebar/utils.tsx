@@ -10,9 +10,6 @@ export function getActiveKey(pathname: string[], routes: Route[]) {
   let activeKey: string | undefined;
 
   function mapMenus(menu: Route) {
-    // We only check if the menu enable is not set to false i.e undefined value is considered true
-    if (menu.enabled === false) return;
-
     // Matching Url
     if (menu.url && url.includes(menu.url)) activeKey = menu.key;
 
