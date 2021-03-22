@@ -6,3 +6,5 @@ export * from './helpers/dataLoaders';
 export * from './components/Search';
 export * from './components/Search/utils';
 export * from './helpers/componentUtils';
+export * from './helpers/utils';
+export * from './components/LanguageSwitcher';

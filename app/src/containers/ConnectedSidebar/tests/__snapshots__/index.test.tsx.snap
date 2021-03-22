@@ -273,7 +273,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue"
+        to="/admin/product-catalogue/view"
       >
         Product Catalogue
       </Link>

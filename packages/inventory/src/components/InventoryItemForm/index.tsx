@@ -3,28 +3,7 @@ import moment from 'moment';
 import { Form, Button, Input, DatePicker, Select, Card } from 'antd';
 import { Redirect, useHistory } from 'react-router';
 import { getFetchOptions } from '@opensrp/server-service';
-import {
-  ACCOUNTABILITY_END_DATE,
-  CANCEL,
-  DELIVERY_DATE,
-  DONOR,
-  ERROR_ACCOUNTABILITY_DATE_REQUIRED,
-  ERROR_DELIVERY_DATE_REQUIRED,
-  ERROR_GENERIC,
-  ERROR_PO_NUMBER_REQUIRED,
-  ERROR_PRODUCT_NAME_REQUIRED,
-  ERROR_SERIAL_NUMBER_REQUIRED,
-  ERROR_UNICEF_SECTION_REQUIRED,
-  OPTIONAL,
-  PO_NUMBER,
-  PRODUCT,
-  QUANTITY,
-  SAVE,
-  SAVING,
-  SELECT,
-  SERIAL_NUMBER,
-  UNICEF_SECTION,
-} from '../../lang';
+import lang from '../../lang';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
 import { isDateFuture, isDatePastOrToday, submitForm } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -235,7 +214,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
 
           submitForm(payload, openSRPBaseURL, setSubmitting, setIfDoneHere, inventoryID).catch(
             (_: Error) => {
-              sendErrorNotification(ERROR_GENERIC);
+              sendErrorNotification(lang.ERROR_GENERIC);
             }
           );
         }}
@@ -243,10 +222,10 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
         <Form.Item
           name="productName"
           id="productName"
-          label={PRODUCT}
-          rules={[{ required: true, message: ERROR_PRODUCT_NAME_REQUIRED }]}
+          label={lang.PRODUCT}
+          rules={[{ required: true, message: lang.ERROR_PRODUCT_NAME_REQUIRED }]}
         >
-          <Select placeholder={SELECT} onChange={handleProductChange} disabled={!!inventoryID}>
+          <Select placeholder={lang.SELECT} onChange={handleProductChange} disabled={!!inventoryID}>
             {products.map((product: ProductCatalogue) => (
               <Select.Option key={product.uniqueId} value={product.productName}>
                 {product.productName}
@@ -255,14 +234,14 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
           </Select>
         </Form.Item>
 
-        <Form.Item name="quantity" id="quantity" label={`${QUANTITY} (${OPTIONAL})`}>
+        <Form.Item name="quantity" id="quantity" label={`${lang.QUANTITY} (${lang.OPTIONAL})`}>
           <Input />
         </Form.Item>
         <Form.Item
           name="deliveryDate"
           id="deliveryDate"
-          label={DELIVERY_DATE}
-          rules={[{ required: true, message: ERROR_DELIVERY_DATE_REQUIRED }]}
+          label={lang.DELIVERY_DATE}
+          rules={[{ required: true, message: lang.ERROR_DELIVERY_DATE_REQUIRED }]}
         >
           <DatePicker
             // Cannot select future date
@@ -273,8 +252,8 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
         <Form.Item
           name="accountabilityEndDate"
           id="accountabilityEndDate"
-          label={ACCOUNTABILITY_END_DATE}
-          rules={[{ required: true, message: ERROR_ACCOUNTABILITY_DATE_REQUIRED }]}
+          label={lang.ACCOUNTABILITY_END_DATE}
+          rules={[{ required: true, message: lang.ERROR_ACCOUNTABILITY_DATE_REQUIRED }]}
         >
           <DatePicker
             // Cannot select today or past dates
@@ -284,10 +263,10 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
         <Form.Item
           name="unicefSection"
           id="unicefSection"
-          label={UNICEF_SECTION}
-          rules={[{ required: true, message: ERROR_UNICEF_SECTION_REQUIRED }]}
+          label={lang.UNICEF_SECTION}
+          rules={[{ required: true, message: lang.ERROR_UNICEF_SECTION_REQUIRED }]}
         >
-          <Select placeholder={SELECT}>
+          <Select placeholder={lang.SELECT}>
             {UNICEFSections.map((option: Setting) => (
               <Select.Option key={option.value} value={option.value}>
                 {option.label}
@@ -295,8 +274,8 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="donor" id="donor" label={`${DONOR} (${OPTIONAL})`}>
-          <Select placeholder={SELECT}>
+        <Form.Item name="donor" id="donor" label={`${lang.DONOR} (${lang.OPTIONAL})`}>
+          <Select placeholder={lang.SELECT}>
             {donors.map((option: Setting) => (
               <Select.Option key={option.value} value={option.value}>
                 {option.label}
@@ -307,8 +286,8 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
         <Form.Item
           name="poNumber"
           id="poNumber"
-          label={PO_NUMBER}
-          rules={[{ required: true, message: ERROR_PO_NUMBER_REQUIRED }]}
+          label={lang.PO_NUMBER}
+          rules={[{ required: true, message: lang.ERROR_PO_NUMBER_REQUIRED }]}
         >
           <Input />
         </Form.Item>
@@ -316,17 +295,17 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
           <Form.Item
             name="serialNumber"
             id="serialNumber"
-            label={SERIAL_NUMBER}
-            rules={[{ required: true, message: ERROR_SERIAL_NUMBER_REQUIRED }]}
+            label={lang.SERIAL_NUMBER}
+            rules={[{ required: true, message: lang.ERROR_SERIAL_NUMBER_REQUIRED }]}
           >
             <Input />
           </Form.Item>
         ) : null}
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
-            {isSubmitting ? SAVING : SAVE}
+            {isSubmitting ? lang.SAVING : lang.SAVE}
           </Button>
-          <Button onClick={() => history.push(cancelURL)}>{CANCEL}</Button>
+          <Button onClick={() => history.push(cancelURL)}>{lang.CANCEL}</Button>
         </Form.Item>
       </Form>
     </Card>
