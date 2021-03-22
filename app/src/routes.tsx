@@ -72,10 +72,6 @@ export interface Route {
 export const getRoutes = (roles: string[]): Route[] => {
   const activeRoles = OPENSRP_ROLES;
 
-  console.warn(
-    ENABLE_PLANS && roles && activeRoles.PLANS && isAuthorized(roles, activeRoles.PLANS.split(','))
-  );
-
   const routes = [
     {
       otherProps: { icon: <MapMarkerOutline className="sidebar-icons" /> },
@@ -212,7 +208,9 @@ export const getRoutes = (roles: string[]): Route[] => {
 
   function filterfalsy(route: Route[]): Route[] {
     return route
-      .filter((e) => e.enabled !== false)
+      .filter(
+        (e) => !e.hasOwnProperty('enabled') || (e.hasOwnProperty('enabled') && e.enabled === true)
+      )
       .map((e) => {
         if (e.children) return { ...e, children: filterfalsy(e.children) };
         else return e;
