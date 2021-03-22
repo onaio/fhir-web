@@ -20,6 +20,7 @@
     "@opensrp/ant-icons": "^0.0.1",
     "@opensrp/card-support": "^0.0.5",
     "@opensrp/error-boundary-fallback": "^0.0.4",
+    "@opensrp/fhir-client": "^0.0.1",
     "@opensrp/form-config-antd": "^0.0.1",
     "@opensrp/inventory": "^0.0.5",
     "@opensrp/keycloak-service": "^0.0.13",
