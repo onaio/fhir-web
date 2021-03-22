@@ -116,3 +116,7 @@ svg {
 td {
   vertical-align: top !important;
 }
+
+.ant-badge {
+  float: right;
+}
