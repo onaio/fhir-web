@@ -1,0 +1,58 @@
+{
+  "name": "@opensrp/fhir-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/opensrp/web",
+  "config": {
+    "folderName": "fhir-client"
+  },
+  "scripts": {
+    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
+    "tsc": "tsc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "dependencies": {
+    "fhirclient": "2.3.11",
+    "react-query": "^3.5.0",
+    "antd": "4.14.0",
+    "@onaio/utils": "0.0.1",
+    "@opensrp/notifications": "^0.0.5",
+    "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7"
+  },
+  "peerDependencies": {
+    "@opensrp/store": "^0.0.9",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-helmet": "^6.1.0",
+    "react-redux": "^7.2.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "redux": "^4.0.5"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false
+}

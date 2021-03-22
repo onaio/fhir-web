@@ -243,6 +243,11 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.SubMenu>
             )}
         </Menu.SubMenu>
+        <Menu.Item key={'patients'} icon={<SettingOutlined />}>
+          <Link to={'/admin/patients'} className="admin-link">
+            {'Patients'}
+          </Link>
+        </Menu.Item>
       </Menu>
     </Layout.Sider>
   );
