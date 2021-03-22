@@ -1,12 +1,12 @@
 {
-  "403": "",
-  "404": "",
-  "Error": "",
-  "Go back": "",
-  "Go home": "",
-  "Search": "",
-  "Session Expired": "",
-  "Something went wrong": "",
-  "Sorry, the resource you requested for, does not exist": "",
-  "Sorry, you are not authorized to access this page": ""
+  "403": "403",
+  "404": "404",
+  "Error": "Error",
+  "Go back": "Go back",
+  "Go home": "Go home",
+  "Search": "Search",
+  "Session Expired": "Session Expired",
+  "Something went wrong": "Something went wrong",
+  "Sorry, the resource you requested for, does not exist": "Sorry, the resource you requested for, does not exist",
+  "Sorry, you are not authorized to access this page": "Sorry, you are not authorized to access this page"
 }
