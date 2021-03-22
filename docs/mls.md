@@ -1,19 +1,57 @@
 # Multi-language Support (MLS)
 
-OpenSRP Web supports mult-language using [react.i18next](https://react.i18next.com/). The configuration
-is supported at the client level and the package level
+OpenSRP Web supports multi-language using [react.i18next](https://react.i18next.com/). This document is divided into 2 sections
 
-## Setting the language
+1. Usage - contains instructions on how consumers of the packages, can tweak mls.
+2. Contributors - Targets people with the intent of either adding packages that should support MlS or maintining packages that aleardy support MLS
 
-The default language for a project if not set is english. To set a different language, configure the environmental variable `REACT_APP_LANGUAGE_CODE` with values of the ISO code of the language you want to use
+## Usage
 
-```sh
-REACT_APP_LANGUAGE_CODE=fr
+**Package's MLS contract**:
+
+- Packages here-in are configured by using the `setAllConfigs` or `setConfig` methods in `@opensrp/pkg-config`.
+- They also get the `18next`-`i18n` instance from the configs, this means to use MLS, you will need to init an `i18next` instance and pass it to `@opensrp/pkg-config` configs.
+- For the i18n configuration to work right of the bat, it needs to be dispatched to the configs before any code in the packages is run(i.e. before actually importing the packages themselves, that is of-course exempting the `@opensrp/pkg-config`)
+- Packages will have the locales needed. Where the locales are missing or not what you want; you could load your own resource files into the configured `i18n` instance that you pass to the configs
+
+**Configuration**
+
+Opensrp-web packages uses 2 configuration options to fully configure MLS: `configs.languageCode` and `configs.projectLanguageCode`.
+
+The default language is english. To set a different language, configure the config option `languageCode` with values of the ISO code of the language you want to use e.g
+
+```tsx
+import { setConfig } from `@opensrp/pkg-config`;
+
+setConfig('languageCode', 'fr');
 ```
 
-**N/B** The language should be available in `i18next-parser.config.js` and translations extracted and updated. If you are not sure of this check the [Adding a new language section](#adding-a-new-language)
+**N/B** The language should be internally available in the package of interest. If you are not sure of this check the [Adding a new language section](#adding-a-new-language)
 
-## Adding a translatable string at the client level
+consider where you have a certain key e.g. `Plans` that should translate to `Plans` for a certain use-case implementation but display as `Missions` in another implementation. How do we configure that in the packages. In other words how can we support different translation values for the same language
+
+This is where the `projectLanguageCode` comes in, helpes further define what set of translations for a certain language should be used
+
+**Why not use namespaces?**
+
+- we are still in the initial stages of MLS, and we will continue to refine the translation workflows in the near future.
+
+## Contributors/Maintainers
+
+This section targets developers interested in enhancing, supporting or maintaining MLS-enabled packages.
+
+Things to cover(in no particular order):
+
+- Structure and Organization of the translation keys
+- How the translation keys are used in the components
+- Updating the locales files
+
+the translation workflow in each package requires 2 files:
+
+- the `src/mls`. this file is responsible for loading the locale .json files, creating a resource object and adding them to the configured `i18n` instance
+- the `src/lang`. this file contains constant declarations of translatable strings. This file is a remnant of our previous MLS workflows and we might remove it in the future, by having the strings written inside the components. _Do we really need this file?_
+
+### Adding a translatable string
 
 For each translatable string, make sure you add the string in `app/src/lang.ts` e.g
 
@@ -25,35 +63,58 @@ Before:
 <div>Just simple content</div>
 ```
 
-1. Add the string in `app/src/lang.ts`
+Add the string in `app/src/lang.ts`
 
 ```ts
-export const JUST_SIMPLE_CONTENT = i18n.t('Just simple content');
+import i18n, { namespace } from './mls';
+import { Dictionary } from '@onaio/utils';
+
+export type Lang = Dictionary<string>;
+const lang: Lang = {};
+
+/** recompute values */
+function fill() {
+  lang.ERROR_OCCURRED = i18n.t(`An error occurred`, { ns: namespace });
+}
+
+// run it initial
+fill();
+
+// bind some events and fill values again (doing the magic you expect to happen magically)
+// This will re-evaluate the translation string,
+i18n.on(`languageChanged`, () => {
+  fill();
+});
+
+// export the const
+export default lang;
 ```
 
-2. Reference this constant in your component e.g
+Reference this constant in your component e.g
 
 ```tsx
-import { JUST_SIMPLE_CONTENT } from '../../../lang';
+import lang from '../../../lang';
+import {useTranslation} from 'react-i18next'
 
-<div>{JUST_SIMPLE_CONTENT}</div>;
+useTranslation()
+<div>{lang.JUST_SIMPLE_CONTENT}</div>;
 ```
 
-3. Extract the translations or add the new string to existing translations by running the command `extractTranslations` defined in `app/package.json`. In the directory `app` run the command
+Extract the translations or add the new string to existing translations by running the command `extractTranslations` defined in `app/package.json`. In the directory `app` run the command
 
 `yarn extractTranslations`
 
 The new string will be added in each of the translation json files located in `src/locales/core/`. Each file in `src/locales/core` corresponds to each of the languages supported by the project as defined in the file `i18next-parser.config.js` found at the root of the project.
 
-4. Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
+Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
 
-## Configuration at package level
+### Configuration at package level
 
 To configure MLS at the package level:
 
-1. Install `i18next` as a dependencies in your package and `i18next-parser` as a dev dependency
-
-2. Add the command `"extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"` to your package.json's `scripts` section
+1. Install `i18next-parser` as a dev dependency
+2. The packages get the active `i18n` instance from `pkg-config`, they have the responsibility to then load their own resources into the i18n instance
+3. Add the command `"extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"` to your package.json's `scripts` section
 
 ```json
  "scripts": {
@@ -62,11 +123,11 @@ To configure MLS at the package level:
 ```
 
 3. Create your configuration file in your package e.g `touch packages/<package-name>/src/mls.tsx` that will
-   be used to initialize `18ln`. This file contains reference to the resources that your package supports
+   be used to load resources into `i18n`. This file contains reference to the resources that your package supports
 
 ```tsx
 import i18n from 'i18next';
-import { initializei18n, LanguageResources } from '@opensrp/pkg-config';
+import { loadLanguageResources } from '@opensrp/pkg-config';
 
 // Swahili configuration
 const coreSwJson = require('../locales/core/sw.json');
@@ -78,7 +139,7 @@ const resources: LanguageResources = {
   },
 };
 
-initializei18n(i18n, resources);
+loadLanguageResources(i18n, resources);
 
 export default i18n;
 ```
@@ -89,37 +150,13 @@ Whoa!!! wait a minute, I do not have a `locales/core/sw.json` file. That's right
 
 For the most part, you should always use `core` which is the default configuration unless you would like to use translations specific to a particular project. `LanguageResources` interface specifies `<languageCode>_<projectCode` language resources supported by OpenSRP Web.
 
-4. To add a translatable string
-
-Before:
-
-```tsx
-<div>Just simple content</div>
-```
-
-Add the string in `<package-name>/src/lang.ts`
-
-```ts
-export const JUST_SIMPLE_CONTENT = i18n.t('Just simple content');
-```
-
-5. Reference this constant in your component e.g
-
-After:
-
-```tsx
-import { JUST_SIMPLE_CONTENT } from '../../../lang';
-
-<div>{JUST_SIMPLE_CONTENT}</div>;
-```
-
-6. Extract the translations or add the new string to existing translations by running the command `extractTranslations` defined in `<package-name>/package.json`. At the root of your package, run the command
+4. Extract the translations or add the new string to existing translations by running the command `extractTranslations` defined in `<package-name>/package.json`. At the root of your package, run the command
 
 `yarn extractTranslations`
 
 The new string will be added in each of the translation json files located in `locales/core/`. Each file in `locales/core` corresponds to each of the languages supported by the project as defined in the file `i18next-parser.config.js` found at the root of the project.
 
-7. Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
+5. Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
 
 ## Configuring MLS at project level
 
@@ -156,7 +193,7 @@ Before:
 
 ```tsx
 import i18n from 'i18next';
-import { initializei18n, LanguageResources } from '@opensrp/pkg-config';
+import { loadLanguageResources } from '@opensrp/pkg-config';
 
 // Swahili configuration
 const coreSwJson = require('../locales/core/sw.json');
@@ -168,7 +205,7 @@ const resources: LanguageResources = {
   },
 };
 
-initializei18n(i18n, resources);
+loadLanguageResources(i18n, resources);
 
 export default i18n;
 ```
@@ -177,7 +214,7 @@ After:
 
 ```tsx
 import i18n from 'i18next';
-import { initializei18n, LanguageResources } from '@opensrp/pkg-config';
+import { loadLanguageResources } from '@opensrp/pkg-config';
 
 // Swahili configuration
 const coreSwJson = require('../locales/core/sw.json');
@@ -193,7 +230,7 @@ const resources: LanguageResources = {
   },
 };
 
-initializei18n(i18n, resources);
+loadLanguageResources(i18n, resources);
 
 export default i18n;
 ```
@@ -228,10 +265,12 @@ module.exports = {
 
 The translations for the project will be created in `src/locales/foo/`
 
-8. Configure the environmental variable `REACT_APP_PROJECT_LANGUAGE_CODE`
+8. Configure the config option `projectLanguageCode`
 
-```sh
-REACT_APP_PROJECT_LANGUAGE_CODE=foo
+```tsx
+import { setAllConfigs } from '@opensrp/pkg-config';
+
+setAllConfigs({ projectLanguageCode: 'foo' });
 ```
 
 9. Upload the modified files to transifex for translation then updated each of the files with the translated strings from transifex
