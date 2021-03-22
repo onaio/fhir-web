@@ -214,7 +214,8 @@ export const getRoutes = (roles: string[]): Route[] => {
     return route
       .filter((e) => e.enabled !== false)
       .map((e) => {
-        return { ...e, children: e.children ? filterfalsy(e.children) : undefined };
+        if (e.children) return { ...e, children: filterfalsy(e.children) };
+        else return e;
       });
   }
 
