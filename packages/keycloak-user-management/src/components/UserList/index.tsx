@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import FHIR, { AbortController } from 'fhirclient';
+import { ConsoleSqlOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -24,6 +25,8 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
+
+const client = FHIR.client('https://r4.smarthealthit.org');
 
 // Define selector instance
 const usersSelector = makeKeycloakUsersSelector();
@@ -79,6 +82,9 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   React.useEffect(() => {
     if (isLoading) {
+      const test = client.request('Patient').then((res: any) => {
+        console.log('res', res);
+      });
       const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
       serve
         .list()
