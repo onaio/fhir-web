@@ -14,7 +14,7 @@ import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/t
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { baseURL } from '../../../constants';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 
 Table.defaultProps = { opensrpBaseURL: baseURL };
 
@@ -157,7 +157,7 @@ describe('location-management/src/components/LocationTagView', () => {
 
   it('hanldles failed deletion', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
+    fetch.mockReject(() => Promise.reject(lang.ERROR_OCCURED));
 
     onDelete(sampleLocationUnitGroupPayload, baseURL);
 
@@ -166,7 +166,7 @@ describe('location-management/src/components/LocationTagView', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
+      message: lang.ERROR_OCCURED,
       description: undefined,
     });
   });

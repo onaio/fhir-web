@@ -12,15 +12,8 @@ import {
   KEYCLOAK_URL_USER_GROUPS,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
-import {
-  MESSAGE_USER_EDITED,
-  ERROR_OCCURED,
-  PRACTITIONER_UPDATED_SUCCESSFULLY,
-  PRACTITIONER_CREATED_SUCCESSFULLY,
-  MESSAGE_USER_GROUP_EDITED,
-} from '../../../lang';
+import lang, { Lang } from '../../../lang';
 import { FormFields } from '.';
-import { Dictionary } from '@onaio/utils';
 
 /** Utility function to set new user UUID extracted from the
  * POST response location header
@@ -37,15 +30,19 @@ export const buildUserObject = (response: Response, values: FormFields): FormFie
 };
 
 /**
- *
- * @param {string} baseURL - opensrp API base URL
- * @param {Dictionary} values - form values
+ * @param baseURL - opensrp API base URL
+ * @param values - form values
+ * @param langObj - the language translations object
  */
-export const createOrEditPractitioners = async (baseURL: string, values: FormFields) => {
+export const createOrEditPractitioners = async (
+  baseURL: string,
+  values: FormFields,
+  langObj: Lang = lang
+) => {
   const requestType = values.practitioner ? 'update' : 'create';
   const successMessage = values.practitioner
-    ? PRACTITIONER_UPDATED_SUCCESSFULLY
-    : PRACTITIONER_CREATED_SUCCESSFULLY;
+    ? langObj.PRACTITIONER_UPDATED_SUCCESSFULLY
+    : langObj.PRACTITIONER_CREATED_SUCCESSFULLY;
   const practitionerValues = {
     active: values.practitioner ? values.active : true,
     identifier: values.practitioner ? values.practitioner.identifier : v4(),
@@ -56,7 +53,7 @@ export const createOrEditPractitioners = async (baseURL: string, values: FormFie
 
   const practitionersService = new OpenSRPService('practitioner', baseURL);
   await practitionersService[requestType](practitionerValues).catch((_: Error) =>
-    sendErrorNotification(ERROR_OCCURED)
+    sendErrorNotification(langObj.ERROR_OCCURED)
   );
 
   if (!values.practitioner) history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
@@ -66,16 +63,18 @@ export const createOrEditPractitioners = async (baseURL: string, values: FormFie
 /**
  * Handle form submission
  *
- * @param {Dictionary} values - form values
- * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {string} opensrpBaseURL - opensrp api base url
- * @param {Array<UserGroup>} userGroups - Array of Usergroups to get data from when sending payload of user groups
+ * @param values - form values
+ * @param keycloakBaseURL - keycloak API base URL
+ * @param opensrpBaseURL - opensrp api base url
+ * @param userGroups - Array of Usergroups to get data from when sending payload of user groups
+ * @param langObj - the translations object lookup
  */
 export const submitForm = async (
   values: FormFields,
   keycloakBaseURL: string,
   opensrpBaseURL: string,
-  userGroups: UserGroup[]
+  userGroups: UserGroup[],
+  langObj: Lang = lang
 ): Promise<void> => {
   const keycloakUserValue: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
     Partial<FormFields> = {
@@ -115,10 +114,12 @@ export const submitForm = async (
     promises.push(promise);
   });
 
-  await Promise.allSettled(promises).catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
-  sendSuccessNotification(MESSAGE_USER_GROUP_EDITED);
+  await Promise.allSettled(promises).catch((_: Error) =>
+    sendErrorNotification(langObj.ERROR_OCCURED)
+  );
+  sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
 
-  sendSuccessNotification(MESSAGE_USER_EDITED);
+  sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
   history.push(URL_USER);
 };
 
@@ -127,10 +128,12 @@ export const submitForm = async (
  *
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {Function} setUserActionOptions - method to set state for selected actions
+ * @param {Lang} langObj - the language translations object
  */
 export const fetchRequiredActions = (
   keycloakBaseURL: string,
-  setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>
+  setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>,
+  langObj: Lang = lang
 ): void => {
   const keycloakService = new KeycloakService(KEYCLOAK_URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
 
@@ -141,5 +144,5 @@ export const fetchRequiredActions = (
         response.filter((action: UserAction) => action.alias !== 'terms_and_conditions')
       );
     })
-    .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
+    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED));
 };

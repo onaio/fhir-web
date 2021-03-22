@@ -11,47 +11,14 @@ import {
   handleGeoFieldsChangeFactory,
   LocationFormFields,
   ServiceTypeSetting,
-  validationRules,
+  validationRulesFactory,
 } from './utils';
 import { baseURL, SERVICE_TYPES_SETTINGS_ID, URL_LOCATION_UNIT } from '../../constants';
 import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
 import { CustomSelect } from './CustomSelect';
 import { loadLocationTags, loadSettings, postPutLocationUnit } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '@opensrp/react-utils';
-import {
-  CANCEL,
-  ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER,
-  ENTER_LOCATION_NAME_PLACEHOLDER,
-  EXTERNAL_ID_LABEL,
-  GEOMETRY_LABEL,
-  GEOMETRY_PLACEHOLDER,
-  ID_LABEL,
-  INSTANCE_LABEL,
-  LOCATION_ACTIVE_STATUS_LABEL,
-  LOCATION_CATEGORY_LABEL,
-  LOCATION_INACTIVE_STATUS_LABEL,
-  LOCATION_JURISDICTION_LABEL,
-  LOCATION_STRUCTURE_LABEL,
-  NAME_LABEL,
-  PARENT_LABEL,
-  PARENT_ID_SELECT_PLACEHOLDER,
-  SAVE,
-  SAVING,
-  SELECT_STATUS_LABEL,
-  SELECT_TYPE_LABEL,
-  SERVICE_TYPES_LABEL,
-  STATUS_LABEL,
-  SUCCESSFULLY_CREATED_LOCATION,
-  SUCCESSFULLY_UPDATED_LOCATION,
-  TYPE_LABEL,
-  UNIT_GROUP_LABEL,
-  USERNAME_LABEL,
-  SERVICE_TYPE_PLACEHOLDER,
-  LONGITUDE_PLACEHOLDER,
-  LATITUDE_LABEL,
-  LATITUDE_PLACEHOLDER,
-  LONGITUDE_LABEL,
-} from '../../lang';
+import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
 
@@ -147,6 +114,7 @@ const LocationForm = (props: LocationFormProps) => {
   const [selectedLocationTags, setLocationTags] = useState<LocationUnitTag[]>([]);
   const [selectedParentNode, setSelectedParentNode] = useState<TreeNode>();
   const [generatedPayload, setGeneratedPayload] = useState<LocationUnit>();
+  const validationRules = validationRulesFactory(lang);
 
   const isHidden = (fieldName: string) => hidden.includes(fieldName);
   const isDisabled = (fieldName: string) => disabled.includes(fieldName);
@@ -158,14 +126,14 @@ const LocationForm = (props: LocationFormProps) => {
   }, [form, initialValues]);
 
   const status = [
-    { label: LOCATION_ACTIVE_STATUS_LABEL, value: LocationUnitStatus.ACTIVE },
-    { label: LOCATION_INACTIVE_STATUS_LABEL, value: LocationUnitStatus.INACTIVE },
+    { label: lang.LOCATION_ACTIVE_STATUS_LABEL, value: LocationUnitStatus.ACTIVE },
+    { label: lang.LOCATION_INACTIVE_STATUS_LABEL, value: LocationUnitStatus.INACTIVE },
   ];
 
   // value options for isJurisdiction questions
   const locationCategoryOptions = [
-    { label: LOCATION_STRUCTURE_LABEL, value: false },
-    { label: LOCATION_JURISDICTION_LABEL, value: true },
+    { label: lang.LOCATION_STRUCTURE_LABEL, value: false },
+    { label: lang.LOCATION_JURISDICTION_LABEL, value: true },
   ];
   /** if plan is updated or saved redirect to plans page */
   if (areWeDoneHere) {
@@ -194,8 +162,8 @@ const LocationForm = (props: LocationFormProps) => {
           );
 
           const successMessage = isEditMode
-            ? SUCCESSFULLY_UPDATED_LOCATION
-            : SUCCESSFULLY_CREATED_LOCATION;
+            ? lang.SUCCESSFULLY_UPDATED_LOCATION
+            : lang.SUCCESSFULLY_CREATED_LOCATION;
 
           const params = {
             // eslint-disable-next-line @typescript-eslint/camelcase
@@ -220,7 +188,7 @@ const LocationForm = (props: LocationFormProps) => {
         <>
           <FormItem
             name="instance"
-            label={INSTANCE_LABEL}
+            label={lang.INSTANCE_LABEL}
             rules={validationRules.instance}
             hidden
             id="instance"
@@ -228,18 +196,18 @@ const LocationForm = (props: LocationFormProps) => {
             <Input disabled></Input>
           </FormItem>
 
-          <FormItem name="id" label={ID_LABEL} rules={validationRules.id} hidden id="id">
+          <FormItem name="id" label={lang.ID_LABEL} rules={validationRules.id} hidden id="id">
             <Input disabled></Input>
           </FormItem>
 
-          <FormItem name="username" label={USERNAME_LABEL} hidden id="username">
+          <FormItem name="username" label={lang.USERNAME_LABEL} hidden id="username">
             <Input disabled></Input>
           </FormItem>
 
           <FormItem
             id="parentId"
             hidden={isHidden('parentId')}
-            label={PARENT_LABEL}
+            label={lang.PARENT_LABEL}
             name="parentId"
             rules={validationRules.parentId}
           >
@@ -248,7 +216,7 @@ const LocationForm = (props: LocationFormProps) => {
               baseURL={opensrpBaseURL}
               disabled={disabled.includes('parentId')}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              placeholder={PARENT_ID_SELECT_PLACEHOLDER}
+              placeholder={lang.PARENT_ID_SELECT_PLACEHOLDER}
               fullDataCallback={setSelectedParentNode}
               disabledTreeNodesCallback={disabledTreeNodesCallback}
             />
@@ -259,12 +227,12 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.name}
             hidden={isHidden('name')}
             name="name"
-            label={NAME_LABEL}
+            label={lang.NAME_LABEL}
             hasFeedback
           >
             <Input
               disabled={disabled.includes('name')}
-              placeholder={ENTER_LOCATION_NAME_PLACEHOLDER}
+              placeholder={lang.ENTER_LOCATION_NAME_PLACEHOLDER}
             ></Input>
           </FormItem>
 
@@ -272,7 +240,7 @@ const LocationForm = (props: LocationFormProps) => {
             id="status"
             rules={validationRules.status}
             hidden={isHidden('status')}
-            label={STATUS_LABEL}
+            label={lang.STATUS_LABEL}
             name="status"
           >
             <Radio.Group options={status}></Radio.Group>
@@ -280,7 +248,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             hidden={isHidden('isJurisdiction')}
-            label={LOCATION_CATEGORY_LABEL}
+            label={lang.LOCATION_CATEGORY_LABEL}
             name="isJurisdiction"
             id="isJurisdiction"
             rules={validationRules.isJurisdiction}
@@ -296,20 +264,20 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.type}
             hidden={isHidden('type')}
             name="type"
-            label={TYPE_LABEL}
+            label={lang.TYPE_LABEL}
           >
-            <Input disabled={disabled.includes('type')} placeholder={SELECT_TYPE_LABEL} />
+            <Input disabled={disabled.includes('type')} placeholder={lang.SELECT_TYPE_LABEL} />
           </FormItem>
 
           <FormItem
             hidden={isHidden('serviceType')}
             name="serviceType"
             id="serviceType"
-            label={SERVICE_TYPES_LABEL}
+            label={lang.SERVICE_TYPES_LABEL}
             rules={validationRules.serviceTypes}
           >
             <CustomSelect<ServiceTypeSetting>
-              placeholder={SERVICE_TYPE_PLACEHOLDER}
+              placeholder={lang.SERVICE_TYPE_PLACEHOLDER}
               disabled={disabled.includes('serviceType')}
               loadData={(setData) => {
                 return loadSettings(SERVICE_TYPES_SETTINGS_ID, opensrpBaseURL, service, setData);
@@ -322,10 +290,13 @@ const LocationForm = (props: LocationFormProps) => {
             id="externalId"
             hidden={isHidden('externalId')}
             name="externalId"
-            label={EXTERNAL_ID_LABEL}
+            label={lang.EXTERNAL_ID_LABEL}
             rules={validationRules.externalId}
           >
-            <Input disabled={disabled.includes('externalId')} placeholder={SELECT_STATUS_LABEL} />
+            <Input
+              disabled={disabled.includes('externalId')}
+              placeholder={lang.SELECT_STATUS_LABEL}
+            />
           </FormItem>
 
           <FormItem
@@ -333,12 +304,12 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.geometry}
             hidden={isHidden('geometry')}
             name="geometry"
-            label={GEOMETRY_LABEL}
+            label={lang.GEOMETRY_LABEL}
           >
             <Input.TextArea
               disabled={disabled.includes('geometry')}
               rows={4}
-              placeholder={GEOMETRY_PLACEHOLDER}
+              placeholder={lang.GEOMETRY_PLACEHOLDER}
             />
           </FormItem>
 
@@ -346,26 +317,32 @@ const LocationForm = (props: LocationFormProps) => {
             id="latitude"
             hidden={isHidden('latitude')}
             name="latitude"
-            label={LATITUDE_LABEL}
+            label={lang.LATITUDE_LABEL}
             rules={validationRules.latitude}
           >
-            <Input disabled={disabled.includes('latitude')} placeholder={LATITUDE_PLACEHOLDER} />
+            <Input
+              disabled={disabled.includes('latitude')}
+              placeholder={lang.LATITUDE_PLACEHOLDER}
+            />
           </FormItem>
 
           <FormItem
             id="longitude"
             hidden={isHidden('longitude')}
             name="longitude"
-            label={LONGITUDE_LABEL}
+            label={lang.LONGITUDE_LABEL}
             rules={validationRules.longitude}
           >
-            <Input disabled={disabled.includes('longitude')} placeholder={LONGITUDE_PLACEHOLDER} />
+            <Input
+              disabled={disabled.includes('longitude')}
+              placeholder={lang.LONGITUDE_PLACEHOLDER}
+            />
           </FormItem>
 
           <FormItem
             id="locationTags"
             hidden={isHidden('locationTags')}
-            label={UNIT_GROUP_LABEL}
+            label={lang.UNIT_GROUP_LABEL}
             name="locationTags"
             rules={validationRules.locationTags}
           >
@@ -374,7 +351,7 @@ const LocationForm = (props: LocationFormProps) => {
               mode="multiple"
               allowClear
               showSearch
-              placeholder={ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER}
+              placeholder={lang.ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER}
               loadData={(setData) => {
                 return loadLocationTags(opensrpBaseURL, service, setData);
               }}
@@ -398,10 +375,10 @@ const LocationForm = (props: LocationFormProps) => {
                 disabled={isSubmitting}
                 htmlType="submit"
               >
-                {isSubmitting ? SAVING : SAVE}
+                {isSubmitting ? lang.SAVING : lang.SAVE}
               </Button>
               <Button id="location-form-cancel-button" onClick={() => onCancel()}>
-                {CANCEL}
+                {lang.CANCEL}
               </Button>
             </Space>
           </FormItem>
