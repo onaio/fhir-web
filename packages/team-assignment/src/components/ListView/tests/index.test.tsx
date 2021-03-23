@@ -12,9 +12,10 @@ import { Provider } from 'react-redux';
 import { TEAM_ASSIGNMENT_LIST_VIEW_URL } from '../../../constants';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
-import reducer, {
+import {
+  assignmentsReducer,
   fetchAssignments,
-  reducerName as assignmentReducerName,
+  assignmentsReducerName,
 } from '../../../ducks/assignments';
 import { generateJurisdictionTree, locationHierachyDucks } from '@opensrp/location-management';
 import {
@@ -34,7 +35,7 @@ const { fetchAllHierarchies } = locationHierachyDucks;
 // reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 reducerRegistry.register(teamsReducerName, teamsReducer);
-reducerRegistry.register(assignmentReducerName, reducer);
+reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 

@@ -1,5 +1,6 @@
 import { RawOpenSRPHierarchy } from '@opensrp/location-management';
 import { PlanDefinition } from '@opensrp/plan-form-core';
+import { processRawAssignments } from '../../../ducks/assignments/utils';
 
 export const samplePlan: PlanDefinition = {
   identifier: '27362060-0309-411a-910c-64f55ede3758',
@@ -883,7 +884,7 @@ export const organizations = [
   },
 ];
 
-export const assignments = [
+export const assignments = processRawAssignments([
   {
     organizationId: '2ea3733c-04fa-4136-b091-726ec3205422',
     jurisdictionId: '45aa723b-c48f-484b-a559-8b801465d751',
@@ -996,4 +997,4 @@ export const assignments = [
     fromDate: 1611090000000,
     toDate: 1930078800000,
   },
-];
+]);
