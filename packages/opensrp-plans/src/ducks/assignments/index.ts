@@ -8,7 +8,7 @@ import { AnyAction } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
 
 /** The reducer name */
-export const assignmentReducerName = 'assignments';
+export const assignmentReducerName = 'plansAssignments';
 
 /** the raw assignment object as received from openSRP API */
 export interface RawAssignment {
