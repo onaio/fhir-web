@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const resourcesSchema = {
   Patient: {
     columns: [
@@ -115,7 +116,7 @@ export const resourcesSchema = {
       },
       {
         title: 'Clinical Status',
-        dataIndex: 'status',
+        dataIndex: 'cstatus',
         editable: true,
         sorter: (a: any, b: any) => a.status.localeCompare(b.name),
       },
@@ -127,7 +128,7 @@ export const resourcesSchema = {
       },
       {
         title: 'Onset Date',
-        dataIndex: 'odate',
+        dataIndex: 'onsetDate',
         editable: true,
         sorter: (a: any, b: any) => a.odate.localeCompare(b.name),
       },
@@ -240,6 +241,144 @@ export const resourcesSchema = {
         dataIndex: 'date',
         editable: true,
         sorter: (a: any, b: any) => a.details.localeCompare(b.name),
+      },
+    ],
+  },
+  Practitioner: {
+    columns: [
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        editable: true,
+        sorter: (a: any, b: any) => a.name.localeCompare(b.name),
+      },
+      {
+        title: 'Gender',
+        dataIndex: 'gender',
+        editable: true,
+        sorter: (a: any, b: any) => a.details.localeCompare(b.name),
+      },
+      {
+        title: 'Active',
+        dataIndex: 'active',
+        editable: true,
+        sorter: (a: any, b: any) => a.details.localeCompare(b.name),
+      },
+    ],
+  },
+  Organization: {
+    columns: [
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        editable: true,
+        sorter: (a: any, b: any) => a.name.localeCompare(b.name),
+      },
+      {
+        title: 'Type',
+        dataIndex: 'type',
+        editable: true,
+        sorter: (a: any, b: any) => a.type.localeCompare(b.name),
+      },
+      {
+        title: 'Active',
+        dataIndex: 'active',
+        editable: true,
+        sorter: (a: any, b: any) => a.active.localeCompare(b.name),
+      },
+    ],
+  },
+  ServiceRequest: {
+    columns: [
+      {
+        title: 'Identifier',
+        dataIndex: 'identifier',
+        editable: true,
+        sorter: (a: any, b: any) => a.identifier.localeCompare(b.name),
+      },
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        editable: true,
+        sorter: (a: any, b: any) => a.name.localeCompare(b.name),
+      },
+      {
+        title: 'Date',
+        dataIndex: 'date',
+        editable: true,
+        sorter: (a: any, b: any) => a.date.localeCompare(b.name),
+      },
+    ],
+  },
+  MedicationAdministration: {
+    columns: [
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        editable: true,
+        sorter: (a: any, b: any) => a.name.localeCompare(b.name),
+      },
+      {
+        title: 'Identifier',
+        dataIndex: 'identifier',
+        editable: true,
+        sorter: (a: any, b: any) => a.identifier.localeCompare(b.name),
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        editable: true,
+        sorter: (a: any, b: any) => a.status.localeCompare(b.name),
+      },
+      {
+        title: 'Date',
+        dataIndex: 'date',
+        editable: true,
+        sorter: (a: any, b: any) => a.date.localeCompare(b.name),
+      },
+    ],
+  },
+  MedicationStatement: {
+    columns: [
+      {
+        title: 'Identifier',
+        dataIndex: 'identifier',
+        editable: true,
+        sorter: (a: any, b: any) => a.identifier.localeCompare(b.name),
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        editable: true,
+        sorter: (a: any, b: any) => a.status.localeCompare(b.name),
+      },
+      {
+        title: 'Date',
+        dataIndex: 'date',
+        editable: true,
+        sorter: (a: any, b: any) => a.date.localeCompare(b.name),
+      },
+    ],
+  },
+  Goal: {
+    columns: [
+      {
+        title: 'Identifier',
+        dataIndex: 'identifier',
+        editable: true,
+        sorter: (a: any, b: any) => a.identifier.localeCompare(b.name),
+      },
+      {
+        title: 'Description',
+        dataIndex: 'details',
+        editable: true,
+        sorter: (a: any, b: any) => a.identifier.localeCompare(b.name),
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        editable: true,
+        sorter: (a: any, b: any) => a.status.localeCompare(b.name),
       },
     ],
   },

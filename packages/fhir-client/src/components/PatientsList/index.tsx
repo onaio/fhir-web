@@ -1,7 +1,19 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu, PageHeader, Tag } from 'antd';
+import {
+  Row,
+  Col,
+  Button,
+  Table,
+  Spin,
+  Divider,
+  Dropdown,
+  Menu,
+  PageHeader,
+  Tag,
+  Space,
+} from 'antd';
 import { Link } from 'react-router-dom';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
@@ -59,11 +71,7 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
     }
   );
 
-  console.log('err1', error);
-
   if (isLoading) return <Spin size="large" />;
-
-  console.log('err2', error);
 
   if (error) {
     return <BrokenPage errorMessage={`${error}`} />;
@@ -160,7 +168,7 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
       </Helmet>
       <PageHeader title={'Patients'} className="page-header" />
       <Row className="list-view">
-        <Col className={'main-content'}>
+        <Col className={'main-content'} span={24}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
             <Link to={'/admin/patients/new'}>
@@ -176,7 +184,7 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
             pagination={{
               showQuickJumper: true,
               showSizeChanger: true,
-              defaultPageSize: 5,
+              defaultPageSize: 20,
               pageSizeOptions: ['5', '10', '20', '50', '100'],
             }}
           />
