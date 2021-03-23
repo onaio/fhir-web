@@ -97,28 +97,28 @@ describe('Assignment/helpers', () => {
     );
     expect(payload).toEqual([
       {
-        fromDate: 1611090000000,
+        fromDate: '2021-01-19T21:00:00+00:00',
         jurisdiction: 'b652b2f4-a95d-489b-9e28-4629746db96a',
         organization: '2ea3733c-04fa-4136-b091-726ec3205422',
         plan: '27362060-0309-411a-910c-64f55ede3758',
         toDate: '2030-12-30T00:00:00+00:00',
       },
       {
-        fromDate: 1611090000000,
+        fromDate: '2021-01-19T21:00:00+00:00',
         jurisdiction: 'b652b2f4-a95d-489b-9e28-4629746db96a',
         organization: 'eb6257cb-821c-46e9-bcee-14cb0101cc42',
         plan: '27362060-0309-411a-910c-64f55ede3758',
         toDate: '2040-12-30T00:00:00+00:00',
       },
       {
-        fromDate: 1612472400000,
+        fromDate: '2021-02-04T21:00:00+00:00',
         jurisdiction: 'b652b2f4-a95d-489b-9e28-4629746db96a',
         organization: '676bd889-e9ee-4f2b-94c3-0509466ad9be',
         plan: '27362060-0309-411a-910c-64f55ede3758',
         toDate: '2040-12-30T00:00:00+00:00',
       },
       {
-        fromDate: 1611090000000,
+        fromDate: '2021-01-19T21:00:00+00:00',
         jurisdiction: 'b652b2f4-a95d-489b-9e28-4629746db96a',
         organization: 'e740e6b8-98dc-4d99-af34-ab2eb602da00',
         plan: '27362060-0309-411a-910c-64f55ede3758',
