@@ -85,6 +85,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       const test = client.request('Patient').then((res: any) => {
         console.log('res', res);
       });
+      console.log('test', test);
       const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
       serve
         .list()
@@ -155,7 +156,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 pagination={{
                   showQuickJumper: true,
                   showSizeChanger: true,
-                  defaultPageSize: 5,
+                  defaultPageSize: 20,
                   pageSizeOptions: ['5', '10', '20', '50', '100'],
                 }}
                 onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {

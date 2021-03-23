@@ -35,7 +35,8 @@
   "dependencies": {
     "fhirclient": "2.3.11",
     "react-query": "^3.5.0",
-    "antd": "4.14.0",
+    "antd": "4.6.3",
+    "lodash": "^4.17.15",
     "@onaio/utils": "0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.6",
