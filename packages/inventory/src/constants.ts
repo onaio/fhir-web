@@ -11,14 +11,14 @@ export const OPENSRP_ENDPOINT_LOCATION = 'location';
 export const OPENSRP_PRODUCT_CATALOGUE = 'product-catalogue';
 
 // router routes
-export const INVENTORY_SERVICE_POINT_LIST_VIEW = '/inventory/list';
+export const INVENTORY_SERVICE_POINT_LIST_VIEW = '/inventory';
 export const INVENTORY_SERVICE_POINT_PROFILE_VIEW = '/inventory/profile';
 export const INVENTORY_BULK_UPLOAD_URL = '/inventory/upload';
 export const INVENTORY_ADD_SERVICE_POINT = '/inventory/servicePoint/add';
 export const INVENTORY_EDIT_SERVICE_POINT = '/inventory/servicePoint/edit';
 export const INVENTORY_SERVICE_POINT_PROFILE_PARAM = 'servicePointId';
-export const URL_INVENTORY_ADD = '/item/add';
-export const URL_INVENTORY_EDIT = '/item/edit';
+export const URL_INVENTORY_ADD = '/inventory/add';
+export const URL_INVENTORY_EDIT = '/inventory/edit';
 
 // other constants
 /** namespace for the keys attached to the columns */

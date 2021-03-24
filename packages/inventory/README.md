@@ -28,8 +28,8 @@ import { ConnectedInventoryAddEdit, ROUTE_PARAM_SERVICE_POINT_ID } from '@opensr
 
 const props = {
 	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
-  cancelURL: '/inventory/list',
-  redirectURL: '/inventory/list',
+  cancelURL: '/inventory',
+  redirectURL: '/inventory',
 }
 
 <Route path={`/service-point/:${ROUTE_PARAM_SERVICE_POINT_ID}/inventory-item/add`}>
