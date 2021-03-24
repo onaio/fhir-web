@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Alert, Select } from 'antd';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
-import { CANCEL, EDIT_TEAMS, SAVE, SELECT } from '../../lang';
+import lang from '../../lang';
 import { SelectProps } from 'rc-select/lib/generate';
 import { Dictionary } from '@onaio/utils';
 
@@ -27,9 +27,9 @@ export interface EditAssignmentsModalProps {
 const defaultProps = {
   existingOptions: [],
   options: [],
-  invokeText: EDIT_TEAMS,
-  modalTitle: EDIT_TEAMS,
-  placeHolder: SELECT,
+  invokeText: lang.EDIT_TEAMS,
+  modalTitle: lang.EDIT_TEAMS,
+  placeHolder: lang.SELECT,
   disabled: false,
 };
 
@@ -93,8 +93,8 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
-        cancelText={CANCEL}
-        okText={SAVE}
+        cancelText={lang.CANCEL}
+        okText={lang.SAVE}
       >
         {broken ? (
           <Alert style={{ marginBottom: '8px' }} message={errorMessage} type="error" />

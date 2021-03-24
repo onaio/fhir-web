@@ -15,7 +15,7 @@ import * as formConfigCore from '@opensrp/form-config-core';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 const {
   draftReducer,
@@ -200,7 +200,7 @@ describe('components/DraftFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();
@@ -260,7 +260,7 @@ describe('components/DraftFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

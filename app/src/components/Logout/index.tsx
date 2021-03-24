@@ -13,7 +13,7 @@ import { store } from '@opensrp/store';
 import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { useHistory } from 'react-router';
-import { ERROR_OCCURRED } from '../../lang';
+import lang from '../../lang';
 
 /** HOC function that calls function that logs out the user from both opensrp
  * and keycloak.
@@ -29,7 +29,7 @@ export const CustomLogout: React.FC = (): JSX.Element => {
   const redirectUri = BACKEND_ACTIVE ? EXPRESS_OAUTH_LOGOUT_URL : DOMAIN_NAME;
   const history = useHistory();
   logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((_: Error) => {
-    sendErrorNotification(ERROR_OCCURRED);
+    sendErrorNotification(lang.ERROR_OCCURRED);
     history.push('/');
   });
   return <Spin size="large" />;

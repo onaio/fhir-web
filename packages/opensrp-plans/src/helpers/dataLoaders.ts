@@ -24,8 +24,8 @@ import {
 } from '@opensrp/team-management';
 import { fetchJurisdictions, Jurisdiction } from '../ducks/jurisdictions';
 import { processRawAssignments } from '../ducks/assignments/utils';
-import { COULD_NOT_LOAD_ASSIGNMENTS } from '../lang';
 import { Dictionary } from '@onaio/utils';
+import lang from '../lang';
 
 const sessionSelector = makeAPIStateSelector();
 
@@ -94,19 +94,22 @@ export async function loadSinglePlan(
     });
 }
 
-/** get all the assignments for plan
+/**
+ * get all the assignments for plan
  *
  * @param {string} baseURL -  base url of api
  * @param {string} planId - id of the product to be fetched
  * @param {OpenSRPService} service - the opensrp service
  * @param {fetchAssignments} actionCreator - Action creator; creates actions that adds plans to the store
+ * @param langDict - the langDict
  * @returns {Promise<void>}
  */
 export async function loadAssignments(
   baseURL: string,
   planId: string,
   service: typeof OpenSRPService = OpenSRPService,
-  actionCreator: typeof fetchAssignments = fetchAssignments
+  actionCreator: typeof fetchAssignments = fetchAssignments,
+  langDict: Dictionary<string> = lang
 ) {
   // get all assignments
   const serve = new service(OPENSRP_GET_ASSIGNMENTS_ENDPOINT, baseURL);
@@ -118,7 +121,7 @@ export async function loadAssignments(
         // save assignments to store
         actionCreator(receivedAssignments);
       } else {
-        throw new Error(COULD_NOT_LOAD_ASSIGNMENTS);
+        throw new Error(langDict.COULD_NOT_LOAD_ASSIGNMENTS);
       }
     })
     .catch((e) => {

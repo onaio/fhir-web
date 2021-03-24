@@ -16,9 +16,9 @@ import moment, { Moment } from 'moment';
 import { PlanFormFields } from './types';
 import { Dictionary } from '@onaio/utils';
 import { cloneDeep } from 'lodash';
-import { PLAN_NAME_CANNOT_CONTAIN_SLASHES } from '../lang';
+import lang, { Lang } from '../lang';
 
-export const validationRules = {
+export const validationRulesFactory = (langObj: Lang = lang) => ({
   activities: {
     actionCode: [{ type: 'enum', enum: PlanActionCodes.map((e) => e) }] as Rule[],
     actionDefinitionUri: [{ type: 'string' }] as Rule[],
@@ -57,7 +57,7 @@ export const validationRules = {
     () => ({
       validator(_, value) {
         if (value.includes('/')) {
-          return Promise.reject(PLAN_NAME_CANNOT_CONTAIN_SLASHES);
+          return Promise.reject(langObj.PLAN_NAME_CANNOT_CONTAIN_SLASHES);
         }
         return Promise.resolve();
       },
@@ -72,7 +72,7 @@ export const validationRules = {
     },
   ] as Rule[],
   description: [{ type: 'string', required: true }] as Rule[],
-};
+});
 
 /** util that changes date fields in activities to use moment
  *

@@ -4,7 +4,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { deleteUser } from '../utils';
 import * as fixtures from '../../../forms/UserForm/tests/fixtures';
 import { KEYCLOAK_URL_USERS } from '../../../../constants';
-import { ERROR_OCCURED } from '../../../../lang';
+import lang from '../../../../lang';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
@@ -74,7 +74,7 @@ describe('components/UserList/utils/deleteUser', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
   it('handles API error when calling the fetch endpoint', async () => {
@@ -95,6 +95,6 @@ describe('components/UserList/utils/deleteUser', () => {
       method: 'DELETE',
     });
     expect(removeUsersMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 });

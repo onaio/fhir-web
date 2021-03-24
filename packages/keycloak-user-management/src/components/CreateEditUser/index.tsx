@@ -14,7 +14,7 @@ import {
   OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
   KEYCLOAK_URL_USER_GROUPS,
 } from '../../constants';
-import { ERROR_OCCURED } from '../../lang';
+import lang from '../../lang';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -77,7 +77,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
-        .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
+        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
   }, [keycloakBaseURL, opensrpBaseURL, userGroups.length]);
 
@@ -92,7 +92,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: KeycloakUser | null | undefined) => {
           if (response) fetchKeycloakUsers([response]);
         })
-        .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
+        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
   }, [userId, keycloakBaseURL, keycloakUser]);
 
@@ -110,7 +110,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: UserGroup[]) =>
           setInitialValues({ ...initialValues, userGroup: response.map((tag) => tag.id) })
         )
-        .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
+        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
   }, [userId, keycloakBaseURL, initialValues]);
 
@@ -122,7 +122,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: Practitioner) =>
           setInitialValues({ ...initialValues, active: response.active, practitioner: response })
         )
-        .catch((_: Error) => sendErrorNotification(ERROR_OCCURED));
+        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
   }, [userId, opensrpBaseURL, initialValues]);
 

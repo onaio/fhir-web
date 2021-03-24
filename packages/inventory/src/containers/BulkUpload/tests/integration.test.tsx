@@ -7,12 +7,7 @@ import {
 import { BulkUpload } from '..';
 import nock from 'nock';
 import { MemoryRouter, Route } from 'react-router';
-import {
-  PLEASE_FIX_THE_ERRORS_LISTED_BELOW,
-  RETRY,
-  UPLOAD_ANOTHER_FILE,
-  USE_CSV_TO_UPLOAD_INVENTORY,
-} from '../../../lang';
+import lang from '../../../lang';
 
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -78,12 +73,12 @@ describe('Inventory bulk upload.integrationTest', () => {
     });
 
     // post confirmation page
-    const uploadAnotherButton = screen.queryByRole('button', { name: UPLOAD_ANOTHER_FILE });
+    const uploadAnotherButton = screen.queryByRole('button', { name: lang.UPLOAD_ANOTHER_FILE });
     uploadAnotherButton.click();
 
     // we should be back to the start upload page
     await waitFor(() => {
-      screen.getByText(USE_CSV_TO_UPLOAD_INVENTORY);
+      screen.getByText(lang.USE_CSV_TO_UPLOAD_INVENTORY);
     });
   });
 
@@ -124,16 +119,16 @@ describe('Inventory bulk upload.integrationTest', () => {
     fireEvent.change(uploadFileInput, { target: { files: [file] } });
 
     await waitFor(() => {
-      screen.getByText(PLEASE_FIX_THE_ERRORS_LISTED_BELOW);
+      screen.getByText(lang.PLEASE_FIX_THE_ERRORS_LISTED_BELOW);
     });
 
     // find retry button and lick
-    const retryUpload = screen.queryByRole('button', { name: RETRY });
+    const retryUpload = screen.queryByRole('button', { name: lang.RETRY });
     retryUpload.click();
 
     // we should be back to the start upload page
     await waitFor(() => {
-      screen.getByText(USE_CSV_TO_UPLOAD_INVENTORY);
+      screen.getByText(lang.USE_CSV_TO_UPLOAD_INVENTORY);
     });
 
     // retry upload successfully so we can test 400 error response during confirmation
@@ -192,7 +187,7 @@ describe('Inventory bulk upload.integrationTest', () => {
 
     // should have reverted back to start upload
     await waitFor(() => {
-      screen.getByText(USE_CSV_TO_UPLOAD_INVENTORY);
+      screen.getByText(lang.USE_CSV_TO_UPLOAD_INVENTORY);
       screen.getByText('Request failed with status code 500');
     });
 
@@ -260,7 +255,7 @@ describe('Inventory bulk upload.integrationTest', () => {
     fireEvent.click(cancelCommit);
 
     await waitFor(() => {
-      screen.getByText(USE_CSV_TO_UPLOAD_INVENTORY);
+      screen.getByText(lang.USE_CSV_TO_UPLOAD_INVENTORY);
     });
   });
 });

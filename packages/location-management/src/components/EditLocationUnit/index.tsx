@@ -15,7 +15,7 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
 import { getUser } from '@onaio/session-reducer';
-import { EDIT } from '../../lang';
+import lang from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
@@ -174,7 +174,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     afterSubmit: () => dispatch(fetchAllHierarchies([])),
     disabledTreeNodesCallback,
   };
-  const pageTitle = `${EDIT} > ${thisLocation.properties.name}`;
+  const pageTitle = `${lang.EDIT} > ${thisLocation.properties.name}`;
 
   return (
     <Row className="layout-content">
