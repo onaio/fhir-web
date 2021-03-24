@@ -18,7 +18,7 @@ import { Dictionary } from '@onaio/utils';
 import { Card, Typography, Spin, Table, Space, Button, Divider, Input } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
-import { RELEASES, UPLOAD_NEW_FILE } from '../../lang';
+import lang from '../../lang';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -96,7 +96,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>{RELEASES}</Title>
+      <Title level={3}>{lang.RELEASES}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
@@ -111,7 +111,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
-            {UPLOAD_NEW_FILE}
+            {lang.UPLOAD_NEW_FILE}
           </Button>
           <Divider type="vertical" />
           <SettingOutlined />

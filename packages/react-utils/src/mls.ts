@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import i18n from 'i18next';
-import { initializei18n, LanguageResources } from '@opensrp/pkg-config';
+import { getConfig } from '@opensrp/pkg-config';
+import { loadLanguageResources } from './helpers/utils';
+import type { i18n as i18nInstance } from 'i18next';
+
+const i18n = getConfig('i18n') as i18nInstance;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coreFrJson = require('../locales/core/fr.json');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coreEnJson = require('../locales/core/en.json');
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const coreThJson = require('../locales/core/th.json');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coreArJson = require('../locales/core/ar.json');
@@ -23,31 +23,30 @@ const eusmFrJson = require('../locales/eusm/fr.json');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const eusmArJson = require('../locales/eusm/ar.json');
 
+export const namespace = 'react-utils';
+
 // the format to load the resource files: <languageCode>_<projectCode>. in small
-const resources: LanguageResources = {
+const resources = {
   ar_core: {
-    translation: coreArJson,
+    [namespace]: coreArJson,
   },
   ar_eusm: {
-    translation: eusmArJson,
+    [namespace]: eusmArJson,
   },
   fr_core: {
-    translation: coreFrJson,
+    [namespace]: coreFrJson,
   },
   fr_eusm: {
-    translation: eusmFrJson,
+    [namespace]: eusmFrJson,
   },
   en_core: {
-    translation: coreEnJson,
+    [namespace]: coreEnJson,
   },
   en_eusm: {
-    translation: eusmEnJson,
-  },
-  th_core: {
-    translation: coreThJson,
+    [namespace]: eusmEnJson,
   },
 };
 
-initializei18n(i18n, resources);
+loadLanguageResources(i18n, resources);
 
 export default i18n;

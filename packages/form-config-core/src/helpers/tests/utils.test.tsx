@@ -13,7 +13,7 @@ import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { FixManifestDraftFiles } from '../../ducks/tests/fixtures';
-import { ERROR_OCCURRED } from '../../lang';
+import lang from '../../lang';
 
 /** eslint-disable @typescript-eslint/no-floating-promises */
 
@@ -322,7 +322,7 @@ describe('helpers/utils/makeRelease', () => {
 
     expect(setIfDoneHereMock).not.toHaveBeenCalled();
     expect(removeDraftFilesMock).not.toHaveBeenCalled();
-    expect(alertErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(alertErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('calls dispatch if dispatch is passed', async () => {
@@ -450,7 +450,7 @@ describe('helpers/utils/fetchDrafts', () => {
     expect(setLoadingMock.mock.calls[0][0]).toBe(true);
     expect(setLoadingMock.mock.calls[1][0]).toBe(false);
     expect(fetchDraftFilesMock).not.toHaveBeenCalled();
-    expect(alertErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(alertErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('calls dispatch if dispatch is passed', async () => {
@@ -583,7 +583,7 @@ describe('helpers/utils/fetchReleaseFiles', () => {
     expect(setLoadingMock.mock.calls[0][0]).toBe(true);
     expect(setLoadingMock.mock.calls[1][0]).toBe(false);
     expect(fetchReleasesMock).not.toHaveBeenCalled();
-    expect(alertErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(alertErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('calls dispatch if dispatch is passed', async () => {
@@ -725,7 +725,7 @@ describe('helpers/utils/fetchManifests', () => {
     expect(setLoadingMock.mock.calls[0][0]).toBe(true);
     expect(setLoadingMock.mock.calls[1][0]).toBe(false);
     expect(fetchFilesMock).not.toHaveBeenCalled();
-    expect(alertErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(alertErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
     expect(removeFilesMock.mock.calls).toHaveLength(1);
   });
 

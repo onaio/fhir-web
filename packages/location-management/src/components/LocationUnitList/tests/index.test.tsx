@@ -13,7 +13,7 @@ import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 import { baseURL } from '../../../constants';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 import {
   generateJurisdictionTree,
   getBaseTreeNode,
@@ -103,7 +103,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
+      message: lang.ERROR_OCCURED,
       description: undefined,
     });
     fetch.resetMocks();
@@ -175,7 +175,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
+      message: lang.ERROR_OCCURED,
       description: undefined,
     });
     wrapper.unmount();
@@ -201,7 +201,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
+      message: lang.ERROR_OCCURED,
       description: undefined,
     });
     wrapper.unmount();

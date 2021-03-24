@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Result } from 'antd';
 import { sendWarningNotification } from '@opensrp/notifications';
 import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
-import { ERROR, YOU_ARE_UNAUTHORIZED } from '../../lang';
+import lang from '../../lang';
 
 /** props for the unauthorized page component */
 export interface UnauthorizedPageProps extends UtilPageExtraProps {
@@ -12,8 +12,8 @@ export interface UnauthorizedPageProps extends UtilPageExtraProps {
 
 const defaultProps = {
   ...extraLinksDefault,
-  errorMessage: YOU_ARE_UNAUTHORIZED,
-  title: ERROR,
+  errorMessage: lang.YOU_ARE_UNAUTHORIZED,
+  title: lang.ERROR,
 };
 
 /** the component that renders a 500 view */

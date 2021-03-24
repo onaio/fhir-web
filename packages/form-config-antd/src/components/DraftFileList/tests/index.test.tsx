@@ -27,7 +27,7 @@ import {
   draftFile3,
 } from '../../../helpers/fixtures';
 import toJson from 'enzyme-to-json';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 const mockHistoryPush = jest.fn();
 
@@ -317,7 +317,7 @@ describe('components/Antd/DraftFileList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
     expect(wrapper.find('tbody').find('tr').find('td').find('div.ant-empty-image')).toHaveLength(1);
 
     wrapper.unmount();
@@ -356,7 +356,7 @@ describe('components/Antd/DraftFileList', () => {
     });
 
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
     wrapper.unmount();
   });
 
@@ -384,7 +384,7 @@ describe('components/Antd/DraftFileList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

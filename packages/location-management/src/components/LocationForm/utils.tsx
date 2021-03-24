@@ -10,18 +10,7 @@ import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
 import { Geometry, Point } from 'geojson';
-import {
-  ERROR_PARENTID_STRING,
-  ERROR_NAME_STRING,
-  ERROR_NAME_REQUIRED,
-  ERROR_STATUS_REQUIRED,
-  ERROR_TYPE_STRING,
-  ERROR_EXTERNAL_ID_STRING,
-  ERROR_LOCATION_TAGS_ARRAY,
-  ERROR_LOCATION_CATEGORY_REQUIRED,
-  ERROR_SERVICE_TYPES_REQUIRED,
-  LONGITUDE_LATITUDE_TYPE_ERROR,
-} from '../../lang';
+import lang, { Lang } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 
 export enum FormInstances {
@@ -245,12 +234,16 @@ export function getServiceTypeOptions(data: ServiceTypeSetting[]) {
   }));
 }
 
-/** validation rules for LocationForm component */
-export const validationRules = {
+/**
+ * factory for validation rules for LocationForm component
+ *
+ * @param langObj - language translation string obj lookup
+ */
+export const validationRulesFactory = (langObj: Lang = lang) => ({
   instance: [{ type: 'enum', enum: Object.values(FormInstances), required: true }] as Rule[],
   id: [{ type: 'string' }] as Rule[],
   parentId: [
-    { type: 'string', message: ERROR_PARENTID_STRING },
+    { type: 'string', message: langObj.ERROR_PARENTID_STRING },
     ({ getFieldValue }) => {
       const instance = getFieldValue('instance');
       if (instance === FormInstances.EUSM)
@@ -263,10 +256,13 @@ export const validationRules = {
     },
   ] as Rule[],
   name: [
-    { type: 'string', message: ERROR_NAME_STRING },
-    { required: true, message: ERROR_NAME_REQUIRED },
+    { type: 'string', message: langObj.ERROR_NAME_STRING },
+    { required: true, message: langObj.ERROR_NAME_REQUIRED },
   ] as Rule[],
-  status: [{ type: 'string' }, { required: true, message: ERROR_STATUS_REQUIRED }] as Rule[],
+  status: [
+    { type: 'string' },
+    { required: true, message: langObj.ERROR_STATUS_REQUIRED },
+  ] as Rule[],
   type: [
     { type: 'string' },
     ({ getFieldValue }) => {
@@ -274,16 +270,16 @@ export const validationRules = {
       if (instance === FormInstances.CORE)
         return {
           required: true,
-          message: ERROR_TYPE_STRING,
+          message: langObj.ERROR_TYPE_STRING,
         };
       return {
         required: false,
       };
     },
   ] as Rule[],
-  externalId: [{ type: 'string', message: ERROR_EXTERNAL_ID_STRING }] as Rule[],
-  locationTags: [{ type: 'array', message: ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
-  geometry: [{ type: 'string', message: ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
+  externalId: [{ type: 'string', message: langObj.ERROR_EXTERNAL_ID_STRING }] as Rule[],
+  locationTags: [{ type: 'array', message: langObj.ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
+  geometry: [{ type: 'string', message: langObj.ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
   isJurisdiction: [
     {
       type: 'boolean',
@@ -294,7 +290,7 @@ export const validationRules = {
       if (isCreateMode)
         return {
           required: true,
-          message: ERROR_LOCATION_CATEGORY_REQUIRED,
+          message: langObj.ERROR_LOCATION_CATEGORY_REQUIRED,
         };
       return {
         required: false,
@@ -307,7 +303,7 @@ export const validationRules = {
       if (instance === FormInstances.EUSM)
         return {
           required: true,
-          message: ERROR_SERVICE_TYPES_REQUIRED,
+          message: langObj.ERROR_SERVICE_TYPES_REQUIRED,
         };
       return {
         required: false,
@@ -320,7 +316,7 @@ export const validationRules = {
         if (!value) {
           return Promise.resolve();
         }
-        return rejectIfNan(value, LONGITUDE_LATITUDE_TYPE_ERROR);
+        return rejectIfNan(value, langObj.LONGITUDE_LATITUDE_TYPE_ERROR);
       },
     }),
   ] as Rule[],
@@ -330,7 +326,7 @@ export const validationRules = {
         if (!value) {
           return Promise.resolve();
         }
-        return rejectIfNan(value, LONGITUDE_LATITUDE_TYPE_ERROR);
+        return rejectIfNan(value, langObj.LONGITUDE_LATITUDE_TYPE_ERROR);
       },
     }),
   ] as Rule[],
@@ -339,7 +335,7 @@ export const validationRules = {
       required: false,
     },
   ],
-};
+});
 
 /** given a value retrun a rejected promise if value is not parseable as number
  *

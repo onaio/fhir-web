@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { removeKeycloakUsers, KeycloakUser } from '../../../ducks/user';
 import { URL_USER_CREDENTIALS, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
+import lang from '../../../lang';
 
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
@@ -62,7 +63,7 @@ const TableActions = (props: Props): JSX.Element => {
   return (
     <>
       <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-        Edit
+        {lang.EDIT}
       </Link>
       <Divider type="vertical" />
       <Dropdown overlay={menu}>

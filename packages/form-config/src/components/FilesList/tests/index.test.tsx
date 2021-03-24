@@ -15,7 +15,7 @@ import { fixManifestFiles, downloadFile } from '../../../helpers/fixtures';
 import toJson from 'enzyme-to-json';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 jest.mock('@opensrp/form-config-core', () => ({
   __esModule: true,
@@ -244,7 +244,7 @@ describe('components/manifestFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();

@@ -23,7 +23,7 @@ import {
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -185,7 +185,7 @@ describe('components/UserList', () => {
      */
     expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
     expect(toJson(wrapper.find('Table'))).toBeFalsy();
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
   it('sort works correctly', async () => {
