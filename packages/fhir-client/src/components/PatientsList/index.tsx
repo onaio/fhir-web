@@ -1,19 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import {
-  Row,
-  Col,
-  Button,
-  Table,
-  Spin,
-  Divider,
-  Dropdown,
-  Menu,
-  PageHeader,
-  Tag,
-  Space,
-} from 'antd';
+import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu, PageHeader, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
