@@ -6,7 +6,6 @@ import { EnvConfig, PlanDefinition } from '../types';
 import { IGNORE, TRUE } from '../constants/stringConstants';
 import { planFormValues4, plans } from './revealFixtures';
 import {
-  dateFormatter,
   displayPlanTypeOnForm,
   extractActivitiesFromPlanForm,
   extractActivityForForm,
@@ -393,11 +392,5 @@ describe('containers/forms/PlanForm/helpers', () => {
     MockDate.reset();
 
     expect(received.activities).toEqual(planFormValues4.activities);
-  });
-
-  it('test dateFormatter', () => {
-    const dateOfInterest = dateFormatter('2021-03-17T00:00:00.000+00:00');
-    //should return same date even with different timezone
-    expect(dateOfInterest.toISOString()).toEqual('2021-03-17T00:00:00.000Z');
   });
 });
