@@ -87,18 +87,13 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   }, [keycloakUser]);
 
   useEffect(() => {
-    const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
     if (!userGroups.length) {
+      const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
       serve
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
-
-    return () => {
-      const controller = serve.controller;
-      controller.abort();
-    };
   }, [keycloakBaseURL, opensrpBaseURL, userGroups.length]);
 
   /**
@@ -120,11 +115,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
    * Fetch User group of the user
    */
   useEffect(() => {
-    const serve = new KeycloakService(
-      KEYCLOAK_URL_USERS + '/' + userId + KEYCLOAK_URL_USER_GROUPS,
-      keycloakBaseURL
-    );
     if (userId && initialValues.userGroup === undefined) {
+      const serve = new KeycloakService(
+        KEYCLOAK_URL_USERS + '/' + userId + KEYCLOAK_URL_USER_GROUPS,
+        keycloakBaseURL
+      );
       serve
         .list()
         .then((response: UserGroup[]) =>
@@ -132,10 +127,6 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         )
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
-    return () => {
-      const controller = serve.controller;
-      controller.abort();
-    };
   }, [userId, keycloakBaseURL, initialValues]);
 
   useEffect(() => {

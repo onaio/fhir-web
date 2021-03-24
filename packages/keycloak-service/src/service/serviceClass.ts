@@ -45,20 +45,19 @@ export function getFilterParams(obj: URLParams): string {
 /**
  * get payload for fetch
  *
- * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
+ * @param {object} _ - signal object that allows you to communicate with a DOM request
  * @param {string} accessToken - the access token
  * @param {string} method - the HTTP method
  * @returns {Object} the payload
  */
 export function getFetchOptions(
-  signal: AbortSignal,
+  _: AbortSignal,
   accessToken: string,
   method: HTTPMethod
-): { headers: HeadersInit; method: HTTPMethod; signal: AbortSignal } {
+): { headers: HeadersInit; method: HTTPMethod } {
   return {
     headers: getDefaultHeaders(accessToken) as HeadersInit,
     method,
-    signal,
   };
 }
 
@@ -105,7 +104,6 @@ export class KeycloakAPIService {
   public endpoint: string;
   public generalURL: string;
   public getOptions: typeof getFetchOptions;
-  public controller: AbortController;
   public signal: AbortSignal;
 
   /**
@@ -115,7 +113,6 @@ export class KeycloakAPIService {
    * @param {string} baseURL - the base Keycloak API URL
    * @param {string} endpoint - the Keycloak endpoint
    * @param {object} getPayload - a function to get the payload
-   * @param {AbortController} controller - a controller object that allows you to abort one or more DOM requests as and when desired.
    * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
    */
   constructor(
@@ -123,12 +120,10 @@ export class KeycloakAPIService {
     baseURL: string = KEYCLOAK_API_BASE_URL,
     endpoint: string,
     getPayload: typeof getFetchOptions = getFetchOptions,
-    controller: AbortController = new AbortController(),
-    signal: AbortSignal = controller.signal
+    signal: AbortSignal = new AbortController().signal
   ) {
     this.endpoint = endpoint;
     this.getOptions = getPayload;
-    this.controller = controller;
     this.signal = signal;
     this.baseURL = baseURL;
     this.generalURL = `${this.baseURL}${this.endpoint}`;
