@@ -361,6 +361,52 @@ describe('services/keycloak', () => {
     mockReadFile.mockRejectedValue('Error!');
     expect(result).toEqual(expect.any(Object));
   });
+
+  it('rejects when aborted before resolved', async () => {
+    jest.useFakeTimers();
+
+    const userService = new KeycloakService(
+      'users',
+      'https://keycloak-test.smartregister.org/auth/realms/'
+    );
+
+    fetch.mockResponseOnce(async () => {
+      // spread execution to 60 milliseconds
+      jest.advanceTimersByTime(60);
+      return JSON.stringify([keycloakUser]);
+    });
+
+    const controller = userService.controller;
+
+    // abort after 50 milliseconds (10 ms before fetch finishes)
+    setTimeout(() => controller.abort(), 50);
+
+    // assert the fetch request for .list was aborted
+    await expect(userService.list()).rejects.toThrow('The operation was aborted.');
+
+    jest.useRealTimers();
+  });
+
+  it('throws when passed an already aborted abort signal', async () => {
+    jest.useFakeTimers();
+
+    fetch.mockResponseOnce(JSON.stringify([keycloakUser]));
+
+    const userService = new KeycloakService(
+      'users',
+      'https://keycloak-test.smartregister.org/auth/realms/'
+    );
+
+    const controller = userService.controller;
+    // abort passed signal
+    controller.abort();
+
+    await expect(userService.list()).rejects.toThrow('The operation was aborted.');
+
+    // expect(userService.list()).toThrow('The operation was aborted.');
+
+    jest.useRealTimers();
+  });
 });
 
 describe('src/errors', () => {
