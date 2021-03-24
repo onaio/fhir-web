@@ -47,7 +47,6 @@ import {
   URL_USER,
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
-  URL_ADMIN,
   URL_TEAMS,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
@@ -144,7 +143,7 @@ export const getRoutes = (roles: string[]): Route[] => {
             roles &&
             activeRoles.PRODUCT_CATALOGUE &&
             isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
-          url: `${URL_ADMIN}${CATALOGUE_LIST_VIEW_URL}`,
+          url: `${CATALOGUE_LIST_VIEW_URL}`,
         },
         {
           title: `${TEAMS}`,
