@@ -169,3 +169,15 @@ Below is a list of currently supported environment variables:
   - Configures the logo src url.
   - **Optional**(`string`)
   - default: `https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png`
+
+- **REACT_APP_SUPPORTED_LANGUAGES**
+
+  - Use alongside the language switcher, customize the options available for language switching.
+  - **Optional**(`string`)
+  - default: all available options
+
+- **REACT_APP_ENABLE_LANGUAGE_SWITCHER**
+
+  - whether to show a language switcher
+  - **Optional**(`boolean`)
+  - default: `true`

@@ -12,7 +12,7 @@ import fetch from 'jest-fetch-mock';
 import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
 import { notification } from 'antd';
 import { baseURL } from '../../../constants';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 
 LocationUnitGroupList.defaultProps = { opensrpBaseURL: baseURL };
 
@@ -69,7 +69,7 @@ describe('location-management/src/components/LocationUnitGroupList', () => {
 
   it('test error thrown if An error occurred', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject(ERROR_OCCURED));
+    fetch.mockReject(() => Promise.reject(lang.ERROR_OCCURED));
     mount(
       <Provider store={store}>
         <Router history={history}>
@@ -83,7 +83,7 @@ describe('location-management/src/components/LocationUnitGroupList', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: ERROR_OCCURED,
+      message: lang.ERROR_OCCURED,
       description: undefined,
     });
   });

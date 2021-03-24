@@ -33,9 +33,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
-    "i18next": "^19.8.4",
-    "react-hooks-global-state": "^1.0.1",
-    "react-i18next": "^11.8.3"
+    "react-hooks-global-state": "^1.0.1"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",

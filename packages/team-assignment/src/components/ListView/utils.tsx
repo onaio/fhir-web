@@ -4,9 +4,10 @@ import { Spin, Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import { ACTIONS, ASSIGN_TEAMS, NAME, EDIT, TableColumnsNamespace } from '../../lang';
+import lang, { Lang } from '../../lang';
 import { TableData } from '.';
-import { AssignLocationsAndPlans } from 'team-assignment/src/ducks/assignments/types';
+import { AssignLocationsAndPlans } from '../../ducks/assignments/types';
+import { TableColumnsNamespace } from '../../constants';
 
 /** component rendered in the action column of the table
  *
@@ -28,41 +29,48 @@ export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (recor
           });
         }}
       >
-        {EDIT}
+        {lang.EDIT}
       </Button>
     </>
   );
 };
 
-/** team assignment table columns */
-export const columns: ColumnsType<TableData> = [
-  {
-    title: NAME,
-    dataIndex: 'locationName',
-    key: `${TableColumnsNamespace}-locationName`,
-    defaultSortOrder: 'descend',
-    sorter: (rec1, rec2) => {
-      if (rec1.locationName > rec2.locationName) {
-        return -1;
-      } else if (rec1.locationName < rec2.locationName) {
-        return 1;
-      } else {
-        return 0;
-      }
+/** team assignment table columns factory
+ *
+ * @param langObj -  the translation string lookup
+ */
+export const columnsFactory = (langObj: Lang = lang) => {
+  const columns: ColumnsType<TableData> = [
+    {
+      title: langObj.NAME,
+      dataIndex: 'locationName',
+      key: `${TableColumnsNamespace}-locationName`,
+      defaultSortOrder: 'descend',
+      sorter: (rec1, rec2) => {
+        if (rec1.locationName > rec2.locationName) {
+          return -1;
+        } else if (rec1.locationName < rec2.locationName) {
+          return 1;
+        } else {
+          return 0;
+        }
+      },
     },
-  },
-  {
-    title: ASSIGN_TEAMS,
-    dataIndex: 'assignedTeams',
-    key: `${TableColumnsNamespace}-assignedTeams`,
-  },
-  {
-    title: ACTIONS,
-    key: `${TableColumnsNamespace}-actions`,
-    render: ActionsColumnCustomRender,
-    width: '20%',
-  },
-];
+    {
+      title: langObj.ASSIGN_TEAMS,
+      dataIndex: 'assignedTeams',
+      key: `${TableColumnsNamespace}-assignedTeams`,
+    },
+    {
+      title: langObj.ACTIONS,
+      key: `${TableColumnsNamespace}-actions`,
+      render: ActionsColumnCustomRender,
+      width: '20%',
+    },
+  ];
+
+  return columns;
+};
 
 /** util component shown when there is a pending promise */
 
