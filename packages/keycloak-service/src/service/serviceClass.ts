@@ -45,19 +45,20 @@ export function getFilterParams(obj: URLParams): string {
 /**
  * get payload for fetch
  *
- * @param {object} _ - signal object that allows you to communicate with a DOM request
+ * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
  * @param {string} accessToken - the access token
  * @param {string} method - the HTTP method
  * @returns {Object} the payload
  */
 export function getFetchOptions(
-  _: AbortSignal,
+  signal: AbortSignal,
   accessToken: string,
   method: HTTPMethod
-): { headers: HeadersInit; method: HTTPMethod } {
+): { headers: HeadersInit; method: HTTPMethod; signal: AbortSignal } {
   return {
     headers: getDefaultHeaders(accessToken) as HeadersInit,
     method,
+    signal,
   };
 }
 
