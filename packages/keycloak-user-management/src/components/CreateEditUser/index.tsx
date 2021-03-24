@@ -152,19 +152,13 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
 
   if (
     // editing an existing user
-    (userId &&
-      (!(userGroups.length > 0) ||
-        !keycloakUser ||
-        initialValues.username === '' ||
-        initialValues.id === '' ||
-        // !initialValues.userGroup?.length ||
-        (Object.keys(extraData).length > 0 && extraData.user_id === ''))) ||
-    // // creating a new user
-    (!userId &&
-      initialValues.username === '' &&
-      initialValues.id === '' &&
-      Object.keys(extraData).length > 0 &&
-      extraData.user_id === '')
+    userId &&
+    (!(userGroups.length > 0) ||
+      !keycloakUser ||
+      initialValues.username === '' ||
+      initialValues.id === '' ||
+      // !initialValues.userGroup?.length ||
+      (Object.keys(extraData).length > 0 && extraData.user_id === ''))
   )
     return <Spin size="large" />;
 
