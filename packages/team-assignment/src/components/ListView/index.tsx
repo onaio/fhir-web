@@ -28,6 +28,7 @@ import {
   fetchAssignments,
   assignmentsReducerName,
   getAssignmentsArrayByPlanId,
+  RawAssignment,
 } from '../../ducks/assignments';
 import {
   ASSIGNMENTS_ENDPOINT,
@@ -37,6 +38,7 @@ import {
   POST_ASSIGNMENTS_ENDPOINT,
 } from '../../constants';
 import lang from '../../lang';
+import { processRawAssignments } from '../../ducks/assignments/utils';
 
 const { fetchAllHierarchies, getAllHierarchiesArray } = locationHierachyDucks;
 
@@ -119,8 +121,9 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
       const assignmentsPromise = asssignmentService
         .list({ plan: defaultPlanId })
-        .then((response: Assignment[]) => {
-          dispatch(fetchAssignments(response));
+        .then((response: RawAssignment[]) => {
+          const parsedAssignments = processRawAssignments(response);
+          dispatch(fetchAssignments(parsedAssignments));
         })
         .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
 
