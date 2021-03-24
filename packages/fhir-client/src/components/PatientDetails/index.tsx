@@ -23,6 +23,11 @@ interface RouteParams {
   patientId: string;
 }
 
+// Interface for resourceTypeMap
+interface ResourceTypeMap {
+  [key: string]: { count: number; data: fhirclient.FHIR.Resource[] };
+}
+
 /** props for editing a user view */
 export interface EditPatientProps {
   keycloakBaseURL: string;
@@ -36,21 +41,7 @@ export const defaultEditPatientProps: EditPatientProps = {
   keycloakBaseURL: '',
 };
 
-/**
- *
- * @param props - CreateEditUser component props
- */
-
-const fetchSingleResource = async (resource: string, patientId: string) => {
-  return await client
-    .request(`${resource}?patient=${patientId}&_count=500`)
-    .then((res: any) => {
-      return res;
-    })
-    .catch((_) => sendErrorNotification('Error Occured'));
-};
-
-const CreateEditPatient: React.FC<CreateEditPatientPropTypes> = (
+const PatientDetails: React.FC<CreateEditPatientPropTypes> = (
   props: CreateEditPatientPropTypes
 ) => {
   const [resourceType, setResourceType] = React.useState<string>('Patient');
@@ -61,7 +52,7 @@ const CreateEditPatient: React.FC<CreateEditPatientPropTypes> = (
     async () => {
       return await client
         .request(`Patient/${patientId}/$everything?_count=5000`)
-        .then((res: any) => {
+        .then((res: fhirclient.FHIR.Bundle) => {
           return res;
         })
         .catch((_) => sendErrorNotification('Error Occured'));
@@ -77,70 +68,90 @@ const CreateEditPatient: React.FC<CreateEditPatientPropTypes> = (
     return <BrokenPage errorMessage={'An error occured'} />;
   }
 
-  const resourceTypeMap: any = {};
+  const resourceTypeMap: ResourceTypeMap = {};
 
-  if (data && data.entry.length) {
+  if (data && data.entry?.length) {
     for (const datum of data.entry) {
-      if (!resourceTypeMap[datum.resource.resourceType]) {
-        resourceTypeMap[datum.resource.resourceType] = {
+      const resourceTypeStr = (datum.resource && datum.resource.resourceType) as string;
+      if (!resourceTypeMap[resourceTypeStr]) {
+        resourceTypeMap[resourceTypeStr] = {
           count: 1,
           data: [datum.resource],
         };
       } else {
-        const resourceCount = Number(resourceTypeMap[datum.resource.resourceType].count) + 1;
-        resourceTypeMap[datum.resource.resourceType] = {
+        const resourceCount = Number(resourceTypeMap[resourceTypeStr].count) + 1;
+        resourceTypeMap[resourceTypeStr] = {
           count: resourceCount,
-          data: [...resourceTypeMap[datum.resource.resourceType].data, datum.resource],
+          data: [...resourceTypeMap[resourceTypeStr]?.data, datum.resource],
         };
       }
     }
   }
 
-  const dataSource = resourceTypeMap[resourceType]?.data.map((d: any, index: number) => {
-    // console.log('display 1', getPath(d, 'code.coding.0.display'));
-    // console.log('display 2', getPath(d, 'code.text'));
-    // console.log('display 3', getPath(d, 'valueQuantity.code'));
+  const dataSource = resourceTypeMap[resourceType]?.data.map((d: Dictionary, index: number) => {
+    const key = `${index}`;
+    const id = d.id;
+    const name =
+      getPatientName(d) ||
+      get(d, 'code.coding.0.display') ||
+      get(d, 'code.text') ||
+      get(d, 'modifierExtension.0.valueReference.display') ||
+      get(d, 'medicationCodeableConcept.coding.0.display') ||
+      get(d, 'class.0.name') ||
+      d.name;
+    const date =
+      get(d, 'effectiveDateTime') ||
+      get(d, 'performedDateTime') ||
+      get(d, 'occurrenceDateTime') ||
+      get(d, 'performedPeriod.start') ||
+      get(d, 'meta.lastUpdated') ||
+      d.date;
+    const active = `${d.active}`;
+    const value =
+      `${get(d, 'valueQuantity.value') || ''} ${get(d, 'valueQuantity.unit') || ''}` || 'N/A';
+    const gender = d.gender;
+    const dob = d.birthDate;
+    const category = get(d, 'category.0.coding.0.display');
+    const identifier = `ID: ${d.id}`;
+    const type = getPath(d, 'type.0.text') || get(d, 'vaccineCode.coding.0.display');
+    const status = d.status || get(d, 'achievementStatus.coding.0.code') || 'N/A';
+    const reason =
+      getPath(d, 'reason.0.coding.0.display') || get(d, 'detail.code.coding.0.display') || 'N/A';
+    const resorceClass = 'N/A';
+    const condition = get(d, 'code.text');
+    const onsetDate = get(d, 'onsetDateTime');
+    const vstatus = get(d, 'verificationStatus.coding.0.code') || 'N/A';
+    const cstatus = get(d, 'clinicalStatus.coding.0.code') || 'N/A';
+    const time = getPath(d, 'period.start');
+    const details =
+      getPath(d, 'description.text') ||
+      getPath(d, 'code.text') ||
+      getPath(d, 'code.coding.0.display') ||
+      getPath(d, 'medicationCodeableConcept.coding.0.display') ||
+      getPath(d, 'medicationCodeableConcept.coding.0.code') ||
+      getPath(d, 'code.coding.0.code') ||
+      getPath(d, 'result.0.display');
     return {
-      key: `${index}`,
-      id: d.id,
-      name:
-        getPatientName(d) ||
-        get(d, 'code.coding.0.display') ||
-        get(d, 'code.text') ||
-        get(d, 'modifierExtension.0.valueReference.display') ||
-        get(d, 'medicationCodeableConcept.coding.0.display') ||
-        d.name,
-      date:
-        get(d, 'effectiveDateTime') ||
-        get(d, 'performedDateTime') ||
-        get(d, 'occurrenceDateTime') ||
-        get(d, 'performedPeriod.start') ||
-        get(d, 'meta.lastUpdated') ||
-        d.date,
-      active: `${d.active}`,
-      value: `${get(d, 'valueQuantity.value')} ${get(d, 'valueQuantity.unit')}` || 'N/A',
-      gender: d.gender,
-      dob: d.birthDate,
-      category: get(d, 'category.0.coding.0.display'),
-      identifier: `ID: ${d.id}`,
-      type: getPath(d, 'type.0.text') || get(d, 'vaccineCode.coding.0.display'),
-      status: d.status || get(d, 'achievementStatus.coding.0.code') || 'N/A',
-      reason:
-        getPath(d, 'reason.0.coding.0.display') || get(d, 'detail.code.coding.0.display') || 'N/A',
-      class: 'N/A',
-      condition: get(d, 'code.text'),
-      onsetDate: get(d, 'onsetDateTime'),
-      vstatus: get(d, 'verificationStatus.coding.0.code') || 'N/A',
-      cstatus: get(d, 'clinicalStatus.coding.0.code') || 'N/A',
-      time: getPath(d, 'period.start'),
-      details:
-        getPath(d, 'description.text') ||
-        getPath(d, 'code.text') ||
-        getPath(d, 'code.coding.0.display') ||
-        getPath(d, 'medicationCodeableConcept.coding.0.display') ||
-        getPath(d, 'medicationCodeableConcept.coding.0.code') ||
-        getPath(d, 'code.coding.0.code') ||
-        getPath(d, 'result.0.display'),
+      key,
+      id,
+      name,
+      date,
+      active,
+      value,
+      gender,
+      dob,
+      category,
+      identifier,
+      type,
+      status,
+      reason,
+      resorceClass,
+      condition,
+      onsetDate,
+      vstatus,
+      cstatus,
+      time,
+      details,
     };
   });
 
@@ -165,9 +176,8 @@ const CreateEditPatient: React.FC<CreateEditPatientPropTypes> = (
                 {Object.keys(resourceTypeMap).map((type: string) => (
                   <Menu.Item
                     key={type}
-                    onClick={async (e: any) => {
-                      // await fetchSingleResource(e.key, patientId);
-                      setResourceType(e.key);
+                    onClick={(e) => {
+                      setResourceType(e.key as string);
                     }}
                   >
                     {type}{' '}
@@ -183,7 +193,7 @@ const CreateEditPatient: React.FC<CreateEditPatientPropTypes> = (
             <Col span={18}>
               <Table
                 dataSource={dataSource}
-                columns={(resourcesSchema as any)[resourceType]?.columns ?? []}
+                columns={resourcesSchema[resourceType]?.columns ?? []}
                 pagination={{
                   showQuickJumper: true,
                   showSizeChanger: true,
@@ -199,15 +209,15 @@ const CreateEditPatient: React.FC<CreateEditPatientPropTypes> = (
   );
 };
 
-CreateEditPatient.defaultProps = defaultEditPatientProps;
+PatientDetails.defaultProps = defaultEditPatientProps;
 
-const PatientComponent = withRouter(CreateEditPatient);
+const PatientComponent = withRouter(PatientDetails);
 
 /** Wrap component in QueryClientProvider
  *
  * @returns {React.FC} - returns patients list view
  */
-export function ConnectedCreateEditPatient() {
+export function ConnectedPatientDetails() {
   return (
     <QueryClientProvider client={queryClient}>
       <PatientComponent keycloakBaseURL="" />
