@@ -17,12 +17,11 @@ import {
   makeKeycloakUsersSelector,
 } from '../../ducks/user';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS, SEARCH_QUERY_PARAM } from '../../constants';
-import { ERROR_OCCURED, NO_DATA_FOUND } from '../../lang';
+import lang from '../../lang';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ADD_USER, USER_MANAGEMENT_PAGE_HEADER } from '../../lang';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -87,7 +86,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
           return fetchKeycloakUsersCreator(res);
         })
         .catch((_: Error) => {
-          return sendErrorNotification(ERROR_OCCURED);
+          return sendErrorNotification(lang.ERROR_OCCURED);
         })
         .finally(() => {
           setIsLoading(false);
@@ -118,7 +117,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   return (
     <section className="layout-content">
-      <h5 className="mb-3">{USER_MANAGEMENT_PAGE_HEADER}</h5>
+      <h5 className="mb-3">{lang.USER_MANAGEMENT_PAGE_HEADER}</h5>
       <Row className="list-view">
         <Col className="main-content" span={24}>
           <div className="main-content__header">
@@ -130,7 +129,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 onClick={() => history.push(URL_USER_CREATE)}
               >
                 <PlusOutlined />
-                {ADD_USER}
+                {lang.ADD_USER}
               </Button>
               <Divider type="vertical" />
               <SettingOutlined />
@@ -158,7 +157,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 }}
               />
             ) : (
-              NO_DATA_FOUND
+              lang.NO_DATA_FOUND
             )}
           </Space>
         </Col>

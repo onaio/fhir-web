@@ -12,7 +12,7 @@ import { createBrowserHistory } from 'history';
 import { URL_USER_GROUPS } from '../../../constants';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 
 const history = createBrowserHistory();
 
@@ -199,6 +199,6 @@ describe('View User Group Details', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 });

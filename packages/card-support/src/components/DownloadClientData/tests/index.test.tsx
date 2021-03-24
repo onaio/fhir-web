@@ -15,7 +15,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import Papaparse from 'papaparse';
 import * as globalUtils from '../../../helpers/utils';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();
@@ -410,7 +410,7 @@ describe('components/DownloadClientData', () => {
     });
     wrapper.update();
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('handles fetch error when fetching user location hierarchy', async () => {
@@ -432,6 +432,6 @@ describe('components/DownloadClientData', () => {
     });
     wrapper.update();
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 });

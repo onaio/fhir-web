@@ -16,15 +16,7 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import {
-  MODULE,
-  RELATED_TO,
-  FILE_NAME,
-  UPLOAD_FILE,
-  ERROR_FORM_REQUIRED,
-  ERROR_FORM_NAME_REQUIRED,
-  ERROR_OCCURRED,
-} from '../../lang';
+import lang from '../../lang';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -106,7 +98,7 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
           displayAlertError,
           endpoint
         ).catch(() => {
-          displayAlertError(ERROR_OCCURRED);
+          displayAlertError(lang.ERROR_OCCURRED);
         });
       }}
     >
@@ -215,14 +207,14 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
 
 /**default props */
 const defaultProps: UploadDefaultProps = {
-  fileNameLabel: FILE_NAME,
-  fileUploadLabel: UPLOAD_FILE,
+  fileNameLabel: lang.FILE_NAME,
+  fileUploadLabel: lang.UPLOAD_FILE,
   formData: null,
   formInitialValues: defaultInitialValues,
-  formNameRequiredLable: ERROR_FORM_NAME_REQUIRED,
-  formRequiredLabel: ERROR_FORM_REQUIRED,
-  moduleLabel: MODULE,
-  relatedToLabel: RELATED_TO,
+  formNameRequiredLable: lang.ERROR_FORM_NAME_REQUIRED,
+  formRequiredLabel: lang.ERROR_FORM_REQUIRED,
+  moduleLabel: lang.MODULE,
+  relatedToLabel: lang.RELATED_TO,
   accessToken: '',
 };
 

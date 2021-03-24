@@ -11,6 +11,7 @@ export interface ConfigState {
   appLoginURL?: string;
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
+  i18n?: unknown;
 }
 
 const initialConfigs = {
@@ -19,6 +20,7 @@ const initialConfigs = {
   appLoginURL: undefined,
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
+  i18n: undefined,
 };
 
 const {

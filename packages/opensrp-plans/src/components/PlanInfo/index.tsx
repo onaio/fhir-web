@@ -3,11 +3,12 @@ import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { Avatar, Divider, Breadcrumb, Row, Col } from 'antd';
 import { PlanStatusColors, PLANS_EDIT_VIEW_URL, PLANS_ASSIGNMENT_VIEW_URL } from '../../constants';
 import { pageTitleBuilder } from '../../containers/ListView/utils';
-import { EDIT, END_DATE, MISSIONS, START_DATE } from '../../lang';
+import lang from '../../lang';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { redirectMapping } from '../../helpers/common';
 import { Route, BreadcrumbProps } from 'antd/lib/breadcrumb/Breadcrumb';
+
 /** interface describing the props of PlanInfo */
 export interface PlanInfoProps {
   plan: PlanDefinition;
@@ -33,7 +34,7 @@ const PlanInfo = (props: PlanInfoProps) => {
 
   const routes = [
     {
-      breadcrumbName: MISSIONS,
+      breadcrumbName: lang.MISSIONS,
     },
     {
       path: redirectMapping[plan.status as PlanStatus],
@@ -74,7 +75,7 @@ const PlanInfo = (props: PlanInfoProps) => {
                 <h4>{plan.title}</h4>
               </div>
               <div>
-                <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{EDIT}</Link>
+                <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{lang.EDIT}</Link>
                 <Divider type="vertical" />
                 <span style={{ color: PlanStatusColors[plan.status] }}>
                   {pageTitleBuilder(plan.status, false)}
@@ -87,12 +88,12 @@ const PlanInfo = (props: PlanInfoProps) => {
         <Col md={12} className="flex-right">
           <div className="plan-dates">
             <div className="plan-start-date">
-              <span className="start-date">{START_DATE}</span>
+              <span className="start-date">{lang.START_DATE}</span>
               <h2>{plan.effectivePeriod.start}</h2>
             </div>
             <Divider className="date-divider" type="vertical" />
             <div className="plan-end-date">
-              <span className="end-date">{END_DATE}</span>
+              <span className="end-date">{lang.END_DATE}</span>
               <h2>{plan.effectivePeriod.end}</h2>
             </div>
           </div>

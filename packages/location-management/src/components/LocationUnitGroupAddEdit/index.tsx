@@ -5,7 +5,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/location-units';
 import Form from './Form';
 import { useParams } from 'react-router';
-import { ADD_LOCATION_UNIT_GROUP, EDIT_LOCATION_UNIT_GROUP } from '../../lang';
+import lang from '../../lang';
 import { Props } from '../../helpers/common';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -18,11 +18,11 @@ export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   return (
     <Row className="layout-content">
       <Helmet>
-        <title>{params.id ? EDIT_LOCATION_UNIT_GROUP : ADD_LOCATION_UNIT_GROUP}</title>
+        <title>{params.id ? lang.EDIT_LOCATION_UNIT_GROUP : lang.ADD_LOCATION_UNIT_GROUP}</title>
       </Helmet>
 
       <h5 className="mb-4 header-title">
-        {params.id ? `${EDIT_LOCATION_UNIT_GROUP} | ${title}` : ADD_LOCATION_UNIT_GROUP}
+        {params.id ? `${lang.EDIT_LOCATION_UNIT_GROUP} | ${title}` : lang.ADD_LOCATION_UNIT_GROUP}
       </h5>
 
       <Col className="bg-white p-4" span={24}>

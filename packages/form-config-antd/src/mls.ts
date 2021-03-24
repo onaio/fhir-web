@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import i18n from 'i18next';
-import { initializei18n, LanguageResources } from '@opensrp/pkg-config';
+import { getConfig } from '@opensrp/pkg-config';
+import { loadLanguageResources } from '@opensrp/react-utils';
+import type { i18n as i18nInstance } from 'i18next';
+
+const i18n = getConfig('i18n') as i18nInstance;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coreFrJson = require('../locales/core/fr.json');
@@ -23,31 +26,33 @@ const eusmFrJson = require('../locales/eusm/fr.json');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const eusmArJson = require('../locales/eusm/ar.json');
 
+export const namespace = 'form-config-antd';
+
 // the format to load the resource files: <languageCode>_<projectCode>. in small
-const resources: LanguageResources = {
+const resources = {
   ar_core: {
-    translation: coreArJson,
+    [namespace]: coreArJson,
   },
   ar_eusm: {
-    translation: eusmArJson,
+    [namespace]: eusmArJson,
   },
   fr_core: {
-    translation: coreFrJson,
+    [namespace]: coreFrJson,
   },
   fr_eusm: {
-    translation: eusmFrJson,
+    [namespace]: eusmFrJson,
   },
   en_core: {
-    translation: coreEnJson,
+    [namespace]: coreEnJson,
   },
   en_eusm: {
-    translation: eusmEnJson,
+    [namespace]: eusmEnJson,
   },
   th_core: {
-    translation: coreThJson,
+    [namespace]: coreThJson,
   },
 };
 
-initializei18n(i18n, resources);
+loadLanguageResources(i18n, resources);
 
 export default i18n;

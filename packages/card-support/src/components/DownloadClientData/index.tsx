@@ -15,21 +15,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { submitForm, handleCardOrderDateChange, UserAssignment } from './utils';
 import { OPENSRP_URL_LOCATION_HIERARCHY, OPENSRP_URL_USER_ASSIGNMENT } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
-import {
-  ALL_LOCATIONS,
-  CARD_STATUS,
-  CLIENT_LOCATION,
-  DOWNLOAD_CLIENT_DATA,
-  NEEDS_CARD,
-  CARD_NOT_NEEDED,
-  BOTH_NEEDS_CARD_CARD_NOT_NEEDED,
-  CARD_ORDER_DATE,
-  CARD_ORDER_DATE_REQUIRED,
-  SELECT_CARD_ORDER_DATE,
-  DOWNLOADING,
-  DOWNLOAD_CSV,
-  ERROR_OCCURRED,
-} from '../../lang';
+import lang from '../../lang';
 
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 
@@ -128,11 +114,11 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
             dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
           })
           .catch((_: Error) => {
-            sendErrorNotification(ERROR_OCCURRED);
+            sendErrorNotification(lang.ERROR_OCCURRED);
           });
       })
       .catch((_: Error) => {
-        sendErrorNotification(ERROR_OCCURRED);
+        sendErrorNotification(lang.ERROR_OCCURRED);
       });
   }, [
     accessToken,
@@ -157,7 +143,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
 
   return (
     <div className="layout-content">
-      <Title level={3}>{DOWNLOAD_CLIENT_DATA}</Title>
+      <Title level={3}>{lang.DOWNLOAD_CLIENT_DATA}</Title>
       <Card>
         <Form
           {...layout}
@@ -177,27 +163,27 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
             );
           }}
         >
-          <Form.Item name="clientLocation" label={CLIENT_LOCATION}>
+          <Form.Item name="clientLocation" label={lang.CLIENT_LOCATION}>
             <TreeSelect
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder="Please select"
             >
-              <TreeSelect.TreeNode value="" title={ALL_LOCATIONS}></TreeSelect.TreeNode>
+              <TreeSelect.TreeNode value="" title={lang.ALL_LOCATIONS}></TreeSelect.TreeNode>
               {parseHierarchyNode(locationHierarchies)}
             </TreeSelect>
           </Form.Item>
-          <Form.Item name="cardStatus" label={CARD_STATUS}>
+          <Form.Item name="cardStatus" label={lang.CARD_STATUS}>
             <Select>
-              <Option value="">{BOTH_NEEDS_CARD_CARD_NOT_NEEDED}</Option>
-              <Option value={CardStatus.NEEDS_CARD}>{NEEDS_CARD}</Option>
-              <Option value={CardStatus.DOES_NOT_NEED_CARD}>{CARD_NOT_NEEDED}</Option>
+              <Option value="">{lang.BOTH_NEEDS_CARD_CARD_NOT_NEEDED}</Option>
+              <Option value={CardStatus.NEEDS_CARD}>{lang.NEEDS_CARD}</Option>
+              <Option value={CardStatus.DOES_NOT_NEED_CARD}>{lang.CARD_NOT_NEEDED}</Option>
             </Select>
           </Form.Item>
           <Form.Item
             name="cardOrderDate"
-            label={CARD_ORDER_DATE}
-            rules={[{ type: 'array', required: true, message: CARD_ORDER_DATE_REQUIRED }]}
+            label={lang.CARD_ORDER_DATE}
+            rules={[{ type: 'array', required: true, message: lang.CARD_ORDER_DATE_REQUIRED }]}
           >
             <RangePicker
               disabledDate={disabledDate}
@@ -210,7 +196,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
           <Form.Item {...tailLayout}>
             <Tooltip
               placement="bottom"
-              title={!cardOrderDate[0] || !cardOrderDate[1] ? SELECT_CARD_ORDER_DATE : ''}
+              title={!cardOrderDate[0] || !cardOrderDate[1] ? lang.SELECT_CARD_ORDER_DATE : ''}
             >
               <Button
                 type="primary"
@@ -218,7 +204,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
                 disabled={!cardOrderDate[0] || !cardOrderDate[1]}
               >
                 <DownloadOutlined />
-                {isSubmitting ? `${DOWNLOADING}....` : DOWNLOAD_CSV}
+                {isSubmitting ? `${lang.DOWNLOADING}....` : lang.DOWNLOAD_CSV}
               </Button>
             </Tooltip>
           </Form.Item>

@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { PlanForm, propsForUpdatingPlans } from '../';
+import { disableDate, PlanForm, propsForUpdatingPlans } from '../';
 import { Form } from 'antd';
 import { generatePlanDefinition, getPlanFormValues } from '../../helpers/utils';
 import { mission1, newPayload1 } from './fixtures';
@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
+import moment from 'moment';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -272,6 +273,40 @@ describe('containers/forms/PlanForm', () => {
 
     // expect name is set the same to plan title
     expect(wrapper.find('#name input').props().value).toEqual('Plan Name');
+    wrapper.unmount();
+  });
+
+  it('disableDate should return false if no value selected', async () => {
+    const dates = [];
+    const current = moment('2017-07-13');
+    expect(disableDate(current, dates)).toBeFalsy();
+  });
+
+  it('disableDate should return true if end date is less than todays date', async () => {
+    const dates = [moment('2017-07-10'), moment('2017-07-11')];
+    const current = moment('2017-07-13');
+    // date today is 2017-07-13
+    expect(disableDate(current, dates)).toBeTruthy();
+  });
+
+  it('disableDate should return true if start and end date is same', async () => {
+    const dates = [moment('2017-07-10'), moment('2017-07-10')];
+    const current = moment('2017-07-13');
+    // date today is 2017-07-13
+    expect(disableDate(current, dates)).toBeTruthy();
+  });
+
+  it('renders correcty when dates are passed', async () => {
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm />
+      </MemoryRouter>
+    );
+
+    const instance = wrapper.find('#dateRange RangePicker').at(0).props();
+    instance.onCalendarChange(['2022-07-13', '2022-07-14']);
+    instance.onOpenChange(true);
+    expect(instance.disabledDate(moment('2017-07-13'))).toBeFalsy();
     wrapper.unmount();
   });
 

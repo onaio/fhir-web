@@ -20,7 +20,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 import {
   defaultInitialValue,
   keycloakUser,
@@ -162,8 +162,8 @@ describe('components/CreateEditUser', () => {
     fetch
       .once(JSON.stringify(userGroup))
       .once(JSON.stringify(userGroup[1]))
-      .once(JSON.stringify(userGroup[1]))
       .once(JSON.stringify(practitioner1))
+      .once(JSON.stringify(userGroup[1]))
       .once(JSON.stringify(practitioner1))
       .once(JSON.stringify(requiredActions))
       .once(JSON.stringify(userGroup[1]))
@@ -185,20 +185,20 @@ describe('components/CreateEditUser', () => {
 
     const row = wrapper.find('Row').at(0);
 
-    expect(row.props()).toMatchSnapshot();
-
     const fetchMockCalls = fetch.mock.calls.map((call) => call[0]);
     expect(fetchMockCalls).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
       'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
       'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
     ]);
+
+    expect(row.props()).toMatchSnapshot();
 
     wrapper.unmount();
   });
@@ -350,7 +350,7 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
     wrapper.unmount();
   });
 

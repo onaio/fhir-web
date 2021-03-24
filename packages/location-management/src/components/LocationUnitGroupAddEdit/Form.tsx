@@ -6,16 +6,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Formik } from 'formik';
 import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
-import {
-  CANCEL,
-  DESCRIPTION,
-  ENTER_LOCATION_GROUP_NAME,
-  ERROR_OCCURED,
-  LOCATION_NAME,
-  SAVE,
-  SAVING,
-  STATUS,
-} from '../../lang';
+import lang, { Lang } from '../../lang';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
@@ -57,12 +48,14 @@ interface Props {
  * @param {string} opensrpBaseURL - base url
  * @param {object} props component props
  * @param {Function} setSubmitting method to set submission status
+ * @param {Lang} langObj - translations object lookup
  */
 export const onSubmit = (
   values: FormField,
   opensrpBaseURL: string,
   props: Props,
-  setSubmitting: (isSubmitting: boolean) => void
+  setSubmitting: (isSubmitting: boolean) => void,
+  langObj: Lang = lang
 ) => {
   const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
 
@@ -78,7 +71,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
+        sendErrorNotification(langObj.ERROR_OCCURED);
         setSubmitting(false);
       });
   } else {
@@ -90,7 +83,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification(ERROR_OCCURED);
+        sendErrorNotification(langObj.ERROR_OCCURED);
         setSubmitting(false);
       });
   }
@@ -120,7 +113,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             setEditTitle(response.name);
             setIsLoading(false);
           })
-          .catch(() => sendErrorNotification(ERROR_OCCURED));
+          .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
       } else setIsLoading(false);
     }
   }, [isLoading, props.id, opensrpBaseURL, setEditTitle]);
@@ -149,11 +142,11 @@ export const Form: React.FC<Props> = (props: Props) => {
       {({ isSubmitting, handleSubmit }) => {
         return (
           <AntForm requiredMark={false} {...layout} onSubmitCapture={handleSubmit}>
-            <AntForm.Item label={LOCATION_NAME} name="name">
-              <Input name="name" placeholder={ENTER_LOCATION_GROUP_NAME} />
+            <AntForm.Item label={lang.LOCATION_NAME} name="name">
+              <Input name="name" placeholder={lang.ENTER_LOCATION_GROUP_NAME} />
             </AntForm.Item>
 
-            <AntForm.Item label={STATUS} name="active" valuePropName="checked">
+            <AntForm.Item label={lang.STATUS} name="active" valuePropName="checked">
               <Radio.Group name="active" defaultValue={initialValue.active}>
                 {status.map((e) => (
                   <Radio name="active" key={e.label} value={e.value}>
@@ -163,14 +156,14 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Radio.Group>
             </AntForm.Item>
 
-            <AntForm.Item name="description" label={DESCRIPTION}>
-              <Input.TextArea name="description" rows={4} placeholder={DESCRIPTION} />
+            <AntForm.Item name="description" label={lang.DESCRIPTION}>
+              <Input.TextArea name="description" rows={4} placeholder={lang.DESCRIPTION} />
             </AntForm.Item>
 
             <AntForm.Item name={'buttons'} {...offsetLayout}>
-              <SubmitButton id="submit">{isSubmitting ? SAVING : SAVE}</SubmitButton>
+              <SubmitButton id="submit">{isSubmitting ? lang.SAVING : lang.SAVE}</SubmitButton>
               <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-                {CANCEL}
+                {lang.CANCEL}
               </Button>
             </AntForm.Item>
           </AntForm>
