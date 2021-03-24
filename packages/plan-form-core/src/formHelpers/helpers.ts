@@ -727,20 +727,6 @@ export function generatePlanDefinition(
 }
 
 /**
- * Get date by passing ISOString
- * returns new date neglecting timezone
- *
- * @param {string} e - iso date string
- * @returns {Date} - get formatted date
- */
-export function dateFormatter(e: string) {
-  const dateOptions = { timeZone: 'UTC', month: 'long', day: 'numeric', year: 'numeric' };
-  const dateFormat = new Intl.DateTimeFormat('en-US', dateOptions);
-  const dateAsFormattedString = dateFormat.format(new Date(e));
-  return new Date(dateAsFormattedString);
-}
-
-/**
  * Get plan form field values from plan definition object
  *
  * @param {PlanDefinition} planObject - the plan definition object
@@ -839,7 +825,7 @@ export function getPlanFormValues(
     activities,
     caseNum: caseNumUseContext.length > 0 ? caseNumUseContext[0].valueCodableConcept : '',
     date: parseISO(`${planObject.date}${configs.defaultTime}`),
-    end: dateFormatter(`${planObject.effectivePeriod.end}${configs.defaultTime}`),
+    end: parseISO(`${planObject.effectivePeriod.end}`),
     fiReason:
       reasonUseContext.length > 0
         ? (reasonUseContext[0].valueCodableConcept as FIReasonType)
@@ -857,7 +843,7 @@ export function getPlanFormValues(
     name: planObject.name,
     opensrpEventId:
       eventIdUseContext.length > 0 ? eventIdUseContext[0].valueCodableConcept : undefined,
-    start: dateFormatter(`${planObject.effectivePeriod.start}${configs.defaultTime}`),
+    start: parseISO(`${planObject.effectivePeriod.start}`),
     status: planObject.status as PlanStatus,
     taskGenerationStatus,
     teamAssignmentStatus,
