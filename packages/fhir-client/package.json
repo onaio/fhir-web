@@ -40,7 +40,8 @@
     "@onaio/utils": "0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.7"
+    "@opensrp/react-utils": "^0.0.7",
+    "react-i18next": "^11.8.10"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.9",
