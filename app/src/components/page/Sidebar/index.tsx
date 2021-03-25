@@ -5,6 +5,7 @@ import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
+import { useTranslation } from 'react-i18next';
 
 import { Route, getRoutes } from '../../../routes';
 import { getActiveKey } from './utils';
@@ -24,6 +25,7 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 
 /** The Sidebar component */
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
+  useTranslation();
   const { extraData } = props;
   const { roles } = extraData;
   let location = useLocation();

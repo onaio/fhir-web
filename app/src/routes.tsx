@@ -21,29 +21,6 @@ import {
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
 } from './configs/env';
-import {
-  ACTIVE,
-  DRAFT,
-  COMPLETE,
-  TRASH,
-  SERVICE_POINT_INVENTORY,
-  USERS,
-  USER_MANAGEMENT,
-  LOCATION_UNIT,
-  LOCATION_UNIT_GROUP,
-  PRODUCT_CATALOGUE,
-  TEAMS,
-  FORM_CONFIGURATION,
-  MANIFEST_RELEASES,
-  DRAFT_FILES,
-  TEAM_ASSIGNMENT,
-  JSON_VALIDATORS,
-  MISSIONS,
-  ADMIN,
-  INVENTORY,
-  USER_ROLES,
-  USER_GROUPS,
-} from './lang';
 
 import {
   URL_USER,
@@ -58,6 +35,7 @@ import {
   URL_USER_GROUPS,
   URL_USER_ROLES,
 } from './constants';
+import lang from './lang';
 
 /** Interface for menu items */
 export interface Route {
@@ -78,7 +56,7 @@ export const getRoutes = (roles: string[]): Route[] => {
   const routes = [
     {
       otherProps: { icon: <MapMarkerOutline className="sidebar-icons" /> },
-      title: `${MISSIONS}`,
+      title: `${lang.MISSIONS}`,
       key: 'missions',
       enabled:
         ENABLE_PLANS &&
@@ -86,10 +64,14 @@ export const getRoutes = (roles: string[]): Route[] => {
         activeRoles.PLANS &&
         isAuthorized(roles, activeRoles.PLANS.split(',')),
       children: [
-        { title: `${ACTIVE}`, url: `${ACTIVE_PLANS_LIST_VIEW_URL}`, key: 'missions-active' },
-        { title: `${DRAFT}`, url: `${DRAFT_PLANS_LIST_VIEW_URL}`, key: 'missions-draft' },
-        { title: `${COMPLETE}`, url: `${COMPLETE_PLANS_LIST_VIEW_URL}`, key: 'missions-complete' },
-        { title: `${TRASH}`, url: `${TRASH_PLANS_LIST_VIEW_URL}`, key: 'missions-trash' },
+        { title: `${lang.ACTIVE}`, url: `${ACTIVE_PLANS_LIST_VIEW_URL}`, key: 'missions-active' },
+        { title: `${lang.DRAFT}`, url: `${DRAFT_PLANS_LIST_VIEW_URL}`, key: 'missions-draft' },
+        {
+          title: `${lang.COMPLETE}`,
+          url: `${COMPLETE_PLANS_LIST_VIEW_URL}`,
+          key: 'missions-complete',
+        },
+        { title: `${lang.TRASH}`, url: `${TRASH_PLANS_LIST_VIEW_URL}`, key: 'missions-trash' },
       ],
     },
     {
@@ -111,7 +93,7 @@ export const getRoutes = (roles: string[]): Route[] => {
     },
     {
       otherProps: { icon: <ArchiveOutline className="sidebar-icons" /> },
-      title: `${INVENTORY}`,
+      title: `${lang.INVENTORY}`,
       key: 'inventory',
       enabled:
         ENABLE_INVENTORY &&
@@ -120,7 +102,7 @@ export const getRoutes = (roles: string[]): Route[] => {
         isAuthorized(roles, activeRoles.INVENTORY.split(',')),
       children: [
         {
-          title: `${SERVICE_POINT_INVENTORY}`,
+          title: `${lang.SERVICE_POINT_INVENTORY}`,
           url: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
           key: 'inventory-list',
         },
@@ -128,19 +110,19 @@ export const getRoutes = (roles: string[]): Route[] => {
     },
     {
       otherProps: { icon: <DashboardOutlined /> },
-      title: `${ADMIN}`,
+      title: `${lang.ADMIN}`,
       key: 'admin',
       enabled: true,
       url: '/admin',
       children: [
         {
-          title: `${USERS}`,
+          title: `${lang.USERS}`,
           key: 'users',
           enabled: roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
           children: [
-            { title: `${USER_MANAGEMENT}`, key: 'user', url: `${URL_USER}` },
-            { title: `${USER_GROUPS}`, key: 'user-groups', url: `${URL_USER_GROUPS}` },
-            { title: `${USER_ROLES}`, key: 'user-roles', url: `${URL_USER_ROLES}` },
+            { title: `${lang.USER_MANAGEMENT}`, key: 'user', url: `${URL_USER}` },
+            { title: `${lang.USER_GROUPS}`, key: 'user-groups', url: `${URL_USER_GROUPS}` },
+            { title: `${lang.USER_ROLES}`, key: 'user-roles', url: `${URL_USER_ROLES}` },
           ],
         },
         {
@@ -152,16 +134,16 @@ export const getRoutes = (roles: string[]): Route[] => {
             activeRoles.LOCATIONS &&
             isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
           children: [
-            { title: `${LOCATION_UNIT}`, url: `${URL_LOCATION_UNIT}`, key: 'location-unit' },
+            { title: `${lang.LOCATION_UNIT}`, url: `${URL_LOCATION_UNIT}`, key: 'location-unit' },
             {
-              title: `${LOCATION_UNIT_GROUP}`,
+              title: `${lang.LOCATION_UNIT_GROUP}`,
               url: `${URL_LOCATION_UNIT_GROUP}`,
               key: 'location-group',
             },
           ],
         },
         {
-          title: `${PRODUCT_CATALOGUE}`,
+          title: `${lang.PRODUCT_CATALOGUE}`,
           key: 'product-catalogue',
           enabled:
             ENABLE_PRODUCT_CATALOGUE &&
@@ -171,7 +153,7 @@ export const getRoutes = (roles: string[]): Route[] => {
           url: `${CATALOGUE_LIST_VIEW_URL}`,
         },
         {
-          title: `${TEAMS}`,
+          title: `${lang.TEAMS}`,
           key: 'teams',
           enabled:
             ENABLE_TEAMS &&
@@ -179,16 +161,16 @@ export const getRoutes = (roles: string[]): Route[] => {
             activeRoles.TEAMS &&
             isAuthorized(roles, activeRoles.TEAMS.split(',')),
           children: [
-            { title: `${TEAMS}`, url: `${URL_TEAMS}`, key: 'teams-list' },
+            { title: `${lang.TEAMS}`, url: `${URL_TEAMS}`, key: 'teams-list' },
             {
-              title: `${TEAM_ASSIGNMENT}`,
+              title: `${lang.TEAM_ASSIGNMENT}`,
               url: `${URL_TEAM_ASSIGNMENT}`,
               key: 'team-assignment',
             },
           ],
         },
         {
-          title: `${FORM_CONFIGURATION}`,
+          title: `${lang.FORM_CONFIGURATION}`,
           key: 'form-config',
           enabled:
             ENABLE_FORM_CONFIGURATION &&
@@ -197,13 +179,17 @@ export const getRoutes = (roles: string[]): Route[] => {
             isAuthorized(roles, activeRoles.FORM_CONFIGURATION.split(',')),
           children: [
             {
-              title: `${MANIFEST_RELEASES}`,
+              title: `${lang.MANIFEST_RELEASES}`,
               key: 'form-config-releases',
               url: `${URL_MANIFEST_RELEASE_LIST}`,
             },
-            { title: `${DRAFT_FILES}`, key: 'form-config-draft', url: `${URL_DRAFT_FILE_LIST}` },
             {
-              title: `${JSON_VALIDATORS}`,
+              title: `${lang.DRAFT_FILES}`,
+              key: 'form-config-draft',
+              url: `${URL_DRAFT_FILE_LIST}`,
+            },
+            {
+              title: `${lang.JSON_VALIDATORS}`,
               key: 'form-config-validators',
               url: `${URL_JSON_VALIDATOR_LIST}`,
             },
