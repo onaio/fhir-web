@@ -13,16 +13,18 @@ const coreArJson = require('./locales/core/ar.json');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const eusmFrJson = require('./locales/eusm/fr.json');
 
+export const namespace = 'app';
+
 // the format to load the resource files: <languageCode>_<projectCode>. in small
 const resources = {
   ar_core: {
-    translation: coreArJson,
+    [namespace]: coreArJson,
   },
   fr_core: {
-    translation: coreFrJson,
+    [namespace]: coreFrJson,
   },
   fr_eusm: {
-    translation: eusmFrJson,
+    [namespace]: eusmFrJson,
   },
 };
 

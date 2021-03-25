@@ -9,7 +9,7 @@ import { MemoryRouter } from 'react-router';
 import { store } from '@opensrp/store';
 import * as notifications from '@opensrp/notifications';
 import { act } from 'react-dom/test-utils';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -73,6 +73,6 @@ describe('components/Logout', () => {
     await act(async () => {
       await flushPromises();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 });

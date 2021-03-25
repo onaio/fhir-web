@@ -2,7 +2,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { removeKeycloakUsers } from '../../../ducks/user';
 import { KEYCLOAK_URL_USERS } from '../../../constants';
-import { USER_DELETED_SUCCESSFULLY, ERROR_OCCURED } from '../../../lang';
+import lang, { Lang } from '../../../lang';
 
 /**
  * Delete keycloak user
@@ -11,13 +11,15 @@ import { USER_DELETED_SUCCESSFULLY, ERROR_OCCURED } from '../../../lang';
  * @param {string} keycloakBaseURL - keycloak api base URL
  * @param {string} userId - id of user to be deleted
  * @param {Function} isLoadingCallback - callback function that sets loading state
+ * @param {Lang} langObj - lang
  * @returns {void}
  */
 export const deleteUser = (
   removeKeycloakUsersCreator: typeof removeKeycloakUsers,
   keycloakBaseURL: string,
   userId: string,
-  isLoadingCallback: (loading: boolean) => void
+  isLoadingCallback: (loading: boolean) => void,
+  langObj: Lang = lang
 ): void => {
   const serviceDelete = new KeycloakService(`${KEYCLOAK_URL_USERS}/${userId}`, keycloakBaseURL);
   serviceDelete
@@ -25,9 +27,9 @@ export const deleteUser = (
     .then(() => {
       removeKeycloakUsersCreator();
       isLoadingCallback(true);
-      sendSuccessNotification(USER_DELETED_SUCCESSFULLY);
+      sendSuccessNotification(langObj.USER_DELETED_SUCCESSFULLY);
     })
     .catch((_: Error) => {
-      sendErrorNotification(ERROR_OCCURED);
+      sendErrorNotification(langObj.ERROR_OCCURED);
     });
 };

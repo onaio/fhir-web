@@ -20,7 +20,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 import {
   defaultInitialValue,
   keycloakUser,
@@ -350,7 +350,7 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
     wrapper.unmount();
   });
 

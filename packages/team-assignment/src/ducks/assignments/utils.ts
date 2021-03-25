@@ -1,4 +1,4 @@
-import { RawAssignment } from '../assignments';
+import { RawAssignment } from '.';
 import moment from 'moment';
 
 export const processRawAssignments = (rawAssignments: RawAssignment[]) => {

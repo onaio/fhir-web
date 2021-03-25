@@ -17,6 +17,7 @@ import {
 import { act } from 'react-dom/test-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
+import { Form } from 'antd';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -96,7 +97,13 @@ describe('components/forms/UserForm', () => {
         method: 'GET',
       },
     ]);
-    expect(wrapper.find('Row').at(0).props()).toMatchSnapshot();
+    expect(wrapper.find('FormItem').at(0).prop('name')).toEqual('firstName');
+    expect(wrapper.find('FormItem').at(1).prop('name')).toEqual('lastName');
+    expect(wrapper.find('FormItem').at(2).prop('name')).toEqual('email');
+    expect(wrapper.find('FormItem').at(3).prop('name')).toEqual('username');
+    expect(wrapper.find('FormItem').at(4).prop('name')).toEqual('enabled');
+    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('requiredActions');
+    expect(wrapper.find('FormItem').at(6).prop('name')).toEqual('userGroup');
     wrapper.unmount();
   });
 
@@ -222,6 +229,62 @@ describe('components/forms/UserForm', () => {
     ]);
   });
 
+  it('render correct value for enabled when set to true', async () => {
+    const wrapper = mount(<UserForm {...props} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    await act(async () => {
+      wrapper
+        .find('input[name="enabled"]')
+        .first()
+        .simulate('change', { target: { name: 'enabled', checked: true } });
+    });
+    wrapper.update();
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    expect(formInstance.getFieldsValue().enabled).toEqual(true);
+    wrapper.unmount();
+  });
+
+  it('render correct value for enabled when set to false', async () => {
+    const wrapper = mount(<UserForm {...props} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    await act(async () => {
+      wrapper
+        .find('input[name="enabled"]')
+        .last()
+        .simulate('change', { target: { name: 'enabled', checked: false } });
+    });
+    wrapper.update();
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    expect(formInstance.getFieldsValue().enabled).toEqual(false);
+    wrapper.unmount();
+  });
+
   it('user is not created if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const wrapper = mount(<UserForm {...props} />);
@@ -341,8 +404,9 @@ describe('components/forms/UserForm', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(wrapper.find('FormItemInput').at(4).prop('id')).toEqual('practitionerToggle');
-    expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
+    const toggleWrapper = wrapper.find('#practitionerToggle');
+    expect(toggleWrapper).toBeTruthy();
+    expect(toggleWrapper.at(0).props()).toMatchSnapshot('practitionerToggle');
   });
 
   it('show practitioner toggle when editing user and practitioner is provided', async () => {
@@ -363,8 +427,9 @@ describe('components/forms/UserForm', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(wrapper.find('FormItemInput').at(4).prop('id')).toEqual('practitionerToggle');
-    expect(wrapper.find('FormItemInput').at(4).props()).toMatchSnapshot('practitionerToggle');
+    const toggleWrapper = wrapper.find('#practitionerToggle');
+    expect(toggleWrapper).toBeTruthy();
+    expect(toggleWrapper.at(0).props()).toMatchSnapshot('practitionerToggle');
   });
 
   it('hides practitioner toggle if user is editing their own profile', async () => {

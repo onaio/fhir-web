@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
-import { TeamAssignmentLoading, columns, getPayload } from './utils';
+import { TeamAssignmentLoading, columnsFactory, getPayload } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -22,11 +22,13 @@ import {
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
-import reducer, {
+import {
+  assignmentsReducer,
   Assignment,
   fetchAssignments,
-  getAssignments,
-  reducerName as assignmentReducerName,
+  assignmentsReducerName,
+  getAssignmentsArrayByPlanId,
+  RawAssignment,
 } from '../../ducks/assignments';
 import {
   ASSIGNMENTS_ENDPOINT,
@@ -35,21 +37,16 @@ import {
   PLANS_ENDPOINT,
   POST_ASSIGNMENTS_ENDPOINT,
 } from '../../constants';
-import {
-  CANCEL,
-  ENTER_TEAM_NAME,
-  ERROR_OCCURED,
-  SAVE,
-  SUCCESSFULLY_ASSIGNED_TEAMS,
-  TEAMS,
-  TEAM_ASSIGNMENT_PAGE_TITLE,
-} from '../../lang';
+import lang from '../../lang';
+import { processRawAssignments } from '../../ducks/assignments/utils';
 
 const { fetchAllHierarchies, getAllHierarchiesArray } = locationHierachyDucks;
 
 reducerRegistry.register(orgReducerName, organizationsReducer);
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
-reducerRegistry.register(assignmentReducerName, reducer);
+reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
+
+const assignmentsSelector = getAssignmentsArrayByPlanId();
 
 export interface TableData {
   id: string;
@@ -85,7 +82,9 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
-  const assignmentsList: Assignment[] = useSelector((state) => getAssignments(state));
+  const assignmentsList: Assignment[] = useSelector((state) =>
+    assignmentsSelector(state, { planId: defaultPlanId })
+  );
   const allOrganizations: Organization[] = useSelector((state) => getOrganizationsArray(state));
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
@@ -95,6 +94,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   );
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
   const [existingAssignments, setExistingAssignments] = useState<Assignment[]>([]);
+  const columns = columnsFactory(lang);
 
   React.useEffect(() => {
     if (loading) {
@@ -111,20 +111,21 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
               dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
             })
             .catch(() => {
-              sendErrorNotification(ERROR_OCCURED);
+              sendErrorNotification(lang.ERROR_OCCURED);
             });
         })
         .catch(() => {
-          sendErrorNotification(ERROR_OCCURED);
+          sendErrorNotification(lang.ERROR_OCCURED);
         });
       // get all assignments
       const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
       const assignmentsPromise = asssignmentService
         .list({ plan: defaultPlanId })
-        .then((response: Assignment[]) => {
-          dispatch(fetchAssignments(response));
+        .then((response: RawAssignment[]) => {
+          const parsedAssignments = processRawAssignments(response);
+          dispatch(fetchAssignments(parsedAssignments));
         })
-        .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
 
       // fetch all organizations
       const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
@@ -134,12 +135,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           dispatch(fetchOrganizationsAction(response));
         })
         .catch(() => {
-          sendErrorNotification(ERROR_OCCURED);
+          sendErrorNotification(lang.ERROR_OCCURED);
         });
 
       Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
         .catch(() => {
-          sendErrorNotification(ERROR_OCCURED);
+          sendErrorNotification(lang.ERROR_OCCURED);
         })
         .finally(() => {
           setLoading(false);
@@ -187,11 +188,11 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
   const tableData = dataSource.map((datum: ParsedHierarchyNode, i: number) => {
     const jurisdictionAssignments = assignmentsList.filter(
-      (assignment) => assignment.jurisdictionId === datum.id
+      (assignment) => assignment.jurisdiction === datum.id
     );
     const jurisdictionOrgs = allOrganizations.filter((org) => {
       const jurisdictionOrgIds = jurisdictionAssignments.map(
-        (assignment) => assignment.organizationId
+        (assignment) => assignment.organization
       );
       return jurisdictionOrgIds.includes(org.identifier);
     });
@@ -213,28 +214,28 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   return (
     <div className="content-section">
       <Helmet>
-        <title>{TEAM_ASSIGNMENT_PAGE_TITLE}</title>
+        <title>{lang.TEAM_ASSIGNMENT_PAGE_TITLE}</title>
       </Helmet>
-      <PageHeader title={TEAM_ASSIGNMENT_PAGE_TITLE} className="page-header"></PageHeader>
+      <PageHeader title={lang.TEAM_ASSIGNMENT_PAGE_TITLE} className="page-header"></PageHeader>
       <Modal
         destroyOnClose={true}
         title={`Assign/Unassign Teams | ${assignedLocAndTeams?.locationName}`}
         visible={visible}
         onCancel={handleCancel}
-        okText={SAVE}
-        cancelText={CANCEL}
+        okText={lang.SAVE}
+        cancelText={lang.CANCEL}
         footer={[
           <Button type="primary" form="teamAssignment" key="submit" htmlType="submit">
-            {SAVE}
+            {lang.SAVE}
           </Button>,
           <Button
-            id={CANCEL}
+            id={lang.CANCEL}
             key="cancel"
             onClick={() => {
               handleCancel();
             }}
           >
-            {CANCEL}
+            {lang.CANCEL}
           </Button>,
         ]}
         okType="default"
@@ -256,7 +257,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
               serve
                 .create(payload)
                 .then(() => {
-                  sendSuccessNotification(SUCCESSFULLY_ASSIGNED_TEAMS);
+                  sendSuccessNotification(lang.SUCCESSFULLY_ASSIGNED_TEAMS);
                   setVisible(false);
                   setLoading(true);
                 })
@@ -266,12 +267,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             }}
             initialValues={{ assignTeams: assignedLocAndTeams?.assignedTeams }}
           >
-            <Form.Item label={TEAMS} name="assignTeams">
+            <Form.Item label={lang.TEAMS} name="assignTeams">
               <Select
                 mode="multiple"
                 allowClear
                 showSearch
-                placeholder={ENTER_TEAM_NAME}
+                placeholder={lang.ENTER_TEAM_NAME}
                 optionFilterProp="children"
                 filterOption={filterFunction}
               >

@@ -15,12 +15,7 @@ import {
   locationUnitsReducerName,
 } from '../../ducks/location-units';
 import { LOCATION_UNIT_ENDPOINT, URL_LOCATION_UNIT_ADD } from '../../constants';
-import {
-  ADD_LOCATION_UNIT,
-  LOCATION_UNIT,
-  LOCATION_UNIT_MANAGEMENT,
-  ERROR_OCCURED,
-} from '../../lang';
+import lang, { Lang } from '../../lang';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -57,11 +52,13 @@ export interface AntTreeProps {
  * @param {TableData} row data selected from the table
  * @param {string} opensrpBaseURL - base url
  * @param {Function} setDetail function to set detail to state
+ * @param {Lang} langObj translation string lookup
  */
 export async function loadSingleLocation(
   row: TableData,
   opensrpBaseURL: string,
-  setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>
+  setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>,
+  langObj: Lang = lang
 ) {
   setDetail('loading');
   const serve = new OpenSRPService(LOCATION_UNIT_ENDPOINT, opensrpBaseURL);
@@ -71,7 +68,7 @@ export async function loadSingleLocation(
     .then((res: LocationUnit) => {
       setDetail(res);
     })
-    .catch(() => sendErrorNotification(ERROR_OCCURED));
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
 }
 
 /** Parse the hierarchy node into table data
@@ -97,7 +94,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
@@ -117,7 +114,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     if (!locationUnits.length) {
       getBaseTreeNode(opensrpBaseURL)
         .then((response: LocationUnit[]) => dispatch(fetchLocationUnits(response)))
-        .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationUnits.length, treeData.length]);
@@ -125,12 +122,13 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   // Function used to parse data from ParsedHierarchyNode to Tree Data
   useEffect(() => {
     if (!treeData.length && locationUnits.length) {
+      setLoading(true);
       getHierarchy(locationUnits, opensrpBaseURL)
         .then((hierarchy: RawOpenSRPHierarchy[]) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
           dispatch(fetchAllHierarchies(allhierarchy));
         })
-        .catch(() => sendErrorNotification(ERROR_OCCURED))
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
         .finally(() => setLoading(false));
     }
     // to avoid extra rerenders
@@ -154,9 +152,9 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{LOCATION_UNIT}</title>
+        <title>{lang.LOCATION_UNIT}</title>
       </Helmet>
-      <h5 className="mb-3">{LOCATION_UNIT_MANAGEMENT}</h5>
+      <h5 className="mb-3">{lang.LOCATION_UNIT_MANAGEMENT}</h5>
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree data={treeData} OnItemClick={(node) => setCurrentClicked(node)} />
@@ -164,7 +162,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5 className="mt-4">
-              {currentClicked?.children?.length ? tableData[0].name : LOCATION_UNIT}
+              {currentClicked?.children?.length ? tableData[0].name : lang.LOCATION_UNIT}
             </h5>
             <div>
               <Link
@@ -176,7 +174,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
               >
                 <Button type="primary">
                   <PlusOutlined />
-                  {ADD_LOCATION_UNIT}
+                  {lang.ADD_LOCATION_UNIT}
                 </Button>
               </Link>
             </div>

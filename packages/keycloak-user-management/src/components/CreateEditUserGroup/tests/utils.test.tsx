@@ -4,7 +4,7 @@ import * as notifications from '@opensrp/notifications';
 import * as fixtures from '../../UserGroupDetailView/tests/fixtures';
 import { fetchSingleGroup, removeAssignedRoles, assignRoles, fetchRoleMappings } from '../utils';
 import fetch from 'jest-fetch-mock';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 import { userRoles } from '../../../ducks/tests/fixtures';
 import {
   KEYCLOAK_URL_ASSIGNED_ROLES,
@@ -65,7 +65,7 @@ describe('dataLoading', () => {
       throw e;
     });
     await new Promise((resolve) => setImmediate(resolve));
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
   it('assignRoles works correctly', async () => {
@@ -96,7 +96,7 @@ describe('dataLoading', () => {
       throw e;
     });
     await new Promise((resolve) => setImmediate(resolve));
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
   it('removeAssignedRoles works correctly', async () => {
@@ -131,7 +131,7 @@ describe('dataLoading', () => {
       }
     );
     await new Promise((resolve) => setImmediate(resolve));
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
   it('fetchRoleMappings fetches available roles', async () => {
@@ -218,6 +218,6 @@ describe('dataLoading', () => {
       throw e;
     });
     await new Promise((resolve) => setImmediate(resolve));
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 });
