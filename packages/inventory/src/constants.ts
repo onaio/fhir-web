@@ -17,8 +17,8 @@ export const INVENTORY_BULK_UPLOAD_URL = '/inventory/upload';
 export const INVENTORY_ADD_SERVICE_POINT = '/inventory/servicePoint/add';
 export const INVENTORY_EDIT_SERVICE_POINT = '/inventory/servicePoint/edit';
 export const INVENTORY_SERVICE_POINT_PROFILE_PARAM = 'servicePointId';
-export const URL_INVENTORY_ADD = '/inventory/add';
-export const URL_INVENTORY_EDIT = '/inventory/edit';
+export const URL_INVENTORY_ADD = '/item/add';
+export const URL_INVENTORY_EDIT = '/item/edit';
 
 // other constants
 /** namespace for the keys attached to the columns */
