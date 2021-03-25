@@ -37,6 +37,21 @@ Array [
   Object {
     "children": Array [
       Object {
+        "key": "download-client-data",
+        "title": "Download Client Data",
+        "url": "/card-support/download-client-data",
+      },
+    ],
+    "enabled": true,
+    "key": "card-support",
+    "otherProps": Object {
+      "icon": <ForwardRef(IdcardOutlined) />,
+    },
+    "title": "Card Support",
+  },
+  Object {
+    "children": Array [
+      Object {
         "key": "inventory-list",
         "title": "Service point inventory",
         "url": "/inventory",
@@ -145,21 +160,6 @@ Array [
     },
     "title": "Admin",
     "url": "/admin",
-  },
-  Object {
-    "children": Array [
-      Object {
-        "key": "download-client-data",
-        "title": "Download Client Data",
-        "url": "/card-support/download-client-data",
-      },
-    ],
-    "enabled": true,
-    "key": "card-support",
-    "otherProps": Object {
-      "icon": <ForwardRef(IdcardOutlined) />,
-    },
-    "title": "Card Support",
   },
 ]
 `;
