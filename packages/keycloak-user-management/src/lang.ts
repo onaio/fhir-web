@@ -70,6 +70,7 @@ function fill() {
   lang.USERNAME = i18n.t(`Username`, { ns: namespace });
   lang.MARK_AS_PRACTITIONER = i18n.t(`Mark as Practitioner`, { ns: namespace });
   lang.REQUIRED_ACTIONS = i18n.t(`Required Actions`, { ns: namespace });
+  lang.ENABLE_USER = i18n.t(`Enable user`, { ns: namespace });
   lang.PLEASE_SELECT = i18n.t(`Please select`, { ns: namespace });
   lang.GROUP = i18n.t(`Group`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
