@@ -86,7 +86,7 @@ Array [
         "enabled": true,
         "key": "product-catalogue",
         "title": "Product Catalogue",
-        "url": "/admin/admin/product-catalogue",
+        "url": "/admin/product-catalogue",
       },
       Object {
         "children": Array [
