@@ -19,6 +19,7 @@ function fill() {
   lang.USER_GROUPS = i18n.t(`User Groups`, { ns: namespace });
   lang.USER_ROLES = i18n.t(`User Roles`, { ns: namespace });
   lang.TEAMS = i18n.t(`Teams`, { ns: namespace });
+  lang.PATIENTS = i18n.t(`Patients`, { ns: namespace });
   lang.LOCATION_UNIT = i18n.t(`Location unit`, { ns: namespace });
   lang.LOCATION_UNIT_GROUP = i18n.t(`Location unit group`, { ns: namespace });
   lang.PRODUCT_CATALOGUE = i18n.t(`Product Catalogue`, { ns: namespace });
