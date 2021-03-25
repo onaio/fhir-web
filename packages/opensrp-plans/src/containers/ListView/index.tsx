@@ -88,7 +88,7 @@ const PlansList = (props: PlansListTypes) => {
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
       <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
-          <div className="main-content__header mission-header">
+          <div className="main-content__header flex-right">
             <Link to={PLANS_CREATE_VIEW_URL}>
               <Button type="primary" className="mr-0">
                 {lang.NEW_MISSION}
