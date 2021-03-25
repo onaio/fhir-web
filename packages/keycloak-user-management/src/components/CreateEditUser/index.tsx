@@ -59,14 +59,8 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     lastName: '',
     username: '',
     active: false,
-    userGroup: [],
-    practitioner: {
-      active: false,
-      identifier: '',
-      name: '',
-      userId: '',
-      username: '',
-    },
+    userGroup: undefined,
+    practitioner: undefined,
   });
 
   const {
@@ -123,11 +117,14 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .list()
         .then((response: UserGroup[]) =>
-          setInitialValues({ ...initialValues, userGroup: response.map((tag) => tag.id) })
+          setInitialValues((prevState) => ({
+            ...prevState,
+            userGroup: response.map((tag) => tag.id),
+          }))
         )
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
-  }, [userId, keycloakBaseURL, initialValues]);
+  }, [userId, keycloakBaseURL, initialValues.userGroup]);
 
   useEffect(() => {
     if (userId && initialValues.practitioner === undefined) {
@@ -135,21 +132,28 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .read(userId)
         .then((response: Practitioner) =>
-          setInitialValues({ ...initialValues, active: response.active, practitioner: response })
+          setInitialValues((prevState) => ({
+            ...prevState,
+            active: response.active,
+            practitioner: response,
+          }))
         )
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
     }
-  }, [userId, opensrpBaseURL, initialValues]);
+  }, [userId, opensrpBaseURL, initialValues.practitioner]);
 
   if (
     // editing an existing user
-    userId &&
-    (!(userGroups.length > 0) ||
-      !keycloakUser ||
-      initialValues.username === '' ||
-      initialValues.id === '' ||
-      // !initialValues.userGroup?.length ||
-      (Object.keys(extraData).length > 0 && extraData.user_id === ''))
+    (userId &&
+      (!(userGroups.length > 0) ||
+        !keycloakUser ||
+        initialValues.username === '' ||
+        initialValues.id === '' ||
+        initialValues.userGroup === undefined ||
+        initialValues.practitioner === undefined ||
+        (Object.keys(extraData).length > 0 && extraData.user_id === ''))) ||
+    // adding a new user
+    (!userId && !(userGroups.length > 0))
   )
     return <Spin size="large" />;
 
