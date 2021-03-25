@@ -1,13 +1,13 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu, PageHeader, Tag } from 'antd';
+import { Row, Col, Button, Table, Spin, PageHeader, Tag } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps, useHistory, withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import FHIR from 'fhirclient';
 import { BrokenPage, createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
-import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { getPatientName } from './utils';
 import { fhirclient } from 'fhirclient/lib/types';
 
@@ -44,8 +44,6 @@ const defaultProps: Partial<PatientsListTypes> = {
  * @returns {Function} returns patients list display
  */
 const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListTypes) => {
-  const history = useHistory();
-
   const { data, isLoading, error } = useQuery<fhirclient.FHIR.Bundle, Error>(
     'fetchPatients',
     async () => {
@@ -116,29 +114,9 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
         <span className="d-flex justify-content-start align-items-center">
           <Link to={`${'/admin/patients'}/${record.id}`}>
             <Button type="link" className="m-0 p-1">
-              Edit
+              View
             </Button>
           </Link>
-          <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    history.push(`${'/admin/patients'}/${record.id}`);
-                  }}
-                >
-                  {'View details'}
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomLeft"
-            arrow
-            trigger={['click']}
-          >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
         </span>
       ),
     },
