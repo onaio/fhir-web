@@ -32,6 +32,7 @@ import {
   ENABLE_INVENTORY,
   MAIN_LOGO_SRC,
   OPENSRP_ROLES,
+  ENABLE_PATIENTS_MODULE,
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -243,11 +244,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
               </Menu.SubMenu>
             )}
         </Menu.SubMenu>
-        <Menu.Item key={'patients'} icon={<SettingOutlined />}>
-          <Link to={'/admin/patients'} className="admin-link">
-            {'Patients'}
-          </Link>
-        </Menu.Item>
+        {ENABLE_PATIENTS_MODULE && (
+          <Menu.Item key="patients" icon={<SettingOutlined />}>
+            <Link to={'/admin/patients'} className="admin-link">
+              {lang.PATIENTS}
+            </Link>
+          </Menu.Item>
+        )}
       </Menu>
     </Layout.Sider>
   );
