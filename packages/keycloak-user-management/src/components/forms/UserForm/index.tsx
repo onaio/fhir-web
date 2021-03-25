@@ -26,7 +26,7 @@ export interface FormFields extends KeycloakUser {
 
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
-
+  const [form] = Form.useForm();
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
@@ -70,6 +70,7 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       <Col className="bg-white p-3" span={24}>
         <Form
           {...layout}
+          form={form}
           initialValues={initialValues}
           onFinish={(values) => {
             setSubmitting(true);
@@ -110,6 +111,9 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             rules={[{ required: true, message: lang.USERNAME_REQUIRED }]}
           >
             <Input disabled={initialValues.id ? true : false} />
+          </Form.Item>
+          <Form.Item id="enabled" name="enabled" label={lang.ENABLE_USER}>
+            <Radio.Group options={status} name="enabled"></Radio.Group>
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item id="practitionerToggle" name="active" label={lang.MARK_AS_PRACTITIONER}>

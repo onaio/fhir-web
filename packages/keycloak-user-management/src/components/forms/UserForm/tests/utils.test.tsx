@@ -148,7 +148,6 @@ describe('forms/utils/submitForm', () => {
           Pragma: 'no-cache',
           body: JSON.stringify({
             ...keycloakuser,
-            enabled: true,
           }),
           headers: {
             accept: 'application/json',

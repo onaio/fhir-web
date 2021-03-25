@@ -55,6 +55,7 @@ interface TableData {
   email: string | undefined;
   firstName: string | undefined;
   lastName: string | undefined;
+  enabled: string | undefined;
 }
 
 export type UserListTypes = Props & RouteComponentProps;
@@ -105,6 +106,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
+      enabled: user.enabled ? 'Enabled' : 'Disabled',
     };
   });
 
@@ -143,7 +145,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   extraData,
                   sortedInfo
                 )}
-                dataSource={keycloakUsers}
+                dataSource={tableData}
                 pagination={{
                   showQuickJumper: true,
                   showSizeChanger: true,
