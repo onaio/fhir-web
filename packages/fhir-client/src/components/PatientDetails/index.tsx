@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react';
-import { Col, Row, Menu, Badge, Table } from 'antd';
+import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag } from 'antd';
+import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import { Spin } from 'antd';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
@@ -15,8 +16,6 @@ import { resourcesSchema } from '../PatientsList/resourcesSchema';
 import { Dictionary } from '@onaio/utils';
 
 const queryClient = new QueryClient();
-
-const client = FHIR.client('https://r4.smarthealthit.org');
 
 // Interface for route params
 interface RouteParams {
@@ -41,6 +40,11 @@ export const defaultEditPatientProps: EditPatientProps = {
   keycloakBaseURL: '',
 };
 
+/** Component which shows FHIR resource details of a single patient
+ *
+ * @param {Object} props - PatientDetails component props
+ * @returns {React.FC} returns patient reources display
+ */
 const PatientDetails: React.FC<CreateEditPatientPropTypes> = (
   props: CreateEditPatientPropTypes
 ) => {
@@ -50,7 +54,7 @@ const PatientDetails: React.FC<CreateEditPatientPropTypes> = (
   const { error, data, isLoading } = useQuery(
     'fetchPatient',
     async () => {
-      return await client
+      return await FHIR.client('https://r4.smarthealthit.org')
         .request(`Patient/${patientId}/$everything?_count=5000`)
         .then((res: fhirclient.FHIR.Bundle) => {
           return res;
@@ -156,7 +160,9 @@ const PatientDetails: React.FC<CreateEditPatientPropTypes> = (
   });
 
   const patientName = getPatientName(resourceTypeMap['Patient'].data[0]);
-
+  const currentPatient = resourceTypeMap['Patient'].data[0];
+  const { gender, birthDate } = currentPatient;
+  const avatarLink = `http://www.gravatar.com/avatar/${patientId}?s=50&r=any&default=identicon&forcedefault=1`;
   return (
     <Row>
       <Col span={24}>
@@ -164,7 +170,75 @@ const PatientDetails: React.FC<CreateEditPatientPropTypes> = (
           <Helmet>
             <title>{'Patient Details'}</title>
           </Helmet>
-          <h5 className="mb-3">{`Patient details - ${patientName}`}</h5>
+          <Row className="patient-info-main">
+            <Col md={12}>
+              <div className="plan-avatar-detail-section">
+                <span className="avatar-section">
+                  <Avatar
+                    /**Find the right icon */
+                    src={avatarLink}
+                    className=""
+                    style={{
+                      width: 80,
+                      height: 82,
+                      lineHeight: 1.8,
+                      color: '#1CABE2',
+                      fontSize: 50,
+                    }}
+                  />
+                </span>
+                <div className="patient-detail-section">
+                  <div>
+                    <h4>
+                      {patientName}{' '}
+                      {currentPatient.deceasedBoolean || currentPatient.deceasedDateTime ? (
+                        <Tag color="red">Deceased</Tag>
+                      ) : null}
+                    </h4>
+                  </div>
+                  <div>
+                    <span>ID: </span>
+                    <span>{patientId}</span>
+                  </div>
+                  <div>
+                    <span>Gender: </span>
+                    <span>{gender}</span>
+                  </div>
+                  <div>
+                    <span>Birth Date: </span>
+                    <span>{birthDate}</span>
+                  </div>
+                </div>
+              </div>
+            </Col>
+            <Col md={12}>
+              <Row>
+                <Col md={12} span={6}>
+                  <span>Phone: </span>
+                  <span>{get(currentPatient, 'telecom.0.value')}</span>
+                </Col>
+                <Col md={12} span={6}>
+                  <span>MRN: </span>
+                  <span>{'Unknown'}</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12} span={6}>
+                  <span>Address: </span>
+                  <span>{`${get(currentPatient, 'address.0.line.0')}, ${get(
+                    currentPatient,
+                    'address.0.state'
+                  )}`}</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12} span={6}>
+                  <span>Country: </span>
+                  <span>{`${get(currentPatient, 'address.0.country')}`}</span>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
           <Row>
             <Col span={6}>
               <Menu
@@ -191,16 +265,27 @@ const PatientDetails: React.FC<CreateEditPatientPropTypes> = (
               </Menu>
             </Col>
             <Col span={18}>
-              <Table
-                dataSource={dataSource}
-                columns={resourcesSchema[resourceType]?.columns ?? []}
-                pagination={{
-                  showQuickJumper: true,
-                  showSizeChanger: true,
-                  defaultPageSize: 5,
-                  pageSizeOptions: ['5', '10', '20', '50', '100'],
-                }}
-              />
+              <Card
+                title={
+                  <>
+                    <span style={{ color: '#1890ff' }}>
+                      <IdcardOutlined /> {resourceType}
+                    </span>
+                  </>
+                }
+                bordered={false}
+              >
+                <Table
+                  dataSource={dataSource}
+                  columns={resourcesSchema[resourceType]?.columns ?? []}
+                  pagination={{
+                    showQuickJumper: true,
+                    showSizeChanger: true,
+                    defaultPageSize: 5,
+                    pageSizeOptions: ['5', '10', '20', '50', '100'],
+                  }}
+                />
+              </Card>
             </Col>
           </Row>
         </section>
