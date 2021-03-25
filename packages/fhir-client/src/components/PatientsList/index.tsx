@@ -28,14 +28,14 @@ interface TableData {
 }
 
 interface Props {
-  keycloakBaseURL: string;
+  fhirBaseURL: string;
 }
 
 export type PatientsListTypes = Props & RouteComponentProps<RouteParams>;
 
 /** default component props */
 const defaultProps: Partial<PatientsListTypes> = {
-  keycloakBaseURL: '',
+  fhirBaseURL: '',
 };
 
 /** Component which shows the list of all patients in FHIR server
@@ -44,10 +44,11 @@ const defaultProps: Partial<PatientsListTypes> = {
  * @returns {Function} returns patients list display
  */
 const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListTypes) => {
+  const { fhirBaseURL } = props;
   const { data, isLoading, error } = useQuery<fhirclient.FHIR.Bundle, Error>(
     'fetchPatients',
     async () => {
-      return await FHIR.client('https://r4.smarthealthit.org')
+      return await FHIR.client(fhirBaseURL)
         .request({
           url: 'Patient',
         })
@@ -137,7 +138,7 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
         <Col className={'main-content'} span={24}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to={'/admin/patients/new'}>
+            <Link to="#">
               <Button type="primary">
                 <PlusOutlined />
                 {'Add patient'}
@@ -167,12 +168,13 @@ const PatientsComponent = withRouter(PatientsListComponent);
 
 /** Wrap component in QueryClientProvider
  *
+ * @param props - component props
  * @returns {React.FC} - returns patients list view
  */
-export function PatientsList() {
+export function PatientsList(props: PatientsListTypes) {
   return (
     <QueryClientProvider client={queryClient}>
-      <PatientsComponent keycloakBaseURL="" />
+      <PatientsComponent {...props} />
     </QueryClientProvider>
   );
 }

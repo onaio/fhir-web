@@ -42,7 +42,7 @@ describe('Patients list view', () => {
     shallow(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <PatientsList />
+          <PatientsList fhirBaseURL="https://r4.smarthealthit.org/" />
         </QueryClientProvider>
       </Router>
     );
@@ -61,7 +61,7 @@ describe('Patients list view', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <PatientsList />
+            <PatientsList fhirBaseURL="https://r4.smarthealthit.org/" />
           </QueryClientProvider>
         </Router>
       </Provider>
@@ -163,7 +163,7 @@ describe('Patients list view', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <PatientsList />
+            <PatientsList fhirBaseURL="https://r4.smarthealthit.org/" />
           </QueryClientProvider>
         </Router>
       </Provider>

@@ -33,6 +33,7 @@ export const PrivateComponent = (props: ComponentProps) => {
     ...props,
     keycloakBaseURL: configs.keycloakBaseURL,
     opensrpBaseURL: configs.opensrpBaseURL,
+    fhirBaseURL: configs.fhirBaseURL,
   };
   const extraData = useSelector((state) => getExtraData(state));
   const authenticated = useSelector((state) => isAuthenticated(state));

@@ -28,33 +28,32 @@ interface ResourceTypeMap {
 }
 
 /** props for editing a user view */
-export interface EditPatientProps {
-  keycloakBaseURL: string;
+export interface PatientDetailProps {
+  fhirBaseURL: string;
 }
 
 /** type intersection for all types that pertain to the props */
-export type CreateEditPatientPropTypes = EditPatientProps & RouteComponentProps<RouteParams>;
+export type PatientDetailPropTypes = PatientDetailProps & RouteComponentProps<RouteParams>;
 
 /** default props for editing patient component */
-export const defaultEditPatientProps: EditPatientProps = {
-  keycloakBaseURL: '',
+export const defaultEditPatientProps: PatientDetailProps = {
+  fhirBaseURL: '',
 };
 
 /** Component which shows FHIR resource details of a single patient
  *
  * @param {Object} props - PatientDetails component props
- * @returns {React.FC} returns patient reources display
+ * @returns {React.FC} returns patient resources display
  */
-const PatientDetails: React.FC<CreateEditPatientPropTypes> = (
-  props: CreateEditPatientPropTypes
-) => {
+const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPropTypes) => {
+  const { fhirBaseURL } = props;
   const [resourceType, setResourceType] = React.useState<string>('Patient');
   const patientId = props.match.params['patientId'];
 
   const { error, data, isLoading } = useQuery(
     'fetchPatient',
     async () => {
-      return await FHIR.client('https://r4.smarthealthit.org')
+      return await FHIR.client(fhirBaseURL)
         .request(`Patient/${patientId}/$everything?_count=5000`)
         .then((res: fhirclient.FHIR.Bundle) => {
           return res;
@@ -300,12 +299,13 @@ const PatientComponent = withRouter(PatientDetails);
 
 /** Wrap component in QueryClientProvider
  *
+ * @param {Object} props - component props
  * @returns {React.FC} - returns patients list view
  */
-export function ConnectedPatientDetails() {
+export function ConnectedPatientDetails(props: PatientDetailPropTypes) {
   return (
     <QueryClientProvider client={queryClient}>
-      <PatientComponent keycloakBaseURL="" />
+      <PatientComponent {...props} />
     </QueryClientProvider>
   );
 }
