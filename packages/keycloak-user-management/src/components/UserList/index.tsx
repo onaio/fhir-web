@@ -82,10 +82,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   React.useEffect(() => {
     if (isLoading) {
-      const test = client.request('Patient').then((res: any) => {
-        console.log('res', res);
-      });
-      console.log('test', test);
       const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
       serve
         .list()
