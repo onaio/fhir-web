@@ -260,17 +260,6 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={
-                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
-              }
-              exact
-              path={CATALOGUE_LIST_VIEW_URL}
-              {...BaseProps}
-              component={ConnectedProductCatalogueList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
               path={ACTIVE_PLANS_LIST_VIEW_URL}
@@ -325,17 +314,6 @@ const App: React.FC = () => {
                 activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
               }
               exact
-              path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
-              {...BaseProps}
-              component={ConnectedProductCatalogueList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={
-                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
-              }
-              exact
               path={CATALOGUE_CREATE_VIEW_URL}
               {...BaseProps}
               component={CreateProductView}
@@ -351,6 +329,29 @@ const App: React.FC = () => {
               {...BaseProps}
               component={ConnectedEditProductView}
             />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
+              }
+              exact
+              path={CATALOGUE_LIST_VIEW_URL}
+              {...BaseProps}
+              component={ConnectedProductCatalogueList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
+              }
+              exact
+              path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
+              {...BaseProps}
+              component={ConnectedProductCatalogueList}
+            />
+
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
