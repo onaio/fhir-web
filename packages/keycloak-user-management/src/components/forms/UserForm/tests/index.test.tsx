@@ -302,7 +302,7 @@ describe('components/forms/UserForm', () => {
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
-    expect(history.location.pathname).toEqual('/admin/users/list');
+    expect(history.location.pathname).toEqual('/admin/users');
   });
 
   it('render correct user name in header', async () => {

@@ -161,7 +161,7 @@ describe('components/Credentials', () => {
       },
     ]);
     expect(mockNotificationSuccess).toHaveBeenCalledWith(CREDENTIALS_UPDATED_SUCCESSFULLY);
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
     wrapper.unmount();
   });
 
