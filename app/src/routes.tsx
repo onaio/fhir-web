@@ -41,6 +41,8 @@ import {
   MISSIONS,
   ADMIN,
   INVENTORY,
+  USER_ROLES,
+  USER_GROUPS,
 } from './lang';
 
 import {
@@ -53,6 +55,8 @@ import {
   URL_TEAM_ASSIGNMENT,
   URL_JSON_VALIDATOR_LIST,
   URL_DOWNLOAD_CLIENT_DATA,
+  URL_USER_GROUPS,
+  URL_USER_ROLES,
 } from './constants';
 
 /** Interface for menu items */
@@ -133,7 +137,11 @@ export const getRoutes = (roles: string[]): Route[] => {
           title: `${USERS}`,
           key: 'users',
           enabled: roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
-          children: [{ title: `${USER_MANAGEMENT}`, key: 'user-management', url: `${URL_USER}` }],
+          children: [
+            { title: `${USER_MANAGEMENT}`, key: 'user', url: `${URL_USER}` },
+            { title: `${USER_GROUPS}`, key: 'user-groups', url: `${URL_USER_GROUPS}` },
+            { title: `${USER_ROLES}`, key: 'user-roles', url: `${URL_USER_ROLES}` },
+          ],
         },
         {
           title: 'Locations',

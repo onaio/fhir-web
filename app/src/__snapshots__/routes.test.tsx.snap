@@ -39,7 +39,7 @@ Array [
       Object {
         "key": "inventory-list",
         "title": "Service point inventory",
-        "url": "/inventory/list",
+        "url": "/inventory",
       },
     ],
     "enabled": true,
@@ -56,9 +56,19 @@ Array [
       Object {
         "children": Array [
           Object {
-            "key": "user-management",
+            "key": "user",
             "title": "User Management",
             "url": "/admin/users",
+          },
+          Object {
+            "key": "user-groups",
+            "title": "User Groups",
+            "url": "/admin/users/groups",
+          },
+          Object {
+            "key": "user-roles",
+            "title": "User Roles",
+            "url": "/admin/users/roles",
           },
         ],
         "enabled": true,

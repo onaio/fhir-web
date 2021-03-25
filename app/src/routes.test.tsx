@@ -58,8 +58,8 @@ describe('routes', () => {
       PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
       FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
-    const routes = getRoutes(['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS']);
 
+    const routes = getRoutes(['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS']);
     expect(routes).toMatchSnapshot();
   });
 });
