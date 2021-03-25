@@ -221,6 +221,10 @@ describe('components/CreateEditUser', () => {
 
   it('fetches user if page is refreshed', async () => {
     fetch.mockResponseOnce(JSON.stringify(userGroup));
+    fetch.mockResponseOnce(JSON.stringify(keycloakUser));
+    fetch.mockResponseOnce(JSON.stringify(userGroup));
+    fetch.mockResponseOnce(JSON.stringify(practitioner1));
+    fetch.mockResponseOnce(JSON.stringify(requiredActions));
 
     opensrpStore.store.dispatch(
       authenticateUser(
@@ -293,6 +297,17 @@ describe('components/CreateEditUser', () => {
       ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer bamboocha',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
         {
           headers: {
             accept: 'application/json',
