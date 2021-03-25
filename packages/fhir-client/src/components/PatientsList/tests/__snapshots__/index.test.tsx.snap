@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Patients list view renders correctly 1`] = `"PatientsAdd patientNameDate Of BirthGenderActions Apple Park  1988-08-04maleView Jane Doe  1988-08-04maleView John Doe  1988-08-04maleView Albert Einstein Deceased 1988-08-04maleView120 / page"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - ascending 0 1`] = `"NameDate Of BirthGenderActions"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - ascending 1 1`] = `" Albert Einstein Deceased 1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - ascending 2 1`] = `" John Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - ascending 3 1`] = `" Jane Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - ascending 4 1`] = `" Apple Park  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - descending 0 1`] = `"NameDate Of BirthGenderActions"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - descending 1 1`] = `" Apple Park  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - descending 2 1`] = `" Jane Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - descending 3 1`] = `" John Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by dob - descending 4 1`] = `" Albert Einstein Deceased 1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - ascending 0 1`] = `"NameDate Of BirthGenderActions"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - ascending 1 1`] = `" Apple Park  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - ascending 2 1`] = `" Jane Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - ascending 3 1`] = `" John Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - ascending 4 1`] = `" Albert Einstein Deceased 1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - descending 0 1`] = `"NameDate Of BirthGenderActions"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - descending 1 1`] = `" Albert Einstein Deceased 1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - descending 2 1`] = `" John Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - descending 3 1`] = `" Jane Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by gender - descending 4 1`] = `" Apple Park  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - ascending 0 1`] = `"NameDate Of BirthGenderActions"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - ascending 1 1`] = `" Albert Einstein Deceased 1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - ascending 2 1`] = `" Apple Park  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - ascending 3 1`] = `" Jane Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - ascending 4 1`] = `" John Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - descending 0 1`] = `"NameDate Of BirthGenderActions"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - descending 1 1`] = `" John Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - descending 2 1`] = `" Jane Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - descending 3 1`] = `" Apple Park  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: sorted table rows by name - descending 4 1`] = `" Albert Einstein Deceased 1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: table rows - default order 0 1`] = `"NameDate Of BirthGenderActions"`;
+
+exports[`Patients list view renders correctly: table rows - default order 1 1`] = `" Apple Park  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: table rows - default order 2 1`] = `" Jane Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: table rows - default order 3 1`] = `" John Doe  1988-08-04maleView"`;
+
+exports[`Patients list view renders correctly: table rows - default order 4 1`] = `" Albert Einstein Deceased 1988-08-04maleView"`;
