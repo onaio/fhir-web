@@ -26,7 +26,10 @@ export interface FormFields extends KeycloakUser {
 
 const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
+
+  // hook into the form lifecycle methods
   const [form] = Form.useForm();
+
   const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
   const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
@@ -60,6 +63,13 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
   React.useEffect(() => {
     setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
   }, [initialValues.requiredActions]);
+
+  /** Update form initial values when initialValues prop changes, without this
+   * the form fields initial values will not change if props.initialValues update
+   * **/
+  React.useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [form, initialValues]);
 
   return (
     <Row className="layout-content">
