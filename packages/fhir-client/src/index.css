@@ -1,0 +1,14 @@
+.patient-info-main {
+  padding: 20px 0;
+}
+
+.patient-detail-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.patient-detail-section > div span:first-child,
+.patient-info-main .ant-col span:first-child {
+  color: #777;
+}
