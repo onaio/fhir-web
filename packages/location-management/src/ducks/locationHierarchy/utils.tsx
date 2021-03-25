@@ -7,7 +7,6 @@ import {
 } from './types';
 import { cloneDeep } from 'lodash';
 import cycle from 'cycle';
-import { quickSort } from '../../utils';
 import TreeModel from 'tree-model';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { LocationUnit } from '../../ducks/location-units';
@@ -164,16 +163,4 @@ export function getHierarchyNodeFromArray(
   });
 
   return result.find((e) => e !== undefined);
-}
-
-/**
- * Sort the Base ParsedHierarchyNode by name
- *
- * @param {Array<ParsedHierarchyNode>} hierarchy Array of ParsedHierarchyNode
- * @returns {Array<ParsedHierarchyNode>} returns Sorted ParsedHierarchyNode
- */
-export function sortBaseParsedHierarchy(hierarchy: ParsedHierarchyNode[]) {
-  const names = hierarchy.map((e) => e.title);
-  quickSort(names);
-  return names.map((title) => hierarchy.find((e) => title === e.title) as ParsedHierarchyNode);
 }
