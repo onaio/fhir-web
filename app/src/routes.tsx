@@ -89,6 +89,23 @@ export const getRoutes = (roles: string[]): Route[] => {
       ],
     },
     {
+      otherProps: { icon: <IdcardOutlined /> },
+      title: 'Card Support',
+      key: 'card-support',
+      enabled:
+        ENABLE_CARD_SUPPORT &&
+        roles &&
+        activeRoles.CARD_SUPPORT &&
+        isAuthorized(roles, activeRoles.CARD_SUPPORT.split(',')),
+      children: [
+        {
+          title: 'Download Client Data',
+          url: `${URL_DOWNLOAD_CLIENT_DATA}`,
+          key: 'download-client-data',
+        },
+      ],
+    },
+    {
       otherProps: { icon: <ArchiveOutline className="sidebar-icons" /> },
       title: `${INVENTORY}`,
       key: 'inventory',
@@ -183,23 +200,6 @@ export const getRoutes = (roles: string[]): Route[] => {
               url: `${URL_JSON_VALIDATOR_LIST}`,
             },
           ],
-        },
-      ],
-    },
-    {
-      otherProps: { icon: <IdcardOutlined /> },
-      title: 'Card Support',
-      key: 'card-support',
-      enabled:
-        ENABLE_CARD_SUPPORT &&
-        roles &&
-        activeRoles.CARD_SUPPORT &&
-        isAuthorized(roles, activeRoles.CARD_SUPPORT.split(',')),
-      children: [
-        {
-          title: 'Download Client Data',
-          url: `${URL_DOWNLOAD_CLIENT_DATA}`,
-          key: 'download-client-data',
         },
       ],
     },
