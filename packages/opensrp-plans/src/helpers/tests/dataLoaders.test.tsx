@@ -1,6 +1,5 @@
 import { eusmPlans } from '../../ducks/planDefinitions/tests/fixtures';
 import {
-  loadAssignments,
   loadOrganizations,
   loadPlans,
   putJurisdictionsToPlan,
@@ -9,12 +8,13 @@ import {
   loadJurisdictions,
   retireAssignmentsByJur,
   getSingleJurisdictionPayload,
+  loadAssignments,
 } from '../dataLoaders';
 import * as plansDux from '../../ducks/planDefinitions';
-import { COULD_NOT_LOAD_ASSIGNMENTS } from '../../lang';
+import lang from '../../lang';
 import { helperRawAssignment1, helperRawAssignment2, helperRawAssignment3 } from './fixtures';
 import MockDate from 'mockdate';
-import { processRawAssignments } from '../../ducks/assignments/utils';
+import { processRawAssignments } from '@opensrp/team-assignment';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -113,7 +113,7 @@ describe('dataLoading', () => {
     fetch.resetMocks();
     fetch.mockResponse(JSON.stringify(null));
     loadAssignments(mockBaseURL, 'planId').catch((e) => {
-      expect(e.message).toEqual(COULD_NOT_LOAD_ASSIGNMENTS);
+      expect(e.message).toEqual(lang.COULD_NOT_LOAD_ASSIGNMENTS);
     });
   });
 

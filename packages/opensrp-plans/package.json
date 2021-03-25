@@ -38,6 +38,7 @@
   "peerDependencies": {
     "@opensrp/store": "^0.0.7",
     "antd": "^4.6.3",
+    "i18next": "^19.8.4",
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
@@ -54,8 +55,9 @@
     "@opensrp/plan-form-core": "^0.0.3",
     "@opensrp/react-utils": "^0.0.7",
     "@opensrp/server-service": "^0.0.17",
+    "@opensrp/team-assignment": "^0.0.2",
     "@opensrp/team-management": "^0.0.5",
-    "i18next": "^19.8.4"
+    "react-i18next": "^11.8.10"
   },
   "devDependencies": {
     "i18next-parser": "^3.5.0"

@@ -3,16 +3,7 @@ import { Spin, Alert } from 'antd';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
-import {
-  LOADING_ELLIPSIS,
-  ACTIONS_TH,
-  SERVICE_POINT_TH,
-  TYPE_TH,
-  LOCATION_TH,
-  SERVICE_POINT_ID_TH,
-  FETCHING_LOCATIONS,
-  FETCHING_LOCATIONS_DESCRIPTION,
-} from '../../lang';
+import lang, { Lang } from '../../lang';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
 
 /** Describes how the data will passed to the table */
@@ -31,50 +22,58 @@ export interface TableData {
 export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (record) => {
   return (
     <>
-      <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>View</Link>
+      <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>
+        {lang.VIEW}
+      </Link>
     </>
   );
 };
 
-/** service point list table columns */
-export const columns: ColumnsType<TableData> = [
-  {
-    title: SERVICE_POINT_TH,
-    dataIndex: 'serviceName',
-    key: `${TableColumnsNamespace}-${SERVICE_POINT_TH}`,
-    defaultSortOrder: 'descend',
-    sorter: (rec1, rec2) => {
-      if (rec1.serviceName > rec2.serviceName) {
-        return -1;
-      } else if (rec1.serviceName < rec2.serviceName) {
-        return 1;
-      } else {
-        return 0;
-      }
+/** service point list table columns factory
+ *
+ * @param langObj - the language translations lookup
+ */
+export const columnsFactory = (langObj: Lang = lang) => {
+  const columns: ColumnsType<TableData> = [
+    {
+      title: langObj.SERVICE_POINT_TH,
+      dataIndex: 'serviceName',
+      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_TH}`,
+      defaultSortOrder: 'descend',
+      sorter: (rec1, rec2) => {
+        if (rec1.serviceName > rec2.serviceName) {
+          return -1;
+        } else if (rec1.serviceName < rec2.serviceName) {
+          return 1;
+        } else {
+          return 0;
+        }
+      },
     },
-  },
-  {
-    title: TYPE_TH,
-    dataIndex: 'type',
-    key: `${TableColumnsNamespace}-${TYPE_TH}`,
-  },
-  {
-    title: LOCATION_TH,
-    dataIndex: 'location',
-    key: `${TableColumnsNamespace}-${LOCATION_TH}`,
-  },
-  {
-    title: SERVICE_POINT_ID_TH,
-    dataIndex: 'servicePointId',
-    key: `${TableColumnsNamespace}-${SERVICE_POINT_ID_TH}`,
-  },
-  {
-    title: ACTIONS_TH,
-    key: `${TableColumnsNamespace}-actions`,
-    render: ActionsColumnCustomRender,
-    width: '10%',
-  },
-];
+    {
+      title: langObj.TYPE_TH,
+      dataIndex: 'type',
+      key: `${TableColumnsNamespace}-${langObj.TYPE_TH}`,
+    },
+    {
+      title: langObj.LOCATION_TH,
+      dataIndex: 'location',
+      key: `${TableColumnsNamespace}-${langObj.LOCATION_TH}`,
+    },
+    {
+      title: langObj.SERVICE_POINT_ID_TH,
+      dataIndex: 'servicePointId',
+      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_ID_TH}`,
+    },
+    {
+      title: langObj.ACTIONS_TH,
+      key: `${TableColumnsNamespace}-actions`,
+      render: ActionsColumnCustomRender,
+      width: '20%',
+    },
+  ];
+  return columns;
+};
 
 /**
  * util component shown when there is a pending promise
@@ -84,11 +83,11 @@ export const columns: ColumnsType<TableData> = [
  * @param root0.description - description of error to show
  */
 export const ServicePointsLoading = ({
-  message = FETCHING_LOCATIONS,
-  description = FETCHING_LOCATIONS_DESCRIPTION,
+  message = lang.FETCHING_LOCATIONS,
+  description = lang.FETCHING_LOCATIONS_DESCRIPTION,
 }) => {
   return (
-    <Spin tip={LOADING_ELLIPSIS}>
+    <Spin tip={lang.LOADING_ELLIPSIS}>
       <Alert message={message} description={description} type="info" />
     </Spin>
   );

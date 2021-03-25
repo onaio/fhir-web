@@ -35,7 +35,8 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.9",
-    "react": "^16.18.1"
+    "react": "^16.18.1",
+    "i18next": "^19.8.4"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
@@ -43,12 +44,13 @@
   "dependencies": {
     "@opensrp/location-management": "^0.0.11",
     "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/product-catalogue": "0.0.2",
+    "@opensrp/product-catalogue": "0.0.6",
     "@opensrp/react-utils": "^0.0.7",
     "@opensrp/store": "^0.0.9",
     "axios": "^0.21.1",
     "date-fns": "^2.19.0",
-    "i18next": "^19.8.4"
+    "i18next": "^19.8.4",
+    "react-i18next": "^11.8.10"
   },
   "devDependencies": {
     "@onaio/session-reducer": "^0.0.12",

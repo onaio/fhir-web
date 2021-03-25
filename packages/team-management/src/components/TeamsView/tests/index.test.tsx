@@ -11,7 +11,7 @@ import fetch from 'jest-fetch-mock';
 import { authenticateUser } from '@onaio/session-reducer';
 import { org1, teamMember } from '../../../ducks/tests/fixtures';
 import { notification } from 'antd';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 describe('components/TeamsView', () => {
   beforeEach(() => {
@@ -122,7 +122,7 @@ describe('components/TeamsView', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: ERROR_OCCURRED,
+      message: lang.ERROR_OCCURRED,
     });
   });
 });

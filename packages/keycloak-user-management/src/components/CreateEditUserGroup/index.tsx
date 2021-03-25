@@ -12,7 +12,7 @@ import {
   KEYCLOAK_URL_EFFECTIVE_ROLES,
   ROUTE_PARAM_USER_GROUP_ID,
 } from '../../constants';
-import { ERROR_OCCURED } from '../../lang';
+import lang from '../../lang';
 import {
   reducer as keycloakUserGroupsReducer,
   reducerName as keycloakUserGroupsReducerName,
@@ -105,7 +105,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
         assignedRolesPromise,
         effectiveRolesPromise,
       ])
-        .catch(() => sendErrorNotification(ERROR_OCCURED))
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
         .finally(() => setIsLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

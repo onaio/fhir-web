@@ -17,7 +17,7 @@ import {
 } from '@opensrp/form-config-core';
 import { fixManifestReleases, manifestRelease4 } from '../../../helpers/fixtures';
 import { ReleaseList } from '..';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 const history = createBrowserHistory();
 const mockHistoryPush = jest.fn();
@@ -186,7 +186,7 @@ describe('components/Antd/ReleaseList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
     expect(wrapper.find('tbody').find('tr').find('td').find('div.ant-empty-image')).toHaveLength(1);
 
     wrapper.unmount();

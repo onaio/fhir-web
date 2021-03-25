@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ManifestReleasesTypes } from '@opensrp/form-config-core';
-import { VIEW_FILES } from '../../../lang';
+import lang from '../../../lang';
 
 /** interface for component props */
 export interface TableActionsProps {
@@ -14,7 +14,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
   return (
     <>
       <Link to={`${viewReleaseURL}/${file.identifier}`} key="actions">
-        {VIEW_FILES}
+        {lang.VIEW_FILES}
       </Link>
     </>
   );

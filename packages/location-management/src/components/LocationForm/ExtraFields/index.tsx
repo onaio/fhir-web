@@ -6,9 +6,10 @@ import { OpenSRPService } from '@opensrp/react-utils';
 import { LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER } from '../../../constants';
 import { loadSettings } from '../../../helpers/dataLoaders';
 import React, { useEffect, useState } from 'react';
-import { LocationSetting, validationRules } from '../utils';
+import { LocationSetting, validationRulesFactory } from '../utils';
 import { Form, Input } from 'antd';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import lang from '../../../lang';
 
 const { List, Item: FormItem } = Form;
 
@@ -33,6 +34,7 @@ const defaultExtraFieldProps = {
 const ExtraFields = (props: ExtraFieldProps) => {
   const { baseURL, service, disabled, hidden } = props;
   const [settings, setSettings] = useState<LocationSetting[]>([]);
+  const validationRules = validationRulesFactory(lang);
 
   useEffect(() => {
     // fetch service type settings

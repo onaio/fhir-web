@@ -13,18 +13,7 @@ import { RouteComponentProps, Redirect } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { ROUTE_PARAM_FORM_ID } from '../../constants';
-import {
-  ERROR_OCCURRED,
-  UPLOAD_FORM,
-  ERROR_FORM_NAME_REQUIRED,
-  ERROR_FORM_REQUIRED,
-  FORM_NAME,
-  MODULE,
-  RELATED_TO,
-  FORM,
-  UPLOADING,
-  CLICK_TO_UPLOAD,
-} from '../../lang';
+import lang from '../../lang';
 
 /** inteface for route params */
 interface RouteParams {
@@ -142,7 +131,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>{UPLOAD_FORM}</Title>
+      <Title level={3}>{lang.UPLOAD_FORM}</Title>
       <Card>
         <Form
           {...layout}
@@ -160,39 +149,39 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
               setIfDoneHere,
               sendErrorNotification
             ).catch(() => {
-              sendErrorNotification(ERROR_OCCURRED);
+              sendErrorNotification(lang.ERROR_OCCURRED);
             });
           }}
         >
           <Form.Item
             id="form_name"
             name="form_name"
-            label={FORM_NAME}
-            rules={[{ required: true, message: ERROR_FORM_NAME_REQUIRED }]}
+            label={lang.FORM_NAME}
+            rules={[{ required: true, message: lang.ERROR_FORM_NAME_REQUIRED }]}
           >
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item id="module" name="module" label={MODULE}>
+          <Form.Item id="module" name="module" label={lang.MODULE}>
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item id="form_relation" name="form_relation" label={RELATED_TO}>
+          <Form.Item id="form_relation" name="form_relation" label={lang.RELATED_TO}>
             <Input disabled={isEditMode} />
           </Form.Item>
           <Form.Item
             id="form"
             name="form"
-            label={FORM}
+            label={lang.FORM}
             valuePropName="fileList"
             getValueFromEvent={normFile}
-            rules={[{ required: true, message: ERROR_FORM_REQUIRED }]}
+            rules={[{ required: true, message: lang.ERROR_FORM_REQUIRED }]}
           >
             <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined />}>{CLICK_TO_UPLOAD}</Button>
+              <Button icon={<UploadOutlined />}>{lang.CLICK_TO_UPLOAD}</Button>
             </Upload>
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              {isSubmitting ? `${UPLOADING}....` : UPLOAD_FORM}
+              {isSubmitting ? `${lang.UPLOADING}....` : lang.UPLOAD_FORM}
             </Button>
           </Form.Item>
         </Form>
