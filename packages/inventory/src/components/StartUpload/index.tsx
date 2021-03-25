@@ -1,10 +1,6 @@
 import React from 'react';
 import { Card, Button, Upload } from 'antd';
-import {
-  CHANCE_TO_REVIEW_BEFORE_COMMITTING,
-  SELECT_CSV_FILE,
-  USE_CSV_TO_UPLOAD_INVENTORY,
-} from '../../lang';
+import lang from '../../lang';
 import { CloudUploadOutlined, UploadOutlined } from '@ant-design/icons';
 import { CSV_FILE_TYPE } from '../../constants';
 import { UploadChangeParam, RcCustomRequestOptions } from 'antd/lib/upload/interface';
@@ -30,7 +26,7 @@ const StartUpload = (props: StartUploadProps) => {
   const cardTitle = (
     <CardTitle
       IconRender={<CloudUploadOutlined className="card-title__icon" />}
-      text={USE_CSV_TO_UPLOAD_INVENTORY}
+      text={lang.USE_CSV_TO_UPLOAD_INVENTORY}
     />
   );
 
@@ -56,10 +52,10 @@ const StartUpload = (props: StartUploadProps) => {
 
   return (
     <Card title={cardTitle} className="full-page-card">
-      <p>{CHANCE_TO_REVIEW_BEFORE_COMMITTING}</p>
+      <p>{lang.CHANCE_TO_REVIEW_BEFORE_COMMITTING}</p>
       <Upload {...uploadProps}>
         <Button icon={<UploadOutlined />} type="primary" className="round-button">
-          {SELECT_CSV_FILE}
+          {lang.SELECT_CSV_FILE}
         </Button>
       </Upload>
     </Card>

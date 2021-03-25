@@ -1,8 +1,8 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { FlushThunks } from 'redux-testkit';
 import {
-  organizationsReducer,
-  orgReducerName,
+  reducer,
+  reducerName,
   fetchOrganizationsAction,
   getOrganizationsArray,
   getTotalOrganizations,
@@ -12,7 +12,7 @@ import {
 import { store } from '@opensrp/store';
 import * as fixtures from './fixtures';
 
-reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(reducerName, reducer);
 
 describe('reducers/organizations', () => {
   beforeEach(() => {

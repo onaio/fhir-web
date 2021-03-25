@@ -5,6 +5,7 @@ import Tree from './components/LocationTree';
 import { FormInstances } from './components/LocationForm/utils';
 
 export * as locationHierachyDucks from './ducks/location-hierarchy';
+export * as updatedLocationHierachyDucks from './ducks/locationHierarchy';
 export * from './ducks/types';
 export { LocationUnitList, LocationUnitGroupList, LocationUnitGroupAddEdit, Tree, FormInstances };
 

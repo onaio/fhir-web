@@ -11,7 +11,7 @@ import {
   reducerName as keycloakUserRolesReducerName,
   reducer as keycloakUserRolesReducer,
 } from '../../ducks/userRoles';
-import { COMPOSITE, DESCRIPTION, ERROR_OCCURED, NAME, USER_ROLES_PAGE_HEADER } from '../../lang';
+import lang from '../../lang';
 import { SEARCH_QUERY_PARAM } from '../../constants';
 import { KeycloakUserRole, makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
 import { fetchAllRoles } from './utils';
@@ -58,7 +58,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
   useEffect(() => {
     if (isLoading) {
       fetchAllRoles(keycloakBaseURL, dispatch)
-        .catch(() => sendErrorNotification(ERROR_OCCURED))
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
         .finally(() => setIsLoading(false));
     }
   });
@@ -84,18 +84,18 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
 
   const columns = [
     {
-      title: NAME,
+      title: lang.NAME,
       dataIndex: 'name',
       editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
-      title: COMPOSITE,
+      title: lang.COMPOSITE,
       dataIndex: 'composite',
       editable: true,
     },
     {
-      title: DESCRIPTION,
+      title: lang.DESCRIPTION,
       dataIndex: 'description',
       editable: true,
       sorter: (a: TableData, b: TableData) => a.description.localeCompare(b.description),
@@ -105,9 +105,9 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
   return (
     <div className="content-section">
       <Helmet>
-        <title>{USER_ROLES_PAGE_HEADER}</title>
+        <title>{lang.USER_ROLES_PAGE_HEADER}</title>
       </Helmet>
-      <PageHeader title={USER_ROLES_PAGE_HEADER} className="page-header" />
+      <PageHeader title={lang.USER_ROLES_PAGE_HEADER} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

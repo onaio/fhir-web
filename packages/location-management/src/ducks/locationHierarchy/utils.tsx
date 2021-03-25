@@ -6,16 +6,22 @@ import {
   TreeNode,
 } from './types';
 import { cloneDeep } from 'lodash';
-import TreeModel from 'tree-model';
 import cycle from 'cycle';
 import { quickSort } from '../../utils';
+import TreeModel from 'tree-model';
+import { OpenSRPService } from '@opensrp/react-utils';
+import { LocationUnit } from '../../ducks/location-units';
+import { LOCATION_HIERARCHY, LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
+
+const { getFilterParams } = OpenSRPService;
 
 /** Parse the raw child hierarchy node map
  *
  * @param {RawHierarchyNodeMap} rawNodeMap - Object of raw hierarchy nodes
+ * @param {string} parent - node parent id
  * @returns {Array<ParsedHierarchyNode>} Array of Parsed hierarchy nodes
  */
-const parseChildren = (rawNodeMap: RawHierarchyNodeMap) => {
+const parseChildren = (rawNodeMap: RawHierarchyNodeMap, parent: string) => {
   const rawHierarchyNode: RawHierarchyNode[] = Object.entries(rawNodeMap).map(
     ([_key, value]) => value
   );
@@ -23,8 +29,8 @@ const parseChildren = (rawNodeMap: RawHierarchyNodeMap) => {
     const parsedNode: ParsedHierarchyNode = {
       ...child,
       title: child.label,
-      key: child.label,
-      children: child.children ? parseChildren(child.children) : undefined,
+      key: `${child.id}-${parent}`,
+      children: child.children ? parseChildren(child.children, parent) : [],
     };
     return parsedNode;
   });
@@ -48,7 +54,7 @@ const parseHierarchy = (raw: RawOpenSRPHierarchy) => {
     ...rawNode,
     title: rawNode.label,
     key: rawNode.id,
-    children: rawNode.children ? parseChildren(rawNode.children) : undefined,
+    children: rawNode.children ? parseChildren(rawNode.children, rawNode.id) : [],
   };
 
   return parsedNode;
@@ -66,6 +72,41 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
   return root;
 };
 
+/** Gets all the location unit at geographicLevel 0
+ *
+ * @param {string} opensrpBaseURL - base url
+ * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
+ */
+export async function getBaseTreeNode(opensrpBaseURL: string) {
+  const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
+  return await serve
+    .list({
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      is_jurisdiction: true,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      return_geometry: false,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+    })
+    .then((response: LocationUnit[]) => response);
+}
+
+/** Gets the hierarchy of the location units
+ *
+ * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
+ * @param {string} opensrpBaseURL - base url
+ * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
+ */
+export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: string) {
+  const hierarchy: RawOpenSRPHierarchy[] = [];
+  for (const loc of location) {
+    const serve = new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL);
+    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
+    hierarchy.push(data);
+  }
+
+  return hierarchy;
+}
 /**
  * serialize tree due to circular dependencies
  *

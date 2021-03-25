@@ -6,30 +6,22 @@ import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { connect } from 'react-redux';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
 import { Link } from 'react-router-dom';
-import filesReducer, {
+import {
+  filesReducer,
   fetchManifestFiles,
   filesReducerName,
   ManifestFilesTypes,
   getAllManifestFilesArray,
   removeManifestFiles,
-} from '../../ducks/manifestFiles';
+  formatDate,
+  downloadManifestFile,
+  fetchManifests,
+} from '@opensrp/form-config-core';
 import { Row, Col } from 'reactstrap';
-import {
-  DOWNLOAD,
-  EDIT,
-  FILE_NAME,
-  FILE_VERSION,
-  IDENTIFIER,
-  UPLOAD_EDIT,
-  UPLOAD_NEW_FILE,
-  MODULE,
-  FIND_FILES,
-  CREATED_AT,
-} from '../../lang';
 import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile, fetchManifests } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
+import lang from '../../lang';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -265,23 +257,23 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
 
 /** declear default props */
 const defaultProps: FilesListDefaultProps = {
-  createdAt: CREATED_AT,
+  createdAt: lang.CREATED_AT,
   data: [],
   debounceTime: 1000,
-  downloadLabel: DOWNLOAD,
+  downloadLabel: lang.DOWNLOAD,
   drillDownProps: {
     paginate: false,
   },
-  editLabel: EDIT,
+  editLabel: lang.EDIT,
   fetchFiles: fetchManifestFiles,
-  fileNameLabel: FILE_NAME,
-  fileVersionLabel: FILE_VERSION,
-  identifierLabel: IDENTIFIER,
-  moduleLabel: MODULE,
-  placeholder: FIND_FILES,
+  fileNameLabel: lang.FILE_NAME,
+  fileVersionLabel: lang.FILE_VERSION,
+  identifierLabel: lang.IDENTIFIER,
+  moduleLabel: lang.MODULE,
+  placeholder: lang.FIND_FILES,
   removeFiles: removeManifestFiles,
-  uploadEditLabel: UPLOAD_EDIT,
-  uploadFileLabel: UPLOAD_NEW_FILE,
+  uploadEditLabel: lang.UPLOAD_EDIT,
+  uploadFileLabel: lang.UPLOAD_NEW_FILE,
   accessToken: '',
 };
 

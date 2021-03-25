@@ -4,7 +4,7 @@ import * as notifications from '@opensrp/notifications';
 import * as fixtures from '../../UserGroupDetailView/tests/fixtures';
 import { loadGroupDetails, loadGroupMembers } from '../utils';
 import fetch from 'jest-fetch-mock';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 
 const mockBaseURL = 'https://example.com/rest';
 
@@ -78,7 +78,7 @@ describe('dataLoading', () => {
       throw e;
     });
     await new Promise((resolve) => setImmediate(resolve));
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
   it('loadGroupDetails handles errors', async () => {
@@ -87,6 +87,6 @@ describe('dataLoading', () => {
     loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 });

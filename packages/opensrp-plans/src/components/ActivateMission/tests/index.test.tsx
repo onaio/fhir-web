@@ -4,11 +4,7 @@ import { ActivateMissionCard } from '..';
 import toJson from 'enzyme-to-json';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import {
-  FAILED_TO_ACTIVATE_MISSION,
-  ONLY_DRAFT_MISSIONS_CAN_BE_ACTIVATED,
-  SUCCESSFULLY_ACTIVATED_MISSION,
-} from '../../../lang';
+import lang from '../../../lang';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
 
@@ -44,6 +40,31 @@ describe('activate mission', () => {
   });
 
   it('works correctly for draft plans', async () => {
+    // plan is active
+    const mockCallback = jest.fn();
+
+    const mission = {
+      ...plan,
+      jurisdiction: [],
+      status: PlanStatus.DRAFT,
+    };
+    const props = {
+      plan: mission as PlanDefinition,
+      submitCallback: mockCallback,
+    };
+    const wrapper = mount(<ActivateMissionCard {...props} />);
+
+    // renders the activate button
+    expect(wrapper.find('button')).toHaveLength(1);
+
+    // check button is disabled
+    expect(wrapper.find('button').props().disabled).toEqual(true);
+
+    // expect toolkit too.
+    expect(wrapper.find('Tooltip')).toHaveLength(1);
+  });
+
+  it('disabled when plan has no Jurisdictions', async () => {
     fetch.once(JSON.stringify({}));
     // plan is active
     const mockCallback = jest.fn();
@@ -57,7 +78,6 @@ describe('activate mission', () => {
       submitCallback: mockCallback,
     };
     const wrapper = mount(<ActivateMissionCard {...props} />);
-    expect(wrapper.text().includes(ONLY_DRAFT_MISSIONS_CAN_BE_ACTIVATED)).toBeFalsy();
     // renders the activate button
     expect(wrapper.find('button')).toHaveLength(1);
 
@@ -94,7 +114,7 @@ describe('activate mission', () => {
     // check callback was called
     expect(mockCallback).toHaveBeenCalledWith(expectedMission);
 
-    expect(sendSuccessMock).toHaveBeenCalledWith(SUCCESSFULLY_ACTIVATED_MISSION);
+    expect(sendSuccessMock).toHaveBeenCalledWith(lang.SUCCESSFULLY_ACTIVATED_MISSION);
     sendSuccessMock.mockRestore();
   });
 
@@ -124,7 +144,7 @@ describe('activate mission', () => {
     // check callback was called
     expect(mockCallback).not.toHaveBeenCalled();
 
-    expect(sendErrorMock).toHaveBeenCalledWith(FAILED_TO_ACTIVATE_MISSION);
+    expect(sendErrorMock).toHaveBeenCalledWith(lang.FAILED_TO_ACTIVATE_MISSION);
     sendErrorMock.mockRestore();
   });
 });

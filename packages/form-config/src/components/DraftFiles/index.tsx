@@ -5,34 +5,28 @@ import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { connect } from 'react-redux';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
-import DraftFilesReducer, {
+import {
+  draftReducer,
   fetchManifestDraftFiles,
   draftReducerName,
   getAllManifestDraftFilesArray,
   removeManifestDraftFiles,
-} from '../../ducks/manifestDraftFiles';
+  ManifestFilesTypes,
+  formatDate,
+  downloadManifestFile,
+  makeRelease,
+  fetchDrafts,
+} from '@opensrp/form-config-core';
 import { Button, Row, Col } from 'reactstrap';
-import { ManifestFilesTypes } from '../../ducks/manifestFiles';
 import { Redirect } from 'react-router';
-import {
-  MAKE_RELEASE,
-  FILE_NAME,
-  FILE_VERSION,
-  IDENTIFIER,
-  MODULE,
-  DOWNLOAD,
-  FIND_DRAFT_FILES,
-  CREATED_AT,
-  UPLOAD_NEW_FILE,
-} from '../../lang';
 import { Cell } from 'react-table';
-import { formatDate, downloadManifestFile, makeRelease, fetchDrafts } from '../../helpers/utils';
 import { Link } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
+import lang from '../../lang';
 
 /** Register reducer */
-reducerRegistry.register(draftReducerName, DraftFilesReducer);
+reducerRegistry.register(draftReducerName, draftReducer);
 
 /** default props interface */
 export interface DraftsDefaultProps extends SearchBarDefaultProps {
@@ -260,21 +254,21 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
 /** declear default props */
 const defaultProps: DraftsDefaultProps = {
   clearDraftFiles: removeManifestDraftFiles,
-  createdAt: CREATED_AT,
+  createdAt: lang.CREATED_AT,
   data: [],
   debounceTime: 1000,
-  downloadLabel: DOWNLOAD,
+  downloadLabel: lang.DOWNLOAD,
   drillDownProps: {
     paginate: false,
   },
   fetchDraftFiles: fetchManifestDraftFiles,
-  fileNameLabel: FILE_NAME,
-  fileVersionLabel: FILE_VERSION,
-  identifierLabel: IDENTIFIER,
-  makeReleaseLabel: MAKE_RELEASE,
-  moduleLabel: MODULE,
-  placeholder: FIND_DRAFT_FILES,
-  uploadFileLabel: UPLOAD_NEW_FILE,
+  fileNameLabel: lang.FILE_NAME,
+  fileVersionLabel: lang.FILE_VERSION,
+  identifierLabel: lang.IDENTIFIER,
+  makeReleaseLabel: lang.MAKE_RELEASE,
+  moduleLabel: lang.MODULE,
+  placeholder: lang.FIND_DRAFT_FILES,
+  uploadFileLabel: lang.UPLOAD_NEW_FILE,
   accessToken: '',
 };
 

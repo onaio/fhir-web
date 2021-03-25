@@ -7,11 +7,9 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import * as opensrpStore from '@opensrp/store';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
-import { OpenSRPService } from '@opensrp/react-utils';
-import { KeycloakService } from '@opensrp/keycloak-service';
 import * as notifications from '@opensrp/notifications';
 import fetch from 'jest-fetch-mock';
 import toJson from 'enzyme-to-json';
@@ -22,7 +20,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 import {
   defaultInitialValue,
   keycloakUser,
@@ -50,12 +48,9 @@ describe('components/CreateEditUser', () => {
     history,
     keycloakUser: keycloakUser,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    serviceClass: KeycloakService,
     practitioner: undefined,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
     opensrpBaseURL: OPENSRP_API_BASE_URL,
-    opensrpServiceClass: OpenSRPService,
-    accessToken: 'bamboocha',
     location: {
       hash: '',
       pathname: '/users/edit',
@@ -75,11 +70,8 @@ describe('components/CreateEditUser', () => {
     history,
     keycloakUser: null,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    serviceClass: KeycloakService,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
     opensrpBaseURL: OPENSRP_API_BASE_URL,
-    opensrpServiceClass: OpenSRPService,
-    accessToken: 'bamboocha',
     location: {
       hash: '',
       pathname: '/users/new',
@@ -170,8 +162,8 @@ describe('components/CreateEditUser', () => {
     fetch
       .once(JSON.stringify(userGroup))
       .once(JSON.stringify(userGroup[1]))
-      .once(JSON.stringify(userGroup[1]))
       .once(JSON.stringify(practitioner1))
+      .once(JSON.stringify(userGroup[1]))
       .once(JSON.stringify(practitioner1))
       .once(JSON.stringify(requiredActions))
       .once(JSON.stringify(userGroup[1]))
@@ -193,20 +185,20 @@ describe('components/CreateEditUser', () => {
 
     const row = wrapper.find('Row').at(0);
 
-    expect(row.props()).toMatchSnapshot();
-
     const fetchMockCalls = fetch.mock.calls.map((call) => call[0]);
     expect(fetchMockCalls).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
       'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
       'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
     ]);
+
+    expect(row.props()).toMatchSnapshot();
 
     wrapper.unmount();
   });
@@ -358,7 +350,7 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
     wrapper.unmount();
   });
 
@@ -391,7 +383,6 @@ describe('components/CreateEditUser', () => {
     });
 
     expect(wrapper.find('CreateEditUser').prop('keycloakUser')).toEqual(keycloakUser);
-    expect(wrapper.find('CreateEditUser').prop('accessToken')).toEqual('bamboocha');
     expect(wrapper.find('CreateEditUser').prop('extraData')).toEqual({
       api_token: 'hunter2',
       oAuth2Data: { access_token: 'bamboocha', state: 'abcde' },

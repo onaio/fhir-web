@@ -1,7 +1,7 @@
 import React from 'react';
 import { EditAssignmentsModal, SelectOption } from '../AssignmentModal';
 import { Divider } from 'antd';
-import { Assignment, fetchAssignments } from '../../ducks/assignments';
+import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
 import { Jurisdiction } from '../../ducks/jurisdictions';
 import { Organization } from '@opensrp/team-management';
 import {
@@ -13,7 +13,7 @@ import {
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
 import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
-import { EDIT_AREAS, EDIT_TEAMS, SELECT_AREAS, SELECT_TEAMS } from '../../lang';
+import lang from '../../lang';
 
 interface ActionColumnProps {
   assignments: Assignment[];
@@ -133,9 +133,9 @@ export const ActionColumn = (props: ActionColumnProps) => {
 
   const teamsIsDisabled = assignedJursOptions.length === 0 || disableAssignments;
   const teamsModalProps = {
-    invokeText: EDIT_TEAMS,
-    modalTitle: EDIT_TEAMS,
-    placeHolder: SELECT_TEAMS,
+    invokeText: lang.EDIT_TEAMS,
+    modalTitle: lang.EDIT_TEAMS,
+    placeHolder: lang.SELECT_TEAMS,
     options: allOrganizationOptions,
     existingOptions: assignedOrgsOptions,
     saveHandler: teamsSaveHandler,
@@ -143,9 +143,9 @@ export const ActionColumn = (props: ActionColumnProps) => {
   };
 
   const areasModalProps = {
-    invokeText: EDIT_AREAS,
-    modalTitle: EDIT_AREAS,
-    placeHolder: SELECT_AREAS,
+    invokeText: lang.EDIT_AREAS,
+    modalTitle: lang.EDIT_AREAS,
+    placeHolder: lang.SELECT_AREAS,
     options: allJurisdictionOptions,
     existingOptions: assignedJursOptions,
     saveHandler: areasSaveHandler,

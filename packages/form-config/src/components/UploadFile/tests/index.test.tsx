@@ -8,12 +8,12 @@ import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { fetchManifestFiles } from '../../../ducks/manifestFiles';
-import { fixManifestFiles } from '../../../ducks/tests/fixtures';
+import { fetchManifestFiles } from '@opensrp/form-config-core';
+import { fixManifestFiles } from '../../../helpers/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import { OpenSRPService } from '@opensrp/server-service';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 const history = createBrowserHistory();
 
@@ -219,7 +219,7 @@ describe('components/UploadFile', () => {
       await flushPromises();
     });
     expect(fetch).not.toHaveBeenCalled();
-    expect(props.customAlert).toHaveBeenCalledWith(ERROR_OCCURRED, {
+    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, {
       type: 'error',
     });
     wrapper.unmount();

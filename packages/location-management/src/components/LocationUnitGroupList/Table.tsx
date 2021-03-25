@@ -4,7 +4,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
-import { ERROR_OCCURED, NAME, ACTIONS, EDIT, VIEW_DETAILS, DEACTIVATE } from '../../lang';
+import lang, { Lang } from '../../lang';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
@@ -19,12 +19,18 @@ export interface Props {
   onViewDetails?: (locationUnit: LocationUnitGroupDetailProps) => void;
 }
 
-/** function to delete the record
+/**
+ * function to delete the record
  *
  * @param {object} record - The record to delete
  * @param {string} opensrpBaseURL - base url
+ * @param {Lang} langObj - the language translation lookup object
  */
-export const onDelete = (record: LocationUnitGroup, opensrpBaseURL: string) => {
+export const onDelete = (
+  record: LocationUnitGroup,
+  opensrpBaseURL: string,
+  langObj: Lang = lang
+) => {
   const clientService = new OpenSRPService(
     LOCATION_UNIT_GROUP_DELETE + record.id.toString(),
     opensrpBaseURL
@@ -32,7 +38,7 @@ export const onDelete = (record: LocationUnitGroup, opensrpBaseURL: string) => {
   clientService
     .delete()
     .then(() => sendSuccessNotification('Successfully Deleted!'))
-    .catch(() => sendErrorNotification(ERROR_OCCURED));
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
 };
 
 const Table: React.FC<Props> = (props: Props) => {
@@ -50,12 +56,12 @@ const Table: React.FC<Props> = (props: Props) => {
     >
       <AntTable.Column
         defaultSortOrder="ascend"
-        title={NAME}
+        title={lang.NAME}
         dataIndex="name"
         sorter={(a: TableData, b: TableData) => a.name.localeCompare(b.name)}
       />
       <AntTable.Column
-        title={ACTIONS}
+        title={lang.ACTIONS}
         width="10%"
         dataIndex="operation"
         sorter={(a: TableData, b: TableData) => a.name.localeCompare(b.name)}
@@ -63,7 +69,7 @@ const Table: React.FC<Props> = (props: Props) => {
           <span className="d-flex justify-content-end align-items-center Actions">
             <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
               <Button type="link" className="m-0 p-1">
-                {EDIT}
+                {lang.EDIT}
               </Button>
             </Link>
             <Divider type="vertical" />
@@ -74,10 +80,10 @@ const Table: React.FC<Props> = (props: Props) => {
                     className="viewdetails"
                     onClick={() => (onViewDetails ? onViewDetails(record) : {})}
                   >
-                    {VIEW_DETAILS}
+                    {lang.VIEW_DETAILS}
                   </Menu.Item>
                   <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL)}>
-                    {DEACTIVATE}
+                    {lang.DEACTIVATE}
                   </Menu.Item>
                 </Menu>
               }
