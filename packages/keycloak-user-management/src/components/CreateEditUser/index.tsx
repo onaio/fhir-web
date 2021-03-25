@@ -52,6 +52,7 @@ export type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParam
  * @param props - CreateEditUser component props
  */
 const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropTypes) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
   const [initialValues, setInitialValues] = useState<FormFields>({
     firstName: '',
@@ -82,34 +83,39 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
 
   useEffect(() => {
     if (!userGroups.length) {
+      setLoading(true);
       const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
       serve
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
+        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .finally(() => setLoading(false));
     }
   }, [keycloakBaseURL, opensrpBaseURL, userGroups.length]);
 
   /**
-   * Fetch user incase the user is not available e.g when page is refreshed
+   * Fetch user if userId changes (editing a different user)
    */
   useEffect(() => {
-    if (userId && !keycloakUser) {
+    if (userId) {
+      setLoading(true);
       const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
       serve
         .read(userId)
         .then((response: KeycloakUser | null | undefined) => {
           if (response) fetchKeycloakUsersCreator([response]);
         })
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
+        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .finally(() => setLoading(false));
     }
-  }, [userId, keycloakBaseURL, keycloakUser, fetchKeycloakUsersCreator]);
+  }, [userId, keycloakBaseURL, fetchKeycloakUsersCreator]);
 
   /**
-   * Fetch User group of the user
+   * Fetch User group of the user being edited
    */
   useEffect(() => {
-    if (userId && initialValues.userGroup === undefined) {
+    if (userId) {
+      setLoading(true);
       const serve = new KeycloakService(
         KEYCLOAK_URL_USERS + '/' + userId + KEYCLOAK_URL_USER_GROUPS,
         keycloakBaseURL
@@ -122,12 +128,17 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
             userGroup: response.map((tag) => tag.id),
           }))
         )
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
+        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .finally(() => setLoading(false));
     }
-  }, [userId, keycloakBaseURL, initialValues.userGroup]);
+  }, [userId, keycloakBaseURL]);
 
+  /**
+   * Fetch practitioner data of the user being edited
+   */
   useEffect(() => {
-    if (userId && initialValues.practitioner === undefined) {
+    if (userId) {
+      setLoading(true);
       const serve = new OpenSRPService(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, opensrpBaseURL);
       serve
         .read(userId)
@@ -138,24 +149,12 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
             practitioner: response,
           }))
         )
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
+        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .finally(() => setLoading(false));
     }
-  }, [userId, opensrpBaseURL, initialValues.practitioner]);
+  }, [userId, opensrpBaseURL]);
 
-  if (
-    // editing an existing user
-    (userId &&
-      (!(userGroups.length > 0) ||
-        !keycloakUser ||
-        initialValues.username === '' ||
-        initialValues.id === '' ||
-        initialValues.userGroup === undefined ||
-        initialValues.practitioner === undefined ||
-        (Object.keys(extraData).length > 0 && extraData.user_id === ''))) ||
-    // adding a new user
-    (!userId && !(userGroups.length > 0))
-  )
-    return <Spin size="large" />;
+  if (loading || !(userGroups.length > 0)) return <Spin size="large" />;
 
   return (
     <Row>
