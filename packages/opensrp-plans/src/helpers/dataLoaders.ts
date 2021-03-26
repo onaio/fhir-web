@@ -15,7 +15,12 @@ import {
 } from '../constants';
 import { OpenSRPService as GenericOpenSRPService, URLParams } from '@opensrp/server-service';
 import { fetchPlanDefinitions } from '../ducks/planDefinitions';
-import { fetchAssignments, Assignment, RawAssignment } from '../ducks/assignments';
+import {
+  fetchAssignments,
+  Assignment,
+  RawAssignment,
+  processRawAssignments,
+} from '@opensrp/team-assignment';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import moment from 'moment';
 import {
@@ -23,7 +28,6 @@ import {
   Organization,
 } from '@opensrp/team-management';
 import { fetchJurisdictions, Jurisdiction } from '../ducks/jurisdictions';
-import { processRawAssignments } from '../ducks/assignments/utils';
 import { Dictionary } from '@onaio/utils';
 import lang from '../lang';
 

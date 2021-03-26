@@ -90,6 +90,38 @@ describe('componentUtils', () => {
     wrapper.unmount();
   });
 
+  it('should not redirect to unauthorized page if not autenticated', async () => {
+    const MockComponent = (props: any) => {
+      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;
+    };
+    const props = {
+      exact: true,
+      redirectPath: '/login',
+      disableLoginProtection: false,
+      path: '/admin',
+      authenticated: false,
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
+          <PrivateComponent
+            {...props}
+            component={MockComponent}
+            activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    await act(async () => {
+      await flushPromises();
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+    wrapper.update();
+    expect(wrapper.exists(MockComponent)).toBeFalsy();
+    expect(toJson(wrapper.find('UnauthorizedPage'))).toBeFalsy();
+    wrapper.unmount();
+  });
+
   it('Show Unauthorized Page if role doesnt have sufficient permissions', async () => {
     const MockComponent = (props: any) => {
       return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;

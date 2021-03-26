@@ -23,7 +23,7 @@
 
 .main-content__header {
   display: flex;
-  justify-content: space-between !important;
+  justify-content: space-between;
   align-items: center;
   margin: 0 0 16px 0;
 }

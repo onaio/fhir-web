@@ -6,7 +6,6 @@ import { Assignment } from '../../ducks/assignments';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import lang, { Lang } from '../../lang';
 import { TableData } from '.';
-import { AssignLocationsAndPlans } from '../../ducks/assignments/types';
 import { TableColumnsNamespace } from '../../constants';
 
 /** component rendered in the action column of the table
@@ -97,12 +96,12 @@ export const getPayload = (
   selectedJurisdictionId: string,
   initialOrgs: string[] = [],
   existingAssignments: Assignment[] = []
-): AssignLocationsAndPlans[] => {
+): Assignment[] => {
   const now = moment(new Date());
   let startDate = now.format();
 
-  const payload: AssignLocationsAndPlans[] = [];
-  const assignmentsByOrgId = keyBy(existingAssignments, 'organizationId');
+  const payload: Assignment[] = [];
+  const assignmentsByOrgId = keyBy(existingAssignments, 'organization');
 
   for (const orgId of selectedOrgs) {
     if (!payload.map((obj) => obj.organization).includes(orgId)) {
