@@ -94,7 +94,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
@@ -122,6 +122,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   // Function used to parse data from ParsedHierarchyNode to Tree Data
   useEffect(() => {
     if (!treeData.length && locationUnits.length) {
+      setLoading(true);
       getHierarchy(locationUnits, opensrpBaseURL)
         .then((hierarchy: RawOpenSRPHierarchy[]) => {
           const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);

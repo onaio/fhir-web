@@ -91,7 +91,6 @@ export const submitForm = async (
     const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
     const response: Response | undefined = await serve.create({
       ...keycloakUserValue,
-      enabled: true,
     });
     // workaround to get user Id for newly created user immediately after performing a POST
     values = response ? buildUserObject(response, values) : values;

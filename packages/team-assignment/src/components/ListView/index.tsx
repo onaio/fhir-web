@@ -22,11 +22,13 @@ import {
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
-import reducer, {
+import {
+  assignmentsReducer,
   Assignment,
   fetchAssignments,
-  getAssignments,
-  reducerName as assignmentReducerName,
+  assignmentsReducerName,
+  getAssignmentsArrayByPlanId,
+  RawAssignment,
 } from '../../ducks/assignments';
 import {
   ASSIGNMENTS_ENDPOINT,
@@ -36,12 +38,15 @@ import {
   POST_ASSIGNMENTS_ENDPOINT,
 } from '../../constants';
 import lang from '../../lang';
+import { processRawAssignments } from '../../ducks/assignments/utils';
 
 const { fetchAllHierarchies, getAllHierarchiesArray } = locationHierachyDucks;
 
 reducerRegistry.register(orgReducerName, organizationsReducer);
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
-reducerRegistry.register(assignmentReducerName, reducer);
+reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
+
+const assignmentsSelector = getAssignmentsArrayByPlanId();
 
 export interface TableData {
   id: string;
@@ -77,7 +82,9 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
-  const assignmentsList: Assignment[] = useSelector((state) => getAssignments(state));
+  const assignmentsList: Assignment[] = useSelector((state) =>
+    assignmentsSelector(state, { planId: defaultPlanId })
+  );
   const allOrganizations: Organization[] = useSelector((state) => getOrganizationsArray(state));
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
@@ -114,8 +121,9 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
       const assignmentsPromise = asssignmentService
         .list({ plan: defaultPlanId })
-        .then((response: Assignment[]) => {
-          dispatch(fetchAssignments(response));
+        .then((response: RawAssignment[]) => {
+          const parsedAssignments = processRawAssignments(response);
+          dispatch(fetchAssignments(parsedAssignments));
         })
         .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
 
@@ -180,11 +188,11 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
   const tableData = dataSource.map((datum: ParsedHierarchyNode, i: number) => {
     const jurisdictionAssignments = assignmentsList.filter(
-      (assignment) => assignment.jurisdictionId === datum.id
+      (assignment) => assignment.jurisdiction === datum.id
     );
     const jurisdictionOrgs = allOrganizations.filter((org) => {
       const jurisdictionOrgIds = jurisdictionAssignments.map(
-        (assignment) => assignment.organizationId
+        (assignment) => assignment.organization
       );
       return jurisdictionOrgIds.includes(org.identifier);
     });
