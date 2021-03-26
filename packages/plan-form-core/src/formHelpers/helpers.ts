@@ -172,7 +172,7 @@ export function extractActivityForForm(
       activityObj.goal.target &&
       activityObj.goal.target[0].due &&
       activityObj.goal.target[0].due !== ''
-        ? parseISO(`${activityObj.goal.target[0].due}${configs.defaultTime}`)
+        ? parseISO(`${activityObj.goal.target[0].due}`)
         : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     goalPriority: activityObj.goal.priority || goalPriorities[1],
     goalValue:
@@ -184,11 +184,11 @@ export function extractActivityForForm(
       1,
     timingPeriodEnd:
       activityObj.action.timingPeriod.end && activityObj.action.timingPeriod.end !== ''
-        ? parseISO(`${activityObj.action.timingPeriod.end}${configs.defaultTime}`)
+        ? parseISO(`${activityObj.action.timingPeriod.end}`)
         : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     timingPeriodStart:
       activityObj.action.timingPeriod.start && activityObj.action.timingPeriod.start !== ''
-        ? parseISO(`${activityObj.action.timingPeriod.start}${configs.defaultTime}`)
+        ? parseISO(`${activityObj.action.timingPeriod.start}`)
         : moment().toDate(),
   };
 }
@@ -824,7 +824,7 @@ export function getPlanFormValues(
   return {
     activities,
     caseNum: caseNumUseContext.length > 0 ? caseNumUseContext[0].valueCodableConcept : '',
-    date: parseISO(`${planObject.date}${configs.defaultTime}`),
+    date: parseISO(`${planObject.date}`),
     end: parseISO(`${planObject.effectivePeriod.end}`),
     fiReason:
       reasonUseContext.length > 0
