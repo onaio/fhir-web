@@ -8,13 +8,6 @@
   padding-right: 0;
 }
 
-.main-content__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 0 32px 0;
-}
-
 .inventory-profile {
   display: flex;
   justify-content: space-between;
