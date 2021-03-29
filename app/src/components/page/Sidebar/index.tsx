@@ -30,7 +30,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { extraData } = props;
   const { roles } = extraData;
   let location = useLocation();
-  let loc = location.pathname.split('/');
   const [openKeys, setOpenKeys] = React.useState<React.Key[]>([]);
 
   const routes = React.useMemo(() => getRoutes(roles as string[]), [roles]);
@@ -60,8 +59,10 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     mapChildren,
   ]);
 
-  const activeLocationPaths = loc.filter((locString: string) => locString.length);
-  const activeKey = getActiveKey(loc, routes);
+  const activeLocationPaths = location.pathname
+    .split('/')
+    .filter((locString: string) => locString.length);
+  const activeKey = getActiveKey(location.pathname, routes);
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
