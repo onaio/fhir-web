@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Route, getRoutes } from '../../../routes';
 import { getActiveKey } from './utils';
 import { MAIN_LOGO_SRC } from '../../../configs/env';
+import { memoize } from 'lodash';
 import './Sidebar.css';
 
 /** interface for SidebarProps */
@@ -34,7 +35,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
   const routes = React.useMemo(() => getRoutes(roles as string[]), [roles]);
 
-  const mapChildren = React.useCallback((route: Route) => {
+  const mapChildren = memoize((route: Route) => {
     if (route.children) {
       return (
         <Menu.SubMenu key={route.key} icon={route.otherProps?.icon} title={route.title}>
@@ -52,11 +53,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     } else {
       return <Menu.Item key={route.key}>{route.title}</Menu.Item>;
     }
-  }, []);
+  });
 
-  const sidebaritems: JSX.Element[] = React.useMemo(() => {
-    return routes.map(mapChildren);
-  }, [mapChildren, routes]);
+  const sidebaritems: JSX.Element[] = React.useMemo(() => routes.map(mapChildren), [
+    routes,
+    mapChildren,
+  ]);
 
   const activeLocationPaths = loc.filter((locString: string) => locString.length);
   const activeKey = getActiveKey(loc, routes);
