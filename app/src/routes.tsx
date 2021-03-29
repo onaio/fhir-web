@@ -49,8 +49,12 @@ export interface Route {
   children?: Route[];
 }
 
-// menu items schema
-export const getRoutes = (roles: string[]): Route[] => {
+/** Gets Routes For Application
+ *
+ * @param roles User's roles
+ * @returns {Route[]} returns generated routes
+ */
+export function getRoutes(roles: string[]): Route[] {
   const activeRoles = OPENSRP_ROLES;
 
   const routes = [
@@ -199,16 +203,20 @@ export const getRoutes = (roles: string[]): Route[] => {
     },
   ];
 
-  function filterfalsy(route: Route[]): Route[] {
-    return route
-      .filter(
-        (e) => !e.hasOwnProperty('enabled') || (e.hasOwnProperty('enabled') && e.enabled === true)
-      )
-      .map((e) => {
-        if (e.children) return { ...e, children: filterfalsy(e.children) };
-        else return e;
-      });
-  }
+  return routes;
+}
 
-  return filterfalsy(routes);
-};
+/** Removes the disabled Routes from
+ *
+ * @param routes all routes
+ * @returns {Route[]} returns only enabled routes
+ */
+export function filterFalsyRoutes(routes: Route[]): Route[] {
+  return routes
+    .filter(
+      (e) => !e.hasOwnProperty('enabled') || (e.hasOwnProperty('enabled') && e.enabled === true)
+    )
+    .map((e) => {
+      return e.children ? { ...e, children: filterFalsyRoutes(e.children) } : e;
+    });
+}
