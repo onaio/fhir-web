@@ -331,17 +331,17 @@ describe('components/ConnectedSidebar/utils', () => {
     ];
 
     // Exactly Match
-    expect(getActiveKey(['admin', 'teams'], routes)).toEqual('teams');
-    expect(getActiveKey(['admin', 'product-catalogue'], routes)).toEqual('product-catalogue');
+    expect(getActiveKey('/admin/teams', routes)).toEqual('teams');
+    expect(getActiveKey('/admin/product-catalogue', routes)).toEqual('product-catalogue');
 
     // Partial Matching Url
-    expect(getActiveKey(['admin', 'users', 'testing-user'], routes)).toEqual('user-management');
-    expect(getActiveKey(['admin', 'location', 'unit', 'add'], routes)).toEqual('location-unit');
+    expect(getActiveKey('/admin/users/testing-user', routes)).toEqual('user-management');
+    expect(getActiveKey('/admin/location/unit/add', routes)).toEqual('location-unit');
 
     // Not Matching
-    expect(getActiveKey(['The', 'teams'], routes)).toEqual(undefined);
-    expect(getActiveKey(['testing', 'user'], routes)).toEqual(undefined);
-    expect(getActiveKey(['user'], routes)).toEqual(undefined);
-    expect(getActiveKey(['now', 'you', 'See', 'User'], routes)).toEqual(undefined);
+    expect(getActiveKey('/The/teams', routes)).toEqual(undefined);
+    expect(getActiveKey('/testing/user', routes)).toEqual(undefined);
+    expect(getActiveKey('/user', routes)).toEqual(undefined);
+    expect(getActiveKey('/now/you/See/User', routes)).toEqual(undefined);
   });
 });
