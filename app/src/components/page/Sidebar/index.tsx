@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { Route, getRoutes } from '../../../routes';
 import { getActiveKey } from './utils';
 import { MAIN_LOGO_SRC } from '../../../configs/env';
-import { memoize } from 'lodash';
 import './Sidebar.css';
 
 /** interface for SidebarProps */
@@ -34,30 +33,29 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
   const routes = React.useMemo(() => getRoutes(roles as string[]), [roles]);
 
-  const mapChildren = memoize((route: Route) => {
-    if (route.children) {
-      return (
-        <Menu.SubMenu key={route.key} icon={route.otherProps?.icon} title={route.title}>
-          {route.children.map(mapChildren)}
-        </Menu.SubMenu>
-      );
-    } else if (route.url) {
-      return (
-        <Menu.Item key={route.key}>
-          <Link className="admin-link" to={route.url}>
-            {route.title}
-          </Link>
-        </Menu.Item>
-      );
-    } else {
-      return <Menu.Item key={route.key}>{route.title}</Menu.Item>;
+  const sidebaritems: JSX.Element[] = React.useMemo(() => {
+    function mapChildren(route: Route) {
+      if (route.children) {
+        return (
+          <Menu.SubMenu key={route.key} icon={route.otherProps?.icon} title={route.title}>
+            {route.children.map(mapChildren)}
+          </Menu.SubMenu>
+        );
+      } else if (route.url) {
+        return (
+          <Menu.Item key={route.key}>
+            <Link className="admin-link" to={route.url}>
+              {route.title}
+            </Link>
+          </Menu.Item>
+        );
+      } else {
+        return <Menu.Item key={route.key}>{route.title}</Menu.Item>;
+      }
     }
-  });
 
-  const sidebaritems: JSX.Element[] = React.useMemo(() => routes.map(mapChildren), [
-    routes,
-    mapChildren,
-  ]);
+    return routes.map(mapChildren);
+  }, [routes]);
 
   const activeLocationPaths = location.pathname
     .split('/')
