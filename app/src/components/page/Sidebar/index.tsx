@@ -55,7 +55,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   }, []);
 
   const sidebaritems: JSX.Element[] = React.useMemo(() => {
-    return routes.filter((route) => route.enabled).map(mapChildren);
+    return routes.map(mapChildren);
   }, [mapChildren, routes]);
 
   const activeLocationPaths = loc.filter((locString: string) => locString.length);

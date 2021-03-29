@@ -203,7 +203,7 @@ export function getRoutes(roles: string[]): Route[] {
     },
   ];
 
-  return routes;
+  return filterFalsyRoutes(routes);
 }
 
 /** Removes the disabled Routes from
