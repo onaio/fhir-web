@@ -18,6 +18,7 @@ import {
   BACKEND_ACTIVE,
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
+  STAGE_ENVIRONMENT,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -165,7 +166,15 @@ const { Content } = Layout;
  */
 
 export const LoadingComponent = () => <Spin size="large" />;
-export const SuccessfulLoginComponent = () => <Redirect to="/" />;
+export const SuccessfulLoginComponent = () => {
+  if (STAGE_ENVIRONMENT === 'eusm') {
+    return <Redirect to={ACTIVE_PLANS_LIST_VIEW_URL} />;
+  } else if (STAGE_ENVIRONMENT === 'tunisia') {
+    return <Redirect to={URL_DOWNLOAD_CLIENT_DATA} />;
+  } else {
+    return <Redirect to="/" />;
+  }
+};
 
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
