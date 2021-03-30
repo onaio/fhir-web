@@ -13,6 +13,7 @@ import {
   practitioner1,
   requiredActions,
   userGroup,
+  value as FirstUser,
 } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
@@ -472,5 +473,32 @@ describe('components/forms/UserForm', () => {
     });
 
     expect(wrapper.find('#requiredActions')).toHaveLength(0);
+  });
+  it('updates form data when user to edit changes', async () => {
+    // start with first user
+    const propsFirstUser = {
+      ...props,
+      initialValues: FirstUser,
+    };
+
+    const wrapper = mount(<UserForm {...propsFirstUser} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('input#firstName').props().value).toEqual(FirstUser.firstName);
+    expect(wrapper.find('input#email').props().value).toEqual(FirstUser.email);
+    expect(wrapper.find('input#username').props().value).toEqual(FirstUser.username);
+
+    // update user
+    wrapper.setProps({ initialValues: keycloakUser });
+    // re-render
+    wrapper.update();
+
+    expect(wrapper.find('input#firstName').props().value).toEqual(keycloakUser.firstName);
+    expect(wrapper.find('input#email').props().value).toEqual(keycloakUser.email);
+    expect(wrapper.find('input#username').props().value).toEqual(keycloakUser.username);
   });
 });
