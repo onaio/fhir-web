@@ -9,7 +9,7 @@ import {
   getLocationsByLevel,
   getLocationsByNameAndId,
 } from '..';
-import { parsedHierarchy, rawHierarchy } from './hierarchyFixtures';
+import { rawHierarchy } from './hierarchyFixtures';
 import { serializeTree } from '../utils';
 
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
