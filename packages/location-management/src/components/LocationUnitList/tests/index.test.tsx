@@ -30,6 +30,8 @@ import {
   fetchLocationUnits,
 } from '../../../ducks/location-units';
 import toJson from 'enzyme-to-json';
+import { ParsedHierarchyNode } from '../../../ducks/locationHierarchy/types';
+import { deforest } from '../../../ducks/locationHierarchy';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -55,6 +57,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
   beforeEach(() => {
     store.dispatch(fetchAllHierarchies([]));
+    store.dispatch(deforest());
     store.dispatch(fetchLocationUnits());
   });
 
@@ -316,10 +319,10 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     wrapper.update();
 
-    const hierarchy1 = generateJurisdictionTree(rawHierarchy[0]).model;
-    const hierarchy2 = generateJurisdictionTree(rawHierarchy[1]).model;
-    const hierarchy3 = generateJurisdictionTree(rawHierarchy[2]).model;
-    store.dispatch(fetchAllHierarchies([hierarchy1, hierarchy2, hierarchy3]));
+    const Tunisia = generateJurisdictionTree(rawHierarchy[0]).model as ParsedHierarchyNode;
+    const Kenya = generateJurisdictionTree(rawHierarchy[1]).model as ParsedHierarchyNode;
+    const Malawi = generateJurisdictionTree(rawHierarchy[2]).model as ParsedHierarchyNode;
+    store.dispatch(fetchAllHierarchies([Tunisia, Kenya, Malawi]));
 
     await act(async () => {
       await flushPromises();
@@ -328,10 +331,10 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     // using index 0 cuz after sorting by name that is the last one
     const tablelastrow = {
-      geographicLevel: baseLocationUnits[0].properties.geographicLevel,
-      id: baseLocationUnits[0].id,
+      geographicLevel: Tunisia.node.attributes.geographicLevel,
+      id: Tunisia.id,
       key: '2',
-      name: baseLocationUnits[0].properties.name,
+      name: Tunisia.label,
     };
 
     expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow);
@@ -343,6 +346,7 @@ describe('location-management/src/components/LocationUnitList', () => {
       await flushPromises();
       wrapper.update();
     });
+
     expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject({
       ...tablelastrow,
       key: '0',
