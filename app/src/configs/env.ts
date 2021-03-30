@@ -139,4 +139,5 @@ export const MAIN_LOGO_SRC =
 
 export const SUPPORTED_LANGUAGES = (process.env.REACT_APP_SUPPORTED_LANGUAGES ?? '').split(',');
 
-export const ENABLE_LANGUAGE_SWITCHER = process.env.REACT_APP_ENABLE_LANGUAGE_SWITCHER === 'true';
+export const ENABLE_LANGUAGE_SWITCHER =
+  process.env.REACT_APP_ENABLE_LANGUAGE_SWITCHER === 'true' || SUPPORTED_LANGUAGES.length > 0;
