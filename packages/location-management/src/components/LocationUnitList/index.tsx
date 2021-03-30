@@ -139,15 +139,16 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     if (treeData.length) {
       let data: TableData[] = [];
       // if have selected some in tree and that selected have some child then only show data from selected node in table
-      if (currentClicked && currentClicked.children) {
-        const cloneddata = currentClicked.children.map((e) => e);
+      if (currentClicked && currentClicked.children && currentClicked.children.length) {
+        const cloneddata = [...currentClicked.children];
         const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
         data = parseTableData([currentClicked, ...sorteddata]);
       } else if (!currentClicked) {
-        const cloneddata = treeData.map((e) => e);
+        const cloneddata = [...treeData];
         const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
         data = parseTableData(sorteddata);
       }
+
       setTableData(data);
     }
   }, [treeData, currentClicked]);
