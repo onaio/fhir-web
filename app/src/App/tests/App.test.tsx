@@ -193,7 +193,7 @@ describe('App - authenticated', () => {
 
   it('renders App correctly when staging environment is set to eusm', async () => {
     const envModule = require('../../configs/env');
-    envModule.STAGE_ENVIRONMENT = 'eusm';
+    envModule.DEFAULT_HOME_MODE = 'eusm';
     history.push(ACTIVE_PLANS_LIST_VIEW_URL);
     const wrapper = mount(
       <Provider store={store}>
@@ -219,7 +219,7 @@ describe('App - authenticated', () => {
 
   it('renders App correctly when staging environment is set to tunisia', async () => {
     const envModule = require('../../configs/env');
-    envModule.STAGE_ENVIRONMENT = 'tunisia';
+    envModule.DEFAULT_HOME_MODE = 'tunisia';
     history.push(URL_DOWNLOAD_CLIENT_DATA);
     const wrapper = mount(
       <Provider store={store}>
