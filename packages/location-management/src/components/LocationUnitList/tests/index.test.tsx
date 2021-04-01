@@ -439,6 +439,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     // shows layout content instead
     expect(toJson(wrapper.find('.layout-content'))).toBeTruthy();
+    expect(wrapper.find('Table').last().prop('data')).toMatchSnapshot();
 
     // unmount component
     wrapper.unmount();
