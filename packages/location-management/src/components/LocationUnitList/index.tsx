@@ -147,7 +147,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     }
   }, [treeData, currentClicked]);
 
-  if (loading) return <Spin size={'large'} />;
+  if (loading || !tableData.length) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
