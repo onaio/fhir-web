@@ -433,9 +433,6 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    const firstAction = wrapper.find('.Actions').first();
-    firstAction.find('button').last().simulate('click');
-
     // no spinner after hierarchies are dispatched
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     // shows layout content instead
