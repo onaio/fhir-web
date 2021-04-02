@@ -53,7 +53,15 @@ Object {
     span={24}
   >
     <UserForm
-      extraData={Object {}}
+      extraData={
+        Object {
+          "api_token": "hunter2",
+          "oAuth2Data": Object {
+            "access_token": "bamboocha",
+            "state": "abcde",
+          },
+        }
+      }
       initialValues={
         Object {
           "access": Object {
@@ -82,7 +90,11 @@ Object {
           },
           "requiredActions": Array [],
           "totp": false,
-          "userGroup": undefined,
+          "userGroup": Array [
+            "283c5d6e-9b83-4954-9f3b-4c2103e4370c",
+            "a55f0b02-950f-4c6a-9857-667ffbba1dd5",
+            "4dd15e66-7132-429b-8939-d1e601611464",
+          ],
           "username": "opensrp",
         }
       }

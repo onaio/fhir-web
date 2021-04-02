@@ -168,28 +168,21 @@ export function extractActivityForForm(
     actionReason: activityObj.action.reason || '',
     actionTitle: activityObj.action.title || '',
     goalDescription: activityObj.goal.description || '',
-    goalDue:
-      activityObj.goal.target &&
-      activityObj.goal.target[0].due &&
-      activityObj.goal.target[0].due !== ''
-        ? parseISO(`${activityObj.goal.target[0].due}`)
-        : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
+    goalDue: activityObj.goal.target?.[0]?.due
+      ? parseISO(`${activityObj.goal.target[0].due}`)
+      : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     goalPriority: activityObj.goal.priority || goalPriorities[1],
     goalValue:
-      (activityObj.goal.target && activityObj.goal.target[0].detail.detailQuantity.value) ||
-      (planActivityKey &&
-        planActivities[planActivityKey as PlanActivityTitlesType] &&
-        planActivities[planActivityKey as PlanActivityTitlesType].goal.target[0].detail
-          .detailQuantity.value) ||
+      activityObj.goal.target?.[0]?.detail.detailQuantity.value ||
+      planActivities?.[planActivityKey as PlanActivityTitlesType]?.goal.target[0].detail
+        .detailQuantity.value ||
       1,
-    timingPeriodEnd:
-      activityObj.action.timingPeriod.end && activityObj.action.timingPeriod.end !== ''
-        ? parseISO(`${activityObj.action.timingPeriod.end}`)
-        : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
-    timingPeriodStart:
-      activityObj.action.timingPeriod.start && activityObj.action.timingPeriod.start !== ''
-        ? parseISO(`${activityObj.action.timingPeriod.start}`)
-        : moment().toDate(),
+    timingPeriodEnd: activityObj.action.timingPeriod?.end
+      ? parseISO(`${activityObj.action.timingPeriod.end}`)
+      : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
+    timingPeriodStart: activityObj.action.timingPeriod?.start
+      ? parseISO(`${activityObj.action.timingPeriod.start}`)
+      : moment().toDate(),
   };
 }
 
@@ -339,22 +332,19 @@ export function getPlanActivityFromActionCode(
 export const getConditionFromFormField = (
   element: PlanActivityFormFields
 ): PlanActionCondition[] | undefined => {
-  return (
-    element.condition &&
-    element.condition.map((item) => {
-      const subjectCodableConcept = {
-        text: item.subjectCodableConceptText,
-      };
-      return {
-        expression: {
-          ...(item.description && { description: item.description }),
-          ...(item.subjectCodableConceptText && { subjectCodableConcept }),
-          expression: item.expression,
-        },
-        kind: APPLICABILITY_CONDITION_KIND,
-      };
-    })
-  );
+  return element?.condition?.map((item) => {
+    const subjectCodableConcept = {
+      text: item.subjectCodableConceptText,
+    };
+    return {
+      expression: {
+        ...(item.description && { description: item.description }),
+        ...(item.subjectCodableConceptText && { subjectCodableConcept }),
+        expression: item.expression,
+      },
+      kind: APPLICABILITY_CONDITION_KIND,
+    };
+  });
 };
 
 /**
@@ -366,21 +356,18 @@ export const getConditionFromFormField = (
 const getTriggerFromFormField = (
   element: PlanActivityFormFields
 ): PlanActionTrigger[] | undefined => {
-  return (
-    element.trigger &&
-    element.trigger.map((item) => {
-      return {
-        ...((item.description || item.expression) && {
-          expression: {
-            ...(item.description && { description: item.description }),
-            ...(item.expression && { expression: item.expression }),
-          },
-        }),
-        name: item.name,
-        type: NAMED_EVENT_TRIGGER_TYPE,
-      } as PlanActionTrigger;
-    })
-  );
+  return element?.trigger?.map((item) => {
+    return {
+      ...((item.description || item.expression) && {
+        expression: {
+          ...(item.description && { description: item.description }),
+          ...(item.expression && { expression: item.expression }),
+        },
+      }),
+      name: item.name,
+      type: NAMED_EVENT_TRIGGER_TYPE,
+    } as PlanActionTrigger;
+  });
 };
 
 /**
@@ -637,17 +624,15 @@ export function generatePlanDefinition(
     ...defaultEnvConfig,
     ...envConfigs,
   };
-  const planIdentifier =
-    formValue.identifier && formValue.identifier !== '' // is this an existing plan?
-      ? formValue.identifier
-      : generateNameSpacedUUID(moment().toString(), configs.planUuidNamespace);
+  const planIdentifier = formValue?.identifier // is this an existing plan?
+    ? formValue.identifier
+    : generateNameSpacedUUID(moment().toString(), configs.planUuidNamespace);
 
-  const planVersion =
-    formValue.identifier && formValue.identifier !== '' // is this an existing plan?
-      ? isNaN(parseInt(formValue.version, 10)) // is the existing version valid?
-        ? parseInt(configs.defaultPlanVersion, 10) + 1
-        : parseInt(formValue.version, 10) + 1
-      : formValue.version;
+  const planVersion = formValue?.identifier // is this an existing plan?
+    ? isNaN(parseInt(formValue.version, 10)) // is the existing version valid?
+      ? parseInt(configs.defaultPlanVersion, 10) + 1
+      : parseInt(formValue.version, 10) + 1
+    : formValue.version;
 
   const actionAndGoals = extractActivitiesFromPlanForm(
     formValue.activities,
@@ -694,7 +679,7 @@ export function generatePlanDefinition(
     });
   }
 
-  if (formValue.teamAssignmentStatus && formValue.teamAssignmentStatus.trim() && isEditMode) {
+  if (formValue.teamAssignmentStatus?.trim?.() && isEditMode) {
     useContext.push({
       code: TEAM_ASSIGNMENT_STATUS_CODE,
       valueCodableConcept: formValue.teamAssignmentStatus,
@@ -824,8 +809,8 @@ export function getPlanFormValues(
   return {
     activities,
     caseNum: caseNumUseContext.length > 0 ? caseNumUseContext[0].valueCodableConcept : '',
-    date: parseISO(`${planObject.date}${configs.defaultTime}`),
-    end: parseISO(`${planObject.effectivePeriod.end}${configs.defaultTime}`),
+    date: parseISO(`${planObject.date}`),
+    end: parseISO(`${planObject.effectivePeriod.end}`),
     fiReason:
       reasonUseContext.length > 0
         ? (reasonUseContext[0].valueCodableConcept as FIReasonType)
@@ -843,7 +828,7 @@ export function getPlanFormValues(
     name: planObject.name,
     opensrpEventId:
       eventIdUseContext.length > 0 ? eventIdUseContext[0].valueCodableConcept : undefined,
-    start: parseISO(`${planObject.effectivePeriod.start}${configs.defaultTime}`),
+    start: parseISO(`${planObject.effectivePeriod.start}`),
     status: planObject.status as PlanStatus,
     taskGenerationStatus,
     teamAssignmentStatus,

@@ -234,6 +234,7 @@ describe('components/ConnectedSidebar', () => {
   it('correctly expand teams menu', () => {
     const envModule = require('../../../configs/env');
     envModule.ENABLE_TEAMS = 'true';
+    envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = 'true';
     envModule.OPENSRP_ROLES = {
       TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
