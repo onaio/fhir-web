@@ -53,13 +53,13 @@ describe('components/ConnectedSidebar', () => {
 
   it('displays menu links for enabled modules', () => {
     const envModule = require('../../../configs/env');
-    envModule.ENABLE_LOCATIONS = 'true';
-    envModule.ENABLE_TEAMS = 'true';
-    envModule.ENABLE_INVENTORY = 'true';
-    envModule.ENABLE_FORM_CONFIGURATION = 'true';
-    envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
-    envModule.ENABLE_PLANS = 'true';
-    envModule.ENABLE_CARD_SUPPORT = 'true';
+    envModule.ENABLE_LOCATIONS = true;
+    envModule.ENABLE_TEAMS = true;
+    envModule.ENABLE_INVENTORY = true;
+    envModule.ENABLE_FORM_CONFIGURATION = true;
+    envModule.ENABLE_PRODUCT_CATALOGUE = true;
+    envModule.ENABLE_PLANS = true;
+    envModule.ENABLE_CARD_SUPPORT = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
       PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
@@ -95,7 +95,7 @@ describe('components/ConnectedSidebar', () => {
 
   it('displays menu links for enabled Location module', () => {
     const envModule = require('../../../configs/env');
-    envModule.ENABLE_LOCATIONS = 'true';
+    envModule.ENABLE_LOCATIONS = true;
     envModule.OPENSRP_ROLES = {
       LOCATIONS: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
@@ -158,7 +158,7 @@ describe('components/ConnectedSidebar', () => {
 
   it('correctly expand location menu', () => {
     const envModule = require('../../../configs/env');
-    envModule.ENABLE_LOCATIONS = 'true';
+    envModule.ENABLE_LOCATIONS = true;
     envModule.OPENSRP_ROLES = {
       LOCATIONS: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
@@ -190,7 +190,7 @@ describe('components/ConnectedSidebar', () => {
 
   it('correctly expand admin-form-config menu', () => {
     const envModule = require('../../../configs/env');
-    envModule.ENABLE_FORM_CONFIGURATION = 'true';
+    envModule.ENABLE_FORM_CONFIGURATION = true;
     envModule.OPENSRP_ROLES = {
       FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
@@ -233,8 +233,8 @@ describe('components/ConnectedSidebar', () => {
 
   it('correctly expand teams menu', () => {
     const envModule = require('../../../configs/env');
-    envModule.ENABLE_TEAMS = 'true';
-    envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = 'true';
+    envModule.ENABLE_TEAMS = true;
+    envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = true;
     envModule.OPENSRP_ROLES = {
       TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
