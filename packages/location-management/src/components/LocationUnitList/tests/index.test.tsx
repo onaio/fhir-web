@@ -31,7 +31,6 @@ import {
 } from '../../../ducks/location-units';
 import toJson from 'enzyme-to-json';
 import { ParsedHierarchyNode } from '../../../ducks/locationHierarchy/types';
-import { deforest } from '../../../ducks/locationHierarchy';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -57,7 +56,6 @@ describe('location-management/src/components/LocationUnitList', () => {
 
   beforeEach(() => {
     store.dispatch(fetchAllHierarchies([]));
-    store.dispatch(deforest());
     store.dispatch(fetchLocationUnits());
   });
 
@@ -347,10 +345,7 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject({
-      ...tablelastrow,
-      key: '0',
-    }); // table didn't change
+    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow); // table didn't change
 
     // test table with tree node with child
     const treeItemwithchild = wrapper.find('span.ant-tree-title').first();
@@ -386,10 +381,10 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     wrapper.update();
 
-    const hierarchy1 = generateJurisdictionTree(rawHierarchy[0]).model;
-    const hierarchy2 = generateJurisdictionTree(rawHierarchy[1]).model;
-    const hierarchy3 = generateJurisdictionTree(rawHierarchy[2]).model;
-    store.dispatch(fetchAllHierarchies([hierarchy1, hierarchy2, hierarchy3]));
+    const Tunisia = generateJurisdictionTree(rawHierarchy[0]).model as ParsedHierarchyNode;
+    const Kenya = generateJurisdictionTree(rawHierarchy[1]).model as ParsedHierarchyNode;
+    const Malawi = generateJurisdictionTree(rawHierarchy[2]).model as ParsedHierarchyNode;
+    store.dispatch(fetchAllHierarchies([Tunisia, Kenya, Malawi]));
 
     await act(async () => {
       await flushPromises();
