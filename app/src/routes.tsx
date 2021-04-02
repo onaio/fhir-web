@@ -17,6 +17,7 @@ import {
   ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_TEAMS,
+  ENABLE_TEAMS_ASSIGNMENT_MODULE,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
@@ -57,7 +58,7 @@ export interface Route {
 export function getRoutes(roles: string[]): Route[] {
   const activeRoles = OPENSRP_ROLES;
 
-  const routes = [
+  const routes: Route[] = [
     {
       otherProps: { icon: <MapMarkerOutline className="sidebar-icons" /> },
       title: `${lang.MISSIONS}`,
@@ -170,6 +171,7 @@ export function getRoutes(roles: string[]): Route[] {
               title: `${lang.TEAM_ASSIGNMENT}`,
               url: `${URL_TEAM_ASSIGNMENT}`,
               key: 'team-assignment',
+              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
         },
