@@ -1,5 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`location-management/src/components/LocationUnitList do not show spinner if hierarchies in state 1`] = `
+Array [
+  Object {
+    "geographicLevel": 0,
+    "id": "a26ca9c8-1441-495a-83b6-bb5df7698996",
+    "key": "0",
+    "name": "Tunisia",
+  },
+  Object {
+    "geographicLevel": 1,
+    "id": "e66a6f38-93d5-42c2-ba1d-57b6d529baa6",
+    "key": "1",
+    "name": "KAIROUAN",
+  },
+  Object {
+    "geographicLevel": 1,
+    "id": "ede2c7cf-331e-497e-9c7f-2f914d734604",
+    "key": "2",
+    "name": "Sousse",
+  },
+]
+`;
+
+exports[`location-management/src/components/LocationUnitList do not show spinner if hierarchies in state 2`] = `
+Array [
+  Object {
+    "geographicLevel": 0,
+    "id": "a26ca9c8-1441-495a-83b6-bb5df7698996",
+    "key": "0",
+    "name": "Tunisia",
+  },
+  Object {
+    "geographicLevel": 1,
+    "id": "e66a6f38-93d5-42c2-ba1d-57b6d529baa6",
+    "key": "1",
+    "name": "KAIROUAN",
+  },
+  Object {
+    "geographicLevel": 1,
+    "id": "ede2c7cf-331e-497e-9c7f-2f914d734604",
+    "key": "2",
+    "name": "Sousse",
+  },
+]
+`;
+
 exports[`location-management/src/components/LocationUnitList location unit table renders correctly 1`] = `
 Object {
   "data": Array [

@@ -413,7 +413,6 @@ describe('location-management/src/components/LocationUnitList', () => {
   });
 
   it('do not show spinner if hierarchies in state', async () => {
-    fetch.once(JSON.stringify(baseLocationUnits));
     fetch.once(JSON.stringify(rawHierarchy[0]));
     fetch.once(JSON.stringify(rawHierarchy[1]));
     fetch.once(JSON.stringify(rawHierarchy[2]));
@@ -441,6 +440,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     // shows layout content instead
     expect(toJson(wrapper.find('.layout-content'))).toBeTruthy();
+    expect(wrapper.find('Table').last().prop('data')).toMatchSnapshot();
 
     // unmount component
     wrapper.unmount();
@@ -450,12 +450,21 @@ describe('location-management/src/components/LocationUnitList', () => {
     expect(toJson(wrapper.find('.layout-content'))).toBeFalsy();
 
     // remount
-    wrapper.mount();
+    const wrapper2 = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <LocationUnitList opensrpBaseURL={baseURL} />
+        </Router>
+      </Provider>
+    );
 
     // no spinner
-    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
-    expect(toJson(wrapper.find('.layout-content'))).toBeTruthy();
+    expect(toJson(wrapper2.find('.ant-spin'))).toBeFalsy();
 
-    wrapper.unmount();
+    // expect table to be mounted without re-fetches
+    expect(toJson(wrapper2.find('.layout-content'))).toBeTruthy();
+    expect(wrapper2.find('Table').last().prop('data')).toMatchSnapshot();
+
+    wrapper2.unmount();
   });
 });
