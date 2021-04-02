@@ -99,13 +99,13 @@ describe('routes', () => {
     );
 
     const envModule = require('./configs/env');
-    envModule.ENABLE_LOCATIONS = 'true';
-    envModule.ENABLE_TEAMS = 'true';
-    envModule.ENABLE_INVENTORY = 'true';
-    envModule.ENABLE_FORM_CONFIGURATION = 'true';
-    envModule.ENABLE_PRODUCT_CATALOGUE = 'true';
-    envModule.ENABLE_PLANS = 'true';
-    envModule.ENABLE_CARD_SUPPORT = 'true';
+    envModule.ENABLE_LOCATIONS = true;
+    envModule.ENABLE_TEAMS = true;
+    envModule.ENABLE_INVENTORY = true;
+    envModule.ENABLE_FORM_CONFIGURATION = true;
+    envModule.ENABLE_PRODUCT_CATALOGUE = true;
+    envModule.ENABLE_PLANS = true;
+    envModule.ENABLE_CARD_SUPPORT = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
       PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
