@@ -137,19 +137,18 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (treeData.length) {
-      let data: TableData[] = [];
       // if have selected some in tree and that selected have some child then only show data from selected node in table
       if (currentClicked && currentClicked.children && currentClicked.children.length) {
         const cloneddata = [...currentClicked.children];
         const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
-        data = parseTableData([currentClicked, ...sorteddata]);
+        const data: TableData[] = parseTableData([currentClicked, ...sorteddata]);
+        setTableData(data);
       } else if (!currentClicked) {
         const cloneddata = [...treeData];
         const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
-        data = parseTableData(sorteddata);
+        const data: TableData[] = parseTableData(sorteddata);
+        setTableData(data);
       }
-
-      setTableData(data);
     }
   }, [treeData, currentClicked]);
 
