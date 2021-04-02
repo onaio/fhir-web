@@ -57,6 +57,7 @@ describe('components/ConnectedSidebar', () => {
     envModule.ENABLE_TEAMS = true;
     envModule.ENABLE_INVENTORY = true;
     envModule.ENABLE_FORM_CONFIGURATION = true;
+    envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = true;
     envModule.ENABLE_PRODUCT_CATALOGUE = true;
     envModule.ENABLE_PLANS = true;
     envModule.ENABLE_CARD_SUPPORT = true;

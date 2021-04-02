@@ -120,11 +120,6 @@ Array [
             "title": "Teams",
             "url": "/admin/teams",
           },
-          Object {
-            "key": "team-assignment",
-            "title": "Team Assignment",
-            "url": "/admin/teams/team-assignment",
-          },
         ],
         "enabled": true,
         "key": "teams",
