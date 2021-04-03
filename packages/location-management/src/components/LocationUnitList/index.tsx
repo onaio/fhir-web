@@ -95,6 +95,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const treeData = useSelector((state) => getAllHierarchiesArray(state));
   const locationUnits = useSelector((state) => getLocationUnitsArray(state));
   const [loading, setLoading] = useState<boolean>(false);
+  const [tableDataEvaluated, setTableDataEvaluated] = useState<boolean>(false);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
@@ -140,14 +141,16 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       if (currentClicked && currentClicked.children) {
         const data = parseTableData([currentClicked, ...currentClicked.children]);
         setTableData(data);
+        setTableDataEvaluated(true);
       } else if (!currentClicked) {
         const data = parseTableData(treeData);
         setTableData(data);
+        setTableDataEvaluated(true);
       }
     }
   }, [treeData, currentClicked]);
 
-  if (loading || !tableData.length) return <Spin size={'large'} />;
+  if (loading || !tableDataEvaluated) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
