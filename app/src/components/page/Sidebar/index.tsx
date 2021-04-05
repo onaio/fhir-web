@@ -2,7 +2,12 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Sidebar.css';
-import { IdcardOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  EnvironmentOutlined,
+  IdcardOutlined,
+  SettingOutlined,
+  InboxOutlined,
+} from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { isAuthorized } from '@opensrp/react-utils';
 import { Layout, Menu } from 'antd';
@@ -42,8 +47,6 @@ import {
 } from '@opensrp/plans';
 import lang from '../../../lang';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
-import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
-import MapMarkerOutline from '@opensrp/ant-icons/lib/MapMarkerOutline';
 import { useTranslation } from 'react-i18next';
 
 /** interface for SidebarProps */
@@ -89,7 +92,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           isAuthorized(roles as string[], activeRoles.PLANS.split(',')) && (
             <Menu.SubMenu
               key="missions"
-              icon={<MapMarkerOutline className="sidebar-icons" />}
+              icon={<EnvironmentOutlined className="sidebar-icons" />}
               title={lang.MISSIONS}
             >
               <Menu.Item key="active">
@@ -136,7 +139,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
           isAuthorized(roles as string[], activeRoles.INVENTORY.split(',')) && (
             <Menu.SubMenu
               key="inventory"
-              icon={<ArchiveOutline className="sidebar-icons" />}
+              icon={<InboxOutlined className="sidebar-icons" />}
               title={lang.INVENTORY}
             >
               <Menu.Item key="list">
