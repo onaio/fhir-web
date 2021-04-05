@@ -205,7 +205,7 @@ exports[`components/ConnectedSidebar displays menu links for enabled modules 1`]
 Array [
   <SubMenu
     icon={
-      <MapMarkerOutlineIcon
+      <ForwardRef(EnvironmentOutlined)
         className="sidebar-icons"
       />
     }
