@@ -1,13 +1,11 @@
 import { history } from '@onaio/connected-reducer-registry';
-import { Dispatch, SetStateAction } from 'react';
 import { v4 } from 'uuid';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { UserAction, UserGroup } from '../../../ducks/user';
+import { UserGroup } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
   URL_USER,
-  KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   URL_USER_CREDENTIALS,
   KEYCLOAK_URL_USER_GROUPS,
 } from '../../../constants';
@@ -120,28 +118,4 @@ export const submitForm = async (
 
   sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
   history.push(URL_USER);
-};
-
-/**
- * Fetch keycloak user action options
- *
- * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {Function} setUserActionOptions - method to set state for selected actions
- * @param {Lang} langObj - the language translations object
- */
-export const fetchRequiredActions = (
-  keycloakBaseURL: string,
-  setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>,
-  langObj: Lang = lang
-): void => {
-  const keycloakService = new KeycloakService(KEYCLOAK_URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
-
-  keycloakService
-    .list()
-    .then((response: UserAction[]) => {
-      setUserActionOptions(
-        response.filter((action: UserAction) => action.alias !== 'terms_and_conditions')
-      );
-    })
-    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED));
 };
