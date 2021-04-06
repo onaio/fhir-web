@@ -15,23 +15,14 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-unit-groups';
 import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../constants';
-import {
-  LOCATION_UNIT_GROUP,
-  ADD_LOCATION_UNIT_GROUP,
-  LOCATION_UNIT_GROUP_MANAGEMENT,
-  ERROR_OCCURED,
-  SEARCH,
-} from '../../lang';
+import lang from '../../lang';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupList.css';
 import { Link } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { Props } from '../../helpers/common';
 
 reducerRegistry.register(reducerName, reducer);
-
-export interface Props {
-  opensrpBaseURL: string;
-}
 
 const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   const locationsArray = useSelector((state) => getLocationUnitGroupsArray(state));
@@ -51,7 +42,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
           dispatch(fetchLocationUnitGroups(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification(ERROR_OCCURED));
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
     }
   });
 
@@ -94,15 +85,15 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{LOCATION_UNIT_GROUP}</title>
+        <title>{lang.LOCATION_UNIT_GROUP}</title>
       </Helmet>
-      <h5 className="mb-3">{LOCATION_UNIT_GROUP_MANAGEMENT}</h5>
+      <h5 className="mb-3">{lang.LOCATION_UNIT_GROUP_MANAGEMENT}</h5>
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h5>
               <Input
-                placeholder={SEARCH}
+                placeholder={lang.SEARCH}
                 size="large"
                 value={value}
                 prefix={<SearchOutlined />}
@@ -113,7 +104,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
               <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
-                  {ADD_LOCATION_UNIT_GROUP}
+                  {lang.ADD_LOCATION_UNIT_GROUP}
                 </Button>
               </Link>
             </div>

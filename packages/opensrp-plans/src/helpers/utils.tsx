@@ -2,14 +2,14 @@ import { Dictionary } from '@onaio/utils';
 import { InterventionType, PlanDefinition, UseContext } from '@opensrp/plan-form-core';
 import { Alert, Spin } from 'antd';
 import React from 'react';
+import { OPENSRP_TASK_EXPORT_DATA } from '../constants';
 import {
-  FIX_PROBLEM_EVENT,
-  FLAG_PROBLEM_EVENT,
-  LOOKS_GOOD_EVENT,
-  OPENSRP_TASK_EXPORT_DATA,
-  RECORD_GPS_EVENT,
-  SERVICE_POINT_EVENT,
-} from '../constants';
+  FIX_PRODUCT_PROBLEMS_CODE,
+  FLAG_PROBLEM_CODE,
+  LOOKS_GOOD_CODE,
+  SERVICE_POINT_CHECK_CODE,
+  RECORD_GPS_CODE,
+} from '@opensrp/plan-form-core';
 
 /**
  * helper to retrieve the plan Type from a plan definition object
@@ -68,6 +68,6 @@ export const PlanLoading = () => {
 };
 
 export const BuildDownloadUrl = (baseURL: string, planId: string) => {
-  const eventType = `${FLAG_PROBLEM_EVENT},${SERVICE_POINT_EVENT},${LOOKS_GOOD_EVENT},${RECORD_GPS_EVENT},${FIX_PROBLEM_EVENT}`;
+  const eventType = `${FLAG_PROBLEM_CODE},${SERVICE_POINT_CHECK_CODE},${LOOKS_GOOD_CODE},${RECORD_GPS_CODE},${FIX_PRODUCT_PROBLEMS_CODE}`;
   return `${baseURL}${OPENSRP_TASK_EXPORT_DATA}?eventTypes=${eventType}&planIdentifier=${planId}`;
 };

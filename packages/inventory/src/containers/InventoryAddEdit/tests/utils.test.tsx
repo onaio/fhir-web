@@ -6,7 +6,7 @@ import { store } from '@opensrp/store';
 import * as notifications from '@opensrp/notifications';
 import { unicefSections } from '../../../components/InventoryItemForm/tests/fixtures';
 import { fetchSettings } from '../utils';
-import { ERROR_GENERIC } from '../../../lang';
+import lang from '../../../lang';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -73,7 +73,7 @@ describe('containers/InventoryAddEdit/utils/fetchSettings', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_GENERIC);
     expect(setSettingsMock).not.toHaveBeenCalled();
   });
 });

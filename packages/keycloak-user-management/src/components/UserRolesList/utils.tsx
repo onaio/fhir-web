@@ -2,7 +2,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { store } from '@opensrp/store';
 import { KEYCLOAK_URL_USER_ROLES } from '../../constants';
-import { ERROR_OCCURED } from '../../lang';
+import lang, { Lang } from '../../lang';
 import { fetchKeycloakUserRoles, KeycloakUserRole } from '../../ducks/userRoles';
 
 /**
@@ -10,8 +10,13 @@ import { fetchKeycloakUserRoles, KeycloakUserRole } from '../../ducks/userRoles'
  *
  * @param {string} keycloakBaseURL - keycloak API base URL
  * @param {Function} dispatch method to dispatch action to store
+ * @param {Lang} langObj - the translation string lookup obj
  */
-export const fetchAllRoles = async (keycloakBaseURL: string, dispatch: typeof store.dispatch) => {
+export const fetchAllRoles = async (
+  keycloakBaseURL: string,
+  dispatch: typeof store.dispatch,
+  langObj: Lang = lang
+) => {
   const keycloakService = new KeycloakService(KEYCLOAK_URL_USER_ROLES, keycloakBaseURL);
 
   await keycloakService
@@ -20,6 +25,6 @@ export const fetchAllRoles = async (keycloakBaseURL: string, dispatch: typeof st
       dispatch(fetchKeycloakUserRoles(response));
     })
     .catch((_: Error) => {
-      sendErrorNotification(ERROR_OCCURED);
+      sendErrorNotification(langObj.ERROR_OCCURED);
     });
 };

@@ -40,13 +40,14 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
     "cycle": "^1.0.3",
     "fast_array_intersect": "^1.1.0",
-    "i18next": "^19.8.4",
-    "tree-model": "^1.0.7"
+    "tree-model": "^1.0.7",
+    "uuid": "^8.3.1",
+    "react-i18next": "^11.8.10"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
@@ -56,9 +57,9 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
+    "@opensrp/store": "^0.0.9",
+    "i18next": "^19.8.4",
     "formik-antd": "^2.0.1",
-    "react": "^16.13.1",
-    "uuid": "^8.3.1"
+    "react": "^16.13.1"
   }
 }

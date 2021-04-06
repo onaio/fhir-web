@@ -13,7 +13,19 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { opensrpBaseURL, id, intialValue, practitioners } from './fixtures';
 import Form, { onSubmit } from '../Form';
 import { Organization, OrganizationPOST } from '../../../ducks/organizations';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
+
+const mockV4 = 'b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a';
+
+jest.mock('uuid', () => {
+  const v4 = () => mockV4;
+
+  return {
+    __esModule: true,
+    ...jest.requireActual('uuid'),
+    v4,
+  };
+});
 
 describe('Team-management/TeamsAddEdit/Form', () => {
   afterEach(() => {
@@ -105,7 +117,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: ERROR_OCCURRED,
+      message: lang.ERROR_OCCURRED,
     });
   });
 
@@ -150,7 +162,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/1',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=1&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
         {
           headers: {
             accept: 'application/json',
@@ -161,7 +173,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/2',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=2&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
         {
           headers: {
             accept: 'application/json',
@@ -172,7 +184,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/3',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=3&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
         {
           headers: {
             accept: 'application/json',
@@ -229,7 +241,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/1',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=1&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -240,7 +252,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/2',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=2&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -313,7 +325,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/1',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=1&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -324,7 +336,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/delete/2',
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=2&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',

@@ -2,13 +2,13 @@
 import React from 'react';
 import { Route, RouteProps, RouteComponentProps } from 'react-router';
 import { useSelector } from 'react-redux';
-import { getExtraData } from '@onaio/session-reducer';
-import { getConfigs } from '@opensrp/pkg-config';
+import { getExtraData, isAuthenticated } from '@onaio/session-reducer';
+import { getAllConfigs } from '@opensrp/pkg-config';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { UnauthorizedPage } from '../components/UnauthorizedPage';
-import { FORBIDDEN_PAGE_STATUS } from '../lang';
+import lang from '../lang';
 
-const configs = getConfigs();
+const configs = getAllConfigs();
 
 /** Private/Public component props */
 interface ComponentProps extends Partial<RouteProps> {
@@ -35,13 +35,17 @@ export const PrivateComponent = (props: ComponentProps) => {
     opensrpBaseURL: configs.opensrpBaseURL,
   };
   const extraData = useSelector((state) => getExtraData(state));
+  const authenticated = useSelector((state) => isAuthenticated(state));
   const { roles } = extraData;
   const { activeRoles } = props;
-  return activeRoles && roles && isAuthorized(roles, activeRoles) ? (
-    <ConnectedPrivateRoute {...CPRProps} />
-  ) : (
-    <UnauthorizedPage title={FORBIDDEN_PAGE_STATUS} />
-  );
+  if (authenticated) {
+    if (activeRoles && roles && isAuthorized(roles, activeRoles)) {
+      return <ConnectedPrivateRoute {...CPRProps} />;
+    } else {
+      return <UnauthorizedPage title={lang.FORBIDDEN_PAGE_STATUS} />;
+    }
+  }
+  return <ConnectedPrivateRoute {...CPRProps} />;
 };
 
 /** Util wrapper around Route for rendering components

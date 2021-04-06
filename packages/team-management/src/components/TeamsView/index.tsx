@@ -10,11 +10,11 @@ import { OpenSRPService } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
-  organizationsReducer,
+  reducer,
   fetchOrganizationsAction,
   getOrganizationsArray,
   Organization,
-  orgReducerName,
+  reducerName,
 } from '../../ducks/organizations';
 import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
@@ -22,10 +22,10 @@ import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
-import { CREATE_TEAM, ERROR_OCCURRED, SEARCH, TEAMS } from '../../lang';
+import lang, { Lang } from '../../lang';
 
 /** Register reducer */
-reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(reducerName, reducer);
 
 /**
  * Function to load selected Team for details
@@ -34,12 +34,14 @@ reducerRegistry.register(orgReducerName, organizationsReducer);
  * @param {string} opensrpBaseURL - base url
  * @param {Function} setDetail funtion to set detail to state
  * @param {Function} setPractitionersList funtion to set detail to state
+ * @param {Lang} langObj - the translation object lookup
  */
 export const loadSingleTeam = (
   row: TableData,
   opensrpBaseURL: string,
   setDetail: (isLoading: string | Organization) => void,
-  setPractitionersList: (isLoading: string | Practitioner[]) => void
+  setPractitionersList: (isLoading: string | Practitioner[]) => void,
+  langObj: Lang = lang
 ): void => {
   const serve = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
   serve
@@ -48,15 +50,15 @@ export const loadSingleTeam = (
       setPractitionersList(response);
       setDetail(row);
     })
-    .catch(() => sendErrorNotification(ERROR_OCCURRED));
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
 };
 
-export interface Props {
+interface Props {
   opensrpBaseURL: string;
 }
 
 /** default component props */
-export const defaultProps = {
+const defaultProps = {
   opensrpBaseURL: '',
 };
 
@@ -84,7 +86,7 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
           dispatch(fetchOrganizationsAction(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification(ERROR_OCCURRED));
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
     }
   });
 
@@ -123,15 +125,15 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{TEAMS}</title>
+        <title>{lang.TEAMS}</title>
       </Helmet>
-      <h5 className="mb-3">{TEAMS}</h5>
+      <h5 className="mb-3">{lang.TEAMS}</h5>
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
             <h5>
               <Input
-                placeholder={SEARCH}
+                placeholder={lang.SEARCH}
                 size="large"
                 value={value}
                 prefix={<SearchOutlined />}
@@ -142,7 +144,7 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
               <Link to={URL_ADD_TEAM}>
                 <Button type="primary">
                   <PlusOutlined />
-                  {CREATE_TEAM}
+                  {lang.CREATE_TEAM}
                 </Button>
               </Link>
             </div>

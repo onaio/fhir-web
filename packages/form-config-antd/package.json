@@ -38,8 +38,9 @@
   "license": "Apache-2.0",
   "private": false,
   "peerDependencies": {
-    "react": "^16.18.1",
-    "@opensrp/store": "^0.0.5"
+    "@opensrp/store": "^0.0.5",
+    "i18next": "^19.8.4",
+    "react": "^16.18.1"
   },
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
@@ -48,9 +49,10 @@
     "@opensrp/form-config-core": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "0.0.7",
     "@opensrp/server-service": "^0.0.17",
     "antd": "^4.6.3",
-    "i18next": "^19.8.4"
+    "react-i18next": "^11.8.10"
   },
   "devDependencies": {
     "@types/redux": "^3.6.0",

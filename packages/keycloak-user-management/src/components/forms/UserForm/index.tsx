@@ -1,27 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import { KeycloakUser, Practitioner, UserAction, UserGroup } from '../../../ducks/user';
 import { URL_USER } from '../../../constants';
-import {
-  CANCEL,
-  EDIT_USER,
-  ADD_USER,
-  FIRST_NAME,
-  LAST_NAME,
-  EMAIL,
-  USERNAME,
-  MARK_AS_PRACTITIONER,
-  REQUIRED_ACTIONS,
-  PLEASE_SELECT,
-  SAVE,
-  SAVING,
-  FIRST_NAME_REQUIRED,
-  LAST_NAME_REQUIRED,
-  USERNAME_REQUIRED,
-  GROUP,
-  ERROR_OCCURED,
-} from '../../../lang';
+import lang from '../../../lang';
 import { submitForm, fetchRequiredActions } from './utils';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -42,12 +24,15 @@ export interface FormFields extends KeycloakUser {
   practitioner?: Practitioner;
 }
 
-const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
+const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
 
-  const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
-  const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+  // hook into the form lifecycle methods
+  const [form] = Form.useForm();
+
+  const [requiredActions, setRequiredActions] = useState<string[]>([]);
+  const [userActionOptions, setUserActionOptions] = useState<UserAction[]>([]);
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const history = useHistory();
   const layout = {
     labelCol: {
@@ -71,23 +56,33 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     { label: 'No', value: false },
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchRequiredActions(keycloakBaseURL, setUserActionOptions);
   }, [keycloakBaseURL]);
 
-  React.useEffect(() => {
-    setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
+  useEffect(() => {
+    if (initialValues.requiredActions) {
+      setRequiredActions(initialValues.requiredActions);
+    }
   }, [initialValues.requiredActions]);
+
+  /** Update form initial values when initialValues prop changes, without this
+   * the form fields initial values will not change if props.initialValues update
+   * **/
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [form, initialValues]);
 
   return (
     <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
       <h5 className="mb-3 header-title">
-        {props.initialValues.id ? `${EDIT_USER} | ${initialValues.username}` : ADD_USER}
+        {props.initialValues.id ? `${lang.EDIT_USER} | ${initialValues.username}` : lang.ADD_USER}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <Form
           {...layout}
+          form={form}
           initialValues={initialValues}
           onFinish={(values) => {
             setSubmitting(true);
@@ -98,39 +93,42 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               userGroups
             ).catch((_: Error) => {
               setSubmitting(false);
-              sendErrorNotification(ERROR_OCCURED);
+              sendErrorNotification(lang.ERROR_OCCURED);
             });
           }}
         >
           <Form.Item
             name="firstName"
             id="firstName"
-            label={FIRST_NAME}
-            rules={[{ required: true, message: FIRST_NAME_REQUIRED }]}
+            label={lang.FIRST_NAME}
+            rules={[{ required: true, message: lang.FIRST_NAME_REQUIRED }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="lastName"
             id="lastName"
-            label={LAST_NAME}
-            rules={[{ required: true, message: LAST_NAME_REQUIRED }]}
+            label={lang.LAST_NAME}
+            rules={[{ required: true, message: lang.LAST_NAME_REQUIRED }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item name="email" id="email" label={EMAIL}>
+          <Form.Item name="email" id="email" label={lang.EMAIL}>
             <Input />
           </Form.Item>
           <Form.Item
             name="username"
             id="username"
-            label={USERNAME}
-            rules={[{ required: true, message: USERNAME_REQUIRED }]}
+            label={lang.USERNAME}
+            rules={[{ required: true, message: lang.USERNAME_REQUIRED }]}
           >
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
+          <Form.Item id="enabled" name="enabled" label={lang.ENABLE_USER}>
+            <Radio.Group options={status} name="enabled"></Radio.Group>
+          </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
-            <Form.Item id="practitionerToggle" name="active" label={MARK_AS_PRACTITIONER}>
+            <Form.Item id="practitionerToggle" name="active" label={lang.MARK_AS_PRACTITIONER}>
               <Radio.Group name="active">
                 {status.map((e) => (
                   <Radio name="active" key={e.label} value={e.value}>
@@ -141,11 +139,11 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
           {initialValues.id !== extraData.user_id ? (
-            <Form.Item name="requiredActions" id="requiredActions" label={REQUIRED_ACTIONS}>
+            <Form.Item name="requiredActions" id="requiredActions" label={lang.REQUIRED_ACTIONS}>
               <Select
                 mode="multiple"
                 allowClear
-                placeholder={PLEASE_SELECT}
+                placeholder={lang.PLEASE_SELECT}
                 onChange={(selected: string[]) => setRequiredActions(selected)}
                 style={{ width: '100%' }}
               >
@@ -157,11 +155,11 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
               </Select>
             </Form.Item>
           ) : null}
-          <Form.Item name="userGroup" id="userGroup" label={GROUP}>
+          <Form.Item name="userGroup" id="userGroup" label={lang.GROUP}>
             <Select
               mode="multiple"
               allowClear
-              placeholder={PLEASE_SELECT}
+              placeholder={lang.PLEASE_SELECT}
               style={{ width: '100%' }}
             >
               {userGroups.map((group) => (
@@ -173,10 +171,10 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
-              {isSubmitting ? SAVING : SAVE}
+              {isSubmitting ? lang.SAVING : lang.SAVE}
             </Button>
             <Button onClick={() => history.push(URL_USER)} className="cancel-user">
-              {CANCEL}
+              {lang.CANCEL}
             </Button>
           </Form.Item>
         </Form>

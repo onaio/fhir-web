@@ -38,6 +38,6 @@
     "@opensrp/store": "^0.0.9"
   },
   "dependencies": {
-    "@opensrp/react-utils": "^0.0.6"
+    "@opensrp/react-utils": "^0.0.7"
   }
 }

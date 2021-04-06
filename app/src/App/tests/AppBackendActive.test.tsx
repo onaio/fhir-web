@@ -8,6 +8,8 @@ import { store } from '@opensrp/store';
 import App from '../App';
 
 jest.mock('../../configs/env', () => ({
+  PROJECT_LANGUAGE_CODE: 'eusm',
+  SUPPORTED_LANGUAGES: ['en', 'fr'],
   BACKEND_ACTIVE: true,
   OPENSRP_ROLES: {
     USERS: 'ROLE_EDIT_KEYCLOAK_USERS',

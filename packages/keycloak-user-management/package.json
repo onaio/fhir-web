@@ -28,6 +28,7 @@
   ],
   "peerDependencies": {
     "@opensrp/store": "^0.0.7",
+    "i18next": "^19.8.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
@@ -49,7 +50,7 @@
     "@opensrp/keycloak-service": "^0.0.13",
     "@opensrp/notifications": "^0.0.1",
     "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7",
     "@opensrp/server-service": "^0.0.16",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
@@ -58,8 +59,8 @@
     "fast_array_intersect": "^1.1.0",
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",
-    "i18next": "^19.8.4",
     "lodash": "^4.17.20",
+    "react-i18next": "^11.8.10",
     "uuid": "^8.3.1",
     "yup": "^0.29.3"
   },

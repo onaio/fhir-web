@@ -5,6 +5,8 @@ export const ENABLE_PRODUCT_CATALOGUE = true;
 export const ENABLE_INVENTORY = true;
 export const LANGUAGE_CODE = 'en';
 export const PROJECT_LANGUAGE_CODE = 'eusm';
+export const SUPPORTED_LANGUAGES = ['en', 'fr'];
+export const ENABLE_LANGUAGE_SWITCHER = true;
 export const OPENSRP_ROLES = {
   USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
   PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',

@@ -27,7 +27,7 @@ import {
   removeKeycloakUserRoles,
 } from '../../../ducks/userRoles';
 import { CreateEditUserGroup } from '..';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 import {
   assignedRoles,
   availableRoles,
@@ -43,7 +43,7 @@ reducerRegistry.register(rolesReducername, rolesReducer);
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
-  ...jest.requireActual('@opensrp/store'),
+  ...Object.assign({}, jest.requireActual('@opensrp/store')),
 }));
 
 jest.mock('@opensrp/notifications', () => ({
@@ -145,7 +145,6 @@ describe('components/CreateEditUserGroup', () => {
   });
 
   it('renders correctly for create user group', () => {
-    jest.resetAllMocks();
     const propsCreate = {
       history,
       keycloakBaseURL:
@@ -237,7 +236,7 @@ describe('components/CreateEditUserGroup', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
     wrapper.unmount();
   });
 

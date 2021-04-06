@@ -69,18 +69,10 @@ Array [
   },
   Object {
     "errors": Array [
-      "'title' is required",
+      "Plan name cannot contain '/'",
     ],
     "name": Array [
       "title",
-    ],
-  },
-  Object {
-    "errors": Array [
-      "'name' is required",
-    ],
-    "name": Array [
-      "name",
     ],
   },
   Object {
@@ -205,6 +197,7 @@ exports[`containers/forms/PlanForm renders correctly: date field 2`] = `
   className="ant-input"
   disabled={false}
   id="planForm_description"
+  maxLength={200}
   onChange={[Function]}
   onKeyDown={[Function]}
   placeholder="Enter the plan's description"
