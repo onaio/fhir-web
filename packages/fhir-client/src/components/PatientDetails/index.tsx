@@ -157,7 +157,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   const patientName = getPatientName(resourceTypeMap['Patient'].data[0]);
   const currentPatient = resourceTypeMap['Patient'].data[0];
   const { gender, birthDate } = currentPatient;
-  const avatarLink = `http://www.gravatar.com/avatar/${patientId}?s=50&r=any&default=identicon&forcedefault=1`;
+  const avatarLink = `https://www.gravatar.com/avatar/${patientId}?s=50&r=any&default=identicon&forcedefault=1`;
   return (
     <Row>
       <Col span={24}>

@@ -33,6 +33,7 @@ import {
   MAIN_LOGO_SRC,
   OPENSRP_ROLES,
   ENABLE_PATIENTS_MODULE,
+  ENABLE_TEAMS_ASSIGNMENT_MODULE,
 } from '../../../configs/env';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -187,11 +188,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
                     {lang.TEAMS}
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="team-assignment">
-                  <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
-                    {lang.TEAM_ASSIGNMENT}
-                  </Link>
-                </Menu.Item>
+                {ENABLE_TEAMS_ASSIGNMENT_MODULE && (
+                  <Menu.Item key="team-assignment">
+                    <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
+                      {lang.TEAM_ASSIGNMENT}
+                    </Link>
+                  </Menu.Item>
+                )}
               </Menu.SubMenu>
             )}
           {ENABLE_PRODUCT_CATALOGUE &&
