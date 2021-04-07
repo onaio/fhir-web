@@ -192,6 +192,14 @@ const PlanForm = (props: PlanFormProps) => {
 
   const [form] = Form.useForm();
 
+  // if active date range has no end date (end date === null)
+  // convert end date (null) to Moment type (moment.Moment | undefined)
+  useEffect(() => {
+    if (!initialValues.dateRange[1]?.isValid()) {
+      initialValues.dateRange[1] = undefined;
+    }
+  }, [initialValues.dateRange]);
+
   useEffect(() => {
     const { conditions, triggers, dynamicValue } = getConditionAndTriggers(
       initialValues.activities,
