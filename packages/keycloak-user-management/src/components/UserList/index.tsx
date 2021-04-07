@@ -7,8 +7,7 @@ import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
 import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import FHIR, { AbortController } from 'fhirclient';
-import { ConsoleSqlOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   KeycloakUser,
   fetchKeycloakUsers,
@@ -25,8 +24,6 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
-
-const client = FHIR.client('https://r4.smarthealthit.org');
 
 // Define selector instance
 const usersSelector = makeKeycloakUsersSelector();
@@ -152,7 +149,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 pagination={{
                   showQuickJumper: true,
                   showSizeChanger: true,
-                  defaultPageSize: 20,
+                  defaultPageSize: 5,
                   pageSizeOptions: ['5', '10', '20', '50', '100'],
                 }}
                 onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {

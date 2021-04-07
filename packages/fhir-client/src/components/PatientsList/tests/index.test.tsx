@@ -16,14 +16,6 @@ const { QueryClient, QueryClientProvider } = reactQuery;
 
 const queryClient = new QueryClient();
 
-jest.mock('fhirclient', () => ({
-  client: jest.fn().mockImplementation(() => {
-    return {
-      request: jest.fn(),
-    };
-  }),
-}));
-
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
