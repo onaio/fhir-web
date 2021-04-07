@@ -810,4 +810,31 @@ describe('containers/forms/PlanForm', () => {
       '/otherPlans'
     );
   });
+  it('date range picker renders correctly for no mission end date', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const initialValues = getPlanFormValues(mission1);
+
+    const props = {
+      initialValues: { ...initialValues, dateRange: [moment('2020-11-23T21:00:00.000Z'), null] },
+    };
+
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: div }
+    );
+
+    expect(wrapper.find('#dateRange RangePicker').at(0).props().value).toMatchSnapshot(
+      'date range for no end date'
+    );
+
+    // end date value is empty, and is not 'Invalid date'
+    const instance = wrapper.find('#dateRange input').at(1).props();
+    expect(instance.placeholder).toBe('End date');
+    expect(instance.value).not.toBe('Invalid date');
+    expect(instance.value).toBe('');
+
+    wrapper.unmount();
+  });
 });
