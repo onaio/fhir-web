@@ -161,19 +161,15 @@ describe('components/CreateEditUser', () => {
   it('renders correctly with user id', async () => {
     fetch
       .once(JSON.stringify(userGroup))
-      .once(JSON.stringify(userGroup[1]))
+      .once(JSON.stringify(keycloakUser))
+      .once(JSON.stringify(userGroup))
       .once(JSON.stringify(practitioner1))
-      .once(JSON.stringify(userGroup[1]))
-      .once(JSON.stringify(practitioner1))
-      .once(JSON.stringify(requiredActions))
-      .once(JSON.stringify(userGroup[1]))
-      .once(JSON.stringify(requiredActions))
-      .once(JSON.stringify(userGroup[1]));
+      .once(JSON.stringify(requiredActions));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <CreateEditUser {...props} />
+          <ConnectedCreateEditUser {...props} />
         </Router>
       </Provider>
     );
@@ -188,14 +184,10 @@ describe('components/CreateEditUser', () => {
     const fetchMockCalls = fetch.mock.calls.map((call) => call[0]);
     expect(fetchMockCalls).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups',
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
-      'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
       'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
     ]);
 
     expect(row.props()).toMatchSnapshot();
@@ -213,6 +205,9 @@ describe('components/CreateEditUser', () => {
       </Router>
     );
 
+    expect(wrapper.exists('.ant-spin')).toBeTruthy();
+    expect(wrapper.exists('Row')).toBeFalsy();
+
     await act(async () => {
       await flushPromises();
       wrapper.update();
@@ -227,6 +222,9 @@ describe('components/CreateEditUser', () => {
   it('fetches user if page is refreshed', async () => {
     fetch.mockResponseOnce(JSON.stringify(userGroup));
     fetch.mockResponseOnce(JSON.stringify(keycloakUser));
+    fetch.mockResponseOnce(JSON.stringify(userGroup));
+    fetch.mockResponseOnce(JSON.stringify(practitioner1));
+    fetch.mockResponseOnce(JSON.stringify(requiredActions));
 
     opensrpStore.store.dispatch(
       authenticateUser(
@@ -299,6 +297,17 @@ describe('components/CreateEditUser', () => {
       ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer bamboocha',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
         {
           headers: {
             accept: 'application/json',
@@ -387,6 +396,36 @@ describe('components/CreateEditUser', () => {
       api_token: 'hunter2',
       oAuth2Data: { access_token: 'bamboocha', state: 'abcde' },
     });
+
+    wrapper.unmount();
+  });
+
+  it('renders edit form once after all props update', async () => {
+    fetch
+      .once(JSON.stringify(userGroup))
+      .once(JSON.stringify(keycloakUser))
+      .once(JSON.stringify(userGroup))
+      .once(JSON.stringify(practitioner1))
+      .once(JSON.stringify(requiredActions));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedCreateEditUser {...props} />
+        </Router>
+      </Provider>
+    );
+
+    expect(wrapper.exists('.ant-spin')).toBeTruthy();
+    expect(wrapper.exists('Row')).toBeFalsy();
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.exists('.ant-spin')).toBeFalsy();
+    expect(wrapper.exists('Row')).toBeTruthy();
 
     wrapper.unmount();
   });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import { KeycloakUser, Practitioner, UserAction, UserGroup } from '../../../ducks/user';
@@ -24,12 +24,15 @@ export interface FormFields extends KeycloakUser {
   practitioner?: Practitioner;
 }
 
-const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
+const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
+
+  // hook into the form lifecycle methods
   const [form] = Form.useForm();
-  const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
-  const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+
+  const [requiredActions, setRequiredActions] = useState<string[]>([]);
+  const [userActionOptions, setUserActionOptions] = useState<UserAction[]>([]);
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const history = useHistory();
   const layout = {
     labelCol: {
@@ -53,13 +56,22 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     { label: 'No', value: false },
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchRequiredActions(keycloakBaseURL, setUserActionOptions);
   }, [keycloakBaseURL]);
 
-  React.useEffect(() => {
-    setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
+  useEffect(() => {
+    if (initialValues.requiredActions) {
+      setRequiredActions(initialValues.requiredActions);
+    }
   }, [initialValues.requiredActions]);
+
+  /** Update form initial values when initialValues prop changes, without this
+   * the form fields initial values will not change if props.initialValues update
+   * **/
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [form, initialValues]);
 
   return (
     <Row className="layout-content">
