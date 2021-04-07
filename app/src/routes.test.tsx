@@ -1,6 +1,10 @@
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { filterFalsyRoutes, getRoutes } from './routes';
+import React from 'react';
+import MapMarkerOutlineIcon from '@opensrp/ant-icons/lib/MapMarkerOutline';
+import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
+import ArchiveOutlineIcon from '@opensrp/ant-icons/lib/ArchiveOutline';
 jest.mock('./configs/env');
 
 describe('routes', () => {
@@ -119,6 +123,163 @@ describe('routes', () => {
     };
 
     const routes = getRoutes(['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS']);
-    expect(routes).toMatchSnapshot();
+    expect(routes).toMatchObject([
+      {
+        children: [
+          {
+            key: 'missions-active',
+            title: 'Active',
+            url: '/missions/active',
+          },
+          {
+            key: 'missions-draft',
+            title: 'Draft',
+            url: '/missions/draft',
+          },
+          {
+            key: 'missions-complete',
+            title: 'Complete',
+            url: '/missions/complete',
+          },
+          {
+            key: 'missions-trash',
+            title: 'Retired',
+            url: '/missions/trash',
+          },
+        ],
+        enabled: true,
+        key: 'missions',
+        otherProps: {
+          icon: <MapMarkerOutlineIcon className="sidebar-icons" />,
+        },
+        title: 'Missions',
+      },
+      {
+        children: [
+          {
+            key: 'download-client-data',
+            title: 'Download Client Data',
+            url: '/card-support/download-client-data',
+          },
+        ],
+        enabled: true,
+        key: 'card-support',
+        otherProps: {
+          icon: <IdcardOutlined />,
+        },
+        title: 'Card Support',
+      },
+      {
+        children: [
+          {
+            key: 'inventory-list',
+            title: 'Service point inventory',
+            url: '/inventory',
+          },
+        ],
+        enabled: true,
+        key: 'inventory',
+        otherProps: {
+          icon: <ArchiveOutlineIcon className="sidebar-icons" />,
+        },
+        title: 'Inventory',
+      },
+      {
+        children: [
+          {
+            children: [
+              {
+                key: 'user',
+                title: 'User Management',
+                url: '/admin/users',
+              },
+              {
+                key: 'user-groups',
+                title: 'User Groups',
+                url: '/admin/users/groups',
+              },
+              {
+                key: 'user-roles',
+                title: 'User Roles',
+                url: '/admin/users/roles',
+              },
+            ],
+            enabled: true,
+            key: 'users',
+            title: 'Users',
+          },
+          {
+            children: [
+              {
+                key: 'location-unit',
+                title: 'Location unit',
+                url: '/admin/location/unit',
+              },
+              {
+                key: 'location-group',
+                title: 'Location unit group',
+                url: '/admin/location/group',
+              },
+            ],
+            enabled: true,
+            key: 'location',
+            title: 'Locations',
+          },
+          {
+            enabled: true,
+            key: 'product-catalogue',
+            title: 'Product Catalogue',
+            url: '/admin/product-catalogue',
+          },
+          {
+            children: [
+              {
+                key: 'teams-list',
+                title: 'Teams',
+                url: '/admin/teams',
+              },
+              {
+                enabled: true,
+                key: 'team-assignment',
+                title: 'Team Assignment',
+                url: '/admin/teams/team-assignment',
+              },
+            ],
+            enabled: true,
+            key: 'teams',
+            title: 'Teams',
+          },
+          {
+            children: [
+              {
+                key: 'form-config-releases',
+                title: 'Manifest Releases',
+                url: '/admin/form-config/releases',
+              },
+              {
+                key: 'form-config-draft',
+                title: 'Draft Files',
+                url: '/admin/form-config/drafts',
+              },
+              {
+                key: 'form-config-validators',
+                title: 'JSON Validators',
+                url: '/admin/form-config/json-validators',
+              },
+            ],
+            enabled: true,
+            key: 'form-config',
+            title: 'Form Configuration',
+          },
+        ],
+        enabled: true,
+        key: 'admin',
+        otherProps: {
+          icon: <DashboardOutlined />,
+        },
+        title: 'Admin',
+        url: '/admin',
+      },
+    ]);
   });
 });
