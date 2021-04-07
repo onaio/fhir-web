@@ -11,6 +11,14 @@ import { initReactI18next } from 'react-i18next';
 
 const configuredLanguage = `en_core`;
 
+jest.mock('fhirclient', () => ({
+  client: jest.fn().mockImplementation(() => {
+    return {
+      request: jest.fn(),
+    };
+  }),
+}));
+
 i18n
   .use(initReactI18next)
   .init({
@@ -34,7 +42,9 @@ setAllConfigs({
 global.fetch = require('jest-fetch-mock');
 MockDate.set('2017-07-13T19:31:00.000Z'); // 7-13-17 19:31 => Mersenne primes :)
 
-enzyme.configure({ adapter: new Adapter() });
+enzyme.configure({
+  adapter: new Adapter(),
+});
 
 global.matchMedia =
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
