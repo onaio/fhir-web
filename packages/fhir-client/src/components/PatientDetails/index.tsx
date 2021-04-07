@@ -50,18 +50,14 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   const [resourceType, setResourceType] = React.useState<string>('Patient');
   const patientId = props.match.params['patientId'];
 
-  const { error, data, isLoading } = useQuery(
-    'fetchPatient',
-    async () => {
-      return await FHIR.client(fhirBaseURL)
-        .request(`Patient/${patientId}/$everything?_count=5000`)
-        .then((res: fhirclient.FHIR.Bundle) => {
-          return res;
-        })
-        .catch((_) => sendErrorNotification('Error Occured'));
-    },
-    { retry: false }
-  );
+  const { error, data, isLoading } = useQuery('fetchPatient', async () => {
+    return await FHIR.client(fhirBaseURL)
+      .request(`Patient/${patientId}/$everything?_count=5000`)
+      .then((res: fhirclient.FHIR.Bundle) => {
+        return res;
+      })
+      .catch((_) => sendErrorNotification('Error Occured'));
+  });
 
   if (isLoading) {
     return <Spin size="large" />;
@@ -272,6 +268,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                     </span>
                   </>
                 }
+                bodyStyle={{ padding: '0 15px' }}
                 bordered={false}
               >
                 <Table
