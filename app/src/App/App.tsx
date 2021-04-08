@@ -18,6 +18,7 @@ import {
   BACKEND_ACTIVE,
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
+  DEFAULT_HOME_MODE,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -165,7 +166,15 @@ const { Content } = Layout;
  */
 
 export const LoadingComponent = () => <Spin size="large" />;
-export const SuccessfulLoginComponent = () => <Redirect to="/" />;
+export const SuccessfulLoginComponent = () => {
+  if (DEFAULT_HOME_MODE === 'eusm') {
+    return <Redirect to={ACTIVE_PLANS_LIST_VIEW_URL} />;
+  } else if (DEFAULT_HOME_MODE === 'tunisia') {
+    return <Redirect to={URL_DOWNLOAD_CLIENT_DATA} />;
+  } else {
+    return <Redirect to="/" />;
+  }
+};
 
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
