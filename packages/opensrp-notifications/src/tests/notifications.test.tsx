@@ -19,6 +19,7 @@ describe('notifcations/sendSuccessNotification', () => {
     sendSuccessNotification(message, description);
     expect(notificationSpy).toHaveBeenCalledWith({
       message,
+      duration: 2,
       description,
     });
   });
@@ -27,6 +28,7 @@ describe('notifcations/sendSuccessNotification', () => {
     sendSuccessNotification(message);
     expect(notificationSpy).toHaveBeenCalledWith({
       message,
+      duration: 2,
       description: undefined,
     });
   });
@@ -45,6 +47,7 @@ describe('notifications/sendErrorNotification', () => {
     sendErrorNotification(message, description);
     expect(notificationSpy).toHaveBeenCalledWith({
       message,
+      duration: 2,
       description,
     });
   });
@@ -53,6 +56,7 @@ describe('notifications/sendErrorNotification', () => {
     sendErrorNotification(message);
     expect(notificationSpy).toHaveBeenCalledWith({
       message,
+      duration: 2,
       description: undefined,
     });
   });
@@ -71,6 +75,7 @@ describe('notifications/sendInfoNotification', () => {
     sendInfoNotification(message, description);
     expect(notificationSpy).toHaveBeenCalledWith({
       message,
+      duration: 2,
       description,
     });
   });
@@ -79,6 +84,7 @@ describe('notifications/sendInfoNotification', () => {
     sendInfoNotification(message);
     expect(notificationSpy).toHaveBeenCalledWith({
       message,
+      duration: 2,
       description: undefined,
     });
   });
@@ -97,6 +103,7 @@ describe('notifications/sendWarningNotification', () => {
     sendWarningNotification(message, description);
     expect(notificationSpy).toHaveBeenCalledWith({
       message,
+      duration: 2,
       description,
     });
   });
@@ -105,6 +112,7 @@ describe('notifications/sendWarningNotification', () => {
     sendWarningNotification(message);
     expect(notificationSpy).toHaveBeenCalledWith({
       message,
+      duration: 2,
       description: undefined,
     });
   });
