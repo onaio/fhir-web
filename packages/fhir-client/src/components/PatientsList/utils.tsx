@@ -1,11 +1,12 @@
 import { Dictionary } from '@onaio/utils';
+import get from 'lodash/get';
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /** util to extract patient name
  *
  * @param patient - patient object
  * @returns {string[]} - returns an array of name strings
  */
-export function getPatientName(patient: any) {
+export function getPatientName(patient: Dictionary) {
   if (!patient) {
     return '';
   }
@@ -25,10 +26,10 @@ export function getPatientName(patient: any) {
   const suffix = Array.isArray(name.suffix) ? name.suffix : [name.suffix];
 
   return [
-    prefix.map((t: any) => String(t || '').trim()).join(' '),
-    given.map((t: any) => String(t || '').trim()).join(' '),
-    family.map((t: any) => String(t || '').trim()).join(' '),
-    suffix.map((t: any) => String(t || '').trim()).join(' '),
+    prefix.map((t: string) => String(t || '').trim()).join(' '),
+    given.map((t: string) => String(t || '').trim()).join(' '),
+    family.map((t: string) => String(t || '').trim()).join(' '),
+    suffix.map((t: string) => String(t || '').trim()).join(' '),
   ]
     .filter(Boolean)
     .join(' ');
@@ -46,4 +47,37 @@ export function getPatientName(patient: any) {
  */
 export function getPath(obj: Dictionary, path = '') {
   return path.split('.').reduce((out, key) => (out ? out[key] : undefined), obj);
+}
+
+/** Fumction to get observation label
+ *
+ * @param {Object} obj - resource object
+ * @returns {string} - returns label string
+ */
+export function getObservationLabel(obj: Dictionary): string {
+  return (
+    get(obj, 'code.coding.0.display') || get(obj, 'code.text') || get(obj, 'valueQuantity.code')
+  );
+}
+
+/** Fumction to get observation value quantity
+ *
+ * @param {Object} obj - resource object
+ * @returns {string} - returns value string
+ */
+export function buildObservationValueString(obj: Dictionary): string {
+  let quantValue = '';
+  if (obj.component && Array.isArray(obj.component)) {
+    obj.component.forEach((c, i) => {
+      quantValue =
+        quantValue +
+        `${getObservationLabel(c).replace('Blood Pressure', '')}: ${
+          get(c, 'valueQuantity.value') || ''
+        }${get(c, 'valueQuantity.unit') || ''}${i > 0 ? '' : ', '}`;
+    });
+  } else {
+    quantValue =
+      `${get(obj, 'valueQuantity.value') || ''} ${get(obj, 'valueQuantity.unit') || ''}` || 'N/A';
+  }
+  return quantValue;
 }

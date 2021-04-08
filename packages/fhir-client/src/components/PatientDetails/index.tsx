@@ -11,7 +11,7 @@ import get from 'lodash/get';
 import { BrokenPage } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { fhirclient } from 'fhirclient/lib/types';
-import { getPatientName, getPath } from '../PatientsList/utils';
+import { getPatientName, getPath, buildObservationValueString } from '../PatientsList/utils';
 import { resourcesSchema } from '../PatientsList/resourcesSchema';
 import { Dictionary } from '@onaio/utils';
 
@@ -106,8 +106,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       get(d, 'meta.lastUpdated') ||
       d.date;
     const active = `${d.active}`;
-    const value =
-      `${get(d, 'valueQuantity.value') || ''} ${get(d, 'valueQuantity.unit') || ''}` || 'N/A';
+    const value = buildObservationValueString(d);
     const gender = d.gender;
     const dob = d.birthDate;
     const category = get(d, 'category.0.coding.0.display');
@@ -220,10 +219,9 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
               <Row>
                 <Col md={12} span={6}>
                   <span>Address: </span>
-                  <span>{`${get(currentPatient, 'address.0.line.0')}, ${get(
-                    currentPatient,
-                    'address.0.state'
-                  )}`}</span>
+                  <span>{`${get(currentPatient, 'address.0.line.0') || 'N/A'}, ${
+                    get(currentPatient, 'address.0.state') || 'N/A'
+                  }`}</span>
                 </Col>
               </Row>
               <Row>
