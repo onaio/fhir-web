@@ -815,7 +815,10 @@ describe('containers/forms/PlanForm', () => {
     const initialValues = getPlanFormValues(mission1);
 
     const props = {
-      initialValues: { ...initialValues, dateRange: [moment('2020-11-23T21:00:00.000Z'), null] },
+      initialValues: {
+        ...initialValues,
+        dateRange: [moment('2020-11-23T21:00:00.000Z'), undefined],
+      },
     };
 
     const wrapper = mount(
