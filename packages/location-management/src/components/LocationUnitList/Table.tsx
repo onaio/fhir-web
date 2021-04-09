@@ -3,7 +3,7 @@ import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
-import { ACTIONS, LEVEL, NAME, VIEW_DETAILS } from '../../lang';
+import lang from '../../lang';
 
 export interface TableData {
   geographicLevel: number;
@@ -21,19 +21,19 @@ const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails } = props;
   const columns = [
     {
-      title: NAME,
+      title: lang.NAME,
       dataIndex: 'name',
       editable: false,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
-      title: LEVEL,
+      title: lang.LEVEL,
       dataIndex: 'geographicLevel',
       editable: false,
       sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
     },
     {
-      title: ACTIONS,
+      title: lang.ACTIONS,
       dataIndex: 'operation',
       width: '10%',
       // eslint-disable-next-line react/display-name
@@ -54,7 +54,7 @@ const Table: React.FC<Props> = (props: Props) => {
                     if (onViewDetails) onViewDetails(record);
                   }}
                 >
-                  {VIEW_DETAILS}
+                  {lang.VIEW_DETAILS}
                 </Menu.Item>
               </Menu>
             }

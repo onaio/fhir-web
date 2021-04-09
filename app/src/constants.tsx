@@ -15,9 +15,9 @@ export const URL_USER_GROUPS = `${URL_ADMIN}/users/groups`;
 export const URL_USER_ROLES = `${URL_ADMIN}/users/roles`;
 export const URL_USER_EDIT = `${URL_ADMIN}/users/edit`;
 export const URL_TEAMS = `${URL_ADMIN}/teams`;
-export const URL_TEAM_ADD = `${URL_ADMIN}/teams/add`;
-export const URL_TEAM_EDIT = `${URL_ADMIN}/teams/edit/:id`;
-
+export const URL_TEAM_ASSIGNMENT = `${URL_TEAMS}/team-assignment`;
+export const URL_TEAMS_EDIT = `${URL_TEAMS}/edit`;
+export const URL_TEAMS_ADD = `${URL_TEAMS}/add`;
 export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';
 export const URL_LOCATION_UNIT = `${URL_ADMIN}/location/unit`;

@@ -1,14 +1,7 @@
 /** shown during inventory csv bulk upload when validation fails and returns a csv error */
 import React from 'react';
 import { Card, Button, Table } from 'antd';
-import {
-  ERRORS,
-  PLEASE_FIX_THE_ERRORS_LISTED_BELOW,
-  RETRY,
-  RETRY_CSV_UPLOAD,
-  ROW_NUMBER,
-  USE_CSV_TO_UPLOAD_INVENTORY,
-} from '../../lang';
+import lang from '../../lang';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { errorsTableColumnsNameSpace, INVENTORY_BULK_UPLOAD_URL } from '../../constants';
 import { Link } from 'react-router-dom';
@@ -17,19 +10,6 @@ import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
 
 type TableData = BadRequestError['errors'][0];
-
-const columns: ColumnsType<TableData> = [
-  {
-    title: ROW_NUMBER,
-    dataIndex: 'row',
-    key: `${errorsTableColumnsNameSpace}-${ROW_NUMBER}`,
-  },
-  {
-    title: ERRORS,
-    dataIndex: 'failureReason',
-    key: `${errorsTableColumnsNameSpace}-${ERRORS}`,
-  },
-];
 
 /** props for file start upload */
 interface PreConfirmationErrorProps {
@@ -43,10 +23,23 @@ interface PreConfirmationErrorProps {
 const PreConfirmationError = (props: PreConfirmationErrorProps) => {
   const { errorObj } = props;
 
+  const columns: ColumnsType<TableData> = [
+    {
+      title: lang.ROW_NUMBER,
+      dataIndex: 'row',
+      key: `${errorsTableColumnsNameSpace}-${lang.ROW_NUMBER}`,
+    },
+    {
+      title: lang.ERRORS,
+      dataIndex: 'failureReason',
+      key: `${errorsTableColumnsNameSpace}-${lang.ERRORS}`,
+    },
+  ];
+
   const cardTitle = (
     <CardTitle
       IconRender={<FileExcelOutlined className="card-title__icon" />}
-      text={USE_CSV_TO_UPLOAD_INVENTORY}
+      text={lang.USE_CSV_TO_UPLOAD_INVENTORY}
     />
   );
 
@@ -60,12 +53,12 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
   return (
     <Card title={cardTitle} className="full-page-card">
       <p>
-        {PLEASE_FIX_THE_ERRORS_LISTED_BELOW}{' '}
-        <Link to={INVENTORY_BULK_UPLOAD_URL}>{RETRY_CSV_UPLOAD}</Link>
+        {lang.PLEASE_FIX_THE_ERRORS_LISTED_BELOW}{' '}
+        <Link to={INVENTORY_BULK_UPLOAD_URL}>{lang.RETRY_CSV_UPLOAD}</Link>
       </p>
       <Table columns={columns} dataSource={dataSource}></Table>
       <Link to={INVENTORY_BULK_UPLOAD_URL}>
-        <Button className="round-button">{RETRY}</Button>
+        <Button className="round-button">{lang.RETRY}</Button>
       </Link>
     </Card>
   );

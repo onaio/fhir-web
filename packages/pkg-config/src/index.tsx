@@ -1,2 +1,1 @@
-export * from './ducks';
-export * from './configs';
+export * from './configStore';

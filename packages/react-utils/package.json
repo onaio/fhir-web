@@ -40,9 +40,9 @@
     "@onaio/gatekeeper": "^0.1.1",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.4",
+    "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/server-service": "^0.0.16",
+    "@opensrp/server-service": "^0.0.17",
     "antd": "^4.6.3"
   },
   "peerDependencies": {

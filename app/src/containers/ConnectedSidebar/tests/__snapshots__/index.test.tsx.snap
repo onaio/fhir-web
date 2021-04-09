@@ -95,14 +95,26 @@ Array [
     }
     title="Admin"
   >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/teams"
-      >
-        Teams
-      </Link>
-    </MenuItem>
+    <SubMenu
+      title="Teams"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/teams"
+        >
+          Teams
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/teams/team-assignment"
+        >
+          Team Assignment
+        </Link>
+      </MenuItem>
+    </SubMenu>
   </SubMenu>,
 ]
 `;
@@ -261,7 +273,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/product-catalogue/list"
+        to="/admin/product-catalogue/view"
       >
         Product Catalogue
       </Link>

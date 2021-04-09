@@ -7,7 +7,7 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURED } from '../../../../lang';
+import lang from '../../../../lang';
 import {
   value,
   keycloakUser,
@@ -104,7 +104,7 @@ describe('forms/utils/fetchRequiredActions', () => {
 
     expect(setUserActionOptionsMock).not.toHaveBeenCalled();
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 });
 
@@ -148,7 +148,6 @@ describe('forms/utils/submitForm', () => {
           Pragma: 'no-cache',
           body: JSON.stringify({
             ...keycloakuser,
-            enabled: true,
           }),
           headers: {
             accept: 'application/json',

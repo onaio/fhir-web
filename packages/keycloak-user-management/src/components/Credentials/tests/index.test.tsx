@@ -20,7 +20,7 @@ import {
   KeycloakUser,
 } from '../../../ducks/user';
 import { URL_USER } from '../../../constants';
-import { ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../lang';
+import lang from '../../../lang';
 import { history as registryHistory } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -76,6 +76,7 @@ describe('components/Credentials', () => {
     accessToken: 'hunter 2',
     keycloakUser: null,
     serviceClass: KeycloakService,
+    cancelUserHandler: jest.fn(),
     history,
     location: {
       hash: '',
@@ -159,7 +160,7 @@ describe('components/Credentials', () => {
         method: 'PUT',
       },
     ]);
-    expect(mockNotificationSuccess).toHaveBeenCalledWith(CREDENTIALS_UPDATED_SUCCESSFULLY);
+    expect(mockNotificationSuccess).toHaveBeenCalledWith(lang.CREDENTIALS_UPDATED_SUCCESSFULLY);
     expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
     wrapper.unmount();
   });
@@ -262,7 +263,7 @@ describe('components/Credentials', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
 
     wrapper.unmount();
   });

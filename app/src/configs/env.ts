@@ -71,6 +71,14 @@ export const DATE_FORMAT = setEnv('REACT_APP_DATE_FORMAT', 'yyyy-MM-DD');
 export const DEFAULT_TIME = setEnv('REACT_APP_DEFAULT_TIME', 'T00:00:00+00:00');
 
 export const DEFAULT_PLAN_DURATION_DAYS = setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20);
+/** Activate teams menu */
+export const ENABLE_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_TEAMS_MODULE', 'false') === 'true';
+
+/** Default plan id */
+export const DEFAULT_PLAN_ID = setEnv(
+  'REACT_APP_DEFAULT_PLAN_ID',
+  '27362060-0309-411a-910c-64f55ede3758'
+);
 
 export const BACKEND_ACTIVE = setEnv('REACT_APP_BACKEND_ACTIVE', 'false') === 'true';
 
@@ -153,3 +161,13 @@ export const PROJECT_LANGUAGE_CODE = setEnv('REACT_APP_PROJECT_LANGUAGE_CODE', '
 export const ENABLE_INVENTORY = setEnv('REACT_APP_ENABLE_INVENTORY', 'false') === 'true';
 
 export const SENTRY_DSN = setEnv('REACT_APP_SENTRY_DSN', '');
+
+export const SUPPORTED_LANGUAGES = setEnv('REACT_APP_SUPPORTED_LANGUAGES', '').split(',');
+
+export const ENABLE_LANGUAGE_SWITCHER =
+  setEnv('REACT_APP_ENABLE_LANGUAGE_SWITCHER', 'false') === 'true';
+
+export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
+
+export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
+  setEnv('REACT_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
