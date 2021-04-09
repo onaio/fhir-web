@@ -2,10 +2,9 @@ import React from 'react';
 import { Table as AntTable } from 'antd';
 import { ColumnType, TableProps } from 'antd/lib/table';
 
-declare type TKey<T> = keyof T & string;
 export interface Column<T> extends ColumnType<T>, Record<string, any> {
-  dataIndex?: TKey<T> | TKey<T>[];
-  key?: TKey<T>;
+  dataIndex?: React.Key | React.Key[];
+  key?: React.Key;
 }
 
 const defaultoptions: TableProps<any> = {
