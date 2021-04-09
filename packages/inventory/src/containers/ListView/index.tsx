@@ -5,6 +5,7 @@ import {
   getQueryParams,
   OpenSRPService,
   SearchForm,
+  TableLayout,
 } from '@opensrp/react-utils';
 import {
   TreeNode,
@@ -152,7 +153,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
 
   const pageTitle = `${lang.SERVICE_POINT_INVENTORY} (${structures.length})`;
   // add a key prop to the array data to be consumed by the table
-  const dataSource = structures.map((location) => {
+  const datasource = structures.map((location) => {
     const locationToDisplay = {
       key: `${TableColumnsNamespace}-${location.id}`,
       type: location.properties.type as string,
@@ -182,12 +183,12 @@ const ServicePointList = (props: ServicePointsListTypes) => {
               <Button type="primary">{lang.ADD_SERVICE_POINT}</Button>
             </Link>
           </div>
-          <Table
+          <TableLayout
             className="custom-table"
-            dataSource={dataSource}
+            datasource={datasource}
             columns={columns}
             pagination={tablePaginationOptions}
-          ></Table>
+          />
         </Col>
       </Row>
     </div>

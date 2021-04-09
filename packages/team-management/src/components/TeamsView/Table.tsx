@@ -5,6 +5,7 @@ import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
+import { Column, TableLayout } from '@opensrp/react-utils';
 
 export interface TableData extends Organization {
   key: string;
@@ -26,7 +27,7 @@ export interface Props {
 const Table: React.FC<Props> = (props: Props) => {
   const { setDetail, onViewDetails, setPractitionersList, opensrpBaseURL } = props;
 
-  const columns = [
+  const columns: Column<TableData>[] = [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -72,18 +73,7 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  return (
-    <AntTable
-      pagination={{
-        showQuickJumper: true,
-        showSizeChanger: true,
-        defaultPageSize: 5,
-        pageSizeOptions: ['5', '10', '20', '50', '100'],
-      }}
-      dataSource={props.data}
-      columns={columns}
-    />
-  );
+  return <TableLayout datasource={props.data} columns={columns} />;
 };
 
 export default Table;

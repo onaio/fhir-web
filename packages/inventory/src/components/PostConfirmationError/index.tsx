@@ -6,10 +6,10 @@ import lang from '../../lang';
 import { WarningOutlined } from '@ant-design/icons';
 import { errorsTableColumnsNameSpace, INVENTORY_BULK_UPLOAD_URL } from '../../constants';
 import { Link } from 'react-router-dom';
-import { ColumnsType } from 'antd/lib/table/interface';
 import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
 import { format } from 'util';
+import { Column, TableLayout } from '@opensrp/react-utils';
 
 type TableData = BadRequestError['errors'][0];
 
@@ -30,16 +30,16 @@ const defaultProps = {
 const PostConfirmError = (props: PostConfirmErrorProps) => {
   const { errorObj, filename } = props;
 
-  const columns: ColumnsType<TableData> = [
+  const columns: Column<TableData>[] = [
     {
       title: lang.ROW_NUMBER,
       dataIndex: 'row',
-      key: `${errorsTableColumnsNameSpace}-${lang.ROW_NUMBER}`,
+      key: `${errorsTableColumnsNameSpace}-${lang.ROW_NUMBER}` as keyof TableData,
     },
     {
       title: lang.ERRORS,
       dataIndex: 'failureReason',
-      key: `${errorsTableColumnsNameSpace}-${lang.ERRORS}`,
+      key: `${errorsTableColumnsNameSpace}-${lang.ERRORS}` as keyof TableData,
     },
   ];
 
@@ -50,12 +50,9 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
     />
   );
 
-  const dataSource = errorObj?.errors.map((error) => {
-    return {
-      ...error,
-      key: error.row,
-    };
-  });
+  const datasource: TableData[] = errorObj?.errors.map((error) => {
+    return { ...error, key: error.row };
+  }) as TableData[];
 
   const rowsProcessed = Number(errorObj?.rowsProcessed ?? '0');
   const totalRows = Number(errorObj?.rowsNumber ?? '0');
@@ -72,13 +69,13 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
         </li>
       </ol>
       <p>
-        {lang.INVENTORY_ITEMS_NOT_LISTED_BELOW}{' '}
-        <Link to={INVENTORY_BULK_UPLOAD_URL}>{lang.SERVICE_POINT_INVENTORY}</Link>.{' '}
+        {lang.INVENTORY_ITEMS_NOT_LISTED_BELOW}
+        <Link to={INVENTORY_BULK_UPLOAD_URL}>{lang.SERVICE_POINT_INVENTORY}</Link>.
         <strong>{lang.CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS}</strong>
       </p>
       <Divider></Divider>
       <p>{format(lang.INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED, filename)}</p>
-      <Table columns={columns} dataSource={dataSource}></Table>
+      <TableLayout columns={columns} datasource={datasource} />
     </Card>
   );
 };

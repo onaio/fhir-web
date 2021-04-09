@@ -39,7 +39,7 @@ describe('team assignment table utils', () => {
     expect(received).toEqual(expectedMergedIds1);
   });
 
-  it('gets dataSource for planJurisdictions only', () => {
+  it('gets datasource for planJurisdictions only', () => {
     const response = getDataSource([], [], [], ['9b5dd829-89de-45a5-98f2-fd37787ae94']);
     expect(response).toEqual([
       {

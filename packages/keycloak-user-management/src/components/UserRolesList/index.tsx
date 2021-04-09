@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
+import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import {
   reducerName as keycloakUserRolesReducerName,
   reducer as keycloakUserRolesReducer,
@@ -15,6 +15,7 @@ import lang from '../../lang';
 import { SEARCH_QUERY_PARAM } from '../../constants';
 import { KeycloakUserRole, makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
 import { fetchAllRoles } from './utils';
+import { Column } from 'react-utils/src/components/TableLayout';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserRolesReducerName, keycloakUserRolesReducer);
@@ -82,7 +83,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     }
   );
 
-  const columns = [
+  const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
@@ -113,8 +114,8 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
           </div>
-          <Table
-            dataSource={tableData}
+          <TableLayout
+            datasource={tableData}
             columns={columns}
             pagination={{
               showQuickJumper: true,

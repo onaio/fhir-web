@@ -1,12 +1,13 @@
 import React from 'react';
 import { Spin, Alert } from 'antd';
-import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
+import { ColumnType } from 'antd/lib/table/interface';
 import { PLANS_ASSIGNMENT_VIEW_URL, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import moment from 'moment';
 import { Dictionary } from '@onaio/utils';
 import lang from '../../lang';
+import { Column } from '@opensrp/react-utils';
 
 /**
  * component rendered in the action column of the table
@@ -25,12 +26,12 @@ export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (
  *
  * @param langObj - the language object
  */
-export const getColumns = (langObj: Dictionary<string> = lang) => {
-  const columns: ColumnsType<PlanDefinition> = [
+export const getColumns = (langObj: Dictionary<string> = lang): Column<PlanDefinition>[] => {
+  const columns: Column<PlanDefinition>[] = [
     {
       title: langObj.NAME,
       dataIndex: 'title',
-      key: `${TableColumnsNamespace}-title`,
+      key: `${TableColumnsNamespace}-title` as keyof PlanDefinition,
       defaultSortOrder: 'descend',
       sorter: (rec1, rec2) => {
         if (rec1.title > rec2.title) {
@@ -45,18 +46,18 @@ export const getColumns = (langObj: Dictionary<string> = lang) => {
     {
       title: lang.DATE,
       dataIndex: 'date',
-      key: `${TableColumnsNamespace}-date`,
+      key: `${TableColumnsNamespace}-date` as keyof PlanDefinition,
       sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
     },
     {
       title: lang.END_DATE,
       dataIndex: 'effectivePeriod',
-      key: `${TableColumnsNamespace}-date`,
+      key: `${TableColumnsNamespace}-date` as keyof PlanDefinition,
       render: (item: Dictionary) => item.end,
     },
     {
       title: langObj.ACTIONS,
-      key: `${TableColumnsNamespace}-actions`,
+      key: `${TableColumnsNamespace}-actions` as keyof PlanDefinition,
       render: ActionsColumnCustomRender,
       width: '20%',
     },

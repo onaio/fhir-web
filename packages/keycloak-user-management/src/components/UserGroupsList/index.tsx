@@ -29,6 +29,7 @@ import {
   makeKeycloakUserGroupsSelector,
 } from '../../ducks/userGroups';
 import { ViewDetails } from '../UserGroupDetailView';
+import TableLayout, { Column } from '@opensrp/react-utils/src/components/TableLayout';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -119,7 +120,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     }
   );
 
-  const columns = [
+  const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
@@ -144,9 +145,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               <Menu className="menu">
                 <Menu.Item
                   className="viewdetails"
-                  onClick={() => {
-                    history.push(`${URL_USER_GROUPS}/${record.id}`);
-                  }}
+                  onClick={() => history.push(`${URL_USER_GROUPS}/${record.id}`)}
                 >
                   {lang.VIEW_DETAILS}
                 </Menu.Item>
@@ -180,8 +179,8 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               </Button>
             </Link>
           </div>
-          <Table
-            dataSource={tableData}
+          <TableLayout
+            datasource={tableData}
             columns={columns}
             pagination={{
               showQuickJumper: true,

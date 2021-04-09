@@ -5,6 +5,7 @@ import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
+import { Column } from '@opensrp/react-utils';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
@@ -34,11 +35,11 @@ export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (recor
  * @param langObj - the language translations lookup
  */
 export const columnsFactory = (langObj: Lang = lang) => {
-  const columns: ColumnsType<TableData> = [
+  const columns: Column<TableData>[] = [
     {
       title: langObj.SERVICE_POINT_TH,
       dataIndex: 'serviceName',
-      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_TH}`,
+      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_TH}` as keyof TableData,
       defaultSortOrder: 'descend',
       sorter: (rec1, rec2) => {
         if (rec1.serviceName > rec2.serviceName) {
@@ -53,21 +54,21 @@ export const columnsFactory = (langObj: Lang = lang) => {
     {
       title: langObj.TYPE_TH,
       dataIndex: 'type',
-      key: `${TableColumnsNamespace}-${langObj.TYPE_TH}`,
+      key: `${TableColumnsNamespace}-${langObj.TYPE_TH}` as keyof TableData,
     },
     {
       title: langObj.LOCATION_TH,
       dataIndex: 'location',
-      key: `${TableColumnsNamespace}-${langObj.LOCATION_TH}`,
+      key: `${TableColumnsNamespace}-${langObj.LOCATION_TH}` as keyof TableData,
     },
     {
       title: langObj.SERVICE_POINT_ID_TH,
       dataIndex: 'servicePointId',
-      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_ID_TH}`,
+      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_ID_TH}` as keyof TableData,
     },
     {
       title: langObj.ACTIONS_TH,
-      key: `${TableColumnsNamespace}-actions`,
+      key: `${TableColumnsNamespace}-actions` as keyof TableData,
       render: ActionsColumnCustomRender,
       width: '20%',
     },

@@ -22,7 +22,7 @@ import {
 import { Alert } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
-import { OpenSRPService, useHandleBrokenPage } from '@opensrp/react-utils';
+import { OpenSRPService, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
@@ -83,7 +83,7 @@ const InventoryList = (props: InventoryListProps) => {
   }
 
   // add a key prop to the array data to be consumed by the table
-  const dataSource = inventoriesArray.map((item) => {
+  const datasource = inventoriesArray.map((item) => {
     const deliveryDate = format(new Date(item.deliveryDate), 'MMM dd, yyyy');
     const accountabilityEndDate = format(new Date(item.accountabilityEndDate), 'MMM dd, yyyy');
     const inventoryToDisplay = {
@@ -107,12 +107,12 @@ const InventoryList = (props: InventoryListProps) => {
               </Button>
             </Link>
           </div>
-          <Table
+          <TableLayout
             className="custom-table"
             pagination={false}
-            dataSource={dataSource}
+            datasource={datasource}
             columns={getTableColumns(servicePointProfileURL, editInventoryURL)}
-          ></Table>
+          />
         </Col>
       </Row>
     </>

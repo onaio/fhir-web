@@ -2,7 +2,7 @@ import React from 'react';
 import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { Column, OpenSRPService, TableLayout } from '@opensrp/react-utils';
 import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
 import lang, { Lang } from '../../lang';
 import { Link } from 'react-router-dom';
@@ -44,7 +44,7 @@ export const onDelete = (
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails, opensrpBaseURL } = props;
 
-  const columns = [
+  const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
@@ -52,7 +52,6 @@ const Table: React.FC<Props> = (props: Props) => {
     },
     {
       title: lang.ACTIONS,
-      dataIndex: 'operation',
       width: '10%',
 
       // eslint-disable-next-line react/display-name
@@ -89,18 +88,7 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  return (
-    <AntTable
-      pagination={{
-        showQuickJumper: true,
-        showSizeChanger: true,
-        defaultPageSize: 5,
-        pageSizeOptions: ['5', '10', '20', '50', '100'],
-      }}
-      dataSource={props.data}
-      columns={columns}
-    />
-  );
+  return <TableLayout datasource={props.data} columns={columns} />;
 };
 
 export default Table;

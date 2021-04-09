@@ -9,6 +9,7 @@ import {
 } from '../../constants';
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
+import { Column } from 'react-utils/dist/types';
 
 /**
  * component rendered in the action column of the table
@@ -29,12 +30,12 @@ export const ActionsColumnCustomRender: ColumnType<ProductCatalogue>['render'] =
  *
  * @param langObj - the lang translation object
  */
-export const columnsFactory = (langObj: Lang = lang) => {
-  const columns: ColumnsType<ProductCatalogue> = [
+export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[] => {
+  const columns: Column<ProductCatalogue>[] = [
     {
       title: langObj.PRODUCT_NAME_TH,
       dataIndex: 'productName',
-      key: `${TableColumnsNamespace}-productName`,
+      key: `${TableColumnsNamespace}-productName` as keyof ProductCatalogue,
       defaultSortOrder: 'descend',
       sorter: (rec1, rec2) => {
         if (rec1.productName > rec2.productName) {
@@ -49,11 +50,11 @@ export const columnsFactory = (langObj: Lang = lang) => {
     {
       title: langObj.ID_TH,
       dataIndex: 'uniqueId',
-      key: `${TableColumnsNamespace}-uniqueId`,
+      key: `${TableColumnsNamespace}-uniqueId` as keyof ProductCatalogue,
     },
     {
       title: langObj.ACTIONS_TH,
-      key: `${TableColumnsNamespace}-actions`,
+      key: `${TableColumnsNamespace}-actions` as keyof ProductCatalogue,
       render: ActionsColumnCustomRender,
       width: '20%',
     },
