@@ -22,11 +22,11 @@ export interface Props<T> extends Omit<TableProps<T>, 'columns' | 'dataSource'> 
 }
 
 export function TableLayout<T extends object = Record<string, any>>(props: Props<T>) {
-  Object.assign(defaultoptions, props);
   const { columns, datasource, children } = props;
+  const options = { ...defaultoptions, ...props };
 
   return (
-    <AntTable<T> dataSource={datasource} columns={columns} {...props}>
+    <AntTable<T> dataSource={datasource} columns={columns} {...options}>
       {children}
     </AntTable>
   );
