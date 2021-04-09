@@ -5,13 +5,15 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
-import { PLANS_LIST_VIEW_URL } from '../../../constants';
+import { ACTIVE_PLANS_LIST_VIEW_URL } from '../../../constants';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
-import { columns, pageTitleBuilder } from '../utils';
-import { DATE } from '../../../lang';
+import { getColumns, pageTitleBuilder } from '../utils';
+import lang from '../../../lang';
+
+const columns = getColumns(lang);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -33,15 +35,15 @@ describe('List view Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: {},
-        path: `${PLANS_LIST_VIEW_URL}`,
-        url: `${PLANS_LIST_VIEW_URL}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
       },
       allowedPlanStatus: 'active',
     };
@@ -64,7 +66,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Active Missions + New MissionNameDateActionsNo Data"`
+      `"Active Missions + New MissionNameDate createdEnd DateActionsNo Data"`
     );
   });
   it('renders Draft Missions Title', async () => {
@@ -74,15 +76,15 @@ describe('List view Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: {},
-        path: `${PLANS_LIST_VIEW_URL}`,
-        url: `${PLANS_LIST_VIEW_URL}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
       },
       allowedPlanStatus: 'draft',
     };
@@ -98,7 +100,7 @@ describe('List view Page', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Draft Missions + New MissionNameDateActionsDraft Plan2020-11-17View1"`
+      `"Draft Missions + New MissionNameDate createdEnd DateActionsDraft Plan2020-11-172021-12-24View1"`
     );
   });
   it('renders Complete Missions Title', async () => {
@@ -113,15 +115,15 @@ describe('List view Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: {},
-        path: `${PLANS_LIST_VIEW_URL}`,
-        url: `${PLANS_LIST_VIEW_URL}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
       },
       allowedPlanStatus: 'complete',
     };
@@ -139,7 +141,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Complete Missions + New MissionNameDateActionsComplete Plan2020-11-17View1"`
+      `"Complete Missions + New MissionNameDate createdEnd DateActionsComplete Plan2020-11-172021-12-24View1"`
     );
   });
 
@@ -150,15 +152,15 @@ describe('List view Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: {},
-        path: `${PLANS_LIST_VIEW_URL}`,
-        url: `${PLANS_LIST_VIEW_URL}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
       },
       allowedPlanStatus: 'retired',
     };
@@ -176,7 +178,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Retired Missions + New MissionNameDateActionsRetired Plan2020-11-17View1"`
+      `"Retired Missions + New MissionNameDate createdEnd DateActionsRetired Plan2020-11-172021-12-24View1"`
     );
   });
 
@@ -187,15 +189,15 @@ describe('List view Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: {},
-        path: `${PLANS_LIST_VIEW_URL}`,
-        url: `${PLANS_LIST_VIEW_URL}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
       },
       allowedPlanStatus: 'active',
     };
@@ -242,15 +244,15 @@ describe('List view Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: {},
-        path: `${PLANS_LIST_VIEW_URL}`,
-        url: `${PLANS_LIST_VIEW_URL}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
       },
       allowedPlanStatus: 'active',
     };
@@ -277,7 +279,7 @@ describe('List view Page', () => {
     });
 
     // click on sort twice to change the order if its date col
-    expect(wrapper.find('thead tr th').at(1).text()).toEqual(DATE);
+    expect(wrapper.find('thead tr th').at(1).text()).toEqual(lang.DATE);
 
     wrapper.find('thead tr th').at(1).simulate('click');
     wrapper.update();
@@ -298,15 +300,15 @@ describe('List view Page', () => {
       history,
       location: {
         hash: '',
-        pathname: `${PLANS_LIST_VIEW_URL}`,
+        pathname: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
         search: '',
         state: {},
       },
       match: {
         isExact: true,
         params: {},
-        path: `${PLANS_LIST_VIEW_URL}`,
-        url: `${PLANS_LIST_VIEW_URL}`,
+        path: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
+        url: `${ACTIVE_PLANS_LIST_VIEW_URL}`,
       },
       allowedPlanStatus: 'active',
     };

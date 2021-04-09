@@ -18,6 +18,7 @@ import {
   BACKEND_ACTIVE,
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
+  DEFAULT_HOME_MODE,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -27,8 +28,8 @@ import {
   URL_LOGOUT,
   URL_LOCATION_UNIT,
   URL_HOME,
-  URL_TEAM_EDIT,
-  URL_TEAM_ADD,
+  URL_TEAMS_EDIT,
+  URL_TEAMS_ADD,
   URL_TEAMS,
   URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT_ADD,
@@ -41,13 +42,13 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
-import '@opensrp/user-management/dist/index.css';
 import {
   ConnectedProductCatalogueList,
   CATALOGUE_LIST_VIEW_URL,
@@ -86,6 +87,7 @@ import {
   URL_USER_CREDENTIALS,
   CreateEditUserGroup,
 } from '@opensrp/user-management';
+import { TeamAssignmentView } from '@opensrp/team-assignment';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
   UploadForm,
@@ -96,7 +98,6 @@ import {
   ROUTE_PARAM_FORM_VERSION,
 } from '@opensrp/form-config-antd';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
-import './App.css';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
@@ -106,7 +107,6 @@ import {
   NewLocationUnit,
   EditLocationUnit,
 } from '@opensrp/location-management';
-import '@opensrp/product-catalogue/dist/index.css';
 import {
   BaseProps,
   jsonValidatorListProps,
@@ -123,13 +123,13 @@ import {
   completedPlansListStatusProp,
   trashPlansListStatusProp,
   missionAssignmentProps,
+  teamAssignmentProps,
   inventoryServiceProps,
   inventoryItemAddEditProps,
   editLocationProps,
   newLocationUnitProps,
 } from './utils';
-import '@opensrp/plans/dist/index.css';
-import '@opensrp/plan-form/dist/index.css';
+import './App.css';
 import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
@@ -148,8 +148,15 @@ import {
   URL_INVENTORY_EDIT,
   URL_INVENTORY_ADD,
 } from '@opensrp/inventory';
+
+import '@opensrp/plans/dist/index.css';
+import '@opensrp/team-assignment/dist/index.css';
+import '@opensrp/user-management/dist/index.css';
+import '@opensrp/product-catalogue/dist/index.css';
 import '@opensrp/inventory/dist/index.css';
+
 import { APP_LOGIN_URL } from '../dispatchConfig';
+import { useTranslation } from 'react-i18next';
 
 const { Content } = Layout;
 
@@ -159,7 +166,15 @@ const { Content } = Layout;
  */
 
 export const LoadingComponent = () => <Spin size="large" />;
-export const SuccessfulLoginComponent = () => <Redirect to="/" />;
+export const SuccessfulLoginComponent = () => {
+  if (DEFAULT_HOME_MODE === 'eusm') {
+    return <Redirect to={ACTIVE_PLANS_LIST_VIEW_URL} />;
+  } else if (DEFAULT_HOME_MODE === 'tunisia') {
+    return <Redirect to={URL_DOWNLOAD_CLIENT_DATA} />;
+  } else {
+    return <Redirect to="/" />;
+  }
+};
 
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
   if (BACKEND_ACTIVE) {
@@ -184,6 +199,7 @@ const App: React.FC = () => {
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   const activeRoles = OPENSRP_ROLES;
+  useTranslation();
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -240,6 +256,15 @@ const App: React.FC = () => {
               exact
               path={URL_TEAMS}
               component={TeamsView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_TEAM_ASSIGNMENT}
+              {...teamAssignmentProps}
+              component={TeamAssignmentView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -443,7 +468,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
-              path={URL_TEAM_ADD}
+              path={URL_TEAMS_ADD}
               component={TeamsAddEdit}
             />
             <PrivateComponent
@@ -451,7 +476,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
-              path={URL_TEAM_EDIT}
+              path={`${URL_TEAMS_EDIT}/:id`}
               component={TeamsAddEdit}
             />
             <PrivateComponent

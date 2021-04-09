@@ -289,7 +289,7 @@ export const fetchCalls1 = [
 
 export const createdLocation1 = {
   properties: {
-    geographicLevel: 0,
+    geographicLevel: 1,
     externalId: 'secret',
     parentId: '51',
     name: 'area51',

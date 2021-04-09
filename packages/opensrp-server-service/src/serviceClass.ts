@@ -54,7 +54,7 @@ export function getFetchOptions<T extends object = Dictionary>(
 
 /** interface to describe URL params object */
 export interface URLParams {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | undefined;
 }
 
 export interface CustomFetch {

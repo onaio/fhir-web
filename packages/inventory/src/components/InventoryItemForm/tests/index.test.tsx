@@ -14,7 +14,7 @@ import { ProductCatalogue } from '@opensrp/product-catalogue';
 import { act } from 'react-dom/test-utils';
 import toJson from 'enzyme-to-json';
 import * as opensrpReactUtils from '@opensrp/react-utils';
-import { ERROR_GENERIC } from '../../../lang';
+import lang from '../../../lang';
 
 /* eslint-disable react/prop-types */
 
@@ -331,7 +331,7 @@ describe('components/InventoryItemForm', () => {
     await act(async () => {
       await flushPromises();
     });
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_GENERIC);
     wrapper.unmount();
   });
 
@@ -502,7 +502,7 @@ describe('components/InventoryItemForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_GENERIC);
     wrapper.unmount();
   });
 
@@ -598,7 +598,7 @@ describe('components/InventoryItemForm', () => {
     });
 
     expect(fetch.mock.calls).toHaveLength(0);
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_GENERIC);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_GENERIC);
     wrapper.unmount();
   });
 

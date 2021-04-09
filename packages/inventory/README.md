@@ -74,3 +74,75 @@ const props = {
   - Route to the service point profile view to redirect to after pressing `Cancel` button on the form to abort and exit the view or after successful submission.
   - If not provided the default is `/inventory/profile/<id>` where `id` is the id of the service point
   - If provided, the id of the service point will be added to the route name e.g if you passed `/inventory/service-point` as the `servicePointProfileURL`, the redirect will be to `/inventory/service-point/<id>`
+  -
+
+### Inventory List
+
+To add a view for inventory list:
+
+```tsx
+import { ConnectedServicePointList } from '@opensrp/inventory';
+
+const props = {
+	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
+}
+
+<Route path={`/inventory/list`}>
+  <ConnectedServicePointList {...props} />
+</Route>
+```
+
+`ConnectedServicePointList` component takes the following props:
+
+- **opensrpBaseURL:**(string)
+
+  - **required**
+  - Opensrp API base URL
+
+### Service Point Profile
+
+To add a view for service point profile:
+
+```tsx
+import { ServicePointProfile, INVENTORY_SERVICE_POINT_PROFILE_PARAM } from '@opensrp/inventory';
+
+const props = {
+	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
+}
+
+<Route path={`/inventory/list/:${ROUTE_PARAM_INVENTORY_ITEM_ID}`}>
+  <ServicePointProfile {...props} />
+</Route>
+```
+
+**N/B** You can declare any path but make sure to include the param `ROUTE_PARAM_INVENTORY_ITEM_ID` in your path e.g `/foo/:${ROUTE_PARAM_INVENTORY_ITEM_ID}`
+
+`ServicePointProfile` component takes the following props:
+
+- **opensrpBaseURL:**(string)
+
+  - **required**
+  - Opensrp API base URL
+
+### Bulk Upload
+
+To add a view for uploading inventories:
+
+```tsx
+import { BulkUpload } from '@opensrp/inventory';
+
+const props = {
+	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
+}
+
+<Route path={`/inventory/upload`}>
+  <BulkUpload {...props} />
+</Route>
+```
+
+`BulkUpload` component takes the following props:
+
+- **opensrpBaseURL:**(string)
+
+  - **required**
+  - Opensrp API base URL

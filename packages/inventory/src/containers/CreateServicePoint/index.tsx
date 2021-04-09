@@ -21,10 +21,8 @@ const defaultProps = {
  * @param props - the component props
  */
 const ServicePointsAdd = (props: ServicePointAddTypes) => {
-  const { baseURL, ...restProps } = props;
   const locationUnitAddEditProps = {
-    ...restProps,
-    openSRPBaseURL: baseURL,
+    ...props,
     instance: FormInstances.EUSM,
     hidden: commonHiddenFields,
     successURLGenerator: (payload?: LocationUnit) =>

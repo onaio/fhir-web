@@ -11,7 +11,6 @@ import {
   PropsForPlanForm,
   redirectPathGetter,
 } from '../../helpers/common';
-import { CREATE_PLAN } from '../../lang';
 import { DRAFT_PLANS_LIST_VIEW_URL } from '../../constants';
 import {
   defaultEnvConfig,
@@ -21,6 +20,7 @@ import {
   planActivities,
 } from '@opensrp/plan-form-core';
 import { useHistory } from 'react-router';
+import lang from '../../lang';
 
 type CreatePlanViewProps = CommonProps & PropsForPlanForm;
 
@@ -37,7 +37,7 @@ const defaultProps = {
 
 const CreatePlanView = (props: CreatePlanViewProps) => {
   const { envConfigs, baseURL, hiddenFields } = props;
-  const pageTitle = CREATE_PLAN;
+  const pageTitle = lang.CREATE_PLAN;
   const history = useHistory();
 
   const configs = {

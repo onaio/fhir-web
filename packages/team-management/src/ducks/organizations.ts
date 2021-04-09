@@ -11,7 +11,7 @@ import {
 } from '@opensrp/reducer-factory';
 
 /** The reducer name */
-export const orgReducerName = 'organizations';
+export const reducerName = 'organizations';
 
 /** interface for Organizations coding property */
 interface OrganizationCoding {
@@ -44,19 +44,16 @@ export interface OrganizationPOST extends Partial<Organization> {
 // action interfaces
 
 /** Item Reducer */
-export const organizationsReducer = reducerFactory<Organization>(orgReducerName);
+export const reducer = reducerFactory<Organization>(reducerName);
 
 // actions
 /** actionCreator returns action to add Item records to store */
-export const fetchOrganizationsAction = fetchActionCreatorFactory<Organization>(
-  orgReducerName,
-  'id'
-);
-export const removeOrganizationsAction = removeActionCreatorFactory(orgReducerName);
-export const setTotalOrganizationsAction = setTotalRecordsFactory(orgReducerName);
+export const fetchOrganizationsAction = fetchActionCreatorFactory<Organization>(reducerName, 'id');
+export const removeOrganizationsAction = removeActionCreatorFactory(reducerName);
+export const setTotalOrganizationsAction = setTotalRecordsFactory(reducerName);
 
 // selectors
-export const getOrganizationsById = getItemsByIdFactory<Organization>(orgReducerName);
-export const getOrganizationById = getItemByIdFactory<Organization>(orgReducerName);
-export const getOrganizationsArray = getItemsArrayFactory<Organization>(orgReducerName);
-export const getTotalOrganizations = getTotalRecordsFactory(orgReducerName);
+export const getOrganizationsById = getItemsByIdFactory<Organization>(reducerName);
+export const getOrganizationById = getItemByIdFactory<Organization>(reducerName);
+export const getOrganizationsArray = getItemsArrayFactory<Organization>(reducerName);
+export const getTotalOrganizations = getTotalRecordsFactory(reducerName);

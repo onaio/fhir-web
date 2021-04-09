@@ -1,29 +1,29 @@
 import { ProductCatalogue } from '../../ducks/productCatalogue';
 import React from 'react';
-import { Col, Typography, Space } from 'antd';
+import { Col } from 'antd';
 import { Resource404 } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
-import { PRODUCT_NAME, UNIQUE_ID, MATERIAL_NUMBER, SERVER_VERSION } from '../../lang';
+import lang, { Lang } from '../../lang';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { Button } from 'antd';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
-
-const { Text } = Typography;
+import './index.css';
 
 /**
  * helper function that creates a list of key,value pairs.
  * This pairs are iterated and displayed as they are.
  *
- * @param {ProductCatalogue} product - a single product object
- * @returns {Dictionary} - the mapping inform of an array
+ * @param  product - a single product object
+ * @param langObj - the translation obj lookup
+ * @returns  - the mapping inform of an array
  */
-export const defaultExtractViewDetails = (product: ProductCatalogue) => {
+export const defaultExtractViewDetails = (product: ProductCatalogue, langObj: Lang = lang) => {
   const mapping: Dictionary = {};
-  mapping[PRODUCT_NAME] = product.productName;
-  mapping[UNIQUE_ID] = product.uniqueId;
-  mapping[MATERIAL_NUMBER] = product.materialNumber;
-  mapping[SERVER_VERSION] = product.serverVersion;
+  mapping[langObj.PRODUCT_NAME] = product.productName;
+  mapping[langObj.UNIQUE_ID] = product.uniqueId;
+  mapping[langObj.MATERIAL_NUMBER] = product.materialNumber;
+  mapping[langObj.SERVER_VERSION] = product.serverVersion;
   return Object.entries(mapping);
 };
 
@@ -64,20 +64,16 @@ const ViewDetails = (props: ViewDetailsProps) => {
       {objectId && !object ? (
         <Resource404></Resource404>
       ) : (
-        <Space direction="vertical">
+        <div className="p-10">
           {extractViewDetails(object as ProductCatalogue).map(([key, val]) => {
             return (
-              <span key={`${key}-${val}`}>
-                <Text strong={true} className="display-block">
-                  {key}
-                </Text>
-                <Text type="secondary" className="display-block">
-                  {val}
-                </Text>
-              </span>
+              <div key={`${key}-${val}`} className="mb-3">
+                <p className="panel-label">{key}</p>
+                <p className="mb-0 panel-value">{`${val}`}</p>
+              </div>
             );
           })}
-        </Space>
+        </div>
       )}
     </Col>
   );

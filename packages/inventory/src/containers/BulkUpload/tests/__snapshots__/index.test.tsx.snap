@@ -10,7 +10,7 @@ exports[`Inventory bulk upload shows post confirmation upload card: post confirm
 
 exports[`Inventory bulk upload shows pre confirmation error page: pre confirmation error page 1`] = `"Add inventory via CSVUse a CSV file to add service point inventoryplease fix the errors listed below, then retry csv uploadRow numberErrorsNo DataRetry"`;
 
-exports[`Inventory bulk upload shows pre confirmation success page: pre confirmation success page 1`] = `"Add inventory via CSV“” ready0 inventory items will be added to service points. Do you wish to proced?Proceed with adding inventoryCancel"`;
+exports[`Inventory bulk upload shows pre confirmation success page: pre confirmation success page 1`] = `"Add inventory via CSV“” ready0 inventory items will be added to service points. Do you wish to proceed?Proceed with adding inventoryCancel"`;
 
 exports[`Inventory bulk upload shows pre confirmation upload page: pre confirmation page 1`] = `"Add inventory via CSVUploading  ...Do not close tab or navigate away.Cancel"`;
 

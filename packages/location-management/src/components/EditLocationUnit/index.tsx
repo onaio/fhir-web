@@ -15,7 +15,7 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
 import { getUser } from '@onaio/session-reducer';
-import { EDIT } from '../../lang';
+import lang from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
@@ -32,14 +32,14 @@ export interface EditLocationUnitProps
       'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps<LocationRouteProps> {
-  openSRPBaseURL: string;
+  opensrpBaseURL: string;
   instance: FormInstances;
   cancelURLGenerator: (data: LocationUnit) => string;
 }
 
 const defaultEditLocationUnitProps = {
   redirectAfterAction: '',
-  openSRPBaseURL: OPENSRP_API_BASE_URL,
+  opensrpBaseURL: OPENSRP_API_BASE_URL,
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
@@ -58,7 +58,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     hidden,
     disabled,
     service,
-    openSRPBaseURL,
+    opensrpBaseURL,
     cancelURLGenerator,
     successURLGenerator,
     disabledTreeNodesCallback,
@@ -108,7 +108,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     const firstPromise = loadJurisdiction(
       locId,
       undefined,
-      openSRPBaseURL,
+      opensrpBaseURL,
       jurisdictionParams,
       service
     )
@@ -123,7 +123,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     const secondPromise = loadJurisdiction(
       locId,
       undefined,
-      openSRPBaseURL,
+      opensrpBaseURL,
       structureParams,
       service
     )
@@ -169,12 +169,12 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     disabled,
     onCancel: cancelHandler,
     service,
-    openSRPBaseURL,
+    opensrpBaseURL,
     user: user.username,
     afterSubmit: () => dispatch(fetchAllHierarchies([])),
     disabledTreeNodesCallback,
   };
-  const pageTitle = `${EDIT} > ${thisLocation.properties.name}`;
+  const pageTitle = `${lang.EDIT} > ${thisLocation.properties.name}`;
 
   return (
     <Row className="layout-content">

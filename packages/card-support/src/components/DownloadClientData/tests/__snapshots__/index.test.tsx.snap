@@ -72,9 +72,7 @@ Object {
         <TreeNode
           title="CSB Hopital Bouficha"
           value="e2b4a441-21b5-4d03-816b-09d45b17cad7"
-        >
-          
-        </TreeNode>
+        />
       </TreeSelect>
     </FormItem>
     <FormItem

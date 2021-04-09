@@ -17,12 +17,11 @@ import {
   makeKeycloakUsersSelector,
 } from '../../ducks/user';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS, SEARCH_QUERY_PARAM } from '../../constants';
-import { ERROR_OCCURED, NO_DATA_FOUND } from '../../lang';
+import lang from '../../lang';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ADD_USER, USER_MANAGEMENT_PAGE_HEADER } from '../../lang';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -56,6 +55,7 @@ interface TableData {
   email: string | undefined;
   firstName: string | undefined;
   lastName: string | undefined;
+  enabled: string | undefined;
 }
 
 export type UserListTypes = Props & RouteComponentProps;
@@ -86,7 +86,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
           return fetchKeycloakUsersCreator(res);
         })
         .catch((_: Error) => {
-          return sendErrorNotification(ERROR_OCCURED);
+          return sendErrorNotification(lang.ERROR_OCCURED);
         })
         .finally(() => {
           setIsLoading(false);
@@ -106,6 +106,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
+      enabled: user.enabled ? 'Enabled' : 'Disabled',
     };
   });
 
@@ -116,22 +117,24 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   return (
     <section className="layout-content">
-      <h5 className="mb-3">{USER_MANAGEMENT_PAGE_HEADER}</h5>
-      <Row>
-        <Col className="bg-white p-3" span={24}>
-          <SearchForm {...searchFormProps} />
-          <Space style={{ marginBottom: 16, float: 'right' }}>
-            <Button
-              type="primary"
-              className="create-user"
-              onClick={() => history.push(URL_USER_CREATE)}
-            >
-              <PlusOutlined />
-              {ADD_USER}
-            </Button>
-            <Divider type="vertical" />
-            <SettingOutlined />
-          </Space>
+      <h5 className="mb-3">{lang.USER_MANAGEMENT_PAGE_HEADER}</h5>
+      <Row className="list-view">
+        <Col className="main-content" span={24}>
+          <div className="main-content__header">
+            <SearchForm {...searchFormProps} />
+            <Space style={{ marginBottom: 16, float: 'right' }}>
+              <Button
+                type="primary"
+                className="create-user"
+                onClick={() => history.push(URL_USER_CREATE)}
+              >
+                <PlusOutlined />
+                {lang.ADD_USER}
+              </Button>
+              <Divider type="vertical" />
+              <SettingOutlined />
+            </Space>
+          </div>
           <Space>
             {tableData.length > 0 ? (
               <Table
@@ -142,7 +145,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   extraData,
                   sortedInfo
                 )}
-                dataSource={keycloakUsers}
+                dataSource={tableData}
                 pagination={{
                   showQuickJumper: true,
                   showSizeChanger: true,
@@ -154,7 +157,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 }}
               />
             ) : (
-              NO_DATA_FOUND
+              lang.NO_DATA_FOUND
             )}
           </Space>
         </Col>
