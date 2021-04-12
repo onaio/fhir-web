@@ -1,6 +1,6 @@
 import { Route } from '../../../routes';
 
-/**
+/** Gets Active key for menu based on path from routes
  *
  * @param routes - The routes to get search the active route from
  * @param path - an array of menu location path
