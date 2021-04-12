@@ -12,7 +12,6 @@ import {
 
 /** Authentication Configs */
 const providers: Providers = {};
-console.log('here???????????????', ENABLE_OPENSRP_OAUTH);
 if (ENABLE_OPENSRP_OAUTH) {
   providers.OpenSRP = {
     accessTokenUri: OPENSRP_ACCESS_TOKEN_URL,
