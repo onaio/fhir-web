@@ -56,10 +56,10 @@ export const OPENSRP_BUSINESS_STATUS_HAS_PROBLEM = 'has_problem';
 // router routes
 export const URL_MISSIONS = '/missions';
 export const PLANS_ASSIGNMENT_VIEW_URL = `${URL_MISSIONS}/assignments`;
-export const PLANS_CREATE_VIEW_URL = `${URL_MISSIONS}/new`;
 export const PLANS_EDIT_VIEW_URL = `${URL_MISSIONS}/edit`;
 export const ACTIVE_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/active`;
 export const DRAFT_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/draft`;
+export const PLANS_CREATE_VIEW_URL = `${DRAFT_PLANS_LIST_VIEW_URL}/new`;
 export const COMPLETE_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/complete`;
 export const TRASH_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/trash`;
 export const HOME_URL = '/';
