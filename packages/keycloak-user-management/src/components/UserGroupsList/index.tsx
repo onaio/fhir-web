@@ -124,7 +124,6 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     {
       title: lang.NAME,
       dataIndex: 'name',
-      editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {

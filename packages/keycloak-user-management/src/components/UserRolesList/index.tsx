@@ -24,7 +24,6 @@ reducerRegistry.register(keycloakUserRolesReducerName, keycloakUserRolesReducer)
 const userRolesSelector = makeKeycloakUserRolesSelector();
 
 interface TableData {
-  key: number | string;
   id: string | undefined;
   name: string;
   composite: boolean | string;
@@ -87,18 +86,15 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     {
       title: lang.NAME,
       dataIndex: 'name',
-      editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
       title: lang.COMPOSITE,
       dataIndex: 'composite',
-      editable: true,
     },
     {
       title: lang.DESCRIPTION,
       dataIndex: 'description',
-      editable: true,
       sorter: (a: TableData, b: TableData) => a.description.localeCompare(b.description),
     },
   ];
@@ -114,16 +110,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
           </div>
-          <TableLayout
-            datasource={tableData}
-            columns={columns}
-            pagination={{
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: 5,
-              pageSizeOptions: ['5', '10', '20', '50', '100'],
-            }}
-          />
+          <TableLayout<TableData> datasource={tableData} columns={columns} />
         </Col>
       </Row>
     </div>
