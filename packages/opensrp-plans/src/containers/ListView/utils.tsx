@@ -19,9 +19,7 @@ export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (
   return (
     <>
       {/* Assumes the record status is in the routes */}
-      <Link to={`${URL_MISSIONS}/${record.status}/${record.identifier}`}>
-        {lang.VIEW}
-      </Link>
+      <Link to={`${URL_MISSIONS}/${record.status}/${record.identifier}`}>{lang.VIEW}</Link>
     </>
   );
 };
