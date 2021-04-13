@@ -30,7 +30,7 @@ function fill() {
   lang.ACTIVE = i18n.t(`Active`, { ns: namespace });
   lang.DRAFT = i18n.t(`Draft`, { ns: namespace });
   lang.COMPLETE = i18n.t(`Complete`, { ns: namespace });
-  lang.TRASH = i18n.t(`Retired`, { ns: namespace });
+  lang.RETIRED = i18n.t(`Retired`, { ns: namespace });
   lang.LOCATIONS = i18n.t(`Locations`, { ns: namespace });
   lang.USERS = i18n.t(`Users`, { ns: namespace });
   lang.ADMIN = i18n.t(`Admin`, { ns: namespace });

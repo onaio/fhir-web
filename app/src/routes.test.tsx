@@ -142,9 +142,9 @@ describe('routes', () => {
             url: '/missions/complete',
           },
           {
-            key: 'missions-trash',
+            key: 'missions-retired',
             title: 'Retired',
-            url: '/missions/trash',
+            url: '/missions/retired',
           },
         ],
         enabled: true,

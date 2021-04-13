@@ -75,7 +75,7 @@ Array [
     <MenuItem>
       <Link
         className="admin-link"
-        to="/missions/trash"
+        to="/missions/retired"
       >
         Retired
       </Link>

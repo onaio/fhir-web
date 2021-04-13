@@ -62,13 +62,11 @@ import {
   ACTIVE_PLANS_LIST_VIEW_URL,
   DRAFT_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,
-  TRASH_PLANS_LIST_VIEW_URL,
+  RETIRED_PLANS_LIST_VIEW_URL,
   ConnectedEditPlanView,
   CreatePlanView,
   PLANS_CREATE_VIEW_URL,
-  PLANS_EDIT_VIEW_URL,
   ConnectedPlanAssignment,
-  PLANS_ASSIGNMENT_VIEW_URL,
 } from '@opensrp/plans';
 import {
   ConnectedUserList,
@@ -120,7 +118,7 @@ import {
   activePlansListStatusProp,
   draftPlansListStatusProp,
   completedPlansListStatusProp,
-  trashPlansListStatusProp,
+  retiredPlansListStatusProp,
   missionAssignmentProps,
   teamAssignmentProps,
   inventoryServiceProps,
@@ -262,11 +260,43 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
+              path={PLANS_CREATE_VIEW_URL}
+              {...planCreateProps}
+              component={CreatePlanView}
+            />
+
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
               path={ACTIVE_PLANS_LIST_VIEW_URL}
               {...plansListProps}
               {...activePlansListStatusProp}
               component={ConnectedPlansList}
             />
+
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
+              path={`${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`}
+              {...plansListProps}
+              {...missionAssignmentProps}
+              component={ConnectedPlanAssignment}
+            />
+
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
+              path={`${ACTIVE_PLANS_LIST_VIEW_URL}/edit/:planId`}
+              {...planEditProps}
+              component={ConnectedEditPlanView}
+            />
+
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -277,6 +307,28 @@ const App: React.FC = () => {
               {...draftPlansListStatusProp}
               component={ConnectedPlansList}
             />
+
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
+              path={`${DRAFT_PLANS_LIST_VIEW_URL}/:planId`}
+              {...plansListProps}
+              {...missionAssignmentProps}
+              component={ConnectedPlanAssignment}
+            />
+
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
+              path={`${DRAFT_PLANS_LIST_VIEW_URL}/edit/:planId`}
+              {...planEditProps}
+              component={ConnectedEditPlanView}
+            />
+
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -287,26 +339,58 @@ const App: React.FC = () => {
               {...completedPlansListStatusProp}
               component={ConnectedPlansList}
             />
+
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
               exact
-              path={TRASH_PLANS_LIST_VIEW_URL}
-              {...plansListProps}
-              {...trashPlansListStatusProp}
-              component={ConnectedPlansList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-              exact
-              path={`${PLANS_ASSIGNMENT_VIEW_URL}/:planId`}
+              path={`${COMPLETE_PLANS_LIST_VIEW_URL}/:planId`}
               {...plansListProps}
               {...missionAssignmentProps}
               component={ConnectedPlanAssignment}
             />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
+              path={`${COMPLETE_PLANS_LIST_VIEW_URL}/edit/:planId`}
+              {...planEditProps}
+              component={ConnectedEditPlanView}
+            />
+
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
+              path={RETIRED_PLANS_LIST_VIEW_URL}
+              {...plansListProps}
+              {...retiredPlansListStatusProp}
+              component={ConnectedPlansList}
+            />
+
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
+              path={`${RETIRED_PLANS_LIST_VIEW_URL}/:planId`}
+              {...plansListProps}
+              {...missionAssignmentProps}
+              component={ConnectedPlanAssignment}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
+              exact
+              path={`${RETIRED_PLANS_LIST_VIEW_URL}/edit/:planId`}
+              {...planEditProps}
+              component={ConnectedEditPlanView}
+            />
+
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -350,16 +434,6 @@ const App: React.FC = () => {
               path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
               {...BaseProps}
               component={ConnectedProductCatalogueList}
-            />
-
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-              exact
-              path={PLANS_CREATE_VIEW_URL}
-              {...planCreateProps}
-              component={CreatePlanView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -405,15 +479,6 @@ const App: React.FC = () => {
               {...BaseProps}
               path={`${INVENTORY_EDIT_SERVICE_POINT}/:id`}
               component={ServicePointEdit}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-              exact
-              path={`${PLANS_EDIT_VIEW_URL}/:planId`}
-              {...planEditProps}
-              component={ConnectedEditPlanView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

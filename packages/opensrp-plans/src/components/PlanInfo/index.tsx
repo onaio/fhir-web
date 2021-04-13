@@ -1,7 +1,7 @@
 import { FileDoneOutlined } from '@ant-design/icons';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { Avatar, Divider, Breadcrumb, Row, Col } from 'antd';
-import { PlanStatusColors, PLANS_EDIT_VIEW_URL, PLANS_ASSIGNMENT_VIEW_URL } from '../../constants';
+import { PlanStatusColors, URL_MISSIONS } from '../../constants';
 import { pageTitleBuilder } from '../../containers/ListView/utils';
 import lang from '../../lang';
 import React from 'react';
@@ -41,7 +41,7 @@ const PlanInfo = (props: PlanInfoProps) => {
       breadcrumbName: pageTitleBuilder(plan.status, false),
     },
     {
-      path: `${PLANS_ASSIGNMENT_VIEW_URL}/${plan.identifier}`,
+      path: `${URL_MISSIONS}/${plan.status}/${plan.identifier}`,
       breadcrumbName: plan.title,
     },
   ] as Route[];
@@ -75,7 +75,7 @@ const PlanInfo = (props: PlanInfoProps) => {
                 <h4>{plan.title}</h4>
               </div>
               <div>
-                <Link to={`${PLANS_EDIT_VIEW_URL}/${planId}`}>{lang.EDIT}</Link>
+                <Link to={`${URL_MISSIONS}/${plan.status}/edit/${planId}`}>{lang.EDIT}</Link>
                 <Divider type="vertical" />
                 <span style={{ color: PlanStatusColors[plan.status] }}>
                   {pageTitleBuilder(plan.status, false)}
