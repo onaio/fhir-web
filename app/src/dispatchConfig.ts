@@ -5,6 +5,7 @@ import {
   LANGUAGE_CODE,
   OPENSRP_API_BASE_URL,
   PROJECT_LANGUAGE_CODE,
+  FHIR_API_BASE_URL,
 } from './configs/env';
 import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from './constants';
 import i18n from './mls';
@@ -17,6 +18,7 @@ const configObject: ConfigState = {
   appLoginURL: APP_LOGIN_URL,
   keycloakBaseURL: KEYCLOAK_API_BASE_URL,
   opensrpBaseURL: OPENSRP_API_BASE_URL,
+  fhirBaseURL: FHIR_API_BASE_URL,
   i18n,
 };
 
