@@ -142,3 +142,8 @@ export const SUPPORTED_LANGUAGES = (process.env.REACT_APP_SUPPORTED_LANGUAGES ??
 export const ENABLE_LANGUAGE_SWITCHER = process.env.REACT_APP_ENABLE_LANGUAGE_SWITCHER === 'true';
 
 export const DEFAULT_HOME_MODE = process.env.REACT_APP_DEFAULT_HOME_MODE || 'default';
+
+export const ENABLE_FHIR = process.env.REACT_APP_ENABLE_FHIR === 'true';
+
+export const FHIR_API_BASE_URL =
+  process.env.REACT_APP_FHIR_API_BASE_URL || 'https://fhir.labs.smartregister.org/fhir';
