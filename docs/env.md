@@ -187,3 +187,15 @@ Below is a list of currently supported environment variables:
   - whether to redirect on eusm or tunisia home page
   - **not required**_(`string`)_
   - _accepted values_: _default | eusm | tunisia_
+
+- **REACT_APP_FHIR_API_BASE_URL**
+
+  - FHIR server base URL
+  - **Required**
+  - default: `https://fhir.labs.smartregister.org/fhir`
+
+- **REACT_APP_ENABLE_FHIR**
+
+  - Enables modules that fetch resources from FHIR server
+  - **Optional**(`boolean`)
+  - default: `"false"`
