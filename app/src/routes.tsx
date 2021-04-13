@@ -61,7 +61,7 @@ export function getRoutes(roles: string[]): Route[] {
   const routes: Route[] = [
     {
       otherProps: { icon: <MapMarkerOutline className="sidebar-icons" /> },
-      title: `${lang.MISSIONS}`,
+      title: lang.MISSIONS,
       key: 'missions',
       enabled:
         ENABLE_PLANS &&
@@ -69,14 +69,10 @@ export function getRoutes(roles: string[]): Route[] {
         activeRoles.PLANS &&
         isAuthorized(roles, activeRoles.PLANS.split(',')),
       children: [
-        { title: `${lang.ACTIVE}`, url: `${ACTIVE_PLANS_LIST_VIEW_URL}`, key: 'missions-active' },
-        { title: `${lang.DRAFT}`, url: `${DRAFT_PLANS_LIST_VIEW_URL}`, key: 'missions-draft' },
-        {
-          title: `${lang.COMPLETE}`,
-          url: `${COMPLETE_PLANS_LIST_VIEW_URL}`,
-          key: 'missions-complete',
-        },
-        { title: `${lang.TRASH}`, url: `${TRASH_PLANS_LIST_VIEW_URL}`, key: 'missions-trash' },
+        { title: lang.ACTIVE, url: ACTIVE_PLANS_LIST_VIEW_URL, key: 'missions-active' },
+        { title: lang.DRAFT, url: DRAFT_PLANS_LIST_VIEW_URL, key: 'missions-draft' },
+        { title: lang.COMPLETE, url: COMPLETE_PLANS_LIST_VIEW_URL, key: 'missions-complete' },
+        { title: lang.TRASH, url: TRASH_PLANS_LIST_VIEW_URL, key: 'missions-trash' },
       ],
     },
     {
@@ -91,14 +87,14 @@ export function getRoutes(roles: string[]): Route[] {
       children: [
         {
           title: 'Download Client Data',
-          url: `${URL_DOWNLOAD_CLIENT_DATA}`,
+          url: URL_DOWNLOAD_CLIENT_DATA,
           key: 'download-client-data',
         },
       ],
     },
     {
       otherProps: { icon: <ArchiveOutline className="sidebar-icons" /> },
-      title: `${lang.INVENTORY}`,
+      title: lang.INVENTORY,
       key: 'inventory',
       enabled:
         ENABLE_INVENTORY &&
@@ -107,27 +103,27 @@ export function getRoutes(roles: string[]): Route[] {
         isAuthorized(roles, activeRoles.INVENTORY.split(',')),
       children: [
         {
-          title: `${lang.SERVICE_POINT_INVENTORY}`,
-          url: `${INVENTORY_SERVICE_POINT_LIST_VIEW}`,
+          title: lang.SERVICE_POINT_INVENTORY,
+          url: INVENTORY_SERVICE_POINT_LIST_VIEW,
           key: 'inventory-list',
         },
       ],
     },
     {
       otherProps: { icon: <DashboardOutlined /> },
-      title: `${lang.ADMIN}`,
+      title: lang.ADMIN,
       key: 'admin',
       enabled: true,
       url: '/admin',
       children: [
         {
-          title: `${lang.USERS}`,
+          title: lang.USERS,
           key: 'users',
           enabled: roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
           children: [
-            { title: `${lang.USER_MANAGEMENT}`, key: 'user', url: `${URL_USER}` },
-            { title: `${lang.USER_GROUPS}`, key: 'user-groups', url: `${URL_USER_GROUPS}` },
-            { title: `${lang.USER_ROLES}`, key: 'user-roles', url: `${URL_USER_ROLES}` },
+            { title: lang.USER_MANAGEMENT, key: 'user', url: URL_USER },
+            { title: lang.USER_GROUPS, key: 'user-groups', url: URL_USER_GROUPS },
+            { title: lang.USER_ROLES, key: 'user-roles', url: URL_USER_ROLES },
           ],
         },
         {
@@ -139,26 +135,26 @@ export function getRoutes(roles: string[]): Route[] {
             activeRoles.LOCATIONS &&
             isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
           children: [
-            { title: `${lang.LOCATION_UNIT}`, url: `${URL_LOCATION_UNIT}`, key: 'location-unit' },
+            { title: lang.LOCATION_UNIT, url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
-              title: `${lang.LOCATION_UNIT_GROUP}`,
-              url: `${URL_LOCATION_UNIT_GROUP}`,
+              title: lang.LOCATION_UNIT_GROUP,
+              url: URL_LOCATION_UNIT_GROUP,
               key: 'location-group',
             },
           ],
         },
         {
-          title: `${lang.PRODUCT_CATALOGUE}`,
+          title: lang.PRODUCT_CATALOGUE,
           key: 'product-catalogue',
           enabled:
             ENABLE_PRODUCT_CATALOGUE &&
             roles &&
             activeRoles.PRODUCT_CATALOGUE &&
             isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
-          url: `${CATALOGUE_LIST_VIEW_URL}`,
+          url: CATALOGUE_LIST_VIEW_URL,
         },
         {
-          title: `${lang.TEAMS}`,
+          title: lang.TEAMS,
           key: 'teams',
           enabled:
             ENABLE_TEAMS &&
@@ -166,17 +162,17 @@ export function getRoutes(roles: string[]): Route[] {
             activeRoles.TEAMS &&
             isAuthorized(roles, activeRoles.TEAMS.split(',')),
           children: [
-            { title: `${lang.TEAMS}`, url: `${URL_TEAMS}`, key: 'teams-list' },
+            { title: lang.TEAMS, url: URL_TEAMS, key: 'teams-list' },
             {
-              title: `${lang.TEAM_ASSIGNMENT}`,
-              url: `${URL_TEAM_ASSIGNMENT}`,
+              title: lang.TEAM_ASSIGNMENT,
+              url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',
               enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
         },
         {
-          title: `${lang.FORM_CONFIGURATION}`,
+          title: lang.FORM_CONFIGURATION,
           key: 'form-config',
           enabled:
             ENABLE_FORM_CONFIGURATION &&
@@ -185,19 +181,15 @@ export function getRoutes(roles: string[]): Route[] {
             isAuthorized(roles, activeRoles.FORM_CONFIGURATION.split(',')),
           children: [
             {
-              title: `${lang.MANIFEST_RELEASES}`,
+              title: lang.MANIFEST_RELEASES,
               key: 'form-config-releases',
-              url: `${URL_MANIFEST_RELEASE_LIST}`,
+              url: URL_MANIFEST_RELEASE_LIST,
             },
+            { title: lang.DRAFT_FILES, key: 'form-config-draft', url: URL_DRAFT_FILE_LIST },
             {
-              title: `${lang.DRAFT_FILES}`,
-              key: 'form-config-draft',
-              url: `${URL_DRAFT_FILE_LIST}`,
-            },
-            {
-              title: `${lang.JSON_VALIDATORS}`,
+              title: lang.JSON_VALIDATORS,
               key: 'form-config-validators',
-              url: `${URL_JSON_VALIDATOR_LIST}`,
+              url: URL_JSON_VALIDATOR_LIST,
             },
           ],
         },
