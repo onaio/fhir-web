@@ -21,8 +21,8 @@ import {
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { getExtraData } from '@onaio/session-reducer';
+import { fhirR4 } from '@smile-cdr/fhirts';
 import '../../index.css';
-import { fhirclient } from 'fhirclient/lib/types';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -141,9 +141,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       const serve = FHIR.client(fhirBaseURL);
       serve
         .request(`Practitioner?identifier=${userId}`)
-        .then((response: fhirclient.FHIR.Bundle) => {
-          const getPractitionerEntry = (response.entry as fhirclient.FHIR.BundleEntry[])[0];
-          const getPractitionerResource = getPractitionerEntry.resource as fhirclient.FHIR.Practitioner;
+        .then((response: fhirR4.Bundle) => {
+          const getPractitionerEntry = (response.entry as fhirR4.BundleEntry[])[0];
+          const getPractitionerResource = getPractitionerEntry.resource as fhirR4.Practitioner;
           setInitialValues((prevState) => ({
             ...prevState,
             active: getPractitionerResource.active,

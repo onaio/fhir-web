@@ -52,6 +52,7 @@
     "@opensrp/pkg-config": "^0.0.6",
     "@opensrp/react-utils": "^0.0.7",
     "@opensrp/server-service": "^0.0.16",
+    "@smile-cdr/fhirts": "^1.2.5",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",

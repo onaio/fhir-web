@@ -1,13 +1,13 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { fhirclient } from 'fhirclient/lib/types';
 import { KeycloakUser, Practitioner, UserAction, UserGroup } from '../../../ducks/user';
 import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
 import { submitForm, fetchRequiredActions } from './utils';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { fhirR4 } from '@smile-cdr/fhirts';
 import '../../../index.css';
 
 /** props for editing a user view */
@@ -22,7 +22,7 @@ export interface UserFormProps {
 export interface FormFields extends KeycloakUser {
   active?: boolean;
   userGroup?: string[];
-  practitioner?: fhirclient.FHIR.Practitioner;
+  practitioner?: fhirR4.Practitioner;
 }
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
