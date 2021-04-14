@@ -13,6 +13,7 @@ import flushPromises from 'flush-promises';
 import * as notifications from '@opensrp/notifications';
 import fetch from 'jest-fetch-mock';
 import toJson from 'enzyme-to-json';
+import * as fhirCient from 'fhirclient';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -24,7 +25,7 @@ import lang from '../../../lang';
 import {
   defaultInitialValue,
   keycloakUser,
-  practitioner1,
+  fhirPractitioner,
   requiredActions,
   userGroup,
 } from '../../forms/UserForm/tests/fixtures';
@@ -50,6 +51,7 @@ describe('components/CreateEditUser', () => {
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     practitioner: undefined,
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
+    fhirBaseURL: 'https://fhir.labs.smartregister.org/fhir',
     opensrpBaseURL: OPENSRP_API_BASE_URL,
     location: {
       hash: '',
@@ -72,6 +74,7 @@ describe('components/CreateEditUser', () => {
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
     opensrpBaseURL: OPENSRP_API_BASE_URL,
+    fhirBaseURL: 'https://fhir.labs.smartregister.org/fhir',
     location: {
       hash: '',
       pathname: '/users/new',
@@ -108,6 +111,10 @@ describe('components/CreateEditUser', () => {
     fetch.resetMocks();
     jest.clearAllMocks();
     // jest.resetAllMocks();
+  });
+
+  afterEach(() => {
+    jest.resetModules();
   });
 
   it('renders correctly', async () => {
@@ -163,8 +170,16 @@ describe('components/CreateEditUser', () => {
       .once(JSON.stringify(userGroup))
       .once(JSON.stringify(keycloakUser))
       .once(JSON.stringify(userGroup))
-      .once(JSON.stringify(practitioner1))
       .once(JSON.stringify(requiredActions));
+
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockResolvedValueOnce(fhirPractitioner),
+        };
+      })
+    );
 
     const wrapper = mount(
       <Provider store={store}>
@@ -186,7 +201,6 @@ describe('components/CreateEditUser', () => {
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
-      'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
     ]);
 
@@ -223,7 +237,6 @@ describe('components/CreateEditUser', () => {
     fetch.mockResponseOnce(JSON.stringify(userGroup));
     fetch.mockResponseOnce(JSON.stringify(keycloakUser));
     fetch.mockResponseOnce(JSON.stringify(userGroup));
-    fetch.mockResponseOnce(JSON.stringify(practitioner1));
     fetch.mockResponseOnce(JSON.stringify(requiredActions));
 
     opensrpStore.store.dispatch(
@@ -296,17 +309,6 @@ describe('components/CreateEditUser', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer bamboocha',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
         {
           headers: {
@@ -323,6 +325,14 @@ describe('components/CreateEditUser', () => {
 
   it('handles error if fetch user fails if page is refreshed', async () => {
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockRejectedValueOnce('Request Failed'),
+        };
+      })
+    );
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     opensrpStore.store.dispatch(
@@ -405,7 +415,6 @@ describe('components/CreateEditUser', () => {
       .once(JSON.stringify(userGroup))
       .once(JSON.stringify(keycloakUser))
       .once(JSON.stringify(userGroup))
-      .once(JSON.stringify(practitioner1))
       .once(JSON.stringify(requiredActions));
 
     const wrapper = mount(

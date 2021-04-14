@@ -11,6 +11,16 @@ import { initReactI18next } from 'react-i18next';
 
 const configuredLanguage = `en_core`;
 
+jest.mock('fhirclient', () => ({
+  client: jest.fn().mockImplementation(() => {
+    return {
+      request: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+    };
+  }),
+}));
+
 i18n
   .use(initReactI18next)
   .init({
