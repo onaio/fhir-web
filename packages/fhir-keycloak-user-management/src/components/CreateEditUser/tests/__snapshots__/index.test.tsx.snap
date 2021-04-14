@@ -7,6 +7,7 @@ Object {
   >
     <UserForm
       extraData={Object {}}
+      fhirBaseURL="https://fhir.labs.smartregister.org/fhir"
       initialValues={
         Object {
           "active": false,
@@ -19,7 +20,6 @@ Object {
         }
       }
       keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
-      opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
       userGroups={
         Array [
           Object {
@@ -62,6 +62,7 @@ Object {
           },
         }
       }
+      fhirBaseURL="https://fhir.labs.smartregister.org/fhir"
       initialValues={
         Object {
           "access": Object {
@@ -83,10 +84,34 @@ Object {
           "notBefore": 0,
           "practitioner": Object {
             "active": true,
-            "identifier": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
-            "name": "prac one",
-            "userId": "7306784c-64fb-4d45-990b-306863eb478b",
-            "username": "prac_1",
+            "id": "125",
+            "identifier": Array [
+              Object {
+                "use": "secondary",
+                "value": "fd4a8d91-89c2-4ff1-950d-8699df608bb0",
+              },
+            ],
+            "meta": Object {
+              "lastUpdated": "2021-04-13T14:51:22.686+00:00",
+              "source": "#634cba62744c9078",
+              "versionId": "1",
+            },
+            "name": Array [
+              Object {
+                "family": "fhir",
+                "given": Array [
+                  "test",
+                ],
+                "use": "official",
+              },
+            ],
+            "resourceType": "Practitioner",
+            "telecom": Array [
+              Object {
+                "system": "email",
+                "value": "test_fhir@test.com",
+              },
+            ],
           },
           "requiredActions": Array [],
           "totp": false,
@@ -99,7 +124,6 @@ Object {
         }
       }
       keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
-      opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
       userGroups={
         Array [
           Object {

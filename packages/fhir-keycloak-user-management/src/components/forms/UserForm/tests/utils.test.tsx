@@ -6,6 +6,7 @@ import fetch from 'jest-fetch-mock';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
+import * as fhirCient from 'fhirclient';
 import * as notifications from '@opensrp/notifications';
 import lang from '../../../../lang';
 import {
@@ -19,6 +20,7 @@ import {
   userAction4,
   userAction5,
   userAction6,
+  fhirPractitioner,
 } from './fixtures';
 import { FormFields } from '..';
 
@@ -116,12 +118,12 @@ describe('forms/utils/submitForm', () => {
 
   const keycloakBaseURL =
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const fhirBaseURL = 'https://fhir.labs.smartregister.org/fhir';
   const id = 'cab07278-c77b-4bc7-b154-bcbf01b7d35b';
 
   it('submits user creation correctly', async () => {
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     const historyPushMock = jest.spyOn(history, 'push');
-
     fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
       status: 200,
       headers: {
@@ -129,7 +131,20 @@ describe('forms/utils/submitForm', () => {
       },
     });
 
-    submitForm(value, keycloakBaseURL, OPENSRP_API_BASE_URL, userGroup).catch(jest.fn());
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          create: jest.fn().mockResolvedValue('Success'),
+        };
+      })
+    );
+
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+    });
+
+    submitForm(value, keycloakBaseURL, fhirBaseURL, userGroup).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -148,26 +163,6 @@ describe('forms/utils/submitForm', () => {
           Pragma: 'no-cache',
           body: JSON.stringify({
             ...keycloakuser,
-          }),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer token',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'POST',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify({
-            active: true,
-            identifier: mockV4,
-            name: `${value.firstName} ${value.lastName}`,
-            userId: id,
-            username: value.username,
           }),
           headers: {
             accept: 'application/json',
@@ -226,10 +221,19 @@ describe('forms/utils/submitForm', () => {
       },
     });
 
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          update: jest.fn().mockResolvedValue('Success'),
+        };
+      })
+    );
+
     submitForm(
-      { ...value, id: id, practitioner: practitioner1 },
+      { ...value, id: id, practitioner: fhirPractitioner },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
+      fhirBaseURL,
       userGroup
     ).catch(jest.fn());
 
@@ -259,25 +263,6 @@ describe('forms/utils/submitForm', () => {
           method: 'PUT',
         },
       ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify({
-            identifier: id,
-            name: `${value.firstName} ${value.lastName}`,
-            userId: practitioner1.userId,
-            username: value.username,
-          }),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer token',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
-      ],
     ]);
 
     expect(notificationSuccessMock.mock.calls).toMatchObject([
@@ -289,12 +274,123 @@ describe('forms/utils/submitForm', () => {
     expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
   });
 
+  it('marks user as practitioner successfully', async () => {
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    const valuesCopy = {
+      ...value,
+      active: true,
+      id: keycloakUser.id,
+    };
+
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          create: jest.fn().mockResolvedValue('Success'),
+        };
+      })
+    );
+
+    createOrEditPractitioners(fhirBaseURL, valuesCopy).catch(jest.fn);
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner created successfully');
+  });
+
+  it('updates practitioner successfully', async () => {
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    const valuesCopy: FormFields = {
+      ...{ ...value, id: id },
+      active: true,
+      id: keycloakUser.id,
+      practitioner: fhirPractitioner,
+    };
+
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          update: jest.fn().mockResolvedValue('Success'),
+        };
+      })
+    );
+
+    createOrEditPractitioners(fhirBaseURL, valuesCopy).catch(jest.fn);
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationSuccessMock).toHaveBeenCalled();
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
+  });
+
+  it('calls API with userId if present in values', async () => {
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    const valuesCopy = {
+      ...value,
+      active: true,
+      id: keycloakUser.id,
+      practitioner: fhirPractitioner,
+    };
+
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          update: jest.fn().mockResolvedValue('Success'),
+        };
+      })
+    );
+    createOrEditPractitioners(fhirBaseURL, valuesCopy).catch(jest.fn);
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
+  });
+
+  it('handles errors when marking practitioner fails', async () => {
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const valuesCopy = {
+      ...{ ...value, id: id },
+      active: true,
+      id: keycloakUser.id,
+    };
+
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          create: jest.fn().mockRejectedValue('Request Failed'),
+        };
+      })
+    );
+
+    createOrEditPractitioners(fhirBaseURL, valuesCopy).catch(jest.fn);
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+  });
+
   it('handles error when user creation fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          create: jest.fn().mockRejectedValue('Request Failed'),
+        };
+      })
+    );
     const rejectFn = jest.fn();
     const historyPushMock = jest.spyOn(history, 'push');
 
-    submitForm(value, keycloakBaseURL, OPENSRP_API_BASE_URL, userGroup).catch(rejectFn);
+    submitForm(value, keycloakBaseURL, fhirBaseURL, userGroup).catch(rejectFn);
 
     await act(async () => {
       await flushPromises();
@@ -306,6 +402,14 @@ describe('forms/utils/submitForm', () => {
 
   it('handles error when user edit fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          update: jest.fn().mockRejectedValue('Request Failed'),
+        };
+      })
+    );
     const rejectFn = jest.fn();
     const historyPushMock = jest.spyOn(history, 'push');
 
@@ -322,135 +426,5 @@ describe('forms/utils/submitForm', () => {
 
     expect(rejectFn).toBeCalled();
     expect(historyPushMock).not.toHaveBeenCalled();
-  });
-
-  it('marks user as practitioner successfully', async () => {
-    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
-    const valuesCopy = {
-      ...value,
-      active: true,
-      id: keycloakUser.id,
-    };
-
-    createOrEditPractitioners(OPENSRP_API_BASE_URL, valuesCopy).catch(jest.fn);
-
-    await act(async () => {
-      await flushPromises();
-    });
-    expect(fetch.mock.calls[0]).toEqual([
-      `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: JSON.stringify({
-          active: true,
-          identifier: mockV4,
-          name: `${value.firstName} ${value.lastName}`,
-          userId: keycloakUser.id,
-          username: value.username,
-        }),
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer token',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'POST',
-      },
-    ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner created successfully');
-  });
-
-  it('updates practitioner successfully', async () => {
-    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
-    const valuesCopy: FormFields = {
-      ...{ ...value, id: id },
-      active: true,
-      id: keycloakUser.id,
-      practitioner: practitioner1,
-    };
-
-    createOrEditPractitioners(OPENSRP_API_BASE_URL, valuesCopy).catch(jest.fn);
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify({
-            active: true,
-            identifier: id,
-            name: `${value.firstName} ${value.lastName}`,
-            userId: practitioner1.userId,
-            username: value.username,
-          }),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer token',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
-      ],
-    ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
-  });
-
-  it('calls API with userId if present in values', async () => {
-    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
-    const valuesCopy = {
-      ...value,
-      active: true,
-      id: keycloakUser.id,
-      practitioner: practitioner1,
-    };
-
-    createOrEditPractitioners(OPENSRP_API_BASE_URL, valuesCopy).catch(jest.fn);
-
-    await act(async () => {
-      await flushPromises();
-    });
-    expect(fetch.mock.calls[0]).toEqual([
-      `https://opensrp-stage.smartregister.org/opensrp/rest/practitioner`,
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: JSON.stringify({
-          active: true,
-          identifier: practitioner1.identifier,
-          name: 'Jane Doe',
-          userId: practitioner1.userId,
-          username: value.username,
-        }),
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer token',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'PUT',
-      },
-    ]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner updated successfully');
-  });
-
-  it('handles errors when marking practitioner fails', async () => {
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-    fetch.mockReject(() => Promise.reject('API is down'));
-    const valuesCopy = {
-      ...{ ...value, id: id },
-      active: true,
-      id: keycloakUser.id,
-    };
-
-    createOrEditPractitioners(OPENSRP_API_BASE_URL, valuesCopy).catch(jest.fn);
-
-    await act(async () => {
-      await flushPromises();
-    });
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 });

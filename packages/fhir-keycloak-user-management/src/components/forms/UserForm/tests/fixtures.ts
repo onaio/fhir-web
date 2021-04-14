@@ -131,6 +131,60 @@ export const keycloakUser = {
   },
 };
 
+export const fhirPractitioner = {
+  resourceType: 'Bundle',
+  id: '0394b79d-1993-44dd-afa9-66e3312fc5ca',
+  meta: {
+    lastUpdated: '2021-04-14T05:54:58.542+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url:
+        'http://fhir.labs.smartregister.org/fhir/Practitioner?_format=json&identifier=fd4a8d91-89c2-4ff1-950d-8699df608bb0',
+    },
+  ],
+  entry: [
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Practitioner/125',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '125',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-04-13T14:51:22.686+00:00',
+          source: '#634cba62744c9078',
+        },
+        identifier: [
+          {
+            use: 'secondary',
+            value: 'fd4a8d91-89c2-4ff1-950d-8699df608bb0',
+          },
+        ],
+        active: true,
+        name: [
+          {
+            use: 'official',
+            family: 'fhir',
+            given: ['test'],
+          },
+        ],
+        telecom: [
+          {
+            system: 'email',
+            value: 'test_fhir@test.com',
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
+
 export const practitioner1 = {
   identifier: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
   active: true,
