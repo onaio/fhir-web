@@ -199,3 +199,9 @@ Below is a list of currently supported environment variables:
   - Enables modules that fetch resources from FHIR server
   - **Optional**(`boolean`)
   - default: `"false"`
+
+- **REACT_APP_OPENSRP_OAUTH_SCOPES**
+
+  - Sets the oauth app permission scopes.
+  - **Required**(`string`)
+  - default: `read,write`
