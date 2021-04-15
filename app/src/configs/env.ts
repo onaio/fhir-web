@@ -37,6 +37,10 @@ export const OPENSRP_AUTHORIZATION_URL =
 
 export const OPENSRP_CLIENT_ID = process.env.REACT_APP_OPENSRP_CLIENT_ID || '';
 
+export const OPENSRP_OAUTH_SCOPES = (
+  process.env.REACT_APP_OPENSRP_OAUTH_SCOPES ?? 'read,write'
+).split(',');
+
 /** The domain name */
 export const DOMAIN_NAME = process.env.REACT_APP_DOMAIN_NAME || 'http://localhost:3000';
 
