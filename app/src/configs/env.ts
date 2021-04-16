@@ -56,6 +56,9 @@ export const OPENSRP_API_BASE_URL =
   process.env.REACT_APP_OPENSRP_API_BASE_URL ||
   'https://opensrp-stage.smartregister.org/opensrp/rest/';
 
+export const FHIR_API_BASE_URL =
+  process.env.REACT_APP_FHIR_API_BASE_URL || 'https://fhir.labs.smartregister.org/fhir/';
+
 export const KEYCLOAK_API_BASE_URL =
   process.env.REACT_APP_KEYCLOAK_API_BASE_URL ||
   'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
@@ -77,6 +80,9 @@ export const ENABLE_PRODUCT_CATALOGUE = process.env.REACT_APP_ENABLE_PRODUCT_CAT
 
 /** Activate teams menu */
 export const ENABLE_TEAMS_MODULE = process.env.REACT_APP_ENABLE_TEAMS_MODULE === 'true';
+
+/** Activate teams menu */
+export const ENABLE_FHIR_TEAMS_MODULE = process.env.REACT_APP_ENABLE_FHIR_TEAMS === 'true';
 
 /** Activate teams assignment menu */
 export const ENABLE_TEAMS_ASSIGNMENT_MODULE =

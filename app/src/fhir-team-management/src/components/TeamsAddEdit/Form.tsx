@@ -54,17 +54,8 @@ export function onSubmit(
 
   const payload: OrganizationPOST = {
     active: values.active,
-    identifier: Teamid,
+    identifier: [{ use: 'official', value: Teamid }],
     name: values.name,
-    type: {
-      coding: [
-        {
-          code: 'team',
-          display: 'Team',
-          system: 'http://terminology.hl7.org/CodeSystem/organization-type',
-        },
-      ],
-    },
   };
 
   setTeam(opensrpBaseURL, payload, id)
