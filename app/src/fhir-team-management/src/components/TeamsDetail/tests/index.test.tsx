@@ -1,23 +1,15 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import TeamsDetail, { Props } from '..';
+import TeamsDetail, { TeamsDetailProps } from '..';
 
 describe('components/TeamsDetail', () => {
-  const props: Props = {
+  const props: TeamsDetailProps = {
     active: true,
-    id: 1,
-    identifier: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4',
+    id: '1',
+    identifier: [{ use: 'official', value: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4' }],
     name: 'The Luang',
-    type: {
-      coding: [
-        {
-          code: 'team',
-          display: 'Team',
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-        },
-      ],
-    },
-    teamMembers: [
+    resourceType: 'Organization',
+    practitioner: [
       {
         active: false,
         identifier: '718e2b7d-22d7-4c23-aaa7-62cca4b9e318',
@@ -60,7 +52,7 @@ describe('components/TeamsDetail', () => {
   });
 
   it('show no team members if doesnt have team members', () => {
-    const wrapper = mount(<TeamsDetail {...props} teamMembers={[]} />);
+    const wrapper = mount(<TeamsDetail {...props} />);
     expect(wrapper.find('.no-team-members').text()).toEqual('No team members');
   });
 });

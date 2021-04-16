@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import TeamsDetail, { Props } from '..';
+import TeamsDetail, { TeamsDetailProps } from '..';
 
 describe('components/TeamsDetail', () => {
-  const props: Props = {
+  const props: TeamsDetailProps = {
     active: true,
     id: 1,
     identifier: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4',

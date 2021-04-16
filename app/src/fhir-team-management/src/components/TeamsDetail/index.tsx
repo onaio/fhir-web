@@ -7,16 +7,11 @@ import lang from '../../lang';
 
 export interface TeamsDetailProps extends Organization {
   onClose?: Function;
-  teamMembers: Practitioner[];
-  active: boolean;
-  id: number;
-  identifier: string;
-  name: string;
-  partOf?: number;
+  practitioner: Practitioner[];
 }
 
 const TeamsDetail = (props: TeamsDetailProps) => {
-  const { name, active, identifier, teamMembers } = props;
+  const { name, active, identifier, practitioner } = props;
   return (
     <div className="p-4 bg-white">
       <Button
@@ -40,8 +35,8 @@ const TeamsDetail = (props: TeamsDetailProps) => {
       </div>
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">{lang.TEAM_MEMBERS}</p>
-        {teamMembers.length ? (
-          teamMembers.map((item) =>
+        {practitioner.length ? (
+          practitioner.map((item) =>
             item.active ? <p key={item.identifier} className="mb-0">{`${item.name}`}</p> : null
           )
         ) : (

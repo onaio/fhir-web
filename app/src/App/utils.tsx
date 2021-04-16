@@ -21,10 +21,12 @@ import {
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
+  FHIR_API_BASE_URL,
 } from '../configs/env';
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
+  fhirbaseURL: FHIR_API_BASE_URL,
 };
 
 export const teamAssignmentProps = {

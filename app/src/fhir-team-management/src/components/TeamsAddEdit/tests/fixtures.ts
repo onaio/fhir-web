@@ -8,19 +8,11 @@ export const opensrpBaseURL = 'https://opensrp-stage.smartregister.org/opensrp/r
 export const id = '258b4dec-79d3-546d-9c5c-f172aa7e03b0';
 
 export const team: Organization = {
-  id: 1,
-  identifier: id,
+  id: '1',
+  resourceType: 'Organization',
+  identifier: [{ use: 'official', value: id }],
   active: true,
   name: 'Test Test Team',
-  type: {
-    coding: [
-      {
-        system: 'http://terminology.hl7.org/CodeSystem/team-type',
-        code: 'team',
-        display: 'Team',
-      },
-    ],
-  },
 };
 
 export const practitioners: Practitioner[] = [
@@ -83,603 +75,282 @@ export const intialValue: FormField = {
 
 export const teamPost: OrganizationPOST = {
   active: intialValue.active,
-  identifier: id,
+  identifier: [{ use: 'official', value: id }],
   name: intialValue.name,
-  type: {
-    coding: [
-      {
-        code: 'team',
-        display: 'Team',
-        system: 'http://terminology.hl7.org/CodeSystem/organization-type',
-      },
-    ],
-  },
 };
 
 export const teams: Organization[] = [
   {
-    id: 1,
-    identifier: '1',
+    id: '1',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '1' }],
     active: true,
     name: 'Sample test Team',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 2,
-    identifier: '2',
+    id: '2',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '2' }],
     active: true,
     name: 'Sample test Team',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 3,
-    identifier: '3',
+    id: '3',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '3' }],
     active: true,
     name: 'Sample test Team',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 4,
-    identifier: '4',
+    id: '4',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '4' }],
     active: true,
     name: 'Sample test Team',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 5,
-    identifier: '5',
+    id: '5',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '5' }],
     active: true,
     name: 'test team 11',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 6,
-    identifier: '6',
+    id: '6',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '6' }],
     active: true,
     name: 'sample test 1',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 7,
-    identifier: '7',
+    id: '7',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '7' }],
     active: true,
     name: 'test team 1',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 8,
-    identifier: '8',
+    id: '8',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '8' }],
     active: true,
     name: 'asdasd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 9,
-    identifier: '9',
+    id: '9',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '9' }],
     active: true,
     name: 'asdasd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 10,
-    identifier: '10',
+    id: '10',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '10' }],
     active: true,
     name: 'asdasd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 11,
-    identifier: '11',
+    id: '11',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '11' }],
     active: true,
     name: 'test again',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 12,
-    identifier: '12',
+    id: '12',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '12' }],
     active: true,
     name: 'test again',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 13,
-    identifier: '13',
+    id: '13',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '13' }],
     active: true,
     name: 'test again',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 14,
-    identifier: '14',
+    id: '14',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '14' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 15,
-    identifier: '15',
+    id: '15',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '15' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 16,
-    identifier: '16',
+    id: '16',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '16' }],
     active: true,
     name: 'asd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 17,
-    identifier: '17',
+    id: '17',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '17' }],
     active: true,
     name: 'asd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 18,
-    identifier: '18',
+    id: '18',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '18' }],
     active: true,
     name: 'asd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 19,
-    identifier: '19',
+    id: '19',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '19' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 20,
-    identifier: '20',
+    id: '20',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '20' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 21,
-    identifier: '21',
+    id: '21',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '21' }],
     active: true,
     name: 'test new',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 22,
-    identifier: '22',
+    id: '22',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '22' }],
     active: true,
     name: 'test new',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 23,
-    identifier: '23',
+    id: '23',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '23' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 24,
-    identifier: '24',
+    id: '24',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '24' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 25,
-    identifier: '25',
+    id: '25',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '25' }],
     active: true,
     name: 'test new',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 26,
-    identifier: '26',
+    id: '26',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '26' }],
     active: true,
     name: 'test new',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 27,
-    identifier: '27',
+    id: '27',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '27' }],
     active: true,
     name: 'testing new',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 28,
-    identifier: '28',
+    id: '28',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '28' }],
     active: true,
     name: '',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 29,
-    identifier: '29',
+    id: '29',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '29' }],
     active: true,
     name: 'asd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 30,
-    identifier: '30',
+    id: '30',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '30' }],
     active: true,
     name: 'asd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 31,
-    identifier: '31',
+    id: '31',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '31' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 32,
-    identifier: '32',
+    id: '32',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '32' }],
     active: true,
     name: '',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 33,
-    identifier: '33',
+    id: '33',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '33' }],
     active: true,
     name: 'asd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 34,
-    identifier: '34',
+    id: '34',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '34' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 35,
-    identifier: '35',
+    id: '35',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '35' }],
     active: true,
     name: 'test',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 36,
-    identifier: '36',
+    id: '36',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '36' }],
     active: true,
     name: 'asd',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 37,
-    identifier: '37',
+    id: '37',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '37' }],
     active: true,
     name: 'Sample test Team 2',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 38,
-    identifier: '38',
+    id: '38',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '38' }],
     active: true,
     name: 'Sample test Team',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
   {
-    id: 39,
-    identifier: '39',
+    id: '39',
+    resourceType: 'Organization',
+    identifier: [{ use: 'official', value: '39' }],
     active: true,
     name: 'Test Test Team',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/team-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
   },
 ];

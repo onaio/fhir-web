@@ -11,6 +11,8 @@
     "@fortawesome/react-fontawesome": "^0.1.11",
     "@onaio/connected-private-route": "^0.0.11",
     "@onaio/connected-reducer-registry": "^0.0.3",
+    "react-query": "3.13.8",
+    "fhirclient": "2.3.11",
     "@onaio/gatekeeper": "^0.1.1",
     "@onaio/list-view": "^0.0.3",
     "@onaio/loaders": "^0.0.1",
