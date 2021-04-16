@@ -49,6 +49,7 @@ export interface FHIRResponse<T extends { resourceType: string; id: string }> {
 }
 
 // action interfaces
+export interface OrganizationPOST extends Partial<Organization> {}
 
 /** Item Reducer */
 export const reducer = reducerFactory<Organization>(reducerName);
