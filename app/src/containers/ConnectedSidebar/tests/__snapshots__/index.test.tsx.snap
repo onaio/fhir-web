@@ -73,12 +73,7 @@ Array [
       </Link>
     </MenuItem>
     <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/trash"
-      >
-        Retired
-      </Link>
+      Retired
     </MenuItem>
   </SubMenu>,
   <SubMenu

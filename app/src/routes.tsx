@@ -5,7 +5,7 @@ import {
   ACTIVE_PLANS_LIST_VIEW_URL,
   DRAFT_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,
-  TRASH_PLANS_LIST_VIEW_URL,
+  RETIRED_PLANS_LIST_VIEW_URL,
 } from '@opensrp/plans';
 import { isAuthorized } from '@opensrp/react-utils';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
@@ -72,7 +72,7 @@ export function getRoutes(roles: string[]): Route[] {
         { title: lang.ACTIVE, url: ACTIVE_PLANS_LIST_VIEW_URL, key: 'missions-active' },
         { title: lang.DRAFT, url: DRAFT_PLANS_LIST_VIEW_URL, key: 'missions-draft' },
         { title: lang.COMPLETE, url: COMPLETE_PLANS_LIST_VIEW_URL, key: 'missions-complete' },
-        { title: lang.TRASH, url: TRASH_PLANS_LIST_VIEW_URL, key: 'missions-trash' },
+        { title: lang.RETIRED, url: RETIRED_PLANS_LIST_VIEW_URL, key: 'missions-retired' },
       ],
     },
     {
