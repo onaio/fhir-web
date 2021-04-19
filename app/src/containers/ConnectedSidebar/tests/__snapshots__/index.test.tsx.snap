@@ -1,135 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/ConnectedSidebar correctly expand admin-form-config menu 1`] = `
-Array [
-  undefined,
-  undefined,
-  undefined,
-  <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Admin"
-  >
-    <SubMenu
-      title="Form Configuration"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/releases"
-        >
-          Manifest Releases
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/drafts"
-        >
-          Draft Files
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/json-validators"
-        >
-          JSON Validators
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
-]
-`;
-
-exports[`components/ConnectedSidebar correctly expand location menu 1`] = `
-Array [
-  undefined,
-  undefined,
-  undefined,
-  <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Admin"
-  >
-    <SubMenu
-      title="Locations"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Location unit
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/group"
-        >
-          Location unit group
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
-]
-`;
-
-exports[`components/ConnectedSidebar correctly expand teams menu 1`] = `
-Array [
-  undefined,
-  undefined,
-  undefined,
-  <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Admin"
-  >
-    <SubMenu
-      title="Teams"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams"
-        >
-          Teams
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams/team-assignment"
-        >
-          Team Assignment
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
-]
-`;
-
 exports[`components/ConnectedSidebar correctly expand users menu 1`] = `
 Array [
-  undefined,
-  undefined,
-  undefined,
   <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -138,7 +12,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin/users/list"
+          to="/admin/users"
         >
           User Management
         </Link>
@@ -164,44 +38,7 @@ Array [
 ]
 `;
 
-exports[`components/ConnectedSidebar displays menu links for enabled Location module 1`] = `
-Array [
-  undefined,
-  undefined,
-  undefined,
-  <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
-    title="Admin"
-  >
-    <SubMenu
-      title="Locations"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Location unit
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/group"
-        >
-          Location unit group
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
-]
-`;
-
-exports[`components/ConnectedSidebar displays menu links for enabled modules 1`] = `
+exports[`components/ConnectedSidebar displays menu links for All Enabled modules 1`] = `
 Array [
   <SubMenu
     icon={
@@ -245,11 +82,7 @@ Array [
     </MenuItem>
   </SubMenu>,
   <SubMenu
-    icon={
-      <ForwardRef(IdcardOutlined)
-        className="sidebar-icons"
-      />
-    }
+    icon={<ForwardRef(IdcardOutlined) />}
     title="Card Support"
   >
     <MenuItem>
@@ -261,23 +94,75 @@ Array [
       </Link>
     </MenuItem>
   </SubMenu>,
-  undefined,
   <SubMenu
     icon={
-      <ForwardRef(SettingOutlined)
+      <ArchiveOutlineIcon
         className="sidebar-icons"
       />
     }
-    title="Admin"
+    title="Inventory"
   >
     <MenuItem>
       <Link
         className="admin-link"
-        to="/admin/product-catalogue/view"
+        to="/inventory"
+      >
+        Service point inventory
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Admin"
+  >
+    <SubMenu
+      title="Locations"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Location unit
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/group"
+        >
+          Location unit group
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/product-catalogue"
       >
         Product Catalogue
       </Link>
     </MenuItem>
+    <SubMenu
+      title="Teams"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/teams"
+        >
+          Teams
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/teams/team-assignment"
+        >
+          Team Assignment
+        </Link>
+      </MenuItem>
+    </SubMenu>
     <SubMenu
       title="Form Configuration"
     >
@@ -331,17 +216,15 @@ Object {
       </div>
       <Menu
         className="menu-dark"
-        defaultOpenKeys={
-          Array [
-            "",
-          ]
-        }
+        defaultOpenKeys={Array []}
         defaultSelectedKeys={
           Array [
             "",
           ]
         }
         mode="inline"
+        onOpenChange={[Function]}
+        openKeys={Array []}
         selectedKeys={
           Array [
             "",
@@ -350,11 +233,7 @@ Object {
         theme="dark"
       >
         <SubMenu
-          icon={
-            <ForwardRef(SettingOutlined)
-              className="sidebar-icons"
-            />
-          }
+          icon={<ForwardRef(DashboardOutlined) />}
           title="Admin"
         />
       </Menu>
@@ -373,15 +252,8 @@ Object {
 
 exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
 Array [
-  undefined,
-  undefined,
-  false,
   <SubMenu
-    icon={
-      <ForwardRef(SettingOutlined)
-        className="sidebar-icons"
-      />
-    }
+    icon={<ForwardRef(DashboardOutlined) />}
     title="Admin"
   >
     <SubMenu
@@ -390,7 +262,7 @@ Array [
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin/users/list"
+          to="/admin/users"
         >
           User Management
         </Link>
