@@ -14,3 +14,8 @@ export const loadLanguageResources = (i18n: i18nInstance | undefined, resources:
     });
   });
 };
+
+/**
+ * From T, convert a set of keys to required, that arr in the union K.
+ */
+export type Require<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
