@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { reducer, Organization, reducerName } from '../../ducks/organizations';
+import { reducer, reducerName } from '../../ducks/organizations';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import { PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
@@ -10,6 +10,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioners';
 import lang, { Lang } from '../../lang';
+import { IfhirR4 } from '@smile-cdr/fhirts';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -22,7 +23,7 @@ reducerRegistry.register(reducerName, reducer);
  */
 export async function getTeamDetail(id: string, opensrpBaseURL: string) {
   const serve = new OpenSRPService(TEAMS_GET + id, opensrpBaseURL);
-  return await serve.list().then(async (response: Organization) => {
+  return await serve.list().then(async (response: IfhirR4.IOrganization) => {
     return {
       name: response.name,
       active: response.active,

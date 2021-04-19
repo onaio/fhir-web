@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Organization, OrganizationPOST } from '../../../ducks/organizations';
+import { Require } from '@opensrp/react-utils/dist/types';
+import { Organization } from '../../../ducks/organizations';
 import { Practitioner } from '../../../ducks/practitioners';
 import { FormField } from '../Form';
 
@@ -7,7 +8,7 @@ export const accessToken = 'token';
 export const opensrpBaseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 export const id = '258b4dec-79d3-546d-9c5c-f172aa7e03b0';
 
-export const team: Organization = {
+export const team: Require<Organization, 'active' | 'id'> = {
   id: '1',
   resourceType: 'Organization',
   identifier: [{ use: 'official', value: id }],
@@ -17,63 +18,65 @@ export const team: Organization = {
 
 export const practitioners: Practitioner[] = [
   {
-    identifier: '1',
+    resourceType: 'Practitioner',
+    id: '1',
     active: true,
-    name: 'prac two',
-    userId: '1',
-    username: 'prac2',
+    name: [{ text: 'prac two' }],
+    identifier: [{ use: 'official', value: '1' }],
   },
   {
-    identifier: '2',
+    resourceType: 'Practitioner',
+    id: '2',
     active: false,
-    name: 'prac one',
-    userId: '2',
-    username: 'prac_1',
+    name: [{ text: 'prac one' }],
+    identifier: [{ use: 'official', value: '2' }],
   },
   {
-    identifier: '3',
+    resourceType: 'Practitioner',
+    id: '3',
     active: false,
-    name: 'prac one',
-    userId: '3',
-    username: 'prac_one',
+    name: [{ text: 'prac one' }],
+    identifier: [{ use: 'official', value: '3' }],
   },
   {
-    identifier: '4',
+    resourceType: 'Practitioner',
+    id: '4',
     active: false,
-    name: 'Practitioner Two',
-    userId: '4',
-    username: 'prac_two',
+    name: [{ text: 'Practitioner Two' }],
+    identifier: [{ use: 'official', value: '4' }],
   },
   {
-    identifier: '5',
+    resourceType: 'Practitioner',
+    id: '5',
     active: false,
-    name: 'Practitioner One',
-    userId: '5',
-    username: 'practitioner_one',
+    name: [{ text: 'Practitioner One' }],
+    identifier: [{ use: 'official', value: '5' }],
   },
   {
-    identifier: '6',
+    resourceType: 'Practitioner',
+    id: '6',
     active: true,
-    name: 'Benjamin Mulyungi',
-    userId: '6',
-    username: 'mwalimu',
+    name: [{ text: 'Benjamin Mulyungi' }],
+    identifier: [{ use: 'official', value: '6' }],
   },
   {
-    identifier: '7',
+    resourceType: 'Practitioner',
+    id: '7',
     active: true,
-    name: 'test admin',
-    userId: '7',
-    username: 'admin-2',
+    name: [{ text: 'test admin' }],
+    identifier: [{ use: 'official', value: '7' }],
   },
 ];
 
 export const intialValue: FormField = {
   name: team.name,
   active: team.active,
-  practitioners: practitioners.slice(0, 3).map((prac) => prac.identifier),
+  practitioners: practitioners.slice(0, 3).map((prac) => prac.id),
 };
 
-export const teamPost: OrganizationPOST = {
+export const teamPost: Organization = {
+  resourceType: 'Organization',
+  id: '1',
   active: intialValue.active,
   identifier: [{ use: 'official', value: id }],
   name: intialValue.name,

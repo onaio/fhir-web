@@ -7,7 +7,8 @@ import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { Organization, reducer, reducerName, FHIRResponse } from '../../ducks/organizations';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+import { FHIRResponse, reducer, reducerName } from '../../ducks/organizations';
 import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsList.css';
@@ -16,6 +17,7 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import FHIR from 'fhirclient';
+import { Practitioner } from '../../ducks/practitioners';
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);
@@ -35,8 +37,8 @@ export const loadSingleTeam = async (props: {
   const serve = FHIR.client(fhirbaseURL);
   setDetail('loading');
   await serve
-    .request(TEAM_PRACTITIONERS + row.identifier[0].value)
-    .then((data) => setDetail({ ...row, practitioner: data }))
+    .request(TEAM_PRACTITIONERS + row.id)
+    .then((data: Practitioner[]) => setDetail({ ...row, practitioners: data }))
     .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
 };
 
@@ -58,14 +60,22 @@ const TeamsListComponent: React.FC<Props> = (props: Props) => {
 
   const teams = useQuery(TEAMS_GET, () => serve.request(TEAMS_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Organization>) => res.entry.map((entry) => entry.resource),
+    select: (res: FHIRResponse<IfhirR4.IOrganization>) => res.entry.map((entry) => entry.resource),
   });
 
   const tableData: TableData[] = useMemo(() => {
     if (teams.data) {
-      console.warn(teams.data);
       return teams.data.map((team, i) => {
-        return { key: i.toString(), ...team };
+        const obj: TableData = {
+          ...team,
+          identifier: team.identifier ? [{ use: 'official', value: team.id }] : undefined,
+          resourceType: 'Organization',
+          active: team.active ?? false,
+          key: i.toString(),
+          name: team.name ?? '',
+          id: team.name ?? '',
+        };
+        return obj;
       });
     } else return [];
   }, [teams.data]);

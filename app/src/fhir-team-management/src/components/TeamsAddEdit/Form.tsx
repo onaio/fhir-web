@@ -9,8 +9,8 @@ import {
   sendInfoNotification,
   sendErrorNotification,
 } from '@opensrp/notifications';
-import { OrganizationPOST } from '../../ducks/organizations';
-import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
+import { Organization } from '../../ducks/organizations';
+import { Practitioner } from '../../ducks/practitioners';
 import lang, { Lang } from '../../lang';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
@@ -52,7 +52,9 @@ export function onSubmit(
   setIsSubmitting(true);
   const Teamid = id ?? v4();
 
-  const payload: OrganizationPOST = {
+  const payload: Organization = {
+    resourceType: 'Organization',
+    id: Teamid,
     active: values.active,
     identifier: [{ use: 'official', value: Teamid }],
     name: values.name,
@@ -100,15 +102,15 @@ async function SetPractitioners(
   });
 
   // Api Call to add practitioners
-  const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.identifier));
-  const payload: PractitionerPOST[] = toAddPractitioner.map((prac) => {
-    return {
+  const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.id));
+  const payload: Practitioner[] = toAddPractitioner.map((prac) => {
+    const practitioner: Practitioner = {
+      resourceType: 'Practitioner',
       active: true,
-      identifier: v4(),
-      practitioner: prac.identifier,
-      organization: id,
-      code: { text: 'Community Health Worker' },
+      id: v4(),
+      identifier: [{ use: 'official', value: v4() }],
     };
+    return practitioner;
   });
   if (toAdd.length) {
     const serve = new OpenSRPService(PRACTITIONER_POST, opensrpBaseURL);
@@ -122,13 +124,13 @@ async function SetPractitioners(
  * Function to make teams API call
  *
  * @param {string} opensrpBaseURL - base url
- * @param {OrganizationPOST} payload payload To send
+ * @param {Organization} payload payload To send
  * @param {string} id of the team if already created
  * @param {Lang} langObj - the translation string lookup
  */
 export async function setTeam(
   opensrpBaseURL: string,
-  payload: OrganizationPOST,
+  payload: Organization,
   id?: string,
   langObj: Lang = lang
 ) {
@@ -181,7 +183,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
           {props.practitioner.map((practitioner) => (
-            <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
+            <Select.Option key={practitioner.id} value={practitioner.id}>
               {practitioner.name}
             </Select.Option>
           ))}

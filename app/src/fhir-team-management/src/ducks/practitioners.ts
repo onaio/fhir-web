@@ -1,23 +1,14 @@
-/** interface for a Practitioner object */
-interface PractitionerCoding {
-  text: string;
+/** Organizations redux module */
+import { Require } from '@opensrp/react-utils';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
+
+export interface Practitioner extends Require<IfhirR4.IPractitioner, 'id' | 'active'> {
+  resourceType: 'Practitioner';
+  identifier: [Identifier & { use: 'official' }];
 }
 
-/** interface for a Practitioner object */
-export interface Practitioner {
-  id?: string | number;
-  identifier: string;
-  active: boolean;
-  name: string;
-  userId: string;
-  username: string;
-  code?: PractitionerCoding;
-}
-
-export interface PractitionerPOST {
-  active: boolean;
-  code: { text: 'Community Health Worker' };
-  identifier: string; // --- uuid, auto generated
-  organization: string; // --- team uuid
-  practitioner: string; // --- practitioner uuid
+export interface PractitionerRole extends Require<IfhirR4.IPractitionerRole, 'id' | 'active'> {
+  resourceType: 'PractitionerRole';
+  identifier: [Identifier & { use: 'official' }];
 }

@@ -13,6 +13,7 @@
     "@onaio/connected-reducer-registry": "^0.0.3",
     "react-query": "3.13.8",
     "fhirclient": "2.3.11",
+    "@smile-cdr/fhirts": "1.2.5",
     "@onaio/gatekeeper": "^0.1.1",
     "@onaio/list-view": "^0.0.3",
     "@onaio/loaders": "^0.0.1",
