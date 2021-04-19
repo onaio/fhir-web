@@ -40,7 +40,7 @@ describe('utils', () => {
     props.history.push = pushMock;
     updateUrl();
 
-    expect(pushMock).toHaveBeenCalledWith('/inventory/list?');
+    expect(pushMock).toHaveBeenCalledWith('/inventory?');
   });
 
   it('test when search param is given but no status', () => {
@@ -64,7 +64,7 @@ describe('utils', () => {
     props.history.push = pushMock;
     updateUrl();
 
-    expect(pushMock).toHaveBeenCalledWith('/inventory/list?');
+    expect(pushMock).toHaveBeenCalledWith('/inventory?');
   });
 
   it('test when search param is given and status', () => {
@@ -88,7 +88,7 @@ describe('utils', () => {
     props.history.push = pushMock;
     updateUrl(UploadStatus.POST_CONFIRMATION_ERROR);
 
-    expect(pushMock).toHaveBeenCalledWith('/inventory/list?bulkStep=postConfirmationError');
+    expect(pushMock).toHaveBeenCalledWith('/inventory?bulkStep=postConfirmationError');
   });
 
   it('test default card title', () => {

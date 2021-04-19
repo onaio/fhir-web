@@ -215,7 +215,7 @@ describe('forms/utils/submitForm', () => {
       ['User edited successfully'],
     ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
   });
 
   it('handles error when user creation fails', async () => {
