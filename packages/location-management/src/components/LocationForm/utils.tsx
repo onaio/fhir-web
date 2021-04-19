@@ -12,6 +12,7 @@ import { v4 } from 'uuid';
 import { Geometry, Point } from 'geojson';
 import lang, { Lang } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
+import { LOCATION_UNIT_TYPE } from 'location-management/src/constants';
 
 export enum FormInstances {
   CORE = 'core',
@@ -184,7 +185,7 @@ export const generateLocationUnit = (
     },
     id: thisLocationsId,
     syncStatus: LocationUnitSyncStatus.SYNCED,
-    type: 'Feature',
+    type: LOCATION_UNIT_TYPE,
     locationTags: selectedTags,
     geometry: geometry ? (JSON.parse(geometry) as Geometry) : undefined,
   };
