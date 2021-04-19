@@ -15,13 +15,12 @@ import './TeamsList.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
 import { Practitioner } from '../../ducks/practitioners';
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);
-const queryClient = new QueryClient();
 
 /**
  * Function to load selected Team for details
@@ -51,7 +50,7 @@ interface Props {
  * @param {Object} props - TeamsList component props
  * @returns {Function} returns team display
  */
-const TeamsListComponent: React.FC<Props> = (props: Props) => {
+export const TeamsList: React.FC<Props> = (props: Props) => {
   const { fhirbaseURL } = props;
   const serve = FHIR.client(fhirbaseURL);
 
@@ -146,16 +145,5 @@ const TeamsListComponent: React.FC<Props> = (props: Props) => {
     </section>
   );
 };
-
-/** Function which shows the list of all teams and there details
- *
- * @param {Object} props - TeamsList component props
- * @returns {Function} returns team display
- */
-export const TeamsList: React.FC<Props> = (props: Props) => (
-  <QueryClientProvider client={queryClient}>
-    <TeamsListComponent {...props} />
-  </QueryClientProvider>
-);
 
 export default TeamsList;
