@@ -87,7 +87,7 @@ const props = {
 	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
 }
 
-<Route path={`/inventory/list`}>
+<Route path={`/inventory`}>
   <ConnectedServicePointList {...props} />
 </Route>
 ```
@@ -110,7 +110,7 @@ const props = {
 	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
 }
 
-<Route path={`/inventory/list/:${ROUTE_PARAM_INVENTORY_ITEM_ID}`}>
+<Route path={`/inventory/:${ROUTE_PARAM_INVENTORY_ITEM_ID}`}>
   <ServicePointProfile {...props} />
 </Route>
 ```
