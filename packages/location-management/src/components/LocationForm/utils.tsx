@@ -124,20 +124,15 @@ export const getLocationFormFields = (
 
 /** removes empty undefined and null objects before they payload is sent to server
  *
- * @param {any} obj object to remove empty keys from
+ * @param {Dictionary} obj object to remove empty keys from
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function removeEmptykeys(obj: any) {
+export function removeEmptykeys(obj: Dictionary) {
   Object.entries(obj).forEach(([key, value]) => {
     if (typeof value === 'undefined') delete obj[key];
     else if (value === '' || value === null) delete obj[key];
-    else if (typeof value === 'object') {
-      // if datatype is object this clearly means that either the value is an array or a json object
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const valueObj = value as { [key: string]: any } | any[];
-      if (typeof valueObj.length !== 'undefined' && valueObj.length === 0) delete obj[key];
-      else removeEmptykeys(value);
-    }
+    else if (Array.isArray(value) && value.length === 0) delete obj[key];
+    // if typeof value is object and its not an array then it should be a json object
+    else if (typeof value === 'object') removeEmptykeys(value);
   });
 }
 
@@ -175,7 +170,7 @@ export const generateLocationUnit = (
   // set username from values for edit mode, otherwise get it from props through args
   const uName = id ? username : nameOfUser ?? '';
 
-  const initialPayload = {
+  const initialPayload: LocationUnit = {
     properties: {
       geographicLevel: thisGeoLevel,
       username: uName,

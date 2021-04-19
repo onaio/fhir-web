@@ -37,6 +37,10 @@ export const OPENSRP_AUTHORIZATION_URL =
 
 export const OPENSRP_CLIENT_ID = process.env.REACT_APP_OPENSRP_CLIENT_ID || '';
 
+export const OPENSRP_OAUTH_SCOPES = (
+  process.env.REACT_APP_OPENSRP_OAUTH_SCOPES ?? 'read,write'
+).split(',');
+
 /** The domain name */
 export const DOMAIN_NAME = process.env.REACT_APP_DOMAIN_NAME || 'http://localhost:3000';
 
@@ -140,3 +144,5 @@ export const MAIN_LOGO_SRC =
 export const SUPPORTED_LANGUAGES = (process.env.REACT_APP_SUPPORTED_LANGUAGES ?? '').split(',');
 
 export const ENABLE_LANGUAGE_SWITCHER = process.env.REACT_APP_ENABLE_LANGUAGE_SWITCHER === 'true';
+
+export const DEFAULT_HOME_MODE = process.env.REACT_APP_DEFAULT_HOME_MODE || 'default';

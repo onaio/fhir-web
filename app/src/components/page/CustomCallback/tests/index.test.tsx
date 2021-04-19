@@ -1,13 +1,21 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, RouteComponentProps } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
+import { history } from '@onaio/connected-reducer-registry';
 import { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
 import { URL_EXPRESS_LOGIN } from '../../../../constants';
 import { Provider } from 'react-redux';
+import { CallbackComponent } from '../../../../App/App';
+
+jest.mock('../../../../configs/env', () => ({
+  ENABLE_OPENSRP_OAUTH: true,
+  DOMAIN_NAME: 'http://localhost:3000',
+  OPENSRP_OAUTH_SCOPES: ['read', 'profile'],
+}));
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -191,5 +199,33 @@ describe('src/components/page/CustomCallback.UnsuccessfulLogin', () => {
       </MemoryRouter>
     );
     expect(hrefMock).toBeCalledWith(URL_EXPRESS_LOGIN);
+  });
+
+  it('Correctly sets oauth scopes', async () => {
+    const routeProps: RouteComponentProps<{ id: string }> = {
+      history,
+      location: {
+        hash: '',
+        pathname: '/',
+        search: '?next=%2F',
+        state: {},
+      },
+      match: {
+        params: { id: 'OpenSRP' },
+      },
+    };
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/` }]}>
+          <CallbackComponent {...routeProps} />
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.update();
+    expect((wrapper.find('OauthCallback').props() as any).providers['OpenSRP'].scopes).toEqual([
+      'read',
+      'profile',
+    ]);
+    wrapper.unmount();
   });
 });
