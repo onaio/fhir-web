@@ -73,7 +73,12 @@ Array [
       </Link>
     </MenuItem>
     <MenuItem>
-      Retired
+      <Link
+        className="admin-link"
+        to="/missions/retired"
+      >
+        Retired
+      </Link>
     </MenuItem>
   </SubMenu>,
   <SubMenu
