@@ -4,14 +4,16 @@ import { Button } from 'antd';
 import { Organization } from '../../ducks/organizations';
 import { Practitioner } from '../../ducks/practitioners';
 import lang from '../../lang';
+import { Require } from '@opensrp/react-utils/dist/types';
 
-export interface TeamsDetailProps extends Organization {
+export interface TeamsDetailProps extends Require<Organization, 'name' | 'id' | 'active'> {
   onClose?: Function;
-  practitioner: Practitioner[];
+  practitioners: Practitioner[];
 }
 
 const TeamsDetail = (props: TeamsDetailProps) => {
-  const { name, active, identifier, practitioner } = props;
+  const { name, active, id, practitioners } = props;
+  const filteredPractitioners = practitioners.filter((prac) => prac.active);
   return (
     <div className="p-4 bg-white">
       <Button
@@ -22,25 +24,27 @@ const TeamsDetail = (props: TeamsDetailProps) => {
         icon={<CloseOutlined />}
       />
       <div className="mb-4 small mt-4">
-        <p className="mb-0 font-weight-bold">{lang.TEAM_NAME}</p>
-        <p className="mb-0">{name}</p>
+        <div className="mb-0 font-weight-bold">{lang.TEAM_NAME}</div>
+        <div className="mb-0">{name}</div>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.STATUS}</p>
-        <p className="mb-0">{`${active}`}</p>
+        <div className="mb-0 font-weight-bold">{lang.STATUS}</div>
+        <div className="mb-0">{`${active}`}</div>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.IDENTIFIER}</p>
-        <p className="mb-0">{`${identifier}`}</p>
+        <div className="mb-0 font-weight-bold">{lang.id}</div>
+        <div className="mb-0">{id}</div>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.TEAM_MEMBERS}</p>
-        {practitioner.length ? (
-          practitioner.map((item) =>
-            item.active ? <p key={item.identifier} className="mb-0">{`${item.name}`}</p> : null
-          )
+        <div className="mb-0 font-weight-bold">{lang.TEAM_MEMBERS}</div>
+        {filteredPractitioners.length ? (
+          filteredPractitioners.map((item) => (
+            <div key={item.id} className="mb-0">
+              {item.name}
+            </div>
+          ))
         ) : (
-          <p className="no-team-members">{lang.NO_TEAM_MEMBERS}</p>
+          <div className="no-team-members">{lang.NO_TEAM_MEMBERS}</div>
         )}
       </div>
     </div>

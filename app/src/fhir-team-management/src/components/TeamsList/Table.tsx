@@ -1,11 +1,11 @@
 import React from 'react';
 import { Table as AntTable, Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
-import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { loadSingleTeam } from '.';
 import { TeamsDetailProps } from '../TeamsDetail';
+import { Organization } from '../../ducks/organizations';
 
 export interface TableData extends Organization {
   key: string;
@@ -35,7 +35,7 @@ const Table: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
+          <Link to={URL_EDIT_TEAM + record.id.toString()}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
