@@ -51,7 +51,6 @@ export interface UserGroupMembers {
   id: string;
   lastName: string;
   notBefore: number;
-  requiredActions: string[];
   totp: boolean;
   username: string;
 }

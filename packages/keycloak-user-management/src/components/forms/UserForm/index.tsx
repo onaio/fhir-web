@@ -1,10 +1,10 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { KeycloakUser, Practitioner, UserAction, UserGroup } from '../../../ducks/user';
+import { KeycloakUser, Practitioner, UserGroup } from '../../../ducks/user';
 import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
-import { submitForm, fetchRequiredActions } from './utils';
+import { submitForm } from './utils';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import '../../../index.css';
@@ -30,8 +30,6 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   // hook into the form lifecycle methods
   const [form] = Form.useForm();
 
-  const [requiredActions, setRequiredActions] = useState<string[]>([]);
-  const [userActionOptions, setUserActionOptions] = useState<UserAction[]>([]);
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const history = useHistory();
   const layout = {
@@ -56,16 +54,6 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     { label: 'No', value: false },
   ];
 
-  useEffect(() => {
-    fetchRequiredActions(keycloakBaseURL, setUserActionOptions);
-  }, [keycloakBaseURL]);
-
-  useEffect(() => {
-    if (initialValues.requiredActions) {
-      setRequiredActions(initialValues.requiredActions);
-    }
-  }, [initialValues.requiredActions]);
-
   /** Update form initial values when initialValues prop changes, without this
    * the form fields initial values will not change if props.initialValues update
    * **/
@@ -87,7 +75,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
           onFinish={(values) => {
             setSubmitting(true);
             submitForm(
-              { ...initialValues, ...values, requiredActions },
+              { ...initialValues, ...values },
               keycloakBaseURL,
               opensrpBaseURL,
               userGroups
@@ -138,23 +126,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               </Radio.Group>
             </Form.Item>
           ) : null}
-          {initialValues.id !== extraData.user_id ? (
-            <Form.Item name="requiredActions" id="requiredActions" label={lang.REQUIRED_ACTIONS}>
-              <Select
-                mode="multiple"
-                allowClear
-                placeholder={lang.PLEASE_SELECT}
-                onChange={(selected: string[]) => setRequiredActions(selected)}
-                style={{ width: '100%' }}
-              >
-                {userActionOptions.map((option: UserAction, index: number) => (
-                  <Select.Option key={`${index}`} value={option.alias}>
-                    {option.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          ) : null}
+
           <Form.Item name="userGroup" id="userGroup" label={lang.GROUP}>
             <Select
               mode="multiple"

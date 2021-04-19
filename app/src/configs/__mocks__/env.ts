@@ -7,6 +7,7 @@ export const LANGUAGE_CODE = 'en';
 export const PROJECT_LANGUAGE_CODE = 'eusm';
 export const SUPPORTED_LANGUAGES = ['en', 'fr'];
 export const ENABLE_LANGUAGE_SWITCHER = true;
+export const ENABLE_OPENSRP_OAUTH = false;
 export const OPENSRP_ROLES = {
   USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
   PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
