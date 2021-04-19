@@ -47,6 +47,7 @@ RUN chmod +x /usr/local/bin/app.sh
 
 WORKDIR /usr/src/web
 
+COPY --from=build /project/node_modules /usr/src/web/node_modules
 COPY --from=build /project/app/build /usr/src/web
 
 RUN chown -R node /usr/src/web
