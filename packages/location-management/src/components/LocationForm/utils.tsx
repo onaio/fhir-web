@@ -12,7 +12,7 @@ import { v4 } from 'uuid';
 import { Geometry, Point } from 'geojson';
 import lang, { Lang } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
-import { LOCATION_UNIT_TYPE } from 'location-management/src/constants';
+import { LOCATION_UNIT_TYPE } from '../../constants';
 
 export enum FormInstances {
   CORE = 'core',
