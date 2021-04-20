@@ -166,7 +166,7 @@ export interface PlanDefinition {
   }>;
   name: string;
   serverVersion?: number;
-  status: string;
+  status: 'retired' | 'complete' | 'draft' | 'active';
   title: string;
   useContext: UseContext[];
   version: string;

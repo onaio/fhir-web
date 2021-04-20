@@ -115,7 +115,7 @@ export const draftPlansListStatusProp = {
 export const completedPlansListStatusProp = {
   allowedPlanStatus: PlanStatus.COMPLETE,
 };
-export const trashPlansListStatusProp = {
+export const retiredPlansListStatusProp = {
   allowedPlanStatus: PlanStatus.RETIRED,
 };
 

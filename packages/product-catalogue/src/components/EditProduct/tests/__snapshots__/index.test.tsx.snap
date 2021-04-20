@@ -15,7 +15,7 @@ Object {
     "serverVersion": 123456,
     "uniqueId": 1,
   },
-  "redirectAfterAction": "/admin/product-catalogue/view",
+  "redirectAfterAction": "/admin/product-catalogue",
 }
 `;
 
