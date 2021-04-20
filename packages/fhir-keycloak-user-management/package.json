@@ -27,7 +27,7 @@
     "dist"
   ],
   "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
+    "@opensrp/store": "^0.0.9",
     "i18next": "^19.8.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -58,7 +58,7 @@
     "bootstrap": "^4.5.2",
     "connected-react-router": "^6.8.0",
     "fast_array_intersect": "^1.1.0",
-    "fhirclient": "2.3.11",
+    "fhirclient": "^2.3.11",
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",
     "lodash": "^4.17.20",
