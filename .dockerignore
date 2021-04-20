@@ -1,0 +1,17 @@
+**/*.db
+**/.env
+**/.env.development.local
+**/.env.local
+**/.env.production.local
+**/.env.test.local
+**/.git*
+**/.waypoint
+**/build
+**/dist
+**/node_modules
+**/npm-debug.log
+.dckerignore
+Dockerfile
+README.md
+docs
+waypoint.hcl
