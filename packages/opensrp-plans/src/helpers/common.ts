@@ -5,7 +5,7 @@ import {
   COMPLETE_PLANS_LIST_VIEW_URL,
   DRAFT_PLANS_LIST_VIEW_URL,
   OPENSRP_API_BASE_URL,
-  TRASH_PLANS_LIST_VIEW_URL,
+  RETIRED_PLANS_LIST_VIEW_URL,
 } from '../constants';
 
 /** props that are common to majority of exported components */
@@ -31,7 +31,7 @@ export const redirectMapping = {
   [PlanStatus.DRAFT]: DRAFT_PLANS_LIST_VIEW_URL,
   [PlanStatus.ACTIVE]: ACTIVE_PLANS_LIST_VIEW_URL,
   [PlanStatus.COMPLETE]: COMPLETE_PLANS_LIST_VIEW_URL,
-  [PlanStatus.RETIRED]: TRASH_PLANS_LIST_VIEW_URL,
+  [PlanStatus.RETIRED]: RETIRED_PLANS_LIST_VIEW_URL,
 };
 
 /** plan form will redirect to the returned path after form submission based on the plan status

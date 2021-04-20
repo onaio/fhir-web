@@ -4,7 +4,7 @@ import {
   DRAFT_PLANS_LIST_VIEW_URL,
   OPENSRP_API_BASE_URL,
   SORT_BY_EFFECTIVE_PERIOD_START_FIELD,
-  TRASH_PLANS_LIST_VIEW_URL,
+  RETIRED_PLANS_LIST_VIEW_URL,
 } from '../../constants';
 import * as planDefinitionFixtures from '../../ducks/planDefinitions/tests/fixtures';
 import { InterventionType, PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
@@ -74,7 +74,7 @@ describe('helpers/utils', () => {
     expect(redirectPathGetter()).toEqual(DRAFT_PLANS_LIST_VIEW_URL);
     expect(redirectPathGetter(PlanStatus.ACTIVE)).toEqual(ACTIVE_PLANS_LIST_VIEW_URL);
     expect(redirectPathGetter(PlanStatus.COMPLETE)).toEqual(COMPLETE_PLANS_LIST_VIEW_URL);
-    expect(redirectPathGetter(PlanStatus.RETIRED)).toEqual(TRASH_PLANS_LIST_VIEW_URL);
+    expect(redirectPathGetter(PlanStatus.RETIRED)).toEqual(RETIRED_PLANS_LIST_VIEW_URL);
   });
   it('tests BuildDownloadUrl', () => {
     expect(BuildDownloadUrl(OPENSRP_API_BASE_URL, '123')).toEqual(
