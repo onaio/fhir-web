@@ -77,6 +77,6 @@ describe('CreateServicePoint', () => {
 
     expect(
       (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
-    ).toEqual('/inventory/list');
+    ).toEqual('/inventory');
   });
 });
