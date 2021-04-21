@@ -7,9 +7,8 @@ import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { IfhirR4 } from '@smile-cdr/fhirts';
-import { FHIRResponse, reducer, reducerName } from '../../ducks/organizations';
-import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
+import { FHIRResponse, Organization, reducer, reducerName } from '../../ducks/organizations';
+import { TEAMS_GET, PRACTITIONER_GET, URL_ADD_TEAM, PRACTITIONERROLE_GET } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsList.css';
 import { Spin } from 'antd';
@@ -17,7 +16,7 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { Practitioner } from '../../ducks/practitioners';
+import { Practitioner, PractitionerRole } from '../../ducks/practitioners';
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);
@@ -28,15 +27,29 @@ reducerRegistry.register(reducerName, reducer);
  * @param {TableData} row data selected from the table
  */
 export async function loadSingleTeam(props: {
-  row: TableData;
+  team: TableData;
   fhirbaseURL: string;
   setDetail: (isLoading: TeamsDetailProps | 'loading' | null) => void;
 }): Promise<void> {
-  const { fhirbaseURL, row, setDetail } = props;
+  const { fhirbaseURL, team, setDetail } = props;
   const serve = FHIR.client(fhirbaseURL);
   setDetail('loading');
-  const data: Practitioner[] = await serve.request(PRACTITIONER_GET + row.id);
-  setDetail({ ...row, practitioners: data });
+
+  const allPractitioner = await serve
+    .request(PRACTITIONER_GET)
+    .then((res: FHIRResponse<Practitioner>) => res.entry.map((entry) => entry.resource));
+  const AllRoles = await serve
+    .request(PRACTITIONERROLE_GET)
+    .then((res: FHIRResponse<PractitionerRole>) => res.entry.map((entry) => entry.resource));
+
+  const practitionerRolesAssigned = AllRoles.filter(
+    (role) => role.organization.identifier?.value === team.identifier[0].value
+  ).map((role) => role.practitioner.identifier?.value);
+  const practitionerAssigned = allPractitioner.filter((prac) =>
+    practitionerRolesAssigned.includes(prac.identifier[0].value)
+  );
+
+  setDetail({ ...team, practitioners: practitionerAssigned });
 }
 
 interface Props {
