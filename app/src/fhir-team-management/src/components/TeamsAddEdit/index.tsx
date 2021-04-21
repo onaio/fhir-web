@@ -1,12 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { FHIRResponse, Organization } from '../../ducks/organizations';
+import { FHIRResponse, Organization, Practitioner, PractitionerRole } from '../../types';
 import Form from './Form';
 import { useParams } from 'react-router';
 import { PRACTITIONERROLE_GET, PRACTITIONER_GET, TEAMS_GET } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import { Practitioner, PractitionerRole } from '../../ducks/practitioners';
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';

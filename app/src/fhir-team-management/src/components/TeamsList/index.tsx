@@ -5,9 +5,8 @@ import { Row, Col, Button, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
-import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { FHIRResponse, Organization, reducer, reducerName } from '../../ducks/organizations';
+import { FHIRResponse, Practitioner, PractitionerRole, Organization } from '../../types';
 import { TEAMS_GET, PRACTITIONER_GET, URL_ADD_TEAM, PRACTITIONERROLE_GET } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsList.css';
@@ -16,10 +15,6 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { Practitioner, PractitionerRole } from '../../ducks/practitioners';
-
-/** Register reducer */
-reducerRegistry.register(reducerName, reducer);
 
 /**
  * Function to load selected Team for details

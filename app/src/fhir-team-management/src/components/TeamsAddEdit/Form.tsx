@@ -8,8 +8,7 @@ import {
   sendInfoNotification,
   sendErrorNotification,
 } from '@opensrp/notifications';
-import { Organization } from '../../ducks/organizations';
-import { Practitioner, PractitionerRole } from '../../ducks/practitioners';
+import { Organization, Practitioner, PractitionerRole } from '../../types';
 import { useQueryClient } from 'react-query';
 
 import lang, { Lang } from '../../lang';
@@ -180,13 +179,12 @@ export const Form: React.FC<Props> = (props: Props) => {
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
           {props.allPractitioner.map((prac) => {
-            const id = prac.identifier.find((e) => e.use === 'official')?.value;
-            if (id)
-              return (
-                <Select.Option key={id} value={id}>
-                  {prac.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`)}
-                </Select.Option>
-              );
+            const id = prac.identifier[0].value;
+            return (
+              <Select.Option key={id} value={id}>
+                {prac.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`)}
+              </Select.Option>
+            );
           })}
         </Select>
       </AntdForm.Item>
