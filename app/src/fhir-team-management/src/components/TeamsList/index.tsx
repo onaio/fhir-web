@@ -132,7 +132,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
         </Col>
         {detail ? (
           detail === 'loading' ? (
-            <div>Loaduing...</div>
+            <Spin size="large" style={{ flexGrow: 1, width: 'auto', height: 'auto' }} />
           ) : (
             <Col className="pl-3" span={5}>
               <TeamsDetail onClose={() => setDetail(null)} {...detail} />
