@@ -154,6 +154,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(fhirbaseURL, setIsSubmitting, allPractitioner, initialValue, values, id)
           .then(() => {
             queryClient.invalidateQueries(TEAMS_GET);
+            queryClient.invalidateQueries([TEAMS_GET, id]);
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
