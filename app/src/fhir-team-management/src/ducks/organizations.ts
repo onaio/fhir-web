@@ -34,7 +34,7 @@ export interface FHIRResponse<T> {
 /** interface for Objects */
 export interface Organization extends Require<IfhirR4.IOrganization, 'name' | 'id' | 'active'> {
   resourceType: 'Organization';
-  identifier?: [Identifier & { use: 'official' }];
+  identifier: [Identifier & { use: 'official'; value: string }];
 }
 
 /** Item Reducer */
