@@ -27,19 +27,17 @@ reducerRegistry.register(reducerName, reducer);
  *
  * @param {TableData} row data selected from the table
  */
-export const loadSingleTeam = async (props: {
+export async function loadSingleTeam(props: {
   row: TableData;
   fhirbaseURL: string;
   setDetail: (isLoading: TeamsDetailProps | 'loading' | null) => void;
-}): Promise<void> => {
+}): Promise<void> {
   const { fhirbaseURL, row, setDetail } = props;
   const serve = FHIR.client(fhirbaseURL);
   setDetail('loading');
-  await serve
-    .request(TEAM_PRACTITIONERS + row.id)
-    .then((data: Practitioner[]) => setDetail({ ...row, practitioners: data }))
-    .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-};
+  const data: Practitioner[] = await serve.request(PRACTITIONER_GET + row.id);
+  setDetail({ ...row, practitioners: data });
+}
 
 interface Props {
   fhirbaseURL: string;
@@ -125,7 +123,12 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
             <Table
               data={filterData.search && filterData.data?.length ? filterData.data : tableData}
               fhirbaseURL={fhirbaseURL}
-              onViewDetails={loadSingleTeam}
+              onViewDetails={(prams) =>
+                loadSingleTeam(prams).catch(() => {
+                  sendErrorNotification(lang.ERROR_OCCURRED);
+                  setDetail(null);
+                })
+              }
               setDetail={setDetail as (isLoading: TeamsDetailProps | 'loading' | null) => void}
             />
           </div>
