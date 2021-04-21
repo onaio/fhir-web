@@ -78,12 +78,11 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
       return teams.data.map((team, i) => {
         const obj: TableData = {
           ...team,
-          identifier: team.identifier ? [{ use: 'official', value: team.id }] : undefined,
           resourceType: 'Organization',
           active: team.active ?? false,
           key: i.toString(),
           name: team.name ?? '',
-          id: team.name ?? '',
+          id: team.id ?? '',
         };
         return obj;
       });
