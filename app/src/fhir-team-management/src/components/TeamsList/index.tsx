@@ -70,7 +70,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
 
   const teams = useQuery(TEAMS_GET, () => serve.request(TEAMS_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<IfhirR4.IOrganization>) => res.entry.map((entry) => entry.resource),
+    select: (res: FHIRResponse<Organization>) => res.entry.map((entry) => entry.resource),
   });
 
   const tableData: TableData[] = useMemo(() => {
