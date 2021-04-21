@@ -1,13 +1,20 @@
 // url
-export const URL_ADD_TEAM = 'teams/add';
+export const URL_ADD_TEAM = 'teams/add/';
 export const URL_EDIT_TEAM = 'teams/edit/';
 
 //
 // Practitioner
 //
-export const PRACTITIONER_GET = 'PractitionerRole/';
-export const PRACTITIONER_POST = 'practitionerRole/add/';
-export const PRACTITIONER_DEL = 'practitionerRole/deleteByPractitioner';
+export const PRACTITIONERROLE_GET = 'PractitionerRole/';
+export const PRACTITIONERROLE_POST = 'PractitionerRole/add/';
+export const PRACTITIONERROLE_DEL = 'PractitionerRole/deleteByPractitioner/';
+
+//
+// Practitioner Role
+//
+export const PRACTITIONER_GET = 'Practitioner/';
+export const PRACTITIONER_POST = 'Practitioner/';
+export const PRACTITIONER_DEL = 'Practitioner/';
 
 //
 // Teams
@@ -15,5 +22,4 @@ export const PRACTITIONER_DEL = 'practitionerRole/deleteByPractitioner';
 export const TEAM_UUID = 'team-uuid';
 export const TEAMS_GET = 'Organization/';
 export const TEAMS_PUT = 'Organization/';
-export const TEAMS_POST = 'Organization';
-export const TEAM_PRACTITIONERS = 'Organization/practitioner/';
+export const TEAMS_POST = 'Organization/';

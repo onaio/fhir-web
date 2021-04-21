@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { TEAMS_POST, PRACTITIONER_POST, PRACTITIONER_DEL, TEAMS_PUT } from '../../constants';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { TEAMS_POST, TEAMS_PUT, TEAMS_GET, PRACTITIONERROLE_DEL } from '../../constants';
 import {
   sendSuccessNotification,
   sendInfoNotification,
   sendErrorNotification,
 } from '@opensrp/notifications';
 import { Organization } from '../../ducks/organizations';
-import { Practitioner } from '../../ducks/practitioners';
+import { Practitioner, PractitionerRole } from '../../ducks/practitioners';
+import { useQueryClient } from 'react-query';
+
 import lang, { Lang } from '../../lang';
+import FHIR from 'fhirclient';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -23,31 +25,29 @@ export interface FormField {
 }
 
 interface Props {
-  opensrpBaseURL: string;
+  fhirbaseURL: string;
   id?: string;
-  practitioner: Practitioner[];
+  allPractitioner: Practitioner[];
   initialValue?: FormField | null;
 }
 
 /**
  * Handle form submission
  *
- * @param {string} opensrpBaseURL - base url
+ * @param {string} fhirbaseURL - base url
  * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
  * @param {string} id id of the team
- * @param {Lang} langObj - the translation string lookup
  */
-export function onSubmit(
-  opensrpBaseURL: string,
+export async function onSubmit(
+  fhirbaseURL: string,
   setIsSubmitting: (value: boolean) => void,
   practitioner: Practitioner[],
   initialValue: FormField,
   values: FormField,
-  id?: string,
-  langObj: Lang = lang
+  id?: string
 ) {
   setIsSubmitting(true);
   const Teamid = id ?? v4();
@@ -60,62 +60,57 @@ export function onSubmit(
     name: values.name,
   };
 
-  setTeam(opensrpBaseURL, payload, id)
-    .then(async () => {
-      // Filter and seperate the practitioners uuid
-      const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
-      const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
+  await setTeam(fhirbaseURL, payload, id);
 
-      await SetPractitioners(opensrpBaseURL, practitioner, toAdd, toRem, Teamid);
-      history.goBack();
-    })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED))
-    .finally(() => setIsSubmitting(false));
+  // Filter and seperate the practitioners uuid
+
+  const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
+  const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
+  console.log(toAdd, toRem);
+
+  await SetPractitioners(fhirbaseURL, practitioner, toAdd, toRem, Teamid);
 }
 
 /**
  * handle Practitioners
  *
- * @param {string} opensrpBaseURL - base url
+ * @param {string} fhirbaseURL - base url
  * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {Array<string>} toAdd list of practitioner uuid to add
  * @param {Array<string>} toRemove list of practitioner uuid to remove
- * @param {string} id id of the team
+ * @param {string} teamId id of the team
  * @param {Lang} langObj - the translation string lookup
  */
 async function SetPractitioners(
-  opensrpBaseURL: string,
+  fhirbaseURL: string,
   practitioner: Practitioner[],
   toAdd: string[],
   toRemove: string[],
-  id: string,
+  teamId: string,
   langObj: Lang = lang
 ) {
   sendInfoNotification(langObj.MSG_ASSIGN_PRACTITIONERS);
+  const serve = FHIR.client(fhirbaseURL);
 
   // Api Call to delete practitioners
-  toRemove.forEach((prac) => {
-    const serve = new OpenSRPService(PRACTITIONER_DEL, opensrpBaseURL);
-    serve
-      .delete({ practitioner: `${prac}`, organization: id })
-      .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
-  });
+  let promises = toRemove.map((prac) => serve.delete(PRACTITIONERROLE_DEL + prac));
+  await Promise.all(promises);
 
   // Api Call to add practitioners
   const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.id));
-  const payload: Practitioner[] = toAddPractitioner.map((prac) => {
-    const practitioner: Practitioner = {
-      resourceType: 'Practitioner',
+  promises = toAddPractitioner.map((prac) => {
+    const id = v4();
+    const payload: Omit<PractitionerRole, 'meta'> = {
+      resourceType: 'PractitionerRole',
       active: true,
-      id: v4(),
-      identifier: [{ use: 'official', value: v4() }],
+      id: id,
+      identifier: [{ use: 'official', value: id }],
+      practitioner: { reference: 'Practitioner/' + prac.id },
+      organization: { reference: 'Organization/' + teamId },
     };
-    return practitioner;
+    return serve.create(payload);
   });
-  if (toAdd.length) {
-    const serve = new OpenSRPService(PRACTITIONER_POST, opensrpBaseURL);
-    await serve.create(payload).catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
-  }
+  await Promise.all(promises);
 
   sendSuccessNotification(langObj.MSG_ASSIGN_PRACTITONERS_SUCCESS);
 }
@@ -123,29 +118,32 @@ async function SetPractitioners(
 /**
  * Function to make teams API call
  *
- * @param {string} opensrpBaseURL - base url
+ * @param {string} fhirbaseURL - base url
  * @param {Organization} payload payload To send
  * @param {string} id of the team if already created
  * @param {Lang} langObj - the translation string lookup
  */
 export async function setTeam(
-  opensrpBaseURL: string,
-  payload: Organization,
+  fhirbaseURL: string,
+  payload: Omit<Organization, 'meta'>,
   id?: string,
   langObj: Lang = lang
 ) {
+  const serve = FHIR.client(fhirbaseURL);
   if (id) {
-    const serve = new OpenSRPService(TEAMS_PUT + id, opensrpBaseURL);
+    console.log(payload, fhirbaseURL + TEAMS_PUT + id);
     await serve.update(payload);
     sendSuccessNotification(langObj.MSG_TEAMS_UPDATE_SUCCESS);
   } else {
-    const serve = new OpenSRPService(TEAMS_POST, opensrpBaseURL);
+    console.log(payload, fhirbaseURL + TEAMS_POST);
     await serve.create(payload);
     sendSuccessNotification(langObj.MSG_TEAMS_ADD_SUCCESS);
   }
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
+  const queryClient = useQueryClient();
+  const { allPractitioner, fhirbaseURL, id } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const initialValue = props.initialValue ?? { active: true, name: '', practitioners: [] };
 
@@ -154,14 +152,13 @@ export const Form: React.FC<Props> = (props: Props) => {
       requiredMark={false}
       {...layout}
       onFinish={(values) =>
-        onSubmit(
-          props.opensrpBaseURL,
-          setIsSubmitting,
-          props.practitioner,
-          initialValue,
-          values,
-          props.id
-        )
+        onSubmit(fhirbaseURL, setIsSubmitting, allPractitioner, initialValue, values, id)
+          .then(() => {
+            queryClient.invalidateQueries(TEAMS_GET);
+            history.goBack();
+          })
+          .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
+          .finally(() => setIsSubmitting(false))
       }
       initialValues={initialValue}
     >
@@ -182,11 +179,15 @@ export const Form: React.FC<Props> = (props: Props) => {
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
-          {props.practitioner.map((practitioner) => (
-            <Select.Option key={practitioner.id} value={practitioner.id}>
-              {practitioner.name}
-            </Select.Option>
-          ))}
+          {props.allPractitioner.map((prac) => {
+            const id = prac.identifier.find((e) => e.use === 'official')?.value;
+            if (id)
+              return (
+                <Select.Option key={id} value={id}>
+                  {prac.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`)}
+                </Select.Option>
+              );
+          })}
         </Select>
       </AntdForm.Item>
 
