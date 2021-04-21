@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Require } from '@opensrp/react-utils/dist/types';
-import { Organization } from '../../../ducks/organizations';
-import { Practitioner } from '../../../ducks/practitioners';
+import { Organization, Practitioner } from '../../../types';
 import { FormField } from '../Form';
 
 export const accessToken = 'token';

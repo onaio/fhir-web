@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { loadSingleTeam } from '.';
 import { TeamsDetailProps } from '../TeamsDetail';
-import { Organization } from '../../ducks/organizations';
+import { Organization } from '../../types';
 
 export interface TableData extends Organization {
   key: string;
