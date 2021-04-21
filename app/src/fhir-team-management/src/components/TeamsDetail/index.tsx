@@ -1,12 +1,11 @@
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { Organization } from '../../ducks/organizations';
 import { Practitioner } from '../../ducks/practitioners';
 import lang from '../../lang';
-import { Require } from '@opensrp/react-utils/dist/types';
+import { TableData } from '../TeamsList/Table';
 
-export interface TeamsDetailProps extends Require<Organization, 'name' | 'id' | 'active'> {
+export interface TeamsDetailProps extends TableData {
   onClose?: Function;
   practitioners: Practitioner[];
 }
@@ -14,6 +13,7 @@ export interface TeamsDetailProps extends Require<Organization, 'name' | 'id' | 
 const TeamsDetail = (props: TeamsDetailProps) => {
   const { name, active, id, practitioners } = props;
   const filteredPractitioners = practitioners.filter((prac) => prac.active);
+
   return (
     <div className="p-4 bg-white">
       <Button
@@ -32,7 +32,7 @@ const TeamsDetail = (props: TeamsDetailProps) => {
         <div className="mb-0">{`${active}`}</div>
       </div>
       <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.id}</div>
+        <div className="mb-0 font-weight-bold">{lang.IDENTIFIER}</div>
         <div className="mb-0">{id}</div>
       </div>
       <div className="mb-4 small">
@@ -40,7 +40,7 @@ const TeamsDetail = (props: TeamsDetailProps) => {
         {filteredPractitioners.length ? (
           filteredPractitioners.map((item) => (
             <div key={item.id} className="mb-0">
-              {item.name}
+              {item.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`)}
             </div>
           ))
         ) : (
