@@ -47,7 +47,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
-                    if (onViewDetails) onViewDetails({ row: record, fhirbaseURL, setDetail });
+                    if (onViewDetails) onViewDetails({ team: record, fhirbaseURL, setDetail });
                   }}
                 >
                   View Details
