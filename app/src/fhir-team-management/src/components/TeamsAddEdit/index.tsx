@@ -1,103 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
-import reducerRegistry from '@onaio/redux-reducer-registry';
-import { reducer, reducerName } from '../../ducks/organizations';
-import Form, { FormField } from './Form';
+import { FHIRResponse, Organization } from '../../ducks/organizations';
+import Form from './Form';
 import { useParams } from 'react-router';
-import { PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { PRACTITIONERROLE_GET, PRACTITIONER_GET, TEAMS_GET } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import { Practitioner } from '../../ducks/practitioners';
-import lang, { Lang } from '../../lang';
-import { IfhirR4 } from '@smile-cdr/fhirts';
-
-reducerRegistry.register(reducerName, reducer);
-
-/**
- * Gets Team data
- *
- * @param {string} id id of the team
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Object>} Object Containing Team Data
- */
-export async function getTeamDetail(id: string, opensrpBaseURL: string) {
-  const serve = new OpenSRPService(TEAMS_GET + id, opensrpBaseURL);
-  return await serve.list().then(async (response: IfhirR4.IOrganization) => {
-    return {
-      name: response.name,
-      active: response.active,
-      practitioners: await getPractitonerDetail(id, opensrpBaseURL),
-    };
-  });
-}
-
-/**
- * Gets Practioners assigned to a team
- *
- * @param {string} id id of the team
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<Practitioner>>} list of Practitioner Assigned to a team
- */
-export async function getPractitonerDetail(id: string, opensrpBaseURL: string) {
-  const serve = new OpenSRPService(TEAM_PRACTITIONERS + id, opensrpBaseURL);
-  return await serve.list().then((response: Practitioner[]) => response.filter((e) => e.active));
-}
-
-/**
- * Set the InitialValue in component
- *
- * @param {string} id id of the team
- * @param {string} opensrpBaseURL - base url
- * @param {Function} setInitialValue Function to set intial value
- * @param {Lang} langObj - the translation object lookup
- */
-function setupInitialValue(
-  id: string,
-  opensrpBaseURL: string,
-  setInitialValue: Function,
-  langObj: Lang = lang
-) {
-  getTeamDetail(id, opensrpBaseURL)
-    .then((response) => {
-      setInitialValue({
-        ...response,
-        practitioners: response.practitioners.map((prac) => prac.identifier),
-      });
-    })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
-}
+import { Practitioner, PractitionerRole } from '../../ducks/practitioners';
+import lang from '../../lang';
+import FHIR from 'fhirclient';
+import { useQuery } from 'react-query';
 
 export interface Props {
-  opensrpBaseURL: string;
+  fhirbaseURL: string;
 }
 
 /** default component props */
 export const defaultProps = {
-  opensrpBaseURL: '',
+  fhirbaseURL: '',
 };
 
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
-  const params: { id: string } = useParams();
-  const [initialValue, setInitialValue] = useState<FormField | null>(null);
-  const [practitioner, setPractitioner] = useState<Practitioner[] | null>(null);
-  const { opensrpBaseURL } = props;
+  const { fhirbaseURL } = props;
 
-  useEffect(() => {
-    if (params.id) setupInitialValue(params.id, opensrpBaseURL, setInitialValue);
-  }, [params.id, opensrpBaseURL]);
+  const serve = FHIR.client(fhirbaseURL);
+  const params: { id?: string } = useParams();
+  let initialValue = null;
 
-  useEffect(() => {
-    const serve = new OpenSRPService(PRACTITIONER_GET, opensrpBaseURL);
-    serve
-      .list()
-      .then((response: Practitioner[]) => {
-        setPractitioner(response);
-      })
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-  }, [opensrpBaseURL]);
+  const allPractitioner = useQuery(PRACTITIONER_GET, () => serve.request(PRACTITIONER_GET), {
+    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+    select: (res: FHIRResponse<Practitioner>) => res.entry.map((entry) => entry.resource),
+  });
 
-  if (!practitioner || (params.id && !initialValue)) return <Spin size={'large'} />;
+  const team = useQuery([TEAMS_GET, params.id], () => serve.request(TEAMS_GET + params.id), {
+    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+    select: (res: Organization) => res,
+    enabled: params.id !== undefined,
+  });
+
+  const AllRoles = useQuery([PRACTITIONERROLE_GET], () => serve.request(PRACTITIONERROLE_GET), {
+    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+    select: (res: FHIRResponse<PractitionerRole>) => res.entry.map((entry) => entry.resource),
+    enabled: params.id !== undefined,
+  });
+
+  if (params.id && team.data && AllRoles.data && allPractitioner.data) {
+    const practitionerRolesAssigned = AllRoles.data
+      .filter((role) => role.organization.identifier?.value === team.data.identifier[0].value)
+      .map((role) => role.practitioner.identifier?.value);
+    const practitionerAssigned = allPractitioner.data.filter((prac) =>
+      practitionerRolesAssigned.includes(prac.identifier[0].value)
+    );
+
+    initialValue = {
+      name: team.data.name,
+      active: team.data.active,
+      practitioners: practitionerAssigned.map((prac) => prac.id),
+    };
+  }
+  if (!allPractitioner.data || (params.id && !initialValue)) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -111,10 +72,10 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
       <div className="bg-white p-5">
         <Form
-          opensrpBaseURL={opensrpBaseURL}
+          fhirbaseURL={fhirbaseURL}
           initialValue={initialValue}
           id={params.id}
-          practitioner={practitioner}
+          allPractitioner={allPractitioner.data}
         />
       </div>
     </section>
