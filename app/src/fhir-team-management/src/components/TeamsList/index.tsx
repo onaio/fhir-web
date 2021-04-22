@@ -3,7 +3,7 @@ import React, { ChangeEvent, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
+import TeamsDetail from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { FHIRResponse, Practitioner, PractitionerRole, Organization } from '../../types';
@@ -17,6 +17,8 @@ import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
 import { ProcessFHIRResponse } from '../../utils';
 
+type TeamDetail = TableData & { practitioners: Practitioner[] };
+
 /**
  * Function to load selected Team for details
  *
@@ -25,11 +27,9 @@ import { ProcessFHIRResponse } from '../../utils';
 export async function loadSingleTeam(props: {
   team: TableData;
   fhirbaseURL: string;
-  setDetail: (isLoading: TeamsDetailProps | 'loading' | null) => void;
-}): Promise<void> {
-  const { fhirbaseURL, team, setDetail } = props;
+}): Promise<TeamDetail> {
+  const { fhirbaseURL, team } = props;
   const serve = FHIR.client(fhirbaseURL);
-  setDetail('loading');
 
   const allPractitioner = await serve
     .request(PRACTITIONER_GET)
@@ -50,7 +50,7 @@ export async function loadSingleTeam(props: {
     practitionerRolesAssigned.includes(prac.identifier.official.value)
   );
 
-  setDetail({ ...team, practitioners: practitionerAssigned });
+  return { ...team, practitioners: practitionerAssigned };
 }
 
 interface Props {
@@ -66,7 +66,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
   const { fhirbaseURL } = props;
   const serve = FHIR.client(fhirbaseURL);
 
-  const [detail, setDetail] = useState<TeamsDetailProps | 'loading' | null>(null);
+  const [detail, setDetail] = useState<TeamDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
 
   const teams = useQuery(TEAMS_GET, () => serve.request(TEAMS_GET), {
@@ -137,13 +137,15 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
             <Table
               data={filterData.search && filterData.data?.length ? filterData.data : tableData}
               fhirbaseURL={fhirbaseURL}
-              onViewDetails={(prams) =>
-                loadSingleTeam(prams).catch(() => {
-                  sendErrorNotification(lang.ERROR_OCCURRED);
-                  setDetail(null);
-                })
-              }
-              setDetail={setDetail as (isLoading: TeamsDetailProps | 'loading' | null) => void}
+              onViewDetails={(prams) => {
+                setDetail('loading');
+                loadSingleTeam(prams)
+                  .then((team) => setDetail(team))
+                  .catch(() => {
+                    sendErrorNotification(lang.ERROR_OCCURRED);
+                    setDetail(null);
+                  });
+              }}
             />
           </div>
         </Col>

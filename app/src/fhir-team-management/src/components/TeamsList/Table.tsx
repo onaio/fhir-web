@@ -3,8 +3,6 @@ import { Table as AntTable, Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
-import { loadSingleTeam } from '.';
-import { TeamsDetailProps } from '../TeamsDetail';
 import { Organization } from '../../types';
 
 export interface TableData extends Organization {
@@ -14,12 +12,11 @@ export interface TableData extends Organization {
 export interface Props {
   data: TableData[];
   fhirbaseURL: string;
-  setDetail: (isLoading: TeamsDetailProps | 'loading' | null) => void;
-  onViewDetails?: typeof loadSingleTeam;
+  onViewDetails?: (param: { team: TableData; fhirbaseURL: string }) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { setDetail, onViewDetails, fhirbaseURL } = props;
+  const { onViewDetails, fhirbaseURL } = props;
 
   const columns = [
     {
@@ -47,7 +44,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
-                    if (onViewDetails) onViewDetails({ team: record, fhirbaseURL, setDetail });
+                    if (onViewDetails) onViewDetails({ team: record, fhirbaseURL });
                   }}
                 >
                   View Details
