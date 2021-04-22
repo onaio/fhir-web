@@ -1,23 +1,25 @@
 import React from 'react';
 import { Spin, Alert } from 'antd';
 import { ColumnType } from 'antd/lib/table/interface';
-import { PLANS_ASSIGNMENT_VIEW_URL, TableColumnsNamespace } from '../../constants';
+import { TableColumnsNamespace, URL_MISSIONS } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import moment from 'moment';
 import { Dictionary } from '@onaio/utils';
 import lang from '../../lang';
-import { Column } from '@opensrp/react-utils';
 
 /**
  * component rendered in the action column of the table
  *
  * @param record record representing the active record
  */
-export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (record) => {
+export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (
+  record: PlanDefinition
+) => {
   return (
     <>
-      <Link to={`${PLANS_ASSIGNMENT_VIEW_URL}/${record.identifier}`}>{lang.VIEW}</Link>
+      {/* Assumes the record status is in the routes */}
+      <Link to={`${URL_MISSIONS}/${record.status}/${record.identifier}`}>{lang.VIEW}</Link>
     </>
   );
 };
@@ -26,8 +28,8 @@ export const ActionsColumnCustomRender: ColumnType<PlanDefinition>['render'] = (
  *
  * @param langObj - the language object
  */
-export const getColumns = (langObj: Dictionary<string> = lang): Column<PlanDefinition>[] => {
-  const columns: Column<PlanDefinition>[] = [
+export const getColumns = (langObj: Dictionary<string> = lang): ColumnType<PlanDefinition>[] => {
+  const columns: ColumnType<PlanDefinition>[] = [
     {
       title: langObj.NAME,
       dataIndex: 'title',

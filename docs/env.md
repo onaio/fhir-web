@@ -181,3 +181,15 @@ Below is a list of currently supported environment variables:
   - whether to show a language switcher
   - **Optional**(`boolean`)
   - default: `true`
+
+  **REACT_APP_DEFAULT_HOME_MODE**
+
+  - whether to redirect on eusm or tunisia home page
+  - **not required**_(`string`)_
+  - _accepted values_: _default | eusm | tunisia_
+
+- **REACT_APP_OPENSRP_OAUTH_SCOPES**
+
+  - Sets the oauth app permission scopes.
+  - **Required**(`string`)
+  - default: `read,write`

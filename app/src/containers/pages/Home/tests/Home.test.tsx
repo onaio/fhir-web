@@ -79,7 +79,7 @@ describe('containers/pages/Home', () => {
 
   it('displays links for location unit module', () => {
     const envModule = require('../../../../configs/env');
-    envModule.ENABLE_LOCATIONS = 'true';
+    envModule.ENABLE_LOCATIONS = true;
 
     const wrapper = mount(
       <Provider store={store}>
@@ -95,7 +95,7 @@ describe('containers/pages/Home', () => {
 
   it('displays links for teams module', () => {
     const envModule = require('../../../../configs/env');
-    envModule.ENABLE_TEAMS = 'true';
+    envModule.ENABLE_TEAMS = true;
 
     const wrapper = mount(
       <Provider store={store}>

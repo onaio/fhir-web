@@ -87,24 +87,12 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer access token',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
     expect(wrapper.find('FormItem').at(0).prop('name')).toEqual('firstName');
     expect(wrapper.find('FormItem').at(1).prop('name')).toEqual('lastName');
     expect(wrapper.find('FormItem').at(2).prop('name')).toEqual('email');
     expect(wrapper.find('FormItem').at(3).prop('name')).toEqual('username');
     expect(wrapper.find('FormItem').at(4).prop('name')).toEqual('enabled');
-    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('requiredActions');
-    expect(wrapper.find('FormItem').at(6).prop('name')).toEqual('userGroup');
+    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('userGroup');
     wrapper.unmount();
   });
 
@@ -161,15 +149,24 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
+    expect(fetch.mock.calls[0]).toMatchObject([
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users',
       {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          firstName: 'Test',
+          id: '',
+          lastName: 'One',
+          username: 'TestOne',
+          email: 'testone@gmail.com',
+        }),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer access token',
           'content-type': 'application/json;charset=UTF-8',
         },
-        method: 'GET',
+        method: 'POST',
       },
     ]);
   });
@@ -203,18 +200,6 @@ describe('components/forms/UserForm', () => {
     await new Promise<unknown>((resolve) => setImmediate(resolve));
 
     expect(fetch.mock.calls[0]).toEqual([
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer access token',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[1]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       {
         'Cache-Control': 'no-cache',
@@ -366,7 +351,7 @@ describe('components/forms/UserForm', () => {
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
-    expect(history.location.pathname).toEqual('/admin/users/list');
+    expect(history.location.pathname).toEqual('/admin/users');
   });
 
   it('render correct user name in header', async () => {
@@ -454,26 +439,6 @@ describe('components/forms/UserForm', () => {
     expect(wrapper.find('#practitionerToggle')).toHaveLength(0);
   });
 
-  it('hides `requiredActions` field if user is editing their own profile', async () => {
-    const propsOwn = {
-      ...props,
-      initialValues: keycloakUser,
-      extraData: { user_id: keycloakUser.id },
-    };
-
-    const wrapper = mount(
-      <Router history={history}>
-        <UserForm {...propsOwn} />
-      </Router>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(wrapper.find('#requiredActions')).toHaveLength(0);
-  });
   it('updates form data when user to edit changes', async () => {
     // start with first user
     const propsFirstUser = {

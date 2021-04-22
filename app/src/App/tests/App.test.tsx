@@ -19,6 +19,8 @@ import {
   CreateProductView,
   EditProductView,
 } from '@opensrp/product-catalogue';
+import { ACTIVE_PLANS_LIST_VIEW_URL } from '@opensrp/plans';
+import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
 
 jest.mock('../../configs/env');
 
@@ -184,6 +186,58 @@ describe('App - authenticated', () => {
     expect(wrapper.find('Router').prop('history')).toMatchObject({
       location: {
         pathname: '/',
+      },
+    });
+    wrapper.unmount();
+  });
+
+  it('renders App correctly when staging environment is set to eusm', async () => {
+    const envModule = require('../../configs/env');
+    envModule.DEFAULT_HOME_MODE = 'eusm';
+    history.push(ACTIVE_PLANS_LIST_VIEW_URL);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <App />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // after resolving get oauth state request superset user is logged in
+    expect(wrapper.find('Router').prop('history')).toMatchObject({
+      location: {
+        pathname: '/missions/active',
+      },
+    });
+    wrapper.unmount();
+  });
+
+  it('renders App correctly when staging environment is set to tunisia', async () => {
+    const envModule = require('../../configs/env');
+    envModule.DEFAULT_HOME_MODE = 'tunisia';
+    history.push(URL_DOWNLOAD_CLIENT_DATA);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <App />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // after resolving get oauth state request superset user is logged in
+    expect(wrapper.find('Router').prop('history')).toMatchObject({
+      location: {
+        pathname: '/card-support/download-client-data',
       },
     });
     wrapper.unmount();

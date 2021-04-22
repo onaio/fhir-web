@@ -1,4 +1,4 @@
-import { submitForm, fetchRequiredActions, createOrEditPractitioners } from '../utils';
+import { submitForm, createOrEditPractitioners } from '../utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -7,19 +7,7 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import lang from '../../../../lang';
-import {
-  value,
-  keycloakUser,
-  practitioner1,
-  requiredActions,
-  userGroup,
-  userAction1,
-  userAction3,
-  userAction4,
-  userAction5,
-  userAction6,
-} from './fixtures';
+import { value, keycloakUser, practitioner1, userGroup } from './fixtures';
 import { FormFields } from '..';
 
 jest.mock('@opensrp/notifications', () => ({
@@ -34,13 +22,7 @@ jest.mock('uuid', () => {
   return { __esModule: true, ...jest.requireActual('uuid'), v4 };
 });
 
-describe('forms/utils/fetchRequiredActions', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-    fetch.mockClear();
-    fetch.resetMocks();
-  });
-
+describe('forms/utils/submitForm', () => {
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -56,59 +38,6 @@ describe('forms/utils/fetchRequiredActions', () => {
     );
   });
 
-  const keycloakBaseURL =
-    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
-  const setUserActionOptionsMock = jest.fn();
-
-  it('fetches required actions', async () => {
-    fetch.mockResponseOnce(JSON.stringify(requiredActions));
-
-    fetchRequiredActions(keycloakBaseURL, setUserActionOptionsMock);
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer token',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-    ]);
-
-    expect(setUserActionOptionsMock).toHaveBeenCalledWith([
-      userAction1,
-      userAction3,
-      userAction4,
-      userAction5,
-      userAction6,
-    ]);
-  });
-
-  it('handles error if fetching fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
-    fetchRequiredActions(keycloakBaseURL, setUserActionOptionsMock);
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(setUserActionOptionsMock).not.toHaveBeenCalled();
-
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
-  });
-});
-
-describe('forms/utils/submitForm', () => {
   afterEach(() => {
     jest.clearAllMocks();
     fetch.mockClear();
@@ -286,7 +215,7 @@ describe('forms/utils/submitForm', () => {
       ['User edited successfully'],
     ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
   });
 
   it('handles error when user creation fails', async () => {
