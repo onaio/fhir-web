@@ -8,7 +8,7 @@ import {
   sendInfoNotification,
   sendErrorNotification,
 } from '@opensrp/notifications';
-import { Organization, Practitioner, PractitionerRole } from '../../types';
+import { FhirObject, Organization, Practitioner, PractitionerRole } from '../../types';
 import { useQueryClient } from 'react-query';
 
 import lang, { Lang } from '../../lang';
@@ -51,7 +51,7 @@ export async function onSubmit(
   setIsSubmitting(true);
   const Teamid = id ?? v4();
 
-  const payload: Organization = {
+  const payload: FhirObject<Organization> = {
     resourceType: 'Organization',
     id: Teamid,
     active: values.active,
@@ -96,15 +96,15 @@ async function SetPractitioners(
   await Promise.all(promises);
 
   // Api Call to add practitioners
-  const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.id));
+  const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.identifier.official.value));
   promises = toAddPractitioner.map((prac) => {
     const id = v4();
-    const payload: Omit<PractitionerRole, 'meta'> = {
+    const payload: FhirObject<Omit<PractitionerRole, 'meta'>> = {
       resourceType: 'PractitionerRole',
       active: true,
       id: id,
       identifier: [{ use: 'official', value: id }],
-      practitioner: { reference: 'Practitioner/' + prac.id },
+      practitioner: { reference: 'Practitioner/' + prac.identifier.official.value },
       organization: { reference: 'Organization/' + teamId },
     };
     return serve.create(payload);
@@ -124,7 +124,7 @@ async function SetPractitioners(
  */
 export async function setTeam(
   fhirbaseURL: string,
-  payload: Omit<Organization, 'meta'>,
+  payload: FhirObject<Omit<Organization, 'meta'>>,
   id?: string,
   langObj: Lang = lang
 ) {
@@ -180,7 +180,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
           {props.allPractitioner.map((prac) => {
-            const id = prac.identifier[0].value;
+            const id = prac.identifier.official.value;
             return (
               <Select.Option key={id} value={id}>
                 {prac.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`)}
