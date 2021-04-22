@@ -6,6 +6,7 @@ on:
     # See also https://github.com/crazy-max/ghaction-docker-meta#basic
     branches:
       - master
+      - add-docker-ci
 
     # Publish `v1.2.3` tags as releases.
     tags:
