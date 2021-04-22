@@ -55,7 +55,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: opensrp/opensrp-server-web
+          images: opensrp/web
           tag-custom: ${{ github.event.inputs.customTag }}
 
       - name: Login to DockerHub
