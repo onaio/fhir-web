@@ -151,6 +151,13 @@ Array [
 ]
 `;
 
+exports[`containers/forms/PlanForm date range picker renders correctly for no mission end date: date range for no end date 1`] = `
+Array [
+  "2020-11-23T21:00:00.000Z",
+  undefined,
+]
+`;
+
 exports[`containers/forms/PlanForm removing dynamic activities works correctly: Changed activity conditions text input names 1`] = `Array []`;
 
 exports[`containers/forms/PlanForm removing dynamic activities works correctly: Changed activity conditions text textarea names 1`] = `Array []`;
