@@ -78,15 +78,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
   const tableData: TableData[] = useMemo(() => {
     if (teams.data) {
       return teams.data.map((team, i) => {
-        const obj: TableData = {
-          ...team,
-          resourceType: 'Organization',
-          active: team.active ?? false,
-          key: i.toString(),
-          name: team.name ?? '',
-          id: team.id ?? '',
-        };
-        return obj;
+        return { ...team, key: i.toString() } as TableData;
       });
     } else return [];
   }, [teams.data]);
