@@ -7,6 +7,7 @@ import {
   defaultFormField,
   generateLocationUnit,
   getLocationTagOptions,
+  getSelectedLocTagObj,
   getServiceTypeOptions,
   handleGeoFieldsChangeFactory,
   LocationFormFields,
@@ -347,6 +348,7 @@ const LocationForm = (props: LocationFormProps) => {
               }}
               getOptions={getLocationTagOptions}
               fullDataCallback={setLocationTags}
+              getSelectedFullData={getSelectedLocTagObj}
             />
           </FormItem>
 
