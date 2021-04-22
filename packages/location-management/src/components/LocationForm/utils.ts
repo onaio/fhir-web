@@ -13,6 +13,8 @@ import { Geometry, Point } from 'geojson';
 import lang, { Lang } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import { LOCATION_UNIT_TYPE } from '../../constants';
+import { GetSelectedFullData } from './CustomSelect';
+import { uniqBy } from 'lodash';
 
 export enum FormInstances {
   CORE = 'core',
@@ -346,6 +348,29 @@ export const getLocationTagOptions = (tags: LocationUnitTag[]) => {
       value: locationTag.id,
     };
   });
+};
+
+/**
+ * method to get the full Location tag object once user selects an option in the select dropdown,
+ * once the user selects, you only get the id of the selected object, this function will be called
+ * to get the full location Tag.
+ *
+ * @param data - the full data objects
+ * @param getOptions - function used to get the options tos how on the dropdown
+ * @param value - selected value (an array for multi select otherwise a string)
+ */
+export const getSelectedLocTagObj: GetSelectedFullData<LocationUnitTag> = (
+  data,
+  getOptions,
+  value
+) => {
+  // #595 - remove duplicate data(those that have the same id)
+  const uniqData = uniqBy(data, (obj) => obj.id);
+  const selected = uniqData.filter((dt) => {
+    const option = getOptions([dt])[0];
+    return (Array.isArray(value) && value.includes(option.value)) || value === option.value;
+  });
+  return selected;
 };
 
 /**

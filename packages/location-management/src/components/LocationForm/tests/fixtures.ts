@@ -159,6 +159,34 @@ export const generatedLocation4 = {
   geometry: { type: 'Point', coordinates: [19.56, 34.56] },
 };
 
+export const generatedLocation4Dot1 = {
+  properties: {
+    geographicLevel: 1,
+    parentId: '03176924-6b3c-4b74-bccd-32afcceebabd',
+    name: 'MENABE',
+    name_en: 'MENABE',
+    status: 'Active',
+    version: 0,
+  },
+  id: '38a0a19b-f91e-4044-a8db-a4b62490bf27',
+  syncStatus: 'Synced',
+  type: 'Feature',
+  locationTags: [{ id: 2, active: true, name: 'Region', description: 'Region Location Tag' }],
+  geometry: {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [17.4298095703125, 29.897805610155874],
+        [17.215576171875, 29.750070930806785],
+        [17.4957275390625, 29.3965337391284],
+        [17.9901123046875, 29.54000879252545],
+        [18.006591796874996, 29.79298413547051],
+        [17.4298095703125, 29.897805610155874],
+      ],
+    ],
+  },
+};
+
 export const expectedFormFields: LocationFormFields = {
   externalId: '',
   extraFields: [],
@@ -309,6 +337,27 @@ export const locationTags = [
   { id: 11, active: true, name: 'Madaraka CHW team', description: 'The madaraka CHW team' },
   { id: 1, active: false, name: 'Sample test edit 1', description: 'Sample description 1' },
   { id: 12, active: true, name: 'Test', description: '' },
+];
+
+export const duplicateLocationTags = [
+  { id: 1, active: true, name: 'Country', description: 'Country Location Tag' },
+  { id: 3, active: true, name: 'District', description: 'District Location Tag' },
+  { id: 4, active: true, name: 'Commune', description: 'Commune Location Tag' },
+  { id: 5, active: true, name: 'Service Point', description: 'Service Point' },
+  { id: 6, active: false, name: 'Location name', description: '' },
+  { id: 1, active: true, name: 'Country', description: 'Country Location Tag' },
+  { id: 3, active: true, name: 'District', description: 'District Location Tag' },
+  { id: 4, active: true, name: 'Commune', description: 'Commune Location Tag' },
+  { id: 5, active: true, name: 'Service Point', description: 'Service Point' },
+  { id: 6, active: false, name: 'Location name', description: '' },
+  { id: 1, active: true, name: 'Country', description: 'Country Location Tag' },
+  { id: 3, active: true, name: 'District', description: 'District Location Tag' },
+  { id: 4, active: true, name: 'Commune', description: 'Commune Location Tag' },
+  { id: 5, active: true, name: 'Service Point', description: 'Service Point' },
+  { id: 6, active: false, name: 'Location name', description: '' },
+  { id: 2, active: true, name: 'Region', description: 'Region Location Tag' },
+  { id: 2, active: true, name: 'Region', description: 'Region Location Tag' },
+  { id: 2, active: true, name: 'Region', description: 'Region Location Tag' },
 ];
 
 export const locationSettings = [

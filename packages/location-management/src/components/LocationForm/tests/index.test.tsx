@@ -11,9 +11,11 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
 import {
   createdLocation1,
+  duplicateLocationTags,
   fetchCalls1,
   generatedLocation2,
   generatedLocation4,
+  generatedLocation4Dot1,
   location2,
   location4,
   locationSettings,
@@ -652,6 +654,66 @@ describe('LocationForm', () => {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
           body: JSON.stringify(generatedLocation4),
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
+        },
+      ],
+    ]);
+    wrapper.unmount();
+  });
+
+  it('#595 Duplicate location Tags failing upload', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    fetch
+      .once(JSON.stringify([location2]))
+      .once(JSON.stringify(serviceTypeSettings))
+      .once(JSON.stringify(duplicateLocationTags))
+      .once(JSON.stringify(locationSettings))
+      .once(JSON.stringify(rawOpenSRPHierarchy1));
+
+    const initialValues = getLocationFormFields(location4);
+
+    const locationFormProps = {
+      initialValues,
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <LocationForm {...locationFormProps} />
+      </Router>,
+
+      { attachTo: container }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    fetch.mockReset();
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    /** payload does not contain duplicate entries in locationTags field*/
+    expect(generatedLocation4Dot1.locationTags).toHaveLength(1);
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: JSON.stringify(generatedLocation4Dot1),
           headers: {
             accept: 'application/json',
             authorization: 'Bearer sometoken',

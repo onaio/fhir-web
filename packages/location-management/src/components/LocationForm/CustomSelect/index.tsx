@@ -7,17 +7,46 @@ import { SelectProps } from 'antd/lib/select';
 import { OptionData } from 'rc-select/lib/interface/';
 
 type RawValueType = string | number | (string | number)[];
+export type GetOptions<T> = (data: T[]) => OptionData[];
+export type GetSelectedFullData<T> = (
+  data: T[],
+  getOptions: GetOptions<T>,
+  value: SelectProps<RawValueType>['value']
+) => T[];
+
+/**
+ * default method to get the fullData object once use selects an option in the select dropdown,
+ * once the user selects, you only get the id of the selected object, this function will be called
+ * to get the full object.
+ *
+ * @param data - the full data objects
+ * @param getOptions - function used to get the options tos how on the dropdown
+ * @param value - selected value (an array for multi select otherwise a string)
+ */
+export function getSelectedFullData<T>(
+  data: T[],
+  getOptions: GetOptions<T>,
+  value: SelectProps<RawValueType>['value']
+) {
+  const selected = data.filter((dt) => {
+    const option = getOptions([dt])[0];
+    return (Array.isArray(value) && value.includes(option.value)) || value === option.value;
+  });
+  return selected;
+}
 
 /** props for custom select component */
 export interface CustomSelectProps<T = Dictionary> extends SelectProps<RawValueType> {
   loadData: (stateSetter: Dispatch<SetStateAction<T[]>>) => Promise<void>;
-  getOptions: (data: T[]) => OptionData[];
+  getOptions: GetOptions<T>;
   fullDataCallback?: (data: T[]) => void;
+  getSelectedFullData: GetSelectedFullData<T>;
 }
 
 const defaultServiceTypeProps = {
   loadData: () => Promise.resolve(),
   getOptions: () => [],
+  getSelectedFullData,
 };
 
 /** custom select,  gets options from the api
@@ -27,7 +56,14 @@ const defaultServiceTypeProps = {
 function CustomSelect<T>(props: CustomSelectProps<T>) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<T[]>([]);
-  const { loadData, getOptions, value, fullDataCallback, ...restProps } = props;
+  const {
+    loadData,
+    getOptions,
+    value,
+    fullDataCallback,
+    getSelectedFullData,
+    ...restProps
+  } = props;
 
   useEffect(() => {
     loadData(setData)
@@ -39,12 +75,9 @@ function CustomSelect<T>(props: CustomSelectProps<T>) {
   }, []);
 
   useEffect(() => {
-    const selected = data.filter((dt) => {
-      const option = getOptions([dt])[0];
-      return (Array.isArray(value) && value.includes(option.value)) || value === option.value;
-    });
+    const selected = getSelectedFullData(data, getOptions, value);
     fullDataCallback?.(selected);
-  }, [data, fullDataCallback, getOptions, value]);
+  }, [data, fullDataCallback, getOptions, getSelectedFullData, value]);
 
   const selectOptions = getOptions(data);
 
