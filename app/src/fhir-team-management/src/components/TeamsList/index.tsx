@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
+import { ProcessFHIRResponse } from '../../utils';
 
 /**
  * Function to load selected Team for details
@@ -32,16 +33,21 @@ export async function loadSingleTeam(props: {
 
   const allPractitioner = await serve
     .request(PRACTITIONER_GET)
-    .then((res: FHIRResponse<Practitioner>) => res.entry.map((entry) => entry.resource));
+    .then((res: FHIRResponse<Practitioner>) =>
+      ProcessFHIRResponse(res).filter((e) => e.identifier.official)
+    );
   const AllRoles = await serve
     .request(PRACTITIONERROLE_GET)
-    .then((res: FHIRResponse<PractitionerRole>) => res.entry.map((entry) => entry.resource));
+    .then((res: FHIRResponse<PractitionerRole>) =>
+      ProcessFHIRResponse(res).filter((e) => e.identifier.official)
+    );
 
   const practitionerRolesAssigned = AllRoles.filter(
-    (role) => role.organization.identifier?.value === team.identifier[0].value
+    (role) => role.organization.identifier?.value === team.identifier.official.value
   ).map((role) => role.practitioner.identifier?.value);
+
   const practitionerAssigned = allPractitioner.filter((prac) =>
-    practitionerRolesAssigned.includes(prac.identifier[0].value)
+    practitionerRolesAssigned.includes(prac.identifier.official.value)
   );
 
   setDetail({ ...team, practitioners: practitionerAssigned });
@@ -65,7 +71,8 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
 
   const teams = useQuery(TEAMS_GET, () => serve.request(TEAMS_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Organization>) => res.entry.map((entry) => entry.resource),
+    select: (res: FHIRResponse<Organization>) =>
+      ProcessFHIRResponse(res).filter((e) => e.identifier.official),
   });
 
   const tableData: TableData[] = useMemo(() => {

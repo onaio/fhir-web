@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Require } from '@opensrp/react-utils/dist/types';
-import { Organization, Practitioner } from '../../../types';
+import { FhirObject, Organization, Practitioner } from '../../../types';
 import { FormField } from '../Form';
 
 export const accessToken = 'token';
 export const opensrpBaseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
 export const id = '258b4dec-79d3-546d-9c5c-f172aa7e03b0';
 
-export const team: Require<Organization, 'active' | 'id'> = {
+export const team: FhirObject<Organization> = {
   id: '1',
   resourceType: 'Organization',
   identifier: [{ use: 'official', value: id }],
@@ -15,7 +14,7 @@ export const team: Require<Organization, 'active' | 'id'> = {
   name: 'Test Test Team',
 };
 
-export const practitioners: Practitioner[] = [
+export const practitioners: FhirObject<Practitioner>[] = [
   {
     resourceType: 'Practitioner',
     id: '1',
@@ -73,7 +72,7 @@ export const intialValue: FormField = {
   practitioners: practitioners.slice(0, 3).map((prac) => prac.id),
 };
 
-export const teamPost: Organization = {
+export const teamPost: FhirObject<Organization> = {
   resourceType: 'Organization',
   id: '1',
   active: intialValue.active,
@@ -81,7 +80,7 @@ export const teamPost: Organization = {
   name: intialValue.name,
 };
 
-export const teams: Organization[] = [
+export const teams: FhirObject<Organization>[] = [
   {
     id: '1',
     resourceType: 'Organization',

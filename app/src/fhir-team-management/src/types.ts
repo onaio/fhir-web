@@ -1,8 +1,8 @@
 /** Organizations redux module */
 import { Require } from '@opensrp/react-utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
+import { Identifier as FhirIdentifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
-import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 
 /** interface for FHIR response */
 export interface FHIRResponse<T> {
@@ -14,26 +14,33 @@ export interface FHIRResponse<T> {
   link: [{ relation: string; url: string }];
   entry: {
     fullUrl: string;
-    resource: T;
+    resource: FhirObject<T>;
     search: { mode: string };
   }[];
 }
 
+export type FhirObject<T> = Omit<T, 'identifier'> & { identifier: FhirIdentifier[] };
+
+export type Identifier = Require<FhirIdentifier, 'use' | 'value'>;
+export type IdentifierObject = Record<FhirIdentifier.UseEnum, Identifier>;
+
 /** interface for Objects */
-export interface Organization extends Require<IfhirR4.IOrganization, 'name' | 'id' | 'active'> {
+export interface Organization
+  extends Require<Omit<IfhirR4.IOrganization, 'identifier'>, 'id' | 'active' | 'name'> {
   resourceType: 'Organization';
-  identifier: [Identifier & { use: 'official'; value: string }];
+  identifier: IdentifierObject;
 }
 
-export interface Practitioner extends Require<IfhirR4.IPractitioner, 'id' | 'name' | 'active'> {
+export interface Practitioner
+  extends Require<Omit<IfhirR4.IPractitioner, 'identifier'>, 'id' | 'active' | 'name'> {
   resourceType: 'Practitioner';
-  identifier: [Identifier & { use: 'official'; value: string }];
+  identifier: IdentifierObject;
 }
 
 export interface PractitionerRole
-  extends Require<IfhirR4.IPractitionerRole, 'id' | 'active' | 'practitioner' | 'organization'> {
+  extends Require<Omit<IfhirR4.IPractitionerRole, 'identifier'>, 'id' | 'active'> {
   resourceType: 'PractitionerRole';
-  identifier: [Identifier & { use: 'official'; value: string }];
-  practitioner: Reference & { reference: string }; // reference have the "Practitioner/" then append the practitoner uuid
-  organization: Reference & { reference: string }; // reference have he "Organization/" then append the practitoner uuid
+  identifier: IdentifierObject;
+  practitioner: Require<Reference, 'reference'>; // reference have the "Practitioner/" then append the practitoner uuid
+  organization: Require<Reference, 'reference'>; // reference have he "Organization/" then append the practitoner uuid
 }

@@ -1,6 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { FHIRResponse, Organization, Practitioner, PractitionerRole } from '../../types';
+import {
+  FhirObject,
+  FHIRResponse,
+  Organization,
+  Practitioner,
+  PractitionerRole,
+} from '../../types';
 import Form from './Form';
 import { useParams } from 'react-router';
 import { PRACTITIONERROLE_GET, PRACTITIONER_GET, TEAMS_GET } from '../../constants';
@@ -9,6 +15,7 @@ import { Spin } from 'antd';
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
+import { ProcessFHIRResponse, ProcessFHIRObject } from '../../utils';
 
 export interface Props {
   fhirbaseURL: string;
@@ -28,33 +35,36 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
   const allPractitioner = useQuery(PRACTITIONER_GET, () => serve.request(PRACTITIONER_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Practitioner>) => res.entry.map((entry) => entry.resource),
+    select: (res: FHIRResponse<Practitioner>) =>
+      ProcessFHIRResponse(res).filter((e) => e.identifier.official),
   });
 
   const team = useQuery([TEAMS_GET, params.id], () => serve.request(TEAMS_GET + params.id), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: Organization) => res,
+    select: (res: FhirObject<Organization>) => ProcessFHIRObject(res),
     enabled: params.id !== undefined,
   });
 
   const AllRoles = useQuery([PRACTITIONERROLE_GET], () => serve.request(PRACTITIONERROLE_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<PractitionerRole>) => res.entry.map((entry) => entry.resource),
+    select: (res: FHIRResponse<PractitionerRole>) =>
+      ProcessFHIRResponse(res).filter((e) => e.identifier.official),
     enabled: params.id !== undefined,
   });
 
   if (params.id && team.data && AllRoles.data && allPractitioner.data) {
     const practitionerRolesAssigned = AllRoles.data
-      .filter((role) => role.organization.identifier?.value === team.data.identifier[0].value)
-      .map((role) => role.practitioner.identifier?.value);
+      .map((role) => role.organization.reference.replace('Organization/', ''))
+      .filter((role) => role === team.data.identifier.official.value);
+
     const practitionerAssigned = allPractitioner.data.filter((prac) =>
-      practitionerRolesAssigned.includes(prac.identifier[0].value)
+      practitionerRolesAssigned.includes(prac.identifier.official.value)
     );
 
     initialValue = {
       name: team.data.name,
       active: team.data.active,
-      practitioners: practitionerAssigned.map((prac) => prac.id),
+      practitioners: practitionerAssigned.map((prac) => prac.identifier.official.value),
     };
   }
   if (!allPractitioner.data || (params.id && !initialValue)) return <Spin size={'large'} />;
