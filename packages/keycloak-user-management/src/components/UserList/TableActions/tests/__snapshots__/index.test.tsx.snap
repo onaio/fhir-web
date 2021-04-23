@@ -1,13 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UserList/TableActions renders correctly: space props 1`] = `
-Object {
-  "children": Array [
-    <Link
-      to="/user/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-    >
-      Edit
-    </Link>,
+exports[`components/UserList/TableActions hides delete element if entry is logged in user: dots menu 1`] = `
+<Menu>
+  <MenuItem>
     <ForwardRef
       cancelText="No"
       disabled={false}
@@ -16,17 +11,166 @@ Object {
       okType="primary"
       onConfirm={[Function]}
       placement="top"
-      title="Are you sure delete this user?"
+      title="Are you sure you want to delete this user?"
+      transitionName="zoom-big"
+      trigger="click"
+    />
+  </MenuItem>
+  <MenuItem>
+    <Link
+      to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="link"
+      >
+        Credentials
+      </Button>
+    </Link>
+  </MenuItem>
+</Menu>
+`;
+
+exports[`components/UserList/TableActions renders correctly: divider 1`] = `
+Object {
+  "type": "vertical",
+}
+`;
+
+exports[`components/UserList/TableActions renders correctly: dots menu 1`] = `
+Object {
+  "children": <Button
+    block={false}
+    ghost={false}
+    htmlType="button"
+    loading={false}
+    style={
+      Object {
+        "margin": 0,
+        "padding": 0,
+      }
+    }
+    type="link"
+  >
+    <ForwardRef(MoreOutlined)
+      className="more-options"
+      style={
+        Object {
+          "fontSize": "16px",
+          "margin": 0,
+          "padding": 0,
+        }
+      }
+    />
+  </Button>,
+  "mouseEnterDelay": 0.15,
+  "mouseLeaveDelay": 0.1,
+  "overlay": <Menu>
+    <MenuItem>
+      <ForwardRef
+        cancelText="No"
+        disabled={false}
+        icon={<ForwardRef(ExclamationCircleFilled) />}
+        okText="Yes"
+        okType="primary"
+        onConfirm={[Function]}
+        placement="top"
+        title="Are you sure you want to delete this user?"
+        transitionName="zoom-big"
+        trigger="click"
+      >
+        <Button
+          block={false}
+          danger={true}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          style={
+            Object {
+              "color": "#",
+            }
+          }
+          type="link"
+        >
+          Delete
+        </Button>
+      </ForwardRef>
+    </MenuItem>
+    <MenuItem>
+      <Link
+        to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+      >
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          type="link"
+        >
+          Credentials
+        </Button>
+      </Link>
+    </MenuItem>
+  </Menu>,
+}
+`;
+
+exports[`components/UserList/TableActions renders correctly: edit 1`] = `
+Object {
+  "children": "Edit",
+  "to": "/admin/users/edit/cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+}
+`;
+
+exports[`components/UserList/TableActions shows delete element if entry is not logged in user: dots menu 1`] = `
+<Menu>
+  <MenuItem>
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[Function]}
+      placement="top"
+      title="Are you sure you want to delete this user?"
       transitionName="zoom-big"
       trigger="click"
     >
-      <Link
-        to="#"
+      <Button
+        block={false}
+        danger={true}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        style={
+          Object {
+            "color": "#",
+          }
+        }
+        type="link"
       >
         Delete
-      </Link>
-    </ForwardRef>,
-  ],
-  "size": "middle",
-}
+      </Button>
+    </ForwardRef>
+  </MenuItem>
+  <MenuItem>
+    <Link
+      to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="link"
+      >
+        Credentials
+      </Button>
+    </Link>
+  </MenuItem>
+</Menu>
 `;

@@ -3,9 +3,14 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { getDefaultHeaders, getFetchOptions } from '../../index';
 import fetch from 'jest-fetch-mock';
-import { getFilterParams, KeycloakService } from '../serviceClass';
+import { customFetch, getFilterParams, KeycloakService } from '../serviceClass';
 import { keycloakUser, OpenSRPAPIResponse } from './fixtures';
-import { HTTPError, throwHTTPError, throwNetworkError } from '../errors';
+import { HTTPError, throwHTTPError, throwNetworkError, NetworkError } from '../errors';
+
+const getAccessToken = (): Promise<string> =>
+  new Promise((resolve, _) => {
+    return resolve('hunter2');
+  });
 
 describe('services/keycloak', () => {
   beforeEach(() => {
@@ -43,9 +48,17 @@ describe('services/keycloak', () => {
     );
   });
 
+  it('processAcessToken works', async () => {
+    // token passed as string
+    let result = await KeycloakService.processAcessToken('hunter2');
+    expect(result).toEqual('hunter2');
+    // call back passed
+    result = await KeycloakService.processAcessToken(getAccessToken);
+    expect(result).toEqual('hunter2');
+  });
+
   it('KeycloakService constructor works', async () => {
     const userService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -61,7 +74,6 @@ describe('services/keycloak', () => {
   it('KeycloakService list method works', async () => {
     fetch.mockResponseOnce(JSON.stringify([keycloakUser]));
     const userService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -82,10 +94,32 @@ describe('services/keycloak', () => {
     ]);
   });
 
+  it('KeycloakService list method params work', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const service = new KeycloakService(
+      'users',
+      'https://keycloak-test.smartregister.org/auth/realms/'
+    );
+
+    await service.list({ first: 0, max: 20 });
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://keycloak-test.smartregister.org/auth/realms/users?first=0&max=20',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
   it('KeycloakService list method should handle http errors', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
     const userService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -105,7 +139,6 @@ describe('services/keycloak', () => {
   it('KeycloakService delete method works', async () => {
     fetch.mockResponseOnce(JSON.stringify({}));
     const service = new KeycloakService(
-      'hunter2',
       `users/${keycloakUser.id}/delete`,
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -129,7 +162,6 @@ describe('services/keycloak', () => {
   it('KeycloakService delete method should handle http errors', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
     const service = new KeycloakService(
-      'hunter2',
       `users/${keycloakUser.id}/delete`,
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -153,7 +185,6 @@ describe('services/keycloak', () => {
   it('KeycloakService read method works', async () => {
     fetch.mockResponseOnce(JSON.stringify([keycloakUser]));
     const usersService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -177,7 +208,6 @@ describe('services/keycloak', () => {
   it('KeycloakService read method handles null response', async () => {
     fetch.mockResponseOnce(JSON.stringify(null));
     const usersService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -185,10 +215,35 @@ describe('services/keycloak', () => {
     expect(result).toEqual(null);
   });
 
+  it('customFetch handles errors', async () => {
+    try {
+      await customFetch('https://keycloak-test.smartregister.org/auth/realms/users', null);
+    } catch (e) {
+      expect(e).toEqual(new NetworkError());
+    }
+  });
+
+  it('getURL works correctly', async () => {
+    // without params
+    const url = KeycloakService.getURL(
+      'https://keycloak-test.smartregister.org/auth/realms/users',
+      null
+    );
+    expect(url).toEqual('https://keycloak-test.smartregister.org/auth/realms/users');
+    // with params
+    const params = { first: 0, max: 20 };
+    const url2 = KeycloakService.getURL(
+      'https://keycloak-test.smartregister.org/auth/realms/users',
+      params
+    );
+    expect(url2).toEqual(
+      'https://keycloak-test.smartregister.org/auth/realms/users?first=0&max=20'
+    );
+  });
+
   it('KeycloakService read method should handle http errors', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
     const usersService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -206,12 +261,11 @@ describe('services/keycloak', () => {
   it('KeycloakService create method works', async () => {
     fetch.mockResponseOnce(JSON.stringify([keycloakUser]), { status: 201 });
     const usersService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
     const result = await usersService.create(keycloakUser);
-    expect(result).toEqual({});
+    expect(result.statusText).toEqual('Created');
     expect(fetch.mock.calls).toEqual([
       [
         'https://keycloak-test.smartregister.org/auth/realms/users',
@@ -233,7 +287,6 @@ describe('services/keycloak', () => {
   it('KeycloakService create method should handle http errors', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
     const usersService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -251,7 +304,6 @@ describe('services/keycloak', () => {
   it('KeycloakService update method works', async () => {
     fetch.mockResponseOnce(JSON.stringify({}));
     const usersService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -282,7 +334,6 @@ describe('services/keycloak', () => {
   it('KeycloakService update method should handle http errors', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
     const usersService = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );
@@ -298,7 +349,6 @@ describe('services/keycloak', () => {
   });
   it('readFile works correctly', async () => {
     const mockClass = new KeycloakService(
-      'hunter2',
       'users',
       'https://keycloak-test.smartregister.org/auth/realms/'
     );

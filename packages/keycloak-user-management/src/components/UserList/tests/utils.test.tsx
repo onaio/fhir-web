@@ -1,43 +1,18 @@
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
-import { getDataFilters, getTableColumns } from '../utils';
+import { getTableColumns } from '../utils';
+/* eslint-disable @typescript-eslint/camelcase */
 
-describe('components/UserList/utils/getDataFilters', () => {
-  it('gets data for the filter menu', () => {
-    expect(getDataFilters(fixtures.keycloakUsersArray, 'username')).toEqual([
-      {
-        text: 'mwalimu',
-        value: 'mwalimu',
-      },
-      {
-        text: 'ona',
-        value: 'ona',
-      },
-      {
-        text: 'ona-admin',
-        value: 'ona-admin',
-      },
-      {
-        text: 'opensrp',
-        value: 'opensrp',
-      },
-    ]);
-  });
-
+describe('components/UserList/utils/getTableColumns', () => {
   it('builds table columns correctly', () => {
-    const fetcUsersMock = jest.fn();
     const removeUsersMock = jest.fn();
-    const accessToken = 'sometoken';
+    const isLoadingCallbackMock = jest.fn();
     const keycloakBaseURL =
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
 
     expect(
-      getTableColumns(
-        [fixtures.keycloakUsersArray[0], fixtures.keycloakUsersArray[1]],
-        fetcUsersMock,
-        removeUsersMock,
-        accessToken,
-        keycloakBaseURL
-      )
+      getTableColumns(removeUsersMock, keycloakBaseURL, isLoadingCallbackMock, {
+        user_id: fixtures.keycloakUser.id,
+      })
     ).toMatchSnapshot('table columns');
   });
 });

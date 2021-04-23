@@ -1,222 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UserList renders user list correctly: breadcrumb col props 1`] = `
-Object {
-  "children": <Space>
-    <HeaderBreadCrumb
-      isAdmin={true}
-    />
-    <Divider />
-  </Space>,
-  "span": 12,
-}
-`;
+exports[`components/UserList renders user list correctly: header actions col props 1`] = `"Add UserUsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit15 / page"`;
 
-exports[`components/UserList renders user list correctly: header actions col props 1`] = `
-Object {
-  "children": <Space
-    style={
-      Object {
-        "justifyContent": "flex-end",
-        "marginBottom": 16,
-      }
-    }
-  >
-    <Button
-      block={false}
-      className="create-user"
-      ghost={false}
-      htmlType="button"
-      loading={false}
-      onClick={[Function]}
-      type="primary"
-    >
-      Add User
-    </Button>
-  </Space>,
-  "span": 12,
-  "style": Object {
-    "display": "flex",
-    "justifyContent": "flex-end",
-  },
-}
-`;
+exports[`components/UserList renders user list correctly: table text 1`] = `"UsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit15 / page"`;
 
-exports[`components/UserList renders user list correctly: table props 1`] = `
-Object {
-  "bordered": true,
-  "columns": Array [
-    Object {
-      "dataIndex": "username",
-      "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
-      "key": "username",
-      "onFilter": [Function],
-      "sortOrder": undefined,
-      "sorter": [Function],
-      "title": "Username",
-    },
-    Object {
-      "dataIndex": "email",
-      "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
-      "key": "email",
-      "onFilter": [Function],
-      "sortOrder": undefined,
-      "sorter": [Function],
-      "title": "Email",
-    },
-    Object {
-      "dataIndex": "firstName",
-      "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
-      "key": "firstName",
-      "onFilter": [Function],
-      "sortOrder": undefined,
-      "sorter": [Function],
-      "title": "First Name",
-    },
-    Object {
-      "dataIndex": "lastName",
-      "ellipsis": true,
-      "filteredValue": null,
-      "filters": Array [],
-      "key": "lastName",
-      "onFilter": [Function],
-      "sortOrder": undefined,
-      "sorter": [Function],
-      "title": "Last Name",
-    },
-    Object {
-      "dataIndex": "actions",
-      "key": "Actions",
-      "render": [Function],
-      "title": "Actions",
-    },
-  ],
-  "dataSource": Array [],
-  "onChange": [Function],
-  "pagination": Object {
-    "pageSize": 5,
-  },
-  "rowKey": "key",
-}
-`;
+exports[`components/UserList sort works correctly: sorted table rows by email - ascending 0 1`] = `"UsernameEmailFirst NameLast NameActions"`;
 
-exports[`components/UserList renders user list correctly: user list props 1`] = `
-Object {
-  "accessToken": "",
-  "extraData": Object {},
-  "fetchKeycloakUsersCreator": [Function],
-  "keycloakBaseURL": "",
-  "keycloakUsers": Array [],
-  "removeKeycloakUsersCreator": [Function],
-  "serviceClass": [Function],
-}
-`;
+exports[`components/UserList sort works correctly: sorted table rows by email - ascending 1 1`] = `"mwalimudubdabasoduba@gmail.comBenjaminMwalimuEdit"`;
 
-exports[`components/UserList works correctly with store: user list props 1`] = `
-Object {
-  "accessToken": "simple-token",
-  "extraData": Object {
-    "api_token": "hunter2",
-    "oAuth2Data": Object {
-      "access_token": "simple-token",
-      "state": "abcde",
-    },
-  },
-  "fetchKeycloakUsersCreator": [Function],
-  "keycloakBaseURL": "https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage",
-  "keycloakUsers": Array [
-    Object {
-      "access": Object {
-        "impersonate": false,
-        "manage": true,
-        "manageGroupMembership": true,
-        "mapRoles": true,
-        "view": true,
-      },
-      "createdTimestamp": 1600843525533,
-      "disableableCredentialTypes": Array [],
-      "email": "dubdabasoduba@gmail.com",
-      "emailVerified": false,
-      "enabled": true,
-      "firstName": "Benjamin",
-      "id": "97f36061-52fb-4474-88f2-fd286311ff1d",
-      "lastName": "Mwalimu",
-      "notBefore": 0,
-      "requiredActions": Array [
-        "UPDATE_PASSWORD",
-      ],
-      "totp": false,
-      "username": "mwalimu",
-    },
-    Object {
-      "access": Object {
-        "impersonate": false,
-        "manage": true,
-        "manageGroupMembership": true,
-        "mapRoles": true,
-        "view": true,
-      },
-      "createdTimestamp": 1600156374050,
-      "disableableCredentialTypes": Array [],
-      "emailVerified": false,
-      "enabled": true,
-      "firstName": "Ona",
-      "id": "80385001-f385-42ec-8edf-8591dc181a54",
-      "lastName": "kenya",
-      "notBefore": 0,
-      "requiredActions": Array [],
-      "totp": false,
-      "username": "ona",
-    },
-    Object {
-      "access": Object {
-        "impersonate": false,
-        "manage": true,
-        "manageGroupMembership": true,
-        "mapRoles": true,
-        "view": true,
-      },
-      "createdTimestamp": 1599565616551,
-      "disableableCredentialTypes": Array [],
-      "email": "test@onatest.com",
-      "emailVerified": false,
-      "enabled": true,
-      "firstName": "Ona",
-      "id": "520b579e-70e9-4ae9-b1f8-0775c605b8d2",
-      "lastName": "Admin",
-      "notBefore": 1600329648,
-      "requiredActions": Array [],
-      "totp": false,
-      "username": "ona-admin",
-    },
-    Object {
-      "access": Object {
-        "impersonate": false,
-        "manage": true,
-        "manageGroupMembership": true,
-        "mapRoles": true,
-        "view": true,
-      },
-      "createdTimestamp": 1600156317992,
-      "disableableCredentialTypes": Array [],
-      "emailVerified": false,
-      "enabled": true,
-      "firstName": "Demo",
-      "id": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
-      "lastName": "kenya",
-      "notBefore": 0,
-      "requiredActions": Array [],
-      "totp": false,
-      "username": "opensrp",
-    },
-  ],
-  "removeKeycloakUsersCreator": [Function],
-  "serviceClass": [Function],
-}
-`;
+exports[`components/UserList sort works correctly: sorted table rows by email - ascending 2 1`] = `"onaOnakenyaEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by email - ascending 3 1`] = `"ona-admintest@onatest.comOnaAdminEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by email - ascending 4 1`] = `"opensrpDemokenyaEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by email - descending 0 1`] = `"UsernameEmailFirst NameLast NameActions"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by email - descending 1 1`] = `"mwalimudubdabasoduba@gmail.comBenjaminMwalimuEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by email - descending 2 1`] = `"onaOnakenyaEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by email - descending 3 1`] = `"ona-admintest@onatest.comOnaAdminEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by email - descending 4 1`] = `"opensrpDemokenyaEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - ascending 0 1`] = `"UsernameEmailFirst NameLast NameActions"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - ascending 1 1`] = `"opensrpDemokenyaEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - ascending 2 1`] = `"ona-admintest@onatest.comOnaAdminEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - ascending 3 1`] = `"onaOnakenyaEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - ascending 4 1`] = `"mwalimudubdabasoduba@gmail.comBenjaminMwalimuEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - descending 0 1`] = `"UsernameEmailFirst NameLast NameActions"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - descending 1 1`] = `"mwalimudubdabasoduba@gmail.comBenjaminMwalimuEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - descending 2 1`] = `"onaOnakenyaEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - descending 3 1`] = `"ona-admintest@onatest.comOnaAdminEdit"`;
+
+exports[`components/UserList sort works correctly: sorted table rows by username - descending 4 1`] = `"opensrpDemokenyaEdit"`;
+
+exports[`components/UserList sort works correctly: table rows - default order 0 1`] = `"UsernameEmailFirst NameLast NameActions"`;
+
+exports[`components/UserList sort works correctly: table rows - default order 1 1`] = `"mwalimudubdabasoduba@gmail.comBenjaminMwalimuEdit"`;
+
+exports[`components/UserList sort works correctly: table rows - default order 2 1`] = `"onaOnakenyaEdit"`;
+
+exports[`components/UserList sort works correctly: table rows - default order 3 1`] = `"ona-admintest@onatest.comOnaAdminEdit"`;
+
+exports[`components/UserList sort works correctly: table rows - default order 4 1`] = `"opensrpDemokenyaEdit"`;
+
+exports[`components/UserList works correctly with store: full rendered text 1`] = `"User ManagementAdd UserUsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit15 / page"`;

@@ -1,5 +1,6 @@
 import { IncomingHttpHeaders } from 'http';
 import queryString from 'querystring';
+import { handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 
 import { throwNetworkError, throwHTTPError } from './errors';
 /** defaults */
@@ -80,6 +81,9 @@ export const customFetch: CustomFetch = async (...rest) => {
 /** params option type */
 type paramsType = URLParams | null;
 
+/** get acess token call back fn type */
+type GetAccessTokenType = () => Promise<string | null>;
+
 /** The Keycloak service class
  *
  * Sample usage:
@@ -95,7 +99,7 @@ type paramsType = URLParams | null;
  * **To update an object**: service.update(theObject)
  */
 export class KeycloakAPIService {
-  public accessToken: string;
+  public accessTokenOrCallBack: GetAccessTokenType | string;
   public baseURL: string;
   public endpoint: string;
   public generalURL: string;
@@ -105,25 +109,25 @@ export class KeycloakAPIService {
   /**
    * Constructor method
    *
-   * @param {string} accessToken - the access token
+   * @param {function() | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
    * @param {string} baseURL - the base Keycloak API URL
    * @param {string} endpoint - the Keycloak endpoint
    * @param {object} getPayload - a function to get the payload
    * @param {AbortSignal} signal - signal object that allows you to communicate with a DOM request
    */
   constructor(
-    accessToken: string,
+    accessTokenOrCallBack: GetAccessTokenType | string = handleSessionOrTokenExpiry,
     baseURL: string = KEYCLOAK_API_BASE_URL,
     endpoint: string,
     getPayload: typeof getFetchOptions = getFetchOptions,
     signal: AbortSignal = new AbortController().signal
   ) {
-    this.accessToken = accessToken;
     this.endpoint = endpoint;
     this.getOptions = getPayload;
     this.signal = signal;
     this.baseURL = baseURL;
     this.generalURL = `${this.baseURL}${this.endpoint}`;
+    this.accessTokenOrCallBack = accessTokenOrCallBack;
   }
 
   /**
@@ -138,6 +142,18 @@ export class KeycloakAPIService {
       return `${generalUrl}?${queryString.stringify(params)}`;
     }
     return generalUrl;
+  }
+
+  /**
+   * process received access token
+   *
+   * @param {function() | string} accessTokenCallBack - received access token
+   */
+  public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
+    if (typeof accessTokenCallBack === 'function') {
+      return (await accessTokenCallBack()) as string;
+    }
+    return accessTokenCallBack;
   }
 
   /** create method
@@ -157,8 +173,9 @@ export class KeycloakAPIService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
+    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
     const payload = {
-      ...this.getOptions(this.signal, this.accessToken, method),
+      ...this.getOptions(this.signal, accessToken, method),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
       body: JSON.stringify(data),
@@ -166,10 +183,10 @@ export class KeycloakAPIService {
     const response = await customFetch(url, payload);
     if (response) {
       if (response.ok || response.status === 201) {
-        return {};
+        return response;
       }
 
-      const defaultMessage = `KeycloakAPIService create on ${this.endpoint} failed, HTTP status ${response?.status}`;
+      const defaultMessage = `KeycloakAPIService create on ${this.endpoint} failed, HTTP status ${response.status}`;
       await throwHTTPError(response, defaultMessage);
     }
   }
@@ -190,7 +207,8 @@ export class KeycloakAPIService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(`${this.generalURL}/${id}`, params);
-    const response = await customFetch(url, this.getOptions(this.signal, this.accessToken, method));
+    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+    const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
 
     if (response) {
       if (response.ok) {
@@ -218,8 +236,9 @@ export class KeycloakAPIService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
+    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
     const payload = {
-      ...this.getOptions(this.signal, this.accessToken, method),
+      ...this.getOptions(this.signal, accessToken, method),
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
       body: JSON.stringify(data),
@@ -244,7 +263,8 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
-    const response = await customFetch(url, this.getOptions(this.signal, this.accessToken, method));
+    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+    const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
 
     if (response) {
       if (response.ok) {
@@ -266,26 +286,25 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async delete(params: paramsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
-    const response = await fetch(url, this.getOptions(this.signal, this.accessToken, method));
+    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+    const response = await fetch(url, this.getOptions(this.signal, accessToken, method));
 
-    if (response) {
-      if (response.ok || response.status === 204 || response.status === 200) {
-        return {};
-      }
-      const defaultMessage = `KeycloakAPIService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
-      await throwHTTPError(response, defaultMessage);
+    if (response.ok || response.status === 204 || response.status === 200) {
+      return {};
     }
+    const defaultMessage = `KeycloakAPIService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
+    await throwHTTPError(response, defaultMessage);
   }
 }
 
 export class KeycloakService extends KeycloakAPIService {
   constructor(
-    accessToken: string,
     endpoint: string,
     baseURL: string = KEYCLOAK_API_BASE_URL,
+    accessTokenOrCallBack: typeof handleSessionOrTokenExpiry = handleSessionOrTokenExpiry,
     getPayload: typeof getFetchOptions = getFetchOptions
   ) {
-    super(accessToken, baseURL, endpoint, getPayload);
+    super(accessTokenOrCallBack, baseURL, endpoint, getPayload);
   }
 
   public async readFile(
@@ -294,7 +313,8 @@ export class KeycloakService extends KeycloakAPIService {
     method: HTTPMethod = 'GET'
   ): Promise<Blob> {
     const url = KeycloakService.getURL(`${this.generalURL}/${id}`, params);
-    const response = await fetch(url, this.getOptions(this.signal, this.accessToken, method));
+    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+    const response = await fetch(url, this.getOptions(this.signal, accessToken, method));
 
     if (!response.ok) {
       throw new Error(

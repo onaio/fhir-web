@@ -24,24 +24,14 @@ export interface ProductCatalogue {
   serverVersion: number;
   uniqueId: number;
   availability: string;
-  productPhoto?: unknown;
+  photoURL: string;
 }
 
 /** reducer name for the Item module */
 export const reducerName = 'product-catalogue';
 
-/** Action types */
-const FETCHED_CATALOGUE_TYPE = `${reducerName}/LOCATION_TAGS_FETCHED`;
-const REMOVE_CATALOGUE_TYPE = `${reducerName}/REMOVE_LOCATION_TAGS`;
-const SET_TOTAL_RECORDS_TYPE = `${reducerName}/SET_TOTAL_LOCATION_TAGS`;
-
 /** Item Reducer */
-export const ProductCatalogueReducer = reducerFactory<ProductCatalogue>(
-  reducerName,
-  FETCHED_CATALOGUE_TYPE,
-  REMOVE_CATALOGUE_TYPE,
-  SET_TOTAL_RECORDS_TYPE
-);
+export const ProductCatalogueReducer = reducerFactory<ProductCatalogue>(reducerName);
 
 // action
 export const fetchProducts = fetchActionCreatorFactory<ProductCatalogue>(reducerName, 'uniqueId');

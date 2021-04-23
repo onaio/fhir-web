@@ -4,10 +4,23 @@ import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
-import { UserForm, defaultInitialValues } from '..';
-import * as fixtures from './fixtures';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
+import { UserForm, UserFormProps } from '..';
+import {
+  keycloakUser,
+  defaultInitialValue,
+  practitioner1,
+  requiredActions,
+  userGroup,
+  value as FirstUser,
+} from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { Router } from 'react-router';
+import { Form } from 'antd';
+
+/* eslint-disable @typescript-eslint/camelcase */
 
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
@@ -31,16 +44,32 @@ jest.mock('antd', () => {
   };
 });
 
-describe('forms/UserForm', () => {
-  const props = {
-    initialValues: defaultInitialValues,
-    serviceClass: KeycloakService,
+describe('components/forms/UserForm', () => {
+  const props: UserFormProps = {
+    initialValues: defaultInitialValue,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    accessToken: 'access token',
+    opensrpBaseURL: OPENSRP_API_BASE_URL,
+    extraData: {},
+    userGroups: userGroup,
   };
 
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'access token', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
-    fetch.once(JSON.stringify(fixtures.userActions));
+    fetch.once(JSON.stringify(requiredActions));
   });
 
   afterEach(() => {
@@ -58,50 +87,35 @@ describe('forms/UserForm', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer access token',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-    const form = wrapper.find('div.form-container');
-    expect(form.find('Formik').props()).toMatchSnapshot('formik props');
-    expect(form.find('FormItem').at(0).props()).toMatchSnapshot('First Name');
-    expect(form.find('FormItem').at(1).props()).toMatchSnapshot('Last Name');
-    expect(form.find('FormItem').at(2).props()).toMatchSnapshot('Username');
-    expect(form.find('FormItem').at(3).props()).toMatchSnapshot('Email');
-    expect(form.find('FormItem').at(4).props()).toMatchSnapshot('User Actions');
-    expect(form.find('FormItem').at(5).props()).toMatchSnapshot('Submit');
+    expect(wrapper.find('FormItem').at(0).prop('name')).toEqual('firstName');
+    expect(wrapper.find('FormItem').at(1).prop('name')).toEqual('lastName');
+    expect(wrapper.find('FormItem').at(2).prop('name')).toEqual('email');
+    expect(wrapper.find('FormItem').at(3).prop('name')).toEqual('username');
+    expect(wrapper.find('FormItem').at(4).prop('name')).toEqual('enabled');
+    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('userGroup');
     wrapper.unmount();
   });
 
   it('form validation works for required fields', async () => {
     const wrapper = mount(<UserForm {...props} />);
+
+    wrapper.find('form').simulate('submit');
+
     await act(async () => {
-      wrapper.find('form').simulate('submit');
+      await flushPromises();
     });
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
 
-    expect(wrapper.find('FormItem').at(0).prop('validateStatus')).toEqual('error');
-    expect(wrapper.find('FormItem').at(0).prop('help')).toMatchSnapshot('first name errors');
-    expect(wrapper.find('FormItem').at(1).prop('validateStatus')).toEqual('error');
-    expect(wrapper.find('FormItem').at(1).prop('help')).toMatchSnapshot('last name errors');
-    expect(wrapper.find('FormItem').at(2).prop('validateStatus')).toEqual('error');
-    expect(wrapper.find('FormItem').at(2).prop('help')).toMatchSnapshot('username errors');
-    expect(wrapper.find('FormItem').at(3).prop('validateStatus')).toEqual('error');
-    expect(wrapper.find('FormItem').at(3).prop('help')).toMatchSnapshot('email errors');
-    // User actions is not required, should not throw error
-    expect(wrapper.find('FormItem').at(4).prop('validateStatus')).toEqual(undefined);
-    expect(wrapper.find('FormItem').at(4).prop('help')).toEqual(false);
+    expect(wrapper.find('FormItemInput').at(0).prop('errors')).toEqual(['First Name is required']);
+    expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual(['Last Name is required']);
+    expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual([]);
+    expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual(['Username is required']);
+    expect(wrapper.find('FormItemInput').at(4).prop('errors')).toEqual([]);
+    expect(wrapper.find('FormItemInput').at(5).prop('errors')).toEqual([]);
+    wrapper.unmount();
   });
 
-  it('creates object to send correctly for creating new user', async () => {
+  it('adds user', async () => {
     const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
@@ -125,35 +139,42 @@ describe('forms/UserForm', () => {
     emailInput.simulate('change', { target: { name: 'email', value: 'testone@gmail.com' } });
 
     const actionSelect = wrapper.find('select');
-    actionSelect.simulate('change', {
+    actionSelect.first().simulate('change', {
       target: { value: ['UPDATE_PASSWORD'] },
     });
     wrapper.find('form').simulate('submit');
-    wrapper.update();
 
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
 
-    expect(fetch.mock.calls[0]).toEqual([
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
+    expect(fetch.mock.calls[0]).toMatchObject([
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users',
       {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify({
+          firstName: 'Test',
+          id: '',
+          lastName: 'One',
+          username: 'TestOne',
+          email: 'testone@gmail.com',
+        }),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer access token',
           'content-type': 'application/json;charset=UTF-8',
         },
-        method: 'GET',
+        method: 'POST',
       },
     ]);
-    wrapper.unmount();
   });
 
-  it('creates object to send correctly for editing user', async () => {
+  it('edits user', async () => {
     const propEdit = {
       ...props,
-      initialValues: fixtures.keycloakUser,
+      initialValues: keycloakUser,
     };
     const wrapper = mount(<UserForm {...propEdit} />);
 
@@ -178,46 +199,12 @@ describe('forms/UserForm', () => {
 
     await new Promise<unknown>((resolve) => setImmediate(resolve));
 
-    const payload = {
-      id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
-      createdTimestamp: 1600156317992,
-      username: 'opensrp',
-      enabled: true,
-      totp: false,
-      emailVerified: false,
-      firstName: 'Test2',
-      lastName: 'kenya',
-      email: 'test@onatest.com',
-      disableableCredentialTypes: [],
-      requiredActions: [],
-      notBefore: 0,
-      access: {
-        manageGroupMembership: true,
-        view: true,
-        mapRoles: true,
-        impersonate: false,
-        manage: true,
-      },
-    };
-
     expect(fetch.mock.calls[0]).toEqual([
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer access token',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-
-    expect(fetch.mock.calls[1]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...keycloakUser, firstName: 'Test2' }),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer access token',
@@ -226,6 +213,61 @@ describe('forms/UserForm', () => {
         method: 'PUT',
       },
     ]);
+  });
+
+  it('render correct value for enabled when set to true', async () => {
+    const wrapper = mount(<UserForm {...props} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    await act(async () => {
+      wrapper
+        .find('input[name="enabled"]')
+        .first()
+        .simulate('change', { target: { name: 'enabled', checked: true } });
+    });
+    wrapper.update();
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    expect(formInstance.getFieldsValue().enabled).toEqual(true);
+    wrapper.unmount();
+  });
+
+  it('render correct value for enabled when set to false', async () => {
+    const wrapper = mount(<UserForm {...props} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    await act(async () => {
+      wrapper
+        .find('input[name="enabled"]')
+        .last()
+        .simulate('change', { target: { name: 'enabled', checked: false } });
+    });
+    wrapper.update();
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    expect(formInstance.getFieldsValue().enabled).toEqual(false);
     wrapper.unmount();
   });
 
@@ -262,14 +304,13 @@ describe('forms/UserForm', () => {
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
-    wrapper.unmount();
   });
 
   it('user is not edited if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
     const propEdit = {
       ...props,
-      initialValues: fixtures.keycloakUser,
+      initialValues: keycloakUser,
     };
     const wrapper = mount(<UserForm {...propEdit} />);
 
@@ -292,11 +333,14 @@ describe('forms/UserForm', () => {
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
-    wrapper.unmount();
   });
 
   it('cancel button returns user to admin page', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...props} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -307,7 +351,119 @@ describe('forms/UserForm', () => {
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
-    expect(history.location.pathname).toEqual('/admin');
-    wrapper.unmount();
+    expect(history.location.pathname).toEqual('/admin/users');
+  });
+
+  it('render correct user name in header', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const propEdit = {
+      ...props,
+      initialValues: keycloakUser,
+    };
+    const wrapper = mount(<UserForm {...propEdit} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('.mb-3.header-title').text()).toEqual(
+      `Edit User | ${keycloakUser.username}`
+    );
+  });
+
+  it('show practitioner toggle when editing user and practitioner is null', async () => {
+    // practitioner is null
+    const propsPractitionerNull = {
+      ...props,
+      practitioner: undefined,
+      initialValues: keycloakUser,
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...propsPractitionerNull} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    const toggleWrapper = wrapper.find('#practitionerToggle');
+    expect(toggleWrapper).toBeTruthy();
+    expect(toggleWrapper.at(0).props()).toMatchSnapshot('practitionerToggle');
+  });
+
+  it('show practitioner toggle when editing user and practitioner is provided', async () => {
+    // practitioner is null
+    const propsPractitioner = {
+      ...props,
+      practitioner: practitioner1,
+      initialValues: keycloakUser,
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...propsPractitioner} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    const toggleWrapper = wrapper.find('#practitionerToggle');
+    expect(toggleWrapper).toBeTruthy();
+    expect(toggleWrapper.at(0).props()).toMatchSnapshot('practitionerToggle');
+  });
+
+  it('hides practitioner toggle if user is editing their own profile', async () => {
+    const propsOwn = {
+      ...props,
+      practitioner: undefined,
+      initialValues: keycloakUser,
+      extraData: { user_id: keycloakUser.id },
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...propsOwn} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('#practitionerToggle')).toHaveLength(0);
+  });
+
+  it('updates form data when user to edit changes', async () => {
+    // start with first user
+    const propsFirstUser = {
+      ...props,
+      initialValues: FirstUser,
+    };
+
+    const wrapper = mount(<UserForm {...propsFirstUser} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('input#firstName').props().value).toEqual(FirstUser.firstName);
+    expect(wrapper.find('input#email').props().value).toEqual(FirstUser.email);
+    expect(wrapper.find('input#username').props().value).toEqual(FirstUser.username);
+
+    // update user
+    wrapper.setProps({ initialValues: keycloakUser });
+    // re-render
+    wrapper.update();
+
+    expect(wrapper.find('input#firstName').props().value).toEqual(keycloakUser.firstName);
+    expect(wrapper.find('input#email').props().value).toEqual(keycloakUser.email);
+    expect(wrapper.find('input#username').props().value).toEqual(keycloakUser.username);
   });
 });

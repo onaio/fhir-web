@@ -1,33 +1,20 @@
 {
   "name": "@opensrp/user-management",
-  "version": "0.1.7",
-  "dependencies": {
-    "@onaio/loaders": "^0.0.1",
-    "@onaio/redux-reducer-registry": "^0.0.9",
-    "@onaio/session-reducer": "^0.0.11",
-    "@onaio/utils": "^0.0.1",
-    "@opensrp/keycloak-service": "^0.0.6",
-    "@opensrp/server-service": "^0.0.10",
-    "@opensrp/store": "^0.0.5",
-    "antd": "^4.6.3",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "bootstrap": "^4.5.2",
-    "connected-react-router": "^6.8.0",
-    "fast_array_intersect": "^1.1.0",
-    "formik": "^2.1.5",
-    "formik-antd": "^2.0.1",
-    "lodash": "^4.17.20",
-    "yup": "^0.29.3"
-  },
+  "version": "0.1.13",
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
   "scripts": {
-    "test": "jest --coverage --verbose --color",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx'  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "jest": "jest --coverage --verbose --color",
+    "test": "cd ../../ && yarn test packages/keycloak-user-management --verbose --collectCoverage=true && cd packages/keycloak-user-management",
+    "test:watch": "cd ../../ && yarn test packages/keycloak-user-management --verbose --watch && cd packages/keycloak-user-management",
     "tsc": "tsc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy"
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
   },
   "license": "Apache-2.0",
   "publishConfig": {
@@ -40,6 +27,8 @@
     "dist"
   ],
   "peerDependencies": {
+    "@opensrp/store": "^0.0.7",
+    "i18next": "^19.8.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
@@ -49,5 +38,35 @@
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.2.2",
+    "@onaio/connected-reducer-registry": "^0.0.3",
+    "@onaio/gatekeeper": "^0.1.1",
+    "@onaio/loaders": "^0.0.1",
+    "@onaio/redux-reducer-registry": "^0.0.9",
+    "@onaio/session-reducer": "^0.0.12",
+    "@onaio/utils": "^0.0.1",
+    "@opensrp/keycloak-service": "^0.0.13",
+    "@opensrp/notifications": "^0.0.1",
+    "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/server-service": "^0.0.16",
+    "antd": "^4.6.3",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "bootstrap": "^4.5.2",
+    "connected-react-router": "^6.8.0",
+    "fast_array_intersect": "^1.1.0",
+    "formik": "^2.1.5",
+    "formik-antd": "^2.0.1",
+    "lodash": "^4.17.20",
+    "react-i18next": "^11.8.10",
+    "uuid": "^8.3.1",
+    "yup": "^0.29.3"
+  },
+  "devDependencies": {
+    "@opensrp/store": "^0.0.9",
+    "@types/uuid": "^8.3.0",
+    "i18next-parser": "^3.5.0"
   }
 }

@@ -1,7 +1,6 @@
-import { KeycloakUser } from '@opensrp/store';
 /* eslint-disable @typescript-eslint/camelcase */
 
-export const keycloakUsersArray: KeycloakUser[] = [
+export const keycloakUsersArray = [
   {
     id: '97f36061-52fb-4474-88f2-fd286311ff1d',
     createdTimestamp: 1600843525533,

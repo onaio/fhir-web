@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment: 
+      - "API_URL=production.example.com"

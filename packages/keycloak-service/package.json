@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/keycloak-service",
-  "version": "0.0.6",
+  "version": "0.0.13",
   "description": "Keycloak Admin API service",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -13,8 +13,8 @@
   "repository": "https://github.com/opensrp/web",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/keycloak-service --verbose --collectCoverage=true && cd packages/keycloak-service",
-    "test:watch": "cd ../../ && jest test  packages/keycloak-service --verbose --watch && cd packages/keycloak-service",
+    "test": "cd ../../ && yarn test packages/keycloak-service --verbose --collectCoverage=true && cd packages/keycloak-service",
+    "test:watch": "cd ../../ && yarn test packages/keycloak-service --verbose --watch && cd packages/keycloak-service",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
@@ -34,10 +34,10 @@
   "author": "Ona Engineering",
   "license": "Apache-2.0",
   "private": false,
-  "dependencies": {
-    "@opensrp/store": "^0.0.5"
+  "devDependencies": {
+    "@opensrp/store": "^0.0.9"
   },
-  "peerDependencies": {
-    "react": "^16.13.1"
+  "dependencies": {
+    "@opensrp/react-utils": "^0.0.7"
   }
 }

@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`View Details case without objectId: Should be null 1`] = `
+<ViewDetails
+  extractViewDetails={[Function]}
+  object={
+    Object {
+      "accountabilityPeriod": 1,
+      "appropriateUsage": "staff is trained to use it appropriately",
+      "availability": "available",
+      "condition": "good condition",
+      "isAttractiveItem": true,
+      "materialNumber": "MT-123",
+      "photoURL": "",
+      "productName": "Scale",
+      "serverVersion": 123456,
+      "uniqueId": 1,
+    }
+  }
+  objectId=""
+/>
+`;
+
+exports[`View Details works correctly: nominal display 1`] = `"Product nameScaleUnique ID1Material numberMT-123Server version123456"`;

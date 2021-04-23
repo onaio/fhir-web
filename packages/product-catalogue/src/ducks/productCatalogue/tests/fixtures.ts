@@ -9,6 +9,7 @@ export const product1 = {
   condition: 'good condition',
   appropriateUsage: 'staff is trained to use it appropriately',
   accountabilityPeriod: 1,
+  photoURL: '',
   serverVersion: 123456,
 };
 
@@ -24,7 +25,7 @@ export const product2 = {
   appropriateUsage:
     'Note in the comments whatever items may be missing from the kit. as well as other items which the midwife may feel are necessary',
   accountabilityPeriod: 12,
-  productPhoto: 'N/A',
+  photoURL: '',
   serverVersion: 123456,
 };
 
