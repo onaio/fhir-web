@@ -30,6 +30,7 @@ import {
   fetchLocationUnits,
 } from '../../../ducks/location-units';
 import toJson from 'enzyme-to-json';
+import { ParsedHierarchyNode } from '../../../ducks/locationHierarchy/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -316,21 +317,22 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     wrapper.update();
 
-    const hierarchy1 = generateJurisdictionTree(rawHierarchy[0]).model;
-    const hierarchy2 = generateJurisdictionTree(rawHierarchy[1]).model;
-    const hierarchy3 = generateJurisdictionTree(rawHierarchy[2]).model;
-    store.dispatch(fetchAllHierarchies([hierarchy1, hierarchy2, hierarchy3]));
+    const Tunisia = generateJurisdictionTree(rawHierarchy[0]).model as ParsedHierarchyNode;
+    const Kenya = generateJurisdictionTree(rawHierarchy[1]).model as ParsedHierarchyNode;
+    const Malawi = generateJurisdictionTree(rawHierarchy[2]).model as ParsedHierarchyNode;
+    store.dispatch(fetchAllHierarchies([Tunisia, Kenya, Malawi]));
 
     await act(async () => {
       await flushPromises();
     });
     wrapper.update();
 
+    // using index 0 cuz after sorting by name that is the last one
     const tablelastrow = {
-      geographicLevel: baseLocationUnits[2].properties.geographicLevel,
-      id: baseLocationUnits[2].id,
+      geographicLevel: Tunisia.node.attributes.geographicLevel,
+      id: Tunisia.id,
       key: '2',
-      name: baseLocationUnits[2].properties.name,
+      name: Tunisia.label,
     };
 
     expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow);
@@ -342,10 +344,8 @@ describe('location-management/src/components/LocationUnitList', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject({
-      ...tablelastrow,
-      key: '0',
-    }); // table didn't change
+
+    expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow); // table didn't change
 
     // test table with tree node with child
     const treeItemwithchild = wrapper.find('span.ant-tree-title').first();
@@ -381,19 +381,18 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     wrapper.update();
 
-    const hierarchy1 = generateJurisdictionTree(rawHierarchy[0]).model;
-    const hierarchy2 = generateJurisdictionTree(rawHierarchy[1]).model;
-    const hierarchy3 = generateJurisdictionTree(rawHierarchy[2]).model;
-    store.dispatch(fetchAllHierarchies([hierarchy1, hierarchy2, hierarchy3]));
+    const Tunisia = generateJurisdictionTree(rawHierarchy[0]).model as ParsedHierarchyNode;
+    const Kenya = generateJurisdictionTree(rawHierarchy[1]).model as ParsedHierarchyNode;
+    const Malawi = generateJurisdictionTree(rawHierarchy[2]).model as ParsedHierarchyNode;
+    store.dispatch(fetchAllHierarchies([Tunisia, Kenya, Malawi]));
 
     await act(async () => {
       await flushPromises();
     });
     wrapper.update();
 
-    wrapper.find('.more-options').first().simulate('click');
-    wrapper.update();
-    wrapper.find('.viewdetails').first().simulate('click');
+    const firstAction = wrapper.find('.Actions').first();
+    firstAction.find('button').last().simulate('click');
 
     // test out loading animation works correctly
     expect(wrapper.find('.ant-spin')).toHaveLength(1);

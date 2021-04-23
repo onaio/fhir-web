@@ -1,6 +1,5 @@
 import React from 'react';
-import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
+import { Table as AntTable, Button, Divider } from 'antd';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import lang from '../../lang';
@@ -38,32 +37,22 @@ const Table: React.FC<Props> = (props: Props) => {
       width: '10%',
       // eslint-disable-next-line react/display-name
       render: (value: boolean, record: TableData) => (
-        <span className="d-flex justify-content-end align-items-center">
+        <span className="d-flex justify-content-end align-items-center Actions">
           <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
           </Link>
           <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    if (onViewDetails) onViewDetails(record);
-                  }}
-                >
-                  {lang.VIEW_DETAILS}
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomLeft"
-            arrow
-            trigger={['click']}
+          <Button
+            type="link"
+            className="m-0 p-1"
+            onClick={() => {
+              if (onViewDetails) onViewDetails(record);
+            }}
           >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
+            {lang.VIEW_DETAILS}
+          </Button>
         </span>
       ),
     },
@@ -74,8 +63,8 @@ const Table: React.FC<Props> = (props: Props) => {
       pagination={{
         showQuickJumper: true,
         showSizeChanger: true,
-        defaultPageSize: 5,
-        pageSizeOptions: ['5', '10', '20', '50', '100'],
+        defaultPageSize: 20,
+        pageSizeOptions: ['10', '20', '50', '100'],
       }}
       dataSource={props.data}
       columns={columns}
