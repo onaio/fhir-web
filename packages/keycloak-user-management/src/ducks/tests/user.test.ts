@@ -25,6 +25,7 @@ describe('reducers/keycloak.reducer- integration test', () => {
   it('fetchedPractitioners actions actually adds data to store', () => {
     expect(getKeycloakUsersById(store.getState())).toEqual({});
     expect(getKeycloakUsersArray(store.getState())).toEqual([]);
+    expect(usersSelector(store.getState(), {})).toEqual([]);
     store.dispatch(fetchKeycloakUsers(keycloakUsersArray as KeycloakUser[]));
     expect(getKeycloakUsersById(store.getState())).toEqual({
       '520b579e-70e9-4ae9-b1f8-0775c605b8d2': {
@@ -206,5 +207,13 @@ describe('reducers/keycloak.reducer- integration test', () => {
     store.dispatch(removeKeycloakUsers());
     numberOfUsers = getKeycloakUsersArray(store.getState()).length;
     expect(numberOfUsers).toEqual(0);
+  });
+
+  it('Searches users by search text', () => {
+    store.dispatch(fetchKeycloakUsers(keycloakUsersArray as KeycloakUser[]));
+    const result1 = usersSelector(store.getState(), { searchText: 'jam' });
+    const result2 = usersSelector(store.getState(), { searchText: 'lIMu' });
+    expect(result1).toEqual(result2);
+    expect(result1[0]).toEqual(keycloakUsersArray[0]);
   });
 });

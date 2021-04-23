@@ -26,7 +26,7 @@ interface APIFilters {
  * @returns {boolean} returns boolean value
  */
 export const fetchAccessToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
-  props.accessToken || null;
+  props.accessToken ? props.accessToken : null;
 
 /** Fetch api token from store if api_token filter val is true
  *
@@ -35,7 +35,7 @@ export const fetchAccessToken = (_: Partial<Store>, props: APIFilters): boolean 
  * @returns {boolean} returns boolean value
  */
 export const fetchApiToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
-  props.apiToken || null;
+  props.apiToken ? props.apiToken : null;
 
 /** Fetch oauth provider state from store if providerState filter val is true
  *
@@ -44,7 +44,7 @@ export const fetchApiToken = (_: Partial<Store>, props: APIFilters): boolean | n
  * @returns {boolean} returns boolean value
  */
 export const fetchOauthProviderState = (_: Partial<Store>, props: APIFilters): boolean | null =>
-  props.providerState || null;
+  props.providerState ? props.providerState : null;
 
 /** Gets extra data object from store
  *
@@ -64,11 +64,15 @@ export const makeAPIStateSelector = () =>
     [fetchAccessToken, fetchApiToken, fetchOauthProviderState, getExtraData],
     (accessToken, apiToken, oauthState, extraData) => {
       if (accessToken) {
-        return (extraData.oAuth2Data && extraData.oAuth2Data.access_token) || null;
+        return extraData.oAuth2Data && extraData.oAuth2Data.access_token
+          ? extraData.oAuth2Data.access_token
+          : null;
       } else if (apiToken) {
-        return extraData.api_token || null;
+        return extraData.api_token ? extraData.api_token : null;
       } else if (oauthState) {
-        return (extraData.oAuth2Data && extraData.oAuth2Data.state) || null;
+        return extraData.oAuth2Data && extraData.oAuth2Data.state
+          ? extraData.oAuth2Data.state
+          : null;
       }
     }
   );

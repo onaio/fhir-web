@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List view Page sort works on date: sorted table rows 0 1`] = `"NameDate createdEnd DateActions"`;
+
+exports[`List view Page sort works on date: sorted table rows 1 1`] = `"Simple Plan2020-11-172021-12-24View"`;
+
+exports[`List view Page sort works on date: sorted table rows 2 1`] = `"EUSM Mission 2020-11-172020-11-172021-12-24View"`;
+
+exports[`List view Page sort works on date: sorted table rows 3 1`] = `"EUSM Mission 2020-11-182020-11-162021-12-24View"`;
+
+exports[`List view Page sort works on date: table rows 0 1`] = `"NameDate createdEnd DateActions"`;
+
+exports[`List view Page sort works on date: table rows 1 1`] = `"EUSM Mission 2020-11-172020-11-172021-12-24View"`;
+
+exports[`List view Page sort works on date: table rows 2 1`] = `"EUSM Mission 2020-11-182020-11-162021-12-24View"`;
+
+exports[`List view Page sort works on date: table rows 3 1`] = `"Simple Plan2020-11-172021-12-24View"`;
+
+exports[`List view Page sort works: sorted table rows 0 1`] = `"NameDate createdEnd DateActions"`;
+
+exports[`List view Page sort works: sorted table rows 1 1`] = `"Simple Plan2020-11-172021-12-24View"`;
+
+exports[`List view Page sort works: sorted table rows 2 1`] = `"EUSM Mission 2020-11-182020-11-162021-12-24View"`;
+
+exports[`List view Page sort works: sorted table rows 3 1`] = `"EUSM Mission 2020-11-172020-11-172021-12-24View"`;
+
+exports[`List view Page sort works: table rows 0 1`] = `"NameDate createdEnd DateActions"`;
+
+exports[`List view Page sort works: table rows 1 1`] = `"EUSM Mission 2020-11-172020-11-172021-12-24View"`;
+
+exports[`List view Page sort works: table rows 2 1`] = `"EUSM Mission 2020-11-182020-11-162021-12-24View"`;
+
+exports[`List view Page sort works: table rows 3 1`] = `"Simple Plan2020-11-172021-12-24View"`;

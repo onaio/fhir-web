@@ -1,0 +1,22 @@
+.logo {
+  padding: 1rem;
+  text-align: center;
+}
+
+.logo img {
+  width: 85%;
+}
+
+.menu-dark,
+.layout-sider {
+  background-color: #1f1f1f !important;
+}
+
+.menu-dark ul:last-child {
+  background: #141414 !important;
+}
+
+.sidebar-icons {
+  font-size: 18px !important;
+  vertical-align: middle;
+}

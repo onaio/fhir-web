@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`productForm edit form submission: Upload button 1`] = `"Upload"`;
+
+exports[`productForm edit form submission: accountabilityPeriod 1`] = `
+<input
+  aria-valuemax={9007199254740991}
+  aria-valuemin={0}
+  aria-valuenow={1}
+  autoComplete="off"
+  className="ant-input-number-input"
+  max={9007199254740991}
+  min={0}
+  name="accountabilityPeriod"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseUp={[Function]}
+  required={false}
+  role="spinbutton"
+  step={1}
+  value="1"
+/>
+`;
+
+exports[`productForm edit form submission: appropriateUsage 1`] = `
+<textarea
+  className="ant-input"
+  name="appropriateUsage"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Describe the product's intended use at the service point"
+  rows={4}
+  style={Object {}}
+  value="staff is trained to use it appropriately"
+/>
+`;
+
+exports[`productForm edit form submission: availability 1`] = `
+<textarea
+  className="ant-input"
+  name="availability"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Describe where a supply monitor can locate this product at the service point."
+  rows={4}
+  style={Object {}}
+  value="available"
+/>
+`;
+
+exports[`productForm edit form submission: condition 1`] = `
+<textarea
+  className="ant-input"
+  name="condition"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Describe how a supply monitor would assess whether the product is in good condition"
+  rows={4}
+  style={Object {}}
+  value="good condition"
+/>
+`;
+
+exports[`productForm edit form submission: isAttractive radio1 1`] = `
+<input
+  checked={true}
+  className="ant-radio-input"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  type="radio"
+  value={true}
+/>
+`;
+
+exports[`productForm edit form submission: isAttractive radio2 1`] = `
+<input
+  checked={false}
+  className="ant-radio-input"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  type="radio"
+  value={false}
+/>
+`;
+
+exports[`productForm edit form submission: materialNumber 1`] = `
+<input
+  className="ant-input"
+  name="materialNumber"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Enter the product's material number"
+  type="text"
+  value="MT-123"
+/>
+`;
+
+exports[`productForm edit form submission: productName 1`] = `
+<input
+  className="ant-input"
+  name="productName"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Enter the product's name e.g Midwifery Kit"
+  type="text"
+  value="Scale"
+/>
+`;
+
+exports[`productForm edit form submission: uniqueId 1`] = `
+<input
+  className="ant-input"
+  id="uniqueId"
+  name="uniqueId"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  readOnly={true}
+  type="hidden"
+  value={1}
+/>
+`;
+
+exports[`productForm renders correctly: radio 0 1`] = `"Attractive item?"`;
+
+exports[`productForm renders correctly: radio 1 1`] = `"yes"`;
+
+exports[`productForm renders correctly: radio 2 1`] = `"no"`;
+
+exports[`productForm validation works: "Product name" 1`] = `undefined`;
+
+exports[`productForm validation works: "photoURL" 1`] = `undefined`;
+
+exports[`productForm validation works: accountability period 1`] = `undefined`;
+
+exports[`productForm validation works: appropriateUsage 1`] = `undefined`;
+
+exports[`productForm validation works: availability 1`] = `undefined`;
+
+exports[`productForm validation works: availability 2`] = `undefined`;
+
+exports[`productForm validation works: condition 1`] = `undefined`;
+
+exports[`productForm validation works: isAttractive 1`] = `undefined`;
+
+exports[`productForm validation works: material number 1`] = `undefined`;

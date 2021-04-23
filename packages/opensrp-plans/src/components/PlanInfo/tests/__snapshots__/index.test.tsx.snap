@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/components/PlanInfo renders and passes props correctly): activate link 1`] = `
+Object {
+  "children": "Edit",
+  "to": "/missions/active/edit/335ef7a3-7f35-58aa-8263-4419464946d8",
+}
+`;
+
+exports[`/components/PlanInfo renders and passes props correctly): avatar props 1`] = `
+Object {
+  "className": "",
+  "icon": <ForwardRef(FileDoneOutlined) />,
+  "shape": "circle",
+  "size": "default",
+  "style": Object {
+    "color": "#1CABE2",
+    "fontSize": 50,
+    "height": 82,
+    "lineHeight": 1.8,
+    "width": 80,
+  },
+}
+`;
+
+exports[`/components/PlanInfo renders and passes props correctly): edit link 1`] = `
+Object {
+  "children": "Active",
+  "to": "/missions/active",
+}
+`;
+
+exports[`/components/PlanInfo renders and passes props correctly): links in breadcrumb 0 1`] = `
+<span
+  className="ant-breadcrumb-link"
+>
+  <span>
+    Missions
+  </span>
+</span>
+`;
+
+exports[`/components/PlanInfo renders and passes props correctly): links in breadcrumb 1 1`] = `
+<span
+  className="ant-breadcrumb-link"
+>
+  <Link
+    to="/missions/active"
+  >
+    <LinkAnchor
+      href="/missions/active"
+      navigate={[Function]}
+    >
+      <a
+        href="/missions/active"
+        onClick={[Function]}
+      >
+        Active
+      </a>
+    </LinkAnchor>
+  </Link>
+</span>
+`;
+
+exports[`/components/PlanInfo renders and passes props correctly): links in breadcrumb 2 1`] = `
+<span
+  className="ant-breadcrumb-link"
+>
+  <span>
+    EUSM Mission 2020-11-17
+  </span>
+</span>
+`;

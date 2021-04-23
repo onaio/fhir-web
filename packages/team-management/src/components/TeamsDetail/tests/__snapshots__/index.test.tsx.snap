@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/TeamsDetail renders without crashing: close button 1`] = `
+Object {
+  "block": false,
+  "className": "float-right close-btn",
+  "ghost": false,
+  "htmlType": "button",
+  "icon": <ForwardRef(CloseOutlined) />,
+  "loading": false,
+  "onClick": [Function],
+  "shape": "circle",
+  "type": "text",
+}
+`;
+
+exports[`components/TeamsDetail renders without crashing: identifier 1`] = `"Team NameThe LuangStatustrueIdentifierfcc19470-d599-11e9-bb65-2a2ae2dbcce4Team Membersprac two"`;
+
+exports[`components/TeamsDetail renders without crashing: status 1`] = `"Team NameThe LuangStatustrueIdentifierfcc19470-d599-11e9-bb65-2a2ae2dbcce4Team Membersprac two"`;
+
+exports[`components/TeamsDetail renders without crashing: team members 1`] = `"Team NameThe LuangStatustrueIdentifierfcc19470-d599-11e9-bb65-2a2ae2dbcce4Team Membersprac two"`;
+
+exports[`components/TeamsDetail renders without crashing: team name 1`] = `"Team NameThe LuangStatustrueIdentifierfcc19470-d599-11e9-bb65-2a2ae2dbcce4Team Membersprac two"`;

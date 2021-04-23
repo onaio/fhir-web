@@ -1,0 +1,16 @@
+{
+  "An error occurred": "Une erreur s'est produite",
+  "Download Client Data": "Télécharger les données client",
+  "Client Location": "Emplacement du client",
+  "All Locations": "Tous les emplacements",
+  "Card Status": "Statut de la carte",
+  "Needs Card": "Carte requise",
+  "Card not needed": "Carte non requise",
+  "Both \"Needs card\" and \"Card not needed\"": "«Carte requise» et «Carte non requise»",
+  "Card Order Date": "Date de commande de la carte",
+  "Please enter start date and end date": "Veuillez saisir la date de début et la date de fin",
+  "Select Card Order Date": "Sélectionnez la date de commande de la carte",
+  "Downloading": "Téléchargement",
+  "Download CSV": "Télécharger CSV",
+  "No data found": "Aucune donnée disponible"
+}

@@ -1,78 +1,37 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { Button } from 'antd';
-import { Form, Select, Input } from 'formik-antd';
-import { history } from '@onaio/connected-reducer-registry';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { KeycloakUser } from '../../../ducks/user';
-import { URL_ADMIN } from '../../../constants';
-import { submitForm, fetchRequiredActions, UserAction } from './utils';
+import React, { useEffect, useState, FC } from 'react';
+import { useHistory } from 'react-router';
+import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
+import { KeycloakUser, Practitioner, UserGroup } from '../../../ducks/user';
+import { URL_USER } from '../../../constants';
+import lang from '../../../lang';
+import { submitForm } from './utils';
+import { Dictionary } from '@onaio/utils';
+import { sendErrorNotification } from '@opensrp/notifications';
 import '../../../index.css';
 
 /** props for editing a user view */
 export interface UserFormProps {
-  accessToken: string;
-  initialValues: KeycloakUser;
-  serviceClass: typeof KeycloakService;
+  initialValues: FormFields;
   keycloakBaseURL: string;
+  opensrpBaseURL: string;
+  userGroups: UserGroup[];
+  extraData: Dictionary;
 }
 
-/** default form initial values */
-export const defaultInitialValues: KeycloakUser = {
-  access: {
-    manageGroupMembership: false,
-    view: false,
-    mapRoles: false,
-    impersonate: false,
-    manage: false,
-  },
-  createdTimestamp: undefined,
-  disableableCredentialTypes: [],
-  email: '',
-  emailVerified: false,
-  enabled: true,
-  firstName: '',
-  id: '',
-  lastName: '',
-  notBefore: 0,
-  requiredActions: [],
-  totp: false,
-  username: '',
-};
+export interface FormFields extends KeycloakUser {
+  active?: boolean;
+  userGroup?: string[];
+  practitioner?: Practitioner;
+}
 
-/** default props for editing user component */
-export const defaultProps: Partial<UserFormProps> = {
-  accessToken: '',
-  initialValues: defaultInitialValues,
-  serviceClass: KeycloakService,
-};
+const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
+  const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
 
-export const userSchema = Yup.object().shape({
-  lastName: Yup.string().required('Required'),
-  firstName: Yup.string().required('Required'),
-  email: Yup.string().required('Required'),
-  username: Yup.string().required('Required'),
-});
+  // hook into the form lifecycle methods
+  const [form] = Form.useForm();
 
-/**
- * Handle required actions change
- *
- * @param {string} selected - selected action
- * @param {Dispatch<SetStateAction<string[]>>} setRequiredActions - selected action dispatcher
- */
-export const handleUserActionsChange = (
-  selected: string[],
-  setRequiredActions: Dispatch<SetStateAction<string[]>>
-): void => {
-  setRequiredActions(selected);
-};
-
-const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
-  const { initialValues, serviceClass, accessToken, keycloakBaseURL } = props;
-  const [requiredActions, setRequiredActions] = React.useState<string[]>([]);
-  const [userActionOptions, setUserActionOptions] = React.useState<UserAction[]>([]);
-
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const history = useHistory();
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -82,7 +41,6 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
     },
     wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
   };
-
   const tailLayout = {
     wrapperCol: {
       xs: { offset: 0, span: 16 },
@@ -91,88 +49,110 @@ const UserForm: React.FC<UserFormProps> = (props: UserFormProps) => {
       lg: { offset: 6, span: 14 },
     },
   };
-  const { Option } = Select;
+  const status = [
+    { label: 'Yes', value: true },
+    { label: 'No', value: false },
+  ];
 
-  React.useEffect(() => {
-    fetchRequiredActions(accessToken, keycloakBaseURL, setUserActionOptions, serviceClass);
-  }, [accessToken, keycloakBaseURL, serviceClass]);
-
-  React.useEffect(() => {
-    setRequiredActions(initialValues.requiredActions ? initialValues.requiredActions : []);
-  }, [initialValues.requiredActions]);
+  /** Update form initial values when initialValues prop changes, without this
+   * the form fields initial values will not change if props.initialValues update
+   * **/
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [form, initialValues]);
 
   return (
-    <div className="form-container">
-      <Formik
-        initialValues={initialValues}
-        validationSchema={userSchema}
-        onSubmit={(values, { setSubmitting }) =>
-          submitForm(
-            {
-              ...values,
-              requiredActions,
-            },
-            accessToken,
-            keycloakBaseURL,
-            serviceClass,
-            setSubmitting,
-            initialValues.id
-          )
-        }
-      >
-        {({ isSubmitting }) => (
-          <Form {...layout}>
-            <Form.Item name="firstName" label="First Name">
-              <Input id="firstName" name="firstName" />
-            </Form.Item>
-
-            <Form.Item name="lastName" label="Last Name">
-              <Input id="lastName" name="lastName" />
-            </Form.Item>
-
-            <Form.Item name="email" label="Email">
-              <Input id="email" name="email" />
-            </Form.Item>
-
-            <Form.Item name="username" label="Username">
-              <Input id="username" name="username" disabled={initialValues.id ? true : false} />
-            </Form.Item>
-
-            <Form.Item name="requiredActions" label="Required Actions">
-              <Select
-                id="requiredActions"
-                name="requiredActions"
-                mode="multiple"
-                allowClear
-                placeholder="Please select"
-                onChange={(selected: string[]) =>
-                  handleUserActionsChange(selected, setRequiredActions)
-                }
-                style={{ width: '100%' }}
-              >
-                {userActionOptions.map((option: UserAction, index: number) => (
-                  <Option key={`${index}`} value={option.alias}>
-                    {option.name}
-                  </Option>
+    <Row className="layout-content">
+      {/** If email is provided render edit user otherwise add user */}
+      <h5 className="mb-3 header-title">
+        {props.initialValues.id ? `${lang.EDIT_USER} | ${initialValues.username}` : lang.ADD_USER}
+      </h5>
+      <Col className="bg-white p-3" span={24}>
+        <Form
+          {...layout}
+          form={form}
+          initialValues={initialValues}
+          onFinish={(values) => {
+            setSubmitting(true);
+            submitForm(
+              { ...initialValues, ...values },
+              keycloakBaseURL,
+              opensrpBaseURL,
+              userGroups
+            ).catch((_: Error) => {
+              setSubmitting(false);
+              sendErrorNotification(lang.ERROR_OCCURED);
+            });
+          }}
+        >
+          <Form.Item
+            name="firstName"
+            id="firstName"
+            label={lang.FIRST_NAME}
+            rules={[{ required: true, message: lang.FIRST_NAME_REQUIRED }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="lastName"
+            id="lastName"
+            label={lang.LAST_NAME}
+            rules={[{ required: true, message: lang.LAST_NAME_REQUIRED }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item name="email" id="email" label={lang.EMAIL}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="username"
+            id="username"
+            label={lang.USERNAME}
+            rules={[{ required: true, message: lang.USERNAME_REQUIRED }]}
+          >
+            <Input disabled={initialValues.id ? true : false} />
+          </Form.Item>
+          <Form.Item id="enabled" name="enabled" label={lang.ENABLE_USER}>
+            <Radio.Group options={status} name="enabled"></Radio.Group>
+          </Form.Item>
+          {initialValues.id && initialValues.id !== extraData.user_id ? (
+            <Form.Item id="practitionerToggle" name="active" label={lang.MARK_AS_PRACTITIONER}>
+              <Radio.Group name="active">
+                {status.map((e) => (
+                  <Radio name="active" key={e.label} value={e.value}>
+                    {e.label}
+                  </Radio>
                 ))}
-              </Select>
+              </Radio.Group>
             </Form.Item>
+          ) : null}
 
-            <Form.Item {...tailLayout} name="tail">
-              <Button type="primary" htmlType="submit" className="create-user">
-                {isSubmitting ? 'Saving' : 'Save'}
-              </Button>
-              <Button onClick={() => history.push(URL_ADMIN)} className="cancel-user">
-                Cancel
-              </Button>
-            </Form.Item>
-          </Form>
-        )}
-      </Formik>
-    </div>
+          <Form.Item name="userGroup" id="userGroup" label={lang.GROUP}>
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder={lang.PLEASE_SELECT}
+              style={{ width: '100%' }}
+            >
+              {userGroups.map((group) => (
+                <Select.Option key={group.id} value={group.id}>
+                  {group.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item {...tailLayout}>
+            <Button type="primary" htmlType="submit" className="create-user">
+              {isSubmitting ? lang.SAVING : lang.SAVE}
+            </Button>
+            <Button onClick={() => history.push(URL_USER)} className="cancel-user">
+              {lang.CANCEL}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Col>
+    </Row>
   );
 };
-
-UserForm.defaultProps = defaultProps;
 
 export { UserForm };

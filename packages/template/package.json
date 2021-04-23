@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/template",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -15,7 +15,7 @@
     "folderName": "template"
   },
   "scripts": {
-    "test": " cd ../../ && pwd && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
+    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",

@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Antd/ReleaseList renders correctly 1`] = `
+<TableActions
+  file={
+    Object {
+      "appId": "org.smartregister.reveal",
+      "appVersion": "1.2.14",
+      "createdAt": "2020-06-08T15:00:38.413+02:00",
+      "identifier": "1.0.11",
+      "json": "{\\"forms_version\\":\\"1.0.11\\",\\"identifiers\\":[\\"blood_screening.json\\"}",
+      "updatedAt": "2020-06-08T15:00:38.413+02:00",
+    }
+  }
+  viewReleaseURL="/releases"
+>
+  <Link
+    key="actions"
+    to="/releases/1.0.11"
+  >
+    <LinkAnchor
+      href="/releases/1.0.11"
+      navigate={[Function]}
+    >
+      <a
+        href="/releases/1.0.11"
+        onClick={[Function]}
+      >
+        View Files
+      </a>
+    </LinkAnchor>
+  </Link>
+</TableActions>
+`;

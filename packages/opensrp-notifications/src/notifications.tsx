@@ -10,6 +10,7 @@ export function sendSuccessNotification(message: string, description?: string) {
   notification.success({
     message: message,
     description: description,
+    duration: 2,
   });
 }
 
@@ -23,6 +24,7 @@ export const sendInfoNotification = (message: string, description?: string): voi
   notification.info({
     message: message,
     description: description,
+    duration: 2,
   });
 };
 
@@ -36,6 +38,7 @@ export const sendWarningNotification = (message: string, description?: string): 
   notification.warning({
     message: message,
     description: description,
+    duration: 2,
   });
 };
 
@@ -49,5 +52,6 @@ export const sendErrorNotification = (message: string, description?: string): vo
   notification.error({
     message: message,
     description: description,
+    duration: 2,
   });
 };

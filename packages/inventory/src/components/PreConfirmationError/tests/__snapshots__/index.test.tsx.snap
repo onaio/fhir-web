@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pre confirmation error card renders correctly 1`] = `[Function]`;
+
+exports[`pre confirmation error card renders correctly: full general snapshot 1`] = `"Use a CSV file to add service point inventoryplease fix the errors listed below, then retry csv uploadRow numberErrors2Service point ID does not exist3Service point ID does not exist, UNICEF section is not valid, Donor is not valid1Retry"`;
+
+exports[`pre confirmation error card renders correctly: table row 1`] = `"Row numberErrors"`;
+
+exports[`pre confirmation error card renders correctly: table row 2`] = `"2Service point ID does not exist"`;
+
+exports[`pre confirmation error card renders correctly: table row 3`] = `"3Service point ID does not exist, UNICEF section is not valid, Donor is not valid"`;
+
+exports[`pre confirmation error card renders correctly: table row 4`] = `""`;

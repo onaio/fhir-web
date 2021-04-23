@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/server-service",
-  "version": "0.0.10",
+  "version": "0.0.17",
   "description": "Wrapper around OpenSRP Server REST API",
   "publishConfig": {
     "access": "public"
@@ -8,8 +8,8 @@
   "repository": "https://github.com/OpenSRP/web",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/opensrp-server-service --verbose --collectCoverage=true && cd packages/opensrp-server-service",
-    "test:watch": "cd ../../ && jest test  packages/opensrp-server-service --verbose --watch && cd packages/opensrp-server-service",
+    "test": "cd ../../ && yarn test packages/opensrp-server-service --verbose --collectCoverage=true && cd packages/opensrp-server-service",
+    "test:watch": "cd ../../ && yarn test packages/opensrp-server-service --verbose --watch && cd packages/opensrp-server-service",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
@@ -33,5 +33,8 @@
   "types": "dist/types",
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@onaio/utils": "^0.0.1"
+  }
 }

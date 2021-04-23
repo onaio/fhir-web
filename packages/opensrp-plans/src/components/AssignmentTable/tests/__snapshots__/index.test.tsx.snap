@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`opensrp-plans/assignmentTable renders correctly when there is data: tr 0 1`] = `"Assigned areasAssigned teamsActions"`;
+
+exports[`opensrp-plans/assignmentTable renders correctly when there is data: tr 1 1`] = `"IITANANGA, OKASHANDJAOna testOrgEdit areasEdit teams"`;
+
+exports[`opensrp-plans/assignmentTable renders correctly when there is data: tr 2 1`] = `"IITANANGATest Test TeamEdit areasEdit teams"`;
+
+exports[`opensrp-plans/assignmentTable renders correctly when there is data: tr 3 1`] = `"OKASHANDJANAIMA old test teamEdit areasEdit teams"`;
+
+exports[`opensrp-plans/assignmentTable renders correctly when there is data: tr 4 1`] = `"IIYALA N.6, OKANKETE-2, OSHIPUMBU MAKILINDIDI NO 2-1 - Edit areasEdit teams"`;
+
+exports[`opensrp-plans/assignmentTable renders correctly: tr 0 1`] = `"Assigned areasAssigned teamsActions"`;
+
+exports[`opensrp-plans/assignmentTable renders correctly: tr 1 1`] = `"9b5dd829-89de-45a5-98f2-fd37787ae949, 6bb05db0-730b-409b-991d-4abfe6a59ea1, 1b14ff5b-1f24-4b50-a59a-33cef0ed7bfb, 7d150b42-11e7-4362-8d0d-1a8ef506c754, 9fb0f2cf-7836-4557-a908-4b8cd628d193 - Edit areasEdit teams"`;
+
+exports[`opensrp-plans/assignmentTable test plan jurisdiction assignment: 0 button 1`] = `"Edit areas"`;
+
+exports[`opensrp-plans/assignmentTable test plan jurisdiction assignment: 1 button 1`] = `"Edit teams"`;
+
+exports[`opensrp-plans/assignmentTable test plan jurisdiction assignment: tr 0 1`] = `"Assigned areasAssigned teamsActions"`;
+
+exports[`opensrp-plans/assignmentTable test plan jurisdiction assignment: tr 1 1`] = `"Edit areasEdit teams"`;
+
+exports[`opensrp-plans/assignmentTable test plan jurisdiction when there is already an assignment: tr 0 1`] = `"Assigned areasAssigned teamsActions"`;
+
+exports[`opensrp-plans/assignmentTable test plan jurisdiction when there is already an assignment: tr 1 1`] = `"IITANANGAOna testOrgEdit areasEdit teams"`;
+
+exports[`opensrp-plans/assignmentTable test plan teams assignment: tr 0 1`] = `"Assigned areasAssigned teamsActions"`;
+
+exports[`opensrp-plans/assignmentTable test plan teams assignment: tr 1 1`] = `"IITANANGA - Edit areasEdit teams"`;

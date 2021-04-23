@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Logout renders logout component 1`] = `
+<CustomLogout>
+  <Spin
+    size="large"
+    spinning={true}
+    wrapperClassName=""
+  >
+    <div
+      className="ant-spin ant-spin-lg ant-spin-spinning"
+    >
+      <span
+        className="ant-spin-dot ant-spin-dot-spin"
+      >
+        <i
+          className="ant-spin-dot-item"
+        />
+        <i
+          className="ant-spin-dot-item"
+        />
+        <i
+          className="ant-spin-dot-item"
+        />
+        <i
+          className="ant-spin-dot-item"
+        />
+      </span>
+    </div>
+  </Spin>
+</CustomLogout>
+`;

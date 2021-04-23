@@ -4,61 +4,192 @@ This document describes the environment variables in this code base and how to u
 
 Below is a list of currently supported environment variables:
 
-1. **REACT_APP_KEYCLOAK_LOGOUT_URL**
+- **REACT_APP_KEYCLOAK_LOGOUT_URL**
 
-- url to logout from the keycloak server
-- **Required**
-- default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout`
+  - url to logout from the keycloak server
+  - **Required**
+  - default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout`
 
-2. **REACT_APP_DOMAIN_NAME**
+- **REACT_APP_DOMAIN_NAME**
 
-- Defines the domain name of the app
-- **Required**
-- default: `http://localhost:3000`
+  - Defines the domain name of the app
+  - **Required**
+  - default: `http://localhost:3000`
 
-3. **REACT_APP_OPENSRP_ACCESS_TOKEN_URL**
+- **REACT_APP_OPENSRP_ACCESS_TOKEN_URL**
 
-- Defines the backend URL for fetching the oauth2 access token
-- **Required**
-- default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/token`
+  - Defines the backend URL for fetching the oauth2 access token
+  - **Required**
+  - default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/token`
 
-4. **REACT_APP_OPENSRP_AUTHORIZATION_URL**
+- **REACT_APP_OPENSRP_AUTHORIZATION_URL**
 
-- Defines the oauth2 auth URL
-- **Required**
-- default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/auth`
+  - Defines the oauth2 auth URL
+  - **Required**
+  - default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/auth`
 
-5. **REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE**
+- **REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE**
 
-- Defines the app oauth2 state to use
-- **Required**
-- default: `opensrp`
+  - Defines the app oauth2 state to use
+  - **Required**
+  - default: `opensrp`
 
-6. **REACT_APP_OPENSRP_CLIENT_ID**
+- **REACT_APP_OPENSRP_CLIENT_ID**
 
-- Defines the oauth2 client id the app should use
-- **Required**
+  - Defines the oauth2 client id the app should use
+  - **Required**
 
-7. **REACT_APP_ENABLE_OPENSRP_OAUTH**
+- **REACT_APP_ENABLE_OPENSRP_OAUTH**
 
-- Enable or disable OpenSRP as the oauth2 provider
-- **Required**
-- default: `true`
+  - Enable or disable OpenSRP as the oauth2 provider
+  - **Required**
+  - default: `true`
 
-8. **REACT_APP_DISABLE_LOGIN_PROTECTION**
+- **REACT_APP_DISABLE_LOGIN_PROTECTION**
 
-- Enable or disable login protection for different app pages
-- **Required**
-- default: `false`
+  - Enable or disable login protection for different app pages
+  - **Required**
+  - default: `false`
 
-9. **REACT_APP_EXPRESS_OAUTH_LOGOUT_URL**
+- **REACT_APP_EXPRESS_OAUTH_LOGOUT_URL**
 
-- URL to logout of the express server
-- **Required**
-- default: `https://web.opensrp-stage.smartregister.org/logout`
+  - URL to logout of the express server
+  - **Required**
+  - default: `https://web.opensrp-stage.smartregister.org/logout`
 
-10. **REACT_APP_EXPRESS_OAUTH_GET_STATE_URL**
+- **REACT_APP_EXPRESS_OAUTH_GET_STATE_URL**
 
-- URL to get oauth2 state value
-- **Required**
-- default: `https://web.opensrp-stage.smartregister.org/oauth/state`
+  - URL to get oauth2 state value
+  - **Required**
+  - default: `https://web.opensrp-stage.smartregister.org/oauth/state`
+
+- **REACT_APP_SENTRY_DSN**
+
+  - URL to send crash reports
+  - **Required**
+
+- **REACT_APP_ENABLE_CARD_SUPPORT**
+
+  - Enables the card support module
+  - **Optional**(_string_)
+  - default: `false`
+
+- **REACT_APP_ENABLE_PRODUCT_CATALOGUE**
+
+  - Enables the product-catalogue module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_PLANS**
+
+  - Enables the plans module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_LOCATIONS**
+
+  - Enables the location module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+  - **REACT_APP_ENABLE_TEAMS**
+
+  - Enables the teams module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_TASK_GENERATION_STATUS**
+
+  - _not required_; _(ENUM<["True", "False", "Disabled", "internal"]>)_
+  - no defaults, applies a heuristic to pick the correct value when env isn't configured
+  - configures the value to be used for taskGenerationStatus context for dynamicPlans
+
+- **REACT_APP_DATE_FORMAT**
+
+  - _not required_; _(`string`)_
+  - The default time used by date fields when creating plans
+
+- **REACT_APP_DEFAULT_PLAN_DURATION_DAYS**
+
+  - _not required_; _(`string`)>)_
+  - Helps determine the number of the default date of a plan given the start date
+
+- **REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS**
+
+  - _not required_; _(`string`)>)_
+  - same as `REACT_APP_DEFAULT_PLAN_DURATION_DAYS` but for each of the activities inside the plan
+
+- **REACT_APP_PLAN_UUID_NAMESPACE**
+
+  - _not required_; _(`string`)_
+  - a random string to use as the namespace when creating uuids for plans
+
+- **REACT_APP_ACTION_UUID_NAMESPACE**
+
+  - _not required_; _(`string`)_
+  - a random string to use as the namespace when creating uuids for plan actions
+
+- **REACT_APP_DEFAULT_PLAN_VERSION**
+
+  - _not required_; _(`string`)_
+  - the default plan version , used when creating plans
+
+- **REACT_APP_ENABLE_FORM_CONFIGURATION**
+
+  - Enables the form configuration module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_LANGUAGE_CODE**
+
+  - language resources to use for text i18next
+  - **optional**_(`string`)_
+  - default: `en`
+
+- **REACT_APP_PROJECT_LANGUAGE_CODE**
+
+  - project code to help decide where to pick the language resource files from
+  - **optional**_(`string`)_
+  - default: `core`
+
+- **REACT_APP_ENABLE_INVENTORY**
+
+  - Enables the inventory module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
+- **REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL**
+
+  - geo level to assign teams at
+  - **Optional**(`number`)
+  - default: `0`
+
+- **REACT_APP_MAIN_LOGO_SRC**
+
+  - Configures the logo src url.
+  - **Optional**(`string`)
+  - default: `https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png`
+
+- **REACT_APP_SUPPORTED_LANGUAGES**
+
+  - Use alongside the language switcher, customize the options available for language switching.
+  - **Optional**(`string`)
+  - default: all available options
+
+- **REACT_APP_ENABLE_LANGUAGE_SWITCHER**
+
+  - whether to show a language switcher
+  - **Optional**(`boolean`)
+  - default: `true`
+
+  **REACT_APP_DEFAULT_HOME_MODE**
+
+  - whether to redirect on eusm or tunisia home page
+  - **not required**_(`string`)_
+  - _accepted values_: _default | eusm | tunisia_
+
+- **REACT_APP_OPENSRP_OAUTH_SCOPES**
+
+  - Sets the oauth app permission scopes.
+  - **Required**(`string`)
+  - default: `read,write`

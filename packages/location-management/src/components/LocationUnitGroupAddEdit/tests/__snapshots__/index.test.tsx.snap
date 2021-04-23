@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`location-management/src/components/LocationUnitGroupAddEdit/tests render with id without crashing 1`] = `
+Array [
+  <HelmetWrapper
+    defer={true}
+    encodeSpecialCharacters={true}
+  >
+    <title>
+      Edit Location Unit Group
+    </title>
+  </HelmetWrapper>,
+  <h5
+    className="mb-4 header-title"
+  >
+    Edit Location Unit Group | 
+  </h5>,
+  <Col
+    className="bg-white p-4"
+    span={24}
+  >
+    <Form
+      id="54"
+      setEditTitle={[Function]}
+    />
+  </Col>,
+]
+`;
+
+exports[`location-management/src/components/LocationUnitGroupAddEdit/tests renders without crashing 1`] = `
+Array [
+  <HelmetWrapper
+    defer={true}
+    encodeSpecialCharacters={true}
+  >
+    <title>
+      Add Location Unit Group
+    </title>
+  </HelmetWrapper>,
+  <h5
+    className="mb-4 header-title"
+  >
+    Add Location Unit Group
+  </h5>,
+  <Col
+    className="bg-white p-4"
+    span={24}
+  >
+    <Form
+      setEditTitle={[Function]}
+    />
+  </Col>,
+]
+`;

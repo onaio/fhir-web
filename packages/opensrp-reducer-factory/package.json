@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/reducer-factory",
-  "version": "0.0.9",
+  "version": "0.0.13",
   "description": "Abstraction for creating other dux modules",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -13,8 +13,8 @@
   "repository": "https://github.com/OpenSRP/web/",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && jest test  packages/opensrp-reducer-factory --verbose --collectCoverage=true && cd packages/opensrp-reducer-factory",
-    "test:watch": "cd ../../ && jest test  packages/opensrp-reducer-factory --verbose --watch && cd packages/opensrp-reducer-factory",
+    "test": "cd ../../ && yarn test packages/opensrp-reducer-factory --verbose --collectCoverage=true && cd packages/opensrp-reducer-factory",
+    "test:watch": "cd ../../ && yarn test packages/opensrp-reducer-factory --verbose --watch && cd packages/opensrp-reducer-factory",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
@@ -34,6 +34,9 @@
   "author": "Ona Engineering",
   "license": "Apache-2.0",
   "private": false,
+  "devDependencies": {
+    "@onaio/redux-reducer-registry": "^0.0.9"
+  },
   "dependencies": {
     "@onaio/utils": "^0.0.1",
     "lodash": "^4.17.15",
