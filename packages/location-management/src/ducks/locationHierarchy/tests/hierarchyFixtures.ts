@@ -1,4 +1,4 @@
-import { ParsedHierarchyNode, RawOpenSRPHierarchy, TreeNode } from '../types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../types';
 import { generateJurisdictionTree } from '../utils';
 export const treedata: ParsedHierarchyNode[] = [
   {
@@ -1202,4 +1202,6 @@ export const rawHierarchy: RawOpenSRPHierarchy[] = [
   },
 ];
 
-export const parsedHierarchy: TreeNode[] = rawHierarchy.map((e) => generateJurisdictionTree(e));
+export const parsedHierarchy: ParsedHierarchyNode[] = rawHierarchy.map(
+  (e) => generateJurisdictionTree(e).model
+);

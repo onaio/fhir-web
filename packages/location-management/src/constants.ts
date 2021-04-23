@@ -4,6 +4,7 @@ export const SETTINGS_CONFIGURATION_TYPE = 'SettingConfiguration';
 
 //
 // Location Unit
+export const LOCATION_UNIT_TYPE = 'Feature';
 export const LOCATION_UNIT_ALL = 'location/sync';
 export const LOCATION_UNIT_ENDPOINT = 'location';
 export const LOCATION_UNIT_POST_PUT = 'location?is_jurisdiction=true';
