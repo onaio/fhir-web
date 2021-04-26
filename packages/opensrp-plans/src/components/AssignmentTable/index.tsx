@@ -1,6 +1,5 @@
 /** Tabular view to view/assign areas and teams to missions */
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   fetchOrganizationsAction as fetchOrganizations,
@@ -32,7 +31,7 @@ import {
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { getDataSource, getPlanAssignmentColumns } from './utils';
 import {
@@ -130,7 +129,7 @@ const AssignmentTable = (props: AssignmentTableProps) => {
   }
 
   const planJurisdictions = plan.jurisdiction.map((jurCode) => jurCode.code);
-  const dataSource = getDataSource(organizations, jurisdictions, assignments, planJurisdictions);
+  const datasource = getDataSource(organizations, jurisdictions, assignments, planJurisdictions);
   const columns = getPlanAssignmentColumns(
     assignments,
     organizations,
@@ -145,7 +144,7 @@ const AssignmentTable = (props: AssignmentTableProps) => {
 
   return (
     <div className="assignment-table">
-      <Table dataSource={dataSource} loading={loading} columns={columns} pagination={false}></Table>
+      <TableLayout datasource={datasource} loading={loading} columns={columns} pagination={false} />
     </div>
   );
 };

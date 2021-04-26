@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Card, Typography, Spin, Table, Space, Button, Divider, Input } from 'antd';
+import { Card, Typography, Spin, Space, Button, Divider, Input } from 'antd';
 import { Dictionary } from '@onaio/utils';
 import {
   filesReducer,
@@ -21,6 +21,7 @@ import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ROUTE_PARAM_FORM_VERSION } from '../../constants';
 import lang from '../../lang';
+import { TableLayout } from '@opensrp/react-utils';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -149,7 +150,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
           )}
           <SettingOutlined />
         </Space>
-        <Table
+        <TableLayout
           columns={getTableColumns(
             accessToken,
             opensrpBaseURL,
@@ -158,13 +159,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             sortedInfo,
             customFetchOptions
           )}
-          dataSource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
-          pagination={{
-            showQuickJumper: true,
-            showSizeChanger: true,
-            defaultPageSize: 5,
-            pageSizeOptions: ['5', '10', '20', '50', '100'],
-          }}
+          datasource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
             setSortedInfo(sorter);
           }}

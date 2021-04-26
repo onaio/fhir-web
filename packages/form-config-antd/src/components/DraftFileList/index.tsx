@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Card, Typography, Spin, Table, Space, Button, Divider, Input } from 'antd';
+import { Card, Typography, Spin, Space, Button, Divider, Input } from 'antd';
 import { getAccessToken } from '@onaio/session-reducer';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import {
@@ -22,6 +22,7 @@ import { useHistory, Redirect } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import lang from '../../lang';
+import { TableLayout } from '@opensrp/react-utils';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, draftReducer);
@@ -120,7 +121,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
           <Divider type="vertical" />
           <SettingOutlined />
         </Space>
-        <Table
+        <TableLayout
           columns={getTableColumns(
             accessToken,
             opensrpBaseURL,
@@ -128,16 +129,8 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
             sortedInfo,
             customFetchOptions
           )}
-          dataSource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
-          pagination={{
-            showQuickJumper: true,
-            showSizeChanger: true,
-            defaultPageSize: 5,
-            pageSizeOptions: ['5', '10', '20', '50', '100'],
-          }}
-          onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
-            setSortedInfo(sorter);
-          }}
+          datasource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
+          onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => setSortedInfo(sorter)}
         />
         {data.length > 0 && (
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

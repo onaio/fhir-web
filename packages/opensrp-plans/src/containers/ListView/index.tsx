@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button, Table } from 'antd';
+import { Row, PageHeader, Col, Button } from 'antd';
 import { loadPlans } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import {
@@ -12,7 +12,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { plansReducer, plansReducerName as PlansReducerName } from '../../ducks/planDefinitions';
-import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import {
   PLANS_CREATE_VIEW_URL,
@@ -70,7 +70,7 @@ const PlansList = (props: PlansListTypes) => {
 
   const pageTitle = pageTitleBuilder(allowedPlanStatus);
   // add a key prop to the array data to be consumed by the table
-  const dataSource = data.map((singleObject, key) => {
+  const datasource = data.map((singleObject, key) => {
     const planWithKey = {
       ...singleObject,
       key: `${TableColumnsNamespace}-${key}`,
@@ -95,7 +95,7 @@ const PlansList = (props: PlansListTypes) => {
               </Button>
             </Link>
           </div>
-          <Table dataSource={dataSource} columns={columns}></Table>
+          <TableLayout datasource={datasource} columns={columns} />
         </Col>
       </Row>
     </div>
