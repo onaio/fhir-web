@@ -2,6 +2,7 @@ import React from 'react';
 import { Table as AntTable } from 'antd';
 import { ColumnType, TableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
+import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../constants';
 
 export interface Column<T> extends ColumnType<T>, Dictionary {
   dataIndex?: React.Key | React.Key[];
@@ -13,8 +14,8 @@ const defaultoptions: TableProps<any> = {
   pagination: {
     showQuickJumper: true,
     showSizeChanger: true,
-    defaultPageSize: 5,
-    pageSizeOptions: ['5', '10', '20', '50', '100'],
+    defaultPageSize: TABLE_PAGE_SIZE,
+    pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
   },
 };
 
