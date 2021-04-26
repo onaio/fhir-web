@@ -33,7 +33,6 @@ import {
   INVENTORY_ADD_SERVICE_POINT,
   SEARCH_QUERY_PARAM,
   TableColumnsNamespace,
-  tablePaginationOptions,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
@@ -183,12 +182,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
               <Button type="primary">{lang.ADD_SERVICE_POINT}</Button>
             </Link>
           </div>
-          <TableLayout
-            className="custom-table"
-            datasource={datasource}
-            columns={columns}
-            pagination={tablePaginationOptions}
-          />
+          <TableLayout className="custom-table" datasource={datasource} columns={columns} />
         </Col>
       </Row>
     </div>

@@ -184,16 +184,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               </Button>
             </Link>
           </div>
-          <TableLayout
-            datasource={tableData}
-            columns={columns}
-            pagination={{
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: 5,
-              pageSizeOptions: ['5', '10', '20', '50', '100'],
-            }}
-          />
+          <TableLayout datasource={tableData} columns={columns} />
         </Col>
         <ViewDetails keycloakBaseURL={keycloakBaseURL} groupId={groupId} />
       </Row>
