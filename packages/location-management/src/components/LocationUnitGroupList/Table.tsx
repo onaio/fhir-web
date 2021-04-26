@@ -43,6 +43,7 @@ export const onDelete = (
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails, opensrpBaseURL } = props;
+  const data = props.data.sort((a, b) => a.name.localeCompare(b.name)); // sorts the data by name  before populating in the table
 
   const columns: Column<TableData>[] = [
     {
@@ -87,7 +88,7 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  return <TableLayout datasource={props.data} columns={columns} />;
+  return <TableLayout datasource={data} columns={columns} />;
 };
 
 export default Table;
