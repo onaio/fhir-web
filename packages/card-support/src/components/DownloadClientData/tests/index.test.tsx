@@ -129,7 +129,7 @@ describe('components/DownloadClientData', () => {
      */
   });
 
-  const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest';
+  const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/';
   const accessToken = 'hunter2';
   const opensrpServiceClass = OpenSRPService;
   const props = {
