@@ -1,14 +1,20 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
+import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
+import {
+  createChangeHandler,
+  getQueryParams,
+  SearchForm,
+  TableLayout,
+  Column,
+} from '@opensrp/react-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import {
   reducerName as keycloakUserGroupsReducerName,
@@ -118,11 +124,10 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     }
   );
 
-  const columns = [
+  const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
-      editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
@@ -179,8 +184,8 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               </Button>
             </Link>
           </div>
-          <Table
-            dataSource={tableData}
+          <TableLayout
+            datasource={tableData}
             columns={columns}
             pagination={{
               showQuickJumper: true,

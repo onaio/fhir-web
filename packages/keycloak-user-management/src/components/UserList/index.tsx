@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Row, Col, Button, Space, Table } from 'antd';
+import { Row, Col, Button, Space } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Spin } from 'antd';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
+import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -135,7 +135,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
           </div>
           <Space>
             {tableData.length > 0 ? (
-              <Table
+              <TableLayout
                 columns={getTableColumns(
                   removeKeycloakUsersCreator,
                   keycloakBaseURL,
@@ -143,13 +143,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   extraData,
                   sortedInfo
                 )}
-                dataSource={tableData}
-                pagination={{
-                  showQuickJumper: true,
-                  showSizeChanger: true,
-                  defaultPageSize: 5,
-                  pageSizeOptions: ['5', '10', '20', '50', '100'],
-                }}
+                datasource={tableData}
                 onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
                   setSortedInfo(sorter);
                 }}
