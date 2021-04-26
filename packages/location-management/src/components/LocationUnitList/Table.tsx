@@ -1,9 +1,10 @@
 import React from 'react';
-import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
+import { Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import lang from '../../lang';
+import { Column, TableLayout } from '@opensrp/react-utils';
 
 export interface TableData {
   geographicLevel: number;
@@ -19,25 +20,22 @@ export interface Props {
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails } = props;
-  const columns = [
+  const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
-      editable: false,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: lang.LEVEL,
       dataIndex: 'geographicLevel',
-      editable: false,
-      sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
+      sorter: (a, b) => a.geographicLevel - b.geographicLevel,
     },
     {
       title: lang.ACTIONS,
-      dataIndex: 'operation',
       width: '10%',
       // eslint-disable-next-line react/display-name
-      render: (value: boolean, record: TableData) => (
+      render: (value: boolean, record) => (
         <span className="d-flex justify-content-end align-items-center">
           <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
             <Button type="link" className="m-0 p-1">
@@ -69,18 +67,7 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  return (
-    <AntTable
-      pagination={{
-        showQuickJumper: true,
-        showSizeChanger: true,
-        defaultPageSize: 5,
-        pageSizeOptions: ['5', '10', '20', '50', '100'],
-      }}
-      dataSource={props.data}
-      columns={columns}
-    />
-  );
+  return <TableLayout datasource={props.data} columns={columns} />;
 };
 
 export default Table;

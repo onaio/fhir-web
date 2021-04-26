@@ -4,7 +4,7 @@ import { BULK_UPLOAD_PARAM, COMMUNE_GEOGRAPHIC_LEVEL } from '../constants';
 import queryString from 'querystring';
 import React from 'react';
 import { Space } from 'antd';
-import { TreeNode } from '@opensrp/location-management/dist/types';
+import { TreeNode } from '@opensrp/location-management';
 
 export enum UploadStatus {
   UPLOAD_START = 'uploadStart',

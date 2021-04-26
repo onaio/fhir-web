@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button, Table } from 'antd';
+import { Row, PageHeader, Col, Button } from 'antd';
 import { loadProductCatalogue } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import {
@@ -17,7 +17,7 @@ import {
   reducerName as ProductCatalogueReducerName,
   ProductCatalogueReducer,
 } from '../../ducks/productCatalogue';
-import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
@@ -74,7 +74,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
 
   const pageTitle = `${lang.PRODUCT_CATALOGUE} (${data.length})`;
   // add a key prop to the array data to be consumed by the table
-  const dataSource = data.map((singleObject) => {
+  const datasource = data.map((singleObject) => {
     const prodWithKey = {
       ...singleObject,
       key: `${TableColumnsNamespace}-${singleObject.uniqueId}`,
@@ -95,7 +95,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
               <Button type="primary">{lang.ADD_PRODUCT_TO_CATALOGUE}</Button>
             </Link>
           </div>
-          <Table dataSource={dataSource} columns={columns}></Table>
+          <TableLayout datasource={datasource} columns={columns} />
         </Col>
         <ViewDetails {...{ object: productUnderView, objectId: productId }} />
       </Row>

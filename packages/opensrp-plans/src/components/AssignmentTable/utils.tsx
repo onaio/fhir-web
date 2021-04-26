@@ -9,7 +9,7 @@ import { Organization } from '@opensrp/team-management';
 import { Jurisdiction } from '../../ducks/jurisdictions';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import { ActionColumn } from '../TableActionColumn';
-import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
 
 /** describes antd's table data accessors */

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Row, PageHeader, Col, Button, Table, Modal, Form, Select } from 'antd';
+import { Row, PageHeader, Col, Button, Modal, Form, Select } from 'antd';
 import { TeamAssignmentLoading, columnsFactory, getPayload } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService, TableLayout } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import {
   reducer as organizationsReducer,
@@ -299,7 +299,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
-          <Table dataSource={tableData} columns={columns}></Table>
+          <TableLayout datasource={tableData} columns={columns} />
         </Col>
       </Row>
     </div>
