@@ -187,32 +187,21 @@ export const generatedLocation4Dot1 = {
   },
 };
 
-export const expectedFormFields = {
+export const expectedFormFields: LocationFormFields = {
   externalId: '',
   extraFields: [],
-  instance: 'core',
+  instance: 'core' as FormInstances,
   isJurisdiction: true,
   locationTags: [],
   name: '',
   serviceType: '',
-  status: 'Active',
-  type: '',
+  status: 'Active' as LocationUnitStatus,
   username: '',
 };
 
 export const expectedFormFields1: LocationFormFields = {
   externalId: undefined,
-  extraFields: [
-    {
-      geographicLevel: 0,
-    },
-    {
-      version: 0,
-    },
-    {
-      name_en: 'Kenya',
-    },
-  ],
+  extraFields: [{ geographicLevel: 0 }, { version: 0 }, { name_en: 'Kenya' }],
   geometry: undefined,
   id: 'b652b2f4-a95d-489b-9e28-4629746db96a',
   instance: 'core' as FormInstances,
@@ -222,7 +211,6 @@ export const expectedFormFields1: LocationFormFields = {
   parentId: '',
   serviceType: undefined,
   status: 'Active' as LocationUnitStatus,
-  type: 'Feature',
   username: 'web-admin',
 };
 

@@ -93,5 +93,5 @@ export const pageTitleBuilder = (
       appendMissions ? ` ${langObj.MISSIONS}` : ''
     }`;
   }
-  return langObj.NO_STATUS_FOUND;
+  return '';
 };

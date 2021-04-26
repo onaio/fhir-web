@@ -94,8 +94,6 @@ describe('LocationForm', () => {
       'isJurisdiction label'
     );
     expect(toJson(wrapper.find('#isJurisdiction input'))).toMatchSnapshot('isJurisdiction field');
-    expect(toJson(wrapper.find('#type label'))).toMatchSnapshot('type label');
-    expect(toJson(wrapper.find('#type input'))).toMatchSnapshot('type field');
     expect(toJson(wrapper.find('#serviceType label'))).toMatchSnapshot('serviceType label');
     expect(toJson(wrapper.find('#serviceType input'))).toMatchSnapshot('serviceType field');
     expect(toJson(wrapper.find('#externalId label'))).toMatchSnapshot('externalId label');
@@ -159,11 +157,6 @@ describe('LocationForm', () => {
 
     expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
       `"Location categoryService pointJurisdiction"`
-    );
-
-    // type is required for core
-    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(
-      `"TypeType can only contain letters, numbers and spaces"`
     );
 
     // name is required for core
@@ -269,9 +262,6 @@ describe('LocationForm', () => {
       `"Location categoryService pointJurisdiction"`
     );
 
-    // type is required for core, but not required for eusm instance
-    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"Type"`);
-
     // name is required for core
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
@@ -331,11 +321,6 @@ describe('LocationForm', () => {
       .simulate('change', {
         target: { checked: true },
       });
-
-    // simulate type field change
-    wrapper
-      .find('FormItem#type input')
-      .simulate('change', { target: { name: 'type', value: 'Feature' } });
 
     // simulate name change
     wrapper
@@ -429,11 +414,6 @@ describe('LocationForm', () => {
       .simulate('change', {
         target: { checked: true },
       });
-
-    // simulate type field change
-    wrapper
-      .find('FormItem#type input')
-      .simulate('change', { target: { name: 'type', value: 'Feature' } });
 
     // simulate name change
     wrapper

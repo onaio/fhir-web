@@ -53,10 +53,9 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       title: lang.ACTIONS,
       width: '10%',
-
       // eslint-disable-next-line react/display-name
-      render: (_: unknown, record: TableData) => (
-        <span className="d-flex justify-content-end align-items-center">
+      render: (_: unknown, record) => (
+        <span className="d-flex justify-content-end align-items-center Actions">
           <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
             <Button type="link" className="m-0 p-1">
               {lang.EDIT}
@@ -73,7 +72,7 @@ const Table: React.FC<Props> = (props: Props) => {
                   {lang.VIEW_DETAILS}
                 </Menu.Item>
                 <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL)}>
-                  {lang.DELETE}
+                  {lang.DEACTIVATE}
                 </Menu.Item>
               </Menu>
             }
