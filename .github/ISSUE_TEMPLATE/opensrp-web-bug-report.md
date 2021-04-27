@@ -6,11 +6,11 @@ labels: Bug Report
 assignees: ''
 ---
 
-## Project deployment did you experience the bug on
+## In what project deployment did you experience the bug?
 
-## How do we replicate the bug
+## How do we replicate the bug?
 
-## How is the feature with the bug expected to work
+## How is the feature with the bug expected to work?
 
 ## Please share any other relevant information about the bug or project.
 
