@@ -123,7 +123,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         .list({ plan: defaultPlanId })
         .then((response: RawAssignment[]) => {
           const parsedAssignments = processRawAssignments(response);
-          dispatch(fetchAssignments(parsedAssignments));
+          dispatch(fetchAssignments(parsedAssignments, assignmentsList.length > 0));
         })
         .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
 

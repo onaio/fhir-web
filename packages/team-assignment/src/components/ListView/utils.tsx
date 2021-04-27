@@ -99,6 +99,7 @@ export const getPayload = (
 ): Assignment[] => {
   const now = moment(new Date());
   let startDate = now.format();
+  const endDate = now.add(10, 'year').format();
 
   const payload: Assignment[] = [];
   const assignmentsByOrgId = keyBy(existingAssignments, 'organization');
@@ -118,13 +119,13 @@ export const getPayload = (
         jurisdiction: selectedJurisdictionId,
         organization: orgId,
         plan: selectedPlanId,
-        toDate: now.add(10, 'year').format(), // set a future date of 10 years
+        toDate: endDate, // set a future date of 10 years
       });
     }
   }
 
   // turns out if you put it in the loop it keeps subtracting a day for every iteration
-  const retireDate = now.format();
+  const retireDate = moment(new Date()).format();
 
   for (const retiredOrgId of initialOrgs.filter((orgId) => !selectedOrgs.includes(orgId))) {
     if (!payload.map((obj) => obj.organization).includes(retiredOrgId)) {
