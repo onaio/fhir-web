@@ -43,7 +43,7 @@ exports[`components/Antd/DraftFileList renders correctly: search 1`] = `
 `;
 
 exports[`components/Antd/DraftFileList renders correctly: table 1`] = `
-<Table
+<TableLayout
   columns={
     Array [
       Object {
@@ -94,7 +94,7 @@ exports[`components/Antd/DraftFileList renders correctly: table 1`] = `
       },
     ]
   }
-  dataSource={
+  datasource={
     Array [
       Object {
         "createdAt": "Jun 19, 2020, 4:23:22 PM",
@@ -123,21 +123,6 @@ exports[`components/Antd/DraftFileList renders correctly: table 1`] = `
     ]
   }
   onChange={[Function]}
-  pagination={
-    Object {
-      "defaultPageSize": 5,
-      "pageSizeOptions": Array [
-        "5",
-        "10",
-        "20",
-        "50",
-        "100",
-      ],
-      "showQuickJumper": true,
-      "showSizeChanger": true,
-    }
-  }
-  rowKey="key"
 />
 `;
 
