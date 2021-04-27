@@ -4,9 +4,11 @@ import { ColumnType, TableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../constants';
 
-export interface Column<T> extends ColumnType<T>, Dictionary {
-  dataIndex?: React.Key | React.Key[];
-  key?: React.Key;
+type TKey<T> = keyof T & React.Key;
+
+export interface Column<T = { [key: string]: any }> extends ColumnType<T>, Dictionary {
+  dataIndex?: TKey<T> | TKey<T>[];
+  key?: TKey<T>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
