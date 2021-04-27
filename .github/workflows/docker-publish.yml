@@ -7,6 +7,7 @@ on:
     branches:
       - master
       - add-docker-build-push-ci
+      - deploy-master
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -20,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       customTag:
-        description: "Includes the specified tag to docker image tags"
+        description: 'Includes the specified tag to docker image tags'
         required: false
 
 jobs:
@@ -48,7 +49,6 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-
 
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -86,7 +86,6 @@ jobs:
         id: docker_build
         with:
           push: true
-          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.docker_meta.outputs.tags }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
