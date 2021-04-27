@@ -138,12 +138,17 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (treeData.length) {
-      if (currentClicked && currentClicked.children) {
-        const data = parseTableData([currentClicked, ...currentClicked.children]);
+      // if have selected some in tree and that selected have some child then only show data from selected node in table
+      if (currentClicked && currentClicked.children && currentClicked.children.length) {
+        const cloneddata = [...currentClicked.children];
+        const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
+        const data: TableData[] = parseTableData([currentClicked, ...sorteddata]);
         setTableData(data);
         setTableDataEvaluated(true);
       } else if (!currentClicked) {
-        const data = parseTableData(treeData);
+        const cloneddata = [...treeData];
+        const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
+        const data: TableData[] = parseTableData(sorteddata);
         setTableData(data);
         setTableDataEvaluated(true);
       }
@@ -157,16 +162,16 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{lang.LOCATION_UNIT}</title>
       </Helmet>
-      <h5 className="mb-3">{lang.LOCATION_UNIT_MANAGEMENT}</h5>
+      <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree data={treeData} OnItemClick={(node) => setCurrentClicked(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h5 className="mt-4">
-              {currentClicked?.children?.length ? tableData[0].name : lang.LOCATION_UNIT}
-            </h5>
+            <h6 className="mt-4">
+              {currentClicked?.children ? currentClicked.node.name : lang.LOCATION_UNIT}
+            </h6>
             <div>
               <Link
                 to={(location) => {

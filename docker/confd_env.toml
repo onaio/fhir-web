@@ -1,0 +1,23 @@
+[template]
+src = "config.js.tmpl"
+dest = "/usr/src/web/config.js"
+keys = [
+    "/react/app/backend/active",
+    "/react/app/disable/login/protection",
+    "/react/app/domain/name",
+    "/react/app/enable/opensrp/oauth",
+    "/react/app/express/oauth/get/state/url",
+    "/react/app/express/oauth/logout/url",
+    "/react/app/keycloak/api/base/url",
+    "/react/app/keycloak/logout/url",
+    "/react/app/navbar/brand/img/src",
+    "/react/app/opensrp/access/token/url",
+    "/react/app/opensrp/api/base/url",
+    "/react/app/opensrp/authorization/url",
+    "/react/app/opensrp/client/id",
+    "/react/app/opensrp/logout/url",
+    "/react/app/opensrp/user/url",
+    "/react/app/website/name",
+    "/react/app/action/uuid/namespace",
+    "/react/app/plan/uuid/namespace"
+]
