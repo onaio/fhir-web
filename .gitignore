@@ -4,7 +4,7 @@
 node_modules/
 /.pnp
 .pnp.js
-
+/.idea
 # testing
 coverage/
 
@@ -19,6 +19,7 @@ build
 .env.development.local
 .env.test.local
 .env.production.local
+*.db
 
 debug.log*
 npm-debug.log*

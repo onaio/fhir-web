@@ -124,7 +124,6 @@ describe('location-management/src/components/LocationTagView', () => {
     const heading = wrapper.find('thead');
     expect(heading.find('th')).toHaveLength(2);
     heading.find('th').at(0).children().simulate('click');
-    heading.find('th').at(0).children().simulate('click');
 
     const body = wrapper.find('tbody');
     expect(body.children().first().prop('rowKey')).toBe('4');

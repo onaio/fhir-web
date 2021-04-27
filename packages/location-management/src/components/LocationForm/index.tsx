@@ -7,6 +7,7 @@ import {
   defaultFormField,
   generateLocationUnit,
   getLocationTagOptions,
+  getSelectedLocTagObj,
   getServiceTypeOptions,
   handleGeoFieldsChangeFactory,
   LocationFormFields,
@@ -260,16 +261,6 @@ const LocationForm = (props: LocationFormProps) => {
           </FormItem>
 
           <FormItem
-            id="type"
-            rules={validationRules.type}
-            hidden={isHidden('type')}
-            name="type"
-            label={lang.TYPE_LABEL}
-          >
-            <Input disabled={disabled.includes('type')} placeholder={lang.SELECT_TYPE_LABEL} />
-          </FormItem>
-
-          <FormItem
             hidden={isHidden('serviceType')}
             name="serviceType"
             id="serviceType"
@@ -357,6 +348,7 @@ const LocationForm = (props: LocationFormProps) => {
               }}
               getOptions={getLocationTagOptions}
               fullDataCallback={setLocationTags}
+              getSelectedFullData={getSelectedLocTagObj}
             />
           </FormItem>
 
