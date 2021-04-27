@@ -13,7 +13,8 @@ RUN chown -R node .
 USER node
 
 RUN cp /project/app/.env.sample /project/app/.env \
-      && yarn
+      && yarn --network-timeout 100000
+# network timeout added to fix an issue with build on arm64 arch https://github.com/yarnpkg/yarn/issues/4890
 
 USER root
 RUN chown -R node .
