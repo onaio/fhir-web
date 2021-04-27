@@ -6,8 +6,8 @@ import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../constants';
 
 type TKey<T> = keyof T & React.Key;
 
-export interface Column<T = { [key: string]: any }> extends ColumnType<T>, Dictionary {
-  dataIndex?: TKey<T> | TKey<T>[];
+export interface Column<T> extends ColumnType<T>, Dictionary {
+  dataIndex?: TKey<T>;
   key?: TKey<T>;
 }
 
