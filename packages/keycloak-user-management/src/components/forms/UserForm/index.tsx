@@ -145,7 +145,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             <Button type="primary" htmlType="submit" className="create-user">
               {isSubmitting ? lang.SAVING : lang.SAVE}
             </Button>
-            <Button onClick={() => history.push(URL_USER)} className="cancel-user">
+            <Button onClick={() => history.goBack()} className="cancel-user">
               {lang.CANCEL}
             </Button>
           </Form.Item>
