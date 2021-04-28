@@ -63,3 +63,17 @@ jobs:
       - run:
           name: upload coverage to coveralls
           command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+
+  test-docker-build:
+    docker:
+      - image: docker:stable
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 18.09.3
+      - run: docker version
+
+workflows:
+  build:
+    jobs:
+      - test-docker-build
