@@ -66,7 +66,7 @@ jobs:
 
   test-docker-build:
     docker:
-      - image: jdrouet/docker-with-buildx:stable
+      - image: docker:stable
     steps:
       - checkout
       - setup_remote_docker:
@@ -76,8 +76,9 @@ jobs:
       - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64
       - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
       - run: docker buildx version
+      - run: docker buildx create --use
       - run: docker buildx inspect --bootstrap
-      - run: docker buildx build --tag opensrp/web .
+      - run: docker buildx build --platform linux/arm64,linux/amd64 --tag opensrp/web .
 
 workflows:
   build:
