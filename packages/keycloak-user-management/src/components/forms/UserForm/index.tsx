@@ -2,7 +2,6 @@ import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import { KeycloakUser, Practitioner, UserGroup } from '../../../ducks/user';
-import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
 import { submitForm } from './utils';
 import { Dictionary } from '@onaio/utils';
