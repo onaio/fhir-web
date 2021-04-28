@@ -76,6 +76,7 @@ jobs:
       - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64
       - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
       - run: docker buildx version
+      - run:  docker run --privileged --rm tonistiigi/binfmt --install all
       - run: docker context create builder-env
       - run: docker context ls
       - run: docker buildx create --name builder-a --use builder-env
