@@ -176,6 +176,11 @@ describe('routes', () => {
             title: 'Service point inventory',
             url: '/inventory',
           },
+          {
+            key: 'inventory-upload',
+            title: 'Add inventory via CSV',
+            url: '/inventory/upload',
+          },
         ],
         enabled: true,
         key: 'inventory',
@@ -281,5 +286,9 @@ describe('routes', () => {
         url: '/admin',
       },
     ]);
+    // check inventory bulk upload title in routes as second item under inventory sub menu
+    expect((routes.find((r) => r.key === 'inventory')?.children as any)[1].title).toEqual(
+      'Add inventory via CSV'
+    );
   });
 });
