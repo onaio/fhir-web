@@ -4,6 +4,9 @@ RUN git clone --depth=1 --branch=config-sessions https://github.com/onaio/expres
 
 FROM node:14.9.0-alpine as build
 
+RUN yarn config set network-timeout 100000 -g
+# network timeout added to fix an issue with build on arm64 arch https://github.com/yarnpkg/yarn/issues/4890
+
 COPY ./ /project
 
 WORKDIR /project
@@ -13,8 +16,7 @@ RUN chown -R node .
 USER node
 
 RUN cp /project/app/.env.sample /project/app/.env \
-      && yarn --network-timeout 100000
-# network timeout added to fix an issue with build on arm64 arch https://github.com/yarnpkg/yarn/issues/4890
+      && yarn
 
 USER root
 RUN chown -R node .
@@ -23,6 +25,7 @@ RUN yarn lerna:prepublish
 
 FROM node:14.9.0-alpine as nodejsbuild
 COPY --from=sources /usr/src/express-server /usr/src/express-server
+RUN yarn config set network-timeout 100000 -g
 
 WORKDIR /usr/src/express-server
 RUN yarn && yarn tsc && npm prune -production
