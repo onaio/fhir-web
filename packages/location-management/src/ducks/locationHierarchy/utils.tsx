@@ -76,35 +76,31 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
  * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<LocationUnit>>} returns array of location unit at geographicLevel 0
  */
-export async function getBaseTreeNode(opensrpBaseURL: string) {
+export function getBaseTreeNode(opensrpBaseURL: string): Promise<LocationUnit[]> {
   const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
-  return await serve
-    .list({
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      is_jurisdiction: true,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      return_geometry: false,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
-    })
-    .then((response: LocationUnit[]) => response);
+  return serve.list({
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    is_jurisdiction: true,
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    return_geometry: false,
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    properties_filter: getFilterParams({ status: 'Active', geographicLevel: 0 }),
+  });
 }
 
 /** Gets the hierarchy of the location units
  *
- * @param {Array<LocationUnit>} location - array of location units to get hierarchy of
+ * @param {Array<LocationUnit>} locations - array of location units to get hierarchy of
  * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
  */
-export async function getHierarchy(location: LocationUnit[], opensrpBaseURL: string) {
-  const hierarchy: RawOpenSRPHierarchy[] = [];
-  for (const loc of location) {
+export function getHierarchy(locations: LocationUnit[], opensrpBaseURL: string) {
+  const hierarchy: Promise<RawOpenSRPHierarchy>[] = [];
+  locations.forEach((location) => {
     const serve = new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL);
-    const data = await serve.read(loc.id).then((response: RawOpenSRPHierarchy) => response);
-    hierarchy.push(data);
-  }
-
-  return hierarchy;
+    hierarchy.push(serve.read(location.id));
+  });
+  return Promise.all(hierarchy);
 }
 /**
  * serialize tree due to circular dependencies

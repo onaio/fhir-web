@@ -5,33 +5,30 @@ import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
-  fetchLocationUnits,
-  getLocationUnitsArray,
   LocationUnit,
   locationUnitsReducer,
   locationUnitsReducerName,
 } from '../../ducks/location-units';
-import { LOCATION_UNIT_ENDPOINT, URL_LOCATION_UNIT_ADD } from '../../constants';
+import {
+  LOCATION_HIERARCHY,
+  LOCATION_UNIT_ENDPOINT,
+  LOCATION_UNIT_FIND_BY_PROPERTIES,
+  URL_LOCATION_UNIT_ADD,
+} from '../../constants';
+import { useQuery, useQueries } from 'react-query';
 import lang, { Lang } from '../../lang';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
-  getAllHierarchiesArray,
-  fetchAllHierarchies,
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
-import {
-  generateJurisdictionTree,
-  getBaseTreeNode,
-  getHierarchy,
-} from '../../ducks/locationHierarchy/utils';
+import { generateJurisdictionTree, getBaseTreeNode } from '../../ducks/locationHierarchy/utils';
 import './LocationUnitList.css';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -91,50 +88,41 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
-  const dispatch = useDispatch();
-  const treeData = useSelector((state) => getAllHierarchiesArray(state));
-  const locationUnits = useSelector((state) => getLocationUnitsArray(state));
-  const [loading, setLoading] = useState<boolean>(false);
-  const [tableDataEvaluated, setTableDataEvaluated] = useState<boolean>(false);
+  const { opensrpBaseURL } = props;
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
-  const { opensrpBaseURL } = props;
+  const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
 
-  useEffect(() => {
-    // clear tree data and location units if
-    // user switches to location management module
-    // from a module that needs only one hierarchy i.e teams assignment
-    if (treeData.length && treeData.length !== locationUnits.length) {
-      dispatch(fetchLocationUnits([]));
-      dispatch(fetchAllHierarchies([]));
+  const locationUnits = useQuery(
+    LOCATION_UNIT_FIND_BY_PROPERTIES,
+    () => getBaseTreeNode(opensrpBaseURL),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: LocationUnit[]) => res,
     }
-  });
+  );
 
-  useEffect(() => {
-    if (!locationUnits.length) {
-      getBaseTreeNode(opensrpBaseURL)
-        .then((response: LocationUnit[]) => dispatch(fetchLocationUnits(response)))
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationUnits.length, treeData.length]);
-
-  // Function used to parse data from ParsedHierarchyNode to Tree Data
-  useEffect(() => {
-    if (!treeData.length && locationUnits.length) {
-      setLoading(true);
-      getHierarchy(locationUnits, opensrpBaseURL)
-        .then((hierarchy: RawOpenSRPHierarchy[]) => {
-          const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
-          dispatch(fetchAllHierarchies(allhierarchy));
+  useQueries(
+    locationUnits.data
+      ? locationUnits.data.map((location) => {
+          return {
+            queryKey: [LOCATION_HIERARCHY, location.id],
+            queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
+            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
+            onSuccess: (res) => {
+              // the Tree is not already in the locationtree
+              // TOdo : what we only a part of tree is changed, we need to remove old one and add new one?
+              if (!treeData.find((data) => JSON.stringify(data) === JSON.stringify(res)))
+                setTreeData([...treeData, res as ParsedHierarchyNode]);
+            },
+            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
+            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
+          };
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
-        .finally(() => setLoading(false));
-    }
-    // to avoid extra rerenders
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
+      : []
+  );
 
   useEffect(() => {
     if (treeData.length) {
@@ -144,18 +132,17 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
         const data: TableData[] = parseTableData([currentClicked, ...sorteddata]);
         setTableData(data);
-        setTableDataEvaluated(true);
       } else if (!currentClicked) {
         const cloneddata = [...treeData];
         const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
         const data: TableData[] = parseTableData(sorteddata);
         setTableData(data);
-        setTableDataEvaluated(true);
       }
     }
   }, [treeData, currentClicked]);
 
-  if (loading || !tableDataEvaluated) return <Spin size={'large'} />;
+  if (tableData.length === 0 || treeData.length !== locationUnits.data?.length)
+    return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
