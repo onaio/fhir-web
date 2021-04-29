@@ -3,10 +3,9 @@
  * @param name - The configurable name that is a property of the environment/configuration.
  * @param defaultValue - The default value to return the value is not defined in process.env and window._env_.
  */
-export const setEnv = (name: string, defaultValue: any, isInteger?: boolean) => {
+export const setEnv = (name: string, defaultValue: any) => {
   const { [name]: envValue } = process.env;
-  const value =
-    typeof envValue === 'undefined' ? defaultValue : isInteger ? Number(envValue) : envValue;
+  const value = typeof envValue === 'undefined' ? defaultValue : envValue;
 
   if (typeof (window as any)._env_ === 'undefined') {
     return value;
