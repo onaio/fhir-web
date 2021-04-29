@@ -1,3 +1,5 @@
+import { setEnv } from './utils';
+
 /** enum representing the keycloak roles */
 export enum Roles {
   ROLE_EDIT_KEYCLOAK_USERS = 'ROLE_EDIT_KEYCLOAK_USERS',
@@ -19,23 +21,6 @@ export const OPENSRP_ROLES =
   (process.env.REACT_APP_OPENSRP_ROLES &&
     JSON.parse(process.env.REACT_APP_OPENSRP_ROLES as string)) ||
   defaultRoles;
-
-/** Returns a value in window._env_ or process.env or the defaultValue passed in.
- *
- * @param name - The configurable name that is a property of the environment/configuration.
- * @param defaultValue - The default value to return the value is not defined in process.env and window._env_.
- */
-export const setEnv = (name: string, defaultValue: any) => {
-  const { [name]: envValue } = process.env;
-  const value = typeof envValue === 'undefined' ? defaultValue : envValue;
-
-  if (typeof (window as any)._env_ === 'undefined') {
-    return value;
-  }
-  const { [name]: confValue } = (window as any)._env_;
-
-  return confValue === undefined ? value : confValue;
-};
 
 export const WEBSITE_NAME = setEnv('REACT_APP_WEBSITE_NAME', 'OpenSRP Web');
 
@@ -62,7 +47,11 @@ export const DEFAULT_PLAN_VERSION = setEnv('REACT_APP_DEFAULT_PLAN_VERSION', '1'
 
 export const TASK_GENERATION_STATUS = setEnv('REACT_APP_TASK_GENERATION_STATUS', 'internal');
 
-export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = setEnv('REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL', 0);
+export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = setEnv(
+  'REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL',
+  '0',
+  true
+);
 
 export const MAIN_LOGO_SRC = setEnv(
   'REACT_APP_MAIN_LOGO_SRC',
