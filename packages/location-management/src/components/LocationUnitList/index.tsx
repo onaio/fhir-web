@@ -113,9 +113,15 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             onSuccess: (res) => {
               // the Tree is not already in the locationtree
-              // TOdo : what we only a part of tree is changed, we need to remove old one and add new one?
-              if (!treeData.find((data) => JSON.stringify(data) === JSON.stringify(res)))
-                setTreeData([...treeData, res as ParsedHierarchyNode]);
+              if (!treeData.find((data) => JSON.stringify(data) === JSON.stringify(res))) {
+                // if the tree already exist i.e only a part of tree is changed, we need to replce old one else add new one
+                const alreadyExist = treeData.findIndex(
+                  (tree) => tree.id === (res as ParsedHierarchyNode).id
+                );
+                if (alreadyExist !== -1)
+                  treeData.splice(alreadyExist, 1, res as ParsedHierarchyNode);
+                else setTreeData([...treeData, res as ParsedHierarchyNode]);
+              }
             },
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
