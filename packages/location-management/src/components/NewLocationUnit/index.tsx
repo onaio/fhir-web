@@ -56,8 +56,15 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
   };
   const user = useSelector((state) => getUser(state));
 
-  const firstInitialValues = getLocationFormFields(undefined, instance);
-  const initialValues = processInitialValues?.(firstInitialValues);
+  const urlquery = new URLSearchParams(history.location.search);
+
+  const firstInitialValues: LocationFormFields = {
+    parentId: urlquery.get('parentId') ?? undefined,
+    ...getLocationFormFields(undefined, instance),
+  };
+  const initialValues = processInitialValues
+    ? processInitialValues(firstInitialValues)
+    : firstInitialValues;
 
   const locationFormProps: LocationFormProps = {
     initialValues: initialValues,
