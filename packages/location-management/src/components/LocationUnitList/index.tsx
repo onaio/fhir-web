@@ -91,7 +91,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL } = props;
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
-  const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
+  const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
   const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
 
   const locationUnits = useQuery(
@@ -132,20 +132,18 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (treeData.length) {
-      // if have selected some in tree and that selected have some child then only show data from selected node in table
-      if (currentClicked && currentClicked.children && currentClicked.children.length) {
-        const cloneddata = [...currentClicked.children];
-        const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
-        const data: TableData[] = parseTableData([currentClicked, ...sorteddata]);
-        setTableData(data);
-      } else if (!currentClicked) {
-        const cloneddata = [...treeData];
-        const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
-        const data: TableData[] = parseTableData(sorteddata);
-        setTableData(data);
-      }
+      const titledata = currentClickedNode ?? null;
+      const childrendata: ParsedHierarchyNode[] = currentClickedNode
+        ? [...(currentClickedNode.children ?? [])]
+        : [...treeData];
+
+      const sorteddata = childrendata.sort((a, b) => a.title.localeCompare(b.title));
+      const data: TableData[] = parseTableData(
+        titledata ? [...[titledata], ...sorteddata] : sorteddata
+      );
+      setTableData(data);
     }
-  }, [treeData, currentClicked]);
+  }, [treeData, currentClickedNode]);
 
   if (tableData.length === 0 || treeData.length !== locationUnits.data?.length)
     return <Spin size={'large'} />;
@@ -158,20 +156,16 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={treeData} OnItemClick={(node) => setCurrentClicked(node)} />
+          <Tree data={treeData} OnItemClick={(node) => setCurrentClickedNode(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h6 className="mt-4">
-              {currentClicked && currentClicked.children && currentClicked.children.length
-                ? tableData[0].name
-                : lang.LOCATION_UNIT}
-            </h6>
+            <h6 className="mt-4">{currentClickedNode ? tableData[0].name : lang.LOCATION_UNIT}</h6>
             <div>
               <Link
                 to={(location) => {
                   let query = '?';
-                  if (currentClicked) query += `parentId=${currentClicked.id}`;
+                  if (currentClickedNode) query += `parentId=${currentClickedNode.id}`;
                   return { ...location, pathname: URL_LOCATION_UNIT_ADD, search: query };
                 }}
               >
