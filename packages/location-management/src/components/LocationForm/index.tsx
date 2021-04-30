@@ -18,7 +18,6 @@ import { baseURL, SERVICE_TYPES_SETTINGS_ID, URL_LOCATION_UNIT } from '../../con
 import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
 import { CustomSelect } from './CustomSelect';
 import { loadLocationTags, loadSettings, postPutLocationUnit } from '../../helpers/dataLoaders';
-import { OpenSRPService } from '@opensrp/react-utils';
 import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
@@ -28,13 +27,12 @@ const { Item: FormItem } = Form;
 /** props for the location form */
 export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
-  initialValues: LocationFormFields | undefined;
+  initialValues?: LocationFormFields;
   successURLGenerator: (payload: LocationUnit) => string;
   opensrpBaseURL: string;
   hidden: string[];
   disabled: string[];
   onCancel: () => void;
-  service: typeof OpenSRPService;
   username: string;
   afterSubmit: Function;
 }
@@ -45,7 +43,6 @@ const defaultProps = {
   hidden: [],
   disabled: [],
   onCancel: () => void 0,
-  service: OpenSRPService,
   username: '',
   opensrpBaseURL: baseURL,
   afterSubmit: () => {
@@ -104,7 +101,6 @@ const LocationForm = (props: LocationFormProps) => {
     disabled,
     onCancel,
     hidden,
-    service,
     username,
     afterSubmit,
     disabledTreeNodesCallback,
@@ -171,7 +167,7 @@ const LocationForm = (props: LocationFormProps) => {
             is_jurisdiction: values.isJurisdiction,
           };
 
-          postPutLocationUnit(payload, opensrpBaseURL, service, isEditMode, params)
+          postPutLocationUnit(payload, opensrpBaseURL, isEditMode, params)
             .then(() => {
               afterSubmit();
               sendSuccessNotification(successMessage);
@@ -213,7 +209,6 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.parentId}
           >
             <CustomTreeSelect
-              service={service}
               baseURL={opensrpBaseURL}
               disabled={disabled.includes('parentId')}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
@@ -271,7 +266,7 @@ const LocationForm = (props: LocationFormProps) => {
               placeholder={lang.SERVICE_TYPE_PLACEHOLDER}
               disabled={disabled.includes('serviceType')}
               loadData={(setData) => {
-                return loadSettings(SERVICE_TYPES_SETTINGS_ID, opensrpBaseURL, service, setData);
+                return loadSettings(SERVICE_TYPES_SETTINGS_ID, opensrpBaseURL, setData);
               }}
               getOptions={getServiceTypeOptions}
             />
@@ -344,7 +339,7 @@ const LocationForm = (props: LocationFormProps) => {
               showSearch
               placeholder={lang.ENTER_A_LOCATION_GROUP_NAME_PLACEHOLDER}
               loadData={(setData) => {
-                return loadLocationTags(opensrpBaseURL, service, setData);
+                return loadLocationTags(opensrpBaseURL, setData);
               }}
               getOptions={getLocationTagOptions}
               fullDataCallback={setLocationTags}
@@ -354,7 +349,6 @@ const LocationForm = (props: LocationFormProps) => {
 
           <ExtraFields
             baseURL={opensrpBaseURL}
-            service={service}
             hidden={isHidden('extraFields')}
             disabled={isDisabled('extraFields')}
           />
