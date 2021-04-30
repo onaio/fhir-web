@@ -14,11 +14,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 import { baseURL } from '../../../constants';
 import lang from '../../../lang';
-import {
-  generateJurisdictionTree,
-  getBaseTreeNode,
-  getHierarchy,
-} from '../../../ducks/locationHierarchy/utils';
+import { generateJurisdictionTree, getBaseTreeNode } from '../../../ducks/locationHierarchy/utils';
 import {
   fetchAllHierarchies,
   reducer as locationHierarchyReducer,
@@ -143,18 +139,6 @@ describe('location-management/src/components/LocationUnitList', () => {
         name: parsedHierarchy[2].title,
       },
     ]);
-  });
-
-  it('test getHierarchy', async () => {
-    fetch.mockResponse(JSON.stringify(rawHierarchy[2]));
-
-    await flushPromises();
-    const response = await getHierarchy([baseLocationUnits[2]], baseURL);
-
-    await flushPromises();
-
-    expect(response).toMatchObject([rawHierarchy[2]]);
-    fetch.resetMocks();
   });
 
   it('fail loading location ', async () => {

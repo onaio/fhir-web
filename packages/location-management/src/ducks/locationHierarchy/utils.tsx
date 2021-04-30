@@ -10,7 +10,7 @@ import cycle from 'cycle';
 import TreeModel from 'tree-model';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { LocationUnit } from '../../ducks/location-units';
-import { LOCATION_HIERARCHY, LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
+import { LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
 
 const { getFilterParams } = OpenSRPService;
 
@@ -88,20 +88,6 @@ export function getBaseTreeNode(opensrpBaseURL: string): Promise<LocationUnit[]>
   });
 }
 
-/** Gets the hierarchy of the location units
- *
- * @param {Array<LocationUnit>} locations - array of location units to get hierarchy of
- * @param {string} opensrpBaseURL - base url
- * @returns {Promise<Array<RawOpenSRPHierarchy>>} array of RawOpenSRPHierarchy
- */
-export function getHierarchy(locations: LocationUnit[], opensrpBaseURL: string) {
-  const hierarchy: Promise<RawOpenSRPHierarchy>[] = [];
-  locations.forEach((location) => {
-    const serve = new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL);
-    hierarchy.push(serve.read(location.id));
-  });
-  return Promise.all(hierarchy);
-}
 /**
  * serialize tree due to circular dependencies
  *
