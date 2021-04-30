@@ -155,7 +155,6 @@ export async function loadSettings<T>(
 /** gets location tags from the api
  *
  * @param baseURL - openSRP base url
- * @param serviceClass  -  the openSRP service class
  * @param callback - callback to call with response data
  */
 export async function loadLocationTags(
