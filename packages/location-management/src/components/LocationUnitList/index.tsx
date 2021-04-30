@@ -162,7 +162,11 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h6 className="mt-4">{currentClicked ? tableData[0].name : lang.LOCATION_UNIT}</h6>
+            <h6 className="mt-4">
+              {currentClicked && currentClicked.children && currentClicked.children.length
+                ? tableData[0].name
+                : lang.LOCATION_UNIT}
+            </h6>
             <div>
               <Link
                 to={(location) => {
