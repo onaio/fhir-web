@@ -1,4 +1,4 @@
-import { BrokenPage, OpenSRPService, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import {
   fetchLocationUnits,
@@ -29,7 +29,7 @@ export type LocationRouteProps = { id: string };
 export interface EditLocationUnitProps
   extends Pick<
       LocationFormProps,
-      'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
+      'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps<LocationRouteProps> {
   opensrpBaseURL: string;
@@ -43,7 +43,6 @@ const defaultEditLocationUnitProps = {
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
-  service: OpenSRPService,
   successURLGenerator: () => '',
   cancelURLGenerator: () => '',
 };
@@ -57,7 +56,6 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     instance,
     hidden,
     disabled,
-    service,
     opensrpBaseURL,
     cancelURLGenerator,
     successURLGenerator,
@@ -105,13 +103,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     };
     // asynchronously get jurisdiction as structure and jurisdiction, depending on the resolved
     // promise, we can then know if the location to edit is a jurisdiction or structure
-    const firstPromise = loadJurisdiction(
-      locId,
-      undefined,
-      opensrpBaseURL,
-      jurisdictionParams,
-      service
-    )
+    const firstPromise = loadJurisdiction(locId, undefined, opensrpBaseURL, jurisdictionParams)
       .then((res) => {
         if (res) {
           locationsDispatcher(res, true);
@@ -120,13 +112,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       .catch((err) => {
         throw err;
       });
-    const secondPromise = loadJurisdiction(
-      locId,
-      undefined,
-      opensrpBaseURL,
-      structureParams,
-      service
-    )
+    const secondPromise = loadJurisdiction(locId, undefined, opensrpBaseURL, structureParams)
       .then((res) => {
         if (res) {
           setIsJurisdiction(false);
@@ -168,7 +154,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     hidden,
     disabled,
     onCancel: cancelHandler,
-    service,
+
     opensrpBaseURL,
     user: user.username,
     afterSubmit: () => dispatch(fetchAllHierarchies([])),

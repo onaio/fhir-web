@@ -1,5 +1,4 @@
 import { getUser } from '@onaio/session-reducer';
-import { OpenSRPService } from '@opensrp/react-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +14,7 @@ import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 export interface NewLocationUnitProps
   extends Pick<
       LocationFormProps,
-      'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
+      'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps {
   opensrpBaseURL: string;
@@ -30,7 +29,6 @@ const defaultNewLocationUnitProps = {
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
-  service: OpenSRPService,
   successURLGenerator: () => '',
   cancelURLGenerator: () => '',
 };
@@ -44,7 +42,6 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     instance,
     hidden,
     disabled,
-    service,
     opensrpBaseURL,
     successURLGenerator,
     cancelURLGenerator,
@@ -68,7 +65,6 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     hidden: hidden,
     disabled: disabled,
     onCancel: cancelHandler,
-    service,
     opensrpBaseURL,
     username: user.username,
     afterSubmit: () => dispatch(fetchAllHierarchies([])),
