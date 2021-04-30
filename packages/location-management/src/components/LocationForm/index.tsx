@@ -34,7 +34,7 @@ export interface LocationFormProps
   disabled: string[];
   onCancel: () => void;
   username: string;
-  afterSubmit: Function;
+  afterSubmit: (payload: LocationUnit) => void;
 }
 
 const defaultProps = {
@@ -169,7 +169,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           postPutLocationUnit(payload, opensrpBaseURL, isEditMode, params)
             .then(() => {
-              afterSubmit();
+              afterSubmit(payload);
               sendSuccessNotification(successMessage);
               setGeneratedPayload(payload);
               setAreWeDoneHere(true);
