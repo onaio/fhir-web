@@ -116,7 +116,7 @@ describe('components/DraftFiles', () => {
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
       'https://test-example.com/rest/',
-      '/form-download',
+      'form-download',
       {
         createdAt: 'Jun 19, 2020, 4:23:22 PM',
         form_relation: '',

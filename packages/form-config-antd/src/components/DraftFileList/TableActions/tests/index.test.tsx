@@ -54,7 +54,7 @@ describe('components/Antd/DraftFilelist/TableActions', () => {
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
       'https://test-example.com/rest/',
-      '/clientForm',
+      'clientForm',
       {
         createdAt: 'Jun 19, 2020, 12:31:37 PM',
         form_relation: '',
@@ -106,7 +106,7 @@ describe('components/Antd/DraftFilelist/TableActions', () => {
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
       'https://test-example.com/rest/',
-      '/clientForm',
+      'clientForm',
       {
         createdAt: 'Jun 19, 2020, 12:31:37 PM',
         form_relation: '',
