@@ -66,7 +66,7 @@ describe('components/Antd/FileList', () => {
   });
 
   const props = {
-    opensrpBaseURL: 'https://test-example.com/rest',
+    opensrpBaseURL: 'https://test-example.com/rest/',
     uploadFileURL: '/form-upload',
     isJsonValidator: true,
     history,
@@ -273,7 +273,7 @@ describe('components/Antd/FileList', () => {
 
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
+      'https://test-example.com/rest/',
       '/clientForm',
       {
         createdAt: 'Jun 19, 2020, 12:31:37 PM',
@@ -341,7 +341,7 @@ describe('components/Antd/FileList', () => {
     wrapper.update();
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
+      'https://test-example.com/rest/',
       '/clientForm',
       {
         createdAt: 'Jun 19, 2020, 12:31:37 PM',
