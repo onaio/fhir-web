@@ -39,7 +39,7 @@ describe('utils/formatDate', () => {
 });
 
 describe('utils/downloadManifestFile', () => {
-  const baseURL = 'https://test-example.com/rest';
+  const baseURL = 'https://test-example.com/rest/';
   const downloadEndPoint = 'form-download';
   const accessToken = 'hunter2';
 
@@ -60,7 +60,7 @@ describe('utils/downloadManifestFile', () => {
 
     expect(fetch.mock.calls).toEqual([
       [
-        'https://test-example.com/restform-download?form_identifier=test-form-1.json&form_version=1.0.26&is_json_validator=true',
+        'https://test-example.com/rest/form-download?form_identifier=test-form-1.json&form_version=1.0.26&is_json_validator=true',
         {
           headers: {
             accept: 'application/json',
@@ -86,7 +86,7 @@ describe('utils/downloadManifestFile', () => {
 
     expect(fetch.mock.calls).toEqual([
       [
-        'https://test-example.com/restform-download?form_identifier=test-form-1.json&form_version=1.0.26',
+        'https://test-example.com/rest/form-download?form_identifier=test-form-1.json&form_version=1.0.26',
         {
           headers: {
             accept: 'application/json',
@@ -115,7 +115,7 @@ describe('helpers/utils/submitUploadForm', () => {
     form: sampleFile,
   };
   const accessToken = 'hunter2';
-  const opensrpBaseURL = 'https://test-example.com/rest';
+  const opensrpBaseURL = 'https://test-example.com/rest/';
   const setSubmittingMock = jest.fn();
   const setIfDoneMock = jest.fn();
   const alertErrorMock = jest.fn();
@@ -232,7 +232,7 @@ describe('helpers/utils/makeRelease', () => {
   });
 
   const accessToken = 'hunter2';
-  const opensrpBaseURL = 'https://test-example.com/rest';
+  const opensrpBaseURL = 'https://test-example.com/rest/';
   const removeDraftFilesMock = jest.fn();
   const setIfDoneHereMock = jest.fn();
   const alertErrorMock = jest.fn();
@@ -367,7 +367,7 @@ describe('helpers/utils/fetchDrafts', () => {
   });
 
   const accessToken = 'hunter2';
-  const opensrpBaseURL = 'https://test-example.com/rest';
+  const opensrpBaseURL = 'https://test-example.com/rest/';
   const fetchDraftFilesMock = jest.fn();
   const setLoadingMock = jest.fn();
   const alertErrorMock = jest.fn();
@@ -494,7 +494,7 @@ describe('helpers/utils/fetchReleaseFiles', () => {
   });
 
   const accessToken = 'hunter2';
-  const opensrpBaseURL = 'https://test-example.com/rest';
+  const opensrpBaseURL = 'https://test-example.com/rest/';
   const fetchReleasesMock = jest.fn();
   const setLoadingMock = jest.fn();
   const alertErrorMock = jest.fn();
@@ -627,7 +627,7 @@ describe('helpers/utils/fetchManifests', () => {
   });
 
   const accessToken = 'hunter2';
-  const opensrpBaseURL = 'https://test-example.com/rest';
+  const opensrpBaseURL = 'https://test-example.com/rest/';
   const fetchFilesMock = jest.fn();
   const removeFilesMock = jest.fn();
   const setLoadingMock = jest.fn();

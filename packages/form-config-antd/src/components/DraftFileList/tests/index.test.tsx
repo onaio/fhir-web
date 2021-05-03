@@ -49,7 +49,7 @@ const history = createBrowserHistory();
 history.push = mockHistoryPush;
 
 const props = {
-  opensrpBaseURL: 'https://test-example.com/rest',
+  opensrpBaseURL: 'https://test-example.com/rest/',
   uploadFileURL: '/form-upload',
   history,
   location: {
@@ -220,7 +220,7 @@ describe('components/Antd/DraftFileList', () => {
 
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
+      'https://test-example.com/rest/',
       '/clientForm',
       {
         createdAt: 'Jun 19, 2020, 4:23:22 PM',

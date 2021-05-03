@@ -34,7 +34,7 @@ reducerRegistry.register(draftReducerName, draftReducer);
 
 const history = createBrowserHistory();
 
-const baseURL = 'https://test-example.com/rest';
+const baseURL = 'https://test-example.com/rest/';
 const endpoint = 'metadata';
 const props = {
   baseURL,
@@ -115,7 +115,7 @@ describe('components/DraftFiles', () => {
 
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
+      'https://test-example.com/rest/',
       '/form-download',
       {
         createdAt: 'Jun 19, 2020, 4:23:22 PM',

@@ -33,7 +33,7 @@ const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification')
 reducerRegistry.register(releasesReducerName, releasesReducer);
 
 const props = {
-  opensrpBaseURL: 'https://test-example.com/rest',
+  opensrpBaseURL: 'https://test-example.com/rest/',
   uploadFileURL: '/form-upload',
   history,
   location: {
