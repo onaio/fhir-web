@@ -65,6 +65,7 @@ export const createOrEditPractitioners = async (
  * @param keycloakBaseURL - keycloak API base URL
  * @param opensrpBaseURL - opensrp api base url
  * @param userGroups - Array of Usergroups to get data from when sending payload of user groups
+ * @param previousUserGroupIds - An array of previously selected user group ids
  * @param langObj - the translations object lookup
  */
 export const submitForm = async (
@@ -72,6 +73,7 @@ export const submitForm = async (
   keycloakBaseURL: string,
   opensrpBaseURL: string,
   userGroups: UserGroup[],
+  previousUserGroupIds: string[],
   langObj: Lang = lang
 ): Promise<void> => {
   const keycloakUserValue: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
@@ -111,12 +113,23 @@ export const submitForm = async (
     promises.push(promise);
   });
 
-  await Promise.allSettled(promises).catch((_: Error) =>
-    sendErrorNotification(langObj.ERROR_OCCURED)
-  );
-  sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
+  previousUserGroupIds.forEach((groupId) => {
+    if (!values.userGroup?.includes(groupId)) {
+      const serve = new KeycloakService(
+        `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
+        keycloakBaseURL
+      );
+      const promise = serve.delete();
+      promises.push(promise);
+    }
+  });
 
-  sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
+  await Promise.allSettled(promises)
+    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
+    .finally(() => {
+      sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
+      sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
+    });
   if (keycloakUserValue.id) {
     history.push(URL_USER);
   }
