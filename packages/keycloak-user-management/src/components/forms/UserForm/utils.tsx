@@ -117,5 +117,7 @@ export const submitForm = async (
   sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
 
   sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
-  history.push(URL_USER);
+  if (keycloakUserValue.id) {
+    history.push(URL_USER);
+  }
 };
