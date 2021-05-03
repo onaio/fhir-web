@@ -119,7 +119,7 @@ describe('helpers/utils/submitUploadForm', () => {
   const setSubmittingMock = jest.fn();
   const setIfDoneMock = jest.fn();
   const alertErrorMock = jest.fn();
-  const endpoint = '/clientForm';
+  const endpoint = 'clientForm';
 
   it('submits', async () => {
     await submitUploadForm(
@@ -237,7 +237,7 @@ describe('helpers/utils/makeRelease', () => {
   const setIfDoneHereMock = jest.fn();
   const alertErrorMock = jest.fn();
   const dispatchMock = jest.fn();
-  const endpoint = '/foo';
+  const endpoint = 'foo';
 
   it('makes a release', async () => {
     makeRelease(
@@ -372,7 +372,7 @@ describe('helpers/utils/fetchDrafts', () => {
   const setLoadingMock = jest.fn();
   const alertErrorMock = jest.fn();
   const dispatchMock = jest.fn();
-  const endpoint = '/foo';
+  const endpoint = 'foo';
 
   it('fetches drafts', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
@@ -499,7 +499,7 @@ describe('helpers/utils/fetchReleaseFiles', () => {
   const setLoadingMock = jest.fn();
   const alertErrorMock = jest.fn();
   const dispatchMock = jest.fn();
-  const endpoint = '/foo';
+  const endpoint = 'foo';
 
   it('fetches releases', async () => {
     fetch.once(JSON.stringify(fixManifestReleases));
@@ -633,7 +633,7 @@ describe('helpers/utils/fetchManifests', () => {
   const setLoadingMock = jest.fn();
   const alertErrorMock = jest.fn();
   const dispatchMock = jest.fn();
-  const endpoint = '/foo';
+  const endpoint = 'foo';
   const formVersion = fixManifestReleases[0].identifier;
 
   it('fetches manifest files', async () => {
