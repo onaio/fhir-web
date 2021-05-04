@@ -166,9 +166,10 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
                 const alreadyExist = treeData.findIndex(
                   (tree) => tree.id === (res as ParsedHierarchyNode).id
                 );
+
                 if (alreadyExist !== -1)
                   treeData.splice(alreadyExist, 1, res as ParsedHierarchyNode);
-                else setTreeData([...treeData, res as ParsedHierarchyNode]);
+                else setTreeData((treeData) => [...treeData, res as ParsedHierarchyNode]);
               }
             },
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
@@ -178,7 +179,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       : []
   );
 
-  if (loading || !locationUnits.data?.length) {
+  if (loading || !locationUnits.data || locationUnits.data.length) {
     return <Spin size="large"></Spin>;
   }
 

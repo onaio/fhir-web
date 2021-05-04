@@ -102,9 +102,10 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
                 const alreadyExist = treeData.findIndex(
                   (tree) => tree.id === (res as ParsedHierarchyNode).id
                 );
+
                 if (alreadyExist !== -1)
                   treeData.splice(alreadyExist, 1, res as ParsedHierarchyNode);
-                else setTreeData([...treeData, res as ParsedHierarchyNode]);
+                else setTreeData((treeData) => [...treeData, res as ParsedHierarchyNode]);
               }
             },
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
@@ -114,7 +115,8 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
       : []
   );
 
-  if (!locationUnits.data?.length) return <Spin size="large"></Spin>;
+  if (treeData.length === 0 || !locationUnits.data || treeData.length !== locationUnits.data.length)
+    return <Spin size="large"></Spin>;
 
   const locationFormProps: LocationFormProps = {
     initialValues: initialValues,
