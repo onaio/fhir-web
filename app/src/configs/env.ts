@@ -65,8 +65,6 @@ export const DEFAULT_TIME = setEnv('REACT_APP_DEFAULT_TIME', 'T00:00:00+00:00');
 export const DEFAULT_PLAN_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20)
 );
-/** Activate teams menu */
-export const ENABLE_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_TEAMS_MODULE', 'false') === 'true';
 
 /** Default plan id */
 export const DEFAULT_PLAN_ID = setEnv(
@@ -164,4 +162,4 @@ export const ENABLE_LANGUAGE_SWITCHER =
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
 export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
-  setEnv('REACT_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
+  setEnv('REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
