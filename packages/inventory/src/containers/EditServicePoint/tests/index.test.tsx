@@ -3,13 +3,14 @@ import { ServicePointEdit } from '..';
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
-import { location1 } from './fixtures';
+import { baseLocationUnits, location1 } from './fixtures';
 import { Provider } from 'react-redux';
 import { RouteComponentProps, Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { commonHiddenFields } from '../../../helpers/utils';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const history = createBrowserHistory();
 
@@ -33,9 +34,10 @@ describe('CreateServicePoint', () => {
   });
 
   it('passes the correct values to form', async () => {
-    fetch.once(JSON.stringify(null));
+    const queryClient = new QueryClient();
     fetch.once(JSON.stringify(location1));
-    fetch.mockResponse(JSON.stringify([]));
+    fetch.once(JSON.stringify(null));
+    fetch.mockResponse(JSON.stringify(baseLocationUnits));
 
     const props = {
       history,
@@ -55,7 +57,9 @@ describe('CreateServicePoint', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ServicePointEdit {...props} />
+          <QueryClientProvider client={queryClient}>
+            <ServicePointEdit {...props} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -64,6 +68,7 @@ describe('CreateServicePoint', () => {
       await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
+    wrapper.update();
 
     const locationFormProps = wrapper.find('LocationForm').props();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
