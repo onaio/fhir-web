@@ -20,3 +20,4 @@ export const OPENSRP_ROLES = {
 };
 export const MAIN_LOGO_SRC =
   'https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png';
+export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = 1;

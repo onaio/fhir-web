@@ -1,6 +1,6 @@
 import React from 'react';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
+import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
   DRAFT_PLANS_LIST_VIEW_URL,
@@ -106,6 +106,11 @@ export function getRoutes(roles: string[]): Route[] {
           title: lang.SERVICE_POINT_INVENTORY,
           url: INVENTORY_SERVICE_POINT_LIST_VIEW,
           key: 'inventory-list',
+        },
+        {
+          title: lang.ADD_INVENTORY_VIA_CSV,
+          url: INVENTORY_BULK_UPLOAD_URL,
+          key: 'inventory-upload',
         },
       ],
     },

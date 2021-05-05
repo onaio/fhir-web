@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Col, Row, Input, Switch } from 'antd';
+import { Button, Form, Col, Row, Input } from 'antd';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -87,10 +87,10 @@ export const submitForm = (
     `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
     keycloakBaseURL
   );
-  const { password, temporary } = values;
+  const { password } = values;
   serve
     .update({
-      temporary: temporary,
+      temporary: false,
       type: 'password',
       value: password,
     })
@@ -172,9 +172,6 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
               ]}
             >
               <Input.Password />
-            </Form.Item>
-            <Form.Item name="temporary" label={lang.TEMPORARY} valuePropName="checked">
-              <Switch />
             </Form.Item>
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" className="reset-password">

@@ -1,3 +1,5 @@
+import { setEnv } from './utils';
+
 /** enum representing the keycloak roles */
 export enum Roles {
   ROLE_EDIT_KEYCLOAK_USERS = 'ROLE_EDIT_KEYCLOAK_USERS',
@@ -20,23 +22,6 @@ export const OPENSRP_ROLES =
     JSON.parse(process.env.REACT_APP_OPENSRP_ROLES as string)) ||
   defaultRoles;
 
-/** Returns a value in window._env_ or process.env or the defaultValue passed in.
- *
- * @param name - The configurable name that is a property of the environment/configuration.
- * @param defaultValue - The default value to return the value is not defined in process.env and window._env_.
- */
-export const setEnv = (name: string, defaultValue: any) => {
-  const { [name]: envValue } = process.env;
-  const value = typeof envValue === 'undefined' ? defaultValue : envValue;
-
-  if (typeof (window as any)._env_ === 'undefined') {
-    return value;
-  }
-  const { [name]: confValue } = (window as any)._env_;
-
-  return confValue === undefined ? value : confValue;
-};
-
 export const WEBSITE_NAME = setEnv('REACT_APP_WEBSITE_NAME', 'OpenSRP Web');
 
 export const ENABLE_CARD_SUPPORT = setEnv('REACT_APP_ENABLE_CARD_SUPPORT', 'false') === 'true';
@@ -52,7 +37,9 @@ export const OPENSRP_OAUTH_SCOPES = setEnv('REACT_APP_OPENSRP_OAUTH_SCOPES', 're
   ','
 );
 
-export const DEFAULT_ACTIVITY_DURATION_DAYS = setEnv('REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS', 7);
+export const DEFAULT_ACTIVITY_DURATION_DAYS = Number(
+  setEnv('REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS', 7)
+);
 
 export const PLAN_UUID_NAMESPACE = setEnv('REACT_APP_PLAN_UUID_NAMESPACE', '');
 
@@ -63,13 +50,11 @@ export const DEFAULT_PLAN_VERSION = setEnv('REACT_APP_DEFAULT_PLAN_VERSION', '1'
 export const FHIR_API_BASE_URL =
   process.env.REACT_APP_FHIR_API_BASE_URL || 'https://fhir.labs.smartregister.org/fhir/';
 
-export const KEYCLOAK_API_BASE_URL =
-  process.env.REACT_APP_KEYCLOAK_API_BASE_URL ||
-  'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
-
 export const TASK_GENERATION_STATUS = setEnv('REACT_APP_TASK_GENERATION_STATUS', 'internal');
 
-export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = setEnv('REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL', 0);
+export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = Number(
+  setEnv('REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL', 0)
+);
 
 export const MAIN_LOGO_SRC = setEnv(
   'REACT_APP_MAIN_LOGO_SRC',
@@ -181,4 +166,4 @@ export const ENABLE_LANGUAGE_SWITCHER =
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
 export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
-  setEnv('REACT_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
+  setEnv('REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
