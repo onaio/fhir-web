@@ -3,7 +3,7 @@ import { ServicePointEdit } from '..';
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
-import { baseLocationUnits, location1 } from './fixtures';
+import { location1 } from './fixtures';
 import { Provider } from 'react-redux';
 import { RouteComponentProps, Router } from 'react-router';
 import { store } from '@opensrp/store';
@@ -37,7 +37,7 @@ describe('CreateServicePoint', () => {
     const queryClient = new QueryClient();
     fetch.once(JSON.stringify(location1));
     fetch.once(JSON.stringify(null));
-    fetch.mockResponse(JSON.stringify(baseLocationUnits));
+    fetch.mockResponse(JSON.stringify([]));
 
     const props = {
       history,
