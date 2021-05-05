@@ -11,7 +11,6 @@ import { act } from 'react-dom/test-utils';
 import { commonHiddenFields } from '../../../helpers/utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { location1 } from '../../EditServicePoint/tests/fixtures';
-import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -70,9 +69,6 @@ describe('CreateServicePoint', () => {
       wrapper.update();
     });
     wrapper.update();
-
-    expect(toJson(wrapper)).toMatchSnapshot();
-    expect(fetch.mock.calls).toMatchInlineSnapshot();
 
     const locationFormProps = wrapper.find('LocationForm').props();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
