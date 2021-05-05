@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 import { LocationUnit, LocationUnitStatus } from '@opensrp/location-management';
 
 export const location1: LocationUnit = {
@@ -10,7 +12,6 @@ export const location1: LocationUnit = {
     geographicLevel: 0,
     version: 0,
     username: 'web-admin',
-    // eslint-disable-next-line @typescript-eslint/camelcase
     name_en: 'Kenya',
   },
   serverVersion: 206,
