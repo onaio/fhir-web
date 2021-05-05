@@ -10,7 +10,7 @@ import { RouteComponentProps, Router } from 'react-router';
 import { act } from 'react-dom/test-utils';
 import { commonHiddenFields } from '../../../helpers/utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { location1 } from '../../EditServicePoint/tests/fixtures';
+import { baseLocationUnits, rawHierarchy } from '../../EditServicePoint/tests/fixtures';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -35,9 +35,10 @@ describe('CreateServicePoint', () => {
 
   it('passes the correct values to form', async () => {
     const queryClient = new QueryClient();
-    fetch.once(JSON.stringify(location1));
-    fetch.once(JSON.stringify(null));
-    fetch.mockResponse(JSON.stringify([]));
+    fetch.once(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const props = {
       history,
