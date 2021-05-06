@@ -1,6 +1,6 @@
 import { getUser } from '@onaio/session-reducer';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
-import React, { useState } from 'react';
+import React from 'react';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
@@ -16,7 +16,7 @@ import {
   getBaseTreeNode,
   getHierarchyNode,
 } from '../../ducks/locationHierarchy/utils';
-import { useQuery, useQueryClient, useQueries } from 'react-query';
+import { useQuery, useQueryClient, useQueries, UseQueryResult } from 'react-query';
 import { LOCATION_HIERARCHY, LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
@@ -76,8 +76,6 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     ? processInitialValues(firstInitialValues)
     : firstInitialValues;
 
-  const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
-
   const locationUnits = useQuery(
     LOCATION_UNIT_FIND_BY_PROPERTIES,
     () => getBaseTreeNode(opensrpBaseURL),
@@ -87,7 +85,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     }
   );
 
-  useQueries(
+  const treeDataQuery = useQueries(
     locationUnits.data
       ? locationUnits.data.map((location) => {
           return {
@@ -95,25 +93,15 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
             onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            onSuccess: (res) => {
-              // the Tree is not already in the locationtree
-              if (!treeData.find((data) => JSON.stringify(data) === JSON.stringify(res))) {
-                // if the tree already exist i.e only a part of tree is changed, we need to replce old one else add new one
-                const alreadyExist = treeData.findIndex(
-                  (tree) => tree.id === (res as ParsedHierarchyNode).id
-                );
-
-                if (alreadyExist !== -1)
-                  treeData.splice(alreadyExist, 1, res as ParsedHierarchyNode);
-                else setTreeData((treeData) => [...treeData, res as ParsedHierarchyNode]);
-              }
-            },
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
           };
         })
       : []
-  );
+  ) as UseQueryResult<ParsedHierarchyNode>[];
+
+  const treeData = treeDataQuery
+    .map((query) => query.data)
+    .filter((e) => e !== undefined) as ParsedHierarchyNode[];
 
   if (treeData.length === 0 || !locationUnits.data || treeData.length !== locationUnits.data.length)
     return <Spin size="large"></Spin>;
