@@ -78,7 +78,8 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               { ...initialValues, ...values },
               keycloakBaseURL,
               opensrpBaseURL,
-              userGroups
+              userGroups,
+              initialValues.userGroup as string[]
             ).catch((_: Error) => {
               setSubmitting(false);
               sendErrorNotification(lang.ERROR_OCCURED);

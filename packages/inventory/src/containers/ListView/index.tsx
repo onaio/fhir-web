@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, PageHeader, Col, Button } from 'antd';
-import {
-  createChangeHandler,
-  getQueryParams,
-  OpenSRPService,
-  SearchForm,
-  TableLayout,
-} from '@opensrp/react-utils';
+import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import {
   TreeNode,
   fetchTree,
@@ -50,7 +44,6 @@ const treesSelector = getTreesByIds();
 interface ServicePointsListProps extends CommonProps {
   trees: TreeNode[];
   rootLocations: LocationUnit[];
-  service: typeof OpenSRPService;
   fetchLocationsCreator: typeof fetchLocationUnits;
   fetchTreesCreator: typeof fetchTree;
   structures: LocationUnit[];
@@ -62,7 +55,6 @@ const defaultProps = {
   rootLocations: [],
   fetchLocationsCreator: fetchLocationUnits,
   fetchTreesCreator: fetchTree,
-  service: OpenSRPService,
   structures: [],
 };
 
@@ -74,7 +66,6 @@ export type ServicePointsListTypes = ServicePointsListProps & RouteComponentProp
  */
 const ServicePointList = (props: ServicePointsListTypes) => {
   const {
-    service,
     trees,
     rootLocations,
     fetchLocationsCreator,
@@ -110,7 +101,6 @@ const ServicePointList = (props: ServicePointsListTypes) => {
           baseURL,
           params,
           {},
-          service,
           LOCATIONS_GET_ALL_SYNC_ENDPOINT
         ).catch((err: Error) => {
           throw err;
@@ -122,13 +112,9 @@ const ServicePointList = (props: ServicePointsListTypes) => {
     const jurisdictionsDispatcher = (locations: LocationUnit[] = []) => {
       return fetchLocationsCreator(locations, true);
     };
-    loadJurisdictions(
-      jurisdictionsDispatcher,
-      baseURL,
-      undefined,
-      undefined,
-      service
-    ).catch((err: Error) => sendErrorNotification(err.message));
+    loadJurisdictions(jurisdictionsDispatcher, baseURL, undefined, undefined).catch((err: Error) =>
+      sendErrorNotification(err.message)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -136,7 +122,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
     if (rootLocations.length > 0) {
       const promises = rootLocations
         .map((location) => location.id.toString())
-        .map((rootId) => loadHierarchy(rootId, fetchTreesCreator, baseURL, undefined, service));
+        .map((rootId) => loadHierarchy(rootId, fetchTreesCreator, baseURL, undefined));
       Promise.all(promises).catch((err: Error) => sendErrorNotification(err.message));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

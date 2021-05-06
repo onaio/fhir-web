@@ -146,14 +146,9 @@ describe('src/helpers/dataloaders', () => {
     const mockDispatcher = jest.fn();
     const mockBaseUrl = 'https://example.com';
 
-    loadJurisdictions(
-      mockDispatcher,
-      mockBaseUrl,
-      {},
-      {},
-      undefined,
-      sampleEndpoint
-    ).catch((_: Error) => fail());
+    loadJurisdictions(mockDispatcher, mockBaseUrl, {}, {}, sampleEndpoint).catch((_: Error) =>
+      fail()
+    );
 
     await new Promise((resolve) => setImmediate(resolve));
 
