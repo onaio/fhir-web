@@ -33,16 +33,14 @@ export const defaultHierarchyParams: LoadHierarchyParams = {
  * @param dispatcher - dispatches an action to add hierarchy to store
  * @param openSRPBaseURL - base url
  * @param urlParams - parameters to add to request
- * @param service - the openSRP service
  */
 export async function loadHierarchy(
   rootJurisdictionId: string,
   dispatcher?: typeof fetchTree,
   openSRPBaseURL: string = baseURL,
-  urlParams: LoadHierarchyParams = defaultHierarchyParams,
-  service: typeof OpenSRPService = OpenSRPService
+  urlParams: LoadHierarchyParams = defaultHierarchyParams
 ) {
-  const serve = new service(LOCATION_HIERARCHY, openSRPBaseURL);
+  const serve = new OpenSRPService(LOCATION_HIERARCHY, openSRPBaseURL);
   const params = {
     ...urlParams,
   } as Dictionary;
@@ -89,7 +87,6 @@ export const defaultParamFilters: ParamFilters = {
  * @param openSRPBaseURL - the openSRP api base url
  * @param urlParams - search params to be added to request
  * @param filterParams - filterParams for property_filter search_param
- * @param service - openSRP service class
  * @param endpoint - the openSRP endpoint
  */
 export async function loadJurisdictions(
@@ -97,13 +94,12 @@ export async function loadJurisdictions(
   openSRPBaseURL: string = baseURL,
   urlParams: GetLocationParams = defaultGetLocationParams,
   filterParams: ParamFilters = defaultParamFilters,
-  service: typeof OpenSRPService = OpenSRPService,
   endpoint: string = LOCATION_UNIT_FIND_BY_PROPERTIES
 ) {
-  const serve = new service(endpoint, openSRPBaseURL);
+  const serve = new OpenSRPService(endpoint, openSRPBaseURL);
   const filterParamsObject =
     Object.values(filterParams).length > 0
-      ? { properties_filter: service.getFilterParams(filterParams as Dictionary) }
+      ? { properties_filter: OpenSRPService.getFilterParams(filterParams as Dictionary) }
       : {};
   const params = {
     ...urlParams,
@@ -130,18 +126,16 @@ export const defaultSettingsParams = {
  *
  * @param settingsIdentifier - id for settings to query from api
  * @param baseURL - the openSRP api base url
- * @param serviceClass - the openSRP service
  * @param callback - callback to call with resolved response
  * @param params - extra params to add to request
  */
 export async function loadSettings<T>(
   settingsIdentifier: string,
   baseURL: string,
-  serviceClass: typeof OpenSRPService = OpenSRPService,
   callback?: (data: T[]) => void,
   params: URLParams = defaultSettingsParams
 ) {
-  const service = new serviceClass(OPENSRP_V2_SETTINGS, baseURL);
+  const service = new OpenSRPService(OPENSRP_V2_SETTINGS, baseURL);
   const queryParams = {
     ...params,
     identifier: settingsIdentifier,
@@ -161,15 +155,13 @@ export async function loadSettings<T>(
 /** gets location tags from the api
  *
  * @param baseURL - openSRP base url
- * @param serviceClass  -  the openSRP service class
  * @param callback - callback to call with response data
  */
 export async function loadLocationTags(
   baseURL: string,
-  serviceClass: typeof OpenSRPService = OpenSRPService,
   callback?: (data: LocationUnitGroup[]) => void
 ) {
-  const serve = new serviceClass(LOCATION_UNIT_GROUP_ALL, baseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, baseURL);
   return serve
     .list()
     .then((response: LocationUnitGroup[]) => {
@@ -187,18 +179,16 @@ export const defaultPostLocationParams = {
 /**
  * @param payload - the payload
  * @param openSRPBaseURL -  base url of api
- * @param service - the opensrp service
  * @param isEdit - help decide whether to post or put plan
  * @param params - params to add to url
  */
 export async function postPutLocationUnit(
   payload: LocationUnit,
   openSRPBaseURL: string = baseURL,
-  service = OpenSRPService,
   isEdit = true,
   params: URLParams = defaultPostLocationParams
 ) {
-  const serve = new service(LOCATION_UNIT_ENDPOINT, openSRPBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_ENDPOINT, openSRPBaseURL);
   if (isEdit) {
     return serve.update(payload, params).catch((err: Error) => {
       throw err;
@@ -216,16 +206,14 @@ export async function postPutLocationUnit(
  * @param dispatcher - called with response, adds data to store
  * @param openSRPBaseURL - the openSRP api base url
  * @param urlParams - search params to be added to request
- * @param service - openSRP service class
  */
 export async function loadJurisdiction(
   locId: string,
   dispatcher?: (loc: LocationUnit | null) => void,
   openSRPBaseURL: string = baseURL,
-  urlParams: GetLocationParams = defaultGetLocationParams,
-  service: typeof OpenSRPService = OpenSRPService
+  urlParams: GetLocationParams = defaultGetLocationParams
 ) {
-  const serve = new service(LOCATION_UNIT_ENDPOINT, openSRPBaseURL);
+  const serve = new OpenSRPService(LOCATION_UNIT_ENDPOINT, openSRPBaseURL);
   const params = {
     ...urlParams,
   } as Dictionary;

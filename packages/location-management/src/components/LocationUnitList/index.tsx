@@ -5,33 +5,30 @@ import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
-  fetchLocationUnits,
-  getLocationUnitsArray,
   LocationUnit,
   locationUnitsReducer,
   locationUnitsReducerName,
 } from '../../ducks/location-units';
-import { LOCATION_UNIT_ENDPOINT, URL_LOCATION_UNIT_ADD } from '../../constants';
+import {
+  LOCATION_HIERARCHY,
+  LOCATION_UNIT_ENDPOINT,
+  LOCATION_UNIT_FIND_BY_PROPERTIES,
+  URL_LOCATION_UNIT_ADD,
+} from '../../constants';
+import { useQuery, useQueries } from 'react-query';
 import lang, { Lang } from '../../lang';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
-  getAllHierarchiesArray,
-  fetchAllHierarchies,
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
-import {
-  generateJurisdictionTree,
-  getBaseTreeNode,
-  getHierarchy,
-} from '../../ducks/locationHierarchy/utils';
+import { generateJurisdictionTree, getBaseTreeNode } from '../../ducks/locationHierarchy/utils';
 import './LocationUnitList.css';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -91,71 +88,71 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
-  const dispatch = useDispatch();
-  const treeData = useSelector((state) => getAllHierarchiesArray(state));
-  const locationUnits = useSelector((state) => getLocationUnitsArray(state));
-  const [loading, setLoading] = useState<boolean>(false);
-  const [tableDataEvaluated, setTableDataEvaluated] = useState<boolean>(false);
+  const { opensrpBaseURL } = props;
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
-  const [currentClicked, setCurrentClicked] = useState<ParsedHierarchyNode | null>(null);
-  const { opensrpBaseURL } = props;
+  const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
+  const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
 
-  useEffect(() => {
-    // clear tree data and location units if
-    // user switches to location management module
-    // from a module that needs only one hierarchy i.e teams assignment
-    if (treeData.length && treeData.length !== locationUnits.length) {
-      dispatch(fetchLocationUnits([]));
-      dispatch(fetchAllHierarchies([]));
+  const locationUnits = useQuery(
+    LOCATION_UNIT_FIND_BY_PROPERTIES,
+    () => getBaseTreeNode(opensrpBaseURL),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: LocationUnit[]) => res,
     }
-  });
+  );
 
-  useEffect(() => {
-    if (!locationUnits.length) {
-      getBaseTreeNode(opensrpBaseURL)
-        .then((response: LocationUnit[]) => dispatch(fetchLocationUnits(response)))
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationUnits.length, treeData.length]);
+  useQueries(
+    locationUnits.data
+      ? locationUnits.data.map((location) => {
+          return {
+            queryKey: [LOCATION_HIERARCHY, location.id],
+            queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
+            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
+            onSuccess: (res) => {
+              // the Tree is not already in the locationtree
+              if (!treeData.find((data) => JSON.stringify(data) === JSON.stringify(res))) {
+                // if the tree already exist i.e only a part of tree is changed, we need to replce old one else add new one
+                const alreadyExist = treeData.findIndex(
+                  (tree) => tree.id === (res as ParsedHierarchyNode).id
+                );
 
-  // Function used to parse data from ParsedHierarchyNode to Tree Data
-  useEffect(() => {
-    if (!treeData.length && locationUnits.length) {
-      setLoading(true);
-      getHierarchy(locationUnits, opensrpBaseURL)
-        .then((hierarchy: RawOpenSRPHierarchy[]) => {
-          const allhierarchy = hierarchy.map((hier) => generateJurisdictionTree(hier).model);
-          dispatch(fetchAllHierarchies(allhierarchy));
+                if (alreadyExist !== -1)
+                  treeData.splice(alreadyExist, 1, res as ParsedHierarchyNode);
+                else setTreeData((treeData) => [...treeData, res as ParsedHierarchyNode]);
+              }
+            },
+            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
+            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
+          };
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
-        .finally(() => setLoading(false));
-    }
-    // to avoid extra rerenders
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationUnits.length, treeData.length, dispatch, opensrpBaseURL]);
+      : []
+  );
 
   useEffect(() => {
     if (treeData.length) {
-      // if have selected some in tree and that selected have some child then only show data from selected node in table
-      if (currentClicked && currentClicked.children && currentClicked.children.length) {
-        const cloneddata = [...currentClicked.children];
-        const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
-        const data: TableData[] = parseTableData([currentClicked, ...sorteddata]);
-        setTableData(data);
-        setTableDataEvaluated(true);
-      } else if (!currentClicked) {
-        const cloneddata = [...treeData];
-        const sorteddata = cloneddata.sort((a, b) => a.title.localeCompare(b.title));
-        const data: TableData[] = parseTableData(sorteddata);
-        setTableData(data);
-        setTableDataEvaluated(true);
-      }
-    }
-  }, [treeData, currentClicked]);
+      const titledata = currentClickedNode ?? null;
+      const childrendata: ParsedHierarchyNode[] = currentClickedNode
+        ? [...(currentClickedNode.children ?? [])]
+        : [...treeData];
 
-  if (loading || !tableDataEvaluated) return <Spin size={'large'} />;
+      const sorteddata = childrendata.sort((a, b) => a.title.localeCompare(b.title));
+      const data: TableData[] = parseTableData(
+        titledata ? [...[titledata], ...sorteddata] : sorteddata
+      );
+      setTableData(data);
+    }
+  }, [treeData, currentClickedNode]);
+
+  if (
+    tableData.length === 0 ||
+    treeData.length === 0 ||
+    !locationUnits.data ||
+    treeData.length !== locationUnits.data.length
+  )
+    return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -165,18 +162,16 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={treeData} OnItemClick={(node) => setCurrentClicked(node)} />
+          <Tree data={treeData} OnItemClick={(node) => setCurrentClickedNode(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h6 className="mt-4">
-              {currentClicked?.children ? currentClicked.node.name : lang.LOCATION_UNIT}
-            </h6>
+            <h6 className="mt-4">{currentClickedNode ? tableData[0].name : lang.LOCATION_UNIT}</h6>
             <div>
               <Link
                 to={(location) => {
                   let query = '?';
-                  if (currentClicked) query += `parentId=${currentClicked.id}`;
+                  if (currentClickedNode) query += `parentId=${currentClickedNode.id}`;
                   return { ...location, pathname: URL_LOCATION_UNIT_ADD, search: query };
                 }}
               >
