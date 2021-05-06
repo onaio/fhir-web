@@ -10,6 +10,7 @@ import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { commonHiddenFields } from '../../../helpers/utils';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const history = createBrowserHistory();
 
@@ -33,8 +34,9 @@ describe('CreateServicePoint', () => {
   });
 
   it('passes the correct values to form', async () => {
-    fetch.once(JSON.stringify(null));
+    const queryClient = new QueryClient();
     fetch.once(JSON.stringify(location1));
+    fetch.once(JSON.stringify(null));
     fetch.mockResponse(JSON.stringify([]));
 
     const props = {
@@ -55,7 +57,9 @@ describe('CreateServicePoint', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ServicePointEdit {...props} />
+          <QueryClientProvider client={queryClient}>
+            <ServicePointEdit {...props} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -64,6 +68,7 @@ describe('CreateServicePoint', () => {
       await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
+    wrapper.update();
 
     const locationFormProps = wrapper.find('LocationForm').props();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
