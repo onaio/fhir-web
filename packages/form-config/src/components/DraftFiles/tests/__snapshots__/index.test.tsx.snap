@@ -89,7 +89,7 @@ exports[`components/DraftFiles renders without crashing when connected to store:
   className="btn btn-secondary float-right"
   to={
     Object {
-      "pathname": "/manifest/file-upload",
+      "pathname": "manifest/file-upload",
       "state": Object {
         "fromDrafts": true,
       },
@@ -98,12 +98,12 @@ exports[`components/DraftFiles renders without crashing when connected to store:
 >
   <LinkAnchor
     className="btn btn-secondary float-right"
-    href="/manifest/file-upload"
+    href="manifest/file-upload"
     navigate={[Function]}
   >
     <a
       className="btn btn-secondary float-right"
-      href="/manifest/file-upload"
+      href="manifest/file-upload"
       onClick={[Function]}
     >
       Upload New File
