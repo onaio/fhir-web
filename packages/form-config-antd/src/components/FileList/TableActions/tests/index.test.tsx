@@ -23,8 +23,8 @@ describe('components/Antd/FileList/TableActions', () => {
   const props = {
     file: manifestFile1,
     accessToken: 'hunter2',
-    opensrpBaseURL: 'https://test-example.com/rest',
-    uploadFileURL: '/upload',
+    opensrpBaseURL: 'https://test-example.com/rest/',
+    uploadFileURL: 'upload',
     isJsonValidator: false,
   };
 
@@ -72,8 +72,8 @@ describe('components/Antd/FileList/TableActions', () => {
 
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
-      '/clientForm',
+      'https://test-example.com/rest/',
+      'clientForm',
       {
         createdAt: 'Jun 19, 2020, 12:31:37 PM',
         form_relation: '',
