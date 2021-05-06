@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -17,8 +17,9 @@ import {
   LOCATION_UNIT_FIND_BY_PROPERTIES,
   URL_LOCATION_UNIT_ADD,
 } from '../../constants';
-import { useQuery, useQueries } from 'react-query';
+import { useQuery, useQueries, UseQueryResult } from 'react-query';
 import lang, { Lang } from '../../lang';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -92,7 +93,6 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
-  const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
 
   const locationUnits = useQuery(
     LOCATION_UNIT_FIND_BY_PROPERTIES,
@@ -103,7 +103,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     }
   );
 
-  useQueries(
+  const treeDataQuery = useQueries(
     locationUnits.data
       ? locationUnits.data.map((location) => {
           return {
@@ -111,27 +111,17 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
             onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            onSuccess: (res) => {
-              // the Tree is not already in the locationtree
-              if (!treeData.find((data) => JSON.stringify(data) === JSON.stringify(res))) {
-                // if the tree already exist i.e only a part of tree is changed, we need to replce old one else add new one
-                const alreadyExist = treeData.findIndex(
-                  (tree) => tree.id === (res as ParsedHierarchyNode).id
-                );
-
-                if (alreadyExist !== -1)
-                  treeData.splice(alreadyExist, 1, res as ParsedHierarchyNode);
-                else setTreeData((treeData) => [...treeData, res as ParsedHierarchyNode]);
-              }
-            },
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
           };
         })
       : []
-  );
+  ) as UseQueryResult<ParsedHierarchyNode>[];
 
-  useEffect(() => {
+  const treeData = treeDataQuery
+    .map((query) => query.data)
+    .filter((e) => e !== undefined) as ParsedHierarchyNode[];
+
+  useDeepCompareEffect(() => {
     if (treeData.length) {
       const titledata = currentClickedNode ?? null;
       const childrendata: ParsedHierarchyNode[] = currentClickedNode
@@ -144,7 +134,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       );
       setTableData(data);
     }
-  }, [treeData, currentClickedNode]);
+  }, [treeDataQuery, currentClickedNode]);
 
   if (
     tableData.length === 0 ||

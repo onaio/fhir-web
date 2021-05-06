@@ -97,7 +97,6 @@ describe('NewLocationUnit', () => {
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
     });
     wrapper.update();
 
@@ -233,7 +232,6 @@ describe('NewLocationUnit', () => {
       await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
-    wrapper.update();
 
     // simulate click on cancel button
     wrapper.find('button#location-form-cancel-button').simulate('click');
