@@ -50,12 +50,11 @@ export const createOrEditPractitioners = async (
   };
 
   const practitionersService = new OpenSRPService('practitioner', baseURL);
-  await practitionersService[requestType](practitionerValues).catch((_: Error) =>
-    sendErrorNotification(langObj.ERROR_OCCURED)
-  );
+  await practitionersService[requestType](practitionerValues)
+    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
+    .finally(() => sendSuccessNotification(successMessage));
 
   if (!values.practitioner) history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
-  sendSuccessNotification(successMessage);
 };
 
 /**
@@ -73,7 +72,7 @@ export const submitForm = async (
   keycloakBaseURL: string,
   opensrpBaseURL: string,
   userGroups: UserGroup[],
-  previousUserGroupIds: string[],
+  previousUserGroupIds: string[] | undefined,
   langObj: Lang = lang
 ): Promise<void> => {
   const keycloakUserValue: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
@@ -100,29 +99,30 @@ export const submitForm = async (
 
   // Assign User Group to user
   const promises: Promise<void>[] = [];
-
-  values.userGroup?.forEach((groupId) => {
-    const userGroupValue = userGroups.find((group) => group.id === groupId) as UserGroup;
-
-    const serve = new KeycloakService(
-      `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
-      keycloakBaseURL
-    );
-
-    const promise = serve.update(userGroupValue);
-    promises.push(promise);
-  });
-
-  previousUserGroupIds.forEach((groupId) => {
-    if (!values.userGroup?.includes(groupId)) {
+  if (values.userGroup) {
+    values.userGroup.forEach((groupId) => {
+      const userGroupValue = userGroups.find((group) => group.id === groupId) as UserGroup;
       const serve = new KeycloakService(
         `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
         keycloakBaseURL
       );
-      const promise = serve.delete();
+      const promise = serve.update(userGroupValue);
       promises.push(promise);
-    }
-  });
+    });
+  }
+
+  if (previousUserGroupIds) {
+    previousUserGroupIds.forEach((groupId) => {
+      if (!values.userGroup?.includes(groupId)) {
+        const serve = new KeycloakService(
+          `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
+          keycloakBaseURL
+        );
+        const promise = serve.delete();
+        promises.push(promise);
+      }
+    });
+  }
 
   await Promise.allSettled(promises)
     .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
