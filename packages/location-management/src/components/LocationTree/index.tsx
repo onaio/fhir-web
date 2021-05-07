@@ -18,21 +18,18 @@ import { Key } from 'rc-tree/lib/interface';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
-  appendParentAsChild?: boolean;
   data: ParsedHierarchyNode[];
   OnItemClick: (item: ParsedHierarchyNode) => void;
 }
 
 export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const { data, OnItemClick } = props;
+  const dispatch = useDispatch();
 
   const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
-  const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const filterData: ParsedHierarchyNode[] = [];
   const locationTreeState = useSelector((state) => getLocationTreeState(state));
-
-  const dispatch = useDispatch();
 
   /**
    * Function to to expand tree
@@ -48,8 +45,6 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       )
       .filter((item, i, self) => item && self.indexOf(item) === i);
     setExpandedKeys(expandedKeys as string[]);
-    setSearchValue(value);
-    setAutoExpandParent(value.length > 0);
     dispatch(
       setLocationTreeState({
         keys: expandedKeys as React.Key[],
@@ -61,12 +56,10 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (locationTreeState?.node) {
-      setExpandedKeys(locationTreeState.keys);
-      const newnode = getHierarchyNodeFromArray(filterData, locationTreeState.node.id);
-      if (newnode) {
-        OnItemClick(newnode);
-        expandTree(newnode.title);
-        return; // stops the execution of loopmail
+      const node = getHierarchyNodeFromArray(filterData, locationTreeState.node.id);
+      if (node) {
+        onExpand(locationTreeState.keys);
+        OnItemClick(node);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +101,6 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       }
     }
     setExpandedKeys(allExpandedKeys);
-    setAutoExpandParent(true);
   }
 
   /** Function to handle event when tree search input changes value
@@ -117,6 +109,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    */
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
+    setSearchValue(value);
     expandTree(value);
   }
 
@@ -150,7 +143,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           data: item,
           key: item.key,
           title: title,
-          children: item.children?.length ? buildTreeData(item.children) : [],
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          ...(item.children && { children: buildTreeData(item.children) }),
         } as AntTreeProps;
       });
     },
@@ -203,7 +197,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         selectedKeys={[locationTreeState?.keys[locationTreeState.keys.length - 1]] as React.Key[]}
         onExpand={onExpand}
         expandedKeys={expandedKeys}
-        autoExpandParent={autoExpandParent}
+        autoExpandParent={true}
         treeData={buildTreeData(data)}
       />
     </div>

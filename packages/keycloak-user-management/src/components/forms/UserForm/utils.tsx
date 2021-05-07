@@ -1,13 +1,11 @@
 import { history } from '@onaio/connected-reducer-registry';
-import { Dispatch, SetStateAction } from 'react';
 import { v4 } from 'uuid';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { UserAction, UserGroup } from '../../../ducks/user';
+import { UserGroup } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
   URL_USER,
-  KEYCLOAK_URL_REQUIRED_USER_ACTIONS,
   URL_USER_CREDENTIALS,
   KEYCLOAK_URL_USER_GROUPS,
 } from '../../../constants';
@@ -67,6 +65,7 @@ export const createOrEditPractitioners = async (
  * @param keycloakBaseURL - keycloak API base URL
  * @param opensrpBaseURL - opensrp api base url
  * @param userGroups - Array of Usergroups to get data from when sending payload of user groups
+ * @param previousUserGroupIds - An array of previously selected user group ids
  * @param langObj - the translations object lookup
  */
 export const submitForm = async (
@@ -74,6 +73,7 @@ export const submitForm = async (
   keycloakBaseURL: string,
   opensrpBaseURL: string,
   userGroups: UserGroup[],
+  previousUserGroupIds: string[],
   langObj: Lang = lang
 ): Promise<void> => {
   const keycloakUserValue: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
@@ -113,35 +113,24 @@ export const submitForm = async (
     promises.push(promise);
   });
 
-  await Promise.allSettled(promises).catch((_: Error) =>
-    sendErrorNotification(langObj.ERROR_OCCURED)
-  );
-  sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
-
-  sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
-  history.push(URL_USER);
-};
-
-/**
- * Fetch keycloak user action options
- *
- * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {Function} setUserActionOptions - method to set state for selected actions
- * @param {Lang} langObj - the language translations object
- */
-export const fetchRequiredActions = (
-  keycloakBaseURL: string,
-  setUserActionOptions: Dispatch<SetStateAction<UserAction[]>>,
-  langObj: Lang = lang
-): void => {
-  const keycloakService = new KeycloakService(KEYCLOAK_URL_REQUIRED_USER_ACTIONS, keycloakBaseURL);
-
-  keycloakService
-    .list()
-    .then((response: UserAction[]) => {
-      setUserActionOptions(
-        response.filter((action: UserAction) => action.alias !== 'terms_and_conditions')
+  previousUserGroupIds.forEach((groupId) => {
+    if (!values.userGroup?.includes(groupId)) {
+      const serve = new KeycloakService(
+        `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
+        keycloakBaseURL
       );
-    })
-    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED));
+      const promise = serve.delete();
+      promises.push(promise);
+    }
+  });
+
+  await Promise.allSettled(promises)
+    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
+    .finally(() => {
+      sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
+      sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
+    });
+  if (keycloakUserValue.id) {
+    history.push(URL_USER);
+  }
 };

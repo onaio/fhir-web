@@ -1,4 +1,4 @@
-import { submitForm, fetchRequiredActions, createOrEditPractitioners } from '../utils';
+import { submitForm, createOrEditPractitioners } from '../utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -7,19 +7,7 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import lang from '../../../../lang';
-import {
-  value,
-  keycloakUser,
-  practitioner1,
-  requiredActions,
-  userGroup,
-  userAction1,
-  userAction3,
-  userAction4,
-  userAction5,
-  userAction6,
-} from './fixtures';
+import { value, keycloakUser, practitioner1, userGroup } from './fixtures';
 import { FormFields } from '..';
 
 jest.mock('@opensrp/notifications', () => ({
@@ -34,13 +22,7 @@ jest.mock('uuid', () => {
   return { __esModule: true, ...jest.requireActual('uuid'), v4 };
 });
 
-describe('forms/utils/fetchRequiredActions', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-    fetch.mockClear();
-    fetch.resetMocks();
-  });
-
+describe('forms/utils/submitForm', () => {
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -56,59 +38,6 @@ describe('forms/utils/fetchRequiredActions', () => {
     );
   });
 
-  const keycloakBaseURL =
-    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
-  const setUserActionOptionsMock = jest.fn();
-
-  it('fetches required actions', async () => {
-    fetch.mockResponseOnce(JSON.stringify(requiredActions));
-
-    fetchRequiredActions(keycloakBaseURL, setUserActionOptionsMock);
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/authentication/required-actions/',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer token',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-    ]);
-
-    expect(setUserActionOptionsMock).toHaveBeenCalledWith([
-      userAction1,
-      userAction3,
-      userAction4,
-      userAction5,
-      userAction6,
-    ]);
-  });
-
-  it('handles error if fetching fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
-    fetchRequiredActions(keycloakBaseURL, setUserActionOptionsMock);
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(setUserActionOptionsMock).not.toHaveBeenCalled();
-
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
-  });
-});
-
-describe('forms/utils/submitForm', () => {
   afterEach(() => {
     jest.clearAllMocks();
     fetch.mockClear();
@@ -129,7 +58,7 @@ describe('forms/utils/submitForm', () => {
       },
     });
 
-    submitForm(value, keycloakBaseURL, OPENSRP_API_BASE_URL, userGroup).catch(jest.fn());
+    submitForm(value, keycloakBaseURL, OPENSRP_API_BASE_URL, userGroup, []).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -215,6 +144,30 @@ describe('forms/utils/submitForm', () => {
     expect(historyPushMock).toHaveBeenCalledWith(`/admin/users/credentials/${id}`);
   });
 
+  it('correctly redirects to credentials page when practitioner is undefined (new user)', async () => {
+    const historyPushMock = jest.spyOn(history, 'push');
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${id}`,
+      },
+    });
+    submitForm(
+      { ...value, practitioner: undefined },
+      keycloakBaseURL,
+      OPENSRP_API_BASE_URL,
+      userGroup,
+      []
+    ).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+    // ensure that redirect only happens once
+    expect(historyPushMock).toHaveBeenCalledTimes(1);
+    expect(historyPushMock).toHaveBeenCalledWith(`/admin/users/credentials/${id}`);
+  });
+
   it('submits user edit correctly', async () => {
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     const historyPushMock = jest.spyOn(history, 'push');
@@ -230,7 +183,8 @@ describe('forms/utils/submitForm', () => {
       { ...value, id: id, practitioner: practitioner1 },
       keycloakBaseURL,
       OPENSRP_API_BASE_URL,
-      userGroup
+      userGroup,
+      []
     ).catch(jest.fn());
 
     await act(async () => {
@@ -286,7 +240,45 @@ describe('forms/utils/submitForm', () => {
       ['User edited successfully'],
     ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
+  });
+
+  it('deletes user from a group', async () => {
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${id}`,
+      },
+    });
+
+    submitForm(
+      {
+        ...value,
+        userGroup: ['cab07278-c77b-4bc7-b154-bcbf01b7d35b'],
+        id,
+        practitioner: practitioner1,
+      },
+      keycloakBaseURL,
+      OPENSRP_API_BASE_URL,
+      userGroup,
+      ['4dd15e66-7132-429b-8939-d1e601611464', 'cab07278-c77b-4bc7-b154-bcbf01b7d35b']
+    ).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+    // should make a fetch to detele user group cab07278-c77b-4bc7-b154-bcbf01b7d35b
+    expect(fetch.mock.calls[3]).toEqual([
+      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups/4dd15e66-7132-429b-8939-d1e601611464',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer token',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'DELETE',
+      },
+    ]);
   });
 
   it('handles error when user creation fails', async () => {
@@ -294,7 +286,7 @@ describe('forms/utils/submitForm', () => {
     const rejectFn = jest.fn();
     const historyPushMock = jest.spyOn(history, 'push');
 
-    submitForm(value, keycloakBaseURL, OPENSRP_API_BASE_URL, userGroup).catch(rejectFn);
+    submitForm(value, keycloakBaseURL, OPENSRP_API_BASE_URL, userGroup, []).catch(rejectFn);
 
     await act(async () => {
       await flushPromises();
@@ -313,7 +305,8 @@ describe('forms/utils/submitForm', () => {
       { ...value, ...practitioner1, id: id },
       keycloakBaseURL,
       OPENSRP_API_BASE_URL,
-      userGroup
+      userGroup,
+      []
     ).catch(rejectFn);
 
     await act(async () => {

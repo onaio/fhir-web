@@ -14,6 +14,6 @@ Object {
     "productName": "",
     "uniqueId": undefined,
   },
-  "redirectAfterAction": "/admin/product-catalogue/view",
+  "redirectAfterAction": "/admin/product-catalogue",
 }
 `;

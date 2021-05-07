@@ -30,22 +30,6 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-jest.mock('antd', () => {
-  const antd = jest.requireActual('antd');
-
-  /* eslint-disable react/prop-types */
-  const Switch = ({ children, onChange }) => {
-    return <select onChange={(e) => onChange(e.target.value)}>{children}</select>;
-  };
-  /* eslint-disable react/prop-types */
-
-  return {
-    __esModule: true,
-    ...antd,
-    Switch,
-  };
-});
-
 const history = createBrowserHistory();
 
 describe('components/Credentials', () => {
@@ -128,11 +112,6 @@ describe('components/Credentials', () => {
     const confirm = wrapper.find('input#confirm');
     confirm.simulate('change', { target: { value: 'password123' } });
 
-    const actionSelect = wrapper.find('select');
-    actionSelect.simulate('change', {
-      target: { value: true },
-    });
-
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -141,7 +120,7 @@ describe('components/Credentials', () => {
     });
 
     const payload = {
-      temporary: true,
+      temporary: false,
       type: 'password',
       value: 'password123',
     };
@@ -161,7 +140,7 @@ describe('components/Credentials', () => {
       },
     ]);
     expect(mockNotificationSuccess).toHaveBeenCalledWith(lang.CREDENTIALS_UPDATED_SUCCESSFULLY);
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
     wrapper.unmount();
   });
 
@@ -250,11 +229,6 @@ describe('components/Credentials', () => {
 
     const confirm = wrapper.find('input#confirm');
     confirm.simulate('change', { target: { value: 'password123' } });
-
-    const actionSelect = wrapper.find('select');
-    actionSelect.simulate('change', {
-      target: { value: true },
-    });
 
     wrapper.find('form').simulate('submit');
 

@@ -22,7 +22,7 @@ describe('components/Antd/DraftFilelist/TableActions', () => {
   const props = {
     file: draftFile1,
     accessToken: 'hunter2',
-    opensrpBaseURL: 'https://test-example.com/rest',
+    opensrpBaseURL: 'https://test-example.com/rest/',
     isJsonValidator: true,
   };
 
@@ -53,8 +53,8 @@ describe('components/Antd/DraftFilelist/TableActions', () => {
 
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
-      '/clientForm',
+      'https://test-example.com/rest/',
+      'clientForm',
       {
         createdAt: 'Jun 19, 2020, 12:31:37 PM',
         form_relation: '',
@@ -105,8 +105,8 @@ describe('components/Antd/DraftFilelist/TableActions', () => {
 
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
-      '/clientForm',
+      'https://test-example.com/rest/',
+      'clientForm',
       {
         createdAt: 'Jun 19, 2020, 12:31:37 PM',
         form_relation: '',

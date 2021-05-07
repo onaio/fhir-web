@@ -12,6 +12,9 @@ import { v4 } from 'uuid';
 import { Geometry, Point } from 'geojson';
 import lang, { Lang } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
+import { LOCATION_UNIT_TYPE } from '../../constants';
+import { GetSelectedFullData } from './CustomSelect';
+import { uniqBy } from 'lodash';
 
 export enum FormInstances {
   CORE = 'core',
@@ -26,7 +29,6 @@ export interface LocationFormFields {
   id?: string;
   name: string;
   status: LocationUnitStatus;
-  type: string;
   parentId?: string;
   externalId?: string;
   locationTags?: number[];
@@ -66,7 +68,6 @@ export const defaultFormField: LocationFormFields = {
   instance: FormInstances.CORE,
   name: '',
   status: LocationUnitStatus.ACTIVE,
-  type: '',
   isJurisdiction: true,
   serviceType: '',
   locationTags: [],
@@ -86,16 +87,8 @@ export const getLocationFormFields = (
   instance: FormInstances = FormInstances.CORE,
   isJurisdiction = true
 ): LocationFormFields => {
-  const commonValues = {
-    instance,
-    isJurisdiction: location?.isJurisdiction ?? isJurisdiction,
-  };
-  if (!location) {
-    return {
-      ...defaultFormField,
-      ...commonValues,
-    };
-  }
+  const commonValues = { instance, isJurisdiction: location?.isJurisdiction ?? isJurisdiction };
+  if (!location) return { ...defaultFormField, ...commonValues };
 
   const {
     name,
@@ -112,13 +105,12 @@ export const getLocationFormFields = (
   const geoJson = JSON.stringify(geoObject);
   const { longitude, latitude } = getPointCoordinates(geoJson);
 
-  const formFields = {
+  const formFields: LocationFormFields = {
     ...defaultFormField,
     ...commonValues,
     id: location.id,
     locationTags: location.locationTags?.map((loc) => loc.id),
     geometry: geoJson,
-    type: location.type,
     name,
     username,
     status,
@@ -168,7 +160,6 @@ export const generateLocationUnit = (
     parentId,
     name,
     status,
-    type,
     geometry,
     extraFields,
     username,
@@ -196,7 +187,7 @@ export const generateLocationUnit = (
     },
     id: thisLocationsId,
     syncStatus: LocationUnitSyncStatus.SYNCED,
-    type: type,
+    type: LOCATION_UNIT_TYPE,
     locationTags: selectedTags,
     geometry: geometry ? (JSON.parse(geometry) as Geometry) : undefined,
   };
@@ -357,6 +348,29 @@ export const getLocationTagOptions = (tags: LocationUnitTag[]) => {
       value: locationTag.id,
     };
   });
+};
+
+/**
+ * method to get the full Location tag object once user selects an option in the select dropdown,
+ * once the user selects, you only get the id of the selected object, this function will be called
+ * to get the full location Tag.
+ *
+ * @param data - the full data objects
+ * @param getOptions - function used to get the options tos how on the dropdown
+ * @param value - selected value (an array for multi select otherwise a string)
+ */
+export const getSelectedLocTagObj: GetSelectedFullData<LocationUnitTag> = (
+  data,
+  getOptions,
+  value
+) => {
+  // #595 - remove duplicate data(those that have the same id)
+  const uniqData = uniqBy(data, (obj) => obj.id);
+  const selected = uniqData.filter((dt) => {
+    const option = getOptions([dt])[0];
+    return (Array.isArray(value) && value.includes(option.value)) || value === option.value;
+  });
+  return selected;
 };
 
 /**
