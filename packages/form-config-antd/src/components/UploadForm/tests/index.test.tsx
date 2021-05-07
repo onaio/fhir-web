@@ -35,7 +35,7 @@ jest.mock('@opensrp/server-service', () => ({
 }));
 
 const props = {
-  opensrpBaseURL: 'https://test-example.com/rest',
+  opensrpBaseURL: 'https://test-example.com/rest/',
   isJsonValidator: false,
   onSaveRedirectURL: '/foo',
   history,

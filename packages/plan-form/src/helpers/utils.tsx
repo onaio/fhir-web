@@ -113,7 +113,10 @@ export const parseBasePlanFormValues = (baseFormValues: BasePlanFormFields): Pla
   const formValues = {
     ...baseFormValues,
     date: moment(baseFormValues.date),
-    dateRange: [moment(baseFormValues.start), moment(baseFormValues.end)],
+    dateRange: [
+      moment(baseFormValues.start),
+      moment(baseFormValues.end).isValid() ? moment(baseFormValues.end) : undefined,
+    ],
   };
   delete (formValues as Dictionary).start;
   delete (formValues as Dictionary).end;

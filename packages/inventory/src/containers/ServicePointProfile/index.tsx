@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
-import { OpenSRPService, Resource404, BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
+import { Resource404, BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import {
   hierarchyReducer,
   hierarchyReducerName,
@@ -49,7 +49,6 @@ const treesSelector = getTreesByIds();
 interface ServicePointsProfileProps extends CommonProps {
   fetchInventories: typeof fetchInventories;
   opensrpBaseURL: string;
-  service: typeof OpenSRPService;
   addInventoryURL: string;
   editInventoryURL: string;
   servicePointProfileURL: string;
@@ -59,7 +58,6 @@ const defaultProps = {
   ...defaultCommonProps,
   fetchInventories,
   opensrpBaseURL: '',
-  service: OpenSRPService,
   addInventoryURL: URL_INVENTORY_ADD,
   editInventoryURL: URL_INVENTORY_EDIT,
   servicePointProfileURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
@@ -95,13 +93,7 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
  * @param props - the component props
  */
 const ServicePointProfile = (props: ServicePointsProfileTypes) => {
-  const {
-    opensrpBaseURL,
-    service,
-    addInventoryURL,
-    editInventoryURL,
-    servicePointProfileURL,
-  } = props;
+  const { opensrpBaseURL, addInventoryURL, editInventoryURL, servicePointProfileURL } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
@@ -136,7 +128,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       }
     };
 
-    loadJurisdiction(spId, structuresDispatcher, opensrpBaseURL, params, service)
+    loadJurisdiction(spId, structuresDispatcher, opensrpBaseURL, params)
       .catch((err: Error) => {
         handleBrokenPage(err);
       })
@@ -150,8 +142,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       jurisdictionsDispatcher,
       opensrpBaseURL,
       undefined,
-      undefined,
-      service
+      undefined
     ).catch((err: Error) => sendErrorNotification(err.message));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -162,9 +153,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
         dispatch(fetchTree(response, treeId));
       const promises = rootLocations
         .map((location) => location.id.toString())
-        .map((rootId) =>
-          loadHierarchy(rootId, customTreeDispatcher, opensrpBaseURL, undefined, service)
-        );
+        .map((rootId) => loadHierarchy(rootId, customTreeDispatcher, opensrpBaseURL, undefined));
       Promise.all(promises).catch((err: Error) => sendErrorNotification(err.message));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

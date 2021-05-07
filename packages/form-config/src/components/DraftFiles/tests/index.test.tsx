@@ -34,17 +34,17 @@ reducerRegistry.register(draftReducerName, draftReducer);
 
 const history = createBrowserHistory();
 
-const baseURL = 'https://test-example.com/rest';
+const baseURL = 'https://test-example.com/rest/';
 const endpoint = 'metadata';
 const props = {
   baseURL,
   endpoint,
-  downloadEndPoint: '/form-download',
-  formUploadUrl: '/manifest',
+  downloadEndPoint: 'form-download',
+  formUploadUrl: 'manifest',
   getPayload: getFetchOptions,
   LoadingComponent: <div>Loading</div>,
-  manifestEndPoint: '/manifest',
-  releasesUrl: '/manifest/releases',
+  manifestEndPoint: 'manifest',
+  releasesUrl: 'manifest/releases',
   uploadTypeUrl: 'file-upload',
   customAlert: jest.fn(),
   accessToken: 'hunter2',
@@ -115,8 +115,8 @@ describe('components/DraftFiles', () => {
 
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
-      '/form-download',
+      'https://test-example.com/rest/',
+      'form-download',
       {
         createdAt: 'Jun 19, 2020, 4:23:22 PM',
         form_relation: '',

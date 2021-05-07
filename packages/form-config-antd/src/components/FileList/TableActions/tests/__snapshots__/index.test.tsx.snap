@@ -54,6 +54,6 @@ Object {
 exports[`components/Antd/FileList/TableActions renders correctly: edit 1`] = `
 Object {
   "children": "Edit",
-  "to": "/upload/52",
+  "to": "upload/52",
 }
 `;

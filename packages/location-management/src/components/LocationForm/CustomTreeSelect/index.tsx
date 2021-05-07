@@ -1,4 +1,3 @@
-import { OpenSRPService } from '@opensrp/react-utils';
 import { loadHierarchy, loadJurisdictions } from '../../../helpers/dataLoaders';
 import { useEffect, useState } from 'react';
 import { baseURL } from '../../../constants';
@@ -14,14 +13,12 @@ import { treeToOptions } from '../utils';
 
 /** props for service types select component */
 export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
-  service: typeof OpenSRPService;
   baseURL: string;
   fullDataCallback?: (node?: TreeNode) => void;
   disabledTreeNodesCallback?: (node: TreeNode) => boolean;
 }
 
 const defaultProps = {
-  service: OpenSRPService,
   baseURL: baseURL,
 };
 
@@ -30,21 +27,14 @@ const defaultProps = {
  * @param props - the component props
  */
 const CustomTreeSelect = (props: CustomTreeSelectProps) => {
-  const {
-    baseURL,
-    service,
-    value,
-    fullDataCallback,
-    disabledTreeNodesCallback,
-    ...restProps
-  } = props;
+  const { baseURL, value, fullDataCallback, disabledTreeNodesCallback, ...restProps } = props;
   const [loadingJurisdictions, setLoadingJurisdictions] = useState(true);
   const [loadingTrees, setLoadingTrees] = useState(true);
   const [rootLocations, setRootLocations] = useState<LocationUnit[]>([]);
   const [trees, updateTrees] = useState<TreeNode[]>([]);
 
   useEffect(() => {
-    loadJurisdictions(undefined, baseURL, undefined, undefined, service)
+    loadJurisdictions(undefined, baseURL, undefined, undefined)
       .then((res) => {
         if (res) setRootLocations(res);
       })
@@ -59,7 +49,7 @@ const CustomTreeSelect = (props: CustomTreeSelectProps) => {
       const promises = rootLocations
         .map((location) => location.id.toString())
         .map((rootId) =>
-          loadHierarchy(rootId, undefined, baseURL, undefined, service).then((res) => {
+          loadHierarchy(rootId, undefined, baseURL, undefined).then((res) => {
             if (res) {
               const tree = generateJurisdictionTree(res);
               thisTrees.push(tree);
