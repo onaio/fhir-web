@@ -56,7 +56,12 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
         {lang.PLEASE_FIX_THE_ERRORS_LISTED_BELOW}{' '}
         <Link to={INVENTORY_BULK_UPLOAD_URL}>{lang.RETRY_CSV_UPLOAD}</Link>
       </p>
-      <TableLayout columns={columns} datasource={datasource} />
+      <TableLayout
+        id="InventoryPreConfirmationError"
+        persistState={true}
+        columns={columns}
+        datasource={datasource}
+      />
       <Link to={INVENTORY_BULK_UPLOAD_URL}>
         <Button className="round-button">{lang.RETRY}</Button>
       </Link>

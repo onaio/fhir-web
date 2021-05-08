@@ -144,7 +144,14 @@ const AssignmentTable = (props: AssignmentTableProps) => {
 
   return (
     <div className="assignment-table">
-      <TableLayout datasource={datasource} loading={loading} columns={columns} pagination={false} />
+      <TableLayout
+        id="PlansAssignmentList"
+        persistState={true}
+        datasource={datasource}
+        loading={loading}
+        columns={columns}
+        pagination={false}
+      />
     </div>
   );
 };

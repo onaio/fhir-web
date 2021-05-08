@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table as AntTable } from 'antd';
-import { ColumnType, TableProps } from 'antd/lib/table';
+import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../constants';
+import { getConfig, TableState, setConfig } from '@opensrp/pkg-config';
 
 type TKey<T> = keyof T & React.Key;
 
@@ -11,8 +12,11 @@ export interface Column<T> extends ColumnType<T>, Dictionary {
   key?: TKey<T>;
 }
 
+// Options Must be of any Data type as the Data could be any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const defaultoptions: TableProps<any> = {
+export type Options<T = any> = AntTableProps<T>;
+
+export const defaults: Options = {
   pagination: {
     showQuickJumper: true,
     showSizeChanger: true,
@@ -21,10 +25,22 @@ const defaultoptions: TableProps<any> = {
   },
 };
 
-export interface Props<T> extends Omit<TableProps<T>, 'columns' | 'dataSource'> {
+export interface TableProps<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
   columns?: Column<T>[];
 }
+
+interface PersistState {
+  id: string;
+  persistState?: boolean;
+}
+
+interface NoPersistState {
+  id?: never;
+  persistState?: never;
+}
+
+type Props<T> = TableProps<T> & (PersistState | NoPersistState);
 
 /** Table Layout Component used to render the table with default Settings
  *
@@ -32,11 +48,38 @@ export interface Props<T> extends Omit<TableProps<T>, 'columns' | 'dataSource'> 
  * @returns - the component
  */
 export function TableLayout<T extends object = Dictionary>(props: Props<T>) {
-  const { columns, datasource, children } = props;
-  const options = { ...defaultoptions, ...props };
+  const { id, columns, datasource, children, persistState } = props;
+
+  const options: Options = { ...defaults, ...props };
+  const tablesState = getConfig('TablesState');
+  const [tableState, setTableState] = useState<TableState>(id ? tablesState[id] : {});
+  const tableprops: Options = {
+    ...options,
+    ...tablesState,
+    // bind change event to pagination instead of table so that table change event it free to use for user
+    pagination: { ...options.pagination, ...tableState?.pagination, onChange: paginationChange },
+  };
+
+  /** Table Layout Component used to render the table with default Settings
+   *
+   * @param page - the current viewing Page number
+   * @param pageSize - the no of rows to show in the table
+   */
+  function paginationChange(page: number, pageSize?: number) {
+    // if table is uniquely identifable and have to persistState then Save Pagination to pkg-config store
+    if (id && persistState) {
+      const newstate: TableState = {
+        ...tableState,
+        pagination: { ...tableState, current: page, pageSize: pageSize },
+      };
+      tablesState[id] = newstate;
+      setConfig('TablesState', { ...tablesState });
+      setTableState(newstate);
+    }
+  }
 
   return (
-    <AntTable<T> dataSource={datasource} columns={columns} {...options}>
+    <AntTable<T> dataSource={datasource} columns={columns} {...tableprops}>
       {children}
     </AntTable>
   );

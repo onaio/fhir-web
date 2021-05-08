@@ -184,7 +184,12 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               </Button>
             </Link>
           </div>
-          <TableLayout datasource={tableData} columns={columns} />
+          <TableLayout
+            id="UserGroupsList"
+            persistState={true}
+            datasource={tableData}
+            columns={columns}
+          />
         </Col>
         <ViewDetails keycloakBaseURL={keycloakBaseURL} groupId={groupId} />
       </Row>

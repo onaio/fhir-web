@@ -72,7 +72,9 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
-  return <TableLayout datasource={props.data} columns={columns} />;
+  return (
+    <TableLayout id="TeamList" persistState={true} datasource={props.data} columns={columns} />
+  );
 };
 
 export default Table;

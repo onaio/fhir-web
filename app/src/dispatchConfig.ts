@@ -18,6 +18,7 @@ const configObject: ConfigState = {
   keycloakBaseURL: KEYCLOAK_API_BASE_URL,
   opensrpBaseURL: OPENSRP_API_BASE_URL,
   i18n,
+  TablesState: {},
 };
 
 setAllConfigs(configObject);

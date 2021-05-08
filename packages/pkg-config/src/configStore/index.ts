@@ -3,6 +3,12 @@ import { createGlobalState } from 'react-hooks-global-state';
 
 export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
 export type ProjectLanguageCode = 'eusm' | 'core';
+export interface TableState {
+  pagination?: {
+    current?: number;
+    pageSize?: number;
+  };
+}
 
 /** interface for configs for this package */
 export interface ConfigState {
@@ -12,15 +18,17 @@ export interface ConfigState {
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
   i18n?: unknown;
+  TablesState: Record<string, TableState>;
 }
 
-const initialConfigs = {
+const initialConfigs: ConfigState = {
   languageCode: 'en' as LanguageCode,
   projectLanguageCode: 'core' as ProjectLanguageCode,
   appLoginURL: undefined,
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
   i18n: undefined,
+  TablesState: {},
 };
 
 const {

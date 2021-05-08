@@ -95,7 +95,12 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
               <Button type="primary">{lang.ADD_PRODUCT_TO_CATALOGUE}</Button>
             </Link>
           </div>
-          <TableLayout datasource={datasource} columns={columns} />
+          <TableLayout
+            id="ProductCatalogueList"
+            persistState={true}
+            datasource={datasource}
+            columns={columns}
+          />
         </Col>
         <ViewDetails {...{ object: productUnderView, objectId: productId }} />
       </Row>

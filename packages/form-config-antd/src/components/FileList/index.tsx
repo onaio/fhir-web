@@ -151,6 +151,8 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
           <SettingOutlined />
         </Space>
         <TableLayout
+          id="FormFileList"
+          persistState={true}
           columns={getTableColumns(
             accessToken,
             opensrpBaseURL,
