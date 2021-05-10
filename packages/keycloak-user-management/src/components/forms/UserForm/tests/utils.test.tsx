@@ -144,6 +144,28 @@ describe('forms/utils/submitForm', () => {
     expect(historyPushMock).toHaveBeenCalledWith(`/admin/users/credentials/${id}`);
   });
 
+  it('ensures error notification is not thrown when creating new user', async () => {
+    const mockErrorCallback = jest.fn();
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${id}`,
+      },
+    });
+    submitForm(
+      { ...value, userGroup: [], practitioner: undefined },
+      keycloakBaseURL,
+      OPENSRP_API_BASE_URL,
+      userGroup,
+      []
+    ).catch(mockErrorCallback);
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(mockErrorCallback).not.toHaveBeenCalled();
+  });
+
   it('correctly redirects to credentials page when practitioner is undefined (new user)', async () => {
     const historyPushMock = jest.spyOn(history, 'push');
     fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
