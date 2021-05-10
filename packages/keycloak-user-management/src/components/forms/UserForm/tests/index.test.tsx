@@ -19,6 +19,7 @@ import { act } from 'react-dom/test-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
 import { Form } from 'antd';
+import { URL_USER } from '../../../../constants';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -351,7 +352,7 @@ describe('components/forms/UserForm', () => {
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
-    expect(history.location.pathname).toEqual('/admin/users');
+    expect(history.location.pathname).toEqual(URL_USER);
   });
 
   it('render correct user name in header', async () => {
