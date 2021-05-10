@@ -79,10 +79,11 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               opensrpBaseURL,
               userGroups,
               initialValues.userGroup as string[]
-            ).catch((_: Error) => {
-              setSubmitting(false);
-              sendErrorNotification(lang.ERROR_OCCURED);
-            });
+            )
+              .catch((_: Error) => {
+                sendErrorNotification(lang.ERROR_OCCURED);
+              })
+              .finally(() => setSubmitting(false));
           }}
         >
           <Form.Item
