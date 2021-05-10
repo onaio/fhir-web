@@ -203,7 +203,7 @@ export function getRoutes(roles: string[]): Route[] {
     },
     {
       otherProps: { icon: <IdcardOutlined /> },
-      title: lang.MISSIONS,
+      title: lang.PATIENTS,
       key: 'fhir-patients',
       enabled: ENABLE_PATIENTS_MODULE,
       url: '/admin/patients',
