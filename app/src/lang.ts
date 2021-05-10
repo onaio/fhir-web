@@ -40,6 +40,7 @@ function fill() {
   lang.INVENTORY = i18n.t(`Inventory`, { ns: namespace });
   lang.SERVICE_POINT_INVENTORY = i18n.t(`Service point inventory`, { ns: namespace });
   lang.ADD_INVENTORY_VIA_CSV = i18n.t(`Add inventory via CSV`, { ns: namespace });
+  lang.PATIENTS = i18n.t(`Patients`, { ns: namespace });
 }
 
 // run it initial
