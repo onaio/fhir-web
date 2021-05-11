@@ -14,7 +14,7 @@ export interface Column<T> extends ColumnType<T>, Dictionary {
 
 // Options Must be of any Data type as the Data could be any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Options<T = any> = AntTableProps<T>;
+type Options<T = any> = AntTableProps<T>;
 
 export const defaults: Options = {
   pagination: {
@@ -25,7 +25,7 @@ export const defaults: Options = {
   },
 };
 
-export interface TableProps<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
+interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
   columns?: Column<T>[];
 }
@@ -40,14 +40,14 @@ interface NoPersistState {
   persistState?: never;
 }
 
-type Props<T> = TableProps<T> & (PersistState | NoPersistState);
+export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
 
 /** Table Layout Component used to render the table with default Settings
  *
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object = Dictionary>(props: Props<T>) {
+export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
   const { id, columns, datasource, children, persistState } = props;
 
   const options: Options = { ...defaults, ...props };
