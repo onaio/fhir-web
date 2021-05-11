@@ -27,7 +27,7 @@ interface TableData {
   id: string | undefined;
   name: string;
   composite: boolean | string;
-  description: string;
+  description?: string;
 }
 
 interface Props {
@@ -98,7 +98,12 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
       title: lang.DESCRIPTION,
       dataIndex: 'description',
       editable: true,
-      sorter: (a: TableData, b: TableData) => a.description.localeCompare(b.description),
+      sorter: (a: TableData, b: TableData) => {
+        if (a.description && b.description) {
+          return a.description.localeCompare(b.description);
+        }
+        return 0;
+      },
     },
   ];
 
