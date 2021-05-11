@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table as AntTable } from 'antd';
-import { ColumnType, TableProps } from 'antd/lib/table';
+import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../constants';
 
@@ -12,7 +12,7 @@ export interface Column<T> extends ColumnType<T>, Dictionary {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const defaultoptions: TableProps<any> = {
+const defaultoptions: AntTableProps<any> = {
   pagination: {
     showQuickJumper: true,
     showSizeChanger: true,
@@ -21,7 +21,7 @@ const defaultoptions: TableProps<any> = {
   },
 };
 
-export interface Props<T> extends Omit<TableProps<T>, 'columns' | 'dataSource'> {
+export interface TableProps<T> extends Omit<AntTableProps<T>, 'columns' | 'dataSource'> {
   datasource: T[];
   columns?: Column<T>[];
 }
@@ -31,7 +31,7 @@ export interface Props<T> extends Omit<TableProps<T>, 'columns' | 'dataSource'> 
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object = Dictionary>(props: Props<T>) {
+export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
   const { columns, datasource, children } = props;
   const options = { ...defaultoptions, ...props };
 
