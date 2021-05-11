@@ -18,6 +18,7 @@ type Options<T = any> = AntTableProps<T>;
 
 export const defaults: Options = {
   pagination: {
+    hideOnSinglePage: true,
     showQuickJumper: true,
     showSizeChanger: true,
     defaultPageSize: TABLE_PAGE_SIZE,
@@ -48,9 +49,9 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @returns - the component
  */
 export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
-  const { id, columns, datasource, children, persistState } = props;
+  const { id, columns, datasource, children, persistState, ...restprops } = props;
 
-  const options: Options = { ...defaults, ...props };
+  const options: Options = { ...defaults, ...restprops };
   const tablesState = getConfig('TablesState');
   const [tableState, setTableState] = useState<TableState>(
     id && tablesState[id] !== undefined ? tablesState[id] : {}
