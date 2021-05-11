@@ -179,7 +179,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       : []
   );
 
-  if (loading || !locationUnits.data || locationUnits.data.length) {
+  if (loading || !locationUnits.data || !locationUnits.data.length) {
     return <Spin size="large"></Spin>;
   }
 
