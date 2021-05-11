@@ -95,7 +95,9 @@ exports[`components/Antd/ReleaseList renders correctly: table 1`] = `
       },
     ]
   }
+  id="FormReleaseList"
   onChange={[Function]}
+  persistState={true}
 />
 `;
 

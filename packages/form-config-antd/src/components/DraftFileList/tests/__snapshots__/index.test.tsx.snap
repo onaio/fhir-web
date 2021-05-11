@@ -122,7 +122,9 @@ exports[`components/Antd/DraftFileList renders correctly: table 1`] = `
       },
     ]
   }
+  id="FormDraftFileList"
   onChange={[Function]}
+  persistState={true}
 />
 `;
 
