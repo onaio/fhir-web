@@ -52,7 +52,10 @@ export function TableLayout<T extends object = Dictionary>(props: Props<T>) {
 
   const options: Options = { ...defaults, ...props };
   const tablesState = getConfig('TablesState');
-  const [tableState, setTableState] = useState<TableState>(id ? tablesState[id] : {});
+  const [tableState, setTableState] = useState<TableState>(
+    id && tablesState[id] !== undefined ? tablesState[id] : {}
+  );
+
   const tableprops: Options = {
     ...options,
     ...tablesState,
