@@ -21,7 +21,7 @@ import {
 import { userRoles } from '../../../ducks/tests/fixtures';
 import { URL_USER_ROLES } from '../../../constants';
 import lang from '../../../lang';
-import { unorderedUserRoles } from './fixtures';
+import { unorderedUserRoles, unorderedUserRoles1 } from './fixtures';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -313,6 +313,63 @@ describe('components/UserRolesList', () => {
     expect(wrapper.find('tbody').find('tr').at(2).find('td').at(2).text()).toEqual(
       'Allows on to Download all Events'
     );
+    wrapper.unmount();
+  });
+  it('sorts descriptions without breaking if description field is undefined in payload', async () => {
+    fetch.once(JSON.stringify(unorderedUserRoles1));
+
+    const props = {
+      ...locationProps,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <UserRolesList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+
+    wrapper.update();
+
+    // Default order
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toEqual(
+      'Allows on to Download all Events'
+    );
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(2).text()).toEqual(
+      'Allows on to view plans for user'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(2).text()).toEqual('');
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(2).text()).toEqual('');
+
+    // Ascending
+    wrapper.find('thead th').at(2).simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toEqual(
+      'Allows on to Download all Events'
+    );
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(2).text()).toEqual(
+      'Allows on to view plans for user'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(2).text()).toEqual('');
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(2).text()).toEqual('');
+
+    //Descending
+    wrapper.find('thead th').at(2).simulate('click');
+    wrapper.update();
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toEqual(
+      'Allows on to view plans for user'
+    );
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(2).text()).toEqual(
+      'Allows on to Download all Events'
+    );
+    expect(wrapper.find('tbody').find('tr').at(2).find('td').at(2).text()).toEqual('');
+    expect(wrapper.find('tbody').find('tr').at(3).find('td').at(2).text()).toEqual('');
     wrapper.unmount();
   });
 });
