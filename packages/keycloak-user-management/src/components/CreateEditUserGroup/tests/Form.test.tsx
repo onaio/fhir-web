@@ -49,6 +49,7 @@ describe('components/forms/UserFroupForm', () => {
 
   afterEach(() => {
     fetch.mockClear();
+    jest.resetAllMocks();
   });
 
   it('renders without crashing', () => {
