@@ -121,7 +121,7 @@ describe('List view Page', () => {
     // expect(toJson(wrapper.find('TeamAssignmentView'))).toEqual('');
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Team AssignmentKenyaNameAssigned TeamsActionsKenya-Edit15 / page"`
+      `"Team AssignmentKenyaNameAssigned TeamsActionsKenya-Edit"`
     );
     wrapper.unmount();
   });
