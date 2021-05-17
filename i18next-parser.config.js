@@ -28,8 +28,12 @@ module.exports = {
   // see below for more details
   lexers: {
     hbs: ['HandlebarsLexer'],
-    handlebars: ['HandlebarsLexer'],
-
+    handlebars: [
+      {
+        lexer: 'HandlebarsLexer',
+        functions: ['t'], // Array of functions to match
+      },
+    ],
     htm: ['HTMLLexer'],
     html: ['HTMLLexer'],
 
