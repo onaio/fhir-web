@@ -7,8 +7,7 @@ import {
   makePlanDefinitionsArraySelector,
 } from '../../ducks/planDefinitions';
 import { connect } from 'react-redux';
-import { ColumnsType } from 'antd/lib/table/interface';
-import { PlansLoading, columns, pageTitleBuilder } from './utils';
+import { PlansLoading, getColumns, pageTitleBuilder } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -23,7 +22,8 @@ import {
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import { NEW_MISSION } from '../../lang';
+import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
+import lang from '../../lang';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(PlansReducerName, plansReducer);
@@ -31,7 +31,6 @@ reducerRegistry.register(PlansReducerName, plansReducer);
 /** props for the PlansList view */
 interface Props<T = PlanDefinition> extends CommonProps {
   data: T[];
-  columns: ColumnsType<T>;
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
   allowedPlanStatus: string;
@@ -40,7 +39,6 @@ interface Props<T = PlanDefinition> extends CommonProps {
 const defaultProps = {
   ...defaultCommonProps,
   data: [],
-  columns: columns,
   fetchPlansCreator: fetchPlanDefinitions,
   service: OpenSRPService,
   allowedPlanStatus: PlanStatus.ACTIVE,
@@ -51,7 +49,7 @@ export type PlansListTypes = Props<PlanDefinition> & RouteComponentProps<RoutePa
 /** component that renders plans */
 
 const PlansList = (props: PlansListTypes) => {
-  const { service, data, columns, fetchPlansCreator, baseURL, allowedPlanStatus } = props;
+  const { service, data, fetchPlansCreator, baseURL, allowedPlanStatus } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
 
@@ -80,18 +78,20 @@ const PlansList = (props: PlansListTypes) => {
     return planWithKey;
   });
 
+  const columns = getColumns();
+
   return (
     <div className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
-      <Row className={'list-view'}>
+      <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
-          <div className="main-content__header">
+          <div className="main-content__header flex-right">
             <Link to={PLANS_CREATE_VIEW_URL}>
-              <Button type="primary" size="large">
-                {NEW_MISSION}
+              <Button type="primary" className="mr-0">
+                {lang.NEW_MISSION}
               </Button>
             </Link>
           </div>

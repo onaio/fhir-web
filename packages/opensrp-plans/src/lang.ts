@@ -1,38 +1,64 @@
-export const MISSIONS = 'Missions';
-export const NEW_MISSION = ' + New Mission';
+import i18n, { namespace } from './mls';
+import { Dictionary } from '@onaio/utils';
 
-// plans table columns
-export const NAME = 'Name';
-export const DATE = 'Date';
-export const ACTIONS = 'Actions';
+const lang: Dictionary<string> = {};
 
-//loader texts
-export const MESSAGE = 'Fetching Plans';
-export const DESCRIPTION = 'Please wait, as we fetch the plans.';
-export const TIP = 'Loading...';
+/** recompute values */
+function fill() {
+  lang.NAME = i18n.t(`Name`, { ns: namespace });
+  lang.VIEW = i18n.t(`View`, { ns: namespace });
 
-export const EDIT_PLAN = `Edit mission`;
-export const CREATE_PLAN = `Create new mission`;
-export const NO_STATUS_FOUND = `No Status Found`;
-export const EDIT = 'Edit';
-export const START_DATE = 'Start Date';
-export const END_DATE = 'End Date';
+  lang.MISSIONS = i18n.t(`Missions`, { ns: namespace });
+  lang.NEW_MISSION = i18n.t(` + New Mission`, { ns: namespace });
 
-export const CANCEL = 'Cancel';
-export const SAVE = 'Save';
-export const EDIT_TEAMS = 'Edit teams';
-export const EDIT_AREAS = 'Edit areas';
-export const SELECT = 'Select';
-export const SELECT_TEAMS = 'Select teams';
-export const SELECT_AREAS = 'Select areas';
-export const ACTIVATE_MISSION = 'Activate mission';
-export const SUCCESSFULLY_ACTIVATED_MISSION = 'Successfully activated mission';
-export const FAILED_TO_ACTIVATE_MISSION = 'Activating mission failed';
-export const COULD_NOT_LOAD_ASSIGNMENTS = 'Could not load Assignments';
+  // plans table columns
+  lang.DATE = i18n.t(`Date created`, { ns: namespace });
+  lang.ACTIONS = i18n.t(`Actions`, { ns: namespace });
 
-export const MISSION_DATA = 'Mission data';
-export const DOWNLOAD_MISSION_DATA = 'Download mission data';
-export const SERVICE_POINTS_VISITED = 'Service points visited';
-export const PRODUCTS_CHECKED = 'Products checked';
-export const NUMBER_OF_FLAGGED_PRODUCTS = 'Number of flagged products';
-export const FETCHING_MISSION_INDICATORS_DATA = 'Fetching mission indicators data';
+  //loader texts
+  lang.MESSAGE = i18n.t(`Fetching Plans`, { ns: namespace });
+  lang.DESCRIPTION = i18n.t(`Please wait, as we fetch the plans.`, { ns: namespace });
+  lang.TIP = i18n.t(`Loading...`, { ns: namespace });
+
+  lang.EDIT_PLAN = i18n.t(`Edit mission`, { ns: namespace });
+  lang.CREATE_PLAN = i18n.t(`Create new mission`, { ns: namespace });
+  lang.EDIT = i18n.t(`Edit`, { ns: namespace });
+  lang.START_DATE = i18n.t(`Start Date`, { ns: namespace });
+  lang.END_DATE = i18n.t(`End Date`, { ns: namespace });
+
+  lang.CANCEL = i18n.t(`Cancel`, { ns: namespace });
+  lang.SAVE = i18n.t(`Save`, { ns: namespace });
+  lang.EDIT_TEAMS = i18n.t(`Edit teams`, { ns: namespace });
+  lang.EDIT_AREAS = i18n.t(`Edit areas`, { ns: namespace });
+  lang.SELECT = i18n.t(`Select`, { ns: namespace });
+  lang.SELECT_TEAMS = i18n.t(`Select teams`, { ns: namespace });
+  lang.SELECT_AREAS = i18n.t(`Select areas`, { ns: namespace });
+  lang.ACTIVATE_MISSION = i18n.t(`Activate mission`, { ns: namespace });
+  lang.SUCCESSFULLY_ACTIVATED_MISSION = i18n.t(`Successfully activated mission`, { ns: namespace });
+  lang.FAILED_TO_ACTIVATE_MISSION = i18n.t(`Activating mission failed`, { ns: namespace });
+  lang.COULD_NOT_LOAD_ASSIGNMENTS = i18n.t(`Could not load Assignments`, { ns: namespace });
+
+  lang.MISSION_DATA = i18n.t(`Mission data`, { ns: namespace });
+  lang.DOWNLOAD_MISSION_DATA = i18n.t(`Download mission data`, { ns: namespace });
+  lang.SERVICE_POINTS_VISITED = i18n.t(`Service points visited`, { ns: namespace });
+  lang.PRODUCTS_CHECKED = i18n.t(`Products checked`, { ns: namespace });
+  lang.NUMBER_OF_FLAGGED_PRODUCTS = i18n.t(`Number of flagged products`, { ns: namespace });
+  lang.FETCHING_MISSION_INDICATORS_DATA = i18n.t(`Fetching mission indicators data`, {
+    ns: namespace,
+  });
+  lang.CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS = i18n.t(
+    `Assign jurisdictions to the Plan, to enable activating it`,
+    { ns: namespace }
+  );
+}
+
+// run it initial
+fill();
+
+// bind some events and fill values again (doing the magic you expect to happen magically)
+i18n.on(`languageChanged`, () => {
+  fill();
+});
+
+// export the const
+export default lang;

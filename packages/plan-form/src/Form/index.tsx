@@ -6,37 +6,15 @@ import { xor } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { format } from 'util';
-import {
-  ACTION,
-  ACTIVE_DATE_RANGE_LABEL,
-  ACTIVITIES_LABEL,
-  ADD_ACTIVITY,
-  ADD_CODED_ACTIVITY,
-  ADD_JURISDICTION,
-  AND,
-  CANCEL,
-  CONDITIONS_LABEL,
-  DESCRIPTION_LABEL,
-  DESCRIPTION_PLACEHOLDER,
-  DYNAMIC_VALUE_LEGEND_TITLE,
-  END_DATE,
-  GOAL_LABEL,
-  INTERVENTION_TYPE_LABEL,
-  PLAN_TITLE_LABEL,
-  PLAN_TITLE_PLACEHOLDER,
-  PRIORITY_LABEL,
-  QUANTITY_LABEL,
-  REASON_HEADER,
-  SAVE_PLAN,
-  START_DATE,
-  STATUS_HEADER,
-  SUCCESSFULLY_CREATED,
-  SUCCESSFULLY_UPDATED,
-  TRIGGERS_LABEL,
-} from '../lang';
-import { PLAN_LIST_URL } from '../constants';
+import { RangePickerSharedProps } from 'rc-picker/lib/RangePicker';
+import lang from '../lang';
+import { PLAN_LIST_URL, PLAN_DESCRIPTION_WORD_LIMIT } from '../constants';
 import { getConditionAndTriggers } from './componentsUtils/actions';
-import { processActivitiesDates, processToBasePlanForm, validationRules } from '../helpers/utils';
+import {
+  processActivitiesDates,
+  processToBasePlanForm,
+  validationRulesFactory,
+} from '../helpers/utils';
 import {
   version,
   actionReasons,
@@ -46,7 +24,6 @@ import {
   goalPrioritiesDisplay,
   goalUnitDisplay,
   planActivities,
-  planStatusDisplay,
   PlanStatus,
   InterventionType,
   PlanActionCodesType,
@@ -79,6 +56,7 @@ import {
   goalDescription,
   status,
   title,
+  jurisdictions,
 } from '@opensrp/plan-form-core';
 import moment, { Moment } from 'moment';
 import { Select, Input, DatePicker } from 'antd';
@@ -86,7 +64,6 @@ import { CloseOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/ic
 import { Collapse, Modal } from 'antd';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { CommonProps, defaultCommonProps } from '../helpers/common';
-import { SUPPLY_MANAGEMENT_TITLE } from '../lang';
 import {
   AfterSubmit,
   BeforeSubmit,
@@ -95,6 +72,7 @@ import {
   PlanFormFieldsKeys,
 } from '../helpers/types';
 import { postPutPlan } from '../helpers/dataloaders';
+import { PlanStatusRenderer } from './componentsUtils/status';
 
 const { Panel } = Collapse;
 const { List, Item: FormItem } = Form;
@@ -158,6 +136,25 @@ export interface PlanFormProps extends CommonProps {
 }
 
 /**
+ * Plan Form Date range picker
+ * Function checks end date to be greater than start date and today date
+ *
+ * @param {Moment} current - current selected/hovered date (date picker)
+ * @param {Moment[]} dates - start and end date
+ * @returns {boolean} - returns true if disabled and viseversa
+ */
+export const disableDate = (current: Moment, dates: Moment[]) => {
+  if (!dates || dates.length === 0) {
+    return false;
+  }
+  return (
+    current.valueOf() <= Date.now() ||
+    current.format('L') <= (dates[0] && dates[0].format('L')) ||
+    (dates[1] && dates[1].valueOf() <= Date.now())
+  );
+};
+
+/**
  * Plan Form component
  *
  * @param {object} props - props
@@ -171,6 +168,7 @@ const PlanForm = (props: PlanFormProps) => {
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
   const [actionDynamicValue, setActionDynamicValue] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [dates, setDates] = useState<Moment[]>([]);
   const {
     allFormActivities,
     disabledActivityFields,
@@ -183,6 +181,7 @@ const PlanForm = (props: PlanFormProps) => {
     onCancel,
   } = props;
   const [newPlanStatus, setNewPlanStatus] = useState<PlanStatus>(initialValues.status);
+  const validationRules = validationRulesFactory();
 
   const configs = {
     ...defaultEnvConfig,
@@ -318,7 +317,7 @@ const PlanForm = (props: PlanFormProps) => {
             setSubmitting(false);
             return;
           }
-          const successMessage = isEditMode ? SUCCESSFULLY_UPDATED : SUCCESSFULLY_CREATED;
+          const successMessage = isEditMode ? lang.SUCCESSFULLY_UPDATED : lang.SUCCESSFULLY_CREATED;
 
           postPutPlan(payload, baseURL, isEditMode)
             .then(() => {
@@ -337,7 +336,7 @@ const PlanForm = (props: PlanFormProps) => {
         <>
           <FormItem
             name={interventionType}
-            label={INTERVENTION_TYPE_LABEL}
+            label={lang.INTERVENTION_TYPE_LABEL}
             required
             rules={validationRules.interventionType}
             hidden={isHidden(interventionType)}
@@ -360,13 +359,13 @@ const PlanForm = (props: PlanFormProps) => {
                 form.setFieldsValue({ jurisdictions: initialJurisdictionValues });
               }}
             >
-              <Option value={InterventionType.SM}>{SUPPLY_MANAGEMENT_TITLE}</Option>
+              <Option value={InterventionType.SM}>{lang.SUPPLY_MANAGEMENT_TITLE}</Option>
             </Select>
           </FormItem>
 
           <FormItem
             hidden={isHidden(title)}
-            label={PLAN_TITLE_LABEL}
+            label={lang.PLAN_TITLE_LABEL}
             name={title}
             rules={validationRules.title}
             id={title}
@@ -378,7 +377,7 @@ const PlanForm = (props: PlanFormProps) => {
                 });
               }}
               required={true}
-              placeholder={PLAN_TITLE_PLACEHOLDER}
+              placeholder={lang.PLAN_TITLE_PLACEHOLDER}
               type="text"
               disabled={disabledFields.includes(title)}
             />
@@ -407,30 +406,49 @@ const PlanForm = (props: PlanFormProps) => {
           <FormItem
             name={status}
             required={true}
-            label={STATUS_HEADER}
+            label={lang.STATUS_HEADER}
             rules={validationRules.status}
             hidden={isHidden(status)}
             id="status"
+            getValueFromEvent={() => {
+              return form.getFieldsValue()[status];
+            }}
           >
-            <Select disabled={disabledFields.includes(status)}>
-              {Object.entries(PlanStatus)
-                .filter((e) => !disAllowedStatusChoices.includes(e[1]))
-                .map((e) => (
-                  <Option key={e[0]} value={e[1]}>
-                    {planStatusDisplay[e[1]]}
-                  </Option>
-                ))}
-            </Select>
+            <PlanStatusRenderer
+              setFieldsValue={form.setFieldsValue}
+              disabledFields={disabledFields}
+              disAllowedStatusChoices={disAllowedStatusChoices}
+              assignedJurisdictions={form.getFieldsValue()[jurisdictions]}
+            />
           </FormItem>
           <FormItem
             rules={validationRules.dateRange}
-            label={ACTIVE_DATE_RANGE_LABEL}
+            label={lang.ACTIVE_DATE_RANGE_LABEL}
             name="dateRange"
             required={true}
             hidden={isHidden('dateRange')}
             id="dateRange"
           >
             <DatePicker.RangePicker
+              onCalendarChange={
+                ((val: Moment[]) => {
+                  setDates(val);
+                }) as RangePickerSharedProps<Moment>['onCalendarChange']
+              }
+              onOpenChange={(open: boolean) => {
+                if (open) {
+                  if (form.getFieldValue('dateRange')) {
+                    setDates(
+                      form.getFieldValue('dateRange')[0] && form.getFieldValue('dateRange')[1]
+                        ? form.getFieldValue('dateRange')
+                        : []
+                    );
+                  } else {
+                    setDates([]);
+                  }
+                }
+              }}
+              disabledDate={(current: Moment) => disableDate(current, dates)}
               disabled={disabledFields.includes('dateRange')}
               format={configs.dateFormat}
             />
@@ -442,7 +460,7 @@ const PlanForm = (props: PlanFormProps) => {
 
           <FormItem
             rules={validationRules.description}
-            label={DESCRIPTION_LABEL}
+            label={lang.DESCRIPTION_LABEL}
             name={description}
             required={true}
             hidden={isHidden(description)}
@@ -450,7 +468,9 @@ const PlanForm = (props: PlanFormProps) => {
           >
             <TextArea
               rows={4}
-              placeholder={DESCRIPTION_PLACEHOLDER}
+              showCount
+              maxLength={PLAN_DESCRIPTION_WORD_LIMIT}
+              placeholder={lang.DESCRIPTION_PLACEHOLDER}
               disabled={disabledFields.includes(description)}
             />
           </FormItem>
@@ -485,7 +505,7 @@ const PlanForm = (props: PlanFormProps) => {
                     onClick={() => add()}
                     icon={<PlusOutlined />}
                   >
-                    {ADD_JURISDICTION}
+                    {lang.ADD_JURISDICTION}
                   </Button>
                 </Form.Item>
               </>
@@ -493,7 +513,7 @@ const PlanForm = (props: PlanFormProps) => {
           </Form.List>
 
           <FormItem
-            label={<h4>{ACTIVITIES_LABEL}</h4>}
+            label={<h4>{lang.ACTIVITIES_LABEL}</h4>}
             hidden={isHidden(activities)}
             id="activities"
           >
@@ -548,7 +568,7 @@ const PlanForm = (props: PlanFormProps) => {
                               <div className="card-body">
                                 <fieldset key={`fieldset${arrItem.actionCode}-${index}`}>
                                   <FormItem
-                                    label={ACTION}
+                                    label={lang.ACTION}
                                     name={[index, actionTitle]}
                                     rules={validationRules.activities.actionTitle}
                                     id={`activities-${index}-actionTitle`}
@@ -589,7 +609,7 @@ const PlanForm = (props: PlanFormProps) => {
                                   </FormItem>
                                   <FormItem
                                     rules={validationRules.activities.actionDescription}
-                                    label={DESCRIPTION_LABEL}
+                                    label={lang.DESCRIPTION_LABEL}
                                     id={`activities-${index}-actionDescription`}
                                     name={[index, actionDescription]}
                                   >
@@ -614,7 +634,7 @@ const PlanForm = (props: PlanFormProps) => {
                                   </FormItem>
                                   <FormItem
                                     rules={validationRules.activities.actionReason}
-                                    label={REASON_HEADER}
+                                    label={lang.REASON_HEADER}
                                     name={[index, actionReason]}
                                     required={true}
                                     id={`activities-${index}-actionReason`}
@@ -633,9 +653,9 @@ const PlanForm = (props: PlanFormProps) => {
                                     </Select>
                                   </FormItem>
                                   <fieldset>
-                                    <legend>{GOAL_LABEL}</legend>
+                                    <legend>{lang.GOAL_LABEL}</legend>
                                     <FormItem
-                                      label={QUANTITY_LABEL}
+                                      label={lang.QUANTITY_LABEL}
                                       name={[index, goalValue]}
                                       rules={validationRules.activities.goalValue}
                                       id={`activities-${index}-goalValue`}
@@ -661,7 +681,7 @@ const PlanForm = (props: PlanFormProps) => {
                                     </FormItem>
                                     <FormItem
                                       rules={validationRules.activities.timingPeriodStart}
-                                      label={START_DATE}
+                                      label={lang.START_DATE}
                                       name={[index, timingPeriodStart]}
                                       required={true}
                                       id={`activities-${index}-timingPeriodStart`}
@@ -677,7 +697,7 @@ const PlanForm = (props: PlanFormProps) => {
                                     </FormItem>
                                     <FormItem
                                       rules={validationRules.activities.timingPeriodEnd}
-                                      label={END_DATE}
+                                      label={lang.END_DATE}
                                       name={[index, timingPeriodEnd]}
                                       required={true}
                                       id={`activities-${index}-timingPeriodEnd`}
@@ -707,7 +727,7 @@ const PlanForm = (props: PlanFormProps) => {
                                     </FormItem>
                                     <FormItem
                                       rules={validationRules.activities.goalPriority}
-                                      label={PRIORITY_LABEL}
+                                      label={lang.PRIORITY_LABEL}
                                       name={[index, goalPriority]}
                                       required={true}
                                       id={`activities-${index}-goalPriority`}
@@ -739,14 +759,14 @@ const PlanForm = (props: PlanFormProps) => {
                                       <Panel
                                         className="triggers-conditions"
                                         showArrow={false}
-                                        header={`${TRIGGERS_LABEL} ${AND} ${CONDITIONS_LABEL}`}
+                                        header={`${lang.TRIGGERS_LABEL} ${lang.AND} ${lang.CONDITIONS_LABEL}`}
                                         key="1"
                                       >
                                         {actionTriggers.hasOwnProperty(
                                           planActivities[index].actionCode
                                         ) && (
                                           <fieldset className="triggers-fieldset">
-                                            <legend>{TRIGGERS_LABEL}</legend>
+                                            <legend>{lang.TRIGGERS_LABEL}</legend>
                                             {actionTriggers[planActivities[index].actionCode]}
                                           </fieldset>
                                         )}
@@ -754,7 +774,7 @@ const PlanForm = (props: PlanFormProps) => {
                                           planActivities[index].actionCode
                                         ) && (
                                           <fieldset className="dynamic-value-fieldset">
-                                            <legend>{DYNAMIC_VALUE_LEGEND_TITLE}</legend>
+                                            <legend>{lang.DYNAMIC_VALUE_LEGEND_TITLE}</legend>
                                             {actionDynamicValue[planActivities[index].actionCode]}
                                           </fieldset>
                                         )}
@@ -762,7 +782,7 @@ const PlanForm = (props: PlanFormProps) => {
                                           planActivities[index].actionCode
                                         ) && (
                                           <fieldset className="conditions-fieldset">
-                                            <legend>{CONDITIONS_LABEL}</legend>
+                                            <legend>{lang.CONDITIONS_LABEL}</legend>
                                             {actionConditions[planActivities[index].actionCode]}
                                           </fieldset>
                                         )}
@@ -785,13 +805,13 @@ const PlanForm = (props: PlanFormProps) => {
                                   danger
                                   onClick={toggleActivityModal}
                                 >
-                                  {ADD_ACTIVITY}
+                                  {lang.ADD_ACTIVITY}
                                 </Button>
 
                                 <Modal
                                   visible={activityModal}
                                   className="activity-modal"
-                                  title={ADD_ACTIVITY}
+                                  title={lang.ADD_ACTIVITY}
                                   onCancel={toggleActivityModal}
                                 >
                                   <>
@@ -825,7 +845,10 @@ const PlanForm = (props: PlanFormProps) => {
                                                 );
                                               }}
                                             >
-                                              {format(ADD_CODED_ACTIVITY, thisActivity.actionCode)}
+                                              {format(
+                                                lang.ADD_CODED_ACTIVITY,
+                                                thisActivity.actionCode
+                                              )}
                                             </Button>
                                           </li>
                                         ))}
@@ -849,15 +872,15 @@ const PlanForm = (props: PlanFormProps) => {
               <Button
                 type="primary"
                 id="planform-submit-button"
-                aria-label={SAVE_PLAN}
+                aria-label={lang.SAVE_PLAN}
                 disabled={isSubmitting}
                 htmlType="submit"
               >
-                {SAVE_PLAN}
+                {lang.SAVE_PLAN}
               </Button>
 
               <Button id="planform-cancel-button" onClick={() => onCancel()}>
-                {CANCEL}
+                {lang.CANCEL}
               </Button>
             </Space>
           </FormItem>

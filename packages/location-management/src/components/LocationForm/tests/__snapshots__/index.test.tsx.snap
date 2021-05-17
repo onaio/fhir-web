@@ -242,6 +242,31 @@ exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 </label>
 `;
 
+exports[`LocationForm renders correctly: latitude field 1`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="location-form_latitude"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="E.g. -16.08306"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`LocationForm renders correctly: latitude label 1`] = `
+<label
+  className=""
+  htmlFor="location-form_latitude"
+  title="Latitude"
+>
+  Latitude
+</label>
+`;
+
 exports[`LocationForm renders correctly: locationTags field 1`] = `
 <input
   aria-activedescendant="location-form_locationTags_list_0"
@@ -282,6 +307,31 @@ exports[`LocationForm renders correctly: locationTags label 1`] = `
 </label>
 `;
 
+exports[`LocationForm renders correctly: longitude field 1`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="location-form_longitude"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="E.g. 49.54933"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`LocationForm renders correctly: longitude label 1`] = `
+<label
+  className=""
+  htmlFor="location-form_longitude"
+  title="Longitude"
+>
+  Longitude
+</label>
+`;
+
 exports[`LocationForm renders correctly: name field 1`] = `
 <input
   className="ant-input"
@@ -319,17 +369,17 @@ exports[`LocationForm renders correctly: parentId label 1`] = `
 </label>
 `;
 
-exports[`LocationForm renders correctly: serviceTypes field 1`] = `
+exports[`LocationForm renders correctly: serviceType field 1`] = `
 <input
-  aria-activedescendant="location-form_serviceTypes_list_0"
+  aria-activedescendant="location-form_serviceType_list_0"
   aria-autocomplete="list"
-  aria-controls="location-form_serviceTypes_list"
+  aria-controls="location-form_serviceType_list"
   aria-haspopup="listbox"
-  aria-owns="location-form_serviceTypes_list"
+  aria-owns="location-form_serviceType_list"
   autoComplete="off"
   className="ant-select-selection-search-input"
   disabled={false}
-  id="location-form_serviceTypes"
+  id="location-form_serviceType"
   onChange={[Function]}
   onCompositionEnd={[Function]}
   onCompositionStart={[Function]}
@@ -349,10 +399,10 @@ exports[`LocationForm renders correctly: serviceTypes field 1`] = `
 />
 `;
 
-exports[`LocationForm renders correctly: serviceTypes label 1`] = `
+exports[`LocationForm renders correctly: serviceType label 1`] = `
 <label
   className=""
-  htmlFor="location-form_serviceTypes"
+  htmlFor="location-form_serviceType"
   title="Type"
 >
   Type
@@ -425,29 +475,4 @@ exports[`LocationForm renders correctly: submit button 1`] = `
     Save
   </span>
 </button>
-`;
-
-exports[`LocationForm renders correctly: type field 1`] = `
-<input
-  className="ant-input"
-  disabled={false}
-  id="location-form_type"
-  onBlur={[Function]}
-  onChange={[Function]}
-  onFocus={[Function]}
-  onKeyDown={[Function]}
-  placeholder="Select type"
-  type="text"
-  value=""
-/>
-`;
-
-exports[`LocationForm renders correctly: type label 1`] = `
-<label
-  className="ant-form-item-required"
-  htmlFor="location-form_type"
-  title="Type"
->
-  Type
-</label>
 `;

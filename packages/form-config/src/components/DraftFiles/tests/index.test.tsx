@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createBrowserHistory } from 'history';
@@ -5,35 +6,45 @@ import { ManifestDraftFiles, ConnectedManifestDraftFiles } from '../index';
 import { getFetchOptions } from '@opensrp/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import reducerRegistry, { store } from '@onaio/redux-reducer-registry';
+import { store } from '@opensrp/store';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import flushPromises from 'flush-promises';
-import draftReducer, {
-  draftReducerName,
-  getAllManifestDraftFilesArray,
-  removeManifestDraftFiles,
-} from '../../../ducks/manifestDraftFiles';
-import { FixManifestDraftFiles, downloadFile } from '../../../ducks/tests/fixtures';
+import { FixManifestDraftFiles, downloadFile } from '../../../helpers/fixtures';
 import toJson from 'enzyme-to-json';
-import * as helpers from '../../../helpers/fileDownload';
+import * as formConfigCore from '@opensrp/form-config-core';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
+import lang from '../../../lang';
+
+const {
+  draftReducer,
+  draftReducerName,
+  getAllManifestDraftFilesArray,
+  removeManifestDraftFiles,
+} = formConfigCore;
+
+jest.mock('@opensrp/form-config-core', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/form-config-core')),
+}));
+
 /** register the reducers */
 reducerRegistry.register(draftReducerName, draftReducer);
 
 const history = createBrowserHistory();
 
-const baseURL = 'https://test-example.com/rest';
+const baseURL = 'https://test-example.com/rest/';
 const endpoint = 'metadata';
 const props = {
   baseURL,
   endpoint,
-  downloadEndPoint: '/form-download',
-  formUploadUrl: '/manifest',
+  downloadEndPoint: 'form-download',
+  formUploadUrl: 'manifest',
   getPayload: getFetchOptions,
   LoadingComponent: <div>Loading</div>,
-  manifestEndPoint: '/manifest',
-  releasesUrl: '/manifest/releases',
+  manifestEndPoint: 'manifest',
+  releasesUrl: 'manifest/releases',
   uploadTypeUrl: 'file-upload',
   customAlert: jest.fn(),
   accessToken: 'hunter2',
@@ -65,7 +76,7 @@ describe('components/DraftFiles', () => {
   });
 
   it('renders without crashing when connected to store', async () => {
-    const downloadSpy = jest.spyOn(helpers, 'handleDownload');
+    const downloadSpy = jest.spyOn(formConfigCore, 'downloadManifestFile');
     fetch.once(JSON.stringify(FixManifestDraftFiles));
     fetch.once(JSON.stringify(downloadFile));
 
@@ -102,7 +113,25 @@ describe('components/DraftFiles', () => {
     });
     wrapper.update();
 
-    expect(downloadSpy).toHaveBeenCalledWith(downloadFile.clientForm.json, 'reveal-test-file.json');
+    expect(downloadSpy).toHaveBeenCalledWith(
+      'hunter2',
+      'https://test-example.com/rest/',
+      'form-download',
+      {
+        createdAt: 'Jun 19, 2020, 4:23:22 PM',
+        form_relation: '',
+        id: '53',
+        identifier: 'reveal-test-file.json',
+        isDraft: false,
+        isJsonValidator: false,
+        jursdiction: '',
+        label: 'test publish',
+        module: '',
+        version: '1.0.27',
+      },
+      false,
+      getFetchOptions
+    );
     expect(fetch.mock.calls[1]).toEqual([
       'https://test-example.com/rest/form-download?form_identifier=reveal-test-file.json&form_version=1.0.27',
       {
@@ -171,7 +200,7 @@ describe('components/DraftFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith('API is down', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();
@@ -180,7 +209,7 @@ describe('components/DraftFiles', () => {
   it('handles download file failure', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
     fetch.mockRejectOnce(() => Promise.reject('Cannot fetch file'));
-    const downloadSpy = jest.spyOn(helpers, 'handleDownload');
+    const downloadSpy = jest.spyOn(formConfigCore, 'handleDownload');
 
     const wrapper = mount(
       <Provider store={store}>
@@ -231,7 +260,7 @@ describe('components/DraftFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith('Cannot create file', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

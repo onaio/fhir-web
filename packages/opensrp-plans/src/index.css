@@ -27,11 +27,7 @@
 }
 
 .plan-info-main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   padding: 16px 28px;
-  flex-wrap: wrap;
 }
 .plan-avatar-detail-section {
   display: flex;
@@ -48,6 +44,7 @@
 .plan-dates {
   display: flex;
   flex-direction: row;
+  align-items: flex-end;
 }
 .plan-start-date {
   flex-direction: column;
@@ -63,7 +60,18 @@
 .end-date {
   display: flex;
   justify-content: flex-end;
+  color: #999999;
+  font-size: 14px;
 }
 .plan-detail-view .date-divider {
   height: 40px;
+}
+.plan-description {
+  padding-left: 0px;
+}
+@media only screen and (min-width: 768px) {
+  .plan-description {
+    padding-left: 104px;
+    font-size: 14px;
+  }
 }

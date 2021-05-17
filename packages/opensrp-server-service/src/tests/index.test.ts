@@ -76,9 +76,17 @@ describe('services/OpenSRP', () => {
     const service = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'location');
 
     await service.list({ is_jurisdiction: true, attribute: 'card_status:needs_card' });
-    expect(fetch.mock.calls[0][0]).toEqual(
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true&attribute=card_status:needs_card'
-    );
+    expect(fetch.mock.calls[0]).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true&attribute=card_status:needs_card',
+      {
+        headers: {
+          accept: 'application/json',
+          authorization: 'Bearer hunter2',
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        method: 'GET',
+      },
+    ]);
   });
 
   it('OpenSRPService list method should handle http errors', async () => {

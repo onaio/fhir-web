@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.11 (2021-02-24)
+
+### Reverts
+
+- Revert ":up: update interface for location unit" ([8c443a9](https://github.com/OpenSRP/web/commit/8c443a9785a813ca980aa080b5c5d6f77bb2ee44))
+- Revert ":up: update snapshot" ([b8a03d3](https://github.com/OpenSRP/web/commit/b8a03d3f6f205c4fed0ee015d5fba31cfbcbe6c0))
+
+## [0.0.10](https://github.com/OpenSRP/web/compare/@opensrp/location-management@0.0.9...@opensrp/location-management@0.0.10) (2021-02-23)
+
+**Note:** Version bump only for package @opensrp/location-management
+
+## [0.0.9](https://github.com/OpenSRP/web/compare/@opensrp/location-management@0.0.8...@opensrp/location-management@0.0.9) (2021-02-18)
+
+**Note:** Version bump only for package @opensrp/location-management
+
+## 0.0.8 (2021-02-18)
+
+### Reverts
+
+- Revert ":up: update interface for location unit" ([8c443a9](https://github.com/OpenSRP/web/commit/8c443a9785a813ca980aa080b5c5d6f77bb2ee44))
+- Revert ":up: update snapshot" ([b8a03d3](https://github.com/OpenSRP/web/commit/b8a03d3f6f205c4fed0ee015d5fba31cfbcbe6c0))
+
 ## 0.0.7 (2020-11-12)
 
 **Note:** Version bump only for package @opensrp/location-management

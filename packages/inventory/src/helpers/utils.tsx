@@ -1,9 +1,10 @@
 import { getQueryParams } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
-import { BULK_UPLOAD_PARAM } from '../constants';
+import { BULK_UPLOAD_PARAM, COMMUNE_GEOGRAPHIC_LEVEL } from '../constants';
 import queryString from 'querystring';
 import React from 'react';
 import { Space } from 'antd';
+import { TreeNode } from '@opensrp/location-management/dist/types';
 
 export enum UploadStatus {
   UPLOAD_START = 'uploadStart',
@@ -38,3 +39,23 @@ export const CardTitle = ({ IconRender = null, text = '' }: CardTitleProps) => (
     <span className="card-title__text">{text}</span>
   </Space>
 );
+
+/** to pass to form, help decide what nodes in the tree select options will be disabled
+ * returns true meaning disabled if node does not have the geographic level 3
+ *
+ * @param node - a single tree node
+ */
+export const disabledTreeNodesCallback = (node: TreeNode) => {
+  return node.model.node.attributes.geographicLevel !== COMMUNE_GEOGRAPHIC_LEVEL;
+};
+
+/** location form fields that are hidden for service point creation and editing in EUSM */
+export const commonHiddenFields = [
+  'extraFields',
+  'status',
+  'type',
+  'locationTags',
+  'externalId',
+  'isJurisdiction',
+  'geometry',
+];

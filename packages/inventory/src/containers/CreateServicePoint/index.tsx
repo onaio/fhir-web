@@ -1,9 +1,14 @@
 import React from 'react';
-import { FormInstances, NewLocationUnit } from '@opensrp/location-management';
+import { FormInstances, LocationUnit, NewLocationUnit } from '@opensrp/location-management';
 import { RouteComponentProps } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
+import {
+  GEOJSON_TYPE_STRING,
+  INVENTORY_SERVICE_POINT_LIST_VIEW,
+  INVENTORY_SERVICE_POINT_PROFILE_VIEW,
+} from '../../constants';
 import { LocationFormFields } from '@opensrp/location-management/dist/types/components/LocationForm/utils';
+import { commonHiddenFields, disabledTreeNodesCallback } from '../../helpers/utils';
 
 type ServicePointAddTypes = CommonProps & RouteComponentProps;
 
@@ -16,15 +21,20 @@ const defaultProps = {
  * @param props - the component props
  */
 const ServicePointsAdd = (props: ServicePointAddTypes) => {
-  const { baseURL, ...restProps } = props;
   const locationUnitAddEditProps = {
-    ...restProps,
-    openSRPBaseURL: baseURL,
+    ...props,
     instance: FormInstances.EUSM,
-    hidden: ['extraFields', 'status', 'type', 'locationTags', 'externalId'],
-    redirectAfterAction: INVENTORY_SERVICE_POINT_LIST_VIEW,
+    hidden: commonHiddenFields,
+    successURLGenerator: (payload?: LocationUnit) =>
+      `${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${payload?.id}`, // todo if payload is missing
+    cancelURLGenerator: () => INVENTORY_SERVICE_POINT_LIST_VIEW,
     disabled: ['isJurisdiction'],
-    processInitialValues: (data: LocationFormFields) => ({ ...data, isJurisdiction: false }),
+    processInitialValues: (data: LocationFormFields) => ({
+      ...data,
+      isJurisdiction: false,
+      type: GEOJSON_TYPE_STRING,
+    }),
+    disabledTreeNodesCallback,
   };
 
   return <NewLocationUnit {...locationUnitAddEditProps} />;

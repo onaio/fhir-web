@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { organizationsReducer, Organization, orgReducerName } from '../../ducks/organizations';
+import { reducer, Organization, reducerName } from '../../ducks/organizations';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import { PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
@@ -9,9 +9,9 @@ import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Practitioner } from '../../ducks/practitioners';
-import { CREATE, CREATE_TEAM, EDIT, EDIT_TEAM, ERROR_OCCURRED } from '../../lang';
+import lang, { Lang } from '../../lang';
 
-reducerRegistry.register(orgReducerName, organizationsReducer);
+reducerRegistry.register(reducerName, reducer);
 
 /**
  * Gets Team data
@@ -49,8 +49,14 @@ export async function getPractitonerDetail(id: string, opensrpBaseURL: string) {
  * @param {string} id id of the team
  * @param {string} opensrpBaseURL - base url
  * @param {Function} setInitialValue Function to set intial value
+ * @param {Lang} langObj - the translation object lookup
  */
-function setupInitialValue(id: string, opensrpBaseURL: string, setInitialValue: Function) {
+function setupInitialValue(
+  id: string,
+  opensrpBaseURL: string,
+  setInitialValue: Function,
+  langObj: Lang = lang
+) {
   getTeamDetail(id, opensrpBaseURL)
     .then((response) => {
       setInitialValue({
@@ -58,7 +64,7 @@ function setupInitialValue(id: string, opensrpBaseURL: string, setInitialValue: 
         practitioners: response.practitioners.map((prac) => prac.identifier),
       });
     })
-    .catch(() => sendErrorNotification(ERROR_OCCURRED));
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
 }
 
 export interface Props {
@@ -87,7 +93,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       .then((response: Practitioner[]) => {
         setPractitioner(response);
       })
-      .catch(() => sendErrorNotification(ERROR_OCCURRED));
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }, [opensrpBaseURL]);
 
   if (!practitioner || (params.id && !initialValue)) return <Spin size={'large'} />;
@@ -95,11 +101,11 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{params.id ? EDIT : CREATE} Team</title>
+        <title>{params.id ? lang.EDIT : lang.CREATE} Team</title>
       </Helmet>
 
       <h5 className="mb-3 header-title">
-        {initialValue?.name ? `${EDIT_TEAM} | ${initialValue.name}` : CREATE_TEAM}
+        {initialValue?.name ? `${lang.EDIT_TEAM} | ${initialValue.name}` : lang.CREATE_TEAM}
       </h5>
 
       <div className="bg-white p-5">

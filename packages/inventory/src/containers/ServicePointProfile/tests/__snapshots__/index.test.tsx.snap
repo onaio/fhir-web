@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile view Page renders correctly when data is present: contains button to edit service point 1`] = `
+<div
+  className="ant-col flex-center-right ant-col-md-6"
+  style={Object {}}
+>
+  <Link
+    to="/inventory/servicePoint/edit/b8a7998c-5df6-49eb-98e6-f0675db71848"
+  >
+    <LinkAnchor
+      href="/inventory/servicePoint/edit/b8a7998c-5df6-49eb-98e6-f0675db71848"
+      navigate={[Function]}
+    >
+      <a
+        href="/inventory/servicePoint/edit/b8a7998c-5df6-49eb-98e6-f0675db71848"
+        onClick={[Function]}
+      >
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          size="large"
+          type="primary"
+        >
+          <Wave>
+            <button
+              className="ant-btn ant-btn-primary ant-btn-lg"
+              onClick={[Function]}
+              type="button"
+            >
+              <LoadingIcon
+                existIcon={false}
+                loading={false}
+                prefixCls="ant-btn"
+              >
+                <CSSMotion
+                  motionName="ant-btn-loading-icon-motion"
+                  onAppearActive={[Function]}
+                  onAppearStart={[Function]}
+                  onEnterActive={[Function]}
+                  onEnterStart={[Function]}
+                  onLeaveActive={[Function]}
+                  onLeaveStart={[Function]}
+                  removeOnLeave={true}
+                  visible={false}
+                >
+                  <DomWrapper />
+                </CSSMotion>
+              </LoadingIcon>
+              <span
+                key=".0"
+              >
+                Edit service point
+              </span>
+            </button>
+          </Wave>
+        </Button>
+      </a>
+    </LinkAnchor>
+  </Link>
+</div>
+`;
+
+exports[`Profile view Page renders correctly when data is present: geographic item key value 1`] = `
+<GeographyItem
+  label="Region"
+  value="ANALANJIROFO"
+>
+  <Col
+    className="geography-item"
+    md={24}
+  >
+    <div
+      className="ant-col geography-item ant-col-md-24"
+      style={Object {}}
+    >
+      <p
+        className="label"
+      >
+        Region
+        :
+      </p>
+      <p
+        className="value"
+      >
+         
+        ANALANJIROFO
+      </p>
+    </div>
+  </Col>
+</GeographyItem>
+`;
+
+exports[`Profile view Page renders correctly when data is present: geographic item key value 2`] = `
+<GeographyItem
+  label="District"
+  value="MANANARA AVARATRA"
+>
+  <Col
+    className="geography-item"
+    md={24}
+  >
+    <div
+      className="ant-col geography-item ant-col-md-24"
+      style={Object {}}
+    >
+      <p
+        className="label"
+      >
+        District
+        :
+      </p>
+      <p
+        className="value"
+      >
+         
+        MANANARA AVARATRA
+      </p>
+    </div>
+  </Col>
+</GeographyItem>
+`;
+
+exports[`Profile view Page renders correctly when data is present: geographic item key value 3`] = `
+<GeographyItem
+  label="Commune"
+  value="AMBATOHARANANA"
+>
+  <Col
+    className="geography-item"
+    md={24}
+  >
+    <div
+      className="ant-col geography-item ant-col-md-24"
+      style={Object {}}
+    >
+      <p
+        className="label"
+      >
+        Commune
+        :
+      </p>
+      <p
+        className="value"
+      >
+         
+        AMBATOHARANANA
+      </p>
+    </div>
+  </Col>
+</GeographyItem>
+`;
+
+exports[`Profile view Page renders correctly when data is present: geographic item key value 4`] = `
+<GeographyItem
+  label="Type"
+  value="Water Point"
+>
+  <Col
+    className="geography-item"
+    md={24}
+  >
+    <div
+      className="ant-col geography-item ant-col-md-24"
+      style={Object {}}
+    >
+      <p
+        className="label"
+      >
+        Type
+        :
+      </p>
+      <p
+        className="value"
+      >
+         
+        Water Point
+      </p>
+    </div>
+  </Col>
+</GeographyItem>
+`;
+
+exports[`Profile view Page renders correctly when data is present: geographic item key value 5`] = `
+<GeographyItem
+  label="Latitude/longitude"
+  value="-16.78147, 49.52125"
+>
+  <Col
+    className="geography-item"
+    md={24}
+  >
+    <div
+      className="ant-col geography-item ant-col-md-24"
+      style={Object {}}
+    >
+      <p
+        className="label"
+      >
+        Latitude/longitude
+        :
+      </p>
+      <p
+        className="value"
+      >
+         
+        -16.78147, 49.52125
+      </p>
+    </div>
+  </Col>
+</GeographyItem>
+`;
+
+exports[`Profile view Page renders correctly when data is present: geographic item key value 6`] = `
+<GeographyItem
+  label="Service point ID"
+  value="b8a7998c-5df6-49eb-98e6-f0675db71848"
+>
+  <Col
+    className="geography-item"
+    md={24}
+  >
+    <div
+      className="ant-col geography-item ant-col-md-24"
+      style={Object {}}
+    >
+      <p
+        className="label"
+      >
+        Service point ID
+        :
+      </p>
+      <p
+        className="value"
+      >
+         
+        b8a7998c-5df6-49eb-98e6-f0675db71848
+      </p>
+    </div>
+  </Col>
+</GeographyItem>
+`;
+
+exports[`Profile view Page shows broken page when jurisdiction request errors out: error broken page 1`] = `"Errorinvalid json response body at  reason: Unexpected token o in JSON at position 1Go backGo home"`;
+
+exports[`Profile view Page shows broken page: error broken page 1`] = `"ErrorCoughidGo backGo home"`;

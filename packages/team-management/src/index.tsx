@@ -1,6 +1,5 @@
-import TeamsAddEdit from './components/TeamsAddEdit';
-import TeamsView from './components/TeamsView';
 import './index.css';
+export * from './components/TeamsAddEdit';
+export * from './components/TeamsView';
 export * from './ducks/organizations';
 export * from './ducks/practitioners';
-export { TeamsView, TeamsAddEdit };

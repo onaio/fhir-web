@@ -85,6 +85,7 @@ fieldset[disabled] .gatekeeper-btn.active {
 
 /* antd overrides */
 
+.custom-ant-spin,
 .ant-spin {
   display: flex;
   justify-content: center;
@@ -103,4 +104,15 @@ fieldset[disabled] .gatekeeper-btn.active {
 }
 svg {
   vertical-align: baseline !important;
+}
+
+.custom-table th {
+  color: rgba(0, 0, 0, 0.85) !important;
+}
+.custom-table td {
+  color: rgba(0, 0, 0, 0.65) !important;
+}
+
+td {
+  vertical-align: top !important;
 }

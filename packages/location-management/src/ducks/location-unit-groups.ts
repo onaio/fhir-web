@@ -36,7 +36,7 @@ const customRemoveActionType = 'location-unit-groups/REMOVE_LOCATION_UNIT_GROUPS
 const customSetTotalRecordsActionType = 'location-unit-groups/SET_TOTAL_LOCATION_UNIT_GROUPS';
 
 /** Item Reducer */
-const reducer = reducerFactory<LocationUnitGroup>(
+export const reducer = reducerFactory<LocationUnitGroup>(
   reducerName,
   customfetchedActionType,
   customRemoveActionType,

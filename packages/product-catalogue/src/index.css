@@ -70,18 +70,6 @@
   padding-right: 0;
 }
 
-.main-content__header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0 0 16px 0;
-}
-
 .display-block {
   display: block;
-}
-
-.flex-right {
-  display: flex;
-  justify-content: flex-end;
 }

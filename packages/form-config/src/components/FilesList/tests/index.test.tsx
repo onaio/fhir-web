@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createBrowserHistory } from 'history';
@@ -5,22 +6,30 @@ import { ManifestFilesList, ConnectedManifestFilesList } from '../index';
 import { getFetchOptions } from '@opensrp/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import reducerRegistry, { store } from '@onaio/redux-reducer-registry';
+import { store } from '@opensrp/store';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import filesReducer, { filesReducerName, removeManifestFiles } from '../../../ducks/manifestFiles';
-import { fixManifestFiles, downloadFile } from '../../../ducks/tests/fixtures';
+import * as formConfigCore from '@opensrp/form-config-core';
+import { fixManifestFiles, downloadFile } from '../../../helpers/fixtures';
 import toJson from 'enzyme-to-json';
-import * as helpers from '../../../helpers/fileDownload';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
+import lang from '../../../lang';
+
+jest.mock('@opensrp/form-config-core', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/form-config-core')),
+}));
+
+const { filesReducer, filesReducerName, removeManifestFiles } = formConfigCore;
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
 
 const history = createBrowserHistory();
 
-const baseURL = 'https://test-example.com/rest';
+const baseURL = 'https://test-example.com/rest/';
 const props = {
   baseURL,
   downloadEndPoint: 'form-download',
@@ -85,7 +94,7 @@ describe('components/manifestFiles', () => {
   it('download files correctly', async () => {
     fetch.once(JSON.stringify(fixManifestFiles));
     fetch.once(JSON.stringify(downloadFile));
-    const downloadSpy = jest.spyOn(helpers, 'handleDownload');
+    const downloadSpy = jest.spyOn(formConfigCore, 'downloadManifestFile');
 
     const wrapper = mount(
       <Provider store={store}>
@@ -120,9 +129,27 @@ describe('components/manifestFiles', () => {
 
     wrapper.update();
 
-    expect(downloadSpy).toHaveBeenCalledWith(downloadFile.clientForm.json, 'reveal-test-file.json');
+    expect(downloadSpy).toHaveBeenCalledWith(
+      'hunter2',
+      'https://test-example.com/rest/',
+      'form-download',
+      {
+        createdAt: 'Jun 19, 2020, 4:23:22 PM',
+        form_relation: '',
+        id: '53',
+        identifier: 'reveal-test-file.json',
+        isDraft: false,
+        isJsonValidator: false,
+        jursdiction: '',
+        label: 'test publish',
+        module: '',
+        version: '1.0.27',
+      },
+      true,
+      getFetchOptions
+    );
     expect(fetch.mock.calls[1]).toEqual([
-      'https://test-example.com/restform-download?form_identifier=reveal-test-file.json&form_version=1.0.27&is_json_validator=true',
+      'https://test-example.com/rest/form-download?form_identifier=reveal-test-file.json&form_version=1.0.27&is_json_validator=true',
       {
         headers: {
           accept: 'application/json',
@@ -136,7 +163,7 @@ describe('components/manifestFiles', () => {
   });
 
   it('download with correct params form normal file', async () => {
-    const downloadSpy = jest.spyOn(helpers, 'handleDownload');
+    const downloadSpy = jest.spyOn(formConfigCore, 'downloadManifestFile');
     fetch.once(JSON.stringify(fixManifestFiles));
     fetch.once(JSON.stringify(downloadFile));
     // file not json validator
@@ -167,9 +194,27 @@ describe('components/manifestFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(downloadSpy).toHaveBeenCalledWith(downloadFile.clientForm.json, 'reveal-test-file.json');
+    expect(downloadSpy).toHaveBeenCalledWith(
+      'hunter2',
+      'https://test-example.com/rest/',
+      'form-download',
+      {
+        createdAt: 'Jun 19, 2020, 4:23:22 PM',
+        form_relation: '',
+        id: '53',
+        identifier: 'reveal-test-file.json',
+        isDraft: false,
+        isJsonValidator: false,
+        jursdiction: '',
+        label: 'test publish',
+        module: '',
+        version: '1.0.27',
+      },
+      false,
+      getFetchOptions
+    );
     expect(fetch.mock.calls[1]).toEqual([
-      'https://test-example.com/restform-download?form_identifier=reveal-test-file.json&form_version=1.0.27',
+      'https://test-example.com/rest/form-download?form_identifier=reveal-test-file.json&form_version=1.0.27',
       {
         headers: {
           accept: 'application/json',
@@ -199,7 +244,7 @@ describe('components/manifestFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith('API is down', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();
@@ -208,7 +253,6 @@ describe('components/manifestFiles', () => {
   it('handles download file failure', async () => {
     fetch.once(JSON.stringify(fixManifestFiles));
     fetch.mockRejectOnce(() => Promise.reject('Cannot fetch file'));
-    const downloadSpy = jest.spyOn(helpers, 'handleDownload');
 
     const wrapper = mount(
       <Provider store={store}>
@@ -234,7 +278,6 @@ describe('components/manifestFiles', () => {
 
     wrapper.update();
     expect(props.customAlert).toHaveBeenCalledWith('Cannot fetch file', { type: 'error' });
-    expect(downloadSpy).not.toHaveBeenCalled();
     wrapper.unmount();
   });
 });

@@ -1,0 +1,43 @@
+window._env_ = {
+  REACT_APP_BACKEND_ACTIVE: "{{ getv "/react/app/backend/active" "true"}}",
+  REACT_APP_DISABLE_LOGIN_PROTECTION: "{{ getv "/react/app/disable/login/protection" "false" }}",
+  REACT_APP_DOMAIN_NAME: "{{ getv "/react/app/domain/name" "http://localhost:3000" }}",
+  REACT_APP_ENABLE_OPENSRP_OAUTH: "{{ getv "/react/app/enable/opensrp/oauth" "true" }}",
+  REACT_APP_EXPRESS_OAUTH_GET_STATE_URL: "{{ getv "/react/app/express/oauth/get/state/url" "http://localhost:3000/oauth/state"}}",
+  REACT_APP_EXPRESS_OAUTH_LOGOUT_URL: "{{ getv "/react/app/express/oauth/logout/url" "https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout" }}",
+  REACT_APP_KEYCLOAK_API_BASE_URL: "{{ getv "/react/app/keycloak/api/base/url" "https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"}}",
+  REACT_APP_KEYCLOAK_LOGOUT_URL: "{{ getv "/react/app/keycloak/logout/url" "https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout" }}",
+  REACT_APP_NAVBAR_BRAND_IMG_SRC: "{{ getv "/react/app/navbar/brand/img/src" ""}}",
+  REACT_APP_OPENSRP_ACCESS_TOKEN_URL: "{{ getv "/react/app/opensrp/access/token/url" "https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/token" }}",
+  REACT_APP_OPENSRP_API_BASE_URL: "{{ getv "/react/app/opensrp/api/base/url" "https://opensrp-stage.smartregister.org/opensrp/rest/" }}",
+  REACT_APP_OPENSRP_AUTHORIZATION_URL: "{{ getv "/react/app/opensrp/authorization/url" "https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/auth" }}",
+  REACT_APP_OPENSRP_CLIENT_ID: "{{ getv "/react/app/opensrp/client/id" "opensrp-stage-server" }}",
+  REACT_APP_OPENSRP_LOGOUT_URL: "{{ getv "/react/app/opensrp/logout/url" "https://opensrp-stage.smartregister.org/opensrp/logout.do" }}",
+  REACT_APP_OPENSRP_USER_URL: "{{ getv "/react/app/opensrp/user/url" "https://opensrp-stage.smartregister.org/opensrp/user-details/" }}",
+  REACT_APP_WEBSITE_NAME: "{{ getv "/react/app/website/name" "opensrp-web" }}",
+  REACT_APP_ACTION_UUID_NAMESPACE: "{{ getv "/react/app/action/uuid/namespace" ""}}",
+  REACT_APP_PLAN_UUID_NAMESPACE: "{{ getv "/react/app/plan/uuid/namespace" ""}}"
+  REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE: "{{ getv "/react/app/enable/teams/assignment/module" "false" }}"
+  REACT_APP_DEFAULT_HOME_MODE: "{{ getv "/react/app/default/home/mode", "default" }}"
+  REACT_APP_ENABLE_LANGUAGE_SWITCHER: "{{ getv "/react/app/enable/language/switcher" "false" }}"
+  REACT_APP_SUPPORTED_LANGUAGES: "{{ getv "/react/app/supported/languages" "en" }}"
+  REACT_APP_SENTRY_DSN: "{{ getv "/react/app/sentry/dsn" "" }}"
+  REACT_APP_ENABLE_INVENTORY: "{{ getv "/react/app/enable/inventory" "false" }}"
+  REACT_APP_PROJECT_LANGUAGE_CODE: "{{ getv "/react/app/project/language/code", "core" }}"
+  REACT_APP_LANGUAGE_CODE: "{{ getv  "/react/app/language/code" "en" }}"
+  REACT_APP_ENABLE_FORM_CONFIGURATION: "{{ getv "/react/app/enable/form/configuration" "false" }}"
+  REACT_APP_ENABLE_PRODUCT_CATALOGUE: "{{ getv "/react/app/enable/product/catalogue" "false" }}"
+  REACT_APP_DEFAULT_PLAN_ID: "{{ getv "/react/app/default/plan/id" "" }}"
+  REACT_APP_DEFAULT_PLAN_DURATION_DAYS: "{{ getv "/react/app/default/plan/duration/days" "30" }}"
+  REACT_APP_DATE_FORMAT: "{{ getv "/react/app/date/format", "yyyy-MM-DD" }}"
+  REACT_APP_MAIN_LOGO_SRC: "{{ getv "/react/app/main/logo/src" "" }}"
+  REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL: "{{ getv "/react/app/plan/assignment/at/geo/level" "0" }}"
+  REACT_APP_TASK_GENERATION_STATUS: "{{ getv  "react/app/task/generation/status" "False" }}"
+  REACT_APP_DEFAULT_PLAN_VERSION: "{{ getv "react/app/default/plan/version" "1" }}"
+  REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS: "{{ getv "/react/app/default/activity/duration/days" "30" }}"
+  REACT_APP_OPENSRP_OAUTH_SCOPES: "{{ getv  "react/app/opensrp/oauth/scopes" "read,write" }}"
+  REACT_APP_ENABLE_LOCATIONS: "{{ getv "/react/app/enable/locations" "false" }}"
+  REACT_APP_ENABLE_TEAMS: "{{ getv "/react/app/enable/teams" "false" }}"
+  REACT_APP_ENABLE_PLANS: "{{ getv "/react/app/enable/plans" "false" }}"
+  REACT_APP_ENABLE_CARD_SUPPORT: "{{ getv "/react/app/enable/card/support" "false" }}"
+};

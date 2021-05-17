@@ -1,8 +1,15 @@
 import { mount } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import { BULK_UPLOAD_PARAM, INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
-import { updateUrlWithStatusCreator, UploadStatus, CardTitle } from '../utils';
+import {
+  updateUrlWithStatusCreator,
+  UploadStatus,
+  CardTitle,
+  disabledTreeNodesCallback,
+} from '../utils';
 import React from 'react';
+import { generateJurisdictionTree } from '@opensrp/location-management/src/ducks/locationHierarchy/utils';
+import { rawOpenSRPHierarchy1 } from '@opensrp/location-management/src/components/LocationForm/tests/fixtures';
 const history = createBrowserHistory();
 
 const props = {
@@ -33,7 +40,7 @@ describe('utils', () => {
     props.history.push = pushMock;
     updateUrl();
 
-    expect(pushMock).toHaveBeenCalledWith('/inventory/list?');
+    expect(pushMock).toHaveBeenCalledWith('/inventory?');
   });
 
   it('test when search param is given but no status', () => {
@@ -57,7 +64,7 @@ describe('utils', () => {
     props.history.push = pushMock;
     updateUrl();
 
-    expect(pushMock).toHaveBeenCalledWith('/inventory/list?');
+    expect(pushMock).toHaveBeenCalledWith('/inventory?');
   });
 
   it('test when search param is given and status', () => {
@@ -81,7 +88,7 @@ describe('utils', () => {
     props.history.push = pushMock;
     updateUrl(UploadStatus.POST_CONFIRMATION_ERROR);
 
-    expect(pushMock).toHaveBeenCalledWith('/inventory/list?bulkStep=postConfirmationError');
+    expect(pushMock).toHaveBeenCalledWith('/inventory?bulkStep=postConfirmationError');
   });
 
   it('test default card title', () => {
@@ -90,5 +97,17 @@ describe('utils', () => {
     const wrapper = mount(<CardTitle {...props} />);
 
     expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+  });
+
+  it('test disableTreeNodesCallback', () => {
+    const generatedTree = generateJurisdictionTree(rawOpenSRPHierarchy1);
+    const rootNode = generatedTree;
+    expect(disabledTreeNodesCallback(rootNode)).toBeTruthy();
+
+    // sample commune node
+    const communeNode = generatedTree.first(
+      (node) => node.model.id === '421fe9fe-e48f-4052-8491-24d1e548daee'
+    );
+    expect(disabledTreeNodesCallback(communeNode)).toBeFalsy();
   });
 });

@@ -14,358 +14,55 @@ exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 />
 `;
 
-exports[`components/forms/UserForm renders correctly 1`] = `
-Object {
-  "children": Array [
-    <h5
-      className="mb-3 header-title"
-    >
-      Add User
-    </h5>,
-    <Col
-      className="bg-white p-3"
-      span={24}
-    >
-      <ForwardRef(InternalForm)
-        form={
-          Object {
-            "__INTERNAL__": Object {
-              "itemRef": [Function],
-              "name": undefined,
-            },
-            "getFieldError": [Function],
-            "getFieldInstance": [Function],
-            "getFieldValue": [Function],
-            "getFieldsError": [Function],
-            "getFieldsValue": [Function],
-            "getInternalHooks": [Function],
-            "isFieldTouched": [Function],
-            "isFieldValidating": [Function],
-            "isFieldsTouched": [Function],
-            "isFieldsValidating": [Function],
-            "resetFields": [Function],
-            "scrollToField": [Function],
-            "setFields": [Function],
-            "setFieldsValue": [Function],
-            "submit": [Function],
-            "validateFields": [Function],
-          }
-        }
-        initialValues={
-          Object {
-            "access": Object {
-              "impersonate": false,
-              "manage": false,
-              "manageGroupMembership": false,
-              "mapRoles": false,
-              "view": false,
-            },
-            "active": false,
-            "createdTimestamp": undefined,
-            "disableableCredentialTypes": Array [],
-            "email": "",
-            "emailVerified": false,
-            "enabled": true,
-            "firstName": "",
-            "id": "",
-            "lastName": "",
-            "notBefore": 0,
-            "requiredActions": Array [],
-            "totp": false,
-            "username": "",
-          }
-        }
-        labelCol={
-          Object {
-            "lg": Object {
-              "offset": 0,
-              "span": 6,
-            },
-            "md": Object {
-              "offset": 0,
-              "span": 8,
-            },
-            "sm": Object {
-              "offset": 2,
-              "span": 10,
-            },
-            "xs": Object {
-              "offset": 0,
-              "span": 16,
-            },
-          }
-        }
-        onFinish={[Function]}
-        wrapperCol={
-          Object {
-            "lg": Object {
-              "span": 10,
-            },
-            "md": Object {
-              "span": 12,
-            },
-            "sm": Object {
-              "span": 14,
-            },
-            "xs": Object {
-              "span": 24,
-            },
-          }
-        }
-      >
-        <FormItem
-          id="firstName"
-          label="First Name"
-          name="firstName"
-          rules={
-            Array [
-              Object {
-                "message": "First Name is required",
-                "required": true,
-              },
-            ]
-          }
-        >
-          <Input
-            type="text"
-          />
-        </FormItem>
-        <FormItem
-          id="lastName"
-          label="Last Name"
-          name="lastName"
-          rules={
-            Array [
-              Object {
-                "message": "Last Name is required",
-                "required": true,
-              },
-            ]
-          }
-        >
-          <Input
-            type="text"
-          />
-        </FormItem>
-        <FormItem
-          id="email"
-          label="Email"
-          name="email"
-        >
-          <Input
-            type="text"
-          />
-        </FormItem>
-        <FormItem
-          id="username"
-          label="Username"
-          name="username"
-          rules={
-            Array [
-              Object {
-                "message": "Username is required",
-                "required": true,
-              },
-            ]
-          }
-        >
-          <Input
-            disabled={false}
-            type="text"
-          />
-        </FormItem>
-        <FormItem
-          id="requiredActions"
-          label="Required Actions"
-          name="requiredActions"
-        >
-          <Select
-            allowClear={true}
-            mode="multiple"
-            onChange={[Function]}
-            placeholder="Please select"
-            style={
-              Object {
-                "width": "100%",
-              }
-            }
-          >
-            <Option
-              value="CONFIGURE_TOTP"
-            >
-              Configure OTP
-            </Option>
-            <Option
-              value="UPDATE_PASSWORD"
-            >
-              Update Password
-            </Option>
-            <Option
-              value="UPDATE_PROFILE"
-            >
-              Update Profile
-            </Option>
-            <Option
-              value="VERIFY_EMAIL"
-            >
-              Verify Email
-            </Option>
-            <Option
-              value="update_user_locale"
-            >
-              Update User Locale
-            </Option>
-          </Select>
-        </FormItem>
-        <FormItem
-          wrapperCol={
-            Object {
-              "lg": Object {
-                "offset": 6,
-                "span": 14,
-              },
-              "md": Object {
-                "offset": 8,
-                "span": 16,
-              },
-              "sm": Object {
-                "offset": 12,
-                "span": 24,
-              },
-              "xs": Object {
-                "offset": 0,
-                "span": 16,
-              },
-            }
-          }
-        >
-          <Button
-            block={false}
-            className="create-user"
-            ghost={false}
-            htmlType="submit"
-            loading={false}
-            type="primary"
-          >
-            Save
-          </Button>
-          <Button
-            block={false}
-            className="cancel-user"
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            onClick={[Function]}
-          >
-            Cancel
-          </Button>
-        </FormItem>
-      </ForwardRef(InternalForm)>
-    </Col>,
-  ],
-  "className": "layout-content",
-}
-`;
-
 exports[`components/forms/UserForm show practitioner toggle when editing user and practitioner is null: practitionerToggle 1`] = `
 Object {
-  "children": <Context.Provider
-    value={
-      Object {
-        "updateItemErrors": [Function],
-      }
-    }
+  "children": <Memo
+    name="active"
   >
-    <Memo
-      update={3}
+    <Radio
+      name="active"
+      type="radio"
+      value={true}
+    >
+      Yes
+    </Radio>
+    <Radio
+      name="active"
+      type="radio"
       value={false}
     >
-      <Memo
-        id="active"
-        name="active"
-        onChange={[Function]}
-        value={false}
-      >
-        <Radio
-          name="active"
-          type="radio"
-          value={true}
-        >
-          Yes
-        </Radio>
-        <Radio
-          name="active"
-          type="radio"
-          value={false}
-        >
-          No
-        </Radio>
-      </Memo>
-    </Memo>
-  </Context.Provider>,
-  "errors": Array [],
+      No
+    </Radio>
+  </Memo>,
   "id": "practitionerToggle",
   "label": "Mark as Practitioner",
-  "name": Array [
-    "active",
-  ],
-  "onDomErrorVisibleChange": [Function],
-  "prefixCls": "ant-form",
-  "status": "",
-  "touched": false,
-  "validateStatus": "",
-  "validating": false,
+  "name": "active",
 }
 `;
 
 exports[`components/forms/UserForm show practitioner toggle when editing user and practitioner is provided: practitionerToggle 1`] = `
 Object {
-  "children": <Context.Provider
-    value={
-      Object {
-        "updateItemErrors": [Function],
-      }
-    }
+  "children": <Memo
+    name="active"
   >
-    <Memo
-      update={3}
+    <Radio
+      name="active"
+      type="radio"
       value={true}
     >
-      <Memo
-        id="active"
-        name="active"
-        onChange={[Function]}
-        value={true}
-      >
-        <Radio
-          name="active"
-          type="radio"
-          value={true}
-        >
-          Yes
-        </Radio>
-        <Radio
-          name="active"
-          type="radio"
-          value={false}
-        >
-          No
-        </Radio>
-      </Memo>
-    </Memo>
-  </Context.Provider>,
-  "errors": Array [],
+      Yes
+    </Radio>
+    <Radio
+      name="active"
+      type="radio"
+      value={false}
+    >
+      No
+    </Radio>
+  </Memo>,
   "id": "practitionerToggle",
   "label": "Mark as Practitioner",
-  "name": Array [
-    "active",
-  ],
-  "onDomErrorVisibleChange": [Function],
-  "prefixCls": "ant-form",
-  "status": "",
-  "touched": false,
-  "validateStatus": "",
-  "validating": false,
+  "name": "active",
 }
 `;
 

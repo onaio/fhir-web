@@ -11,24 +11,7 @@ import {
 } from '@opensrp/notifications';
 import { OrganizationPOST } from '../../ducks/organizations';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
-import {
-  ACTIVE,
-  CANCEL,
-  ENTER_TEAM_NAME,
-  ERROR_OCCURRED,
-  INACTIVE,
-  MSG_ASSIGN_PRACTITIONERS,
-  MSG_ASSIGN_PRACTITONERS_SUCCESS,
-  MSG_TEAMS_ADD_SUCCESS,
-  MSG_TEAMS_UPDATE_SUCCESS,
-  SAVE,
-  SAVING,
-  SELECT_PRACTITIONER,
-  STATUS,
-  TEAM_MEMBERS,
-  TEAM_NAME,
-  TIP_REQUIRED_FIELD,
-} from '../../lang';
+import lang, { Lang } from '../../lang';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -55,6 +38,7 @@ interface Props {
  * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
  * @param {string} id id of the team
+ * @param {Lang} langObj - the translation string lookup
  */
 export function onSubmit(
   opensrpBaseURL: string,
@@ -62,7 +46,8 @@ export function onSubmit(
   practitioner: Practitioner[],
   initialValue: FormField,
   values: FormField,
-  id?: string
+  id?: string,
+  langObj: Lang = lang
 ) {
   setIsSubmitting(true);
   const Teamid = id ?? v4();
@@ -85,14 +70,13 @@ export function onSubmit(
   setTeam(opensrpBaseURL, payload, id)
     .then(async () => {
       // Filter and seperate the practitioners uuid
-      // const toBe = initialValue.practitioners.filter((val) => values.practitioners.includes(val));
       const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
       const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
       await SetPractitioners(opensrpBaseURL, practitioner, toAdd, toRem, Teamid);
       history.goBack();
     })
-    .catch(() => sendErrorNotification(ERROR_OCCURRED))
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED))
     .finally(() => setIsSubmitting(false));
 }
 
@@ -104,20 +88,24 @@ export function onSubmit(
  * @param {Array<string>} toAdd list of practitioner uuid to add
  * @param {Array<string>} toRemove list of practitioner uuid to remove
  * @param {string} id id of the team
+ * @param {Lang} langObj - the translation string lookup
  */
 async function SetPractitioners(
   opensrpBaseURL: string,
   practitioner: Practitioner[],
   toAdd: string[],
   toRemove: string[],
-  id: string
+  id: string,
+  langObj: Lang = lang
 ) {
-  sendInfoNotification(MSG_ASSIGN_PRACTITIONERS);
+  sendInfoNotification(langObj.MSG_ASSIGN_PRACTITIONERS);
 
   // Api Call to delete practitioners
   toRemove.forEach((prac) => {
-    const serve = new OpenSRPService(PRACTITIONER_DEL + prac, opensrpBaseURL);
-    serve.delete().catch(() => sendErrorNotification(ERROR_OCCURRED));
+    const serve = new OpenSRPService(PRACTITIONER_DEL, opensrpBaseURL);
+    serve
+      .delete({ practitioner: `${prac}`, organization: id })
+      .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
   });
 
   // Api Call to add practitioners
@@ -133,10 +121,10 @@ async function SetPractitioners(
   });
   if (toAdd.length) {
     const serve = new OpenSRPService(PRACTITIONER_POST, opensrpBaseURL);
-    await serve.create(payload).catch(() => sendErrorNotification(ERROR_OCCURRED));
+    await serve.create(payload).catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
   }
 
-  sendSuccessNotification(MSG_ASSIGN_PRACTITONERS_SUCCESS);
+  sendSuccessNotification(langObj.MSG_ASSIGN_PRACTITONERS_SUCCESS);
 }
 
 /**
@@ -145,16 +133,22 @@ async function SetPractitioners(
  * @param {string} opensrpBaseURL - base url
  * @param {OrganizationPOST} payload payload To send
  * @param {string} id of the team if already created
+ * @param {Lang} langObj - the translation string lookup
  */
-export async function setTeam(opensrpBaseURL: string, payload: OrganizationPOST, id?: string) {
+export async function setTeam(
+  opensrpBaseURL: string,
+  payload: OrganizationPOST,
+  id?: string,
+  langObj: Lang = lang
+) {
   if (id) {
     const serve = new OpenSRPService(TEAMS_PUT + id, opensrpBaseURL);
     await serve.update(payload);
-    sendSuccessNotification(MSG_TEAMS_UPDATE_SUCCESS);
+    sendSuccessNotification(langObj.MSG_TEAMS_UPDATE_SUCCESS);
   } else {
     const serve = new OpenSRPService(TEAMS_POST, opensrpBaseURL);
     await serve.create(payload);
-    sendSuccessNotification(MSG_TEAMS_ADD_SUCCESS);
+    sendSuccessNotification(langObj.MSG_TEAMS_ADD_SUCCESS);
   }
 }
 
@@ -178,19 +172,23 @@ export const Form: React.FC<Props> = (props: Props) => {
       }
       initialValues={initialValue}
     >
-      <AntdForm.Item name="name" label={TEAM_NAME}>
-        <Input placeholder={ENTER_TEAM_NAME} />
+      <AntdForm.Item name="name" label={lang.TEAM_NAME}>
+        <Input placeholder={lang.ENTER_TEAM_NAME} />
       </AntdForm.Item>
 
-      <AntdForm.Item name="active" label={STATUS}>
+      <AntdForm.Item name="active" label={lang.STATUS}>
         <Radio.Group>
-          <Radio value={true}>{ACTIVE}</Radio>
-          <Radio value={false}>{INACTIVE}</Radio>
+          <Radio value={true}>{lang.ACTIVE}</Radio>
+          <Radio value={false}>{lang.INACTIVE}</Radio>
         </Radio.Group>
       </AntdForm.Item>
 
-      <AntdForm.Item name="practitioners" label={TEAM_MEMBERS} tooltip={TIP_REQUIRED_FIELD}>
-        <Select allowClear mode="multiple" placeholder={SELECT_PRACTITIONER}>
+      <AntdForm.Item
+        name="practitioners"
+        label={lang.TEAM_MEMBERS}
+        tooltip={lang.TIP_REQUIRED_FIELD}
+      >
+        <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
           {props.practitioner.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
@@ -201,10 +199,10 @@ export const Form: React.FC<Props> = (props: Props) => {
 
       <AntdForm.Item {...offsetLayout}>
         <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
-          {isSubmitting ? SAVING : SAVE}
+          {isSubmitting ? lang.SAVING : lang.SAVE}
         </Button>
         <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-          {CANCEL}
+          {lang.CANCEL}
         </Button>
       </AntdForm.Item>
     </AntdForm>

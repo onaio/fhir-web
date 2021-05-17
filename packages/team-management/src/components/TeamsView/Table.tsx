@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table as AntTable, Button, Divider } from 'antd';
+import { Table as AntTable, Button, Divider, Dropdown, Menu } from 'antd';
+import { MoreOutlined } from '@ant-design/icons';
 import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
@@ -34,7 +35,6 @@ const Table: React.FC<Props> = (props: Props) => {
     },
     {
       title: 'Actions',
-      dataIndex: 'operation',
       width: '10%',
 
       // eslint-disable-next-line react/display-name
@@ -46,17 +46,27 @@ const Table: React.FC<Props> = (props: Props) => {
             </Button>
           </Link>
           <Divider type="vertical" />
-          <Button
-            onClick={() => {
-              if (onViewDetails) {
-                onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
-              }
-            }}
-            type="link"
-            className="m-0 p-1 viewdetails"
+          <Dropdown
+            overlay={
+              <Menu className="menu">
+                <Menu.Item
+                  className="viewdetails"
+                  onClick={() => {
+                    if (onViewDetails) {
+                      onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
+                    }
+                  }}
+                >
+                  View Details
+                </Menu.Item>
+              </Menu>
+            }
+            placement="bottomRight"
+            arrow
+            trigger={['click']}
           >
-            View Details
-          </Button>
+            <MoreOutlined className="more-options" />
+          </Dropdown>
         </span>
       ),
     },

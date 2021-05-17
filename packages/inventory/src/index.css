@@ -8,11 +8,11 @@
   padding-right: 0;
 }
 
-.main-content__header {
+.inventory-profile {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 0 32px 0;
+  margin: 0 0 16px 0;
 }
 
 .display-block {
@@ -22,6 +22,31 @@
 .flex-right {
   display: flex;
   justify-content: flex-end;
+}
+
+.flex-center-right {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.inventory-profile-header {
+  background-color: #ffffff;
+  padding: 20px 33px;
+}
+
+.go-back-text {
+  color: #1890ff;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.inventory-profile-header .title {
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 20px;
 }
 
 .full-page-card .ant-card-head-title {
@@ -48,6 +73,24 @@
 .card-title__text {
   font-size: 20px;
   line-height: 28px;
+}
+
+.geography-item {
+  display: flex;
+}
+
+.geography-item .label {
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 16px;
+  margin-right: 5px;
+  white-space: nowrap;
+}
+
+.geography-item .value {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 16px;
 }
 
 .full-page-card {

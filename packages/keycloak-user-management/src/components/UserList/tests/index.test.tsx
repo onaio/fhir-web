@@ -23,11 +23,11 @@ import {
 import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
-import { ERROR_OCCURED } from '../../../lang';
+import lang from '../../../lang';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
-  ...jest.requireActual('@opensrp/store'),
+  ...Object.assign({}, jest.requireActual('@opensrp/store')),
 }));
 
 jest.mock('@opensrp/notifications', () => ({
@@ -185,6 +185,85 @@ describe('components/UserList', () => {
      */
     expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
     expect(toJson(wrapper.find('Table'))).toBeFalsy();
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+  });
+
+  it('sort works correctly', async () => {
+    fetch.once(JSON.stringify(keycloakUsersArray));
+    const props = {
+      ...locationProps,
+      extraData: {
+        user_id: fixtures.keycloakUser.id,
+      },
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
+      serviceClass: KeycloakService,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <ConnectedUserList {...props} />
+        </Router>
+      </Provider>
+    );
+    // Loader should be displayed
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    // Loader should be hidden
+    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
+    // find table (sorted by default order)
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`table rows - default order ${index}`);
+    });
+
+    // sort by username
+    // click on sort to change the order (ascending)
+    wrapper.find('thead tr th').first().simulate('click');
+    wrapper.update();
+
+    // check new sort order by username (ascending)
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`sorted table rows by username - ascending ${index}`);
+    });
+
+    // click on sort to change the order (descending)
+    wrapper.find('thead tr th').first().simulate('click');
+    wrapper.update();
+
+    // check new sort order by username (ascending)
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`sorted table rows by username - descending ${index}`);
+    });
+
+    // cancel sort
+    // click on sort to change the order (descending)
+    wrapper.find('thead tr th').first().simulate('click');
+    wrapper.update();
+
+    // sort by email
+    // click on sort to change the order (ascending)
+    expect(wrapper.find('thead tr th').at(1).text()).toEqual('Email');
+    wrapper.find('thead tr th').at(1).simulate('click');
+    wrapper.update();
+    // check new sort order by email (ascending)
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`sorted table rows by email - ascending ${index}`);
+    });
+
+    // click on sort to change the order (descending)
+    wrapper.find('thead tr th').at(1).simulate('click');
+    wrapper.update();
+
+    // check new sort order by email (descending)
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`sorted table rows by email - descending ${index}`);
+    });
+    wrapper.unmount();
   });
 });

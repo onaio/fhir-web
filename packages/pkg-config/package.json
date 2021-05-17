@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/pkg-config",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "stores packages' configs",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -20,8 +20,7 @@
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
@@ -32,17 +31,10 @@
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
-  "peerDependencies": {
-    "@reduxjs/toolkit": "^1.5.0"
-  },
   "dependencies": {
-    "i18next": "^19.8.4",
-    "react-i18next": "^11.8.3"
+    "react-hooks-global-state": "^1.0.1"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false,
-  "devDependencies": {
-    "@opensrp/store": "^0.0.7"
-  }
+  "private": false
 }

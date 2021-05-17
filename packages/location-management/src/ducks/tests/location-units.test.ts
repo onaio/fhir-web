@@ -13,6 +13,8 @@ import {
   LocationUnit,
   getLocationsIfJurisdiction,
   getLocationsBySearch,
+  getLocationByIds,
+  getLocationsByFilters,
 } from '../location-units';
 import { locationUnit1, locationUnit2, locationUnit3 } from './fixtures';
 
@@ -59,6 +61,8 @@ describe('src/ducks/location-units', () => {
 describe('src/ducks/location-units.reselect', () => {
   const isJurisdictionSelector = getLocationsIfJurisdiction();
   const jurisdictionBySearch = getLocationsBySearch();
+  const jurisdictionsByIds = getLocationByIds();
+  const locationsSelector = getLocationsByFilters();
 
   beforeEach(() => {
     store.dispatch(removeLocationUnits());
@@ -69,6 +73,9 @@ describe('src/ducks/location-units.reselect', () => {
     expect(isJurisdictionSelector(store.getState(), { isJurisdiction: true })).toEqual([]);
     expect(jurisdictionBySearch(store.getState(), {})).toEqual([]);
     expect(jurisdictionBySearch(store.getState(), { searchQuery: 'tango' })).toEqual([]);
+    expect(jurisdictionsByIds(store.getState(), {})).toEqual([]);
+    expect(jurisdictionsByIds(store.getState(), { ids: ['tango'] })).toEqual([]);
+    expect(locationsSelector(store.getState(), {})).toEqual([]);
   });
 
   it('jurisdiction selector work correctly on non-empty state', () => {
@@ -79,6 +86,36 @@ describe('src/ducks/location-units.reselect', () => {
     ]);
     expect(isJurisdictionSelector(store.getState(), { isJurisdiction: false })).toEqual([
       { ...locationUnit3, isJurisdiction: false },
+    ]);
+  });
+
+  it('by id selectors', () => {
+    store.dispatch(fetchLocationUnits([locationUnit1] as LocationUnit[], true));
+    store.dispatch(fetchLocationUnits([locationUnit3] as LocationUnit[], false));
+    expect(jurisdictionsByIds(store.getState(), {})).toEqual([
+      { ...locationUnit1, isJurisdiction: true },
+      { ...locationUnit3, isJurisdiction: false },
+    ]);
+    expect(jurisdictionsByIds(store.getState(), { ids: [locationUnit1.id] })).toEqual([
+      { ...locationUnit1, isJurisdiction: true },
+    ]);
+  });
+
+  it('byFilter selector', () => {
+    store.dispatch(fetchLocationUnits([locationUnit1] as LocationUnit[], true));
+    store.dispatch(fetchLocationUnits([locationUnit3] as LocationUnit[], false));
+    expect(locationsSelector(store.getState(), {})).toEqual([
+      { ...locationUnit1, isJurisdiction: true },
+      { ...locationUnit3, isJurisdiction: false },
+    ]);
+    expect(locationsSelector(store.getState(), { isJurisdiction: false })).toEqual([
+      { ...locationUnit3, isJurisdiction: false },
+    ]);
+    expect(locationsSelector(store.getState(), { searchQuery: 'bodisatra' })).toEqual([
+      {
+        ...locationUnit3,
+        isJurisdiction: false,
+      },
     ]);
   });
 

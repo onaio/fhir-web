@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Col, Row, Input, Switch } from 'antd';
+import { Button, Form, Col, Row, Input } from 'antd';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -13,19 +13,7 @@ import {
   ROUTE_PARAM_USER_ID,
   URL_USER,
 } from '../../constants';
-import {
-  CREDENTIALS,
-  ERROR_PASSWORD_MISMATCH,
-  RESET_PASSWORD,
-  CANCEL,
-  CONFIRM_PASSWORD,
-  CREDENTIALS_UPDATED_SUCCESSFULLY,
-  ERROR_OCCURED,
-  TEMPORARY,
-  PASSWORD,
-  ERROR_CONFIRM_PASSWORD_REQUIRED,
-  ERROR_PASSWORD_REQUIRED,
-} from '../../lang';
+import lang, { Lang } from '../../lang';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -86,30 +74,32 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
  * @param {string} userId - user id
  * @param {string} serviceClass - KeycloakService
  * @param {string} keycloakBaseURL - Keycloak API base URL
+ * @param {Lang} langObj - the translations look up object
  */
 export const submitForm = (
   values: UserCredentialsFormFields,
   userId: string,
   serviceClass: typeof KeycloakService,
-  keycloakBaseURL: string
+  keycloakBaseURL: string,
+  langObj: Lang = lang
 ): void => {
   const serve = new serviceClass(
     `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
     keycloakBaseURL
   );
-  const { password, temporary } = values;
+  const { password } = values;
   serve
     .update({
-      temporary: temporary,
+      temporary: false,
       type: 'password',
       value: password,
     })
     .then(() => {
-      sendSuccessNotification(CREDENTIALS_UPDATED_SUCCESSFULLY);
+      sendSuccessNotification(langObj.CREDENTIALS_UPDATED_SUCCESSFULLY);
       history.push(URL_USER);
     })
     .catch((_: Error) => {
-      sendErrorNotification(ERROR_OCCURED);
+      sendErrorNotification(langObj.ERROR_OCCURED);
     });
 };
 
@@ -137,7 +127,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   return (
     <Row className="layout-content">
       <h5 className="mb-3">
-        {CREDENTIALS} | {keycloakUser ? keycloakUser.username : ''}
+        {lang.CREDENTIALS} | {keycloakUser ? keycloakUser.username : ''}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
@@ -149,11 +139,11 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
           >
             <Form.Item
               name="password"
-              label={PASSWORD}
+              label={lang.PASSWORD}
               rules={[
                 {
                   required: true,
-                  message: ERROR_PASSWORD_REQUIRED,
+                  message: lang.ERROR_PASSWORD_REQUIRED,
                 },
               ]}
               hasFeedback
@@ -163,35 +153,32 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
 
             <Form.Item
               name="confirm"
-              label={CONFIRM_PASSWORD}
+              label={lang.CONFIRM_PASSWORD}
               dependencies={['password']}
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: ERROR_CONFIRM_PASSWORD_REQUIRED,
+                  message: lang.ERROR_CONFIRM_PASSWORD_REQUIRED,
                 },
                 ({ getFieldValue }) => ({
                   validator(rule, value) {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(ERROR_PASSWORD_MISMATCH);
+                    return Promise.reject(lang.ERROR_PASSWORD_MISMATCH);
                   },
                 }),
               ]}
             >
               <Input.Password />
             </Form.Item>
-            <Form.Item name="temporary" label={TEMPORARY} valuePropName="checked">
-              <Switch />
-            </Form.Item>
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" className="reset-password">
-                {RESET_PASSWORD}
+                {lang.RESET_PASSWORD}
               </Button>
               <Button onClick={() => props.cancelUserHandler(history)} className="cancel-user">
-                {CANCEL}
+                {lang.CANCEL}
               </Button>
             </Form.Item>
           </Form>

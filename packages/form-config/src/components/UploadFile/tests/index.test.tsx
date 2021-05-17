@@ -5,18 +5,22 @@ import { UploadConfigFile, ConnectedUploadConfigFile } from '../index';
 import { getFetchOptions } from '@opensrp/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import reducerRegistry, { store } from '@onaio/redux-reducer-registry';
+import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import filesReducer, { fetchManifestFiles, filesReducerName } from '../../../ducks/manifestFiles';
-import { fixManifestFiles } from '../../../ducks/tests/fixtures';
+import { fetchManifestFiles } from '@opensrp/form-config-core';
+import { fixManifestFiles } from '../../../helpers/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
-
-/** register the reducers */
-reducerRegistry.register(filesReducerName, filesReducer);
+import { OpenSRPService } from '@opensrp/server-service';
+import lang from '../../../lang';
 
 const history = createBrowserHistory();
+
+jest.mock('@opensrp/server-service', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/server-service')),
+}));
 
 const props = {
   baseURL: 'https://test-example.com/rest/',
@@ -61,7 +65,7 @@ describe('components/UploadFile', () => {
     });
     wrapper.update();
     // we have errors
-    expect(wrapper.find('.text-danger').at(0).text()).toEqual('Form name is required');
+    expect(wrapper.find('.text-danger').at(0).text()).toEqual('Form Name is required');
     expect(wrapper.find('.text-danger').at(1).text()).toEqual('Form is required');
 
     wrapper
@@ -83,6 +87,7 @@ describe('components/UploadFile', () => {
       'https://test-example.com/rest/forms/upload',
       expect.any(Object)
     );
+    wrapper.unmount();
   });
 
   it('edits form correctly', async () => {
@@ -117,10 +122,11 @@ describe('components/UploadFile', () => {
       'https://test-example.com/rest/forms/upload',
       expect.any(Object)
     );
+    wrapper.unmount();
   });
 
   it('handles error if upload fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API has been hijacked by aliens'));
+    fetch.once('API has been hijacked by aliens', { status: 500 });
 
     const wrapper = mount(
       <Provider store={store}>
@@ -185,5 +191,37 @@ describe('components/UploadFile', () => {
       'https://test-example.com/rest/forms/upload',
       expect.any(Object)
     );
+    wrapper.unmount();
+  });
+
+  it('handles non-API errors when submitting', async () => {
+    jest
+      .spyOn(OpenSRPService, 'processAcessToken')
+      .mockImplementationOnce(() => Promise.reject('Error'));
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedUploadConfigFile {...props} />
+        </Router>
+      </Provider>
+    );
+    wrapper
+      .find('input[name="form_name"]')
+      .simulate('change', { target: { name: 'form_name', value: 'test name' } });
+    wrapper
+      .find('input[name="module"]')
+      .simulate('change', { target: { name: 'module', value: 'test module' } });
+    wrapper
+      .find('input[name="form"]')
+      .simulate('change', { target: { name: 'form', files: sampleFile } });
+    wrapper.find('Button').simulate('submit');
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(fetch).not.toHaveBeenCalled();
+    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, {
+      type: 'error',
+    });
+    wrapper.unmount();
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/server-service",
-  "version": "0.0.13",
+  "version": "0.0.17",
   "description": "Wrapper around OpenSRP Server REST API",
   "publishConfig": {
     "access": "public"
@@ -12,10 +12,9 @@
     "test:watch": "cd ../../ && yarn test packages/opensrp-server-service --verbose --watch && cd packages/opensrp-server-service",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    "build": "yarn run tsc && yarn run transpile && yarn run copy"
   },
   "jest": {
     "automock": false,

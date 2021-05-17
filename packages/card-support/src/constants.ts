@@ -1,7 +1,7 @@
 // OPENSRP API endpoints
-export const OPENSRP_URL_USER_ASSIGNMENT = '/organization/user-assignment';
-export const OPENSRP_URL_CLIENT_SEARCH = '/client/search';
-export const OPENSRP_URL_LOCATION_HIERARCHY = '/location/hierarchy';
+export const OPENSRP_URL_USER_ASSIGNMENT = 'organization/user-assignment';
+export const OPENSRP_URL_CLIENT_SEARCH = 'client/search';
+export const OPENSRP_URL_LOCATION_HIERARCHY = 'location/hierarchy';
 
 /** CSV File MIME Types */
 export const TEXT_CSV = 'text/csv';

@@ -1,36 +1,72 @@
-export const ADD_PRODUCT = 'Add product to catalogue';
-export const EDIT = 'Edit';
-export const PRODUCT_CATALOGUE = 'Product Catalogue';
-export const ADD_PRODUCT_TO_CATALOGUE = ' + Add product to catalogue';
-export const PRODUCT_NAME_TH = 'Product Name';
-export const ID_TH = 'ID';
-export const ACTIONS_TH = 'Actions';
-export const LOADING_ELLIPSIS = 'Loading...';
-export const FETCHING_PRODUCT = 'Fetching product Catalogue';
-export const FETCHING_PRODUCT_DESCRIPTION = 'Please wait, as we fetch the product Catalogue.';
-export const REQUIRED = 'Required';
-export const YES = 'yes';
-export const NO = 'no';
-export const SUCCESSFULLY_UPDATED = 'Successfully Updated';
-export const SUCCESSFULLY_ADDED = 'Successfully Added';
-export const ENTER_PRODUCTS_NAME = "Enter the product's name e.g Midwifery Kit";
-export const PRODUCT_NAME = 'Product name';
-export const UNIQUE_ID = 'Unique ID';
-export const MATERIAL_NUMBER = 'Material number';
-export const CREATED = 'Created';
-export const LAST_UPDATED = 'Last Updated';
-export const SERVER_VERSION = 'Server version';
-export const CANCEL = 'Cancel';
-export const PHOTO_OF_THE_PRODUCT = 'Photo of the product (optional)';
-export const ACCOUNTABILITY_PERIOD = 'Accountability period (in months)';
-export const DESCRIBE_THE_PRODUCTS_USE = "Describe the product's intended use at the service point";
-export const USED_APPROPRIATELY = 'Is it being used appropriately? (optional)';
-export const CONDITION_PLACEHOLDER =
-  'Describe how a supply monitor would assess whether the product is in good condition';
-export const CONDITION_LABEL = 'Is it in good condition? (optional)';
-export const AVAILABILITY_PLACEHOLDER =
-  'Describe where a supply monitor can locate this product at the service point.';
-export const AVAILABILITY_LABEL = 'Is it there?';
-export const ATTRACTIVE_ITEM_LABEL = 'Attractive item?';
-export const MATERIAL_NUMBER_PLACEHOLDER = "Enter the product's material number";
-export const SUBMIT = 'Submit';
+import i18n, { namespace } from './mls';
+import { Dictionary } from '@onaio/utils';
+
+export type Lang = Dictionary<string>;
+
+const lang: Lang = {};
+
+/** recompute values */
+function fill() {
+  lang.ADD_PRODUCT = i18n.t(`Add product to catalogue`, { ns: namespace });
+  lang.EDIT = i18n.t(`Edit`, { ns: namespace });
+  lang.PRODUCT_CATALOGUE = i18n.t(`Product Catalogue`, { ns: namespace });
+  lang.ADD_PRODUCT_TO_CATALOGUE = i18n.t(` + Add product to catalogue`, { ns: namespace });
+  lang.PRODUCT_NAME_TH = i18n.t(`Product Name`, { ns: namespace });
+  lang.ID_TH = i18n.t(`ID`, { ns: namespace });
+  lang.ACTIONS_TH = i18n.t(`Actions`, { ns: namespace });
+  lang.LOADING_ELLIPSIS = i18n.t(`Loading...`, { ns: namespace });
+  lang.FETCHING_PRODUCT = i18n.t(`Fetching product Catalogue`, { ns: namespace });
+  lang.FETCHING_PRODUCT_DESCRIPTION = i18n.t(`Please wait, as we fetch the product Catalogue.`, {
+    ns: namespace,
+  });
+  lang.REQUIRED = i18n.t(`Required`, { ns: namespace });
+  lang.YES = i18n.t(`yes`, { ns: namespace });
+  lang.NO = i18n.t(`no`, { ns: namespace });
+  lang.SUCCESSFULLY_UPDATED = i18n.t(`Successfully Updated`, { ns: namespace });
+  lang.SUCCESSFULLY_ADDED = i18n.t(`Successfully Added`, { ns: namespace });
+  lang.ENTER_PRODUCTS_NAME = `Enter the product's name e.g Midwifery Kit`;
+  lang.PRODUCT_NAME = i18n.t(`Product name`, { ns: namespace });
+  lang.UNIQUE_ID = i18n.t(`Unique ID`, { ns: namespace });
+  lang.MATERIAL_NUMBER = i18n.t(`Material number`, { ns: namespace });
+  lang.CREATED = i18n.t(`Created`, { ns: namespace });
+  lang.LAST_UPDATED = i18n.t(`Last Updated`, { ns: namespace });
+  lang.SERVER_VERSION = i18n.t(`Server version`, { ns: namespace });
+  lang.CANCEL = i18n.t(`Cancel`, { ns: namespace });
+  lang.PHOTO_OF_THE_PRODUCT = i18n.t(`Photo of the product (optional)`, { ns: namespace });
+  lang.ACCOUNTABILITY_PERIOD = i18n.t(`Accountability period (in months)`, { ns: namespace });
+  lang.DESCRIBE_THE_PRODUCTS_USE = i18n.t(
+    `Describe the product's intended use at the service point`,
+    { ns: namespace }
+  );
+  lang.USED_APPROPRIATELY = i18n.t(`Is it being used appropriately? (optional)`, { ns: namespace });
+  lang.CONDITION_PLACEHOLDER = i18n.t(
+    `Describe how a supply monitor would assess whether the product is in good condition`,
+    { ns: namespace }
+  );
+  lang.CONDITION_LABEL = i18n.t(`Is it in good condition? (optional)`, { ns: namespace });
+  lang.AVAILABILITY_PLACEHOLDER = i18n.t(
+    `Describe where a supply monitor can locate this product at the service point.`,
+    { ns: namespace }
+  );
+  lang.AVAILABILITY_LABEL = i18n.t(`Is it there?`, { ns: namespace });
+  lang.ATTRACTIVE_ITEM_LABEL = i18n.t(`Attractive item?`, { ns: namespace });
+  lang.MATERIAL_NUMBER_PLACEHOLDER = i18n.t(`Enter the product's material number`, {
+    ns: namespace,
+  });
+  lang.SUBMIT = i18n.t(`Submit`, { ns: namespace });
+  lang.VIEW_DETAILS = i18n.t(`View details`, { ns: namespace });
+
+  // Errors
+  lang.ERROR_IMAGE_LOAD = i18n.t(`Image could not be loaded`, { ns: namespace });
+}
+
+// run it initial
+fill();
+
+// bind some events and fill values again (doing the magic you expect to happen magically)
+i18n.on(`languageChanged`, () => {
+  fill();
+});
+
+// the const
+export default lang;

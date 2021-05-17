@@ -9,7 +9,7 @@ export const expressAPIResponse = {
         token_type: 'bearer',
       },
       preferredName: 'Superset User',
-      roles: ['Provider'],
+      roles: ['Provider', 'ROLE_VIEW_KEYCLOAK_USERS'],
       username: 'superset-user',
     },
     success: true,
@@ -25,7 +25,7 @@ export const expressAPIResponse = {
         token_type: 'bearer',
       },
       preferredName: 'Superset User',
-      roles: ['Provider'],
+      roles: ['Provider', 'ROLE_VIEW_KEYCLOAK_USERS'],
       username: 'superset-user',
     },
     user: {

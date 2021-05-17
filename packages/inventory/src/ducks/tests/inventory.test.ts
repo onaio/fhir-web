@@ -11,6 +11,7 @@ import {
   removeInventories,
   fetchInventories,
   Inventory,
+  getInventoriesByExpiry,
 } from '../inventory';
 import { inventory1, inventory2 } from './fixtures';
 
@@ -53,6 +54,27 @@ describe('src/ducks/inventory', () => {
       })
     ).toEqual([inventory1, inventory2]);
     expect(getInventoriesArray(store.getState())).toEqual([inventory1, inventory2]);
+  });
+
+  it('fetches inventories by expiry', () => {
+    store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
+    expect(
+      getInventoriesByExpiry(store.getState(), {
+        servicePointIds: [inventory1.locationId],
+        expired: true,
+      })
+    ).toEqual([inventory1]);
+    expect(
+      getInventoriesByExpiry(store.getState(), {
+        servicePointIds: [inventory2.locationId],
+        expired: false,
+      })
+    ).toEqual([inventory2]);
+  });
+
+  it('fetches inventories if expiry is not defined', () => {
+    store.dispatch(fetchInventories([inventory1, inventory2] as Inventory[]));
+    expect(getInventoriesByExpiry(store.getState(), {})).toEqual([inventory1, inventory2]);
   });
 
   it('removes inventory correctly', () => {

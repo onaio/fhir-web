@@ -12,7 +12,7 @@ import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
 
 import TeamsAddEdit, { getPractitonerDetail, getTeamDetail } from '..';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   beforeAll(() => {
@@ -142,7 +142,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: ERROR_OCCURRED,
+      message: lang.ERROR_OCCURRED,
     });
   });
 
@@ -230,7 +230,6 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       await flushPromises();
       wrapper.update();
     });
-
     expect(wrapper.find('.mb-3.header-title').text()).toEqual(`Edit Team | ${team.name}`);
   });
 });

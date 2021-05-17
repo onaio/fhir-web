@@ -19,9 +19,9 @@ import {
 import { act } from 'react-dom/test-utils';
 import { jurisdictions } from './fixtures';
 import { Jurisdiction, removeJurisdictions } from '../../../ducks/jurisdictions';
-import { removeAssignmentsAction } from '../../../ducks/assignments';
+import { removeAssignmentsAction } from '@opensrp/team-assignment';
 import { Organization, removeOrganizationsAction } from '@opensrp/team-management';
-import { EDIT_AREAS, EDIT_TEAMS } from '../../../lang';
+import lang from '../../../lang';
 import { Dictionary } from '@onaio/utils';
 import MockDate from 'mockdate';
 import { Router } from 'react-router-dom';
@@ -187,9 +187,7 @@ describe('opensrp-plans/assignmentTable', () => {
     });
 
     // check the rendered output
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"ErrorCould not load AssignmentsGo BackBack Home"`
-    );
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorCould not load AssignmentsGo backGo home"`);
     wrapper.unmount();
   });
 
@@ -237,7 +235,7 @@ describe('opensrp-plans/assignmentTable', () => {
     // simulate selecting jurisdictions
     const jurisdictionAssignmentModal = wrapper.find('EditAssignmentsModal').first();
     // make sure its the areas one
-    expect(jurisdictionAssignmentModal.text().includes(EDIT_AREAS)).toBeTruthy();
+    expect(jurisdictionAssignmentModal.text().includes(lang.EDIT_AREAS)).toBeTruthy();
     const selectedJurisdiction = jursToOptions([jurisdictions[0]]);
     (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
     await act(async () => {
@@ -318,7 +316,7 @@ describe('opensrp-plans/assignmentTable', () => {
     // simulate selecting jurisdictions
     const teamAssignmentModal = wrapper.find('EditAssignmentsModal').last();
     // make sure its the areas one
-    expect(teamAssignmentModal.text().includes(EDIT_TEAMS)).toBeTruthy();
+    expect(teamAssignmentModal.text().includes(lang.EDIT_TEAMS)).toBeTruthy();
     const selectedOrgs = orgsToOptions([organizations[0]]);
     (teamAssignmentModal.props() as Dictionary).saveHandler(selectedOrgs);
     await act(async () => {
@@ -383,7 +381,7 @@ describe('opensrp-plans/assignmentTable', () => {
     // simulate selecting jurisdictions
     const jurisdictionAssignmentModal = wrapper.find('EditAssignmentsModal').first();
     // make sure its the areas one
-    expect(jurisdictionAssignmentModal.text().includes(EDIT_AREAS)).toBeTruthy();
+    expect(jurisdictionAssignmentModal.text().includes(lang.EDIT_AREAS)).toBeTruthy();
     const selectedJurisdiction = jursToOptions([jurisdictions[1], jurisdictions[0]]);
     (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
     await act(async () => {

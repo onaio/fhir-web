@@ -1,0 +1,23 @@
+{
+  "Active": "Actif",
+  "Add inventory via CSV": "Ajouter produits avec CSV",
+  "Admin": "Admin",
+  "An error occurred": "Une erreur est survenue",
+  "Complete": "Achevé",
+  "Draft": "Brouillon",
+  "Inventory": "Inventaire",
+  "Location unit": "Unité géographique",
+  "Locations": "Emplacements",
+  "Login": "Se Connecter",
+  "Manage account": "Gérer son compte",
+  "Missions": "Missions",
+  "Please log in with one of the following providers": "Veuillez vous connecter avec l'un des utilisateurs suivants",
+  "Product Catalogue": "Catalogue des Produits",
+  "Retired": "Retiré",
+  "Service point inventory": "Inventaire du Point de Service",
+  "Teams": "Équipes",
+  "User Management": "Gestion des Utilisateurs",
+  "User Roles": "Rôles utilisateur",
+  "Users": "Utilisateurs",
+  "Welcome to OpenSRP": "Bienvenue à OpenSRP"
+}

@@ -9,8 +9,7 @@ import {
   ProductCatalogue,
 } from '../../ducks/productCatalogue';
 import { connect } from 'react-redux';
-import { ColumnsType } from 'antd/lib/table/interface';
-import { CatalogueLoading, columns } from './utils';
+import { CatalogueLoading, columnsFactory } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -23,7 +22,7 @@ import { Helmet } from 'react-helmet';
 import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { ADD_PRODUCT_TO_CATALOGUE, PRODUCT_CATALOGUE } from '../../lang';
+import lang from '../../lang';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
@@ -32,7 +31,6 @@ reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
 interface Props<T = ProductCatalogue> extends CommonProps {
   data: T[];
   productUnderView: T | null;
-  columns: ColumnsType<T>;
   service: typeof OpenSRPService;
   fetchProductsCreator: typeof fetchProducts;
 }
@@ -41,7 +39,6 @@ const defaultProps = {
   ...defaultCommonProps,
   data: [],
   productUnderView: null,
-  columns: columns,
   fetchProductsCreator: fetchProducts,
   service: OpenSRPService,
 };
@@ -51,9 +48,11 @@ export type ProductCatalogueListTypes = Props<ProductCatalogue> & RouteComponent
 /** component that renders product catalogue */
 
 const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
-  const { service, data, columns, productUnderView, fetchProductsCreator, baseURL } = props;
+  const { service, data, productUnderView, fetchProductsCreator, baseURL } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
+
+  const columns = columnsFactory();
 
   // see if we have a view-details product
   const productId = props.match.params.productId ?? '';
@@ -73,7 +72,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = `${PRODUCT_CATALOGUE} (${data.length})`;
+  const pageTitle = `${lang.PRODUCT_CATALOGUE} (${data.length})`;
   // add a key prop to the array data to be consumed by the table
   const dataSource = data.map((singleObject) => {
     const prodWithKey = {
@@ -84,18 +83,16 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   });
 
   return (
-    <div className="content-section">
+    <div className="content-section product-catalogue">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
       <PageHeader title={pageTitle} className="page-header"></PageHeader>
-      <Row className={'list-view'}>
+      <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
-          <div className="main-content__header">
+          <div className="main-content__header flex-right">
             <Link to={CATALOGUE_CREATE_VIEW_URL}>
-              <Button type="primary" size="large">
-                {ADD_PRODUCT_TO_CATALOGUE}
-              </Button>
+              <Button type="primary">{lang.ADD_PRODUCT_TO_CATALOGUE}</Button>
             </Link>
           </div>
           <Table dataSource={dataSource} columns={columns}></Table>
