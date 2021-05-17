@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.7",
+  "version": "0.0.11",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -17,10 +17,9 @@
     "test:watch": "cd ../../ && yarn test packages/location-management --verbose --watch && cd packages/location-management",
     "tsc": "tsc",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__",
     "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
   },
   "jest": {
@@ -38,25 +37,30 @@
   "dependencies": {
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.2",
-    "@opensrp/react-utils": "^0.0.2",
-    "@opensrp/reducer-factory": "^0.0.11",
-    "@opensrp/server-service": "^0.0.13",
+    "@opensrp/notifications": "^0.0.4",
+    "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/reducer-factory": "^0.0.13",
+    "@opensrp/server-service": "^0.0.16",
     "cycle": "^1.0.3",
+    "fast_array_intersect": "^1.1.0",
     "tree-model": "^1.0.7",
-    "i18next": "^19.8.4"
+    "uuid": "^8.3.1",
+    "react-i18next": "^11.8.10"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@opensrp/store": "^0.0.7",
+    "@opensrp/store": "^0.0.9",
     "@types/geojson": "^7946.0.7",
     "@types/uuid": "8.3.0",
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
+    "use-deep-compare-effect": "1.6.1",
+    "react-query": "^3.15.1",
+    "@opensrp/store": "^0.0.9",
+    "i18next": "^19.8.4",
     "formik-antd": "^2.0.1",
-    "react": "^16.13.1",
-    "uuid": "^8.3.1"
+    "react": "^16.13.1"
   }
 }

@@ -15,7 +15,7 @@ import { DownloadClientDataFormFields } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import * as notifications from '@opensrp/notifications';
-import { ERROR_OCCURRED } from '../../../lang';
+import lang from '../../../lang';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -140,7 +140,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     cardStatus,
     cardOrderDate,
   };
-  const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest';
+  const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/';
   const accessToken = 'hunter2';
   const setSubmittingMock = jest.fn();
 
@@ -212,7 +212,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     ]);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith(ERROR_OCCURRED);
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('calls API correctly if card status is empty', async () => {

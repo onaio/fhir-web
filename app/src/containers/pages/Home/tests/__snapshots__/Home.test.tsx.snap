@@ -81,16 +81,16 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
           >
             <Link
               className="admin-link"
-              to="/admin/users/list"
+              to="/admin/users"
             >
               <LinkAnchor
                 className="admin-link"
-                href="/admin/users/list"
+                href="/admin/users"
                 navigate={[Function]}
               >
                 <a
                   className="admin-link"
-                  href="/admin/users/list"
+                  href="/admin/users"
                   onClick={[Function]}
                 >
                   <Button
@@ -141,6 +141,34 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
           </div>
         </Col>
       </div>
+    </Row>
+    <Row
+      className="links-box"
+      gutter={16}
+    >
+      <div
+        className="ant-row links-box"
+        style={
+          Object {
+            "marginLeft": -8,
+            "marginRight": -8,
+          }
+        }
+      />
+    </Row>
+    <Row
+      className="links-box"
+      gutter={16}
+    >
+      <div
+        className="ant-row links-box"
+        style={
+          Object {
+            "marginLeft": -8,
+            "marginRight": -8,
+          }
+        }
+      />
     </Row>
   </div>
 </Home>

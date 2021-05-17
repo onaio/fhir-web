@@ -1,64 +1,16 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import './Sidebar.css';
-import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  URL_USER,
-  URL_HOME,
-  URL_LOCATION_UNIT_GROUP,
-  URL_TEAMS,
-  URL_DOWNLOAD_CLIENT_DATA,
-  URL_LOCATION_UNIT,
-  URL_JSON_VALIDATOR_LIST,
-  URL_DRAFT_FILE_LIST,
-  URL_MANIFEST_RELEASE_LIST,
-  URL_SERVER_SETTINGS,
-} from '../../../constants';
-import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
-import {
-  ENABLE_FORM_CONFIGURATION,
-  ENABLE_PLANS,
-  ENABLE_TEAMS,
-  ENABLE_LOCATIONS,
-  ENABLE_PRODUCT_CATALOGUE,
-  ENABLE_CARD_SUPPORT,
-  ENABLE_INVENTORY,
-  MAIN_LOGO_SRC,
-} from '../../../configs/env';
-import {
-  ACTIVE_PLANS_LIST_VIEW_URL,
-  DRAFT_PLANS_LIST_VIEW_URL,
-  COMPLETE_PLANS_LIST_VIEW_URL,
-  TRASH_PLANS_LIST_VIEW_URL,
-} from '@opensrp/plans';
-import {
-  CARD_SUPPORT,
-  DOWNLOAD_CLIENT_DATA,
-  USER_MANAGEMENT,
-  TEAMS,
-  LOCATIONS_UNIT,
-  LOCATIONS_UNIT_GROUP,
-  PRODUCT_CATALOGUE,
-  FORM_CONFIGURATION,
-  MANIFEST_RELEASES,
-  DRAFT_FILES,
-  JSON_VALIDATORS,
-  USERS,
-  ADMIN,
-  ACTIVE,
-  DRAFT,
-  COMPLETE,
-  TRASH,
-  MISSIONS,
-  LOCATIONS,
-  SERVICE_POINT_INVENTORY,
-  INVENTORY,
-} from '../../../lang';
-import { INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
+import { URL_HOME } from '../../../constants';
+import { useTranslation } from 'react-i18next';
+
+import { Route, getRoutes } from '../../../routes';
+import { getActiveKey } from './utils';
+import { MAIN_LOGO_SRC } from '../../../configs/env';
+import './Sidebar.css';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -72,13 +24,43 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 };
 
 /** The Sidebar component */
-
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
+  useTranslation();
   const { extraData } = props;
   const { roles } = extraData;
   let location = useLocation();
-  let loc = location.pathname.split('/');
-  loc.shift();
+  const [openKeys, setOpenKeys] = React.useState<React.Key[]>([]);
+
+  const routes = React.useMemo(() => getRoutes(roles as string[]), [roles]);
+
+  const sidebaritems: JSX.Element[] = React.useMemo(() => {
+    function mapChildren(route: Route) {
+      if (route.children) {
+        return (
+          <Menu.SubMenu key={route.key} icon={route.otherProps?.icon} title={route.title}>
+            {route.children.map(mapChildren)}
+          </Menu.SubMenu>
+        );
+      } else if (route.url) {
+        return (
+          <Menu.Item key={route.key}>
+            <Link className="admin-link" to={route.url}>
+              {route.title}
+            </Link>
+          </Menu.Item>
+        );
+      } else {
+        return <Menu.Item key={route.key}>{route.title}</Menu.Item>;
+      }
+    }
+
+    return routes.map(mapChildren);
+  }, [routes]);
+
+  const activeLocationPaths = location.pathname
+    .split('/')
+    .filter((locString: string) => locString.length);
+  const activeKey = getActiveKey(location.pathname, routes);
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
@@ -89,118 +71,17 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       </div>
 
       <Menu
+        key="main-menu"
         theme="dark"
-        selectedKeys={[loc[loc.length - 1]]}
-        defaultOpenKeys={loc}
-        defaultSelectedKeys={[loc[loc.length - 1]]}
+        selectedKeys={[activeKey ?? '']}
+        openKeys={openKeys.length ? (openKeys as string[]) : activeLocationPaths}
+        defaultOpenKeys={activeLocationPaths}
+        defaultSelectedKeys={[activeKey ?? '']}
+        onOpenChange={(keys) => setOpenKeys(keys)}
         mode="inline"
         className="menu-dark"
       >
-        {ENABLE_PLANS && (
-          <Menu.SubMenu key="missions" icon={<DashboardOutlined />} title={MISSIONS}>
-            <Menu.Item key="active">
-              <Link to={ACTIVE_PLANS_LIST_VIEW_URL} className="admin-link">
-                {ACTIVE}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="draft">
-              <Link to={DRAFT_PLANS_LIST_VIEW_URL} className="admin-link">
-                {DRAFT}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="complete">
-              <Link to={COMPLETE_PLANS_LIST_VIEW_URL} className="admin-link">
-                {COMPLETE}
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="trash">
-              <Link to={TRASH_PLANS_LIST_VIEW_URL} className="admin-link">
-                {TRASH}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-        {ENABLE_CARD_SUPPORT && (
-          <Menu.SubMenu key="card-support" title={CARD_SUPPORT} icon={<IdcardOutlined />}>
-            <Menu.Item key="card-support-client-data">
-              <Link to={URL_DOWNLOAD_CLIENT_DATA} className="admin-link">
-                {DOWNLOAD_CLIENT_DATA}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-        {ENABLE_INVENTORY && (
-          <Menu.SubMenu key="inventory" icon={<DashboardOutlined />} title={INVENTORY}>
-            <Menu.Item key="list">
-              <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW} className="admin-link">
-                {SERVICE_POINT_INVENTORY}
-              </Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-        <Menu.SubMenu key="admin" icon={<DashboardOutlined />} title={ADMIN}>
-          {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
-            <Menu.SubMenu key="users" title={USERS}>
-              <Menu.Item key={'list'}>
-                <Link to={URL_USER} className="admin-link">
-                  {USER_MANAGEMENT}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-          {ENABLE_TEAMS && (
-            <Menu.Item key="teams">
-              <Link to={URL_TEAMS} className="admin-link">
-                {TEAMS}
-              </Link>
-            </Menu.Item>
-          )}
-          <Menu.Item key="server-settings">
-            <Link to={URL_SERVER_SETTINGS} className="admin-link">
-              {'Server Settings'}
-            </Link>
-          </Menu.Item>
-          {ENABLE_PRODUCT_CATALOGUE && (
-            <Menu.Item key="product-catalogue">
-              <Link to={CATALOGUE_LIST_VIEW_URL} className="admin-link">
-                {PRODUCT_CATALOGUE}
-              </Link>
-            </Menu.Item>
-          )}
-          {ENABLE_LOCATIONS && (
-            <Menu.SubMenu key="location" title={LOCATIONS}>
-              <Menu.Item key="unit">
-                <Link to={URL_LOCATION_UNIT} className="admin-link">
-                  {LOCATIONS_UNIT}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="group">
-                <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
-                  {LOCATIONS_UNIT_GROUP}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-          {ENABLE_FORM_CONFIGURATION && (
-            <Menu.SubMenu key="form-config" title={FORM_CONFIGURATION}>
-              <Menu.Item key="releases">
-                <Link to={URL_MANIFEST_RELEASE_LIST} className="admin-link">
-                  {MANIFEST_RELEASES}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="drafts">
-                <Link to={URL_DRAFT_FILE_LIST} className="admin-link">
-                  {DRAFT_FILES}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="json-validators">
-                <Link to={URL_JSON_VALIDATOR_LIST} className="admin-link">
-                  {JSON_VALIDATORS}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          )}
-        </Menu.SubMenu>
+        {sidebaritems}
       </Menu>
     </Layout.Sider>
   );

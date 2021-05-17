@@ -21,15 +21,21 @@ import {
   PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
+  DEFAULT_PLAN_ID,
 } from '../configs/env';
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
 };
 
+export const teamAssignmentProps = {
+  defaultPlanId: DEFAULT_PLAN_ID,
+};
+
 export const newLocationUnitProps = {
-  redirectAfterAction: URL_LOCATION_UNIT,
-  hidden: 'serviceTypes',
+  successURLGenerator: () => URL_LOCATION_UNIT,
+  cancelURLGenerator: () => URL_LOCATION_UNIT,
+  hidden: ['serviceType', 'latitude', 'longitude'],
 };
 
 export const editLocationProps = {
@@ -114,7 +120,7 @@ export const draftPlansListStatusProp = {
 export const completedPlansListStatusProp = {
   allowedPlanStatus: PlanStatus.COMPLETE,
 };
-export const trashPlansListStatusProp = {
+export const retiredPlansListStatusProp = {
   allowedPlanStatus: PlanStatus.RETIRED,
 };
 
@@ -123,4 +129,8 @@ export const missionAssignmentProps = {
   showAssignmentTable: true,
   showMissionData: true,
   assignGeoLevel: PLAN_ASSIGNMENT_AT_GEO_LEVEL,
+};
+
+export const inventoryItemAddEditProps = {
+  openSRPBaseURL: OPENSRP_API_BASE_URL,
 };

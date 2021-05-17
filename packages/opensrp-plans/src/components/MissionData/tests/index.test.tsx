@@ -63,6 +63,41 @@ describe('mission data listing & download', () => {
     expect(wrapper.find('a').at(0).props().href).toEqual(
       'https://opensrp-stage.smartregister.org/opensrp/rest/event/export-data?eventTypes=flag_problem,service_point_check,looks_good,record_gps,fix_problem&planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8'
     );
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=service_point_check&returnTaskCountOnly=true&status=Completed',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=product_check&returnTaskCountOnly=true&status=Completed',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/task/search?planIdentifier=335ef7a3-7f35-58aa-8263-4419464946d8&code=product_check&returnTaskCountOnly=true&status=Completed&businessStatus=has_problem',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer null',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
   });
 
   it('shows broken page', async () => {

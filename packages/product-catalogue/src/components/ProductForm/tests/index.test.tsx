@@ -8,18 +8,28 @@ import toJson from 'enzyme-to-json';
 import { product1 } from '../../../ducks/productCatalogue/tests/fixtures';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
-import { product2 } from './fixtures';
+import { product2, product3 } from './fixtures';
+import * as opensrpReactUtils from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
 });
 
+jest.mock('@opensrp/react-utils', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/react-utils')),
+}));
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
 describe('productForm', () => {
+  global.URL.revokeObjectURL = jest.fn();
+
   afterEach(() => {
     fetch.resetMocks();
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it('renders without crashing', async () => {
@@ -548,5 +558,90 @@ describe('productForm', () => {
 
     expect(errorNotificationSMock).toHaveBeenCalledWith('Error', otherErrorMessage);
     (sendErrorNotification as jest.Mock).mockReset();
+  });
+
+  it('fetches image if photoURL is given', async () => {
+    const fetchProtectedImageMock = jest
+      .spyOn(opensrpReactUtils, 'fetchProtectedImage')
+      .mockImplementation(() => Promise.resolve('hello'));
+
+    const props = {
+      initialValues: product3,
+    };
+
+    const wrapper = mount(
+      <MemoryRouter>
+        <ProductForm {...props} />
+      </MemoryRouter>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+    wrapper.update();
+
+    expect(fetchProtectedImageMock).toHaveBeenCalledWith(
+      'https://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4'
+    );
+    expect(wrapper.find('img').get(0).props.src).toEqual('hello');
+    wrapper.unmount();
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('hello');
+  });
+
+  it('does not display image if fetch image fails', async () => {
+    const fetchProtectedImageMock = jest
+      .spyOn(opensrpReactUtils, 'fetchProtectedImage')
+      .mockImplementation(() => Promise.resolve(null));
+
+    const props = {
+      initialValues: product3,
+    };
+
+    const wrapper = mount(
+      <MemoryRouter>
+        <ProductForm {...props} />
+      </MemoryRouter>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+    wrapper.update();
+
+    expect(fetchProtectedImageMock).toHaveBeenCalledWith(
+      'https://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4'
+    );
+    expect(toJson(wrapper.find('img'))).toBeFalsy();
+
+    wrapper.unmount();
+  });
+
+  it('display error toast if fetching image fails', async () => {
+    const fetchProtectedImageMock = jest
+      .spyOn(opensrpReactUtils, 'fetchProtectedImage')
+      .mockImplementation(() => Promise.reject('error'));
+
+    const props = {
+      initialValues: product3,
+    };
+
+    const wrapper = mount(
+      <MemoryRouter>
+        <ProductForm {...props} />
+      </MemoryRouter>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+    });
+    wrapper.update();
+
+    expect(fetchProtectedImageMock).toHaveBeenCalledWith(
+      'https://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4'
+    );
+    expect(toJson(wrapper.find('img'))).toBeFalsy();
+    expect(sendErrorNotification).toHaveBeenCalledWith('Image could not be loaded');
+
+    wrapper.unmount();
   });
 });

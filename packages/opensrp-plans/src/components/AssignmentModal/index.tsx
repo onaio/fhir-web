@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Alert, Select } from 'antd';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
-import { CANCEL, EDIT_TEAMS, SAVE, SELECT } from '../../lang';
+import lang from '../../lang';
 import { SelectProps } from 'rc-select/lib/generate';
 import { Dictionary } from '@onaio/utils';
 
@@ -27,9 +27,9 @@ export interface EditAssignmentsModalProps {
 const defaultProps = {
   existingOptions: [],
   options: [],
-  invokeText: EDIT_TEAMS,
-  modalTitle: EDIT_TEAMS,
-  placeHolder: SELECT,
+  invokeText: lang.EDIT_TEAMS,
+  modalTitle: lang.EDIT_TEAMS,
+  placeHolder: lang.SELECT,
   disabled: false,
 };
 
@@ -93,8 +93,8 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
-        cancelText={CANCEL}
-        okText={SAVE}
+        cancelText={lang.CANCEL}
+        okText={lang.SAVE}
       >
         {broken ? (
           <Alert style={{ marginBottom: '8px' }} message={errorMessage} type="error" />
@@ -106,6 +106,8 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
           defaultValue={defaultValue}
           onChange={handleChange as SelectProps<Dictionary[], string[]>['onChange']}
           options={options}
+          showSearch={true}
+          filterOption={optionFilter as SelectProps<Dictionary[], string[]>['filterOption']}
         />
       </Modal>
     </>
@@ -115,3 +117,12 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
 EditAssignmentsModal.defaultProps = defaultProps;
 
 export { EditAssignmentsModal };
+
+/** filters what options to show depending on the string input
+ *
+ * @param input - the string input
+ * @param option - a single option
+ */
+export const optionFilter = (input: string, option: SelectOption) => {
+  return option.label.toLowerCase().includes(input.toLowerCase());
+};

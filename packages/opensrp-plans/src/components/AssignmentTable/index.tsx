@@ -6,16 +6,16 @@ import {
   fetchOrganizationsAction as fetchOrganizations,
   getOrganizationsArray,
   Organization,
-  organizationsReducer,
-  orgReducerName,
+  reducer as organizationsReducer,
+  reducerName as orgReducerName,
 } from '@opensrp/team-management';
 import {
   assignmentsReducer,
-  assignmentReducerName,
+  assignmentsReducerName,
   Assignment,
   fetchAssignments,
   getAssignmentsArrayByPlanId,
-} from '../../ducks/assignments';
+} from '@opensrp/team-assignment';
 import {
   JurisdictionsReducer,
   jurisdictionReducerName,
@@ -40,7 +40,7 @@ import {
   makePlanDefinitionsArraySelector,
 } from '../../ducks/planDefinitions';
 
-reducerRegistry.register(assignmentReducerName, assignmentsReducer);
+reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
 reducerRegistry.register(orgReducerName, organizationsReducer);
 reducerRegistry.register(jurisdictionReducerName, JurisdictionsReducer);
 

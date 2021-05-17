@@ -54,7 +54,7 @@ export function getFetchOptions<T extends object = Dictionary>(
 
 /** interface to describe URL params object */
 export interface URLParams {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | undefined;
 }
 
 export interface CustomFetch {
@@ -73,7 +73,7 @@ export const customFetch: CustomFetch = async (...rest) => {
 type paramsType = URLParams | null;
 
 /** get acess token call back fn type */
-type GetAccessTokenType = () => Promise<string | null>;
+export type GetAccessTokenType = () => Promise<string | null>;
 
 /** The OpenSRP service class
  *

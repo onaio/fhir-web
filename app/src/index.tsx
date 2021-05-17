@@ -12,8 +12,12 @@ import { store } from '@opensrp/store';
 import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
 import { URL_HOME } from './constants';
 import * as Sentry from '@sentry/react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
+// tslint:disable-next-line: ordered-imports
+const queryClient = new QueryClient();
 
 if (SENTRY_DSN) {
   Sentry.init({ dsn: SENTRY_DSN });
@@ -23,7 +27,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </Sentry.ErrorBoundary>
     </ConnectedRouter>
   </Provider>,

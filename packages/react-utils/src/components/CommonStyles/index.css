@@ -1,0 +1,14 @@
+/* common styles goes here */
+.mr-0 {
+  margin-right: 0px;
+}
+.pt-0 {
+  padding-top: 0px !important;
+}
+.d-flex {
+  display: flex;
+}
+.flex-right {
+  display: flex !important;
+  justify-content: flex-end !important;
+}

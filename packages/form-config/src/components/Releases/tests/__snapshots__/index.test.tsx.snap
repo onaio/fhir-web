@@ -9,7 +9,7 @@ Object {
       "accessor": [Function],
     },
     Object {
-      "Header": "App Id",
+      "Header": "App ID",
       "accessor": "appId",
     },
     Object {

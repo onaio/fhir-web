@@ -2,19 +2,7 @@
  * to the db fails and returns a csv error */
 import React from 'react';
 import { Card, Table, Divider } from 'antd';
-import {
-  CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS,
-  ERRORS,
-  EXTRACT_THE_ROWS_LISTED,
-  INVENTORY_ITEMS_FAILED_TO_BE_ADDED,
-  INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED,
-  INVENTORY_ITEMS_NOT_LISTED_BELOW,
-  INVENTORY_PROCESSING_ERROR,
-  PASTE_THE_ROWS,
-  ROW_NUMBER,
-  SERVICE_POINT_INVENTORY,
-  UPLOAD_THE_CSV_FILE,
-} from '../../lang';
+import lang from '../../lang';
 import { WarningOutlined } from '@ant-design/icons';
 import { errorsTableColumnsNameSpace, INVENTORY_BULK_UPLOAD_URL } from '../../constants';
 import { Link } from 'react-router-dom';
@@ -24,19 +12,6 @@ import { CardTitle } from '../../helpers/utils';
 import { format } from 'util';
 
 type TableData = BadRequestError['errors'][0];
-
-const columns: ColumnsType<TableData> = [
-  {
-    title: ROW_NUMBER,
-    dataIndex: 'row',
-    key: `${errorsTableColumnsNameSpace}-${ROW_NUMBER}`,
-  },
-  {
-    title: ERRORS,
-    dataIndex: 'failureReason',
-    key: `${errorsTableColumnsNameSpace}-${ERRORS}`,
-  },
-];
 
 /** props for file start upload */
 interface PostConfirmErrorProps {
@@ -55,10 +30,23 @@ const defaultProps = {
 const PostConfirmError = (props: PostConfirmErrorProps) => {
   const { errorObj, filename } = props;
 
+  const columns: ColumnsType<TableData> = [
+    {
+      title: lang.ROW_NUMBER,
+      dataIndex: 'row',
+      key: `${errorsTableColumnsNameSpace}-${lang.ROW_NUMBER}`,
+    },
+    {
+      title: lang.ERRORS,
+      dataIndex: 'failureReason',
+      key: `${errorsTableColumnsNameSpace}-${lang.ERRORS}`,
+    },
+  ];
+
   const cardTitle = (
     <CardTitle
       IconRender={<WarningOutlined className="card-title__icon" />}
-      text={INVENTORY_PROCESSING_ERROR}
+      text={lang.INVENTORY_PROCESSING_ERROR}
     />
   );
 
@@ -75,21 +63,21 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
 
   return (
     <Card title={cardTitle} className="full-page-card">
-      <p>{format(INVENTORY_ITEMS_FAILED_TO_BE_ADDED, failedRowsNum, filename)}</p>
+      <p>{format(lang.INVENTORY_ITEMS_FAILED_TO_BE_ADDED, failedRowsNum, filename)}</p>
       <ol>
-        <li>{format(EXTRACT_THE_ROWS_LISTED, filename)}</li>
-        <li>{PASTE_THE_ROWS}</li>
+        <li>{format(lang.EXTRACT_THE_ROWS_LISTED, filename)}</li>
+        <li>{lang.PASTE_THE_ROWS}</li>
         <li>
-          <Link to={INVENTORY_BULK_UPLOAD_URL}>{UPLOAD_THE_CSV_FILE}</Link>
+          <Link to={INVENTORY_BULK_UPLOAD_URL}>{lang.UPLOAD_THE_CSV_FILE}</Link>
         </li>
       </ol>
       <p>
-        {INVENTORY_ITEMS_NOT_LISTED_BELOW}{' '}
-        <Link to={INVENTORY_BULK_UPLOAD_URL}>{SERVICE_POINT_INVENTORY}</Link>.{' '}
-        <strong>{CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS}</strong>
+        {lang.INVENTORY_ITEMS_NOT_LISTED_BELOW}{' '}
+        <Link to={INVENTORY_BULK_UPLOAD_URL}>{lang.SERVICE_POINT_INVENTORY}</Link>.{' '}
+        <strong>{lang.CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS}</strong>
       </p>
       <Divider></Divider>
-      <p>{format(INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED, filename)}</p>
+      <p>{format(lang.INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED, filename)}</p>
       <Table columns={columns} dataSource={dataSource}></Table>
     </Card>
   );

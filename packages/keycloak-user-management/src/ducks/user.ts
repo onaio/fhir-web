@@ -9,6 +9,34 @@ import SeamlessImmutable from 'seamless-immutable';
 /** The reducer name */
 export const reducerName = 'keycloakUsers';
 
+/** Interface for UserGroup json object */
+export interface UserGroup {
+  id: string;
+  name: string;
+  path: string;
+  subGroups?: UserGroup[];
+}
+
+/** Interface for practitioner json object */
+export interface Practitioner {
+  active: boolean;
+  identifier: string;
+  name: string;
+  userId: string;
+  username: string;
+}
+
+/** interface user action */
+export interface UserAction {
+  alias: string;
+  name: string;
+  providerId: string;
+  enabled: boolean;
+  defaultAction: boolean;
+  priority: number;
+  config: Dictionary;
+}
+
 /** Interface for user json object */
 export interface KeycloakUser {
   access?: {

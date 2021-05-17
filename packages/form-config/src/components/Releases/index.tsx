@@ -1,32 +1,25 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { OpenSRPService } from '@opensrp/server-service';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import releasesReducer, {
+import {
+  releasesReducer,
   fetchManifestReleases,
   releasesReducerName,
   getAllManifestReleasesArray,
   ManifestReleasesTypes,
-} from '../../ducks/manifestReleases';
+  formatDate,
+  fetchReleaseFiles,
+} from '@opensrp/form-config-core';
 import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
 import { Link } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
-import {
-  APP_ID_LABEL,
-  APP_VERSION_LABEL,
-  VIEW_FILES_LABEL,
-  UPOL0AD_FILE_LABEL,
-  IDENTIFIER_LABEL,
-  FIND_RELEASES_LABEL,
-  UPDATED_AT_LABEL,
-} from '../../constants';
 import { Cell } from 'react-table';
-import { formatDate } from '../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
-
+import { GetAccessTokenType } from '@opensrp/server-service';
+import lang from '../../lang';
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
 
@@ -41,7 +34,7 @@ export interface ReleasesDefaultProps extends SearchBarDefaultProps {
   updatedAt: string;
   uploadFileLabel: string;
   viewFilesLabel: string;
-  accessToken: string;
+  accessToken: string | GetAccessTokenType;
 }
 
 /** ManifestReleases props interface */
@@ -78,21 +71,27 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestReleasesTypes[]>(data);
 
+  const displayAlertError = (err: string): void => {
+    if (customAlert) {
+      customAlert(err, { type: 'error' });
+    }
+  };
+
   useEffect(() => {
     /** get manifest releases */
     if (data.length < 1) {
-      setLoading(true);
-      const clientService = new OpenSRPService(accessToken, baseURL, endpoint, getPayload);
-      clientService
-        .list()
-        .then((res: ManifestReleasesTypes[]) => fetchReleases(res))
-        .catch((error) => {
-          if (customAlert) {
-            customAlert(String(error), { type: 'error' });
-          }
-        })
-        .finally(() => setLoading(false));
+      fetchReleaseFiles(
+        accessToken,
+        baseURL,
+        fetchReleases,
+        setLoading,
+        displayAlertError,
+        endpoint,
+        undefined,
+        getPayload
+      );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseURL, endpoint, getPayload, customAlert, fetchReleases, data.length, accessToken]);
 
   useEffect(() => {
@@ -188,19 +187,19 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
 
 /** populate default props for ManifestReleases */
 const defaultProps: ReleasesDefaultProps = {
-  appIdLabel: APP_ID_LABEL,
-  appVersionLabel: APP_VERSION_LABEL,
+  appIdLabel: lang.APP_ID_LABEL,
+  appVersionLabel: lang.APP_VERSION_LABEL,
   data: [],
   debounceTime: 1000,
   drillDownProps: {
     paginate: false,
   },
   fetchReleases: fetchManifestReleases,
-  identifierLabel: IDENTIFIER_LABEL,
-  placeholder: FIND_RELEASES_LABEL,
-  updatedAt: UPDATED_AT_LABEL,
-  uploadFileLabel: UPOL0AD_FILE_LABEL,
-  viewFilesLabel: VIEW_FILES_LABEL,
+  identifierLabel: lang.IDENTIFIER,
+  placeholder: lang.FIND_RELEASES_LABEL,
+  updatedAt: lang.UPDATED_AT_LABEL,
+  uploadFileLabel: lang.UPLOAD_NEW_FILE,
+  viewFilesLabel: lang.VIEW_FILES,
   accessToken: '',
 };
 

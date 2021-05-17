@@ -20,7 +20,7 @@ import {
   KeycloakUser,
 } from '../../../ducks/user';
 import { URL_USER } from '../../../constants';
-import { ERROR_OCCURED, CREDENTIALS_UPDATED_SUCCESSFULLY } from '../../../lang';
+import lang from '../../../lang';
 import { history as registryHistory } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -29,22 +29,6 @@ jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
-
-jest.mock('antd', () => {
-  const antd = jest.requireActual('antd');
-
-  /* eslint-disable react/prop-types */
-  const Switch = ({ children, onChange }) => {
-    return <select onChange={(e) => onChange(e.target.value)}>{children}</select>;
-  };
-  /* eslint-disable react/prop-types */
-
-  return {
-    __esModule: true,
-    ...antd,
-    Switch,
-  };
-});
 
 const history = createBrowserHistory();
 
@@ -76,6 +60,7 @@ describe('components/Credentials', () => {
     accessToken: 'hunter 2',
     keycloakUser: null,
     serviceClass: KeycloakService,
+    cancelUserHandler: jest.fn(),
     history,
     location: {
       hash: '',
@@ -127,11 +112,6 @@ describe('components/Credentials', () => {
     const confirm = wrapper.find('input#confirm');
     confirm.simulate('change', { target: { value: 'password123' } });
 
-    const actionSelect = wrapper.find('select');
-    actionSelect.simulate('change', {
-      target: { value: true },
-    });
-
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -140,7 +120,7 @@ describe('components/Credentials', () => {
     });
 
     const payload = {
-      temporary: true,
+      temporary: false,
       type: 'password',
       value: 'password123',
     };
@@ -159,8 +139,8 @@ describe('components/Credentials', () => {
         method: 'PUT',
       },
     ]);
-    expect(mockNotificationSuccess).toHaveBeenCalledWith(CREDENTIALS_UPDATED_SUCCESSFULLY);
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
+    expect(mockNotificationSuccess).toHaveBeenCalledWith(lang.CREDENTIALS_UPDATED_SUCCESSFULLY);
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
     wrapper.unmount();
   });
 
@@ -250,11 +230,6 @@ describe('components/Credentials', () => {
     const confirm = wrapper.find('input#confirm');
     confirm.simulate('change', { target: { value: 'password123' } });
 
-    const actionSelect = wrapper.find('select');
-    actionSelect.simulate('change', {
-      target: { value: true },
-    });
-
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -262,7 +237,7 @@ describe('components/Credentials', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
 
     wrapper.unmount();
   });

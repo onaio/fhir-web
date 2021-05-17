@@ -14,7 +14,7 @@ import { generateJurisdictionTree, locationHierachyDucks } from '@opensrp/locati
  * @param {URLParams} params - url query params
  * @param {Dispatch<AnyAction>} dispatch - dispatches action
  * @param {OpenSRPService} service - the opensrp service
- * @param {fetchProducts}actionCreator - Action creator; creates actions thad adds products to the store
+ * @param {fetchProducts} actionCreator - Action creator; creates actions thad adds products to the store
  *
  * @returns {Promise<void>}
  */
@@ -55,7 +55,7 @@ export async function getLocationHierarchy(baseURL: string, dispatch: typeof sto
   const userLocSettings = await fetchUserLocationSettings(baseURL);
   const { locationsHierarchy } = userLocSettings.locations;
   const processedHierarchy = generateJurisdictionTree({ locationsHierarchy });
-  dispatch(locationHierachyDucks.fetchAllHierarchies(processedHierarchy.model));
+  dispatch(locationHierachyDucks.fetchAllHierarchies([processedHierarchy.model]));
 
   const { map: userLocMap } = userLocSettings.locations.locationsHierarchy;
   return Object.keys(userLocMap)[0];

@@ -50,16 +50,16 @@ export const OPENSRP_LOCATION = 'location';
 export const OPENSRP_ACTIVE = 'Active';
 export const OPENSRP_TASK_SEARCH = 'task/search';
 export const OPENSRP_TASK_EXPORT_DATA = 'event/export-data';
+export const OPENSRP_TASK_STATUS_COMPLETED = 'Completed';
+export const OPENSRP_BUSINESS_STATUS_HAS_PROBLEM = 'has_problem';
 
 // router routes
 export const URL_MISSIONS = '/missions';
-export const PLANS_ASSIGNMENT_VIEW_URL = `${URL_MISSIONS}/assignments`;
-export const PLANS_CREATE_VIEW_URL = `${URL_MISSIONS}/new`;
-export const PLANS_EDIT_VIEW_URL = `${URL_MISSIONS}/edit`;
 export const ACTIVE_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/active`;
 export const DRAFT_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/draft`;
+export const PLANS_CREATE_VIEW_URL = `${DRAFT_PLANS_LIST_VIEW_URL}/new`;
 export const COMPLETE_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/complete`;
-export const TRASH_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/trash`;
+export const RETIRED_PLANS_LIST_VIEW_URL = `${URL_MISSIONS}/retired`;
 export const HOME_URL = '/';
 
 // other constants
@@ -87,11 +87,3 @@ export const PlanStatusColors: Dictionary = {
 };
 
 export const NO_DATA_FOUND = 'No data found';
-
-// event types
-
-export const FLAG_PROBLEM_EVENT = 'flag_problem';
-export const SERVICE_POINT_EVENT = 'service_point_check';
-export const LOOKS_GOOD_EVENT = 'looks_good';
-export const RECORD_GPS_EVENT = 'record_gps';
-export const FIX_PROBLEM_EVENT = 'fix_problem';

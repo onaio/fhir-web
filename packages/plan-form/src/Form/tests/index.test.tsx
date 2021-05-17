@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { PlanForm, propsForUpdatingPlans } from '../';
+import { disableDate, PlanForm, propsForUpdatingPlans } from '../';
 import { Form } from 'antd';
 import { generatePlanDefinition, getPlanFormValues } from '../../helpers/utils';
 import { mission1, newPayload1 } from './fixtures';
@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
+import moment from 'moment';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -67,8 +68,10 @@ describe('containers/forms/PlanForm', () => {
     expect(toJson(wrapper.find('#taskGenerationStatus input'))).toMatchSnapshot(
       'taskGenerationStatus field'
     );
-    expect(toJson(wrapper.find('#status label'))).toMatchSnapshot('status label');
-    expect(toJson(wrapper.find('#status select'))).toMatchSnapshot('status field');
+    wrapper.find('#status Radio').forEach((radio) => {
+      expect(radio.find('label').text()).toMatchSnapshot('status label');
+      expect(toJson(radio.find('input'))).toMatchSnapshot('status input');
+    });
     expect(toJson(wrapper.find('#dateRange label'))).toMatchSnapshot('date range label');
     expect(toJson(wrapper.find('#dateRange input'))).toMatchSnapshot('start field');
     expect(wrapper.find('#date label')).toHaveLength(0);
@@ -130,9 +133,11 @@ describe('containers/forms/PlanForm', () => {
         `conditions inputs ${index}`
       );
     });
+    wrapper.unmount();
   });
 
   it('Form validation works', async () => {
+    jest.setTimeout(10000);
     const container = document.createElement('div');
     document.body.appendChild(container);
 
@@ -149,7 +154,7 @@ describe('containers/forms/PlanForm', () => {
     let fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // No errors are shown initially
-    expect(fieldsWithErrors).toMatchSnapshot(' Initial Errors');
+    expect(fieldsWithErrors).toMatchSnapshot('Initial Errors, no errors shown initially');
 
     wrapper.find('form').simulate('submit');
 
@@ -179,7 +184,7 @@ describe('containers/forms/PlanForm', () => {
     // description is required
     expect(
       (wrapper.find('FormItem[name="description"] FormItemInput').props() as any).errors
-    ).toMatchSnapshot('title error');
+    ).toMatchSnapshot('description error');
 
     // let us cause errors for other required fields and ascertain that they are indeed validated
 
@@ -204,7 +209,7 @@ describe('containers/forms/PlanForm', () => {
     fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // we now have some more errors
-    expect(fieldsWithErrors).toMatchSnapshot('more Errors');
+    expect(fieldsWithErrors).toMatchSnapshot('more Errors, dateRange, interventionType, date');
 
     // date is required
     expect(
@@ -228,6 +233,11 @@ describe('containers/forms/PlanForm', () => {
 
     // next we set wrong values for fields that expect specific values
 
+    // Set title for the plan with forward slash
+    wrapper
+      .find('#title input')
+      .simulate('change', { target: { name: 'title', value: 'Plan / Name' } });
+
     // Set wrong interventionType field value
     formInstance.setFieldsValue({
       interventionType: 'Oov',
@@ -245,7 +255,9 @@ describe('containers/forms/PlanForm', () => {
     fieldsWithErrors = errors.filter((error) => error.errors.length > 0);
 
     // we now have some more errors
-    expect(fieldsWithErrors).toMatchSnapshot('invalid data type Errors');
+    expect(fieldsWithErrors).toMatchSnapshot(
+      'invalid data type Errors, we should have some errors'
+    );
   });
 
   it('Auto-setting name and title field values works', async () => {
@@ -261,6 +273,41 @@ describe('containers/forms/PlanForm', () => {
 
     // expect name is set the same to plan title
     expect(wrapper.find('#name input').props().value).toEqual('Plan Name');
+    wrapper.unmount();
+  });
+
+  it('disableDate should return false if no value selected', async () => {
+    const dates = [];
+    const current = moment('2017-07-13');
+    expect(disableDate(current, dates)).toBeFalsy();
+  });
+
+  it('disableDate should return true if end date is less than todays date', async () => {
+    const dates = [moment('2017-07-10'), moment('2017-07-11')];
+    const current = moment('2017-07-13');
+    // date today is 2017-07-13
+    expect(disableDate(current, dates)).toBeTruthy();
+  });
+
+  it('disableDate should return true if start and end date is same', async () => {
+    const dates = [moment('2017-07-10'), moment('2017-07-10')];
+    const current = moment('2017-07-13');
+    // date today is 2017-07-13
+    expect(disableDate(current, dates)).toBeTruthy();
+  });
+
+  it('renders correcty when dates are passed', async () => {
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm />
+      </MemoryRouter>
+    );
+
+    const instance = wrapper.find('#dateRange RangePicker').at(0).props();
+    instance.onCalendarChange(['2022-07-13', '2022-07-14']);
+    instance.onOpenChange(true);
+    expect(instance.disabledDate(moment('2017-07-13'))).toBeFalsy();
+    wrapper.unmount();
   });
 
   it('Form submission for new plans works', async () => {
@@ -310,13 +357,15 @@ describe('containers/forms/PlanForm', () => {
 
     expect(fetch).toHaveBeenCalled();
 
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(newPayload1);
+
     // the last request should be the one that is sent to OpenSRP
-    expect(fetch.mock.calls[0]).toEqual([
+    expect(fetch.mock.calls[0]).toMatchObject([
       'https://opensrp-stage.smartregister.org/opensrp/rest/plans',
       {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
-        body: JSON.stringify(newPayload1),
+        body: expect.any(String),
         headers: {
           accept: 'application/json',
           authorization: 'Bearer null',
@@ -325,6 +374,7 @@ describe('containers/forms/PlanForm', () => {
         method: 'POST',
       },
     ]);
+    wrapper.unmount();
   });
 
   it('Form submission for editing plans works', async () => {
@@ -350,6 +400,14 @@ describe('containers/forms/PlanForm', () => {
       .find('#description textarea')
       .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
 
+    // try changing the status to retired
+    wrapper.find('input[value="retired"]').simulate('click');
+    // look for popup to confirm
+    expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
+      `"Are you sure? you won't be able to change the status for retired plansnoyes"`
+    );
+    wrapper.find('.plan-form-status button').last().simulate('click');
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -357,6 +415,66 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
 
+    const payload = {
+      ...generatePlanDefinition(initialValues),
+      version: 2,
+      status: PlanStatus.RETIRED,
+      description: 'Mission plan description',
+    };
+
+    // expect(payload.status).toEqual(PlanStatus.RETIRED);
+
+    // the last request should be the one that is sent to OpenSRP
+    expect(fetch.mock.calls[0][0]).toEqual(
+      'https://opensrp-stage.smartregister.org/opensrp/rest/plans'
+    );
+
+    // the last request should be the one that is sent to OpenSRP
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
+
+    expect(afterSubmitMock).toHaveBeenCalled();
+  });
+
+  it('clicking no in popup during status change', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const initialValues = getPlanFormValues(mission1);
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const afterSubmitMock = jest.fn();
+
+    const props = {
+      initialValues,
+      afterSubmit: afterSubmitMock,
+    };
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: container }
+    );
+
+    wrapper
+      .find('#description textarea')
+      .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
+
+    // try changing the status to retired
+    wrapper.find('input[value="retired"]').simulate('click');
+    // look for popup to confirm
+    expect(wrapper.find('.ant-popover-content').text()).toMatchInlineSnapshot(
+      `"Are you sure? you won't be able to change the status for retired plansnoyes"`
+    );
+    // cancel status change
+    wrapper.find('.plan-form-status button').first().simulate('click');
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await new Promise<any>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // no status change
     const payload = {
       ...generatePlanDefinition(initialValues),
       version: 2,
@@ -372,6 +490,7 @@ describe('containers/forms/PlanForm', () => {
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual(payload);
 
     expect(afterSubmitMock).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('Checking disabled fields for draft plans', async () => {
@@ -411,6 +530,7 @@ describe('containers/forms/PlanForm', () => {
       await new Promise<any>((resolve) => setImmediate(resolve));
       wrapper.update();
     });
+    wrapper.unmount();
   });
 
   it('Notifies on errors during submission', async () => {
@@ -453,6 +573,7 @@ describe('containers/forms/PlanForm', () => {
 
     expect(errorNotificationSMock).toHaveBeenCalledWith('Error', errorMessage);
     (sendErrorNotification as jest.Mock).mockReset();
+    wrapper.unmount();
   });
 
   it('Can add and remove jurisdictions', async () => {
@@ -487,6 +608,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('.jurisdiction-fields__delete').first().simulate('click');
 
     expect(wrapper.find('.jurisdiction-fields')).toHaveLength(5);
+    wrapper.unmount();
   });
 
   it('removing dynamic activities works correctly', async () => {
@@ -640,6 +762,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.update();
 
     expect(cancelMock).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('test redirectPath getter', async () => {
@@ -686,5 +809,35 @@ describe('containers/forms/PlanForm', () => {
     expect((wrapper.find('Router').props() as Dictionary).history.location.pathname).toEqual(
       '/otherPlans'
     );
+  });
+  it('date range picker renders correctly for no mission end date', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}));
+    const initialValues = getPlanFormValues(mission1);
+
+    const props = {
+      initialValues: {
+        ...initialValues,
+        dateRange: [moment('2020-11-23T21:00:00.000Z'), undefined],
+      },
+    };
+
+    const wrapper = mount(
+      <MemoryRouter>
+        <PlanForm {...props} />
+      </MemoryRouter>,
+      { attachTo: div }
+    );
+
+    expect(wrapper.find('#dateRange RangePicker').at(0).props().value).toMatchSnapshot(
+      'date range for no end date'
+    );
+
+    // end date value is empty, and is not 'Invalid date'
+    const instance = wrapper.find('#dateRange input').at(1).props();
+    expect(instance.placeholder).toBe('End date');
+    expect(instance.value).not.toBe('Invalid date');
+    expect(instance.value).toBe('');
+
+    wrapper.unmount();
   });
 });

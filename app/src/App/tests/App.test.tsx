@@ -6,18 +6,21 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, RouteComponentProps, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
-import App, {
-  PrivateComponent,
-  PublicComponent,
-  CallbackComponent,
-  LoadingComponent,
-  SuccessfulLoginComponent,
-} from '../App';
+import App, { CallbackComponent, LoadingComponent, SuccessfulLoginComponent } from '../App';
 import { expressAPIResponse } from './fixtures';
-import { UserList } from '@opensrp/user-management';
-import { KEYCLOAK_API_BASE_URL } from '../../configs/env';
-import NotFound from '../../components/NotFound';
 import { mount } from 'enzyme';
+import { authenticateUser } from '@onaio/session-reducer';
+import * as serverLogout from '@opensrp/server-logout';
+import {
+  CATALOGUE_CREATE_VIEW_URL,
+  CATALOGUE_EDIT_VIEW_URL,
+  CATALOGUE_LIST_VIEW_URL,
+  ConnectedProductCatalogueList,
+  CreateProductView,
+  EditProductView,
+} from '@opensrp/product-catalogue';
+import { ACTIVE_PLANS_LIST_VIEW_URL } from '@opensrp/plans';
+import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
 
 jest.mock('../../configs/env');
 
@@ -25,7 +28,7 @@ const realLocation = window.location;
 
 // tslint:disable-next-line: no-var-requires
 
-describe('App', () => {
+describe('App - unauthenticated', () => {
   beforeEach(() => {
     window.location = realLocation;
     fetch.mockResponse(JSON.stringify(expressAPIResponse));
@@ -55,7 +58,7 @@ describe('App', () => {
       </Provider>
     );
     // before resolving get oauth state request, the user is logged out
-    expect(wrapper.text()).toMatchInlineSnapshot(`"InventoryAdminLogin"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"AdminLogin"`);
 
     await act(async () => {
       await new Promise<unknown>((resolve) => setImmediate(resolve));
@@ -68,47 +71,6 @@ describe('App', () => {
         pathname: '/login',
       },
     });
-    wrapper.unmount();
-  });
-
-  it('PrivateComponent Renders correctly', async () => {
-    const MockComponent = (props: any) => {
-      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;
-    };
-    const props = {
-      exact: true,
-      redirectPath: '/login',
-      disableLoginProtection: false,
-      path: '/admin',
-      authenticated: true,
-    };
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-          <PrivateComponent {...props} component={MockComponent} />
-        </MemoryRouter>
-      </Provider>
-    );
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-    expect(wrapper.exists(MockComponent)).toBeTruthy();
-    wrapper.unmount();
-  });
-
-  it('PublicComponent Renders correctly', () => {
-    const MockComponent = () => {
-      return <NotFound />;
-    };
-    const props = { exact: true, path: '/unknown', authenticated: false };
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/unknown`, hash: '', search: '', state: {} }]}>
-        <PublicComponent {...props} component={MockComponent} />
-      </MemoryRouter>
-    );
-
-    expect(wrapper.exists(MockComponent)).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -160,6 +122,181 @@ describe('App', () => {
     );
     wrapper.update();
     expect(wrapper.exists('SuccessfulLoginComponent')).toBeTruthy();
+    wrapper.unmount();
+  });
+});
+
+describe('App - authenticated', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'test@gmail.com',
+          name: 'This Name',
+          username: 'tHat Part',
+        },
+        {
+          roles: ['ROLE_VIEW_KEYCLOAK_USERS'],
+          username: 'superset-user',
+          user_id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        }
+      )
+    );
+  });
+
+  beforeEach(() => {
+    window.location = realLocation;
+    // Reset history
+    history.push('/');
+  });
+
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    ReactDOM.render(
+      <Provider store={store}>
+        <Router history={history}>
+          <App />
+        </Router>
+      </Provider>,
+      div
+    );
+    ReactDOM.unmountComponentAtNode(div);
+  });
+
+  it('integration: renders App correctly', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <App />
+        </Router>
+      </Provider>
+    );
+    // before resolving get oauth state request, the user is logged out
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"InventoryAdmintHat ParttHat PartWelcome to OpenSRP"`
+    );
+
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // after resolving get oauth state request superset user is logged in
+    expect(wrapper.find('Router').prop('history')).toMatchObject({
+      location: {
+        pathname: '/',
+      },
+    });
+    wrapper.unmount();
+  });
+
+  it('renders App correctly when staging environment is set to eusm', async () => {
+    const envModule = require('../../configs/env');
+    envModule.DEFAULT_HOME_MODE = 'eusm';
+    history.push(ACTIVE_PLANS_LIST_VIEW_URL);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <App />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // after resolving get oauth state request superset user is logged in
+    expect(wrapper.find('Router').prop('history')).toMatchObject({
+      location: {
+        pathname: '/missions/active',
+      },
+    });
+    wrapper.unmount();
+  });
+
+  it('renders App correctly when staging environment is set to tunisia', async () => {
+    const envModule = require('../../configs/env');
+    envModule.DEFAULT_HOME_MODE = 'tunisia';
+    history.push(URL_DOWNLOAD_CLIENT_DATA);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <App />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // after resolving get oauth state request superset user is logged in
+    expect(wrapper.find('Router').prop('history')).toMatchObject({
+      location: {
+        pathname: '/card-support/download-client-data',
+      },
+    });
+    wrapper.unmount();
+  });
+
+  it('correctly logs out user', async () => {
+    const mock = jest.spyOn(serverLogout, 'logout');
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/logout` }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+    expect(mock).toHaveBeenCalled();
+  });
+
+  it('product catalogue routes are correctly registered', async () => {
+    // redirecting to certain routes renders the correct page
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `${CATALOGUE_LIST_VIEW_URL}` }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    await act(async () => {
+      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // start with the catalogue list component
+    expect(wrapper.find(ConnectedProductCatalogueList)).toHaveLength(1);
+
+    // go to the product profile view
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${CATALOGUE_LIST_VIEW_URL}/1`
+    );
+    wrapper.update();
+    expect(wrapper.find('ViewDetails')).toHaveLength(1);
+
+    // go to new product page
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${CATALOGUE_CREATE_VIEW_URL}`
+    );
+
+    wrapper.update();
+    expect(wrapper.find(CreateProductView)).toHaveLength(1);
+
+    // go to edit product page
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${CATALOGUE_EDIT_VIEW_URL}/1`
+    );
+    wrapper.update();
+    expect(wrapper.find(EditProductView)).toHaveLength(1);
     wrapper.unmount();
   });
 });

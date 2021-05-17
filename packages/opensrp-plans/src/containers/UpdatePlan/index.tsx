@@ -33,7 +33,7 @@ import {
 } from '@opensrp/plan-form-core';
 import { PlanLoading } from '../../helpers/utils';
 import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp/plan-form';
-import { EDIT_PLAN } from '../../lang';
+import lang from '../../lang';
 
 /** register catalogue reducer */
 reducerRegistry.register(planReducerName, plansReducer);
@@ -114,7 +114,7 @@ const EditPlanView = (props: EditViewTypes) => {
     onCancel: cancelHandler,
   };
 
-  const pageTitle = EDIT_PLAN;
+  const pageTitle = lang.EDIT_PLAN;
 
   return (
     <Layout className="content-section">

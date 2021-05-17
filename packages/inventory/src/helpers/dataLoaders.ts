@@ -39,7 +39,7 @@ export const parseSingleErrorRow = (errorRow: string) => {
  *
  * @param resText - string response showing what lines in the uploaded csv were defective
  */
-export const parseBadResponseError = (resText: string) => {
+export const parseTextResponse = (resText: string) => {
   // divide response into lines
   const splitText = split(resText, '\n').map((text) => trim(text, '\r'));
   // find rowsProcessed
@@ -54,10 +54,10 @@ export const parseBadResponseError = (resText: string) => {
   const errors: BadRequestError['errors'] = [];
   splitText.forEach((entry, index) => {
     if (entry.includes(rowsTotalNumberPrefix)) {
-      rowsNumber = split(entry, ',')[1];
+      rowsNumber = split(entry, ',')[1] ?? rowsNumber;
     }
     if (entry.includes(processedRowsPrefix)) {
-      rowsProcessed = split(entry, ',')[1];
+      rowsProcessed = split(entry, ',')[1] ?? rowsProcessed;
     }
     if (entry.includes(errorsHeader)) {
       errorsStartIndex = index;
@@ -128,7 +128,7 @@ export async function uploadCSV(
       },
       cancelToken,
     })
-    .then((response: AxiosResponse<SuccessfulResponse>) => {
+    .then((response: AxiosResponse<SuccessfulResponse | string>) => {
       return response.data;
     })
     .catch((err) => {
@@ -137,7 +137,7 @@ export async function uploadCSV(
         onRequestCancel?.();
       }
       if (err.response.status === 400) {
-        const parsedError = parseBadResponseError(err.response.data);
+        const parsedError = parseTextResponse(err.response.data);
         onBadRequest?.(parsedError);
         return;
       }

@@ -134,7 +134,7 @@ describe('List view Page', () => {
     expect(fetch.mock.calls).toEqual(fetchCalls);
 
     // look for pagination
-    expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(`"15 / page"`);
+    expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(`"120 / page"`);
 
     wrapper.unmount();
   });
@@ -184,8 +184,6 @@ describe('List view Page', () => {
     expect(wrapper.find('tbody tr')).toHaveLength(1);
 
     expect(wrapper.find('tbody').text()).toMatchSnapshot('full body has only one entry Madagascar');
-
-    wrapper.unmount();
   });
 
   it('shows broken page', async () => {

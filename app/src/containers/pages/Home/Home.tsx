@@ -7,14 +7,19 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import './Home.css';
-import { LOCATIONS_UNIT, LOCATIONS_UNIT_GROUP, WELCOME_TO_OPENSRP, TEAMS } from '../../../lang';
+import lang from '../../../lang';
 import {
   URL_USER,
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
+  URL_TEAM_ASSIGNMENT,
   URL_TEAMS,
 } from '../../../constants';
-import { ENABLE_LOCATIONS, ENABLE_TEAMS } from '../../../configs/env';
+import {
+  ENABLE_LOCATIONS,
+  ENABLE_TEAMS,
+  ENABLE_TEAMS_ASSIGNMENT_MODULE,
+} from '../../../configs/env';
 
 export interface HomeProps {
   extraData: Dictionary;
@@ -30,7 +35,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
       </Helmet>
       <Row justify="center" className="weclome-box">
         <Col span={6}>
-          <h3>{WELCOME_TO_OPENSRP}</h3>
+          <h3>{lang.WELCOME_TO_OPENSRP}</h3>
         </Col>
       </Row>
       <Row gutter={16} className="links-box">
@@ -38,7 +43,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           <Col className="gutter-row" span={12}>
             <Link to={URL_USER} className="admin-link">
               <Button color="outline" className="btn-links">
-                Admin
+                {lang.ADMIN}
               </Button>
             </Link>
           </Col>
@@ -47,17 +52,19 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           <Col className="gutter-row" span={12}>
             <Link to={URL_TEAMS} className="admin-link">
               <Button color="outline" className="btn-links">
-                {TEAMS}
+                {lang.TEAMS}
               </Button>
             </Link>
           </Col>
         )}
+      </Row>
+      <Row gutter={16} className="links-box">
         {ENABLE_LOCATIONS && (
           <>
             <Col className="gutter-row" span={12}>
               <Link to={URL_LOCATION_UNIT} className="admin-link">
                 <Button color="outline" className="btn-links">
-                  {LOCATIONS_UNIT}
+                  {lang.LOCATION_UNIT}
                 </Button>
               </Link>
             </Col>
@@ -65,11 +72,22 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
             <Col className="gutter-row" span={12}>
               <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
                 <Button color="outline" className="btn-links">
-                  {LOCATIONS_UNIT_GROUP}
+                  {lang.LOCATION_UNIT_GROUP}
                 </Button>
               </Link>
             </Col>
           </>
+        )}
+      </Row>
+      <Row gutter={16} className="links-box">
+        {ENABLE_TEAMS_ASSIGNMENT_MODULE && (
+          <Col className="gutter-row" span={12}>
+            <Link to={URL_TEAM_ASSIGNMENT} className="admin-link">
+              <Button color="outline" className="btn-links">
+                {lang.TEAM_ASSIGNMENT}
+              </Button>
+            </Link>
+          </Col>
         )}
       </Row>
     </div>

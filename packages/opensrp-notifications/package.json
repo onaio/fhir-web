@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/notifications",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "Utility functions for dispaying OpenSRP web notifications",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -20,8 +20,7 @@
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
@@ -32,10 +31,8 @@
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
-  "dependencies": {
-    "antd": "^4.6.3"
-  },
   "peerDependencies": {
+    "antd": "^4.6.3",
     "react": "^16.18.1"
   },
   "author": "OpenSRP Engineering",

@@ -3,13 +3,14 @@ import { EditLocationUnit } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createBrowserHistory } from 'history';
-import { Router } from 'react-router';
+import { RouteComponentProps, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { removeLocationUnits } from '../../../ducks/location-units';
 import { authenticateUser } from '@onaio/session-reducer';
 import { location1 } from '../../LocationForm/tests/fixtures';
 import { act } from 'react-dom/test-utils';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -56,11 +57,15 @@ describe('EditLocationUnit', () => {
   });
 
   it('renders without crashing', async () => {
+    const queryClient = new QueryClient();
     fetch.mockResponse(JSON.stringify([]));
+
     shallow(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...locationProps} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -71,6 +76,7 @@ describe('EditLocationUnit', () => {
   });
 
   it('renders correctly when location is jurisdiction', async () => {
+    const queryClient = new QueryClient();
     fetch.once(JSON.stringify(location1));
     fetch.once(JSON.stringify(null));
     fetch.mockResponse(JSON.stringify([]));
@@ -78,7 +84,9 @@ describe('EditLocationUnit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...locationProps} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -92,10 +100,10 @@ describe('EditLocationUnit', () => {
     });
 
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual('Edit Location Unit | Kenya');
+    expect(helmet.title).toEqual('Edit > Kenya');
 
     // rendered page including title
-    expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Edit Location Unit | Kenya"`);
+    expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Edit > Kenya"`);
 
     expect(wrapper.find('LocationForm').text()).toMatchSnapshot('form rendered');
 
@@ -128,6 +136,7 @@ describe('EditLocationUnit', () => {
   });
 
   it('renders correctly when location is structure', async () => {
+    const queryClient = new QueryClient();
     fetch.once(JSON.stringify(null));
     fetch.once(JSON.stringify(location1));
     fetch.mockResponse(JSON.stringify([]));
@@ -135,7 +144,9 @@ describe('EditLocationUnit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...locationProps} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -154,13 +165,16 @@ describe('EditLocationUnit', () => {
   });
 
   it('renders errorPage correctly', async () => {
+    const queryClient = new QueryClient();
     const errorMessage = 'An error happened';
     fetch.mockReject(new Error(errorMessage));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...locationProps} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -173,6 +187,85 @@ describe('EditLocationUnit', () => {
       wrapper.update();
     });
 
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorAn error happenedGo BackBack Home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+  });
+
+  it('renders resource404 when location is not found', async () => {
+    const queryClient = new QueryClient();
+    fetch.once(JSON.stringify(null));
+    fetch.once(JSON.stringify(location1));
+    fetch.mockResponse(JSON.stringify([]));
+
+    const props = {
+      ...locationProps,
+      match: {
+        ...locationProps.match,
+        params: { id: 'unknown' },
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...props} />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+
+    // loading page
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // resource not found
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"404Sorry, the resource you requested for, does not existGo backGo home"`
+    );
+  });
+
+  it('cancel url is used if passed', async () => {
+    const queryClient = new QueryClient();
+    fetch.once(JSON.stringify(null));
+    fetch.once(JSON.stringify(location1));
+    fetch.mockResponse(JSON.stringify([]));
+    const cancelURL = '/canceledURL';
+
+    const props = {
+      ...locationProps,
+      match: {
+        ...locationProps.match,
+        params: { id: location1.id },
+      },
+      cancelURLGenerator: () => cancelURL,
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...props} />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // simulate click on cancel button
+    wrapper.find('button#location-form-cancel-button').simulate('click');
+    wrapper.update();
+
+    // check url
+    expect(
+      (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
+    ).toEqual(cancelURL);
   });
 });
