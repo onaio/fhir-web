@@ -64,6 +64,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
     // bind change event to pagination only if  table is uniquely identifable /and have to persistState
     // instead of table onchange bind it to pagination onchange so that table change event will be free to use for user at will
     ...(id &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       persistState && {
         pagination: {
           ...options.pagination,

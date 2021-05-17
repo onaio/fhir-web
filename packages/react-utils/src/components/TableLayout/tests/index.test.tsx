@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { Column, TableLayout } from '..';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../../constants';
+import { setAllConfigs } from '@opensrp/pkg-config';
 
 interface TableData {
   geographicLevel: number;
@@ -84,5 +85,29 @@ describe('Table Layout', () => {
     expect(
       (wrapper1.find('Table').first().prop('pagination') as PaginationProps).onChange
     ).toBeTruthy();
+  });
+
+  it('Get and Save Value to pkg-config', () => {
+    // get when nothing is stored
+    const wrapper = mount(
+      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+    );
+
+    expect(wrapper.find('Table').first().prop('pagination') as PaginationProps).toMatchObject({
+      ...paginationDefaults,
+      onChange: expect.any(Function),
+    });
+
+    // get when something is really stored
+    setAllConfigs({ TablesState: { TestTable: { pagination: { current: 3, pageSize: 10 } } } });
+    const wrapper1 = mount(
+      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+    );
+    expect(wrapper1.find('Table').first().prop('pagination') as PaginationProps).toMatchObject({
+      ...paginationDefaults,
+      current: 3,
+      pageSize: 10,
+      onChange: expect.any(Function),
+    });
   });
 });
