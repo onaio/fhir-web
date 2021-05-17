@@ -1,3 +1,4 @@
+import { PaginationProps } from 'antd/lib/pagination';
 import { mount } from 'enzyme';
 import React from 'react';
 import { Column, TableLayout } from '..';
@@ -29,6 +30,14 @@ const columns: Column<TableData>[] = [
   },
 ];
 
+const paginationDefaults = {
+  hideOnSinglePage: true,
+  showQuickJumper: true,
+  showSizeChanger: true,
+  defaultPageSize: TABLE_PAGE_SIZE,
+  pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
+};
+
 describe('Table Layout', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
@@ -50,12 +59,7 @@ describe('Table Layout', () => {
   it('Must have default settings applied', () => {
     const wrapper = mount(<TableLayout datasource={tableData} columns={columns} />);
 
-    expect(wrapper.find('Table').first().prop('pagination')).toMatchObject({
-      showQuickJumper: true,
-      showSizeChanger: true,
-      defaultPageSize: TABLE_PAGE_SIZE,
-      pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
-    });
+    expect(wrapper.find('Table').first().prop('pagination')).toMatchObject(paginationDefaults);
   });
 
   it('can override default settings', () => {
@@ -64,5 +68,21 @@ describe('Table Layout', () => {
     );
 
     expect(wrapper.find('Table').first().prop('pagination')).toBe(false);
+  });
+
+  it('Add event to pagination change only when presist state', () => {
+    const wrapper = mount(<TableLayout datasource={tableData} columns={columns} />);
+
+    expect(
+      (wrapper.find('Table').first().prop('pagination') as PaginationProps).onChange
+    ).toBeFalsy();
+
+    const wrapper1 = mount(
+      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+    );
+
+    expect(
+      (wrapper1.find('Table').first().prop('pagination') as PaginationProps).onChange
+    ).toBeTruthy();
   });
 });

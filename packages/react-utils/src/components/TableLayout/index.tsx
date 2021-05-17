@@ -53,6 +53,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
 
   const options: Options = { ...defaults, ...restprops };
   const tablesState = getConfig('TablesState');
+
   const [tableState, setTableState] = useState<TableState>(
     id && tablesState[id] !== undefined ? tablesState[id] : {}
   );
@@ -60,8 +61,16 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   const tableprops: Options = {
     ...options,
     ...tablesState,
-    // bind change event to pagination instead of table so that table change event it free to use for user
-    pagination: { ...options.pagination, ...tableState?.pagination, onChange: paginationChange },
+    // bind change event to pagination only if  table is uniquely identifable /and have to persistState
+    // instead of table onchange bind it to pagination onchange so that table change event will be free to use for user at will
+    ...(id &&
+      persistState && {
+        pagination: {
+          ...options.pagination,
+          ...tableState?.pagination,
+          onChange: paginationChange,
+        },
+      }),
   };
 
   /** Table Layout Component used to render the table with default Settings
