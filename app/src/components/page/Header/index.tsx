@@ -14,6 +14,7 @@ import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/
 import i18n from '../../../mls';
 import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
 import { SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -53,6 +54,7 @@ const languageChangeHandler = (languageCode: string | number) => {
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id } = extraData;
+  const { t } = useTranslation();
 
   /** default enum of all possible language options */
 
@@ -71,7 +73,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
                 <Link to={URL_LOGOUT}>Logout</Link>
               </Menu.Item>
               <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
-                <Link to={`${URL_USER_EDIT}/${user_id}`}>{lang.MANAGE_ACCOUNT}</Link>
+                <Link to={`${URL_USER_EDIT}/${user_id}`}>{lang(t).MANAGE_ACCOUNT}</Link>
               </Menu.Item>
             </Menu>
           }
@@ -92,7 +94,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         </Dropdown>
       ) : (
         <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
-          <Link to={URL_REACT_LOGIN}>{lang.LOGIN}</Link>
+          <Link to={URL_REACT_LOGIN}>{lang(t).LOGIN}</Link>
         </Button>
       )}
       {ENABLE_LANGUAGE_SWITCHER && <LanguageSwitcher {...languageSwitcherProps} />}
