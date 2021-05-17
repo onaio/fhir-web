@@ -37,6 +37,7 @@ import {
   URL_USER_ROLES,
 } from './constants';
 import lang from './lang';
+import { TFunction } from 'react-i18next';
 
 /** Interface for menu items */
 export interface Route {
@@ -55,13 +56,14 @@ export interface Route {
  * @param roles User's roles
  * @returns {Route[]} returns generated routes
  */
-export function getRoutes(roles: string[]): Route[] {
+export function getRoutes(roles: string[], t: TFunction): Route[] {
   const activeRoles = OPENSRP_ROLES;
+  const langObj = lang(t);
 
   const routes: Route[] = [
     {
       otherProps: { icon: <MapMarkerOutline className="sidebar-icons" /> },
-      title: lang.MISSIONS,
+      title: langObj.MISSIONS,
       key: 'missions',
       enabled:
         ENABLE_PLANS &&
@@ -69,10 +71,10 @@ export function getRoutes(roles: string[]): Route[] {
         activeRoles.PLANS &&
         isAuthorized(roles, activeRoles.PLANS.split(',')),
       children: [
-        { title: lang.ACTIVE, url: ACTIVE_PLANS_LIST_VIEW_URL, key: 'missions-active' },
-        { title: lang.DRAFT, url: DRAFT_PLANS_LIST_VIEW_URL, key: 'missions-draft' },
-        { title: lang.COMPLETE, url: COMPLETE_PLANS_LIST_VIEW_URL, key: 'missions-complete' },
-        { title: lang.RETIRED, url: RETIRED_PLANS_LIST_VIEW_URL, key: 'missions-retired' },
+        { title: langObj.ACTIVE, url: ACTIVE_PLANS_LIST_VIEW_URL, key: 'missions-active' },
+        { title: langObj.DRAFT, url: DRAFT_PLANS_LIST_VIEW_URL, key: 'missions-draft' },
+        { title: langObj.COMPLETE, url: COMPLETE_PLANS_LIST_VIEW_URL, key: 'missions-complete' },
+        { title: langObj.RETIRED, url: RETIRED_PLANS_LIST_VIEW_URL, key: 'missions-retired' },
       ],
     },
     {
@@ -94,7 +96,7 @@ export function getRoutes(roles: string[]): Route[] {
     },
     {
       otherProps: { icon: <ArchiveOutline className="sidebar-icons" /> },
-      title: lang.INVENTORY,
+      title: langObj.INVENTORY,
       key: 'inventory',
       enabled:
         ENABLE_INVENTORY &&
@@ -103,12 +105,12 @@ export function getRoutes(roles: string[]): Route[] {
         isAuthorized(roles, activeRoles.INVENTORY.split(',')),
       children: [
         {
-          title: lang.SERVICE_POINT_INVENTORY,
+          title: langObj.SERVICE_POINT_INVENTORY,
           url: INVENTORY_SERVICE_POINT_LIST_VIEW,
           key: 'inventory-list',
         },
         {
-          title: lang.ADD_INVENTORY_VIA_CSV,
+          title: langObj.ADD_INVENTORY_VIA_CSV,
           url: INVENTORY_BULK_UPLOAD_URL,
           key: 'inventory-upload',
         },
@@ -116,19 +118,19 @@ export function getRoutes(roles: string[]): Route[] {
     },
     {
       otherProps: { icon: <DashboardOutlined /> },
-      title: lang.ADMIN,
+      title: langObj.ADMIN,
       key: 'admin',
       enabled: true,
       url: '/admin',
       children: [
         {
-          title: lang.USERS,
+          title: langObj.USERS,
           key: 'users',
           enabled: roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
           children: [
-            { title: lang.USER_MANAGEMENT, key: 'user', url: URL_USER },
-            { title: lang.USER_GROUPS, key: 'user-groups', url: URL_USER_GROUPS },
-            { title: lang.USER_ROLES, key: 'user-roles', url: URL_USER_ROLES },
+            { title: langObj.USER_MANAGEMENT, key: 'user', url: URL_USER },
+            { title: langObj.USER_GROUPS, key: 'user-groups', url: URL_USER_GROUPS },
+            { title: langObj.USER_ROLES, key: 'user-roles', url: URL_USER_ROLES },
           ],
         },
         {
@@ -140,16 +142,16 @@ export function getRoutes(roles: string[]): Route[] {
             activeRoles.LOCATIONS &&
             isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
           children: [
-            { title: lang.LOCATION_UNIT, url: URL_LOCATION_UNIT, key: 'location-unit' },
+            { title: langObj.LOCATION_UNIT, url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
-              title: lang.LOCATION_UNIT_GROUP,
+              title: langObj.LOCATION_UNIT_GROUP,
               url: URL_LOCATION_UNIT_GROUP,
               key: 'location-group',
             },
           ],
         },
         {
-          title: lang.PRODUCT_CATALOGUE,
+          title: langObj.PRODUCT_CATALOGUE,
           key: 'product-catalogue',
           enabled:
             ENABLE_PRODUCT_CATALOGUE &&
@@ -159,7 +161,7 @@ export function getRoutes(roles: string[]): Route[] {
           url: CATALOGUE_LIST_VIEW_URL,
         },
         {
-          title: lang.TEAMS,
+          title: langObj.TEAMS,
           key: 'teams',
           enabled:
             ENABLE_TEAMS &&
@@ -167,9 +169,9 @@ export function getRoutes(roles: string[]): Route[] {
             activeRoles.TEAMS &&
             isAuthorized(roles, activeRoles.TEAMS.split(',')),
           children: [
-            { title: lang.TEAMS, url: URL_TEAMS, key: 'teams-list' },
+            { title: langObj.TEAMS, url: URL_TEAMS, key: 'teams-list' },
             {
-              title: lang.TEAM_ASSIGNMENT,
+              title: langObj.TEAM_ASSIGNMENT,
               url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',
               enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
@@ -177,7 +179,7 @@ export function getRoutes(roles: string[]): Route[] {
           ],
         },
         {
-          title: lang.FORM_CONFIGURATION,
+          title: langObj.FORM_CONFIGURATION,
           key: 'form-config',
           enabled:
             ENABLE_FORM_CONFIGURATION &&
@@ -186,13 +188,13 @@ export function getRoutes(roles: string[]): Route[] {
             isAuthorized(roles, activeRoles.FORM_CONFIGURATION.split(',')),
           children: [
             {
-              title: lang.MANIFEST_RELEASES,
+              title: langObj.MANIFEST_RELEASES,
               key: 'form-config-releases',
               url: URL_MANIFEST_RELEASE_LIST,
             },
-            { title: lang.DRAFT_FILES, key: 'form-config-draft', url: URL_DRAFT_FILE_LIST },
+            { title: langObj.DRAFT_FILES, key: 'form-config-draft', url: URL_DRAFT_FILE_LIST },
             {
-              title: lang.JSON_VALIDATORS,
+              title: langObj.JSON_VALIDATORS,
               key: 'form-config-validators',
               url: URL_JSON_VALIDATOR_LIST,
             },
