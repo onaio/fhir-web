@@ -36,8 +36,7 @@ import {
   URL_USER_GROUPS,
   URL_USER_ROLES,
 } from './constants';
-import lang from './lang';
-import { TFunction } from 'react-i18next';
+import lang, { TFunction } from './lang';
 
 /** Interface for menu items */
 export interface Route {

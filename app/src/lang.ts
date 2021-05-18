@@ -1,5 +1,9 @@
 import { namespace } from './mls';
-import { TFunction } from 'react-i18next';
+
+/** hack: to get the correct TFunction type from i18next  we'll need to move to tsc >= v4.0.1*/
+export interface TFunction {
+  (t: string, options: Record<string, unknown>): typeof t;
+}
 
 /** recompute values */
 export function lang(t: TFunction) {
