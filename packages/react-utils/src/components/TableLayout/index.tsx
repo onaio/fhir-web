@@ -18,7 +18,6 @@ type Options<T = any> = AntTableProps<T>;
 
 export const defaults: Options = {
   pagination: {
-    hideOnSinglePage: true,
     showQuickJumper: true,
     showSizeChanger: true,
     defaultPageSize: TABLE_PAGE_SIZE,

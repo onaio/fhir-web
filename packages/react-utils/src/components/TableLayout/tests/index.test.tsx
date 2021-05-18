@@ -32,7 +32,6 @@ const columns: Column<TableData>[] = [
 ];
 
 const paginationDefaults = {
-  hideOnSinglePage: true,
   showQuickJumper: true,
   showSizeChanger: true,
   defaultPageSize: TABLE_PAGE_SIZE,
