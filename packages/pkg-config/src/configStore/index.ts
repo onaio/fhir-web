@@ -18,7 +18,7 @@ export interface ConfigState {
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
   i18n?: unknown;
-  TablesState: Record<string, TableState>;
+  tablesState?: Record<string, TableState>;
 }
 
 const initialConfigs: ConfigState = {
@@ -28,7 +28,7 @@ const initialConfigs: ConfigState = {
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
   i18n: undefined,
-  TablesState: {},
+  tablesState: {},
 };
 
 const {
