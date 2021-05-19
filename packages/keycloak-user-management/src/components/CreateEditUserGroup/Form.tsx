@@ -171,7 +171,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
               { ...initialValues, ...values },
               keycloakBaseURL,
               setIsSubmitting
-            ).catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED));
+            ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
           }}
         >
           <Form.Item
