@@ -24,7 +24,7 @@ export interface ConfigState {
 }
 
 export interface UserPreference {
-  tablesPref?: Record<string, TableState>;
+  tablespref?: Record<string, TableState>;
 }
 
 const DefaultConfigs: GlobalState = {
@@ -34,7 +34,7 @@ const DefaultConfigs: GlobalState = {
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
   i18n: undefined,
-  tablesPref: undefined,
+  tablespref: undefined,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)
@@ -125,7 +125,7 @@ function setAllConfigs(value: GlobalState) {
  * @param config config to save to local storage
  */
 function saveToLocal(config: GlobalState) {
-  localstorage = { tablesPref: config.tablesPref };
+  localstorage = { tablespref: config.tablespref };
   localStorage.setItem(USER_PREFERENCE_KEY, JSON.stringify(localstorage));
 }
 

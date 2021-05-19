@@ -51,7 +51,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   const { id, columns, datasource, children, persistState, ...restprops } = props;
 
   const options: Options = { ...defaults, ...restprops };
-  const tablesState = getConfig('tablesPref') ?? {};
+  const tablesState = getConfig('tablespref') ?? {};
 
   const [tableState, setTableState] = useState<TableState>(
     id && tablesState[id] !== undefined ? tablesState[id] : {}
@@ -86,7 +86,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
         pagination: { ...tableState, current: page, pageSize: pageSize },
       };
       tablesState[id] = newstate;
-      setConfig('tablesPref', { ...tablesState });
+      setConfig('tablespref', { ...tablesState });
       setTableState(newstate);
     }
   }

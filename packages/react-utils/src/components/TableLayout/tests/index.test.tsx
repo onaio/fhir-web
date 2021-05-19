@@ -98,7 +98,7 @@ describe('Table Layout', () => {
     });
 
     // get when something is really stored
-    setAllConfigs({ tablesPref: { TestTable: { pagination: { current: 3, pageSize: 10 } } } });
+    setAllConfigs({ tablespref: { TestTable: { pagination: { current: 3, pageSize: 10 } } } });
     const wrapper1 = mount(
       <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
     );
