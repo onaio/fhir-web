@@ -71,6 +71,9 @@ const getConfig = getGlobalState;
 
 /** function to set config values outside of React
  *
+ * @param key name of the config to set
+ * @param value value of the config to set
+ *
  * @example
  * import {setConfig} from `'@opensrp/pkg-config'`;
  *
@@ -100,6 +103,8 @@ const getAllConfigs = otherGettersSetters.getState;
 
 /** function to get all config values outside of React
  *
+ * @param value Object for setting all config values
+ *
  * @example
  * import {setAllConfigs} from `'@opensrp/pkg-config'`;
  *
@@ -117,6 +122,7 @@ function setAllConfigs(value: GlobalState) {
 
 /** internal function to save Value to Local Storage for later retrival
  *
+ * @param config config to save to local storage
  */
 function saveToLocal(config: GlobalState) {
   localstorage = { tablesPref: config.tablesPref };
