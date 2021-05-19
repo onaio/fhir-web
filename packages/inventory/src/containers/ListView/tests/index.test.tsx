@@ -134,7 +134,7 @@ describe('List view Page', () => {
     expect(fetch.mock.calls).toEqual(fetchCalls);
 
     // look for pagination
-    expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(`""`);
+    expect(wrapper.find('Pagination').first().text()).toMatchInlineSnapshot(`"15 / page"`);
 
     wrapper.unmount();
   });

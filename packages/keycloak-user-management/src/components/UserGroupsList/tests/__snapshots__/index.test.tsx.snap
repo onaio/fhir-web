@@ -2,8 +2,8 @@
 
 exports[`components/UserGroupsList renders user list correctly: full table body has 4 user group entries 1`] = `"AdminEditNew GroupEditSuper UserEditTest User GroupEdit"`;
 
-exports[`components/UserGroupsList renders user list correctly: header actions col props 1`] = `"New User GroupNameActionsAdminEditNew GroupEditSuper UserEditTest User GroupEdit"`;
+exports[`components/UserGroupsList renders user list correctly: header actions col props 1`] = `"New User GroupNameActionsAdminEditNew GroupEditSuper UserEditTest User GroupEdit15 / page"`;
 
-exports[`components/UserGroupsList renders user list correctly: table text 1`] = `"NameActionsAdminEditNew GroupEditSuper UserEditTest User GroupEdit"`;
+exports[`components/UserGroupsList renders user list correctly: table text 1`] = `"NameActionsAdminEditNew GroupEditSuper UserEditTest User GroupEdit15 / page"`;
 
-exports[`components/UserGroupsList works correctly with store: full rendered text 1`] = `"User GroupsNew User GroupNameActionsAdminEditNew GroupEditSuper UserEditTest User GroupEdit"`;
+exports[`components/UserGroupsList works correctly with store: full rendered text 1`] = `"User GroupsNew User GroupNameActionsAdminEditNew GroupEditSuper UserEditTest User GroupEdit15 / page"`;
