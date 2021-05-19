@@ -146,7 +146,7 @@ export const submitForm = async (
   values: KeycloakUserGroup & { roles?: string[] },
   keycloakBaseURL: string,
   setSubmittingCallback: Dispatch<SetStateAction<boolean>>
-) => {
+): Promise<void> => {
   if (values.id) {
     const serve = new KeycloakService(`${KEYCLOAK_URL_USER_GROUPS}/${values.id}`, keycloakBaseURL);
     serve
