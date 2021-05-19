@@ -3,7 +3,6 @@ import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
-import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as fixtures from './fixtures';
@@ -17,7 +16,6 @@ import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
 import { UserGroupForm, defaultInitialValues } from '../Form';
 import toJson from 'enzyme-to-json';
-import lang from '../../../lang';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -50,7 +48,7 @@ describe('components/forms/UserFroupForm', () => {
   });
 
   afterEach(() => {
-    fetch.resetMocks();
+    fetch.mockClear();
     jest.resetAllMocks();
   });
 
@@ -81,7 +79,6 @@ describe('components/forms/UserFroupForm', () => {
 
   it('adds new user group successfully', async () => {
     const wrapper = mount(<UserGroupForm {...props} />);
-    const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
 
     await act(async () => {
       await flushPromises();
@@ -95,9 +92,24 @@ describe('components/forms/UserFroupForm', () => {
     wrapper.find('form').simulate('submit');
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
-    expect(mockNotificationSuccess).toHaveBeenCalledWith('User Group created successfully');
+    wrapper.update();
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: '{"name":"Test"}',
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer access token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'POST',
+        },
+      ],
+    ]);
     wrapper.unmount();
   });
 
@@ -106,8 +118,13 @@ describe('components/forms/UserFroupForm', () => {
       ...props,
       initialValues: fixtures.userGroup,
     };
+
     const wrapper = mount(<UserGroupForm {...propEdit} />);
 
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     // usergroup name
     await act(async () => {
       const nameInput = wrapper.find('input#name');
@@ -118,36 +135,32 @@ describe('components/forms/UserFroupForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await flushPromises();
       wrapper.update();
     });
-
     await new Promise<unknown>((resolve) => setImmediate(resolve));
 
-    const payload = {
-      name: 'Test1',
-    };
-
-    expect(fetch.mock.calls[0]).toEqual([
-      `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups/${fixtures.userGroup.id}`,
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: JSON.stringify(payload),
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer access token',
-          'content-type': 'application/json;charset=UTF-8',
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups/283c5d6e-9b83-4954-9f3b-4c2103e4370c',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body:
+            '{"id":"283c5d6e-9b83-4954-9f3b-4c2103e4370c","name":"Test1","path":"/Admin","subGroups":[]}',
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer access token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
         },
-        method: 'PUT',
-      },
+      ],
     ]);
     wrapper.unmount();
   });
 
   it('usergroup is not created if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const wrapper = mount(<UserGroupForm {...props} />);
 
     await act(async () => {
@@ -166,13 +179,12 @@ describe('components/forms/UserFroupForm', () => {
 
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
   });
 
   it('usergroup is not edited if api is down', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const propEdit = {
       ...props,
       initialValues: fixtures.userGroup,
@@ -195,7 +207,7 @@ describe('components/forms/UserFroupForm', () => {
     });
     await new Promise<unknown>((resolve) => setImmediate(resolve));
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
   });
 
