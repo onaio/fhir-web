@@ -1,8 +1,11 @@
 /** stores configuration for any other package */
 import { createGlobalState } from 'react-hooks-global-state';
+import { USER_PREFERENCE_KEY } from '../constants';
 
 export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
 export type ProjectLanguageCode = 'eusm' | 'core';
+export type GlobalState = ConfigState & UserPreference;
+
 export interface TableState {
   pagination?: {
     current?: number;
@@ -18,25 +21,32 @@ export interface ConfigState {
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
   i18n?: unknown;
-  tablesState?: Record<string, TableState>;
 }
 
-const initialConfigs: ConfigState = {
-  languageCode: 'en' as LanguageCode,
-  projectLanguageCode: 'core' as ProjectLanguageCode,
+export interface UserPreference {
+  tablesPref?: Record<string, TableState>;
+}
+
+const DefaultConfigs: GlobalState = {
+  languageCode: 'en',
+  projectLanguageCode: 'core',
   appLoginURL: undefined,
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
   i18n: undefined,
-  tablesState: {},
+  tablesPref: undefined,
 };
+
+let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)
+  ? JSON.parse(localStorage.getItem(USER_PREFERENCE_KEY) as string)
+  : {};
 
 const {
   useGlobalState,
   getGlobalState,
   setGlobalState,
   ...unexposedGettersSetters
-} = createGlobalState<ConfigState>(initialConfigs);
+} = createGlobalState<GlobalState>({ ...DefaultConfigs, ...localstorage });
 
 /** hook to get and update values in the config store
  *
@@ -66,12 +76,17 @@ const getConfig = getGlobalState;
  *
  * const language = setConfig('languageCode', 'fr');
  */
-const setConfig = setGlobalState;
+function setConfig<T extends keyof GlobalState>(key: T, value: GlobalState[T]) {
+  const newstate: GlobalState = {};
+  newstate[key] = value;
+  saveToLocal(newstate);
+  setGlobalState(key, value);
+}
 
 /** these properties are part of useGlobalState but the exposed type interface does not include them */
 const otherGettersSetters = (unexposedGettersSetters as unknown) as {
-  getState: () => ConfigState;
-  setState: (nextGlobalState: ConfigState) => void;
+  getState: () => GlobalState;
+  setState: (nextGlobalState: GlobalState) => void;
 };
 
 /** function to get all config values outside of React
@@ -95,6 +110,17 @@ const getAllConfigs = otherGettersSetters.getState;
  *
  * const allConfigs = setAllConfigs(configs);
  */
-const setAllConfigs = otherGettersSetters.setState;
+function setAllConfigs(value: GlobalState) {
+  saveToLocal(value);
+  otherGettersSetters.setState(value);
+}
+
+/** internal function to save Value to Local Storage for later retrival
+ *
+ */
+function saveToLocal(config: GlobalState) {
+  localstorage = { tablesPref: config.tablesPref };
+  localStorage.setItem(USER_PREFERENCE_KEY, JSON.stringify(localstorage));
+}
 
 export { useGlobalConfigs, getConfig, setConfig, getAllConfigs, setAllConfigs };
