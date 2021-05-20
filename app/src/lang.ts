@@ -35,6 +35,7 @@ export function lang(t: TFunction) {
     RETIRED: t(`Retired`, { ns: namespace }),
     LOCATIONS: t(`Locations`, { ns: namespace }),
     USERS: t(`Users`, { ns: namespace }),
+    SERVER_SETTINGS: t(`Server Settings`, { ns: namespace }),
     ADMIN: t(`Admin`, { ns: namespace }),
     MISSIONS: t(`Missions`, { ns: namespace }),
     WELCOME_TO_OPENSRP: t(`Welcome to OpenSRP`, { ns: namespace }),
