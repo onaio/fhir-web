@@ -4,7 +4,7 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
 import '../../index.css';
 import {
@@ -98,8 +98,8 @@ export const submitForm = (
       sendSuccessNotification(langObj.CREDENTIALS_UPDATED_SUCCESSFULLY);
       history.push(URL_USER);
     })
-    .catch((_: Error) => {
-      sendErrorNotification(langObj.ERROR_OCCURED);
+    .catch((e: HTTPError) => {
+      sendErrorNotification(e.description);
     });
 };
 
