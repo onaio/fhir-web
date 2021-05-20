@@ -201,7 +201,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
         {
-          title: lang.SERVER_SETTINGS,
+          title: langObj.SERVER_SETTINGS,
           key: 'server-settings',
           enabled: true,
           url: URL_SERVER_SETTINGS,
