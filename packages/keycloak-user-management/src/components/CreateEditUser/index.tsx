@@ -145,13 +145,15 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       const serve = new OpenSRPService(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, opensrpBaseURL);
       serve
         .read(userId)
-        .then((response: Practitioner) =>
-          setInitialValues((prevState) => ({
-            ...prevState,
-            active: response.active,
-            practitioner: response,
-          }))
-        )
+        .then((response: Practitioner | undefined) => {
+          if (response) {
+            setInitialValues((prevState) => ({
+              ...prevState,
+              active: response.active,
+              practitioner: response,
+            }));
+          }
+        })
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
         .finally(() => setPractitionerLoading(false));
     }
