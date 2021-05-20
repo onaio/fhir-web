@@ -2,7 +2,6 @@ import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import { KeycloakUser, Practitioner, UserGroup } from '../../../ducks/user';
-import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
 import { submitForm } from './utils';
 import { Dictionary } from '@onaio/utils';
@@ -80,10 +79,11 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               opensrpBaseURL,
               userGroups,
               initialValues.userGroup as string[]
-            ).catch((_: Error) => {
-              setSubmitting(false);
-              sendErrorNotification(lang.ERROR_OCCURED);
-            });
+            )
+              .catch((_: Error) => {
+                sendErrorNotification(lang.ERROR_OCCURED);
+              })
+              .finally(() => setSubmitting(false));
           }}
         >
           <Form.Item
@@ -146,7 +146,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             <Button type="primary" htmlType="submit" className="create-user">
               {isSubmitting ? lang.SAVING : lang.SAVE}
             </Button>
-            <Button onClick={() => history.push(URL_USER)} className="cancel-user">
+            <Button onClick={() => history.goBack()} className="cancel-user">
               {lang.CANCEL}
             </Button>
           </Form.Item>

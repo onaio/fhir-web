@@ -22,7 +22,7 @@ export interface KeycloakUserGroup {
   name: string;
   path: string;
   realmRoles?: string[];
-  subGroups: string[];
+  subGroups?: string[];
 }
 
 // actions
