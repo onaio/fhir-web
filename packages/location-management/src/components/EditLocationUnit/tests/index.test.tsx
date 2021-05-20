@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { removeLocationUnits } from '../../../ducks/location-units';
 import { authenticateUser } from '@onaio/session-reducer';
-import { location1 } from '../../LocationForm/tests/fixtures';
+import { baseLocationUnits, location1, rawHierarchy } from '../../LocationForm/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -77,9 +77,12 @@ describe('EditLocationUnit', () => {
 
   it('renders correctly when location is jurisdiction', async () => {
     const queryClient = new QueryClient();
-    fetch.once(JSON.stringify(location1));
-    fetch.once(JSON.stringify(null));
-    fetch.mockResponse(JSON.stringify([]));
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -137,9 +140,12 @@ describe('EditLocationUnit', () => {
 
   it('renders correctly when location is structure', async () => {
     const queryClient = new QueryClient();
-    fetch.once(JSON.stringify(null));
-    fetch.once(JSON.stringify(location1));
-    fetch.mockResponse(JSON.stringify([]));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -192,9 +198,12 @@ describe('EditLocationUnit', () => {
 
   it('renders resource404 when location is not found', async () => {
     const queryClient = new QueryClient();
-    fetch.once(JSON.stringify(null));
-    fetch.once(JSON.stringify(location1));
-    fetch.mockResponse(JSON.stringify([]));
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const props = {
       ...locationProps,
@@ -230,9 +239,13 @@ describe('EditLocationUnit', () => {
 
   it('cancel url is used if passed', async () => {
     const queryClient = new QueryClient();
-    fetch.once(JSON.stringify(null));
-    fetch.once(JSON.stringify(location1));
-    fetch.mockResponse(JSON.stringify([]));
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
+
     const cancelURL = '/canceledURL';
 
     const props = {
