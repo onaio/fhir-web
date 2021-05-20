@@ -1,8 +1,15 @@
+import { Dispatch, SetStateAction } from 'react';
+import { history } from '@onaio/connected-reducer-registry';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { store } from '@opensrp/store';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import lang, { Lang } from '../../lang';
-import { KEYCLOAK_URL_ASSIGNED_ROLES, KEYCLOAK_URL_USER_GROUPS } from '../../constants';
+import {
+  KEYCLOAK_URL_ASSIGNED_ROLES,
+  KEYCLOAK_URL_USER_GROUPS,
+  URL_USER_GROUPS,
+  URL_USER_GROUP_EDIT,
+} from '../../constants';
 import { KeycloakUserRole } from '../../ducks/userRoles';
 import { fetchKeycloakUserGroups, KeycloakUserGroup } from '../../ducks/userGroups';
 
@@ -133,4 +140,39 @@ export const fetchSingleGroup = async (
     .catch((_: Error) => {
       sendErrorNotification(langObj.ERROR_OCCURED);
     });
+};
+
+export const submitForm = async (
+  values: KeycloakUserGroup & { roles?: string[] },
+  keycloakBaseURL: string,
+  setSubmittingCallback: Dispatch<SetStateAction<boolean>>
+): Promise<void> => {
+  if (values.id) {
+    const serve = new KeycloakService(`${KEYCLOAK_URL_USER_GROUPS}/${values.id}`, keycloakBaseURL);
+    serve
+      .update(values)
+      .then(() => sendSuccessNotification(lang.MESSAGE_USER_GROUP_EDITED))
+      .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+      .finally(() => {
+        history.push(URL_USER_GROUPS);
+        setSubmittingCallback(false);
+      });
+  } else {
+    let newUUID: string | undefined;
+    const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
+    serve
+      .create({ name: values.name })
+      .then((res: Response) => {
+        const locationStr = res.headers.get('location')?.split('/') as string[];
+        newUUID = locationStr[locationStr.length - 1];
+        sendSuccessNotification(lang.MESSAGE_USER_GROUP_CREATED);
+      })
+      .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+      .finally(() => {
+        setSubmittingCallback(false);
+        if (newUUID) {
+          history.push(`${URL_USER_GROUP_EDIT}/${newUUID}`);
+        }
+      });
+  }
 };
