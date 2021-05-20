@@ -111,7 +111,11 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     const dob = d.birthDate;
     const category = get(d, 'category.0.coding.0.display');
     const identifier = `ID: ${d.id}`;
-    const type = getPath(d, 'type.0.text') || get(d, 'vaccineCode.coding.0.display');
+    const type =
+      get(d, 'type.0.text') ||
+      get(d, 'vaccineCode.text') ||
+      get(d, 'vaccineCode.coding.0.display') ||
+      get(d, 'vaccineCode.coding.0.code');
     const status = d.status || get(d, 'achievementStatus.coding.0.code') || 'N/A';
     const reason =
       getPath(d, 'reason.0.coding.0.display') || get(d, 'detail.code.coding.0.display') || 'N/A';
