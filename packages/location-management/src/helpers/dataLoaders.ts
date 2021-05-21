@@ -77,7 +77,6 @@ export interface ParamFilters {
 
 export const defaultParamFilters: ParamFilters = {
   status: ACTIVE,
-  geographicLevel: 0,
 };
 
 /**
@@ -88,18 +87,25 @@ export const defaultParamFilters: ParamFilters = {
  * @param urlParams - search params to be added to request
  * @param filterParams - filterParams for property_filter search_param
  * @param endpoint - the openSRP endpoint
+ * @param filterByParentId - boolean to filter by parentId properties filter
  */
 export async function loadJurisdictions(
   dispatcher?: typeof fetchLocationUnits,
   openSRPBaseURL: string = baseURL,
   urlParams: GetLocationParams = defaultGetLocationParams,
   filterParams: ParamFilters = defaultParamFilters,
-  endpoint: string = LOCATION_UNIT_FIND_BY_PROPERTIES
+  endpoint: string = LOCATION_UNIT_FIND_BY_PROPERTIES,
+  filterByParentId?: boolean
 ) {
   const serve = new OpenSRPService(endpoint, openSRPBaseURL);
   const filterParamsObject =
     Object.values(filterParams).length > 0
-      ? { properties_filter: OpenSRPService.getFilterParams(filterParams as Dictionary) }
+      ? {
+          properties_filter: OpenSRPService.getFilterParams({
+            ...filterParams,
+            ...{ ...(filterByParentId ? { parentId: null } : { geographicLevel: 0 }) },
+          }),
+        }
       : {};
   const params = {
     ...urlParams,

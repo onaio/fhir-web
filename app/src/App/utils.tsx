@@ -21,6 +21,7 @@ import {
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
+  FILTER_BY_PARENT_ID,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -31,14 +32,20 @@ export const teamAssignmentProps = {
   defaultPlanId: DEFAULT_PLAN_ID,
 };
 
+export const locationUnitProps = {
+  filterByParentId: FILTER_BY_PARENT_ID,
+};
+
 export const newLocationUnitProps = {
   successURLGenerator: () => URL_LOCATION_UNIT,
   cancelURLGenerator: () => URL_LOCATION_UNIT,
   hidden: ['serviceType', 'latitude', 'longitude'],
+  ...locationUnitProps,
 };
 
 export const editLocationProps = {
   ...newLocationUnitProps,
+  ...locationUnitProps,
 };
 
 export const inventoryServiceProps = {
