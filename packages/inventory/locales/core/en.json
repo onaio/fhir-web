@@ -3,9 +3,8 @@
   "“%s” inventory items successfully added": "“%s” inventory items successfully added",
   "“%s” ready": "“%s” ready",
   "%s inventory items failed to be added from “%s”. To add items, follow these steps: ": "%s inventory items failed to be added from “%s”. To add items, follow these steps: ",
-  "%s inventory items will be added to service points. Do you wish to proced?": "%s inventory items will be added to service points. Do you wish to proced?",
+  "%s inventory items will be added to service points. Do you wish to proceed?": "",
   "+ Add service point": "+ Add service point",
-  "<0>{INVENTORY_ITEMS_NOT_LISTED_BELOW} <2>{SERVICE_POINT_INVENTORY}</2>. <5>{CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS}</5></0>": "<0>{INVENTORY_ITEMS_NOT_LISTED_BELOW} <2>{SERVICE_POINT_INVENTORY}</2>. <5>{CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS}</5></0>",
   "Accountability end date": "Accountability end date",
   "Accountability end date is required": "Accountability end date is required",
   "Acct. end dt.": "Acct. end dt.",
@@ -80,6 +79,6 @@
   "Uploading %s ...": "Uploading %s ...",
   "Use a CSV file to add service point inventory": "Use a CSV file to add service point inventory",
   "Validating %s ...": "Validating %s ...",
-  "view": "view",
+  "View": "",
   "You’ll get a chance to review before committing inventory updates.": "You’ll get a chance to review before committing inventory updates."
 }

@@ -1,16 +1,16 @@
 {
-  "An error occurred": "",
-  "Download Client Data": "",
-  "Client Location": "",
   "All Locations": "",
-  "Card Status": "",
-  "Needs Card": "",
-  "Card not needed": "",
+  "An error occurred": "",
   "Both \"Needs card\" and \"Card not needed\"": "",
+  "Card not needed": "",
   "Card Order Date": "",
-  "Please enter start date and end date": "",
-  "Select Card Order Date": "",
-  "Downloading": "",
+  "Card Status": "",
+  "Client Location": "",
+  "Download Client Data": "",
   "Download CSV": "",
-  "No data found": ""
+  "Downloading": "",
+  "Needs Card": "",
+  "No data found": "",
+  "Please enter start date and end date": "",
+  "Select Card Order Date": ""
 }
