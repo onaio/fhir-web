@@ -30,7 +30,7 @@ export interface NewLocationUnitProps
     RouteComponentProps {
   opensrpBaseURL: string;
   instance: FormInstances;
-  filterByParentId: boolean;
+  filterByParentId?: boolean;
   processInitialValues?: (formFields: LocationFormFields) => LocationFormFields;
   cancelURLGenerator: () => string;
 }

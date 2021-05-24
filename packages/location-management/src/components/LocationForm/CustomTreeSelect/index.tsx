@@ -14,7 +14,7 @@ import { treeToOptions } from '../utils';
 /** props for service types select component */
 export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
   baseURL: string;
-  filterByParentId: boolean;
+  filterByParentId?: boolean;
   fullDataCallback?: (node?: TreeNode) => void;
   disabledTreeNodesCallback?: (node: TreeNode) => boolean;
 }

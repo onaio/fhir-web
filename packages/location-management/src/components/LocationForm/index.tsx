@@ -34,7 +34,7 @@ export interface LocationFormProps
   disabled: string[];
   onCancel: () => void;
   username: string;
-  filterByParentId: boolean;
+  filterByParentId?: boolean;
   afterSubmit: (payload: LocationUnit) => void;
 }
 
