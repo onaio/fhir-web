@@ -193,3 +193,9 @@ Below is a list of currently supported environment variables:
   - Sets the oauth app permission scopes.
   - **Required**(`string`)
   - default: `read,write`
+
+- **REACT_APP_FILTER_BY_PARENT_ID**
+
+  - Allows filtering root locations by parentId when set to true
+  - **Optional**(_string_)
+  - default: `"false"`

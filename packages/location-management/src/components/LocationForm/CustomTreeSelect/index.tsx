@@ -14,6 +14,7 @@ import { treeToOptions } from '../utils';
 /** props for service types select component */
 export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
   baseURL: string;
+  filterByParentId?: boolean;
   fullDataCallback?: (node?: TreeNode) => void;
   disabledTreeNodesCallback?: (node: TreeNode) => boolean;
 }
@@ -27,14 +28,21 @@ const defaultProps = {
  * @param props - the component props
  */
 const CustomTreeSelect = (props: CustomTreeSelectProps) => {
-  const { baseURL, value, fullDataCallback, disabledTreeNodesCallback, ...restProps } = props;
+  const {
+    baseURL,
+    value,
+    fullDataCallback,
+    disabledTreeNodesCallback,
+    filterByParentId,
+    ...restProps
+  } = props;
   const [loadingJurisdictions, setLoadingJurisdictions] = useState(true);
   const [loadingTrees, setLoadingTrees] = useState(true);
   const [rootLocations, setRootLocations] = useState<LocationUnit[]>([]);
   const [trees, updateTrees] = useState<TreeNode[]>([]);
 
   useEffect(() => {
-    loadJurisdictions(undefined, baseURL, undefined, undefined)
+    loadJurisdictions(undefined, baseURL, undefined, undefined, undefined, filterByParentId)
       .then((res) => {
         if (res) setRootLocations(res);
       })

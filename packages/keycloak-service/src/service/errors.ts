@@ -1,3 +1,5 @@
+import { Dictionary } from '@onaio/utils';
+
 /** Modifies the name field for our custom Error classes */
 class BaseError extends Error {
   constructor() {
@@ -15,11 +17,11 @@ export class HTTPError extends BaseError {
   public statusText: string;
   public url: string;
   public description: string;
-  constructor(response: Response, object: string, serviceDescription?: string) {
+  constructor(response: Response, object: Dictionary | undefined, serviceDescription?: string) {
     super();
     this.statusCode = response.status;
     this.statusText = response.statusText;
-    this.description = object;
+    this.description = object && object.error_description;
     this.url = response.url;
     if (serviceDescription) {
       this.message = serviceDescription;
@@ -44,8 +46,7 @@ export class NetworkError extends BaseError {
  */
 export const throwHTTPError = async (response: Response, customMessage?: string): Promise<void> => {
   const responseClone1 = response.clone();
-
-  await responseClone1.text().then((apiErrRes: string) => {
+  await responseClone1.json().then((apiErrRes: Dictionary) => {
     throw new HTTPError(response, apiErrRes, customMessage);
   });
 };

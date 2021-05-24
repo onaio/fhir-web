@@ -298,6 +298,54 @@ describe('components/CreateEditUser', () => {
     wrapper.unmount();
   });
 
+  it('loads edit user page without breaking if user is not a practitioner', async () => {
+    fetch.mockResponseOnce(JSON.stringify(userGroup));
+    fetch.mockResponseOnce(JSON.stringify(keycloakUser));
+    fetch.mockResponseOnce(JSON.stringify(userGroup));
+    fetch.mockResponseOnce(JSON.stringify(null)); // practitioner response
+    fetch.mockResponseOnce(JSON.stringify(requiredActions));
+
+    opensrpStore.store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
+      )
+    );
+
+    const userProps = {
+      ...props,
+      keycloakUser: null,
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <ConnectedCreateEditUser {...userProps} />
+        </Router>
+      </Provider>
+    );
+
+    // Loader should be displayed
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      // eslint-disable-next-line no-irregular-whitespace
+      `"Edit User | opensrpFirst NameLast NameEmailUsernameEnable userYesNoMark as PractitionerYesNoGroupAdminAdmin 2New Group SaveCancel"`
+    );
+    wrapper.unmount();
+  });
+
   it('handles error if fetch user fails if page is refreshed', async () => {
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
