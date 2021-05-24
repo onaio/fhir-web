@@ -44,7 +44,7 @@ export interface EditLocationUnitProps
     RouteComponentProps<LocationRouteProps> {
   opensrpBaseURL: string;
   instance: FormInstances;
-  filterByParentId: boolean;
+  filterByParentId?: boolean;
   cancelURLGenerator: (data: LocationUnit) => string;
 }
 
