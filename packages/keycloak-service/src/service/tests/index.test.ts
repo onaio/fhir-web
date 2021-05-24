@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
@@ -11,6 +12,11 @@ const getAccessToken = (): Promise<string> =>
   new Promise((resolve, _) => {
     return resolve('hunter2');
   });
+
+const errorObject = {
+  error: 'errorMessage',
+  error_description: 'Error Description',
+};
 
 describe('services/keycloak', () => {
   beforeEach(() => {
@@ -347,6 +353,26 @@ describe('services/keycloak', () => {
       new HTTPError({}, undefined, 'KeycloakAPIService update on users failed, HTTP status 500')
     );
   });
+
+  it('Should correctly display api error messages on update', async () => {
+    fetch.mockResponseOnce(JSON.stringify(errorObject), { status: 400 });
+    const usersService = new KeycloakService(
+      'users',
+      'https://keycloak-test.smartregister.org/auth/realms/'
+    );
+    let error;
+    try {
+      await usersService.update(keycloakUser);
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toEqual(
+      new HTTPError({}, undefined, 'KeycloakAPIService update on users failed, HTTP status 400')
+    );
+    expect(error.statusText).toEqual('Bad Request');
+    expect(error.description).toEqual('Error Description');
+  });
+
   it('readFile works correctly', async () => {
     const mockClass = new KeycloakService(
       'users',

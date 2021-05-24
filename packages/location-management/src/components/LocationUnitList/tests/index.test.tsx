@@ -284,6 +284,41 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     await new Promise((resolve) => setImmediate(resolve));
     expect(response).toMatchObject(baseLocationUnits);
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+    fetch.resetMocks();
+  });
+
+  it('test getBaseTreeNode with parentId filter', async () => {
+    fetch.mockResponse(JSON.stringify(baseLocationUnits));
+
+    await getBaseTreeNode(baseURL, true);
+
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,parentId:null',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
     fetch.resetMocks();
   });
 
