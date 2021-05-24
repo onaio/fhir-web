@@ -79,6 +79,7 @@ export const intialValue: FormField = {
   name: team.name,
   active: team.active,
   practitioners: practitioners.slice(0, 3).map((prac) => prac.identifier),
+  practitionersList: practitioners.slice(0, 3),
 };
 
 export const teamPost: OrganizationPOST = {
