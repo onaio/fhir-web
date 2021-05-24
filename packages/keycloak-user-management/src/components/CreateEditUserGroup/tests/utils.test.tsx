@@ -1,16 +1,26 @@
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
+import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
 import * as fixtures from '../../UserGroupDetailView/tests/fixtures';
-import { fetchSingleGroup, removeAssignedRoles, assignRoles, fetchRoleMappings } from '../utils';
+import {
+  fetchSingleGroup,
+  removeAssignedRoles,
+  assignRoles,
+  fetchRoleMappings,
+  submitForm,
+} from '../utils';
 import fetch from 'jest-fetch-mock';
 import lang from '../../../lang';
+import { value } from './fixtures';
 import { userRoles } from '../../../ducks/tests/fixtures';
 import {
   KEYCLOAK_URL_ASSIGNED_ROLES,
   KEYCLOAK_URL_AVAILABLE_ROLES,
   KEYCLOAK_URL_EFFECTIVE_ROLES,
 } from '../../../constants';
+import { act } from 'react-dom/test-utils';
+import flushPromises from 'flush-promises';
 
 const mockBaseURL = 'https://example.com/rest';
 
@@ -36,8 +46,13 @@ describe('dataLoading', () => {
   });
 
   afterEach(() => {
-    fetch.resetMocks();
+    jest.clearAllMocks();
+    fetch.mockClear();
   });
+
+  const keycloakBaseURL =
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const id = '283c5d6e-9b83-4954-9f3b-4c2103e4370c';
 
   it('fetchSingleGroup works correctly', async () => {
     fetch.once(JSON.stringify(fixtures.userGroup1));
@@ -219,5 +234,112 @@ describe('dataLoading', () => {
     });
     await new Promise((resolve) => setImmediate(resolve));
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+  });
+
+  it('submits group creation correctly', async () => {
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    const historyPushMock = jest.spyOn(history, 'push');
+    const mockSubmitCallback = jest.fn();
+
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${id}`,
+      },
+    });
+
+    submitForm(value, keycloakBaseURL, mockSubmitCallback).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: '{"name":"Admin"}',
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'POST',
+        },
+      ],
+    ]);
+    expect(mockSubmitCallback).toHaveBeenCalled();
+    expect(notificationSuccessMock.mock.calls).toEqual([['User Group created successfully']]);
+    expect(historyPushMock).toHaveBeenCalledTimes(1);
+    expect(historyPushMock).toHaveBeenCalledWith(
+      '/admin/users/group/edit/283c5d6e-9b83-4954-9f3b-4c2103e4370c'
+    );
+  });
+
+  it('submits user edit correctly', async () => {
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    const historyPushMock = jest.spyOn(history, 'push');
+    const mockSubmitCallback = jest.fn();
+
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${id}`,
+      },
+    });
+
+    submitForm({ ...value, id: id }, keycloakBaseURL, mockSubmitCallback).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups/283c5d6e-9b83-4954-9f3b-4c2103e4370c',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: '{"id":"283c5d6e-9b83-4954-9f3b-4c2103e4370c","name":"Admin","path":"/Admin"}',
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
+        },
+      ],
+    ]);
+    expect(notificationSuccessMock.mock.calls).toEqual([['User Group edited successfully']]);
+    expect(historyPushMock).toHaveBeenCalledTimes(1);
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/groups');
+  });
+
+  it('handles error when user creation fails', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+    const historyPushMock = jest.spyOn(history, 'push');
+
+    submitForm(value, keycloakBaseURL, jest.fn()).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationErrorMock).toBeCalledTimes(1);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(historyPushMock).not.toHaveBeenCalled();
+  });
+
+  it('handles error when user edit fails', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    submitForm({ ...value, id }, keycloakBaseURL, jest.fn()).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(notificationErrorMock).toBeCalledTimes(1);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 });

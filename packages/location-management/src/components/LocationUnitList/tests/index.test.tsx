@@ -78,7 +78,6 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
     wrapper.update();
 
@@ -155,7 +154,6 @@ describe('location-management/src/components/LocationUnitList', () => {
       await flushPromises();
       wrapper.update();
     });
-    wrapper.update();
 
     const Tunisia = generateJurisdictionTree(rawHierarchy[0]).model as ParsedHierarchyNode;
     const Kenya = generateJurisdictionTree(rawHierarchy[1]).model as ParsedHierarchyNode;
@@ -210,7 +208,6 @@ describe('location-management/src/components/LocationUnitList', () => {
       await flushPromises();
       wrapper.update();
     });
-    wrapper.update();
 
     const firstAction = wrapper.find('.Actions').first();
     firstAction.find('button').last().simulate('click');

@@ -14,6 +14,7 @@ import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { useHistory } from 'react-router';
 import lang from '../../lang';
+import { useTranslation } from 'react-i18next';
 
 /** HOC function that calls function that logs out the user from both opensrp
  * and keycloak.
@@ -21,6 +22,7 @@ import lang from '../../lang';
  * @returns {Function} returns Ripple component
  */
 export const CustomLogout: React.FC = (): JSX.Element => {
+  const { t } = useTranslation();
   const payload = getFetchOptions(
     new AbortController().signal,
     getAccessToken(store.getState()) as string,
@@ -29,7 +31,7 @@ export const CustomLogout: React.FC = (): JSX.Element => {
   const redirectUri = BACKEND_ACTIVE ? EXPRESS_OAUTH_LOGOUT_URL : DOMAIN_NAME;
   const history = useHistory();
   logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((_: Error) => {
-    sendErrorNotification(lang.ERROR_OCCURRED);
+    sendErrorNotification(lang(t).ERROR_OCCURRED);
     history.push('/');
   });
   return <Spin size="large" />;

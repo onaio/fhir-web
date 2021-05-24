@@ -3,7 +3,7 @@ import { ServicePointEdit } from '..';
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
-import { location1 } from './fixtures';
+import { baseLocationUnits, location1, rawHierarchy } from './fixtures';
 import { Provider } from 'react-redux';
 import { RouteComponentProps, Router } from 'react-router';
 import { store } from '@opensrp/store';
@@ -35,9 +35,12 @@ describe('CreateServicePoint', () => {
 
   it('passes the correct values to form', async () => {
     const queryClient = new QueryClient();
-    fetch.once(JSON.stringify(location1));
-    fetch.once(JSON.stringify(null));
-    fetch.mockResponse(JSON.stringify([]));
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const props = {
       history,
@@ -68,7 +71,6 @@ describe('CreateServicePoint', () => {
       await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
-    wrapper.update();
 
     const locationFormProps = wrapper.find('LocationForm').props();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
