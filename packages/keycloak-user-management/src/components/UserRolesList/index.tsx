@@ -31,7 +31,7 @@ const userRolesSelector = makeKeycloakUserRolesSelector();
 interface TableData {
   name: string;
   composite: boolean | string;
-  description: string;
+  description?: string;
 }
 
 interface Props {
@@ -90,7 +90,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     {
       title: lang.NAME,
       dataIndex: 'name',
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: lang.COMPOSITE,
@@ -99,7 +99,6 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     {
       title: lang.DESCRIPTION,
       dataIndex: 'description',
-      sorter: (a: TableData, b: TableData) => a.description.localeCompare(b.description),
     },
   ];
 
