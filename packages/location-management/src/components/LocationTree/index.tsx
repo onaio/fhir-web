@@ -24,7 +24,6 @@ interface TreeProp {
 
 export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const { data, OnItemClick } = props;
-  console.log('data??', data);
   const dispatch = useDispatch();
 
   const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
