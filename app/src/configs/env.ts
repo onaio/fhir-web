@@ -159,6 +159,8 @@ export const SUPPORTED_LANGUAGES = setEnv('REACT_APP_SUPPORTED_LANGUAGES', '').s
 export const ENABLE_LANGUAGE_SWITCHER =
   setEnv('REACT_APP_ENABLE_LANGUAGE_SWITCHER', 'false') === 'true';
 
+export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'false') === 'true';
+
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
 export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
