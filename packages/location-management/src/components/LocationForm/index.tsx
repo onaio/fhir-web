@@ -34,11 +34,13 @@ export interface LocationFormProps
   disabled: string[];
   onCancel: () => void;
   username: string;
+  filterByParentId?: boolean;
   afterSubmit: (payload: LocationUnit) => void;
 }
 
 const defaultProps = {
   initialValues: defaultFormField,
+  filterByParentId: false,
   successURLGenerator: () => URL_LOCATION_UNIT,
   hidden: [],
   disabled: [],
@@ -104,6 +106,7 @@ const LocationForm = (props: LocationFormProps) => {
     username,
     afterSubmit,
     disabledTreeNodesCallback,
+    filterByParentId,
   } = props;
   const isEditMode = !!initialValues?.id;
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
@@ -210,6 +213,7 @@ const LocationForm = (props: LocationFormProps) => {
           >
             <CustomTreeSelect
               baseURL={opensrpBaseURL}
+              filterByParentId={filterByParentId}
               disabled={disabled.includes('parentId')}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder={lang.PARENT_ID_SELECT_PLACEHOLDER}
