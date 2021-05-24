@@ -37,6 +37,7 @@ reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer)
 
 interface Props {
   opensrpBaseURL: string;
+  filterByParentId: boolean;
 }
 
 export interface AntTreeProps {
@@ -89,14 +90,14 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
-  const { opensrpBaseURL } = props;
+  const { opensrpBaseURL, filterByParentId } = props;
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
 
   const locationUnits = useQuery(
     LOCATION_UNIT_FIND_BY_PROPERTIES,
-    () => getBaseTreeNode(opensrpBaseURL),
+    () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res: LocationUnit[]) => res,

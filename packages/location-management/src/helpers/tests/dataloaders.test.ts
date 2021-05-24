@@ -194,6 +194,37 @@ describe('src/helpers/dataloaders', () => {
     ]);
   });
 
+  it('loadJurisdictions works with parentId url param', async () => {
+    fetch.once(JSON.stringify([]));
+    const mockBaseUrl = 'https://example.com/';
+    const mockDispatcher = jest.fn();
+
+    loadJurisdictions(
+      mockDispatcher,
+      mockBaseUrl,
+      undefined,
+      undefined,
+      undefined,
+      true // set filterByParentId
+    ).catch((_: Error) => fail());
+
+    await new Promise((resolve) => setImmediate(resolve));
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://example.com/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,parentId:null',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
   it('loadJurisdictions returns response if dispatcher undefined', async () => {
     fetch.once(JSON.stringify([]));
     const mockBaseUrl = 'https://example.com';
