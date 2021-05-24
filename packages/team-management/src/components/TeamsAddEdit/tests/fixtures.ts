@@ -75,6 +75,30 @@ export const practitioners: Practitioner[] = [
   },
 ];
 
+export const members = [
+  {
+    identifier: '3',
+    active: false,
+    name: 'prac one',
+    userId: '3',
+    username: 'prac_one',
+  },
+  {
+    identifier: '4',
+    active: false,
+    name: 'Practitioner Two',
+    userId: '4',
+    username: 'prac_two',
+  },
+  {
+    identifier: '5',
+    active: false,
+    name: 'Practitioner One',
+    userId: '5',
+    username: 'practitioner_one',
+  },
+];
+
 export const intialValue: FormField = {
   name: team.name,
   active: team.active,
