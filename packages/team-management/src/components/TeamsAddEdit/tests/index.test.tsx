@@ -2,11 +2,12 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
+import { Dictionary } from '@onaio/utils';
 import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { id, intialValue, opensrpBaseURL, practitioners, team } from './fixtures';
+import { id, intialValue, opensrpBaseURL, practitioners, team, members } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
@@ -65,6 +66,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     ]);
 
     expect(wrapper.find('form')).toHaveLength(1);
+    wrapper.unmount();
   });
 
   it('renders with id without crashing', async () => {
@@ -121,6 +123,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       ],
     ]);
     expect(wrapper.find('form')).toHaveLength(1);
+    wrapper.unmount();
   });
 
   it('Fail setupInitialValue', async () => {
@@ -231,5 +234,78 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       wrapper.update();
     });
     expect(wrapper.find('.mb-3.header-title').text()).toEqual(`Edit Team | ${team.name}`);
+    wrapper.unmount();
+  });
+
+  it('correctly adds/removes members from team', async () => {
+    fetch.once(JSON.stringify(team));
+    fetch.once(JSON.stringify(members));
+    fetch.once(JSON.stringify(practitioners));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
+          <Route path={'/:id'} component={TeamsAddEdit} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      // eslint-disable-next-line no-irregular-whitespace
+      `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersprac twoBenjamin Mulyungitest admin SaveCancel"`
+    );
+    // trigger team member change
+    (wrapper.find('Select').props() as Dictionary).onChange(
+      ['1'],
+      [{ label: 'prac two', value: '1' }]
+    );
+    wrapper.update();
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      // eslint-disable-next-line no-irregular-whitespace
+      `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersprac two SaveCancel"`
+    );
+    wrapper.unmount();
   });
 });

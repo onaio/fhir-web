@@ -20,6 +20,7 @@ export interface FormField {
   name: string;
   active: boolean;
   practitioners: string[];
+  practitionersList: Practitioner[];
 }
 
 interface Props {
@@ -154,7 +155,12 @@ export async function setTeam(
 
 export const Form: React.FC<Props> = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue = props.initialValue ?? { active: true, name: '', practitioners: [] };
+  const initialValue = props.initialValue ?? {
+    active: true,
+    name: '',
+    practitioners: [],
+    practitionersList: [],
+  };
 
   return (
     <AntdForm
@@ -189,7 +195,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
-          {props.practitioner.map((practitioner) => (
+          {initialValue.practitionersList.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
             </Select.Option>
