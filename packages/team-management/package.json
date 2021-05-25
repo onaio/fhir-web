@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
+    "@onaio/utils": "^0.0.1",
     "@opensrp/store": "^0.0.9",
     "@types/uuid": "8.3.0",
     "i18next-parser": "^3.5.0"

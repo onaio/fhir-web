@@ -62,6 +62,7 @@ function setupInitialValue(
       setInitialValue({
         ...response,
         practitioners: response.practitioners.map((prac) => prac.identifier),
+        practitionersList: response.practitioners,
       });
     })
     .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
