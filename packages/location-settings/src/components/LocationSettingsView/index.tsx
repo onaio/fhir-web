@@ -89,38 +89,59 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                       overlay={
                         <Menu className="menu">
                           <Menu.Item
-                            onClick={async () => {
+                            onClick={() => {
                               const payload = { ...row, value: 'true', locationId: currentLocId };
-                              await new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
+                              new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
                                 .update(payload)
-                                .catch(() => sendErrorNotification('ERROR OCCURRED'));
+                                .catch(() => sendErrorNotification('ERROR OCCURRED'))
+                                .then(() => {
+                                  queryClient
+                                    .invalidateQueries([['settings', currentLocId]])
+                                    .catch(() => sendErrorNotification('Cant Invalidate'));
 
-                              await queryClient
-                                .invalidateQueries([['settings', currentLocId]])
-                                .catch(() => sendErrorNotification('Cant Invalidate'));
-
-                              sendSuccessNotification('sucessfully Updated');
+                                  sendSuccessNotification('sucessfully Updated');
+                                });
                             }}
                           >
                             Yes
                           </Menu.Item>
                           <Menu.Item
-                            onClick={async () => {
+                            onClick={() => {
                               const payload = { ...row, value: 'true', locationId: currentLocId };
-                              await new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
+                              new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
                                 .update(payload)
-                                .catch(() => sendErrorNotification('ERROR OCCURRED'));
+                                .catch(() => sendErrorNotification('ERROR OCCURRED'))
+                                .then(() => {
+                                  queryClient
+                                    .invalidateQueries([['settings', currentLocId]])
+                                    .catch(() => sendErrorNotification('Cant Invalidate'));
 
-                              await queryClient
-                                .invalidateQueries([['settings', currentLocId]])
-                                .catch(() => sendErrorNotification('Cant Invalidate'));
-
-                              sendSuccessNotification('sucessfully Updated');
+                                  sendSuccessNotification('sucessfully Updated');
+                                });
                             }}
                           >
                             No
                           </Menu.Item>
-                          <Menu.Item>Inherit</Menu.Item>
+                          <Menu.Item
+                            onClick={() => {
+                              new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
+                                .delete()
+                                .catch(() => sendErrorNotification('ERROR OCCURRED'))
+                                .then(() => {
+                                  queryClient
+                                    .invalidateQueries([['settings', currentLocId]])
+                                    .catch(() => sendErrorNotification('Cant Invalidate'));
+
+                                  sendSuccessNotification('sucessfully Updated');
+                                });
+                            }}
+                          >
+                            Inherit
+                          </Menu.Item>
+                          <Menu.Item onClick={() => console.log(row)}>Log Row</Menu.Item>
+                          <Menu.Item onClick={() => console.log(currentLocId)}>
+                            Log currentLocId
+                          </Menu.Item>
                         </Menu>
                       }
                       placement="bottomLeft"
