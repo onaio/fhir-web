@@ -1,6 +1,5 @@
 /** interface for settings */
 export interface Setting {
-  editing?: boolean;
   value: 'true' | 'false';
   label: string;
   description: string;
@@ -18,4 +17,7 @@ export interface Setting {
   team?: string;
   teamId?: string;
   type: string;
+  key: string;
+  identifier?: string;
+  _id?: string;
 }
