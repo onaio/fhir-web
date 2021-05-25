@@ -28,6 +28,29 @@ jest.mock('uuid', () => {
 });
 
 describe('Team-management/TeamsAddEdit/Form', () => {
+  const members = [
+    {
+      identifier: '3',
+      active: false,
+      name: 'prac one',
+      userId: '3',
+      username: 'prac_one',
+    },
+    {
+      identifier: '4',
+      active: false,
+      name: 'Practitioner Two',
+      userId: '4',
+      username: 'prac_two',
+    },
+    {
+      identifier: '5',
+      active: false,
+      name: 'Practitioner One',
+      userId: '5',
+      username: 'practitioner_one',
+    },
+  ];
   afterEach(() => {
     fetch.resetMocks();
   });
@@ -126,6 +149,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       active: true,
       name: 'New team name',
       practitioners: [],
+      practitionersList: [],
     });
 
     await act(async () => {
@@ -203,7 +227,12 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       jest.fn,
       practitioners,
       intialValue,
-      { active: false, name: 'new name', practitioners: ['3', '4', '5'] },
+      {
+        active: false,
+        name: 'new name',
+        practitioners: ['3', '4', '5'],
+        practitionersList: members,
+      },
       id
     );
 
@@ -287,7 +316,12 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       jest.fn,
       practitioners,
       intialValue,
-      { active: false, name: 'new name', practitioners: ['3', '4', '5'] },
+      {
+        active: false,
+        name: 'new name',
+        practitioners: ['3', '4', '5'],
+        practitionersList: members,
+      },
       id
     );
 

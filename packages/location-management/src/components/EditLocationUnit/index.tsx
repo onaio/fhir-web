@@ -44,11 +44,13 @@ export interface EditLocationUnitProps
     RouteComponentProps<LocationRouteProps> {
   opensrpBaseURL: string;
   instance: FormInstances;
+  filterByParentId?: boolean;
   cancelURLGenerator: (data: LocationUnit) => string;
 }
 
 const defaultEditLocationUnitProps = {
   redirectAfterAction: '',
+  filterByParentId: false,
   opensrpBaseURL: OPENSRP_API_BASE_URL,
   instance: FormInstances.CORE,
   hidden: [],
@@ -67,6 +69,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     hidden,
     disabled,
     opensrpBaseURL,
+    filterByParentId,
     cancelURLGenerator,
     successURLGenerator,
     disabledTreeNodesCallback,
@@ -143,7 +146,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
 
   const locationUnits = useQuery(
     LOCATION_UNIT_FIND_BY_PROPERTIES,
-    () => getBaseTreeNode(opensrpBaseURL),
+    () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res: LocationUnit[]) => res,
@@ -197,6 +200,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     disabled,
     onCancel: cancelHandler,
     opensrpBaseURL,
+    filterByParentId,
     username: user.username,
     afterSubmit: (payload) => {
       const parentid = payload.parentId;
