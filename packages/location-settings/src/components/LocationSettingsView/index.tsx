@@ -1,24 +1,20 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import { MoreOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin, Table } from 'antd';
-import reducerRegistry from '@onaio/redux-reducer-registry';
+import { Row, Col, Spin, Dropdown, Menu } from 'antd';
 import {
   Tree,
-  locationHierachyDucks,
   generateJurisdictionTree,
+  ParsedHierarchyNode,
+  RawOpenSRPHierarchy,
 } from '@opensrp/location-management';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Setting } from '../../ducks/settings';
-import { columns } from './utils';
-import { useDispatch, useSelector } from 'react-redux';
 import { POP_CHARACTERISTICS_PARAM, SECURITY_AUTHENTICATE_ENDPOINT } from '../../constants';
-import { useQuery } from 'react-query';
-
-reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
-
-const { getAllHierarchiesArray } = locationHierachyDucks;
+import { useQuery, useQueryClient } from 'react-query';
+import { Table } from './Table';
 
 export interface Props {
   baseURL: string;
@@ -28,30 +24,28 @@ export interface Props {
 
 export const LocationSettingsView: React.FC<Props> = (props: Props) => {
   const { baseURL, v2BaseURL } = props;
-  const dispatch = useDispatch();
   const [currentLocId, setCurrentLocId] = useState<string>('');
+  const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
 
-  const treeData = useSelector((state) => getAllHierarchiesArray(state));
+  const queryClient = useQueryClient();
 
   const userLocSettings = useQuery(
     SECURITY_AUTHENTICATE_ENDPOINT,
     () => new OpenSRPService(SECURITY_AUTHENTICATE_ENDPOINT, baseURL).list(),
     {
       onError: () => sendErrorNotification('ERROR OCCURRED'),
-      select: (res) => res,
+      select: (res: { locations: RawOpenSRPHierarchy }) => res.locations,
     }
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (userLocSettings.data?.locations) {
-      const { locationsHierarchy } = userLocSettings.data.locations;
-      const processedHierarchy = generateJurisdictionTree({ locationsHierarchy });
-      dispatch(locationHierachyDucks.fetchAllHierarchies([processedHierarchy.model]));
-      const { map: userLocMap } = userLocSettings.data.locations.locationsHierarchy;
+    if (userLocSettings.data) {
+      const processedHierarchy = generateJurisdictionTree(userLocSettings.data).model;
+      setTreeData([processedHierarchy]);
+      const { map: userLocMap } = userLocSettings.data.locationsHierarchy;
       setCurrentLocId(Object.keys(userLocMap)[0]);
     }
-  }, [userLocSettings.data, dispatch]);
+  }, [userLocSettings.data, setTreeData, setCurrentLocId]);
 
   const locationSettings = useQuery(
     ['settings', currentLocId],
@@ -70,14 +64,6 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
 
   if (!locationSettings.data?.length) return <Spin size="large" />;
 
-  const dataSource = locationSettings.data.map((settingObject) => {
-    return {
-      ...settingObject,
-      key: settingObject.settingMetadataId,
-      inheritedFrom: settingObject.inheritedFrom?.trim() ?? '',
-    };
-  });
-
   return (
     <section className="layout-content">
       <Helmet>
@@ -90,7 +76,64 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
-            <Table dataSource={dataSource} columns={columns} />
+            <Table
+              data={locationSettings.data}
+              tree={treeData}
+              actioncolumn={{
+                title: 'Actions',
+                key: `actions`,
+                // eslint-disable-next-line react/display-name
+                render: (_, row: Setting) => {
+                  return (
+                    <Dropdown
+                      overlay={
+                        <Menu className="menu">
+                          <Menu.Item
+                            onClick={async () => {
+                              const payload = { ...row, value: 'true', locationId: currentLocId };
+                              await new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
+                                .update(payload)
+                                .catch(() => sendErrorNotification('ERROR OCCURRED'));
+
+                              await queryClient
+                                .invalidateQueries([['settings', currentLocId]])
+                                .catch(() => sendErrorNotification('Cant Invalidate'));
+
+                              sendSuccessNotification('sucessfully Updated');
+                            }}
+                          >
+                            Yes
+                          </Menu.Item>
+                          <Menu.Item
+                            onClick={async () => {
+                              const payload = { ...row, value: 'true', locationId: currentLocId };
+                              await new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
+                                .update(payload)
+                                .catch(() => sendErrorNotification('ERROR OCCURRED'));
+
+                              await queryClient
+                                .invalidateQueries([['settings', currentLocId]])
+                                .catch(() => sendErrorNotification('Cant Invalidate'));
+
+                              sendSuccessNotification('sucessfully Updated');
+                            }}
+                          >
+                            No
+                          </Menu.Item>
+                          <Menu.Item>Inherit</Menu.Item>
+                        </Menu>
+                      }
+                      placement="bottomLeft"
+                      arrow
+                      trigger={['click']}
+                    >
+                      <MoreOutlined className="more-options" />
+                    </Dropdown>
+                  );
+                },
+                width: '10%',
+              }}
+            />
           </div>
         </Col>
       </Row>
