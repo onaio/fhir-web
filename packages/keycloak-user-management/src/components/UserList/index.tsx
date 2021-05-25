@@ -16,7 +16,12 @@ import {
   reducer as keycloakUsersReducer,
   makeKeycloakUsersSelector,
 } from '../../ducks/user';
-import { URL_USER_CREATE, KEYCLOAK_URL_USERS, SEARCH_QUERY_PARAM } from '../../constants';
+import {
+  URL_USER_CREATE,
+  KEYCLOAK_URL_USERS,
+  KEYCLOAK_URL_USERS_COUNT,
+  SEARCH_QUERY_PARAM,
+} from '../../constants';
 import lang from '../../lang';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
@@ -27,6 +32,11 @@ reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 // Define selector instance
 const usersSelector = makeKeycloakUsersSelector();
+
+export interface PaginationProps {
+  currentPage: number;
+  pageSize: number | undefined;
+}
 
 /** interface for component props */
 export interface Props {
@@ -63,6 +73,11 @@ export type UserListTypes = Props & RouteComponentProps;
 const UserList = (props: UserListTypes): JSX.Element => {
   const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [usersCount, setUsersCount] = React.useState<number>(0);
+  const [pageProps, setPageProps] = React.useState<PaginationProps>({
+    currentPage: 1,
+    pageSize: 20,
+  });
   const {
     serviceClass,
     fetchKeycloakUsersCreator,
@@ -77,22 +92,35 @@ const UserList = (props: UserListTypes): JSX.Element => {
   };
   const history = useHistory();
 
+  const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
+
   React.useEffect(() => {
-    if (isLoading) {
-      const serve = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
-      serve
-        .list()
-        .then((res: KeycloakUser[]) => {
-          return fetchKeycloakUsersCreator(res);
-        })
-        .catch((_: Error) => {
-          return sendErrorNotification(lang.ERROR_OCCURED);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  });
+    const { currentPage, pageSize } = pageProps;
+    const filterParams = {
+      first: currentPage * (pageSize ?? 0) - (pageSize ?? 0),
+      max: pageSize ?? 20,
+      search: searchParam,
+    };
+    const usersCountService = new serviceClass(`${KEYCLOAK_URL_USERS_COUNT}`, keycloakBaseURL);
+    const usersCountPromise = usersCountService.list().then((res: number) => {
+      setUsersCount(res);
+    });
+    const usersService = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
+    const usersListPromise = usersService
+      .list(filterParams as Dictionary)
+      .then((res: KeycloakUser[]) => {
+        if (keycloakUsers.length) {
+          removeKeycloakUsersCreator();
+        }
+        fetchKeycloakUsersCreator(res);
+      });
+
+    Promise.all([usersCountPromise, usersListPromise])
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+      .finally(() => setIsLoading(false));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParam, JSON.stringify(pageProps)]);
 
   if (isLoading) {
     return <Spin size="large" />;
@@ -134,29 +162,36 @@ const UserList = (props: UserListTypes): JSX.Element => {
             </Space>
           </div>
           <Space>
-            {tableData.length > 0 ? (
-              <Table
-                columns={getTableColumns(
-                  removeKeycloakUsersCreator,
-                  keycloakBaseURL,
-                  isLoadingCallback,
-                  extraData,
-                  sortedInfo
-                )}
-                dataSource={tableData}
-                pagination={{
-                  showQuickJumper: true,
-                  showSizeChanger: true,
-                  defaultPageSize: 5,
-                  pageSizeOptions: ['5', '10', '20', '50', '100'],
-                }}
-                onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
-                  setSortedInfo(sorter);
-                }}
-              />
-            ) : (
-              lang.NO_DATA_FOUND
-            )}
+            <Table
+              columns={getTableColumns(
+                removeKeycloakUsersCreator,
+                keycloakBaseURL,
+                isLoadingCallback,
+                extraData,
+                sortedInfo
+              )}
+              dataSource={tableData}
+              pagination={{
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultPageSize: 20,
+                pageSize: pageProps.pageSize,
+                current: pageProps.currentPage,
+                onChange: (page: number, pageSize: number | undefined) => {
+                  setPageProps({
+                    currentPage: page,
+                    pageSize: pageSize,
+                  });
+                  setIsLoading(true);
+                },
+                total: searchParam && searchParam.length ? keycloakUsers.length : usersCount,
+                pageSizeOptions: ['5', '10', '20', '50', '100'],
+              }}
+              onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
+                setSortedInfo(sorter);
+              }}
+            />
+            )
           </Space>
         </Col>
       </Row>
@@ -174,9 +209,8 @@ interface DispatchedProps {
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>, props: UserListTypes): DispatchedProps => {
-  const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
-  const keycloakUsers = usersSelector(state, { searchText: searchQuery });
+const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
+  const keycloakUsers = usersSelector(state, {});
   const extraData = getExtraData(state);
   return { keycloakUsers, extraData };
 };
