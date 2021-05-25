@@ -46,6 +46,7 @@ export interface Props {
   keycloakUsers: KeycloakUser[];
   keycloakBaseURL: string;
   extraData: Dictionary;
+  usersPageSize: number;
 }
 
 /** default component props */
@@ -56,6 +57,7 @@ export const defaultProps = {
   keycloakUsers: [],
   keycloakBaseURL: '',
   extraData: {},
+  usersPageSie: 20,
 };
 
 interface TableData {
@@ -85,6 +87,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     keycloakUsers,
     keycloakBaseURL,
     extraData,
+    usersPageSize,
   } = props;
 
   const isLoadingCallback = (isLoading: boolean) => {
@@ -98,7 +101,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     const { currentPage, pageSize } = pageProps;
     const filterParams = {
       first: currentPage * (pageSize ?? 0) - (pageSize ?? 0),
-      max: pageSize ?? 20,
+      max: usersPageSize,
       search: searchParam,
     };
     const usersCountService = new serviceClass(`${KEYCLOAK_URL_USERS_COUNT}`, keycloakBaseURL);
@@ -174,7 +177,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               pagination={{
                 showQuickJumper: true,
                 showSizeChanger: true,
-                defaultPageSize: 20,
+                defaultPageSize: usersPageSize,
                 pageSize: pageProps.pageSize,
                 current: pageProps.currentPage,
                 onChange: (page: number, pageSize: number | undefined) => {

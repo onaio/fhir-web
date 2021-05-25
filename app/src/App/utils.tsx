@@ -22,6 +22,7 @@ import {
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
   FILTER_BY_PARENT_ID,
+  KEYCLOAK_USERS_PAGE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -48,6 +49,9 @@ export const editLocationProps = {
   ...locationUnitProps,
 };
 
+export const usersListProps = {
+  usersPageSize: KEYCLOAK_USERS_PAGE_SIZE,
+};
 export const inventoryServiceProps = {
   baseURL: OPENSRP_API_BASE_URL,
 };
