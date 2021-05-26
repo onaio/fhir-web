@@ -80,6 +80,7 @@ describe('components/UserList', () => {
     shallow(<UserList {...locationProps} />);
   });
   it('works correctly with store', async () => {
+    fetch.once(JSON.stringify(4));
     fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
     const props = {
       ...locationProps,
@@ -91,6 +92,7 @@ describe('components/UserList', () => {
       serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      usersPageSize: 20,
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
@@ -111,6 +113,7 @@ describe('components/UserList', () => {
   });
 
   it('renders user list correctly', async () => {
+    fetch.once(JSON.stringify(4));
     fetch.once(JSON.stringify(keycloakUsersArray));
     const props = {
       ...locationProps,
@@ -122,6 +125,7 @@ describe('components/UserList', () => {
       serviceClass: KeycloakService,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      usersPageSize: 20,
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
@@ -140,15 +144,43 @@ describe('components/UserList', () => {
     // Loader should be hiddern
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
 
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/count',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer simple-token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?first=0&max=20',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer simple-token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+
     const userList = wrapper.find('UserList');
     const headerRow = userList.find('Row').at(0);
 
     expect(headerRow.find('Col').at(0).text()).toMatchSnapshot('header actions col props');
     expect(headerRow.find('Table').first().text()).toMatchSnapshot('table text');
+    // look for pagination
+    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"120 / page"`);
     wrapper.unmount();
   });
 
   it('handles user list fetch failure', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
     fetch.mockReject(() => Promise.reject('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const props = {
@@ -184,11 +216,15 @@ describe('components/UserList', () => {
      * on the final block
      */
     expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
-    expect(toJson(wrapper.find('Table'))).toBeFalsy();
+    // check that table has No Data
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"User ManagementAdd UserUsernameEmailFirst NameLast NameActionsNo Data)"`
+    );
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
   it('sort works correctly', async () => {
+    fetch.once(JSON.stringify(4));
     fetch.once(JSON.stringify(keycloakUsersArray));
     const props = {
       ...locationProps,
