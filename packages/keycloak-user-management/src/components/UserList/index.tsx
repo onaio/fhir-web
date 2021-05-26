@@ -99,11 +99,16 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   React.useEffect(() => {
     const { currentPage, pageSize } = pageProps;
-    const filterParams = {
-      first: currentPage * (pageSize ?? 0) - (pageSize ?? 0),
+    let filterParams: Dictionary = {
+      first: currentPage * (pageSize ?? usersPageSize) - (pageSize ?? usersPageSize),
       max: usersPageSize,
-      search: searchParam,
     };
+    if (searchParam) {
+      filterParams = {
+        ...filterParams,
+        search: searchParam,
+      };
+    }
     const usersCountService = new serviceClass(`${KEYCLOAK_URL_USERS_COUNT}`, keycloakBaseURL);
     const usersCountPromise = usersCountService.list().then((res: number) => {
       setUsersCount(res);
