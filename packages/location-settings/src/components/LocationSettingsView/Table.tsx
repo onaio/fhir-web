@@ -8,10 +8,10 @@ import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 interface Props {
   data: Setting[];
   tree: ParsedHierarchyNode[];
-  actioncolumn: ColumnType<Setting>;
+  actioncolumn?: ColumnType<Setting>;
 }
 
-interface TableData extends Setting {
+export interface TableData extends Setting {
   key: string;
 }
 
@@ -26,19 +26,15 @@ export const Table: React.FC<Props> = (props: Props) => {
     };
   });
 
-  const columns: ColumnsType<TableData> = useMemo(
-    () => [
+  const columns: ColumnsType<TableData> = useMemo(() => {
+    const col: ColumnsType<TableData> = [
       {
         title: 'Name',
         dataIndex: 'label',
         key: `productName`,
         defaultSortOrder: 'descend',
         width: '25%',
-        sorter: (rec1, rec2) => {
-          if (rec1.label > rec2.label) return -1;
-          else if (rec1.label < rec2.label) return 1;
-          else return 0;
-        },
+        sorter: (rec1, rec2) => (rec1.label > rec2.label ? -1 : rec1.label < rec2.label ? 1 : 0),
       },
       {
         title: 'Description',
@@ -59,10 +55,10 @@ export const Table: React.FC<Props> = (props: Props) => {
         key: `inheritedFrom`,
         render: (value) => (value !== '' ? getHierarchyNodeFromArray(tree, value)?.label : '-'),
       },
-      actioncolumn,
-    ],
-    [actioncolumn, tree]
-  );
+    ];
+    if (actioncolumn) col.push(actioncolumn);
+    return col;
+  }, [actioncolumn, tree]);
 
   return <AntTable dataSource={data} columns={columns} />;
 };
