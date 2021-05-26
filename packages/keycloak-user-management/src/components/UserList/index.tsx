@@ -101,7 +101,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     const { currentPage, pageSize } = pageProps;
     let filterParams: Dictionary = {
       first: currentPage * (pageSize ?? usersPageSize) - (pageSize ?? usersPageSize),
-      max: usersPageSize,
+      max: pageSize ?? usersPageSize,
     };
     if (searchParam) {
       filterParams = {
