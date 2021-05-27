@@ -78,7 +78,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
   const [usersCount, setUsersCount] = React.useState<number>(0);
   const [pageProps, setPageProps] = React.useState<PaginationProps>({
     currentPage: 1,
-    pageSize: 20,
+    pageSize: props.usersPageSize,
   });
   const {
     serviceClass,
@@ -106,6 +106,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     if (searchParam) {
       filterParams = {
         ...filterParams,
+        first: 0,
         search: searchParam,
       };
     }
@@ -117,10 +118,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     const usersListPromise = usersService
       .list(filterParams as Dictionary)
       .then((res: KeycloakUser[]) => {
-        if (keycloakUsers.length) {
-          removeKeycloakUsersCreator();
-        }
-        fetchKeycloakUsersCreator(res);
+        fetchKeycloakUsersCreator(res, true);
       });
 
     Promise.all([usersCountPromise, usersListPromise])
@@ -150,6 +148,8 @@ const UserList = (props: UserListTypes): JSX.Element => {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
     onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
   };
+
+  const isSearchActive = searchParam && searchParam.length;
 
   return (
     <section className="layout-content">
@@ -184,7 +184,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 showSizeChanger: true,
                 defaultPageSize: usersPageSize,
                 pageSize: pageProps.pageSize,
-                current: pageProps.currentPage,
+                current: isSearchActive ? 1 : pageProps.currentPage,
                 onChange: (page: number, pageSize: number | undefined) => {
                   setPageProps({
                     currentPage: page,
@@ -192,7 +192,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   });
                   setIsLoading(true);
                 },
-                total: searchParam && searchParam.length ? keycloakUsers.length : usersCount,
+                total: isSearchActive ? keycloakUsers.length : usersCount,
                 pageSizeOptions: ['5', '10', '20', '50', '100'],
               }}
               onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
