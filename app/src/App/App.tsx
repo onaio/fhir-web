@@ -127,6 +127,7 @@ import {
   inventoryItemAddEditProps,
   editLocationProps,
   newLocationUnitProps,
+  locationUnitProps,
 } from './utils';
 import './App.css';
 import {
@@ -663,6 +664,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
               exact
               path={URL_LOCATION_UNIT}
+              {...locationUnitProps}
               component={LocationUnitList}
             />
             <PrivateComponent

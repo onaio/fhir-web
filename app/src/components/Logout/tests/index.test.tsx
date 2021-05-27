@@ -1,4 +1,3 @@
-import { mount, shallow } from 'enzyme';
 import flushPromises from 'flush-promises';
 import * as serverLogout from '@opensrp/server-logout';
 import toJson from 'enzyme-to-json';
@@ -9,23 +8,22 @@ import { MemoryRouter } from 'react-router';
 import { store } from '@opensrp/store';
 import * as notifications from '@opensrp/notifications';
 import { act } from 'react-dom/test-utils';
-import lang from '../../../lang';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
+jest.mock('../../../configs/env');
+
 describe('components/Logout', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it('renders without crashing', () => {
-    shallow(<CustomLogout />);
-  });
 
   it('renders logout component', () => {
-    const wrapper = mount(
+    const wrapper = mountWithTranslations(
       <Provider store={store}>
         <MemoryRouter>
           <CustomLogout />
@@ -49,7 +47,7 @@ describe('components/Logout', () => {
     const logoutURL = 'https://opensrp-stage.smartregister.org/opensrp/logout.do';
     const keycloakURL =
       'https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout';
-    mount(
+    mountWithTranslations(
       <Provider store={store}>
         <MemoryRouter>
           <CustomLogout />
@@ -63,7 +61,7 @@ describe('components/Logout', () => {
   it('handles logout failure correctly', async () => {
     jest.spyOn(serverLogout, 'logout').mockImplementation(() => Promise.reject('error'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    mount(
+    mountWithTranslations(
       <Provider store={store}>
         <MemoryRouter>
           <CustomLogout />
@@ -73,6 +71,6 @@ describe('components/Logout', () => {
     await act(async () => {
       await flushPromises();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 });
