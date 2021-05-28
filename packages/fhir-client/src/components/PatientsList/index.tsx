@@ -31,11 +31,35 @@ interface Props {
   fhirBaseURL: string;
 }
 
+export interface PaginationProps {
+  currentPage: number;
+  pageSize: number | undefined;
+}
+
 export type PatientsListTypes = Props & RouteComponentProps<RouteParams>;
 
 /** default component props */
 const defaultProps: Partial<PatientsListTypes> = {
   fhirBaseURL: '',
+};
+
+export const fetchPatients = async (
+  fhirBaseURL: string,
+  pageSize: number,
+  pageOffset: number,
+  searchParam: string | undefined,
+  setUsersCountCallback: (count: number) => void
+) => {
+  return await FHIR.client(fhirBaseURL)
+    .request({
+      url: `Patient/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}${
+        searchParam ? '&name=' + searchParam : ''
+      }`,
+    })
+    .then((res: fhirclient.FHIR.Bundle) => {
+      setUsersCountCallback(res.total as number);
+      return res;
+    });
 };
 
 /** Component which shows the list of all patients in FHIR server
@@ -45,20 +69,34 @@ const defaultProps: Partial<PatientsListTypes> = {
  */
 const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListTypes) => {
   const { fhirBaseURL } = props;
-  const { data, isLoading, error } = useQuery<fhirclient.FHIR.Bundle, Error>(
+  const [usersCount, setUsersCount] = React.useState<number>(0);
+  const [pageProps, setPageProps] = React.useState<PaginationProps>({
+    currentPage: 1,
+    pageSize: 20,
+  });
+  const { currentPage, pageSize } = pageProps;
+  const pageOffset = (currentPage - 1) * (pageSize ?? 20);
+  const searchParam = getQueryParams(props.location)['querySearch'];
+  const { data, error, isFetching, refetch } = useQuery<fhirclient.FHIR.Bundle, Error>(
     'fetchPatients',
-    async () => {
-      return await FHIR.client(fhirBaseURL)
-        .request({
-          url: 'Patient',
-        })
-        .then((res: fhirclient.FHIR.Bundle) => {
-          return res;
-        });
-    }
+    () =>
+      fetchPatients(
+        fhirBaseURL,
+        pageSize as number,
+        pageOffset,
+        searchParam as string,
+        setUsersCount
+      ),
+    { refetchOnWindowFocus: false }
   );
 
-  if (isLoading) return <Spin size="large" />;
+  React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(pageProps), searchParam]);
+
+  if (isFetching) return <Spin size="large" />;
 
   if (error) {
     return <BrokenPage errorMessage={`${error}`} />;
@@ -152,6 +190,14 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
               showQuickJumper: true,
               showSizeChanger: true,
               defaultPageSize: 20,
+              onChange: (page: number, pageSize: number | undefined) => {
+                setPageProps({
+                  currentPage: page,
+                  pageSize: pageSize,
+                });
+              },
+              current: currentPage,
+              total: usersCount,
               pageSizeOptions: ['5', '10', '20', '50', '100'],
             }}
           />

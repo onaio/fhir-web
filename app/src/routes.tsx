@@ -204,7 +204,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
     },
     {
       otherProps: { icon: <IdcardOutlined /> },
-      title: lang.PATIENTS,
+      title: langObj.PATIENTS,
       key: 'fhir-patients',
       enabled: ENABLE_PATIENTS_MODULE,
       url: '/admin/patients',
