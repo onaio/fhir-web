@@ -57,7 +57,7 @@ export const defaultProps = {
   keycloakUsers: [],
   keycloakBaseURL: '',
   extraData: {},
-  usersPageSie: 20,
+  usersPageSize: 20,
 };
 
 interface TableData {
