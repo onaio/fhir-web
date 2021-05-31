@@ -118,6 +118,8 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
           <SettingOutlined />
         </Space>
         <TableLayout
+          id="FormReleaseList"
+          persistState={true}
           columns={getTableColumns(viewReleaseURL, sortedInfo)}
           datasource={value.length < 1 ? data : (filterData as ManifestReleasesTypes[])}
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {

@@ -136,6 +136,8 @@ const UserList = (props: UserListTypes): JSX.Element => {
           <Space>
             {tableData.length > 0 ? (
               <TableLayout
+                id="UserList"
+                persistState={true}
                 columns={getTableColumns(
                   removeKeycloakUsersCreator,
                   keycloakBaseURL,

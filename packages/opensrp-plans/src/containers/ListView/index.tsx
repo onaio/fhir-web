@@ -95,7 +95,12 @@ const PlansList = (props: PlansListTypes) => {
               </Button>
             </Link>
           </div>
-          <TableLayout datasource={datasource} columns={columns} />
+          <TableLayout
+            id="PlansList"
+            persistState={true}
+            datasource={datasource}
+            columns={columns}
+          />
         </Col>
       </Row>
     </div>

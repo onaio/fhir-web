@@ -122,6 +122,8 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
           <SettingOutlined />
         </Space>
         <TableLayout
+          id="FormDraftFileList"
+          persistState={true}
           columns={getTableColumns(
             accessToken,
             opensrpBaseURL,

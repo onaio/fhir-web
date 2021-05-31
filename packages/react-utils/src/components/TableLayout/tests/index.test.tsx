@@ -1,7 +1,9 @@
+import { PaginationProps } from 'antd/lib/pagination';
 import { mount } from 'enzyme';
 import React from 'react';
 import { Column, TableLayout } from '..';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../../constants';
+import { setAllConfigs } from '@opensrp/pkg-config';
 
 interface TableData {
   geographicLevel: number;
@@ -29,6 +31,13 @@ const columns: Column<TableData>[] = [
   },
 ];
 
+const paginationDefaults = {
+  showQuickJumper: true,
+  showSizeChanger: true,
+  defaultPageSize: TABLE_PAGE_SIZE,
+  pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
+};
+
 describe('Table Layout', () => {
   const tableData: TableData[] = [];
   for (let i = 1; i < 5; i++) {
@@ -50,12 +59,7 @@ describe('Table Layout', () => {
   it('Must have default settings applied', () => {
     const wrapper = mount(<TableLayout datasource={tableData} columns={columns} />);
 
-    expect(wrapper.find('Table').first().prop('pagination')).toMatchObject({
-      showQuickJumper: true,
-      showSizeChanger: true,
-      defaultPageSize: TABLE_PAGE_SIZE,
-      pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
-    });
+    expect(wrapper.find('Table').first().prop('pagination')).toMatchObject(paginationDefaults);
   });
 
   it('can override default settings', () => {
@@ -64,5 +68,45 @@ describe('Table Layout', () => {
     );
 
     expect(wrapper.find('Table').first().prop('pagination')).toBe(false);
+  });
+
+  it('Add event to pagination change only when presist state', () => {
+    const wrapper = mount(<TableLayout datasource={tableData} columns={columns} />);
+
+    expect(
+      (wrapper.find('Table').first().prop('pagination') as PaginationProps).onChange
+    ).toBeFalsy();
+
+    const wrapper1 = mount(
+      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+    );
+
+    expect(
+      (wrapper1.find('Table').first().prop('pagination') as PaginationProps).onChange
+    ).toBeTruthy();
+  });
+
+  it('Get and Save Value to pkg-config', () => {
+    // get when nothing is stored
+    const wrapper = mount(
+      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+    );
+
+    expect(wrapper.find('Table').first().prop('pagination') as PaginationProps).toMatchObject({
+      ...paginationDefaults,
+      onChange: expect.any(Function),
+    });
+
+    // get when something is really stored
+    setAllConfigs({ tablespref: { TestTable: { pagination: { current: 3, pageSize: 10 } } } });
+    const wrapper1 = mount(
+      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+    );
+    expect(wrapper1.find('Table').first().prop('pagination') as PaginationProps).toMatchObject({
+      ...paginationDefaults,
+      current: 3,
+      pageSize: 10,
+      onChange: expect.any(Function),
+    });
   });
 });

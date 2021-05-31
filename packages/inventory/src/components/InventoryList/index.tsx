@@ -108,6 +108,8 @@ const InventoryList = (props: InventoryListProps) => {
             </Link>
           </div>
           <TableLayout
+            id="InventoryList"
+            persistState={true}
             className="custom-table"
             pagination={false}
             datasource={datasource}

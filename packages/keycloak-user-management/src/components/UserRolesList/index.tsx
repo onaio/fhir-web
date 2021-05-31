@@ -113,7 +113,12 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
           </div>
-          <TableLayout datasource={tableData} columns={columns} />
+          <TableLayout
+            id="UserRolesList"
+            persistState={true}
+            datasource={tableData}
+            columns={columns}
+          />
         </Col>
       </Row>
     </div>

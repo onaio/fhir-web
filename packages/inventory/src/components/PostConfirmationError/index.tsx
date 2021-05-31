@@ -75,7 +75,12 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
       </p>
       <Divider></Divider>
       <p>{format(lang.INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED, filename)}</p>
-      <TableLayout columns={columns} datasource={datasource} />
+      <TableLayout
+        id="InventoryPostConfirmationError"
+        persistState={true}
+        columns={columns}
+        datasource={datasource}
+      />
     </Card>
   );
 };

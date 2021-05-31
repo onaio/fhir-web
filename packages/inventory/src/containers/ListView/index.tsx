@@ -168,7 +168,13 @@ const ServicePointList = (props: ServicePointsListTypes) => {
               <Button type="primary">{lang.ADD_SERVICE_POINT}</Button>
             </Link>
           </div>
-          <TableLayout className="custom-table" datasource={datasource} columns={columns} />
+          <TableLayout
+            id="InventoryListView"
+            persistState={true}
+            className="custom-table"
+            datasource={datasource}
+            columns={columns}
+          />
         </Col>
       </Row>
     </div>

@@ -299,7 +299,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
-          <TableLayout datasource={tableData} columns={columns} />
+          <TableLayout
+            id="TeamAssignmentList"
+            persistState={true}
+            datasource={tableData}
+            columns={columns}
+          />
         </Col>
       </Row>
     </div>
