@@ -5,7 +5,13 @@ import { Spin } from 'antd';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
+import {
+  createChangeHandler,
+  defaults,
+  getQueryParams,
+  SearchForm,
+  TableLayout,
+} from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -27,16 +33,12 @@ import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { PaginationProps } from 'antd/lib/pagination';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 // Define selector instance
 const usersSelector = makeKeycloakUsersSelector();
-
-export interface PaginationProps {
-  currentPage: number;
-  pageSize: number | undefined;
-}
 
 /** interface for component props */
 export interface Props {
@@ -73,13 +75,6 @@ interface TableData {
 export type UserListTypes = Props & RouteComponentProps;
 
 const UserList = (props: UserListTypes): JSX.Element => {
-  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [usersCount, setUsersCount] = React.useState<number>(0);
-  const [pageProps, setPageProps] = React.useState<PaginationProps>({
-    currentPage: 1,
-    pageSize: props.usersPageSize,
-  });
   const {
     serviceClass,
     fetchKeycloakUsersCreator,
@@ -90,6 +85,14 @@ const UserList = (props: UserListTypes): JSX.Element => {
     usersPageSize,
   } = props;
 
+  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [usersCount, setUsersCount] = React.useState<number>(0);
+  const [page, setPage] = React.useState<Pick<PaginationProps, 'current' | 'pageSize'>>({
+    current: 1,
+    pageSize: usersPageSize,
+  });
+
   const isLoadingCallback = (isLoading: boolean) => {
     setIsLoading(isLoading);
   };
@@ -98,9 +101,9 @@ const UserList = (props: UserListTypes): JSX.Element => {
   const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
 
   React.useEffect(() => {
-    const { currentPage, pageSize } = pageProps;
+    const { current, pageSize } = page;
     let filterParams: Dictionary = {
-      first: currentPage * (pageSize ?? usersPageSize) - (pageSize ?? usersPageSize),
+      first: (current ?? 1) * (pageSize ?? usersPageSize) - (pageSize ?? usersPageSize),
       max: pageSize ?? usersPageSize,
     };
     if (searchParam) {
@@ -126,7 +129,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       .finally(() => setIsLoading(false));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParam, JSON.stringify(pageProps)]);
+  }, [searchParam, JSON.stringify(page)]);
 
   if (isLoading) {
     return <Spin size="large" />;
@@ -180,15 +183,13 @@ const UserList = (props: UserListTypes): JSX.Element => {
               )}
               datasource={tableData}
               pagination={{
-                defaultPageSize: usersPageSize,
-                current: isSearchActive ? 1 : pageProps.currentPage,
+                ...defaults.pagination,
+                current: page.current,
+                pageSize: page.pageSize,
                 total: isSearchActive ? keycloakUsers.length : usersCount,
               }}
               onChange={(pagination, __, sorter) => {
-                setPageProps({
-                  currentPage: pagination.current ?? 1,
-                  pageSize: pagination.pageSize,
-                });
+                setPage({ current: pagination.current ?? 1, pageSize: pagination.pageSize });
                 setSortedInfo(sorter);
                 setIsLoading(true);
               }}
