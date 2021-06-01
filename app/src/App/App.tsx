@@ -127,6 +127,7 @@ import {
   editLocationProps,
   newLocationUnitProps,
   locationUnitProps,
+  usersListProps,
 } from './utils';
 import './App.css';
 import {
@@ -222,6 +223,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER}
+              {...usersListProps}
               component={ConnectedUserList}
             />
             <PrivateComponent
