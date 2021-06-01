@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UserList renders user list correctly: header actions col props 1`] = `"Add UserUsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit15 / page"`;
+exports[`components/UserList renders user list correctly: header actions col props 1`] = `"Add UserUsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit120 / page)"`;
 
-exports[`components/UserList renders user list correctly: table text 1`] = `"UsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit15 / page"`;
+exports[`components/UserList renders user list correctly: table text 1`] = `"UsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit120 / page"`;
 
 exports[`components/UserList sort works correctly: sorted table rows by email - ascending 0 1`] = `"UsernameEmailFirst NameLast NameActions"`;
 
@@ -54,4 +54,4 @@ exports[`components/UserList sort works correctly: table rows - default order 3 
 
 exports[`components/UserList sort works correctly: table rows - default order 4 1`] = `"opensrpDemokenyaEdit"`;
 
-exports[`components/UserList works correctly with store: full rendered text 1`] = `"User ManagementAdd UserUsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit15 / page"`;
+exports[`components/UserList works correctly with store: full rendered text 1`] = `"User ManagementAdd UserUsernameEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit120 / page)"`;
