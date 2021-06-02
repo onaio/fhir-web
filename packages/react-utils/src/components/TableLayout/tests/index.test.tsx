@@ -1,9 +1,10 @@
 import { PaginationProps } from 'antd/lib/pagination';
 import { mount } from 'enzyme';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { Column, TableLayout } from '..';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../../constants';
-import { setAllConfigs } from '@opensrp/pkg-config';
+import { getConfig } from '@opensrp/pkg-config';
 
 interface TableData {
   geographicLevel: number;
@@ -40,7 +41,7 @@ const paginationDefaults = {
 
 describe('Table Layout', () => {
   const tableData: TableData[] = [];
-  for (let i = 1; i < 5; i++) {
+  for (let i = 1; i < 20; i++) {
     tableData.push({
       id: i.toString(),
       key: i.toString(),
@@ -64,7 +65,13 @@ describe('Table Layout', () => {
 
   it('can override default settings', () => {
     const wrapper = mount(
-      <TableLayout datasource={tableData} pagination={false} columns={columns} />
+      <TableLayout
+        datasource={tableData}
+        id="TestTable"
+        persistState={false}
+        pagination={false}
+        columns={columns}
+      />
     );
 
     expect(wrapper.find('Table').first().prop('pagination')).toBe(false);
@@ -86,27 +93,36 @@ describe('Table Layout', () => {
     ).toBeTruthy();
   });
 
-  it('Get and Save Value to pkg-config', () => {
-    // get when nothing is stored
+  it('Get and Save Value to pkg-config', async () => {
+    // When no persistState or id is assigned
     const wrapper = mount(
-      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+      <TableLayout datasource={tableData} id="TestTable" persistState={false} columns={columns} />
     );
 
-    expect(wrapper.find('Table').first().prop('pagination') as PaginationProps).toMatchObject({
-      ...paginationDefaults,
-      onChange: expect.any(Function),
+    await act(async () => {
+      wrapper.find('Table').find('.ant-pagination-item-3').simulate('click');
+      wrapper.update();
     });
 
-    // get when something is really stored
-    setAllConfigs({ tablespref: { TestTable: { pagination: { current: 3, pageSize: 10 } } } });
+    expect(getConfig('tablespref')).toBeUndefined();
+
+    // get when nothing is stored
     const wrapper1 = mount(
       <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
     );
-    expect(wrapper1.find('Table').first().prop('pagination') as PaginationProps).toMatchObject({
-      ...paginationDefaults,
-      current: 3,
-      pageSize: 10,
-      onChange: expect.any(Function),
+
+    await act(async () => {
+      wrapper1.find('Table').find('.ant-pagination-item-3').simulate('click');
+      wrapper1.update();
+    });
+
+    expect(getConfig('tablespref')).toMatchObject({
+      TestTable: {
+        pagination: {
+          current: 3,
+          pageSize: 5,
+        },
+      },
     });
   });
 });
