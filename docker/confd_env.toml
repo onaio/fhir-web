@@ -43,4 +43,5 @@ keys = [
     "/react/app/enable/teams",
     "/react/app/enable/plans",
     "/react/app/enable/card/support",
+    "/react/app/fhir/api/base/url",
 ]

@@ -205,3 +205,9 @@ Below is a list of currently supported environment variables:
   - keycloak users page size
   - **Optional**(`number`)
   - default: `20`
+
+- **REACT_APP_FHIR_API_BASE_URL**
+
+  - FHIR server base URL
+  - **Required**
+  - default: `https://fhir.labs.smartregister.org/fhir`
