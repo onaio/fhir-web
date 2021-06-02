@@ -166,4 +166,9 @@ export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default'
 export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
   setEnv('REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
 
+export const FHIR_API_BASE_URL = setEnv(
+  'REACT_APP_FHIR_API_BASE_URL',
+  'https://fhir.labs.smartregister.org/fhir'
+);
+
 export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
