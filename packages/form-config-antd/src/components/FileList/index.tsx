@@ -22,6 +22,7 @@ import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/ico
 import { ROUTE_PARAM_FORM_VERSION } from '../../constants';
 import lang from '../../lang';
 import { TableLayout } from '@opensrp/react-utils';
+import { TableActions } from './TableActions';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -153,14 +154,21 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
         <TableLayout
           id="FormFileList"
           persistState={true}
-          columns={getTableColumns(
-            accessToken,
-            opensrpBaseURL,
-            isJsonValidator,
-            uploadFileURL,
-            sortedInfo,
-            customFetchOptions
-          )}
+          columns={getTableColumns(isJsonValidator, sortedInfo)}
+          actions={{
+            // eslint-disable-next-line react/display-name
+            render: (_: string, file: ManifestFilesTypes) => {
+              const tableActionProps = {
+                file,
+                uploadFileURL,
+                accessToken,
+                opensrpBaseURL,
+                isJsonValidator,
+                customFetchOptions,
+              };
+              return <TableActions {...tableActionProps} />;
+            },
+          }}
           datasource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
             setSortedInfo(sorter);
