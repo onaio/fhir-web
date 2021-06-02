@@ -7,10 +7,10 @@ export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
 export type ProjectLanguageCode = 'eusm' | 'core';
 export type GlobalState = ConfigState & UserPreference;
 
-export type Pagination = Pick<PaginationProps, 'current' | 'pageSize'>;
+export type PaginationState = Pick<PaginationProps, 'current' | 'pageSize'>;
 
 export interface TableState {
-  pagination?: Pagination;
+  pagination?: PaginationState;
 }
 
 /** interface for configs for this package */
