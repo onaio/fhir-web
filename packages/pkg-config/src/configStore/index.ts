@@ -1,16 +1,16 @@
 /** stores configuration for any other package */
 import { createGlobalState } from 'react-hooks-global-state';
 import { USER_PREFERENCE_KEY } from '../constants';
+import { PaginationProps } from 'antd/lib/pagination/Pagination';
 
 export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
 export type ProjectLanguageCode = 'eusm' | 'core';
 export type GlobalState = ConfigState & UserPreference;
 
+export type PaginationState = Pick<PaginationProps, 'current' | 'pageSize'>;
+
 export interface TableState {
-  pagination?: {
-    current?: number;
-    pageSize?: number;
-  };
+  pagination?: PaginationState;
 }
 
 /** interface for configs for this package */
