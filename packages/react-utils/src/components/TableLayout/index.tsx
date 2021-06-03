@@ -59,7 +59,9 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
     const actionsColumn: Column<T> = {
       key: TABLE_ACTIONS_KEY as TKey<T>,
       title: 'Actions',
+      width: 'min-content',
       ...actions,
+      className: `${actions.width ? '' : 'text-nowrap'} ${actions.className}`,
     };
     columns.push(actionsColumn);
   }
