@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/error-boundary-fallback",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
@@ -31,8 +31,8 @@
     "react": "^16.13.1"
   },
   "dependencies": {
-    "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/pkg-config": "^0.0.7",
+    "@opensrp/react-utils": "^0.0.8",
     "react-i18next": "^11.8.10"
   },
   "devDependencies": {
