@@ -4,6 +4,7 @@ import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS, TABLE_ACTIONS_KEY } from '../../constants';
 import { getConfig, TableState, setConfig } from '@opensrp/pkg-config';
+import { Optional } from '../../helpers/utils';
 
 type TKey<T> = keyof T & React.Key;
 
@@ -30,8 +31,6 @@ interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   columns?: Column<T>[];
   actions?: Optional<Column<T>, 'key' | 'dataIndex'>;
 }
-
-type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
 
 interface PersistState {
   id: string;
