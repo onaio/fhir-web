@@ -32,11 +32,11 @@ interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
 
 interface PersistState {
   id: string;
-  persistState?: boolean;
+  persistState: boolean;
 }
 
 interface NoPersistState {
-  id?: never;
+  id?: string;
   persistState?: never;
 }
 
