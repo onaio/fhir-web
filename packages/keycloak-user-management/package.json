@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/user-management",
-  "version": "0.1.14",
+  "version": "0.1.13",
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
@@ -46,10 +46,10 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/keycloak-service": "^0.0.14",
+    "@opensrp/keycloak-service": "^0.0.13",
     "@opensrp/notifications": "^0.0.1",
-    "@opensrp/pkg-config": "^0.0.7",
-    "@opensrp/react-utils": "^0.0.8",
+    "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7",
     "@opensrp/server-service": "^0.0.16",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",

@@ -3,10 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.7](https://github.com/opensrp/web/compare/@opensrp/pkg-config@0.0.4...@opensrp/pkg-config@0.0.7) (2021-06-03)
-
-**Note:** Version bump only for package @opensrp/pkg-config
-
 ## 0.0.4 (2021-02-24)
 
 **Note:** Version bump only for package @opensrp/pkg-config

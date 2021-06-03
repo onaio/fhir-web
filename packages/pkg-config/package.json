@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/pkg-config",
-  "version": "0.0.7",
+  "version": "0.0.6",
   "description": "stores packages' configs",
   "main": "dist/index.js",
   "types": "dist/types",
