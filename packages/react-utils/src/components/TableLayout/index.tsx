@@ -35,11 +35,11 @@ type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
 
 interface PersistState {
   id: string;
-  persistState?: boolean;
+  persistState: boolean;
 }
 
 interface NoPersistState {
-  id?: never;
+  id?: string;
   persistState?: never;
 }
 
