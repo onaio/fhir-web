@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/react-utils",
-  "version": "0.0.8",
+  "version": "0.0.7",
   "description": "A couple of utils that work with react",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -40,7 +40,7 @@
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
-    "@opensrp/pkg-config": "^0.0.7",
+    "@opensrp/pkg-config": "^0.0.6",
     "@opensrp/server-service": "^0.0.17",
     "antd": "^4.6.3"
   },

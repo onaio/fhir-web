@@ -3,10 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.12](https://github.com/OpenSRP/web/compare/@opensrp/location-management@0.0.11...@opensrp/location-management@0.0.12) (2021-06-03)
-
-**Note:** Version bump only for package @opensrp/location-management
-
 ## 0.0.11 (2021-02-24)
 
 ### Reverts

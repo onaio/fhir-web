@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/product-catalogue",
-  "version": "0.0.7",
+  "version": "0.0.6",
   "description": "Contains product catalogue Page",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -37,8 +37,8 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
-    "@opensrp/pkg-config": "^0.0.7",
-    "@opensrp/react-utils": "^0.0.8",
+    "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/react-utils": "^0.0.7",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
     "formik": "^2.1.5",

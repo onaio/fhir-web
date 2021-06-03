@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/team-assignment",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "description": "Contains team assignment page",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -35,12 +35,12 @@
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/location-management": "^0.0.12",
+    "@opensrp/location-management": "^0.0.11",
     "@opensrp/notifications": "^0.0.5",
-    "@opensrp/react-utils": "^0.0.8",
+    "@opensrp/react-utils": "^0.0.7",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.17",
-    "@opensrp/team-management": "^0.0.6",
+    "@opensrp/team-management": "^0.0.5",
     "antd": "^4.6.3",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
@@ -52,8 +52,8 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.9",
     "i18next": "^19.8.4",
+    "@opensrp/store": "^0.0.9",
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
