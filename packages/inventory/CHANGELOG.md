@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/opensrp/web/compare/@opensrp/inventory@0.0.5...@opensrp/inventory@0.0.6) (2021-06-03)
+
+**Note:** Version bump only for package @opensrp/inventory
+
 ## 0.0.5 (2021-02-24)
 
 **Note:** Version bump only for package @opensrp/inventory
