@@ -31,13 +31,15 @@ import {
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, Column, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { PlanDefinition } from '@opensrp/plan-form-core';
-import { getDataSource, getPlanAssignmentColumns } from './utils';
+import { compressAssignments, mergeIdsWithNames, getDataSource, TableData } from './utils';
 import {
   fetchPlanDefinitions,
   makePlanDefinitionsArraySelector,
 } from '../../ducks/planDefinitions';
+import { TableColumnsNamespace } from '../../index';
+import { ActionColumn } from '../TableActionColumn';
 
 reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
 reducerRegistry.register(orgReducerName, organizationsReducer);
@@ -130,17 +132,21 @@ const AssignmentTable = (props: AssignmentTableProps) => {
 
   const planJurisdictions = plan.jurisdiction.map((jurCode) => jurCode.code);
   const datasource = getDataSource(organizations, jurisdictions, assignments, planJurisdictions);
-  const columns = getPlanAssignmentColumns(
-    assignments,
-    organizations,
-    jurisdictions,
-    serviceClass,
-    planCreator,
-    assignmentsActionCreator,
-    plan,
-    baseURL,
-    disableAssignments
-  );
+
+  const columns: Column<TableData>[] = [
+    {
+      title: 'Assigned areas',
+      dataIndex: 'jurisdictions',
+      key: `${TableColumnsNamespace}-assigned-areas` as keyof TableData,
+      width: '40%',
+    },
+    {
+      title: 'Assigned teams',
+      dataIndex: 'organizations',
+      key: `${TableColumnsNamespace}-assigned-teams` as keyof TableData,
+      width: '40%',
+    },
+  ];
 
   return (
     <div className="assignment-table">
@@ -151,6 +157,38 @@ const AssignmentTable = (props: AssignmentTableProps) => {
         loading={loading}
         columns={columns}
         pagination={false}
+        actions={{
+          title: 'Actions',
+          render: (_, __, index: number) => {
+            const fullyGrouped = compressAssignments(assignments);
+            const planJurisdictions = plan.jurisdiction.map((jur) => jur.code);
+            const mergedOptions = mergeIdsWithNames(
+              fullyGrouped,
+              organizations,
+              jurisdictions,
+              assignments,
+              planJurisdictions
+            );
+            const assignedOrgsOptions = mergedOptions[index]?.organizations ?? [];
+            const assignedJursOptions = mergedOptions[index]?.jurisdictions ?? [];
+
+            const props = {
+              organizations,
+              assignments,
+              jurisdictions,
+              assignedJursOptions,
+              assignedOrgsOptions,
+              serviceClass,
+              planCreator,
+              assignmentsCreator: assignmentsActionCreator,
+              plan,
+              baseURL,
+              disableAssignments,
+            };
+            return <ActionColumn {...props}></ActionColumn>;
+          },
+          width: '20%',
+        }}
       />
     </div>
   );

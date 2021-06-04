@@ -29,7 +29,7 @@ export const getTableColumns = (
     langObj.FIRST_NAME,
     langObj.LAST_NAME,
   ];
-  const dataElements = [];
+  const dataElements: Dictionary[] = [];
   const fields: string[] = ['username', 'email', 'firstName', 'lastName'];
 
   fields.forEach((field: string, index: number) => {
@@ -49,6 +49,7 @@ export const getTableColumns = (
       ellipsis: true,
     });
   });
+
   // append action column
   dataElements.push({
     title: 'Actions',
