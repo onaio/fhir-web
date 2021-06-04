@@ -315,4 +315,39 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     );
     wrapper.unmount();
   });
+
+  it('renders with inactive practitioners filtered out', async () => {
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(team));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
+          <Route path={'/:id'} component={TeamsAddEdit} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find antd Select with id 'practitioners' in the 'Form' component
+    const practitionersSelect = wrapper.find('Form').find('Select#practitioners');
+
+    // find antd select items (prefixed with 'ant-select-selection-item-content' css class)
+    const options = practitionersSelect.find('.ant-select-selection-item-content');
+
+    // filter practitioners against inactive users
+    const filteredPractitioners = practitioners.filter((practitioner) => practitioner.active);
+    // only return the names
+    const filteredPractitionerNames = filteredPractitioners.map(
+      (practitioner) => practitioner.name
+    );
+
+    // expect antd select options text to equal practitioners filtered for only active users
+    expect(options.map((opt) => opt.text())).toStrictEqual(filteredPractitionerNames);
+  });
 });
