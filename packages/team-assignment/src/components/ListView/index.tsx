@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Row, PageHeader, Col, Button, Modal, Form, Select } from 'antd';
-import { TeamAssignmentLoading, columnsFactory, getPayload } from './utils';
+import {
+  TeamAssignmentLoading,
+  columnsFactory,
+  getPayload,
+  ActionsColumnCustomRender,
+} from './utils';
 import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService, TableLayout } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -304,6 +309,11 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             persistState={true}
             datasource={tableData}
             columns={columns}
+            actions={{
+              title: lang.ACTIONS,
+              width: '20%',
+              render: ActionsColumnCustomRender,
+            }}
           />
         </Col>
       </Row>

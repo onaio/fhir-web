@@ -33,47 +33,50 @@ const Table: React.FC<Props> = (props: Props) => {
       dataIndex: 'name',
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
-    {
-      title: 'Actions',
-      width: '10%',
-
-      // eslint-disable-next-line react/display-name
-      render: (_: unknown, record: TableData) => (
-        <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
-            <Button type="link" className="m-0 p-1">
-              Edit
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    if (onViewDetails) {
-                      onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
-                    }
-                  }}
-                >
-                  View Details
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomRight"
-            arrow
-            trigger={['click']}
-          >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
-        </span>
-      ),
-    },
   ];
 
   return (
-    <TableLayout id="TeamList" persistState={true} datasource={props.data} columns={columns} />
+    <TableLayout
+      id="TeamList"
+      persistState={true}
+      datasource={props.data}
+      columns={columns}
+      actions={{
+        width: '10%',
+        // eslint-disable-next-line react/display-name
+        render: (_: unknown, record: TableData) => (
+          <span className="d-flex justify-content-end align-items-center">
+            <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
+              <Button type="link" className="m-0 p-1">
+                Edit
+              </Button>
+            </Link>
+            <Divider type="vertical" />
+            <Dropdown
+              overlay={
+                <Menu className="menu">
+                  <Menu.Item
+                    className="viewdetails"
+                    onClick={() => {
+                      if (onViewDetails) {
+                        onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
+                      }
+                    }}
+                  >
+                    View Details
+                  </Menu.Item>
+                </Menu>
+              }
+              placement="bottomRight"
+              arrow
+              trigger={['click']}
+            >
+              <MoreOutlined className="more-options" />
+            </Dropdown>
+          </span>
+        ),
+      }}
+    />
   );
 };
 

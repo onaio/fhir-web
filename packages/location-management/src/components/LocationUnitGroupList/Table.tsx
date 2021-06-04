@@ -51,41 +51,6 @@ const Table: React.FC<Props> = (props: Props) => {
       dataIndex: 'name',
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
-    {
-      title: lang.ACTIONS,
-      width: '10%',
-      // eslint-disable-next-line react/display-name
-      render: (_: unknown, record) => (
-        <span className="d-flex justify-content-end align-items-center Actions">
-          <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
-            <Button type="link" className="m-0 p-1">
-              {lang.EDIT}
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => (onViewDetails ? onViewDetails(record) : {})}
-                >
-                  {lang.VIEW_DETAILS}
-                </Menu.Item>
-                <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL)}>
-                  {lang.DEACTIVATE}
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomLeft"
-            arrow
-            trigger={['click']}
-          >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
-        </span>
-      ),
-    },
   ];
 
   return (
@@ -94,6 +59,41 @@ const Table: React.FC<Props> = (props: Props) => {
       persistState={true}
       datasource={data}
       columns={columns}
+      actions={{
+        title: lang.ACTIONS,
+        width: '10%',
+        // eslint-disable-next-line react/display-name
+        render: (_: unknown, record) => (
+          <span className="d-flex justify-content-end align-items-center Actions">
+            <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
+              <Button type="link" className="m-0 p-1">
+                {lang.EDIT}
+              </Button>
+            </Link>
+            <Divider type="vertical" />
+            <Dropdown
+              overlay={
+                <Menu className="menu">
+                  <Menu.Item
+                    className="viewdetails"
+                    onClick={() => (onViewDetails ? onViewDetails(record) : {})}
+                  >
+                    {lang.VIEW_DETAILS}
+                  </Menu.Item>
+                  <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL)}>
+                    {lang.DEACTIVATE}
+                  </Menu.Item>
+                </Menu>
+              }
+              placement="bottomLeft"
+              arrow
+              trigger={['click']}
+            >
+              <MoreOutlined className="more-options" />
+            </Dropdown>
+          </span>
+        ),
+      }}
     />
   );
 };
