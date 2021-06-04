@@ -44,6 +44,11 @@ exports[`components/Antd/DraftFileList renders correctly: search 1`] = `
 
 exports[`components/Antd/DraftFileList renders correctly: table 1`] = `
 <TableLayout
+  actions={
+    Object {
+      "render": [Function],
+    }
+  }
   columns={
     Array [
       Object {
@@ -88,9 +93,9 @@ exports[`components/Antd/DraftFileList renders correctly: table 1`] = `
         "title": "Module",
       },
       Object {
-        "key": "action",
+        "key": "_actions",
         "render": [Function],
-        "title": "Action",
+        "title": "Actions",
       },
     ]
   }

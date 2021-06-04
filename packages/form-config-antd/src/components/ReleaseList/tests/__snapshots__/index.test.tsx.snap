@@ -23,6 +23,11 @@ exports[`components/Antd/ReleaseList renders correctly: search 1`] = `
 
 exports[`components/Antd/ReleaseList renders correctly: table 1`] = `
 <TableLayout
+  actions={
+    Object {
+      "render": [Function],
+    }
+  }
   columns={
     Array [
       Object {
@@ -61,9 +66,9 @@ exports[`components/Antd/ReleaseList renders correctly: table 1`] = `
         "title": "Updated At",
       },
       Object {
-        "key": "action",
+        "key": "_actions",
         "render": [Function],
-        "title": "Action",
+        "title": "Actions",
       },
     ]
   }
