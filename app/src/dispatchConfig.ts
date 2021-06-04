@@ -1,6 +1,7 @@
 import { ConfigState, LanguageCode, ProjectLanguageCode, setAllConfigs } from '@opensrp/pkg-config';
 import {
   BACKEND_ACTIVE,
+  FHIR_API_BASE_URL,
   KEYCLOAK_API_BASE_URL,
   LANGUAGE_CODE,
   OPENSRP_API_BASE_URL,
@@ -17,6 +18,7 @@ const configObject: ConfigState = {
   appLoginURL: APP_LOGIN_URL,
   keycloakBaseURL: KEYCLOAK_API_BASE_URL,
   opensrpBaseURL: OPENSRP_API_BASE_URL,
+  fhirBaseURL: FHIR_API_BASE_URL,
   i18n,
 };
 

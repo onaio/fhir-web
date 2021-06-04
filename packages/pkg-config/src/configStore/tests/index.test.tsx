@@ -14,6 +14,7 @@ describe('pkg-configs/configStore', () => {
       keycloakBaseURL: undefined,
       languageCode: 'en',
       opensrpBaseURL: undefined,
+      fhirBaseURL: undefined,
       projectLanguageCode: 'core',
     });
   });
