@@ -7,7 +7,7 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { id, intialValue, opensrpBaseURL, practitioners, team, members } from './fixtures';
+import { id, intialValue, opensrpBaseURL, practitioners, team } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
@@ -245,7 +245,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('correctly adds/removes members from team', async () => {
-    fetch.mockResponseOnce(JSON.stringify(members));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
     fetch.mockResponseOnce(JSON.stringify(team));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
