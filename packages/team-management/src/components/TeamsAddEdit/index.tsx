@@ -99,7 +99,9 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     serve
       .list()
       .then((response: Practitioner[]) => {
-        setPractitioners(response);
+        // filter inactive practitioners
+        const filteredResponse = response.filter((practitioner) => practitioner.active);
+        setPractitioners(filteredResponse);
       })
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }, [opensrpBaseURL]);
