@@ -159,8 +159,10 @@ const AssignmentTable = (props: AssignmentTableProps) => {
         pagination={false}
         actions={{
           title: 'Actions',
+          // eslint-disable-next-line react/display-name
           render: (_, __, index: number) => {
             const fullyGrouped = compressAssignments(assignments);
+            // eslint-disable-next-line react/prop-types
             const planJurisdictions = plan.jurisdiction.map((jur) => jur.code);
             const mergedOptions = mergeIdsWithNames(
               fullyGrouped,
@@ -169,7 +171,9 @@ const AssignmentTable = (props: AssignmentTableProps) => {
               assignments,
               planJurisdictions
             );
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             const assignedOrgsOptions = mergedOptions[index]?.organizations ?? [];
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             const assignedJursOptions = mergedOptions[index]?.jurisdictions ?? [];
 
             const props = {
