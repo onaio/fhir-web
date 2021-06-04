@@ -6,16 +6,16 @@ import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS, TABLE_ACTIONS_KEY } from '../
 import { getConfig, TableState, setConfig } from '@opensrp/pkg-config';
 import { Optional } from '../../helpers/utils';
 
+// Options Must be of any Data type as the Data could be any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Options<T = any> = AntTableProps<T>;
+type Action<T> = Optional<Column<T>, 'key' | 'dataIndex'>;
 type TKey<T> = keyof T & React.Key;
 
 export interface Column<T> extends ColumnType<T>, Dictionary {
   dataIndex?: TKey<T>;
   key?: TKey<T>;
 }
-
-// Options Must be of any Data type as the Data could be any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Options<T = any> = AntTableProps<T>;
 
 export const defaults: Options = {
   pagination: {
@@ -29,7 +29,7 @@ export const defaults: Options = {
 interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
   columns?: Column<T>[];
-  actions?: Optional<Column<T>, 'key' | 'dataIndex'>;
+  actions?: Action<T>;
 }
 
 interface PersistState {
