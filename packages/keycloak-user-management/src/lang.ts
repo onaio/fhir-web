@@ -75,6 +75,11 @@ function fill() {
   lang.GROUP = i18n.t(`Group`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
   lang.SAVING = i18n.t(`Saving`, { ns: namespace });
+  lang.CONTACT = i18n.t(`Contact`, { ns: namespace });
+  lang.CONTACT_IS_REQUIRED_ERROR = i18n.t(`Contact is required`, { ns: namespace });
+  lang.CONTACT_REGEX_ERROR = i18n.t(`Contact should be 10 digits and start with 0`, {
+    ns: namespace,
+  });
 }
 
 // run it initial
