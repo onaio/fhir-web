@@ -22,6 +22,8 @@ import {
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
   FHIR_API_BASE_URL,
+  FILTER_BY_PARENT_ID,
+  KEYCLOAK_USERS_PAGE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -33,16 +35,25 @@ export const teamAssignmentProps = {
   defaultPlanId: DEFAULT_PLAN_ID,
 };
 
+export const locationUnitProps = {
+  filterByParentId: FILTER_BY_PARENT_ID,
+};
+
 export const newLocationUnitProps = {
   successURLGenerator: () => URL_LOCATION_UNIT,
   cancelURLGenerator: () => URL_LOCATION_UNIT,
   hidden: ['serviceType', 'latitude', 'longitude'],
+  ...locationUnitProps,
 };
 
 export const editLocationProps = {
   ...newLocationUnitProps,
+  ...locationUnitProps,
 };
 
+export const usersListProps = {
+  usersPageSize: KEYCLOAK_USERS_PAGE_SIZE,
+};
 export const inventoryServiceProps = {
   baseURL: OPENSRP_API_BASE_URL,
 };

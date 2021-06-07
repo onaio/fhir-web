@@ -8,8 +8,9 @@ import { Provider } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { removeLocationUnits } from '../../../ducks/location-units';
 import { authenticateUser } from '@onaio/session-reducer';
-import { location1 } from '../../LocationForm/tests/fixtures';
+import { baseLocationUnits, location1, rawHierarchy } from '../../LocationForm/tests/fixtures';
 import { act } from 'react-dom/test-utils';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -56,11 +57,15 @@ describe('EditLocationUnit', () => {
   });
 
   it('renders without crashing', async () => {
+    const queryClient = new QueryClient();
     fetch.mockResponse(JSON.stringify([]));
+
     shallow(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...locationProps} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -71,14 +76,20 @@ describe('EditLocationUnit', () => {
   });
 
   it('renders correctly when location is jurisdiction', async () => {
-    fetch.once(JSON.stringify(location1));
-    fetch.once(JSON.stringify(null));
-    fetch.mockResponse(JSON.stringify([]));
+    const queryClient = new QueryClient();
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...locationProps} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -128,14 +139,20 @@ describe('EditLocationUnit', () => {
   });
 
   it('renders correctly when location is structure', async () => {
-    fetch.once(JSON.stringify(null));
-    fetch.once(JSON.stringify(location1));
-    fetch.mockResponse(JSON.stringify([]));
+    const queryClient = new QueryClient();
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...locationProps} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -154,13 +171,16 @@ describe('EditLocationUnit', () => {
   });
 
   it('renders errorPage correctly', async () => {
+    const queryClient = new QueryClient();
     const errorMessage = 'An error happened';
     fetch.mockReject(new Error(errorMessage));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...locationProps} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -173,13 +193,17 @@ describe('EditLocationUnit', () => {
       wrapper.update();
     });
 
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorAn error happenedGo backGo home"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
   });
 
   it('renders resource404 when location is not found', async () => {
-    fetch.once(JSON.stringify(null));
-    fetch.once(JSON.stringify(location1));
-    fetch.mockResponse(JSON.stringify([]));
+    const queryClient = new QueryClient();
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const props = {
       ...locationProps,
@@ -192,7 +216,9 @@ describe('EditLocationUnit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...props} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...props} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
@@ -212,9 +238,14 @@ describe('EditLocationUnit', () => {
   });
 
   it('cancel url is used if passed', async () => {
-    fetch.once(JSON.stringify(null));
-    fetch.once(JSON.stringify(location1));
-    fetch.mockResponse(JSON.stringify([]));
+    const queryClient = new QueryClient();
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
+
     const cancelURL = '/canceledURL';
 
     const props = {
@@ -229,7 +260,9 @@ describe('EditLocationUnit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <EditLocationUnit {...props} />
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...props} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );

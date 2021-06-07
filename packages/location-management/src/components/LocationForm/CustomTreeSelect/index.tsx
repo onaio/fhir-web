@@ -1,4 +1,3 @@
-import { OpenSRPService } from '@opensrp/react-utils';
 import { loadHierarchy, loadJurisdictions } from '../../../helpers/dataLoaders';
 import { useEffect, useState } from 'react';
 import { baseURL } from '../../../constants';
@@ -14,14 +13,13 @@ import { treeToOptions } from '../utils';
 
 /** props for service types select component */
 export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
-  service: typeof OpenSRPService;
   baseURL: string;
+  filterByParentId?: boolean;
   fullDataCallback?: (node?: TreeNode) => void;
   disabledTreeNodesCallback?: (node: TreeNode) => boolean;
 }
 
 const defaultProps = {
-  service: OpenSRPService,
   baseURL: baseURL,
 };
 
@@ -32,10 +30,10 @@ const defaultProps = {
 const CustomTreeSelect = (props: CustomTreeSelectProps) => {
   const {
     baseURL,
-    service,
     value,
     fullDataCallback,
     disabledTreeNodesCallback,
+    filterByParentId,
     ...restProps
   } = props;
   const [loadingJurisdictions, setLoadingJurisdictions] = useState(true);
@@ -44,7 +42,7 @@ const CustomTreeSelect = (props: CustomTreeSelectProps) => {
   const [trees, updateTrees] = useState<TreeNode[]>([]);
 
   useEffect(() => {
-    loadJurisdictions(undefined, baseURL, undefined, undefined, service)
+    loadJurisdictions(undefined, baseURL, undefined, undefined, undefined, filterByParentId)
       .then((res) => {
         if (res) setRootLocations(res);
       })
@@ -59,7 +57,7 @@ const CustomTreeSelect = (props: CustomTreeSelectProps) => {
       const promises = rootLocations
         .map((location) => location.id.toString())
         .map((rootId) =>
-          loadHierarchy(rootId, undefined, baseURL, undefined, service).then((res) => {
+          loadHierarchy(rootId, undefined, baseURL, undefined).then((res) => {
             if (res) {
               const tree = generateJurisdictionTree(res);
               thisTrees.push(tree);

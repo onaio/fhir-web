@@ -122,7 +122,10 @@ describe('routes', () => {
       FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
 
-    const routes = getRoutes(['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS']);
+    const routes = getRoutes(
+      ['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS'],
+      (t: string) => t
+    );
     expect(routes).toMatchObject([
       {
         children: [

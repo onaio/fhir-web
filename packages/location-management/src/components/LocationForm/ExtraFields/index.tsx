@@ -2,7 +2,6 @@
  * we get the property names for the shown fields from the settings endpoint
  */
 import { sendErrorNotification } from '@opensrp/notifications';
-import { OpenSRPService } from '@opensrp/react-utils';
 import { LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER } from '../../../constants';
 import { loadSettings } from '../../../helpers/dataLoaders';
 import React, { useEffect, useState } from 'react';
@@ -15,14 +14,12 @@ const { List, Item: FormItem } = Form;
 
 export interface ExtraFieldProps {
   baseURL: string;
-  service: typeof OpenSRPService;
   disabled: boolean;
   hidden: boolean;
 }
 
 const defaultExtraFieldProps = {
   baseURL: OPENSRP_API_BASE_URL,
-  service: OpenSRPService,
   disabled: false,
   hidden: false,
 };
@@ -32,18 +29,18 @@ const defaultExtraFieldProps = {
  * @param props - the components props
  */
 const ExtraFields = (props: ExtraFieldProps) => {
-  const { baseURL, service, disabled, hidden } = props;
+  const { baseURL, disabled, hidden } = props;
   const [settings, setSettings] = useState<LocationSetting[]>([]);
   const validationRules = validationRulesFactory(lang);
 
   useEffect(() => {
     // fetch service type settings
-    loadSettings(LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER, baseURL, service, setSettings)
-      .catch((err) => sendErrorNotification(err.message))
+    loadSettings(LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER, baseURL, setSettings)
+      .catch((err: Error) => sendErrorNotification(err.message))
       .finally(() => {
         // maybe add a loader on this section?
       });
-  }, [baseURL, service]);
+  }, [baseURL]);
 
   return (
     <List name="extraFields">

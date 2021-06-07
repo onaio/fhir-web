@@ -6,7 +6,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
-import { cancelUserHandler, ConnectedUserCredentials, UserCredentials } from '..';
+import { cancelUserHandler, ConnectedUserCredentials, UserCredentials, submitForm } from '..';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { store } from '@opensrp/store';
@@ -50,6 +50,7 @@ describe('components/Credentials', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    fetch.mockClear();
   });
 
   beforeEach(() => {
@@ -93,6 +94,7 @@ describe('components/Credentials', () => {
       </Provider>
     );
     expect(wrapper.find('Row').at(0).props()).toMatchSnapshot('row props');
+    wrapper.unmount();
   });
 
   it('adds user credentials correctly', async () => {
@@ -179,6 +181,7 @@ describe('components/Credentials', () => {
     expect(
       formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')
     ).toBeTruthy();
+    wrapper.unmount();
   });
 
   it('shows validation error if passwords do not match', async () => {
@@ -212,8 +215,43 @@ describe('components/Credentials', () => {
     wrapper.unmount();
   });
 
+  it('submitForm submits form data correctly', async () => {
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    const historyPushMock = jest.spyOn(registryHistory, 'push');
+
+    const values = {
+      password: 'password122',
+    };
+
+    submitForm(values, fixtures.keycloakUser.id, KeycloakService, props.keycloakBaseURL);
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/reset-password',
+        {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          body: '{"temporary":false,"type":"password","value":"password122"}',
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'PUT',
+        },
+      ],
+    ]);
+    expect(notificationSuccessMock.mock.calls).toEqual([['Credentials updated successfully']]);
+    expect(historyPushMock).toHaveBeenCalledTimes(1);
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
+  });
+
   it('it handles errors correctly if API response is not 200', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(() => Promise.reject({ description: lang.ERROR_OCCURED }));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(
@@ -236,7 +274,6 @@ describe('components/Credentials', () => {
       await flushPromises();
       wrapper.update();
     });
-
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
 
     wrapper.unmount();
@@ -256,6 +293,7 @@ describe('components/Credentials', () => {
     );
     wrapper.find('button.cancel-user').simulate('click');
     expect(cancelUserHandlerMock).toBeCalled();
+    wrapper.unmount();
   });
   it('cancelUserHandler pushes to history', () => {
     const mockUseHistory = {

@@ -15,6 +15,7 @@ export const ROUTE_PARAM_USER_GROUP_ID = 'userGroupId';
 
 // Keycloak API URLs
 export const KEYCLOAK_URL_USERS = '/users';
+export const KEYCLOAK_URL_USERS_COUNT = '/users/count';
 export const KEYCLOAK_URL_USER_GROUPS = '/groups';
 export const KEYCLOAK_URL_USER_ROLES = '/roles';
 export const KEYCLOAK_URL_AVAILABLE_ROLES = '/role-mappings/realm/available';

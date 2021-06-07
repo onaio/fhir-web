@@ -53,6 +53,7 @@
     "jsdom-global": "^3.0.2",
     "lodash": "^4.17.20",
     "react-i18next": "^11.8.10",
+    "react-query": "^3.15.1",
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
@@ -60,7 +61,8 @@
     "seamless-immutable": "^7.1.4",
     "tree-model": "^1.0.7",
     "yarn": "^1.22.10",
-    "yup": "^0.29.3"
+    "yup": "^0.29.3",
+    "use-deep-compare-effect": "1.6.1"
   },
   "scripts": {
     "start": "react-scripts start",
