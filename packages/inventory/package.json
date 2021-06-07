@@ -20,8 +20,7 @@
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
   },
   "jest": {
@@ -34,6 +33,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
+    "react-query": "^3.15.1",
     "@opensrp/store": "^0.0.9",
     "react": "^16.18.1",
     "i18next": "^19.8.4"

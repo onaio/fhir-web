@@ -3,13 +3,14 @@ import { ServicePointEdit } from '..';
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
-import { location1 } from './fixtures';
+import { baseLocationUnits, location1, rawHierarchy } from './fixtures';
 import { Provider } from 'react-redux';
 import { RouteComponentProps, Router } from 'react-router';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { commonHiddenFields } from '../../../helpers/utils';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const history = createBrowserHistory();
 
@@ -33,9 +34,13 @@ describe('CreateServicePoint', () => {
   });
 
   it('passes the correct values to form', async () => {
-    fetch.once(JSON.stringify(null));
-    fetch.once(JSON.stringify(location1));
-    fetch.mockResponse(JSON.stringify([]));
+    const queryClient = new QueryClient();
+    fetch.mockResponseOnce(JSON.stringify(location1));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const props = {
       history,
@@ -55,7 +60,9 @@ describe('CreateServicePoint', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ServicePointEdit {...props} />
+          <QueryClientProvider client={queryClient}>
+            <ServicePointEdit {...props} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );

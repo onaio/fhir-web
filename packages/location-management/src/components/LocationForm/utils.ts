@@ -132,7 +132,7 @@ export const getLocationFormFields = (
 export function removeEmptykeys(obj: Dictionary) {
   Object.entries(obj).forEach(([key, value]) => {
     if (typeof value === 'undefined') delete obj[key];
-    else if (value === '' || value === null) delete obj[key];
+    else if (key !== 'parentId' && (value === '' || value === null)) delete obj[key];
     else if (Array.isArray(value) && value.length === 0) delete obj[key];
     // if typeof value is object and its not an array then it should be a json object
     else if (typeof value === 'object') removeEmptykeys(value);

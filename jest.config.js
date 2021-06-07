@@ -3,6 +3,7 @@ module.exports = {
   collectCoverageFrom: [
     'app/src/**/*.{ts,tsx}',
     'packages/**/*.{ts,tsx}',
+    '!app/src/configs/env.ts',
     '!app/src/index.tsx',
     '!app/src/serviceWorker.ts',
     '!**/node_modules/**',

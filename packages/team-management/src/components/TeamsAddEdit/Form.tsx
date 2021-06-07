@@ -20,12 +20,13 @@ export interface FormField {
   name: string;
   active: boolean;
   practitioners: string[];
+  practitionersList: Practitioner[];
 }
 
 interface Props {
   opensrpBaseURL: string;
   id?: string;
-  practitioner: Practitioner[];
+  practitioners: Practitioner[];
   initialValue?: FormField | null;
 }
 
@@ -154,7 +155,12 @@ export async function setTeam(
 
 export const Form: React.FC<Props> = (props: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue = props.initialValue ?? { active: true, name: '', practitioners: [] };
+  const initialValue = props.initialValue ?? {
+    active: true,
+    name: '',
+    practitioners: [],
+    practitionersList: [],
+  };
 
   return (
     <AntdForm
@@ -164,7 +170,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(
           props.opensrpBaseURL,
           setIsSubmitting,
-          props.practitioner,
+          props.practitioners,
           initialValue,
           values,
           props.id
@@ -188,8 +194,13 @@ export const Form: React.FC<Props> = (props: Props) => {
         label={lang.TEAM_MEMBERS}
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
-        <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
-          {props.practitioner.map((practitioner) => (
+        <Select
+          allowClear
+          mode="multiple"
+          placeholder={lang.SELECT_PRACTITIONER}
+          value={initialValue.practitionersList.map((practitioner) => practitioner.name)}
+        >
+          {props.practitioners.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
             </Select.Option>

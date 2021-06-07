@@ -193,3 +193,21 @@ Below is a list of currently supported environment variables:
   - Sets the oauth app permission scopes.
   - **Required**(`string`)
   - default: `read,write`
+
+- **REACT_APP_FILTER_BY_PARENT_ID**
+
+  - Allows filtering root locations by parentId when set to true
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_KEYCLOAK_USERS_PAGE_SIZE**
+
+  - keycloak users page size
+  - **Optional**(`number`)
+  - default: `20`
+
+- **REACT_APP_FHIR_API_BASE_URL**
+
+  - FHIR server base URL
+  - **Required**
+  - default: `https://fhir.labs.smartregister.org/fhir`
