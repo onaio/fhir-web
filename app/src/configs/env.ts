@@ -47,9 +47,6 @@ export const ACTION_UUID_NAMESPACE = setEnv('REACT_APP_ACTION_UUID_NAMESPACE', '
 
 export const DEFAULT_PLAN_VERSION = setEnv('REACT_APP_DEFAULT_PLAN_VERSION', '1');
 
-export const FHIR_API_BASE_URL =
-  process.env.REACT_APP_FHIR_API_BASE_URL || 'https://fhir.labs.smartregister.org/fhir/';
-
 export const TASK_GENERATION_STATUS = setEnv('REACT_APP_TASK_GENERATION_STATUS', 'internal');
 
 export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = Number(
