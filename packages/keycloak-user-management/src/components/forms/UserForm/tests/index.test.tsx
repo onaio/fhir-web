@@ -92,8 +92,11 @@ describe('components/forms/UserForm', () => {
     expect(wrapper.find('FormItem').at(1).prop('name')).toEqual('lastName');
     expect(wrapper.find('FormItem').at(2).prop('name')).toEqual('email');
     expect(wrapper.find('FormItem').at(3).prop('name')).toEqual('username');
-    expect(wrapper.find('FormItem').at(4).prop('name')).toEqual('enabled');
-    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('userGroup');
+    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('enabled');
+    expect(wrapper.find('FormItem').at(6).prop('name')).toEqual('userGroup');
+
+    expect(toJson(wrapper.find('#contact label'))).toMatchSnapshot('contact label');
+    expect(toJson(wrapper.find('#contact input'))).toMatchSnapshot('contact field');
     wrapper.unmount();
   });
 
@@ -111,13 +114,51 @@ describe('components/forms/UserForm', () => {
     expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual(['Last Name is required']);
     expect(wrapper.find('FormItemInput').at(2).prop('errors')).toEqual([]);
     expect(wrapper.find('FormItemInput').at(3).prop('errors')).toEqual(['Username is required']);
-    expect(wrapper.find('FormItemInput').at(4).prop('errors')).toEqual([]);
     expect(wrapper.find('FormItemInput').at(5).prop('errors')).toEqual([]);
+    expect(wrapper.find('FormItemInput').at(6).prop('errors')).toEqual([]);
+    wrapper.unmount();
+  });
+
+  it('form validation works for contact field', async () => {
+    const wrapper = mount(<UserForm {...{ ...props, hidden: [] }} />);
+
+    // empty error message; contact is required
+    wrapper.find('form').simulate('submit');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual(['Contact is required']);
+
+    // regex validation
+    wrapper
+      .find('input#attributes_contact')
+      .simulate('change', { target: { name: 'contact', value: 'Test' } });
+    wrapper.find('form').simulate('submit');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([
+      'Contact should be 10 digits and start with 0',
+    ]);
+
+    // should now not have an error.
+    wrapper
+      .find('input#attributes_contact')
+      .simulate('change', { target: { name: 'contact', value: '0123456789' } });
+    wrapper.find('form').simulate('submit');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([]);
+
     wrapper.unmount();
   });
 
   it('adds user', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(<UserForm {...{ ...props, hidden: [] }} />);
 
     await act(async () => {
       await flushPromises();
@@ -143,6 +184,11 @@ describe('components/forms/UserForm', () => {
     actionSelect.first().simulate('change', {
       target: { value: ['UPDATE_PASSWORD'] },
     });
+
+    wrapper
+      .find('input#attributes_contact')
+      .simulate('change', { target: { name: 'contact', value: '0123456789' } });
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -161,6 +207,9 @@ describe('components/forms/UserForm', () => {
           lastName: 'One',
           username: 'TestOne',
           email: 'testone@gmail.com',
+          attributes: {
+            contact: '0123456789',
+          },
         }),
         headers: {
           accept: 'application/json',
