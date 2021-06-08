@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
 import { Column, TableLayout } from '@opensrp/react-utils';
+import lang from '../../lang';
 
 export interface TableData extends Organization {
   key: string;
@@ -29,7 +30,7 @@ const Table: React.FC<Props> = (props: Props) => {
 
   const columns: Column<TableData>[] = [
     {
-      title: 'Name',
+      title: lang.NAME,
       dataIndex: 'name',
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
@@ -48,7 +49,7 @@ const Table: React.FC<Props> = (props: Props) => {
           <span className="d-flex justify-content-end align-items-center">
             <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
               <Button type="link" className="m-0 p-1">
-                Edit
+                {lang.EDIT}
               </Button>
             </Link>
             <Divider type="vertical" />
@@ -63,7 +64,7 @@ const Table: React.FC<Props> = (props: Props) => {
                       }
                     }}
                   >
-                    View Details
+                    {lang.VIEW_DETAILS}
                   </Menu.Item>
                 </Menu>
               }
