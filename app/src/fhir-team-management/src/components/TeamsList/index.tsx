@@ -6,7 +6,13 @@ import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { FHIRResponse, Practitioner, PractitionerRole, Organization } from '../../types';
+import {
+  FHIRResponse,
+  Practitioner,
+  PractitionerRole,
+  Organization,
+  FhirObject,
+} from '../../types';
 import { TEAMS_GET, PRACTITIONER_GET, URL_ADD_TEAM, PRACTITIONERROLE_GET } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsList.css';
@@ -15,7 +21,7 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { ProcessFHIRResponse } from '../../utils';
+import { ProcessFHIRObject, ProcessFHIRResponse } from '../../utils';
 
 type TeamDetail = TableData & { practitioners: Practitioner[] };
 
@@ -31,24 +37,24 @@ export async function loadSingleTeam(props: {
   const { fhirbaseURL, team } = props;
   const serve = FHIR.client(fhirbaseURL);
 
-  const allPractitioner = await serve
-    .request(PRACTITIONER_GET)
-    .then((res: FHIRResponse<Practitioner>) =>
-      ProcessFHIRResponse(res).filter((e) => e.identifier.official)
-    );
   const AllRoles = await serve
     .request(PRACTITIONERROLE_GET)
-    .then((res: FHIRResponse<PractitionerRole>) =>
-      ProcessFHIRResponse(res).filter((e) => e.identifier.official)
-    );
+    .then((res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res));
 
-  const practitionerRolesAssigned = AllRoles.filter(
-    (role) => role.organization.identifier?.value === team.identifier.official.value
-  ).map((role) => role.practitioner.identifier?.value);
+  const practitionerrolesassignedref = AllRoles.filter((role) => {
+    if (role.organization.reference === `Organization/${team.id}`)
+      console.log(role, role.practitioner.reference, `Organization/${team.id}`);
 
-  const practitionerAssigned = allPractitioner.filter((prac) =>
-    practitionerRolesAssigned.includes(prac.identifier.official.value)
-  );
+    return role.organization.reference === `Organization/${team.id}`;
+  }).map((role) => role.practitioner.reference.split('/')[1]);
+
+  const practitionerAssignedPromise = practitionerrolesassignedref.map((id) => {
+    return serve
+      .request(`${PRACTITIONER_GET}/${id}`)
+      .then((res: FhirObject<Practitioner>) => ProcessFHIRObject(res));
+  });
+
+  const practitionerAssigned = await Promise.all(practitionerAssignedPromise);
 
   return { ...team, practitioners: practitionerAssigned };
 }
