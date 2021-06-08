@@ -1,4 +1,4 @@
-import { Require } from '@opensrp/react-utils';
+import { Require, convertToObject } from '@opensrp/react-utils';
 import { Identifier as FhirIdentifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 
 /** interface for FHIR response */
@@ -30,10 +30,5 @@ export function ProcessFHIRObjects<T>(object: FhirObject<T>[]) {
 }
 
 export function ProcessFHIRObject<T>(object: FhirObject<T>): T {
-  const identifier: IdentifierObject = object.identifier.reduce((prev, id) => {
-    const typesid = id as Identifier;
-    return { ...prev, [typesid.use]: typesid.value };
-  }, {}) as IdentifierObject;
-
-  return ({ ...object, identifier: identifier } as unknown) as T;
+  return ({ ...object, identifier: convertToObject(object.identifier, 'use') } as unknown) as T;
 }
