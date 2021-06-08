@@ -1,11 +1,10 @@
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { Practitioner } from '../../types';
+import { OrganizationDetail, Practitioner } from '../../types';
 import lang from '../../lang';
-import { TableData } from '../TeamsList/Table';
 
-export interface TeamsDetailProps extends TableData {
+export interface TeamsDetailProps extends OrganizationDetail {
   onClose?: Function;
   practitioners: Practitioner[];
 }
