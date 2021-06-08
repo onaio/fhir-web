@@ -1,28 +1,8 @@
 /** Organizations redux module */
 import { Require } from '@opensrp/react-utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { Identifier as FhirIdentifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
-
-/** interface for FHIR response */
-export interface FHIRResponse<T> {
-  resourceType: string;
-  id: string;
-  meta: { lastUpdated: string };
-  type: string;
-  total: number;
-  link: [{ relation: string; url: string }];
-  entry: {
-    fullUrl: string;
-    resource: FhirObject<T>;
-    search: { mode: string };
-  }[];
-}
-
-export type FhirObject<T> = Omit<T, 'identifier'> & { identifier: FhirIdentifier[] };
-
-export type Identifier = Require<FhirIdentifier, 'use' | 'value'>;
-export type IdentifierObject = Record<FhirIdentifier.UseEnum, Identifier>;
+import { IdentifierObject } from './fhirutils';
 
 /** interface for Objects */
 export interface Organization
@@ -30,6 +10,8 @@ export interface Organization
   resourceType: 'Organization';
   identifier: IdentifierObject;
 }
+
+export type OrganizationDetail = Organization & { practitioners: Practitioner[] };
 
 export interface Practitioner
   extends Require<Omit<IfhirR4.IPractitioner, 'identifier'>, 'id' | 'active' | 'name'> {

@@ -1,18 +1,38 @@
-import { FhirObject, FHIRResponse, Identifier, IdentifierObject } from './types';
+import FHIR from 'fhirclient';
+import { Organization, PractitionerRole, OrganizationDetail, Practitioner } from '.';
+import { PRACTITIONERROLE_GET, PRACTITIONER_GET } from './constants';
+import { FHIRResponse, ProcessFHIRResponse, FhirObject, ProcessFHIRObject } from './fhirutils';
 
-export function ProcessFHIRResponse<T>(res: FHIRResponse<T>) {
-  return ProcessFHIRObjects(res.entry.map((e) => e.resource));
-}
+/**
+ * Function to load selected Team for details
+ *
+ * @param {TableData} row data selected from the table
+ */
+export async function loadTeamDetails(props: {
+  team: Organization;
+  fhirbaseURL: string;
+  AllRoles?: PractitionerRole[];
+}): Promise<OrganizationDetail> {
+  const { fhirbaseURL, team } = props;
+  const serve = FHIR.client(fhirbaseURL);
 
-export function ProcessFHIRObjects<T>(object: FhirObject<T>[]) {
-  return object.map((e) => ProcessFHIRObject(e));
-}
+  const AllRoles: PractitionerRole[] =
+    props.AllRoles ??
+    (await serve
+      .request(PRACTITIONERROLE_GET)
+      .then((res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res)));
 
-export function ProcessFHIRObject<T>(object: FhirObject<T>): T {
-  const identifier: IdentifierObject = object.identifier.reduce((prev, id) => {
-    const typesid = id as Identifier;
-    return { ...prev, [typesid.use]: typesid.value };
-  }, {}) as IdentifierObject;
+  const practitionerrolesassignedref = AllRoles.filter(
+    (role) => role.organization.reference === `Organization/${team.id}`
+  ).map((role) => role.practitioner.reference.split('/')[1]);
 
-  return ({ ...object, identifier: identifier } as unknown) as T;
+  const practitionerAssignedPromise = practitionerrolesassignedref.map((id) =>
+    serve
+      .request(`${PRACTITIONER_GET}/${id}`)
+      .then((res: FhirObject<Practitioner>) => ProcessFHIRObject(res))
+  );
+
+  const practitionerAssigned = await Promise.all(practitionerAssignedPromise);
+
+  return { ...team, practitioners: practitionerAssigned };
 }

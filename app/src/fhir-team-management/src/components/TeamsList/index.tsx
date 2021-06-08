@@ -6,14 +6,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
-import {
-  FHIRResponse,
-  Practitioner,
-  PractitionerRole,
-  Organization,
-  FhirObject,
-} from '../../types';
-import { TEAMS_GET, PRACTITIONER_GET, URL_ADD_TEAM, PRACTITIONERROLE_GET } from '../../constants';
+import { Organization, OrganizationDetail } from '../../types';
+import { TEAMS_GET, URL_ADD_TEAM } from '../../constants';
 import Table, { TableData } from './Table';
 import './TeamsList.css';
 import { Spin } from 'antd';
@@ -21,40 +15,8 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { ProcessFHIRObject, ProcessFHIRResponse } from '../../utils';
-
-type TeamDetail = TableData & { practitioners: Practitioner[] };
-
-/**
- * Function to load selected Team for details
- *
- * @param {TableData} row data selected from the table
- */
-export async function loadSingleTeam(props: {
-  team: TableData;
-  fhirbaseURL: string;
-}): Promise<TeamDetail> {
-  const { fhirbaseURL, team } = props;
-  const serve = FHIR.client(fhirbaseURL);
-
-  const AllRoles = await serve
-    .request(PRACTITIONERROLE_GET)
-    .then((res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res));
-
-  const practitionerrolesassignedref = AllRoles.filter(
-    (role) => role.organization.reference === `Organization/${team.id}`
-  ).map((role) => role.practitioner.reference.split('/')[1]);
-
-  const practitionerAssignedPromise = practitionerrolesassignedref.map((id) =>
-    serve
-      .request(`${PRACTITIONER_GET}/${id}`)
-      .then((res: FhirObject<Practitioner>) => ProcessFHIRObject(res))
-  );
-
-  const practitionerAssigned = await Promise.all(practitionerAssignedPromise);
-
-  return { ...team, practitioners: practitionerAssigned };
-}
+import { FHIRResponse, ProcessFHIRResponse } from '../../fhirutils';
+import { loadTeamDetails } from '../../utils';
 
 interface Props {
   fhirbaseURL: string;
@@ -69,7 +31,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
   const { fhirbaseURL } = props;
   const serve = FHIR.client(fhirbaseURL);
 
-  const [detail, setDetail] = useState<TeamDetail | 'loading' | null>(null);
+  const [detail, setDetail] = useState<OrganizationDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
 
   const teams = useQuery(TEAMS_GET, () => serve.request(TEAMS_GET), {
@@ -133,7 +95,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
               fhirbaseURL={fhirbaseURL}
               onViewDetails={(prams) => {
                 setDetail('loading');
-                loadSingleTeam(prams)
+                loadTeamDetails(prams)
                   .then((team) => setDetail(team))
                   .catch(() => {
                     sendErrorNotification(lang.ERROR_OCCURRED);
