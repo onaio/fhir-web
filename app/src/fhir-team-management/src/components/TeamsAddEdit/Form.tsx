@@ -105,7 +105,7 @@ async function SetPractitioners(
       active: true,
       id: id,
       identifier: [{ use: 'official', value: id }],
-      practitioner: { reference: 'Practitioner/' + prac.identifier.official.value },
+      practitioner: { reference: 'Practitioner/' + prac.id },
       organization: { reference: 'Organization/' + teamId },
     };
     return serve.create(payload);
