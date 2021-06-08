@@ -1,11 +1,12 @@
 import { Require, convertToObject } from '@opensrp/react-utils';
 import { Identifier as FhirIdentifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
+import { Meta } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/meta';
 
 /** interface for FHIR response */
 export interface FHIRResponse<T> {
   resourceType: string;
   id: string;
-  meta: { lastUpdated: string };
+  meta?: Meta;
   type: string;
   total: number;
   link: [{ relation: string; url: string }];
