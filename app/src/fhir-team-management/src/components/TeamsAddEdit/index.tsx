@@ -50,15 +50,13 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       team: team.data,
       fhirbaseURL: fhirbaseURL,
       AllRoles: AllRoles.data,
-    }).then((team) => {
-      console.log(team);
-
+    }).then((team) =>
       setInitialValue({
         active: team.active,
         name: team.name,
         practitioners: team.practitioners.map((prac) => prac.id),
-      });
-    });
+      })
+    );
   }
 
   if (!allPractitioner.data || (params.id && !initialValue)) return <Spin size={'large'} />;
