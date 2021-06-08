@@ -41,18 +41,15 @@ export async function loadSingleTeam(props: {
     .request(PRACTITIONERROLE_GET)
     .then((res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res));
 
-  const practitionerrolesassignedref = AllRoles.filter((role) => {
-    if (role.organization.reference === `Organization/${team.id}`)
-      console.log(role, role.practitioner.reference, `Organization/${team.id}`);
+  const practitionerrolesassignedref = AllRoles.filter(
+    (role) => role.organization.reference === `Organization/${team.id}`
+  ).map((role) => role.practitioner.reference.split('/')[1]);
 
-    return role.organization.reference === `Organization/${team.id}`;
-  }).map((role) => role.practitioner.reference.split('/')[1]);
-
-  const practitionerAssignedPromise = practitionerrolesassignedref.map((id) => {
-    return serve
+  const practitionerAssignedPromise = practitionerrolesassignedref.map((id) =>
+    serve
       .request(`${PRACTITIONER_GET}/${id}`)
-      .then((res: FhirObject<Practitioner>) => ProcessFHIRObject(res));
-  });
+      .then((res: FhirObject<Practitioner>) => ProcessFHIRObject(res))
+  );
 
   const practitionerAssigned = await Promise.all(practitionerAssignedPromise);
 
