@@ -69,7 +69,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           overlay={
             <Menu>
               <Menu.Item key={URL_LOGOUT}>
-                <Link to={URL_LOGOUT}>Logout</Link>
+                <Link to={URL_LOGOUT}>{lang(t).LOGOUT}</Link>
               </Menu.Item>
               <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
                 <Link to={`${URL_USER_EDIT}/${user_id}`}>{lang(t).MANAGE_ACCOUNT}</Link>

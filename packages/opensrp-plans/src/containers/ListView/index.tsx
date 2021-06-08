@@ -68,7 +68,7 @@ const PlansList = (props: PlansListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = pageTitleBuilder(allowedPlanStatus);
+  const pageTitle = pageTitleBuilder(allowedPlanStatus as PlanStatus);
   // add a key prop to the array data to be consumed by the table
   const datasource = data.map((singleObject, key) => {
     const planWithKey = {
