@@ -1,13 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import {
-  FhirObject,
-  FHIRResponse,
-  Organization,
-  Practitioner,
-  PractitionerRole,
-} from '../../types';
-import Form from './Form';
+import { Organization, Practitioner, PractitionerRole } from '../../types';
+import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import { PRACTITIONERROLE_GET, PRACTITIONER_GET, TEAMS_GET } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -15,7 +9,8 @@ import { Spin } from 'antd';
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
-import { ProcessFHIRResponse, ProcessFHIRObject } from '../../utils';
+import { FhirObject, FHIRResponse, ProcessFHIRObject, ProcessFHIRResponse } from '../../fhirutils';
+import { loadTeamDetails } from '../../utils';
 
 export interface Props {
   fhirbaseURL: string;
@@ -31,12 +26,11 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
   const serve = FHIR.client(fhirbaseURL);
   const params: { id?: string } = useParams();
-  let initialValue = null;
+  const [initialValue, setInitialValue] = useState<FormField>();
 
   const allPractitioner = useQuery(PRACTITIONER_GET, () => serve.request(PRACTITIONER_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Practitioner>) =>
-      ProcessFHIRResponse(res).filter((e) => e.identifier.official),
+    select: (res: FHIRResponse<Practitioner>) => ProcessFHIRResponse(res),
   });
 
   const team = useQuery([TEAMS_GET, params.id], () => serve.request(TEAMS_GET + params.id), {
@@ -47,26 +41,26 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
   const AllRoles = useQuery([PRACTITIONERROLE_GET], () => serve.request(PRACTITIONERROLE_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<PractitionerRole>) =>
-      ProcessFHIRResponse(res).filter((e) => e.identifier.official),
+    select: (res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res),
     enabled: params.id !== undefined,
   });
 
-  if (params.id && team.data && AllRoles.data && allPractitioner.data) {
-    const practitionerRolesAssigned = AllRoles.data
-      .map((role) => role.organization.reference.replace('Organization/', ''))
-      .filter((role) => role === team.data.identifier.official.value);
+  if (params.id && team.data && AllRoles.data && !initialValue) {
+    loadTeamDetails({
+      team: team.data,
+      fhirbaseURL: fhirbaseURL,
+      AllRoles: AllRoles.data,
+    }).then((team) => {
+      console.log(team);
 
-    const practitionerAssigned = allPractitioner.data.filter((prac) =>
-      practitionerRolesAssigned.includes(prac.identifier.official.value)
-    );
-
-    initialValue = {
-      name: team.data.name,
-      active: team.data.active,
-      practitioners: practitionerAssigned.map((prac) => prac.identifier.official.value),
-    };
+      setInitialValue({
+        active: team.active,
+        name: team.name,
+        practitioners: team.practitioners.map((prac) => prac.id),
+      });
+    });
   }
+
   if (!allPractitioner.data || (params.id && !initialValue)) return <Spin size={'large'} />;
 
   return (

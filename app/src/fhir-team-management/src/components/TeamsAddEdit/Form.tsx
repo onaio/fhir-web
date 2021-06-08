@@ -8,7 +8,8 @@ import {
   sendInfoNotification,
   sendErrorNotification,
 } from '@opensrp/notifications';
-import { FhirObject, Organization, Practitioner, PractitionerRole } from '../../types';
+import { Organization, Practitioner, PractitionerRole } from '../../types';
+import { FhirObject } from '../../fhirutils';
 import { useQueryClient } from 'react-query';
 
 import lang, { Lang } from '../../lang';
@@ -27,7 +28,7 @@ interface Props {
   fhirbaseURL: string;
   id?: string;
   allPractitioner: Practitioner[];
-  initialValue?: FormField | null;
+  initialValue?: FormField;
 }
 
 /**
@@ -179,14 +180,11 @@ export const Form: React.FC<Props> = (props: Props) => {
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
-          {props.allPractitioner.map((prac) => {
-            const id = prac.identifier.official.value;
-            return (
-              <Select.Option key={id} value={id}>
-                {prac.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`)}
-              </Select.Option>
-            );
-          })}
+          {props.allPractitioner.map((prac) => (
+            <Select.Option key={prac.id} value={prac.id}>
+              {prac.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`)}
+            </Select.Option>
+          ))}
         </Select>
       </AntdForm.Item>
 
