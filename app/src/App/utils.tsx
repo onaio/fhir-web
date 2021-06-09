@@ -23,6 +23,7 @@ import {
   DEFAULT_PLAN_ID,
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
+  USER_FORM_HIDDEN,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -137,4 +138,11 @@ export const missionAssignmentProps = {
 
 export const inventoryItemAddEditProps = {
   openSRPBaseURL: OPENSRP_API_BASE_URL,
+};
+
+export const createEditUserProps = {
+  // TODO: this will not scale well, need a better configuration-first solution that enables us to
+  // simulate a diverse set of behaviors from the same code base for a module. preferable a solution
+  // that is closer to the code.
+  userFormHidden: USER_FORM_HIDDEN,
 };
