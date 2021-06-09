@@ -34,6 +34,7 @@ import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { PaginationProps } from 'antd/lib/pagination';
+import { TableActions } from './TableActions';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -62,9 +63,9 @@ export const defaultProps = {
   usersPageSize: 20,
 };
 
-interface TableData {
+export interface TableData {
   key: number | string;
-  id: string | undefined;
+  id: string;
   username: string | undefined;
   email: string | undefined;
   firstName: string | undefined;
@@ -174,13 +175,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
           </div>
           <Space>
             <TableLayout
-              columns={getTableColumns(
-                removeKeycloakUsersCreator,
-                keycloakBaseURL,
-                isLoadingCallback,
-                extraData,
-                sortedInfo
-              )}
+              columns={getTableColumns(sortedInfo)}
               datasource={tableData}
               pagination={{
                 ...defaults.pagination,
@@ -195,6 +190,20 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 });
                 setSortedInfo(sorter);
                 setIsLoading(true);
+              }}
+              actions={{
+                title: 'Actions',
+                // eslint-disable-next-line react/display-name
+                render: (_: string, record) => {
+                  const tableActionsProps = {
+                    removeKeycloakUsersCreator,
+                    keycloakBaseURL,
+                    isLoadingCallback,
+                    record,
+                    extraData,
+                  };
+                  return <TableActions {...tableActionsProps} />;
+                },
               }}
             />
             )

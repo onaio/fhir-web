@@ -20,6 +20,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import lang from '../../lang';
 import { TableLayout } from '@opensrp/react-utils';
+import { TableActions } from './TableActions';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -120,7 +121,17 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
         <TableLayout
           id="FormReleaseList"
           persistState={true}
-          columns={getTableColumns(viewReleaseURL, sortedInfo)}
+          columns={getTableColumns(sortedInfo)}
+          actions={{
+            // eslint-disable-next-line react/display-name
+            render: (_: string, file: ManifestReleasesTypes) => {
+              const tableActionProps = {
+                file,
+                viewReleaseURL,
+              };
+              return <TableActions {...tableActionProps} />;
+            },
+          }}
           datasource={value.length < 1 ? data : (filterData as ManifestReleasesTypes[])}
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
             setSortedInfo(sorter);

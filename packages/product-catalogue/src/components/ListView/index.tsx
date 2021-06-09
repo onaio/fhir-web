@@ -9,7 +9,7 @@ import {
   ProductCatalogue,
 } from '../../ducks/productCatalogue';
 import { connect } from 'react-redux';
-import { CatalogueLoading, columnsFactory } from './utils';
+import { ActionsColumnCustomRender, CatalogueLoading, columnsFactory } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -100,6 +100,11 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
             persistState={true}
             datasource={datasource}
             columns={columns}
+            actions={{
+              title: lang.ACTIONS_TH,
+              width: '20%',
+              render: ActionsColumnCustomRender,
+            }}
           />
         </Col>
         <ViewDetails {...{ object: productUnderView, objectId: productId }} />

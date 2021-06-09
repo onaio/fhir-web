@@ -65,12 +65,6 @@ export const columnsFactory = (langObj: Lang = lang) => {
       dataIndex: 'servicePointId',
       key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_ID_TH}` as keyof TableData,
     },
-    {
-      title: langObj.ACTIONS_TH,
-      key: `${TableColumnsNamespace}-actions` as keyof TableData,
-      render: ActionsColumnCustomRender,
-      width: '20%',
-    },
   ];
   return columns;
 };
