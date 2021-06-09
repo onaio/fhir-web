@@ -20,6 +20,7 @@ export interface ConfigState {
   appLoginURL?: string;
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
+  fhirBaseURL?: string;
   i18n?: unknown;
 }
 
@@ -33,6 +34,7 @@ const DefaultConfigs: GlobalState = {
   appLoginURL: undefined,
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
+  fhirBaseURL: undefined,
   i18n: undefined,
   tablespref: undefined,
 };
