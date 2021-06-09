@@ -349,5 +349,14 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     // expect antd select options text to equal practitioners filtered for only active users
     expect(options.map((opt) => opt.text())).toStrictEqual(filteredPractitionerNames);
+
+    // get default displayed practitioners
+    const defaultPractitioners = practitionersSelect.find('.ant-select-selection-item-content');
+    // expect them to match default active practitioners
+    expect(defaultPractitioners.map((opt) => opt.text())).toStrictEqual([
+      'prac two',
+      'Benjamin Mulyungi',
+      'test admin',
+    ]);
   });
 });
