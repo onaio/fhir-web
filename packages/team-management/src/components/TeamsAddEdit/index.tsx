@@ -68,7 +68,7 @@ function setupInitialValue(
     .then((response) => {
       setInitialValue({
         ...response,
-        practitioners: response.practitioners.map((practitioner) => practitioner.name),
+        practitioners: response.practitioners.map((practitioner) => practitioner.identifier),
         practitionersList: response.practitioners,
       });
     })
