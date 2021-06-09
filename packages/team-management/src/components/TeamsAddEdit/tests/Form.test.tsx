@@ -480,6 +480,16 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       '7',
     ]);
 
+    // expect default values to match existing practitioners
+
+    // get all practitioner objects matching default values
+    const defaultPractitioners = practitioners.filter((practitioner) =>
+      (values as readonly string[]).includes(practitioner.identifier)
+    );
+
+    // expect object with names whose identifiers match default values
+    expect(defaultPractitioners).toMatchSnapshot('default practitioner objects');
+
     // simulate change
     // add '6' to default values
     practitionersSelect.simulate('change', {
