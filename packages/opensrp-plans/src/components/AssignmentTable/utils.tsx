@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react';
-import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { TableColumnsNamespace } from '../../constants';
 import { SelectOption } from '../AssignmentModal';
 import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
@@ -11,6 +10,7 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import { ActionColumn } from '../TableActionColumn';
 import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
+import { Column } from '@opensrp/react-utils';
 
 /** describes antd's table data accessors */
 export interface TableData {
@@ -81,7 +81,7 @@ export const mergeIdsWithNames = (
   const orgByIds = keyBy(organizations, 'identifier');
   const jursByIds = keyBy(jurisdictions, 'id');
   const assignmentsByJur = keyBy(assignments, 'jurisdiction');
-  // const get plan jurisdictions that do not have an assignment, add those to dataSource
+  // const get plan jurisdictions that do not have an assignment, add those to datasource
   const jursWithoutAss = planJurisdictions.filter(
     (jurisdiction) => !assignmentsByJur[jurisdiction]
   );
@@ -132,7 +132,7 @@ export const getDataSource = (
   assignments: Assignment[],
   planJurisdictions: string[]
 ) => {
-  // const get plan jurisdictions that do not have an assignment, add those to dataSource
+  // const get plan jurisdictions that do not have an assignment, add those to datasource
   const compressedAssignments = compressAssignments(assignments);
   const orgsAndJursOptions = mergeIdsWithNames(
     compressedAssignments,
@@ -142,33 +142,33 @@ export const getDataSource = (
     planJurisdictions
   );
 
-  const dataSource = orgsAndJursOptions.map((mapping, index) => ({
+  const datasource = orgsAndJursOptions.map((mapping, index) => ({
     key: `${TableColumnsNamespace}-${index}`,
     organizations: mapping.organizations.map((option) => option.label).join(', ') || ' - ',
     jurisdictions: mapping.jurisdictions.map((option) => option.label).join(', ') || ' - ',
   }));
-  if (dataSource.length < 1) {
-    dataSource.push({
+  if (datasource.length < 1) {
+    datasource.push({
       key: TableColumnsNamespace,
       organizations: '',
       jurisdictions: '',
     });
   }
-  return dataSource;
+  return datasource;
 };
 
 /** non dynamic columns for assignment table component */
-export const staticColumns: ColumnsType<TableData> = [
+export const staticColumns: Column<TableData>[] = [
   {
     title: 'Assigned areas',
     dataIndex: 'jurisdictions',
-    key: `${TableColumnsNamespace}-assigned-areas`,
+    key: `${TableColumnsNamespace}-assigned-areas` as keyof TableData,
     width: '40%',
   },
   {
     title: 'Assigned teams',
     dataIndex: 'organizations',
-    key: `${TableColumnsNamespace}-assigned-teams`,
+    key: `${TableColumnsNamespace}-assigned-teams` as keyof TableData,
     width: '40%',
   },
 ];
@@ -196,8 +196,8 @@ export const getPlanAssignmentColumns = (
   plan: PlanDefinition,
   baseURL: string,
   disableAssignments: boolean
-) => {
-  const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (_, __, index: number) => {
+): Column<TableData>[] => {
+  const ActionsColumnCustomRender: Column<TableData>['render'] = (_, __, index: number) => {
     const fullyGrouped = compressAssignments(assignments);
     const planJurisdictions = plan.jurisdiction.map((jur) => jur.code);
     const mergedOptions = mergeIdsWithNames(
@@ -226,10 +226,10 @@ export const getPlanAssignmentColumns = (
     return <ActionColumn {...props}></ActionColumn>;
   };
 
-  const dynamicColumn = [
+  const dynamicColumn: Column<TableData>[] = [
     {
       title: 'Actions',
-      key: `${TableColumnsNamespace}-actions`,
+      key: `${TableColumnsNamespace}-actions` as keyof TableData,
       render: ActionsColumnCustomRender,
       width: '20%',
     },

@@ -12,7 +12,7 @@ import {
 } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
-import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 import lang from '../../lang';
 
 interface ActionColumnProps {

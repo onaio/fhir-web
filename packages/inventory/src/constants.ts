@@ -30,14 +30,7 @@ export const INVENTORY_UNICEF_SECTIONS = 'inventory_unicef_sections';
 // magic figures
 export const SEARCH_QUERY_PARAM = 'querySearch';
 export const BULK_UPLOAD_PARAM = 'bulkStep';
-export const TABLE_PAGE_SIZE = 20;
-export const TABLE_PAGE_SIZE_OPTIONS = ['10', '20', '50', '100'];
-export const tablePaginationOptions = {
-  showQuickJumper: true,
-  showSizeChanger: true,
-  defaultPageSize: TABLE_PAGE_SIZE,
-  pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
-};
+
 export const GEOJSON_TYPE_STRING = 'Feature';
 
 //endpoints

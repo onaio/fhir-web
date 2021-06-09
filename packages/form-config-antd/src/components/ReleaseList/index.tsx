@@ -15,10 +15,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
-import { Card, Typography, Spin, Table, Space, Button, Divider, Input } from 'antd';
+import { Card, Typography, Spin, Space, Button, Divider, Input } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import lang from '../../lang';
+import { TableLayout } from '@opensrp/react-utils';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -116,15 +117,11 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
           <Divider type="vertical" />
           <SettingOutlined />
         </Space>
-        <Table
+        <TableLayout
+          id="FormReleaseList"
+          persistState={true}
           columns={getTableColumns(viewReleaseURL, sortedInfo)}
-          dataSource={value.length < 1 ? data : (filterData as ManifestReleasesTypes[])}
-          pagination={{
-            showQuickJumper: true,
-            showSizeChanger: true,
-            defaultPageSize: 5,
-            pageSizeOptions: ['5', '10', '20', '50', '100'],
-          }}
+          datasource={value.length < 1 ? data : (filterData as ManifestReleasesTypes[])}
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
             setSortedInfo(sorter);
           }}

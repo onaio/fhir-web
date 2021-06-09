@@ -34,6 +34,9 @@
   "dependencies": {
     "react-hooks-global-state": "^1.0.1"
   },
+  "devDependencies": {
+    "antd": "^4.6.3"
+  },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "private": false
