@@ -142,6 +142,9 @@ export const DISABLE_LOGIN_PROTECTION =
 export const ENABLE_PRODUCT_CATALOGUE =
   setEnv('REACT_APP_ENABLE_PRODUCT_CATALOGUE', 'false') === 'true';
 
+/** Activate the FHIR Care Team menu */
+export const ENABLE_FHIR_CARE_TEAM = setEnv('REACT_APP_ENABLE_FHIR_CARE_TEAM', 'false') === 'true';
+
 /** Activate form configuration */
 export const ENABLE_FORM_CONFIGURATION =
   setEnv('REACT_APP_ENABLE_FORM_CONFIGURATION', 'false') === 'true';

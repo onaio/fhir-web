@@ -217,3 +217,9 @@ Below is a list of currently supported environment variables:
   - configure hidden form fields in creating editing users, a comma separated list of keys
   - **optional**
   - default: `''`
+
+- **REACT_APP_ENABLE_FHIR_CARE_TEAM**
+
+  - Enables the FHIR Care Team module
+  - **Optional**(`boolean`)
+  - default: `"false"`
