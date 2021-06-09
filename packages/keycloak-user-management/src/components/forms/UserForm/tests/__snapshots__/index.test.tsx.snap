@@ -14,6 +14,29 @@ exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 />
 `;
 
+exports[`components/forms/UserForm renders correctly: contact field 1`] = `
+<input
+  className="ant-input"
+  id="attributes_contact"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm renders correctly: contact label 1`] = `
+<label
+  className=""
+  htmlFor="attributes_contact"
+  title="Contact"
+>
+  Contact
+</label>
+`;
+
 exports[`components/forms/UserForm show practitioner toggle when editing user and practitioner is null: practitionerToggle 1`] = `
 Object {
   "children": <Memo

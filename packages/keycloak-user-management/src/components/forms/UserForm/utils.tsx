@@ -12,6 +12,7 @@ import {
 import { OpenSRPService } from '@opensrp/react-utils';
 import lang, { Lang } from '../../../lang';
 import { FormFields } from '.';
+import { some } from 'lodash';
 
 /** Utility function to set new user UUID extracted from the
  * POST response location header
@@ -75,13 +76,11 @@ export const submitForm = async (
   previousUserGroupIds: string[] | undefined,
   langObj: Lang = lang
 ): Promise<void> => {
-  const keycloakUserValue: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
-    Partial<FormFields> = {
-    ...values,
-  };
-  delete keycloakUserValue.active;
-  delete keycloakUserValue.userGroup;
-  delete keycloakUserValue.practitioner;
+  const { active, userGroup, practitioner, attributes, ...keycloakValues } = values;
+  let keycloakUserValue: Omit<FormFields, 'active' | 'userGroup' | 'practitioner'> = keycloakValues;
+  if (some(attributes)) {
+    keycloakUserValue = { ...keycloakValues, attributes };
+  }
 
   if (values.id) {
     const serve = new KeycloakService(`${KEYCLOAK_URL_USERS}/${values.id}`, keycloakBaseURL);
