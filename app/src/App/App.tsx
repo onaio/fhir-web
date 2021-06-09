@@ -45,6 +45,7 @@ import {
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_FHIR_CARE_TEAM,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -85,6 +86,7 @@ import {
   URL_USER_CREDENTIALS,
   CreateEditUserGroup,
 } from '@opensrp/user-management';
+import { CareTeamList } from '@opensrp/fhir-care-team';
 import { TeamAssignmentView } from '@opensrp/team-assignment';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
@@ -258,6 +260,14 @@ const App: React.FC = () => {
               exact
               path={URL_TEAMS}
               component={TeamsView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_FHIR_CARE_TEAM}
+              component={CareTeamList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
