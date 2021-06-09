@@ -1,4 +1,4 @@
-import { Dictionary } from '@onaio/utils/dist/types/types';
+import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
 
 /**
