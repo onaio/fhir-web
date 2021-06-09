@@ -23,6 +23,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import lang from '../../lang';
 import { TableLayout } from '@opensrp/react-utils';
+import { TableActions } from './TableActions';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, draftReducer);
@@ -124,13 +125,20 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
         <TableLayout
           id="FormDraftFileList"
           persistState={true}
-          columns={getTableColumns(
-            accessToken,
-            opensrpBaseURL,
-            false,
-            sortedInfo,
-            customFetchOptions
-          )}
+          columns={getTableColumns(sortedInfo)}
+          actions={{
+            // eslint-disable-next-line react/display-name
+            render: (_: string, file: ManifestFilesTypes) => {
+              const tableActionProps = {
+                file,
+                accessToken,
+                opensrpBaseURL,
+                isJsonValidator: false,
+                customFetchOptions,
+              };
+              return <TableActions {...tableActionProps} />;
+            },
+          }}
           datasource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => setSortedInfo(sorter)}
         />
