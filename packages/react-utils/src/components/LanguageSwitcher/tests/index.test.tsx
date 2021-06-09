@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LanguageCode } from '@opensrp/pkg-config/dist/types';
+import { LanguageCode } from '@opensrp/pkg-config';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { LanguageOptions, LanguageSwitcher } from '..';

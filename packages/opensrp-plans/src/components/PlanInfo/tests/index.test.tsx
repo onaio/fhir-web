@@ -2,7 +2,7 @@ import React from 'react';
 import PlanInfo from '..';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { mount, shallow } from 'enzyme';
-import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
+import { PlanDefinition } from '@opensrp/plan-form-core';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import toJson from 'enzyme-to-json';
