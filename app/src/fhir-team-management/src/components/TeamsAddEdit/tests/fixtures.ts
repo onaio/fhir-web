@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { FhirObject, Organization, Practitioner } from '../../../types';
+import { FhirObject } from '../../../fhirutils';
+import { Organization, Practitioner } from '../../../types';
 import { FormField } from '../Form';
 
 export const accessToken = 'token';
