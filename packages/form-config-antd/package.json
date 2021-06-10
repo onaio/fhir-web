@@ -48,7 +48,7 @@
     "@opensrp/form-config-core": "^0.0.2",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "0.0.10",
+    "@opensrp/react-utils": "^0.0.10",
     "@opensrp/server-service": "^0.0.17",
     "antd": "^4.6.3",
     "react-i18next": "^11.8.10"

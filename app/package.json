@@ -57,9 +57,9 @@
     "reselect": "^4.0.0",
     "seamless-immutable": "^7.1.4",
     "tree-model": "^1.0.7",
+    "use-deep-compare-effect": "1.6.1",
     "yarn": "^1.22.10",
-    "yup": "^0.29.3",
-    "use-deep-compare-effect": "1.6.1"
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",
