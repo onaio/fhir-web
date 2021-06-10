@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/form-config-antd",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -37,7 +37,7 @@
   "license": "Apache-2.0",
   "private": false,
   "peerDependencies": {
-    "@opensrp/store": "^0.0.5",
+    "@opensrp/store": "^0.0.10",
     "i18next": "^19.8.4",
     "react": "^16.18.1"
   },
@@ -45,10 +45,10 @@
     "@ant-design/icons": "^4.3.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/form-config-core": "^0.0.1",
+    "@opensrp/form-config-core": "^0.0.2",
     "@opensrp/notifications": "^0.0.5",
-    "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "0.0.7",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/react-utils": "0.0.10",
     "@opensrp/server-service": "^0.0.17",
     "antd": "^4.6.3",
     "react-i18next": "^11.8.10"
