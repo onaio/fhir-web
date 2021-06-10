@@ -53,7 +53,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/form-config-core": "^0.0.2",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "0.0.10",
+    "@opensrp/react-utils": "^0.0.10",
     "@opensrp/server-service": "^0.0.17",
     "formik": "^2.1.4",
     "lodash": "^4.17.15",
