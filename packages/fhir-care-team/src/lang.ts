@@ -19,6 +19,7 @@ function fill() {
 
   // Rendered text
   lang.STATUS = i18n.t(`Status`, { ns: namespace });
+  lang.NAME = i18n.t(`Name`, { ns: namespace });
   lang.SAVING = i18n.t(`Saving`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
   lang.ACTIVE = i18n.t(`Active`, { ns: namespace });
@@ -31,6 +32,7 @@ function fill() {
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
   lang.TEAMS = i18n.t(`Care Teams`, { ns: namespace });
   lang.SEARCH = i18n.t(`Search`, { ns: namespace });
+  lang.CARE_TEAM_PAGE_HEADER = i18n.t(`FHIR Care Team`, { ns: namespace });
 }
 
 // run it initial
