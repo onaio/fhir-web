@@ -21,6 +21,7 @@ import {
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
+  ENABLE_FHIR_CARE_TEAM,
 } from './configs/env';
 
 import {
@@ -163,7 +164,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: langObj.CARE_TEAM,
           key: 'fhir-care-team',
-          enabled: true,
+          enabled: ENABLE_FHIR_CARE_TEAM,
           url: URL_FHIR_CARE_TEAM,
         },
         {

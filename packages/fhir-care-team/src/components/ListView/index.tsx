@@ -105,9 +105,9 @@ export const CareTeamList: React.FC<Props & RouteComponentProps> = (
   return (
     <div className="content-section">
       <Helmet>
-        <title>{lang.USER_ROLES_PAGE_HEADER}</title>
+        <title>{lang.CARE_TEAM_PAGE_HEADER}</title>
       </Helmet>
-      <PageHeader title={lang.USER_ROLES_PAGE_HEADER} className="page-header" />
+      <PageHeader title={lang.CARE_TEAM_PAGE_HEADER} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
