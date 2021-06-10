@@ -66,7 +66,6 @@ export async function onSubmit(
 
   const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
   const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
-  console.log(toAdd, toRem);
 
   await SetPractitioners(fhirbaseURL, practitioner, toAdd, toRem, Teamid);
 }
