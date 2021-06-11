@@ -242,9 +242,9 @@ describe('forms/utils/submitForm', () => {
           Pragma: 'no-cache',
           body: JSON.stringify({
             identifier: id,
-            name: `${value.firstName} ${value.lastName}`,
+            name: practitioner1.name,
             userId: practitioner1.userId,
-            username: value.username,
+            username: practitioner1.username,
           }),
           headers: {
             accept: 'application/json',
@@ -399,9 +399,9 @@ describe('forms/utils/submitForm', () => {
           body: JSON.stringify({
             active: true,
             identifier: id,
-            name: `${value.firstName} ${value.lastName}`,
+            name: practitioner1.name,
             userId: practitioner1.userId,
-            username: value.username,
+            username: practitioner1.username,
           }),
           headers: {
             accept: 'application/json',
@@ -437,9 +437,9 @@ describe('forms/utils/submitForm', () => {
         body: JSON.stringify({
           active: true,
           identifier: practitioner1.identifier,
-          name: 'Jane Doe',
+          name: practitioner1.name,
           userId: practitioner1.userId,
-          username: value.username,
+          username: practitioner1.username,
         }),
         headers: {
           accept: 'application/json',
