@@ -3,16 +3,26 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Table, Spin, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import FHIR from 'fhirclient';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { useQuery } from 'react-query';
 import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
 import lang from '../../lang';
-import { SEARCH_QUERY_PARAM, FHIR_CARE_TEAM, URL_EDIT_CARE_TEAM } from '../../constants';
+import {
+  SEARCH_QUERY_PARAM,
+  FHIR_CARE_TEAM,
+  URL_EDIT_CARE_TEAM,
+  URL_CARE_TEAM,
+  ROUTE_PARAM_CARE_TEAM_ID,
+} from '../../constants';
+import { ViewDetails } from '../ViewDetails';
 
-// Define selector instance
+// route params for user group pages
+interface RouteParams {
+  careTeamId: string | undefined;
+}
 
 interface TableData {
   key: number | string;
@@ -29,15 +39,17 @@ const defaultProps = {
   fhirBaseURL: '',
 };
 
+export type CareTeamListPropTypes = Props & RouteComponentProps<RouteParams>;
+
 /** Function which shows the list of all roles and their details
  *
  * @param {Object} props - UserRolesList component props
  * @returns {Function} returns User Roles list display
  */
-export const CareTeamList: React.FC<Props & RouteComponentProps> = (
-  props: Props & RouteComponentProps
-) => {
+export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
+  const history = useHistory();
+  const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID] ?? '';
 
   const { data, isLoading } = useQuery(
     FHIR_CARE_TEAM,
@@ -86,7 +98,12 @@ export const CareTeamList: React.FC<Props & RouteComponentProps> = (
           <Dropdown
             overlay={
               <Menu className="menu">
-                <Menu.Item className="viewdetails" onClick={() => {}}>
+                <Menu.Item
+                  className="viewdetails"
+                  onClick={() => {
+                    history.push(`${URL_CARE_TEAM}/${record.id}`);
+                  }}
+                >
                   View Details
                 </Menu.Item>
               </Menu>
@@ -124,6 +141,7 @@ export const CareTeamList: React.FC<Props & RouteComponentProps> = (
             }}
           />
         </Col>
+        <ViewDetails careTeamId={careTeamId} fhirBaseURL={fhirBaseURL} />
       </Row>
     </div>
   );

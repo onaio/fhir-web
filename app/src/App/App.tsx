@@ -86,7 +86,7 @@ import {
   URL_USER_CREDENTIALS,
   CreateEditUserGroup,
 } from '@opensrp/user-management';
-import { CareTeamList } from '@opensrp/fhir-care-team';
+import { CareTeamList, ROUTE_PARAM_CARE_TEAM_ID } from '@opensrp/fhir-care-team';
 import { TeamAssignmentView } from '@opensrp/team-assignment';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
@@ -267,6 +267,14 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_FHIR_CARE_TEAM}
+              component={CareTeamList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={`${URL_FHIR_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
               component={CareTeamList}
             />
             <PrivateComponent
