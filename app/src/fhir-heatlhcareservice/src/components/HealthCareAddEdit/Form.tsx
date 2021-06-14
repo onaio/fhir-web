@@ -123,9 +123,9 @@ export const Form: React.FC<Props> = (props: Props) => {
           <Radio value={false}>{lang.INACTIVE}</Radio>
         </Radio.Group>
       </AntdForm.Item>
-
+``
       <AntdForm.Item name="comment" label={lang.COMMENT}>
-        <Input.TextArea rows={4} placeholder={lang.ENTER_COMMENT} />
+        <Input.TextArea rows={2} placeholder={lang.ENTER_COMMENT} />
       </AntdForm.Item>
 
       <AntdForm.Item name="extraDetails" label={lang.EXTRADETAILS}>
