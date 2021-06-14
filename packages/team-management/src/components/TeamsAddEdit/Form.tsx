@@ -195,7 +195,9 @@ export const Form: React.FC<Props> = (props: Props) => {
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
-          {props.practitioners.map((practitioner) => (
+          {/* concat team members to practitioners list.
+          spread practitioners incase of override and ordering selected first*/}
+          {[...initialValue.practitionersList, ...props.practitioners].map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
             </Select.Option>
