@@ -23,6 +23,8 @@ function fill() {
 
   // Rendered text
   lang.ENTER_HEALTHCARE_NAME = i18n.t(`Enter a healthcare name`, { ns: namespace });
+  lang.ENTER_COMMENT = i18n.t(`Enter comment`, { ns: namespace });
+  lang.ENTER_EXTRADETAILS = i18n.t(`Enter extra details`, { ns: namespace });
   lang.LAST_UPDATED_DATE = i18n.t(`Last updated date`, { ns: namespace });
   lang.HEALTHCARE_NAME = i18n.t(`Healthcare Name`, { ns: namespace });
   lang.STATUS = i18n.t(`Status`, { ns: namespace });

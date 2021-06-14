@@ -124,6 +124,14 @@ export const Form: React.FC<Props> = (props: Props) => {
         </Radio.Group>
       </AntdForm.Item>
 
+      <AntdForm.Item name="comment" label={lang.COMMENT}>
+        <Input.TextArea rows={4} placeholder={lang.ENTER_COMMENT} />
+      </AntdForm.Item>
+
+      <AntdForm.Item name="extraDetails" label={lang.EXTRADETAILS}>
+        <Input.TextArea rows={4} placeholder={lang.ENTER_EXTRADETAILS} />
+      </AntdForm.Item>
+
       <AntdForm.Item {...offsetLayout}>
         <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
           {isSubmitting ? lang.SAVING : lang.SAVE}
