@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { HealthcareService } from '../../types';
+import { HealthcareServiceDetail } from '../../types';
 import lang from '../../lang';
 
-export interface HealthCareDetailProps extends HealthcareService {
+export interface HealthCareDetailProps extends HealthcareServiceDetail {
   onClose?: Function;
 }
 
 const HealthcareDetails = (props: HealthCareDetailProps) => {
-  const { extraDetails, comment, meta, name, active, id } = props;
+  const { extraDetails, comment, meta, name, active, id, organization } = props;
 
   const lastUpdated = useMemo(() => {
     if (meta?.lastUpdated) {
@@ -42,6 +42,10 @@ const HealthcareDetails = (props: HealthCareDetailProps) => {
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.LAST_UPDATED_DATE}</div>
         <div className="mb-0">{lastUpdated}</div>
+      </div>
+      <div className="mb-4 small">
+        <div className="mb-0 font-weight-bold">{lang.ORGANIZATION}</div>
+        <div className="mb-0">{organization ? organization.name : lang.NOORGANIZATION}</div>
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.COMMENT}</div>

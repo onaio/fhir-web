@@ -30,6 +30,8 @@ function fill() {
   lang.STATUS = i18n.t(`Status`, { ns: namespace });
   lang.HEALTHCARE_MEMBERS = i18n.t(`Healthcare Members`, { ns: namespace });
   lang.Active = i18n.t(`Active`, { ns: namespace });
+  lang.ORGANIZATION = i18n.t(`Organization`, { ns: namespace });
+  lang.NOORGANIZATION = i18n.t(`No Organization`, { ns: namespace });
   lang.SAVING = i18n.t(`Saving`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
   lang.ACTIVE = i18n.t(`Active`, { ns: namespace });

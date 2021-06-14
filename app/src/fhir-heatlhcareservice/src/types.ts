@@ -15,9 +15,11 @@ export interface HealthcareService
   identifier: IdentifierObject;
 }
 
+export type HealthcareServiceDetail = HealthcareService & { organization?: Organization };
+
 /** interface for Objects */
-// export interface Organization
-//   extends Require<Omit<IfhirR4.IOrganization, 'identifier'>, 'id' | 'active' | 'name'> {
-//   resourceType: 'Organization';
-//   identifier: IdentifierObject;
-// }
+export interface Organization
+  extends Require<Omit<IfhirR4.IOrganization, 'identifier'>, 'id' | 'active' | 'name'> {
+  resourceType: 'Organization';
+  identifier: IdentifierObject;
+}

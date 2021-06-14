@@ -3,10 +3,10 @@ import React, { ChangeEvent, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import HEALTHCAREsDetail from '../HealthCareDetail';
+import HealthCaresDetail from '../HealthCareDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { HealthcareService } from '../../types';
+import { HealthcareService, HealthcareServiceDetail } from '../../types';
 import { HEALTHCARES_GET, URL_ADD_HEALTHCARE } from '../../constants';
 import Table, { TableData } from './Table';
 import './index.css';
@@ -32,7 +32,7 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
 
   const serve = FHIR.client(fhirBaseURL);
 
-  const [detail, setDetail] = useState<HealthcareService | 'loading' | null>(null);
+  const [detail, setDetail] = useState<HealthcareServiceDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
 
   const healthcare = useQuery(HEALTHCARES_GET, () => serve.request(HEALTHCARES_GET), {
@@ -93,7 +93,7 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
           <div className="bg-white">
             <Table
               data={filterData.search && filterData.data?.length ? filterData.data : tableData}
-              fhirbaseURL={fhirBaseURL}
+              fhirBaseURL={fhirBaseURL}
               onViewDetails={(prams) => {
                 setDetail('loading');
                 loadHealthcareDetails(prams)
@@ -111,7 +111,7 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
             <Spin size="large" style={{ flexGrow: 1, width: 'auto', height: 'auto' }} />
           ) : (
             <Col className="pl-3" span={5}>
-              <HEALTHCAREsDetail onClose={() => setDetail(null)} {...detail} />
+              <HealthCaresDetail onClose={() => setDetail(null)} {...detail} />
             </Col>
           )
         ) : (
