@@ -2,7 +2,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Table, Spin, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
+import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import FHIR from 'fhirclient';
@@ -16,6 +16,7 @@ import {
   URL_EDIT_CARE_TEAM,
   URL_CARE_TEAM,
   ROUTE_PARAM_CARE_TEAM_ID,
+  URL_CREATE_CARE_TEAM,
 } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 
@@ -51,16 +52,17 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   const history = useHistory();
   const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID] ?? '';
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     FHIR_CARE_TEAM,
     () => FHIR.client(fhirBaseURL).request(FHIR_CARE_TEAM),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: any) => res,
+      refetchOnWindowFocus: false,
     }
   );
 
-  if (isLoading && !data) return <Spin size="large" />;
+  if (isLoading || !data || isFetching) return <Spin size="large" />;
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
@@ -89,7 +91,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={URL_EDIT_CARE_TEAM + record.id.toString()}>
+          <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
@@ -129,6 +131,12 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
+            <Link to={URL_CREATE_CARE_TEAM}>
+              <Button type="primary">
+                <PlusOutlined />
+                {lang.CREATE_CARE_TEAM}
+              </Button>
+            </Link>
           </div>
           <Table
             dataSource={tableData}
