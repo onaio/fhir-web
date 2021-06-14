@@ -24,6 +24,7 @@ import {
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
   USER_FORM_HIDDEN,
+  FHIR_API_BASE_URL,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -145,4 +146,8 @@ export const createEditUserProps = {
   // simulate a diverse set of behaviors from the same code base for a module. preferable a solution
   // that is closer to the code.
   userFormHidden: USER_FORM_HIDDEN,
+};
+
+export const heatlhcareProps = {
+  fhirBaseURL: FHIR_API_BASE_URL,
 };

@@ -45,6 +45,9 @@ import {
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_HEALTHCARE,
+  URL_HEALTHCARE_ADD,
+  URL_HEALTHCARE_EDIT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -129,6 +132,7 @@ import {
   locationUnitProps,
   usersListProps,
   createEditUserProps,
+  heatlhcareProps,
 } from './utils';
 import './App.css';
 import {
@@ -158,6 +162,8 @@ import '@opensrp/inventory/dist/index.css';
 
 import { APP_LOGIN_URL } from '../dispatchConfig';
 import { useTranslation } from 'react-i18next';
+import { HealthCareList } from '../fhir-heatlhcareservice/src/components/HealthCareList';
+import { HealthCareAddEdit } from '../fhir-heatlhcareservice/src';
 
 const { Content } = Layout;
 
@@ -201,6 +207,7 @@ const App: React.FC = () => {
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   const activeRoles = OPENSRP_ROLES;
   useTranslation();
+
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -712,6 +719,30 @@ const App: React.FC = () => {
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEATLH_CARE && activeRoles.HEATLH_CARE.split(',')}
+              path={URL_HEALTHCARE_EDIT}
+              {...heatlhcareProps}
+              component={HealthCareAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEATLH_CARE && activeRoles.HEATLH_CARE.split(',')}
+              path={URL_HEALTHCARE_ADD}
+              {...heatlhcareProps}
+              component={HealthCareAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEATLH_CARE && activeRoles.HEATLH_CARE.split(',')}
+              path={URL_HEALTHCARE}
+              {...heatlhcareProps}
+              component={HealthCareList}
             />
             <Route
               exact

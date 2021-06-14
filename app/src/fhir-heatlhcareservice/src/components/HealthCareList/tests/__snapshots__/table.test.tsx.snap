@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/TeamsView/table renders without crashing: Table 1`] = `
+<Table
+  data={
+    Array [
+      Object {
+        "active": false,
+        "id": 1,
+        "identifier": "mock 1",
+        "key": "1",
+        "name": "Edrward 1",
+      },
+      Object {
+        "active": true,
+        "id": 2,
+        "identifier": "mock 2",
+        "key": "2",
+        "name": "Edrward 2",
+      },
+      Object {
+        "active": false,
+        "id": 3,
+        "identifier": "mock 3",
+        "key": "3",
+        "name": "Edrward 3",
+      },
+      Object {
+        "active": true,
+        "id": 4,
+        "identifier": "mock 4",
+        "key": "4",
+        "name": "Edrward 4",
+      },
+    ]
+  }
+  opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
+  setDetail={[Function]}
+  setPractitionersList={[Function]}
+/>
+`;
