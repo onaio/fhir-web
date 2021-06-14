@@ -14,6 +14,7 @@ import { useQueryClient } from 'react-query';
 
 import lang, { Lang } from '../../lang';
 import FHIR from 'fhirclient';
+import { valuesIn } from 'lodash';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -21,6 +22,8 @@ const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 export interface FormField {
   name: string;
   active: boolean;
+  comment: string;
+  extraDetails: string;
 }
 
 interface Props {
@@ -42,7 +45,6 @@ interface Props {
 export async function onSubmit(
   fhirBaseURL: string,
   setIsSubmitting: (value: boolean) => void,
-  initialValue: FormField,
   values: FormField,
   id?: string
 ) {
@@ -95,14 +97,19 @@ export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
   const { fhirBaseURL, id } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue = props.initialValue ?? { active: true, name: '', practitioners: [] };
+  const initialValue = props.initialValue ?? {
+    active: true,
+    name: '',
+    comment: '',
+    extraDetails: '',
+  };
 
   return (
     <AntdForm
       requiredMark={false}
       {...layout}
       onFinish={(values) =>
-        onSubmit(fhirBaseURL, setIsSubmitting, initialValue, values, id)
+        onSubmit(fhirBaseURL, setIsSubmitting, values, id)
           .then(() => {
             queryClient.invalidateQueries(HEALTHCARES_GET);
             queryClient.invalidateQueries([HEALTHCARES_GET, id]);
@@ -123,7 +130,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           <Radio value={false}>{lang.INACTIVE}</Radio>
         </Radio.Group>
       </AntdForm.Item>
-``
+
       <AntdForm.Item name="comment" label={lang.COMMENT}>
         <Input.TextArea rows={2} placeholder={lang.ENTER_COMMENT} />
       </AntdForm.Item>
