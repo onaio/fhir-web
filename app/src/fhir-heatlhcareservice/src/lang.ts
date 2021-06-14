@@ -25,13 +25,14 @@ function fill() {
   lang.ENTER_HEALTHCARE_NAME = i18n.t(`Enter a healthcare name`, { ns: namespace });
   lang.ENTER_COMMENT = i18n.t(`Enter comment`, { ns: namespace });
   lang.ENTER_EXTRADETAILS = i18n.t(`Enter extra details`, { ns: namespace });
+  lang.ENTER_ORGANIZATION = i18n.t(`Enter organization`, { ns: namespace });
   lang.LAST_UPDATED_DATE = i18n.t(`Last updated date`, { ns: namespace });
   lang.HEALTHCARE_NAME = i18n.t(`Healthcare Name`, { ns: namespace });
   lang.STATUS = i18n.t(`Status`, { ns: namespace });
   lang.HEALTHCARE_MEMBERS = i18n.t(`Healthcare Members`, { ns: namespace });
   lang.Active = i18n.t(`Active`, { ns: namespace });
   lang.ORGANIZATION = i18n.t(`Organization`, { ns: namespace });
-  lang.NOORGANIZATION = i18n.t(`No Organization`, { ns: namespace });
+  lang.NOORGANIZATION = i18n.t(`No organization`, { ns: namespace });
   lang.SAVING = i18n.t(`Saving`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
   lang.ACTIVE = i18n.t(`Active`, { ns: namespace });

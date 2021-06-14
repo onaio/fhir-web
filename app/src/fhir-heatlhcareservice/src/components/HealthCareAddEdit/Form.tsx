@@ -8,13 +8,12 @@ import {
   sendInfoNotification,
   sendErrorNotification,
 } from '@opensrp/notifications';
-import { HealthcareService } from '../../types';
+import { HealthcareService, Organization } from '../../types';
 import { FhirObject } from '../../fhirutils';
 import { useQueryClient } from 'react-query';
 
 import lang, { Lang } from '../../lang';
 import FHIR from 'fhirclient';
-import { valuesIn } from 'lodash';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -24,12 +23,14 @@ export interface FormField {
   active: boolean;
   comment: string;
   extraDetails: string;
+  organizationid: string | undefined;
 }
 
 interface Props {
   fhirBaseURL: string;
   id?: string;
   initialValue?: FormField;
+  organizations: Organization[];
 }
 
 /**
@@ -37,7 +38,6 @@ interface Props {
  *
  * @param {string} fhirBaseURL - base url
  * @param {Function} setIsSubmitting function to set IsSubmitting loading process
- * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
  * @param {string} id id of the healthcare
@@ -51,57 +51,37 @@ export async function onSubmit(
   setIsSubmitting(true);
   const Healthcareid = id ?? v4();
 
-  //   const payload: FhirObject<HealthcareService> = {
-  //     resourceType: 'HealthcareService',
-  //     id: Healthcareid,
-  //     active: values.active,
-  //     identifier: [{ use: 'official', value: Healthcareid }],
-  //     name: values.name,
-  //   };
+  const payload: FhirObject<Omit<HealthcareService, 'meta'>> = {
+    resourceType: 'HealthcareService',
+    id: Healthcareid,
+    active: values.active,
+    identifier: [{ use: 'official', value: Healthcareid }],
+    comment: values.comment,
+    extraDetails: values.extraDetails,
+    providedBy: { reference: 'Organization/' + values.organizationid },
+    name: values.name,
+  };
 
-  //   await setHealthcare(fhirBaseURL, payload, id);
-
-  //   // Filter and seperate the practitioners uuid
-
-  //   const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
-  //   const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
-}
-
-/**
- * Function to make healthcares API call
- *
- * @param {string} fhirBaseURL - base url
- * @param {HealthcareService} payload payload To send
- * @param {string} id of the healthcare if already created
- * @param {Lang} langObj - the translation string lookup
- */
-export async function setHealthcare(
-  fhirBaseURL: string,
-  payload: FhirObject<Omit<HealthcareService, 'meta'>>,
-  id?: string,
-  langObj: Lang = lang
-) {
   const serve = FHIR.client(fhirBaseURL);
   if (id) {
-    console.log(payload, fhirBaseURL + HEALTHCARES_PUT + id);
     await serve.update(payload);
-    sendSuccessNotification(langObj.MSG_HEALTHCARES_UPDATE_SUCCESS);
+    sendSuccessNotification(lang.MSG_HEALTHCARES_UPDATE_SUCCESS);
   } else {
-    console.log(payload, fhirBaseURL + HEALTHCARES_POST);
     await serve.create(payload);
-    sendSuccessNotification(langObj.MSG_HEALTHCARES_ADD_SUCCESS);
+    sendSuccessNotification(lang.MSG_HEALTHCARES_ADD_SUCCESS);
   }
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { fhirBaseURL, id } = props;
+  const { fhirBaseURL, id, organizations } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue = props.initialValue ?? {
+  const initialValue: FormField = props.initialValue ?? {
     active: true,
     name: '',
     comment: '',
     extraDetails: '',
+    organizationid: undefined,
   };
 
   return (
@@ -137,6 +117,16 @@ export const Form: React.FC<Props> = (props: Props) => {
 
       <AntdForm.Item name="extraDetails" label={lang.EXTRADETAILS}>
         <Input.TextArea rows={4} placeholder={lang.ENTER_EXTRADETAILS} />
+      </AntdForm.Item>
+
+      <AntdForm.Item name="organizationid" label={lang.ORGANIZATION}>
+        <Select placeholder={lang.ENTER_ORGANIZATION}>
+          {organizations.map((org) => (
+            <Select.Option key={org.id} value={org.id}>
+              {org.name}
+            </Select.Option>
+          ))}
+        </Select>
       </AntdForm.Item>
 
       <AntdForm.Item {...offsetLayout}>
