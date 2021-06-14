@@ -2,8 +2,9 @@ import React from 'react';
 import { Col, Space, Spin, Button, Typography } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
-import { useQuery } from 'react-query';
+import { useQuery, useQueries } from 'react-query';
 import { Resource404 } from '@opensrp/react-utils';
+import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import FHIR from 'fhirclient';
 import lang from '../../lang';
@@ -14,6 +15,40 @@ const { Text } = Typography;
 export interface ViewDetailsProps {
   careTeamId: string;
   fhirBaseURL: string;
+}
+
+/** Util function to build out patient or practitioner name
+ *
+ * @param {object} patient - patient resource object
+ * @returns {string} - returns patient or practitioner name string
+ */
+export function getPatientName(patient: Dictionary | undefined) {
+  if (!patient) {
+    return '';
+  }
+
+  let name = patient.name;
+  if (!Array.isArray(name)) {
+    name = [name];
+  }
+  name = name[0];
+  if (!name) {
+    return '';
+  }
+
+  const family = Array.isArray(name.family) ? name.family : [name.family];
+  const given = Array.isArray(name.given) ? name.given : [name.given];
+  const prefix = Array.isArray(name.prefix) ? name.prefix : [name.prefix];
+  const suffix = Array.isArray(name.suffix) ? name.suffix : [name.suffix];
+
+  return [
+    prefix.map((t: string) => String(t || '').trim()).join(' '),
+    given.map((t: string) => String(t || '').trim()).join(' '),
+    family.map((t: string) => String(t || '').trim()).join(' '),
+    suffix.map((t: string) => String(t || '').trim()).join(' '),
+  ]
+    .filter(Boolean)
+    .join(' ');
 }
 
 /** component that renders the details view to the right side
@@ -31,7 +66,31 @@ const ViewDetails = (props: ViewDetailsProps) => {
     {
       refetchOnWindowFocus: false,
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: any) => res,
+      select: (res) => res,
+    }
+  );
+
+  const practitioners = useQueries(
+    data && data.participant
+      ? data.participant.map((p: any) => {
+          return {
+            queryKey: [FHIR_CARE_TEAM, p.member.reference],
+            queryFn: () => FHIR.client(fhirBaseURL).request(p.member.reference),
+            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
+            select: (res: any) => res,
+          };
+        })
+      : []
+  );
+
+  const subject = useQuery(
+    (data && data.subject && data.subject.reference) ?? '',
+    () => FHIR.client(fhirBaseURL).request((data && data.subject && data.subject.reference) ?? ''),
+    {
+      refetchOnWindowFocus: false,
+      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+      select: (res) => res,
     }
   );
 
@@ -74,6 +133,30 @@ const ViewDetails = (props: ViewDetailsProps) => {
           <Text type="secondary" className="display-block">
             {data.status}
           </Text>
+          {subject.data && subject.data.name ? (
+            <>
+              <Text strong={true} className="display-block">
+                {lang.SUBJECT}
+              </Text>
+              <Text type="secondary" className="display-block">
+                {subject.data.name}
+              </Text>
+            </>
+          ) : (
+            ''
+          )}
+          <Text strong={true} className="display-block">
+            {lang.PARTICIPANTS}
+          </Text>
+          {practitioners.length
+            ? practitioners.map((datum: any) => (
+                <>
+                  <Text type="secondary" className="display-block">
+                    {getPatientName(datum.data)}
+                  </Text>
+                </>
+              ))
+            : ''}
         </Space>
       )}
     </Col>

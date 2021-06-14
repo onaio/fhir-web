@@ -34,6 +34,8 @@ function fill() {
   lang.SEARCH = i18n.t(`Search`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
   lang.CARE_TEAM_PAGE_HEADER = i18n.t(`FHIR Care Team`, { ns: namespace });
+  lang.SUBJECT = i18n.t(`Subject`, { ns: namespace });
+  lang.PARTICIPANTS = i18n.t(`Participant`, { ns: namespace });
 }
 
 // run it initial
