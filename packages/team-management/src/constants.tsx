@@ -7,7 +7,7 @@ export const URL_EDIT_TEAM = 'teams/edit/';
 //
 export const PRACTITIONER_GET = 'practitioner/';
 export const PRACTITIONER_ROLE = 'practitionerRole';
-export const PRACTITIONER_POST = `${PRACTITIONER_ROLE}/add`;
+export const PRACTITIONER_POST = `${PRACTITIONER_ROLE}/add/`;
 export const PRACTITIONER_DEL = `${PRACTITIONER_ROLE}/deleteByPractitioner`;
 
 //
