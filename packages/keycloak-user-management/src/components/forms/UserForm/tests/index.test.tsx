@@ -516,4 +516,61 @@ describe('components/forms/UserForm', () => {
     expect(wrapper.find('input#email').props().value).toEqual(keycloakUser.email);
     expect(wrapper.find('input#username').props().value).toEqual(keycloakUser.username);
   });
+
+  it('disables and toggles practitioner off when toggling active user off', async () => {
+    const propsOwn = {
+      ...props,
+      practitioner: practitioner1,
+      // mount with both user and practitioner enabled
+      initialValues: { ...keycloakUser, enabled: true, active: true },
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...propsOwn} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // user enabled checkbox
+    const userEnabled = wrapper.find('input[name="enabled"]');
+    // expect 'yes' and 'no' options
+    expect(userEnabled).toHaveLength(2);
+    // 'yes' to be checked and 'no' to be unchecked (active user)
+    expect(userEnabled.at(0).props().checked).toEqual(true);
+    expect(userEnabled.at(1).props().checked).toEqual(false);
+
+    // practitioner active checkbox
+    const practitionerActive = wrapper.find('input[name="active"]');
+    // 'yes' and 'no' options
+    expect(practitionerActive).toHaveLength(2);
+    // 'yes' to be checked and 'no' to be unchecked (practitioner active)
+    expect(practitionerActive.at(0).props().checked).toEqual(true);
+    expect(practitionerActive.at(1).props().checked).toEqual(false);
+    // practitioner not disabled
+    wrapper.find('Radio[name="active"]').forEach((node) => {
+      expect(node.props().disabled).toBe(false);
+    });
+
+    // simulate toggle user off
+    userEnabled.at(1).simulate('change', { target: { checked: true } });
+
+    // re-select
+    const userEnabled2 = wrapper.find('input[name="enabled"]');
+    const practitionerActive2 = wrapper.find('input[name="active"]');
+
+    // expect user toggled off
+    expect(userEnabled2.at(0).props().checked).toEqual(false);
+    expect(userEnabled2.at(1).props().checked).toEqual(true);
+    // expect practitioner toggle off and disabled
+    expect(practitionerActive2.at(0).props().checked).toEqual(false);
+    expect(practitionerActive2.at(1).props().checked).toEqual(true);
+    wrapper.find('Radio[name="active"]').forEach((node) => {
+      expect(node.props().disabled).toBe(true);
+    });
+  });
 });

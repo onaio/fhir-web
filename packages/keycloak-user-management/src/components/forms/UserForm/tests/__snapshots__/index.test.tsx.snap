@@ -43,6 +43,7 @@ Object {
     name="active"
   >
     <Radio
+      disabled={false}
       name="active"
       type="radio"
       value={true}
@@ -50,6 +51,7 @@ Object {
       Yes
     </Radio>
     <Radio
+      disabled={false}
       name="active"
       type="radio"
       value={false}
@@ -69,6 +71,7 @@ Object {
     name="active"
   >
     <Radio
+      disabled={false}
       name="active"
       type="radio"
       value={true}
@@ -76,6 +79,7 @@ Object {
       Yes
     </Radio>
     <Radio
+      disabled={false}
       name="active"
       type="radio"
       value={false}
