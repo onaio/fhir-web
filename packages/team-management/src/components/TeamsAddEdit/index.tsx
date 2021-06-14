@@ -4,11 +4,16 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { reducer, Organization, reducerName } from '../../ducks/organizations';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import { PRACTITIONER_GET, TEAMS_GET, TEAM_PRACTITIONERS } from '../../constants';
+import {
+  PRACTITIONER_GET,
+  TEAMS_GET,
+  TEAM_PRACTITIONERS,
+  PRACTITIONER_ROLE,
+} from '../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import { Practitioner } from '../../ducks/practitioners';
+import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 import lang, { Lang } from '../../lang';
 
 reducerRegistry.register(reducerName, reducer);
@@ -88,23 +93,53 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
   const [practitioners, setPractitioners] = useState<Practitioner[] | null>(null);
+  const [practitionersRole, setPractitionersRole] = useState<PractitionerPOST[] | null>(null);
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
     if (params.id) setupInitialValue(params.id, opensrpBaseURL, setInitialValue);
   }, [params.id, opensrpBaseURL]);
 
+  /**
+   * Fetch practitioners role array - array of all practitioners already assigned to teams
+   */
   useEffect(() => {
-    const serve = new OpenSRPService(PRACTITIONER_GET, opensrpBaseURL);
+    const serve = new OpenSRPService(PRACTITIONER_ROLE, opensrpBaseURL);
     serve
       .list()
-      .then((response: Practitioner[]) => {
+      .then((response: PractitionerPOST[]) => {
         // filter inactive practitioners
         const filteredResponse = response.filter((practitioner) => practitioner.active);
-        setPractitioners(filteredResponse);
+        setPractitionersRole(filteredResponse);
       })
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }, [opensrpBaseURL]);
+
+  /**
+   * fetch practitioners and diff inactive and already assigned to teams
+   */
+  useEffect(() => {
+    if (practitionersRole) {
+      const serve = new OpenSRPService(PRACTITIONER_GET, opensrpBaseURL);
+      serve
+        .list()
+        .then((response: Practitioner[]) => {
+          // get identifiers of all practitioners already assigned
+          const assignedPractitioners = practitionersRole.map(
+            (practitioner) => practitioner.practitioner
+          );
+          // filter out already assigned and inactive practitioners
+          const filteredResponse = response.filter(
+            (practitioner) =>
+              !assignedPractitioners.includes(practitioner.identifier) &&
+              practitioner.active === true
+          );
+
+          setPractitioners(filteredResponse);
+        })
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+    }
+  }, [opensrpBaseURL, practitionersRole]);
 
   if (!practitioners || (params.id && !initialValue)) return <Spin size={'large'} />;
 
