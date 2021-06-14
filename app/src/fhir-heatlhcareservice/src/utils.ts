@@ -1,7 +1,8 @@
 import FHIR from 'fhirclient';
-import { HealthcareService } from '.';
-// import { PRACTITIONERROLE_GET, PRACTITIONER_GET } from './constants';
+import { HealthcareService, HealthcareServiceDetail } from '.';
+import { ORGANIZATION_GET } from './constants';
 import { FHIRResponse, ProcessFHIRResponse, FhirObject, ProcessFHIRObject } from './fhirutils';
+import { Organization } from './types';
 
 /**
  * Function to load selected healthcareservice for details
@@ -10,30 +11,18 @@ import { FHIRResponse, ProcessFHIRResponse, FhirObject, ProcessFHIRObject } from
  */
 export async function loadHealthcareDetails(props: {
   healthcareservice: HealthcareService;
-  fhirbaseURL: string;
-}): Promise<HealthcareService> {
-  const { fhirbaseURL, healthcareservice } = props;
-  const serve = FHIR.client(fhirbaseURL);
+  fhirBaseURL: string;
+}): Promise<HealthcareServiceDetail> {
+  const { fhirBaseURL, healthcareservice } = props;
+  const serve = FHIR.client(fhirBaseURL);
 
-  console.log(healthcareservice);
+  const orgid = healthcareservice.providedBy?.reference?.split('/')[1];
 
-  // const AllRoles: PractitionerRole[] =
-  //   props.AllRoles ??
-  //   (await serve
-  //     .request(PRACTITIONERROLE_GET)
-  //     .then((res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res)));
+  const organization = orgid
+    ? await serve
+        .request(ORGANIZATION_GET + orgid)
+        .then((res: FhirObject<Organization>) => ProcessFHIRObject(res))
+    : undefined;
 
-  // const practitionerrolesassignedref = AllRoles.filter(
-  //   (role) => role.healthcareservice.reference === `HealthcareService/${healthcareservice.id}`
-  // ).map((role) => role.practitioner.reference.split('/')[1]);
-
-  // const practitionerAssignedPromise = practitionerrolesassignedref.map((id) =>
-  //   serve
-  //     .request(`${PRACTITIONER_GET}/${id}`)
-  //     .then((res: FhirObject<Practitioner>) => ProcessFHIRObject(res))
-  // );
-
-  // const practitionerAssigned = await Promise.all(practitionerAssignedPromise);
-
-  return { ...healthcareservice };
+  return { ...healthcareservice, ...(organization && { organization: organization }) };
 }

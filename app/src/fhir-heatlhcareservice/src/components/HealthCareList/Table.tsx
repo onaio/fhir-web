@@ -13,12 +13,12 @@ export interface TableData extends HealthcareService {
 
 export interface Props {
   data: TableData[];
-  fhirbaseURL: string;
-  onViewDetails?: (param: { healthcareservice: TableData; fhirbaseURL: string }) => void;
+  fhirBaseURL: string;
+  onViewDetails?: (param: { healthcareservice: TableData; fhirBaseURL: string }) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails, fhirbaseURL } = props;
+  const { onViewDetails, fhirBaseURL } = props;
 
   const columns: Column<TableData>[] = [
     {
@@ -69,7 +69,7 @@ const Table: React.FC<Props> = (props: Props) => {
                   <Menu.Item
                     className="viewdetails"
                     onClick={() => {
-                      if (onViewDetails) onViewDetails({ healthcareservice: record, fhirbaseURL });
+                      if (onViewDetails) onViewDetails({ healthcareservice: record, fhirBaseURL });
                     }}
                   >
                     View Details

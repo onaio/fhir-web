@@ -9,3 +9,8 @@ export const HEALTHCARE_UUID = 'healthcare-uuid';
 export const HEALTHCARES_GET = 'Group/';
 export const HEALTHCARES_PUT = 'Group/';
 export const HEALTHCARES_POST = 'Group/';
+
+//
+// Healthcares
+//
+export const ORGANIZATION_GET = 'Organization/';
