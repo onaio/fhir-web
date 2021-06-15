@@ -59,6 +59,8 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: any) => res,
       refetchOnWindowFocus: false,
+      retryOnMount: true,
+      suspense: !!careTeamId,
     }
   );
 

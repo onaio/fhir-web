@@ -26,15 +26,13 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const { careTeamId, fhirBaseURL } = props;
   const history = useHistory();
 
-  const { data, isLoading } = useQuery(
-    `CareTeam/${careTeamId}`,
-    () => FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`),
-    {
-      refetchOnWindowFocus: false,
-      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res) => res,
-    }
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: [`CareTeam/${careTeamId}`],
+    queryFn: () =>
+      careTeamId ? FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`) : undefined,
+    onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+    select: (res) => res,
+  });
 
   const practitioners = useQueries(
     data && data.participant
@@ -50,15 +48,15 @@ const ViewDetails = (props: ViewDetailsProps) => {
       : []
   );
 
-  const subject = useQuery(
-    (data && data.subject && data.subject.reference) ?? '',
-    () => FHIR.client(fhirBaseURL).request((data && data.subject && data.subject.reference) ?? ''),
-    {
-      refetchOnWindowFocus: false,
-      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res) => res,
-    }
-  );
+  const subject = useQuery({
+    queryKey: [`CareTeam/${data && data.subject && data.subject.reference}`],
+    queryFn: () =>
+      data && data.subject && data.subject.reference
+        ? FHIR.client(fhirBaseURL).request(data.subject.reference)
+        : undefined,
+    onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+    select: (res) => res,
+  });
 
   if (!careTeamId) {
     return null;
