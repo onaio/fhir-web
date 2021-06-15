@@ -4,6 +4,13 @@ exports[`Team-management/TeamsAddEdit/Form renders with default team members wit
 Array [
   Object {
     "active": true,
+    "identifier": "0",
+    "name": "anon ops",
+    "userId": "0",
+    "username": "anon-ops",
+  },
+  Object {
+    "active": true,
     "identifier": "1",
     "name": "prac two",
     "userId": "1",
@@ -15,13 +22,6 @@ Array [
     "name": "prac one",
     "userId": "2",
     "username": "prac_1",
-  },
-  Object {
-    "active": false,
-    "identifier": "3",
-    "name": "prac one",
-    "userId": "3",
-    "username": "prac_one",
   },
 ]
 `;
