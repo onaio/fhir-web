@@ -59,7 +59,8 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
 
   const singleCareTeam = useQuery(
     FHIR_CARE_TEAM,
-    () => FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`),
+    () =>
+      careTeamId ? FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`) : undefined,
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: any) => res,
@@ -84,31 +85,37 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     return <Spin size="large" />;
   }
 
-  const userGroupFormProps = {
+  const careTeamFormProps = {
     fhirBaseURL,
     initialValues: {
-      id: singleCareTeam.data.id,
-      name: singleCareTeam.data.name,
-      status: singleCareTeam.data.status,
-      practitioners: fhirPractitioners.data.entry.map((e: any) => {
-        return {
-          id: e.resource.id,
-          name: getPatientName(e.resource),
-        };
-      }),
-      groups: fhirGroups.data.entry.map((e: any) => {
-        return {
-          id: e.resource.id,
-          name: e.resource.name,
-        };
-      }),
+      id: singleCareTeam.data ? singleCareTeam.data.id : '',
+      name: singleCareTeam.data ? singleCareTeam.data.name : '',
+      status: singleCareTeam.data ? singleCareTeam.data.status : '',
+      practitionersId: singleCareTeam.data
+        ? singleCareTeam.data.participant?.map((p: any) => p.member.reference.split('/')[1]) ?? []
+        : [],
+      groupsId: singleCareTeam.data
+        ? singleCareTeam.data.subject?.reference.split('/')[1] ?? ''
+        : '',
     },
+    practitioners: fhirPractitioners.data.entry.map((e: any) => {
+      return {
+        id: e.resource.id,
+        name: getPatientName(e.resource),
+      };
+    }),
+    groups: fhirGroups.data.entry.map((e: any) => {
+      return {
+        id: e.resource.id,
+        name: e.resource.name,
+      };
+    }),
   };
 
   return (
     <Row>
       <Col span={24}>
-        <CareTeamForm {...userGroupFormProps} />
+        <CareTeamForm {...careTeamFormProps} />
       </Col>
     </Row>
   );
