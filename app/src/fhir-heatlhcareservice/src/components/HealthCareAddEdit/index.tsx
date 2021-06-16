@@ -10,7 +10,6 @@ import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
 import { FhirObject, FHIRResponse, ProcessFHIRObject, ProcessFHIRResponse } from '../../fhirutils';
-import { loadHealthcareDetails } from '../../utils';
 
 export interface Props {
   fhirBaseURL: string;
@@ -56,11 +55,13 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{params.id ? lang.EDIT : lang.CREATE} Team</title>
+        <title>{params.id ? lang.EDIT : lang.CREATE} Healthcare</title>
       </Helmet>
 
       <h5 className="mb-3 header-title">
-        {initialValue?.name ? `${lang.EDIT_TEAM} | ${initialValue.name}` : lang.CREATE_TEAM}
+        {initialValue?.name
+          ? `${lang.EDIT_HEALTHCARE} | ${initialValue.name}`
+          : lang.CREATE_HEALTHCARE}
       </h5>
 
       <div className="bg-white p-5">
