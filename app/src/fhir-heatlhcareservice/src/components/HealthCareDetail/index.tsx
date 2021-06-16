@@ -16,7 +16,7 @@ const HealthcareDetails = (props: HealthCareDetailProps) => {
       const date = new Date(meta.lastUpdated);
       return <div>{date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}</div>;
     }
-  }, [meta?.lastUpdated]);
+  }, [meta]);
 
   return (
     <div className="p-4 bg-white">

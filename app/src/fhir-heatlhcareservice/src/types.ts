@@ -1,7 +1,6 @@
 /** Organizations redux module */
 import { Require } from '@opensrp/react-utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 import { IdentifierObject } from './fhirutils';
 
 /** interface for Objects */

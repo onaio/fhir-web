@@ -1,7 +1,7 @@
 import FHIR from 'fhirclient';
 import { HealthcareService, HealthcareServiceDetail } from '.';
 import { ORGANIZATION_GET } from './constants';
-import { FHIRResponse, ProcessFHIRResponse, FhirObject, ProcessFHIRObject } from './fhirutils';
+import { FhirObject, ProcessFHIRObject } from './fhirutils';
 import { Organization } from './types';
 
 /**
