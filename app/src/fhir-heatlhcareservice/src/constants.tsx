@@ -6,9 +6,9 @@ export const URL_EDIT_HEALTHCARE = 'healthcare/edit/';
 // Healthcares
 //
 export const HEALTHCARE_UUID = 'healthcare-uuid';
-export const HEALTHCARES_GET = 'Group/';
-export const HEALTHCARES_PUT = 'Group/';
-export const HEALTHCARES_POST = 'Group/';
+export const HEALTHCARES_GET = 'HealthcareService/';
+export const HEALTHCARES_PUT = 'HealthcareService/';
+export const HEALTHCARES_POST = 'HealthcareService/';
 
 //
 // Healthcares
