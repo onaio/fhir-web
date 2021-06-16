@@ -29,7 +29,7 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
 
   const Healthcares = useQuery(
     [HEALTHCARES_GET, params.id],
-    () => serve.request(HEALTHCARES_GET + params.id),
+    () => serve.request(`${HEALTHCARES_GET}${params.id}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res: FhirObject<HealthcareService>) => ProcessFHIRObject(res),
@@ -47,8 +47,6 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     const organizationid = healthcares.providedBy?.reference?.split('/')[1];
     setInitialValue({ ...healthcares, organizationid: organizationid ?? undefined });
   }
-
-  console.log(organizations.data, !organizations.data);
 
   if (!organizations.data || (params.id && !initialValue)) return <Spin size={'large'} />;
 

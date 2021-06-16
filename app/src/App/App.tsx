@@ -101,6 +101,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
+import { HealthCareList, HealthCareAddEdit } from '@opensrp/fhir-heatlhcareservice';
 import {
   LocationUnitList,
   LocationUnitGroupAddEdit,
@@ -162,8 +163,6 @@ import '@opensrp/inventory/dist/index.css';
 
 import { APP_LOGIN_URL } from '../dispatchConfig';
 import { useTranslation } from 'react-i18next';
-import { HealthCareList } from '../fhir-heatlhcareservice/src/components/HealthCareList';
-import { HealthCareAddEdit } from '../fhir-heatlhcareservice/src';
 
 const { Content } = Layout;
 

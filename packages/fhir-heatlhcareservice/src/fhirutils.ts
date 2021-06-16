@@ -22,14 +22,23 @@ export type FhirObject<T> = Omit<T, 'identifier'> & { identifier: FhirIdentifier
 export type Identifier = Require<FhirIdentifier, 'use' | 'value'>;
 export type IdentifierObject = Record<FhirIdentifier.UseEnum, Identifier>;
 
+/**
+ * @param res FHIR Response to process
+ */
 export function ProcessFHIRResponse<T>(res: FHIRResponse<T>) {
   return ProcessFHIRObjects(res.entry.map((e) => e.resource));
 }
 
+/**
+ * @param object FHIR Object to process
+ */
 export function ProcessFHIRObjects<T>(object: FhirObject<T>[]) {
   return object.map((e) => ProcessFHIRObject(e));
 }
 
+/**
+ * @param object FHIR Object to process
+ */
 export function ProcessFHIRObject<T>(object: FhirObject<T>): T {
   return ({ ...object, identifier: convertToObject(object.identifier, 'use') } as unknown) as T;
 }
