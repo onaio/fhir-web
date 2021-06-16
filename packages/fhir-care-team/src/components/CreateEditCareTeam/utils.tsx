@@ -1,22 +1,21 @@
-import { Dispatch, SetStateAction } from 'react';
 import { history } from '@onaio/connected-reducer-registry';
-import { KeycloakService } from '@opensrp/keycloak-service';
 import { v4 } from 'uuid';
 import FHIR from 'fhirclient';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import lang from '../../lang';
 import { URL_CARE_TEAM } from '../../constants';
 import { Dictionary } from '@onaio/utils';
-import { fhirR4 } from '@smile-cdr/fhirts';
+import { IfhirR4 } from '@smile-cdr/fhirts';
 import { FormFields } from './Form';
 
 export const submitForm = async (
   values: FormFields,
   fhirBaseURL: string,
-  id?: string
+  id?: string,
+  uuid?: string
 ): Promise<void> => {
-  const careTeamId = id ?? v4();
-  const payload: fhirR4.CareTeam = {
+  const careTeamId = uuid ? uuid : v4();
+  const payload: Omit<IfhirR4.ICareTeam, 'meta'> = {
     resourceType: 'CareTeam',
     identifier: [
       {
@@ -24,8 +23,9 @@ export const submitForm = async (
         value: careTeamId,
       },
     ],
+    id: id,
     name: values.name,
-    status: values.status,
+    status: values.status as any,
     subject: {
       reference: `Group/${values.groupsId}`,
     },
@@ -40,12 +40,14 @@ export const submitForm = async (
   const serve = FHIR.client(fhirBaseURL);
   if (id) {
     await serve
-      .update(payload as Dictionary)
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+      .update(payload)
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
+      .finally(() => sendSuccessNotification(lang.CARE_TEAMS_UPDATE_SUCCESS));
   } else {
     await serve
-      .create(payload as Dictionary)
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+      .create(payload)
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
+      .finally(() => sendSuccessNotification(lang.CARE_TEAMS_ADD_SUCCESS));
   }
   history.push(URL_CARE_TEAM);
 };

@@ -2,10 +2,10 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { useDispatch, useSelector } from 'react-redux';
 import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps } from 'react-router-dom';
+import { Dictionary } from '@onaio/utils';
 import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
@@ -13,7 +13,8 @@ import {
   FHIR_PRACTITIONERS,
   ROUTE_PARAM_CARE_TEAM_ID,
 } from '../../constants';
-import { CareTeamForm, FormFields } from './Form';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+import { CareTeamForm } from './Form';
 import { getPatientName } from './utils';
 
 // Interface for route params
@@ -41,43 +42,33 @@ export const defaultEditCareTeamsProps: EditCareTeamProps = {
 
 const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEditCareTeamProps) => {
   const { fhirBaseURL } = props;
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID];
-  //   const initialValues = keycloakUserGroup.length ? keycloakUserGroup[0] : defaultInitialValues;
-
-  /**
-   * Fetch group incase the user group is not available e.g when page is refreshed
-   * also fetches all roles, available and assigned roles during edit mode
-   */
-  React.useEffect(() => {
-    if (careTeamId) {
-      console.log('user group');
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.location]);
 
   const singleCareTeam = useQuery(
-    FHIR_CARE_TEAM,
-    () =>
+    `${FHIR_CARE_TEAM}/${careTeamId}`,
+    async () =>
       careTeamId ? FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`) : undefined,
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: any) => res,
+      select: (res: IfhirR4.ICareTeam) => res,
     }
   );
 
-  const fhirGroups = useQuery(FHIR_GROUPS, () => FHIR.client(fhirBaseURL).request(FHIR_GROUPS), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-    select: (res: any) => res,
-  });
+  const fhirGroups = useQuery(
+    FHIR_GROUPS,
+    async () => FHIR.client(fhirBaseURL).request(FHIR_GROUPS),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+      select: (res: IfhirR4.IBundle) => res,
+    }
+  );
 
   const fhirPractitioners = useQuery(
     FHIR_PRACTITIONERS,
-    () => FHIR.client(fhirBaseURL).request(FHIR_PRACTITIONERS),
+    async () => FHIR.client(fhirBaseURL).request(FHIR_PRACTITIONERS),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: any) => res,
+      select: (res: IfhirR4.IBundle) => res,
     }
   );
 
@@ -88,6 +79,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
   const careTeamFormProps = {
     fhirBaseURL,
     initialValues: {
+      uuid: (singleCareTeam.data?.identifier as Dictionary[])[0].value as any,
       id: singleCareTeam.data ? singleCareTeam.data.id : '',
       name: singleCareTeam.data ? singleCareTeam.data.name : '',
       status: singleCareTeam.data ? singleCareTeam.data.status : '',
@@ -95,21 +87,19 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
         ? singleCareTeam.data.participant?.map((p: any) => p.member.reference.split('/')[1]) ?? []
         : [],
       groupsId: singleCareTeam.data
-        ? singleCareTeam.data.subject?.reference.split('/')[1] ?? ''
+        ? singleCareTeam.data.subject?.reference?.split('/')[1] ?? ''
         : '',
     },
-    practitioners: fhirPractitioners.data.entry.map((e: any) => {
+    practitioners: fhirPractitioners.data?.entry?.map((e: any) => {
       return {
         id: e.resource.id,
         name: getPatientName(e.resource),
       };
     }),
-    groups: fhirGroups.data.entry.map((e: any) => {
-      return {
-        id: e.resource.id,
-        name: e.resource.name,
-      };
-    }),
+    groups: fhirGroups.data?.entry?.map((e: any) => ({
+      id: e.resource?.id,
+      name: e.resource?.name as string,
+    })),
   };
 
   return (
