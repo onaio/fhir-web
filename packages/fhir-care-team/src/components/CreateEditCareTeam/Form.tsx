@@ -9,9 +9,10 @@ import { fhirR4 } from '@smile-cdr/fhirts';
 import { URL_CARE_TEAM } from '../../constants';
 
 export interface FormFields {
+  uuid: string | undefined;
   id: string | undefined;
-  name: string;
-  status: 'active' | 'inactive';
+  name: string | undefined;
+  status: string | undefined;
   practitionersId?: string[];
   groupsId?: string;
 }
@@ -55,6 +56,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     { label: 'No', value: 'inactive' },
   ];
   const initialValues = props.initialValues ?? {
+    uuid: '',
     id: '',
     name: '',
     status: '',
@@ -89,10 +91,14 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             submitForm(
               { ...initialValues, ...values },
               fhirBaseURL,
-              props.initialValues?.id
+              props.initialValues?.id,
+              props.initialValues?.uuid
             ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
           }}
         >
+          <Form.Item id={'uuid'} hidden={true} name={'uuid'} label={'UUID'}>
+            <Input />
+          </Form.Item>
           <Form.Item
             name="name"
             id="name"
