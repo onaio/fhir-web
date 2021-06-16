@@ -34,7 +34,6 @@ interface Props {
  *
  * @param {string} fhirBaseURL - base url
  * @param {Function} setIsSubmitting function to set IsSubmitting loading process
- * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
  * @param {string} id id of the healthcare
  */
@@ -54,7 +53,7 @@ export async function onSubmit(
     identifier: [{ use: 'official', value: Healthcareid }],
     comment: values.comment,
     extraDetails: values.extraDetails,
-    providedBy: { reference: 'Organization/' + values.organizationid },
+    providedBy: { reference: `Organization/${values.organizationid}` },
     name: values.name,
   };
 
@@ -87,8 +86,12 @@ export const Form: React.FC<Props> = (props: Props) => {
       onFinish={(values) =>
         onSubmit(fhirBaseURL, setIsSubmitting, values, id)
           .then(() => {
-            queryClient.invalidateQueries(HEALTHCARES_GET);
-            queryClient.invalidateQueries([HEALTHCARES_GET, id]);
+            queryClient
+              .invalidateQueries(HEALTHCARES_GET)
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+            queryClient
+              .invalidateQueries([HEALTHCARES_GET, id])
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))

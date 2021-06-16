@@ -93,10 +93,9 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
           <div className="bg-white">
             <Table
               data={filterData.search && filterData.data?.length ? filterData.data : tableData}
-              fhirBaseURL={fhirBaseURL}
-              onViewDetails={(prams) => {
+              onViewDetails={(datum) => {
                 setDetail('loading');
-                loadHealthcareDetails(prams)
+                loadHealthcareDetails(fhirBaseURL, datum)
                   .then((healthcare) => setDetail(healthcare))
                   .catch(() => {
                     sendErrorNotification(lang.ERROR_OCCURRED);

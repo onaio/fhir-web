@@ -13,12 +13,11 @@ export interface TableData extends HealthcareService {
 
 export interface Props {
   data: TableData[];
-  fhirBaseURL: string;
-  onViewDetails?: (param: { healthcareservice: TableData; fhirBaseURL: string }) => void;
+  onViewDetails?: (healthcareservice: TableData) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails, fhirBaseURL } = props;
+  const { onViewDetails } = props;
 
   const columns: Column<TableData>[] = [
     {
@@ -30,7 +29,8 @@ const Table: React.FC<Props> = (props: Props) => {
       title: 'Active',
       dataIndex: 'active',
       sorter: (a, b) => (a.active === b.active ? 0 : a.active ? -1 : 1),
-      render: (value) => <div>{value ? 'Yes' : 'No'}</div>,
+      // eslint-disable-next-line react/display-name
+      render: (value: boolean) => <div>{value ? 'Yes' : 'No'}</div>,
     },
     {
       title: 'Last Updated',
@@ -39,9 +39,7 @@ const Table: React.FC<Props> = (props: Props) => {
       render: (value: Meta) => {
         if (value.lastUpdated) {
           const date = new Date(value.lastUpdated);
-          return (
-            <div>{date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}</div>
-          );
+          return <div>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</div>;
         }
       },
     },
@@ -69,7 +67,7 @@ const Table: React.FC<Props> = (props: Props) => {
                   <Menu.Item
                     className="viewdetails"
                     onClick={() => {
-                      if (onViewDetails) onViewDetails({ healthcareservice: record, fhirBaseURL });
+                      if (onViewDetails) onViewDetails(record);
                     }}
                   >
                     View Details

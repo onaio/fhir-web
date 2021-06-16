@@ -36,8 +36,8 @@
   "private": false,
   "dependencies": {
     "@opensrp/notifications": "^0.0.4",
-    "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/react-utils": "^0.0.10",
     "@opensrp/reducer-factory": "^0.0.13",
     "fhirclient": "2.3.11",
     "i18next": "^19.8.4",
@@ -45,6 +45,7 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "@smile-cdr/fhirts": "1.2.5",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@opensrp/store": "^0.0.9",
     "@types/uuid": "8.3.0",

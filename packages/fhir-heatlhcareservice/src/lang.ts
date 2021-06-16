@@ -18,7 +18,9 @@ function fill() {
   lang.MSG_ASSIGN_PRACTITONERS_SUCCESS = i18n.t(`Successfully Assigned Practitioners`, {
     ns: namespace,
   });
-  lang.MSG_HEALTHCARES_UPDATE_SUCCESS = i18n.t(`Successfully Updated Healthcares`, { ns: namespace });
+  lang.MSG_HEALTHCARES_UPDATE_SUCCESS = i18n.t(`Successfully Updated Healthcares`, {
+    ns: namespace,
+  });
   lang.MSG_HEALTHCARES_ADD_SUCCESS = i18n.t(`Successfully Added Healthcares`, { ns: namespace });
 
   // Rendered text

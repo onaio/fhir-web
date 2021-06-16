@@ -14,7 +14,7 @@ const HealthcareDetails = (props: HealthCareDetailProps) => {
   const lastUpdated = useMemo(() => {
     if (meta?.lastUpdated) {
       const date = new Date(meta.lastUpdated);
-      return <div>{date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}</div>;
+      return <div>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</div>;
     }
   }, [meta]);
 
@@ -49,11 +49,11 @@ const HealthcareDetails = (props: HealthCareDetailProps) => {
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.COMMENT}</div>
-        <div className="mb-0">{comment ?? lang.NOCOMMENT}</div>
+        <div className="mb-0">{comment ? comment : lang.NOCOMMENT}</div>
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.EXTRADETAILS}</div>
-        <div className="mb-0">{extraDetails ?? lang.NO_HEALTHCARE_MEMBERS}</div>
+        <div className="mb-0">{extraDetails ? extraDetails : lang.NO_HEALTHCARE_MEMBERS}</div>
       </div>
     </div>
   );
