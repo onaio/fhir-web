@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { HEALTHCARES_POST, HEALTHCARES_PUT, HEALTHCARES_GET } from '../../constants';
-import {
-  sendSuccessNotification,
-  sendInfoNotification,
-  sendErrorNotification,
-} from '@opensrp/notifications';
+import { HEALTHCARES_GET } from '../../constants';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService, Organization } from '../../types';
 import { FhirObject } from '../../fhirutils';
 import { useQueryClient } from 'react-query';
 
-import lang, { Lang } from '../../lang';
+import lang from '../../lang';
 import FHIR from 'fhirclient';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
