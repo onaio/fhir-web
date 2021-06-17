@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",

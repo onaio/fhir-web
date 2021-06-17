@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/team-management",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Team management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
