@@ -174,15 +174,25 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     return <TeamAssignmentLoading />;
   }
 
-  /** function to filter options from the select or not
+  /**
+   * function to filter select options by text - passed all select options to filter from
    *
-   * @param {string} input value
-   * @param {any} option .
-   * @returns {boolean} return weather option will be included in the filtered set;
+   * @param input - typed in search text
+   * @param option - a select option to be evaluated - with it's key, value, and children props
+   * @param option.key - the Select.Option 'key' prop
+   * @param option.value - the Select.Option 'value' prop
+   * @param option.children - the Select.Option 'children' prop
+   * @param option.label - the Select.Option 'label' prop
+   * @returns {boolean} - matcher function that evaluates to boolean - whether to include option in filtered set or not
    */
+  // Todo: type-check options
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function filterFunction(input: string, option: any): boolean {
-    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    let expr1 = false,
+      expr2 = false;
+    if (option.children) expr1 = option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    if (option.label) expr2 = option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    return expr1 || expr2;
   }
 
   const dataSource = currentParentChildren.length ? currentParentChildren : Treedata;
