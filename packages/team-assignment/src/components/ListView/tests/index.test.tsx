@@ -693,4 +693,104 @@ describe('List view Page', () => {
     expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
     wrapper.unmount();
   });
+
+  it('filters select options by text', async () => {
+    fetch.mockResponses(
+      /** Get plan */
+      [JSON.stringify(samplePlan), { status: 200 }],
+      /** These calls are made by TeamAssignment */
+      [JSON.stringify(assignments), { status: 200 }],
+      [JSON.stringify(organizations), { status: 200 }]
+    );
+
+    store.dispatch(fetchAssignments(assignments));
+    store.dispatch(fetchOrganizationsAction(organizations));
+    const hierarchy = generateJurisdictionTree(sampleHierarchy);
+    store.dispatch(fetchAllHierarchies([hierarchy.model]));
+
+    const props = {
+      history,
+      opensrpBaseURL: OPENSRP_API_BASE_URL,
+      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
+      location: {
+        hash: '',
+        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        search: '',
+        state: {},
+      },
+      match: {
+        isExact: true,
+        params: {},
+        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <TeamAssignmentView {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // simulate to open modal
+    wrapper.find('button').at(0).simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find antd Select with id 'teamAssignment_assignTeams'
+    const teamAssignmentSelect = wrapper.find('Select#teamAssignment_assignTeams');
+
+    // simulate click on select - to show dropdown items
+    teamAssignmentSelect.find('.ant-select-selector').simulate('mousedown');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // expect to see all options
+    const teamAssignmentSelect2 = wrapper.find('Select#teamAssignment_assignTeams');
+    // find antd select options
+    const selectOptions = teamAssignmentSelect2.find('.ant-select-item-option-content');
+    // expect all team options
+    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([
+      'Team 1',
+      'Team 2',
+      'Team 3',
+      'ANC Test Team',
+      'team 2',
+      'Test Demo Team',
+      'TestTeam',
+      'Team Blank test',
+    ]);
+
+    // find search input field
+    const inputField = teamAssignmentSelect.find('input#teamAssignment_assignTeams');
+    // simulate change (type search phrase)
+    inputField.simulate('change', { target: { value: 'Demo' } });
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // expect to see only filtered options
+    const teamAssignmentSelect3 = wrapper.find('Select#teamAssignment_assignTeams');
+    const selectOptions2 = teamAssignmentSelect3.find('.ant-select-item-option-content');
+    expect(selectOptions2.map((opt) => opt.text())).toMatchInlineSnapshot(`
+      Array [
+        "Test Demo Team",
+      ]
+    `);
+  });
 });
