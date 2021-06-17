@@ -83,7 +83,6 @@ interface TeamAssignmentViewProps extends RouteComponentProps<RouteParams> {
 
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
-  const [form] = Form.useForm();
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
@@ -153,10 +152,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
-
-  React.useEffect(() => {
-    form.setFieldsValue({ assignTeams: assignedLocAndTeams?.assignedTeams });
-  }, [assignedLocAndTeams, form]);
 
   React.useEffect(() => {
     // team assignment only needs one hierarchy
@@ -257,7 +252,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       >
         <div className="form-container">
           <Form
-            form={form}
             name="teamAssignment"
             onFinish={(values: { assignTeams: string[] }) => {
               const { assignTeams } = values;
