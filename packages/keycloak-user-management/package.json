@@ -23,7 +23,8 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
