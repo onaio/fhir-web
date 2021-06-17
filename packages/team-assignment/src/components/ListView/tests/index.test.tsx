@@ -114,9 +114,8 @@ describe('List view Page', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-
-    wrapper.update();
 
     // expect(toJson(wrapper.find('TeamAssignmentView'))).toEqual('');
 
@@ -319,7 +318,10 @@ describe('List view Page', () => {
     });
     // simulate to open modal
     wrapper.find('button').at(0).simulate('click');
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     // modal text: save button, cancel button, placeholder and header text
     expect(wrapper.find('Modal').text()).toMatchInlineSnapshot(
       // eslint-disable-next-line no-irregular-whitespace
@@ -331,7 +333,10 @@ describe('List view Page', () => {
       ['fcc19470-d599-11e9-bb65-2a2ae2dbcce4'],
       [{ label: 'The Luang', value: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4' }]
     );
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     // filter props works correctly
     expect(
       (wrapper.find('Modal Select').props() as Dictionary).filterOption('luang', {
@@ -355,8 +360,10 @@ describe('List view Page', () => {
     );
     fetch.once(JSON.stringify([assignments[0]]));
     wrapper.find('form').simulate('submit');
-    await flushPromises();
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     expect(mockNotificationSuccess).toHaveBeenCalledWith('Successfully Assigned Teams');
     wrapper.unmount();
   });
@@ -407,7 +414,10 @@ describe('List view Page', () => {
     });
     // simulate to open modal
     wrapper.find('button').at(0).simulate('click');
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     // modal text: save button, cancel button, placeholder and header text
     expect(wrapper.find('Modal').text()).toMatchInlineSnapshot(
       // eslint-disable-next-line no-irregular-whitespace
@@ -419,7 +429,10 @@ describe('List view Page', () => {
       ['c53900dd-cb8e-4f9f-befc-5b21742612a1'],
       [{ label: 'Team 1', value: 'c53900dd-cb8e-4f9f-befc-5b21742612a1' }]
     );
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     // filter props works correctly
     expect(
       (wrapper.find('Modal Select').props() as Dictionary).filterOption('Team 1', {
@@ -441,7 +454,10 @@ describe('List view Page', () => {
       ['e740e6b8-98dc-4d99-af34-ab2eb602da00'],
       [{ label: 'Team 2', value: 'e740e6b8-98dc-4d99-af34-ab2eb602da00' }]
     );
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     wrapper.find('button').at(1).simulate('click');
     wrapper.find('form').simulate('submit');
     // check that the othe 2 teams have been unassigned
@@ -449,8 +465,10 @@ describe('List view Page', () => {
       // eslint-disable-next-line no-irregular-whitespace
       `"Assign/Unassign Teams | KenyaTeamsTeam 2 SaveCancel"`
     );
-    await flushPromises();
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     const payload = [
       {
         fromDate: '2021-01-19T21:00:00+00:00',
@@ -538,12 +556,18 @@ describe('List view Page', () => {
 
     // simulate to open modal
     wrapper.find('button').at(0).simulate('click');
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     expect(toJson(wrapper.find('Modal'))).toBeTruthy();
     expect(wrapper.find('Modal').props()['visible']).toBeTruthy();
     expect(wrapper.find('button').at(2).text()).toEqual('Cancel');
     wrapper.find('button').at(2).simulate('click');
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     // check visibility is set to false
     expect(wrapper.find('Modal').props()['visible']).toBeFalsy();
   });
@@ -652,15 +676,20 @@ describe('List view Page', () => {
     });
     // simulate to open modal
     wrapper.find('button').at(0).simulate('click');
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     (wrapper.find('Modal Select').props() as Dictionary).onChange(
       ['4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4'],
       [{ label: 'Demo Team', value: '4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4' }]
     );
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
     wrapper.find('form').simulate('submit');
-    await flushPromises();
-    wrapper.update();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
     wrapper.unmount();
   });
