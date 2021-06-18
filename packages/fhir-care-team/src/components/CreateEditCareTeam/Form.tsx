@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { Dictionary } from '@onaio/utils';
 import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import lang from '../../lang';
-import { getPatientName, submitForm } from './utils';
-import { fhirR4 } from '@smile-cdr/fhirts';
+import { submitForm } from './utils';
 import { URL_CARE_TEAM } from '../../constants';
+
+export interface Fields {
+  id: string;
+  name: string;
+}
 
 export interface FormFields {
   uuid: string | undefined;
@@ -123,7 +126,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
             <Select placeholder={lang.PARTICIPANTS} allowClear mode="multiple">
-              {props.practitioners.map((practitioner: any) => (
+              {props.practitioners.map((practitioner: Fields) => (
                 <Select.Option key={practitioner.id} value={practitioner.id}>
                   {practitioner.name}
                 </Select.Option>
@@ -137,7 +140,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
             <Select placeholder={lang.SUBJECT}>
-              {props.groups.map((group: any) => (
+              {props.groups.map((group: Fields) => (
                 <Select.Option key={group.id} value={group.id}>
                   {group.name}
                 </Select.Option>
