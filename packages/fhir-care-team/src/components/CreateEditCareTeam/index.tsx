@@ -43,7 +43,6 @@ export const defaultEditCareTeamsProps: EditCareTeamProps = {
 const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEditCareTeamProps) => {
   const { fhirBaseURL } = props;
   const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID];
-
   const singleCareTeam = useQuery(
     `${FHIR_CARE_TEAM}/${careTeamId}`,
     async () =>
@@ -79,24 +78,28 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
   const careTeamFormProps = {
     fhirBaseURL,
     initialValues: {
-      uuid: (singleCareTeam.data?.identifier as Dictionary[])[0].value as any,
+      uuid: singleCareTeam.data
+        ? ((singleCareTeam.data?.identifier as Dictionary[])[0].value as string)
+        : '',
       id: singleCareTeam.data ? singleCareTeam.data.id : '',
       name: singleCareTeam.data ? singleCareTeam.data.name : '',
-      status: singleCareTeam.data ? singleCareTeam.data.status : '',
+      status: singleCareTeam.data ? singleCareTeam.data.status : 'active',
       practitionersId: singleCareTeam.data
-        ? singleCareTeam.data.participant?.map((p: any) => p.member.reference.split('/')[1]) ?? []
+        ? singleCareTeam.data.participant?.map(
+            (p: Dictionary) => p.member.reference.split('/')[1]
+          ) ?? []
         : [],
       groupsId: singleCareTeam.data
         ? singleCareTeam.data.subject?.reference?.split('/')[1] ?? ''
         : '',
     },
-    practitioners: fhirPractitioners.data?.entry?.map((e: any) => {
+    practitioners: fhirPractitioners.data?.entry?.map((e: Dictionary) => {
       return {
         id: e.resource.id,
         name: getPatientName(e.resource),
       };
     }),
-    groups: fhirGroups.data?.entry?.map((e: any) => ({
+    groups: fhirGroups.data?.entry?.map((e: Dictionary) => ({
       id: e.resource?.id,
       name: e.resource?.name as string,
     })),
