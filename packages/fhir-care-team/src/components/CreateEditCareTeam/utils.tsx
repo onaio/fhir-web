@@ -41,13 +41,13 @@ export const submitForm = async (
   if (id) {
     await serve
       .update(payload)
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
-      .finally(() => sendSuccessNotification(lang.CARE_TEAMS_UPDATE_SUCCESS));
+      .then(() => sendSuccessNotification(lang.CARE_TEAMS_UPDATE_SUCCESS))
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   } else {
     await serve
       .create(payload)
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
-      .finally(() => sendSuccessNotification(lang.CARE_TEAMS_ADD_SUCCESS));
+      .then(() => sendSuccessNotification(lang.CARE_TEAMS_ADD_SUCCESS))
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }
   history.push(URL_CARE_TEAM);
 };
