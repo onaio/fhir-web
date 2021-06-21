@@ -2736,7 +2736,7 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
-"@opensrp/fhir-heatlhcareservice@file:./packages/fhir-heatlhcareservice":
+"@opensrp/fhir-heatlhcareservice@file:packages/fhir-heatlhcareservice":
   version "0.0.5"
   dependencies:
     "@opensrp/notifications" "^0.0.4"
