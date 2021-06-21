@@ -84,6 +84,7 @@ describe('Patients list view', () => {
       await flushPromises();
       wrapper.update();
     });
+
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     expect(wrapper.text()).toMatchSnapshot();
 
@@ -238,5 +239,34 @@ describe('hooks', () => {
     await waitFor(() => result.current.isFetched);
 
     expect(result.current.data).toBe(careTeams);
+  });
+
+  it('shows broken page if fhir api is down', async () => {
+    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
+    reactQueryMock.mockImplementation(
+      () =>
+        ({
+          data: undefined,
+          error: 'Something went wrong',
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any)
+    );
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+    /** error view */
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
+    wrapper.unmount();
   });
 });
