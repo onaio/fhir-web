@@ -20,6 +20,7 @@ import {
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
+  ENABLE_GROUP,
   OPENSRP_ROLES,
 } from './configs/env';
 
@@ -28,6 +29,7 @@ import {
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
+  URL_GROUP,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
   URL_TEAM_ASSIGNMENT,
@@ -176,6 +178,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
               enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
+        },
+        {
+          title: langObj.GROUP,
+          key: 'group',
+          url: URL_GROUP,
+          enabled: ENABLE_GROUP,
         },
         {
           title: langObj.FORM_CONFIGURATION,

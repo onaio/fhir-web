@@ -14,6 +14,7 @@ const defaultRoles = {
   INVENTORY: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   TEAMS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  GROUP: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
@@ -36,6 +37,9 @@ export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') ==
 export const OPENSRP_OAUTH_SCOPES = setEnv('REACT_APP_OPENSRP_OAUTH_SCOPES', 'read,write').split(
   ','
 );
+
+/** Activate the teams menu */
+export const ENABLE_GROUP = setEnv('REACT_APP_ENABLE_GROUP', 'false') === 'true';
 
 export const DEFAULT_ACTIVITY_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS', 7)
