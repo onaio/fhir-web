@@ -83,7 +83,6 @@ interface TeamAssignmentViewProps extends RouteComponentProps<RouteParams> {
 
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
-  const [form] = Form.useForm();
   const Treedata = useSelector(
     (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
   );
@@ -155,10 +154,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   }, [loading]);
 
   React.useEffect(() => {
-    form.setFieldsValue({ assignTeams: assignedLocAndTeams?.assignedTeams });
-  }, [assignedLocAndTeams, form]);
-
-  React.useEffect(() => {
     // team assignment only needs one hierarchy
     // i.e when user switches from location unit module
     if (Treedata.length > 1) {
@@ -174,15 +169,25 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     return <TeamAssignmentLoading />;
   }
 
-  /** function to filter options from the select or not
+  /**
+   * function to filter select options by text - passed all select options to filter from
    *
-   * @param {string} input value
-   * @param {any} option .
-   * @returns {boolean} return weather option will be included in the filtered set;
+   * @param input - typed in search text
+   * @param option - a select option to be evaluated - with it's key, value, and children props
+   * @param option.key - the Select.Option 'key' prop
+   * @param option.value - the Select.Option 'value' prop
+   * @param option.children - the Select.Option 'children' prop
+   * @param option.label - the Select.Option 'label' prop
+   * @returns {boolean} - matcher function that evaluates to boolean - whether to include option in filtered set or not
    */
+  // Todo: type-check options
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function filterFunction(input: string, option: any): boolean {
-    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    let expr1 = false,
+      expr2 = false;
+    if (option.children) expr1 = option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    if (option.label) expr2 = option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    return expr1 || expr2;
   }
 
   const dataSource = currentParentChildren.length ? currentParentChildren : Treedata;
@@ -247,7 +252,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       >
         <div className="form-container">
           <Form
-            form={form}
             name="teamAssignment"
             onFinish={(values: { assignTeams: string[] }) => {
               const { assignTeams } = values;
