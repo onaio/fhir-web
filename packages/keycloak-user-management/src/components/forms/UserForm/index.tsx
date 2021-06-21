@@ -19,16 +19,10 @@ export interface UserFormProps {
   hidden?: string[];
 }
 
-/** adhoc attributes that can be applied to a user */
-export interface UserAttributes {
-  contact?: string;
-}
-
 export interface FormFields extends KeycloakUser {
   active?: boolean;
   userGroup?: string[];
   practitioner?: Practitioner;
-  attributes?: UserAttributes;
 }
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
