@@ -1,6 +1,6 @@
 {
   "name": "web",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
@@ -35,7 +35,7 @@
     "@opensrp/store": "^0.0.10",
     "@opensrp/team-assignment": "^0.0.4",
     "@opensrp/team-management": "^0.0.7",
-    "@opensrp/user-management": "^0.1.16",
+    "@opensrp/user-management": "^0.1.17",
     "@sentry/react": "^5.27.4",
     "add": "^2.0.6",
     "antd": "^4.6.3",
