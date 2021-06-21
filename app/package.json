@@ -34,7 +34,7 @@
     "@opensrp/server-service": "^0.0.16",
     "@opensrp/store": "^0.0.10",
     "@opensrp/team-assignment": "^0.0.3",
-    "@opensrp/fhir-heatlhcareservice": "file:./../packages/fhir-heatlhcareservice",
+    "@opensrp/fhir-heatlhcareservice": "file:../packages/fhir-heatlhcareservice",
     "@opensrp/team-management": "^0.0.6",
     "@opensrp/user-management": "^0.1.15",
     "@sentry/react": "^5.27.4",
