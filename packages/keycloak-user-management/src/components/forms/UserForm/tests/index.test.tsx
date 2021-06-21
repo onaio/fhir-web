@@ -143,6 +143,19 @@ describe('components/forms/UserForm', () => {
       'Contact should be 10 digits and start with 0',
     ]);
 
+    // regex validation more than 10 alphanumerics
+    wrapper
+      .find('input#attributes_contact')
+      .simulate('change', { target: { name: 'contact', value: '012345678910' } });
+    wrapper.find('form').simulate('submit');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([
+      'Contact should be 10 digits and start with 0',
+    ]);
+
     // should now not have an error.
     wrapper
       .find('input#attributes_contact')
