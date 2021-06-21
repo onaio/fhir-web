@@ -45,6 +45,9 @@ import {
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_GROUP,
+  URL_GROUP_ADD,
+  URL_GROUP_EDIT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -129,6 +132,7 @@ import {
   locationUnitProps,
   usersListProps,
   createEditUserProps,
+  groupProps,
 } from './utils';
 import './App.css';
 import {
@@ -158,6 +162,8 @@ import '@opensrp/inventory/dist/index.css';
 
 import { APP_LOGIN_URL } from '../dispatchConfig';
 import { useTranslation } from 'react-i18next';
+import { GroupList } from '../fhir-group/src/components/GroupList';
+import { GroupAddEdit } from '../fhir-group/src';
 
 const { Content } = Layout;
 
@@ -712,6 +718,30 @@ const App: React.FC = () => {
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={URL_GROUP_EDIT}
+              {...groupProps}
+              component={GroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={URL_GROUP_ADD}
+              {...groupProps}
+              component={GroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={URL_GROUP}
+              {...groupProps}
+              component={GroupList}
             />
             <Route
               exact
