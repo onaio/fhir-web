@@ -278,7 +278,7 @@ describe('components/UserList', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"User ManagementAdd UserEmailFirst NameLast NameActionszkaliminaZembaKaliminaEditzkapeleZyingaKapeleEdit125 / pageGo to)"`
+      `"User ManagementAdd UserEmailFirst NameLast NameActionszkaliminaZembaKaliminaEditzkapeleZyingaKapeleEdit125 / pageGo to"`
     );
   });
 
@@ -354,7 +354,7 @@ describe('components/UserList', () => {
     expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
     // check that table has No Data
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"User ManagementAdd UserEmailFirst NameLast NameActionsNo Data)"`
+      `"User ManagementAdd UserEmailFirst NameLast NameActionsNo Data"`
     );
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
