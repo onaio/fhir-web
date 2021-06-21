@@ -151,7 +151,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             rules={[
               {
                 type: 'string',
-                pattern: /^0\d{9}/,
+                pattern: /^0\d{9}$/,
                 message: lang.CONTACT_REGEX_ERROR,
               },
               { required: !isHidden(CONTACT_FORM_FIELD), message: lang.CONTACT_IS_REQUIRED_ERROR },
