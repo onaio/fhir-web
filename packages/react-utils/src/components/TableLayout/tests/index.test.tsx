@@ -24,13 +24,14 @@ const columns: Column<TableData>[] = [
     dataIndex: 'geographicLevel',
     sorter: (a, b) => a.geographicLevel - b.geographicLevel,
   },
-  {
-    title: 'ACTIONS',
-    width: '10%',
-    // eslint-disable-next-line react/display-name
-    render: () => <span id="Actions">actions</span>,
-  },
 ];
+
+const actions = {
+  title: 'ACTIONS',
+  width: '10%',
+  // eslint-disable-next-line react/display-name
+  render: () => <span id="Actions">actions</span>,
+};
 
 const paginationDefaults = {
   showQuickJumper: true,
@@ -51,14 +52,18 @@ describe('Table Layout', () => {
   }
 
   it('renders without crashing', () => {
-    const wrapper = mount(<TableLayout datasource={tableData} columns={columns} />);
+    const wrapper = mount(
+      <TableLayout datasource={tableData} columns={columns} actions={actions} />
+    );
 
     expect(wrapper.find('Table').first().prop('dataSource')).toMatchObject(tableData);
     expect(wrapper.find('Table').first().prop('columns')).toMatchObject(columns);
   });
 
   it('Must have default settings applied', () => {
-    const wrapper = mount(<TableLayout datasource={tableData} columns={columns} />);
+    const wrapper = mount(
+      <TableLayout datasource={tableData} columns={columns} actions={actions} />
+    );
 
     expect(wrapper.find('Table').first().prop('pagination')).toMatchObject(paginationDefaults);
   });
@@ -78,14 +83,22 @@ describe('Table Layout', () => {
   });
 
   it('Add event to pagination change only when presist state', () => {
-    const wrapper = mount(<TableLayout datasource={tableData} columns={columns} />);
+    const wrapper = mount(
+      <TableLayout datasource={tableData} columns={columns} actions={actions} />
+    );
 
     expect(
       (wrapper.find('Table').first().prop('pagination') as PaginationProps).onChange
     ).toBeFalsy();
 
     const wrapper1 = mount(
-      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+      <TableLayout
+        datasource={tableData}
+        id="TestTable"
+        persistState={true}
+        columns={columns}
+        actions={actions}
+      />
     );
 
     expect(
@@ -96,7 +109,13 @@ describe('Table Layout', () => {
   it('Get and Save Value to pkg-config', async () => {
     // When no persistState or id is assigned
     const wrapper = mount(
-      <TableLayout datasource={tableData} id="TestTable" persistState={false} columns={columns} />
+      <TableLayout
+        datasource={tableData}
+        id="TestTable"
+        persistState={false}
+        columns={columns}
+        actions={actions}
+      />
     );
 
     await act(async () => {
@@ -108,7 +127,13 @@ describe('Table Layout', () => {
 
     // get when nothing is stored
     const wrapper1 = mount(
-      <TableLayout datasource={tableData} id="TestTable" persistState={true} columns={columns} />
+      <TableLayout
+        datasource={tableData}
+        id="TestTable"
+        persistState={true}
+        columns={columns}
+        actions={actions}
+      />
     );
 
     await act(async () => {

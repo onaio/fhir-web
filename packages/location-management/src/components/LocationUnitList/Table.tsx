@@ -30,30 +30,6 @@ const Table: React.FC<Props> = (props: Props) => {
       dataIndex: 'geographicLevel',
       sorter: (a, b) => a.geographicLevel - b.geographicLevel,
     },
-    {
-      title: lang.ACTIONS,
-      width: '10%',
-      // eslint-disable-next-line react/display-name
-      render: (value: boolean, record) => (
-        <span className="d-flex justify-content-end align-items-center Actions">
-          <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
-            <Button type="link" className="m-0 p-1">
-              Edit
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Button
-            type="link"
-            className="m-0 p-1"
-            onClick={() => {
-              if (onViewDetails) onViewDetails(record);
-            }}
-          >
-            {lang.VIEW_DETAILS}
-          </Button>
-        </span>
-      ),
-    },
   ];
 
   return (
@@ -62,6 +38,30 @@ const Table: React.FC<Props> = (props: Props) => {
       persistState={true}
       datasource={props.data}
       columns={columns}
+      actions={{
+        title: lang.ACTIONS,
+        width: '10%',
+        // eslint-disable-next-line react/display-name
+        render: (value: boolean, record) => (
+          <span className="d-flex justify-content-end align-items-center Actions">
+            <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
+              <Button type="link" className="m-0 p-1">
+                Edit
+              </Button>
+            </Link>
+            <Divider type="vertical" />
+            <Button
+              type="link"
+              className="m-0 p-1"
+              onClick={() => {
+                if (onViewDetails) onViewDetails(record);
+              }}
+            >
+              {lang.VIEW_DETAILS}
+            </Button>
+          </span>
+        ),
+      }}
     />
   );
 };

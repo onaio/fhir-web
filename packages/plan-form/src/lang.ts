@@ -153,7 +153,7 @@ function fill() {
   lang.ROUTINE_TITLE = i18n.t(`Routine`, { ns: namespace });
   lang.CASE_TRIGGERED_TITLE = i18n.t(`Case Triggered`, { ns: namespace });
 
-  lang.ACTION = i18n.t(`Action`, { ns: namespace });
+  lang.ACTIONS = i18n.t(`Action`, { ns: namespace });
   lang.ACTIVITIES_LABEL = i18n.t(`Activities`, { ns: namespace });
   lang.ADD = i18n.t(`Add`, { ns: namespace });
   lang.ADD_ACTIVITY = i18n.t(`Add Activity`, { ns: namespace });

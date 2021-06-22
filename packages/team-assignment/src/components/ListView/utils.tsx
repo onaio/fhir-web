@@ -60,12 +60,6 @@ export const columnsFactory = (langObj: Lang = lang): Column<TableData>[] => {
       dataIndex: 'assignedTeams',
       key: `${TableColumnsNamespace}-assignedTeams` as keyof TableData,
     },
-    {
-      title: langObj.ACTIONS,
-      key: `${TableColumnsNamespace}-actions` as keyof TableData,
-      render: ActionsColumnCustomRender,
-      width: '20%',
-    },
   ];
 
   return columns;

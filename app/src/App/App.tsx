@@ -133,6 +133,7 @@ import {
   newLocationUnitProps,
   locationUnitProps,
   usersListProps,
+  createEditUserProps,
 } from './utils';
 import './App.css';
 import {
@@ -504,6 +505,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
+              {...createEditUserProps}
               component={ConnectedCreateEditUser}
             />
             <PrivateComponent
@@ -528,6 +530,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_CREATE}
+              {...createEditUserProps}
               component={ConnectedCreateEditUser}
             />
             <PrivateComponent

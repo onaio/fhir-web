@@ -51,12 +51,6 @@ export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[]
       dataIndex: 'uniqueId',
       key: `${TableColumnsNamespace}-uniqueId` as keyof ProductCatalogue,
     },
-    {
-      title: langObj.ACTIONS_TH,
-      key: `${TableColumnsNamespace}-actions` as keyof ProductCatalogue,
-      render: ActionsColumnCustomRender,
-      width: '20%',
-    },
   ];
   return columns;
 };

@@ -1,16 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import React from 'react';
 import { TableColumnsNamespace } from '../../constants';
 import { SelectOption } from '../AssignmentModal';
-import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
+import { Assignment } from '@opensrp/team-assignment';
 import { Dictionary, keyBy } from 'lodash';
 import { Organization } from '@opensrp/team-management';
 import { Jurisdiction } from '../../ducks/jurisdictions';
-import { OpenSRPService } from '../../helpers/dataLoaders';
-import { ActionColumn } from '../TableActionColumn';
-import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
-import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
-import { Column } from '@opensrp/react-utils';
 
 /** describes antd's table data accessors */
 export interface TableData {
@@ -155,85 +149,4 @@ export const getDataSource = (
     });
   }
   return datasource;
-};
-
-/** non dynamic columns for assignment table component */
-export const staticColumns: Column<TableData>[] = [
-  {
-    title: 'Assigned areas',
-    dataIndex: 'jurisdictions',
-    key: `${TableColumnsNamespace}-assigned-areas` as keyof TableData,
-    width: '40%',
-  },
-  {
-    title: 'Assigned teams',
-    dataIndex: 'organizations',
-    key: `${TableColumnsNamespace}-assigned-teams` as keyof TableData,
-    width: '40%',
-  },
-];
-
-/**
- * construct the full table columns for the plan assignment table
- *
- * @param  assignments - assignments response from api per plan
- * @param  organizations - a list of all organizations
- * @param  jurisdictions - all jurisdictions that can be assigned
- * @param  serviceClass -  opensrp service class
- * @param  planCreator - action creator to add plans
- * @param  assignmentsCreator - action creator to add assignments
- * @param  plan - the plan
- * @param  baseURL - the base url
- * @param  disableAssignments - whether to enable assignments
- */
-export const getPlanAssignmentColumns = (
-  assignments: Assignment[],
-  organizations: Organization[],
-  jurisdictions: Jurisdiction[],
-  serviceClass: typeof OpenSRPService,
-  planCreator: typeof fetchPlanDefinitions,
-  assignmentsCreator: typeof fetchAssignments,
-  plan: PlanDefinition,
-  baseURL: string,
-  disableAssignments: boolean
-): Column<TableData>[] => {
-  const ActionsColumnCustomRender: Column<TableData>['render'] = (_, __, index: number) => {
-    const fullyGrouped = compressAssignments(assignments);
-    const planJurisdictions = plan.jurisdiction.map((jur) => jur.code);
-    const mergedOptions = mergeIdsWithNames(
-      fullyGrouped,
-      organizations,
-      jurisdictions,
-      assignments,
-      planJurisdictions
-    );
-    const assignedOrgsOptions = mergedOptions[index]?.organizations ?? [];
-    const assignedJursOptions = mergedOptions[index]?.jurisdictions ?? [];
-
-    const props = {
-      organizations,
-      assignments,
-      jurisdictions,
-      assignedJursOptions,
-      assignedOrgsOptions,
-      serviceClass,
-      planCreator,
-      assignmentsCreator,
-      plan,
-      baseURL,
-      disableAssignments,
-    };
-    return <ActionColumn {...props}></ActionColumn>;
-  };
-
-  const dynamicColumn: Column<TableData>[] = [
-    {
-      title: 'Actions',
-      key: `${TableColumnsNamespace}-actions` as keyof TableData,
-      render: ActionsColumnCustomRender,
-      width: '20%',
-    },
-  ];
-  const columns = [...staticColumns, ...dynamicColumn];
-  return columns;
 };

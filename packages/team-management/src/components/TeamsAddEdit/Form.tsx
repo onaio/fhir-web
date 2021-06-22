@@ -194,12 +194,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         label={lang.TEAM_MEMBERS}
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
-        <Select
-          allowClear
-          mode="multiple"
-          placeholder={lang.SELECT_PRACTITIONER}
-          value={initialValue.practitionersList.map((practitioner) => practitioner.name)}
-        >
+        <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
           {props.practitioners.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
