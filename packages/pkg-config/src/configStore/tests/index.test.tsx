@@ -10,10 +10,13 @@ describe('pkg-configs/configStore', () => {
     expect(getConfig('languageCode')).toEqual('en');
     expect(getConfig('opensrpBaseURL')).toBeUndefined();
     expect(getAllConfigs()).toEqual({
+      tablespref: undefined,
       appLoginURL: undefined,
+      i18n: undefined,
       keycloakBaseURL: undefined,
       languageCode: 'en',
       opensrpBaseURL: undefined,
+      fhirBaseURL: undefined,
       projectLanguageCode: 'core',
     });
   });

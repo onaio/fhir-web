@@ -1,5 +1,7 @@
-import { Dictionary } from '@onaio/utils/dist/types/types';
+import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
+
+export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
 
 /**
  * Abstraction to add language resources to the i18n instance

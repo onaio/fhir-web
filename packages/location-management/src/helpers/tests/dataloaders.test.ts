@@ -146,14 +146,9 @@ describe('src/helpers/dataloaders', () => {
     const mockDispatcher = jest.fn();
     const mockBaseUrl = 'https://example.com';
 
-    loadJurisdictions(
-      mockDispatcher,
-      mockBaseUrl,
-      {},
-      {},
-      undefined,
-      sampleEndpoint
-    ).catch((_: Error) => fail());
+    loadJurisdictions(mockDispatcher, mockBaseUrl, {}, {}, sampleEndpoint).catch((_: Error) =>
+      fail()
+    );
 
     await new Promise((resolve) => setImmediate(resolve));
 
@@ -187,6 +182,37 @@ describe('src/helpers/dataloaders', () => {
     expect(fetch.mock.calls).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
+  it('loadJurisdictions works with parentId url param', async () => {
+    fetch.once(JSON.stringify([]));
+    const mockBaseUrl = 'https://example.com/';
+    const mockDispatcher = jest.fn();
+
+    loadJurisdictions(
+      mockDispatcher,
+      mockBaseUrl,
+      undefined,
+      undefined,
+      undefined,
+      true // set filterByParentId
+    ).catch((_: Error) => fail());
+
+    await new Promise((resolve) => setImmediate(resolve));
+
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://example.com/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,parentId:null',
         {
           headers: {
             accept: 'application/json',

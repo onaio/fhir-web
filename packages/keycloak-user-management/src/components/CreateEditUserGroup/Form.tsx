@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Transfer } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { KEYCLOAK_URL_USER_GROUPS, URL_USER_GROUPS } from '../../constants';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { URL_USER_GROUPS } from '../../constants';
 import lang from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
-import { assignRoles, removeAssignedRoles } from './utils';
+import { assignRoles, removeAssignedRoles, submitForm } from './utils';
 import {
   reducerName as keycloakUserRolesReducerName,
   reducer as keycloakUserRolesReducer,
@@ -168,24 +167,11 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
             // remove roles array from payload
             delete values.roles;
             setIsSubmitting(true);
-            if (initialValues.id) {
-              const serve = new KeycloakService(
-                `${KEYCLOAK_URL_USER_GROUPS}/${initialValues.id}`,
-                keycloakBaseURL
-              );
-              serve
-                .update(values)
-                .then(() => sendSuccessNotification(lang.MESSAGE_USER_GROUP_EDITED))
-                .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
-                .finally(() => setIsSubmitting(false));
-            } else {
-              const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
-              serve
-                .create({ name: values.name })
-                .then(() => sendSuccessNotification(lang.MESSAGE_USER_GROUP_CREATED))
-                .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
-                .finally(() => setIsSubmitting(false));
-            }
+            submitForm(
+              { ...initialValues, ...values },
+              keycloakBaseURL,
+              setIsSubmitting
+            ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
           }}
         >
           <Form.Item

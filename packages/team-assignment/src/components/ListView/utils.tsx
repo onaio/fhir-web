@@ -3,16 +3,16 @@ import { get, keyBy } from 'lodash';
 import { Spin, Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
-import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import lang, { Lang } from '../../lang';
 import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
+import { Column } from '@opensrp/react-utils';
 
 /** component rendered in the action column of the table
  *
  * @param record - table row record
  */
-export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (record) => {
+export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
   return (
     <>
       <Button
@@ -38,12 +38,12 @@ export const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (recor
  *
  * @param langObj -  the translation string lookup
  */
-export const columnsFactory = (langObj: Lang = lang) => {
-  const columns: ColumnsType<TableData> = [
+export const columnsFactory = (langObj: Lang = lang): Column<TableData>[] => {
+  const columns: Column<TableData>[] = [
     {
       title: langObj.NAME,
       dataIndex: 'locationName',
-      key: `${TableColumnsNamespace}-locationName`,
+      key: `${TableColumnsNamespace}-locationName` as keyof TableData,
       defaultSortOrder: 'descend',
       sorter: (rec1, rec2) => {
         if (rec1.locationName > rec2.locationName) {
@@ -58,13 +58,7 @@ export const columnsFactory = (langObj: Lang = lang) => {
     {
       title: langObj.ASSIGN_TEAMS,
       dataIndex: 'assignedTeams',
-      key: `${TableColumnsNamespace}-assignedTeams`,
-    },
-    {
-      title: langObj.ACTIONS,
-      key: `${TableColumnsNamespace}-actions`,
-      render: ActionsColumnCustomRender,
-      width: '20%',
+      key: `${TableColumnsNamespace}-assignedTeams` as keyof TableData,
     },
   ];
 
@@ -99,6 +93,7 @@ export const getPayload = (
 ): Assignment[] => {
   const now = moment(new Date());
   let startDate = now.format();
+  const endDate = now.add(10, 'year').format();
 
   const payload: Assignment[] = [];
   const assignmentsByOrgId = keyBy(existingAssignments, 'organization');
@@ -118,13 +113,13 @@ export const getPayload = (
         jurisdiction: selectedJurisdictionId,
         organization: orgId,
         plan: selectedPlanId,
-        toDate: now.add(10, 'year').format(), // set a future date of 10 years
+        toDate: endDate, // set a future date of 10 years
       });
     }
   }
 
   // turns out if you put it in the loop it keeps subtracting a day for every iteration
-  const retireDate = now.format();
+  const retireDate = moment(new Date()).format();
 
   for (const retiredOrgId of initialOrgs.filter((orgId) => !selectedOrgs.includes(orgId))) {
     if (!payload.map((obj) => obj.organization).includes(retiredOrgId)) {

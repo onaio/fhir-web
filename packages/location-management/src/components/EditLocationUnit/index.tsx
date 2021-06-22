@@ -1,4 +1,4 @@
-import { BrokenPage, OpenSRPService, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import {
   fetchLocationUnits,
@@ -19,6 +19,16 @@ import lang from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
+import { OpenSRPService } from '@opensrp/react-utils';
+import {
+  generateJurisdictionTree,
+  getBaseTreeNode,
+  getHierarchyNode,
+} from '../../ducks/locationHierarchy/utils';
+import { useQuery, useQueryClient, useQueries, UseQueryResult } from 'react-query';
+import { LOCATION_HIERARCHY, LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 
@@ -29,21 +39,22 @@ export type LocationRouteProps = { id: string };
 export interface EditLocationUnitProps
   extends Pick<
       LocationFormProps,
-      'hidden' | 'disabled' | 'service' | 'disabledTreeNodesCallback' | 'successURLGenerator'
+      'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps<LocationRouteProps> {
   opensrpBaseURL: string;
   instance: FormInstances;
+  filterByParentId?: boolean;
   cancelURLGenerator: (data: LocationUnit) => string;
 }
 
 const defaultEditLocationUnitProps = {
   redirectAfterAction: '',
+  filterByParentId: false,
   opensrpBaseURL: OPENSRP_API_BASE_URL,
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
-  service: OpenSRPService,
   successURLGenerator: () => '',
   cancelURLGenerator: () => '',
 };
@@ -57,13 +68,14 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     instance,
     hidden,
     disabled,
-    service,
     opensrpBaseURL,
+    filterByParentId,
     cancelURLGenerator,
     successURLGenerator,
     disabledTreeNodesCallback,
   } = props;
   const history = useHistory();
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const [isJurisdiction, setIsJurisdiction] = useState<boolean>(true);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
@@ -105,13 +117,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     };
     // asynchronously get jurisdiction as structure and jurisdiction, depending on the resolved
     // promise, we can then know if the location to edit is a jurisdiction or structure
-    const firstPromise = loadJurisdiction(
-      locId,
-      undefined,
-      opensrpBaseURL,
-      jurisdictionParams,
-      service
-    )
+    const firstPromise = loadJurisdiction(locId, undefined, opensrpBaseURL, jurisdictionParams)
       .then((res) => {
         if (res) {
           locationsDispatcher(res, true);
@@ -120,13 +126,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       .catch((err) => {
         throw err;
       });
-    const secondPromise = loadJurisdiction(
-      locId,
-      undefined,
-      opensrpBaseURL,
-      structureParams,
-      service
-    )
+    const secondPromise = loadJurisdiction(locId, undefined, opensrpBaseURL, structureParams)
       .then((res) => {
         if (res) {
           setIsJurisdiction(false);
@@ -144,9 +144,40 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locId]);
 
-  if (loading) {
+  const locationUnits = useQuery(
+    LOCATION_UNIT_FIND_BY_PROPERTIES,
+    () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: LocationUnit[]) => res,
+    }
+  );
+
+  const treeDataQuery = useQueries(
+    locationUnits.data && locationUnits.data.length
+      ? locationUnits.data.map((location) => {
+          return {
+            queryKey: [LOCATION_HIERARCHY, location.id],
+            queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
+            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
+            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
+          };
+        })
+      : []
+  ) as UseQueryResult<ParsedHierarchyNode>[];
+
+  const treeData = treeDataQuery
+    .map((query) => query.data)
+    .filter((e) => e !== undefined) as ParsedHierarchyNode[];
+
+  if (
+    loading ||
+    treeData.length === 0 ||
+    !locationUnits.data ||
+    treeData.length !== locationUnits.data.length
+  )
     return <Spin size="large"></Spin>;
-  }
 
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;
@@ -162,16 +193,28 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     history.push(cancelURL);
   };
 
-  const locationFormProps = {
+  const locationFormProps: LocationFormProps = {
     initialValues,
     successURLGenerator,
     hidden,
     disabled,
     onCancel: cancelHandler,
-    service,
     opensrpBaseURL,
-    user: user.username,
-    afterSubmit: () => dispatch(fetchAllHierarchies([])),
+    filterByParentId,
+    username: user.username,
+    afterSubmit: (payload) => {
+      const parentid = payload.parentId;
+      // if the location unit is changed inside some parent id
+      if (parentid) {
+        const grandparenthierarchy = treeData.find((tree) => getHierarchyNode(tree, parentid));
+        if (grandparenthierarchy && grandparenthierarchy.id)
+          queryClient
+            .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy.id])
+            .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+        else sendErrorNotification(lang.ERROR_OCCURRED);
+      }
+      dispatch(fetchAllHierarchies([]));
+    },
     disabledTreeNodesCallback,
   };
   const pageTitle = `${lang.EDIT} > ${thisLocation.properties.name}`;

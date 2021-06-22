@@ -22,7 +22,12 @@ exports[`components/Antd/ReleaseList renders correctly: search 1`] = `
 `;
 
 exports[`components/Antd/ReleaseList renders correctly: table 1`] = `
-<Table
+<TableLayout
+  actions={
+    Object {
+      "render": [Function],
+    }
+  }
   columns={
     Array [
       Object {
@@ -61,13 +66,13 @@ exports[`components/Antd/ReleaseList renders correctly: table 1`] = `
         "title": "Updated At",
       },
       Object {
-        "key": "action",
+        "key": "_actions",
         "render": [Function],
-        "title": "Action",
+        "title": "Actions",
       },
     ]
   }
-  dataSource={
+  datasource={
     Array [
       Object {
         "appId": "org.smartregister.reveal",
@@ -95,22 +100,9 @@ exports[`components/Antd/ReleaseList renders correctly: table 1`] = `
       },
     ]
   }
+  id="FormReleaseList"
   onChange={[Function]}
-  pagination={
-    Object {
-      "defaultPageSize": 5,
-      "pageSizeOptions": Array [
-        "5",
-        "10",
-        "20",
-        "50",
-        "100",
-      ],
-      "showQuickJumper": true,
-      "showSizeChanger": true,
-    }
-  }
-  rowKey="key"
+  persistState={true}
 />
 `;
 

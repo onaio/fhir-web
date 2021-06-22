@@ -128,6 +128,9 @@ import {
   inventoryItemAddEditProps,
   editLocationProps,
   newLocationUnitProps,
+  locationUnitProps,
+  usersListProps,
+  createEditUserProps,
 } from './utils';
 import './App.css';
 import {
@@ -223,6 +226,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER}
+              {...usersListProps}
               component={ConnectedUserList}
             />
             <PrivateComponent
@@ -497,6 +501,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
+              {...createEditUserProps}
               component={ENABLE_FHIR ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
             />
             <PrivateComponent
@@ -521,6 +526,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_CREATE}
+              {...createEditUserProps}
               component={ENABLE_FHIR ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
             />
             <PrivateComponent
@@ -648,6 +654,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
               exact
               path={URL_LOCATION_UNIT}
+              {...locationUnitProps}
               component={LocationUnitList}
             />
             <PrivateComponent

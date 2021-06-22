@@ -22,7 +22,6 @@ function fill() {
 
   lang.EDIT_PLAN = i18n.t(`Edit mission`, { ns: namespace });
   lang.CREATE_PLAN = i18n.t(`Create new mission`, { ns: namespace });
-  lang.NO_STATUS_FOUND = i18n.t(`No Status Found`, { ns: namespace });
   lang.EDIT = i18n.t(`Edit`, { ns: namespace });
   lang.START_DATE = i18n.t(`Start Date`, { ns: namespace });
   lang.END_DATE = i18n.t(`End Date`, { ns: namespace });

@@ -87,19 +87,18 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{lang.LOCATION_UNIT_GROUP}</title>
       </Helmet>
-      <h5 className="mb-3">{lang.LOCATION_UNIT_GROUP_MANAGEMENT}</h5>
+      <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_GROUP_MANAGEMENT}</h1>
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h5>
-              <Input
-                placeholder={lang.SEARCH}
-                size="large"
-                value={value}
-                prefix={<SearchOutlined />}
-                onChange={onChange}
-              />
-            </h5>
+            <Input
+              className="w-auto"
+              placeholder={lang.SEARCH}
+              size="large"
+              value={value}
+              prefix={<SearchOutlined />}
+              onChange={onChange}
+            />
             <div>
               <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
                 <Button type="primary">

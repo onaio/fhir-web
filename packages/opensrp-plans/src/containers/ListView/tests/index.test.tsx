@@ -100,7 +100,7 @@ describe('List view Page', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Draft Missions + New MissionNameDate createdEnd DateActionsDraft Plan2020-11-172021-12-24View1"`
+      `"Draft Missions + New MissionNameDate createdEnd DateActionsDraft Plan2020-11-172021-12-24View15 / page"`
     );
   });
   it('renders Complete Missions Title', async () => {
@@ -141,7 +141,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Complete Missions + New MissionNameDate createdEnd DateActionsComplete Plan2020-11-172021-12-24View1"`
+      `"Complete Missions + New MissionNameDate createdEnd DateActionsComplete Plan2020-11-172021-12-24View15 / page"`
     );
   });
 
@@ -178,7 +178,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Retired Missions + New MissionNameDate createdEnd DateActionsRetired Plan2020-11-172021-12-24View1"`
+      `"Retired Missions + New MissionNameDate createdEnd DateActionsRetired Plan2020-11-172021-12-24View15 / page"`
     );
   });
 
@@ -347,5 +347,5 @@ describe('List view Page', () => {
   expect(pageTitleBuilder('draft')).toEqual('Draft Missions');
   expect(pageTitleBuilder('complete')).toEqual('Complete Missions');
   expect(pageTitleBuilder('retired')).toEqual('Retired Missions');
-  expect(pageTitleBuilder()).toEqual('No Status Found');
+  expect(pageTitleBuilder()).toEqual('');
 });

@@ -76,7 +76,6 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
   const [value, setValue] = useState('');
   const [filter, setfilterData] = useState<TableData[] | null>(null);
   const { opensrpBaseURL } = props;
-
   useEffect(() => {
     if (isLoading) {
       const serve = new OpenSRPService(TEAMS_GET, opensrpBaseURL);

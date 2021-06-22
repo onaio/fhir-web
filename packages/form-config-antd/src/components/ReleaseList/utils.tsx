@@ -1,16 +1,13 @@
-import React from 'react';
 import { Dictionary } from '@onaio/utils';
-import { ManifestReleasesTypes, formatDate } from '@opensrp/form-config-core';
-import { TableActions } from './TableActions';
+import { formatDate } from '@opensrp/form-config-core';
 
 /**
  * Return table columns
  *
- * @param {string} viewReleaseURL URL to view the release details
  * @param {Dictionary} sortedInfo object containing sorting order information
  * @returns {Dictionary[]} table columns
  */
-export const getTableColumns = (viewReleaseURL: string, sortedInfo?: Dictionary): Dictionary[] => {
+export const getTableColumns = (sortedInfo?: Dictionary): Dictionary[] => {
   const columns: Dictionary[] = [];
   const headerItems: string[] = ['Identifier', 'App Id', 'App Version', 'Updated At'];
   const fields: string[] = ['identifier', 'appId', 'appVersion', 'updatedAt'];
@@ -44,17 +41,5 @@ export const getTableColumns = (viewReleaseURL: string, sortedInfo?: Dictionary)
     columns.push(column);
   });
 
-  columns.push({
-    title: 'Action',
-    key: 'action',
-    // eslint-disable-next-line react/display-name
-    render: (_: string, file: ManifestReleasesTypes) => {
-      const tableActionProps = {
-        file,
-        viewReleaseURL,
-      };
-      return <TableActions {...tableActionProps} />;
-    },
-  });
   return columns;
 };

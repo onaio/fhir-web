@@ -81,19 +81,19 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
       const groupPromise = fetchSingleGroup(userGroupId, keycloakBaseURL, dispatch);
       const allRolesPromise = fetchAllRoles(keycloakBaseURL, dispatch);
       const availableRolesPromise = fetchRoleMappings(
-        initialValues.id,
+        userGroupId,
         keycloakBaseURL,
         KEYCLOAK_URL_AVAILABLE_ROLES,
         setAvailableRoles
       );
       const assignedRolesPromise = fetchRoleMappings(
-        initialValues.id,
+        userGroupId,
         keycloakBaseURL,
         KEYCLOAK_URL_ASSIGNED_ROLES,
         setAssignedRoles
       );
       const effectiveRolesPromise = fetchRoleMappings(
-        initialValues.id,
+        userGroupId,
         keycloakBaseURL,
         KEYCLOAK_URL_EFFECTIVE_ROLES,
         setEffectiveRoles
@@ -109,7 +109,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
         .finally(() => setIsLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialValues.id]);
+  }, [initialValues.id, props.location]);
 
   if (isLoading) {
     return <Spin size="large" />;
