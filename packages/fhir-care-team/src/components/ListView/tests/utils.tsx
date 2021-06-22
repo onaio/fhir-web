@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-const createTestQueryClient = () =>
+export const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       queries: {
@@ -12,6 +12,11 @@ const createTestQueryClient = () =>
     },
   });
 
+/** Test util function to render element with react query provider
+ *
+ * @param ui - element to be rendered
+ * @returns {React.ReactElement} - returns element with react query provider wrapper
+ */
 export function renderWithClient(ui: React.ReactElement) {
   const testQueryClient = createTestQueryClient();
   const { rerender, ...result } = render(
@@ -24,6 +29,10 @@ export function renderWithClient(ui: React.ReactElement) {
   };
 }
 
+/** Test Util function to create element wrapper
+ *
+ * @returns {React.ReactElement} - returns element with react query provider wrapper
+ */
 export function createWrapper() {
   const testQueryClient = createTestQueryClient();
   return ({ children }: { children: React.ReactNode }) => (
