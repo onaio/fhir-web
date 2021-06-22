@@ -15,6 +15,8 @@ jest.mock('fhirclient', () => ({
   client: jest.fn().mockImplementation(() => {
     return {
       request: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
     };
   }),
 }));
@@ -65,13 +67,3 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
-
-jest.mock('fhirclient', () => ({
-  client: jest.fn().mockImplementation(() => {
-    return {
-      request: require('jest-fetch-mock'),
-      update: require('jest-fetch-mock'),
-      create: require('jest-fetch-mock'),
-    };
-  }),
-}));

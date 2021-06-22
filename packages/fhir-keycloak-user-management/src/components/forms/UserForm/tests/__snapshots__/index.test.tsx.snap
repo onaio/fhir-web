@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
+<input
+  className="ant-input ant-input-disabled"
+  disabled={true}
+  id="username"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value="opensrp"
+/>
+`;
+
+exports[`components/forms/UserForm show practitioner toggle when editing user and practitioner is null: practitionerToggle 1`] = `
+Object {
+  "children": <Memo
+    name="active"
+  >
+    <Radio
+      name="active"
+      type="radio"
+      value={true}
+    >
+      Yes
+    </Radio>
+    <Radio
+      name="active"
+      type="radio"
+      value={false}
+    >
+      No
+    </Radio>
+  </Memo>,
+  "id": "practitionerToggle",
+  "label": "Mark as Practitioner",
+  "name": "active",
+}
+`;
+
+exports[`components/forms/UserForm show practitioner toggle when editing user and practitioner is provided: practitionerToggle 1`] = `
+Object {
+  "children": <Memo
+    name="active"
+  >
+    <Radio
+      name="active"
+      type="radio"
+      value={true}
+    >
+      Yes
+    </Radio>
+    <Radio
+      name="active"
+      type="radio"
+      value={false}
+    >
+      No
+    </Radio>
+  </Memo>,
+  "id": "practitionerToggle",
+  "label": "Mark as Practitioner",
+  "name": "active",
+}
+`;
+
+exports[`components/forms/UserForm user is not edited if api is down: readonly username edit 1`] = `
+<input
+  className="ant-input ant-input-disabled"
+  disabled={true}
+  id="username"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value="opensrp"
+/>
+`;
