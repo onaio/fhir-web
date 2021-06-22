@@ -68,6 +68,7 @@ export const practitioners: FhirObject<Practitioner>[] = [
 ];
 
 export const intialValue: FormField = {
+  uuid: '',
   name: team.name,
   active: team.active,
   practitioners: practitioners.slice(0, 3).map((prac) => prac.id),
