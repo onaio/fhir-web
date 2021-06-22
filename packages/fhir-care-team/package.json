@@ -34,7 +34,7 @@
   "private": false,
   "dependencies": {
     "@opensrp/notifications": "^0.0.4",
-    "@opensrp/pkg-config": "^0.0.6",
+    "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.10",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
@@ -47,7 +47,7 @@
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/store": "^0.0.9",
+    "@opensrp/store": "^0.0.10",
     "@types/uuid": "8.3.0",
     "i18next-parser": "^3.5.0",
     "nock": "^13.0.6"
