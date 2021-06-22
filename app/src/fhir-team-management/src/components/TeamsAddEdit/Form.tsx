@@ -54,7 +54,7 @@ export async function onSubmit(
 
   const payload: FhirObject<Organization> = {
     resourceType: 'Organization',
-    id: Teamid,
+    id: Teamid as string,
     active: values.active,
     identifier: [{ use: 'official', value: Teamid }],
     name: values.name,
