@@ -14,7 +14,7 @@ import {
   ROUTE_PARAM_CARE_TEAM_ID,
 } from '../../constants';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { CareTeamForm } from './Form';
+import { CareTeamForm, FormFields } from './Form';
 import { getPatientName } from './utils';
 
 // Interface for route params
@@ -35,6 +35,14 @@ export const defaultEditCareTeamsProps: EditCareTeamProps = {
   fhirBaseURL: '',
 };
 
+export const defaultInitialValues: FormFields = {
+  uuid: '',
+  id: '',
+  name: '',
+  status: '',
+  practitionersId: [],
+  groupsId: '',
+};
 /**
  *
  * @param props - CreateEditUser component props
@@ -75,34 +83,34 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     return <Spin size="large" />;
   }
 
+  const buildInitialValues = singleCareTeam.data
+    ? {
+        uuid: (singleCareTeam.data?.identifier as Dictionary[])[0].value as string,
+        id: singleCareTeam.data.id,
+        name: singleCareTeam.data.name,
+        status: singleCareTeam.data.status ?? 'active',
+        practitionersId: singleCareTeam.data.participant?.map(
+          (p: Dictionary) => p.member.reference.split('/')[1]
+        ),
+        groupsId: singleCareTeam.data.subject?.reference?.split('/')[1] ?? '',
+      }
+    : defaultInitialValues;
+
   const careTeamFormProps = {
     fhirBaseURL,
-    initialValues: {
-      uuid: singleCareTeam.data
-        ? ((singleCareTeam.data?.identifier as Dictionary[])[0].value as string)
-        : '',
-      id: singleCareTeam.data ? singleCareTeam.data.id : '',
-      name: singleCareTeam.data ? singleCareTeam.data.name : '',
-      status: singleCareTeam.data ? singleCareTeam.data.status : 'active',
-      practitionersId: singleCareTeam.data
-        ? singleCareTeam.data.participant?.map(
-            (p: Dictionary) => p.member.reference.split('/')[1]
-          ) ?? []
-        : [],
-      groupsId: singleCareTeam.data
-        ? singleCareTeam.data.subject?.reference?.split('/')[1] ?? ''
-        : '',
-    },
-    practitioners: fhirPractitioners.data?.entry?.map((e: Dictionary) => {
-      return {
-        id: e.resource.id,
-        name: getPatientName(e.resource),
-      };
-    }),
-    groups: fhirGroups.data?.entry?.map((e: Dictionary) => ({
-      id: e.resource?.id,
-      name: e.resource?.name as string,
-    })),
+    initialValues: buildInitialValues,
+    practitioners:
+      fhirPractitioners.data?.entry?.map((e: Dictionary) => {
+        return {
+          id: e.resource.id,
+          name: getPatientName(e.resource),
+        };
+      }) ?? [],
+    groups:
+      fhirGroups.data?.entry?.map((e: Dictionary) => ({
+        id: e.resource?.id,
+        name: e.resource?.name as string,
+      })) ?? [],
   };
 
   return (
