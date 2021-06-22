@@ -1,7 +1,5 @@
-import React from 'react';
 import { Column } from '@opensrp/react-utils';
 import { TableColumnsNamespace } from '../../constants';
-import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
 import { Inventory } from '../../ducks/inventory';
 import { Dictionary } from '@onaio/utils';
@@ -9,15 +7,9 @@ import { Dictionary } from '@onaio/utils';
 /**
  * Get table columns
  *
- * @param servicePointProfileURL route to the service point profile
- * @param editURL route the edit inventory item
  * @param langObj - the language translations object
  */
-export const getTableColumns = (
-  servicePointProfileURL: string,
-  editURL: string,
-  langObj: Lang = lang
-): Column<Inventory>[] => {
+export const getTableColumns = (langObj: Lang = lang): Column<Inventory>[] => {
   return [
     {
       title: langObj.PRODUCT_NAME_TH,
@@ -74,17 +66,6 @@ export const getTableColumns = (
       title: langObj.DONOR_TH,
       dataIndex: 'donor',
       key: `${TableColumnsNamespace}-${langObj.DONOR_TH}` as keyof Inventory,
-    },
-    {
-      title: langObj.ACTIONS_TH,
-      key: `${TableColumnsNamespace}-actions` as keyof Inventory,
-      // eslint-disable-next-line react/display-name
-      render: (_: string, record) => (
-        <Link to={`${servicePointProfileURL}/${record.locationId}${editURL}/${record._id}`}>
-          {langObj.EDIT}
-        </Link>
-      ),
-      width: '20%',
     },
   ];
 };

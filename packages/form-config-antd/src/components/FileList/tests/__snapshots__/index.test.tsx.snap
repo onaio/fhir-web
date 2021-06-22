@@ -23,6 +23,11 @@ exports[`components/Antd/FileList renders correctly for view file: search 1`] = 
 
 exports[`components/Antd/FileList renders correctly for view file: table 1`] = `
 <TableLayout
+  actions={
+    Object {
+      "render": [Function],
+    }
+  }
   columns={
     Array [
       Object {
@@ -64,9 +69,9 @@ exports[`components/Antd/FileList renders correctly for view file: table 1`] = `
         "title": "Module",
       },
       Object {
-        "key": "action",
+        "key": "_actions",
         "render": [Function],
-        "title": "Action",
+        "title": "Actions",
       },
     ]
   }
@@ -147,6 +152,11 @@ exports[`components/Antd/FileList renders correctly: search 1`] = `
 
 exports[`components/Antd/FileList renders correctly: table 1`] = `
 <TableLayout
+  actions={
+    Object {
+      "render": [Function],
+    }
+  }
   columns={
     Array [
       Object {
@@ -183,9 +193,9 @@ exports[`components/Antd/FileList renders correctly: table 1`] = `
         "title": "Created at",
       },
       Object {
-        "key": "action",
+        "key": "_actions",
         "render": [Function],
-        "title": "Action",
+        "title": "Actions",
       },
     ]
   }

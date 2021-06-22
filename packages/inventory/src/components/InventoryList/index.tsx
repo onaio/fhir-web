@@ -113,7 +113,19 @@ const InventoryList = (props: InventoryListProps) => {
             className="custom-table"
             pagination={false}
             datasource={datasource}
-            columns={getTableColumns(servicePointProfileURL, editInventoryURL)}
+            columns={getTableColumns()}
+            actions={{
+              title: lang.ACTIONS_TH,
+              // eslint-disable-next-line react/display-name
+              render: (_: string, record) => (
+                <Link
+                  to={`${servicePointProfileURL}/${record.locationId}${editInventoryURL}/${record._id}`}
+                >
+                  {lang.EDIT}
+                </Link>
+              ),
+              width: '20%',
+            }}
           />
         </Col>
       </Row>

@@ -16,7 +16,12 @@ import {
   getTreesByIds,
 } from '@opensrp/location-management';
 import { connect } from 'react-redux';
-import { ServicePointsLoading, columnsFactory, getNodePath } from './utils';
+import {
+  ServicePointsLoading,
+  columnsFactory,
+  getNodePath,
+  ActionsColumnCustomRender,
+} from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -174,6 +179,11 @@ const ServicePointList = (props: ServicePointsListTypes) => {
             className="custom-table"
             datasource={datasource}
             columns={columns}
+            actions={{
+              title: lang.ACTIONS_TH,
+              render: ActionsColumnCustomRender,
+              width: '20%',
+            }}
           />
         </Col>
       </Row>

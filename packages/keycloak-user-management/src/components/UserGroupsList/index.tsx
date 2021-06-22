@@ -128,42 +128,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     {
       title: lang.NAME,
       dataIndex: 'name',
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
-    },
-    {
-      title: lang.ACTIONS,
-      width: '10%',
-
-      // eslint-disable-next-line react/display-name
-      render: (record: KeycloakUserGroup) => (
-        <span className="d-flex justify-content-end align-items-center">
-          <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
-            <Button type="link" className="m-0 p-1">
-              {lang.EDIT}
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    history.push(`${URL_USER_GROUPS}/${record.id}`);
-                  }}
-                >
-                  {lang.VIEW_DETAILS}
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomLeft"
-            arrow
-            trigger={['click']}
-          >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
-        </span>
-      ),
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
   ];
 
@@ -189,6 +154,40 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
             persistState={true}
             datasource={tableData}
             columns={columns}
+            actions={{
+              title: lang.ACTIONS,
+              width: '10%',
+              // eslint-disable-next-line react/display-name
+              render: (record) => (
+                <span className="d-flex justify-content-end align-items-center">
+                  <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
+                    <Button type="link" className="m-0 p-1">
+                      {lang.EDIT}
+                    </Button>
+                  </Link>
+                  <Divider type="vertical" />
+                  <Dropdown
+                    overlay={
+                      <Menu className="menu">
+                        <Menu.Item
+                          className="viewdetails"
+                          onClick={() => {
+                            history.push(`${URL_USER_GROUPS}/${record.id}`);
+                          }}
+                        >
+                          {lang.VIEW_DETAILS}
+                        </Menu.Item>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    arrow
+                    trigger={['click']}
+                  >
+                    <MoreOutlined className="more-options" />
+                  </Dropdown>
+                </span>
+              ),
+            }}
           />
         </Col>
         <ViewDetails keycloakBaseURL={keycloakBaseURL} groupId={groupId} />
