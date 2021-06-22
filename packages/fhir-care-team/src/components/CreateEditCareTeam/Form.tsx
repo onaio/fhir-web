@@ -21,10 +21,10 @@ export interface FormFields {
 }
 
 export interface CareTeamFormProps {
-  initialValues?: FormFields;
+  initialValues: FormFields;
   fhirBaseURL: string;
-  practitioners: any;
-  groups: any;
+  practitioners: Fields[];
+  groups: Fields[];
 }
 
 /** Care Team form for editing/adding FHIR Care Teams
@@ -32,7 +32,7 @@ export interface CareTeamFormProps {
  * @param {object} props - component props
  */
 const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, initialValues } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const history = useHistory();
   const [form] = Form.useForm();
@@ -55,17 +55,9 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
   };
 
   const status = [
-    { label: 'Yes', value: 'active' },
-    { label: 'No', value: 'inactive' },
+    { label: 'Active', value: 'active' },
+    { label: 'Inactive', value: 'inactive' },
   ];
-  const initialValues = props.initialValues ?? {
-    uuid: '',
-    id: '',
-    name: '',
-    status: '',
-    practitionersId: undefined,
-    groupsId: undefined,
-  };
 
   /** Update form initial values when initialValues prop changes, without this
    * the form fields initial values will not change if props.initiaValues is updated
@@ -113,7 +105,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
           <Form.Item id="status" name="status" label={lang.STATUS}>
             <Radio.Group name="status">
               {status.map((e) => (
-                <Radio name="active" key={e.label} value={e.value}>
+                <Radio name="status" key={e.label} value={e.value}>
                   {e.label}
                 </Radio>
               ))}

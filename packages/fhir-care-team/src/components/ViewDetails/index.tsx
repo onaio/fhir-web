@@ -2,9 +2,10 @@ import React from 'react';
 import { Col, Space, Spin, Button, Typography } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
+import { Dictionary } from '@onaio/utils';
 import { useQuery, useQueries } from 'react-query';
-import { Resource404 } from '@opensrp/react-utils';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+import { Resource404, BrokenPage } from '@opensrp/react-utils';
 import FHIR from 'fhirclient';
 import lang from '../../lang';
 import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
@@ -26,23 +27,21 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const { careTeamId, fhirBaseURL } = props;
   const history = useHistory();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: [`CareTeam/${careTeamId}`],
     queryFn: () =>
       careTeamId ? FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`) : undefined,
-    onError: () => sendErrorNotification(lang.ERROR_OCCURED),
     select: (res) => res,
   });
 
   const practitioners = useQueries(
     data && data.participant
-      ? data.participant.map((p: any) => {
+      ? data.participant.map((p: { member: { reference: string } }) => {
           return {
             queryKey: [FHIR_CARE_TEAM, p.member.reference],
             queryFn: () => FHIR.client(fhirBaseURL).request(p.member.reference),
-            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res: any) => res,
+            select: (res: IfhirR4.IPractitioner) => res,
           };
         })
       : []
@@ -54,12 +53,15 @@ const ViewDetails = (props: ViewDetailsProps) => {
       data && data.subject && data.subject.reference
         ? FHIR.client(fhirBaseURL).request(data.subject.reference)
         : undefined,
-    onError: () => sendErrorNotification(lang.ERROR_OCCURED),
     select: (res) => res,
   });
 
   if (!careTeamId) {
     return null;
+  }
+
+  if (error) {
+    return <BrokenPage errorMessage={`${error}`} />;
   }
 
   return (
@@ -113,7 +115,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
             {lang.PARTICIPANTS}
           </Text>
           {practitioners.length
-            ? practitioners.map((datum: any) => (
+            ? practitioners.map((datum: Dictionary) => (
                 <>
                   <Text type="secondary" className="display-block">
                     {getPatientName(datum.data)}

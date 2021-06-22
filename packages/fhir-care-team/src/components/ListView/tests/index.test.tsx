@@ -37,7 +37,7 @@ const careTeamProps = {
   },
   match: {
     isExact: true,
-    params: { careTeamId: null },
+    params: { careTeamId: '' },
     path: `${URL_CARE_TEAM}`,
     url: `${URL_CARE_TEAM}`,
   },
@@ -116,49 +116,7 @@ describe('Patients list view', () => {
     // cancel sort
     // click on sort to change the order (descending)
     wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
 
-    // sort by dob
-    // click on sort to change the order (ascending)
-    expect(wrapper.find('thead tr th').at(1).text()).toEqual('Date Of Birth');
-    wrapper.find('thead tr th').at(1).simulate('click');
-    wrapper.update();
-    // check new sort order by dob (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by dob - ascending ${index}`);
-    });
-
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').at(1).simulate('click');
-    wrapper.update();
-
-    // check new sort order by email (descending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by dob - descending ${index}`);
-    });
-    wrapper.update();
-    // sort by gender
-    // click on sort to change the order (ascending)
-    wrapper.find('thead tr th').at(2).simulate('click');
-    wrapper.update();
-
-    // check new sort order by name (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by gender - ascending ${index}`);
-    });
-
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').at(2).simulate('click');
-    wrapper.update();
-
-    // check new sort order by name (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by gender - descending ${index}`);
-    });
-
-    // cancel sort
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').at(2).simulate('click');
     wrapper.unmount();
   });
 

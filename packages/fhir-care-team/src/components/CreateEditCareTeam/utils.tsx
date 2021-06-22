@@ -25,7 +25,7 @@ export const submitForm = async (
     ],
     id: id,
     name: values.name,
-    status: values.status as any,
+    status: values.status as IfhirR4.CareTeam.StatusEnum,
     subject: {
       reference: `Group/${values.groupsId}`,
     },
