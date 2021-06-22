@@ -36,6 +36,11 @@ interface Props {
   fhirBaseURL: string;
 }
 
+export interface PaginationProps {
+  currentPage: number;
+  pageSize: number | undefined;
+}
+
 /** default component props */
 const defaultProps = {
   fhirBaseURL: '',
@@ -49,23 +54,57 @@ export type CareTeamListPropTypes = Props & RouteComponentProps<RouteParams>;
  * @returns {Function} returns User Roles list display
  */
 
-export const fetcCareTeams = async (fhirBaseURL: string): Promise<IfhirR4.IBundle> => {
-  return await FHIR.client(fhirBaseURL).request(FHIR_CARE_TEAM);
+export const fetcCareTeams = async (
+  fhirBaseURL: string,
+  pageSize: number,
+  pageOffset: number,
+  searchParam: string | undefined,
+  setPayloadCount: (count: number) => void
+): Promise<IfhirR4.IBundle> => {
+  return await FHIR.client(fhirBaseURL)
+    .request(`${FHIR_CARE_TEAM}/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}`)
+    .then((res: IfhirR4.IBundle) => {
+      setPayloadCount(res.total as number);
+      return res;
+    });
 };
 
-export const useCareTeamsHook = (fhirBaseURL: string) => {
-  return useQuery(FHIR_CARE_TEAM, () => fetcCareTeams(fhirBaseURL), {
-    select: (res: IfhirR4.IBundle) => res,
-    refetchOnWindowFocus: false,
-    retryOnMount: true,
-  });
+export const useCareTeamsHook = (
+  fhirBaseURL: string,
+  pageSize: number,
+  pageOffset: number,
+  searchParam: string,
+  setPayloadCount: (count: number) => void
+) => {
+  return useQuery(
+    FHIR_CARE_TEAM,
+    () => fetcCareTeams(fhirBaseURL, pageSize, pageOffset, searchParam, setPayloadCount),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
   const history = useHistory();
   const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID] ?? '';
 
-  const { data, isLoading, isFetching, error } = useCareTeamsHook(fhirBaseURL);
+  const [payloadCount, setPayloadCount] = React.useState<number>(0);
+  const [pageProps, setPageProps] = React.useState<PaginationProps>({
+    currentPage: 1,
+    pageSize: 20,
+  });
+  const { currentPage, pageSize } = pageProps;
+  const pageOffset = (currentPage - 1) * (pageSize ?? 20);
+  const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM];
+
+  const { data, isLoading, isFetching, error } = useCareTeamsHook(
+    fhirBaseURL,
+    pageSize as number,
+    pageOffset,
+    searchParam as string,
+    setPayloadCount
+  );
 
   if (isLoading || isFetching) return <Spin size="large" />;
 
@@ -153,7 +192,15 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             pagination={{
               showQuickJumper: true,
               showSizeChanger: true,
-              defaultPageSize: 5,
+              defaultPageSize: pageSize ?? 20,
+              onChange: (page: number, pageSize: number | undefined) => {
+                setPageProps({
+                  currentPage: page,
+                  pageSize: pageSize,
+                });
+              },
+              current: currentPage,
+              total: payloadCount,
               pageSizeOptions: ['5', '10', '20', '50', '100'],
             }}
           />
