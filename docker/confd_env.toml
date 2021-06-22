@@ -45,4 +45,9 @@ keys = [
     "/react/app/enable/card/support",
     "/react/app/fhir/api/base/url",
     "/react/app/user/form/hidden",
+    "/react/app/enable/fhir",
+    "/react/app/enable/fhir/healthcare",
+    "/react/app/enable/fhir/care/team",
+    "/react/app/enable/fhir/teams",
+    "/react/app/enable/fhir/patients",
 ]
