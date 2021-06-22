@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/plan-form-core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Core utils to support UIs for creating or editing plans",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -20,8 +20,7 @@
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,

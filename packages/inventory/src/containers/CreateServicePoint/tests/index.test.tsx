@@ -9,6 +9,8 @@ import { Provider } from 'react-redux';
 import { RouteComponentProps, Router } from 'react-router';
 import { act } from 'react-dom/test-utils';
 import { commonHiddenFields } from '../../../helpers/utils';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { baseLocationUnits, rawHierarchy } from '../../EditServicePoint/tests/fixtures';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -32,7 +34,11 @@ describe('CreateServicePoint', () => {
   });
 
   it('passes the correct values to form', async () => {
-    fetch.mockResponse(JSON.stringify([]));
+    const queryClient = new QueryClient();
+    fetch.once(JSON.stringify(baseLocationUnits));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
 
     const props = {
       history,
@@ -52,15 +58,17 @@ describe('CreateServicePoint', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ServicePointsAdd {...props} />
+          <QueryClientProvider client={queryClient}>
+            <ServicePointsAdd {...props} />
+          </QueryClientProvider>
         </Router>
       </Provider>
     );
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
     });
+    wrapper.update();
 
     const locationFormProps = wrapper.find('LocationForm').props();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

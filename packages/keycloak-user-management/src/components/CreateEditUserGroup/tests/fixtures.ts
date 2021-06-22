@@ -28,3 +28,9 @@ export const userGroup: KeycloakUserGroup = {
   path: '/Admin',
   subGroups: [],
 };
+
+export const value = {
+  id: '',
+  name: 'Admin',
+  path: '/Admin',
+};

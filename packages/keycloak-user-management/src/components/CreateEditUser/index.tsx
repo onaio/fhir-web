@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { OpenSRPService } from '@opensrp/react-utils';
-import { UserForm, FormFields } from '../forms/UserForm';
+import { UserForm, FormFields, UserFormProps } from '../forms/UserForm';
 import {
   ROUTE_PARAM_USER_ID,
   KEYCLOAK_URL_USERS,
@@ -42,6 +42,7 @@ export interface EditUserProps {
   opensrpBaseURL: string;
   extraData: Dictionary;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
+  userFormHidden: UserFormProps['hidden'];
 }
 
 /** type intersection for all types that pertain to the props */
@@ -73,6 +74,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     opensrpBaseURL,
     extraData,
     fetchKeycloakUsersCreator,
+    userFormHidden,
   } = props;
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
@@ -145,13 +147,15 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       const serve = new OpenSRPService(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, opensrpBaseURL);
       serve
         .read(userId)
-        .then((response: Practitioner) =>
-          setInitialValues((prevState) => ({
-            ...prevState,
-            active: response.active,
-            practitioner: response,
-          }))
-        )
+        .then((response: Practitioner | undefined) => {
+          if (response) {
+            setInitialValues((prevState) => ({
+              ...prevState,
+              active: response.active,
+              practitioner: response,
+            }));
+          }
+        })
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
         .finally(() => setPractitionerLoading(false));
     }
@@ -175,6 +179,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           opensrpBaseURL={opensrpBaseURL}
           userGroups={userGroups}
           extraData={extraData}
+          hidden={userFormHidden}
         />
       </Col>
     </Row>

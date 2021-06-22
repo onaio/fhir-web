@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/plan-form",
-  "version": "0.0.2-5",
+  "version": "0.0.2",
   "description": "Form component for creating OpenSRP pages",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -21,8 +21,7 @@
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "transpile:windows": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
   },
   "jest": {
@@ -47,9 +46,9 @@
     "@ant-design/icons": "^4.3.0",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.4",
-    "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/plan-form-core": "^0.0.3",
-    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/plan-form-core": "^0.0.4",
+    "@opensrp/react-utils": "^0.0.10",
     "@opensrp/server-service": "^0.0.16",
     "lodash": "^4.17.20",
     "react-i18next": "^11.8.10",

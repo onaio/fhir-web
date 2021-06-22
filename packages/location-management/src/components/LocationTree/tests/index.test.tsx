@@ -86,7 +86,9 @@ describe('location-management/src/components/LocationTree', () => {
     );
 
     let treeNode = wrapper.find('.ant-tree-list-holder-inner');
-    expect(treeNode.children()).toHaveLength(3); // as per structure make sure we have 3 tree
+
+    // Todo need to filter out Ant tree motion child from length
+    expect(treeNode.children()).toHaveLength(4); // as per structure make sure we have 3 tree
 
     const expandButton = treeNode.find('span.ant-tree-switcher').first();
     expandButton.simulate('click');

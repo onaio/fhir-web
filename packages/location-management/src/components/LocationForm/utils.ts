@@ -12,6 +12,7 @@ import { v4 } from 'uuid';
 import { Geometry, Point } from 'geojson';
 import lang, { Lang } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
+import { LOCATION_UNIT_TYPE } from '../../constants';
 import { GetSelectedFullData } from './CustomSelect';
 import { uniqBy } from 'lodash';
 
@@ -28,7 +29,6 @@ export interface LocationFormFields {
   id?: string;
   name: string;
   status: LocationUnitStatus;
-  type: string;
   parentId?: string;
   externalId?: string;
   locationTags?: number[];
@@ -68,7 +68,6 @@ export const defaultFormField: LocationFormFields = {
   instance: FormInstances.CORE,
   name: '',
   status: LocationUnitStatus.ACTIVE,
-  type: '',
   isJurisdiction: true,
   serviceType: '',
   locationTags: [],
@@ -88,16 +87,8 @@ export const getLocationFormFields = (
   instance: FormInstances = FormInstances.CORE,
   isJurisdiction = true
 ): LocationFormFields => {
-  const commonValues = {
-    instance,
-    isJurisdiction: location?.isJurisdiction ?? isJurisdiction,
-  };
-  if (!location) {
-    return {
-      ...defaultFormField,
-      ...commonValues,
-    };
-  }
+  const commonValues = { instance, isJurisdiction: location?.isJurisdiction ?? isJurisdiction };
+  if (!location) return { ...defaultFormField, ...commonValues };
 
   const {
     name,
@@ -114,13 +105,12 @@ export const getLocationFormFields = (
   const geoJson = JSON.stringify(geoObject);
   const { longitude, latitude } = getPointCoordinates(geoJson);
 
-  const formFields = {
+  const formFields: LocationFormFields = {
     ...defaultFormField,
     ...commonValues,
     id: location.id,
     locationTags: location.locationTags?.map((loc) => loc.id),
     geometry: geoJson,
-    type: location.type,
     name,
     username,
     status,
@@ -142,7 +132,7 @@ export const getLocationFormFields = (
 export function removeEmptykeys(obj: Dictionary) {
   Object.entries(obj).forEach(([key, value]) => {
     if (typeof value === 'undefined') delete obj[key];
-    else if (value === '' || value === null) delete obj[key];
+    else if (key !== 'parentId' && (value === '' || value === null)) delete obj[key];
     else if (Array.isArray(value) && value.length === 0) delete obj[key];
     // if typeof value is object and its not an array then it should be a json object
     else if (typeof value === 'object') removeEmptykeys(value);
@@ -170,7 +160,6 @@ export const generateLocationUnit = (
     parentId,
     name,
     status,
-    type,
     geometry,
     extraFields,
     username,
@@ -198,7 +187,7 @@ export const generateLocationUnit = (
     },
     id: thisLocationsId,
     syncStatus: LocationUnitSyncStatus.SYNCED,
-    type: type,
+    type: LOCATION_UNIT_TYPE,
     locationTags: selectedTags,
     geometry: geometry ? (JSON.parse(geometry) as Geometry) : undefined,
   };

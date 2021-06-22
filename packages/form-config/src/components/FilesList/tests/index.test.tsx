@@ -29,7 +29,7 @@ reducerRegistry.register(filesReducerName, filesReducer);
 
 const history = createBrowserHistory();
 
-const baseURL = 'https://test-example.com/rest';
+const baseURL = 'https://test-example.com/rest/';
 const props = {
   baseURL,
   downloadEndPoint: 'form-download',
@@ -131,7 +131,7 @@ describe('components/manifestFiles', () => {
 
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
+      'https://test-example.com/rest/',
       'form-download',
       {
         createdAt: 'Jun 19, 2020, 4:23:22 PM',
@@ -149,7 +149,7 @@ describe('components/manifestFiles', () => {
       getFetchOptions
     );
     expect(fetch.mock.calls[1]).toEqual([
-      'https://test-example.com/restform-download?form_identifier=reveal-test-file.json&form_version=1.0.27&is_json_validator=true',
+      'https://test-example.com/rest/form-download?form_identifier=reveal-test-file.json&form_version=1.0.27&is_json_validator=true',
       {
         headers: {
           accept: 'application/json',
@@ -196,7 +196,7 @@ describe('components/manifestFiles', () => {
     wrapper.update();
     expect(downloadSpy).toHaveBeenCalledWith(
       'hunter2',
-      'https://test-example.com/rest',
+      'https://test-example.com/rest/',
       'form-download',
       {
         createdAt: 'Jun 19, 2020, 4:23:22 PM',
@@ -214,7 +214,7 @@ describe('components/manifestFiles', () => {
       getFetchOptions
     );
     expect(fetch.mock.calls[1]).toEqual([
-      'https://test-example.com/restform-download?form_identifier=reveal-test-file.json&form_version=1.0.27',
+      'https://test-example.com/rest/form-download?form_identifier=reveal-test-file.json&form_version=1.0.27',
       {
         headers: {
           accept: 'application/json',

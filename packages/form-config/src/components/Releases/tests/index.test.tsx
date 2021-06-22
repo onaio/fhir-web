@@ -25,7 +25,7 @@ reducerRegistry.register(releasesReducerName, releasesReducer);
 
 const history = createBrowserHistory();
 
-const baseURL = 'https://test-example.com/rest';
+const baseURL = 'https://test-example.com/rest/';
 const endpoint = 'manifest';
 const props = {
   baseURL,

@@ -122,7 +122,10 @@ describe('routes', () => {
       FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
 
-    const routes = getRoutes(['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS']);
+    const routes = getRoutes(
+      ['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS'],
+      (t: string) => t
+    );
     expect(routes).toMatchObject([
       {
         children: [
@@ -175,6 +178,11 @@ describe('routes', () => {
             key: 'inventory-list',
             title: 'Service point inventory',
             url: '/inventory',
+          },
+          {
+            key: 'inventory-upload',
+            title: 'Add inventory via CSV',
+            url: '/inventory/upload',
           },
         ],
         enabled: true,
@@ -281,5 +289,9 @@ describe('routes', () => {
         url: '/admin',
       },
     ]);
+    // check inventory bulk upload title in routes as second item under inventory sub menu
+    expect((routes.find((r) => r.key === 'inventory')?.children as any)[1].title).toEqual(
+      'Add inventory via CSV'
+    );
   });
 });

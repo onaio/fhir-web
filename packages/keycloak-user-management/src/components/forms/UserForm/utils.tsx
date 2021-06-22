@@ -12,6 +12,8 @@ import {
 import { OpenSRPService } from '@opensrp/react-utils';
 import lang, { Lang } from '../../../lang';
 import { FormFields } from '.';
+import { Practitioner } from '@opensrp/team-management';
+import { some } from 'lodash';
 
 /** Utility function to set new user UUID extracted from the
  * POST response location header
@@ -37,25 +39,41 @@ export const createOrEditPractitioners = async (
   values: FormFields,
   langObj: Lang = lang
 ) => {
-  const requestType = values.practitioner ? 'update' : 'create';
-  const successMessage = values.practitioner
-    ? langObj.PRACTITIONER_UPDATED_SUCCESSFULLY
-    : langObj.PRACTITIONER_CREATED_SUCCESSFULLY;
-  const practitionerValues = {
-    active: values.practitioner ? values.active : true,
-    identifier: values.practitioner ? values.practitioner.identifier : v4(),
+  const practitionersService = new OpenSRPService('practitioner', baseURL);
+
+  // initialize values for creating a practitioner
+  let requestType: 'update' | 'create' = 'create';
+  // inherits id, names, and username of tied keycloak user
+  let practitionerValues: Practitioner = {
+    active: true,
+    identifier: v4(),
     name: `${values.firstName} ${values.lastName}`,
-    userId: values.practitioner ? values.practitioner.userId : values.id,
+    userId: values.id,
     username: values.username,
   };
+  let successMessage: string = langObj.PRACTITIONER_CREATED_SUCCESSFULLY;
 
-  const practitionersService = new OpenSRPService('practitioner', baseURL);
-  await practitionersService[requestType](practitionerValues).catch((_: Error) =>
-    sendErrorNotification(langObj.ERROR_OCCURED)
-  );
+  // if practitioner exists re-initialize as update practitioner
+  if (values.practitioner) {
+    requestType = 'update';
+    practitionerValues = {
+      // if the base keycloak user is disabled, also disable the tied opensrp practitioner
+      // otherwise follow the practitioner's activation field
+      active: (values.enabled as boolean) === false ? false : (values.active as boolean),
+      identifier: values.practitioner.identifier,
+      name: values.practitioner.name,
+      userId: values.practitioner.userId,
+      username: values.practitioner.username,
+    };
+    successMessage = langObj.PRACTITIONER_UPDATED_SUCCESSFULLY;
+  }
+
+  // update or create new practitioner
+  await practitionersService[requestType](practitionerValues)
+    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
+    .finally(() => sendSuccessNotification(successMessage));
 
   if (!values.practitioner) history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
-  sendSuccessNotification(successMessage);
 };
 
 /**
@@ -65,6 +83,7 @@ export const createOrEditPractitioners = async (
  * @param keycloakBaseURL - keycloak API base URL
  * @param opensrpBaseURL - opensrp api base url
  * @param userGroups - Array of Usergroups to get data from when sending payload of user groups
+ * @param previousUserGroupIds - An array of previously selected user group ids
  * @param langObj - the translations object lookup
  */
 export const submitForm = async (
@@ -72,15 +91,14 @@ export const submitForm = async (
   keycloakBaseURL: string,
   opensrpBaseURL: string,
   userGroups: UserGroup[],
+  previousUserGroupIds: string[] | undefined,
   langObj: Lang = lang
 ): Promise<void> => {
-  const keycloakUserValue: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
-    Partial<FormFields> = {
-    ...values,
-  };
-  delete keycloakUserValue.active;
-  delete keycloakUserValue.userGroup;
-  delete keycloakUserValue.practitioner;
+  const { active, userGroup, practitioner, attributes, ...keycloakValues } = values;
+  let keycloakUserValue: Omit<FormFields, 'active' | 'userGroup' | 'practitioner'> = keycloakValues;
+  if (some(attributes)) {
+    keycloakUserValue = { ...keycloakValues, attributes };
+  }
 
   if (values.id) {
     const serve = new KeycloakService(`${KEYCLOAK_URL_USERS}/${values.id}`, keycloakBaseURL);
@@ -98,24 +116,38 @@ export const submitForm = async (
 
   // Assign User Group to user
   const promises: Promise<void>[] = [];
+  if (values.userGroup) {
+    values.userGroup.forEach((groupId) => {
+      const userGroupValue = userGroups.find((group) => group.id === groupId) as UserGroup;
+      const serve = new KeycloakService(
+        `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
+        keycloakBaseURL
+      );
+      const promise = serve.update(userGroupValue);
+      promises.push(promise);
+    });
+  }
 
-  values.userGroup?.forEach((groupId) => {
-    const userGroupValue = userGroups.find((group) => group.id === groupId) as UserGroup;
+  if (previousUserGroupIds) {
+    previousUserGroupIds.forEach((groupId) => {
+      if (!values.userGroup?.includes(groupId)) {
+        const serve = new KeycloakService(
+          `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
+          keycloakBaseURL
+        );
+        const promise = serve.delete();
+        promises.push(promise);
+      }
+    });
+  }
 
-    const serve = new KeycloakService(
-      `${KEYCLOAK_URL_USERS}/${values.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
-      keycloakBaseURL
-    );
-
-    const promise = serve.update(userGroupValue);
-    promises.push(promise);
-  });
-
-  await Promise.allSettled(promises).catch((_: Error) =>
-    sendErrorNotification(langObj.ERROR_OCCURED)
-  );
-  sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
-
-  sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
-  history.push(URL_USER);
+  await Promise.allSettled(promises)
+    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
+    .finally(() => {
+      sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
+      sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
+    });
+  if (keycloakUserValue.id) {
+    history.push(URL_USER);
+  }
 };

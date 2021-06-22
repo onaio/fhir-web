@@ -13,6 +13,7 @@
   "Enter the product's material number": "",
   "Fetching product Catalogue": "",
   "ID": "",
+  "Image could not be loaded": "Image could not be loaded",
   "Is it being used appropriately? (optional)": "",
   "Is it in good condition? (optional)": "",
   "Is it there?": "",
@@ -31,5 +32,6 @@
   "Successfully Added": "",
   "Successfully Updated": "",
   "Unique ID": "",
+  "View details": "View details",
   "yes": ""
 }
