@@ -790,7 +790,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.HEATLHCARE && activeRoles.HEATLHCARE.split(',')}
+              activeRoles={activeRoles.HEALTHCARE && activeRoles.HEALTHCARE.split(',')}
               path={URL_HEALTHCARE_EDIT}
               {...heatlhcareProps}
               component={HealthCareAddEdit}
@@ -798,7 +798,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.HEATLHCARE && activeRoles.HEATLHCARE.split(',')}
+              activeRoles={activeRoles.HEALTHCARE && activeRoles.HEALTHCARE.split(',')}
               path={URL_HEALTHCARE_ADD}
               {...heatlhcareProps}
               component={HealthCareAddEdit}
@@ -806,7 +806,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.HEATLHCARE && activeRoles.HEATLHCARE.split(',')}
+              activeRoles={activeRoles.HEALTHCARE && activeRoles.HEALTHCARE.split(',')}
               path={URL_HEALTHCARE}
               {...heatlhcareProps}
               component={HealthCareList}
