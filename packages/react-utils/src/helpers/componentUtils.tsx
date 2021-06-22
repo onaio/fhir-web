@@ -19,6 +19,7 @@ interface ComponentProps extends Partial<RouteProps> {
   activeRoles?: string[];
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
+  fhirBaseURL?: string;
 }
 
 /** Util wrapper around ConnectedPrivateRoute to render components

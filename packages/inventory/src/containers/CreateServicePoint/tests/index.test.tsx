@@ -67,8 +67,8 @@ describe('CreateServicePoint', () => {
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
     });
+    wrapper.update();
 
     const locationFormProps = wrapper.find('LocationForm').props();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

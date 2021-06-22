@@ -112,24 +112,6 @@ describe('location-management/src/components/LocationTagView', () => {
     expect(mockNotificationSuccess).toBeCalled();
   });
 
-  it('Test Name Sorting functionality', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Table opensrpBaseURL={baseURL} data={tableData} />
-        </Router>
-      </Provider>
-    );
-
-    const heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(2);
-    heading.find('th').at(0).children().simulate('click');
-
-    const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe('4');
-    expect(body.children().last().prop('rowKey')).toBe('1');
-  });
-
   it('deletes location', async () => {
     const notificationSuccessMock = jest.spyOn(notification, 'success');
     fetch.mockResponse(JSON.stringify(sampleLocationUnitGroupPayload));

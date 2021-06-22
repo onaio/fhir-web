@@ -37,6 +37,7 @@ i18n
 setAllConfigs({
   i18n: i18n,
   projectLanguageCode: 'core',
+  TablesState: {},
 });
 
 global.fetch = require('jest-fetch-mock');

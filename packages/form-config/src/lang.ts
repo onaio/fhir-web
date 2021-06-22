@@ -34,7 +34,7 @@ function fill() {
   lang.DRAFT_FILES = i18n.t(`Draft Files`, { ns: namespace });
   lang.RELEASES = i18n.t(`Releases`, { ns: namespace });
   lang.JSON_VALIDATORS = i18n.t(`JSON Validators`, { ns: namespace });
-  lang.ACTION = i18n.t(`Action`, { ns: namespace });
+  lang.ACTIONS = i18n.t(`Actions`, { ns: namespace });
   lang.UPLOAD_FORM = i18n.t(`Upload Form`, { ns: namespace });
   lang.FORM_NAME = i18n.t(`Form Name`, { ns: namespace });
   lang.FORM = i18n.t(`Form`, { ns: namespace });

@@ -14,6 +14,7 @@ window._env_ = {
   REACT_APP_OPENSRP_CLIENT_ID: "{{ getv "/react/app/opensrp/client/id" "opensrp-stage-server" }}",
   REACT_APP_OPENSRP_LOGOUT_URL: "{{ getv "/react/app/opensrp/logout/url" "https://opensrp-stage.smartregister.org/opensrp/logout.do" }}",
   REACT_APP_OPENSRP_USER_URL: "{{ getv "/react/app/opensrp/user/url" "https://opensrp-stage.smartregister.org/opensrp/user-details/" }}",
+  REACT_APP_FHIR_API_BASE_URL: "{{ getv "/react/app/fhir/api/base/url" "https://fhir.labs.smartregister.org/fhir" }}",
   REACT_APP_WEBSITE_NAME: "{{ getv "/react/app/website/name" "opensrp-web" }}",
   REACT_APP_ACTION_UUID_NAMESPACE: "{{ getv "/react/app/action/uuid/namespace" ""}}",
   REACT_APP_PLAN_UUID_NAMESPACE: "{{ getv "/react/app/plan/uuid/namespace" ""}}"
@@ -40,4 +41,5 @@ window._env_ = {
   REACT_APP_ENABLE_TEAMS: "{{ getv "/react/app/enable/teams" "false" }}"
   REACT_APP_ENABLE_PLANS: "{{ getv "/react/app/enable/plans" "false" }}"
   REACT_APP_ENABLE_CARD_SUPPORT: "{{ getv "/react/app/enable/card/support" "false" }}"
+  REACT_APP_USER_FORM_HIDDEN: "{{ getv "/react/app/user/form/hidden" "contact" }}"
 };

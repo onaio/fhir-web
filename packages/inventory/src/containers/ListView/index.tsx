@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button, Table } from 'antd';
-import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
+import { Row, PageHeader, Col, Button } from 'antd';
+import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import {
   TreeNode,
   fetchTree,
@@ -16,7 +16,12 @@ import {
   getTreesByIds,
 } from '@opensrp/location-management';
 import { connect } from 'react-redux';
-import { ServicePointsLoading, columnsFactory, getNodePath } from './utils';
+import {
+  ServicePointsLoading,
+  columnsFactory,
+  getNodePath,
+  ActionsColumnCustomRender,
+} from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -27,7 +32,6 @@ import {
   INVENTORY_ADD_SERVICE_POINT,
   SEARCH_QUERY_PARAM,
   TableColumnsNamespace,
-  tablePaginationOptions,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
@@ -139,7 +143,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
 
   const pageTitle = `${lang.SERVICE_POINT_INVENTORY} (${structures.length})`;
   // add a key prop to the array data to be consumed by the table
-  const dataSource = structures.map((location) => {
+  const datasource = structures.map((location) => {
     const locationToDisplay = {
       key: `${TableColumnsNamespace}-${location.id}`,
       type: location.properties.type as string,
@@ -169,12 +173,18 @@ const ServicePointList = (props: ServicePointsListTypes) => {
               <Button type="primary">{lang.ADD_SERVICE_POINT}</Button>
             </Link>
           </div>
-          <Table
+          <TableLayout
+            id="InventoryListView"
+            persistState={true}
             className="custom-table"
-            dataSource={dataSource}
+            datasource={datasource}
             columns={columns}
-            pagination={tablePaginationOptions}
-          ></Table>
+            actions={{
+              title: lang.ACTIONS_TH,
+              render: ActionsColumnCustomRender,
+              width: '20%',
+            }}
+          />
         </Col>
       </Row>
     </div>

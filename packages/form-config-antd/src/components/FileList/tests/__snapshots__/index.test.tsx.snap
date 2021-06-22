@@ -22,7 +22,12 @@ exports[`components/Antd/FileList renders correctly for view file: search 1`] = 
 `;
 
 exports[`components/Antd/FileList renders correctly for view file: table 1`] = `
-<Table
+<TableLayout
+  actions={
+    Object {
+      "render": [Function],
+    }
+  }
   columns={
     Array [
       Object {
@@ -64,13 +69,13 @@ exports[`components/Antd/FileList renders correctly for view file: table 1`] = `
         "title": "Module",
       },
       Object {
-        "key": "action",
+        "key": "_actions",
         "render": [Function],
-        "title": "Action",
+        "title": "Actions",
       },
     ]
   }
-  dataSource={
+  datasource={
     Array [
       Object {
         "createdAt": "Jun 19, 2020, 12:31:37 PM",
@@ -98,22 +103,9 @@ exports[`components/Antd/FileList renders correctly for view file: table 1`] = `
       },
     ]
   }
+  id="FormFileList"
   onChange={[Function]}
-  pagination={
-    Object {
-      "defaultPageSize": 5,
-      "pageSizeOptions": Array [
-        "5",
-        "10",
-        "20",
-        "50",
-        "100",
-      ],
-      "showQuickJumper": true,
-      "showSizeChanger": true,
-    }
-  }
-  rowKey="key"
+  persistState={true}
 />
 `;
 
@@ -159,7 +151,12 @@ exports[`components/Antd/FileList renders correctly: search 1`] = `
 `;
 
 exports[`components/Antd/FileList renders correctly: table 1`] = `
-<Table
+<TableLayout
+  actions={
+    Object {
+      "render": [Function],
+    }
+  }
   columns={
     Array [
       Object {
@@ -196,13 +193,13 @@ exports[`components/Antd/FileList renders correctly: table 1`] = `
         "title": "Created at",
       },
       Object {
-        "key": "action",
+        "key": "_actions",
         "render": [Function],
-        "title": "Action",
+        "title": "Actions",
       },
     ]
   }
-  dataSource={
+  datasource={
     Array [
       Object {
         "createdAt": "Jun 19, 2020, 12:31:37 PM",
@@ -230,22 +227,9 @@ exports[`components/Antd/FileList renders correctly: table 1`] = `
       },
     ]
   }
+  id="FormFileList"
   onChange={[Function]}
-  pagination={
-    Object {
-      "defaultPageSize": 5,
-      "pageSizeOptions": Array [
-        "5",
-        "10",
-        "20",
-        "50",
-        "100",
-      ],
-      "showQuickJumper": true,
-      "showSizeChanger": true,
-    }
-  }
-  rowKey="key"
+  persistState={true}
 />
 `;
 

@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/pkg-config",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "description": "stores packages' configs",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -33,6 +33,9 @@
   },
   "dependencies": {
     "react-hooks-global-state": "^1.0.1"
+  },
+  "devDependencies": {
+    "antd": "^4.6.3"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",

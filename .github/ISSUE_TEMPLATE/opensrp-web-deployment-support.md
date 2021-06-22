@@ -8,6 +8,8 @@ assignees: ''
 
 ## Which project requires this deployment?
 
+## What kind of deployment is this i.e. staging, preview, production
+
 ## Who is the technical lead on this project?
 
 ## Do we have any deadlines tied to this deployment?

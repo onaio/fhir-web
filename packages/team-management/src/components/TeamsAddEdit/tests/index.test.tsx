@@ -7,12 +7,12 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { id, intialValue, opensrpBaseURL, practitioners, team, members } from './fixtures';
+import { id, intialValue, opensrpBaseURL, practitioners, team } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
 
-import TeamsAddEdit, { getPractitonerDetail, getTeamDetail } from '..';
+import TeamsAddEdit, { getPractitionerDetail, getTeamDetail } from '..';
 import lang from '../../../lang';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
@@ -70,8 +70,8 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('renders with id without crashing', async () => {
-    fetch.mockResponseOnce(JSON.stringify(team));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(team));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     const wrapper = mount(
@@ -89,6 +89,17 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(fetch.mock.calls).toMatchObject([
       [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
         'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
@@ -101,17 +112,6 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer hunter2',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -149,9 +149,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     });
   });
 
-  it('test getPractitonerDetail', async () => {
+  it('test getPractitionerDetail', async () => {
     fetch.mockResponseOnce(JSON.stringify(practitioners));
-    const response = await getPractitonerDetail(id, opensrpBaseURL);
+    const response = await getPractitionerDetail(id, opensrpBaseURL);
 
     await act(async () => {
       await flushPromises();
@@ -161,8 +161,14 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('test getTeamDetail', async () => {
-    fetch.mockResponseOnce(JSON.stringify({ name: intialValue.name, active: intialValue.active }));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        name: intialValue.name,
+        active: intialValue.active,
+      })
+    );
+
     const response = await getTeamDetail(id, opensrpBaseURL);
 
     await act(async () => {
@@ -172,12 +178,13 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     expect(response).toMatchObject({
       name: intialValue.name,
       active: intialValue.active,
+      practitioners: practitioners.filter((e) => e.active),
     });
   });
 
   it('render with correct team name in header', async () => {
-    fetch.mockResponseOnce(JSON.stringify(team));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(team));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     const wrapper = mount(
@@ -195,6 +202,17 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(fetch.mock.calls).toMatchObject([
       [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
         'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
@@ -207,17 +225,6 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer hunter2',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -238,9 +245,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('correctly adds/removes members from team', async () => {
-    fetch.once(JSON.stringify(team));
-    fetch.once(JSON.stringify(members));
-    fetch.once(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(team));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -258,6 +265,17 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(fetch.mock.calls).toEqual([
       [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
         'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
@@ -270,17 +288,6 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       ],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer hunter2',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -307,5 +314,49 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersprac two SaveCancel"`
     );
     wrapper.unmount();
+  });
+
+  it('renders with inactive practitioners filtered out', async () => {
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(team));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
+          <Route path={'/:id'} component={TeamsAddEdit} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find antd Select with id 'practitioners' in the 'Form' component
+    const practitionersSelect = wrapper.find('Form').find('Select#practitioners');
+
+    // find antd select items (prefixed with 'ant-select-selection-item-content' css class)
+    const options = practitionersSelect.find('.ant-select-selection-item-content');
+
+    // filter practitioners against inactive users
+    const filteredPractitioners = practitioners.filter((practitioner) => practitioner.active);
+    // only return the names
+    const filteredPractitionerNames = filteredPractitioners.map(
+      (practitioner) => practitioner.name
+    );
+
+    // expect antd select options text to equal practitioners filtered for only active users
+    expect(options.map((opt) => opt.text())).toStrictEqual(filteredPractitionerNames);
+
+    // get default displayed practitioners
+    const defaultPractitioners = practitionersSelect.find('.ant-select-selection-item-content');
+    // expect them to match default active practitioners
+    expect(defaultPractitioners.map((opt) => opt.text())).toStrictEqual([
+      'prac two',
+      'Benjamin Mulyungi',
+      'test admin',
+    ]);
   });
 });

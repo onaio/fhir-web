@@ -49,11 +49,6 @@ export const DEFAULT_PLAN_VERSION = setEnv('REACT_APP_DEFAULT_PLAN_VERSION', '1'
 
 export const TASK_GENERATION_STATUS = setEnv('REACT_APP_TASK_GENERATION_STATUS', 'internal');
 
-export const FHIR_API_BASE_URL = setEnv(
-  'REACT_APP_FHIR_API_BASE_URL',
-  'https://r4.smarthealthit.org'
-);
-
 export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = Number(
   setEnv('REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL', 0)
 );
@@ -173,3 +168,12 @@ export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default'
 
 export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
   setEnv('REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
+
+export const FHIR_API_BASE_URL = setEnv(
+  'REACT_APP_FHIR_API_BASE_URL',
+  'https://fhir.labs.smartregister.org/fhir'
+);
+
+export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
+
+export const USER_FORM_HIDDEN = setEnv('REACT_APP_USER_FORM_HIDDEN', '').split(',');
