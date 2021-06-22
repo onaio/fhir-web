@@ -22,6 +22,7 @@ import {
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
   ENABLE_PATIENTS_MODULE,
+  ENABLE_FHIR_CARE_TEAM,
 } from './configs/env';
 
 import {
@@ -36,6 +37,7 @@ import {
   URL_DOWNLOAD_CLIENT_DATA,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_FHIR_CARE_TEAM,
 } from './constants';
 import lang, { TFunction } from './lang';
 
@@ -159,6 +161,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.PRODUCT_CATALOGUE &&
             isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
           url: CATALOGUE_LIST_VIEW_URL,
+        },
+        {
+          title: langObj.CARE_TEAM,
+          key: 'fhir-care-team',
+          enabled: ENABLE_FHIR_CARE_TEAM,
+          url: URL_FHIR_CARE_TEAM,
         },
         {
           title: langObj.TEAMS,
