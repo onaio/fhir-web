@@ -33,7 +33,7 @@ export const ENABLE_PLANS = setEnv('REACT_APP_ENABLE_PLANS', 'false') === 'true'
 export const ENABLE_TEAMS = setEnv('REACT_APP_ENABLE_TEAMS', 'false') === 'true';
 
 /** Activate the teams menu */
-export const ENABLE_HEALTHCARE = setEnv('REACT_APP_ENABLE_TEAMS', 'false') === 'true';
+export const ENABLE_HEALTHCARE = setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE', 'false') === 'true';
 
 /** Activate the plans menu */
 export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') === 'true';
