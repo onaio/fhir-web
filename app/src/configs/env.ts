@@ -12,6 +12,7 @@ const defaultRoles = {
   LOCATIONS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   CARD_SUPPORT: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   INVENTORY: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  HEALTHCARE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   TEAMS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
@@ -30,6 +31,9 @@ export const ENABLE_PLANS = setEnv('REACT_APP_ENABLE_PLANS', 'false') === 'true'
 
 /** Activate the teams menu */
 export const ENABLE_TEAMS = setEnv('REACT_APP_ENABLE_TEAMS', 'false') === 'true';
+
+/** Activate the teams menu */
+export const ENABLE_HEALTHCARE = setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE', 'false') === 'true';
 
 /** Activate the plans menu */
 export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') === 'true';
