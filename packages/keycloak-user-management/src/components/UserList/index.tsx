@@ -206,7 +206,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 },
               }}
             />
-            )
           </Space>
         </Col>
       </Row>
