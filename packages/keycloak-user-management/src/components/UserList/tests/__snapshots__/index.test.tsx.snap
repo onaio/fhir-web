@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UserList renders user list correctly: header actions col props 1`] = `"Add UserEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit120 / page)"`;
+exports[`components/UserList renders user list correctly: header actions col props 1`] = `"Add UserEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit120 / page"`;
 
 exports[`components/UserList renders user list correctly: table text 1`] = `"EmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit120 / page"`;
 
-exports[`components/UserList works correctly with store: full rendered text 1`] = `"User ManagementAdd UserEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit120 / page)"`;
+exports[`components/UserList works correctly with store: full rendered text 1`] = `"User ManagementAdd UserEmailFirst NameLast NameActionsmwalimudubdabasoduba@gmail.comBenjaminMwalimuEditonaOnakenyaEditona-admintest@onatest.comOnaAdminEditopensrpDemokenyaEdit120 / page"`;
