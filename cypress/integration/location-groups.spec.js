@@ -11,19 +11,18 @@ describe('Location unit group', () => {
 
     it('User can search for a unit group', function () {
         cy.get('.ant-menu-submenu-title .ant-menu-submenu-arrow')
-            .click()
-        cy.get('.ant-menu-submenu-title .anticon')
-            .click()
+            .click( { force: true} )
+        cy.wait(5000)
         cy.get('.ant-menu-inline .ant-menu-submenu-title')
-            .eq(3)
+            .eq(2)
             .should('have.text', 'Locations')
             .click()
-        // cy.get('.ant-menu-item a[href="/admin/location/group"]')
-        //     .click()
-        // cy.get('input.ant-input.ant-input-lg')
-        //     .type('Madaraka', { timeout: 5000 } )
-        //     .focused()
-        //     .clear()
+        cy.get('.ant-menu-item a[href="/admin/location/group"]')
+            .click()
+        cy.get('input.ant-input.ant-input-lg')
+            .type('Madaraka', { timeout: 5000 } )
+            .focused()
+            .clear()
     })
 
     // it('User can add a location group', function () {
