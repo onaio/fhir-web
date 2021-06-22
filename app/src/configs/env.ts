@@ -174,3 +174,6 @@ export const FHIR_API_BASE_URL = setEnv(
 export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
 
 export const USER_FORM_HIDDEN = setEnv('REACT_APP_USER_FORM_HIDDEN', '').split(',');
+
+export const DISABLE_TEAM_MEMBER_REASSIGNMENT =
+  setEnv('REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT', 'false') === 'true';
