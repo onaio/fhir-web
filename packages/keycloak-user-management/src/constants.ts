@@ -29,7 +29,3 @@ export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = 'practitioner/user';
 
 // Query patams
 export const SEARCH_QUERY_PARAM = 'searchQuery';
-
-// form field names
-export const CONTACT_FORM_FIELD = 'contact';
-export const ATTRIBUTES_FORM_FIELD = 'attributes';

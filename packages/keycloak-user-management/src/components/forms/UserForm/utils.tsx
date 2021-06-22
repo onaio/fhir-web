@@ -11,7 +11,7 @@ import {
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import lang, { Lang } from '../../../lang';
-import { FormFields } from '.';
+import { FormFields } from './types';
 import { Practitioner } from '@opensrp/team-management';
 import { some } from 'lodash';
 
