@@ -65,7 +65,7 @@ export const DEFAULT_TIME = setEnv('REACT_APP_DEFAULT_TIME', 'T00:00:00+00:00');
 export const DEFAULT_PLAN_DURATION_DAYS = setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20);
 
 /** Activate teams menu */
-export const ENABLE_FHIR_TEAMS_MODULE = process.env.REACT_APP_ENABLE_FHIR_TEAMS === 'true';
+export const ENABLE_FHIR_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
 
 /** Default plan id */
 export const DEFAULT_PLAN_ID = setEnv(
