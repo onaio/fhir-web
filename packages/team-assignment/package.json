@@ -1,11 +1,12 @@
 {
   "name": "@opensrp/team-assignment",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Contains team assignment page",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "publishConfig": {
     "access": "public"
@@ -35,12 +36,12 @@
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/location-management": "^0.0.12",
+    "@opensrp/location-management": "^0.0.13",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/react-utils": "^0.0.10",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.17",
-    "@opensrp/team-management": "^0.0.6",
+    "@opensrp/team-management": "^0.0.7",
     "antd": "^4.6.3",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
