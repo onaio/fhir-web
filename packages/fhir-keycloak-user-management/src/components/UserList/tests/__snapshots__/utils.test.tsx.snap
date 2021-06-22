@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/UserList/utils/getTableColumns builds table columns correctly: table columns 1`] = `
+Array [
+  Object {
+    "dataIndex": "username",
+    "ellipsis": true,
+    "key": "username",
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "Username",
+  },
+  Object {
+    "dataIndex": "email",
+    "ellipsis": true,
+    "key": "email",
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "Email",
+  },
+  Object {
+    "dataIndex": "firstName",
+    "ellipsis": true,
+    "key": "firstName",
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "First Name",
+  },
+  Object {
+    "dataIndex": "lastName",
+    "ellipsis": true,
+    "key": "lastName",
+    "sortOrder": undefined,
+    "sorter": [Function],
+    "title": "Last Name",
+  },
+  Object {
+    "dataIndex": "actions",
+    "key": "Actions",
+    "render": [Function],
+    "title": "Actions",
+  },
+]
+`;

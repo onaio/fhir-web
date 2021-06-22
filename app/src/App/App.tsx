@@ -19,6 +19,7 @@ import {
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
   DEFAULT_HOME_MODE,
+  ENABLE_FHIR,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -95,6 +96,7 @@ import {
   URL_EDIT_CARE_TEAM,
   URL_CARE_TEAM,
 } from '@opensrp/fhir-care-team';
+import { ConnectedCreateEditUser as FHIRConnectedCreateEditUser } from '@opensrp/fhir-user-management';
 import { TeamAssignmentView } from '@opensrp/team-assignment';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
@@ -558,7 +560,7 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               {...createEditUserProps}
-              component={ConnectedCreateEditUser}
+              component={ENABLE_FHIR ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -583,7 +585,7 @@ const App: React.FC = () => {
               exact
               path={URL_USER_CREATE}
               {...createEditUserProps}
-              component={ConnectedCreateEditUser}
+              component={ENABLE_FHIR ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
