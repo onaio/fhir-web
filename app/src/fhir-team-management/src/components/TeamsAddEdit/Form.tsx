@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { TEAMS_POST, TEAMS_PUT, TEAMS_GET, PRACTITIONERROLE_DEL } from '../../constants';
+import { TEAMS_GET, PRACTITIONERROLE_DEL } from '../../constants';
 import {
   sendSuccessNotification,
   sendInfoNotification,
@@ -19,6 +19,7 @@ const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 
 export interface FormField {
+  uuid: string;
   name: string;
   active: boolean;
   practitioners: string[];
@@ -47,14 +48,15 @@ export async function onSubmit(
   practitioner: Practitioner[],
   initialValue: FormField,
   values: FormField,
-  id?: string
+  id?: string,
+  uuid?: string
 ) {
   setIsSubmitting(true);
-  const Teamid = id ?? v4();
+  const Teamid = uuid ? uuid : v4();
 
   const payload: FhirObject<Organization> = {
     resourceType: 'Organization',
-    id: Teamid as string,
+    id: id as string,
     active: values.active,
     identifier: [{ use: 'official', value: Teamid }],
     name: values.name,
@@ -96,7 +98,9 @@ async function SetPractitioners(
   await Promise.all(promises);
 
   // Api Call to add practitioners
-  const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.identifier.official.value));
+  const toAddPractitioner = practitioner.filter((e) =>
+    toAdd.includes(e.identifier.official?.value)
+  );
   promises = toAddPractitioner.map((prac) => {
     const id = v4();
     const payload: FhirObject<Omit<PractitionerRole, 'meta'>> = {
@@ -130,11 +134,9 @@ export async function setTeam(
 ) {
   const serve = FHIR.client(fhirbaseURL);
   if (id) {
-    console.log(payload, fhirbaseURL + TEAMS_PUT + id);
     await serve.update(payload);
     sendSuccessNotification(langObj.MSG_TEAMS_UPDATE_SUCCESS);
   } else {
-    console.log(payload, fhirbaseURL + TEAMS_POST);
     await serve.create(payload);
     sendSuccessNotification(langObj.MSG_TEAMS_ADD_SUCCESS);
   }
@@ -144,14 +146,37 @@ export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
   const { allPractitioner, fhirbaseURL, id } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue = props.initialValue ?? { active: true, name: '', practitioners: [] };
+  const [form] = AntdForm.useForm();
+  const initialValue = props.initialValue ?? {
+    uuid: '',
+    active: true,
+    name: '',
+    practitioners: [],
+  };
+
+  /** Update form initial values when initialValues prop changes, without this
+   * the form fields initial values will not change if props.initiaValues is updated
+   * **/
+  React.useEffect(() => {
+    form.setFieldsValue({
+      ...initialValue,
+    });
+  }, [form, initialValue]);
 
   return (
     <AntdForm
       requiredMark={false}
       {...layout}
       onFinish={(values) =>
-        onSubmit(fhirbaseURL, setIsSubmitting, allPractitioner, initialValue, values, id)
+        onSubmit(
+          fhirbaseURL,
+          setIsSubmitting,
+          allPractitioner,
+          initialValue,
+          values,
+          id,
+          initialValue.uuid
+        )
           .then(() => {
             queryClient.invalidateQueries(TEAMS_GET);
             queryClient.invalidateQueries([TEAMS_GET, id]);
@@ -162,6 +187,10 @@ export const Form: React.FC<Props> = (props: Props) => {
       }
       initialValues={initialValue}
     >
+      <AntdForm.Item name="uuid" label={lang.TEAM_NAME} hidden={true}>
+        <Input />
+      </AntdForm.Item>
+
       <AntdForm.Item name="name" label={lang.TEAM_NAME}>
         <Input placeholder={lang.ENTER_TEAM_NAME} />
       </AntdForm.Item>
