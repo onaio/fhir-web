@@ -182,7 +182,7 @@ Below is a list of currently supported environment variables:
   - **Optional**(`boolean`)
   - default: `true`
 
-  **REACT_APP_DEFAULT_HOME_MODE**
+- **REACT_APP_DEFAULT_HOME_MODE**
 
   - whether to redirect on eusm or tunisia home page
   - **not required**_(`string`)_
@@ -199,3 +199,21 @@ Below is a list of currently supported environment variables:
   - Allows filtering root locations by parentId when set to true
   - **Optional**(_string_)
   - default: `"false"`
+
+- **REACT_APP_KEYCLOAK_USERS_PAGE_SIZE**
+
+  - keycloak users page size
+  - **Optional**(`number`)
+  - default: `20`
+
+- **REACT_APP_FHIR_API_BASE_URL**
+
+  - FHIR server base URL
+  - **Required**
+  - default: `https://fhir.labs.smartregister.org/fhir`
+
+- **REACT_APP_USER_FORM_HIDDEN**
+
+  - configure hidden form fields in creating editing users, a comma separated list of keys
+  - **optional**
+  - default: `''`

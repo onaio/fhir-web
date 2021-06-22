@@ -22,13 +22,20 @@ reducerRegistry.register(reducerName, reducer);
  */
 export async function getTeamDetail(id: string, opensrpBaseURL: string) {
   const serve = new OpenSRPService(TEAMS_GET + id, opensrpBaseURL);
-  return await serve.list().then(async (response: Organization) => {
-    return {
-      name: response.name,
-      active: response.active,
-      practitioners: await getPractitonerDetail(id, opensrpBaseURL),
-    };
-  });
+
+  // fetch in parallel
+  return Promise.all([
+    getPractitionerDetail(id, opensrpBaseURL),
+    serve.list() as Promise<Organization>,
+  ])
+    .then(([practitioners, Organization]) => ({
+      name: Organization.name,
+      active: Organization.active,
+      practitioners: practitioners,
+    }))
+    .catch((error) => {
+      throw error;
+    });
 }
 
 /**
@@ -38,7 +45,7 @@ export async function getTeamDetail(id: string, opensrpBaseURL: string) {
  * @param {string} opensrpBaseURL - base url
  * @returns {Promise<Array<Practitioner>>} list of Practitioner Assigned to a team
  */
-export async function getPractitonerDetail(id: string, opensrpBaseURL: string) {
+export async function getPractitionerDetail(id: string, opensrpBaseURL: string) {
   const serve = new OpenSRPService(TEAM_PRACTITIONERS + id, opensrpBaseURL);
   return await serve.list().then((response: Practitioner[]) => response.filter((e) => e.active));
 }
@@ -61,7 +68,7 @@ function setupInitialValue(
     .then((response) => {
       setInitialValue({
         ...response,
-        practitioners: response.practitioners.map((prac) => prac.identifier),
+        practitioners: response.practitioners.map((practitioner) => practitioner.identifier),
         practitionersList: response.practitioners,
       });
     })
@@ -80,7 +87,7 @@ export const defaultProps = {
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
-  const [practitioner, setPractitioner] = useState<Practitioner[] | null>(null);
+  const [practitioners, setPractitioners] = useState<Practitioner[] | null>(null);
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
@@ -92,12 +99,14 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     serve
       .list()
       .then((response: Practitioner[]) => {
-        setPractitioner(response);
+        // filter inactive practitioners
+        const filteredResponse = response.filter((practitioner) => practitioner.active);
+        setPractitioners(filteredResponse);
       })
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }, [opensrpBaseURL]);
 
-  if (!practitioner || (params.id && !initialValue)) return <Spin size={'large'} />;
+  if (!practitioners || (params.id && !initialValue)) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -114,7 +123,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
           opensrpBaseURL={opensrpBaseURL}
           initialValue={initialValue}
           id={params.id}
-          practitioner={practitioner}
+          practitioners={practitioners}
         />
       </div>
     </section>

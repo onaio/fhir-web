@@ -27,6 +27,55 @@ jest.mock('uuid', () => {
   };
 });
 
+// mock out antd (multi)select
+jest.mock('antd', () => {
+  const antd = jest.requireActual('antd');
+
+  const Select = ({
+    mode,
+    value,
+    defaultValue,
+    id,
+    onChange,
+    children,
+  }: {
+    mode: string;
+    value: string[];
+    defaultValue: string[];
+    id: string;
+    onChange: (e: string | string[]) => void;
+    children: React.ReactNode;
+  }) => {
+    const multiple = ['tags', 'multiple'].includes(mode);
+
+    return (
+      <select
+        value={value}
+        defaultValue={defaultValue}
+        multiple={multiple}
+        id={id}
+        onChange={(e) =>
+          onChange(
+            multiple
+              ? Array.from(e.target.selectedOptions).map((option) => option.value)
+              : e.target.value
+          )
+        }
+      >
+        {children}
+      </select>
+    );
+  };
+
+  const Option = ({ children, ...otherProps }: { children: React.ReactNode }) => (
+    <option {...otherProps}>{children}</option>
+  );
+
+  Select.Option = Option;
+
+  return { ...antd, Select };
+});
+
 describe('Team-management/TeamsAddEdit/Form', () => {
   const members = [
     {
@@ -74,7 +123,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form opensrpBaseURL={opensrpBaseURL} practitioner={practitioners} />
+          <Form opensrpBaseURL={opensrpBaseURL} practitioners={practitioners} />
         </Router>
       </Provider>
     );
@@ -90,7 +139,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
             id={id}
             opensrpBaseURL={opensrpBaseURL}
             initialValue={intialValue}
-            practitioner={practitioners}
+            practitioners={practitioners}
           />
         </Router>
       </Provider>
@@ -105,7 +154,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form opensrpBaseURL={opensrpBaseURL} practitioner={practitioners} />
+          <Form opensrpBaseURL={opensrpBaseURL} practitioners={practitioners} />
         </Router>
       </Provider>
     );
@@ -124,7 +173,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <Router history={history}>
           <Form
             opensrpBaseURL={opensrpBaseURL}
-            practitioner={practitioners}
+            practitioners={practitioners}
             initialValue={intialValue}
           />
         </Router>
@@ -395,5 +444,69 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
     ]);
+  });
+
+  it('renders with default team members with option to add', async () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Form
+            id={id}
+            opensrpBaseURL={opensrpBaseURL}
+            initialValue={intialValue}
+            practitioners={practitioners}
+          />
+        </Router>
+      </Provider>
+    );
+
+    // find select with id 'practitioners'
+    const practitionersSelect = wrapper.find('select#practitioners');
+
+    // get it's value props
+    const values = practitionersSelect.props().value;
+
+    // expect default values to be a subset of all options
+    expect(values).toStrictEqual(['1', '2', '3']);
+
+    const options = practitionersSelect.find('option');
+    expect(options.map((opt) => opt.props().value)).toStrictEqual([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+    ]);
+
+    // expect default values to match existing practitioners
+
+    // get all practitioner objects matching default values
+    const defaultPractitioners = practitioners.filter((practitioner) =>
+      (values as readonly string[]).includes(practitioner.identifier)
+    );
+
+    // expect object with names whose identifiers match default values
+    expect(defaultPractitioners).toMatchSnapshot('default practitioner objects');
+
+    // simulate change
+    // add '6' to default values
+    practitionersSelect.simulate('change', {
+      target: {
+        selectedOptions: [
+          ...(values as string[]).map((value) => ({
+            value,
+          })),
+          { value: '6' },
+        ],
+      },
+    });
+
+    // re-find updated select with id 'practitioners'
+    const practitionersSelect2 = wrapper.find('select#practitioners');
+
+    // '6' is added to its value prop
+    expect(practitionersSelect2.props().value).toStrictEqual(['1', '2', '3', '6']);
   });
 });

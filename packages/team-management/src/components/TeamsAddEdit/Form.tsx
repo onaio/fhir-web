@@ -26,7 +26,7 @@ export interface FormField {
 interface Props {
   opensrpBaseURL: string;
   id?: string;
-  practitioner: Practitioner[];
+  practitioners: Practitioner[];
   initialValue?: FormField | null;
 }
 
@@ -170,7 +170,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(
           props.opensrpBaseURL,
           setIsSubmitting,
-          props.practitioner,
+          props.practitioners,
           initialValue,
           values,
           props.id
@@ -195,7 +195,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
-          {initialValue.practitionersList.map((practitioner) => (
+          {props.practitioners.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
             </Select.Option>

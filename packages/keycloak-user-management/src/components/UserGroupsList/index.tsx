@@ -1,14 +1,20 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Table, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
+import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
+import {
+  createChangeHandler,
+  getQueryParams,
+  SearchForm,
+  TableLayout,
+  Column,
+} from '@opensrp/react-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import {
   reducerName as keycloakUserGroupsReducerName,
@@ -118,47 +124,11 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     }
   );
 
-  const columns = [
+  const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
-      editable: true,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
-    },
-    {
-      title: lang.ACTIONS,
-      width: '10%',
-
-      // eslint-disable-next-line react/display-name
-      render: (record: KeycloakUserGroup) => (
-        <span className="d-flex justify-content-end align-items-center">
-          <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
-            <Button type="link" className="m-0 p-1">
-              {lang.EDIT}
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    history.push(`${URL_USER_GROUPS}/${record.id}`);
-                  }}
-                >
-                  {lang.VIEW_DETAILS}
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomLeft"
-            arrow
-            trigger={['click']}
-          >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
-        </span>
-      ),
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
   ];
 
@@ -179,14 +149,44 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               </Button>
             </Link>
           </div>
-          <Table
-            dataSource={tableData}
+          <TableLayout
+            id="UserGroupsList"
+            persistState={true}
+            datasource={tableData}
             columns={columns}
-            pagination={{
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: 5,
-              pageSizeOptions: ['5', '10', '20', '50', '100'],
+            actions={{
+              title: lang.ACTIONS,
+              width: '10%',
+              // eslint-disable-next-line react/display-name
+              render: (record) => (
+                <span className="d-flex justify-content-end align-items-center">
+                  <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
+                    <Button type="link" className="m-0 p-1">
+                      {lang.EDIT}
+                    </Button>
+                  </Link>
+                  <Divider type="vertical" />
+                  <Dropdown
+                    overlay={
+                      <Menu className="menu">
+                        <Menu.Item
+                          className="viewdetails"
+                          onClick={() => {
+                            history.push(`${URL_USER_GROUPS}/${record.id}`);
+                          }}
+                        >
+                          {lang.VIEW_DETAILS}
+                        </Menu.Item>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    arrow
+                    trigger={['click']}
+                  >
+                    <MoreOutlined className="more-options" />
+                  </Dropdown>
+                </span>
+              ),
             }}
           />
         </Col>
