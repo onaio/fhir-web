@@ -60,7 +60,7 @@ const {
  *   ...
  * };
  */
-const useGlobalConfigs = useGlobalState;
+export const useGlobalConfigs = useGlobalState;
 
 /** function to get config values outside of React
  *
@@ -69,7 +69,7 @@ const useGlobalConfigs = useGlobalState;
  *
  * const language = getConfig('languageCode');
  */
-const getConfig = getGlobalState;
+export const getConfig = getGlobalState;
 
 /** function to set config values outside of React
  *
@@ -81,7 +81,7 @@ const getConfig = getGlobalState;
  *
  * const language = setConfig('languageCode', 'fr');
  */
-function setConfig<T extends keyof GlobalState>(key: T, value: GlobalState[T]) {
+export function setConfig<T extends keyof GlobalState>(key: T, value: GlobalState[T]) {
   const newstate: GlobalState = {};
   newstate[key] = value;
   saveToLocal(newstate);
@@ -101,7 +101,7 @@ const otherGettersSetters = (unexposedGettersSetters as unknown) as {
  *
  * const allConfigs = getAllConfigs();;
  */
-const getAllConfigs = otherGettersSetters.getState;
+export const getAllConfigs = otherGettersSetters.getState;
 
 /** function to get all config values outside of React
  *
@@ -117,7 +117,7 @@ const getAllConfigs = otherGettersSetters.getState;
  *
  * const allConfigs = setAllConfigs(configs);
  */
-function setAllConfigs(value: GlobalState) {
+export function setAllConfigs(value: GlobalState) {
   saveToLocal(value);
   otherGettersSetters.setState(value);
 }
@@ -130,5 +130,3 @@ function saveToLocal(config: GlobalState) {
   localstorage = { tablespref: config.tablespref };
   localStorage.setItem(USER_PREFERENCE_KEY, JSON.stringify(localstorage));
 }
-
-export { useGlobalConfigs, getConfig, setConfig, getAllConfigs, setAllConfigs };

@@ -18,6 +18,7 @@ import {
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_TEAMS,
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
+  ENABLE_HEALTHCARE,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
@@ -30,6 +31,7 @@ import {
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
+  URL_HEALTHCARE,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
   URL_TEAM_ASSIGNMENT,
@@ -185,6 +187,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
               enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
+        },
+        {
+          title: langObj.HEALTHCARE,
+          key: 'healthcare',
+          url: URL_HEALTHCARE,
+          enabled: ENABLE_HEALTHCARE,
         },
         {
           title: langObj.FORM_CONFIGURATION,
