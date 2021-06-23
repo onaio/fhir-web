@@ -209,6 +209,7 @@ describe('hooks', () => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any)
     );
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -218,6 +219,7 @@ describe('hooks', () => {
         </Router>
       </Provider>
     );
+
     await act(async () => {
       await flushPromises();
     });

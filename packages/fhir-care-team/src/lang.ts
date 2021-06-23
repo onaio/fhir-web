@@ -16,6 +16,7 @@ function fill() {
   // Messages
   lang.CARE_TEAMS_UPDATE_SUCCESS = i18n.t(`Successfully Updated Care Teams`, { ns: namespace });
   lang.CARE_TEAMS_ADD_SUCCESS = i18n.t(`Successfully Added Care Teams`, { ns: namespace });
+  lang.CARE_TEAM_DELETE_SUCCESS = i18n.t('Successfully Deleted Care Team', { ns: namespace });
 
   // Rendered text
   lang.STATUS = i18n.t(`Status`, { ns: namespace });

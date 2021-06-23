@@ -1,7 +1,18 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Table, Spin, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
+import {
+  Row,
+  Col,
+  Table,
+  Spin,
+  PageHeader,
+  Button,
+  Divider,
+  Dropdown,
+  Menu,
+  Popconfirm,
+} from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -20,6 +31,7 @@ import {
 } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 
 // route params for user group pages
 interface RouteParams {
@@ -69,6 +81,13 @@ export const fetcCareTeams = async (
     });
 };
 
+export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<void> => {
+  return await FHIR.client(fhirBaseURL)
+    .delete(`${FHIR_CARE_TEAM}/${id}`)
+    .then(() => sendSuccessNotification(lang.CARE_TEAM_DELETE_SUCCESS))
+    .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+};
+
 export const useCareTeamsHook = (
   fhirBaseURL: string,
   pageSize: number,
@@ -98,7 +117,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   const pageOffset = (currentPage - 1) * (pageSize ?? 20);
   const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM];
 
-  const { data, isLoading, isFetching, error } = useCareTeamsHook(
+  const { data, isLoading, isFetching, error, refetch } = useCareTeamsHook(
     fhirBaseURL,
     pageSize as number,
     pageOffset,
@@ -148,6 +167,21 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
           <Dropdown
             overlay={
               <Menu className="menu">
+                <Menu.Item>
+                  <Popconfirm
+                    title="Are you sure you want to delete this user?"
+                    okText="Yes"
+                    cancelText="No"
+                    onConfirm={async () => {
+                      await deleteCareTeam(fhirBaseURL, record.id);
+                      await refetch();
+                    }}
+                  >
+                    <Button danger type="link" style={{ color: '#' }}>
+                      Delete
+                    </Button>
+                  </Popconfirm>
+                </Menu.Item>
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
