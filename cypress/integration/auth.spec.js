@@ -14,6 +14,7 @@ describe('Authentication', () => {
       cy.get('input[name="username"]').clear()
           .type(username)
       cy.get('input[name="password"]').type(password, { log: false })
+      cy.pause()
       cy.get('#kc-login').click()     
     })
       
