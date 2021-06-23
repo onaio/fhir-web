@@ -12,12 +12,12 @@ export interface TableData extends Organization {
 
 export interface Props {
   data: TableData[];
-  fhirbaseURL: string;
-  onViewDetails?: (param: { team: TableData; fhirbaseURL: string }) => void;
+  fhirBaseURL: string;
+  onViewDetails?: (param: { team: TableData; fhirBaseURL: string }) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails, fhirbaseURL } = props;
+  const { onViewDetails, fhirBaseURL } = props;
 
   const columns: Column<TableData>[] = [
     {
@@ -45,7 +45,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
-                    if (onViewDetails) onViewDetails({ team: record, fhirbaseURL });
+                    if (onViewDetails) onViewDetails({ team: record, fhirBaseURL });
                   }}
                 >
                   View Details

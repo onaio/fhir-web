@@ -13,18 +13,13 @@ import { FhirObject, FHIRResponse, ProcessFHIRObject, ProcessFHIRResponse } from
 import { loadTeamDetails } from '../../utils';
 
 export interface Props {
-  fhirbaseURL: string;
+  fhirBaseURL: string;
 }
 
-/** default component props */
-export const defaultProps = {
-  fhirbaseURL: '',
-};
-
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
-  const { fhirbaseURL } = props;
+  const { fhirBaseURL } = props;
 
-  const serve = FHIR.client(fhirbaseURL);
+  const serve = FHIR.client(fhirBaseURL);
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
@@ -48,7 +43,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   if (params.id && team.data && AllRoles.data && !initialValue) {
     loadTeamDetails({
       team: team.data,
-      fhirbaseURL: fhirbaseURL,
+      fhirBaseURL: fhirBaseURL,
       AllRoles: AllRoles.data,
     }).then((team) => {
       setInitialValue({
@@ -74,7 +69,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
       <div className="bg-white p-5">
         <Form
-          fhirbaseURL={fhirbaseURL}
+          fhirbaseURL={fhirBaseURL}
           initialValue={initialValue}
           id={params.id}
           allPractitioner={allPractitioner.data}

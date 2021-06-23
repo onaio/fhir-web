@@ -10,11 +10,11 @@ import { FHIRResponse, ProcessFHIRResponse, FhirObject, ProcessFHIRObject } from
  */
 export async function loadTeamDetails(props: {
   team: Organization;
-  fhirbaseURL: string;
+  fhirBaseURL: string;
   AllRoles?: PractitionerRole[];
 }): Promise<OrganizationDetail> {
-  const { fhirbaseURL, team } = props;
-  const serve = FHIR.client(fhirbaseURL);
+  const { fhirBaseURL, team } = props;
+  const serve = FHIR.client(fhirBaseURL);
 
   const AllRoles: PractitionerRole[] =
     props.AllRoles ??

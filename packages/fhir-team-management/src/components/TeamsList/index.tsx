@@ -19,7 +19,7 @@ import { FHIRResponse, ProcessFHIRResponse } from '../../fhirutils';
 import { loadTeamDetails } from '../../utils';
 
 interface Props {
-  fhirbaseURL: string;
+  fhirBaseURL: string;
 }
 
 /** Function which shows the list of all teams and there details
@@ -28,8 +28,8 @@ interface Props {
  * @returns {Function} returns team display
  */
 export const TeamsList: React.FC<Props> = (props: Props) => {
-  const { fhirbaseURL } = props;
-  const serve = FHIR.client(fhirbaseURL);
+  const { fhirBaseURL } = props;
+  const serve = FHIR.client(fhirBaseURL);
 
   const [detail, setDetail] = useState<OrganizationDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
@@ -92,7 +92,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
           <div className="bg-white">
             <Table
               data={filterData.search && filterData.data?.length ? filterData.data : tableData}
-              fhirbaseURL={fhirbaseURL}
+              fhirBaseURL={fhirBaseURL}
               onViewDetails={(prams) => {
                 setDetail('loading');
                 loadTeamDetails(prams)
