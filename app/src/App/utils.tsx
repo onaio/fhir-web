@@ -30,7 +30,7 @@ import {
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
-  fhirbaseURL: FHIR_API_BASE_URL,
+  fhirBaseURL: FHIR_API_BASE_URL,
 };
 
 export const teamAssignmentProps = {
@@ -38,6 +38,7 @@ export const teamAssignmentProps = {
 };
 
 export const teamManagementProps = {
+  ...BaseProps,
   disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
 };
 

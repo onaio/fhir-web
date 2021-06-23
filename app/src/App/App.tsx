@@ -263,7 +263,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS}
-              {...BaseProps}
+              {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsView : TeamsView}
             />
             <PrivateComponent
@@ -548,7 +548,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS_ADD}
-              {...BaseProps}
+              {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
             <PrivateComponent
