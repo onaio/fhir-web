@@ -297,4 +297,9 @@ export const defaultInitialValue: FormFields = {
   active: false,
   userGroup: undefined,
   practitioner: undefined,
+  email: '',
+  enabled: false,
+  attributes: {
+    contact: '',
+  },
 };

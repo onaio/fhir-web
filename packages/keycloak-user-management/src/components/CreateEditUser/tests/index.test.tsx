@@ -27,6 +27,7 @@ import {
   practitioner1,
   requiredActions,
   userGroup,
+  keycloakUsersArray,
 } from '../../forms/UserForm/tests/fixtures';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -64,6 +65,7 @@ describe('components/CreateEditUser', () => {
       url: `/users/edit/${keycloakUser.id}`,
     },
     extraData: {},
+    userFormHidden: ['contact'],
   };
 
   const propsCreate = {
@@ -85,6 +87,7 @@ describe('components/CreateEditUser', () => {
       url: `/users/new/`,
     },
     extraData: {},
+    userFormHidden: ['contact'],
   };
 
   beforeAll(() => {
@@ -341,7 +344,7 @@ describe('components/CreateEditUser', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     expect(wrapper.text()).toMatchInlineSnapshot(
       // eslint-disable-next-line no-irregular-whitespace
-      `"Edit User | opensrpFirst NameLast NameEmailUsernameContactEnable userYesNoMark as PractitionerYesNoGroupAdminAdmin 2New Group SaveCancel"`
+      `"Edit User | opensrpFirst NameLast NameEmailUsernameContactEnable userYesNoMark as PractitionerYesNoGroup Please selectSaveCancel"`
     );
     wrapper.unmount();
   });
@@ -453,5 +456,40 @@ describe('components/CreateEditUser', () => {
     expect(wrapper.exists('Row')).toBeTruthy();
 
     wrapper.unmount();
+  });
+
+  it('loads correct initial values for editing different keycloak user', async () => {
+    fetch
+      .once(JSON.stringify(userGroup))
+      .once(JSON.stringify(keycloakUser))
+      .once(JSON.stringify(userGroup))
+      .once(JSON.stringify(practitioner1))
+      .once(JSON.stringify(requiredActions));
+
+    // start with first user - has email
+    const propsFirstUser = {
+      ...props,
+      keycloakUser: keycloakUsersArray[0],
+    };
+
+    const wrapper = mount(<CreateEditUser {...propsFirstUser} />);
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // expect default email address
+    expect(wrapper.find('input#email').props().value).toMatchInlineSnapshot(
+      `"dubdabasoduba@gmail.com"`
+    );
+
+    // update user - without email
+    wrapper.setProps({ keycloakUser: keycloakUsersArray[1] });
+    // re-render
+    wrapper.update();
+
+    // expect no default email address
+    expect(wrapper.find('input#email').props().value).toMatchInlineSnapshot(`""`);
   });
 });
