@@ -28,6 +28,7 @@ interface Props {
   id?: string;
   practitioners: Practitioner[];
   initialValue?: FormField | null;
+  disableTeamMemberReassignment: boolean;
 }
 
 /**
@@ -153,28 +154,34 @@ export async function setTeam(
   }
 }
 
-export const Form: React.FC<Props> = (props: Props) => {
+export const Form: React.FC<Props> = ({
+  initialValue: initialValueProp,
+  practitioners,
+  opensrpBaseURL,
+  id,
+  disableTeamMemberReassignment,
+}: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue = props.initialValue ?? {
+  const initialValue = initialValueProp ?? {
     active: true,
     name: '',
     practitioners: [],
     practitionersList: [],
   };
 
+  // when team member reassignment is disabled,
+  // current team members are filtered out of the practitioners list.
+  // hence the concat back
+  const practitionersList = disableTeamMemberReassignment
+    ? [...initialValue.practitionersList, ...practitioners]
+    : practitioners;
+
   return (
     <AntdForm
       requiredMark={false}
       {...layout}
       onFinish={(values) =>
-        onSubmit(
-          props.opensrpBaseURL,
-          setIsSubmitting,
-          props.practitioners,
-          initialValue,
-          values,
-          props.id
-        )
+        onSubmit(opensrpBaseURL, setIsSubmitting, practitioners, initialValue, values, id)
       }
       initialValues={initialValue}
     >
@@ -195,7 +202,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
         <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
-          {props.practitioners.map((practitioner) => (
+          {practitionersList.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
             </Select.Option>

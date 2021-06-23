@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/card-support",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "OpenSRP card support features",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -43,7 +43,7 @@
     "@ant-design/icons": "^4.2.2",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/location-management": "^0.0.12",
+    "@opensrp/location-management": "^0.0.13",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/react-utils": "^0.0.10",
     "@opensrp/reducer-factory": "^0.0.9",

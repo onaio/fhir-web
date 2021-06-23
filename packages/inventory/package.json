@@ -1,11 +1,12 @@
 {
   "name": "@opensrp/inventory",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Module to manage inventory, and service points",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "publishConfig": {
     "access": "public"
@@ -42,7 +43,7 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/location-management": "^0.0.12",
+    "@opensrp/location-management": "^0.0.13",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/product-catalogue": "^0.0.7",
     "@opensrp/react-utils": "^0.0.10",

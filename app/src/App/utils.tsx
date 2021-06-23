@@ -25,6 +25,7 @@ import {
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
   USER_FORM_HIDDEN,
+  DISABLE_TEAM_MEMBER_REASSIGNMENT,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -34,6 +35,10 @@ export const BaseProps = {
 
 export const teamAssignmentProps = {
   defaultPlanId: DEFAULT_PLAN_ID,
+};
+
+export const teamManagementProps = {
+  disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
 };
 
 export const locationUnitProps = {
