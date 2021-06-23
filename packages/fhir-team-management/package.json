@@ -35,11 +35,11 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/notifications": "^0.0.4",
-    "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/notifications": "^0.0.5",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/react-utils": "^0.0.10",
     "@opensrp/reducer-factory": "^0.0.13",
-    "fhirclient": "2.3.11",
+    "fhirclient": "2.4.0",
     "i18next": "^19.8.4",
     "react-i18next": "^11.8.10",
     "uuid": "^8.3.1"
