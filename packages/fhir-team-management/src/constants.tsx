@@ -1,8 +1,8 @@
 // url
 export const URL_ADMIN = 'admin';
 export const URL_LIST_TEAMS = `${URL_ADMIN}/teams/`;
-export const URL_ADD_TEAM = `${URL_LIST_TEAMS}add/`;
-export const URL_EDIT_TEAM = `${URL_LIST_TEAMS}edit/`;
+export const URL_ADD_TEAM = 'teams/add/';
+export const URL_EDIT_TEAM = 'teams/edit/';
 
 //
 // Practitioner
