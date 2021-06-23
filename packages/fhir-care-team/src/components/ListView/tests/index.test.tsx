@@ -188,7 +188,7 @@ describe('hooks', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useCareTeamsHook('https://r4.smarthealthit.org/'),
+      () => useCareTeamsHook('https://r4.smarthealthit.org/', 20, 0, undefined, jest.fn()),
       {
         wrapper: createWrapper(),
       }
