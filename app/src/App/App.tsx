@@ -99,7 +99,10 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
-import { TeamsList as FhirTeamsView, TeamsAddEdit as FhirTeamsAddEdit } from '@opensrp/fhir-team-management';
+import {
+  TeamsList as FhirTeamsView,
+  TeamsAddEdit as FhirTeamsAddEdit,
+} from '@opensrp/fhir-team-management';
 import {
   LocationUnitList,
   LocationUnitGroupAddEdit,
@@ -131,6 +134,7 @@ import {
   locationUnitProps,
   usersListProps,
   createEditUserProps,
+  teamManagementProps,
 } from './utils';
 import './App.css';
 import {
@@ -553,7 +557,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={`${URL_TEAMS_EDIT}/:id`}
-              {...BaseProps}
+              {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
             <PrivateComponent

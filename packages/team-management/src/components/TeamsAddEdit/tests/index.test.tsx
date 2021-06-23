@@ -7,7 +7,7 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { id, intialValue, opensrpBaseURL, practitioners, team } from './fixtures';
+import { id, intialValue, opensrpBaseURL, practitioners, team, practitionerRole } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
@@ -16,6 +16,10 @@ import TeamsAddEdit, { getPractitionerDetail, getTeamDetail } from '..';
 import lang from '../../../lang';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
+  const props = {
+    opensrpBaseURL,
+    disableTeamMemberReassignment: false,
+  };
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -41,7 +45,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <TeamsAddEdit opensrpBaseURL={opensrpBaseURL} />
+          <TeamsAddEdit {...props} />
         </Router>
       </Provider>
     );
@@ -301,7 +305,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(wrapper.text()).toMatchInlineSnapshot(
       // eslint-disable-next-line no-irregular-whitespace
-      `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersprac twoBenjamin Mulyungitest admin SaveCancel"`
+      `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersanon opsprac twoBenjamin Mulyungitest admin SaveCancel"`
     );
     // trigger team member change
     (wrapper.find('Select').props() as Dictionary).onChange(
@@ -354,9 +358,74 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     const defaultPractitioners = practitionersSelect.find('.ant-select-selection-item-content');
     // expect them to match default active practitioners
     expect(defaultPractitioners.map((opt) => opt.text())).toStrictEqual([
+      'anon ops',
       'prac two',
       'Benjamin Mulyungi',
       'test admin',
     ]);
+  });
+
+  it('configurable filtering out of already assigned practitioners', async () => {
+    fetch.mockResponseOnce(JSON.stringify(practitioners.slice(4))); // subset of all practitioners - from index 4 to end of arr
+    fetch.mockResponseOnce(JSON.stringify(team));
+    fetch.mockResponseOnce(JSON.stringify(practitionerRole)); // with practitioner id matching the active subset's identifier id
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+
+    // enable filtering out configuration
+    const configuredProps = {
+      ...props,
+      disableTeamMemberReassignment: true,
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: `admin/teams/edit/${id}`, hash: '', search: '', state: {} }]}
+        >
+          <Route
+            exact
+            path="admin/teams/edit/:id"
+            component={() => <TeamsAddEdit {...configuredProps} />}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find antd Select with id 'practitioners' in the 'Form' component
+    const practitionersSelect = wrapper.find('Form').find('Select#practitioners');
+    // find antd select items (prefixed with 'ant-select-selection-item-content' css class)
+    const options = practitionersSelect.find('.ant-select-selection-item-content');
+    //  should be equal to array of all active elements in the subset
+    expect(options.map((opt) => opt.text())).toMatchInlineSnapshot(`
+      Array [
+        "Benjamin Mulyungi",
+        "test admin",
+      ]
+    `);
+
+    // simulate click on select - to show dropdown items
+    practitionersSelect.find('.ant-select-selector').simulate('mousedown');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    const practitionersSelect2 = wrapper.find('Form').find('Select#practitioners');
+    // find antd select options
+    const selectOptions = practitionersSelect2.find('.ant-select-item-option-content');
+    // expect all active options - except those who are team members elsewhere (practitioners[0])
+    expect(selectOptions.map((opt) => opt.text())).toMatchInlineSnapshot(`
+      Array [
+        "Benjamin Mulyungi",
+        "test admin",
+        "prac two",
+      ]
+    `);
   });
 });
