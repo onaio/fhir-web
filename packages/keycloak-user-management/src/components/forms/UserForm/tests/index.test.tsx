@@ -207,6 +207,7 @@ describe('components/forms/UserForm', () => {
           lastName: 'One',
           username: 'TestOne',
           email: 'testone@gmail.com',
+          enabled: false,
           attributes: {
             contact: '0123456789',
           },
