@@ -66,6 +66,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     active: false,
     userGroup: undefined,
     practitioner: undefined,
+    email: '',
+    enabled: false,
+    attributes: {
+      contact: '',
+    },
   });
 
   const {
@@ -79,11 +84,31 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
 
+  /**
+   * add keycloak user being edited to initial values
+   */
   useEffect(() => {
     if (keycloakUser) {
-      /** only update the object diff */
       setInitialValues((prevState) => ({ ...prevState, ...keycloakUser }));
     }
+    // cleanup after un-mount
+    // re-assign initial values
+    return () => {
+      setInitialValues({
+        firstName: '',
+        id: '',
+        lastName: '',
+        username: '',
+        active: false,
+        userGroup: undefined,
+        practitioner: undefined,
+        email: '',
+        enabled: false,
+        attributes: {
+          contact: '',
+        },
+      });
+    };
   }, [keycloakUser]);
 
   useEffect(() => {
