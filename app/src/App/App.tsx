@@ -99,10 +99,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
-import {
-  TeamsList as FhirTeamsView,
-  TeamsAddEdit as FhirTeamsAddEdit,
-} from '../fhir-team-management/src';
+import { TeamsList as FhirTeamsView, TeamsAddEdit as FhirTeamsAddEdit } from '@opensrp/fhir-team-management';
 import {
   LocationUnitList,
   LocationUnitGroupAddEdit,
