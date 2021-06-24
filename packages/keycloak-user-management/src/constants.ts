@@ -25,7 +25,11 @@ export const KEYCLOAK_URL_RESET_PASSWORD = '/reset-password';
 export const KEYCLOAK_URL_REQUIRED_USER_ACTIONS = '/authentication/required-actions/';
 
 // OpenSRP API strings
-export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = 'practitioner/user';
+export const PRACTITIONER = 'practitioner';
+export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = `${PRACTITIONER}/user`;
+
+// practitioner role
+export const DELETE_PRACTITIONER_ROLE = 'practitionerRole/delete/';
 
 // Query patams
 export const SEARCH_QUERY_PARAM = 'searchQuery';
