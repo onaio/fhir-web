@@ -117,7 +117,6 @@ async function SetPractitioners(
       practitioner: { reference: 'Practitioner/' + prac.id },
       organization: { reference: 'Organization/' + teamId },
     };
-    console.log('payload', payload);
     return serve.create(payload);
   });
   await Promise.all(promises);
