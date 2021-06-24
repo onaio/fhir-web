@@ -34,7 +34,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     enabled: params.id !== undefined,
   });
 
-  const AllRoles = useQuery([PRACTITIONERROLE_GET], () => serve.request(PRACTITIONERROLE_GET), {
+  const AllRoles = useQuery(PRACTITIONERROLE_GET, () => serve.request(PRACTITIONERROLE_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res),
     enabled: params.id !== undefined,
