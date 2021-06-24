@@ -38,7 +38,14 @@ export const deleteUser = async (
     OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
     userId,
     opensrpBaseURL
-  );
+  ).catch(() => {
+    sendErrorNotification(langObj.ERROR_OCCURED);
+    // stop loader
+    isLoadingCallback(false);
+    return undefined;
+  });
+
+  if (!practitioner) return;
 
   // service class to delete keycloak user
   const serviceDelete = new KeycloakService(`${KEYCLOAK_URL_USERS}/${userId}`, keycloakBaseURL);
@@ -121,7 +128,5 @@ async function unassignAndDeactivatePractitioner(
       ...practitioner,
       active: false,
     }),
-  ]).catch((err) => {
-    throw err;
-  });
+  ]);
 }
