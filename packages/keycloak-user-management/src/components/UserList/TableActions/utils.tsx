@@ -30,6 +30,9 @@ export const deleteUser = async (
   isLoadingCallback: (loading: boolean) => void,
   langObj: Lang = lang
 ) => {
+  // start loader
+  isLoadingCallback(true);
+
   // get tied practitioner from base user Id
   const practitioner = await getPractitionerByUserId(
     OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
@@ -53,13 +56,16 @@ export const deleteUser = async (
   ])
     .then(() => {
       removeKeycloakUsersCreator();
-      isLoadingCallback(true);
       sendSuccessNotification(langObj.USER_DELETED_SUCCESSFULLY);
       sendSuccessNotification(langObj.PRACTITIONER_UNASSIGNED_SUCCESSFULLY);
       sendSuccessNotification(langObj.PRACTITIONER_DEACTIVATED_SUCCESSFULLY);
     })
     .catch((_: Error) => {
       sendErrorNotification(langObj.ERROR_OCCURED);
+    })
+    .finally(() => {
+      // stop loader
+      isLoadingCallback(false);
     });
 };
 
