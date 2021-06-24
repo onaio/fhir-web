@@ -58,6 +58,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   if (!allPractitioner.data || !AllRoles.data || (params.id && !initialValue))
     return <Spin size={'large'} />;
 
+  console.log(initialValue);
+
   return (
     <section className="layout-content">
       <Helmet>
