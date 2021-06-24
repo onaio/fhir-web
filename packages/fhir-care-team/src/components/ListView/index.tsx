@@ -169,9 +169,9 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
               <Menu className="menu">
                 <Menu.Item>
                   <Popconfirm
-                    title="Are you sure you want to delete this user?"
-                    okText="Yes"
-                    cancelText="No"
+                    title={lang.CONFIRM_TEXT}
+                    okText={lang.YES}
+                    cancelText={lang.NO}
                     onConfirm={async () => {
                       await deleteCareTeam(fhirBaseURL, record.id);
                       await refetch();

@@ -4,6 +4,7 @@
 import enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import MockDate from 'mockdate';
+import FHIR from 'fhirclient';
 import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/camelcase */
 import i18n from 'i18next';
@@ -59,9 +60,9 @@ window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
 jest.mock('fhirclient', () => ({
   client: jest.fn().mockImplementation(() => {
     return {
-      request: require('jest-fetch-mock'),
-      update: require('jest-fetch-mock'),
-      create: require('jest-fetch-mock'),
+      request: jest.fn(),
+      update: jest.fn(),
+      create: jest.fn(),
     };
   }),
 }));
