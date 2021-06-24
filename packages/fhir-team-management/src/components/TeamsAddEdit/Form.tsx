@@ -29,6 +29,7 @@ interface Props {
   fhirbaseURL: string;
   id?: string;
   allPractitioner: Practitioner[];
+  allPractitionerRole: PractitionerRole[];
   initialValue?: FormField;
 }
 
@@ -46,17 +47,17 @@ export async function onSubmit(
   fhirbaseURL: string,
   setIsSubmitting: (value: boolean) => void,
   practitioner: Practitioner[],
+  allPractitionerRole: PractitionerRole[],
   initialValue: FormField,
   values: FormField,
-  id?: string,
-  uuid?: string
+  id?: string
 ) {
   setIsSubmitting(true);
-  const Teamid = uuid ? uuid : v4();
+  const Teamid = initialValue.uuid ?? v4();
 
   const payload: FhirObject<Organization> = {
     resourceType: 'Organization',
-    id: id as string,
+    id: Teamid,
     active: values.active,
     identifier: [{ use: 'official', value: Teamid }],
     name: values.name,
@@ -69,7 +70,7 @@ export async function onSubmit(
   const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
   const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
-  await SetPractitioners(fhirbaseURL, practitioner, toAdd, toRem, Teamid);
+  await SetPractitioners(fhirbaseURL, practitioner, allPractitionerRole, toAdd, toRem, Teamid);
 }
 
 /**
@@ -85,6 +86,7 @@ export async function onSubmit(
 async function SetPractitioners(
   fhirbaseURL: string,
   practitioner: Practitioner[],
+  practitionerrole: PractitionerRole[],
   toAdd: string[],
   toRemove: string[],
   teamId: string,
@@ -94,13 +96,17 @@ async function SetPractitioners(
   const serve = FHIR.client(fhirbaseURL);
 
   // Api Call to delete practitioners
-  let promises = toRemove.map((prac) => serve.delete(PRACTITIONERROLE_DEL + prac));
+  const pracrole = practitionerrole.filter(
+    (role) => role.organization.reference === `Organization/${teamId}`
+  );
+  const toremoveroles = toRemove
+    .map((id) => pracrole.find((role) => role.practitioner.reference === `Practitioner/${id}`))
+    .map((role) => role?.id);
+  let promises = toremoveroles.map((roles) => serve.delete(PRACTITIONERROLE_DEL + roles));
   await Promise.all(promises);
 
   // Api Call to add practitioners
-  const toAddPractitioner = practitioner.filter((e) =>
-    toAdd.includes(e.identifier.official?.value)
-  );
+  const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.id));
   promises = toAddPractitioner.map((prac) => {
     const id = v4();
     const payload: FhirObject<Omit<PractitionerRole, 'meta'>> = {
@@ -111,6 +117,7 @@ async function SetPractitioners(
       practitioner: { reference: 'Practitioner/' + prac.id },
       organization: { reference: 'Organization/' + teamId },
     };
+    console.log('payload', payload);
     return serve.create(payload);
   });
   await Promise.all(promises);
@@ -144,7 +151,7 @@ export async function setTeam(
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { allPractitioner, fhirbaseURL, id } = props;
+  const { allPractitioner, allPractitionerRole, fhirbaseURL, id } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [form] = AntdForm.useForm();
   const initialValue = props.initialValue ?? {
@@ -172,10 +179,10 @@ export const Form: React.FC<Props> = (props: Props) => {
           fhirbaseURL,
           setIsSubmitting,
           allPractitioner,
+          allPractitionerRole,
           initialValue,
           values,
-          id,
-          initialValue.uuid
+          id
         )
           .then(() => {
             queryClient.invalidateQueries(TEAMS_GET);
