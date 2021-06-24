@@ -55,7 +55,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     });
   }
 
-  if (!allPractitioner.data || (params.id && !initialValue)) return <Spin size={'large'} />;
+  if (!allPractitioner.data || !AllRoles.data || (params.id && !initialValue))
+    return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
@@ -73,6 +74,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
           initialValue={initialValue}
           id={params.id}
           allPractitioner={allPractitioner.data}
+          allPractitionerRole={AllRoles.data}
         />
       </div>
     </section>

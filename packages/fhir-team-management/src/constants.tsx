@@ -8,8 +8,8 @@ export const URL_EDIT_TEAM = 'teams/edit/';
 // Practitioner
 //
 export const PRACTITIONERROLE_GET = 'PractitionerRole/';
-export const PRACTITIONERROLE_POST = 'PractitionerRole/add/';
-export const PRACTITIONERROLE_DEL = 'PractitionerRole/deleteByPractitioner/';
+export const PRACTITIONERROLE_POST = 'PractitionerRole/';
+export const PRACTITIONERROLE_DEL = 'PractitionerRole/';
 
 //
 // Practitioner Role
