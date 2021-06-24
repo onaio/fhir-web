@@ -152,22 +152,12 @@ export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
   const { allPractitioner, allPractitionerRole, fhirbaseURL, id } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [form] = AntdForm.useForm();
   const initialValue = props.initialValue ?? {
     uuid: '',
     active: true,
     name: '',
     practitioners: [],
   };
-
-  /** Update form initial values when initialValues prop changes, without this
-   * the form fields initial values will not change if props.initiaValues is updated
-   * **/
-  React.useEffect(() => {
-    form.setFieldsValue({
-      ...initialValue,
-    });
-  }, [form, initialValue]);
 
   return (
     <AntdForm
