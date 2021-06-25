@@ -275,10 +275,6 @@ describe('componentUtils', () => {
     // expect change to result of second fetch
     expect(wrapper.find('.mockClassName').text()).toMatchInlineSnapshot(`"Anon Central"`);
 
-    // expect both fetch calls
-    expect(fetch.mock.calls).toMatchObject([
-      ['http://example.com/users/1'],
-      ['http://example.com/users/2'],
-    ]);
+    wrapper.unmount();
   });
 });
