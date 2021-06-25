@@ -2231,6 +2231,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2269,6 +2283,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2303,6 +2331,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_5_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_description"
     title="Description"
   >
     Description
@@ -2501,6 +2543,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2539,6 +2595,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2573,6 +2643,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_7_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_description"
     title="Description"
   >
     Description
@@ -3452,7 +3536,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.identifier.where(system='hasGeometry').value='false'"
+    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
   />,
   <textarea
     className="ant-input form-control"
@@ -3463,6 +3547,26 @@ Array [
     required={true}
     style={Object {}}
     value="Service point does not have geometry"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
   />,
 ]
 `;
@@ -3477,7 +3581,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.identifier.where(system='hasGeometry').value='false'"
+    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
   />,
   <textarea
     className="ant-input form-control"
@@ -3488,6 +3592,26 @@ Array [
     required={true}
     style={Object {}}
     value="Service point does not have geometry"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
   />,
 ]
 `;
@@ -3502,7 +3626,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.identifier.where(system='hasGeometry').value='false'"
+    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
   />,
   <textarea
     className="ant-input form-control"
@@ -3513,6 +3637,26 @@ Array [
     required={true}
     style={Object {}}
     value="Service point does not have geometry"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
   />,
 ]
 `;
@@ -3602,7 +3746,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Location)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -3613,6 +3757,26 @@ Array [
     required={true}
     style={Object {}}
     value="All service points"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
   />,
 ]
 `;
@@ -3627,7 +3791,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Location)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -3638,6 +3802,26 @@ Array [
     required={true}
     style={Object {}}
     value="All service points"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
   />,
 ]
 `;
@@ -3652,7 +3836,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Location)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -3663,6 +3847,26 @@ Array [
     required={true}
     style={Object {}}
     value="All service points"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
   />,
 ]
 `;
