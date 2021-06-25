@@ -96,18 +96,21 @@ async function SetPractitioners(
   const serve = FHIR.client(fhirbaseURL);
 
   // Api Call to delete practitioners
-  const pracrole = practitionerrole.filter(
-    (role) => role.organization.reference === `Organization/${teamId}`
-  );
   const toremoveroles = toRemove
-    .map((id) => pracrole.find((role) => role.practitioner.reference === `Practitioner/${id}`))
+    .map((id) =>
+      practitionerrole.find(
+        (role) =>
+          role.organization.reference === `Organization/${teamId}` &&
+          role.practitioner.reference === `Practitioner/${id}`
+      )
+    )
     .map((role) => role?.id);
-  let promises = toremoveroles.map((roles) => serve.delete(PRACTITIONERROLE_DEL + roles));
-  await Promise.all(promises);
+  const rempromises = toremoveroles.map((roles) => serve.delete(PRACTITIONERROLE_DEL + roles));
+  await Promise.all(rempromises);
 
   // Api Call to add practitioners
   const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.id));
-  promises = toAddPractitioner.map((prac) => {
+  const addpromises = toAddPractitioner.map((prac) => {
     const id = v4();
     const payload: FhirObject<Omit<PractitionerRole, 'meta'>> = {
       resourceType: 'PractitionerRole',
@@ -119,7 +122,7 @@ async function SetPractitioners(
     };
     return serve.create(payload);
   });
-  await Promise.all(promises);
+  await Promise.all(addpromises);
 
   sendSuccessNotification(langObj.MSG_ASSIGN_PRACTITONERS_SUCCESS);
 }
