@@ -44,5 +44,6 @@ keys = [
     "/react/app/enable/plans",
     "/react/app/enable/card/support",
     "/react/app/fhir/api/base/url",
-    "/react/app/user/form/hidden",
+    "/react/app/user/form/hidden/fields",
+    "react/app/user/form/render/fields",
 ]
