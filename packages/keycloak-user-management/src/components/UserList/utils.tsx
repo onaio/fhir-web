@@ -15,13 +15,13 @@ export const getTableColumns = (
   langObj: Lang = lang
 ): Column<TableData>[] => {
   const headerItems: string[] = [
-    // langObj.USERNAME,
     langObj.EMAIL,
     langObj.FIRST_NAME,
     langObj.LAST_NAME,
+    langObj.USERNAME,
   ];
   const dataElements: Column<TableData>[] = [];
-  const fields: string[] = ['username', 'email', 'firstName', 'lastName'];
+  const fields: string[] = ['email', 'firstName', 'lastName', 'username'];
 
   fields.forEach((field: string, index: number) => {
     dataElements.push({

@@ -1,18 +1,24 @@
-import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { getTableColumns } from '../utils';
-/* eslint-disable @typescript-eslint/camelcase */
 
 describe('components/UserList/utils/getTableColumns', () => {
-  it('builds table columns correctly', () => {
-    const removeUsersMock = jest.fn();
-    const isLoadingCallbackMock = jest.fn();
-    const keycloakBaseURL =
-      'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const sortedInfo = {
+    column: { title: 'First Name', dataIndex: 'firstName', key: 'firstName', ellipsis: true },
+    order: 'ascend',
+    field: 'firstName',
+    columnKey: 'firstName',
+  };
 
-    expect(
-      getTableColumns(removeUsersMock, keycloakBaseURL, isLoadingCallbackMock, {
-        user_id: fixtures.keycloakUser.id,
-      })
-    ).toMatchSnapshot('table columns');
+  const langObj = {
+    EMAIL: 'Email',
+    FIRST_NAME: 'First Name',
+    LAST_NAME: 'Last Name',
+    USERNAME: 'Username',
+  };
+
+  it('builds table columns correctly', () => {
+    expect(getTableColumns(undefined, langObj)).toMatchSnapshot('table columns');
+  });
+  it('builds table columns correctly with sorted info', () => {
+    expect(getTableColumns(sortedInfo, langObj)).toMatchSnapshot('table columns with sorted info');
   });
 });
