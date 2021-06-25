@@ -23,8 +23,12 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       title: 'Name',
       dataIndex: 'name',
-      editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'active',
+      render: (value) => <div>{value ? 'Active' : 'Inactive'}</div>,
     },
     {
       title: 'Actions',
