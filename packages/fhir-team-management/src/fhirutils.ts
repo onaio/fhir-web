@@ -31,5 +31,10 @@ export function ProcessFHIRObjects<T>(object: FhirObject<T>[]) {
 }
 
 export function ProcessFHIRObject<T>(object: FhirObject<T>): T {
-  return ({ ...object, identifier: convertToObject(object.identifier, 'use') } as unknown) as T;
+  return ({
+    ...object,
+    ...(object.identifier && {
+      identifier: convertToObject<FhirIdentifier, FhirIdentifier.UseEnum>(object.identifier, 'use'),
+    }),
+  } as unknown) as T;
 }

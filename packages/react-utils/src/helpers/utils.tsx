@@ -24,12 +24,15 @@ export const loadLanguageResources = (i18n: i18nInstance | undefined, resources:
  * @param key key of T to used to the processed Object
  * @returns resultant Object
  */
-export function convertToObject<T>(array: Array<T>, key: keyof T): Record<string, T> {
+export function convertToObject<T, K extends string>(
+  array: Array<T>,
+  key: keyof T
+): Partial<Record<K, T>> {
   return array.reduce((prev, item) => {
     const _key = item[key];
     if (typeof _key !== 'string') throw new Error('Key should be a string value');
     return { ...prev, [_key]: item };
-  }, {}) as Record<string, T>;
+  }, {}) as Partial<Record<K, T>>;
 }
 
 /**
