@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { TEAMS_GET, PRACTITIONERROLE_DEL } from '../../constants';
+import { TEAMS_GET, PRACTITIONERROLE_DEL, PRACTITIONERROLE_GET } from '../../constants';
 import {
   sendSuccessNotification,
   sendInfoNotification,
@@ -178,6 +178,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         )
           .then(() => {
             queryClient.invalidateQueries(TEAMS_GET);
+            queryClient.invalidateQueries(PRACTITIONERROLE_GET);
             queryClient.invalidateQueries([TEAMS_GET, id]);
             history.goBack();
           })
