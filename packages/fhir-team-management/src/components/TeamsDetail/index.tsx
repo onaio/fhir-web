@@ -28,7 +28,7 @@ const TeamsDetail = (props: TeamsDetailProps) => {
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.STATUS}</div>
-        <div className="mb-0">{`${active}`}</div>
+        <div className="mb-0">{active ? 'Active' : 'Inactive'}</div>
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.IDENTIFIER}</div>
