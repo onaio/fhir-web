@@ -13,6 +13,7 @@ import { TableData } from '..';
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakBaseURL: string;
+  opensrpBaseURL: string;
   record: TableData;
   isLoadingCallback: (loading: boolean) => void;
   extraData: Dictionary;
@@ -29,6 +30,7 @@ const TableActions = (props: Props): JSX.Element => {
     record,
     removeKeycloakUsersCreator,
     keycloakBaseURL,
+    opensrpBaseURL,
     isLoadingCallback,
     extraData,
   } = props;
@@ -41,7 +43,13 @@ const TableActions = (props: Props): JSX.Element => {
           okText="Yes"
           cancelText="No"
           onConfirm={() =>
-            deleteUser(removeKeycloakUsersCreator, keycloakBaseURL, record.id, isLoadingCallback)
+            deleteUser(
+              removeKeycloakUsersCreator,
+              keycloakBaseURL,
+              opensrpBaseURL,
+              record.id,
+              isLoadingCallback
+            )
           }
         >
           {user_id &&
