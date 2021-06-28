@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Patients list view renders correctly 1`] = `"FHIR Care TeamCreate Care TeamNameActionsCare Team OneEditCare Team ThreeEditCare Team FiveEdittest 33EditCare Team SixEditCare Team FourEdit120 / page"`;
+exports[`Patients list view renders correctly 1`] = `"FHIR Care TeamCreate Care TeamNameActionsCare Team OneEditCare Team ThreeEditCare Team FiveEdittest 33EditCare Team SixEdit1235 / pageGo to"`;
+
+exports[`Patients list view renders correctly 3`] = `"FHIR Care TeamCreate Care TeamNameActionsCare Team FourEdit1235 / pageGo to"`;
 
 exports[`Patients list view renders correctly: sorted table rows by name - ascending 0 1`] = `"NameActions"`;
 
@@ -14,8 +16,6 @@ exports[`Patients list view renders correctly: sorted table rows by name - ascen
 
 exports[`Patients list view renders correctly: sorted table rows by name - ascending 5 1`] = `"Care Team ThreeEdit"`;
 
-exports[`Patients list view renders correctly: sorted table rows by name - ascending 6 1`] = `"test 33Edit"`;
-
 exports[`Patients list view renders correctly: sorted table rows by name - descending 0 1`] = `"NameActions"`;
 
 exports[`Patients list view renders correctly: sorted table rows by name - descending 1 1`] = `"test 33Edit"`;
@@ -28,8 +28,6 @@ exports[`Patients list view renders correctly: sorted table rows by name - desce
 
 exports[`Patients list view renders correctly: sorted table rows by name - descending 5 1`] = `"Care Team FourEdit"`;
 
-exports[`Patients list view renders correctly: sorted table rows by name - descending 6 1`] = `"Care Team FiveEdit"`;
-
 exports[`Patients list view renders correctly: table rows - default order 0 1`] = `"NameActions"`;
 
 exports[`Patients list view renders correctly: table rows - default order 1 1`] = `"Care Team OneEdit"`;
@@ -41,5 +39,3 @@ exports[`Patients list view renders correctly: table rows - default order 3 1`] 
 exports[`Patients list view renders correctly: table rows - default order 4 1`] = `"test 33Edit"`;
 
 exports[`Patients list view renders correctly: table rows - default order 5 1`] = `"Care Team SixEdit"`;
-
-exports[`Patients list view renders correctly: table rows - default order 6 1`] = `"Care Team FourEdit"`;

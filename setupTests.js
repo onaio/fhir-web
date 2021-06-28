@@ -63,6 +63,7 @@ jest.mock('fhirclient', () => ({
       request: jest.fn(),
       update: jest.fn(),
       create: jest.fn(),
+      delete: jest.fn(),
     };
   }),
 }));
