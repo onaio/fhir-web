@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/keycloak-service",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "Keycloak Admin API service",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -16,7 +16,7 @@
     "test": "cd ../../ && yarn test packages/keycloak-service --verbose --collectCoverage=true && cd packages/keycloak-service",
     "test:watch": "cd ../../ && yarn test packages/keycloak-service --verbose --watch && cd packages/keycloak-service",
     "tsc": "tsc",
-    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy"
@@ -34,9 +34,9 @@
   "license": "Apache-2.0",
   "private": false,
   "devDependencies": {
-    "@opensrp/store": "^0.0.9"
+    "@opensrp/store": "^0.0.10"
   },
   "dependencies": {
-    "@opensrp/react-utils": "^0.0.7"
+    "@opensrp/react-utils": "^0.0.10"
   }
 }

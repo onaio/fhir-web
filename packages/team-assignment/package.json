@@ -1,11 +1,12 @@
 {
   "name": "@opensrp/team-assignment",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Contains team assignment page",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "publishConfig": {
     "access": "public"
@@ -17,7 +18,7 @@
   "scripts": {
     "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
     "tsc": "tsc",
-    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
@@ -35,12 +36,12 @@
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/location-management": "^0.0.11",
+    "@opensrp/location-management": "^0.0.13",
     "@opensrp/notifications": "^0.0.5",
-    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/react-utils": "^0.0.10",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.17",
-    "@opensrp/team-management": "^0.0.5",
+    "@opensrp/team-management": "^0.0.7",
     "antd": "^4.6.3",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
@@ -52,8 +53,8 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
+    "@opensrp/store": "^0.0.10",
     "i18next": "^19.8.4",
-    "@opensrp/store": "^0.0.9",
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",

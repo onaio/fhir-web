@@ -14,7 +14,7 @@ exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 />
 `;
 
-exports[`components/forms/UserForm renders correctly: contact field 1`] = `
+exports[`components/forms/UserForm form validation works for contact field: contact input 1`] = `
 <input
   className="ant-input"
   id="attributes_contact"
@@ -27,9 +27,9 @@ exports[`components/forms/UserForm renders correctly: contact field 1`] = `
 />
 `;
 
-exports[`components/forms/UserForm renders correctly: contact label 1`] = `
+exports[`components/forms/UserForm form validation works for contact field: contact label 1`] = `
 <label
-  className=""
+  className="ant-form-item-required"
   htmlFor="attributes_contact"
   title="Contact"
 >
@@ -43,6 +43,7 @@ Object {
     name="active"
   >
     <Radio
+      disabled={false}
       name="active"
       type="radio"
       value={true}
@@ -50,6 +51,7 @@ Object {
       Yes
     </Radio>
     <Radio
+      disabled={false}
       name="active"
       type="radio"
       value={false}
@@ -69,6 +71,7 @@ Object {
     name="active"
   >
     <Radio
+      disabled={false}
       name="active"
       type="radio"
       value={true}
@@ -76,6 +79,7 @@ Object {
       Yes
     </Radio>
     <Radio
+      disabled={false}
       name="active"
       type="radio"
       value={false}

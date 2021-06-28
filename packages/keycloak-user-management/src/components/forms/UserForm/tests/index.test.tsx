@@ -6,7 +6,7 @@ import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import { UserForm, UserFormProps } from '..';
+import { UserForm } from '..';
 import {
   keycloakUser,
   defaultInitialValue,
@@ -20,6 +20,7 @@ import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
 import { Form } from 'antd';
 import { URL_USER } from '../../../../constants';
+import { UserFormProps } from '../types';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -92,11 +93,12 @@ describe('components/forms/UserForm', () => {
     expect(wrapper.find('FormItem').at(1).prop('name')).toEqual('lastName');
     expect(wrapper.find('FormItem').at(2).prop('name')).toEqual('email');
     expect(wrapper.find('FormItem').at(3).prop('name')).toEqual('username');
-    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('enabled');
-    expect(wrapper.find('FormItem').at(6).prop('name')).toEqual('userGroup');
+    expect(wrapper.find('FormItem').at(4).prop('name')).toEqual('enabled');
+    expect(wrapper.find('FormItem').at(5).prop('name')).toEqual('userGroup');
 
-    expect(toJson(wrapper.find('#contact label'))).toMatchSnapshot('contact label');
-    expect(toJson(wrapper.find('#contact input'))).toMatchSnapshot('contact field');
+    // not found, not rendered in props
+    expect(toJson(wrapper.find('#contact label'))).toMatchInlineSnapshot(`null`);
+    expect(toJson(wrapper.find('#contact input'))).toMatchInlineSnapshot(`null`);
     wrapper.unmount();
   });
 
@@ -119,8 +121,21 @@ describe('components/forms/UserForm', () => {
     wrapper.unmount();
   });
 
+  it('hidden fields', async () => {
+    const wrapper = mount(
+      <UserForm {...{ ...props, renderFields: ['contact'], hiddenFields: ['contact'] }} />
+    );
+
+    expect(wrapper.find('FormItemInput#contact').prop('hidden')).toBeTruthy();
+    wrapper.unmount();
+  });
+
   it('form validation works for contact field', async () => {
-    const wrapper = mount(<UserForm {...{ ...props, hidden: [] }} />);
+    const wrapper = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+
+    // found
+    expect(toJson(wrapper.find('#contact label'))).toMatchSnapshot('contact label');
+    expect(toJson(wrapper.find('#contact input'))).toMatchSnapshot('contact input');
 
     // empty error message; contact is required
     wrapper.find('form').simulate('submit');
@@ -134,6 +149,19 @@ describe('components/forms/UserForm', () => {
     wrapper
       .find('input#attributes_contact')
       .simulate('change', { target: { name: 'contact', value: 'Test' } });
+    wrapper.find('form').simulate('submit');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([
+      'Contact should be 10 digits and start with 0',
+    ]);
+
+    // regex validation more than 10 alphanumerics
+    wrapper
+      .find('input#attributes_contact')
+      .simulate('change', { target: { name: 'contact', value: '012345678910' } });
     wrapper.find('form').simulate('submit');
     await act(async () => {
       await flushPromises();
@@ -158,7 +186,7 @@ describe('components/forms/UserForm', () => {
   });
 
   it('adds user', async () => {
-    const wrapper = mount(<UserForm {...{ ...props, hidden: [] }} />);
+    const wrapper = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
 
     await act(async () => {
       await flushPromises();
@@ -515,5 +543,62 @@ describe('components/forms/UserForm', () => {
     expect(wrapper.find('input#firstName').props().value).toEqual(keycloakUser.firstName);
     expect(wrapper.find('input#email').props().value).toEqual(keycloakUser.email);
     expect(wrapper.find('input#username').props().value).toEqual(keycloakUser.username);
+  });
+
+  it('disables and toggles practitioner off when toggling active user off', async () => {
+    const propsOwn = {
+      ...props,
+      practitioner: practitioner1,
+      // mount with both user and practitioner enabled
+      initialValues: { ...keycloakUser, enabled: true, active: true },
+    };
+
+    const wrapper = mount(
+      <Router history={history}>
+        <UserForm {...propsOwn} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // user enabled checkbox
+    const userEnabled = wrapper.find('input[name="enabled"]');
+    // expect 'yes' and 'no' options
+    expect(userEnabled).toHaveLength(2);
+    // 'yes' to be checked and 'no' to be unchecked (active user)
+    expect(userEnabled.at(0).props().checked).toEqual(true);
+    expect(userEnabled.at(1).props().checked).toEqual(false);
+
+    // practitioner active checkbox
+    const practitionerActive = wrapper.find('input[name="active"]');
+    // 'yes' and 'no' options
+    expect(practitionerActive).toHaveLength(2);
+    // 'yes' to be checked and 'no' to be unchecked (practitioner active)
+    expect(practitionerActive.at(0).props().checked).toEqual(true);
+    expect(practitionerActive.at(1).props().checked).toEqual(false);
+    // practitioner not disabled
+    wrapper.find('Radio[name="active"]').forEach((node) => {
+      expect(node.props().disabled).toBe(false);
+    });
+
+    // simulate toggle user off
+    userEnabled.at(1).simulate('change', { target: { checked: true } });
+
+    // re-select
+    const userEnabled2 = wrapper.find('input[name="enabled"]');
+    const practitionerActive2 = wrapper.find('input[name="active"]');
+
+    // expect user toggled off
+    expect(userEnabled2.at(0).props().checked).toEqual(false);
+    expect(userEnabled2.at(1).props().checked).toEqual(true);
+    // expect practitioner toggle off and disabled
+    expect(practitionerActive2.at(0).props().checked).toEqual(false);
+    expect(practitionerActive2.at(1).props().checked).toEqual(true);
+    wrapper.find('Radio[name="active"]').forEach((node) => {
+      expect(node.props().disabled).toBe(true);
+    });
   });
 });
