@@ -484,4 +484,72 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       ]
     `);
   });
+  it('fetches all practitioners recursively from a paginated endpoint', async () => {
+    // practitioners that are already members of the team
+    fetch.mockResponseOnce(JSON.stringify(practitioners.slice(6)));
+    // team details
+    fetch.mockResponseOnce(JSON.stringify(team));
+    // practitioner count endpoint - pageSize === 1k. so if 1k < resp < 2k, pageNumber = 2
+    fetch.mockResponseOnce(JSON.stringify(1450));
+    // expect two practitioner calls, one for each page
+    fetch
+      // split fixture object between the requests
+      .mockOnce(JSON.stringify(practitioners.slice(0, 3)))
+      .mockOnce(JSON.stringify(practitioners.slice(3)));
+
+    // editing team with id === ${id}
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: `admin/teams/edit/${id}`, hash: '', search: '', state: {} }]}
+        >
+          <Route exact path="admin/teams/edit/:id" component={() => <TeamsAddEdit {...props} />} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // compose request object with request url only
+    const composeRequests = fetch.mock.calls.map((req) => req[0]);
+
+    // expect all calls:
+    // get team members, team details, practitioner count, and two practitioner pages
+    expect(composeRequests).toMatchObject([
+      'https://some.opensrp.url/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+      'https://some.opensrp.url/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+      'https://some.opensrp.url/practitioner/count/',
+      'https://some.opensrp.url/practitioner?pageNumber=1&pageSize=1000',
+      'https://some.opensrp.url/practitioner?pageNumber=2&pageSize=1000',
+    ]);
+
+    // find antd Select with id 'practitioners' in the 'Form' component
+    const practitionersSelect = wrapper.find('Form').find('Select#practitioners');
+
+    // simulate click on select - to show dropdown items
+    practitionersSelect.find('.ant-select-selector').simulate('mousedown');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // re-find
+    const practitionersSelect2 = wrapper.find('Form').find('Select#practitioners');
+    // find antd select options
+    const selectOptions = practitionersSelect2.find('.ant-select-item-option-content');
+
+    // remove inactive users and only return the names
+    const filteredPractitioners = practitioners
+      .filter((practitioner) => practitioner.active)
+      .map((practitioner) => practitioner.name);
+
+    // expect antd select option text to equal all practitioners (except those who are inactive)
+    expect(selectOptions.map((opt) => opt.text())).toStrictEqual(filteredPractitioners);
+
+    wrapper.unmount();
+  });
 });
