@@ -1,9 +1,11 @@
 import { mount, shallow } from 'enzyme';
 import flushPromises from 'flush-promises';
 import React from 'react';
+import { history } from '@onaio/connected-reducer-registry';
 import * as fhirCient from 'fhirclient';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
+import { Router } from 'react-router';
 import { defaultInitialValues } from '..';
 import { CareTeamForm } from '../Form';
 import { getPatientName } from '../utils';
@@ -191,5 +193,24 @@ describe('components/forms/CreateTeamForm', () => {
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
+  });
+
+  it('cancel button returns user to list view', async () => {
+    const historyPushMock = jest.spyOn(history, 'push');
+    const wrapper = mount(
+      <Router history={history}>
+        <CareTeamForm {...props} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+    wrapper.find('.cancel-care-team').at(1).simulate('click');
+    wrapper.update();
+    expect(historyPushMock).toHaveBeenCalledTimes(1);
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/CareTeams');
   });
 });

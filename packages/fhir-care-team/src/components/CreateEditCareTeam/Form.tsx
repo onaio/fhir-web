@@ -143,7 +143,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             <Button type="primary" htmlType="submit" className="create-group">
               {isSubmitting ? lang.SAVING : lang.SAVE}
             </Button>
-            <Button onClick={() => history.push(URL_CARE_TEAM)} className="cancel-group">
+            <Button onClick={() => history.push(URL_CARE_TEAM)} className="cancel-care-team">
               {lang.CANCEL}
             </Button>
           </Form.Item>
