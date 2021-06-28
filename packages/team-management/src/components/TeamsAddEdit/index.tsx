@@ -97,7 +97,7 @@ export const defaultProps = {
  * @param opensrpBaseURL - OpenSRP API base URL
  * @param practitionersEndpoint - OpenSRP practitioners endpoint
  * @param pageNumber - paginated page number
- * @param pageSize - paginated page size
+ * @param pageSize - number of practitioners in each page
  * @param errorNotification - the error message to show for a failed request
  * @returns {Promise<Practitioner[]>} an array of practitioners
  */
@@ -108,10 +108,13 @@ async function fetchPractitioners(
   pageSize: number,
   errorNotification: string = lang.ERROR_OCCURRED
 ): Promise<Practitioner[]> {
-  const composePaginatedEndpoint = `${practitionersEndpoint}?pageNumber=${pageNumber}&pageSize=${pageSize}`;
-  const serve = new OpenSRPService(composePaginatedEndpoint, opensrpBaseURL);
+  const paginationParams = {
+    pageNumber,
+    pageSize,
+  };
+  const serve = new OpenSRPService(practitionersEndpoint, opensrpBaseURL);
   try {
-    const practitioners: Practitioner[] = await serve.list();
+    const practitioners: Practitioner[] = await serve.list(paginationParams);
     return practitioners;
   } catch (_) {
     sendErrorNotification(errorNotification);
@@ -125,37 +128,38 @@ async function fetchPractitioners(
  * @param opensrpBaseURL - OpenSRP API base URL
  * @param practitionersCountEndpoint - OpenSRP practitioners count endpoint
  * @param practitionersEndpoint - OpenSRP practitioners endpoint
+ * @param pageSize - number of practitioners in each page
  * @returns {Promise<Practitioner[]>} - an array of all practitioners in a paginated endpoint
  */
 async function fetchPractitionersRecursively(
   opensrpBaseURL: string,
   practitionersCountEndpoint: string,
-  practitionersEndpoint: string
+  practitionersEndpoint: string,
+  pageSize = 1000
 ): Promise<Practitioner[]> {
-  // practitioner array to fill recursively
-  const allPractitioners: Practitioner[] = [];
-
   // get the total number of practitioners
   const serve = new OpenSRPService(practitionersCountEndpoint, opensrpBaseURL);
   const practitionerCount: number = await serve.list();
 
-  const pageSize = 1000;
-
   // get the maximum possible page numbers
   const maxPageNo = Math.ceil(practitionerCount / pageSize);
 
-  // add practitioners recursively based on page number
+  // compose a promise array to resolve in parallel
+  const promises: Promise<Practitioner[]>[] = [];
   for (let pageNumber = 1; pageNumber <= maxPageNo; pageNumber++) {
-    const practitioners = await fetchPractitioners(
-      opensrpBaseURL,
-      practitionersEndpoint,
-      pageNumber,
-      pageSize
-    );
-    allPractitioners.push(...practitioners);
+    promises.push(fetchPractitioners(opensrpBaseURL, practitionersEndpoint, pageNumber, pageSize));
   }
 
-  return allPractitioners;
+  // fetch practitioners recursively according to page numbers
+  return Promise.all(promises)
+    .then((practitioners: Practitioner[][]) => {
+      // flatten 2D array - [[][]]
+      const flatPractitionersArray = practitioners.flat();
+      return flatPractitionersArray;
+    })
+    .catch((err) => {
+      throw err;
+    });
 }
 
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
