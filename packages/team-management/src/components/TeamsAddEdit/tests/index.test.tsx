@@ -19,6 +19,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   const props = {
     opensrpBaseURL,
     disableTeamMemberReassignment: false,
+    paginationSize: 1000,
   };
   beforeAll(() => {
     store.dispatch(
