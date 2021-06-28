@@ -4,7 +4,7 @@ import { Practitioner, PractitionerPOST } from '../../../ducks/practitioners';
 import { FormField } from '../Form';
 
 export const accessToken = 'token';
-export const opensrpBaseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+export const opensrpBaseURL = 'https://some.opensrp.url/';
 export const id = '258b4dec-79d3-546d-9c5c-f172aa7e03b0';
 
 export const team: Organization = {

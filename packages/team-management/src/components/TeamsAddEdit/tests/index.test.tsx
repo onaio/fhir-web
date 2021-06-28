@@ -40,6 +40,8 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('renders without crashing', async () => {
+    // practitioner count endpoint - pageSize === 1k. so if resp < 1k, pageNumber = 1
+    fetch.mockResponseOnce(JSON.stringify(900));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     const wrapper = mount(
@@ -57,7 +59,18 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
+        'https://some.opensrp.url/practitioner/count/',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://some.opensrp.url/practitioner?pageNumber=1&pageSize=1000',
         {
           headers: {
             accept: 'application/json',
@@ -76,12 +89,14 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   it('renders with id without crashing', async () => {
     fetch.mockResponseOnce(JSON.stringify(practitioners));
     fetch.mockResponseOnce(JSON.stringify(team));
+    // practitioner count endpoint - pageSize === 1k. so if resp < 1k, pageNumber = 1
+    fetch.mockResponseOnce(JSON.stringify(900));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={TeamsAddEdit} />
+          <Route path={'/:id'} component={() => <TeamsAddEdit {...props} />} />
         </MemoryRouter>
       </Provider>
     );
@@ -93,7 +108,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -104,7 +119,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -115,7 +130,18 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
+        'https://some.opensrp.url/practitioner/count/',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://some.opensrp.url/practitioner?pageNumber=1&pageSize=1000',
         {
           headers: {
             accept: 'application/json',
@@ -138,7 +164,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={TeamsAddEdit} />
+          <Route path={'/:id'} component={() => <TeamsAddEdit {...props} />} />
         </MemoryRouter>
       </Provider>
     );
@@ -189,12 +215,14 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   it('render with correct team name in header', async () => {
     fetch.mockResponseOnce(JSON.stringify(practitioners));
     fetch.mockResponseOnce(JSON.stringify(team));
+    // practitioner count endpoint - pageSize === 1k. so if resp < 1k, pageNumber = 1
+    fetch.mockResponseOnce(JSON.stringify(900));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={TeamsAddEdit} />
+          <Route path={'/:id'} component={() => <TeamsAddEdit {...props} />} />
         </MemoryRouter>
       </Provider>
     );
@@ -206,7 +234,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -217,7 +245,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -228,7 +256,18 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
+        'https://some.opensrp.url/practitioner/count/',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://some.opensrp.url/practitioner?pageNumber=1&pageSize=1000',
         {
           headers: {
             accept: 'application/json',
@@ -251,12 +290,14 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   it('correctly adds/removes members from team', async () => {
     fetch.mockResponseOnce(JSON.stringify(practitioners));
     fetch.mockResponseOnce(JSON.stringify(team));
+    // practitioner count endpoint - pageSize === 1k. so if resp < 1k, pageNumber = 1
+    fetch.mockResponseOnce(JSON.stringify(900));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={TeamsAddEdit} />
+          <Route path={'/:id'} component={() => <TeamsAddEdit {...props} />} />
         </MemoryRouter>
       </Provider>
     );
@@ -267,9 +308,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     wrapper.update();
 
-    expect(fetch.mock.calls).toEqual([
+    expect(fetch.mock.calls).toMatchObject([
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/organization/practitioner/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -280,7 +321,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -291,7 +332,18 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/',
+        'https://some.opensrp.url/practitioner/count/',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://some.opensrp.url/practitioner?pageNumber=1&pageSize=1000',
         {
           headers: {
             accept: 'application/json',
@@ -323,12 +375,14 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   it('renders with inactive practitioners filtered out', async () => {
     fetch.mockResponseOnce(JSON.stringify(practitioners));
     fetch.mockResponseOnce(JSON.stringify(team));
+    // practitioner count endpoint - pageSize === 1k. so if resp < 1k, pageNumber = 1
+    fetch.mockResponseOnce(JSON.stringify(900));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
-          <Route path={'/:id'} component={TeamsAddEdit} />
+          <Route path={'/:id'} component={() => <TeamsAddEdit {...props} />} />
         </MemoryRouter>
       </Provider>
     );
@@ -369,6 +423,8 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     fetch.mockResponseOnce(JSON.stringify(practitioners.slice(4))); // subset of all practitioners - from index 4 to end of arr
     fetch.mockResponseOnce(JSON.stringify(team));
     fetch.mockResponseOnce(JSON.stringify(practitionerRole)); // with practitioner id matching the active subset's identifier id
+    // practitioner count endpoint - pageSize === 1k. so if resp < 1k, pageNumber = 1
+    fetch.mockResponseOnce(JSON.stringify(900));
     fetch.mockResponseOnce(JSON.stringify(practitioners));
 
     // enable filtering out configuration
