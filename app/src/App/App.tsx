@@ -543,6 +543,7 @@ const App: React.FC = () => {
               exact
               path={URL_TEAMS_ADD}
               component={TeamsAddEdit}
+              {...teamManagementProps}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
