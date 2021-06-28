@@ -9,6 +9,7 @@ import {
   TEAMS_GET,
   TEAM_PRACTITIONERS,
   PRACTITIONER_ROLE,
+  PRACTITIONER_COUNT,
 } from '../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -90,6 +91,73 @@ export const defaultProps = {
   opensrpBaseURL: '',
 };
 
+/**
+ * function to fetch a paginated practitioner object
+ *
+ * @param opensrpBaseURL - OpenSRP API base URL
+ * @param practitionersEndpoint - OpenSRP practitioners endpoint
+ * @param pageNumber - paginated page number
+ * @param pageSize - paginated page size
+ * @param errorNotification - the error message to show for a failed request
+ * @returns {Promise<Practitioner[]>} an array of practitioners
+ */
+async function fetchPractitioners(
+  opensrpBaseURL: string,
+  practitionersEndpoint: string,
+  pageNumber: number,
+  pageSize: number,
+  errorNotification: string = lang.ERROR_OCCURRED
+): Promise<Practitioner[]> {
+  const composePaginatedEndpoint = `${practitionersEndpoint}?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  const serve = new OpenSRPService(composePaginatedEndpoint, opensrpBaseURL);
+  try {
+    const practitioners: Practitioner[] = await serve.list();
+    return practitioners;
+  } catch (_) {
+    sendErrorNotification(errorNotification);
+    return [];
+  }
+}
+
+/**
+ * function to fetch paginated practitioners resource recursively
+ *
+ * @param opensrpBaseURL - OpenSRP API base URL
+ * @param practitionersCountEndpoint - OpenSRP practitioners count endpoint
+ * @param practitionersEndpoint - OpenSRP practitioners endpoint
+ * @returns {Promise<Practitioner[]>} - an array of all practitioners in a paginated endpoint
+ */
+async function fetchPractitionersRecursively(
+  opensrpBaseURL: string,
+  practitionersCountEndpoint: string,
+  practitionersEndpoint: string
+): Promise<Practitioner[]> {
+  // practitioner array to fill recursively
+  const allPractitioners: Practitioner[] = [];
+
+  // get the total number of practitioners
+  const serve = new OpenSRPService(practitionersCountEndpoint, opensrpBaseURL);
+  const practitionerCount: number = await serve.list();
+
+  const pageSize = 1000;
+
+  // get the maximum possible page numbers
+  const maxPageNo = Math.ceil(practitionerCount / pageSize);
+
+  // add practitioners recursively based on page number
+  for (let pageNumber = 1; pageNumber <= maxPageNo; pageNumber++) {
+    const practitioners = await fetchPractitioners(
+      opensrpBaseURL,
+      practitionersEndpoint,
+      pageNumber,
+      pageSize
+    );
+    allPractitioners.push(...practitioners);
+  }
+
+  return allPractitioners;
+}
+
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
@@ -124,9 +192,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
    */
   useEffect(() => {
     if ((disableTeamMemberReassignment && practitionersRole) || !disableTeamMemberReassignment) {
-      const serve = new OpenSRPService(PRACTITIONER_GET, opensrpBaseURL);
-      serve
-        .list()
+      // fetch practitioners recursively from a paginated endpoint
+      fetchPractitionersRecursively(opensrpBaseURL, PRACTITIONER_COUNT, PRACTITIONER_GET)
         .then((response: Practitioner[]) => {
           // filter out inactive practitioners
           const activePractitioners = response.filter((practitioner) => practitioner.active);
