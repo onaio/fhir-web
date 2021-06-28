@@ -84,6 +84,7 @@ function setupInitialValue(
 export interface Props {
   opensrpBaseURL: string;
   disableTeamMemberReassignment: boolean;
+  paginationSize: number;
 }
 
 /** default component props */
@@ -135,7 +136,7 @@ async function fetchPractitionersRecursively(
   opensrpBaseURL: string,
   practitionersCountEndpoint: string,
   practitionersEndpoint: string,
-  pageSize = 1000
+  pageSize: number
 ): Promise<Practitioner[]> {
   // get the total number of practitioners
   const serve = new OpenSRPService(practitionersCountEndpoint, opensrpBaseURL);
@@ -167,7 +168,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
   const [practitioners, setPractitioners] = useState<Practitioner[] | null>(null);
   const [practitionersRole, setPractitionersRole] = useState<PractitionerPOST[] | null>(null);
-  const { opensrpBaseURL, disableTeamMemberReassignment } = props;
+  const { opensrpBaseURL, disableTeamMemberReassignment, paginationSize } = props;
 
   useEffect(() => {
     if (params.id) setupInitialValue(params.id, opensrpBaseURL, setInitialValue);
@@ -197,7 +198,12 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if ((disableTeamMemberReassignment && practitionersRole) || !disableTeamMemberReassignment) {
       // fetch practitioners recursively from a paginated endpoint
-      fetchPractitionersRecursively(opensrpBaseURL, PRACTITIONER_COUNT, PRACTITIONER_GET)
+      fetchPractitionersRecursively(
+        opensrpBaseURL,
+        PRACTITIONER_COUNT,
+        PRACTITIONER_GET,
+        paginationSize
+      )
         .then((response: Practitioner[]) => {
           // filter out inactive practitioners
           const activePractitioners = response.filter((practitioner) => practitioner.active);
@@ -233,7 +239,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
         })
         .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
     }
-  }, [disableTeamMemberReassignment, opensrpBaseURL, practitionersRole]);
+  }, [disableTeamMemberReassignment, opensrpBaseURL, paginationSize, practitionersRole]);
 
   if (!practitioners || (params.id && !initialValue)) return <Spin size={'large'} />;
 
