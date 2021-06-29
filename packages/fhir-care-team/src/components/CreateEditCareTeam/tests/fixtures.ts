@@ -723,8 +723,9 @@ export const practitioners = {
         name: [
           {
             use: 'official',
-            family: 'Ceno',
+            family: ['Ceno'],
             given: ['John'],
+            prefix: 'Mr.',
           },
         ],
         telecom: [
@@ -760,6 +761,7 @@ export const practitioners = {
             use: 'official',
             family: 'Allan',
             given: ['Allay'],
+            prefix: ['Mr.'],
           },
         ],
         telecom: [

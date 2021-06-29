@@ -121,7 +121,7 @@ describe('components/forms/CreateTeamForm', () => {
     });
     wrapper.update();
     expect(wrapper.find('form').text()).toMatchInlineSnapshot(
-      `"UUIDNameStatusActiveInactiveParticipantWard N Williams MDWard N Williams MDWard N Williams MDtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirJohn CenoAllay AllanBobi mapesaSubjectSavingCancel"`
+      `"UUIDNameStatusActiveInactiveParticipantWard N Williams MDWard N Williams MDWard N Williams MDtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirMr. John CenoMr. Allay AllanBobi mapesaSubjectSavingCancel"`
     );
     expect(fhir).toHaveBeenCalled();
     wrapper.unmount();
