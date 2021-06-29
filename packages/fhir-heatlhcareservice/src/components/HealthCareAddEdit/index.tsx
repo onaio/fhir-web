@@ -44,7 +44,7 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
 
   if (params.id && Healthcares.data && !initialValue) {
     const healthcares = Healthcares.data;
-    setInitialValue({ ...healthcares, service: healthcares });
+    setInitialValue({ ...healthcares });
   }
 
   if (!organizations.data || (params.id && !initialValue)) return <Spin size={'large'} />;

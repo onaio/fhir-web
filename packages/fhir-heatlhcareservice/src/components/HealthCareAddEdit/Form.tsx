@@ -14,12 +14,11 @@ import { ProcessFHIRObject } from 'fhir-heatlhcareservice/src/fhirutils';
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 
-export interface FormField {
+export interface FormField extends Partial<HealthcareService> {
   name: string;
   active: boolean;
   comment: string;
   extraDetails: string;
-  service?: HealthcareService;
 }
 
 interface Props {
@@ -35,22 +34,21 @@ interface Props {
  * @param {object} values value of form fields
  */
 export async function onSubmit(fhirBaseURL: string, values: FormField) {
-  const { service } = values;
-  const identifier = service ? ProcessFHIRObject(service).identifier?.official?.value : v4();
+  const identifier = values.id ? ProcessFHIRObject(values).identifier?.official?.value : v4();
 
   const payload: Omit<HealthcareService, 'meta'> = {
     resourceType: 'HealthcareService',
-    id: service ? service.id : '',
+    id: values.id ? values.id : '',
     active: values.active,
     identifier: [{ use: 'official', value: identifier }],
     comment: values.comment,
     extraDetails: values.extraDetails,
-    providedBy: { reference: `Organization/${service?.providedBy?.reference?.split('/')[1]}` },
+    providedBy: { reference: `Organization/${values?.providedBy?.reference?.split('/')[1]}` },
     name: values.name,
   };
 
   const serve = FHIR.client(fhirBaseURL);
-  if (service) {
+  if (values.id) {
     await serve.update(payload);
     sendSuccessNotification(lang.MSG_HEALTHCARES_UPDATE_SUCCESS);
   } else {
@@ -80,7 +78,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           .then(() => {
             queryClient.invalidateQueries(ORGANIZATION_GET);
             queryClient.invalidateQueries(HEALTHCARES_GET);
-            queryClient.invalidateQueries([HEALTHCARES_GET, initialValue.service?.id]);
+            queryClient.invalidateQueries([HEALTHCARES_GET, initialValue?.id]);
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
