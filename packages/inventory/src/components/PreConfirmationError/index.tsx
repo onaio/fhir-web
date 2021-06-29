@@ -43,12 +43,7 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
     />
   );
 
-  const datasource: TableData[] = errorObj?.errors.map((error) => {
-    return {
-      ...error,
-      key: error.row,
-    };
-  }) as TableData[];
+  const datasource = errorObj?.errors as TableData[];
 
   return (
     <Card title={cardTitle} className="full-page-card">

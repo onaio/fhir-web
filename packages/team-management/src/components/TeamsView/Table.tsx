@@ -7,17 +7,13 @@ import { URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
 import { Column, TableLayout } from '@opensrp/react-utils';
 
-export interface TableData extends Organization {
-  key: string;
-}
-
 export interface Props {
-  data: TableData[];
+  data: Organization[];
   opensrpBaseURL: string;
   setDetail: (isLoading: string | Organization) => void;
   setPractitionersList: (isLoading: string | Practitioner[]) => void;
   onViewDetails?: (
-    row: TableData,
+    row: Organization,
     opensrpBaseURL: string,
     setDetail: (isLoading: string | Organization) => void,
     setPractitionersList: (isLoading: string | Practitioner[]) => void
@@ -27,11 +23,11 @@ export interface Props {
 const Table: React.FC<Props> = (props: Props) => {
   const { setDetail, onViewDetails, setPractitionersList, opensrpBaseURL } = props;
 
-  const columns: Column<TableData>[] = [
+  const columns: Column<Organization>[] = [
     {
       title: 'Name',
       dataIndex: 'name',
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      sorter: (a: Organization, b: Organization) => a.name.localeCompare(b.name),
     },
   ];
 
@@ -44,7 +40,7 @@ const Table: React.FC<Props> = (props: Props) => {
       actions={{
         width: '10%',
         // eslint-disable-next-line react/display-name
-        render: (_: unknown, record: TableData) => (
+        render: (_: unknown, record: Organization) => (
           <span className="d-flex justify-content-end align-items-center">
             <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
               <Button type="link" className="m-0 p-1">

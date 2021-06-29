@@ -49,7 +49,9 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
+export function TableLayout<T extends object & { key?: string } = Dictionary>(
+  props: TableProps<T>
+) {
   const { id, columns, datasource, children, persistState, actions, ...restprops } = props;
 
   const options: Options = { ...defaults, ...restprops };
@@ -86,6 +88,11 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
       }),
   };
 
+  // auto append key into data if not provided
+  const data: T[] = datasource.map((e, index) => {
+    return { ...e, key: e.key ?? index };
+  });
+
   /** Table Layout Component used to render the table with default Settings
    *
    * @param page - the current viewing Page number
@@ -103,7 +110,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   }
 
   return (
-    <AntTable<T> dataSource={datasource} columns={columns} {...tableprops}>
+    <AntTable<T> dataSource={data} columns={columns} {...tableprops}>
       {children}
     </AntTable>
   );
