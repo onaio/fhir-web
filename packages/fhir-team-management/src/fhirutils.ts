@@ -12,29 +12,32 @@ export interface FHIRResponse<T> {
   link: [{ relation: string; url: string }];
   entry: {
     fullUrl: string;
-    resource: FhirObject<T>;
+    resource: T;
     search: { mode: string };
   }[];
 }
 
-export type FhirObject<T> = Omit<T, 'identifier'> & { identifier: FhirIdentifier[] };
-
+type ProcessedObj<T> = Omit<T, 'identifier'> & {
+  identifier?: Partial<Record<FhirIdentifier.UseEnum, FhirIdentifier>>;
+};
 export type Identifier = Require<FhirIdentifier, 'use' | 'value'>;
 export type IdentifierObject = Record<FhirIdentifier.UseEnum, Identifier>;
 
-export function ProcessFHIRResponse<T>(res: FHIRResponse<T>) {
+export function ProcessFHIRResponse<T>(res: FHIRResponse<T>): ProcessedObj<T>[] {
   return ProcessFHIRObjects(res.entry.map((e) => e.resource));
 }
 
-export function ProcessFHIRObjects<T>(object: FhirObject<T>[]) {
+export function ProcessFHIRObjects<T>(object: T[]): ProcessedObj<T>[] {
   return object.map((e) => ProcessFHIRObject(e));
 }
 
-export function ProcessFHIRObject<T>(object: FhirObject<T>): T {
+export function ProcessFHIRObject<T>(
+  object: T & { identifier?: FhirIdentifier[] }
+): ProcessedObj<T> {
   return ({
     ...object,
     ...(object.identifier && {
       identifier: convertToObject<FhirIdentifier, FhirIdentifier.UseEnum>(object.identifier, 'use'),
     }),
-  } as unknown) as T;
+  } as unknown) as ProcessedObj<T>;
 }

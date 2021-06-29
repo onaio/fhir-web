@@ -9,7 +9,7 @@ import { Spin } from 'antd';
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
-import { FhirObject, FHIRResponse, ProcessFHIRObject, ProcessFHIRResponse } from '../../fhirutils';
+import { FHIRResponse, ProcessFHIRObject } from '../../fhirutils';
 import { loadTeamDetails } from '../../utils';
 
 export interface Props {
@@ -25,18 +25,18 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
   const allPractitioner = useQuery(PRACTITIONER_GET, () => serve.request(PRACTITIONER_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Practitioner>) => ProcessFHIRResponse(res),
+    select: (res: FHIRResponse<Practitioner>) => res.entry.map((e) => e.resource),
   });
 
   const team = useQuery([TEAMS_GET, params.id], () => serve.request(TEAMS_GET + params.id), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FhirObject<Organization>) => ProcessFHIRObject(res),
+    select: (res: Organization) => res,
     enabled: params.id !== undefined,
   });
 
   const AllRoles = useQuery(PRACTITIONERROLE_GET, () => serve.request(PRACTITIONERROLE_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res),
+    select: (res: FHIRResponse<PractitionerRole>) => res.entry.map((e) => e.resource),
     enabled: params.id !== undefined,
   });
 
@@ -47,7 +47,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       AllRoles: AllRoles.data,
     }).then((team) => {
       setInitialValue({
-        uuid: team.identifier.official.value,
+        team: team,
         active: team.active,
         name: team.name,
         practitioners: team.practitioners.map((prac) => prac.id),
@@ -55,7 +55,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     });
   }
 
-  if (!allPractitioner.data || !AllRoles.data || (params.id && !initialValue))
+  if (!allPractitioner.data || (params.id && (!initialValue || !AllRoles.data)))
     return <Spin size={'large'} />;
 
   return (
@@ -72,9 +72,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
         <Form
           fhirbaseURL={fhirBaseURL}
           initialValue={initialValue}
-          id={params.id}
           allPractitioner={allPractitioner.data}
-          allPractitionerRole={AllRoles.data}
+          allPractitionerRole={AllRoles.data ? AllRoles.data : undefined}
         />
       </div>
     </section>
