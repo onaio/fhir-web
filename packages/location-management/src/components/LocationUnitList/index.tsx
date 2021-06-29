@@ -117,7 +117,8 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
 
       const data: TableData[] = hierarchy.map((location) => {
         return {
-          ...location,
+          label: location.label,
+          id: location.id,
           geographicLevel: location.node.attributes.geographicLevel,
         };
       });
