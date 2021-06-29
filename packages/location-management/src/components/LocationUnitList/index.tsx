@@ -37,7 +37,7 @@ reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer)
 
 interface Props {
   opensrpBaseURL: string;
-  filterByParentId: boolean;
+  filterByParentId?: boolean;
 }
 
 export interface AntTreeProps {
