@@ -1,7 +1,7 @@
 import FHIR from 'fhirclient';
 import { Organization, PractitionerRole, OrganizationDetail, Practitioner } from '.';
 import { PRACTITIONERROLE_GET, PRACTITIONER_GET } from './constants';
-import { FHIRResponse, ProcessFHIRResponse, FhirObject, ProcessFHIRObject } from './fhirutils';
+import { FHIRResponse } from './fhirutils';
 
 /**
  * Function to load selected Team for details
@@ -20,16 +20,14 @@ export async function loadTeamDetails(props: {
     props.AllRoles ??
     (await serve
       .request(PRACTITIONERROLE_GET)
-      .then((res: FHIRResponse<PractitionerRole>) => ProcessFHIRResponse(res)));
+      .then((res: FHIRResponse<PractitionerRole>) => res.entry.map((e) => e.resource)));
 
   const practitionerrolesassignedref = AllRoles.filter(
     (role) => role.organization.reference === `Organization/${team.id}`
   ).map((role) => role.practitioner.reference.split('/')[1]);
 
   const practitionerAssignedPromise = practitionerrolesassignedref.map((id) =>
-    serve
-      .request(`${PRACTITIONER_GET}/${id}`)
-      .then((res: FhirObject<Practitioner>) => ProcessFHIRObject(res))
+    serve.request(`${PRACTITIONER_GET}/${id}`).then((res: Practitioner) => res)
   );
 
   const practitionerAssigned = await Promise.all(practitionerAssignedPromise);

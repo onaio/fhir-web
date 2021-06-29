@@ -4,9 +4,9 @@ import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Organization } from '../../types';
-import { Column, TableLayout } from '@opensrp/react-utils';
+import { Column, Require, TableLayout } from '@opensrp/react-utils';
 
-export interface TableData extends Organization {
+export interface TableData extends Require<Organization, 'id'> {
   key: string;
 }
 

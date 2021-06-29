@@ -2,24 +2,29 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { TEAMS_GET, PRACTITIONERROLE_DEL, PRACTITIONERROLE_GET } from '../../constants';
+import {
+  TEAMS_GET,
+  PRACTITIONERROLE_DEL,
+  PRACTITIONERROLE_GET,
+  PRACTITIONER_GET,
+} from '../../constants';
 import {
   sendSuccessNotification,
   sendInfoNotification,
   sendErrorNotification,
 } from '@opensrp/notifications';
-import { Organization, Practitioner, PractitionerRole } from '../../types';
-import { FhirObject } from '../../fhirutils';
+import { Organization, OrganizationDetail, Practitioner, PractitionerRole } from '../../types';
 import { useQueryClient } from 'react-query';
 
-import lang, { Lang } from '../../lang';
+import lang from '../../lang';
 import FHIR from 'fhirclient';
+import { ProcessFHIRObject } from '../../fhirutils';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 
 export interface FormField {
-  uuid: string;
+  team?: OrganizationDetail;
   name: string;
   active: boolean;
   practitioners: string[];
@@ -27,9 +32,8 @@ export interface FormField {
 
 interface Props {
   fhirbaseURL: string;
-  id?: string;
   allPractitioner: Practitioner[];
-  allPractitionerRole: PractitionerRole[];
+  allPractitionerRole?: PractitionerRole[];
   initialValue?: FormField;
 }
 
@@ -45,32 +49,30 @@ interface Props {
  */
 export async function onSubmit(
   fhirbaseURL: string,
-  setIsSubmitting: (value: boolean) => void,
-  practitioner: Practitioner[],
-  allPractitionerRole: PractitionerRole[],
   initialValue: FormField,
   values: FormField,
-  id?: string
+  practitioner: Practitioner[],
+  allPractitionerRole?: PractitionerRole[]
 ) {
-  setIsSubmitting(true);
-  const Teamid = initialValue.uuid ?? v4();
+  const officialidentifier = initialValue.team
+    ? ProcessFHIRObject(initialValue.team)?.identifier?.official?.value
+    : v4();
 
-  const payload: FhirObject<Organization> = {
+  const payload: Organization = {
     resourceType: 'Organization',
-    id: Teamid,
+    id: initialValue.team ? initialValue.team?.id : '',
     active: values.active,
-    identifier: [{ use: 'official', value: Teamid }],
+    identifier: [{ use: 'official', value: officialidentifier }],
     name: values.name,
   };
 
-  await setTeam(fhirbaseURL, payload, id);
+  const team = await setTeam(fhirbaseURL, payload);
 
   // Filter and seperate the practitioners uuid
-
   const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
   const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
-  await SetPractitioners(fhirbaseURL, practitioner, allPractitionerRole, toAdd, toRem, Teamid);
+  await SetPractitioners(fhirbaseURL, team.id, toAdd, toRem, practitioner, allPractitionerRole);
 }
 
 /**
@@ -81,24 +83,22 @@ export async function onSubmit(
  * @param {Array<string>} toAdd list of practitioner uuid to add
  * @param {Array<string>} toRemove list of practitioner uuid to remove
  * @param {string} teamId id of the team
- * @param {Lang} langObj - the translation string lookup
  */
 async function SetPractitioners(
   fhirbaseURL: string,
-  practitioner: Practitioner[],
-  practitionerrole: PractitionerRole[],
+  teamId: string,
   toAdd: string[],
   toRemove: string[],
-  teamId: string,
-  langObj: Lang = lang
+  practitioner: Practitioner[],
+  practitionerrole?: PractitionerRole[]
 ) {
-  sendInfoNotification(langObj.MSG_ASSIGN_PRACTITIONERS);
+  sendInfoNotification(lang.MSG_ASSIGN_PRACTITIONERS);
   const serve = FHIR.client(fhirbaseURL);
 
   // Api Call to delete practitioners
   const toremoveroles = toRemove
     .map((id) =>
-      practitionerrole.find(
+      practitionerrole?.find(
         (role) =>
           role.organization.reference === `Organization/${teamId}` &&
           role.practitioner.reference === `Practitioner/${id}`
@@ -110,9 +110,11 @@ async function SetPractitioners(
 
   // Api Call to add practitioners
   const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.id));
+  console.log(toAddPractitioner, teamId);
+
   const addpromises = toAddPractitioner.map((prac) => {
     const id = v4();
-    const payload: FhirObject<Omit<PractitionerRole, 'meta'>> = {
+    const payload: Omit<PractitionerRole, 'meta'> = {
       resourceType: 'PractitionerRole',
       active: true,
       id: id,
@@ -124,7 +126,7 @@ async function SetPractitioners(
   });
   await Promise.all(addpromises);
 
-  sendSuccessNotification(langObj.MSG_ASSIGN_PRACTITONERS_SUCCESS);
+  sendSuccessNotification(lang.MSG_ASSIGN_PRACTITONERS_SUCCESS);
 }
 
 /**
@@ -133,30 +135,25 @@ async function SetPractitioners(
  * @param {string} fhirbaseURL - base url
  * @param {Organization} payload payload To send
  * @param {string} id of the team if already created
- * @param {Lang} langObj - the translation string lookup
  */
-export async function setTeam(
-  fhirbaseURL: string,
-  payload: FhirObject<Omit<Organization, 'meta'>>,
-  id?: string,
-  langObj: Lang = lang
-) {
+export async function setTeam(fhirbaseURL: string, payload: Omit<Organization, 'meta'>) {
   const serve = FHIR.client(fhirbaseURL);
-  if (id) {
-    await serve.update(payload);
-    sendSuccessNotification(langObj.MSG_TEAMS_UPDATE_SUCCESS);
+  if (payload.id) {
+    const resp: Organization = await serve.update(payload);
+    sendSuccessNotification(lang.MSG_TEAMS_UPDATE_SUCCESS);
+    return resp;
   } else {
-    await serve.create(payload);
-    sendSuccessNotification(langObj.MSG_TEAMS_ADD_SUCCESS);
+    const resp: Organization = await serve.create(payload);
+    sendSuccessNotification(lang.MSG_TEAMS_ADD_SUCCESS);
+    return resp;
   }
 }
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { allPractitioner, allPractitionerRole, fhirbaseURL, id } = props;
+  const { allPractitioner, allPractitionerRole, fhirbaseURL } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const initialValue = props.initialValue ?? {
-    uuid: '',
     active: true,
     name: '',
     practitioners: [],
@@ -166,25 +163,19 @@ export const Form: React.FC<Props> = (props: Props) => {
     <AntdForm
       requiredMark={false}
       {...layout}
-      onFinish={(values) =>
-        onSubmit(
-          fhirbaseURL,
-          setIsSubmitting,
-          allPractitioner,
-          allPractitionerRole,
-          initialValue,
-          values,
-          id
-        )
+      onFinish={(values) => {
+        setIsSubmitting(true);
+        onSubmit(fhirbaseURL, initialValue, values, allPractitioner, allPractitionerRole)
           .then(() => {
             queryClient.invalidateQueries(TEAMS_GET);
             queryClient.invalidateQueries(PRACTITIONERROLE_GET);
-            queryClient.invalidateQueries([TEAMS_GET, id]);
+            queryClient.invalidateQueries(PRACTITIONER_GET);
+            queryClient.invalidateQueries([TEAMS_GET, initialValue.team?.id]);
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
-          .finally(() => setIsSubmitting(false))
-      }
+          .finally(() => setIsSubmitting(false));
+      }}
       initialValues={initialValue}
     >
       <AntdForm.Item name="uuid" label={lang.TEAM_NAME} hidden={true}>

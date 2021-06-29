@@ -1,14 +1,13 @@
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { OrganizationDetail, Practitioner } from '../../types';
+import { OrganizationDetail } from '../../types';
 import lang from '../../lang';
 import { convertToObject } from '@opensrp/react-utils';
 import { HumanName } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/humanName';
 
 export interface TeamsDetailProps extends OrganizationDetail {
   onClose?: Function;
-  practitioners: Practitioner[];
 }
 
 const TeamsDetail = (props: TeamsDetailProps) => {
