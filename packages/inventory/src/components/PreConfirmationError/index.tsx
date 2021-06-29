@@ -43,7 +43,7 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
     />
   );
 
-  const datasource = errorObj?.errors as TableData[];
+  const datasource: TableData[] = errorObj?.errors ?? [];
 
   return (
     <Card title={cardTitle} className="full-page-card">
