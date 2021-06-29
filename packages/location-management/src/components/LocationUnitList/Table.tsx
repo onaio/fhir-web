@@ -6,7 +6,7 @@ import lang from '../../lang';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 
-export interface TableData extends ParsedHierarchyNode {
+export interface TableData extends Pick<ParsedHierarchyNode, 'id' | 'label'> {
   geographicLevel: number;
 }
 
