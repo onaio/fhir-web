@@ -1,7 +1,6 @@
 import FHIR from 'fhirclient';
 import { HealthcareService, HealthcareServiceDetail } from '.';
 import { ORGANIZATION_GET } from './constants';
-import { FhirObject, ProcessFHIRObject } from './fhirutils';
 import { Organization } from './types';
 
 /**
@@ -19,9 +18,7 @@ export async function loadHealthcareDetails(
   const orgid = healthcareservice.providedBy?.reference?.split('/')[1];
 
   const organization = orgid
-    ? await serve
-        .request(ORGANIZATION_GET + orgid)
-        .then((res: FhirObject<Organization>) => ProcessFHIRObject(res))
+    ? await serve.request(ORGANIZATION_GET + orgid).then((res: Organization) => res)
     : undefined;
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
