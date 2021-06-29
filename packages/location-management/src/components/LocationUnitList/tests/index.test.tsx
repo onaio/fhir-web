@@ -7,7 +7,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { notification } from 'antd';
 import { Router } from 'react-router';
-import LocationUnitList, { loadSingleLocation, parseTableData } from '..';
+import LocationUnitList, { loadSingleLocation } from '..';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -27,6 +27,7 @@ import {
 } from '../../../ducks/location-units';
 import { ParsedHierarchyNode } from '../../../ducks/locationHierarchy/types';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { TableData } from '../Table';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -234,11 +235,10 @@ describe('location-management/src/components/LocationUnitList', () => {
     fetch.mockResponse(JSON.stringify(baseLocationUnits[0]));
     const called = jest.fn();
 
-    const row = {
+    const row: TableData = {
       geographicLevel: parsedHierarchy[0].node.attributes.geographicLevel,
       id: parsedHierarchy[0].id,
-      key: '0',
-      name: parsedHierarchy[0].title,
+      label: parsedHierarchy[0].label,
     };
 
     await loadSingleLocation(row, baseURL, called);
@@ -257,11 +257,10 @@ describe('location-management/src/components/LocationUnitList', () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
     fetch.mockReject();
 
-    const row = {
+    const row: TableData = {
       geographicLevel: parsedHierarchy[0].node.attributes.geographicLevel,
       id: parsedHierarchy[0].id,
-      key: '0',
-      name: parsedHierarchy[0].title,
+      label: parsedHierarchy[0].label,
     };
 
     await loadSingleLocation(row, baseURL, jest.fn());
@@ -320,31 +319,6 @@ describe('location-management/src/components/LocationUnitList', () => {
       ],
     ]);
     fetch.resetMocks();
-  });
-
-  it('test parseTableData', () => {
-    const response = parseTableData(parsedHierarchy);
-
-    expect(response).toMatchObject([
-      {
-        geographicLevel: parsedHierarchy[0].node.attributes.geographicLevel,
-        id: parsedHierarchy[0].id,
-        key: '0',
-        name: parsedHierarchy[0].title,
-      },
-      {
-        geographicLevel: parsedHierarchy[1].node.attributes.geographicLevel,
-        id: parsedHierarchy[1].id,
-        key: '1',
-        name: parsedHierarchy[1].title,
-      },
-      {
-        geographicLevel: parsedHierarchy[2].node.attributes.geographicLevel,
-        id: parsedHierarchy[2].id,
-        key: '2',
-        name: parsedHierarchy[2].title,
-      },
-    ]);
   });
 
   it('fail loading location ', async () => {
