@@ -170,8 +170,8 @@ describe('location-management/src/components/LocationUnitList', () => {
     const tablelastrow = {
       geographicLevel: Tunisia.node.attributes.geographicLevel,
       id: Tunisia.id,
-      key: '2',
-      name: Tunisia.label,
+      key: 2,
+      label: Tunisia.label,
     };
 
     expect(wrapper.find('tbody BodyRow').last().prop('record')).toMatchObject(tablelastrow);

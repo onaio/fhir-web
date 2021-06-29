@@ -50,7 +50,7 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
     />
   );
 
-  const datasource = errorObj?.errors as TableData[];
+  const datasource: TableData[] = errorObj?.errors ?? [];
 
   const rowsProcessed = Number(errorObj?.rowsProcessed ?? '0');
   const totalRows = Number(errorObj?.rowsNumber ?? '0');
