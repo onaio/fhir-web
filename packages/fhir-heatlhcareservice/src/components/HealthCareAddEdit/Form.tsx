@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { HEALTHCARES_GET } from '../../constants';
+import { HEALTHCARES_GET, ORGANIZATION_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService, Organization } from '../../types';
-import { FhirObject } from '../../fhirutils';
 import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
 import FHIR from 'fhirclient';
+import { ProcessFHIRObject } from 'fhir-heatlhcareservice/src/fhirutils';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -19,12 +19,11 @@ export interface FormField {
   active: boolean;
   comment: string;
   extraDetails: string;
-  organizationid: string | undefined;
+  service?: HealthcareService;
 }
 
 interface Props {
   fhirBaseURL: string;
-  id?: string;
   initialValue?: FormField;
   organizations: Organization[];
 }
@@ -33,32 +32,25 @@ interface Props {
  * Handle form submission
  *
  * @param {string} fhirBaseURL - base url
- * @param {Function} setIsSubmitting function to set IsSubmitting loading process
  * @param {object} values value of form fields
- * @param {string} id id of the healthcare
  */
-export async function onSubmit(
-  fhirBaseURL: string,
-  setIsSubmitting: (value: boolean) => void,
-  values: FormField,
-  id?: string
-) {
-  setIsSubmitting(true);
-  const Healthcareid = id ?? v4();
+export async function onSubmit(fhirBaseURL: string, values: FormField) {
+  const { service } = values;
+  const identifier = service ? ProcessFHIRObject(service).identifier?.official?.value : v4();
 
-  const payload: FhirObject<Omit<HealthcareService, 'meta'>> = {
+  const payload: Omit<HealthcareService, 'meta'> = {
     resourceType: 'HealthcareService',
-    id: Healthcareid,
+    id: service ? service.id : '',
     active: values.active,
-    identifier: [{ use: 'official', value: Healthcareid }],
+    identifier: [{ use: 'official', value: identifier }],
     comment: values.comment,
     extraDetails: values.extraDetails,
-    providedBy: { reference: `Organization/${values.organizationid}` },
+    providedBy: { reference: `Organization/${service?.providedBy?.reference?.split('/')[1]}` },
     name: values.name,
   };
 
   const serve = FHIR.client(fhirBaseURL);
-  if (id) {
+  if (service) {
     await serve.update(payload);
     sendSuccessNotification(lang.MSG_HEALTHCARES_UPDATE_SUCCESS);
   } else {
@@ -69,34 +61,31 @@ export async function onSubmit(
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { fhirBaseURL, id, organizations } = props;
+  const { fhirBaseURL, organizations } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const initialValue: FormField = props.initialValue ?? {
     active: true,
     name: '',
     comment: '',
     extraDetails: '',
-    organizationid: undefined,
   };
 
   return (
     <AntdForm
       requiredMark={false}
       {...layout}
-      onFinish={(values) =>
-        onSubmit(fhirBaseURL, setIsSubmitting, values, id)
+      onFinish={(values) => {
+        setIsSubmitting(true);
+        onSubmit(fhirBaseURL, values)
           .then(() => {
-            queryClient
-              .invalidateQueries(HEALTHCARES_GET)
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-            queryClient
-              .invalidateQueries([HEALTHCARES_GET, id])
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+            queryClient.invalidateQueries(ORGANIZATION_GET);
+            queryClient.invalidateQueries(HEALTHCARES_GET);
+            queryClient.invalidateQueries([HEALTHCARES_GET, initialValue.service?.id]);
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
-          .finally(() => setIsSubmitting(false))
-      }
+          .finally(() => setIsSubmitting(false));
+      }}
       initialValues={initialValue}
     >
       <AntdForm.Item name="name" label={lang.HEALTHCARE_NAME}>

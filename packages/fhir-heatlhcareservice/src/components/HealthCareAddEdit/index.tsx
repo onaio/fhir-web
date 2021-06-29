@@ -9,7 +9,7 @@ import { Spin } from 'antd';
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
-import { FhirObject, FHIRResponse, ProcessFHIRObject, ProcessFHIRResponse } from '../../fhirutils';
+import { FHIRResponse } from '../../fhirutils';
 
 export interface Props {
   fhirBaseURL: string;
@@ -32,20 +32,19 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     () => serve.request(`${HEALTHCARES_GET}${params.id}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: FhirObject<HealthcareService>) => ProcessFHIRObject(res),
+      select: (res: HealthcareService) => res,
       enabled: params.id !== undefined,
     }
   );
 
-  const organizations = useQuery([ORGANIZATION_GET], () => serve.request(ORGANIZATION_GET), {
+  const organizations = useQuery(ORGANIZATION_GET, () => serve.request(ORGANIZATION_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Organization>) => ProcessFHIRResponse(res),
+    select: (res: FHIRResponse<Organization>) => res.entry.map((e) => e.resource),
   });
 
   if (params.id && Healthcares.data && !initialValue) {
     const healthcares = Healthcares.data;
-    const organizationid = healthcares.providedBy?.reference?.split('/')[1];
-    setInitialValue({ ...healthcares, organizationid: organizationid ?? undefined });
+    setInitialValue({ ...healthcares, service: healthcares });
   }
 
   if (!organizations.data || (params.id && !initialValue)) return <Spin size={'large'} />;
@@ -65,9 +64,8 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
       <div className="bg-white p-5">
         <Form
           fhirBaseURL={fhirBaseURL}
-          organizations={organizations.data}
           initialValue={initialValue}
-          id={params.id}
+          organizations={organizations.data}
         />
       </div>
     </section>
