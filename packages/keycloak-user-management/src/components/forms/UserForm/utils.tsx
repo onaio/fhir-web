@@ -8,10 +8,11 @@ import {
   URL_USER,
   URL_USER_CREDENTIALS,
   KEYCLOAK_URL_USER_GROUPS,
+  PRACTITIONER,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import lang, { Lang } from '../../../lang';
-import { FormFields } from '.';
+import { FormFields } from './types';
 import { Practitioner } from '@opensrp/team-management';
 import { some } from 'lodash';
 
@@ -39,7 +40,7 @@ export const createOrEditPractitioners = async (
   values: FormFields,
   langObj: Lang = lang
 ) => {
-  const practitionersService = new OpenSRPService('practitioner', baseURL);
+  const practitionersService = new OpenSRPService(PRACTITIONER, baseURL);
 
   // initialize values for creating a practitioner
   let requestType: 'update' | 'create' = 'create';
