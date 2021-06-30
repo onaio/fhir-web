@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Table as AntTable } from 'antd';
 import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
@@ -89,9 +89,11 @@ export function TableLayout<T extends object & { key?: string } = Dictionary>(
   };
 
   // auto append key into data if not provided
-  const data: T[] = datasource.map((e, index) => {
-    return { ...e, key: e.key ?? index };
-  });
+  const data: T[] = useMemo(() => {
+    return datasource.map((e, index) => {
+      return { ...e, key: e.key ?? index };
+    });
+  }, [datasource]);
 
   /** Table Layout Component used to render the table with default Settings
    *
