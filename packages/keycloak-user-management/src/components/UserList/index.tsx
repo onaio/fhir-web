@@ -48,6 +48,7 @@ export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakUsers: KeycloakUser[];
   keycloakBaseURL: string;
+  opensrpBaseURL: string;
   extraData: Dictionary;
   usersPageSize: number;
 }
@@ -59,6 +60,7 @@ export const defaultProps = {
   removeKeycloakUsersCreator: removeKeycloakUsers,
   keycloakUsers: [],
   keycloakBaseURL: '',
+  opensrpBaseURL: '',
   extraData: {},
   usersPageSize: 20,
 };
@@ -82,6 +84,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     removeKeycloakUsersCreator,
     keycloakUsers,
     keycloakBaseURL,
+    opensrpBaseURL,
     extraData,
     usersPageSize,
   } = props;
@@ -198,6 +201,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   const tableActionsProps = {
                     removeKeycloakUsersCreator,
                     keycloakBaseURL,
+                    opensrpBaseURL,
                     isLoadingCallback,
                     record,
                     extraData,

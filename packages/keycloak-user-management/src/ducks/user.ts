@@ -37,6 +37,10 @@ export interface UserAction {
   config: Dictionary;
 }
 
+export interface UserAttributes {
+  contact: string[];
+}
+
 /** Interface for user json object */
 export interface KeycloakUser {
   access?: {
@@ -58,6 +62,7 @@ export interface KeycloakUser {
   requiredActions?: string[];
   totp?: boolean;
   username: string;
+  attributes?: UserAttributes;
 }
 
 // actions

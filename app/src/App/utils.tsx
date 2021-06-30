@@ -24,8 +24,10 @@ import {
   FHIR_API_BASE_URL,
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
-  USER_FORM_HIDDEN,
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
+  USER_FORM_HIDDEN_FIELDS,
+  USER_FORM_RENDER_FIELDS,
+  PAGINATION_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -40,6 +42,7 @@ export const teamAssignmentProps = {
 export const teamManagementProps = {
   ...BaseProps,
   disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
+  paginationSize: PAGINATION_SIZE,
 };
 
 export const locationUnitProps = {
@@ -152,5 +155,6 @@ export const createEditUserProps = {
   // TODO: this will not scale well, need a better configuration-first solution that enables us to
   // simulate a diverse set of behaviors from the same code base for a module. preferable a solution
   // that is closer to the code.
-  userFormHidden: USER_FORM_HIDDEN,
+  userFormHiddenFields: USER_FORM_HIDDEN_FIELDS,
+  userFormRenderFields: USER_FORM_RENDER_FIELDS,
 };

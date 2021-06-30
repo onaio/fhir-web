@@ -548,8 +548,8 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS_ADD}
-              {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
+              {...teamManagementProps}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
