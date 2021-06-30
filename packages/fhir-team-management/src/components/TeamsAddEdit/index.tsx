@@ -9,7 +9,7 @@ import { Spin } from 'antd';
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
-import { FHIRResponse, ProcessFHIRObject } from '../../fhirutils';
+import { FHIRResponse } from '../../fhirutils';
 import { loadTeamDetails } from '../../utils';
 
 export interface Props {
@@ -28,7 +28,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     select: (res: FHIRResponse<Practitioner>) => res.entry.map((e) => e.resource),
   });
 
-  const team = useQuery([TEAMS_GET, params.id], () => serve.request(TEAMS_GET + params.id), {
+  const team = useQuery([TEAMS_GET, params.id], () => serve.request(`${TEAMS_GET}${params.id}`), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res: Organization) => res,
     enabled: params.id !== undefined,
@@ -45,14 +45,16 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       team: team.data,
       fhirBaseURL: fhirBaseURL,
       AllRoles: AllRoles.data,
-    }).then((team) => {
-      setInitialValue({
-        team: team,
-        active: team.active,
-        name: team.name,
-        practitioners: team.practitioners.map((prac) => prac.id),
-      });
-    });
+    })
+      .then((team) => {
+        setInitialValue({
+          team: team,
+          active: team.active,
+          name: team.name,
+          practitioners: team.practitioners.map((prac) => prac.id),
+        });
+      })
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }
 
   if (!allPractitioner.data || (params.id && (!initialValue || !AllRoles.data)))

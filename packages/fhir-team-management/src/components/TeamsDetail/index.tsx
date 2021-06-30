@@ -3,8 +3,6 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { OrganizationDetail } from '../../types';
 import lang from '../../lang';
-import { convertToObject } from '@opensrp/react-utils';
-import { HumanName } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/humanName';
 
 export interface TeamsDetailProps extends OrganizationDetail {
   onClose?: Function;
@@ -38,11 +36,11 @@ const TeamsDetail = (props: TeamsDetailProps) => {
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.TEAM_MEMBERS}</div>
         {filteredPractitioners.length ? (
-          filteredPractitioners.map((item) => {
-            const names = convertToObject<HumanName, HumanName.UseEnum>(item.name, 'use');
+          filteredPractitioners.map((prac) => {
+            const name = prac.name.find((e) => e.use === 'official')?.given;
             return (
-              <div key={item.id} className="mb-0">
-                {names.official?.given?.reduce((fullname, name) => `${fullname} ${name}`)}
+              <div key={prac.id} className="mb-0">
+                {name?.reduce((fullname, name) => `${fullname} ${name}`)}
               </div>
             );
           })
