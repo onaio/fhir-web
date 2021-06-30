@@ -18,7 +18,6 @@ import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
 import FHIR from 'fhirclient';
-import { ProcessFHIRObject } from '../../fhirutils';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -41,11 +40,10 @@ interface Props {
  * Handle form submission
  *
  * @param {string} fhirbaseURL - base url
- * @param {Function} setIsSubmitting function to set IsSubmitting loading process
- * @param {Practitioner} practitioner list of practitioner to filter the selected one from
  * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
- * @param {string} id id of the team
+ * @param {Practitioner} practitioner list of practitioner to refer to when adding or removing
+ * @param {PractitionerRole} allPractitionerRole list of practitionerRole to remove or add
  */
 export async function onSubmit(
   fhirbaseURL: string,
@@ -55,12 +53,12 @@ export async function onSubmit(
   allPractitionerRole?: PractitionerRole[]
 ) {
   const officialidentifier = initialValue.team
-    ? ProcessFHIRObject(initialValue.team)?.identifier?.official?.value
+    ? initialValue.team.identifier?.find((e) => e.use === 'official')?.value
     : v4();
 
   const payload: Organization = {
     resourceType: 'Organization',
-    id: initialValue.team ? initialValue.team?.id : '',
+    id: initialValue.team ? initialValue.team.id : '',
     active: values.active,
     identifier: [{ use: 'official', value: officialidentifier }],
     name: values.name,
@@ -79,10 +77,11 @@ export async function onSubmit(
  * handle Practitioners
  *
  * @param {string} fhirbaseURL - base url
- * @param {Practitioner} practitioner list of practitioner to filter the selected one from
- * @param {Array<string>} toAdd list of practitioner uuid to add
- * @param {Array<string>} toRemove list of practitioner uuid to remove
  * @param {string} teamId id of the team
+ * @param {string[]} toAdd list of practitioner uuid to add
+ * @param {string[]} toRemove list of practitioner uuid to remove
+ * @param {Practitioner[]} practitioner list of practitioner to refer to when adding or removing
+ * @param {PractitionerRole[]} practitionerrole list of practitionerRole to remove or add
  */
 async function SetPractitioners(
   fhirbaseURL: string,
@@ -105,12 +104,11 @@ async function SetPractitioners(
       )
     )
     .map((role) => role?.id);
-  const rempromises = toremoveroles.map((roles) => serve.delete(PRACTITIONERROLE_DEL + roles));
+  const rempromises = toremoveroles.map((roles) => serve.delete(`${PRACTITIONERROLE_DEL}${roles}`));
   await Promise.all(rempromises);
 
   // Api Call to add practitioners
   const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.id));
-  console.log(toAddPractitioner, teamId);
 
   const addpromises = toAddPractitioner.map((prac) => {
     const id = v4();
@@ -134,7 +132,6 @@ async function SetPractitioners(
  *
  * @param {string} fhirbaseURL - base url
  * @param {Organization} payload payload To send
- * @param {string} id of the team if already created
  */
 export async function setTeam(fhirbaseURL: string, payload: Omit<Organization, 'meta'>) {
   const serve = FHIR.client(fhirbaseURL);
@@ -167,10 +164,18 @@ export const Form: React.FC<Props> = (props: Props) => {
         setIsSubmitting(true);
         onSubmit(fhirbaseURL, initialValue, values, allPractitioner, allPractitionerRole)
           .then(() => {
-            queryClient.invalidateQueries(TEAMS_GET);
-            queryClient.invalidateQueries(PRACTITIONERROLE_GET);
-            queryClient.invalidateQueries(PRACTITIONER_GET);
-            queryClient.invalidateQueries([TEAMS_GET, initialValue.team?.id]);
+            queryClient
+              .invalidateQueries(TEAMS_GET)
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+            queryClient
+              .invalidateQueries(PRACTITIONERROLE_GET)
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+            queryClient
+              .invalidateQueries(PRACTITIONER_GET)
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+            queryClient
+              .invalidateQueries([TEAMS_GET, initialValue.team?.id])
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))

@@ -1,7 +1,15 @@
 import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
 
+/**
+ * From T, convert a set of keys to optional, that are in the union K.
+ */
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
+
+/**
+ * From T, convert a set of keys to required, that are in the union K.
+ */
+export type Require<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
 /**
  * Abstraction to add language resources to the i18n instance
@@ -16,26 +24,3 @@ export const loadLanguageResources = (i18n: i18nInstance | undefined, resources:
     });
   });
 };
-
-/**
- * Convert array of Object T to object with param key used for key of resultant object.
- *
- * @param array array of T to be converted
- * @param key key of T to used to the processed Object
- * @returns resultant Object
- */
-export function convertToObject<T, K extends string>(
-  array: Array<T>,
-  key: keyof T
-): Partial<Record<K, T>> {
-  return array.reduce((prev, item) => {
-    const _key = item[key];
-    if (typeof _key !== 'string') throw new Error('Key should be a string value');
-    return { ...prev, [_key]: item };
-  }, {}) as Partial<Record<K, T>>;
-}
-
-/**
- * From T, convert a set of keys to required, that arr in the union K.
- */
-export type Require<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;

@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { FHIRResponse, ProcessFHIRResponse } from '../../fhirutils';
+import { FHIRResponse } from '../../fhirutils';
 import { loadTeamDetails } from '../../utils';
 
 interface Props {
