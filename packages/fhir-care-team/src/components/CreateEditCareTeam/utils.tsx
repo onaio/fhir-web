@@ -26,16 +26,19 @@ export const submitForm = async (
     id: id,
     name: values.name,
     status: values.status as IfhirR4.CareTeam.StatusEnum,
-    subject: {
-      reference: `Group/${values.groupsId}`,
-    },
-    participant: values.practitionersId?.map((id) => {
-      return {
-        member: {
-          reference: `Practitioner/${id}`,
-        },
-      };
-    }),
+    subject: values.groupsId
+      ? {
+          reference: `Group/${values.groupsId}`,
+        }
+      : undefined,
+    participant:
+      values.practitionersId?.map((id) => {
+        return {
+          member: {
+            reference: `Practitioner/${id}`,
+          },
+        };
+      }) ?? [],
   };
   const serve = FHIR.client(fhirBaseURL);
   if (id) {
