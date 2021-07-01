@@ -176,6 +176,27 @@ export const Form: React.FC<Props> = ({
     ? [...initialValue.practitionersList, ...practitioners]
     : practitioners;
 
+  /**
+   * function to filter select options by text - passed all select options to filter from
+   *
+   * @param input - typed in search text
+   * @param option - a select option to be evaluated - with it's key, value, and children props
+   * @param option.key - the Select.Option 'key' prop
+   * @param option.value - the Select.Option 'value' prop
+   * @param option.children - the Select.Option 'children' prop
+   * @param option.label - the Select.Option 'label' prop
+   * @returns {boolean} - matcher function that evaluates to boolean - whether to include option in filtered set or not
+   */
+  // Todo: type-check options
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function filterFunction(input: string, option: any): boolean {
+    let expr1 = false,
+      expr2 = false;
+    if (option.children) expr1 = option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    if (option.label) expr2 = option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    return expr1 || expr2;
+  }
+
   return (
     <AntdForm
       requiredMark={false}
@@ -201,7 +222,14 @@ export const Form: React.FC<Props> = ({
         label={lang.TEAM_MEMBERS}
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
-        <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
+        <Select
+          allowClear
+          mode="multiple"
+          placeholder={lang.SELECT_PRACTITIONER}
+          showSearch
+          optionFilterProp="children"
+          filterOption={filterFunction}
+        >
           {practitionersList.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
