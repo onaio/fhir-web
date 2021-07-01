@@ -26,6 +26,7 @@ import {
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
   USER_FORM_HIDDEN_FIELDS,
   USER_FORM_RENDER_FIELDS,
+  PAGINATION_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -38,6 +39,7 @@ export const teamAssignmentProps = {
 
 export const teamManagementProps = {
   disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
+  paginationSize: PAGINATION_SIZE,
 };
 
 export const locationUnitProps = {
