@@ -62,7 +62,7 @@ const defaultProps = {
 
 export type CareTeamListPropTypes = Props & RouteComponentProps<RouteParams>;
 
-export const fetcCareTeams = async (
+export const fetchCareTeams = async (
   fhirBaseURL: string,
   pageSize: number,
   pageOffset: number,
@@ -91,7 +91,7 @@ export const useCareTeamsHook = (
 ) => {
   return useQuery(
     FHIR_CARE_TEAM,
-    () => fetcCareTeams(fhirBaseURL, pageSize, pageOffset, setPayloadCount),
+    () => fetchCareTeams(fhirBaseURL, pageSize, pageOffset, setPayloadCount),
     {
       refetchOnWindowFocus: false,
     }
