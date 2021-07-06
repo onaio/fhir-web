@@ -553,4 +553,68 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     wrapper.unmount();
   });
+
+  it('filters select options by text', async () => {
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify(team));
+    // practitioner count endpoint - pageSize === 1k. so if resp < 1k, pageNumber = 1
+    fetch.mockResponseOnce(JSON.stringify(900));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/${id}`, hash: '', search: '', state: {} }]}>
+          <Route path={'/:id'} component={() => <TeamsAddEdit {...props} />} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find antd Select with id 'practitioners' in the 'Form' component
+    const practitionersSelect = wrapper.find('Form').find('Select#practitioners');
+
+    // simulate click on select - to show dropdown items
+    practitionersSelect.find('.ant-select-selector').simulate('mousedown');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // expect to see all options (practitioners)
+    const practitionersSelect2 = wrapper.find('Select#practitioners');
+    // find antd select options
+    const selectOptions = practitionersSelect2.find('.ant-select-item-option-content');
+
+    // expect all team options
+    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([
+      'anon ops',
+      'prac two',
+      'Benjamin Mulyungi',
+      'test admin',
+    ]);
+
+    // find search input field
+    const inputField = practitionersSelect.find('input#practitioners');
+    // simulate change (type search phrase)
+    inputField.simulate('change', { target: { value: 'anon' } });
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // expect to see only filtered options
+    const practitionersSelect3 = wrapper.find('Select#practitioners');
+    const selectOptions2 = practitionersSelect3.find('.ant-select-item-option-content');
+    expect(selectOptions2.map((opt) => opt.text())).toMatchInlineSnapshot(`
+      Array [
+        "anon ops",
+      ]
+    `);
+  });
 });
