@@ -117,6 +117,7 @@ export const submitForm = async (
     // get user Id for newly created keycloak user from response headers
     if (response) {
       const UUID = getUserId(response);
+      // inject id to values
       values = { ...values, id: UUID };
     }
 
