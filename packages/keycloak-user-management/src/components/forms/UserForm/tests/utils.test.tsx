@@ -8,7 +8,7 @@ import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
 import { value, keycloakUser, practitioner1, userGroup } from './fixtures';
-import { FormFields } from '..';
+import { FormFields } from '../types';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -241,10 +241,10 @@ describe('forms/utils/submitForm', () => {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
           body: JSON.stringify({
-            identifier: id,
-            name: practitioner1.name,
-            userId: practitioner1.userId,
-            username: practitioner1.username,
+            identifier: practitioner1.identifier,
+            name: `${value.firstName} ${value.lastName}`,
+            userId: id,
+            username: value.username,
           }),
           headers: {
             accept: 'application/json',
@@ -257,9 +257,9 @@ describe('forms/utils/submitForm', () => {
     ]);
 
     expect(notificationSuccessMock.mock.calls).toMatchObject([
-      ['Practitioner updated successfully'],
       ['User Group edited successfully'],
       ['User edited successfully'],
+      ['Practitioner updated successfully'],
     ]);
     expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
     expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
@@ -320,8 +320,7 @@ describe('forms/utils/submitForm', () => {
 
   it('handles error when user edit fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const rejectFn = jest.fn();
-    const historyPushMock = jest.spyOn(history, 'push');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     submitForm(
       { ...value, ...practitioner1, id: id },
@@ -329,14 +328,13 @@ describe('forms/utils/submitForm', () => {
       OPENSRP_API_BASE_URL,
       userGroup,
       []
-    ).catch(rejectFn);
+    ).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(rejectFn).toBeCalled();
-    expect(historyPushMock).not.toHaveBeenCalled();
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 
   it('marks user as practitioner successfully', async () => {
@@ -399,9 +397,9 @@ describe('forms/utils/submitForm', () => {
           body: JSON.stringify({
             active: true,
             identifier: id,
-            name: practitioner1.name,
-            userId: practitioner1.userId,
-            username: practitioner1.username,
+            name: `${value.firstName} ${value.lastName}`,
+            userId: id,
+            username: value.username,
           }),
           headers: {
             accept: 'application/json',
@@ -437,9 +435,9 @@ describe('forms/utils/submitForm', () => {
         body: JSON.stringify({
           active: true,
           identifier: practitioner1.identifier,
-          name: practitioner1.name,
-          userId: practitioner1.userId,
-          username: practitioner1.username,
+          name: `${value.firstName} ${value.lastName}`,
+          userId: id,
+          username: value.username,
         }),
         headers: {
           accept: 'application/json',
@@ -467,5 +465,52 @@ describe('forms/utils/submitForm', () => {
       await flushPromises();
     });
     expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+  });
+
+  it('updates practitioner values when user values update', async () => {
+    submitForm(
+      { ...value, id: id, userGroup: undefined, practitioner: practitioner1 },
+      keycloakBaseURL,
+      OPENSRP_API_BASE_URL,
+      [],
+      undefined
+    ).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    // compose request object with endpoint, method and body
+    const reqObj = fetch.mock.calls.map((req) => ({
+      url: req[0],
+      method: req[1].method,
+      body: req[1].body,
+    }));
+
+    // expect practitioner values to be extrapolated from user values
+    expect(reqObj).toMatchObject([
+      {
+        url: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${id}`,
+        method: 'PUT',
+        body: JSON.stringify({
+          firstName: value.firstName,
+          lastName: value.lastName,
+          username: value.username,
+          email: value.email,
+          requiredActions: value.requiredActions,
+          id: id,
+        }),
+      },
+      {
+        url: 'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner',
+        method: 'PUT',
+        body: JSON.stringify({
+          identifier: practitioner1.identifier,
+          name: `${value.firstName} ${value.lastName}`,
+          userId: id,
+          username: value.username,
+        }),
+      },
+    ]);
   });
 });
