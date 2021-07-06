@@ -69,7 +69,7 @@ export const createOrEditPractitioners = async (
 
   // update or create new practitioner
   await practitionersService[requestType](practitionerValues)
-    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
     .finally(() => sendSuccessNotification(successMessage));
 
   if (!values.practitioner) history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
@@ -104,9 +104,7 @@ export const submitForm = async (
     Promise.all([
       serve.update(keycloakValues),
       createOrEditPractitioners(opensrpBaseURL, values),
-    ]).catch((err) => {
-      throw err;
-    });
+    ]).catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
   } else {
     // create new keycloak user
     const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
@@ -152,7 +150,7 @@ export const submitForm = async (
   }
 
   await Promise.allSettled(promises)
-    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
     .finally(() => {
       sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
       sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
