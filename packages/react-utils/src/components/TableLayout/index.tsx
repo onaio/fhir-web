@@ -49,7 +49,7 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object & { key?: string } = Dictionary>(
+export function TableLayout<T extends object & { key?: string | number } = Dictionary>(
   props: TableProps<T>
 ) {
   const { id, columns, datasource, children, persistState, actions, ...restprops } = props;
