@@ -24,10 +24,11 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "peerDependencies": {
-    "@opensrp/store": "^0.0.9",
+    "@opensrp/store": "^0.0.10",
     "i18next": "^19.8.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -47,10 +48,10 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/keycloak-service": "^0.0.13",
-    "@opensrp/notifications": "^0.0.1",
+    "@opensrp/keycloak-service": "^0.0.16",
+    "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.10",
+    "@opensrp/react-utils": "^0.0.11",
     "@opensrp/server-service": "^0.0.16",
     "@smile-cdr/fhirts": "^1.2.5",
     "antd": "^4.6.3",
@@ -67,7 +68,6 @@
     "yup": "^0.29.3"
   },
   "devDependencies": {
-    "@opensrp/store": "^0.0.9",
     "@types/uuid": "^8.3.0",
     "i18next-parser": "^3.5.0"
   }
