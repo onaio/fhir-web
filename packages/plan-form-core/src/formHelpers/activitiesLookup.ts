@@ -1090,6 +1090,14 @@ export const planActivities: PlanActivities = {
             expression: '$this.is(FHIR.Bundle)',
           },
         },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Product is active',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+        },
       ],
       dynamicValue: [
         {
@@ -1429,6 +1437,14 @@ export const planActivities: PlanActivities = {
             expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
           },
         },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+        },
       ],
       dynamicValue: [
         {
@@ -1559,6 +1575,14 @@ export const planActivities: PlanActivities = {
           expression: {
             description: 'Check if service point has stock',
             expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
           },
         },
       ],
