@@ -2,8 +2,6 @@ import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { deleteUser } from '../utils';
-import * as fixtures from '../../../forms/UserForm/tests/fixtures';
-import { KEYCLOAK_URL_USERS } from '../../../../constants';
 import lang from '../../../../lang';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
@@ -17,9 +15,18 @@ jest.mock('@opensrp/notifications', () => ({
 describe('components/UserList/utils/deleteUser', () => {
   const removeUsersMock = jest.fn();
   const isLoadingCallback = jest.fn();
-  const keycloakBaseURL =
-    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const keycloakBaseURL = 'https://some.keycloak.url';
+  const opensrpBaseURL = 'https://some.opensrp.url/';
   const userId = '1';
+  const practitioner = {
+    id: '01',
+    identifier: '001',
+    active: true,
+    name: 'anon ops',
+    userId: '001',
+    username: 'anonops',
+    code: '001',
+  };
 
   beforeAll(() => {
     store.dispatch(
@@ -42,33 +49,60 @@ describe('components/UserList/utils/deleteUser', () => {
     jest.resetModules();
   });
 
-  it('deletes user', async () => {
+  it('deletes user, deactivates, and un-assigns tied practitioner', async () => {
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
-    fetch.mockResponse(JSON.stringify([fixtures.keycloakUser]));
+    fetch.mockResponseOnce(JSON.stringify(practitioner));
 
-    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, isLoadingCallback).catch(
+      () => 'obligatory catch'
+    );
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(fetch).toHaveBeenCalledWith(`${keycloakBaseURL}${KEYCLOAK_URL_USERS}/${userId}`, {
-      headers: {
-        accept: 'application/json',
-        authorization: 'Bearer sometoken',
-        'content-type': 'application/json;charset=UTF-8',
+    // compose request object with request url and method
+    const composeRequests = fetch.mock.calls.map((req) => ({
+      req: req[0],
+      method: req[1].method,
+    }));
+
+    // expect all calls:
+    // get practitioner from userId, delete keycloak user, delete practitioner role, deactivate practitioner
+    expect(composeRequests).toMatchObject([
+      {
+        method: 'GET',
+        req: 'https://some.opensrp.url/practitioner/user/1',
       },
-      method: 'DELETE',
-    });
-    expect(removeUsersMock).toHaveBeenCalled();
-    expect(isLoadingCallback).toHaveBeenCalled();
-    expect(notificationSuccessMock).toHaveBeenCalledWith('User deleted successfully');
+      {
+        method: 'DELETE',
+        req: 'https://some.keycloak.url/users/1',
+      },
+      {
+        method: 'DELETE',
+        req: 'https://some.opensrp.url/practitionerRole/delete/001',
+      },
+      {
+        method: 'PUT',
+        req: 'https://some.opensrp.url/practitioner',
+      },
+    ]);
+
+    expect(removeUsersMock).toHaveBeenCalledTimes(1);
+    expect(isLoadingCallback).toHaveBeenCalledTimes(2);
+    expect(notificationSuccessMock.mock.calls).toMatchObject([
+      ['User deleted successfully'],
+      ['Practitioner unassigned successfully'],
+      ['Practitioner deactivated successfully'],
+    ]);
   });
 
   it('handles API error when calling the deletion endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockReject(() => Promise.reject('API is down'));
-    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, isLoadingCallback).catch(
+      () => 'obligatory catch'
+    );
 
     await act(async () => {
       await flushPromises();
@@ -77,23 +111,31 @@ describe('components/UserList/utils/deleteUser', () => {
     expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
-  it('handles API error when calling the fetch endpoint', async () => {
+  it('handles API error when calling the fetch endpoints', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.once(JSON.stringify([])).mockRejectOnce(() => Promise.reject('API is down'));
-    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, isLoadingCallback).catch(
+      () => 'obligatory catch'
+    );
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(fetch).toHaveBeenCalledWith(`${keycloakBaseURL}${KEYCLOAK_URL_USERS}/${userId}`, {
-      headers: {
-        accept: 'application/json',
-        authorization: 'Bearer sometoken',
-        'content-type': 'application/json;charset=UTF-8',
+    // compose request object with request url and method
+    const composeRequests = fetch.mock.calls.map((req) => ({
+      req: req[0],
+      method: req[1].method,
+    }));
+
+    // expect first request to fail - get practitioner from userId
+    expect(composeRequests).toMatchObject([
+      {
+        method: 'GET',
+        req: 'https://some.opensrp.url/practitioner/user/1',
       },
-      method: 'DELETE',
-    });
+    ]);
+
     expect(removeUsersMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
