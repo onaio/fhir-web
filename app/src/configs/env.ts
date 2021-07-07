@@ -186,4 +186,11 @@ export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
 
 export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
 
-export const USER_FORM_HIDDEN = setEnv('REACT_APP_USER_FORM_HIDDEN', '').split(',');
+export const DISABLE_TEAM_MEMBER_REASSIGNMENT =
+  setEnv('REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT', 'false') === 'true';
+
+export const USER_FORM_HIDDEN_FIELDS = setEnv('REACT_APP_USER_FORM_HIDDEN_FIELDS', '').split(',');
+
+export const USER_FORM_RENDER_FIELDS = setEnv('REACT_APP_USER_FORM_RENDER_FIELDS', '').split(',');
+
+export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000));

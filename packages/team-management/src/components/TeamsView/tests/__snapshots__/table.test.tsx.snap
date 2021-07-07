@@ -34,7 +34,7 @@ exports[`components/TeamsView/table renders without crashing: Table 1`] = `
       },
     ]
   }
-  opensrpBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
+  opensrpBaseURL="https://some.opensrp.url/"
   setDetail={[Function]}
   setPractitionersList={[Function]}
 />

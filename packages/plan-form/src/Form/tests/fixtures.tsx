@@ -591,14 +591,6 @@ export const newPayload1 = {
       prefix: 1,
       title: 'Product Check',
       description: 'Check for all products (100%) within the jurisdiction',
-      dynamicValue: [
-        {
-          expression: {
-            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
-          },
-          path: 'structureId',
-        },
-      ],
       code: 'product_check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
@@ -609,6 +601,14 @@ export const newPayload1 = {
         {
           expression: { description: 'Product exists', expression: '$this.is(FHIR.Bundle)' },
           kind: 'applicability',
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
+          },
         },
       ],
       definitionUri: 'product_check.json',
@@ -763,25 +763,26 @@ export const newPayload1 = {
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
       goalId: 'record_gps',
-      subjectCodableConcept: { text: 'Location' },
+      subjectCodableConcept: { text: 'Location.Stock' },
       trigger: [{ name: 'plan-activation', type: 'named-event' }],
       condition: [
         {
           expression: {
             description: 'Service point does not have geometry',
-            expression: "$this.identifier.where(system='hasGeometry').value='false'",
+            expression:
+              "Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'",
+          },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'Check if service point has stock',
+            expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
           },
           kind: 'applicability',
         },
       ],
-      dynamicValue: [
-        {
-          expression: {
-            expression: '$this.id',
-          },
-          path: 'structureId',
-        },
-      ],
+      dynamicValue: [{ path: 'structureId', expression: { expression: '$this.id' } }],
       definitionUri: 'record_gps.json',
       type: 'create',
     },
@@ -829,22 +830,21 @@ export const newPayload1 = {
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
       goalId: 'service_point_check',
-      subjectCodableConcept: { text: 'Location' },
+      subjectCodableConcept: { text: 'Location.Stock' },
       condition: [
         {
-          expression: { description: 'All service points', expression: '$this.is(FHIR.Location)' },
+          expression: { description: 'All service points', expression: '$this.is(FHIR.Bundle)' },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'Check if service point has stock',
+            expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
           kind: 'applicability',
         },
       ],
-      dynamicValue: [
-        {
-          expression: {
-            expression: '$this.id',
-          },
-          path: 'structureId',
-        },
-      ],
-
+      dynamicValue: [{ path: 'structureId', expression: { expression: '$this.id' } }],
       definitionUri: 'service_point_check.json',
       title: 'Service Point Check',
       trigger: [{ name: 'plan-activation', type: 'named-event' }],

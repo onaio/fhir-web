@@ -151,6 +151,7 @@ import {
   usersListProps,
   createEditUserProps,
   heatlhcareProps,
+  teamManagementProps,
 } from './utils';
 import './App.css';
 import {
@@ -614,6 +615,7 @@ const App: React.FC = () => {
               exact
               path={URL_TEAMS_ADD}
               {...BaseProps}
+              {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
             <PrivateComponent
@@ -623,6 +625,7 @@ const App: React.FC = () => {
               exact
               path={`${URL_TEAMS_EDIT}/:id`}
               {...BaseProps}
+              {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
             <PrivateComponent
