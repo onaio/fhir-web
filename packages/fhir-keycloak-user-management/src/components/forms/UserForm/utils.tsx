@@ -1,7 +1,6 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { Dispatch, SetStateAction } from 'react';
 import { get } from 'lodash';
-import { v4 } from 'uuid';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { KeycloakUser, UserAction, UserGroup } from '../../../ducks/user';
@@ -47,11 +46,11 @@ export const createOrEditPractitioners = async (
 
   const practitionerValues = {
     resourceType: 'Practitioner',
-    id: values.practitioner ? (values.practitioner.id as string) : v4(),
+    id: values.practitioner ? (values.practitioner.id as string) : undefined,
     identifier: [
       {
-        use: 'secondary',
-        value: values.practitioner ? get(values, 'identifier.0.value') : values.id,
+        use: 'official',
+        value: values.practitioner ? get(values.practitioner, 'identifier.0.value') : values.id,
       },
     ],
     active: true,
