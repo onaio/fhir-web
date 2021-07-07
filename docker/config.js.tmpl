@@ -41,6 +41,8 @@ window._env_ = {
   REACT_APP_ENABLE_TEAMS: "{{ getv "/react/app/enable/teams" "false" }}",
   REACT_APP_ENABLE_PLANS: "{{ getv "/react/app/enable/plans" "false" }}",
   REACT_APP_ENABLE_CARD_SUPPORT: "{{ getv "/react/app/enable/card/support" "false" }}",
+  REACT_APP_USER_FORM_HIDDEN_FIELDS: "{{ getv "/react/app/user/form/hidden/fields" "" }}",
+  REACT_APP_USER_FORM_RENDERED_FIELDS: "{{ "{{ getv "/react/app/user/form/render/fields" "" }}" }}",
   REACT_APP_USER_FORM_HIDDEN: "{{ getv "/react/app/user/form/hidden" "contact" }}",
   REACT_APP_ENABLE_FHIR_CARE_TEAM: "{{ getv "/react/app/enable/fhir/care/team" "false" }}",
   REACT_APP_ENABLE_FHIR_HEALTHCARE: "{{ getv "/react/app/enable/fhir/healthcare" "false" }}",

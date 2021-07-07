@@ -50,4 +50,6 @@ keys = [
     "/react/app/enable/fhir/care/team",
     "/react/app/enable/fhir/teams",
     "/react/app/enable/fhir/patients",
+    "/react/app/user/form/hidden/fields",
+    "/react/app/user/form/render/fields",
 ]
