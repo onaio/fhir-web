@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/team-management",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Team management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -36,7 +36,7 @@
   "dependencies": {
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.10",
+    "@opensrp/react-utils": "^0.0.11",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
     "i18next": "^19.8.4",
