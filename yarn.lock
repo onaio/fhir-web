@@ -1286,13 +1286,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.14.5":
-  version "7.14.6"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
-  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
 "@babel/runtime@^7.6.2":
   version "7.13.17"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.17.tgz#8966d1fc9593bf848602f0662d6b4d0069e3a7ec"
@@ -2710,46 +2703,11 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
-"@opensrp/keycloak-service@^0.0.13":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.13.tgz#fb9d8ade852b32ebce0f6fd69b61f4ab9975d442"
-  integrity sha512-jVGLsCikfyTIum7T31Wh+ZkZJeBE8VdR76svHtfyu4nD/HcvhVeh0dYm6DffvGhRdDjiE3ldQqFT09gERKqanQ==
-  dependencies:
-    "@opensrp/react-utils" "^0.0.6"
-
-"@opensrp/notifications@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.1.tgz#73d9fd283be241b15754607d8677b29761d587d3"
-  integrity sha512-qqvx4lcAy4iMUSnPk5riS6m7Se8GwGpSMS9M/iBoP3bT/TInhu5Ixm2DsM2s6OC9FSt8CE7p6T6cA0x711xk4w==
-
 "@opensrp/notifications@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.4.tgz#c97b991ed7f820f1b6d2b9d447ec9169772c29ab"
   integrity sha512-7Gv+7x9OMc8nlAGnxid3fapU4vnpF4Dei64xZdxyWDvKRXVDzuP9a58E1UvDyfqTh/7F20YB9/f2YXutDVQprw==
   dependencies:
-    antd "^4.6.3"
-
-"@opensrp/pkg-config@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@opensrp/pkg-config/-/pkg-config-0.0.4.tgz#4e5e47cf8c35a56981c9e91c3655ebce612565ae"
-  integrity sha512-+binqpj7l/zmUFJ6O+5YugmE9xlppOXy4trW9KjI/me/qO5ew1v8EXTdtLjGhkbnKkD5cFsn93F+7qtp9idPgQ==
-  dependencies:
-    "@reduxjs/toolkit" "^1.5.0"
-    i18next "^19.8.4"
-    react-i18next "^11.8.3"
-
-"@opensrp/react-utils@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.6.tgz#f3580f1a13edd9227e69fda09d3b3cbf0d21cbba"
-  integrity sha512-laBk8WxROXnYnpu/bEXSYAv1haz7PaTYpLfQ1OY+fGnltdFz0s/VXDO6uTUWevzoTBgsGmleESq4ADLmg21QcA==
-  dependencies:
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.1"
-    "@onaio/session-reducer" "^0.0.12"
-    "@onaio/utils" "^0.0.1"
-    "@opensrp/notifications" "^0.0.4"
-    "@opensrp/pkg-config" "^0.0.4"
-    "@opensrp/server-service" "^0.0.16"
     antd "^4.6.3"
 
 "@opensrp/reducer-factory@^0.0.9":
@@ -2780,19 +2738,6 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
-
-"@opensrp/store@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.9.tgz#e0b5cf49665e80ae377a2db40c046889d496f50a"
-  integrity sha512-v0JlRY51v/96Yw3IrM2E332cpv0FxS0Q4IE4yvVozZkDy4Hn0QQMVLOeExEMT2OHJq0XkwFXyHGdkBj21jVAeA==
-  dependencies:
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.1"
-    "@onaio/redux-reducer-registry" "^0.0.9"
-    "@onaio/session-reducer" "^0.0.11"
-    "@onaio/utils" "^0.0.1"
-    connected-react-router "^6.8.0"
-    reselect "^4.0.0"
 
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
@@ -8917,13 +8862,6 @@ html-parse-stringify2@^2.0.1:
   dependencies:
     void-elements "^2.0.1"
 
-html-parse-stringify@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/html-parse-stringify/-/html-parse-stringify-3.0.1.tgz#dfc1017347ce9f77c8141a507f233040c59c55d2"
-  integrity sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==
-  dependencies:
-    void-elements "3.1.0"
-
 html-webpack-plugin@4.0.0-beta.11:
   version "4.0.0-beta.11"
   resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-4.0.0-beta.11.tgz#3059a69144b5aecef97708196ca32f9e68677715"
@@ -14647,14 +14585,6 @@ react-i18next@^11.8.10:
     "@babel/runtime" "^7.13.6"
     html-parse-stringify2 "^2.0.1"
 
-react-i18next@^11.8.3:
-  version "11.11.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.11.0.tgz#2f7c6cb4f81f94d1728a02d60e4bb5216709f942"
-  integrity sha512-p1jHmoyJgDFQmyubUEjrx6kCsr1izW/C8i9pOiJy+9lJqLYwNA8sElVplm0VAnop3kH68edT0/g3wB3UvAcRCQ==
-  dependencies:
-    "@babel/runtime" "^7.14.5"
-    html-parse-stringify "^3.0.1"
-
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.6:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -17594,11 +17524,6 @@ vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
-
-void-elements@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
-  integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
 
 void-elements@^2.0.1:
   version "2.0.1"
