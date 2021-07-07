@@ -1,11 +1,12 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "publishConfig": {
     "access": "public"
@@ -16,7 +17,7 @@
     "test": "cd ../../ && yarn test packages/location-management --verbose --collectCoverage=true -u && cd packages/location-management",
     "test:watch": "cd ../../ && yarn test packages/location-management --verbose --watch && cd packages/location-management",
     "tsc": "tsc",
-    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
@@ -39,7 +40,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.10",
+    "@opensrp/react-utils": "^0.0.11",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
     "cycle": "^1.0.3",

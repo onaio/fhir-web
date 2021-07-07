@@ -7,11 +7,6 @@ Object {
   >
     <UserForm
       extraData={Object {}}
-      hidden={
-        Array [
-          "contact",
-        ]
-      }
       initialValues={
         Object {
           "active": false,
@@ -66,11 +61,6 @@ Object {
             "state": "abcde",
           },
         }
-      }
-      hidden={
-        Array [
-          "contact",
-        ]
       }
       initialValues={
         Object {

@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { OpenSRPService } from '@opensrp/react-utils';
-import { UserForm, FormFields, UserFormProps } from '../forms/UserForm';
 import {
   ROUTE_PARAM_USER_ID,
   KEYCLOAK_URL_USERS,
@@ -27,6 +26,8 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { getExtraData } from '@onaio/session-reducer';
 import '../../index.css';
+import { FormFields, UserFormProps } from '../forms/UserForm/types';
+import { UserForm } from '../forms/UserForm';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -42,7 +43,8 @@ export interface EditUserProps {
   opensrpBaseURL: string;
   extraData: Dictionary;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
-  userFormHidden: UserFormProps['hidden'];
+  userFormHiddenFields?: UserFormProps['hiddenFields'];
+  userFormRenderFields?: UserFormProps['renderFields'];
 }
 
 /** type intersection for all types that pertain to the props */
@@ -74,7 +76,8 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     opensrpBaseURL,
     extraData,
     fetchKeycloakUsersCreator,
-    userFormHidden,
+    userFormHiddenFields,
+    userFormRenderFields,
   } = props;
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
@@ -179,7 +182,8 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           opensrpBaseURL={opensrpBaseURL}
           userGroups={userGroups}
           extraData={extraData}
-          hidden={userFormHidden}
+          hiddenFields={userFormHiddenFields}
+          renderFields={userFormRenderFields}
         />
       </Col>
     </Row>
