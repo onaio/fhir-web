@@ -147,7 +147,7 @@ export const getFormValues = (
   userGroups?: UserGroup[]
 ): FormFields => {
   if (!keycloakUser) {
-    // this should mean we are in edit mode
+    // this should mean we are in create mode
     return defaultUserFormInitialValues;
   }
   const { id, username, firstName, lastName, email, enabled } = keycloakUser;
