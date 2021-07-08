@@ -107,7 +107,6 @@ describe('components/forms/UserForm', () => {
     expect(toJson(wrapper.find('#email input'))).toMatchSnapshot(`email input`);
     expect(toJson(wrapper.find('#username label'))).toMatchSnapshot(`username label`);
     expect(toJson(wrapper.find('#username input'))).toMatchSnapshot(`username input`);
-    expect(toJson(wrapper.find('#enabled label'))).toMatchSnapshot(`enabled label`);
     expect(toJson(wrapper.find('#enabled input'))).toMatchSnapshot(`enabled input`);
     expect(toJson(wrapper.find('#practitionerToggle label'))).toMatchSnapshot(
       `practitionerToggle label`

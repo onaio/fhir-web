@@ -78,13 +78,6 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
 
   useEffect(() => {
-    if (keycloakUser) {
-      /** only update the object diff */
-      setInitialValues((prevState) => ({ ...prevState, ...keycloakUser }));
-    }
-  }, [keycloakUser]);
-
-  useEffect(() => {
     if (!userGroups.length) {
       setUserGroupsLoading(true);
       const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
