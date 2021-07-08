@@ -187,12 +187,13 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 total: isSearchActive ? keycloakUsers.length : usersCount,
               }}
               onChange={(pagination, __, sorter) => {
+                setIsLoading(true);
                 setPage({
                   current: pagination.current ?? 1,
                   pageSize: pagination.pageSize ?? usersPageSize,
                 });
                 setSortedInfo(sorter);
-                setIsLoading(true);
+                setIsLoading(false);
               }}
               actions={{
                 title: 'Actions',
