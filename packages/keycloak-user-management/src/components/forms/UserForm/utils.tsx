@@ -16,22 +16,6 @@ import { FormFields } from './types';
 import { Practitioner } from '@opensrp/team-management';
 import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
-<<<<<<< HEAD
-=======
-
-// /** Utility function to set new user UUID extracted from the
-//  * POST response location header
-//  *
-//  * @param {Response} response - response object from POST request
-//  * @returns {FormFields} - new values object with userid set
-//  *
-//  */
-// export const getPractitionerId = (response: Response): string => {
-//   const locationStr = response.headers.get('location')?.split('/') as string[];
-//   const newUUID = locationStr[locationStr.length - 1];
-//   return newUUID;
-// };
->>>>>>> Move extracting formValues and creating payload to util functions
 
 /**
  * @param baseURL - opensrp API base URL
