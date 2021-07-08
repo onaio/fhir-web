@@ -10,11 +10,13 @@ Object {
       initialValues={
         Object {
           "active": false,
+          "contact": undefined,
+          "enabled": false,
           "firstName": "",
           "id": "",
           "lastName": "",
           "practitioner": undefined,
-          "userGroup": undefined,
+          "userGroups": undefined,
           "username": "",
         }
       }
@@ -64,23 +66,34 @@ Object {
       }
       initialValues={
         Object {
-          "access": Object {
-            "impersonate": false,
-            "manage": true,
-            "manageGroupMembership": true,
-            "mapRoles": true,
-            "view": true,
-          },
           "active": true,
-          "createdTimestamp": 1600156317992,
-          "disableableCredentialTypes": Array [],
+          "contact": undefined,
           "email": "test@onatest.com",
-          "emailVerified": false,
           "enabled": true,
           "firstName": "Demo",
           "id": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+          "keycloakUser": Object {
+            "access": Object {
+              "impersonate": false,
+              "manage": true,
+              "manageGroupMembership": true,
+              "mapRoles": true,
+              "view": true,
+            },
+            "createdTimestamp": 1600156317992,
+            "disableableCredentialTypes": Array [],
+            "email": "test@onatest.com",
+            "emailVerified": false,
+            "enabled": true,
+            "firstName": "Demo",
+            "id": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
+            "lastName": "kenya",
+            "notBefore": 0,
+            "requiredActions": Array [],
+            "totp": false,
+            "username": "opensrp",
+          },
           "lastName": "kenya",
-          "notBefore": 0,
           "practitioner": Object {
             "active": true,
             "identifier": "cab07278-c77b-4bc7-b154-bcbf01b7d35b",
@@ -88,9 +101,7 @@ Object {
             "userId": "7306784c-64fb-4d45-990b-306863eb478b",
             "username": "prac_1",
           },
-          "requiredActions": Array [],
-          "totp": false,
-          "userGroup": Array [
+          "userGroups": Array [
             "283c5d6e-9b83-4954-9f3b-4c2103e4370c",
             "a55f0b02-950f-4c6a-9857-667ffbba1dd5",
             "4dd15e66-7132-429b-8939-d1e601611464",

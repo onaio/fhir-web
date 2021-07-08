@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { mount } from 'enzyme';
 import React from 'react';
@@ -22,19 +23,20 @@ import {
 import { authenticateUser } from '@onaio/session-reducer';
 import lang from '../../../lang';
 import {
-  defaultInitialValue,
   keycloakUser,
   practitioner1,
   requiredActions,
   userGroup,
 } from '../../forms/UserForm/tests/fixtures';
+import { defaultUserFormInitialValues } from '../../forms/UserForm';
 
-/* eslint-disable @typescript-eslint/camelcase */
-
-jest.mock('@opensrp/store', () => ({
-  __esModule: true,
-  ...jest.requireActual('@opensrp/store'),
-}));
+jest.mock('@opensrp/store', () => {
+  const actualStore = jest.requireActual('@opensrp/store');
+  return {
+    __esModule: true,
+    ...actualStore,
+  };
+});
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -203,7 +205,7 @@ describe('components/CreateEditUser', () => {
 
     const row = wrapper.find('Row').at(0);
 
-    expect(row.find('UserForm').prop('initialValues')).toEqual(defaultInitialValue);
+    expect(row.find('UserForm').prop('initialValues')).toEqual(defaultUserFormInitialValues);
     wrapper.unmount();
   });
 
