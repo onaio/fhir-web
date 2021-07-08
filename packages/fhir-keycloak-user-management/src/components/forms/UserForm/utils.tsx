@@ -5,6 +5,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { KeycloakUser, UserAction, UserGroup } from '../../../ducks/user';
 import FHIR from 'fhirclient';
+import { v4 } from 'uuid';
 import {
   KEYCLOAK_URL_USERS,
   URL_USER,
@@ -50,7 +51,11 @@ export const createOrEditPractitioners = async (
     identifier: [
       {
         use: 'official',
-        value: values.practitioner ? get(values.practitioner, 'identifier.0.value') : values.id,
+        value: values.practitioner ? get(values.practitioner, 'identifier.0.value') : v4(),
+      },
+      {
+        use: 'secondary',
+        value: values.practitioner ? get(values.practitioner, 'identifier.1.value') : values.id,
       },
     ],
     active: true,
