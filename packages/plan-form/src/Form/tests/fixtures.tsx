@@ -602,6 +602,14 @@ export const newPayload1 = {
           expression: { description: 'Product exists', expression: '$this.is(FHIR.Bundle)' },
           kind: 'applicability',
         },
+        {
+          expression: {
+            description: 'Product is active',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+          kind: 'applicability',
+        },
       ],
       dynamicValue: [
         {
@@ -781,6 +789,14 @@ export const newPayload1 = {
           },
           kind: 'applicability',
         },
+        {
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+          kind: 'applicability',
+        },
       ],
       dynamicValue: [{ path: 'structureId', expression: { expression: '$this.id' } }],
       definitionUri: 'record_gps.json',
@@ -840,6 +856,14 @@ export const newPayload1 = {
           expression: {
             description: 'Check if service point has stock',
             expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
           },
           kind: 'applicability',
         },
