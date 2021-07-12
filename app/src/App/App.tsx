@@ -19,6 +19,7 @@ import {
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
   DEFAULT_HOME_MODE,
+  ENABLE_FHIR_LOCATIONS,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -105,6 +106,11 @@ import {
   NewLocationUnit,
   EditLocationUnit,
 } from '@opensrp/location-management';
+import {
+  LocationUnitList as FHIRLocationUnitList,
+  NewLocationUnit as FHIRNewLocationUnit,
+  EditLocationUnit as FHIREditLocationUnit,
+} from '@opensrp/fhir-location-management';
 import {
   BaseProps,
   jsonValidatorListProps,
@@ -656,7 +662,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT}
               {...locationUnitProps}
-              component={LocationUnitList}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRLocationUnitList : LocationUnitList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -665,7 +671,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_ADD}
               {...newLocationUnitProps}
-              component={NewLocationUnit}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRNewLocationUnit : NewLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -674,7 +680,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_EDIT}
               {...editLocationProps}
-              component={EditLocationUnit}
+              component={ENABLE_FHIR_LOCATIONS ? FHIREditLocationUnit : EditLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

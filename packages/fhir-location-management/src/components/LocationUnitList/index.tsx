@@ -5,6 +5,8 @@ import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+import FHIR from 'fhirclient';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   LocationUnit,
@@ -37,6 +39,7 @@ reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer)
 
 interface Props {
   opensrpBaseURL: string;
+  fhirBaseURL: string;
   filterByParentId: boolean;
 }
 
@@ -90,7 +93,7 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
-  const { opensrpBaseURL, filterByParentId } = props;
+  const { opensrpBaseURL, filterByParentId, fhirBaseURL } = props;
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
@@ -103,6 +106,17 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       select: (res: LocationUnit[]) => res,
     }
   );
+
+  const fhirLocationUnits = useQuery(
+    'Locations',
+    () => FHIR.client(fhirBaseURL).request('Location'),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: IfhirR4.IBundle) => res.entry,
+    }
+  );
+
+  const data = fhirLocationUnits.data?.map((d) => d.resource);
 
   const treeDataQuery = useQueries(
     locationUnits.data
@@ -175,7 +189,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
           </div>
           <div className="bg-white p-3">
             <Table
-              data={tableData}
+              data={data as any}
               onViewDetails={async (row) => {
                 await loadSingleLocation(row, opensrpBaseURL, setDetail);
               }}

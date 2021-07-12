@@ -10,6 +10,7 @@ export interface TableData {
   id: string;
   key: string;
   name: string;
+  description?: string;
 }
 
 export interface Props {
@@ -26,9 +27,8 @@ const Table: React.FC<Props> = (props: Props) => {
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: lang.LEVEL,
-      dataIndex: 'geographicLevel',
-      sorter: (a, b) => a.geographicLevel - b.geographicLevel,
+      title: lang.DESCRIPTION,
+      dataIndex: 'description',
     },
   ];
 
