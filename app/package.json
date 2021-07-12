@@ -21,6 +21,7 @@
     "@opensrp/card-support": "^0.0.7",
     "@opensrp/error-boundary-fallback": "^0.0.5",
     "@opensrp/form-config-antd": "^0.0.2",
+    "@opensrp/fhir-location-management": "^0.0.1",
     "@opensrp/inventory": "^0.0.7",
     "@opensrp/keycloak-service": "^0.0.15",
     "@opensrp/location-management": "^0.0.13",
