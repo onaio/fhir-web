@@ -1,13 +1,13 @@
 {
-  "Actions": "",
-  "An error occurred": "",
-  "Assign/Unassign Teams": "",
-  "Assigned Teams": "",
-  "Cancel": "",
-  "Enter a Team name": "",
-  "Name": "",
-  "Save": "",
-  "Team Assignment": "",
-  "team-assignment": "",
-  "Teams": ""
+  "Actions": "Actions",
+  "An error occurred": "An error occurred",
+  "Assign/Unassign Teams": "Assign/Unassign Teams",
+  "Assigned Teams": "Assigned Teams",
+  "Cancel": "Cancel",
+  "Edit": "Edit",
+  "Enter a Team name": "Enter a Team name",
+  "Name": "Name",
+  "Save": "Save",
+  "Team Assignment": "Team Assignment",
+  "Teams": "Teams"
 }
