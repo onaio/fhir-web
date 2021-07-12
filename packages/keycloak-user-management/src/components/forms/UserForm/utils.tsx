@@ -186,7 +186,7 @@ export const getUserFormPayload = (values: FormFields) => {
 
   const cleanedAttributes = pickBy(
     preUserAttributes,
-    (value) => value !== undefined || value !== null
+    (value) => value !== undefined && value !== null
   );
 
   const keycloakUser = {
