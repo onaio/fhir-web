@@ -49,7 +49,7 @@ module.exports = {
   lineEnding: 'auto',
   // Control the line ending. See options at https://github.com/ryanve/eol
 
-  locales: ['en', 'sw', 'fr', 'ar', 'th'],
+  locales: ['en', 'fr', 'ar', 'th'],
   // An array of the locales in your applications
 
   namespaceSeparator: '::',
@@ -72,7 +72,7 @@ module.exports = {
   sort: true,
   // Whether or not to sort the catalog
 
-  useKeysAsDefaultValue: false,
+  useKeysAsDefaultValue: true,
   // Whether to use the keys as the default value; ex. "Hello": "Hello", "World": "World"
   // The option `defaultValue` will not work if this is set to true
 
