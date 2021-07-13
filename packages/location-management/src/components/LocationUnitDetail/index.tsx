@@ -23,6 +23,11 @@ const LocationUnitDetail: React.FC<Props> = (props: Props) => {
         <p className="mb-0 loc-desc">{props.properties.name}</p>
       </div>
 
+      <div className="mb-4 small mt-4">
+        <p className="mb-0 font-weight-bold">{lang.IDENTIFIER}</p>
+        <p className="mb-0 loc-desc">{props.id}</p>
+      </div>
+
       <div className="mb-4 small">
         <p className="mb-0 font-weight-bold">{lang.STATUS}</p>
         <p className="mb-0 loc-desc">{props.properties.status}</p>

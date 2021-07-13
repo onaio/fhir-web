@@ -41,4 +41,11 @@ describe('location-management/src/components/LocationUnitDetail', () => {
     wrapper.find('button').simulate('click');
     expect(wrapper).toHaveLength(1);
   });
+
+  it('renders identifier', () => {
+    const wrapper = mount(<LocationUnitDetail {...props} />);
+    // find node with text matching identifier
+    const identifierNode = wrapper.findWhere((node) => node.type() && node.text() === props.id);
+    expect(identifierNode).toHaveLength(1);
+  });
 });
