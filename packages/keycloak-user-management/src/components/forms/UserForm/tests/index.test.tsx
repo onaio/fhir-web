@@ -71,6 +71,7 @@ describe('components/forms/UserForm', () => {
   });
 
   beforeEach(() => {
+    history.push('/admin/users');
     fetch.once(JSON.stringify(requiredActions));
   });
 
