@@ -107,6 +107,8 @@ function fill() {
   lang.DELETE = i18n.t(`Delete`, { ns: namespace });
   lang.LATITUDE_LABEL = i18n.t(`Latitude`, { ns: namespace });
   lang.LONGITUDE_LABEL = i18n.t(`Longitude`, { ns: namespace });
+  lang.ALIAS = i18n.t(`Alias`, { ns: namespace });
+  lang.PHYSICAL_TYPE = i18n.t(`Physical Type`, { ns: namespace });
 }
 
 // run it initial
