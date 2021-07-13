@@ -5,7 +5,7 @@ import lang from '../../../lang';
 import { submitForm } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import '../../../index.css';
-import { ATTRIBUTES_FORM_FIELD, CONTACT_FORM_FIELD, FormFieldsKey, UserFormProps } from './types';
+import { CONTACT_FORM_FIELD, FormFields, FormFieldsKey, UserFormProps } from './types';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const {
@@ -95,7 +95,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               keycloakBaseURL,
               opensrpBaseURL,
               userGroups,
-              initialValues.userGroup as string[]
+              initialValues.userGroups as string[]
             )
               .catch((_: Error) => {
                 sendErrorNotification(lang.ERROR_OCCURED);
@@ -146,7 +146,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
                 },
               ]}
               hidden={isHidden(CONTACT_FORM_FIELD)}
-              name={[ATTRIBUTES_FORM_FIELD, CONTACT_FORM_FIELD]}
+              name={CONTACT_FORM_FIELD}
               label={lang.CONTACT}
             >
               <Input></Input>
@@ -179,7 +179,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
 
-          <Form.Item name="userGroup" id="userGroup" label={lang.GROUP}>
+          <Form.Item name="userGroups" id="userGroups" label={lang.GROUP}>
             <Select
               mode="multiple"
               allowClear
@@ -205,6 +205,22 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
       </Col>
     </Row>
   );
+};
+
+export const defaultUserFormInitialValues: FormFields = {
+  firstName: '',
+  id: '',
+  lastName: '',
+  username: '',
+  active: false,
+  userGroups: undefined,
+  practitioner: undefined,
+  contact: undefined,
+  enabled: false,
+};
+
+UserForm.defaultProps = {
+  initialValues: defaultUserFormInitialValues,
 };
 
 export { UserForm };

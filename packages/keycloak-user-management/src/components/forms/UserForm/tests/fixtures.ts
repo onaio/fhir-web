@@ -1,4 +1,4 @@
-import { FormFields } from '..';
+import { FormFields } from '../types';
 import { KeycloakUser, UserGroup } from '../../../../ducks/user';
 
 export const userGroup: UserGroup[] = [
@@ -281,20 +281,9 @@ export const requiredActions = [
 
 export const value: FormFields = {
   firstName: 'Jane',
+  id: '',
   lastName: 'Doe',
   username: 'janedoe',
   email: 'janedoe@example.com',
-  requiredActions: ['UPDATE_PASSWORD'],
-  id: '',
-  userGroup: userGroup.splice(3).map((e) => e.id),
-};
-
-export const defaultInitialValue: FormFields = {
-  firstName: '',
-  id: '',
-  lastName: '',
-  username: '',
-  active: false,
-  userGroup: undefined,
-  practitioner: undefined,
+  userGroups: userGroup.splice(3).map((e) => e.id),
 };
