@@ -34,7 +34,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'jest', 'jsdoc'],
   parserOptions: {
-    ecmaVersion: 2015,
+    ecmaVersion: 2020,
     sourceType: 'module',
     project: './tsconfig.json',
   },
