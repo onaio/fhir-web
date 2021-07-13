@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { get } from 'lodash';
 import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
+import LocationUnitDetail from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import FHIR from 'fhirclient';
@@ -15,12 +16,11 @@ import {
 } from '../../ducks/location-units';
 import {
   LOCATION_HIERARCHY,
-  LOCATION_UNIT_ENDPOINT,
   LOCATION_UNIT_FIND_BY_PROPERTIES,
   URL_LOCATION_UNIT_ADD,
 } from '../../constants';
 import { useQuery, useQueries, UseQueryResult } from 'react-query';
-import lang, { Lang } from '../../lang';
+import lang from '../../lang';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
@@ -49,30 +49,6 @@ export interface AntTreeProps {
   children: AntTreeProps[];
 }
 
-/** Function to Load selected location unit for details
- *
- * @param {TableData} row data selected from the table
- * @param {string} opensrpBaseURL - base url
- * @param {Function} setDetail function to set detail to state
- * @param {Lang} langObj translation string lookup
- */
-export async function loadSingleLocation(
-  row: TableData,
-  opensrpBaseURL: string,
-  setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>,
-  langObj: Lang = lang
-) {
-  setDetail('loading');
-  const serve = new OpenSRPService(LOCATION_UNIT_ENDPOINT, opensrpBaseURL);
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  return await serve
-    .read(row.id, { is_jurisdiction: true })
-    .then((res: LocationUnit) => {
-      setDetail(res);
-    })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
-}
-
 /** Parse the hierarchy node into table data
  *
  * @param {Array<ParsedHierarchyNode>} hierarchy - hierarchy node to be parsed
@@ -95,7 +71,7 @@ export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL, filterByParentId, fhirBaseURL } = props;
   const [tableData, setTableData] = useState<TableData[]>([]);
-  const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
+  const [detailId, setDetailId] = useState<string>();
   const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
 
   const locationUnits = useQuery(
@@ -116,7 +92,18 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const data = fhirLocationUnits.data?.map((d) => d.resource);
+  const fhirLocationDetail = useQuery(
+    `Location/${detailId}`,
+    async () => (detailId ? FHIR.client(fhirBaseURL).request(`Location/${detailId}`) : undefined),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: IfhirR4.IBundle) => res,
+    }
+  );
+
+  const data = fhirLocationUnits.data?.map((d) => {
+    return { ...d.resource, physicalType: get(d, 'resource.physicalType.coding.0.display') };
+  });
 
   const treeDataQuery = useQueries(
     locationUnits.data
@@ -169,7 +156,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3" span={6}>
           <Tree data={treeData} OnItemClick={(node) => setCurrentClickedNode(node)} />
         </Col>
-        <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
+        <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h6 className="mt-4">{currentClickedNode ? tableData[0].name : lang.LOCATION_UNIT}</h6>
             <div>
@@ -191,18 +178,20 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
             <Table
               data={data as any}
               onViewDetails={async (row) => {
-                await loadSingleLocation(row, opensrpBaseURL, setDetail);
+                setDetailId(row.id);
               }}
             />
           </div>
         </Col>
-
-        {detail ? (
+        {detailId ? (
           <Col className="pl-3" span={5}>
-            {detail === 'loading' ? (
+            {fhirLocationDetail.isLoading ? (
               <Spin size={'large'} />
             ) : (
-              <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
+              <LocationUnitDetail
+                onClose={() => setDetailId('')}
+                {...(fhirLocationDetail.data as IfhirR4.ILocation)}
+              />
             )}
           </Col>
         ) : (
