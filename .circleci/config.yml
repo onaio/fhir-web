@@ -38,7 +38,6 @@ jobs:
           name: Install dependencies
           command: yarn install
 
-      # TODO - why does the test fail without this.
       - run:
           name: build packages
           command: yarn lerna:prepublish
@@ -49,12 +48,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: Run ts linter
+          name: Run linter
           command: yarn lint
-
-      - run:
-          name: Run snap linter
-          command: yarn lint-snap --debug
 
       - run:
           name: Run test with coverage
