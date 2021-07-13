@@ -4,7 +4,6 @@
 import enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import MockDate from 'mockdate';
-import FHIR from 'fhirclient';
 import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/camelcase */
 import i18n from 'i18next';
