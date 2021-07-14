@@ -358,4 +358,52 @@ describe('components/UserList', () => {
     );
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
+
+  it('sorting works', async () => {
+    fetch.once(JSON.stringify(4));
+    fetch.once(JSON.stringify(keycloakUsersArray));
+    const props = {
+      ...locationProps,
+      extraData: {
+        user_id: fixtures.keycloakUser.id,
+      },
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
+      serviceClass: KeycloakService,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      usersPageSize: 20,
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <ConnectedUserList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // get ordered tr keys
+    const rowKeys = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
+    expect(rowKeys).toMatchObject(['0', '1', '2', '3']);
+
+    // trigger sort on second column (first name)
+    const sorter = wrapper.find('th.ant-table-column-has-sorters').at(1);
+    sorter.simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // get newly ordered tr keys
+    const rowKeys2 = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
+    expect(rowKeys2).toMatchObject(['1', '2', '3', '0']);
+
+    wrapper.unmount();
+  });
 });
