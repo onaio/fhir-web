@@ -200,16 +200,18 @@ export const getUserFormPayload = (values: FormFields) => {
     ...(some(cleanedAttributes) ? { attributes: cleanedAttributes } : {}),
   };
 
-  // if the base keycloak user is disabled, also disable the tied opensrp practitioner
-  // otherwise follow the practitioner's activation field
-  const practitionerActive = enabled === false ? false : active ?? false;
+  // initialize for new practitioner
   let practitioner = {
-    active: practitionerActive,
+    active: true,
     identifier: v4(),
     name: `${firstName} ${lastName}`,
     userId: keycloakUser.id,
     username,
   };
+
+  // if the base keycloak user is disabled, also disable the tied opensrp practitioner
+  // otherwise follow the practitioner's activation field
+  const practitionerActive = enabled === false ? false : active === undefined ? false : active;
   if (values.practitioner?.identifier) {
     practitioner = {
       ...values.practitioner,
