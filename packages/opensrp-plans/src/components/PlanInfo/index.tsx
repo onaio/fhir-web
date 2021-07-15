@@ -38,7 +38,7 @@ const PlanInfo = (props: PlanInfoProps) => {
     },
     {
       path: redirectMapping[plan.status as PlanStatus],
-      breadcrumbName: pageTitleBuilder(plan.status, false),
+      breadcrumbName: pageTitleBuilder(plan.status as PlanStatus, false),
     },
     {
       path: `${URL_MISSIONS}/${plan.status}/${plan.identifier}`,
@@ -78,7 +78,7 @@ const PlanInfo = (props: PlanInfoProps) => {
                 <Link to={`${URL_MISSIONS}/${plan.status}/edit/${planId}`}>{lang.EDIT}</Link>
                 <Divider type="vertical" />
                 <span style={{ color: PlanStatusColors[plan.status] }}>
-                  {pageTitleBuilder(plan.status, false)}
+                  {pageTitleBuilder(plan.status as PlanStatus, false)}
                 </span>
                 <Divider type="vertical" />
               </div>
