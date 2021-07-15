@@ -73,7 +73,7 @@ describe('forms/utils/submitForm', () => {
       id: mockV4,
     });
     expect(JSON.parse((fetch.mock.calls[1][1] as Dictionary).body)).toEqual({
-      active: false,
+      active: true,
       identifier: mockV4,
       name: `${value.firstName} ${value.lastName}`,
       userId: mockV4,
@@ -545,6 +545,54 @@ describe('forms/utils/submitForm', () => {
           identifier: practitioner1.identifier,
           name: `${value.firstName} ${value.lastName}`,
           userId: id,
+          username: value.username,
+        },
+      },
+    ]);
+  });
+
+  it('creates active practitioner on keycloak user creation', async () => {
+    submitForm(
+      // initialize values for new user creation
+      { ...value, id: undefined, userGroups: undefined },
+      keycloakBaseURL,
+      OPENSRP_API_BASE_URL,
+      [],
+      undefined
+    ).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    // compose request object with endpoint, method and body
+    const reqObj = fetch.mock.calls.map((req) => ({
+      url: req[0],
+      method: req[1].method,
+      body: JSON.parse(req[1].body as string),
+    }));
+
+    // first request is to create user in keycloak, second request is to create practitioner
+    expect(reqObj).toMatchObject([
+      {
+        url: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users`,
+        method: 'POST',
+        body: {
+          firstName: value.firstName,
+          lastName: value.lastName,
+          username: value.username,
+          email: value.email,
+          id: mockV4,
+        },
+      },
+      {
+        url: 'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner',
+        method: 'POST',
+        body: {
+          active: true,
+          identifier: mockV4,
+          name: `${value.firstName} ${value.lastName}`,
+          userId: mockV4,
           username: value.username,
         },
       },
