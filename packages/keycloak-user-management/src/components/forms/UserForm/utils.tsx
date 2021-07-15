@@ -12,7 +12,7 @@ import {
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import lang, { Lang } from '../../../lang';
-import { FormFields } from './types';
+import { FormFields, SelectOption } from './types';
 import { Practitioner } from '@opensrp/team-management';
 import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
@@ -227,4 +227,24 @@ export const getUserFormPayload = (values: FormFields) => {
     practitioner,
     userGroups: values.userGroups ?? [],
   };
+};
+
+/**
+ * converts userGroups to options that can be passed to antd Select
+ *
+ * @param userGroups - the userGroups in an array
+ */
+export const getUserGroupsOptions = (userGroups: UserGroup[]): SelectOption[] =>
+  userGroups.map((userGroup) => {
+    return { value: userGroup.id, label: userGroup.name };
+  });
+
+/**
+ * filters options listed once user types in userGroups select
+ *
+ * @param inputValue - the search text,
+ * @param option - one of the options
+ */
+export const userGroupOptionsFilter = (inputValue: string, option?: SelectOption) => {
+  return !!option?.label.toLowerCase().includes(inputValue.toLowerCase());
 };
