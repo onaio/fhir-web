@@ -16,6 +16,17 @@ import { FormFields, SelectOption } from './types';
 import { Practitioner } from '@opensrp/team-management';
 import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
+/**
+ * Utility function to get new user UUID from POST response location header
+ *
+ * @param {Response} response - response object from POST request
+ * @returns {string} - userId extracted from location header
+ */
+const getUserId = (response: Response): string => {
+  const locationStr = response.headers.get('location')?.split('/') as string[];
+  const newUUID = locationStr[locationStr.length - 1];
+  return newUUID;
+};
 
 /**
  * @param baseURL - opensrp API base URL
@@ -51,6 +62,52 @@ export const createOrEditPractitioners = async (
 };
 
 /**
+ * util to help create/edit a keycloak user
+ *
+ * @param keycloakBaseURL -  base url for the keycloak instance
+ * @param keycloakUserPayload - the keycloak user payload
+ * @param isEditMode - whether editing or creating the keycloak user
+ * @param callback - function called when user is successfully posted or updated
+ * @param langObj - the translation store object
+ */
+const createEditKeycloakUser = async (
+  keycloakBaseURL: string,
+  keycloakUserPayload: KeycloakUser,
+  isEditMode: boolean,
+  callback: (id: string) => Promise<void>,
+  langObj = lang
+) => {
+  if (isEditMode) {
+    const serve = new KeycloakService(
+      `${KEYCLOAK_URL_USERS}/${keycloakUserPayload.id}`,
+      keycloakBaseURL
+    );
+    return serve
+      .update(keycloakUserPayload)
+      .then(() => {
+        sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
+        callback(keycloakUserPayload.id).catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  } else {
+    // create new keycloak user
+    const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
+    return serve
+      .create(keycloakUserPayload)
+      .then((res) => {
+        sendSuccessNotification(langObj.MESSAGE_USER_CREATED);
+        const keycloakUserId = getUserId(res);
+        callback(keycloakUserId).catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+};
+
+/**
  * Handle form submission
  *
  * @param values - form values
@@ -75,60 +132,63 @@ export const submitForm = async (
     practitionerIsEditMode,
   } = getUserFormPayload(values);
 
-  let keycloakUserPromise: Promise<string | void>;
+  /**
+   * callback to update groups and practitioners upon successfully updating keycloak user
+   *
+   * @param keycloakUserId - id of the keycloak user
+   */
+  const updateGroupsAndPractitioner = async (keycloakUserId: string) => {
+    const promises: Promise<void>[] = [];
 
-  if (isEditMode) {
-    const serve = new KeycloakService(`${KEYCLOAK_URL_USERS}/${values.id}`, keycloakBaseURL);
-    keycloakUserPromise = serve
-      .update(keycloakUser)
-      .then(() => sendSuccessNotification(langObj.MESSAGE_USER_EDITED))
-      .catch(() => langObj.AN_ERROR_OCCURRED);
-  } else {
-    // create new keycloak user
-    const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
-    keycloakUserPromise = serve
-      .create(keycloakUser)
-      .then(() => sendSuccessNotification(langObj.MESSAGE_USER_CREATED))
-      .catch(() => langObj.AN_ERROR_OCCURRED);
-  }
+    const practitionerPayload = { ...practitionerValue, userId: keycloakUserId };
+    promises.push(
+      createOrEditPractitioners(opensrpBaseURL, practitionerPayload, practitionerIsEditMode)
+    );
 
-  Promise.all([
-    keycloakUserPromise,
-    createOrEditPractitioners(opensrpBaseURL, practitionerValue, practitionerIsEditMode),
-  ]).catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
-
-  // Assign User Group to user
-  const promises: Promise<void>[] = [];
-  if (values.userGroups) {
-    values.userGroups.forEach((groupId) => {
-      const userGroupValue = allUserGroups.find((group) => group.id === groupId) as UserGroup;
-      const serve = new KeycloakService(
-        `${KEYCLOAK_URL_USERS}/${keycloakUser.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
-        keycloakBaseURL
-      );
-      const promise = serve.update(userGroupValue);
-      promises.push(promise);
-    });
-  }
-
-  if (previousUserGroupIds) {
-    previousUserGroupIds.forEach((groupId) => {
-      if (!values.userGroups?.includes(groupId)) {
+    // Assign User Group to user
+    if (values.userGroups) {
+      values.userGroups.forEach((groupId) => {
+        const userGroupValue = allUserGroups.find((group) => group.id === groupId) as UserGroup;
         const serve = new KeycloakService(
-          `${KEYCLOAK_URL_USERS}/${keycloakUser.id}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
+          `${KEYCLOAK_URL_USERS}/${keycloakUserId}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
           keycloakBaseURL
         );
-        const promise = serve.delete();
+        const promise = serve.update(userGroupValue);
         promises.push(promise);
-      }
-    });
-  }
+      });
+    }
 
-  await Promise.allSettled(promises)
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
-    .then(() => {
-      sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
-    });
+    if (previousUserGroupIds) {
+      previousUserGroupIds.forEach((groupId) => {
+        if (!values.userGroups?.includes(groupId)) {
+          const serve = new KeycloakService(
+            `${KEYCLOAK_URL_USERS}/${keycloakUserId}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`,
+            keycloakBaseURL
+          );
+          const promise = serve.delete();
+          promises.push(promise);
+        }
+      });
+    }
+
+    return await Promise.allSettled(promises)
+      .catch((error) => {
+        throw error;
+      })
+      .then(() => {
+        sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
+      });
+  };
+
+  await createEditKeycloakUser(
+    keycloakBaseURL,
+    keycloakUser,
+    isEditMode,
+    updateGroupsAndPractitioner
+  ).catch(() => {
+    sendErrorNotification(langObj.ERROR_OCCURED);
+  });
+
   if (isEditMode) {
     history.push(URL_USER);
   }
@@ -192,7 +252,7 @@ export const getUserFormPayload = (values: FormFields) => {
   const keycloakUser = {
     ...(values.keycloakUser ?? {}),
     firstName,
-    id: isEditMode ? id : v4(),
+    id: isEditMode ? id : '', // id is generated by keycloak for after POST new user
     lastName,
     username,
     ...(email ? { email } : {}),
@@ -201,11 +261,12 @@ export const getUserFormPayload = (values: FormFields) => {
   };
 
   // initialize for new practitioner
+  const practitionerId = v4();
   let practitioner = {
     active: true,
-    identifier: v4(),
+    identifier: practitionerId,
     name: `${firstName} ${lastName}`,
-    userId: keycloakUser.id,
+    userId: '', // need to override this with the new keycloak users' id
     username,
   };
 
@@ -217,7 +278,7 @@ export const getUserFormPayload = (values: FormFields) => {
       ...values.practitioner,
       active: practitionerActive,
       name: `${firstName} ${lastName}`,
-      userId: keycloakUser.id,
+      userId: id,
       username,
     };
   }
