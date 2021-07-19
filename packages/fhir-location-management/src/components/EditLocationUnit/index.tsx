@@ -1,5 +1,7 @@
 import { BrokenPage, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+import FHIR from 'fhirclient';
 import {
   fetchLocationUnits,
   getLocationsByFilters,
@@ -42,6 +44,7 @@ export interface EditLocationUnitProps
       'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps<LocationRouteProps> {
+  fhirBaseURL: string;
   opensrpBaseURL: string;
   instance: FormInstances;
   filterByParentId?: boolean;
@@ -73,6 +76,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     cancelURLGenerator,
     successURLGenerator,
     disabledTreeNodesCallback,
+    fhirBaseURL,
   } = props;
   const history = useHistory();
   const queryClient = useQueryClient();
@@ -167,6 +171,16 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       : []
   ) as UseQueryResult<ParsedHierarchyNode>[];
 
+  const singleLocation = useQuery(
+    `Locations/${locId}`,
+    () => FHIR.client(fhirBaseURL).request(`Location/${locId}`),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: IfhirR4.ILocation) => res,
+    }
+  );
+
+  console.log('single loc??', singleLocation.data);
   const treeData = treeDataQuery
     .map((query) => query.data)
     .filter((e) => e !== undefined) as ParsedHierarchyNode[];
@@ -183,23 +197,24 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  if (!thisLocation) {
-    return <Resource404 />;
-  }
+  // if (!thisLocation) {
+  //   return <Resource404 />;
+  // }
 
-  const initialValues = getLocationFormFields(thisLocation, instance, isJurisdiction);
-  const cancelHandler = () => {
-    const cancelURL = cancelURLGenerator(thisLocation);
-    history.push(cancelURL);
-  };
+  const initialValues = getLocationFormFields(singleLocation.data as any, instance, isJurisdiction);
+  // const cancelHandler = () => {
+  //   const cancelURL = cancelURLGenerator(thisLocation);
+  //   history.push(cancelURL);
+  // };
 
   const locationFormProps: LocationFormProps = {
     initialValues,
     successURLGenerator,
     hidden,
     disabled,
-    onCancel: cancelHandler,
+    onCancel: () => {},
     opensrpBaseURL,
+    fhirBaseURL,
     filterByParentId,
     username: user.username,
     afterSubmit: (payload) => {
@@ -217,7 +232,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     },
     disabledTreeNodesCallback,
   };
-  const pageTitle = `${lang.EDIT} > ${thisLocation.properties.name}`;
+  const pageTitle = `${lang.EDIT} > Test`;
 
   return (
     <Row className="layout-content">

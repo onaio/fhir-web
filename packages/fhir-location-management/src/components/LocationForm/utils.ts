@@ -1,4 +1,5 @@
 import { Dictionary } from '@onaio/utils';
+import FHIR from 'fhirclient';
 import {
   LocationUnit,
   LocationUnitStatus,
@@ -15,6 +16,7 @@ import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import { LOCATION_UNIT_TYPE } from '../../constants';
 import { GetSelectedFullData } from './CustomSelect';
 import { uniqBy } from 'lodash';
+import { IfhirR4 } from '@smile-cdr/fhirts';
 
 export enum FormInstances {
   CORE = 'core',
@@ -90,39 +92,7 @@ export const getLocationFormFields = (
   const commonValues = { instance, isJurisdiction: location?.isJurisdiction ?? isJurisdiction };
   if (!location) return { ...defaultFormField, ...commonValues };
 
-  const {
-    name,
-    status,
-    parentId,
-    username,
-    externalId,
-    type,
-    ...restProperties
-  } = location.properties;
-
-  // derive latitude and longitudes for point
-  const { geometry: geoObject } = location;
-  const geoJson = JSON.stringify(geoObject);
-  const { longitude, latitude } = getPointCoordinates(geoJson);
-
-  const formFields: LocationFormFields = {
-    ...defaultFormField,
-    ...commonValues,
-    id: location.id,
-    locationTags: location.locationTags?.map((loc) => loc.id),
-    geometry: geoJson,
-    name,
-    username,
-    status,
-    parentId,
-    externalId,
-    serviceType: type,
-    extraFields: Object.entries(restProperties).map(([key, val]) => ({ [key]: val })),
-    longitude,
-    latitude,
-  };
-
-  return formFields;
+  return location as any;
 };
 
 /** removes empty undefined and null objects before they payload is sent to server
@@ -143,69 +113,42 @@ export function removeEmptykeys(obj: Dictionary) {
  * util method to generate a location unit payload from form values
  *
  * @param formValues - values from the form
+ * @param uuid - location official identifier
  * @param nameOfUser - the name of the user
  * @param selectedTags - the selected location tags
  * @param parentNode - selected node to be the parent node
  */
-export const generateLocationUnit = (
-  formValues: LocationFormFields,
-  nameOfUser?: string,
-  selectedTags: LocationUnitTag[] = [],
-  parentNode?: TreeNode
-): LocationUnit => {
-  const {
-    serviceType,
-    id,
-    externalId,
-    parentId,
-    name,
+export const generateLocationUnit = (formValues: any, uuid: string) => {
+  const { id, name, status, description, alias } = formValues;
+
+  const thisLocationsId = uuid ? uuid : v4();
+
+  const payload = {
+    resourceType: 'Location',
+    id: id ? id : undefined,
     status,
-    geometry,
-    extraFields,
-    username,
-  } = formValues;
-
-  const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? 0;
-  const thisGeoLevel = parentId ? (parentGeographicLevel as number) + 1 : 0;
-
-  const thisLocationsId = id ? id : v4();
-
-  // set username from values for edit mode, otherwise get it from props through args
-  const uName = id ? username : nameOfUser ?? '';
-
-  const initialPayload: LocationUnit = {
-    properties: {
-      geographicLevel: thisGeoLevel,
-      username: uName,
-      externalId: externalId,
-      parentId: parentId ?? '',
-      name,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      name_en: name,
-      status: status,
-      type: serviceType,
+    name,
+    alias,
+    description,
+    partOf: '',
+    identifier: [
+      {
+        use: 'official',
+        value: thisLocationsId,
+      },
+    ],
+    physicalType: {
+      coding: [
+        {
+          system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
+          code: 'jdn',
+          display: 'Jurisdiction',
+        },
+      ],
     },
-    id: thisLocationsId,
-    syncStatus: LocationUnitSyncStatus.SYNCED,
-    type: LOCATION_UNIT_TYPE,
-    locationTags: selectedTags,
-    geometry: geometry ? (JSON.parse(geometry) as Geometry) : undefined,
   };
 
-  extraFields.forEach((obj) => {
-    // assumes the data to be string or number as for now we only use input type number and text
-    Object.keys(obj).forEach((key) => {
-      if (key === 'geographicLevel') {
-        (initialPayload.properties as Dictionary)[key] = thisGeoLevel;
-      } else {
-        (initialPayload.properties as Dictionary)[key] = obj[key];
-      }
-    });
-  });
-
-  //TODO: - mutable operation.
-  removeEmptykeys(initialPayload);
-  return initialPayload;
+  return payload;
 };
 
 /**
@@ -242,6 +185,10 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
     },
   ] as Rule[],
   name: [
+    { type: 'string', message: langObj.ERROR_NAME_STRING },
+    { required: true, message: langObj.ERROR_NAME_REQUIRED },
+  ] as Rule[],
+  alias: [
     { type: 'string', message: langObj.ERROR_NAME_STRING },
     { required: true, message: langObj.ERROR_NAME_REQUIRED },
   ] as Rule[],

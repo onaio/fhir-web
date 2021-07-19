@@ -29,6 +29,7 @@ export interface NewLocationUnitProps
     >,
     RouteComponentProps {
   opensrpBaseURL: string;
+  fhirBaseURL: string;
   instance: FormInstances;
   filterByParentId?: boolean;
   processInitialValues?: (formFields: LocationFormFields) => LocationFormFields;
@@ -39,6 +40,7 @@ const defaultNewLocationUnitProps = {
   redirectAfterAction: '',
   findByParentId: false,
   opensrpBaseURL: OPENSRP_API_BASE_URL,
+  fhirBaseURL: '',
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
@@ -56,6 +58,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     hidden,
     disabled,
     opensrpBaseURL,
+    fhirBaseURL,
     filterByParentId,
     successURLGenerator,
     cancelURLGenerator,
@@ -116,6 +119,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     disabled: disabled,
     onCancel: cancelHandler,
     opensrpBaseURL,
+    fhirBaseURL,
     filterByParentId,
     username: user.username,
     afterSubmit: (payload) => {
