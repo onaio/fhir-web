@@ -7,14 +7,12 @@ import {
   LOCATION_HIERARCHY,
   LOCATION_UNIT_FIND_BY_PROPERTIES,
   LOCATION_UNIT_ENDPOINT,
-  LOCATION_UNIT_GROUP_ALL,
   OPENSRP_V2_SETTINGS,
 } from '../constants';
 import { fetchLocationUnits, LocationUnit } from '../ducks/location-units';
 import { fetchTree } from '../ducks/locationHierarchy';
 import { RawOpenSRPHierarchy } from '../ducks/locationHierarchy/types';
 import { URLParams } from '@opensrp/server-service';
-import { LocationUnitGroup } from '../ducks/location-unit-groups';
 
 /** Abstract 2 functions; get jurisdiction at any geo-level, get hierarchy */
 
@@ -152,26 +150,6 @@ export async function loadSettings<T>(
       if (callback) {
         callback(res);
       }
-    })
-    .catch((error: Error) => {
-      throw error;
-    });
-}
-
-/** gets location tags from the api
- *
- * @param baseURL - openSRP base url
- * @param callback - callback to call with response data
- */
-export async function loadLocationTags(
-  baseURL: string,
-  callback?: (data: LocationUnitGroup[]) => void
-) {
-  const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, baseURL);
-  return serve
-    .list()
-    .then((response: LocationUnitGroup[]) => {
-      callback?.(response);
     })
     .catch((error: Error) => {
       throw error;
