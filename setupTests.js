@@ -2,8 +2,11 @@
 // allows you to do things like:
 // learn more: https://github.com/testing-library/jest-dom
 import enzyme from 'enzyme';
+import nock from 'nock';
 import Adapter from 'enzyme-adapter-react-16';
 import MockDate from 'mockdate';
+import mockClient from 'fhirclient/lib/Client';
+import mockfetch from 'jest-fetch-mock';
 import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/camelcase */
 import i18n from 'i18next';
@@ -55,3 +58,15 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
+
+// const mockfhirBaseURL = 'https://fhirBaseURL.com/';
+// const mockclient = new mockClient({}, { serverUrl: mockfhirBaseURL });
+
+jest.mock('fhirclient', () => ({
+  client: jest.fn().mockImplementation(() => ({
+    request: (...parm) => console.error('Override Fhir request Implimentation', ...parm),
+    update: (...parm) => console.error('Override Fhir update Implimentation', ...parm),
+    create: (...parm) => console.error('Override Fhir create Implimentation', ...parm),
+    delete: (...parm) => console.error('Override Fhir delete Implimentation', ...parm),
+  })),
+}));

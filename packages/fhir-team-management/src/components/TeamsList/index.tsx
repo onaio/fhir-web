@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { FHIRResponse } from '../../fhirutils';
+import { FHIRResponse } from '@opensrp/react-utils';
 import { loadTeamDetails } from '../../utils';
 
 interface Props {
@@ -81,7 +81,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
               />
             </h5>
             <div>
-              <Link to={URL_ADD_TEAM}>
+              <Link className="create" to={URL_ADD_TEAM}>
                 <Button type="primary">
                   <PlusOutlined />
                   {lang.CREATE_TEAM}

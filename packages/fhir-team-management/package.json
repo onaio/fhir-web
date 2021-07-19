@@ -47,7 +47,9 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@opensrp/store": "^0.0.10",
     "@types/uuid": "8.3.1",
-    "i18next-parser": "^3.5.0"
+    "i18next-parser": "^3.5.0",
+    "nock": "^13.1.1",
+    "@smile-cdr/fhirts": "1.2.5"
   },
   "peerDependencies": {
     "i18next": "^19.8.4",
