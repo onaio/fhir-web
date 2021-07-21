@@ -67,14 +67,14 @@ export const createOrEditPractitioners = async (
  * @param keycloakBaseURL -  base url for the keycloak instance
  * @param keycloakUserPayload - the keycloak user payload
  * @param isEditMode - whether editing or creating the keycloak user
- * @param callback - function called when user is successfully posted or updated
+ * @param updateGroupsAndPractitionerCallback - function called when user is successfully posted or updated
  * @param langObj - the translation store object
  */
 const createEditKeycloakUser = async (
   keycloakBaseURL: string,
   keycloakUserPayload: KeycloakUser,
   isEditMode: boolean,
-  callback: (id: string) => Promise<void>,
+  updateGroupsAndPractitionerCallback: (id: string) => Promise<void>,
   langObj = lang
 ) => {
   if (isEditMode) {
@@ -86,7 +86,9 @@ const createEditKeycloakUser = async (
       .update(keycloakUserPayload)
       .then(() => {
         sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
-        callback(keycloakUserPayload.id).catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
+        updateGroupsAndPractitionerCallback(keycloakUserPayload.id).catch(() =>
+          sendErrorNotification(langObj.ERROR_OCCURED)
+        );
       })
       .catch((error) => {
         throw error;
@@ -99,7 +101,9 @@ const createEditKeycloakUser = async (
       .then((res) => {
         sendSuccessNotification(langObj.MESSAGE_USER_CREATED);
         const keycloakUserId = getUserId(res);
-        callback(keycloakUserId).catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
+        updateGroupsAndPractitionerCallback(keycloakUserId).catch(() =>
+          sendErrorNotification(langObj.ERROR_OCCURED)
+        );
       })
       .catch((error) => {
         throw error;
