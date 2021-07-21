@@ -573,6 +573,12 @@ describe('forms/utils/submitForm', () => {
   });
 
   it('creates active practitioner on keycloak user creation', async () => {
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${keycloakUserId}`,
+      },
+    });
     submitForm(
       // initialize values for new user creation
       { ...value, id: undefined, userGroups: undefined },
@@ -603,7 +609,7 @@ describe('forms/utils/submitForm', () => {
           lastName: value.lastName,
           username: value.username,
           email: value.email,
-          id: mockV4,
+          id: '',
         },
       },
       {
@@ -613,7 +619,7 @@ describe('forms/utils/submitForm', () => {
           active: true,
           identifier: mockV4,
           name: `${value.firstName} ${value.lastName}`,
-          userId: mockV4,
+          userId: keycloakUserId,
           username: value.username,
         },
       },
