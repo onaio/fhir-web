@@ -1,27 +1,22 @@
 import React, { useState } from 'react';
 import { Form, Input, Space, Button, Radio } from 'antd';
+import { useHistory } from 'react-router';
 import FHIR from 'fhirclient';
 import { get } from 'lodash';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Redirect } from 'react-router';
-import { ExtraFields } from './ExtraFields';
 import {
   defaultFormField,
   generateLocationUnit,
-  getServiceTypeOptions,
   handleGeoFieldsChangeFactory,
   LocationFormFields,
-  ServiceTypeSetting,
   validationRulesFactory,
 } from './utils';
-import { baseURL, SERVICE_TYPES_SETTINGS_ID, URL_LOCATION_UNIT } from '../../constants';
+import { baseURL, URL_LOCATION_UNIT } from '../../constants';
 import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
-import { CustomSelect } from './CustomSelect';
-import { loadSettings, postPutLocationUnit } from '../../helpers/dataLoaders';
 import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
-import { IfhirR4 } from '@smile-cdr/fhirts';
 
 const { Item: FormItem } = Form;
 
@@ -104,10 +99,7 @@ const LocationForm = (props: LocationFormProps) => {
     successURLGenerator,
     opensrpBaseURL,
     disabled,
-    onCancel,
     hidden,
-    username,
-    afterSubmit,
     disabledTreeNodesCallback,
     filterByParentId,
     fhirBaseURL,
@@ -118,10 +110,10 @@ const LocationForm = (props: LocationFormProps) => {
   const [selectedLocationTags, setLocationTags] = useState<LocationUnitTag[]>([]);
   const [selectedParentNode, setSelectedParentNode] = useState<TreeNode>();
   const [generatedPayload, setGeneratedPayload] = useState<LocationUnit>();
+  const history = useHistory();
   const validationRules = validationRulesFactory(lang);
 
   const isHidden = (fieldName: string) => hidden.includes(fieldName);
-  const isDisabled = (fieldName: string) => disabled.includes(fieldName);
 
   const [form] = Form.useForm();
 
@@ -145,8 +137,6 @@ const LocationForm = (props: LocationFormProps) => {
     return <Redirect to={redirectAfterAction} />;
   }
 
-  console.log('loc form??', initialValues);
-
   const geoFieldsChangeHandler = handleGeoFieldsChangeFactory(form);
 
   return (
@@ -162,21 +152,12 @@ const LocationForm = (props: LocationFormProps) => {
         onFinish={async (values) => {
           const payload = generateLocationUnit(
             values as any,
-            get(initialValues, 'identifier.0.value'),
-            username,
-            selectedLocationTags,
-            selectedParentNode
+            get(initialValues, 'identifier.0.value')
           );
 
           const successMessage = isEditMode
             ? lang.SUCCESSFULLY_UPDATED_LOCATION
             : lang.SUCCESSFULLY_CREATED_LOCATION;
-
-          const params = {
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            is_jurisdiction: values.isJurisdiction,
-          };
-
           const serve = FHIR.client(fhirBaseURL);
           if (initialValues?.id) {
             await serve
@@ -189,6 +170,7 @@ const LocationForm = (props: LocationFormProps) => {
               .then(() => sendSuccessNotification(successMessage))
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
           }
+          history.push(URL_LOCATION_UNIT);
         }}
       >
         <>
@@ -269,7 +251,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             hidden={isHidden('isJurisdiction')}
-            label={lang.LOCATION_CATEGORY_LABEL}
+            label={lang.PHYSICAL_TYPE}
             name="isJurisdiction"
             id="isJurisdiction"
             rules={validationRules.isJurisdiction}
@@ -289,7 +271,10 @@ const LocationForm = (props: LocationFormProps) => {
               >
                 {isSubmitting ? lang.SAVING : lang.SAVE}
               </Button>
-              <Button id="location-form-cancel-button" onClick={() => onCancel()}>
+              <Button
+                id="location-form-cancel-button"
+                onClick={() => history.push(URL_LOCATION_UNIT)}
+              >
                 {lang.CANCEL}
               </Button>
             </Space>

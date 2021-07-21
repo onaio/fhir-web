@@ -232,7 +232,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     },
     disabledTreeNodesCallback,
   };
-  const pageTitle = `${lang.EDIT} > Test`;
+  const pageTitle = `${lang.EDIT} > ${initialValues.name}`;
 
   return (
     <Row className="layout-content">

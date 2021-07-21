@@ -1,11 +1,5 @@
 import { Dictionary } from '@onaio/utils';
-import FHIR from 'fhirclient';
-import {
-  LocationUnit,
-  LocationUnitStatus,
-  LocationUnitSyncStatus,
-  LocationUnitTag,
-} from '../../ducks/location-units';
+import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
 import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
@@ -13,10 +7,8 @@ import { v4 } from 'uuid';
 import { Geometry, Point } from 'geojson';
 import lang, { Lang } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
-import { LOCATION_UNIT_TYPE } from '../../constants';
 import { GetSelectedFullData } from './CustomSelect';
 import { uniqBy } from 'lodash';
-import { IfhirR4 } from '@smile-cdr/fhirts';
 
 export enum FormInstances {
   CORE = 'core',
