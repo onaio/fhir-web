@@ -64,11 +64,11 @@ function fill() {
   lang.LOCATION_ACTIVE_STATUS_LABEL = i18n.t(`Active`, { ns: namespace });
   lang.LOCATION_INACTIVE_STATUS_LABEL = i18n.t(`Inactive`, { ns: namespace });
   lang.LOCATION_JURISDICTION_LABEL = i18n.t(`Jurisdiction`, { ns: namespace });
-  lang.LOCATION_STRUCTURE_LABEL = i18n.t(`Service point`, { ns: namespace });
+  lang.LOCATION_STRUCTURE_LABEL = i18n.t(`Structure`, { ns: namespace });
   lang.INSTANCE_LABEL = i18n.t(`Instance`, { ns: namespace });
   lang.ID_LABEL = i18n.t(`Id`, { ns: namespace });
   lang.USERNAME_LABEL = i18n.t(`username`, { ns: namespace });
-  lang.PARENT_LABEL = i18n.t(`Parent`, { ns: namespace });
+  lang.PARENT_LABEL = i18n.t(`Part Of`, { ns: namespace });
   lang.NAME_LABEL = i18n.t(`Name`, { ns: namespace });
   lang.STATUS_LABEL = i18n.t(`Status`, { ns: namespace });
   lang.LOCATION_CATEGORY_LABEL = i18n.t(`Location category`, { ns: namespace });
