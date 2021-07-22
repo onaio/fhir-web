@@ -251,7 +251,7 @@ describe('components/forms/UserForm', () => {
 
     expect(JSON.parse((fetch.mock.calls[0][1] as Dictionary).body)).toEqual({
       firstName: 'Test',
-      id: mockId,
+      id: '',
       lastName: 'One',
       username: 'TestOne',
       email: 'testone@gmail.com',
