@@ -28,7 +28,7 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/auth`
 
-- **REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE**
+- **REACT_APP_OPENSRP_OAUTH_STATE**
 
   - Defines the app oauth2 state to use
   - **Required**
@@ -213,6 +213,7 @@ Below is a list of currently supported environment variables:
   - default: `https://fhir.labs.smartregister.org/fhir`
 
 - **REACT_APP_USER_FORM_RENDER_FIELDS** `partially-implemented`
+
   - module: `user-management`
   - configure rendered form fields in creating editing users, a comma separated list of `FormFieldsKey's`
   - **optional**
