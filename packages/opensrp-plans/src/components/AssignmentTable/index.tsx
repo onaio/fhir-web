@@ -33,13 +33,12 @@ import { Store } from 'redux';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { BrokenPage, Column, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { PlanDefinition } from '@opensrp/plan-form-core';
-import { compressAssignments, mergeIdsWithNames, getDataSource, TableData } from './utils';
+import { getDataSource, TableData, getPlanAssignmentColumns } from './utils';
 import {
   fetchPlanDefinitions,
   makePlanDefinitionsArraySelector,
 } from '../../ducks/planDefinitions';
-import { TableColumnsNamespace } from '../../index';
-import { ActionColumn } from '../TableActionColumn';
+import { useTranslation } from 'react-i18next';
 
 reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
 reducerRegistry.register(orgReducerName, organizationsReducer);
@@ -95,6 +94,7 @@ const AssignmentTable = (props: AssignmentTableProps) => {
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
   const [loading, setLoading] = useState<boolean>(true);
   const planId = plan.identifier;
+  useTranslation();
 
   // todo component should re-render make the calls to get
   useEffect(() => {
@@ -133,20 +133,17 @@ const AssignmentTable = (props: AssignmentTableProps) => {
   const planJurisdictions = plan.jurisdiction.map((jurCode) => jurCode.code);
   const datasource = getDataSource(organizations, jurisdictions, assignments, planJurisdictions);
 
-  const columns: Column<TableData>[] = [
-    {
-      title: 'Assigned areas',
-      dataIndex: 'jurisdictions',
-      key: `${TableColumnsNamespace}-assigned-areas` as keyof TableData,
-      width: '40%',
-    },
-    {
-      title: 'Assigned teams',
-      dataIndex: 'organizations',
-      key: `${TableColumnsNamespace}-assigned-teams` as keyof TableData,
-      width: '40%',
-    },
-  ];
+  const columns = getPlanAssignmentColumns(
+    assignments,
+    organizations,
+    jurisdictions,
+    OpenSRPService,
+    planCreator,
+    assignmentsActionCreator,
+    plan,
+    baseURL,
+    disableAssignments
+  ) as Column<TableData>[];
 
   return (
     <div className="assignment-table">
@@ -157,42 +154,6 @@ const AssignmentTable = (props: AssignmentTableProps) => {
         loading={loading}
         columns={columns}
         pagination={false}
-        actions={{
-          title: 'Actions',
-          // eslint-disable-next-line react/display-name
-          render: (_, __, index: number) => {
-            const fullyGrouped = compressAssignments(assignments);
-            // eslint-disable-next-line react/prop-types
-            const planJurisdictions = plan.jurisdiction.map((jur) => jur.code);
-            const mergedOptions = mergeIdsWithNames(
-              fullyGrouped,
-              organizations,
-              jurisdictions,
-              assignments,
-              planJurisdictions
-            );
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            const assignedOrgsOptions = mergedOptions[index]?.organizations ?? [];
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            const assignedJursOptions = mergedOptions[index]?.jurisdictions ?? [];
-
-            const props = {
-              organizations,
-              assignments,
-              jurisdictions,
-              assignedJursOptions,
-              assignedOrgsOptions,
-              serviceClass,
-              planCreator,
-              assignmentsCreator: assignmentsActionCreator,
-              plan,
-              baseURL,
-              disableAssignments,
-            };
-            return <ActionColumn {...props}></ActionColumn>;
-          },
-          width: '20%',
-        }}
       />
     </div>
   );
