@@ -90,11 +90,10 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
   };
 
   // auto append key into data if not provided
-  const data: T[] = useMemo(() => {
-    return datasource.map((e, index) => {
-      return { ...e, key: e.key ?? `${id ?? ''}${index}` };
-    });
-  }, [datasource, id]);
+  const data: T[] = useMemo(
+    () => datasource.map((e, index) => ({ ...e, key: e.key ?? `${id ?? ''}${index}` })),
+    [datasource, id]
+  );
 
   /** Table Layout Component used to render the table with default Settings
    *
