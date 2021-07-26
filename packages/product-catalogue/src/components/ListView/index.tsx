@@ -89,6 +89,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
           </div>
           <TableLayout
             id="ProductCatalogueList"
+            dataKeyAccessor="uniqueId"
             persistState={true}
             datasource={data}
             columns={columns}
