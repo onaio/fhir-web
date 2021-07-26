@@ -5,6 +5,7 @@ import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS, TABLE_ACTIONS_KEY } from '../../constants';
 import { getConfig, TableState, setConfig } from '@opensrp/pkg-config';
 import { Optional } from '../../helpers/utils';
+import lang from '../../lang';
 
 // Options Must be of any Data type as the Data could be any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,7 +61,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
   if (columns && actions) {
     const actionsColumn: Column<T> = {
       key: TABLE_ACTIONS_KEY as TKey<T>,
-      title: 'Actions',
+      title: lang.ACTIONS,
       ...actions,
     };
     columns.push(actionsColumn);
