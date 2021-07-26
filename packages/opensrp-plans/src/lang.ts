@@ -50,6 +50,14 @@ function fill() {
     `Assign jurisdictions to the Plan, to enable activating it`,
     { ns: namespace }
   );
+  lang.MISSIONS = i18n.t('Missions', { ns: namespace });
+  lang.DRAFT = i18n.t('Draft', { ns: namespace });
+  lang.RETIRED = i18n.t('Retired', { ns: namespace });
+  lang.ACTIVE = i18n.t('Active', { ns: namespace });
+  lang.COMPLETE = i18n.t('Complete', { ns: namespace });
+  lang.ASSIGNED_AREAS = i18n.t('Assigned areas', { ns: namespace });
+  lang.ASSIGNED_TEAMS = i18n.t('Assigned teams', { ns: namespace });
+  lang.ACTIONS = i18n.t('Actions', { ns: namespace });
 }
 
 // run it initial
