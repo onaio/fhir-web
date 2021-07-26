@@ -389,7 +389,7 @@ describe('components/UserList', () => {
 
     // get ordered tr keys
     const rowKeys = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
-    expect(rowKeys).toMatchObject(['0', '1', '2', '3']);
+    expect(rowKeys).toMatchObject([0, 1, 2, 3]);
 
     // trigger sort on second column (first name)
     const sorter = wrapper.find('th.ant-table-column-has-sorters').at(1);
@@ -402,7 +402,7 @@ describe('components/UserList', () => {
 
     // get newly ordered tr keys
     const rowKeys2 = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
-    expect(rowKeys2).toMatchObject(['1', '2', '3', '0']);
+    expect(rowKeys2).toMatchObject([1, 2, 3, 0]);
 
     wrapper.unmount();
   });
