@@ -29,6 +29,7 @@ export const defaults: Options = {
 
 interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
+  dataKeyAccessor?: keyof T;
   columns?: Column<T>[];
   actions?: Action<T>;
 }
@@ -53,7 +54,16 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
 export function TableLayout<T extends object & { key?: string | number } = Dictionary>(
   props: TableProps<T>
 ) {
-  const { id, columns, datasource, children, persistState, actions, ...restprops } = props;
+  const {
+    id,
+    columns,
+    datasource,
+    children,
+    persistState,
+    actions,
+    dataKeyAccessor,
+    ...restprops
+  } = props;
 
   const options: Options = { ...defaults, ...restprops };
   const tablesState = getConfig('tablespref') ?? {};
@@ -90,10 +100,12 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
   };
 
   // auto append key into data if not provided
-  const data: T[] = useMemo(
-    () => datasource.map((e, index) => ({ ...e, key: e.key ?? `${id ?? ''}${index}` })),
-    [datasource, id]
-  );
+  const data: T[] = useMemo(() => {
+    return datasource.map((e, index) => ({
+      ...e,
+      key: e.key ?? dataKeyAccessor ? e[dataKeyAccessor as keyof T] : index,
+    }));
+  }, [dataKeyAccessor, datasource]);
 
   /** Table Layout Component used to render the table with default Settings
    *
