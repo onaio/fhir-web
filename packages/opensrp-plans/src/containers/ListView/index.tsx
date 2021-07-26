@@ -32,7 +32,7 @@ interface Props<T = PlanDefinition> extends CommonProps {
   data: T[];
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
-  allowedPlanStatus: string;
+  allowedPlanStatus: PlanStatus;
 }
 
 const defaultProps = {

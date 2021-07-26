@@ -172,7 +172,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   pageSize: pagination.pageSize ?? usersPageSize,
                 });
                 setSortedInfo(sorter);
-                setIsLoading(true);
               }}
               actions={{
                 title: 'Actions',

@@ -1586,6 +1586,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -1624,6 +1638,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -1658,6 +1686,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_0_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_condition_1_description"
     title="Description"
   >
     Description
@@ -2245,6 +2287,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2297,6 +2353,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2345,6 +2415,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_5_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_2_description"
     title="Description"
   >
     Description
@@ -2557,6 +2641,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2609,6 +2707,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2657,6 +2769,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_7_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_2_description"
     title="Description"
   >
     Description
@@ -3173,6 +3299,26 @@ Array [
     style={Object {}}
     value="Product exists"
   />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_0_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_0_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Product is active"
+  />,
 ]
 `;
 
@@ -3198,6 +3344,26 @@ Array [
     style={Object {}}
     value="Product exists"
   />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_0_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_0_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Product is active"
+  />,
 ]
 `;
 
@@ -3222,6 +3388,26 @@ Array [
     required={true}
     style={Object {}}
     value="Product exists"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_0_condition_1_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_0_condition_1_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Product is active"
   />,
 ]
 `;
@@ -3568,6 +3754,26 @@ Array [
     style={Object {}}
     value="Check if service point has stock"
   />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_2_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_2_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
+  />,
 ]
 `;
 
@@ -3613,6 +3819,26 @@ Array [
     style={Object {}}
     value="Check if service point has stock"
   />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_2_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_2_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
+  />,
 ]
 `;
 
@@ -3657,6 +3883,26 @@ Array [
     required={true}
     style={Object {}}
     value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_2_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_2_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
   />,
 ]
 `;
@@ -3778,6 +4024,26 @@ Array [
     style={Object {}}
     value="Check if service point has stock"
   />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_2_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_2_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
+  />,
 ]
 `;
 
@@ -3823,6 +4089,26 @@ Array [
     style={Object {}}
     value="Check if service point has stock"
   />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_2_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_2_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
+  />,
 ]
 `;
 
@@ -3867,6 +4153,26 @@ Array [
     required={true}
     style={Object {}}
     value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_2_expression"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_2_description"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
   />,
 ]
 `;
