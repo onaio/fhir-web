@@ -194,7 +194,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 setSortedInfo(sorter);
               }}
               actions={{
-                title: 'Actions',
+                title: lang.ACTIONS,
                 // eslint-disable-next-line react/display-name
                 render: (_: string, record) => {
                   const tableActionsProps = {
