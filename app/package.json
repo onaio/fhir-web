@@ -135,7 +135,8 @@
   },
   "devDependencies": {
     "i18next-parser": "^3.5.0",
-    "react-app-rewired": "^2.1.8"
+    "react-app-rewired": "^2.1.8",
+    "tsconfig-paths-webpack-plugin": "^3.5.1"
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"
