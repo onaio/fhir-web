@@ -61,8 +61,8 @@
     "yup": "^0.29.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "cd ../ && yarn test app --verbose --collectCoverage=true && cd app",
     "test:watch": "cd ../ && yarn test app --verbose --watch && cd app",
     "lint": "eslint ./**/*.{ts,tsx} --max-warnings 0",
@@ -134,7 +134,8 @@
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
-    "i18next-parser": "^3.5.0"
+    "i18next-parser": "^3.5.0",
+    "react-app-rewired": "^2.1.8"
   },
   "resolutions": {
     "react-scripts/jest": "25.3.0"
