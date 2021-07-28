@@ -10,7 +10,7 @@
     "jest": "jest --coverage --verbose --color",
     "test": "cd ../../ && yarn test packages/opensrp-server-service --verbose --collectCoverage=true && cd packages/opensrp-server-service",
     "test:watch": "cd ../../ && yarn test packages/opensrp-server-service --verbose --watch && cd packages/opensrp-server-service",
-    "tsc": "tsc",
+    "tsc": "tsc --project tsconfig.build.json",
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
