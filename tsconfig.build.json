@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "sourceMap": false,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noEmitOnError": true,
+    "jsx": "preserve",
+    "baseUrl": "packages",
+    "declaration": true,
+    "declarationMap": false,
+    "listEmittedFiles": true
+  },
+  "include": [
+    "packages/",
+    "app/src",
+    "jest.config.js",
+    "babel.config.js",
+    "setupTests.js",
+    "i18next-parser.config.js",
+    "__mocks__/"
+  ],
+  "exclude": ["**/node_modules", "**/coverage", "**/dist", "**/*.spec.ts"]
+}
