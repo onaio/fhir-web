@@ -1,34 +1,14 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "target": "esnext",
-    "sourceMap": false,
-    "lib": ["dom", "dom.iterable", "esnext", "es6"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "emitDeclarationOnly": true,
-    "noEmitOnError": true,
-    "jsx": "preserve",
-    "baseUrl": "packages",
-    "declaration": true,
-    "declarationMap": false,
-    "listEmittedFiles": true
-  },
-  "include": [
-    "packages/",
-    "app/src",
-    "jest.config.js",
-    "babel.config.js",
-    "setupTests.js",
-    "i18next-parser.config.js",
-    "__mocks__/"
-  ],
-  "exclude": ["**/node_modules", "**/coverage", "**/dist", "**/*.spec.ts"]
+    "paths": {
+      "@opensrp/user-management": ["packages/keycloak-user-management/src"],
+      "@opensrp/notifications": ["packages/opensrp-notifications/src"],
+      "@opensrp/plans": ["packages/opensrp-plans/src"],
+      "@opensrp/reducer-factory": ["packages/opensrp-reducer-factory/src"],
+      "@opensrp/server-service": ["packages/opensrp-server-service/src"],
+      "@opensrp/store": ["packages/opensrp-store/src"],
+      "@opensrp/*": ["packages/*/src"]
+    }
+  }
 }
