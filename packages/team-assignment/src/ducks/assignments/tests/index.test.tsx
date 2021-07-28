@@ -52,9 +52,10 @@ describe('reducers/assignments', () => {
 
     store.dispatch(fetchAssignments([fixtures.assignment6]));
     assignmentsNum = getAssByPlanId(store.getState(), { planId: 'alpha' }).length;
-    expect(assignmentsNum).toEqual(2);
+    expect(assignmentsNum).toEqual(3);
 
     expect(getAssByPlanId(store.getState(), { planId: 'alpha' })).toEqual([
+      fixtures.assignment6,
       fixtures.assignments[1],
       fixtures.assignments[2],
     ]);
@@ -91,6 +92,13 @@ describe('reducers/assignments', () => {
     );
     const assignments = getAssByPlanId(store.getState(), { planId: fixtures.assignment1.plan });
     expect(assignments).toHaveLength(1);
+  });
+
+  it('should fetch all Assignments regardless of date', () => {
+    const assignment = { ...fixtures.assignment1, toDate: '12/31/2018' };
+    store.dispatch(fetchAssignments([assignment]));
+    const planAssignments = getAssByPlanId(store.getState(), { planId: 'alpha' });
+    expect(planAssignments).toHaveLength(1);
   });
 });
 
