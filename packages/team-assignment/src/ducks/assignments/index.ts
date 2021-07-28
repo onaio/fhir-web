@@ -1,7 +1,6 @@
 /** Assignments redux module */
 import { Dictionary } from '@onaio/utils';
 import { get, uniqWith } from 'lodash';
-import moment from 'moment';
 import { createSelector } from 'reselect';
 import { Store } from 'redux';
 import { AnyAction } from 'redux';
@@ -215,6 +214,6 @@ export const getAssignmentsArrayByPlanId = () => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       assignments = get(assignmentsMap, planId) ?? [];
     }
-    return assignments.filter((obj) => moment(obj.toDate) >= moment());
+    return assignments;
   });
 };
