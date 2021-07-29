@@ -42,18 +42,28 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @returns - the component
  */
 export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
-  const { id, columns, datasource, children, persistState, actions, ...restprops } = props;
+  const {
+    id,
+    columns,
+    datasource,
+    children,
+    persistState,
+    actions,
+    pagination,
+    ...restprops
+  } = props;
 
-  const paginationDefaults: Options = {
-    pagination: {
-      showQuickJumper: true,
-      showSizeChanger: true,
-      defaultPageSize: getConfig('defaultTablesPageSize') ?? TABLE_PAGE_SIZE,
-      pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
-    },
+  const paginationDefaults = {
+    showQuickJumper: true,
+    showSizeChanger: true,
+    defaultPageSize: getConfig('defaultTablesPageSize') ?? TABLE_PAGE_SIZE,
+    pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
   };
 
-  const options: Options = { ...paginationDefaults, ...restprops };
+  const options: Options = {
+    pagination: pagination === false ? false : { ...paginationDefaults, ...pagination },
+    ...restprops,
+  };
   const tablesState = getConfig('tablespref') ?? {};
 
   if (columns && actions) {
