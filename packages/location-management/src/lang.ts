@@ -90,6 +90,7 @@ function fill() {
   lang.SERVICE_TYPE_PLACEHOLDER = i18n.t(`Select the service point type`, { ns: namespace });
   lang.LATITUDE_PLACEHOLDER = i18n.t(`E.g. -16.08306`, { ns: namespace });
   lang.LONGITUDE_PLACEHOLDER = i18n.t(`E.g. 49.54933`, { ns: namespace });
+  lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
 
   lang.NAME = i18n.t(`Name`, { ns: namespace });
   lang.STATUS = i18n.t(`Status`, { ns: namespace });

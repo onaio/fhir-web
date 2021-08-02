@@ -18,6 +18,7 @@ describe('pkg-configs/configStore', () => {
       opensrpBaseURL: undefined,
       fhirBaseURL: undefined,
       projectLanguageCode: 'core',
+      defaultTablesPageSize: 5,
     });
   });
 

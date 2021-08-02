@@ -37,6 +37,11 @@ export interface UserAction {
   config: Dictionary;
 }
 
+export interface UserAttributes {
+  // while these may be adhoc and arbitrary it carries with it serious back and cross compatibility issues, these should not be modified lightly
+  contact?: string[];
+}
+
 /** Interface for user json object */
 export interface KeycloakUser {
   access?: {
@@ -58,6 +63,7 @@ export interface KeycloakUser {
   requiredActions?: string[];
   totp?: boolean;
   username: string;
+  attributes?: UserAttributes;
 }
 
 // actions

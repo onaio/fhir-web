@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { mount } from 'enzyme';
 import React from 'react';
@@ -22,19 +23,22 @@ import {
 import { authenticateUser } from '@onaio/session-reducer';
 import lang from '../../../lang';
 import {
-  defaultInitialValue,
   keycloakUser,
   practitioner1,
   requiredActions,
   userGroup,
 } from '../../forms/UserForm/tests/fixtures';
+import { defaultUserFormInitialValues } from '../../forms/UserForm';
+import { getFormValues } from '../../forms/UserForm/utils';
+import { Dictionary } from '@onaio/utils/dist/types/types';
 
-/* eslint-disable @typescript-eslint/camelcase */
-
-jest.mock('@opensrp/store', () => ({
-  __esModule: true,
-  ...jest.requireActual('@opensrp/store'),
-}));
+jest.mock('@opensrp/store', () => {
+  const actualStore = jest.requireActual('@opensrp/store');
+  return {
+    __esModule: true,
+    ...actualStore,
+  };
+});
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -152,8 +156,7 @@ describe('components/CreateEditUser', () => {
       .once(JSON.stringify(userGroup))
       .once(JSON.stringify(keycloakUser))
       .once(JSON.stringify(userGroup))
-      .once(JSON.stringify(practitioner1))
-      .once(JSON.stringify(requiredActions));
+      .once(JSON.stringify(practitioner1));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -168,8 +171,6 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
-    const row = wrapper.find('Row').at(0);
-
     const fetchMockCalls = fetch.mock.calls.map((call) => call[0]);
     expect(fetchMockCalls).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups',
@@ -178,7 +179,11 @@ describe('components/CreateEditUser', () => {
       'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner/user/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
     ]);
 
-    expect(row.props()).toMatchSnapshot();
+    expect(wrapper.find('UserForm')).toHaveLength(1);
+    const userFormProps = wrapper.find('UserForm').props() as Dictionary;
+    expect(userFormProps.initialValues).toEqual(
+      getFormValues(keycloakUser, practitioner1, userGroup)
+    );
 
     wrapper.unmount();
   });
@@ -203,7 +208,7 @@ describe('components/CreateEditUser', () => {
 
     const row = wrapper.find('Row').at(0);
 
-    expect(row.find('UserForm').prop('initialValues')).toEqual(defaultInitialValue);
+    expect(row.find('UserForm').prop('initialValues')).toEqual(defaultUserFormInitialValues);
     wrapper.unmount();
   });
 
@@ -341,7 +346,7 @@ describe('components/CreateEditUser', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     expect(wrapper.text()).toMatchInlineSnapshot(
       // eslint-disable-next-line no-irregular-whitespace
-      `"Edit User | opensrpFirst NameLast NameEmailUsernameContactEnable userYesNoMark as PractitionerYesNoGroupAdminAdmin 2New Group SaveCancel"`
+      `"Edit User | opensrpFirst NameLast NameEmailUsernameEnable userYesNoMark as PractitionerYesNoGroupAdminAdmin 2New Group SaveCancel"`
     );
     wrapper.unmount();
   });

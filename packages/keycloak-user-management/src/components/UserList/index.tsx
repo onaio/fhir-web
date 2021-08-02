@@ -5,13 +5,7 @@ import { Spin } from 'antd';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import {
-  createChangeHandler,
-  defaults,
-  getQueryParams,
-  SearchForm,
-  TableLayout,
-} from '@opensrp/react-utils';
+import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -48,6 +42,7 @@ export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakUsers: KeycloakUser[];
   keycloakBaseURL: string;
+  opensrpBaseURL: string;
   extraData: Dictionary;
   usersPageSize: number;
 }
@@ -59,6 +54,7 @@ export const defaultProps = {
   removeKeycloakUsersCreator: removeKeycloakUsers,
   keycloakUsers: [],
   keycloakBaseURL: '',
+  opensrpBaseURL: '',
   extraData: {},
   usersPageSize: 20,
 };
@@ -82,6 +78,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     removeKeycloakUsersCreator,
     keycloakUsers,
     keycloakBaseURL,
+    opensrpBaseURL,
     extraData,
     usersPageSize,
   } = props;
@@ -178,7 +175,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
               columns={getTableColumns(sortedInfo)}
               datasource={tableData}
               pagination={{
-                ...defaults.pagination,
                 current: page.current,
                 pageSize: page.pageSize,
                 total: isSearchActive ? keycloakUsers.length : usersCount,
@@ -189,7 +185,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   pageSize: pagination.pageSize ?? usersPageSize,
                 });
                 setSortedInfo(sorter);
-                setIsLoading(true);
               }}
               actions={{
                 title: 'Actions',
@@ -198,6 +193,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   const tableActionsProps = {
                     removeKeycloakUsersCreator,
                     keycloakBaseURL,
+                    opensrpBaseURL,
                     isLoadingCallback,
                     record,
                     extraData,
@@ -206,7 +202,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 },
               }}
             />
-            )
           </Space>
         </Col>
       </Row>

@@ -1090,6 +1090,14 @@ export const planActivities: PlanActivities = {
             expression: '$this.is(FHIR.Bundle)',
           },
         },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Product is active',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+        },
       ],
       dynamicValue: [
         {
@@ -1405,7 +1413,7 @@ export const planActivities: PlanActivities = {
       reason: ROUTINE,
       goalId: RECORD_GPS_CODE,
       subjectCodableConcept: {
-        text: 'Location',
+        text: 'Location.Stock',
       },
       trigger: [
         {
@@ -1418,7 +1426,23 @@ export const planActivities: PlanActivities = {
           kind: APPLICABILITY_CONDITION_KIND,
           expression: {
             description: 'Service point does not have geometry',
-            expression: "$this.identifier.where(system='hasGeometry').value='false'",
+            expression:
+              "Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'",
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has stock',
+            expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
           },
         },
       ],
@@ -1536,14 +1560,29 @@ export const planActivities: PlanActivities = {
       reason: ROUTINE,
       goalId: SERVICE_POINT_CHECK_CODE,
       subjectCodableConcept: {
-        text: 'Location',
+        text: 'Location.Stock',
       },
       condition: [
         {
           kind: APPLICABILITY_CONDITION_KIND,
           expression: {
             description: 'All service points',
-            expression: '$this.is(FHIR.Location)',
+            expression: '$this.is(FHIR.Bundle)',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has stock',
+            expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
           },
         },
       ],
