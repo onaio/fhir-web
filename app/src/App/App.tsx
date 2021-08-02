@@ -133,6 +133,7 @@ import {
   usersListProps,
   createEditUserProps,
   groupProps,
+  teamManagementProps,
 } from './utils';
 import './App.css';
 import {
@@ -548,6 +549,7 @@ const App: React.FC = () => {
               exact
               path={URL_TEAMS_ADD}
               component={TeamsAddEdit}
+              {...teamManagementProps}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -556,6 +558,7 @@ const App: React.FC = () => {
               exact
               path={`${URL_TEAMS_EDIT}/:id`}
               component={TeamsAddEdit}
+              {...teamManagementProps}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

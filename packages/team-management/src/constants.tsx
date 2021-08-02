@@ -5,9 +5,11 @@ export const URL_EDIT_TEAM = 'teams/edit/';
 //
 // Practitioner
 //
-export const PRACTITIONER_GET = 'practitioner/';
-export const PRACTITIONER_POST = 'practitionerRole/add/';
-export const PRACTITIONER_DEL = 'practitionerRole/deleteByPractitioner';
+export const PRACTITIONER_GET = 'practitioner';
+export const PRACTITIONER_COUNT = `${PRACTITIONER_GET}/count/`;
+export const PRACTITIONER_ROLE = 'practitionerRole';
+export const PRACTITIONER_POST = `${PRACTITIONER_ROLE}/add/`;
+export const PRACTITIONER_DEL = `${PRACTITIONER_ROLE}/deleteByPractitioner`;
 
 //
 // Teams

@@ -12,6 +12,7 @@ export function lang(t: TFunction) {
     DOWNLOAD_CLIENT_DATA: t(`Download Client Data`, { ns: namespace }),
     CARD_SUPPORT: t(`Card Support`, { ns: namespace }),
     LOGIN: t(`Login`, { ns: namespace }),
+    LOGOUT: t(`Logout`, { ns: namespace }),
     MANAGE_ACCOUNT: t(`Manage account`, { ns: namespace }),
     LOGIN_PROMPT: t(`Please log in with one of the following providers`, {
       ns: namespace,
