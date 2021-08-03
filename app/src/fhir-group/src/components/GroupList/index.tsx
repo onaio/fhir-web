@@ -15,16 +15,16 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { FHIRResponse, ProcessFHIRResponse } from '../../fhirutils';
-import { loadHealthcareDetails } from '../../utils';
+import { FHIRResponse } from '../../fhirutils';
+import { loadGroupDetails } from '../../utils';
 
 interface Props {
   fhirBaseURL: string;
 }
 
-/** Function which shows the list of all healthcares and there details
+/** Function which shows the list of all group and there details
  *
- * @param {Object} props - HEALTHCAREsList component props
+ * @param {Object} props - GroupList component props
  * @returns {Function} returns healthcare display
  */
 export const GroupList: React.FC<Props> = (props: Props) => {
@@ -37,7 +37,7 @@ export const GroupList: React.FC<Props> = (props: Props) => {
 
   const healthcare = useQuery(GROUP_GET, () => serve.request(GROUP_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Groups>) => ProcessFHIRResponse(res),
+    select: (res: FHIRResponse<Groups>) => res.entry.map((e) => e.resource),
   });
 
   const tableData: TableData[] = useMemo(() => {
@@ -49,7 +49,7 @@ export const GroupList: React.FC<Props> = (props: Props) => {
   }, [healthcare.data]);
 
   /**
-   * Returns filted list of healthcares
+   * Returns filted list of group
    *
    * @param {ChangeEvent<HTMLInputElement>} e event recieved onChange
    */
@@ -66,9 +66,9 @@ export const GroupList: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{lang.HEALTHCARES}</title>
+        <title>{lang.GROUPS}</title>
       </Helmet>
-      <h5 className="mb-3">{lang.HEALTHCARES}</h5>
+      <h5 className="mb-3">{lang.GROUPS}</h5>
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
@@ -85,7 +85,7 @@ export const GroupList: React.FC<Props> = (props: Props) => {
               <Link to={URL_ADD_GROUP}>
                 <Button type="primary">
                   <PlusOutlined />
-                  {lang.CREATE_HEALTHCARE}
+                  {lang.CREATE_GROUP}
                 </Button>
               </Link>
             </div>
@@ -96,7 +96,7 @@ export const GroupList: React.FC<Props> = (props: Props) => {
               fhirBaseURL={fhirBaseURL}
               onViewDetails={(prams) => {
                 setDetail('loading');
-                loadHealthcareDetails(prams)
+                loadGroupDetails(prams)
                   .then((healthcare) => setDetail(healthcare))
                   .catch(() => {
                     sendErrorNotification(lang.ERROR_OCCURRED);

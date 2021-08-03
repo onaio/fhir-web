@@ -9,7 +9,7 @@ export interface GroupDetailProps extends GroupDetail {
 }
 
 const GroupDetails = (props: GroupDetailProps) => {
-  const { extraDetails, comment, meta, name, active, id, patient } = props;
+  const { meta, name, active, id } = props;
 
   const lastUpdated = useMemo(() => {
     if (meta?.lastUpdated) {
@@ -28,7 +28,7 @@ const GroupDetails = (props: GroupDetailProps) => {
         icon={<CloseOutlined />}
       />
       <div className="mb-4 small mt-4">
-        <div className="mb-0 font-weight-bold">{lang.HEALTHCARE_NAME}</div>
+        <div className="mb-0 font-weight-bold">{lang.GROUP_NAME}</div>
         <div className="mb-0">{name}</div>
       </div>
       <div className="mb-4 small">
@@ -42,18 +42,6 @@ const GroupDetails = (props: GroupDetailProps) => {
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.LAST_UPDATED_DATE}</div>
         <div className="mb-0">{lastUpdated}</div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.ORGANIZATION}</div>
-        <div className="mb-0">{patient ? patient.name : lang.NOORGANIZATION}</div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.COMMENT}</div>
-        <div className="mb-0">{comment ?? lang.NOCOMMENT}</div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.EXTRADETAILS}</div>
-        <div className="mb-0">{extraDetails ?? lang.NO_HEALTHCARE_MEMBERS}</div>
       </div>
     </div>
   );
