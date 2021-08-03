@@ -18,21 +18,6 @@ export const loadLanguageResources = (i18n: i18nInstance | undefined, resources:
 };
 
 /**
- * Convert array of Object T to object with param key used for key of resultant object.
- *
- * @param array array of T to be converted
- * @param key key of T to used to the processed Object
- * @returns resultant Object
- */
-export function convertToObject<T>(array: Array<T>, key: keyof T): Record<string, T> {
-  return array.reduce((prev, item) => {
-    const _key = item[key];
-    if (typeof _key !== 'string') throw new Error('Key should be a string value');
-    return { ...prev, [_key]: item };
-  }, {}) as Record<string, T>;
-}
-
-/**
  * From T, convert a set of keys to required, that arr in the union K.
  */
 export type Require<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;

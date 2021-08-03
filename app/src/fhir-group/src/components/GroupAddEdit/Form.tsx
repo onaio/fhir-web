@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
+import { Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { GROUP_POST, GROUP_PUT, GROUP_GET } from '../../constants';
-import {
-  sendSuccessNotification,
-  sendInfoNotification,
-  sendErrorNotification,
-} from '@opensrp/notifications';
-import { Groups, Patient } from '../../types';
-import { FhirObject } from '../../fhirutils';
+import { GROUP_GET } from '../../constants';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
+import { Groups } from '../../types';
 import { useQueryClient } from 'react-query';
 
-import lang, { Lang } from '../../lang';
+import lang from '../../lang';
 import FHIR from 'fhirclient';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
@@ -21,16 +16,11 @@ const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 export interface FormField {
   name: string;
   active: boolean;
-  comment: string;
-  extraDetails: string;
-  organizationid: string | undefined;
 }
 
 interface Props {
   fhirBaseURL: string;
-  id?: string;
-  initialValue?: FormField;
-  organizations: Patient[];
+  initialValue?: FormField & Partial<Groups>;
 }
 
 /**
@@ -46,24 +36,21 @@ export async function onSubmit(
   fhirBaseURL: string,
   setIsSubmitting: (value: boolean) => void,
   values: FormField,
-  id?: string
+  initialValue: FormField & Partial<Groups>
 ) {
   setIsSubmitting(true);
-  const Groupid = id ?? v4();
+  const Groupid = initialValue.id ? initialValue.id : v4();
 
-  const payload: FhirObject<Omit<Groups, 'meta'>> = {
+  const payload: Omit<Groups, 'meta'> = {
     resourceType: 'Group',
     id: Groupid,
     active: values.active,
     identifier: [{ use: 'official', value: Groupid }],
-    comment: values.comment,
-    extraDetails: values.extraDetails,
-    providedBy: { reference: 'Organization/' + values.organizationid },
     name: values.name,
   };
 
   const serve = FHIR.client(fhirBaseURL);
-  if (id) {
+  if (initialValue.id) {
     await serve.update(payload);
     sendSuccessNotification(lang.MSG_GROUPS_UPDATE_SUCCESS);
   } else {
@@ -74,25 +61,22 @@ export async function onSubmit(
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { fhirBaseURL, id, organizations } = props;
+  const { fhirBaseURL } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue: FormField = props.initialValue ?? {
+  const initialValue = props.initialValue ?? {
     active: true,
     name: '',
-    comment: '',
-    extraDetails: '',
-    organizationid: undefined,
   };
 
   return (
     <AntdForm
       requiredMark={false}
       {...layout}
-      onFinish={(values) =>
-        onSubmit(fhirBaseURL, setIsSubmitting, values, id)
+      onFinish={(values: FormField) =>
+        onSubmit(fhirBaseURL, setIsSubmitting, values, initialValue)
           .then(() => {
             queryClient.invalidateQueries(GROUP_GET);
-            queryClient.invalidateQueries([GROUP_GET, id]);
+            queryClient.invalidateQueries([GROUP_GET, initialValue?.id]);
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
@@ -109,24 +93,6 @@ export const Form: React.FC<Props> = (props: Props) => {
           <Radio value={true}>{lang.ACTIVE}</Radio>
           <Radio value={false}>{lang.INACTIVE}</Radio>
         </Radio.Group>
-      </AntdForm.Item>
-
-      <AntdForm.Item name="comment" label={lang.COMMENT}>
-        <Input.TextArea rows={2} placeholder={lang.ENTER_COMMENT} />
-      </AntdForm.Item>
-
-      <AntdForm.Item name="extraDetails" label={lang.EXTRADETAILS}>
-        <Input.TextArea rows={4} placeholder={lang.ENTER_EXTRADETAILS} />
-      </AntdForm.Item>
-
-      <AntdForm.Item name="organizationid" label={lang.ORGANIZATION}>
-        <Select placeholder={lang.ENTER_ORGANIZATION}>
-          {organizations.map((org) => (
-            <Select.Option key={org.id} value={org.id}>
-              {org.name}
-            </Select.Option>
-          ))}
-        </Select>
       </AntdForm.Item>
 
       <AntdForm.Item {...offsetLayout}>

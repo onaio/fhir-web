@@ -14,7 +14,7 @@ export interface TableData extends Groups {
 export interface Props {
   data: TableData[];
   fhirBaseURL: string;
-  onViewDetails?: (param: { healthcareservice: TableData; fhirBaseURL: string }) => void;
+  onViewDetails?: (param: { group: TableData; fhirBaseURL: string }) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
@@ -69,7 +69,7 @@ const Table: React.FC<Props> = (props: Props) => {
                   <Menu.Item
                     className="viewdetails"
                     onClick={() => {
-                      if (onViewDetails) onViewDetails({ healthcareservice: record, fhirBaseURL });
+                      if (onViewDetails) onViewDetails({ group: record, fhirBaseURL });
                     }}
                   >
                     View Details
