@@ -12,6 +12,7 @@ export function lang(t: TFunction) {
     DOWNLOAD_CLIENT_DATA: t(`Download Client Data`, { ns: namespace }),
     CARD_SUPPORT: t(`Card Support`, { ns: namespace }),
     LOGIN: t(`Login`, { ns: namespace }),
+    LOGOUT: t(`Logout`, { ns: namespace }),
     MANAGE_ACCOUNT: t(`Manage account`, { ns: namespace }),
     LOGIN_PROMPT: t(`Please log in with one of the following providers`, {
       ns: namespace,
@@ -39,6 +40,7 @@ export function lang(t: TFunction) {
     MISSIONS: t(`Missions`, { ns: namespace }),
     WELCOME_TO_OPENSRP: t(`Welcome to OpenSRP`, { ns: namespace }),
     HEALTHCARE: t(`Health Care`, { ns: namespace }),
+    GROUP: t(`Group`, { ns: namespace }),
     INVENTORY: t(`Inventory`, { ns: namespace }),
     SERVICE_POINT_INVENTORY: t(`Service point inventory`, { ns: namespace }),
     ADD_INVENTORY_VIA_CSV: t(`Add inventory via CSV`, { ns: namespace }),
