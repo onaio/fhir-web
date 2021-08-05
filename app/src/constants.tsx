@@ -36,3 +36,6 @@ export const URL_DOWNLOAD_CLIENT_DATA = '/card-support/download-client-data';
 export const URL_HEALTHCARE = `/healthcare`;
 export const URL_HEALTHCARE_ADD = `${URL_HEALTHCARE}/add`;
 export const URL_HEALTHCARE_EDIT = `${URL_HEALTHCARE}/edit/:id`;
+export const URL_GROUP = `/group`;
+export const URL_GROUP_ADD = `${URL_GROUP}/add`;
+export const URL_GROUP_EDIT = `${URL_GROUP}/edit/:id`;

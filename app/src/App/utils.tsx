@@ -161,3 +161,7 @@ export const createEditUserProps = {
 export const heatlhcareProps = {
   fhirBaseURL: FHIR_API_BASE_URL,
 };
+
+export const groupProps = {
+  fhirBaseURL: FHIR_API_BASE_URL,
+};

@@ -21,6 +21,7 @@ import {
   ENABLE_HEALTHCARE,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
+  ENABLE_GROUP,
   OPENSRP_ROLES,
   ENABLE_PATIENTS_MODULE,
   ENABLE_FHIR_CARE_TEAM,
@@ -32,6 +33,7 @@ import {
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
   URL_HEALTHCARE,
+  URL_GROUP,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
   URL_TEAM_ASSIGNMENT,
@@ -138,7 +140,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
         {
-          title: 'Locations',
+          title: langObj.LOCATIONS,
           key: 'location',
           enabled:
             ENABLE_LOCATIONS &&
@@ -193,6 +195,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           key: 'healthcare',
           url: URL_HEALTHCARE,
           enabled: ENABLE_HEALTHCARE,
+        },
+        {
+          title: langObj.GROUP,
+          key: 'group',
+          url: URL_GROUP,
+          enabled: ENABLE_GROUP,
         },
         {
           title: langObj.FORM_CONFIGURATION,

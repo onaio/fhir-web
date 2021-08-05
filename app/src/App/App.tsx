@@ -51,6 +51,9 @@ import {
   URL_HEALTHCARE,
   URL_HEALTHCARE_ADD,
   URL_HEALTHCARE_EDIT,
+  URL_GROUP,
+  URL_GROUP_ADD,
+  URL_GROUP_EDIT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -151,6 +154,7 @@ import {
   usersListProps,
   createEditUserProps,
   heatlhcareProps,
+  groupProps,
   teamManagementProps,
 } from './utils';
 import './App.css';
@@ -181,6 +185,8 @@ import '@opensrp/inventory/dist/index.css';
 
 import { APP_LOGIN_URL } from '../dispatchConfig';
 import { useTranslation } from 'react-i18next';
+import { GroupList } from '../fhir-group/src/components/GroupList';
+import { GroupAddEdit } from '../fhir-group/src';
 
 const { Content } = Layout;
 
@@ -801,10 +807,34 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={URL_GROUP_EDIT}
+              {...groupProps}
+              component={GroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={URL_GROUP_ADD}
+              {...groupProps}
+              component={GroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.HEALTHCARE && activeRoles.HEALTHCARE.split(',')}
               path={URL_HEALTHCARE_ADD}
               {...heatlhcareProps}
               component={HealthCareAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={URL_GROUP}
+              {...groupProps}
+              component={GroupList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
