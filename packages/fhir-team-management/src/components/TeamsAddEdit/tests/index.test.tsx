@@ -3,6 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter, Route, Router } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import * as notifications from '@opensrp/notifications';
 import { createBrowserHistory } from 'history';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
@@ -12,7 +13,6 @@ import {
   practitioner102,
   practitioner116,
   practitionerrole,
-  teamsdetail,
   practitioner,
   team212,
 } from '../../../tests/fixtures';
@@ -27,25 +27,31 @@ jest.mock('@opensrp/notifications', () => ({
 
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
-fhir.mockImplementation(
-  jest.fn().mockImplementation(() => {
-    return {
-      request: jest.fn((url) => {
-        if (url === 'Organization/') return Promise.resolve(team);
-        if (url === 'Organization/212') return Promise.resolve(team212);
-        else if (url === 'Practitioner/') return Promise.resolve(practitioner);
-        else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
-        else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
-        else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
-        else {
-          console.error(url);
-        }
-      }),
-    };
-  })
-);
 
 describe('components/TeamsAddEdit', () => {
+  beforeEach(() => {
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn((url) => {
+          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization/212') return Promise.resolve(team212);
+          else if (url === 'Practitioner/') return Promise.resolve(practitioner);
+          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+          else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
+          else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
+          else {
+            // eslint-disable-next-line no-console
+            console.error(url);
+          }
+        }),
+      }))
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders correctly when creating Team', async () => {
     const queryClient = new QueryClient();
 
@@ -82,5 +88,78 @@ describe('components/TeamsAddEdit', () => {
     });
 
     expect(wrapper.find('form')).toHaveLength(1);
+  });
+
+  it('show error message when cant load data from server', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn(() => Promise.reject()),
+      }))
+    );
+
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
+        <QueryClientProvider client={queryClient}>
+          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={TeamsAddEdit} />
+        </QueryClientProvider>
+      </MemoryRouter>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock.mock.calls).toMatchObject([
+      ['An error occurred'],
+      ['An error occurred'],
+      ['An error occurred'],
+    ]);
+  });
+
+  it('show error message when cant team details', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn((url) => {
+          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization/212') return Promise.resolve(team212);
+          else if (url === 'Practitioner/') return Promise.resolve(practitioner);
+          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+          else if (url === 'Practitioner/116') return Promise.reject();
+          else if (url === 'Practitioner/102') return Promise.reject();
+        }),
+      }))
+    );
+
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
+        <QueryClientProvider client={queryClient}>
+          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={TeamsAddEdit} />
+        </QueryClientProvider>
+      </MemoryRouter>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock.mock.calls).toMatchObject([
+      ['An error occurred'],
+      ['An error occurred'],
+      ['An error occurred'],
+    ]);
   });
 });
