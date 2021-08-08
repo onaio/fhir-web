@@ -3,7 +3,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import toJson from 'enzyme-to-json';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
@@ -21,23 +20,28 @@ jest.mock('@opensrp/notifications', () => ({
 
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
-fhir.mockImplementation(
-  jest.fn().mockImplementation(() => {
-    return {
-      request: jest.fn((url) => {
-        if (url === 'Organization/') return Promise.resolve(team);
-        else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
-        else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
-        else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
-        else {
-          console.error(url);
-        }
-      }),
-    };
-  })
-);
-
 describe('components/TeamsList', () => {
+  beforeEach(() => {
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn((url) => {
+          if (url === 'Organization/') return Promise.resolve(team);
+          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+          else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
+          else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
+          else {
+            // eslint-disable-next-line no-console
+            console.error('response not found', url);
+          }
+        }),
+      }))
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders correctly', async () => {
     const queryClient = new QueryClient();
 
@@ -82,32 +86,32 @@ describe('components/TeamsList', () => {
     expect(((input.instance() as unknown) as HTMLInputElement).value).toEqual('Sample');
   });
 
-  // it('show error message when cant load teams from server', async () => {
-  //   const queryClient = new QueryClient();
+  it('show error message when cant load teams from server', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
-  //   const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-  //   fhir.mockImplementation(
-  //     jest.fn().mockImplementation(() => jest.fn().mockRejectedValue('API Failed'))
-  //   );
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => jest.fn().mockRejectedValue('API Failed'))
+    );
 
-  //   const wrapper = mount(
-  //     <Router history={history}>
-  //       <QueryClientProvider client={queryClient}>
-  //         <TeamsList fhirBaseURL={fhirBaseURL} />
-  //       </QueryClientProvider>
-  //     </Router>
-  //   );
+    const wrapper = mount(
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>
+          <TeamsList fhirBaseURL={fhirBaseURL} />
+        </QueryClientProvider>
+      </Router>
+    );
 
-  //   await act(async () => {
-  //     await flushPromises();
-  //     wrapper.update();
-  //   });
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
-  //   console.warn(notificationErrorMock.mock);
-
-  //   expect(notificationErrorMock.mock.calls).toMatchObject([['An error occurred']]);
-  // });
+    expect(notificationErrorMock.mock.calls).toMatchObject([['An error occurred']]);
+  });
 
   it('Test Open Table View Detail', async () => {
     const queryClient = new QueryClient();
@@ -174,41 +178,45 @@ describe('components/TeamsList', () => {
     expect(wrapper.find('TeamsDetail')).toHaveLength(0);
   });
 
-  // it('redirects to new user form', async () => {
-  //   const historyPushMock = jest.spyOn(history, 'push');
-  //   const queryClient = new QueryClient();
+  it('show error message when cant load team detail from server', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
-  //   const fhir = jest.spyOn(fhirCient, 'client');
-  //   fhir.mockImplementation(
-  //     jest.fn().mockImplementation(() => {
-  //       return {
-  //         request: jest.fn().mockResolvedValue(teams),
-  //       };
-  //     })
-  //   );
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-  //   const wrapper = mount(
-  //     <Router history={history}>
-  //       <QueryClientProvider client={queryClient}>
-  //         <TeamsList fhirBaseURL={fhirBaseURL} />
-  //       </QueryClientProvider>
-  //     </Router>
-  //   );
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn((url) => {
+          if (url === 'Organization/') return Promise.resolve(team);
+          else return Promise.reject();
+        }),
+      }))
+    );
 
-  //   await act(async () => {
-  //     await flushPromises();
-  //     wrapper.update();
-  //   });
+    const wrapper = mount(
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>
+          <TeamsList fhirBaseURL={fhirBaseURL} />
+        </QueryClientProvider>
+      </Router>
+    );
 
-  //   expect(toJson(wrapper)).toMatchSnapshot();
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
-  //   wrapper.find('.create').first().simulate('click');
+    await act(async () => {
+      wrapper.find('Dropdown').first().simulate('click');
+      await flushPromises();
+      wrapper.update();
+      wrapper.find('MenuItem').first().simulate('click');
+      await flushPromises();
+      wrapper.update();
+    });
 
-  //   await act(async () => {
-  //     await flushPromises();
-  //     wrapper.update();
-  //   });
-
-  //   expect(historyPushMock).toBeCalled();
-  // });
+    expect(notificationErrorMock.mock.calls).toMatchObject([['An error occurred']]);
+    wrapper.unmount();
+  });
 });
