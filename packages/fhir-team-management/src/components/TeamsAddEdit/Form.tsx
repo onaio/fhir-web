@@ -103,7 +103,10 @@ async function SetPractitioners(
           role.practitioner.reference === `Practitioner/${id}`
       )
     )
+    // Filter undefined if nothing is found
+    .filter((e) => !!e)
     .map((role) => role?.id);
+
   const rempromises = toremoveroles.map((roles) => serve.delete(`${PRACTITIONERROLE_DEL}${roles}`));
   await Promise.all(rempromises);
 
