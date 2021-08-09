@@ -71,7 +71,6 @@ export const fetchPractitionerRoles = async (
   return await FHIR.client(fhirBaseURL)
     .request(`${FHIR_PRACTITIONER_ROLE}/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}`)
     .then((res: IfhirR4.IBundle) => {
-      console.log('res???', res);
       setPayloadCount(res.total as number);
       return res;
     });
@@ -231,7 +230,6 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
                   currentPage: page,
                   pageSize: pageSize ?? PractitionerRolePageSize,
                 });
-                await refetch();
               },
               current: currentPage,
               total: payloadCount,
