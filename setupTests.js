@@ -55,3 +55,12 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
+
+jest.mock('fhirclient', () => ({
+  client: jest.fn().mockImplementation(() => ({
+    request: (...parm) => console.error('Override Fhir request Implimentation', ...parm),
+    update: (...parm) => console.error('Override Fhir update Implimentation', ...parm),
+    create: (...parm) => console.error('Override Fhir create Implimentation', ...parm),
+    delete: (...parm) => console.error('Override Fhir delete Implimentation', ...parm),
+  })),
+}));
