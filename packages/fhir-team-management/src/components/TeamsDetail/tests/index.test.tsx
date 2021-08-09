@@ -33,7 +33,7 @@ fhir.mockImplementation(
         else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
         else {
           // eslint-disable-next-line no-console
-          console.error(url);
+          console.error('response not found', url);
         }
       }),
     };
