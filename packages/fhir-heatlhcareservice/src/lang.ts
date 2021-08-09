@@ -49,7 +49,7 @@ function fill() {
   lang.EXTRADETAILS = i18n.t(`Extra Details`, { ns: namespace });
   lang.CREATE = i18n.t(`Create`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
-  lang.NO_HEALTHCARE_MEMBERS = i18n.t(`No healthcare members`, { ns: namespace });
+  lang.NO_EXTRADETAILS = i18n.t(`No Extra Details`, { ns: namespace });
   lang.HEALTHCARES = i18n.t(`Healthcares`, { ns: namespace });
   lang.SEARCH = i18n.t(`Search`, { ns: namespace });
 }

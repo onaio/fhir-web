@@ -8,14 +8,14 @@ import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService, HealthcareServiceDetail } from '../../types';
 import { HEALTHCARES_GET, URL_ADD_HEALTHCARE } from '../../constants';
-import Table, { TableData } from './Table';
+import Table from './Table';
 import './index.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { loadHealthcareDetails } from '../../utils';
+import { loadHealthcareOrganization } from '../../utils';
 import { FHIRResponse } from 'react-utils';
 
 interface Props {
@@ -33,17 +33,17 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
   const serve = FHIR.client(fhirBaseURL);
 
   const [detail, setDetail] = useState<HealthcareServiceDetail | 'loading' | null>(null);
-  const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
+  const [filterData, setfilterData] = useState<{ search?: string; data?: HealthcareService[] }>({});
 
   const healthcare = useQuery(HEALTHCARES_GET, () => serve.request(HEALTHCARES_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res: FHIRResponse<HealthcareService>) => res.entry.map((e) => e.resource),
   });
 
-  const tableData: TableData[] = useMemo(() => {
+  const tableData: HealthcareService[] = useMemo(() => {
     if (healthcare.data) {
       return healthcare.data.map((healthcare, i) => {
-        return { ...healthcare, key: i.toString() } as TableData;
+        return { ...healthcare, key: i.toString() } as HealthcareService;
       });
     } else return [];
   }, [healthcare.data]);
@@ -95,7 +95,7 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
               data={filterData.search && filterData.data?.length ? filterData.data : tableData}
               onViewDetails={(datum) => {
                 setDetail('loading');
-                loadHealthcareDetails(fhirBaseURL, datum)
+                loadHealthcareOrganization(fhirBaseURL, datum)
                   .then((healthcare) => setDetail(healthcare))
                   .catch(() => {
                     sendErrorNotification(lang.ERROR_OCCURRED);

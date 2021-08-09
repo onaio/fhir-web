@@ -7,19 +7,15 @@ import { HealthcareService } from '../../types';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { Meta } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/meta';
 
-export interface TableData extends HealthcareService {
-  key: string;
-}
-
 export interface Props {
-  data: TableData[];
-  onViewDetails?: (healthcareservice: TableData) => void;
+  data: HealthcareService[];
+  onViewDetails?: (healthcareservice: HealthcareService) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails } = props;
 
-  const columns: Column<TableData>[] = [
+  const columns: Column<HealthcareService>[] = [
     {
       title: 'Name',
       dataIndex: 'name',

@@ -9,7 +9,7 @@ import { Organization } from './types';
  * @param fhirBaseURL Base url of fhir server
  * @param healthcareservice data selected from the table
  */
-export async function loadHealthcareDetails(
+export async function loadHealthcareOrganization(
   fhirBaseURL: string,
   healthcareservice: HealthcareService
 ): Promise<HealthcareServiceDetail> {
