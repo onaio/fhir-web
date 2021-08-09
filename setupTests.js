@@ -2,11 +2,8 @@
 // allows you to do things like:
 // learn more: https://github.com/testing-library/jest-dom
 import enzyme from 'enzyme';
-import nock from 'nock';
 import Adapter from 'enzyme-adapter-react-16';
 import MockDate from 'mockdate';
-import mockClient from 'fhirclient/lib/Client';
-import mockfetch from 'jest-fetch-mock';
 import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/camelcase */
 import i18n from 'i18next';
