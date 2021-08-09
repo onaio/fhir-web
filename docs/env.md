@@ -213,14 +213,22 @@ Below is a list of currently supported environment variables:
   - default: `https://fhir.labs.smartregister.org/fhir`
 
 - **REACT_APP_USER_FORM_RENDER_FIELDS** `partially-implemented`
+
   - module: `user-management`
   - configure rendered form fields in creating editing users, a comma separated list of `FormFieldsKey's`
   - **optional**
   - default: `''`
 
 - **REACT_APP_USER_FORM_HIDDEN_FIELDS** `partially-implemented`
+
   - module: `user-management`
   - configure hidden form fields in creating editing users, a comma separated list of `FormFieldsKey's`.
   - hidden form fields need to be first rendered in `REACT_APP_USER_FORM_RENDER_FIELDS`
   - **optional**
   - default: `''`
+
+- **REACT_APP_ENABLE_FHIR_PRACTITIONER_ROLE**
+
+  - Enables the FHIR Practitioner Role module
+  - **Optional**(`boolean`)
+  - default: `"false"`
