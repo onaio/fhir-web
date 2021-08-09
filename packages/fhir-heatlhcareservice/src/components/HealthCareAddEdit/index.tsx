@@ -9,7 +9,7 @@ import { Spin } from 'antd';
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
-import { FHIRResponse } from '../../fhirutils';
+import { FHIRResponse } from 'react-utils';
 
 export interface Props {
   fhirBaseURL: string;

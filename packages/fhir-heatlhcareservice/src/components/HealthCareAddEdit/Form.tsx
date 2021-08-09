@@ -9,7 +9,6 @@ import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
 import FHIR from 'fhirclient';
-import { ProcessFHIRObject } from 'fhir-heatlhcareservice/src/fhirutils';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -34,7 +33,7 @@ interface Props {
  * @param {object} values value of form fields
  */
 export async function onSubmit(fhirBaseURL: string, values: FormField) {
-  const identifier = values.id ? ProcessFHIRObject(values).identifier?.official?.value : v4();
+  const identifier = values.id ? values.identifier?.find((e) => e.use === 'official')?.value : v4();
 
   const payload: Omit<HealthcareService, 'meta'> = {
     resourceType: 'HealthcareService',
