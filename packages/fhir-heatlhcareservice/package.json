@@ -35,23 +35,21 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/notifications": "^0.0.4",
+    "@opensrp/notifications": "^0.0.5",
+    "@opensrp/react-utils": "^0.0.11",
+    "fhirclient": "2.4.0",
+    "uuid": "^8.3.1",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.10",
-    "@opensrp/reducer-factory": "^0.0.13",
-    "fhirclient": "2.3.11",
-    "i18next": "^19.8.4",
-    "react-i18next": "^11.8.10",
-    "uuid": "^8.3.1"
+    "react-i18next": "^11.8.10"
   },
   "devDependencies": {
-    "@smile-cdr/fhirts": "1.2.5",
-    "@onaio/redux-reducer-registry": "^0.0.9",
-    "@opensrp/store": "^0.0.9",
-    "@types/uuid": "8.3.0",
-    "i18next-parser": "^3.5.0"
+    "@types/antd": "^1.0.0",
+    "i18next-parser": "^3.5.0",
+    "@types/uuid": "8.3.1",
+    "@smile-cdr/fhirts": "1.2.5"
   },
   "peerDependencies": {
+    "antd": "^4.6.3",
     "i18next": "^19.8.4",
     "react": "^16.13.1"
   }
