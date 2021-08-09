@@ -17,7 +17,13 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
 // tslint:disable-next-line: ordered-imports
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // avoid refetching data on window focus
+    },
+  },
+});
 
 if (SENTRY_DSN) {
   Sentry.init({ dsn: SENTRY_DSN });
