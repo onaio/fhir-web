@@ -53,7 +53,7 @@ const HealthcareDetails = (props: HealthCareDetailProps) => {
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.EXTRADETAILS}</div>
-        <div className="mb-0">{extraDetails ? extraDetails : lang.NO_HEALTHCARE_MEMBERS}</div>
+        <div className="mb-0">{extraDetails ? extraDetails : lang.NO_EXTRADETAILS}</div>
       </div>
     </div>
   );

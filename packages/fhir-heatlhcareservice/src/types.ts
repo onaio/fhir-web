@@ -5,10 +5,7 @@ import { IfhirR4 } from '@smile-cdr/fhirts';
 /** interface for Objects */
 
 export interface HealthcareService
-  extends Require<
-    IfhirR4.IHealthcareService,
-    'id' | 'providedBy' | 'comment' | 'extraDetails' | 'active' | 'name'
-  > {
+  extends Require<IfhirR4.IHealthcareService, 'id' | 'providedBy' | 'active' | 'name'> {
   resourceType: 'HealthcareService';
 }
 
