@@ -5,13 +5,7 @@ import { Spin } from 'antd';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import {
-  createChangeHandler,
-  defaults,
-  getQueryParams,
-  SearchForm,
-  TableLayout,
-} from '@opensrp/react-utils';
+import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -181,7 +175,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
               columns={getTableColumns(sortedInfo)}
               datasource={tableData}
               pagination={{
-                ...defaults.pagination,
                 current: page.current,
                 pageSize: page.pageSize,
                 total: isSearchActive ? keycloakUsers.length : usersCount,
