@@ -9,8 +9,8 @@ import { Spin } from 'antd';
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
-import { FHIRResponse } from '../../fhirutils';
-import { loadTeamDetails } from '../../utils';
+import { FHIRResponse } from '@opensrp/react-utils';
+import { loadTeamPractitioner } from '../../utils';
 
 export interface Props {
   fhirBaseURL: string;
@@ -41,10 +41,10 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   });
 
   if (params.id && team.data && AllRoles.data && !initialValue) {
-    loadTeamDetails({
+    loadTeamPractitioner({
       team: team.data,
       fhirBaseURL: fhirBaseURL,
-      AllRoles: AllRoles.data,
+      AllPractitionerRoles: AllRoles.data,
     })
       .then((team) => {
         setInitialValue({

@@ -16,7 +16,10 @@ const TeamsDetail = (props: TeamsDetailProps) => {
     <div className="p-4 bg-white">
       <Button
         shape="circle"
-        onClick={() => (props.onClose ? props.onClose() : '')}
+        onClick={() => {
+          if (props.onClose) props.onClose();
+          else throw new Error('No OnClose Function Specified');
+        }}
         className="float-right close-btn"
         type="text"
         icon={<CloseOutlined />}
