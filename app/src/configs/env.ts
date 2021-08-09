@@ -175,9 +175,6 @@ export const FHIR_API_BASE_URL = setEnv(
   'https://fhir.labs.smartregister.org/fhir'
 );
 
-export const ENABLE_HEATLH_CARE_MODULE =
-  setEnv('REACT_APP_ENABLE_HEATLH_CARE_MODULE', 'false') === 'true';
-
 export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
 
 export const DISABLE_TEAM_MEMBER_REASSIGNMENT =
