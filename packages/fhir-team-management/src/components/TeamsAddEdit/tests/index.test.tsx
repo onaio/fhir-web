@@ -99,7 +99,7 @@ describe('components/TeamsAddEdit', () => {
 
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
-        request: jest.fn(() => Promise.reject()),
+        request: jest.fn(() => Promise.reject('Mock Api Fail')),
       }))
     );
 
@@ -137,8 +137,8 @@ describe('components/TeamsAddEdit', () => {
           if (url === 'Organization/212') return Promise.resolve(team212);
           else if (url === 'Practitioner/') return Promise.resolve(practitioner);
           else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
-          else if (url === 'Practitioner/116') return Promise.reject();
-          else if (url === 'Practitioner/102') return Promise.reject();
+          else if (url === 'Practitioner/116') return Promise.reject('Mock Api Fail');
+          else if (url === 'Practitioner/102') return Promise.reject('Mock Api Fail');
         }),
       }))
     );

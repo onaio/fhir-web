@@ -94,7 +94,9 @@ describe('components/TeamsList', () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     fhir.mockImplementation(
-      jest.fn().mockImplementation(() => jest.fn().mockRejectedValue('API Failed'))
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn(() => Promise.reject('Mock Api Fail')),
+      }))
     );
 
     const wrapper = mount(
@@ -189,7 +191,7 @@ describe('components/TeamsList', () => {
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
           if (url === 'Organization/') return Promise.resolve(team);
-          else return Promise.reject();
+          else return Promise.reject('Mock Api Fail');
         }),
       }))
     );

@@ -233,10 +233,10 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
-        request: jest.fn(() => Promise.reject()),
-        create: jest.fn(() => Promise.reject()),
-        update: jest.fn(() => Promise.reject()),
-        delete: jest.fn(() => Promise.reject()),
+        request: jest.fn(() => Promise.reject('Mock Api Fail')),
+        create: jest.fn(() => Promise.reject('Mock Api Fail')),
+        update: jest.fn(() => Promise.reject('Mock Api Fail')),
+        delete: jest.fn(() => Promise.reject('Mock Api Fail')),
       }))
     );
 
