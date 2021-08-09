@@ -21,6 +21,7 @@ import {
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
+  ENABLE_FHIR_PRACTITIONER_ROLE,
 } from './configs/env';
 
 import {
@@ -161,9 +162,13 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           url: CATALOGUE_LIST_VIEW_URL,
         },
         {
-          title: 'Practitioner Role',
+          title: langObj.PRACTITIONER_ROLE,
           key: 'practitioner-role',
-          enabled: true,
+          enabled:
+            ENABLE_FHIR_PRACTITIONER_ROLE &&
+            roles &&
+            activeRoles.PRACTITIONER_ROLE &&
+            isAuthorized(roles, activeRoles.PRACTITIONER_ROLE.split(',')),
           url: URL_PRACTITIONER_ROLE,
         },
         {

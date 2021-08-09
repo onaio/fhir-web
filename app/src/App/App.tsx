@@ -282,7 +282,9 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              activeRoles={
+                activeRoles.PRACTITIONER_ROLE && activeRoles.PRACTITIONER_ROLE.split(',')
+              }
               exact
               path={URL_PRACTITIONER_ROLE}
               component={PractitionerRoleList}
