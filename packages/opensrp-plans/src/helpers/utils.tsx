@@ -4,7 +4,6 @@ import { Alert, Spin } from 'antd';
 import React from 'react';
 import { OPENSRP_TASK_EXPORT_DATA } from '../constants';
 import {
-  FIX_PRODUCT_PROBLEMS_CODE,
   FLAG_PROBLEM_CODE,
   LOOKS_GOOD_CODE,
   SERVICE_POINT_CHECK_CODE,
@@ -68,6 +67,6 @@ export const PlanLoading = () => {
 };
 
 export const BuildDownloadUrl = (baseURL: string, planId: string) => {
-  const eventType = `${FLAG_PROBLEM_CODE},${SERVICE_POINT_CHECK_CODE},${LOOKS_GOOD_CODE},${RECORD_GPS_CODE},${FIX_PRODUCT_PROBLEMS_CODE}`;
+  const eventType = `${FLAG_PROBLEM_CODE},${SERVICE_POINT_CHECK_CODE},${LOOKS_GOOD_CODE},${RECORD_GPS_CODE}`;
   return `${baseURL}${OPENSRP_TASK_EXPORT_DATA}?eventTypes=${eventType}&planIdentifier=${planId}`;
 };

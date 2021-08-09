@@ -45,7 +45,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           <Col className="gutter-row" span={12}>
             <Link to={URL_USER} className="admin-link">
               <Button color="outline" className="btn-links">
-                {lang(t).ADMIN}
+                {lang(t).USERS}
               </Button>
             </Link>
           </Col>
