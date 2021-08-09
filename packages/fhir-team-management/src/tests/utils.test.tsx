@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { team, practitioner102, practitioner116, practitionerrole, teamsdetail } from './fixtures';
 import * as fhirCient from 'fhirclient';
-import { loadTeamDetails } from '../utils';
+import { loadTeamPractitioner } from '../utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -24,8 +24,8 @@ fhir.mockImplementation(
 );
 
 describe('utils', () => {
-  it('test loadTeamDetails load the correct data', async () => {
-    const result = await loadTeamDetails({
+  it('test loadTeamPractitioner load the correct data', async () => {
+    const result = await loadTeamPractitioner({
       fhirBaseURL: fhirBaseURL,
       team: team.entry[0].resource,
     });
