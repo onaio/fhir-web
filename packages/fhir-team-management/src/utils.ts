@@ -6,18 +6,21 @@ import { FHIRResponse } from '@opensrp/react-utils';
 /**
  * Function to load selected Team for details
  *
- * @param {TableData} row data selected from the table
+ * @param props function properties containing data
+ * @param {Organization} props.team team to load data of
+ * @param {string} props.fhirBaseURL base url to use for data loading
+ * @param {PractitionerRole[]} props.AllPractitionerRoles All practioner roles to use for data mapiing
  */
-export async function loadTeamDetails(props: {
+export async function loadTeamPractitioner(props: {
   team: Organization;
   fhirBaseURL: string;
-  AllRoles?: PractitionerRole[];
+  AllPractitionerRoles?: PractitionerRole[];
 }): Promise<OrganizationDetail> {
   const { fhirBaseURL, team } = props;
   const serve = FHIR.client(fhirBaseURL);
 
   const AllRoles: PractitionerRole[] =
-    props.AllRoles ??
+    props.AllPractitionerRoles ??
     (await serve
       .request(PRACTITIONERROLE_GET)
       .then((res: FHIRResponse<PractitionerRole>) => res.entry.map((e) => e.resource)));

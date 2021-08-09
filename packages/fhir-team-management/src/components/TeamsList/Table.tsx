@@ -28,6 +28,7 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       title: 'Status',
       dataIndex: 'active',
+      // eslint-disable-next-line react/display-name
       render: (value) => <div>{value ? 'Active' : 'Inactive'}</div>,
     },
     {
@@ -47,6 +48,7 @@ const Table: React.FC<Props> = (props: Props) => {
             overlay={
               <Menu>
                 <Menu.Item
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   onClick={() => onViewDetails && onViewDetails({ team: record, fhirBaseURL })}
                 >
                   View Details
