@@ -22,6 +22,7 @@ export interface ConfigState {
   opensrpBaseURL?: string;
   fhirBaseURL?: string;
   i18n?: unknown;
+  defaultTablesPageSize?: number; // static value of the default number of rows per page
 }
 
 export interface UserPreference {
@@ -37,6 +38,7 @@ const DefaultConfigs: GlobalState = {
   fhirBaseURL: undefined,
   i18n: undefined,
   tablespref: undefined,
+  defaultTablesPageSize: 5,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)

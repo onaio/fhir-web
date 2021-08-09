@@ -123,7 +123,11 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form opensrpBaseURL={opensrpBaseURL} practitioners={practitioners} />
+          <Form
+            opensrpBaseURL={opensrpBaseURL}
+            practitioners={practitioners}
+            disableTeamMemberReassignment={false}
+          />
         </Router>
       </Provider>
     );
@@ -140,6 +144,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
             opensrpBaseURL={opensrpBaseURL}
             initialValue={intialValue}
             practitioners={practitioners}
+            disableTeamMemberReassignment={false}
           />
         </Router>
       </Provider>
@@ -154,7 +159,11 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Form opensrpBaseURL={opensrpBaseURL} practitioners={practitioners} />
+          <Form
+            opensrpBaseURL={opensrpBaseURL}
+            practitioners={practitioners}
+            disableTeamMemberReassignment={false}
+          />
         </Router>
       </Provider>
     );
@@ -175,6 +184,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
             opensrpBaseURL={opensrpBaseURL}
             practitioners={practitioners}
             initialValue={intialValue}
+            disableTeamMemberReassignment={false}
           />
         </Router>
       </Provider>
@@ -207,7 +217,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization',
+        'https://some.opensrp.url/organization',
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -235,7 +245,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=1&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
+        'https://some.opensrp.url/practitionerRole/deleteByPractitioner?practitioner=0&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
         {
           headers: {
             accept: 'application/json',
@@ -246,7 +256,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=2&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
+        'https://some.opensrp.url/practitionerRole/deleteByPractitioner?practitioner=1&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
         {
           headers: {
             accept: 'application/json',
@@ -257,7 +267,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=3&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
+        'https://some.opensrp.url/practitionerRole/deleteByPractitioner?practitioner=2&organization=b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a',
         {
           headers: {
             accept: 'application/json',
@@ -279,7 +289,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       {
         active: false,
         name: 'new name',
-        practitioners: ['3', '4', '5'],
+        practitioners: ['2', '3', '4'],
         practitionersList: members,
       },
       id
@@ -291,7 +301,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -319,7 +329,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=1&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/practitionerRole/deleteByPractitioner?practitioner=0&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -330,7 +340,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=2&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/practitionerRole/deleteByPractitioner?practitioner=1&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -341,7 +351,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/add/',
+        'https://some.opensrp.url/practitionerRole/add/',
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -368,7 +378,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       {
         active: false,
         name: 'new name',
-        practitioners: ['3', '4', '5'],
+        practitioners: ['2', '3', '4'],
         practitionersList: members,
       },
       id
@@ -380,7 +390,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/organization/258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -408,7 +418,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=1&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/practitionerRole/deleteByPractitioner?practitioner=0&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -419,7 +429,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/deleteByPractitioner?practitioner=2&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
+        'https://some.opensrp.url/practitionerRole/deleteByPractitioner?practitioner=1&organization=258b4dec-79d3-546d-9c5c-f172aa7e03b0',
         {
           headers: {
             accept: 'application/json',
@@ -430,7 +440,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         },
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/practitionerRole/add/',
+        'https://some.opensrp.url/practitionerRole/add/',
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -455,6 +465,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
             opensrpBaseURL={opensrpBaseURL}
             initialValue={intialValue}
             practitioners={practitioners}
+            disableTeamMemberReassignment={false}
           />
         </Router>
       </Provider>
@@ -467,10 +478,17 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     const values = practitionersSelect.props().value;
 
     // expect default values to be a subset of all options
-    expect(values).toStrictEqual(['1', '2', '3']);
+    expect(values).toMatchInlineSnapshot(`
+      Array [
+        "0",
+        "1",
+        "2",
+      ]
+    `);
 
     const options = practitionersSelect.find('option');
     expect(options.map((opt) => opt.props().value)).toStrictEqual([
+      '0',
       '1',
       '2',
       '3',
@@ -507,6 +525,6 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     const practitionersSelect2 = wrapper.find('select#practitioners');
 
     // '6' is added to its value prop
-    expect(practitionersSelect2.props().value).toStrictEqual(['1', '2', '3', '6']);
+    expect(practitionersSelect2.props().value).toStrictEqual(['0', '1', '2', '6']);
   });
 });

@@ -28,7 +28,7 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/auth`
 
-- **REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE**
+- **REACT_APP_OPENSRP_OAUTH_STATE**
 
   - Defines the app oauth2 state to use
   - **Required**
@@ -212,8 +212,22 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://fhir.labs.smartregister.org/fhir`
 
-- **REACT_APP_USER_FORM_HIDDEN**
+- **REACT_APP_USER_FORM_RENDER_FIELDS** `partially-implemented`
 
-  - configure hidden form fields in creating editing users, a comma separated list of keys
+  - module: `user-management`
+  - configure rendered form fields in creating editing users, a comma separated list of `FormFieldsKey's`
   - **optional**
   - default: `''`
+
+- **REACT_APP_USER_FORM_HIDDEN_FIELDS** `partially-implemented`
+
+  - module: `user-management`
+  - configure hidden form fields in creating editing users, a comma separated list of `FormFieldsKey's`.
+  - hidden form fields need to be first rendered in `REACT_APP_USER_FORM_RENDER_FIELDS`
+  - **optional**
+  - default: `''`
+
+- **REACT_APP_DEFAULTS_TABLE_PAGE_SIZE**
+  - Default number of rows per table page
+  - default: 5
+  - `Enum: 5, 10, 20 , 50, 100`

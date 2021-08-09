@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { OpenSRPService } from '@opensrp/react-utils';
-import { UserForm, FormFields, UserFormProps } from '../forms/UserForm';
 import {
   ROUTE_PARAM_USER_ID,
   KEYCLOAK_URL_USERS,
@@ -27,6 +26,9 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { getExtraData } from '@onaio/session-reducer';
 import '../../index.css';
+import { FormFields, UserFormProps } from '../forms/UserForm/types';
+import { defaultUserFormInitialValues, UserForm } from '../forms/UserForm';
+import { getFormValues } from '../forms/UserForm/utils';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -42,7 +44,8 @@ export interface EditUserProps {
   opensrpBaseURL: string;
   extraData: Dictionary;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
-  userFormHidden: UserFormProps['hidden'];
+  userFormHiddenFields?: UserFormProps['hiddenFields'];
+  userFormRenderFields?: UserFormProps['renderFields'];
 }
 
 /** type intersection for all types that pertain to the props */
@@ -58,15 +61,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const [userGroupLoading, setUserGroupLoading] = useState(false);
   const [practitionerLoading, setPractitionerLoading] = useState(false);
   const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
-  const [initialValues, setInitialValues] = useState<FormFields>({
-    firstName: '',
-    id: '',
-    lastName: '',
-    username: '',
-    active: false,
-    userGroup: undefined,
-    practitioner: undefined,
-  });
+  const [assignedUserGroups, setAssignedUserGroups] = useState<UserGroup[]>([]);
+  const [initialValues, setInitialValues] = useState<FormFields>(defaultUserFormInitialValues);
+  const [practitioner, setPractitioner] = useState<Practitioner>();
 
   const {
     keycloakUser,
@@ -74,17 +71,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     opensrpBaseURL,
     extraData,
     fetchKeycloakUsersCreator,
-    userFormHidden,
+    userFormHiddenFields,
+    userFormRenderFields,
   } = props;
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
-
-  useEffect(() => {
-    if (keycloakUser) {
-      /** only update the object diff */
-      setInitialValues((prevState) => ({ ...prevState, ...keycloakUser }));
-    }
-  }, [keycloakUser]);
 
   useEffect(() => {
     if (!userGroups.length) {
@@ -127,12 +118,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       );
       serve
         .list()
-        .then((response: UserGroup[]) =>
-          setInitialValues((prevState) => ({
-            ...prevState,
-            userGroup: response.map((tag) => tag.id),
-          }))
-        )
+        .then((response: UserGroup[]) => setAssignedUserGroups(response))
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
         .finally(() => setUserGroupLoading(false));
     }
@@ -148,18 +134,16 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .read(userId)
         .then((response: Practitioner | undefined) => {
-          if (response) {
-            setInitialValues((prevState) => ({
-              ...prevState,
-              active: response.active,
-              practitioner: response,
-            }));
-          }
+          setPractitioner(response);
         })
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
         .finally(() => setPractitionerLoading(false));
     }
   }, [userId, opensrpBaseURL]);
+
+  useEffect(() => {
+    setInitialValues(getFormValues(keycloakUser ?? undefined, practitioner, assignedUserGroups));
+  }, [keycloakUser, practitioner, assignedUserGroups]);
 
   if (
     userGroupsLoading ||
@@ -179,7 +163,8 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           opensrpBaseURL={opensrpBaseURL}
           userGroups={userGroups}
           extraData={extraData}
-          hidden={userFormHidden}
+          hiddenFields={userFormHiddenFields}
+          renderFields={userFormRenderFields}
         />
       </Col>
     </Row>

@@ -28,6 +28,7 @@ interface Props {
   id?: string;
   practitioners: Practitioner[];
   initialValue?: FormField | null;
+  disableTeamMemberReassignment: boolean;
 }
 
 /**
@@ -153,28 +154,55 @@ export async function setTeam(
   }
 }
 
-export const Form: React.FC<Props> = (props: Props) => {
+export const Form: React.FC<Props> = ({
+  initialValue: initialValueProp,
+  practitioners,
+  opensrpBaseURL,
+  id,
+  disableTeamMemberReassignment,
+}: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue = props.initialValue ?? {
+  const initialValue = initialValueProp ?? {
     active: true,
     name: '',
     practitioners: [],
     practitionersList: [],
   };
 
+  // when team member reassignment is disabled,
+  // current team members are filtered out of the practitioners list.
+  // hence the concat back
+  const practitionersList = disableTeamMemberReassignment
+    ? [...initialValue.practitionersList, ...practitioners]
+    : practitioners;
+
+  /**
+   * function to filter select options by text - passed all select options to filter from
+   *
+   * @param input - typed in search text
+   * @param option - a select option to be evaluated - with it's key, value, and children props
+   * @param option.key - the Select.Option 'key' prop
+   * @param option.value - the Select.Option 'value' prop
+   * @param option.children - the Select.Option 'children' prop
+   * @param option.label - the Select.Option 'label' prop
+   * @returns {boolean} - matcher function that evaluates to boolean - whether to include option in filtered set or not
+   */
+  // Todo: type-check options
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function filterFunction(input: string, option: any): boolean {
+    let expr1 = false,
+      expr2 = false;
+    if (option.children) expr1 = option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    if (option.label) expr2 = option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    return expr1 || expr2;
+  }
+
   return (
     <AntdForm
       requiredMark={false}
       {...layout}
       onFinish={(values) =>
-        onSubmit(
-          props.opensrpBaseURL,
-          setIsSubmitting,
-          props.practitioners,
-          initialValue,
-          values,
-          props.id
-        )
+        onSubmit(opensrpBaseURL, setIsSubmitting, practitioners, initialValue, values, id)
       }
       initialValues={initialValue}
     >
@@ -194,8 +222,15 @@ export const Form: React.FC<Props> = (props: Props) => {
         label={lang.TEAM_MEMBERS}
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
-        <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
-          {props.practitioners.map((practitioner) => (
+        <Select
+          allowClear
+          mode="multiple"
+          placeholder={lang.SELECT_PRACTITIONER}
+          showSearch
+          optionFilterProp="children"
+          filterOption={filterFunction}
+        >
+          {practitionersList.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
               {practitioner.name}
             </Select.Option>
