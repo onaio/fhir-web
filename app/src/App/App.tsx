@@ -105,6 +105,7 @@ import {
   NewLocationUnit,
   EditLocationUnit,
 } from '@opensrp/location-management';
+import { PractitionerRoleList, URL_PRACTITIONER_ROLE } from '@opensrp/fhir-practitioner-role';
 import {
   BaseProps,
   jsonValidatorListProps,
@@ -278,7 +279,14 @@ const App: React.FC = () => {
               {...planCreateProps}
               component={CreatePlanView}
             />
-
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_PRACTITIONER_ROLE}
+              component={PractitionerRoleList}
+            />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}

@@ -35,6 +35,7 @@ import {
   URL_DOWNLOAD_CLIENT_DATA,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_PRACTITIONER_ROLE,
 } from './constants';
 import lang, { TFunction } from './lang';
 
@@ -158,6 +159,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.PRODUCT_CATALOGUE &&
             isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
           url: CATALOGUE_LIST_VIEW_URL,
+        },
+        {
+          title: 'Practitioner Role',
+          key: 'practitioner-role',
+          enabled: true,
+          url: URL_PRACTITIONER_ROLE,
         },
         {
           title: langObj.TEAMS,

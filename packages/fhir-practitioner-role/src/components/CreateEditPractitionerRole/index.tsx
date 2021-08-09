@@ -11,7 +11,7 @@ import {
   FHIR_PRACTITIONER_ROLE,
   FHIR_GROUPS,
   FHIR_PRACTITIONERS,
-  ROUTE_PARAM_CARE_TEAM_ID,
+  ROUTE_PARAM_PRACTITIONER_ROLE_ID,
 } from '../../constants';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { PractitionerRoleForm, FormFields } from './Form';
@@ -19,7 +19,7 @@ import { getPatientName } from './utils';
 
 // Interface for route params
 interface RouteParams {
-  careTeamId: string;
+  practitionerRoleId: string;
 }
 
 /** props for editing a user view */
@@ -51,7 +51,7 @@ export const defaultInitialValues: FormFields = {
 
 const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEditCareTeamProps) => {
   const { fhirBaseURL } = props;
-  const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID];
+  const careTeamId = props.match.params[ROUTE_PARAM_PRACTITIONER_ROLE_ID];
   const singleCareTeam = useQuery(
     `${FHIR_PRACTITIONER_ROLE}/${careTeamId}`,
     async () =>
@@ -118,9 +118,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
 
   return (
     <Row>
-      <Col span={24}>
-        <PractitionerRoleForm {...careTeamFormProps} />
-      </Col>
+      <Col span={24}>{/* <PractitionerRoleForm {...careTeamFormProps} /> */}</Col>
     </Row>
   );
 };

@@ -8,8 +8,8 @@ import { IfhirR4 } from '@smile-cdr/fhirts';
 import { Resource404, BrokenPage } from '@opensrp/react-utils';
 import FHIR from 'fhirclient';
 import lang from '../../lang';
-import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
-import { getPatientName } from '../CreateEditCareTeam/utils';
+import { FHIR_PRACTITIONER_ROLE, URL_PRACTITIONER_ROLE } from '../../constants';
+import { getPatientName } from '../CreateEditPractitionerRole/utils';
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -30,7 +30,9 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const { data, isLoading, error } = useQuery({
     queryKey: [`CareTeam/${careTeamId}`],
     queryFn: () =>
-      careTeamId ? FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`) : undefined,
+      careTeamId
+        ? FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONER_ROLE}/${careTeamId}`)
+        : undefined,
     select: (res) => res,
   });
 
@@ -38,7 +40,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
     data && data.participant
       ? data.participant.map((p: { member: { reference: string } }) => {
           return {
-            queryKey: [FHIR_CARE_TEAM, p.member.reference],
+            queryKey: [FHIR_PRACTITIONER_ROLE, p.member.reference],
             queryFn: () => FHIR.client(fhirBaseURL).request(p.member.reference),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res: IfhirR4.IPractitioner) => res,
@@ -71,7 +73,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(URL_CARE_TEAM)}
+          onClick={() => history.push(URL_PRACTITIONER_ROLE)}
         />
       </div>
       {isLoading ? (

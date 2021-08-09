@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import FHIR from 'fhirclient';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import lang from '../../lang';
-import { URL_CARE_TEAM } from '../../constants';
+import { URL_PRACTITIONER_ROLE } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { FormFields } from './Form';
@@ -48,7 +48,7 @@ export const submitForm = async (
       .then(() => sendSuccessNotification(lang.CARE_TEAMS_ADD_SUCCESS))
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }
-  history.push(URL_CARE_TEAM);
+  history.push(URL_PRACTITIONER_ROLE);
 };
 
 /** Util function to build out patient or practitioner name

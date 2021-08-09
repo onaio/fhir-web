@@ -26,8 +26,8 @@ import {
   FHIR_PRACTITIONER_ROLE,
   URL_EDIT_PRACTITIONER_ROLE,
   URL_PRACTITIONER_ROLE,
-  ROUTE_PARAM_CARE_TEAM_ID,
   URL_CREATE_PRACTITIONER_ROLE,
+  ROUTE_PARAM_PRACTITIONER_ROLE_ID,
 } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
@@ -35,18 +35,18 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 
 // route params for user group pages
 interface RouteParams {
-  careTeamId: string | undefined;
+  practitionerRoleId: string | undefined;
 }
 
 interface TableData {
   key: number | string;
   id: string;
-  name: string;
+  name?: string;
 }
 
 interface Props {
   fhirBaseURL: string;
-  careTeamPageSize: number;
+  PractitionerRolePageSize: number;
 }
 
 export interface PaginationProps {
@@ -57,12 +57,12 @@ export interface PaginationProps {
 /** default component props */
 const defaultProps = {
   fhirBaseURL: '',
-  careTeamPageSize: 5,
+  PractitionerRolePageSize: 5,
 };
 
-export type CareTeamListPropTypes = Props & RouteComponentProps<RouteParams>;
+export type PractitionerRoleListPropTypes = Props & RouteComponentProps<RouteParams>;
 
-export const fetchCareTeams = async (
+export const fetchPractitionerRoles = async (
   fhirBaseURL: string,
   pageSize: number,
   pageOffset: number,
@@ -71,19 +71,20 @@ export const fetchCareTeams = async (
   return await FHIR.client(fhirBaseURL)
     .request(`${FHIR_PRACTITIONER_ROLE}/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}`)
     .then((res: IfhirR4.IBundle) => {
+      console.log('res???', res);
       setPayloadCount(res.total as number);
       return res;
     });
 };
 
-export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<void> => {
+export const deletePractitionerRole = async (fhirBaseURL: string, id: string): Promise<void> => {
   return await FHIR.client(fhirBaseURL)
     .delete(`${FHIR_PRACTITIONER_ROLE}/${id}`)
     .then(() => sendSuccessNotification(lang.CARE_TEAM_DELETE_SUCCESS))
     .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
 };
 
-export const useCareTeamsHook = (
+export const usePractitionerRolesHook = (
   fhirBaseURL: string,
   pageSize: number,
   pageOffset: number,
@@ -91,7 +92,7 @@ export const useCareTeamsHook = (
 ) => {
   return useQuery(
     FHIR_PRACTITIONER_ROLE,
-    () => fetchCareTeams(fhirBaseURL, pageSize, pageOffset, setPayloadCount),
+    () => fetchPractitionerRoles(fhirBaseURL, pageSize, pageOffset, setPayloadCount),
     {
       refetchOnWindowFocus: false,
     }
@@ -103,20 +104,21 @@ export const useCareTeamsHook = (
  * @param {Object} props - UserRolesList component props
  * @returns {Function} returns User Roles list display
  */
-export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
-  const { fhirBaseURL, careTeamPageSize } = props;
+export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
+  props: PractitionerRoleListPropTypes
+) => {
+  const { fhirBaseURL, PractitionerRolePageSize } = props;
   const history = useHistory();
-  const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID] ?? '';
+  const PractitionerRoleId = props.match.params[ROUTE_PARAM_PRACTITIONER_ROLE_ID] ?? '';
 
   const [payloadCount, setPayloadCount] = React.useState<number>(0);
   const [pageProps, setPageProps] = React.useState<PaginationProps>({
     currentPage: 1,
-    pageSize: careTeamPageSize,
+    pageSize: PractitionerRolePageSize,
   });
   const { currentPage, pageSize } = pageProps;
   const pageOffset = (currentPage - 1) * pageSize;
-
-  const { data, isLoading, isFetching, error, refetch } = useCareTeamsHook(
+  const { data, isLoading, isFetching, error, refetch } = usePractitionerRolesHook(
     fhirBaseURL,
     pageSize as number,
     pageOffset,
@@ -138,16 +140,15 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     return {
       key: `${index}`,
       id: datum.resource.id,
-      name: datum.resource.name,
     };
   });
 
   const columns = [
     {
       title: lang.NAME,
-      dataIndex: 'name',
+      dataIndex: 'id',
       editable: true,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      sorter: (a: TableData, b: TableData) => a.id.localeCompare(b.id),
     },
     {
       title: 'Actions',
@@ -171,7 +172,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
                     okText={lang.YES}
                     cancelText={lang.NO}
                     onConfirm={async () => {
-                      await deleteCareTeam(fhirBaseURL, record.id);
+                      await deletePractitionerRole(fhirBaseURL, record.id);
                       await refetch();
                     }}
                   >
@@ -225,11 +226,12 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
               showQuickJumper: true,
               showSizeChanger: true,
               defaultPageSize: pageSize,
-              onChange: (page: number, pageSize: number | undefined) => {
+              onChange: async (page: number, pageSize: number | undefined) => {
                 setPageProps({
                   currentPage: page,
-                  pageSize: pageSize ?? careTeamPageSize,
+                  pageSize: pageSize ?? PractitionerRolePageSize,
                 });
+                await refetch();
               },
               current: currentPage,
               total: payloadCount,
@@ -237,12 +239,12 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             }}
           />
         </Col>
-        <ViewDetails careTeamId={careTeamId} fhirBaseURL={fhirBaseURL} />
+        {/* <ViewDetails PractitionerRoleId={PractitionerRoleId} fhirBaseURL={fhirBaseURL} /> */}
       </Row>
     </div>
   );
 };
 
-CareTeamList.defaultProps = defaultProps;
+PractitionerRoleList.defaultProps = defaultProps;
 
-export default CareTeamList;
+export default PractitionerRoleList;

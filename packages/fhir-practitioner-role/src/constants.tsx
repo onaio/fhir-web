@@ -13,4 +13,4 @@ export const URL_CREATE_PRACTITIONER_ROLE = `${URL_ADMIN}/PractitionerRole/new`;
 export const URL_PRACTITIONER_ROLE = `${URL_ADMIN}/PractitionerRole`;
 
 // Route params
-export const ROUTE_PARAM_CARE_TEAM_ID = 'careTeamId';
+export const ROUTE_PARAM_PRACTITIONER_ROLE_ID = 'practitionerRoleId';

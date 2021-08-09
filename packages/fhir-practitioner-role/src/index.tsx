@@ -1,3 +1,3 @@
 export * from './components/ListView';
-export * from './components/CreateEditCareTeam';
+export * from './components/CreateEditPractitionerRole';
 export * from './constants';
