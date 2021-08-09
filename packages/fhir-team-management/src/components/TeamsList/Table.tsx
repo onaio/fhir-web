@@ -4,10 +4,10 @@ import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Organization } from '../../types';
-import { Column, Require, TableLayout } from '@opensrp/react-utils';
+import { Column, TableLayout } from '@opensrp/react-utils';
 
-export interface TableData extends Require<Organization, 'id'> {
-  key: string;
+export interface TableData extends Organization {
+  key: string | number;
 }
 
 export interface Props {
@@ -28,6 +28,7 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       title: 'Status',
       dataIndex: 'active',
+      // eslint-disable-next-line react/display-name
       render: (value) => <div>{value ? 'Active' : 'Inactive'}</div>,
     },
     {
@@ -45,12 +46,10 @@ const Table: React.FC<Props> = (props: Props) => {
           <Divider type="vertical" />
           <Dropdown
             overlay={
-              <Menu className="menu">
+              <Menu>
                 <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    if (onViewDetails) onViewDetails({ team: record, fhirBaseURL });
-                  }}
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                  onClick={() => onViewDetails && onViewDetails({ team: record, fhirBaseURL })}
                 >
                   View Details
                 </Menu.Item>
@@ -60,7 +59,7 @@ const Table: React.FC<Props> = (props: Props) => {
             arrow
             trigger={['click']}
           >
-            <MoreOutlined className="more-options" />
+            <MoreOutlined />
           </Dropdown>
         </span>
       ),

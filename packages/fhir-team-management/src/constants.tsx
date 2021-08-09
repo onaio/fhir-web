@@ -21,7 +21,6 @@ export const PRACTITIONER_DEL = 'Practitioner/';
 //
 // Teams
 //
-export const TEAM_UUID = 'team-uuid';
 export const TEAMS_GET = 'Organization/';
 export const TEAMS_PUT = 'Organization/';
 export const TEAMS_POST = 'Organization/';

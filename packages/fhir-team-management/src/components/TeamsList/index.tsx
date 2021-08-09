@@ -15,8 +15,8 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { FHIRResponse } from '../../fhirutils';
-import { loadTeamDetails } from '../../utils';
+import { FHIRResponse } from '@opensrp/react-utils';
+import { loadTeamPractitioner } from '../../utils';
 
 interface Props {
   fhirBaseURL: string;
@@ -81,7 +81,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
               />
             </h5>
             <div>
-              <Link to={URL_ADD_TEAM}>
+              <Link className="create" to={URL_ADD_TEAM}>
                 <Button type="primary">
                   <PlusOutlined />
                   {lang.CREATE_TEAM}
@@ -95,7 +95,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
               fhirBaseURL={fhirBaseURL}
               onViewDetails={(prams) => {
                 setDetail('loading');
-                loadTeamDetails(prams)
+                loadTeamPractitioner(prams)
                   .then((team) => setDetail(team))
                   .catch(() => {
                     sendErrorNotification(lang.ERROR_OCCURRED);
