@@ -14,7 +14,7 @@ const { Text } = Typography;
 
 /** typings for the view details component */
 export interface ViewDetailsProps {
-  careTeamId: string;
+  practitionerRoleId: string;
   fhirBaseURL: string;
 }
 
@@ -24,41 +24,37 @@ export interface ViewDetailsProps {
  * @param props - detail view component props
  */
 const ViewDetails = (props: ViewDetailsProps) => {
-  const { careTeamId, fhirBaseURL } = props;
+  const { practitionerRoleId, fhirBaseURL } = props;
   const history = useHistory();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [`CareTeam/${careTeamId}`],
+    queryKey: [`PractitionerRole/${practitionerRoleId}`],
     queryFn: () =>
-      careTeamId
-        ? FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONER_ROLE}/${careTeamId}`)
+      practitionerRoleId
+        ? FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONER_ROLE}/${practitionerRoleId}`)
         : undefined,
     select: (res) => res,
   });
 
-  const practitioners = useQueries(
-    data && data.participant
-      ? data.participant.map((p: { member: { reference: string } }) => {
-          return {
-            queryKey: [FHIR_PRACTITIONER_ROLE, p.member.reference],
-            queryFn: () => FHIR.client(fhirBaseURL).request(p.member.reference),
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res: IfhirR4.IPractitioner) => res,
-          };
-        })
-      : []
-  );
-
-  const subject = useQuery({
-    queryKey: [`CareTeam/${data && data.subject && data.subject.reference}`],
+  const practitioner = useQuery({
+    queryKey: [`Practitioner/${data && data.practitioner && data.practitioner.reference}`],
     queryFn: () =>
-      data && data.subject && data.subject.reference
-        ? FHIR.client(fhirBaseURL).request(data.subject.reference)
+      data && data.practitioner && data.practitioner.reference
+        ? FHIR.client(fhirBaseURL).request(data.practitioner.reference)
         : undefined,
     select: (res) => res,
   });
 
-  if (!careTeamId) {
+  const organization = useQuery({
+    queryKey: [`Organization/${data && data.organization && data.organization.reference}`],
+    queryFn: () =>
+      data && data.organization && data.organization.reference
+        ? FHIR.client(fhirBaseURL).request(data.organization.reference)
+        : undefined,
+    select: (res) => res,
+  });
+
+  if (!practitionerRoleId) {
     return null;
   }
 
@@ -79,7 +75,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
       {isLoading ? (
         <Spin size="large" className="custom-ant-spin" />
       ) : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      !isLoading && careTeamId && !data ? (
+      !isLoading && practitionerRoleId && !data ? (
         <Resource404 />
       ) : (
         <Space direction="vertical">
@@ -99,32 +95,32 @@ const ViewDetails = (props: ViewDetailsProps) => {
             {lang.STATUS}
           </Text>
           <Text type="secondary" className="display-block">
-            {data.status}
+            {data.active.toString()}
           </Text>
-          {subject.data && subject.data.name ? (
+          {organization.data && organization.data.name ? (
             <>
               <Text strong={true} className="display-block">
-                {lang.SUBJECT}
+                {lang.ORGANIZATION}
               </Text>
               <Text type="secondary" className="display-block">
-                {subject.data.name}
+                {organization.data.name}
               </Text>
             </>
           ) : (
             ''
           )}
-          <Text strong={true} className="display-block">
-            {lang.PARTICIPANTS}
-          </Text>
-          {practitioners.length
-            ? practitioners.map((datum: Dictionary) => (
-                <>
-                  <Text type="secondary" className="display-block">
-                    {getPatientName(datum.data)}
-                  </Text>
-                </>
-              ))
-            : ''}
+          {practitioner.data && practitioner.data.name ? (
+            <>
+              <Text strong={true} className="display-block">
+                {lang.PRACTITIONER}
+              </Text>
+              <Text type="secondary" className="display-block">
+                {getPatientName(practitioner.data)}
+              </Text>
+            </>
+          ) : (
+            ''
+          )}
         </Space>
       )}
     </Col>

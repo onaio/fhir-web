@@ -239,7 +239,7 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
             }}
           />
         </Col>
-        {/* <ViewDetails PractitionerRoleId={PractitionerRoleId} fhirBaseURL={fhirBaseURL} /> */}
+        <ViewDetails practitionerRoleId={PractitionerRoleId} fhirBaseURL={fhirBaseURL} />
       </Row>
     </div>
   );

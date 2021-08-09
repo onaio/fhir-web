@@ -45,8 +45,8 @@ function fill() {
   lang.SEARCH = i18n.t(`Search`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
   lang.CARE_TEAM_PAGE_HEADER = i18n.t(`FHIR Practitioner Role`, { ns: namespace });
-  lang.SUBJECT = i18n.t(`Subject`, { ns: namespace });
-  lang.PARTICIPANTS = i18n.t(`Participant`, { ns: namespace });
+  lang.ORGANIZATION = i18n.t(`Organization`, { ns: namespace });
+  lang.PRACTITIONER = i18n.t(`Practitioner`, { ns: namespace });
 }
 
 // run it initial

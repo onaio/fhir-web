@@ -105,7 +105,11 @@ import {
   NewLocationUnit,
   EditLocationUnit,
 } from '@opensrp/location-management';
-import { PractitionerRoleList, URL_PRACTITIONER_ROLE } from '@opensrp/fhir-practitioner-role';
+import {
+  PractitionerRoleList,
+  URL_PRACTITIONER_ROLE,
+  ROUTE_PARAM_PRACTITIONER_ROLE_ID,
+} from '@opensrp/fhir-practitioner-role';
 import {
   BaseProps,
   jsonValidatorListProps,
@@ -287,6 +291,16 @@ const App: React.FC = () => {
               }
               exact
               path={URL_PRACTITIONER_ROLE}
+              component={PractitionerRoleList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={
+                activeRoles.PRACTITIONER_ROLE && activeRoles.PRACTITIONER_ROLE.split(',')
+              }
+              exact
+              path={`${URL_PRACTITIONER_ROLE}/:${ROUTE_PARAM_PRACTITIONER_ROLE_ID}`}
               component={PractitionerRoleList}
             />
             <PrivateComponent
