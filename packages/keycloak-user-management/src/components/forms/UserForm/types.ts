@@ -23,5 +23,11 @@ export interface UserFormProps {
   renderFields?: FormFieldsKey[];
 }
 
+/** descibes antd select component options */
+export interface SelectOption {
+  label: string;
+  value: string;
+}
+
 // form field names
 export const CONTACT_FORM_FIELD: FormFieldsKey = 'contact';
