@@ -14,10 +14,10 @@ exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 />
 `;
 
-exports[`components/forms/UserForm renders correctly: contact field 1`] = `
+exports[`components/forms/UserForm form validation works for contact field: contact input 1`] = `
 <input
   className="ant-input"
-  id="attributes_contact"
+  id="contact"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
@@ -27,13 +27,147 @@ exports[`components/forms/UserForm renders correctly: contact field 1`] = `
 />
 `;
 
-exports[`components/forms/UserForm renders correctly: contact label 1`] = `
+exports[`components/forms/UserForm form validation works for contact field: contact label 1`] = `
 <label
-  className=""
-  htmlFor="attributes_contact"
+  className="ant-form-item-required"
+  htmlFor="contact"
   title="Contact"
 >
   Contact
+</label>
+`;
+
+exports[`components/forms/UserForm renders correctly: email input 1`] = `
+<input
+  className="ant-input"
+  id="email"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm renders correctly: email label 1`] = `
+<label
+  className=""
+  htmlFor="email"
+  title="Email"
+>
+  Email
+</label>
+`;
+
+exports[`components/forms/UserForm renders correctly: enabled input 1`] = `
+Array [
+  <input
+    checked={false}
+    className="ant-radio-input"
+    name="enabled"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    type="radio"
+    value={true}
+  />,
+  <input
+    checked={true}
+    className="ant-radio-input"
+    name="enabled"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    type="radio"
+    value={false}
+  />,
+]
+`;
+
+exports[`components/forms/UserForm renders correctly: firstName input 1`] = `
+<input
+  className="ant-input"
+  id="firstName"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm renders correctly: firstName label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="firstName"
+  title="First Name"
+>
+  First Name
+</label>
+`;
+
+exports[`components/forms/UserForm renders correctly: lastName input 1`] = `
+<input
+  className="ant-input"
+  id="lastName"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm renders correctly: lastName label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="lastName"
+  title="Last Name"
+>
+  Last Name
+</label>
+`;
+
+exports[`components/forms/UserForm renders correctly: practitionerToggle input 1`] = `null`;
+
+exports[`components/forms/UserForm renders correctly: practitionerToggle label 1`] = `null`;
+
+exports[`components/forms/UserForm renders correctly: userGroups input 1`] = `null`;
+
+exports[`components/forms/UserForm renders correctly: userGroups label 1`] = `
+<label
+  className=""
+  htmlFor="userGroups"
+  title="Group"
+>
+  Group
+</label>
+`;
+
+exports[`components/forms/UserForm renders correctly: username input 1`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="username"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm renders correctly: username label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="username"
+  title="Username"
+>
+  Username
 </label>
 `;
 

@@ -1,10 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { TableColumnsNamespace } from '../../constants';
 import { SelectOption } from '../AssignmentModal';
-import { Assignment } from '@opensrp/team-assignment';
+import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
 import { Dictionary, keyBy } from 'lodash';
 import { Organization } from '@opensrp/team-management';
 import { Jurisdiction } from '../../ducks/jurisdictions';
+import { OpenSRPService } from '../../helpers/dataLoaders';
+import { ActionColumn } from '../TableActionColumn';
+import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
+import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
+import lang from '../../lang';
+import { ColumnType } from 'antd/lib/table/interface';
+import React from 'react';
+import { ColumnsType } from 'rc-table/lib/interface';
 
 /** describes antd's table data accessors */
 export interface TableData {
@@ -136,17 +144,103 @@ export const getDataSource = (
     planJurisdictions
   );
 
-  const datasource = orgsAndJursOptions.map((mapping, index) => ({
+  const dataSource = orgsAndJursOptions.map((mapping, index) => ({
     key: `${TableColumnsNamespace}-${index}`,
     organizations: mapping.organizations.map((option) => option.label).join(', ') || ' - ',
     jurisdictions: mapping.jurisdictions.map((option) => option.label).join(', ') || ' - ',
   }));
-  if (datasource.length < 1) {
-    datasource.push({
+  if (dataSource.length < 1) {
+    dataSource.push({
       key: TableColumnsNamespace,
       organizations: '',
       jurisdictions: '',
     });
   }
-  return datasource;
+  return dataSource;
+};
+
+/** non dynamic columns for assignment table component
+ *
+ * @param langObj - the translation lookup object
+ */
+export const staticColumns = (langObj: Dictionary<string> = lang): ColumnsType<TableData> => [
+  {
+    title: langObj.ASSIGNED_AREAS,
+    dataIndex: 'jurisdictions',
+    key: `${TableColumnsNamespace}-assigned-areas`,
+    width: '40%',
+  },
+  {
+    title: langObj.ASSIGNED_TEAMS,
+    dataIndex: 'organizations',
+    key: `${TableColumnsNamespace}-assigned-teams`,
+    width: '40%',
+  },
+];
+
+/**
+ * construct the full table columns for the plan assignment table
+ *
+ * @param  assignments - assignments response from api per plan
+ * @param  organizations - a list of all organizations
+ * @param  jurisdictions - all jurisdictions that can be assigned
+ * @param  serviceClass -  opensrp service class
+ * @param  planCreator - action creator to add plans
+ * @param  assignmentsCreator - action creator to add assignments
+ * @param  plan - the plan
+ * @param  baseURL - the base url
+ * @param  disableAssignments - whether to enable assignments
+ * @param langObj - the translation lookup object
+ */
+export const getPlanAssignmentColumns = (
+  assignments: Assignment[],
+  organizations: Organization[],
+  jurisdictions: Jurisdiction[],
+  serviceClass: typeof OpenSRPService,
+  planCreator: typeof fetchPlanDefinitions,
+  assignmentsCreator: typeof fetchAssignments,
+  plan: PlanDefinition,
+  baseURL: string,
+  disableAssignments: boolean,
+  langObj: Dictionary<string> = lang
+) => {
+  const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (_, __, index: number) => {
+    const fullyGrouped = compressAssignments(assignments);
+    const planJurisdictions = plan.jurisdiction.map((jur) => jur.code);
+    const mergedOptions = mergeIdsWithNames(
+      fullyGrouped,
+      organizations,
+      jurisdictions,
+      assignments,
+      planJurisdictions
+    );
+    const assignedOrgsOptions = mergedOptions[index]?.organizations ?? [];
+    const assignedJursOptions = mergedOptions[index]?.jurisdictions ?? [];
+
+    const props = {
+      organizations,
+      assignments,
+      jurisdictions,
+      assignedJursOptions,
+      assignedOrgsOptions,
+      serviceClass,
+      planCreator,
+      assignmentsCreator,
+      plan,
+      baseURL,
+      disableAssignments,
+    };
+    return <ActionColumn {...props}></ActionColumn>;
+  };
+
+  const dynamicColumn = [
+    {
+      title: langObj.ACTIONS,
+      key: `${TableColumnsNamespace}-actions`,
+      render: ActionsColumnCustomRender,
+      width: '20%',
+    },
+  ];
+  const columns = [...staticColumns(langObj), ...dynamicColumn];
+  return columns;
 };
