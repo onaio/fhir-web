@@ -2025,6 +2025,67 @@ export const practitioner102: Practitioner = {
   birthDate: '1996-11-22',
 };
 
+export const practitioner104: Practitioner = {
+  resourceType: 'Practitioner',
+  id: '104',
+  meta: {
+    versionId: '1',
+    lastUpdated: '2021-04-07T13:14:35.065+00:00',
+    source: '#497f40b7dfa4047a',
+  },
+  text: {
+    status: 'generated',
+    div: '<div xmlns="http://www.w3.org/1999/xhtml">Ward Williams</div>',
+  },
+  identifier: [
+    {
+      use: 'official',
+      value: '026467d1-5cf7-45ec-82d2-4a467b524278',
+    },
+    {
+      use: 'secondary',
+      value: '287aff05-ff9b-4b07-b525-8860c70377d0',
+    },
+  ],
+  active: true,
+  name: [
+    {
+      use: 'official',
+      family: 'Williams',
+      given: ['Ward', 'N'],
+      suffix: ['MD'],
+    },
+  ],
+  telecom: [
+    {
+      system: 'phone',
+      value: '800-651-2242',
+      use: 'home',
+    },
+    {
+      system: 'phone',
+      value: '800-471-8810',
+      use: 'mobile',
+    },
+    {
+      system: 'email',
+      value: 'susan.williams@example.com',
+    },
+  ],
+  address: [
+    {
+      use: 'home',
+      line: ['27 South Ave'],
+      city: 'Tulsa',
+      state: 'OK',
+      postalCode: '74126',
+      country: 'USA',
+    },
+  ],
+  gender: 'female',
+  birthDate: '1996-11-22',
+};
+
 export const teamsdetail: TeamsDetailProps = {
   active: false,
   id: '212',
