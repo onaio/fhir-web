@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Table as AntTable } from 'antd';
 import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
@@ -41,9 +41,7 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object & { key?: string | number } = Dictionary>(
-  props: TableProps<T>
-) {
+export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
   const {
     id,
     columns,
@@ -99,13 +97,6 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
       }),
   };
 
-  // auto append key into data if not provided
-  const data: T[] = useMemo(() => {
-    return datasource.map((e, index) => {
-      return { ...e, key: e.key ?? index };
-    });
-  }, [datasource]);
-
   /** Table Layout Component used to render the table with default Settings
    *
    * @param page - the current viewing Page number
@@ -123,7 +114,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
   }
 
   return (
-    <AntTable<T> dataSource={data} columns={columns} {...tableprops}>
+    <AntTable<T> dataSource={datasource} columns={columns} {...tableprops}>
       {children}
     </AntTable>
   );
