@@ -15,8 +15,8 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
-import { FHIRResponse } from '../../fhirutils';
 import { loadHealthcareDetails } from '../../utils';
+import { FHIRResponse } from 'react-utils';
 
 interface Props {
   fhirBaseURL: string;
