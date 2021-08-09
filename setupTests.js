@@ -56,9 +56,6 @@ Object.defineProperty(window, 'location', {
 });
 window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
 
-// const mockfhirBaseURL = 'https://fhirBaseURL.com/';
-// const mockclient = new mockClient({}, { serverUrl: mockfhirBaseURL });
-
 jest.mock('fhirclient', () => ({
   client: jest.fn().mockImplementation(() => ({
     request: (...parm) => console.error('Override Fhir request Implimentation', ...parm),
