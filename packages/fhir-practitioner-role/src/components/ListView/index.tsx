@@ -89,12 +89,8 @@ export const usePractitionerRolesHook = (
   pageOffset: number,
   setPayloadCount: (count: number) => void
 ) => {
-  return useQuery(
-    FHIR_PRACTITIONER_ROLE,
-    () => fetchPractitionerRoles(fhirBaseURL, pageSize, pageOffset, setPayloadCount),
-    {
-      refetchOnWindowFocus: false,
-    }
+  return useQuery(FHIR_PRACTITIONER_ROLE, () =>
+    fetchPractitionerRoles(fhirBaseURL, pageSize, pageOffset, setPayloadCount)
   );
 };
 
@@ -111,11 +107,11 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
   const PractitionerRoleId = props.match.params[ROUTE_PARAM_PRACTITIONER_ROLE_ID] ?? '';
 
   const [payloadCount, setPayloadCount] = React.useState<number>(0);
-  const [pageProps, setPageProps] = React.useState<PaginationProps>({
+  const [paginationProps, setPaginationProps] = React.useState<PaginationProps>({
     currentPage: 1,
     pageSize: PractitionerRolePageSize,
   });
-  const { currentPage, pageSize } = pageProps;
+  const { currentPage, pageSize } = paginationProps;
   const pageOffset = (currentPage - 1) * pageSize;
   const { data, isLoading, isFetching, error, refetch } = usePractitionerRolesHook(
     fhirBaseURL,
@@ -123,6 +119,12 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
     pageOffset,
     setPayloadCount
   );
+
+  React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paginationProps]);
 
   if (isLoading || isFetching) return <Spin size="large" />;
 
@@ -225,8 +227,8 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
               showQuickJumper: true,
               showSizeChanger: true,
               defaultPageSize: pageSize,
-              onChange: async (page: number, pageSize: number | undefined) => {
-                setPageProps({
+              onChange: (page: number, pageSize: number | undefined) => {
+                setPaginationProps({
                   currentPage: page,
                   pageSize: pageSize ?? PractitionerRolePageSize,
                 });
