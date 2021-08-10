@@ -21,6 +21,7 @@ jest.mock('@opensrp/notifications', () => {
 });
 
 const mockV4 = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
+const keycloakUserId = 'generatedKeycloakId';
 
 jest.mock('uuid', () => {
   const actualUUID = jest.requireActual('uuid');
@@ -54,6 +55,12 @@ describe('forms/utils/submitForm', () => {
   const id = mockV4;
 
   it('submits user creation correctly', async () => {
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${keycloakUserId}`,
+      },
+    });
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     const historyPushMock = jest.spyOn(history, 'push');
 
@@ -68,15 +75,17 @@ describe('forms/utils/submitForm', () => {
     delete expectedKUser.userGroups;
     delete expectedKUser.practitioner;
 
+    // keycloak user payload
     expect(JSON.parse((fetch.mock.calls[0][1] as Dictionary).body)).toEqual({
       ...expectedKUser,
-      id: mockV4,
+      id: '',
     });
+    // practitioner payload
     expect(JSON.parse((fetch.mock.calls[1][1] as Dictionary).body)).toEqual({
-      active: false,
+      active: true,
       identifier: mockV4,
       name: `${value.firstName} ${value.lastName}`,
-      userId: mockV4,
+      userId: keycloakUserId,
       username: value.username,
     });
     expect(fetch.mock.calls).toMatchObject([
@@ -109,7 +118,7 @@ describe('forms/utils/submitForm', () => {
         },
       ],
       [
-        `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${mockV4}/groups/580c7fbf-c201-4dad-9172-1df9faf24936`,
+        `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${keycloakUserId}/groups/580c7fbf-c201-4dad-9172-1df9faf24936`,
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -123,7 +132,7 @@ describe('forms/utils/submitForm', () => {
         },
       ],
       [
-        `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${mockV4}/groups/2fffbc6a-528d-4cec-aa44-97ef65b9bba2`,
+        `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${keycloakUserId}/groups/2fffbc6a-528d-4cec-aa44-97ef65b9bba2`,
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -170,6 +179,12 @@ describe('forms/utils/submitForm', () => {
 
   it('correctly redirects to credentials page when practitioner is undefined (new user)', async () => {
     const historyPushMock = jest.spyOn(history, 'push');
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${keycloakUserId}`,
+      },
+    });
 
     submitForm(
       { ...value, practitioner: undefined },
@@ -381,7 +396,7 @@ describe('forms/utils/submitForm', () => {
           active: true,
           identifier: mockV4,
           name: `${value.firstName} ${value.lastName}`,
-          userId: keycloakUser.id,
+          userId: '',
           username: value.username,
         }),
         headers: {
@@ -506,6 +521,12 @@ describe('forms/utils/submitForm', () => {
   });
 
   it('updates practitioner values when user values update', async () => {
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${keycloakUserId}`,
+      },
+    });
     submitForm(
       { ...value, id: id, userGroups: undefined, practitioner: practitioner1 },
       keycloakBaseURL,
@@ -545,6 +566,60 @@ describe('forms/utils/submitForm', () => {
           identifier: practitioner1.identifier,
           name: `${value.firstName} ${value.lastName}`,
           userId: id,
+          username: value.username,
+        },
+      },
+    ]);
+  });
+
+  it('creates active practitioner on keycloak user creation', async () => {
+    fetch.mockResponseOnce(JSON.stringify({ id: 1 }), {
+      status: 200,
+      headers: {
+        Location: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/${keycloakUserId}`,
+      },
+    });
+    submitForm(
+      // initialize values for new user creation
+      { ...value, id: undefined, userGroups: undefined },
+      keycloakBaseURL,
+      OPENSRP_API_BASE_URL,
+      [],
+      undefined
+    ).catch(jest.fn());
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    // compose request object with endpoint, method and body
+    const reqObj = fetch.mock.calls.map((req) => ({
+      url: req[0],
+      method: req[1].method,
+      body: JSON.parse(req[1].body as string),
+    }));
+
+    // first request is to create user in keycloak, second request is to create practitioner
+    expect(reqObj).toMatchObject([
+      {
+        url: `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users`,
+        method: 'POST',
+        body: {
+          firstName: value.firstName,
+          lastName: value.lastName,
+          username: value.username,
+          email: value.email,
+          id: '',
+        },
+      },
+      {
+        url: 'https://opensrp-stage.smartregister.org/opensrp/rest/practitioner',
+        method: 'POST',
+        body: {
+          active: true,
+          identifier: mockV4,
+          name: `${value.firstName} ${value.lastName}`,
+          userId: keycloakUserId,
           username: value.username,
         },
       },

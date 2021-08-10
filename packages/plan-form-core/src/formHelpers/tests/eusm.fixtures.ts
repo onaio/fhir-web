@@ -66,18 +66,6 @@ export const mission1 = ({
       ],
     },
     {
-      id: 'fix_problem',
-      description: 'Fix problems for all products (100%) within the jurisdiction',
-      priority: 'medium-priority',
-      target: [
-        {
-          measure: 'Percent of products problems fixed',
-          detail: { detailQuantity: { value: 100.0, comparator: '\u0026gt;', unit: 'Percent' } },
-          due: '2021-03-02',
-        },
-      ],
-    },
-    {
       id: 'record_gps',
       description: 'Record GPS for all service points without GPS within the jurisdiction',
       priority: 'medium-priority',
@@ -264,40 +252,8 @@ export const mission1 = ({
       type: 'update',
     },
     {
-      identifier: '2c05848d-9968-536f-896e-0deba30a7c07',
-      prefix: 5,
-      title: 'Fix Problem',
-      description: 'Fix problems for all products (100%) within the jurisdiction',
-      code: 'fix_problem',
-      timingPeriod: { start: '2021-02-23', end: '2021-03-02' },
-      reason: 'Routine',
-      goalId: 'fix_problem',
-      subjectCodableConcept: { text: 'Device' },
-      trigger: [
-        {
-          type: 'named-event',
-          name: 'event-submission',
-          expression: {
-            description: 'Trigger when a Fix Product event is submitted',
-            expression: 'questionnaire \u003d \u0027flag_problem\u0027',
-          },
-        },
-      ],
-      condition: [
-        {
-          kind: 'applicability',
-          expression: {
-            description: 'Product exists',
-            expression: '$this.is(FHIR.QuestionnaireResponse)',
-          },
-        },
-      ],
-      definitionUri: 'fix_problem.json',
-      type: 'create',
-    },
-    {
       identifier: '243b02b6-303c-5582-a715-a50973cd2418',
-      prefix: 6,
+      prefix: 5,
       title: 'Record GPS',
       description: 'Record GPS for all service points (100%) without GPS within the jurisdiction',
       code: 'record_gps',
@@ -330,7 +286,7 @@ export const mission1 = ({
     },
     {
       identifier: '9545c558-f99c-5e14-a191-3dffaf3075e8',
-      prefix: 7,
+      prefix: 6,
       title: 'Complete Record GPS',
       description: 'Completes Record GPS activity for structure',
       code: 'complete_record_gps',
@@ -366,7 +322,7 @@ export const mission1 = ({
     },
     {
       identifier: 'a67e35b7-a34f-5845-9c8a-22afd24531fe',
-      prefix: 8,
+      prefix: 7,
       title: 'Service Point Check',
       description: 'Conduct checks for all service point (100%) within the Jurisdiction',
       code: 'service_point_check',
@@ -397,7 +353,7 @@ export const mission1 = ({
     },
     {
       identifier: 'aa45bcb8-61d3-5f7e-9455-238914bd3e74',
-      prefix: 9,
+      prefix: 8,
       title: 'Complete Service Point Check',
       description: 'Completes Service Point Check',
       code: 'complete_service_point_check',
@@ -561,34 +517,6 @@ export const generatedMissionForm1 = {
       trigger: [
         {
           description: 'Trigger when a Flag Problem event is submitted',
-          expression: "questionnaire = 'flag_problem'",
-          name: 'event-submission',
-        },
-      ],
-    },
-    {
-      actionCode: 'fix_problem',
-      actionDefinitionUri: 'fix_problem.json',
-      actionDescription: 'Fix problems for all products (100%) within the jurisdiction',
-      actionIdentifier: '2c05848d-9968-536f-896e-0deba30a7c07',
-      actionReason: 'Routine',
-      actionTitle: 'Fix Problem',
-      condition: [
-        {
-          description: 'Product exists',
-          expression: '$this.is(FHIR.QuestionnaireResponse)',
-          subjectCodableConceptText: '',
-        },
-      ],
-      goalDescription: 'Fix problems for all products (100%) within the jurisdiction',
-      goalDue: parseISO('2021-03-02T00:00:00.000Z'),
-      goalPriority: 'medium-priority',
-      goalValue: 100,
-      timingPeriodEnd: parseISO('2021-03-02T00:00:00.000Z'),
-      timingPeriodStart: parseISO('2021-02-23T00:00:00.000Z'),
-      trigger: [
-        {
-          description: 'Trigger when a Fix Product event is submitted',
           expression: "questionnaire = 'flag_problem'",
           name: 'event-submission',
         },
