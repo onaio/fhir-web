@@ -4,7 +4,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Column, TableLayout } from '..';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../../constants';
-import { getConfig } from '@opensrp/pkg-config';
+import { getConfig, setConfig } from '@opensrp/pkg-config';
 
 interface TableData {
   geographicLevel: number;
@@ -147,5 +147,30 @@ describe('Table Layout', () => {
         },
       },
     });
+  });
+});
+
+describe('Table layout pkg config integration', () => {
+  const tableData: TableData[] = [];
+  for (let i = 1; i < 20; i++) {
+    tableData.push({
+      id: i.toString(),
+      key: i.toString(),
+      name: `Edrward ${i}`,
+      geographicLevel: i,
+    });
+  }
+
+  beforeAll(() => {
+    setConfig('defaultTablesPageSize', 100);
+  });
+
+  it('Picks default page size value from config', () => {
+    const wrapper = mount(
+      <TableLayout datasource={tableData} columns={columns} actions={actions} />
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((wrapper.find('Table').first().prop('pagination') as any).defaultPageSize).toEqual(100);
   });
 });

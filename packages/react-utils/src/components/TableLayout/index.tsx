@@ -18,15 +18,6 @@ export interface Column<T> extends ColumnType<T>, Dictionary {
   key?: TKey<T>;
 }
 
-export const defaults: Options = {
-  pagination: {
-    showQuickJumper: true,
-    showSizeChanger: true,
-    defaultPageSize: TABLE_PAGE_SIZE,
-    pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
-  },
-};
-
 interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
   dataKeyAccessor?: keyof T;
@@ -62,10 +53,21 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
     persistState,
     actions,
     dataKeyAccessor,
+    pagination,
     ...restprops
   } = props;
 
-  const options: Options = { ...defaults, ...restprops };
+  const paginationDefaults = {
+    showQuickJumper: true,
+    showSizeChanger: true,
+    defaultPageSize: getConfig('defaultTablesPageSize') ?? TABLE_PAGE_SIZE,
+    pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
+  };
+
+  const options: Options = {
+    pagination: pagination === false ? false : { ...paginationDefaults, ...pagination },
+    ...restprops,
+  };
   const tablesState = getConfig('tablespref') ?? {};
 
   if (columns && actions) {
