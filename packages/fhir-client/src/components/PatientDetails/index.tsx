@@ -105,6 +105,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       get(d, 'performedPeriod.start') ||
       get(d, 'meta.lastUpdated') ||
       d.date;
+    const reasonClass = get(d, 'class.display');
     const active = `${d.active}`;
     const value = buildObservationValueString(d);
     const gender = d.gender;
@@ -115,10 +116,14 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       get(d, 'type.0.text') ||
       get(d, 'vaccineCode.text') ||
       get(d, 'vaccineCode.coding.0.display') ||
-      get(d, 'vaccineCode.coding.0.code');
+      get(d, 'vaccineCode.coding.0.code') ||
+      get(d, 'type.0.coding.0.display');
     const status = d.status || get(d, 'achievementStatus.coding.0.code') || 'N/A';
     const reason =
-      getPath(d, 'reason.0.coding.0.display') || get(d, 'detail.code.coding.0.display') || 'N/A';
+      getPath(d, 'reason.0.coding.0.display') ||
+      get(d, 'detail.code.coding.0.display') ||
+      get(d, 'reasonCode.0.coding.0.display') ||
+      'N/A';
     const resorceClass = 'N/A';
     const condition = get(d, 'code.text');
     const onsetDate = get(d, 'onsetDateTime');
@@ -148,6 +153,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       status,
       reason,
       resorceClass,
+      reasonClass,
       condition,
       onsetDate,
       vstatus,

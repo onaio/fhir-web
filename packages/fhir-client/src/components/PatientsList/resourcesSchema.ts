@@ -39,9 +39,9 @@ export const resourcesSchema: Dictionary = {
       },
       {
         title: 'Class',
-        dataIndex: 'class',
+        dataIndex: 'reasonClass',
         editable: true,
-        sorter: (a: Dictionary, b: Dictionary) => a.class.localeCompare(b.name),
+        sorter: (a: Dictionary, b: Dictionary) => a.reasonClass.localeCompare(b.name),
       },
       {
         title: 'Status',
