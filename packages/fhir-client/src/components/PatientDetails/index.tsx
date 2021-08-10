@@ -90,6 +90,9 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   const dataSource = resourceTypeMap[resourceType]?.data.map((d: Dictionary, index: number) => {
     const key = `${index}`;
     const id = d.id;
+    const city = get(d, 'address.city');
+    const country = get(d, 'address.country');
+    const state = get(d, 'address.state');
     const name =
       getPatientName(d) ||
       get(d, 'code.coding.0.display') ||
@@ -137,11 +140,15 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       getPath(d, 'medicationCodeableConcept.coding.0.display') ||
       getPath(d, 'medicationCodeableConcept.coding.0.code') ||
       getPath(d, 'code.coding.0.code') ||
-      getPath(d, 'result.0.display');
+      getPath(d, 'result.0.display') ||
+      d.description;
     return {
       key,
       id,
       name,
+      city,
+      country,
+      state,
       date,
       active,
       value,
