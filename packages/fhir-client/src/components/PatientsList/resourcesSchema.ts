@@ -185,6 +185,40 @@ export const resourcesSchema: Dictionary = {
       },
     ],
   },
+  Location: {
+    columns: [
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        editable: true,
+        sorter: (a: Dictionary, b: Dictionary) => a.name.localeCompare(b.name),
+      },
+      {
+        title: 'Desciption',
+        dataIndex: 'details',
+        editable: true,
+        sorter: (a: Dictionary, b: Dictionary) => a.details.localeCompare(b.name),
+      },
+      {
+        title: 'City',
+        dataIndex: 'city',
+        editable: true,
+        sorter: (a: Dictionary, b: Dictionary) => a.city.localeCompare(b.name),
+      },
+      {
+        title: 'State',
+        dataIndex: 'state',
+        editable: true,
+        sorter: (a: Dictionary, b: Dictionary) => a.state.localeCompare(b.name),
+      },
+      {
+        title: 'Country',
+        dataIndex: 'country',
+        editable: true,
+        sorter: (a: Dictionary, b: Dictionary) => a.country.localeCompare(b.name),
+      },
+    ],
+  },
   Medication: {
     columns: [
       {
