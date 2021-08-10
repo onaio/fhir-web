@@ -41,6 +41,7 @@ interface RouteParams {
 interface TableData {
   key: number | string;
   id: string;
+  status?: boolean;
   name?: string;
 }
 
@@ -79,7 +80,7 @@ export const fetchPractitionerRoles = async (
 export const deletePractitionerRole = async (fhirBaseURL: string, id: string): Promise<void> => {
   return await FHIR.client(fhirBaseURL)
     .delete(`${FHIR_PRACTITIONER_ROLE}/${id}`)
-    .then(() => sendSuccessNotification(lang.CARE_TEAM_DELETE_SUCCESS))
+    .then(() => sendSuccessNotification(lang.PRACTITIONER_ROLE_DELETE_SUCCESS))
     .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
 };
 
@@ -206,9 +207,9 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
   return (
     <div className="content-section">
       <Helmet>
-        <title>{lang.CARE_TEAM_PAGE_HEADER}</title>
+        <title>{lang.PRACTITIONER_ROLE_PAGE_HEADER}</title>
       </Helmet>
-      <PageHeader title={lang.CARE_TEAM_PAGE_HEADER} className="page-header" />
+      <PageHeader title={lang.PRACTITIONER_ROLE_PAGE_HEADER} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -216,7 +217,7 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
             <Link to={URL_CREATE_PRACTITIONER_ROLE}>
               <Button type="primary">
                 <PlusOutlined />
-                {lang.CREATE_CARE_TEAM}
+                {lang.CREATE_PRACTITIONER_ROLE}
               </Button>
             </Link>
           </div>

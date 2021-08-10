@@ -2,9 +2,7 @@ import React from 'react';
 import { Col, Space, Spin, Button, Typography } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
-import { Dictionary } from '@onaio/utils';
-import { useQuery, useQueries } from 'react-query';
-import { IfhirR4 } from '@smile-cdr/fhirts';
+import { useQuery } from 'react-query';
 import { Resource404, BrokenPage } from '@opensrp/react-utils';
 import FHIR from 'fhirclient';
 import lang from '../../lang';
@@ -79,12 +77,6 @@ const ViewDetails = (props: ViewDetailsProps) => {
         <Resource404 />
       ) : (
         <Space direction="vertical">
-          <Text strong={true} className="display-block">
-            {lang.NAME}
-          </Text>
-          <Text type="secondary" className="display-block">
-            {data.name}
-          </Text>
           <Text strong={true} className="display-block">
             {lang.IDENTIFIER}
           </Text>

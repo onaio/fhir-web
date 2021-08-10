@@ -23,15 +23,16 @@ interface RouteParams {
 }
 
 /** props for editing a user view */
-export interface EditCareTeamProps {
+export interface EditPractitionerRoleProps {
   fhirBaseURL: string;
 }
 
 /** type intersection for all types that pertain to the props */
-export type CreateEditCareTeamProps = EditCareTeamProps & RouteComponentProps<RouteParams>;
+export type CreateEditPractitionerRoleProps = EditPractitionerRoleProps &
+  RouteComponentProps<RouteParams>;
 
 /** default props for editing user component */
-export const defaultEditCareTeamsProps: EditCareTeamProps = {
+export const defaultEditPractitionerRoleProps: EditPractitionerRoleProps = {
   fhirBaseURL: '',
 };
 
@@ -49,7 +50,9 @@ export const defaultInitialValues: FormFields = {
  * @param props - CreateEditUser component props
  */
 
-const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEditCareTeamProps) => {
+const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
+  props: CreateEditPractitionerRoleProps
+) => {
   const { fhirBaseURL } = props;
   const careTeamId = props.match.params[ROUTE_PARAM_PRACTITIONER_ROLE_ID];
   const singleCareTeam = useQuery(
@@ -123,6 +126,6 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
   );
 };
 
-CreateEditCareTeam.defaultProps = defaultEditCareTeamsProps;
+CreateEditPractitionerRole.defaultProps = defaultEditPractitionerRoleProps;
 
-export { CreateEditCareTeam };
+export { CreateEditPractitionerRole };

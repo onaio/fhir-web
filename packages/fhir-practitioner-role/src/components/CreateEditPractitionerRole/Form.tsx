@@ -75,8 +75,8 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
     <Row className="layout-content practitioner-role">
       <h5 className="mb-3 header-title">
         {props.initialValues?.id
-          ? `${lang.EDIT_CARE_TEAM} | ${initialValues.name}`
-          : lang.CREATE_CARE_TEAM}
+          ? `${lang.EDIT_PRACTITIONER_ROLE} | ${initialValues.name}`
+          : lang.CREATE_PRACTITIONER_ROLE}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <Form

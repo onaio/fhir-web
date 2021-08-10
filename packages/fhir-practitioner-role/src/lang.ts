@@ -14,11 +14,13 @@ function fill() {
   lang.ERROR_OCCURRED = i18n.t(`An error occurred`, { ns: namespace });
 
   // Messages
-  lang.CARE_TEAMS_UPDATE_SUCCESS = i18n.t(`Successfully Updated Practitioner Role`, {
+  lang.PRACTITIONER_ROLE_UPDATE_SUCCESS = i18n.t(`Successfully Updated Practitioner Role`, {
     ns: namespace,
   });
-  lang.CARE_TEAMS_ADD_SUCCESS = i18n.t(`Successfully Added Practitioner Role`, { ns: namespace });
-  lang.CARE_TEAM_DELETE_SUCCESS = i18n.t(`Successfully Deleted Practitioner Role`, {
+  lang.PRACTITIONER_ROLE_ADD_SUCCESS = i18n.t(`Successfully Added Practitioner Role`, {
+    ns: namespace,
+  });
+  lang.PRACTITIONER_ROLE_DELETE_SUCCESS = i18n.t(`Successfully Deleted Practitioner Role`, {
     ns: namespace,
   });
   lang.CONFIRM_DELETE = i18n.t(`Are you sure you want to delete this Practitioner Role?`, {
@@ -35,16 +37,15 @@ function fill() {
   lang.ACTIVE = i18n.t(`Active`, { ns: namespace });
   lang.INACTIVE = i18n.t(`Inactive`, { ns: namespace });
   lang.CANCEL = i18n.t(`Cancel`, { ns: namespace });
-  lang.EDIT_CARE_TEAM = i18n.t(`Edit Practitioner Role`, { ns: namespace });
-  lang.CREATE_CARE_TEAM = i18n.t(`Create Practitioner Role`, { ns: namespace });
+  lang.EDIT_PRACTITIONER_ROLE = i18n.t(`Edit Practitioner Role`, { ns: namespace });
+  lang.CREATE_PRACTITIONER_ROLE = i18n.t(`Create Practitioner Role`, { ns: namespace });
   lang.EDIT = i18n.t(`Edit`, { ns: namespace });
   lang.CREATE = i18n.t(`Create`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
   lang.TEAMS = i18n.t(`Practitioner Roles`, { ns: namespace });
-  lang.CARE_TEAM_MEMBERS = i18n.t(`Care Teams`, { ns: namespace });
   lang.SEARCH = i18n.t(`Search`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
-  lang.CARE_TEAM_PAGE_HEADER = i18n.t(`FHIR Practitioner Role`, { ns: namespace });
+  lang.PRACTITIONER_ROLE_PAGE_HEADER = i18n.t(`FHIR Practitioner Role`, { ns: namespace });
   lang.ORGANIZATION = i18n.t(`Organization`, { ns: namespace });
   lang.PRACTITIONER = i18n.t(`Practitioner`, { ns: namespace });
 }
