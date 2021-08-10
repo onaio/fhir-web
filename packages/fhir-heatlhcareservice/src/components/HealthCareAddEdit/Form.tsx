@@ -75,9 +75,15 @@ export const Form: React.FC<Props> = (props: Props) => {
         setIsSubmitting(true);
         onSubmit(fhirBaseURL, values)
           .then(() => {
-            queryClient.invalidateQueries(ORGANIZATION_GET);
-            queryClient.invalidateQueries(HEALTHCARES_GET);
-            queryClient.invalidateQueries([HEALTHCARES_GET, initialValue?.id]);
+            queryClient
+              .invalidateQueries(ORGANIZATION_GET)
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+            queryClient
+              .invalidateQueries(HEALTHCARES_GET)
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+            queryClient
+              .invalidateQueries([HEALTHCARES_GET, initialValue?.id])
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
