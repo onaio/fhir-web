@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react';
-import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag } from 'antd';
+import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag, Spin } from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
-import { Spin } from 'antd';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import FHIR from 'fhirclient';
@@ -14,6 +13,10 @@ import { fhirclient } from 'fhirclient/lib/types';
 import { getPatientName, getPath, buildObservationValueString } from '../PatientsList/utils';
 import { resourcesSchema } from '../PatientsList/resourcesSchema';
 import { Dictionary } from '@onaio/utils';
+import { transform } from 'lodash';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+import { format } from 'date-fns';
+import './documentResource.css'; // TODO: should we import this
 
 const queryClient = new QueryClient();
 
@@ -297,16 +300,24 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                 bodyStyle={{ padding: '0 15px' }}
                 bordered={false}
               >
-                <Table
-                  dataSource={dataSource}
-                  columns={resourcesSchema[resourceType]?.columns ?? []}
-                  pagination={{
-                    showQuickJumper: true,
-                    showSizeChanger: true,
-                    defaultPageSize: 5,
-                    pageSizeOptions: ['5', '10', '20', '50', '100'],
-                  }}
-                />
+                {resourceType === 'DocumentReference' ? (
+                  <DocumentReferenceDetails
+                    documentResources={
+                      resourceTypeMap[resourceType].data as IfhirR4.IDocumentReference[]
+                    }
+                  />
+                ) : (
+                  <Table
+                    dataSource={dataSource}
+                    columns={resourcesSchema[resourceType]?.columns ?? []}
+                    pagination={{
+                      showQuickJumper: true,
+                      showSizeChanger: true,
+                      defaultPageSize: 5,
+                      pageSizeOptions: ['5', '10', '20', '50', '100'],
+                    }}
+                  />
+                )}
               </Card>
             </Col>
           </Row>
@@ -332,3 +343,66 @@ export function ConnectedPatientDetails(props: PatientDetailPropTypes) {
     </QueryClientProvider>
   );
 }
+
+export interface DocumentReferenceDetailsProps {
+  documentResources: IfhirR4.IDocumentReference[];
+}
+
+const DocumentReferenceDetails = (props: DocumentReferenceDetailsProps) => {
+  const { documentResources } = props;
+
+  const getAttachments = (resources: IfhirR4.IDocumentReference[]) => {
+    return resources.map((resource) => {
+      const { id, meta } = resource;
+      const lastUpdated = meta?.lastUpdated
+        ? format(new Date(meta?.lastUpdated), 'yyyy-MM-dd HH:mm:ss')
+        : undefined;
+      const resourceAttachments = resource.content;
+      const parsedAttachments = transform(
+        resourceAttachments,
+        (acc: Dictionary, resAttachment, _) => {
+          const mimeType = resAttachment.attachment.contentType;
+          if (!mimeType) {
+            return false;
+          }
+          if (!acc[mimeType]) {
+            acc[mimeType] = {};
+          }
+          acc[mimeType] = { url: resAttachment.attachment.data };
+        },
+        {}
+      );
+      return { id, lastUpdated, parsedAttachments };
+    });
+  };
+
+  // using a very restrictive check of mime type image/png to identify qr code
+  const qrCodeMimeType = 'image/png';
+  const imgSrcB64Prefix = 'data:image/png;base64,';
+  const hasQrAttachment = (att: ReturnType<typeof getAttachments>[0]) =>
+    !!att.parsedAttachments[qrCodeMimeType];
+
+  return (
+    <div className="documentResource_container">
+      {getAttachments(documentResources).map((attach) => {
+        if (hasQrAttachment(attach)) {
+          const cardProps = {
+            hoverable: false,
+            cover: (
+              <img
+                alt={attach.id}
+                src={`${imgSrcB64Prefix} ${attach.parsedAttachments[qrCodeMimeType].url}`}
+              />
+            ),
+          };
+          return (
+            <Card {...cardProps} key={attach.id} className="documentResource_card">
+              <Card.Meta title={attach.id} description={attach.lastUpdated} />
+            </Card>
+          );
+        }
+        return <></>;
+      })}
+    </div>
+  );
+};
