@@ -142,7 +142,13 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       getPath(d, 'code.coding.0.code') ||
       getPath(d, 'result.0.display') ||
       d.description;
+    const dateRecommendationCreated = get(d, 'date');
+    const nextDoseDate = get(d, 'dateCriterion.0.code.coding.0.code');
+    const dosesNum = get(d, 'doseNumberPositiveInt');
     return {
+      dosesNum,
+      nextDoseDate,
+      dateRecommendationCreated,
       key,
       id,
       name,
@@ -219,10 +225,15 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                     <span>Birth Date: </span>
                     <span>{birthDate}</span>
                   </div>
+                  <div>
+                    <span>UUID: </span>
+                    <span>{get(currentPatient, 'identifier.0.value')}</span>
+                  </div>
                 </div>
               </div>
             </Col>
             <Col md={12}>
+              {/* TODO: addresses can be multiple this only assumes there is one */}
               <Row>
                 <Col md={12} span={6}>
                   <span>Phone: </span>

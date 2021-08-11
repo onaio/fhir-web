@@ -445,4 +445,26 @@ export const resourcesSchema: Dictionary = {
       },
     ],
   },
+  ImmunizationRecommendation: {
+    columns: [
+      {
+        title: 'Date recommendation Created',
+        dataIndex: 'dateRecommendationCreated',
+        editable: true,
+        sorter: (a: Dictionary, b: Dictionary) => a.name.localeCompare(b.name), // TODO sort date function
+      },
+      {
+        title: 'Number of doses',
+        dataIndex: 'nextDoseDate',
+        editable: true,
+        sorter: (a: Dictionary, b: Dictionary) => a.identifier.localeCompare(b.name),
+      },
+      {
+        title: 'Next Dose Date',
+        dataIndex: 'dosesNum',
+        editable: true,
+        sorter: (a: Dictionary, b: Dictionary) => a.status.localeCompare(b.name),
+      },
+    ],
+  },
 };
