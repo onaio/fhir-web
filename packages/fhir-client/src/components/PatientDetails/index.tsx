@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react';
-import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag, Spin } from 'antd';
+import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag, Spin, Layout } from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
@@ -16,7 +16,9 @@ import { Dictionary } from '@onaio/utils';
 import { transform } from 'lodash';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { format } from 'date-fns';
-import './documentResource.css'; // TODO: should we import this
+import './d.css'; // TODO: should we import this
+
+const { Header, Sider, Content } = Layout;
 
 const queryClient = new QueryClient();
 
@@ -145,9 +147,11 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       getPath(d, 'code.coding.0.code') ||
       getPath(d, 'result.0.display') ||
       d.description;
+    // TODO: one immunization Recommendation resource can have more than a single recommendation
     const dateRecommendationCreated = get(d, 'date');
-    const nextDoseDate = get(d, 'dateCriterion.0.code.coding.0.code');
-    const dosesNum = get(d, 'doseNumberPositiveInt');
+    const nextDoseDate = get(d, 'recommendation.0.dateCriterion.0.value');
+    const dosesNum = get(d, 'recommendation.0.doseNumberPositiveInt');
+
     return {
       dosesNum,
       nextDoseDate,
@@ -190,79 +194,61 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
           <Helmet>
             <title>{'Patient Details'}</title>
           </Helmet>
-          <Row className="patient-info-main">
-            <Col md={12}>
-              <div className="plan-avatar-detail-section">
-                <span className="avatar-section">
-                  <Avatar
-                    /**Find the right icon */
-                    src={avatarLink}
-                    className=""
-                    style={{
-                      width: 80,
-                      height: 82,
-                      lineHeight: 1.8,
-                      color: '#1CABE2',
-                      fontSize: 50,
-                    }}
-                  />
-                </span>
-                <div className="patient-detail-section">
-                  <div>
-                    <h4>
-                      {patientName}{' '}
-                      {currentPatient.deceasedBoolean || currentPatient.deceasedDateTime ? (
-                        <Tag color="red">Deceased</Tag>
-                      ) : null}
-                    </h4>
-                  </div>
-                  <div>
-                    <span>ID: </span>
-                    <span>{patientId}</span>
-                  </div>
-                  <div>
-                    <span>Gender: </span>
-                    <span>{gender}</span>
-                  </div>
-                  <div>
-                    <span>Birth Date: </span>
-                    <span>{birthDate}</span>
-                  </div>
-                  <div>
-                    <span>UUID: </span>
-                    <span>{get(currentPatient, 'identifier.0.value')}</span>
-                  </div>
-                </div>
-              </div>
-            </Col>
-            <Col md={12}>
-              {/* TODO: addresses can be multiple this only assumes there is one */}
-              <Row>
-                <Col md={12} span={6}>
-                  <span>Phone: </span>
-                  <span>{get(currentPatient, 'telecom.0.value')}</span>
-                </Col>
-                <Col md={12} span={6}>
-                  <span>MRN: </span>
-                  <span>{'Unknown'}</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={12} span={6}>
-                  <span>Address: </span>
-                  <span>{`${get(currentPatient, 'address.0.line.0') || 'N/A'}, ${
-                    get(currentPatient, 'address.0.state') || 'N/A'
-                  }`}</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={12} span={6}>
-                  <span>Country: </span>
-                  <span>{`${get(currentPatient, 'address.0.country')}`}</span>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          <div className="plan-avatar-detail-section">
+            <Layout className="patient-details-banner">
+              <Sider>
+                <Avatar src={avatarLink} className="patient-details-banner_avatar" />
+              </Sider>
+              <Layout>
+                <Header>
+                  <h4>
+                    {patientName}{' '}
+                    {currentPatient.deceasedBoolean || currentPatient.deceasedDateTime ? (
+                      <Tag color="red">Deceased</Tag>
+                    ) : null}
+                  </h4>
+                </Header>
+                <Content>
+                  {(() => {
+                    const columnarData = [
+                      {
+                        UUID: get(currentPatient, 'identifier.0.value'),
+                        ID: patientId,
+                        Gender: gender,
+                      },
+                      {
+                        'Birth Date': birthDate,
+                        Phone: get(currentPatient, 'telecom.0.value'),
+                        MRN: 'Unknown',
+                      },
+                      {
+                        Address: get(currentPatient, 'address.0.line.0') || 'N/A',
+                        Country: get(currentPatient, 'address.0.country'),
+                      },
+                    ];
+                    return (
+                      <div className="patient-details__box">
+                        {columnarData.map((columnData, idx) => {
+                          return (
+                            <div className="patient-detail-section" key={idx}>
+                              {Object.entries(columnData).map(([key, value]) => {
+                                return (
+                                  <div key={key} className="patient-detail__key-value">
+                                    <span>{key}: </span>
+                                    <span>{value}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
+                </Content>
+              </Layout>
+            </Layout>
+          </div>
           <Row>
             <Col span={6}>
               <Menu
@@ -376,18 +362,17 @@ const DocumentReferenceDetails = (props: DocumentReferenceDetailsProps) => {
     });
   };
 
-  // using a very restrictive check of mime type image/png to identify qr code
+  // using a very restrictive check of mime type image/png to identify qr code attachment
   const qrCodeMimeType = 'image/png';
   const imgSrcB64Prefix = 'data:image/png;base64,';
   const hasQrAttachment = (att: ReturnType<typeof getAttachments>[0]) =>
     !!att.parsedAttachments[qrCodeMimeType];
 
   return (
-    <div className="documentResource_container">
+    <div className="documentResource-container">
       {getAttachments(documentResources).map((attach) => {
         if (hasQrAttachment(attach)) {
           const cardProps = {
-            hoverable: false,
             cover: (
               <img
                 alt={attach.id}
@@ -396,7 +381,7 @@ const DocumentReferenceDetails = (props: DocumentReferenceDetailsProps) => {
             ),
           };
           return (
-            <Card {...cardProps} key={attach.id} className="documentResource_card">
+            <Card {...cardProps} key={attach.id} className="documentResource-card">
               <Card.Meta title={attach.id} description={attach.lastUpdated} />
             </Card>
           );
