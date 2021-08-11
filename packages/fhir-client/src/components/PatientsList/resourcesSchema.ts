@@ -1,4 +1,5 @@
 import { Dictionary } from '@onaio/utils';
+import { dateStringSorterFn } from './utils';
 
 export const resourcesSchema: Dictionary = {
   Patient: {
@@ -451,13 +452,13 @@ export const resourcesSchema: Dictionary = {
         title: 'Date recommendation Created',
         dataIndex: 'dateRecommendationCreated',
         editable: true,
-        sorter: (a: Dictionary, b: Dictionary) => a.name.localeCompare(b.name), // TODO sort date function
+        sorter: dateStringSorterFn,
       },
       {
         title: 'Next Dose Date',
         dataIndex: 'nextDoseDate',
         editable: true,
-        sorter: (a: Dictionary, b: Dictionary) => a.identifier.localeCompare(b.name),
+        sorter: dateStringSorterFn,
       },
       {
         title: 'Number of doses',
