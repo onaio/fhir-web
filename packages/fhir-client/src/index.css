@@ -25,8 +25,8 @@
 }
 
 .patient-details-banner .patient-details-banner_avatar {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   line-height: 1.8;
   color: '#1CABE2';
   font-size: 50;
@@ -35,6 +35,15 @@
 .patient-details-banner .ant-layout-sider {
   text-align: center;
   padding: 10px 0;
+}
+
+.patient-details-banner aside.ant-layout-sider {
+  width: fit-content !important;
+  flex: 0 0 auto !important;
+  min-width: auto !important;
+  max-width: auto !important;
+  padding: 8px;
+  margin-right: 16px;
 }
 
 .patient-details-banner .ant-layout-header {
