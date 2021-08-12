@@ -81,3 +81,10 @@ export function buildObservationValueString(obj: Dictionary): string {
   }
   return quantValue;
 }
+
+/** Abstracts sort functionality for dates as strings
+ *
+ * @param d1 - the first date string
+ * @param d2 - the second date string
+ */
+export const dateStringSorterFn = (d1: string, d2: string) => Date.parse(d1) - Date.parse(d2);

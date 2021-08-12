@@ -3,12 +3,57 @@
 }
 
 .patient-detail-section {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .patient-detail-section > div span:first-child,
 .patient-info-main .ant-col span:first-child {
   color: #777;
+}
+
+.documentResource-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 20px;
+  padding: 5px;
+}
+
+.patient-details-banner * {
+  background: #f5f5f5 !important;
+}
+
+.patient-details-banner .patient-details-banner_avatar {
+  width: 80px;
+  height: 80px;
+  line-height: 1.8;
+  color: '#1CABE2';
+  font-size: 50;
+}
+
+.patient-details-banner .ant-layout-sider {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.patient-details-banner aside.ant-layout-sider {
+  width: fit-content !important;
+  flex: 0 0 auto !important;
+  min-width: auto !important;
+  max-width: auto !important;
+  padding: 8px;
+  margin-right: 16px;
+}
+
+.patient-details-banner .ant-layout-header {
+  height: inherit;
+  padding: 5px 0;
+}
+
+.patient-details__box {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-bottom: 15px;
 }
