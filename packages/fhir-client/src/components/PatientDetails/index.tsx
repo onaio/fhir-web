@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react';
-import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag } from 'antd';
+import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag, Spin, Layout } from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
-import { Spin } from 'antd';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import FHIR from 'fhirclient';
@@ -14,6 +13,10 @@ import { fhirclient } from 'fhirclient/lib/types';
 import { getPatientName, getPath, buildObservationValueString } from '../PatientsList/utils';
 import { resourcesSchema } from '../PatientsList/resourcesSchema';
 import { Dictionary } from '@onaio/utils';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+import { DocumentReferenceDetails } from '../DocumentReference';
+
+const { Header, Sider, Content } = Layout;
 
 const queryClient = new QueryClient();
 
@@ -142,7 +145,15 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       getPath(d, 'code.coding.0.code') ||
       getPath(d, 'result.0.display') ||
       d.description;
+    // TODO: one immunization Recommendation resource can have more than a single recommendation
+    const dateRecommendationCreated = get(d, 'date');
+    const nextDoseDate = get(d, 'recommendation.0.dateCriterion.0.value');
+    const dosesNum = get(d, 'recommendation.0.doseNumberPositiveInt');
+
     return {
+      dosesNum,
+      nextDoseDate,
+      dateRecommendationCreated,
       key,
       id,
       name,
@@ -181,74 +192,61 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
           <Helmet>
             <title>{'Patient Details'}</title>
           </Helmet>
-          <Row className="patient-info-main">
-            <Col md={12}>
-              <div className="plan-avatar-detail-section">
-                <span className="avatar-section">
-                  <Avatar
-                    /**Find the right icon */
-                    src={avatarLink}
-                    className=""
-                    style={{
-                      width: 80,
-                      height: 82,
-                      lineHeight: 1.8,
-                      color: '#1CABE2',
-                      fontSize: 50,
-                    }}
-                  />
-                </span>
-                <div className="patient-detail-section">
-                  <div>
-                    <h4>
-                      {patientName}{' '}
-                      {currentPatient.deceasedBoolean || currentPatient.deceasedDateTime ? (
-                        <Tag color="red">Deceased</Tag>
-                      ) : null}
-                    </h4>
-                  </div>
-                  <div>
-                    <span>ID: </span>
-                    <span>{patientId}</span>
-                  </div>
-                  <div>
-                    <span>Gender: </span>
-                    <span>{gender}</span>
-                  </div>
-                  <div>
-                    <span>Birth Date: </span>
-                    <span>{birthDate}</span>
-                  </div>
-                </div>
-              </div>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={12} span={6}>
-                  <span>Phone: </span>
-                  <span>{get(currentPatient, 'telecom.0.value')}</span>
-                </Col>
-                <Col md={12} span={6}>
-                  <span>MRN: </span>
-                  <span>{'Unknown'}</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={12} span={6}>
-                  <span>Address: </span>
-                  <span>{`${get(currentPatient, 'address.0.line.0') || 'N/A'}, ${
-                    get(currentPatient, 'address.0.state') || 'N/A'
-                  }`}</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={12} span={6}>
-                  <span>Country: </span>
-                  <span>{`${get(currentPatient, 'address.0.country')}`}</span>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          <div className="plan-avatar-detail-section">
+            <Layout className="patient-details-banner">
+              <Sider>
+                <Avatar src={avatarLink} className="patient-details-banner_avatar" />
+              </Sider>
+              <Layout>
+                <Header>
+                  <h4>
+                    {patientName}{' '}
+                    {currentPatient.deceasedBoolean || currentPatient.deceasedDateTime ? (
+                      <Tag color="red">Deceased</Tag>
+                    ) : null}
+                  </h4>
+                </Header>
+                <Content>
+                  {(() => {
+                    const columnarData = [
+                      {
+                        UUID: get(currentPatient, 'identifier.0.value'),
+                        ID: patientId,
+                        Gender: gender,
+                      },
+                      {
+                        'Birth Date': birthDate,
+                        Phone: get(currentPatient, 'telecom.0.value'),
+                        MRN: 'Unknown',
+                      },
+                      {
+                        Address: get(currentPatient, 'address.0.line.0') || 'N/A',
+                        Country: get(currentPatient, 'address.0.country'),
+                      },
+                    ];
+                    return (
+                      <div className="patient-details__box">
+                        {columnarData.map((columnData, idx) => {
+                          return (
+                            <div className="patient-detail-section" key={idx}>
+                              {Object.entries(columnData).map(([key, value]) => {
+                                return (
+                                  <div key={key} className="patient-detail__key-value">
+                                    <span>{key}: </span>
+                                    <span>{value}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
+                </Content>
+              </Layout>
+            </Layout>
+          </div>
           <Row>
             <Col span={6}>
               <Menu
@@ -260,6 +258,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                 {Object.keys(resourceTypeMap).map((type: string) => (
                   <Menu.Item
                     key={type}
+                    id={type}
                     onClick={(e) => {
                       setResourceType(e.key as string);
                     }}
@@ -286,16 +285,24 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                 bodyStyle={{ padding: '0 15px' }}
                 bordered={false}
               >
-                <Table
-                  dataSource={dataSource}
-                  columns={resourcesSchema[resourceType]?.columns ?? []}
-                  pagination={{
-                    showQuickJumper: true,
-                    showSizeChanger: true,
-                    defaultPageSize: 5,
-                    pageSizeOptions: ['5', '10', '20', '50', '100'],
-                  }}
-                />
+                {resourceType === 'DocumentReference' ? (
+                  <DocumentReferenceDetails
+                    documentResources={
+                      resourceTypeMap[resourceType].data as IfhirR4.IDocumentReference[]
+                    }
+                  />
+                ) : (
+                  <Table
+                    dataSource={dataSource}
+                    columns={resourcesSchema[resourceType]?.columns ?? []}
+                    pagination={{
+                      showQuickJumper: true,
+                      showSizeChanger: true,
+                      defaultPageSize: 5,
+                      pageSizeOptions: ['5', '10', '20', '50', '100'],
+                    }}
+                  />
+                )}
               </Card>
             </Col>
           </Row>

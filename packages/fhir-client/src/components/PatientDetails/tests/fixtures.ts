@@ -15839,5 +15839,100 @@ export const patientDetails = {
         etag: 'W/"2"',
       },
     },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/DocumentReference/1015',
+      resource: {
+        resourceType: 'DocumentReference',
+        id: '1015',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-08-06T20:52:15.494+00:00',
+          source: '#f88469aadd55a8cc',
+        },
+        status: 'current',
+        category: [
+          {
+            coding: [
+              {
+                system:
+                  'https://WorldHealthOrganization.github.io/ddcc/CodeSystem/DDCC-QR-Category-Usage-CodeSystem',
+                code: 'who',
+              },
+            ],
+          },
+        ],
+        subject: {
+          reference: 'Patient/969',
+        },
+        date: '2021-08-04T15:01:52.008Z',
+        content: [
+          {
+            attachment: {
+              contentType: 'image/png',
+              data:
+                'iVBORw4/6moboOm4rzlABABAgoAIAIEBABQBAoLoOFQAAcIYKAIAEARUAAAECKgAAAgRUAAAECKgAAAgQUAEAECCgAgAgQEAFAECAgAoAgAABFQAAAQIqAAACBFQAAAQIqAAACBBQAQAQIKACACDwPwTIOK+IP3y7AAAAAElFTkSuQmCC',
+            },
+            format: {
+              system:
+                'https://WorldHealthOrganization.github.io/ddcc/CodeSystem/DDCC-QR-Format-CodeSystem',
+              code: 'image',
+            },
+          },
+          {
+            attachment: {
+              contentType: 'application/json',
+              data:
+                'eyJuYW1lIjoiRWRkaWUgTXVycGh5IiwiYmlydGhEYXRlIjoiMTk4Ni0wOS0xOSIsImlkZW50aWZpZXIiOiIxMjM0NTY3ODkwIiwic2V4Ijp7ImNvZGUiOiJtYWxlIiwic3lzdGVtIjoiaHR0cDovL2hsNy5vcmcvZmhpci9hZG1pbmlzdHJhdGl2ZS1nZW5kZXIifSwidmFjY2luZSI6eyJjb2RlIjoiMTExOTM0OTAwNyIsInN5c3RlbSI6Imh0dHA6Ly9zbm9tZWQuaW5mby9zY3QifSwiYnJhbmQiOnsiY29kZSI6IlRFU1QiLCJzeXN0ZW0iOiJodHRwOi8vd29ybGRoZWFsdGhvcmdhbml6YXRpb24uZ2l0aHViLmlvL2RkY2MvQ29kZVN5c3RlbS9ERENDLUV4YW1wbGUtVGVzdC1Db2RlU3lzdGVtIn0sIm1hbnVmYWN0dXJlciI6eyJjb2RlIjoiVEVTVCIsInN5c3RlbSI6Imh0dHA6Ly93b3JsZGhlYWx0aG9yZ2FuaXphdGlvbi5naXRodWIuaW8vZGRjYy9Db2RlU3lzdGVtL0REQ0MtRXhhbXBsZS1UZXN0LUNvZGVTeXN0ZW0ifSwibWFfaG9sZGVyIjp7ImNvZGUiOiJURVNUIiwic3lzdGVtIjoiaHR0cDovL3dvcmxkaGVhbHRob3JnYW5pemF0aW9uLmdpdGh1Yi5pby9kZGNjL0NvZGVTeXN0ZW0vRERDQy1FeGFtcGxlLVRlc3QtQ29kZVN5c3RlbSJ9LCJsb3QiOiJQVDEyM0YiLCJkYXRlIjoiMjAyMS0wNy0wOCIsInZhY2NpbmVfdmFsaWQiOiIyMDIxLTA3LTIyIiwiZG9zZSI6MSwidG90YWxfZG9zZXMiOjIsImNvdW50cnkiOnsiY29kZSI6IlVTQSIsInN5c3RlbSI6InVybjppc286c3RkOmlzbzozMTY2In0sImNlbnRyZSI6IlZhY2NpbmF0aW9uIFNpdGUiLCJodyI6Imh0dHA6Ly93d3cuYWNtZS5vcmcvcHJhY3RpdGlvbmVycy8yMyIsImRpc2Vhc2UiOnsiY29kZSI6Ijg0MDUzOTAwNiIsInN5c3RlbSI6Imh0dHA6Ly9zbm9tZWQuaW5mby9zY3QifSwiZHVlX2RhdGUiOiIyMDIxLTA3LTI5IiwicGhhIjoid0E2OWc4VkQ1MTJUZlRUZGtUTlNzRyIsImhjaWQiOiJVUzExMTIyMjMzMzQ0NDU1NTY2NiIsInZhbGlkX2Zyb20iOiIyMDIxLTA3LTA4IiwidmFsaWRfdW50aWwiOiIyMDIyLTA3LTA4In0=',
+            },
+            format: {
+              system:
+                'https://WorldHealthOrganization.github.io/ddcc/CodeSystem/DDCC-QR-Format-CodeSystem',
+              code: 'serialized',
+            },
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/ImmunizationRecommendation/1016',
+      resource: {
+        resourceType: 'ImmunizationRecommendation',
+        id: '1016',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-08-06T20:54:53.779+00:00',
+          source: '#9dda5e6faa977c8a',
+        },
+        patient: { reference: 'Patient/969' },
+        date: '2021-07-08',
+        recommendation: [
+          {
+            vaccineCode: [{ coding: [{ system: 'http://snomed.info/sct', code: '1119349007' }] }],
+            targetDisease: { coding: [{ system: 'http://snomed.info/sct', code: '840539006' }] },
+            forecastStatus: {
+              coding: [
+                {
+                  system:
+                    'http://terminology.hl7.org/2.1.0/CodeSystem-immunization-recommendation-status.html',
+                  code: 'due',
+                },
+              ],
+            },
+            dateCriterion: [
+              {
+                code: { coding: [{ system: 'http://loinc.org', code: '30980-7' }] },
+                value: '2021-02-02',
+              },
+            ],
+            doseNumberPositiveInt: 2,
+            seriesDosesPositiveInt: 2,
+          },
+        ],
+      },
+      search: { mode: 'match' },
+    },
   ],
 };
