@@ -11,6 +11,7 @@ import { mount, shallow } from 'enzyme';
 import * as fhirCient from 'fhirclient';
 import toJson from 'enzyme-to-json';
 import { patientDetails } from './fixtures';
+import { DocumentReferenceDetails } from '../../DocumentReference';
 
 const { QueryClient, QueryClientProvider } = reactQuery;
 
@@ -94,6 +95,76 @@ describe('Patients list view', () => {
     wrapper.update();
     /** error view */
     expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorAn error occuredGo backGo home"`);
+    wrapper.unmount();
+  });
+
+  it('shows document Reference', async () => {
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockResolvedValueOnce(patientDetails),
+        };
+      })
+    );
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <ConnectedPatientDetails fhirBaseURL="https://r4.smarthealthit.org/" />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+    expect(wrapper.find(DocumentReferenceDetails)).toHaveLength(0);
+    // click on documentReference button
+    const docReferenceBtn = wrapper.find('#DocumentReference').first();
+    docReferenceBtn.simulate('click');
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+    expect(wrapper.find(DocumentReferenceDetails)).toHaveLength(1);
+    wrapper.unmount();
+  });
+
+  it('shows immunization recommendation', async () => {
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockResolvedValueOnce(patientDetails),
+        };
+      })
+    );
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <ConnectedPatientDetails fhirBaseURL="https://r4.smarthealthit.org/" />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    // click on immunizationRecommendation button
+    const docReferenceBtn = wrapper.find('#ImmunizationRecommendation').first();
+    docReferenceBtn.simulate('click');
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+    expect(wrapper.find('Table').first().text()).toMatchSnapshot(
+      'ImmunizationRecommendation records'
+    );
     wrapper.unmount();
   });
 });
