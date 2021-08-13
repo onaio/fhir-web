@@ -56,8 +56,8 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
   };
 
   const status = [
-    { label: 'Active', value: 'active' },
-    { label: 'Inactive', value: 'inactive' },
+    { label: 'Active', value: true },
+    { label: 'Inactive', value: false },
   ];
 
   /** Update form initial values when initialValues prop changes, without this
@@ -106,7 +106,7 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
           <Form.Item
             name="practitionersId"
             id="practitionersId"
-            label={lang.PARTICIPANTS}
+            label={lang.PRACTITIONER}
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
             <Select placeholder={lang.PARTICIPANTS}>
@@ -120,7 +120,7 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
           <Form.Item
             name="orgsId"
             id="orgsId"
-            label={lang.SUBJECT}
+            label={lang.ORGANIZATION}
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
             <Select placeholder={lang.SUBJECT}>

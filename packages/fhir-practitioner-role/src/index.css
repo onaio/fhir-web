@@ -1,3 +1,7 @@
+.practitioner-role .ant-form-item-control-input-content {
+  display: flex;
+}
+
 .bg-white {
   background-color: white;
 }
