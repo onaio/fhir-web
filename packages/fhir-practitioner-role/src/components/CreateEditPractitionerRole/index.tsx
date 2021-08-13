@@ -9,9 +9,9 @@ import { Dictionary } from '@onaio/utils';
 import lang from '../../lang';
 import {
   FHIR_PRACTITIONER_ROLE,
-  FHIR_GROUPS,
   FHIR_PRACTITIONERS,
   ROUTE_PARAM_PRACTITIONER_ROLE_ID,
+  FHIR_ORGANIZATIONS,
 } from '../../constants';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { PractitionerRoleForm, FormFields } from './Form';
@@ -39,11 +39,9 @@ export const defaultEditPractitionerRoleProps: EditPractitionerRoleProps = {
 export const defaultInitialValues: FormFields = {
   uuid: '',
   id: '',
-  name: '',
-  status: '',
   active: true,
-  practitionersId: [],
-  groupsId: '',
+  practitionersId: '',
+  orgsId: '',
 };
 /**
  *
@@ -54,22 +52,22 @@ const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
   props: CreateEditPractitionerRoleProps
 ) => {
   const { fhirBaseURL } = props;
-  const careTeamId = props.match.params[ROUTE_PARAM_PRACTITIONER_ROLE_ID];
-  const singleCareTeam = useQuery(
-    `${FHIR_PRACTITIONER_ROLE}/${careTeamId}`,
+  const practitionerRoleId = props.match.params[ROUTE_PARAM_PRACTITIONER_ROLE_ID];
+  const singlePractitionerRole = useQuery(
+    `${FHIR_PRACTITIONER_ROLE}/${practitionerRoleId}`,
     async () =>
-      careTeamId
-        ? FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONER_ROLE}/${careTeamId}`)
+      practitionerRoleId
+        ? FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONER_ROLE}/${practitionerRoleId}`)
         : undefined,
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: IfhirR4.ICareTeam) => res,
+      select: (res: IfhirR4.IPractitionerRole) => res,
     }
   );
 
-  const fhirGroups = useQuery(
-    FHIR_GROUPS,
-    async () => FHIR.client(fhirBaseURL).request(FHIR_GROUPS),
+  const fhirOrganizations = useQuery(
+    FHIR_ORGANIZATIONS,
+    async () => FHIR.client(fhirBaseURL).request(FHIR_ORGANIZATIONS),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: IfhirR4.IBundle) => res,
@@ -85,20 +83,21 @@ const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
     }
   );
 
-  if (singleCareTeam.isLoading || fhirGroups.isLoading || fhirPractitioners.isLoading) {
+  if (
+    singlePractitionerRole.isLoading ||
+    fhirOrganizations.isLoading ||
+    fhirPractitioners.isLoading
+  ) {
     return <Spin size="large" />;
   }
 
-  const buildInitialValues = singleCareTeam.data
+  const buildInitialValues = singlePractitionerRole.data
     ? {
-        uuid: (singleCareTeam.data?.identifier as Dictionary[])[0].value as string,
-        id: singleCareTeam.data.id,
-        name: singleCareTeam.data.name,
-        status: singleCareTeam.data.status ?? 'active',
-        practitionersId: singleCareTeam.data.participant?.map(
-          (p: Dictionary) => p.member.reference.split('/')[1]
-        ),
-        groupsId: singleCareTeam.data.subject?.reference?.split('/')[1] ?? '',
+        uuid: (singlePractitionerRole.data?.identifier as Dictionary[])[0].value as string,
+        id: singlePractitionerRole.data.id,
+        active: singlePractitionerRole.data.active ?? true,
+        practitionersId: singlePractitionerRole.data.practitioner?.reference?.split('/')[1] ?? '',
+        orgsId: singlePractitionerRole.data.organization?.reference?.split('/')[1] ?? '',
       }
     : defaultInitialValues;
 
@@ -112,8 +111,8 @@ const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
           name: getPatientName(e.resource),
         };
       }) ?? [],
-    groups:
-      fhirGroups.data?.entry?.map((e: Dictionary) => ({
+    organizations:
+      fhirOrganizations.data?.entry?.map((e: Dictionary) => ({
         id: e.resource?.id,
         name: e.resource?.name as string,
       })) ?? [],
@@ -121,7 +120,9 @@ const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
 
   return (
     <Row>
-      <Col span={24}>{/* <PractitionerRoleForm {...careTeamFormProps} /> */}</Col>
+      <Col span={24}>
+        <PractitionerRoleForm {...careTeamFormProps} />
+      </Col>
     </Row>
   );
 };

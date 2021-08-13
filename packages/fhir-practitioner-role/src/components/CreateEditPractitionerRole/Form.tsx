@@ -14,18 +14,16 @@ export interface Fields {
 export interface FormFields {
   uuid: string | undefined;
   id: string | undefined;
-  name: string | undefined;
-  status: string | undefined;
   active: boolean;
-  practitionersId?: string[];
-  groupsId?: string;
+  practitionersId?: string;
+  orgsId?: string;
 }
 
 export interface PractitionerRoleFormProps {
   initialValues: FormFields;
   fhirBaseURL: string;
   practitioners: Fields[];
-  groups: Fields[];
+  organizations: Fields[];
 }
 
 /** Practitioner Role form for editing/adding Practitioner Roles
@@ -75,7 +73,7 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
     <Row className="layout-content practitioner-role">
       <h5 className="mb-3 header-title">
         {props.initialValues?.id
-          ? `${lang.EDIT_PRACTITIONER_ROLE} | ${initialValues.name}`
+          ? `${lang.EDIT_PRACTITIONER_ROLE} | ${initialValues.id}`
           : lang.CREATE_PRACTITIONER_ROLE}
       </h5>
       <Col className="bg-white p-3" span={24}>
@@ -96,18 +94,10 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
           <Form.Item id={'uuid'} hidden={true} name={'uuid'} label={'UUID'}>
             <Input />
           </Form.Item>
-          <Form.Item
-            name="name"
-            id="name"
-            label={lang.NAME}
-            rules={[{ required: true, message: lang.NAME_REQUIRED }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item id="status" name="status" label={lang.STATUS}>
-            <Radio.Group name="status">
+          <Form.Item id="active" name="active" label={lang.STATUS}>
+            <Radio.Group name="active">
               {status.map((e) => (
-                <Radio name="status" key={e.label} value={e.value}>
+                <Radio name="active" key={e.label} value={e.value}>
                   {e.label}
                 </Radio>
               ))}
@@ -128,13 +118,13 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
             </Select>
           </Form.Item>
           <Form.Item
-            name="organizationsId"
-            id="organizationsId"
+            name="orgsId"
+            id="orgsId"
             label={lang.SUBJECT}
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
             <Select placeholder={lang.SUBJECT}>
-              {props.groups.map((group: Fields) => (
+              {props.organizations.map((group: Fields) => (
                 <Select.Option key={group.id} value={group.id}>
                   {group.name}
                 </Select.Option>
@@ -147,7 +137,7 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
             </Button>
             <Button
               onClick={() => history.push(URL_PRACTITIONER_ROLE)}
-              className="cancel-care-team"
+              className="cancel-practitioner-role"
             >
               {lang.CANCEL}
             </Button>

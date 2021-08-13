@@ -25,14 +25,14 @@ export const submitForm = async (
     ],
     id: id,
     active: values.active,
-    organization: values.groupsId
+    organization: values.orgsId
       ? {
-          reference: `Organization/${values.groupsId}`,
+          reference: `Organization/${values.orgsId}`,
         }
       : undefined,
-    practitioner: values.groupsId
+    practitioner: values.practitionersId
       ? {
-          reference: `Practitioner/${values.groupsId}`,
+          reference: `Practitioner/${values.practitionersId}`,
         }
       : undefined,
   };
@@ -40,12 +40,12 @@ export const submitForm = async (
   if (id) {
     await serve
       .update(payload)
-      .then(() => sendSuccessNotification(lang.CARE_TEAMS_UPDATE_SUCCESS))
+      .then(() => sendSuccessNotification(lang.PRACTITIONER_ROLE_UPDATE_SUCCESS))
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   } else {
     await serve
       .create(payload)
-      .then(() => sendSuccessNotification(lang.CARE_TEAMS_ADD_SUCCESS))
+      .then(() => sendSuccessNotification(lang.PRACTITIONER_ROLE_ADD_SUCCESS))
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }
   history.push(URL_PRACTITIONER_ROLE);
