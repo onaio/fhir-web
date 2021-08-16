@@ -154,6 +154,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
             <TableLayout
               columns={getTableColumns(sortedInfo)}
               datasource={tableData}
+              dataKeyAccessor="id"
               pagination={{
                 current: page.current,
                 pageSize: page.pageSize,
