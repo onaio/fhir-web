@@ -41,8 +41,9 @@ interface RouteParams {
 interface TableData {
   key: number | string;
   id: string;
-  status?: boolean;
-  name?: string;
+  active?: boolean;
+  orgName: string;
+  practitionerName: string;
 }
 
 interface Props {
@@ -142,15 +143,29 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
     return {
       key: `${index}`,
       id: datum.resource.id,
+      status: datum.resource.active.toString(),
+      orgName: datum.resource.organization?.display,
+      practitionerName: datum.resource.practitioner?.display,
     };
   });
 
   const columns = [
     {
-      title: lang.NAME,
-      dataIndex: 'id',
+      title: lang.ORGANIZATION_NAME,
+      dataIndex: 'orgName',
       editable: true,
-      sorter: (a: TableData, b: TableData) => a.id.localeCompare(b.id),
+      sorter: (a: TableData, b: TableData) => a.orgName.localeCompare(b.orgName),
+    },
+    {
+      title: lang.PRACTITIONER_NAME,
+      dataIndex: 'practitionerName',
+      editable: true,
+      sorter: (a: TableData, b: TableData) => a.practitionerName.localeCompare(b.practitionerName),
+    },
+    {
+      title: lang.STATUS,
+      dataIndex: 'status',
+      editable: true,
     },
     {
       title: 'Actions',

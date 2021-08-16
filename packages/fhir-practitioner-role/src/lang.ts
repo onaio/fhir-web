@@ -32,6 +32,8 @@ function fill() {
   // Rendered text
   lang.STATUS = i18n.t(`Status`, { ns: namespace });
   lang.NAME = i18n.t(`Name`, { ns: namespace });
+  lang.PRACTITIONER_NAME = i18n.t(`Practitioner Name`, { ns: namespace });
+  lang.ORGANIZATION_NAME = i18n.t(`Organization Name`, { ns: namespace });
   lang.SAVING = i18n.t(`Saving`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
   lang.ACTIVE = i18n.t(`Active`, { ns: namespace });
