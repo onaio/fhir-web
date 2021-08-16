@@ -67,7 +67,7 @@ const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
 
   const fhirOrganizations = useQuery(
     FHIR_ORGANIZATIONS,
-    async () => FHIR.client(fhirBaseURL).request(FHIR_ORGANIZATIONS),
+    async () => FHIR.client(fhirBaseURL).request(`${FHIR_ORGANIZATIONS}/_search?_count=${1000}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: IfhirR4.IBundle) => res,
@@ -76,7 +76,7 @@ const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
 
   const fhirPractitioners = useQuery(
     FHIR_PRACTITIONERS,
-    async () => FHIR.client(fhirBaseURL).request(FHIR_PRACTITIONERS),
+    async () => FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONERS}/_search?_count=${1000}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: IfhirR4.IBundle) => res,

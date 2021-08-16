@@ -6,14 +6,20 @@ import lang from '../../lang';
 import { URL_PRACTITIONER_ROLE } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { FormFields } from './Form';
+import { FormFields, Fields } from './Form';
 
 export const submitForm = async (
   values: FormFields,
   fhirBaseURL: string,
+  orgs: Fields[],
+  practitioners: Fields[],
   id?: string,
   uuid?: string
 ): Promise<void> => {
+  const currentOrg = orgs.find((org) => org.id === values.orgsId);
+  const currentPractitioner = practitioners.find(
+    (practitioner) => practitioner.id === values.practitionersId
+  );
   const practitionerRoleId = uuid ? uuid : v4();
   const payload: Omit<IfhirR4.IPractitionerRole, 'meta'> = {
     resourceType: 'PractitionerRole',
@@ -28,11 +34,13 @@ export const submitForm = async (
     organization: values.orgsId
       ? {
           reference: `Organization/${values.orgsId}`,
+          display: currentOrg?.name,
         }
       : undefined,
     practitioner: values.practitionersId
       ? {
           reference: `Practitioner/${values.practitionersId}`,
+          display: currentPractitioner?.name,
         }
       : undefined,
   };

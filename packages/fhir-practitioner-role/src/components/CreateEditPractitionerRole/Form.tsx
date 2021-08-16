@@ -86,6 +86,8 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
             submitForm(
               { ...initialValues, ...values },
               fhirBaseURL,
+              props.organizations,
+              props.practitioners,
               props.initialValues?.id,
               props.initialValues?.uuid
             ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
