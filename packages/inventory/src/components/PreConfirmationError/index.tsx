@@ -53,6 +53,7 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
       </p>
       <TableLayout
         id="InventoryPreConfirmationError"
+        dataKeyAccessor="row"
         persistState={true}
         columns={columns}
         datasource={datasource}

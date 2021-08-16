@@ -105,6 +105,7 @@ const InventoryList = (props: InventoryListProps) => {
             </Link>
           </div>
           <TableLayout
+            dataKeyAccessor="_id"
             id="InventoryList"
             persistState={true}
             className="custom-table"

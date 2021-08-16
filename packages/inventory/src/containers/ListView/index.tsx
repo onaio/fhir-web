@@ -145,6 +145,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
 
   const datasource: TableData[] = structures.map((location) => {
     const locationToDisplay = {
+      key: location.id,
       type: location.properties.type as string,
       serviceName: location.properties.name,
       location: getNodePath(location, trees),
