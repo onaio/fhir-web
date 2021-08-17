@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { CareTeamList, deleteCareTeam, useCareTeamsHook } from '..';
+import { PractitionerRoleList, deletePractitionerRole, usePractitionerRolesHook } from '..';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import nock from 'nock';
@@ -11,11 +11,11 @@ import { waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
-import { careTeams } from './fixtures';
+import { practitionerRoles } from './fixtures';
 import { mount, shallow } from 'enzyme';
 import * as fhirCient from 'fhirclient';
 import toJson from 'enzyme-to-json';
-import { URL_CARE_TEAM } from '../../../constants';
+import { URL_PRACTITIONER_ROLE } from '../../../constants';
 import { createWrapper, renderWithClient } from './utils';
 import Client from 'fhirclient/lib/Client';
 
@@ -30,26 +30,26 @@ jest.mock('@opensrp/notifications', () => ({
 
 const history = createBrowserHistory();
 
-const careTeamProps = {
+const practitionerRoleProps = {
   history,
-  careTeamPageSize: 5,
+  PractitionerRolePageSize: 5,
   location: {
     hash: '',
-    pathname: `${URL_CARE_TEAM}`,
+    pathname: `${URL_PRACTITIONER_ROLE}`,
     search: '',
     state: {},
   },
   match: {
     isExact: true,
-    params: { careTeamId: undefined },
-    path: `${URL_CARE_TEAM}`,
-    url: `${URL_CARE_TEAM}`,
+    params: { practitionerRoleId: undefined },
+    path: `${URL_PRACTITIONER_ROLE}`,
+    url: `${URL_PRACTITIONER_ROLE}`,
   },
 };
 
-describe('Patients list view', () => {
+describe('Practitioner Role list view', () => {
   beforeAll(() => {
-    nock('https://r4.smarthealthit.org').get('/CareTeam').reply(200, careTeams);
+    nock('https://r4.smarthealthit.org').get('/PractitionerRole').reply(200, practitionerRoles);
   });
 
   afterEach(() => {
@@ -58,17 +58,20 @@ describe('Patients list view', () => {
     jest.restoreAllMocks();
   });
 
-  it('renders patients table without crashing', async () => {
+  it('renders practitioner roles table without crashing', async () => {
     shallow(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+          <PractitionerRoleList
+            {...practitionerRoleProps}
+            fhirBaseURL="https://r4.smarthealthit.org/"
+          />
         </QueryClientProvider>
       </Router>
     );
   });
 
-  it('renders correctly', async () => {
+  it('renders table correctly', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const client = new Client({} as any, {
       serverUrl: 'https://r4.smarthealthit.org/',
@@ -76,7 +79,7 @@ describe('Patients list view', () => {
 
     const result = await client.request({
       includeResponse: true,
-      url: 'CareTeam',
+      url: 'PractitionerRole',
     });
 
     // expect(result.body).toEqual('');
@@ -94,7 +97,10 @@ describe('Patients list view', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+            <PractitionerRoleList
+              {...practitionerRoleProps}
+              fhirBaseURL="https://r4.smarthealthit.org/"
+            />
           </QueryClientProvider>
         </Router>
       </Provider>
@@ -107,7 +113,9 @@ describe('Patients list view', () => {
       wrapper.update();
     });
 
-    expect(requestMock.mock.calls).toEqual([['CareTeam/_search?_count=5&_getpagesoffset=0']]);
+    expect(requestMock.mock.calls).toEqual([
+      ['PractitionerRole/_search?_count=5&_getpagesoffset=0'],
+    ]);
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     expect(wrapper.text()).toMatchSnapshot();
 
@@ -117,14 +125,16 @@ describe('Patients list view', () => {
       expect(tr.text()).toMatchSnapshot(`table rows - default order ${index}`);
     });
 
-    // sort by username
+    // sort by practitioner name
     // click on sort to change the order (ascending)
     wrapper.find('thead tr th').first().simulate('click');
     wrapper.update();
 
     // check new sort order by name (ascending)
     wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by name - ascending ${index}`);
+      expect(tr.text()).toMatchSnapshot(
+        `sorted table rows by practitioner nam - ascending ${index}`
+      );
     });
 
     // click on sort to change the order (descending)
@@ -133,7 +143,28 @@ describe('Patients list view', () => {
 
     // check new sort order by name (ascending)
     wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by name - descending ${index}`);
+      expect(tr.text()).toMatchSnapshot(
+        `sorted table rows by practitioner name name - descending ${index}`
+      );
+    });
+
+    // sort by org name
+    // click on sort to change the order (ascending)
+    wrapper.find('thead tr th').at(1).simulate('click');
+    wrapper.update();
+
+    // check new sort order by name (ascending)
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`sorted table rows by org name - ascending ${index}`);
+    });
+
+    // click on sort to change the order (descending)
+    wrapper.find('thead tr th').at(1).simulate('click');
+    wrapper.update();
+
+    // check new sort order by name (ascending)
+    wrapper.find('tr').forEach((tr, index) => {
+      expect(tr.text()).toMatchSnapshot(`sorted table rows by org name - descending ${index}`);
     });
 
     // cancel sort
@@ -141,19 +172,19 @@ describe('Patients list view', () => {
     wrapper.find('thead tr th').first().simulate('click');
 
     // look for pagination
-    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"1235 / pageGo to"`);
+    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"12345 / pageGo to"`);
     wrapper.find('.ant-pagination-item-2').simulate('click');
     expect(wrapper.text()).toMatchSnapshot();
 
     wrapper.unmount();
   });
 
-  it('correctly redirects to care team detail view url', async () => {
+  it('correctly redirects to practitioner role detail view url', async () => {
     const fhir = jest.spyOn(fhirCient, 'client');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValueOnce(careTeams),
+          request: jest.fn().mockResolvedValueOnce(practitionerRoles),
         };
       })
     );
@@ -161,7 +192,10 @@ describe('Patients list view', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+            <PractitionerRoleList
+              {...practitionerRoleProps}
+              fhirBaseURL="https://r4.smarthealthit.org/"
+            />
           </QueryClientProvider>
         </Router>
       </Provider>
@@ -176,8 +210,8 @@ describe('Patients list view', () => {
     wrapper.update();
     wrapper.find('.viewdetails').at(0).simulate('click');
     wrapper.update();
-    // Redirect to care team detail view
-    expect(history.location.pathname).toEqual('/admin/CareTeams/308');
+    // Redirect to practitioner role detail view
+    expect(history.location.pathname).toEqual('/admin/PractitionerRole/388');
   });
 
   it('successful query component', async () => {
@@ -185,25 +219,28 @@ describe('Patients list view', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValueOnce(careTeams),
+          request: jest.fn().mockResolvedValueOnce(practitionerRoles),
         };
       })
     );
     const result = renderWithClient(
       <Router history={history}>
-        <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+        <PractitionerRoleList
+          {...practitionerRoleProps}
+          fhirBaseURL="https://r4.smarthealthit.org/"
+        />
       </Router>
     );
-    await waitFor(() => result.getByText(/Care Team One/));
+    await waitFor(() => result.getAllByText(/OpenSRP web Test Organisation/));
   });
 
-  it('successfully deletes care team', async () => {
+  it('successfully deletes practitioner role', async () => {
     const fhir = jest.spyOn(fhirCient, 'client');
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValueOnce(careTeams),
+          request: jest.fn().mockResolvedValueOnce(practitionerRoles),
           delete: jest.fn().mockResolvedValue('Success'),
         };
       })
@@ -213,7 +250,10 @@ describe('Patients list view', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+            <PractitionerRoleList
+              {...practitionerRoleProps}
+              fhirBaseURL="https://r4.smarthealthit.org/"
+            />
           </QueryClientProvider>
         </Router>
       </Provider>
@@ -231,7 +271,7 @@ describe('Patients list view', () => {
     wrapper.update();
     // check pop up text
     expect(wrapper.find('.ant-popover-content').at(0).text()).toMatchInlineSnapshot(
-      `"Are you sure you want to delete this Care Team?NoYes"`
+      `"Are you sure you want to delete this Practitioner Role?NoYes"`
     );
     const popconfirm = wrapper.find('.ant-popover-content').at(0);
     popconfirm.find('Button').at(1).simulate('click');
@@ -242,10 +282,12 @@ describe('Patients list view', () => {
 
     wrapper.update();
 
-    expect(notificationSuccessMock.mock.calls).toEqual([['Successfully Deleted Care Team']]);
+    expect(notificationSuccessMock.mock.calls).toEqual([
+      ['Successfully Deleted Practitioner Role'],
+    ]);
   });
 
-  it('handles failed care team deletion', async () => {
+  it('handles failed practitioner role deletion', async () => {
     const notificationErrorsMock = jest.spyOn(notifications, 'sendErrorNotification');
     const fhir = jest.spyOn(fhirCient, 'client');
     fhir.mockImplementation(
@@ -255,7 +297,7 @@ describe('Patients list view', () => {
         };
       })
     );
-    await deleteCareTeam('https://r4.smarthealthit.org/', '308');
+    await deletePractitionerRole('https://r4.smarthealthit.org/', '308');
 
     await act(async () => {
       await flushPromises();
@@ -273,17 +315,17 @@ describe('hooks', () => {
     jest.resetModules();
   });
 
-  it('successful fetchCareTeams query hook', async () => {
+  it('successful fetchPractitionerRoles query hook', async () => {
     const fhir = jest.spyOn(fhirCient, 'client');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValueOnce(careTeams),
+          request: jest.fn().mockResolvedValueOnce(practitionerRoles),
         };
       })
     );
     const { result, waitFor } = renderHook(
-      () => useCareTeamsHook('https://r4.smarthealthit.org/', 20, 0, jest.fn()),
+      () => usePractitionerRolesHook('https://r4.smarthealthit.org/', 20, 0, jest.fn()),
       {
         wrapper: createWrapper(),
       }
@@ -291,7 +333,7 @@ describe('hooks', () => {
 
     await waitFor(() => result.current.isFetched);
 
-    expect(result.current.data).toBe(careTeams);
+    expect(result.current.data).toBe(practitionerRoles);
   });
 
   it('shows broken page if fhir api is down', async () => {
@@ -309,7 +351,10 @@ describe('hooks', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+            <PractitionerRoleList
+              {...practitionerRoleProps}
+              fhirBaseURL="https://r4.smarthealthit.org/"
+            />
           </QueryClientProvider>
         </Router>
       </Provider>
