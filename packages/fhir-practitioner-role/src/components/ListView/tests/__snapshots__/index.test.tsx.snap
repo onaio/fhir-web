@@ -2,7 +2,7 @@
 
 exports[`Practitioner Role list view renders table correctly 1`] = `"FHIR Practitioner RoleCreate Practitioner RolePractitioner NameOrganization NameStatusActionsAllay AllanOpenSRP web Test OrganisationtrueEditJohn CenoOpenSRP web Test OrganisationtrueEditAllay AllanOpenSRP web Test OrganisationtrueEditBobi mapesaOpenSRP web Test OrganisationtrueEditWard N Williams MDTest Team OnetrueEdit12345 / pageGo to"`;
 
-exports[`Practitioner Role list view renders table correctly 3`] = `"FHIR Practitioner RoleCreate Practitioner RolePractitioner NameOrganization NameStatusActionsWard N Williams MDTest Team OnetrueEditWard N Williams MDTest Team OnetrueEdit12345 / pageGo to"`;
+exports[`Practitioner Role list view renders table correctly 3`] = `""`;
 
 exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - ascending 0 1`] = `"Practitioner NameOrganization NameStatusActions"`;
 

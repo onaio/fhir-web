@@ -91,7 +91,7 @@ export const usePractitionerRolesHook = (
   pageOffset: number,
   setPayloadCount: (count: number) => void
 ) => {
-  return useQuery(FHIR_PRACTITIONER_ROLE, () =>
+  return useQuery([FHIR_PRACTITIONER_ROLE, pageOffset], () =>
     fetchPractitionerRoles(fhirBaseURL, pageSize, pageOffset, setPayloadCount)
   );
 };
@@ -115,20 +115,14 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
   });
   const { currentPage, pageSize } = paginationProps;
   const pageOffset = (currentPage - 1) * pageSize;
-  const { data, isLoading, isFetching, error, refetch } = usePractitionerRolesHook(
+  const { data, isLoading, error, refetch } = usePractitionerRolesHook(
     fhirBaseURL,
     pageSize as number,
     pageOffset,
     setPayloadCount
   );
 
-  React.useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationProps]);
-
-  if (isLoading || isFetching) return <Spin size="large" />;
+  if (isLoading) return <Spin size="large" />;
 
   if (error) {
     return <BrokenPage errorMessage={`${error}`} />;
@@ -151,16 +145,16 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
 
   const columns = [
     {
-      title: lang.ORGANIZATION_NAME,
-      dataIndex: 'orgName',
-      editable: true,
-      sorter: (a: TableData, b: TableData) => a.orgName.localeCompare(b.orgName),
-    },
-    {
       title: lang.PRACTITIONER_NAME,
       dataIndex: 'practitionerName',
       editable: true,
       sorter: (a: TableData, b: TableData) => a.practitionerName.localeCompare(b.practitionerName),
+    },
+    {
+      title: lang.ORGANIZATION_NAME,
+      dataIndex: 'orgName',
+      editable: true,
+      sorter: (a: TableData, b: TableData) => a.orgName.localeCompare(b.orgName),
     },
     {
       title: lang.STATUS,

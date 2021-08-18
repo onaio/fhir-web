@@ -82,8 +82,6 @@ describe('Practitioner Role list view', () => {
       url: 'PractitionerRole',
     });
 
-    // expect(result.body).toEqual('');
-
     const fhir = jest.spyOn(fhirCient, 'client');
     const requestMock = jest.fn();
     fhir.mockImplementation(
