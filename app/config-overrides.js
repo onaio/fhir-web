@@ -1,3 +1,4 @@
+// override default CRA configurations (webpack, eslint, babel, etc)
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = (config) => {
