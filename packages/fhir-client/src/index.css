@@ -14,10 +14,14 @@
 }
 
 .documentResource-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px 20px;
-  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.documentResource-card {
+  width: 30%;
+  margin: 5px !important;
+  min-width: 240px;
 }
 
 .patient-details-banner * {
