@@ -152,7 +152,7 @@ describe('forms/utils/submitForm', () => {
       ['Practitioner created successfully'],
       ['User Group edited successfully'],
     ]);
-    expect(historyPushMock).toHaveBeenCalledWith(`/admin/users/credentials/${mockV4}`);
+    expect(historyPushMock).toHaveBeenCalledWith(`/admin/users/credentials/${keycloakUserId}`);
   });
 
   it('ensures error notification is not thrown when creating new user', async () => {
@@ -199,7 +199,7 @@ describe('forms/utils/submitForm', () => {
     });
     // ensure that redirect only happens once
     expect(historyPushMock).toHaveBeenCalledTimes(1);
-    expect(historyPushMock).toHaveBeenCalledWith(`/admin/users/credentials/${mockV4}`);
+    expect(historyPushMock).toHaveBeenCalledWith(`/admin/users/credentials/${keycloakUserId}`);
   });
 
   it('submits user edit correctly', async () => {
