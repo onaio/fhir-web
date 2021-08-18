@@ -28,7 +28,7 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/auth`
 
-- **REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE**
+- **REACT_APP_OPENSRP_OAUTH_STATE**
 
   - Defines the app oauth2 state to use
   - **Required**
@@ -232,3 +232,9 @@ Below is a list of currently supported environment variables:
   - Enables the FHIR Practitioner Role module
   - **Optional**(`boolean`)
   - default: `"false"`
+
+- **REACT_APP_DEFAULTS_TABLE_PAGE_SIZE**
+  - Default number of rows per table page
+  - default: 5
+  - `Enum: 5, 10, 20 , 50, 100`
+
