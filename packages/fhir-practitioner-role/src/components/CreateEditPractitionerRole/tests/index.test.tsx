@@ -44,6 +44,7 @@ describe('components/CreateEditPractitionerRole', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.resetModules();
   });
 
   it('renders without crashing', () => {
@@ -130,7 +131,7 @@ describe('components/CreateEditPractitionerRole', () => {
     wrapper.unmount();
   });
 
-  it('fetches practitioner roles if page is refreshed', async () => {
+  it('renders correctly for practitioner role edit', async () => {
     const fhir = jest.spyOn(fhirCient, 'client');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
@@ -161,6 +162,42 @@ describe('components/CreateEditPractitionerRole', () => {
       orgsId: '105',
       practitionersId: '206',
       uuid: 'b3046485-1591-46b4-959f-02db30a2f622',
+    });
+
+    wrapper.unmount();
+  });
+
+  it('fetches practitioner roles if page is refreshed', async () => {
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockResolvedValue(fixtures.practitionerRole2),
+        };
+      })
+    );
+    const wrapper = mount(
+      <Router history={history}>
+        <QueryClientProvider client={testQueryClient}>
+          <CreateEditPractitionerRole {...props} />
+        </QueryClientProvider>
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+
+    // check if form initial values are set
+
+    expect(wrapper.find('PractitionerRoleForm').props().initialValues).toEqual({
+      active: true,
+      id: '391',
+      orgsId: '',
+      practitionersId: '',
+      uuid: '699c95e8-76b9-4e1a-9aed-76692269b528',
     });
 
     wrapper.unmount();

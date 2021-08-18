@@ -23,6 +23,22 @@ export const practitionerRole1 = {
   },
 };
 
+export const practitionerRole2 = {
+  resourceType: 'PractitionerRole',
+  id: '391',
+  meta: {
+    versionId: '2',
+    lastUpdated: '2021-08-16T13:18:33.314+00:00',
+    source: '#d3ad0359f7651e97',
+  },
+  identifier: [
+    {
+      use: 'official',
+      value: '699c95e8-76b9-4e1a-9aed-76692269b528',
+    },
+  ],
+};
+
 export const practitioners = {
   resourceType: 'Bundle',
   id: '5db4aa7e-eca6-432d-a544-d0a8279d8103',
