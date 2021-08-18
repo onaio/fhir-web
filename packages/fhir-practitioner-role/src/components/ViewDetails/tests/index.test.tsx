@@ -22,18 +22,18 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-describe('View Care Team Details', () => {
+describe('View Practitioner role Details', () => {
   it('works correctly', async () => {
     const fhir = jest.spyOn(fhirCient, 'client');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValue(fixtures.careTeam1),
+          request: jest.fn().mockResolvedValue(fixtures.practitionerRole1),
         };
       })
     );
     const props = {
-      careTeamId: fixtures.careTeam1.id,
+      practitionerRoleId: fixtures.practitionerRole1.id,
       fhirBaseURL: 'https://r4.smarthealthit.org/',
     };
 
@@ -56,9 +56,9 @@ describe('View Care Team Details', () => {
     wrapper.unmount();
   });
 
-  it('displays care team, details correctly', async () => {
+  it('displays practitioner role details correctly', async () => {
     const props = {
-      careTeamId: fixtures.careTeam1.id,
+      practitionerRoleId: fixtures.practitionerRole1.id,
       fhirBaseURL: 'https://r4.smarthealthit.org/',
     };
     const wrapper = mount(
@@ -73,9 +73,9 @@ describe('View Care Team Details', () => {
     expect(toJson(wrapper.find('.view-details-content'))).toBeTruthy();
   });
 
-  it('detail view without careTeamId', () => {
+  it('detail view without practitionerRoleId', () => {
     const props = {
-      careTeamId: '',
+      practitionerRoleId: '',
       fhirBaseURL: 'https://r4.smarthealthit.org/',
     };
     const wrapper = mount(
@@ -91,7 +91,7 @@ describe('View Care Team Details', () => {
 
   it('Closes on clicking cancel (X) ', () => {
     const props = {
-      careTeamId: fixtures.careTeam1.id,
+      practitionerRoleId: fixtures.practitionerRole1.id,
       fhirBaseURL: 'https://r4.smarthealthit.org/',
     };
     const wrapper = mount(
@@ -107,13 +107,13 @@ describe('View Care Team Details', () => {
       wrapper.find('.flex-right button').simulate('click');
     });
 
-    expect(wrapper.props().history.location.pathname).toEqual('/admin/CareTeams');
+    expect(wrapper.props().history.location.pathname).toEqual('/admin/PractitionerRole');
     wrapper.unmount();
   });
 
   it('shows broken page if fhir api is down', async () => {
     const props = {
-      careTeamId: fixtures.careTeam1.id,
+      practitionerRoleId: fixtures.practitionerRole1.id,
       fhirBaseURL: 'https://r4.smarthealthit.org/',
     };
     const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');

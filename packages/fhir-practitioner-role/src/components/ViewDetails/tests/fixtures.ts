@@ -1,60 +1,44 @@
-export const careTeam1 = {
-  resourceType: 'CareTeam',
-  id: '308',
+export const practitionerRole1 = {
+  resourceType: 'PractitionerRole',
+  id: '388',
   meta: {
-    versionId: '4',
-    lastUpdated: '2021-06-18T06:07:29.649+00:00',
-    source: '#9bf085bac3f61473',
+    versionId: '2',
+    lastUpdated: '2021-08-16T13:18:24.126+00:00',
+    source: '#1e274683ed9d3c54',
   },
   identifier: [
     {
       use: 'official',
-      value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
-    },
-  ],
-  status: 'active',
-  name: 'Care Team One',
-  subject: {
-    reference: 'Group/306',
-  },
-  participant: [
-    {
-      member: {
-        reference: 'Practitioner/206',
-      },
-    },
-    {
-      member: {
-        reference: 'Practitioner/103',
-      },
-    },
-  ],
-};
-
-export const group1 = {
-  resourceType: 'Group',
-  id: '306',
-  meta: {
-    versionId: '1',
-    lastUpdated: '2021-05-26T16:31:30.444+00:00',
-    source: '#0d2306dfa4b90412',
-  },
-  identifier: [
-    {
-      use: 'official',
-      value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
+      value: 'b3046485-1591-46b4-959f-02db30a2f622',
     },
   ],
   active: true,
-  name: 'ANC patients',
-  quantity: 1,
-  member: [
+  practitioner: {
+    reference: 'Practitioner/206',
+    display: 'Allay Allan',
+  },
+  organization: {
+    reference: 'Organization/105',
+    display: 'OpenSRP web Test Organisation',
+  },
+};
+
+export const org1 = {
+  resourceType: 'Organization',
+  id: '205',
+  meta: {
+    versionId: '2',
+    lastUpdated: '2021-06-22T08:43:41.801+00:00',
+    source: '#e4f4daada5b65d9b',
+  },
+  identifier: [
     {
-      entity: {
-        reference: 'Patient/3',
-      },
+      use: 'official',
+      value: '205',
     },
   ],
+  active: true,
+  name: 'test 345',
 };
 
 export const practitioner1 = {

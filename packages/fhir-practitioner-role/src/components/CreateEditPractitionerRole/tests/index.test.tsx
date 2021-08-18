@@ -9,7 +9,7 @@ import * as fhirCient from 'fhirclient';
 import flushPromises from 'flush-promises';
 import { createTestQueryClient } from '../../ListView/tests/utils';
 import * as notifications from '@opensrp/notifications';
-import { defaultInitialValues, CreateEditCareTeam } from '..';
+import { defaultInitialValues, CreateEditPractitionerRole } from '..';
 import toJson from 'enzyme-to-json';
 import lang from '../../../lang';
 
@@ -24,21 +24,21 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-describe('components/CreateEditCareTeam', () => {
+describe('components/CreateEditPractitionerRole', () => {
   const props = {
     history,
     fhirBaseURL: 'https://r4.smarthealthit.org/',
     location: {
       hash: '',
-      pathname: '/CareTeam/edit',
+      pathname: '/PractitionerRole/edit',
       search: '',
       state: '',
     },
     match: {
       isExact: true,
-      params: { careTeamId: fixtures.careTeam1.id },
-      path: `/CareTeam/edit/:careTeamId`,
-      url: `/CareTeam/edit/${fixtures.careTeam1.id}`,
+      params: { practitionerRoleId: fixtures.practitionerRole1.id },
+      path: `/PractitionerRole/edit/:practitionerRoleId`,
+      url: `/PractitionerRole/edit/${fixtures.practitionerRole1.id}`,
     },
   };
 
@@ -51,7 +51,7 @@ describe('components/CreateEditCareTeam', () => {
       shallow(
         <Router history={history}>
           <QueryClientProvider client={testQueryClient}>
-            <CreateEditCareTeam {...props} />
+            <CreateEditPractitionerRole {...props} />
           </QueryClientProvider>
         </Router>
       );
@@ -63,7 +63,7 @@ describe('components/CreateEditCareTeam', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValueOnce(fixtures.careTeam1),
+          request: jest.fn().mockResolvedValueOnce(fixtures.practitionerRole1),
         };
       })
     );
@@ -71,7 +71,7 @@ describe('components/CreateEditCareTeam', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...props} />
+          <CreateEditPractitionerRole {...props} />
         </QueryClientProvider>
       </Router>
     );
@@ -86,33 +86,33 @@ describe('components/CreateEditCareTeam', () => {
 
     const row = wrapper.find('Row').at(0);
 
-    expect(row.text()).toMatchSnapshot('full care tem form');
+    expect(row.text()).toMatchSnapshot('full practitioner role form');
 
     wrapper.unmount();
   });
 
-  it('renders correctly for create care team', async () => {
+  it('renders correctly for create practitioner role', async () => {
     const propsCreate = {
       history,
       fhirBaseURL: 'https://r4.smarthealthit.org/',
       location: {
         hash: '',
-        pathname: '/CareTeam/new',
+        pathname: '/PractitionerRole/new',
         search: '',
         state: '',
       },
       match: {
         isExact: true,
-        params: { careTeamId: '' },
-        path: `/CareTeam/new`,
-        url: `/CareTeam/new`,
+        params: { practitionerRoleId: '' },
+        path: `/PractitionerRole/new`,
+        url: `/PractitionerRole/new`,
       },
     };
 
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...propsCreate} />
+          <CreateEditPractitionerRole {...propsCreate} />
         </QueryClientProvider>
       </Router>
     );
@@ -125,24 +125,24 @@ describe('components/CreateEditCareTeam', () => {
 
     const row = wrapper.find('Row').at(0);
 
-    expect(row.find('CareTeamForm').prop('initialValues')).toEqual(defaultInitialValues);
+    expect(row.find('PractitionerRoleForm').prop('initialValues')).toEqual(defaultInitialValues);
 
     wrapper.unmount();
   });
 
-  it('fetches care team if page is refreshed', async () => {
+  it('fetches practitioner roles if page is refreshed', async () => {
     const fhir = jest.spyOn(fhirCient, 'client');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValue(fixtures.careTeam1),
+          request: jest.fn().mockResolvedValue(fixtures.practitionerRole1),
         };
       })
     );
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...props} />
+          <CreateEditPractitionerRole {...props} />
         </QueryClientProvider>
       </Router>
     );
@@ -155,13 +155,12 @@ describe('components/CreateEditCareTeam', () => {
 
     // check if form initial values are set
 
-    expect(wrapper.find('CareTeamForm').props().initialValues).toEqual({
-      groupsId: '306',
-      id: '308',
-      name: 'Care Team One',
-      practitionersId: ['206', '103'],
-      status: 'active',
-      uuid: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
+    expect(wrapper.find('PractitionerRoleForm').props().initialValues).toEqual({
+      active: true,
+      id: '388',
+      orgsId: '105',
+      practitionersId: '206',
+      uuid: 'b3046485-1591-46b4-959f-02db30a2f622',
     });
 
     wrapper.unmount();
@@ -182,7 +181,7 @@ describe('components/CreateEditCareTeam', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...props} />
+          <CreateEditPractitionerRole {...props} />
         </QueryClientProvider>
       </Router>
     );
