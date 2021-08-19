@@ -303,4 +303,59 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     // expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
+  it('select search filter works', async () => {
+    const queryClient = new QueryClient();
+    const wrapper = mount(
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>
+          <Form
+            fhirbaseURL={fhirBaseURL}
+            allPractitioner={practitioner.entry.map((e) => e.resource)}
+            allPractitionerRole={practitionerrole.entry.map((e) => e.resource)}
+            initialValue={TeamValue}
+          />
+        </QueryClientProvider>
+      </Router>
+    );
+
+    // find antd Select with id 'practitioners' in the 'Form' component
+    const practitionersSelect = wrapper.find('Select#practitioners');
+
+    // simulate click on select - to show dropdown items
+    practitionersSelect.find('.ant-select-selector').simulate('mousedown');
+    wrapper.update();
+
+    // find antd select options
+    const selectOptions = wrapper.find('.ant-select-item-option-content');
+
+    // expect all groups options
+    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([
+      'Ward N',
+      'Ward N',
+      'Ward N',
+      'test',
+      'test',
+      'test',
+      'test',
+      'test',
+      'test',
+      'test',
+      'test',
+      'test',
+    ]);
+
+    // find search input field
+    const inputField = practitionersSelect.find('input#practitioners');
+    // simulate change (type search phrase)
+    inputField.simulate('change', { target: { value: 'ward' } });
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // expect to see only 3 filtered options
+    const selectOptions2 = wrapper.find('.ant-select-item-option-content');
+    expect(selectOptions2.map((opt) => opt.text())).toStrictEqual(['Ward N', 'Ward N', 'Ward N']);
+  });
 });
