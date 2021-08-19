@@ -18,7 +18,6 @@ import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
 import FHIR from 'fhirclient';
-import { SelectProps } from 'antd/lib/select';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -121,8 +120,8 @@ async function SetPractitioners(
       active: true,
       id: id,
       identifier: [{ use: 'official', value: id }],
-      practitioner: { reference: `Practitioner/${prac.id}` },
-      organization: { reference: `Organization/${teamId}` },
+      practitioner: { reference: 'Practitioner/' + prac.id },
+      organization: { reference: 'Organization/' + teamId },
     };
     return serve.create(payload);
   });
@@ -158,35 +157,6 @@ export const Form: React.FC<Props> = (props: Props) => {
     active: true,
     name: '',
     practitioners: [],
-  };
-
-  /** antd select component options */
-  interface SelectOption {
-    label: string;
-    value: string;
-  }
-
-  /**
-   * compose practitioners to practitioner select options
-   *
-   * @param practitioners a list of practitioners
-   * @returns an array of select options
-   */
-  const getPractitionersOptions = (practitioners: Practitioner[]): SelectOption[] =>
-    practitioners.map((practitioner) => ({
-      label: practitioner.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`) ?? '',
-      value: practitioner.id,
-    }));
-
-  /**
-   * filter practitioners select on search
-   *
-   * @param inputValue search term
-   * @param option select option to filter against
-   * @returns boolean - whether select option matches condition
-   */
-  const practitionersFilterFunction = (inputValue: string, option?: SelectOption) => {
-    return !!option?.label.toLowerCase().includes(inputValue.toLowerCase());
   };
 
   return (
@@ -236,14 +206,13 @@ export const Form: React.FC<Props> = (props: Props) => {
         label={lang.TEAM_MEMBERS}
         tooltip={lang.TIP_REQUIRED_FIELD}
       >
-        <Select
-          allowClear
-          mode="multiple"
-          optionFilterProp="label"
-          placeholder={lang.SELECT_PRACTITIONER}
-          options={getPractitionersOptions(props.allPractitioner)}
-          filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
-        ></Select>
+        <Select allowClear mode="multiple" placeholder={lang.SELECT_PRACTITIONER}>
+          {props.allPractitioner.map((prac) => (
+            <Select.Option key={prac.id} value={prac.id}>
+              {prac.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`)}
+            </Select.Option>
+          ))}
+        </Select>
       </AntdForm.Item>
 
       <AntdForm.Item {...offsetLayout}>
