@@ -15,7 +15,7 @@ jobs:
           REACT_APP_DOMAIN_NAME: "http://localhost:3000"
           REACT_APP_OPENSRP_ACCESS_TOKEN_URL: "https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/token"
           REACT_APP_OPENSRP_AUTHORIZATION_URL: "https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/auth"
-          REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE: "opensrp"
+          REACT_APP_OPENSRP_OAUTH_STATE: "opensrp"
           REACT_APP_OPENSRP_CLIENT_ID: "reveal-stage-server"
           REACT_APP_ENABLE_OPENSRP_OAUTH: "true"
           REACT_APP_OPENSRP_API_BASE_URL: "https://reveal-stage.smartregister.org/opensrp/rest/"
@@ -38,7 +38,6 @@ jobs:
           name: Install dependencies
           command: yarn install
 
-      # TODO - why does the test fail without this.
       - run:
           name: build packages
           command: yarn lerna:prepublish
@@ -49,12 +48,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: Run ts linter
+          name: Run linter
           command: yarn lint
-
-      - run:
-          name: Run snap linter
-          command: yarn lint-snap --debug
 
       - run:
           name: Run test with coverage
