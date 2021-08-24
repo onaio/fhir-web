@@ -46,8 +46,8 @@
     "@opensrp-web/location-management": "^0.0.14",
     "@opensrp-web/notifications": "^0.0.5",
     "@opensrp-web/react-utils": "^0.0.11",
-    "@opensrp-web/reducer-factory": "^0.0.9",
-    "@opensrp-web/server-service": "^0.0.16",
+    "@opensrp-web/reducer-factory": "^0.0.13",
+    "@opensrp-web/server-service": "^0.0.17",
     "papaparse": "^5.3.0",
     "react-i18next": "^11.8.10"
   },

@@ -38,11 +38,11 @@
   "dependencies": {
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp-web/notifications": "^0.0.4",
+    "@opensrp-web/notifications": "^0.0.5",
     "@opensrp-web/pkg-config": "^0.0.9",
     "@opensrp-web/react-utils": "^0.0.11",
     "@opensrp-web/reducer-factory": "^0.0.13",
-    "@opensrp-web/server-service": "^0.0.16",
+    "@opensrp-web/server-service": "^0.0.17",
     "cycle": "^1.0.3",
     "fast_array_intersect": "^1.1.0",
     "react-i18next": "^11.8.10",

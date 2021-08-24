@@ -34,11 +34,11 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp-web/notifications": "^0.0.4",
+    "@opensrp-web/notifications": "^0.0.5",
     "@opensrp-web/pkg-config": "^0.0.9",
     "@opensrp-web/react-utils": "^0.0.11",
     "@opensrp-web/reducer-factory": "^0.0.13",
-    "@opensrp-web/server-service": "^0.0.16",
+    "@opensrp-web/server-service": "^0.0.17",
     "i18next": "^19.8.4",
     "react-i18next": "^11.8.10",
     "uuid": "^8.3.1"

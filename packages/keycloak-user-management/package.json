@@ -51,7 +51,7 @@
     "@opensrp-web/notifications": "^0.0.5",
     "@opensrp-web/pkg-config": "^0.0.9",
     "@opensrp-web/react-utils": "^0.0.11",
-    "@opensrp-web/server-service": "^0.0.16",
+    "@opensrp-web/server-service": "^0.0.17",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",

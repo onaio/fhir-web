@@ -1,4 +1,4 @@
-import { logout } from '@opensrp-web/server-logout';
+import { logout } from '@opensrp/server-logout';
 import React from 'react';
 import {
   DOMAIN_NAME,

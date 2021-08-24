@@ -17,7 +17,6 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp-web/ant-icons": "^0.0.1",
     "@opensrp-web/card-support": "^0.0.8",
     "@opensrp-web/error-boundary-fallback": "^0.0.6",
     "@opensrp-web/form-config-antd": "^0.0.3",
@@ -30,12 +29,13 @@
     "@opensrp-web/product-catalogue": "^0.0.8",
     "@opensrp-web/react-utils": "^0.0.11",
     "@opensrp-web/reducer-factory": "^0.0.13",
-    "@opensrp-web/server-logout": "^0.0.1",
-    "@opensrp-web/server-service": "^0.0.16",
+    "@opensrp-web/server-service": "^0.0.17",
     "@opensrp-web/store": "^0.0.10",
     "@opensrp-web/team-assignment": "^0.0.5",
     "@opensrp-web/team-management": "^0.0.8",
     "@opensrp-web/user-management": "^0.1.18",
+    "@opensrp/ant-icons": "^0.0.1",
+    "@opensrp/server-logout": "^0.0.1",
     "@sentry/react": "^5.27.4",
     "antd": "^4.6.3",
     "bootstrap": "^4.5.2",
@@ -61,8 +61,8 @@
     "yup": "^0.29.3"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "craco start",
+    "build": "craco build",
     "test": "cd ../ && yarn test app --verbose --collectCoverage=true && cd app",
     "test:watch": "cd ../ && yarn test app --verbose --watch && cd app",
     "lint": "eslint ./**/*.{ts,tsx} --max-warnings 0",
@@ -134,8 +134,8 @@
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
+    "@craco/craco": "^6.2.0",
     "i18next-parser": "^3.5.0",
-    "react-app-rewired": "^2.1.8",
     "tsconfig-paths-webpack-plugin": "^3.5.1"
   },
   "resolutions": {

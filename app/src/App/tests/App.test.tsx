@@ -10,7 +10,7 @@ import App, { CallbackComponent, LoadingComponent, SuccessfulLoginComponent } fr
 import { expressAPIResponse } from './fixtures';
 import { mount } from 'enzyme';
 import { authenticateUser } from '@onaio/session-reducer';
-import * as serverLogout from '@opensrp-web/server-logout';
+import * as serverLogout from '@opensrp/server-logout';
 import {
   CATALOGUE_CREATE_VIEW_URL,
   CATALOGUE_EDIT_VIEW_URL,

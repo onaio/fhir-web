@@ -12,8 +12,8 @@ import {
 } from '@opensrp-web/plans';
 import { isAuthorized } from '@opensrp-web/react-utils';
 import { CATALOGUE_LIST_VIEW_URL } from '@opensrp-web/product-catalogue';
-import ArchiveOutline from '@opensrp-web/ant-icons/lib/ArchiveOutline';
-import MapMarkerOutline from '@opensrp-web/ant-icons/lib/MapMarkerOutline';
+import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
+import MapMarkerOutline from '@opensrp/ant-icons/lib/MapMarkerOutline';
 import {
   ENABLE_PLANS,
   ENABLE_INVENTORY,

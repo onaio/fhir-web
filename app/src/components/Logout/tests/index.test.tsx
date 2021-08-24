@@ -1,5 +1,5 @@
 import flushPromises from 'flush-promises';
-import * as serverLogout from '@opensrp-web/server-logout';
+import * as serverLogout from '@opensrp/server-logout';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { CustomLogout } from '..';
