@@ -4,13 +4,13 @@ import {
   PlanStatus,
   PRODUCT_CHECK_CODE,
   SERVICE_POINT_CHECK_CODE,
-} from '@opensrp/plan-form-core';
+} from '@opensrp-web/plan-form-core';
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Typography, Space, Alert } from 'antd';
 import lang from '../../lang';
 import { loadTasksIndicators, TaskCount, TaskParams } from '../../helpers/dataLoaders';
-import { CommonProps, defaultCommonProps } from '@opensrp/plan-form';
-import { useHandleBrokenPage } from '@opensrp/react-utils';
+import { CommonProps, defaultCommonProps } from '@opensrp-web/plan-form';
+import { useHandleBrokenPage } from '@opensrp-web/react-utils';
 import { BuildDownloadUrl } from '../../helpers/utils';
 import {
   OPENSRP_BUSINESS_STATUS_HAS_PROBLEM,

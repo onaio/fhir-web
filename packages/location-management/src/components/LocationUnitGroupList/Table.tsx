@@ -2,12 +2,12 @@ import React from 'react';
 import { Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
-import { Column, OpenSRPService, TableLayout } from '@opensrp/react-utils';
+import { Column, OpenSRPService, TableLayout } from '@opensrp-web/react-utils';
 import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
 import lang, { Lang } from '../../lang';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
-import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp-web/notifications';
 
 export interface TableData extends LocationUnitGroup {
   key: string;

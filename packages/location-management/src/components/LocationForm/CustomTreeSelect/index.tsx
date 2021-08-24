@@ -1,7 +1,7 @@
 import { loadHierarchy, loadJurisdictions } from '../../../helpers/dataLoaders';
 import { useEffect, useState } from 'react';
 import { baseURL } from '../../../constants';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import React from 'react';
 import { TreeNode } from '../../../ducks/locationHierarchy/types';
 import { LocationUnit } from '../../../ducks/location-units';

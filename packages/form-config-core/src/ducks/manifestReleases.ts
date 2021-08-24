@@ -5,7 +5,7 @@ import {
   getItemsByIdFactory,
   getItemsArrayFactory,
   getItemByIdFactory,
-} from '@opensrp/reducer-factory';
+} from '@opensrp-web/reducer-factory';
 
 /** json field interface */
 export interface ManifestJsonFieldType {

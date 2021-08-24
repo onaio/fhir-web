@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConnectedPlanAssignment } from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
@@ -8,7 +8,7 @@ import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '../../../constants';
-import { PlanStatus } from '@opensrp/plan-form-core';
+import { PlanStatus } from '@opensrp-web/plan-form-core';
 import * as planDux from '../../../ducks/planDefinitions';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

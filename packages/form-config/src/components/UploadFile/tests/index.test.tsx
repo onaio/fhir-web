@@ -2,24 +2,24 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import { UploadConfigFile, ConnectedUploadConfigFile } from '../index';
-import { getFetchOptions } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp-web/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { fetchManifestFiles } from '@opensrp/form-config-core';
+import { fetchManifestFiles } from '@opensrp-web/form-config-core';
 import { fixManifestFiles } from '../../../helpers/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp-web/server-service';
 import lang from '../../../lang';
 
 const history = createBrowserHistory();
 
-jest.mock('@opensrp/server-service', () => ({
+jest.mock('@opensrp-web/server-service', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/server-service')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/server-service')),
 }));
 
 const props = {

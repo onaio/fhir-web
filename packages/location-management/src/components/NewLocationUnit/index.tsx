@@ -1,7 +1,7 @@
 import { getUser } from '@onaio/session-reducer';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp-web/server-service';
 import React from 'react';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
@@ -18,7 +18,7 @@ import {
 } from '../../ducks/locationHierarchy/utils';
 import { useQuery, useQueryClient, useQueries, UseQueryResult } from 'react-query';
 import { LOCATION_HIERARCHY, LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 
 /** full props for the new location component */

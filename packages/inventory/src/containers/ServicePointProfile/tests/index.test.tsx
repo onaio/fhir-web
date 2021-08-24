@@ -1,7 +1,7 @@
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { findPath, ServicePointProfile } from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
@@ -16,7 +16,7 @@ import {
   hierarchyReducer,
   hierarchyReducerName,
   removeLocationUnits,
-} from '@opensrp/location-management';
+} from '@opensrp-web/location-management';
 import {
   fetchCalls,
   geographicHierarchy,
@@ -30,9 +30,9 @@ import toJson from 'enzyme-to-json';
 import { Helmet } from 'react-helmet';
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 jest.mock('react-router-dom', () => ({

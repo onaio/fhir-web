@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders } from 'http';
 import queryString from 'querystring';
-import { handleSessionOrTokenExpiry } from '@opensrp/react-utils';
+import { handleSessionOrTokenExpiry } from '@opensrp-web/react-utils';
 
 import { throwNetworkError, throwHTTPError } from './errors';
 /** defaults */

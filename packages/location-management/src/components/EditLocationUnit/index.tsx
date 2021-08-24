@@ -1,5 +1,5 @@
-import { BrokenPage, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { BrokenPage, Resource404, useHandleBrokenPage } from '@opensrp-web/react-utils';
+import { OPENSRP_API_BASE_URL } from '@opensrp-web/server-service';
 import {
   fetchLocationUnits,
   getLocationsByFilters,
@@ -19,7 +19,7 @@ import lang from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import {
   generateJurisdictionTree,
   getBaseTreeNode,
@@ -27,7 +27,7 @@ import {
 } from '../../ducks/locationHierarchy/utils';
 import { useQuery, useQueryClient, useQueries, UseQueryResult } from 'react-query';
 import { LOCATION_HIERARCHY, LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);

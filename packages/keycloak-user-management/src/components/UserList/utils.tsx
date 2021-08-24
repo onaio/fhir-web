@@ -1,6 +1,6 @@
 import { Dictionary } from '@onaio/utils';
 import lang, { Lang } from '../../lang';
-import { Column } from '@opensrp/react-utils';
+import { Column } from '@opensrp-web/react-utils';
 import { TableData } from '.';
 
 /**

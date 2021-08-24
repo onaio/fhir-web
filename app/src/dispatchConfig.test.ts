@@ -1,5 +1,5 @@
 import './dispatchConfig';
-import { getAllConfigs } from '@opensrp/pkg-config';
+import { getAllConfigs } from '@opensrp-web/pkg-config';
 import i18n from './mls';
 
 jest.mock('./configs/env');

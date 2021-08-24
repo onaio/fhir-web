@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/react-utils",
+  "name": "@opensrp-web/react-utils",
   "version": "0.0.11",
   "description": "A couple of utils that work with react",
   "main": "dist/index.js",
@@ -39,13 +39,13 @@
     "@onaio/gatekeeper": "^0.1.1",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.5",
-    "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/server-service": "^0.0.17",
+    "@opensrp-web/notifications": "^0.0.5",
+    "@opensrp-web/pkg-config": "^0.0.9",
+    "@opensrp-web/server-service": "^0.0.17",
     "antd": "^4.6.3"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
+    "@opensrp-web/store": "^0.0.10",
     "antd": "^4.6.3",
     "react": "^16.18.1",
     "react-redux": "^7.2.1",

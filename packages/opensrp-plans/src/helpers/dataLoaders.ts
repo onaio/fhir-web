@@ -1,6 +1,6 @@
 /** get the full plans data-loader */
 import { get, keyBy, uniqBy } from 'lodash';
-import { store, makeAPIStateSelector } from '@opensrp/store';
+import { store, makeAPIStateSelector } from '@opensrp-web/store';
 import {
   NO_DATA_FOUND,
   OPENSRP_ACTIVE,
@@ -13,20 +13,20 @@ import {
   OPENSRP_POST_ASSIGNMENTS_ENDPOINT,
   OPENSRP_TASK_SEARCH,
 } from '../constants';
-import { OpenSRPService as GenericOpenSRPService, URLParams } from '@opensrp/server-service';
+import { OpenSRPService as GenericOpenSRPService, URLParams } from '@opensrp-web/server-service';
 import { fetchPlanDefinitions } from '../ducks/planDefinitions';
 import {
   fetchAssignments,
   Assignment,
   RawAssignment,
   processRawAssignments,
-} from '@opensrp/team-assignment';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+} from '@opensrp-web/team-assignment';
+import { PlanDefinition } from '@opensrp-web/plan-form-core';
 import moment from 'moment';
 import {
   fetchOrganizationsAction as fetchOrganizations,
   Organization,
-} from '@opensrp/team-management';
+} from '@opensrp-web/team-management';
 import { fetchJurisdictions, Jurisdiction } from '../ducks/jurisdictions';
 import { Dictionary } from '@onaio/utils';
 import lang from '../lang';

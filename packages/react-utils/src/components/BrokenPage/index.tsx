@@ -3,7 +3,7 @@
  */
 import React, { useState } from 'react';
 import { Result } from 'antd';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
 import lang from '../../lang';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageHeader } from 'antd';
-import { getQueryParams } from '@opensrp/react-utils';
+import { getQueryParams } from '@opensrp-web/react-utils';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
@@ -26,7 +26,7 @@ import { PreConfirmationSuccess } from '../../components/PreConfirmationSuccess'
 import { PostConfirmationUpload } from '../../components/PostConfirmUpload';
 import { PostConfirmationSuccess } from '../../components/PostConfirmationSuccess';
 import { PreConfirmationError } from '../../components/PreConfirmationError';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 
 export type CSVUploadTypes = CommonProps & RouteComponentProps;
 

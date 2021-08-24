@@ -1,5 +1,5 @@
 import { FileDoneOutlined } from '@ant-design/icons';
-import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
+import { PlanDefinition, PlanStatus } from '@opensrp-web/plan-form-core';
 import { Avatar, Divider, Breadcrumb, Row, Col } from 'antd';
 import { PlanStatusColors, URL_MISSIONS } from '../../constants';
 import { pageTitleBuilder } from '../../containers/ListView/utils';

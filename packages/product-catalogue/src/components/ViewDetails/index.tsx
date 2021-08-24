@@ -1,7 +1,7 @@
 import { ProductCatalogue } from '../../ducks/productCatalogue';
 import React from 'react';
 import { Col } from 'antd';
-import { Resource404 } from '@opensrp/react-utils';
+import { Resource404 } from '@opensrp-web/react-utils';
 import { Dictionary } from '@onaio/utils';
 import lang, { Lang } from '../../lang';
 import { CloseOutlined } from '@ant-design/icons';

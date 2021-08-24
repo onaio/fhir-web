@@ -10,9 +10,9 @@ import { createBrowserHistory } from 'history';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import * as opensrpStore from '@opensrp/store';
+import * as opensrpStore from '@opensrp-web/store';
 import { Provider } from 'react-redux';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import {
   reducerName as keycloakUserRolesReducerName,
   reducer as keycloakUserRolesReducer,
@@ -23,14 +23,14 @@ import { URL_USER_ROLES } from '../../../constants';
 import lang from '../../../lang';
 import { unorderedUserRoles } from './fixtures';
 
-jest.mock('@opensrp/store', () => ({
+jest.mock('@opensrp-web/store', () => ({
   __esModule: true,
-  ...jest.requireActual('@opensrp/store'),
+  ...jest.requireActual('@opensrp-web/store'),
 }));
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 const history = createBrowserHistory();

@@ -3,15 +3,15 @@
 import { fetchProtectedImage, handleSessionOrTokenExpiry, OpenSRPService } from '../dataLoaders';
 import fetch from 'jest-fetch-mock';
 import MockDate from 'mockdate';
-import * as opensrpService from '@opensrp/server-service';
+import * as opensrpService from '@opensrp-web/server-service';
 import * as fixtures from './fixtures';
 import { authenticateUser, updateExtraData } from '@onaio/session-reducer';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import * as registry from '@onaio/connected-reducer-registry';
 import flushPromises from 'flush-promises';
 
-jest.mock('@opensrp/pkg-config', () => {
-  const actual = jest.requireActual('@opensrp/pkg-config');
+jest.mock('@opensrp-web/pkg-config', () => {
+  const actual = jest.requireActual('@opensrp-web/pkg-config');
   return {
     ...actual,
     getAllConfigs: () => ({
@@ -20,9 +20,9 @@ jest.mock('@opensrp/pkg-config', () => {
   };
 });
 
-jest.mock('@opensrp/server-service', () => ({
+jest.mock('@opensrp-web/server-service', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/server-service')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/server-service')),
 }));
 
 describe('helpers/dataLoaders/fetchProtectedImage', () => {

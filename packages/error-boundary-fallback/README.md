@@ -5,7 +5,7 @@ This package provides a fallback component which you can use as an error boundar
 ## Installation
 
 ```node
-yarn add @opensrp/error-boundary-fallback
+yarn add @opensrp-web/error-boundary-fallback
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ yarn add @opensrp/error-boundary-fallback
 ```javascript
 import App from '..';
 import * as Sentry from '@sentry/react';
-import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
+import { ErrorBoundaryFallback } from '@opensrp-web/error-boundary-fallback';
 
 ReactDOM.render(
   <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={'/home'} />}>

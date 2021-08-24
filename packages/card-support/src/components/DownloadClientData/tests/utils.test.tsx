@@ -8,20 +8,20 @@ import {
   submitForm,
   getLocationDetails,
 } from '../utils';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp-web/server-service';
 import Papaparse from 'papaparse';
 import fetch from 'jest-fetch-mock';
 import { DownloadClientDataFormFields } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import lang from '../../../lang';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/camelcase */
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 const mockDownload = jest.fn();
 (globalUtils as any).downloadFile = mockDownload;

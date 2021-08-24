@@ -2,7 +2,7 @@
 import { Dictionary } from '@onaio/utils';
 import React from 'react';
 import lang from '../../lang';
-import { PlanActivityFormFields } from '@opensrp/plan-form-core';
+import { PlanActivityFormFields } from '@opensrp-web/plan-form-core';
 import { Form, Input } from 'antd';
 
 const { Item: FormItem } = Form;

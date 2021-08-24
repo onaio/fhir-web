@@ -3,7 +3,7 @@ import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as fixtures from './fixtures';
 import {
@@ -17,9 +17,9 @@ import { Router } from 'react-router';
 import { UserGroupForm, defaultInitialValues } from '../Form';
 import toJson from 'enzyme-to-json';
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 describe('components/forms/UserFroupForm', () => {

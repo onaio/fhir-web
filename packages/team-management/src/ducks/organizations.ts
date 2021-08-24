@@ -8,7 +8,7 @@ import {
   getItemsArrayFactory,
   getItemByIdFactory,
   getTotalRecordsFactory,
-} from '@opensrp/reducer-factory';
+} from '@opensrp-web/reducer-factory';
 
 /** The reducer name */
 export const reducerName = 'organizations';

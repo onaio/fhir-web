@@ -2,9 +2,9 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { Router } from 'react-router';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import fetch from 'jest-fetch-mock';
 import { ViewDetails } from '..';
 import * as fixtures from './fixtures';
@@ -16,9 +16,9 @@ import lang from '../../../lang';
 
 const history = createBrowserHistory();
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 describe('View User Group Details', () => {

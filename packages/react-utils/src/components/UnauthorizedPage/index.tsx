@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Result } from 'antd';
-import { sendWarningNotification } from '@opensrp/notifications';
+import { sendWarningNotification } from '@opensrp-web/notifications';
 import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
 import lang from '../../lang';
 

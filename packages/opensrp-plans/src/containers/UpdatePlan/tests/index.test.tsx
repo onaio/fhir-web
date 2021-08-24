@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConnectedEditPlanView } from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
@@ -10,7 +10,7 @@ import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
-import { PlanFormFieldsKeys } from '@opensrp/plan-form';
+import { PlanFormFieldsKeys } from '@opensrp-web/plan-form';
 import lang from '../../../lang';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

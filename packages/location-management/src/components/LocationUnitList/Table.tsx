@@ -3,7 +3,7 @@ import { Button, Divider } from 'antd';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import lang from '../../lang';
-import { Column, TableLayout } from '@opensrp/react-utils';
+import { Column, TableLayout } from '@opensrp-web/react-utils';
 
 export interface TableData {
   geographicLevel: number;

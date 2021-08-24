@@ -7,15 +7,15 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import {
   createChangeHandler,
   getQueryParams,
   SearchForm,
   TableLayout,
   Column,
-} from '@opensrp/react-utils';
-import { KeycloakService } from '@opensrp/keycloak-service';
+} from '@opensrp-web/react-utils';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
 import {
   reducerName as keycloakUserGroupsReducerName,
   reducer as keycloakUserGroupsReducer,

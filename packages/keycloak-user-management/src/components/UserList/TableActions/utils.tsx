@@ -1,6 +1,6 @@
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { OpenSRPService } from '@opensrp/react-utils';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
+import { OpenSRPService } from '@opensrp-web/react-utils';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp-web/notifications';
 import { removeKeycloakUsers } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
@@ -9,7 +9,7 @@ import {
   DELETE_PRACTITIONER_ROLE,
 } from '../../../constants';
 import lang, { Lang } from '../../../lang';
-import { Practitioner } from '@opensrp/team-management';
+import { Practitioner } from '@opensrp-web/team-management';
 
 /**
  * Delete keycloak user and practitioner

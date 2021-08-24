@@ -6,5 +6,5 @@ This package contains a set of components for managing (create, edit, view, dele
 
 ```sh
 
-yarn add @opensrp/location-management
+yarn add @opensrp-web/location-management
 ```

@@ -7,7 +7,7 @@ import {
   getItemsArrayFactory,
   getItemByIdFactory,
   getTotalRecordsFactory,
-} from '@opensrp/reducer-factory';
+} from '@opensrp-web/reducer-factory';
 import { Dictionary } from '@onaio/utils';
 import { Geometry } from 'geojson';
 import { createSelector } from 'reselect';

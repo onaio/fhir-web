@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 import { history } from '@onaio/connected-reducer-registry';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { store } from '@opensrp/store';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
+import { store } from '@opensrp-web/store';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp-web/notifications';
 import lang, { Lang } from '../../lang';
 import {
   KEYCLOAK_URL_ASSIGNED_ROLES,

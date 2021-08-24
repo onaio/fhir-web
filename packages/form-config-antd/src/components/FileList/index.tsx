@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { getFetchOptions } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp-web/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Card, Typography, Spin, Space, Button, Divider, Input } from 'antd';
@@ -13,15 +13,15 @@ import {
   filesReducerName,
   OPENSRP_FORM_METADATA_ENDPOINT,
   fetchManifests,
-} from '@opensrp/form-config-core';
+} from '@opensrp-web/form-config-core';
 import { useSelector, useDispatch } from 'react-redux';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { getTableColumns } from './utils';
 import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ROUTE_PARAM_FORM_VERSION } from '../../constants';
 import lang from '../../lang';
-import { TableLayout } from '@opensrp/react-utils';
+import { TableLayout } from '@opensrp-web/react-utils';
 import { TableActions } from './TableActions';
 
 /** Register reducer */

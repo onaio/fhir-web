@@ -1,12 +1,12 @@
 /** get the full product Catalogue
  */
 
-import { store, makeAPIStateSelector } from '@opensrp/store';
+import { store, makeAPIStateSelector } from '@opensrp-web/store';
 import {
   getFetchOptions,
   OpenSRPService as GenericOpenSRPService,
   HTTPMethod,
-} from '@opensrp/server-service';
+} from '@opensrp-web/server-service';
 import { OPENSRP_API_BASE_URL, OPENSRP_PRODUCT_CATALOGUE } from '../constants';
 import { fetchProducts, ProductCatalogue } from '../ducks/productCatalogue';
 import { Dictionary } from '@onaio/utils';

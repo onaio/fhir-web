@@ -2,7 +2,7 @@
 import React from 'react';
 import { Menu, Dropdown, Button } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
-import { LanguageCode } from '@opensrp/pkg-config';
+import { LanguageCode } from '@opensrp-web/pkg-config';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
 /** describes object representation of language options */

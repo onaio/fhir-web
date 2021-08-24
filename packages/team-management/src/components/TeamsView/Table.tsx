@@ -5,7 +5,7 @@ import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
-import { Column, TableLayout } from '@opensrp/react-utils';
+import { Column, TableLayout } from '@opensrp-web/react-utils';
 import lang from '../../lang';
 
 export interface TableData extends Organization {

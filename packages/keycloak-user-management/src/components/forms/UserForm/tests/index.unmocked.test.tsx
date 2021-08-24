@@ -5,7 +5,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { defaultUserFormInitialValues, UserForm } from '..';
 import { keycloakUser, practitioner1, userGroup } from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp-web/server-service';
 import { Router } from 'react-router';
 import { UserFormProps } from '../types';
 import { getFormValues } from '../utils';

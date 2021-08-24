@@ -6,7 +6,7 @@ import {
   loadSettings,
   postPutLocationUnit,
 } from '../dataLoaders';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

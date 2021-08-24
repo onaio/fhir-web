@@ -1,13 +1,13 @@
 /** this component renders adhoc fields for arbitrary values in locationUnit.properties
  * we get the property names for the shown fields from the settings endpoint
  */
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { LOCATION_UNIT_EXTRA_FIELDS_IDENTIFIER } from '../../../constants';
 import { loadSettings } from '../../../helpers/dataLoaders';
 import React, { useEffect, useState } from 'react';
 import { LocationSetting, validationRulesFactory } from '../utils';
 import { Form, Input } from 'antd';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp-web/server-service';
 import lang from '../../../lang';
 
 const { List, Item: FormItem } = Form;

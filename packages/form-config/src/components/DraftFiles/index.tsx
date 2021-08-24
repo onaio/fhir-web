@@ -16,13 +16,13 @@ import {
   downloadManifestFile,
   makeRelease,
   fetchDrafts,
-} from '@opensrp/form-config-core';
+} from '@opensrp-web/form-config-core';
 import { Button, Row, Col } from 'reactstrap';
 import { Redirect } from 'react-router';
 import { Cell } from 'react-table';
 import { Link } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
-import { GetAccessTokenType } from '@opensrp/server-service';
+import { GetAccessTokenType } from '@opensrp-web/server-service';
 import lang from '../../lang';
 
 /** Register reducer */

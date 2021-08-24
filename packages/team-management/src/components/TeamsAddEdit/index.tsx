@@ -11,8 +11,8 @@ import {
   PRACTITIONER_ROLE,
   PRACTITIONER_COUNT,
 } from '../../constants';
-import { OpenSRPService } from '@opensrp/react-utils';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { OpenSRPService } from '@opensrp-web/react-utils';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { Spin } from 'antd';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 import lang, { Lang } from '../../lang';

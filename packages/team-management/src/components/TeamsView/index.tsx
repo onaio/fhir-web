@@ -6,9 +6,9 @@ import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import {
   reducer,
   fetchOrganizationsAction,

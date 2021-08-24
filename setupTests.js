@@ -4,7 +4,7 @@
 import enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import MockDate from 'mockdate';
-import { setAllConfigs } from '@opensrp/pkg-config';
+import { setAllConfigs } from '@opensrp-web/pkg-config';
 /* eslint-disable @typescript-eslint/camelcase */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';

@@ -5,12 +5,12 @@ import {
   reducerFactory,
   getItemsArrayFactory,
   getTotalRecordsFactory,
-} from '@opensrp/reducer-factory';
+} from '@opensrp-web/reducer-factory';
 import { values } from 'lodash';
 import { Store } from 'redux';
 import { createSelector } from 'reselect';
 import { Dictionary } from '@onaio/utils';
-import { ProductCatalogue } from '@opensrp/product-catalogue';
+import { ProductCatalogue } from '@opensrp-web/product-catalogue';
 
 /** interface custom properties for inventory */
 export interface CustomProperties {

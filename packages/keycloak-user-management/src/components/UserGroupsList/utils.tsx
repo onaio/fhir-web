@@ -1,5 +1,5 @@
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { KEYCLOAK_URL_USER_GROUPS } from '../../constants';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 import { UserGroupMembers } from '.';

@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio } from 'formik-antd';
 import { Button, Spin } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import { Formik } from 'formik';
 import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
 import lang, { Lang } from '../../lang';
-import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp-web/notifications';
 import {
   LocationUnitGroup,
   LocationUnitGroupPayloadPOST,

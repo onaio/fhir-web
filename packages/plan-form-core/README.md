@@ -12,7 +12,7 @@ The intention for this package, is to serve as a common building block for sever
 ## Installation
 
 ```sh
-yarn add @opensrp/planform-core
+yarn add @opensrp-web/planform-core
 ```
 
 ## Usage

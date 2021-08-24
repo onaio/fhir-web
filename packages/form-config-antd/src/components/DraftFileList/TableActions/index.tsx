@@ -4,9 +4,9 @@ import {
   ManifestFilesTypes,
   OPENSRP_FORMS_ENDPOINT,
   downloadManifestFile,
-} from '@opensrp/form-config-core';
-import { getFetchOptions } from '@opensrp/server-service';
-import { sendErrorNotification } from '@opensrp/notifications';
+} from '@opensrp-web/form-config-core';
+import { getFetchOptions } from '@opensrp-web/server-service';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import lang from '../../../lang';
 
 /** interface for component props */

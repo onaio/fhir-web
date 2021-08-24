@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import Helmet from 'react-helmet';
-import { BrokenPage, useHandleBrokenPage, Resource404 } from '@opensrp/react-utils';
+import { BrokenPage, useHandleBrokenPage, Resource404 } from '@opensrp-web/react-utils';
 import {
   CommonProps,
   defaultCommonProps,
@@ -30,9 +30,9 @@ import {
   planActivities,
   PlanDefinition,
   PlanStatus,
-} from '@opensrp/plan-form-core';
+} from '@opensrp-web/plan-form-core';
 import { PlanLoading } from '../../helpers/utils';
-import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp/plan-form';
+import { PlanForm, getPlanFormValues, propsForUpdatingPlans } from '@opensrp-web/plan-form';
 import lang from '../../lang';
 
 /** register catalogue reducer */

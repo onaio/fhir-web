@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, {
   fetchLocationUnitGroups,
@@ -19,7 +19,7 @@ import lang from '../../lang';
 import Table, { TableData } from './Table';
 import './LocationUnitGroupList.css';
 import { Link } from 'react-router-dom';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { Props } from '../../helpers/common';
 
 reducerRegistry.register(reducerName, reducer);

@@ -1,10 +1,10 @@
-import { getQueryParams } from '@opensrp/react-utils';
+import { getQueryParams } from '@opensrp-web/react-utils';
 import { RouteComponentProps } from 'react-router';
 import { BULK_UPLOAD_PARAM, COMMUNE_GEOGRAPHIC_LEVEL } from '../constants';
 import queryString from 'querystring';
 import React from 'react';
 import { Space } from 'antd';
-import { TreeNode } from '@opensrp/location-management';
+import { TreeNode } from '@opensrp-web/location-management';
 
 export enum UploadStatus {
   UPLOAD_START = 'uploadStart',

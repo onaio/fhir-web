@@ -3,7 +3,7 @@ import {
   fetchActionCreatorFactory,
   reducerFactory,
   removeActionCreatorFactory,
-} from '@opensrp/reducer-factory';
+} from '@opensrp-web/reducer-factory';
 import { Geometry } from 'geojson';
 import { get, values } from 'lodash';
 import { Store } from 'redux';

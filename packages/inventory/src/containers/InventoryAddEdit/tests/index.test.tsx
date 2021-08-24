@@ -1,12 +1,12 @@
 import { mount, shallow } from 'enzyme';
 import moment from 'moment';
 import React from 'react';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import {
   fetchLocationUnits,
   removeLocationUnits,
   LocationUnit,
-} from '@opensrp/location-management';
+} from '@opensrp-web/location-management';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
@@ -30,9 +30,9 @@ import { authenticateUser } from '@onaio/session-reducer';
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 jest.mock('antd', () => {

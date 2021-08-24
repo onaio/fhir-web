@@ -1,4 +1,4 @@
-import { Column } from '@opensrp/react-utils';
+import { Column } from '@opensrp-web/react-utils';
 import { TableColumnsNamespace } from '../../constants';
 import lang, { Lang } from '../../lang';
 import { Inventory } from '../../ducks/inventory';

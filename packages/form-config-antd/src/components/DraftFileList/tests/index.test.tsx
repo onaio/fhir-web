@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -15,9 +15,9 @@ import {
   draftReducerName,
   getAllManifestDraftFilesArray,
   removeManifestDraftFiles,
-} from '@opensrp/form-config-core';
-import * as helpers from '@opensrp/form-config-core';
-import * as notifications from '@opensrp/notifications';
+} from '@opensrp-web/form-config-core';
+import * as helpers from '@opensrp-web/form-config-core';
+import * as notifications from '@opensrp-web/notifications';
 import { DrafFileList } from '..';
 import {
   FixManifestDraftFiles,
@@ -31,14 +31,14 @@ import lang from '../../../lang';
 
 const mockHistoryPush = jest.fn();
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
-jest.mock('@opensrp/form-config-core', () => ({
+jest.mock('@opensrp-web/form-config-core', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/form-config-core')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/form-config-core')),
 }));
 
 const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');

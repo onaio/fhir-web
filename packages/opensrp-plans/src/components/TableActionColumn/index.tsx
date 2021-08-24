@@ -1,9 +1,9 @@
 import React from 'react';
 import { EditAssignmentsModal, SelectOption } from '../AssignmentModal';
 import { Divider } from 'antd';
-import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
+import { Assignment, fetchAssignments } from '@opensrp-web/team-assignment';
 import { Jurisdiction } from '../../ducks/jurisdictions';
-import { Organization } from '@opensrp/team-management';
+import { Organization } from '@opensrp-web/team-management';
 import {
   getAllJursPayload,
   updateAssignments,
@@ -12,7 +12,7 @@ import {
 } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+import { PlanDefinition } from '@opensrp-web/plan-form-core';
 import lang from '../../lang';
 
 interface ActionColumnProps {

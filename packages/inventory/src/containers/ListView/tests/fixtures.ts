@@ -1,4 +1,4 @@
-import { LocationUnit } from '@opensrp/location-management/src/ducks/location-units';
+import { LocationUnit } from '@opensrp-web/location-management/src/ducks/location-units';
 
 export const madagascar = {
   type: 'Feature',

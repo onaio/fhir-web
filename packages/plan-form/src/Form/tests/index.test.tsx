@@ -8,12 +8,12 @@ import { Form } from 'antd';
 import { generatePlanDefinition, getPlanFormValues } from '../../helpers/utils';
 import { mission1, newPayload1 } from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { InterventionType, PlanStatus } from '@opensrp-web/plan-form-core';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { Dictionary } from '@onaio/utils';
 import moment from 'moment';
 
-jest.mock('@opensrp/notifications', () => {
+jest.mock('@opensrp-web/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
 });
 

@@ -5,7 +5,7 @@ This package contains components that list locations and their assigned teams, u
 ## Installation
 
 ```sh
-yarn add @opensrp/team-assignment
+yarn add @opensrp-web/team-assignment
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ This component allows assigning teams to locations from the admin panel.
 To add the team assignment list view component:
 
 ```tsx
-import { TeamAssignmentView } from '@opensrp/team-assignment';
+import { TeamAssignmentView } from '@opensrp-web/team-assignment';
 
 export const teamAssignmentProps = {
   opensrpBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest'

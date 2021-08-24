@@ -1,16 +1,16 @@
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import {
   getFetchOptions,
   OpenSRPService as GenericOpenSRPService,
   OPENSRP_API_BASE_URL,
   customFetch,
-} from '@opensrp/server-service';
+} from '@opensrp-web/server-service';
 import { history } from '@onaio/connected-reducer-registry';
 import { refreshToken } from '@onaio/gatekeeper';
 import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
 import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
-import { getAllConfigs } from '@opensrp/pkg-config';
+import { getAllConfigs } from '@opensrp-web/pkg-config';
 import lang, { Lang } from '../lang';
 
 const configs = getAllConfigs();

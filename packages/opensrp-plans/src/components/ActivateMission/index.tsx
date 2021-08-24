@@ -1,11 +1,11 @@
-import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
+import { PlanDefinition, PlanStatus } from '@opensrp-web/plan-form-core';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import React from 'react';
 import { Card, Button, Typography, Tooltip } from 'antd';
 import lang from '../../lang';
-import { CommonProps, postPutPlan } from '@opensrp/plan-form';
+import { CommonProps, postPutPlan } from '@opensrp-web/plan-form';
 import { defaultCommonProps } from '../../helpers/common';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp-web/notifications';
 
 const { Title } = Typography;
 

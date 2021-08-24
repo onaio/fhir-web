@@ -3,14 +3,14 @@ import { shallow, mount } from 'enzyme';
 import { ActivateMissionCard } from '..';
 import toJson from 'enzyme-to-json';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
-import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
+import { PlanDefinition, PlanStatus } from '@opensrp-web/plan-form-core';
 import lang from '../../../lang';
 import { act } from 'react-dom/test-utils';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 const plan = eusmPlans[0];

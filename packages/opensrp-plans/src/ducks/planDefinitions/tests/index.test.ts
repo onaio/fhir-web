@@ -1,8 +1,8 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { keyBy } from 'lodash';
 import { FlushThunks } from 'redux-testkit';
-import { PlanDefinition, InterventionType } from '@opensrp/plan-form-core';
-import { store } from '@opensrp/store';
+import { PlanDefinition, InterventionType } from '@opensrp-web/plan-form-core';
+import { store } from '@opensrp-web/store';
 import {
   filterPlansByStatus,
   getPlanDefinitionsArrayByStatus,

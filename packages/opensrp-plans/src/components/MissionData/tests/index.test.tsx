@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { MissionData } from '..';
 import { eusmPlans, retiredDraftPlans } from '../../../ducks/planDefinitions/tests/fixtures';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+import { PlanDefinition } from '@opensrp-web/plan-form-core';
 import { act } from 'react-dom/test-utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

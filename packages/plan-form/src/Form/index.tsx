@@ -57,12 +57,12 @@ import {
   status,
   title,
   jurisdictions,
-} from '@opensrp/plan-form-core';
+} from '@opensrp-web/plan-form-core';
 import moment, { Moment } from 'moment';
 import { Select, Input, DatePicker } from 'antd';
 import { CloseOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Collapse, Modal } from 'antd';
-import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp-web/notifications';
 import { CommonProps, defaultCommonProps } from '../helpers/common';
 import {
   AfterSubmit,

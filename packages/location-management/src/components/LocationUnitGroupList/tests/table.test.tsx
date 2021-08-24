@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { mount } from 'enzyme';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { history } from '@onaio/connected-reducer-registry';

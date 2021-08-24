@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/product-catalogue",
+  "name": "@opensrp-web/product-catalogue",
   "version": "0.0.8",
   "description": "Contains product catalogue Page",
   "main": "dist/index.js",
@@ -36,11 +36,11 @@
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.5",
-    "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.11",
-    "@opensrp/reducer-factory": "^0.0.13",
-    "@opensrp/server-service": "^0.0.16",
+    "@opensrp-web/notifications": "^0.0.5",
+    "@opensrp-web/pkg-config": "^0.0.9",
+    "@opensrp-web/react-utils": "^0.0.11",
+    "@opensrp-web/reducer-factory": "^0.0.13",
+    "@opensrp-web/server-service": "^0.0.16",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
     "react-helmet": "^6.1.0",
@@ -48,7 +48,7 @@
     "yup": "^0.29.3"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
+    "@opensrp-web/store": "^0.0.10",
     "antd": "^4.8.2",
     "i18next": "^19.8.4",
     "react": "^16.18.1",

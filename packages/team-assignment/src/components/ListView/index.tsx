@@ -8,23 +8,23 @@ import {
   ActionsColumnCustomRender,
 } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
-import { OpenSRPService, TableLayout } from '@opensrp/react-utils';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { OpenSRPService, TableLayout } from '@opensrp-web/react-utils';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp-web/notifications';
 import {
   reducer as organizationsReducer,
   fetchOrganizationsAction,
   Organization,
   getOrganizationsArray,
   reducerName as orgReducerName,
-} from '@opensrp/team-management';
+} from '@opensrp-web/team-management';
 import {
   Tree,
   generateJurisdictionTree,
   locationHierachyDucks,
   ParsedHierarchyNode,
   RawOpenSRPHierarchy,
-} from '@opensrp/location-management';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+} from '@opensrp-web/location-management';
+import { PlanDefinition } from '@opensrp-web/plan-form-core';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import {

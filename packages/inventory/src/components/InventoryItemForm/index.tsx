@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { Form, Button, Input, DatePicker, Select, Card } from 'antd';
 import { Redirect, useHistory } from 'react-router';
-import { getFetchOptions } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp-web/server-service';
 import lang from '../../lang';
-import { ProductCatalogue } from '@opensrp/product-catalogue';
+import { ProductCatalogue } from '@opensrp-web/product-catalogue';
 import { isDateFuture, isDatePastOrToday, submitForm } from './utils';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { InventoryPost } from '../../ducks/inventory';
 
 /** interface for setting **/

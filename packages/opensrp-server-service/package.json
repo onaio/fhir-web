@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/server-service",
+  "name": "@opensrp-web/server-service",
   "version": "0.0.17",
   "description": "Wrapper around OpenSRP Server REST API",
   "publishConfig": {

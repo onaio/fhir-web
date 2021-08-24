@@ -5,7 +5,7 @@ This package has a set of components that are used for OpenSRP card support feat
 ## Installation
 
 ```sh
-yarn add @opensrp/card-support
+yarn add @opensrp-web/card-support
 ```
 
 ### Code examples
@@ -19,7 +19,7 @@ Download client data feature, enables the user to download client data in CSV fo
 To make use of the download client data feature
 
 ```tsx
-import { DownloadClientData } from '@opensrp/card-support';
+import { DownloadClientData } from '@opensrp-web/card-support';
 
 
 ...

@@ -10,9 +10,9 @@ This package includes set of components that interact with missions/plan api. It
 ## Installation
 
 ```sh
-yarn add @opensrp/plans
+yarn add @opensrp-web/plans
 ```
 
 ```typescript
-import '@opensrp/plans/dist/index.css';
+import '@opensrp-web/plans/dist/index.css';
 ```

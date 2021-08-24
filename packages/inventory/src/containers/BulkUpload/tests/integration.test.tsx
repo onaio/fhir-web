@@ -12,8 +12,8 @@ import lang from '../../../lang';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-jest.mock('@opensrp/react-utils', () => {
-  const actual = jest.requireActual('@opensrp/react-utils');
+jest.mock('@opensrp-web/react-utils', () => {
+  const actual = jest.requireActual('@opensrp-web/react-utils');
   return {
     ...actual,
     handleSessionOrTokenExpiry: () => Promise.resolve('Token'),

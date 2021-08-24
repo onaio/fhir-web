@@ -17,7 +17,7 @@ import {
   reducerName as ProductCatalogueReducerName,
   ProductCatalogueReducer,
 } from '../../ducks/productCatalogue';
-import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp-web/react-utils';
 import { Helmet } from 'react-helmet';
 import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
 import { ViewDetails } from '../ViewDetails';

@@ -14,7 +14,7 @@ import * as plansDux from '../../ducks/planDefinitions';
 import lang from '../../lang';
 import { helperRawAssignment1, helperRawAssignment2, helperRawAssignment3 } from './fixtures';
 import MockDate from 'mockdate';
-import { processRawAssignments } from '@opensrp/team-assignment';
+import { processRawAssignments } from '@opensrp-web/team-assignment';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');

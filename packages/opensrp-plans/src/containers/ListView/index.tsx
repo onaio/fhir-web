@@ -12,7 +12,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { plansReducer, plansReducerName as PlansReducerName } from '../../ducks/planDefinitions';
-import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp-web/react-utils';
 import { Helmet } from 'react-helmet';
 import {
   PLANS_CREATE_VIEW_URL,
@@ -21,8 +21,8 @@ import {
   TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
+import { PlanDefinition, PlanStatus } from '@opensrp-web/plan-form-core';
+import '@opensrp-web/react-utils/dist/components/CommonStyles/index.css';
 import lang from '../../lang';
 
 /** make sure plans reducer is registered */

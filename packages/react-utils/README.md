@@ -5,7 +5,7 @@ A couple of utils being used in opensrp-web that work with react
 ## Installation
 
 ```sh
-yarn add @opensrp/react-utils
+yarn add @opensrp-web/react-utils
 ```
 
 ## Usage
@@ -67,7 +67,7 @@ url path to home page
 ### Code examples
 
 ```tsx
-import { Resource404, BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
+import { Resource404, BrokenPage, useHandleBrokenPage } from '@opensrp-web/react-utils';
 
 const Foo = () => {
   const { broken, handleBrokenPage } = useHandleBrokenPage;

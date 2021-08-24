@@ -1,10 +1,10 @@
 /** plans  service hook */
 
-import { store, makeAPIStateSelector } from '@opensrp/store';
-import { OpenSRPService as GenericOpenSRPService } from '@opensrp/server-service';
+import { store, makeAPIStateSelector } from '@opensrp-web/store';
+import { OpenSRPService as GenericOpenSRPService } from '@opensrp-web/server-service';
 import { Dictionary } from '@onaio/utils';
 import { OPENSRP_API_BASE_URL, OPENSRP_PLAN_ENDPOINT } from '../constants';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+import { PlanDefinition } from '@opensrp-web/plan-form-core';
 
 const sessionSelector = makeAPIStateSelector();
 

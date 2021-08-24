@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConnectedServicePointList } from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
@@ -8,16 +8,16 @@ import { INVENTORY_SERVICE_POINT_LIST_VIEW, SEARCH_QUERY_PARAM } from '../../../
 import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
-import { deforest, removeLocationUnits } from '@opensrp/location-management';
+import { deforest, removeLocationUnits } from '@opensrp-web/location-management';
 import { fetchCalls, madagascar, madagascarTree, structure1, structures } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { getNodePath } from '../utils';
-import { generateJurisdictionTree } from '@opensrp/location-management';
-import * as notifications from '@opensrp/notifications';
+import { generateJurisdictionTree } from '@opensrp-web/location-management';
+import * as notifications from '@opensrp-web/notifications';
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

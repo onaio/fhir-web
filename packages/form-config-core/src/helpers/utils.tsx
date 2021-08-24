@@ -4,7 +4,7 @@ import {
   getFetchOptions,
   HTTPError,
   GetAccessTokenType,
-} from '@opensrp/server-service';
+} from '@opensrp-web/server-service';
 import { Dictionary } from '@onaio/utils';
 import { UploadFileFieldTypes } from './types';
 import {

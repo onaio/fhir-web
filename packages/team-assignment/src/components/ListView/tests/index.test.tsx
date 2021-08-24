@@ -1,9 +1,9 @@
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { TeamAssignmentView } from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { history } from '@onaio/connected-reducer-registry';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import fetch from 'jest-fetch-mock';
 import { authenticateUser } from '@onaio/session-reducer';
 import flushPromises from 'flush-promises';
@@ -17,12 +17,12 @@ import {
   fetchAssignments,
   assignmentsReducerName,
 } from '../../../ducks/assignments';
-import { generateJurisdictionTree, locationHierachyDucks } from '@opensrp/location-management';
+import { generateJurisdictionTree, locationHierachyDucks } from '@opensrp-web/location-management';
 import {
   fetchOrganizationsAction,
   reducer as teamsReducer,
   reducerName as teamsReducerName,
-} from '@opensrp/team-management';
+} from '@opensrp-web/team-management';
 import { OPENSRP_API_BASE_URL } from '../../../constants';
 import {
   assignments,
@@ -44,9 +44,9 @@ reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 describe('List view Page', () => {

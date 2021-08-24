@@ -16,11 +16,11 @@ import {
   formatDate,
   downloadManifestFile,
   fetchManifests,
-} from '@opensrp/form-config-core';
+} from '@opensrp-web/form-config-core';
 import { Row, Col } from 'reactstrap';
 import { Cell } from 'react-table';
 import { Dictionary } from '@onaio/utils';
-import { GetAccessTokenType } from '@opensrp/server-service';
+import { GetAccessTokenType } from '@opensrp-web/server-service';
 import lang from '../../lang';
 
 /** Register reducer */

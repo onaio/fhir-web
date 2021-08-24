@@ -1,7 +1,7 @@
 /** use for assigning organizations and jurisdictions in eusm assignments table */
 import React, { useState } from 'react';
 import { Button, Modal, Alert, Select } from 'antd';
-import { useHandleBrokenPage } from '@opensrp/react-utils';
+import { useHandleBrokenPage } from '@opensrp-web/react-utils';
 import lang from '../../lang';
 import { SelectProps } from 'rc-select/lib/generate';
 import { Dictionary } from '@onaio/utils';

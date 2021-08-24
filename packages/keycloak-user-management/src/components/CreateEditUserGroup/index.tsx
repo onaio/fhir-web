@@ -3,7 +3,7 @@ import { Col, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Spin } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { RouteComponentProps } from 'react-router-dom';
 import { defaultInitialValues, UserGroupFormProps } from './Form';
 import {

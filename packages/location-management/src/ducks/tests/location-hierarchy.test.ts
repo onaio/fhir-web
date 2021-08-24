@@ -1,5 +1,5 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { Dictionary } from '@onaio/utils';
 import {
   reducer,

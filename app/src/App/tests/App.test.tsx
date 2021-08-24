@@ -5,12 +5,12 @@ import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { MemoryRouter, RouteComponentProps, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import App, { CallbackComponent, LoadingComponent, SuccessfulLoginComponent } from '../App';
 import { expressAPIResponse } from './fixtures';
 import { mount } from 'enzyme';
 import { authenticateUser } from '@onaio/session-reducer';
-import * as serverLogout from '@opensrp/server-logout';
+import * as serverLogout from '@opensrp-web/server-logout';
 import {
   CATALOGUE_CREATE_VIEW_URL,
   CATALOGUE_EDIT_VIEW_URL,
@@ -18,8 +18,8 @@ import {
   ConnectedProductCatalogueList,
   CreateProductView,
   EditProductView,
-} from '@opensrp/product-catalogue';
-import { ACTIVE_PLANS_LIST_VIEW_URL } from '@opensrp/plans';
+} from '@opensrp-web/product-catalogue';
+import { ACTIVE_PLANS_LIST_VIEW_URL } from '@opensrp-web/plans';
 import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
 
 jest.mock('../../configs/env');

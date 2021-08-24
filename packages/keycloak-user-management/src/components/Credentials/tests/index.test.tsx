@@ -7,12 +7,12 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { cancelUserHandler, ConnectedUserCredentials, UserCredentials, submitForm } from '..';
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -25,9 +25,9 @@ import { history as registryHistory } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 const history = createBrowserHistory();

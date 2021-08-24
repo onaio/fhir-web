@@ -1,6 +1,6 @@
-import { OpenSRPService } from '@opensrp/react-utils';
-import { getFetchOptions } from '@opensrp/server-service';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { OpenSRPService } from '@opensrp-web/react-utils';
+import { getFetchOptions } from '@opensrp-web/server-service';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_ENDPOINT_SETTINGS } from '../../constants';

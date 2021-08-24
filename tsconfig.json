@@ -2,13 +2,13 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "paths": {
-      "@opensrp/user-management": ["packages/keycloak-user-management/src"],
-      "@opensrp/notifications": ["packages/opensrp-notifications/src"],
-      "@opensrp/plans": ["packages/opensrp-plans/src"],
-      "@opensrp/reducer-factory": ["packages/opensrp-reducer-factory/src"],
-      "@opensrp/server-service": ["packages/opensrp-server-service/src"],
-      "@opensrp/store": ["packages/opensrp-store/src"],
-      "@opensrp/*": ["packages/*/src"]
+      "@opensrp-web/user-management": ["packages/keycloak-user-management/src"],
+      "@opensrp-web/notifications": ["packages/opensrp-notifications/src"],
+      "@opensrp-web/plans": ["packages/opensrp-plans/src"],
+      "@opensrp-web/reducer-factory": ["packages/opensrp-reducer-factory/src"],
+      "@opensrp-web/server-service": ["packages/opensrp-server-service/src"],
+      "@opensrp-web/store": ["packages/opensrp-store/src"],
+      "@opensrp-web/*": ["packages/*/src"]
     }
   }
 }

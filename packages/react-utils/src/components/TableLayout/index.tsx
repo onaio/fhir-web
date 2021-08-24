@@ -3,7 +3,7 @@ import { Table as AntTable } from 'antd';
 import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS, TABLE_ACTIONS_KEY } from '../../constants';
-import { getConfig, TableState, setConfig } from '@opensrp/pkg-config';
+import { getConfig, TableState, setConfig } from '@opensrp-web/pkg-config';
 import { Optional } from '../../helpers/utils';
 import lang from '../../lang';
 

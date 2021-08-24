@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, RouteProps, RouteComponentProps, useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
 import { getExtraData, isAuthenticated } from '@onaio/session-reducer';
-import { getAllConfigs } from '@opensrp/pkg-config';
+import { getAllConfigs } from '@opensrp-web/pkg-config';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { UnauthorizedPage } from '../components/UnauthorizedPage';
 import lang from '../lang';

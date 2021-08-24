@@ -5,5 +5,5 @@ This package contains the Product Catalogue Ui elements, utilities and redux mod
 ## Installation
 
 ```sh
-yarn add @opensrp/product-catalogue
+yarn add @opensrp-web/product-catalogue
 ```

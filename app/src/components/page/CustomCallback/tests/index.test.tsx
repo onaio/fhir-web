@@ -3,8 +3,8 @@ import React from 'react';
 import { MemoryRouter, RouteComponentProps } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import { authenticateUser } from '@onaio/session-reducer';
-import * as notifications from '@opensrp/notifications';
-import { store } from '@opensrp/store';
+import * as notifications from '@opensrp-web/notifications';
+import { store } from '@opensrp-web/store';
 import { history } from '@onaio/connected-reducer-registry';
 import { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
 import { URL_EXPRESS_LOGIN } from '../../../../constants';
@@ -17,9 +17,9 @@ jest.mock('../../../../configs/env', () => ({
   OPENSRP_OAUTH_SCOPES: ['read', 'profile'],
 }));
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 const App = () => {

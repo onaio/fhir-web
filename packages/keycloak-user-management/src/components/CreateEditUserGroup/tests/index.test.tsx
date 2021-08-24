@@ -6,11 +6,11 @@ import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { authenticateUser } from '@onaio/session-reducer';
-import { store } from '@opensrp/store';
-import * as opensrpStore from '@opensrp/store';
+import { store } from '@opensrp-web/store';
+import * as opensrpStore from '@opensrp-web/store';
 import * as fixtures from './fixtures';
 import flushPromises from 'flush-promises';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import fetch from 'jest-fetch-mock';
 import { defaultInitialValues } from '../Form';
 import toJson from 'enzyme-to-json';
@@ -41,14 +41,14 @@ reducerRegistry.register(rolesReducername, rolesReducer);
 
 /* eslint-disable @typescript-eslint/camelcase */
 
-jest.mock('@opensrp/store', () => ({
+jest.mock('@opensrp-web/store', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/store')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/store')),
 }));
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 const userGroupSelector = makeKeycloakUserGroupsSelector();

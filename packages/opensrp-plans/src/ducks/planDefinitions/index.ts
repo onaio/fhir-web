@@ -4,7 +4,7 @@ import { get, keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { createSelector } from 'reselect';
 import SeamlessImmutable from 'seamless-immutable';
-import { InterventionType, PlanDefinition } from '@opensrp/plan-form-core';
+import { InterventionType, PlanDefinition } from '@opensrp-web/plan-form-core';
 import { descendingOrderSort, isPlanDefinitionOfType } from '../../helpers/utils';
 
 /** the reducer name */

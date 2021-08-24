@@ -2,32 +2,32 @@ import React from 'react';
 import moment from 'moment';
 import { createBrowserHistory } from 'history';
 import fetch from 'jest-fetch-mock';
-import * as notifications from '@opensrp/notifications';
-import { store } from '@opensrp/store';
+import * as notifications from '@opensrp-web/notifications';
+import { store } from '@opensrp-web/store';
 import flushPromises from 'flush-promises';
 import { authenticateUser } from '@onaio/session-reducer';
 import { mount, shallow } from 'enzyme';
 import { Router } from 'react-router';
 import { InventoryItemForm, defaultInitialValues } from '..';
 import * as fixtures from './fixtures';
-import { ProductCatalogue } from '@opensrp/product-catalogue';
+import { ProductCatalogue } from '@opensrp-web/product-catalogue';
 import { act } from 'react-dom/test-utils';
 import toJson from 'enzyme-to-json';
-import * as opensrpReactUtils from '@opensrp/react-utils';
+import * as opensrpReactUtils from '@opensrp-web/react-utils';
 import lang from '../../../lang';
 
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
-jest.mock('@opensrp/react-utils', () => ({
+jest.mock('@opensrp-web/react-utils', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/react-utils')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/react-utils')),
 }));
 
 jest.mock('antd', () => {

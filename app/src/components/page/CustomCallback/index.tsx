@@ -6,9 +6,9 @@ import React from 'react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
 import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { Spin } from 'antd';
-import { sendSuccessNotification } from '@opensrp/notifications';
+import { sendSuccessNotification } from '@opensrp-web/notifications';
 /**
  * antd notification popup.
  *

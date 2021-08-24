@@ -1,6 +1,6 @@
-import { sendErrorNotification } from '@opensrp/notifications';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { store } from '@opensrp/store';
+import { sendErrorNotification } from '@opensrp-web/notifications';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
+import { store } from '@opensrp-web/store';
 import { KEYCLOAK_URL_USER_ROLES } from '../../constants';
 import lang, { Lang } from '../../lang';
 import { fetchKeycloakUserRoles, KeycloakUserRole } from '../../ducks/userRoles';

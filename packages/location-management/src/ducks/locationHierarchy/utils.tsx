@@ -8,7 +8,7 @@ import {
 import { cloneDeep } from 'lodash';
 import cycle from 'cycle';
 import TreeModel from 'tree-model';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import { LocationUnit } from '../../ducks/location-units';
 import { LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
 

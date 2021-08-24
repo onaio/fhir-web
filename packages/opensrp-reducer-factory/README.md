@@ -11,7 +11,7 @@ Currently , the only opinionated part about me is how i structure the stored dat
 ## Installation
 
 ```node
-yarn add @opensrp/reducer-factory
+yarn add @opensrp-web/reducer-factory
 ```
 
 ## Code example
@@ -27,7 +27,7 @@ import {
   getItemByIdFactory,
   getTotalRecordsFactory,
   BaseDux,
-} from '@opensrp/reducer-factory';
+} from '@opensrp-web/reducer-factory';
 
 /** reducer name for the Item module */
 export const reducerName = '<preferred reducer name>';

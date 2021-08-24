@@ -4,9 +4,9 @@ import { Col, Row, Spin } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { sendErrorNotification } from '@opensrp/notifications';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
+import { sendErrorNotification } from '@opensrp-web/notifications';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import {
   ROUTE_PARAM_USER_ID,
   KEYCLOAK_URL_USERS,

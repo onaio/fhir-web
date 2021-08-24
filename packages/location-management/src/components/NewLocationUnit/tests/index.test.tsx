@@ -1,7 +1,7 @@
 import { mount, shallow } from 'enzyme';
 import { NewLocationUnit } from '..';
 import React from 'react';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { createBrowserHistory } from 'history';
 import { RouteComponentProps, Router } from 'react-router';
 import { Provider } from 'react-redux';

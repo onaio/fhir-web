@@ -4,7 +4,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedHeader from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 
 jest.mock('../../../configs/env');
 

@@ -3,18 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Button, Card, Typography, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp-web/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import {
   locationHierachyDucks,
   RawOpenSRPHierarchy,
   generateJurisdictionTree,
   ParsedHierarchyNode,
-} from '@opensrp/location-management';
+} from '@opensrp-web/location-management';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { submitForm, handleCardOrderDateChange, UserAssignment } from './utils';
 import { OPENSRP_URL_LOCATION_HIERARCHY, OPENSRP_URL_USER_ASSIGNMENT } from '../../constants';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import lang from '../../lang';
 
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);

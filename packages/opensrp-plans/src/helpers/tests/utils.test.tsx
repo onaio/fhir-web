@@ -7,7 +7,7 @@ import {
   RETIRED_PLANS_LIST_VIEW_URL,
 } from '../../constants';
 import * as planDefinitionFixtures from '../../ducks/planDefinitions/tests/fixtures';
-import { InterventionType, PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
+import { InterventionType, PlanDefinition, PlanStatus } from '@opensrp-web/plan-form-core';
 import {
   descendingOrderSort,
   isPlanDefinitionOfType,

@@ -55,7 +55,7 @@ const {
 /** hook to get and update values in the config store
  *
  * @example
- * import { useGlobalConfigs } from `'@opensrp/pkg-config'`;
+ * import { useGlobalConfigs } from `'@opensrp-web/pkg-config'`;
  *
  * const Component = () => {
  *   const [language, setLanguage] = useGlobalConfigs('languageCode');
@@ -67,7 +67,7 @@ const useGlobalConfigs = useGlobalState;
 /** function to get config values outside of React
  *
  * @example
- * import {getConfig} from `"@opensrp/pkg-config"`;
+ * import {getConfig} from `"@opensrp-web/pkg-config"`;
  *
  * const language = getConfig('languageCode');
  */
@@ -79,7 +79,7 @@ const getConfig = getGlobalState;
  * @param value value of the config to set
  *
  * @example
- * import {setConfig} from `'@opensrp/pkg-config'`;
+ * import {setConfig} from `'@opensrp-web/pkg-config'`;
  *
  * const language = setConfig('languageCode', 'fr');
  */
@@ -99,7 +99,7 @@ const otherGettersSetters = (unexposedGettersSetters as unknown) as {
 /** function to get all config values outside of React
  *
  * @example
- * import {getAllConfigs} from `'@opensrp/pkg-config'`;
+ * import {getAllConfigs} from `'@opensrp-web/pkg-config'`;
  *
  * const allConfigs = getAllConfigs();;
  */
@@ -110,7 +110,7 @@ const getAllConfigs = otherGettersSetters.getState;
  * @param value Object for setting all config values
  *
  * @example
- * import {setAllConfigs} from `'@opensrp/pkg-config'`;
+ * import {setAllConfigs} from `'@opensrp-web/pkg-config'`;
  *
  * const configs = {
  *  languageCode: 'en',

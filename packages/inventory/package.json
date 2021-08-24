@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/inventory",
+  "name": "@opensrp-web/inventory",
   "version": "0.0.8",
   "description": "Module to manage inventory, and service points",
   "main": "dist/index.js",
@@ -34,7 +34,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
+    "@opensrp-web/store": "^0.0.10",
     "i18next": "^19.8.4",
     "react": "^16.18.1",
     "react-query": "^3.15.1"
@@ -43,10 +43,10 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@opensrp/location-management": "^0.0.14",
-    "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/product-catalogue": "^0.0.8",
-    "@opensrp/react-utils": "^0.0.11",
+    "@opensrp-web/location-management": "^0.0.14",
+    "@opensrp-web/pkg-config": "^0.0.9",
+    "@opensrp-web/product-catalogue": "^0.0.8",
+    "@opensrp-web/react-utils": "^0.0.11",
     "axios": "^0.21.1",
     "date-fns": "2.11.1",
     "react-i18next": "^11.8.10"

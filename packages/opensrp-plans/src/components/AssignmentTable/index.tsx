@@ -7,14 +7,14 @@ import {
   Organization,
   reducer as organizationsReducer,
   reducerName as orgReducerName,
-} from '@opensrp/team-management';
+} from '@opensrp-web/team-management';
 import {
   assignmentsReducer,
   assignmentsReducerName,
   Assignment,
   fetchAssignments,
   getAssignmentsArrayByPlanId,
-} from '@opensrp/team-assignment';
+} from '@opensrp-web/team-assignment';
 import {
   JurisdictionsReducer,
   jurisdictionReducerName,
@@ -31,8 +31,8 @@ import {
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import { BrokenPage, Column, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+import { BrokenPage, Column, TableLayout, useHandleBrokenPage } from '@opensrp-web/react-utils';
+import { PlanDefinition } from '@opensrp-web/plan-form-core';
 import { getDataSource, TableData, getPlanAssignmentColumns } from './utils';
 import {
   fetchPlanDefinitions,

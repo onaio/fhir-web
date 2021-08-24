@@ -11,7 +11,7 @@ The keycloak api service module allows for making HTTP requests to the keycloak 
 ## Installation
 
 ```node
-yarn add @opensrp/keycloak-service
+yarn add @opensrp-web/keycloak-service
 ```
 
 ## Usage
@@ -57,7 +57,7 @@ This is thrown when the fetch error cannot go through due to a failed internet c
 ### Code example
 
 ```typescript
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
 
 const loadClients = async () => {
   const clientService = new KeycloakService(accessToken, keycloakEndpoint, keycloakBaseURL);

@@ -6,8 +6,8 @@ import {
   URL_MANIFEST_RELEASE_LIST,
   URL_LOCATION_UNIT,
 } from '../constants';
-import { interventionType, status, activities, PlanStatus } from '@opensrp/plan-form-core';
-import { PlanFormFieldsKeys } from '@opensrp/plan-form';
+import { interventionType, status, activities, PlanStatus } from '@opensrp-web/plan-form-core';
+import { PlanFormFieldsKeys } from '@opensrp-web/plan-form';
 
 import {
   ACTION_UUID_NAMESPACE,

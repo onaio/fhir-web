@@ -1,5 +1,5 @@
 import { Dictionary } from '@onaio/utils';
-import { InterventionType, PlanDefinition, UseContext } from '@opensrp/plan-form-core';
+import { InterventionType, PlanDefinition, UseContext } from '@opensrp-web/plan-form-core';
 import { Alert, Spin } from 'antd';
 import React from 'react';
 import { OPENSRP_TASK_EXPORT_DATA } from '../constants';
@@ -8,7 +8,7 @@ import {
   LOOKS_GOOD_CODE,
   SERVICE_POINT_CHECK_CODE,
   RECORD_GPS_CODE,
-} from '@opensrp/plan-form-core';
+} from '@opensrp-web/plan-form-core';
 
 /**
  * helper to retrieve the plan Type from a plan definition object

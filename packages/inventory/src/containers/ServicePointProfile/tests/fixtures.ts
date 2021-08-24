@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { LocationUnit } from '@opensrp/location-management/src/ducks/location-units';
+import { LocationUnit } from '@opensrp-web/location-management/src/ducks/location-units';
 import { Inventory } from '../../../ducks/inventory';
 
 export const opensrpBaseURL = 'https://test-example.com/rest/';

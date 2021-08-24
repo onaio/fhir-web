@@ -1,6 +1,6 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import { BrokenPage, Resource404, useHandleBrokenPage } from '@opensrp/react-utils';
+import { PlanDefinition, PlanStatus } from '@opensrp-web/plan-form-core';
+import { BrokenPage, Resource404, useHandleBrokenPage } from '@opensrp-web/react-utils';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';

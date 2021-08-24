@@ -5,16 +5,16 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import {
   releasesReducer,
   releasesReducerName,
   removeManifestReleases,
-} from '@opensrp/form-config-core';
+} from '@opensrp-web/form-config-core';
 import { fixManifestReleases, manifestRelease4 } from '../../../helpers/fixtures';
 import { ReleaseList } from '..';
 import lang from '../../../lang';
@@ -23,9 +23,9 @@ const history = createBrowserHistory();
 const mockHistoryPush = jest.fn();
 history.push = mockHistoryPush;
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');

@@ -10,10 +10,10 @@ import { createBrowserHistory } from 'history';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import * as opensrpStore from '@opensrp/store';
+import * as opensrpStore from '@opensrp-web/store';
 import { Provider } from 'react-redux';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import * as notifications from '@opensrp/notifications';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
+import * as notifications from '@opensrp-web/notifications';
 import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
@@ -25,14 +25,14 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
 
-jest.mock('@opensrp/store', () => ({
+jest.mock('@opensrp-web/store', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/store')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/store')),
 }));
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 const history = createBrowserHistory();

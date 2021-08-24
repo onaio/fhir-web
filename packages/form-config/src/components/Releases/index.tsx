@@ -11,14 +11,14 @@ import {
   ManifestReleasesTypes,
   formatDate,
   fetchReleaseFiles,
-} from '@opensrp/form-config-core';
+} from '@opensrp-web/form-config-core';
 import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
 import { Link } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
 import { Cell } from 'react-table';
 import { Dictionary } from '@onaio/utils';
-import { GetAccessTokenType } from '@opensrp/server-service';
+import { GetAccessTokenType } from '@opensrp-web/server-service';
 import lang from '../../lang';
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);

@@ -2,7 +2,7 @@ import {
   PlanDefinition,
   EnvConfig,
   PlanFormFields as BasePlanFormFields,
-} from '@opensrp/plan-form-core';
+} from '@opensrp-web/plan-form-core';
 import { Moment } from 'moment';
 
 /** called before submission starts, return true to proceed with submission */

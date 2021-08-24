@@ -7,7 +7,7 @@ import {
 } from '../utils';
 import { fixManifestFiles, downloadFile, fixManifestReleases } from '../../ducks/tests/fixtures';
 import fetch from 'jest-fetch-mock';
-import { getFetchOptions } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp-web/server-service';
 import { submitUploadForm, makeRelease } from '../utils';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';

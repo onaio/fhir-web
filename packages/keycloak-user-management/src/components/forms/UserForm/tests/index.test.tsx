@@ -4,7 +4,7 @@ import flushPromises from 'flush-promises';
 import React from 'react';
 import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { defaultUserFormInitialValues, UserForm } from '..';
 import {
@@ -15,7 +15,7 @@ import {
   value as FirstUser,
 } from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp-web/server-service';
 import { Router } from 'react-router';
 import { Form } from 'antd';
 import { URL_USER } from '../../../../constants';

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import { Dictionary } from '@onaio/utils';
 import {
   ACTIVE,
@@ -13,7 +13,7 @@ import {
 import { fetchLocationUnits, LocationUnit } from '../ducks/location-units';
 import { fetchTree } from '../ducks/locationHierarchy';
 import { RawOpenSRPHierarchy } from '../ducks/locationHierarchy/types';
-import { URLParams } from '@opensrp/server-service';
+import { URLParams } from '@opensrp-web/server-service';
 import { LocationUnitGroup } from '../ducks/location-unit-groups';
 
 /** Abstract 2 functions; get jurisdiction at any geo-level, get hierarchy */

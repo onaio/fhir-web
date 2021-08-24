@@ -5,11 +5,11 @@ Component that renders a form to create or edit OpenSRP plans. It implements cus
 ## Installation
 
 ```sh
-yarn add @opensrp/plan-form
+yarn add @opensrp-web/plan-form
 ```
 
 ```typescript
-import '@opensrp/plan-form/dist/index.css';
+import '@opensrp-web/plan-form/dist/index.css';
 ```
 
 ## Usage
@@ -79,8 +79,8 @@ predefine form field values
 ### Code examples
 
 ```typescript
-import {PlanForm} form '@opensrp/plan-form';
-import '@opensrp/plan-form/dist/index.css';
+import {PlanForm} form '@opensrp-web/plan-form';
+import '@opensrp-web/plan-form/dist/index.css';
 
 const formPage = () => {
   return (<PlanForm />)

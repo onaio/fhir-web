@@ -8,8 +8,8 @@ import {
   disabledTreeNodesCallback,
 } from '../utils';
 import React from 'react';
-import { generateJurisdictionTree } from '@opensrp/location-management/src/ducks/locationHierarchy/utils';
-import { rawOpenSRPHierarchy1 } from '@opensrp/location-management/src/components/LocationForm/tests/fixtures';
+import { generateJurisdictionTree } from '@opensrp-web/location-management/src/ducks/locationHierarchy/utils';
+import { rawOpenSRPHierarchy1 } from '@opensrp-web/location-management/src/components/LocationForm/tests/fixtures';
 const history = createBrowserHistory();
 
 const props = {

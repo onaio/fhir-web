@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { TableColumnsNamespace } from '../../constants';
 import { SelectOption } from '../AssignmentModal';
-import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
+import { Assignment, fetchAssignments } from '@opensrp-web/team-assignment';
 import { Dictionary, keyBy } from 'lodash';
-import { Organization } from '@opensrp/team-management';
+import { Organization } from '@opensrp-web/team-management';
 import { Jurisdiction } from '../../ducks/jurisdictions';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import { ActionColumn } from '../TableActionColumn';
-import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
+import { PlanDefinition } from '@opensrp-web/plan-form-core/dist/types';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
 import lang from '../../lang';
 import { ColumnType } from 'antd/lib/table/interface';

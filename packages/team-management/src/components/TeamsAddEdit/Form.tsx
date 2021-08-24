@@ -3,12 +3,12 @@ import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
 import { TEAMS_POST, PRACTITIONER_POST, PRACTITIONER_DEL, TEAMS_PUT } from '../../constants';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import {
   sendSuccessNotification,
   sendInfoNotification,
   sendErrorNotification,
-} from '@opensrp/notifications';
+} from '@opensrp-web/notifications';
 import { OrganizationPOST } from '../../ducks/organizations';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 import lang, { Lang } from '../../lang';

@@ -4,7 +4,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Column, TableLayout } from '..';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS } from '../../../constants';
-import { getConfig, setConfig } from '@opensrp/pkg-config';
+import { getConfig, setConfig } from '@opensrp-web/pkg-config';
 
 interface TableData {
   geographicLevel: number;

@@ -5,7 +5,7 @@ The package contains utility functions for displaying notifications
 ## Installation
 
 ```sh
-yarn add @opensrp/notifications
+yarn add @opensrp-web/notifications
 ```
 
 ## Usage

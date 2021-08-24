@@ -1,16 +1,19 @@
 import React from 'react';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
-import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
+import {
+  INVENTORY_BULK_UPLOAD_URL,
+  INVENTORY_SERVICE_POINT_LIST_VIEW,
+} from '@opensrp-web/inventory';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
   DRAFT_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,
   RETIRED_PLANS_LIST_VIEW_URL,
-} from '@opensrp/plans';
-import { isAuthorized } from '@opensrp/react-utils';
-import { CATALOGUE_LIST_VIEW_URL } from '@opensrp/product-catalogue';
-import ArchiveOutline from '@opensrp/ant-icons/lib/ArchiveOutline';
-import MapMarkerOutline from '@opensrp/ant-icons/lib/MapMarkerOutline';
+} from '@opensrp-web/plans';
+import { isAuthorized } from '@opensrp-web/react-utils';
+import { CATALOGUE_LIST_VIEW_URL } from '@opensrp-web/product-catalogue';
+import ArchiveOutline from '@opensrp-web/ant-icons/lib/ArchiveOutline';
+import MapMarkerOutline from '@opensrp-web/ant-icons/lib/MapMarkerOutline';
 import {
   ENABLE_PLANS,
   ENABLE_INVENTORY,

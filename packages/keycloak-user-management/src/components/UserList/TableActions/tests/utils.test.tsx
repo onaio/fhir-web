@@ -1,15 +1,15 @@
 import fetch from 'jest-fetch-mock';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { deleteUser } from '../utils';
 import lang from '../../../../lang';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...jest.requireActual('@opensrp/notifications'),
+  ...jest.requireActual('@opensrp-web/notifications'),
 }));
 
 describe('components/UserList/utils/deleteUser', () => {

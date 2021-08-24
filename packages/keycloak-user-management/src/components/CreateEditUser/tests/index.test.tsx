@@ -6,12 +6,12 @@ import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { store } from '@opensrp/store';
-import * as opensrpStore from '@opensrp/store';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
+import { store } from '@opensrp-web/store';
+import * as opensrpStore from '@opensrp-web/store';
+import { OPENSRP_API_BASE_URL } from '@opensrp-web/server-service';
 import { CreateEditUser, ConnectedCreateEditUser } from '..';
 import flushPromises from 'flush-promises';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import fetch from 'jest-fetch-mock';
 import toJson from 'enzyme-to-json';
 import {
@@ -32,17 +32,17 @@ import { defaultUserFormInitialValues } from '../../forms/UserForm';
 import { getFormValues } from '../../forms/UserForm/utils';
 import { Dictionary } from '@onaio/utils/dist/types/types';
 
-jest.mock('@opensrp/store', () => {
-  const actualStore = jest.requireActual('@opensrp/store');
+jest.mock('@opensrp-web/store', () => {
+  const actualStore = jest.requireActual('@opensrp-web/store');
   return {
     __esModule: true,
     ...actualStore,
   };
 });
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);

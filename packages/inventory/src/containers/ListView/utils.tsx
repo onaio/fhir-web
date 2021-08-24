@@ -3,8 +3,8 @@ import { Spin, Alert } from 'antd';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
-import { LocationUnit, TreeNode } from '@opensrp/location-management';
-import { Column } from '@opensrp/react-utils';
+import { LocationUnit, TreeNode } from '@opensrp-web/location-management';
+import { Column } from '@opensrp-web/react-utils';
 
 /** Describes how the data will passed to the table */
 export interface TableData {

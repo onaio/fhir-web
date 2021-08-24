@@ -6,7 +6,7 @@ import { MemoryRouter, Route, Router } from 'react-router';
 import { notification } from 'antd';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
 
 import Form, { onSubmit } from '../Form';

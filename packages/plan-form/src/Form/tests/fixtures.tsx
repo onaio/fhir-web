@@ -1,4 +1,4 @@
-import { PlanDefinition } from '@opensrp/plan-form-core';
+import { PlanDefinition } from '@opensrp-web/plan-form-core';
 
 export const mission1 = {
   identifier: '335ef7a3-7f35-58aa-8263-4419464946d8',

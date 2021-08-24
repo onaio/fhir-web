@@ -9,7 +9,7 @@ import {
   removeOrganizationsAction,
   setTotalOrganizationsAction,
 } from '../organizations';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import * as fixtures from './fixtures';
 
 reducerRegistry.register(reducerName, reducer);

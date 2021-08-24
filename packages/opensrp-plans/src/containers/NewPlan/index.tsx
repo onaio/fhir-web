@@ -1,7 +1,7 @@
 /** component renders view where users can create plans
  */
 import React from 'react';
-import { defaultInitialValues, PlanForm, processActivitiesDates } from '@opensrp/plan-form';
+import { defaultInitialValues, PlanForm, processActivitiesDates } from '@opensrp-web/plan-form';
 import { Layout, PageHeader } from 'antd';
 import Helmet from 'react-helmet';
 import {
@@ -18,7 +18,7 @@ import {
   getPlanActivitiesMap,
   InterventionType,
   planActivities,
-} from '@opensrp/plan-form-core';
+} from '@opensrp-web/plan-form-core';
 import { useHistory } from 'react-router';
 import lang from '../../lang';
 

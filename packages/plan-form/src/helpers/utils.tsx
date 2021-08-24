@@ -10,7 +10,7 @@ import {
   getPlanFormValues as getBasePlanFormValues,
   generatePlanDefinition as generateBasePlanDefinition,
   PlanDefinition,
-} from '@opensrp/plan-form-core';
+} from '@opensrp-web/plan-form-core';
 import { Rule } from 'rc-field-form/lib/interface';
 import moment, { Moment } from 'moment';
 import { PlanFormFields } from './types';

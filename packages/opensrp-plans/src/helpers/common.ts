@@ -1,5 +1,5 @@
-import { defaultEnvConfig, EnvConfig, PlanStatus } from '@opensrp/plan-form-core';
-import { PlanFormProps } from '@opensrp/plan-form/dist/types';
+import { defaultEnvConfig, EnvConfig, PlanStatus } from '@opensrp-web/plan-form-core';
+import { PlanFormProps } from '@opensrp-web/plan-form/dist/types';
 import {
   ACTIVE_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,

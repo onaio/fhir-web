@@ -14,15 +14,15 @@ import {
   OPENSRP_MANIFEST_ENDPOINT,
   makeRelease,
   fetchDrafts,
-} from '@opensrp/form-config-core';
-import { getFetchOptions } from '@opensrp/server-service';
+} from '@opensrp-web/form-config-core';
+import { getFetchOptions } from '@opensrp-web/server-service';
 import { Dictionary } from '@onaio/utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, Redirect } from 'react-router';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { getTableColumns } from './utils';
 import lang from '../../lang';
-import { TableLayout } from '@opensrp/react-utils';
+import { TableLayout } from '@opensrp-web/react-utils';
 import { TableActions } from './TableActions';
 
 /** Register reducer */

@@ -4,7 +4,7 @@ import React from 'react';
 import { createBrowserHistory } from 'history';
 import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
 import { authenticateUser } from '@onaio/session-reducer';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { Provider } from 'react-redux';
 import { RouteComponentProps, Router } from 'react-router';
 import { act } from 'react-dom/test-utils';

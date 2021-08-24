@@ -2,17 +2,17 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import { ManifestReleases, ConnectedManifestReleases } from '../index';
-import { getFetchOptions } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp-web/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import flushPromises from 'flush-promises';
 import {
   releasesReducer,
   releasesReducerName,
   removeManifestReleases,
-} from '@opensrp/form-config-core';
+} from '@opensrp-web/form-config-core';
 import { fixManifestReleases } from '../../../helpers/fixtures';
 import toJson from 'enzyme-to-json';
 import fetch from 'jest-fetch-mock';

@@ -22,7 +22,7 @@ import {
 import { Alert } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
-import { OpenSRPService, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
+import { OpenSRPService, TableLayout, useHandleBrokenPage } from '@opensrp-web/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);

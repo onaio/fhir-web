@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/location-management",
+  "name": "@opensrp-web/location-management",
   "version": "0.0.14",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
@@ -38,11 +38,11 @@
   "dependencies": {
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.4",
-    "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.11",
-    "@opensrp/reducer-factory": "^0.0.13",
-    "@opensrp/server-service": "^0.0.16",
+    "@opensrp-web/notifications": "^0.0.4",
+    "@opensrp-web/pkg-config": "^0.0.9",
+    "@opensrp-web/react-utils": "^0.0.11",
+    "@opensrp-web/reducer-factory": "^0.0.13",
+    "@opensrp-web/server-service": "^0.0.16",
     "cycle": "^1.0.3",
     "fast_array_intersect": "^1.1.0",
     "react-i18next": "^11.8.10",
@@ -56,7 +56,7 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
+    "@opensrp-web/store": "^0.0.10",
     "formik-antd": "^2.0.1",
     "i18next": "^19.8.4",
     "react": "^16.13.1",

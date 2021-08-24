@@ -3,15 +3,15 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import { ManifestDraftFiles, ConnectedManifestDraftFiles } from '../index';
-import { getFetchOptions } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp-web/server-service';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import flushPromises from 'flush-promises';
 import { FixManifestDraftFiles, downloadFile } from '../../../helpers/fixtures';
 import toJson from 'enzyme-to-json';
-import * as formConfigCore from '@opensrp/form-config-core';
+import * as formConfigCore from '@opensrp-web/form-config-core';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
@@ -24,9 +24,9 @@ const {
   removeManifestDraftFiles,
 } = formConfigCore;
 
-jest.mock('@opensrp/form-config-core', () => ({
+jest.mock('@opensrp-web/form-config-core', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/form-config-core')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/form-config-core')),
 }));
 
 /** register the reducers */

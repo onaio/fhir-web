@@ -1,12 +1,12 @@
 import Papaparse from 'papaparse';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp-web/server-service';
 import { DownloadClientDataFormFields } from '../DownloadClientData';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_URL_CLIENT_SEARCH, APPLICATION_CSV } from '../../constants';
 import { Client } from '../../ducks/clients';
 import { downloadFile } from '../../helpers/utils';
-import { ParsedHierarchyNode } from '@opensrp/location-management';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { ParsedHierarchyNode } from '@opensrp-web/location-management';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { Dictionary } from '@onaio/utils';
 import lang, { Lang } from '../../lang';
 /* eslint-disable @typescript-eslint/camelcase */

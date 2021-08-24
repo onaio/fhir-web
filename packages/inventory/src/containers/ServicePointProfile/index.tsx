@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
-import { Resource404, BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
+import { Resource404, BrokenPage, useHandleBrokenPage } from '@opensrp-web/react-utils';
 import {
   hierarchyReducer,
   hierarchyReducerName,
@@ -14,10 +14,10 @@ import {
   loadHierarchy,
   fetchTree,
   loadJurisdiction,
-} from '@opensrp/location-management';
+} from '@opensrp-web/location-management';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCords, GeographicLocationInterface } from './utils';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { Spin } from 'antd';
 import { Link, RouteComponentProps, useParams } from 'react-router-dom';
 import reducerRegistry from '@onaio/redux-reducer-registry';

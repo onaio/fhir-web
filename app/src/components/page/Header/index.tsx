@@ -9,10 +9,10 @@ import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import { BellOutlined } from '@ant-design/icons';
 import lang from '../../../lang';
-import { LanguageOptions, LanguageSwitcher } from '@opensrp/react-utils';
+import { LanguageOptions, LanguageSwitcher } from '@opensrp-web/react-utils';
 import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/env';
 import i18n from '../../../mls';
-import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
+import { getConfig, LanguageCode, setConfig } from '@opensrp-web/pkg-config';
 import { useTranslation } from 'react-i18next';
 
 /** interface for HeaderProps */

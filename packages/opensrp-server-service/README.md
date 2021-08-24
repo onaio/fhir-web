@@ -12,7 +12,7 @@ generic enough to be used on most apis. It exposes the below methods.
 ## Installation
 
 ```node
-yarn add @opensrp/server-service
+yarn add @opensrp-web/server-service
 ```
 
 ## Usage
@@ -54,7 +54,7 @@ This is thrown when the fetch error cannot go through due to a failed internet c
 ### Code example
 
 ```typescript
-import OpenSRPService from '@opensrp/server-service';
+import OpenSRPService from '@opensrp-web/server-service';
 
 function getFetchOptions(
   signal: AbortSignal,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Space, Button, Radio } from 'antd';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp-web/notifications';
 import { Redirect } from 'react-router';
 import { ExtraFields } from './ExtraFields';
 import {

@@ -4,7 +4,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { act } from 'react-dom/test-utils';
 import { getActiveKey } from '../../../components/page/Sidebar/utils';
 import toJson from 'enzyme-to-json';

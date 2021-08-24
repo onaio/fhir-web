@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import lang from '../../../lang';
 import { getUserGroupsOptions, submitForm, userGroupOptionsFilter } from './utils';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import '../../../index.css';
 import {
   CONTACT_FORM_FIELD,

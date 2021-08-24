@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { authenticateUser } from '@onaio/session-reducer';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { getDefaultHeaders, getFetchOptions } from '../../index';
 import fetch from 'jest-fetch-mock';
 import { customFetch, getFilterParams, KeycloakService } from '../serviceClass';

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { GoalUnit, PlanDefinition } from '@opensrp/plan-form-core';
+import { GoalUnit, PlanDefinition } from '@opensrp-web/plan-form-core';
 import { Jurisdiction } from '../../../ducks/jurisdictions';
 
 export const plan: PlanDefinition = {

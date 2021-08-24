@@ -9,7 +9,7 @@ This package has a set of components that are used to interact with keycloak api
 ## Installation
 
 ```node
-yarn add @opensrp/keycloak-user-management
+yarn add @opensrp-web/keycloak-user-management
 ```
 
 ## Code example
@@ -24,7 +24,7 @@ import {
   ROUTE_PARAM_USER_ID,
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
-} from '@opensrp/user-management';
+} from '@opensrp-web/user-management';
 
 const App = () => {
   return (

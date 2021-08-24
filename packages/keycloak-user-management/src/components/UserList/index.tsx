@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { Row, Col, Button, Space } from 'antd';
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
 import { Spin } from 'antd';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
+import {
+  createChangeHandler,
+  getQueryParams,
+  SearchForm,
+  TableLayout,
+} from '@opensrp-web/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -26,7 +31,7 @@ import lang from '../../lang';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { PaginationProps } from 'antd/lib/pagination';
 import { TableActions } from './TableActions';
 

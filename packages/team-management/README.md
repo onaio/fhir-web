@@ -6,5 +6,5 @@ This package has components for creating, editing, vieing or deleting a team.
 
 ```sh
 
-yarn add @opensrp/team-management
+yarn add @opensrp-web/team-management
 ```

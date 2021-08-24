@@ -1,7 +1,7 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { KeycloakService } from '@opensrp/keycloak-service';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { KeycloakService } from '@opensrp-web/keycloak-service';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp-web/notifications';
 import { KeycloakUser, UserGroup } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
@@ -10,10 +10,10 @@ import {
   KEYCLOAK_URL_USER_GROUPS,
   PRACTITIONER,
 } from '../../../constants';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import lang, { Lang } from '../../../lang';
 import { FormFields, SelectOption } from './types';
-import { Practitioner } from '@opensrp/team-management';
+import { Practitioner } from '@opensrp-web/team-management';
 import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
 /**

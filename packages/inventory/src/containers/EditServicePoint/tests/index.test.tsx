@@ -6,7 +6,7 @@ import { INVENTORY_ADD_SERVICE_POINT } from '../../../constants';
 import { baseLocationUnits, location1, rawHierarchy } from './fixtures';
 import { Provider } from 'react-redux';
 import { RouteComponentProps, Router } from 'react-router';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { commonHiddenFields } from '../../../helpers/utils';

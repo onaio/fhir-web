@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
 import { format } from 'util';
-import { Column, TableLayout } from '@opensrp/react-utils';
+import { Column, TableLayout } from '@opensrp-web/react-utils';
 
 type TableData = BadRequestError['errors'][0];
 

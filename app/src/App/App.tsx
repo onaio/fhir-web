@@ -1,5 +1,5 @@
 import React from 'react';
-import { Resource404, PrivateComponent, PublicComponent } from '@opensrp/react-utils';
+import { Resource404, PrivateComponent, PublicComponent } from '@opensrp-web/react-utils';
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
@@ -57,7 +57,7 @@ import {
   CreateProductView,
   CATALOGUE_EDIT_VIEW_URL,
   ConnectedEditProductView,
-} from '@opensrp/product-catalogue';
+} from '@opensrp-web/product-catalogue';
 import {
   ConnectedPlansList,
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -68,7 +68,7 @@ import {
   CreatePlanView,
   PLANS_CREATE_VIEW_URL,
   ConnectedPlanAssignment,
-} from '@opensrp/plans';
+} from '@opensrp-web/plans';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -84,9 +84,9 @@ import {
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
   CreateEditUserGroup,
-} from '@opensrp/user-management';
-import { TeamAssignmentView } from '@opensrp/team-assignment';
-import { DownloadClientData } from '@opensrp/card-support';
+} from '@opensrp-web/user-management';
+import { TeamAssignmentView } from '@opensrp-web/team-assignment';
+import { DownloadClientData } from '@opensrp-web/card-support';
 import {
   UploadForm,
   FileList,
@@ -94,17 +94,17 @@ import {
   DrafFileList,
   ReleaseList,
   ROUTE_PARAM_FORM_VERSION,
-} from '@opensrp/form-config-antd';
+} from '@opensrp-web/form-config-antd';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
-import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
+import { TeamsView, TeamsAddEdit } from '@opensrp-web/team-management';
 import {
   LocationUnitList,
   LocationUnitGroupAddEdit,
   LocationUnitGroupList,
   NewLocationUnit,
   EditLocationUnit,
-} from '@opensrp/location-management';
+} from '@opensrp-web/location-management';
 import {
   BaseProps,
   jsonValidatorListProps,
@@ -149,13 +149,13 @@ import {
   ROUTE_PARAM_INVENTORY_ID,
   URL_INVENTORY_EDIT,
   URL_INVENTORY_ADD,
-} from '@opensrp/inventory';
+} from '@opensrp-web/inventory';
 
-import '@opensrp/plans/dist/index.css';
-import '@opensrp/team-assignment/dist/index.css';
-import '@opensrp/user-management/dist/index.css';
-import '@opensrp/product-catalogue/dist/index.css';
-import '@opensrp/inventory/dist/index.css';
+import '@opensrp-web/plans/dist/index.css';
+import '@opensrp-web/team-assignment/dist/index.css';
+import '@opensrp-web/user-management/dist/index.css';
+import '@opensrp-web/product-catalogue/dist/index.css';
+import '@opensrp-web/inventory/dist/index.css';
 
 import { APP_LOGIN_URL } from '../dispatchConfig';
 import { useTranslation } from 'react-i18next';

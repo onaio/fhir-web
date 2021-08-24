@@ -1,6 +1,6 @@
 import React from 'react';
 import { CreateProductView } from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';

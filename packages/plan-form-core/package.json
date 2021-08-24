@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/plan-form-core",
+  "name": "@opensrp-web/plan-form-core",
   "version": "0.0.4",
   "description": "Core utils to support UIs for creating or editing plans",
   "main": "dist/index.js",

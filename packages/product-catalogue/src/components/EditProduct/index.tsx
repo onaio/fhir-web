@@ -20,8 +20,8 @@ import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { CatalogueLoading } from '../ListView/utils';
 import Helmet from 'react-helmet';
-import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
-import { Resource404 } from '@opensrp/react-utils';
+import { BrokenPage, useHandleBrokenPage } from '@opensrp-web/react-utils';
+import { Resource404 } from '@opensrp-web/react-utils';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
 

@@ -1,17 +1,17 @@
 import { mount } from 'enzyme';
 import { CustomSelect } from '..';
 import React from 'react';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import { act } from 'react-dom/test-utils';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
 import { locationTags } from '../../tests/fixtures';
 import { getLocationTagOptions } from '../../utils';
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 describe('FormComponents/CustomSelect', () => {

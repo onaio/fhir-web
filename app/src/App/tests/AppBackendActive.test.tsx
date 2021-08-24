@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import App from '../App';
 
 jest.mock('../../configs/env', () => ({

@@ -1,5 +1,5 @@
-import { RawOpenSRPHierarchy } from '@opensrp/location-management';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+import { RawOpenSRPHierarchy } from '@opensrp-web/location-management';
+import { PlanDefinition } from '@opensrp-web/plan-form-core';
 import { processRawAssignments } from '../../../ducks/assignments/utils';
 
 export const samplePlan: PlanDefinition = {

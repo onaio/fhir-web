@@ -1,7 +1,7 @@
 import moment from 'moment';
-import { sendErrorNotification } from '@opensrp/notifications';
-import { OpenSRPService, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
-import { HTTPError } from '@opensrp/server-service';
+import { sendErrorNotification } from '@opensrp-web/notifications';
+import { OpenSRPService, handleSessionOrTokenExpiry } from '@opensrp-web/react-utils';
+import { HTTPError } from '@opensrp-web/server-service';
 import { InventoryPost } from '../../ducks/inventory';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_ENDPOINT_STOCK_RESOURCE } from '../../constants';

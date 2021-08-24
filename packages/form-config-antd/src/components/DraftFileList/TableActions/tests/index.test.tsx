@@ -4,13 +4,13 @@ import { TableActions } from '..';
 import { shallow, mount } from 'enzyme';
 import fetch from 'jest-fetch-mock';
 import { draftFile1, downloadFile } from '../../../../helpers/fixtures';
-import * as helpers from '@opensrp/form-config-core';
+import * as helpers from '@opensrp-web/form-config-core';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 
-jest.mock('@opensrp/form-config-core', () => ({
+jest.mock('@opensrp-web/form-config-core', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/form-config-core')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/form-config-core')),
 }));
 
 describe('components/Antd/DraftFilelist/TableActions', () => {

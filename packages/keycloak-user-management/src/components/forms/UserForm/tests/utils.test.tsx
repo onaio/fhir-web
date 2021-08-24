@@ -1,19 +1,19 @@
 import { submitForm, createOrEditPractitioners, getUserFormPayload } from '../utils';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
-import { store } from '@opensrp/store';
+import { OPENSRP_API_BASE_URL } from '@opensrp-web/server-service';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { history } from '@onaio/connected-reducer-registry';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import { value, keycloakUser, practitioner1, userGroup } from './fixtures';
 import { FormFields } from '../types';
 import { cloneDeep } from 'lodash';
 import { Dictionary } from '@onaio/utils/dist/types/types';
 
-jest.mock('@opensrp/notifications', () => {
-  const actualNotifications = jest.requireActual('@opensrp/notifications');
+jest.mock('@opensrp-web/notifications', () => {
+  const actualNotifications = jest.requireActual('@opensrp-web/notifications');
   return {
     __esModule: true,
     ...actualNotifications,

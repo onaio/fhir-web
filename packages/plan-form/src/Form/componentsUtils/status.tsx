@@ -1,6 +1,6 @@
 import React from 'react';
 import { Radio, Popconfirm } from 'antd';
-import { PlanStatus, planStatusDisplay, status } from '@opensrp/plan-form-core';
+import { PlanStatus, planStatusDisplay, status } from '@opensrp-web/plan-form-core';
 import { FormInstance } from 'antd/lib/form';
 import lang from '../../lang';
 import { PlanFormFields } from '../../helpers/types';

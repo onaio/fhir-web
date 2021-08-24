@@ -21,4 +21,4 @@
 
 - run `lerna:prepublish` script.
   - This runs build script in each of the package, generating the dist folder.
-  - One can target a specific package by passing in `--scope` flag e.g. `--scope @opensrp/opensrp-store`
+  - One can target a specific package by passing in `--scope` flag e.g. `--scope @opensrp-web/opensrp-store`

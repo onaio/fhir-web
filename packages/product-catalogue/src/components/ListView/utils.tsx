@@ -8,7 +8,7 @@ import {
 } from '../../constants';
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
-import { Column } from '@opensrp/react-utils';
+import { Column } from '@opensrp-web/react-utils';
 
 /**
  * component rendered in the action column of the table

@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import React from 'react';
 import { Dictionary } from '@onaio/utils';
 import { SelectProps } from 'antd/lib/select';

@@ -7,7 +7,7 @@ import {
   getItemsArrayFactory,
   getItemByIdFactory,
   getTotalRecordsFactory,
-} from '@opensrp/reducer-factory';
+} from '@opensrp-web/reducer-factory';
 
 /** interface for location Unit Group **/
 export interface LocationUnitGroup {

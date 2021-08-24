@@ -1,4 +1,4 @@
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';

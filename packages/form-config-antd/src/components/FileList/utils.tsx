@@ -1,5 +1,5 @@
 import { Dictionary } from '@onaio/utils';
-import { formatDate } from '@opensrp/form-config-core';
+import { formatDate } from '@opensrp-web/form-config-core';
 import lang, { Lang } from '../../lang';
 
 /**

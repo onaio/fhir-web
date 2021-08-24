@@ -5,11 +5,11 @@ Provides UI components and utils for managing inventory items per service point
 ## Installation
 
 ```sh
-yarn add @opensrp/inventory
+yarn add @opensrp-web/inventory
 ```
 
 ```typescript
-import '@opensrp/inventory/dist/index.css';
+import '@opensrp-web/inventory/dist/index.css';
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ Use this component to create a view for adding a new inventory item or editing a
 To add a view for adding a new inventory item:
 
 ```tsx
-import { ConnectedInventoryAddEdit, ROUTE_PARAM_SERVICE_POINT_ID } from '@opensrp/inventory';
+import { ConnectedInventoryAddEdit, ROUTE_PARAM_SERVICE_POINT_ID } from '@opensrp-web/inventory';
 
 
 const props = {
@@ -46,7 +46,7 @@ import {
 ConnectedInventoryAddEdit,
 ROUTE_PARAM_SERVICE_POINT_ID,
 ROUTE_PARAM_INVENTORY_ITEM_ID
-} from '@opensrp/inventory';
+} from '@opensrp-web/inventory';
 
 
 const props = {
@@ -81,7 +81,7 @@ const props = {
 To add a view for inventory list:
 
 ```tsx
-import { ConnectedServicePointList } from '@opensrp/inventory';
+import { ConnectedServicePointList } from '@opensrp-web/inventory';
 
 const props = {
 	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
@@ -104,7 +104,7 @@ const props = {
 To add a view for service point profile:
 
 ```tsx
-import { ServicePointProfile, INVENTORY_SERVICE_POINT_PROFILE_PARAM } from '@opensrp/inventory';
+import { ServicePointProfile, INVENTORY_SERVICE_POINT_PROFILE_PARAM } from '@opensrp-web/inventory';
 
 const props = {
 	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',
@@ -129,7 +129,7 @@ const props = {
 To add a view for uploading inventories:
 
 ```tsx
-import { BulkUpload } from '@opensrp/inventory';
+import { BulkUpload } from '@opensrp-web/inventory';
 
 const props = {
 	openSRPBaseURL: 'https://opensrp-stage.smartregister.org/opensrp/rest',

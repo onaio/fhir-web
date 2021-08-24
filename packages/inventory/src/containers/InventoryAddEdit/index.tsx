@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Typography, Spin } from 'antd';
 import { Helmet } from 'react-helmet';
-import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
+import { OpenSRPService, Resource404 } from '@opensrp-web/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import lang from '../../lang';
 import { fetchSettings } from './utils';
 import { Setting } from '../../components/InventoryItemForm';
-import { sendErrorNotification } from '@opensrp/notifications';
-import { getFetchOptions, HTTPError } from '@opensrp/server-service';
+import { sendErrorNotification } from '@opensrp-web/notifications';
+import { getFetchOptions, HTTPError } from '@opensrp-web/server-service';
 import { RouteComponentProps } from 'react-router';
 import {
   fetchLocationUnits,
@@ -18,7 +18,7 @@ import {
   LocationUnit,
   locationUnitsReducerName,
   locationUnitsReducer,
-} from '@opensrp/location-management';
+} from '@opensrp-web/location-management';
 import {
   INVENTORY_DONORS,
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
@@ -37,7 +37,7 @@ import {
   inventoryReducerName,
 } from '../../ducks/inventory';
 import { InventoryItemForm, defaultInitialValues } from '../../components/InventoryItemForm';
-import { ProductCatalogue } from '@opensrp/product-catalogue';
+import { ProductCatalogue } from '@opensrp-web/product-catalogue';
 
 /** register reducers */
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);

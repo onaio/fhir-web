@@ -6,7 +6,7 @@ import { Assignment } from '../../ducks/assignments';
 import lang, { Lang } from '../../lang';
 import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
-import { Column } from '@opensrp/react-utils';
+import { Column } from '@opensrp-web/react-utils';
 
 /** component rendered in the action column of the table
  *

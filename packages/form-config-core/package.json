@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/form-config-core",
+  "name": "@opensrp-web/form-config-core",
   "version": "0.0.3",
   "description": "",
   "main": "dist/index.js",
@@ -42,10 +42,10 @@
   },
   "dependencies": {
     "@onaio/utils": "^0.0.1",
-    "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.11",
-    "@opensrp/reducer-factory": "^0.0.13",
-    "@opensrp/server-service": "^0.0.17",
+    "@opensrp-web/pkg-config": "^0.0.9",
+    "@opensrp-web/react-utils": "^0.0.11",
+    "@opensrp-web/reducer-factory": "^0.0.13",
+    "@opensrp-web/server-service": "^0.0.17",
     "date-fns": "^2.17.0",
     "react-i18next": "^11.8.10"
   },

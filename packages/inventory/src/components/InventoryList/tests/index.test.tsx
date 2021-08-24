@@ -1,5 +1,5 @@
 import React from 'react';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { createBrowserHistory } from 'history';

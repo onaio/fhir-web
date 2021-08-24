@@ -11,7 +11,7 @@ import {
   getItemsArrayFactory,
   getItemByIdFactory,
   getTotalRecordsFactory,
-} from '@opensrp/reducer-factory';
+} from '@opensrp-web/reducer-factory';
 
 /** interface for a single Product catalogue as received from the api **/
 export interface ProductCatalogue {

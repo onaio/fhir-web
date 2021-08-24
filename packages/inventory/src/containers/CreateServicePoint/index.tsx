@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormInstances, LocationUnit, NewLocationUnit } from '@opensrp/location-management';
+import { FormInstances, LocationUnit, NewLocationUnit } from '@opensrp-web/location-management';
 import { RouteComponentProps } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import {
@@ -7,7 +7,7 @@ import {
   INVENTORY_SERVICE_POINT_LIST_VIEW,
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 } from '../../constants';
-import { LocationFormFields } from '@opensrp/location-management/dist/types/components/LocationForm/utils';
+import { LocationFormFields } from '@opensrp-web/location-management/dist/types/components/LocationForm/utils';
 import { commonHiddenFields, disabledTreeNodesCallback } from '../../helpers/utils';
 
 type ServicePointAddTypes = CommonProps & RouteComponentProps;

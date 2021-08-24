@@ -5,14 +5,14 @@ import { Row, Col, Spin, PageHeader } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import {
   createChangeHandler,
   getQueryParams,
   SearchForm,
   TableLayout,
   Column,
-} from '@opensrp/react-utils';
+} from '@opensrp-web/react-utils';
 import {
   reducerName as keycloakUserRolesReducerName,
   reducer as keycloakUserRolesReducer,

@@ -2,11 +2,11 @@ import React from 'react';
 import { Spin, Alert } from 'antd';
 import { TableColumnsNamespace, URL_MISSIONS } from '../../constants';
 import { Link } from 'react-router-dom';
-import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
+import { PlanDefinition, PlanStatus } from '@opensrp-web/plan-form-core';
 import moment from 'moment';
 import { Dictionary } from '@onaio/utils';
 import lang from '../../lang';
-import { Column } from '@opensrp/react-utils';
+import { Column } from '@opensrp-web/react-utils';
 
 /**
  * component rendered in the action column of the table

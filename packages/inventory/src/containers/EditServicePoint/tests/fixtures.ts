@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import { LocationUnit, LocationUnitStatus } from '@opensrp/location-management';
+import { LocationUnit, LocationUnitStatus } from '@opensrp-web/location-management';
 
 export const location1: LocationUnit = {
   type: 'Feature',

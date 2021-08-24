@@ -1,4 +1,4 @@
-import { logout } from '@opensrp/server-logout';
+import { logout } from '@opensrp-web/server-logout';
 import React from 'react';
 import {
   DOMAIN_NAME,
@@ -7,11 +7,11 @@ import {
   EXPRESS_OAUTH_LOGOUT_URL,
   BACKEND_ACTIVE,
 } from '../../configs/env';
-import { getFetchOptions } from '@opensrp/keycloak-service';
+import { getFetchOptions } from '@opensrp-web/keycloak-service';
 import { getAccessToken } from '@onaio/session-reducer';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { Spin } from 'antd';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { useHistory } from 'react-router';
 import lang from '../../lang';
 import { useTranslation } from 'react-i18next';

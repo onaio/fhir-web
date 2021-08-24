@@ -1,17 +1,17 @@
 import MockDate from 'mockdate';
 import moment from 'moment';
 import { authenticateUser } from '@onaio/session-reducer';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import { isDateFuture, isDatePastOrToday, submitForm } from '../utils';
 import lang from '../../../lang';
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 describe('components/InventoryItemForm/utils/submitForm', () => {

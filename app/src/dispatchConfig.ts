@@ -4,7 +4,7 @@ import {
   ProjectLanguageCode,
   setAllConfigs,
   getAllConfigs,
-} from '@opensrp/pkg-config';
+} from '@opensrp-web/pkg-config';
 import {
   BACKEND_ACTIVE,
   DEFAULTS_TABLE_PAGE_SIZE,

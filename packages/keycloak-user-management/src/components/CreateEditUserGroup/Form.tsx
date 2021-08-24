@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Transfer } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { URL_USER_GROUPS } from '../../constants';
 import lang from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ManifestReleasesTypes } from '@opensrp/form-config-core';
+import { ManifestReleasesTypes } from '@opensrp-web/form-config-core';
 import lang from '../../../lang';
 
 /** interface for component props */

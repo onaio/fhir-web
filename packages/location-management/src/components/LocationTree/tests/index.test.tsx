@@ -3,7 +3,7 @@ import React from 'react';
 import Tree from '../';
 import flushPromises from 'flush-promises';
 import { treedata } from '../../../ducks/locationHierarchy/tests/hierarchyFixtures';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { Provider } from 'react-redux';
 import { act } from 'react-dom/test-utils';
 import toJson from 'enzyme-to-json';

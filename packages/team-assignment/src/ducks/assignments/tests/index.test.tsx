@@ -10,7 +10,7 @@ import {
   resetPlanAssignments,
 } from '..';
 import * as fixtures from './fixtures';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { processRawAssignments } from '../utils';
 
 reducerRegistry.register(assignmentsReducerName, assignmentsReducer);

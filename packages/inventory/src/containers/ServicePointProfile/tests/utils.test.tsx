@@ -1,4 +1,4 @@
-import { generateJurisdictionTree } from '@opensrp/location-management';
+import { generateJurisdictionTree } from '@opensrp-web/location-management';
 import { getCords, getNodePath } from '../utils';
 import { geographicHierarchy, madagascarTree, structure2 } from './fixtures';
 

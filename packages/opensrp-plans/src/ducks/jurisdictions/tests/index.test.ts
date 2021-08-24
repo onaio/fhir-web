@@ -7,7 +7,7 @@ import {
   getJursByGeoLevel,
   removeJurisdictions,
 } from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { jurisdiction1, jurisdictions } from './fixtures';
 
 reducerRegistry.register(jurisdictionReducerName, JurisdictionsReducer);

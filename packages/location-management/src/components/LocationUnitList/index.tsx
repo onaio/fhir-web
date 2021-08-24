@@ -5,7 +5,7 @@ import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp-web/react-utils';
 import {
   LocationUnit,
   locationUnitsReducer,
@@ -22,7 +22,7 @@ import lang, { Lang } from '../../lang';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   reducer as locationHierarchyReducer,

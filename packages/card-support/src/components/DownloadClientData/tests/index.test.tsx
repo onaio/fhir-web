@@ -1,10 +1,10 @@
 import React from 'react';
 import { DownloadClientData } from '..';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp-web/server-service';
 import fetch from 'jest-fetch-mock';
-import { locationHierachyDucks } from '@opensrp/location-management';
+import { locationHierachyDucks } from '@opensrp-web/location-management';
 import { shallow, mount } from 'enzyme';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
@@ -14,15 +14,15 @@ import flushPromises from 'flush-promises';
 import { authenticateUser } from '@onaio/session-reducer';
 import Papaparse from 'papaparse';
 import * as globalUtils from '../../../helpers/utils';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import lang from '../../../lang';
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 jest.mock('antd', () => {
@@ -125,7 +125,7 @@ describe('components/DownloadClientData', () => {
      * the duplicate key warning when running tests
      *
      * Currently, there isn't an action method to remove all hierachies. If one is made
-     * available from the package @opensrp/location-management, then it should be used here
+     * available from the package @opensrp-web/location-management, then it should be used here
      */
   });
 

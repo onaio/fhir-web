@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConnectedPlansList } from '..';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
@@ -12,7 +12,7 @@ import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { getColumns, pageTitleBuilder } from '../utils';
 import lang from '../../../lang';
-import { PlanStatus } from '@opensrp/plan-form-core';
+import { PlanStatus } from '@opensrp-web/plan-form-core';
 
 const columns = getColumns(lang);
 

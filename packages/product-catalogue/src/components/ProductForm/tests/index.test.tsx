@@ -6,18 +6,18 @@ import { MemoryRouter } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
 import toJson from 'enzyme-to-json';
 import { product1 } from '../../../ducks/productCatalogue/tests/fixtures';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
 import { product2, product3 } from './fixtures';
-import * as opensrpReactUtils from '@opensrp/react-utils';
+import * as opensrpReactUtils from '@opensrp-web/react-utils';
 
-jest.mock('@opensrp/notifications', () => {
+jest.mock('@opensrp-web/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
 });
 
-jest.mock('@opensrp/react-utils', () => ({
+jest.mock('@opensrp-web/react-utils', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/react-utils')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/react-utils')),
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

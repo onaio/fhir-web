@@ -10,7 +10,7 @@ The configuration files include:
 ## Instalation
 
 ```node
-yarn add @opensrp/form-config
+yarn add @opensrp-web/form-config
 ```
 
 ## Code Sample
@@ -24,7 +24,7 @@ import '@onaio/drill-down-table/dist/table.css';
 ### Form upload and Edit
 
 ```typescript
-import ConnectedUploadConfigFile from '@opensrp/form-config'
+import ConnectedUploadConfigFile from '@opensrp-web/form-config'
 
 const UploadConfigFilePage = () => {
 
@@ -45,7 +45,7 @@ const UploadConfigFilePage = () => {
 ### List manifest releases
 
 ```typescript
-import ConnectedManifestReleases from '@opensrp/form-config'
+import ConnectedManifestReleases from '@opensrp-web/form-config'
 
 const ManifestReleasesPage = () => {
 
@@ -67,7 +67,7 @@ const ManifestReleasesPage = () => {
 Create the list view component
 
 ```ts
-import { AntdReleaseList } from '@opensrp/form-config';
+import { AntdReleaseList } from '@opensrp-web/form-config';
 
 const { ReleaseList } = AntdReleaseList;
 
@@ -83,7 +83,7 @@ const ManifestReleasesPage = () => {
 Create the view component that displays a details record
 
 ```ts
-import { AntdFilesList } from '@opensrp/form-config';
+import { AntdFilesList } from '@opensrp-web/form-config';
 
 const { FileList } = AndFilesList;
 
@@ -98,7 +98,7 @@ const ManifestReleaseViewPage = () => {
 Create the upload form component to upload a draft form
 
 ```ts
-import { AntdUploadForm } from '@opensrp/form-config';
+import { AntdUploadForm } from '@opensrp-web/form-config';
 
 const { UploadForm } = AntdUploadForm;
 
@@ -114,7 +114,7 @@ const UploadDraftPage = () => {
 Declare routes
 
 ```tsx
-import { ROUTE_PARAM_FORM_VERSION } from '@opensrp/form-config';
+import { ROUTE_PARAM_FORM_VERSION } from '@opensrp-web/form-config';
 // releases list view
 <Route path="/releases">
   <ManifestReleasesPage />
@@ -134,7 +134,7 @@ import { ROUTE_PARAM_FORM_VERSION } from '@opensrp/form-config';
 ### List JSON validators and config forms
 
 ```typescript
-import ConnectedManifestFilesList from '@opensrp/form-config'
+import ConnectedManifestFilesList from '@opensrp-web/form-config'
 
 const JsonValidatorsPage = () => {
 
@@ -158,7 +158,7 @@ const JsonValidatorsPage = () => {
 Create the list view component
 
 ```ts
-import { AntdFilesList } from '@opensrp/form-config';
+import { AntdFilesList } from '@opensrp-web/form-config';
 
 const { FileList } = AntdFilesList;
 
@@ -174,7 +174,7 @@ const JsonValidatorsPage = () => {
 Create the upload form component
 
 ```ts
-import { AntdUploadForm } from '@opensrp/form-config';
+import { AntdUploadForm } from '@opensrp-web/form-config';
 
 const { UploadForm } = AntdUploadForm;
 
@@ -190,7 +190,7 @@ const UploadJsonValidatorPage = () => {
 Declare routes
 
 ```tsx
-import { ROUTE_PARAM_FORM_ID } from '@opensrp/form-config';
+import { ROUTE_PARAM_FORM_ID } from '@opensrp-web/form-config';
 
 // json validators list view
 <Route path="/json-validators">
@@ -211,7 +211,7 @@ import { ROUTE_PARAM_FORM_ID } from '@opensrp/form-config';
 ### List Draft files
 
 ```typescript
-import ManifestDraftFiles from '@opensrp/form-config'
+import ManifestDraftFiles from '@opensrp-web/form-config'
 
 const DraftListPage = () => {
 
@@ -234,7 +234,7 @@ const DraftListPage = () => {
 Create the list view component
 
 ```ts
-import { AntdDraftFileList } from '@opensrp/form-config';
+import { AntdDraftFileList } from '@opensrp-web/form-config';
 
 const { DraftList } = AntdDraftFileList;
 
@@ -250,7 +250,7 @@ const DraftListPage = () => {
 Create the upload form component
 
 ```ts
-import { AntdUploadForm } from '@opensrp/form-config';
+import { AntdUploadForm } from '@opensrp-web/form-config';
 
 const { UploadForm } = AntdUploadForm;
 
@@ -266,7 +266,7 @@ const UploadDraftPage = () => {
 Declare routes
 
 ```tsx
-import { ROUTE_PARAM_FORM_ID } from '@opensrp/form-config';
+import { ROUTE_PARAM_FORM_ID } from '@opensrp-web/form-config';
 
 // drafts list view
 <Route path="/drafts">

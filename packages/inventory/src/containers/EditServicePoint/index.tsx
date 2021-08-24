@@ -3,7 +3,7 @@ import {
   EditLocationUnit,
   LocationRouteProps,
   LocationUnit,
-} from '@opensrp/location-management';
+} from '@opensrp-web/location-management';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import React from 'react';

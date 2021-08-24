@@ -1,6 +1,6 @@
 /** data loading functions */
-import { handleSessionOrTokenExpiry, OpenSRPService } from '@opensrp/react-utils';
-import { URLParams } from '@opensrp/server-service/dist/types';
+import { handleSessionOrTokenExpiry, OpenSRPService } from '@opensrp-web/react-utils';
+import { URLParams } from '@opensrp-web/server-service/dist/types';
 import axios, { AxiosResponse, CancelToken } from 'axios';
 import { split, trim } from 'lodash';
 import {

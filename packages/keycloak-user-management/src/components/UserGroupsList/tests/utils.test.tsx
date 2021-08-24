@@ -1,6 +1,6 @@
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import * as notifications from '@opensrp/notifications';
+import * as notifications from '@opensrp-web/notifications';
 import * as fixtures from '../../UserGroupDetailView/tests/fixtures';
 import { loadGroupDetails, loadGroupMembers } from '../utils';
 import fetch from 'jest-fetch-mock';
@@ -8,9 +8,9 @@ import lang from '../../../lang';
 
 const mockBaseURL = 'https://example.com/rest';
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 describe('dataLoading', () => {

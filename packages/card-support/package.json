@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/card-support",
+  "name": "@opensrp-web/card-support",
   "version": "0.0.8",
   "description": "OpenSRP card support features",
   "main": "dist/index.js",
@@ -34,7 +34,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
+    "@opensrp-web/store": "^0.0.10",
     "antd": "^4.6.3",
     "i18next": "^19.8.4",
     "react": "^16.18.1"
@@ -43,11 +43,11 @@
     "@ant-design/icons": "^4.2.2",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/location-management": "^0.0.14",
-    "@opensrp/notifications": "^0.0.5",
-    "@opensrp/react-utils": "^0.0.11",
-    "@opensrp/reducer-factory": "^0.0.9",
-    "@opensrp/server-service": "^0.0.16",
+    "@opensrp-web/location-management": "^0.0.14",
+    "@opensrp-web/notifications": "^0.0.5",
+    "@opensrp-web/react-utils": "^0.0.11",
+    "@opensrp-web/reducer-factory": "^0.0.9",
+    "@opensrp-web/server-service": "^0.0.16",
     "papaparse": "^5.3.0",
     "react-i18next": "^11.8.10"
   },

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { getConfig } from '@opensrp/pkg-config';
+import { getConfig } from '@opensrp-web/pkg-config';
 import { loadLanguageResources } from './helpers/utils';
 import type { i18n as i18nInstance } from 'i18next';
 

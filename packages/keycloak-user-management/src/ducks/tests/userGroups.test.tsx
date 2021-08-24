@@ -1,7 +1,7 @@
 /** Test file for the practitioners ducks module */
 import { keyBy } from 'lodash';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import {
   fetchKeycloakUserGroups,
   getKeycloakUserGroupsArray,

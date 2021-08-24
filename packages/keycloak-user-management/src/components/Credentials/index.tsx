@@ -4,7 +4,7 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
+import { KeycloakService, HTTPError } from '@opensrp-web/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
 import '../../index.css';
 import {
@@ -22,7 +22,7 @@ import {
   KeycloakUser,
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
-import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
+import { sendSuccessNotification, sendErrorNotification } from '@opensrp-web/notifications';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 

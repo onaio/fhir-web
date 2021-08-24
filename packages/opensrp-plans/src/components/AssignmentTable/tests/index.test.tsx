@@ -8,7 +8,7 @@ import {
   plan,
   sampleRawAssignments,
 } from './fixtures';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { Provider } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
@@ -19,8 +19,8 @@ import {
 import { act } from 'react-dom/test-utils';
 import { jurisdictions } from './fixtures';
 import { Jurisdiction, removeJurisdictions } from '../../../ducks/jurisdictions';
-import { removeAssignmentsAction } from '@opensrp/team-assignment';
-import { Organization, removeOrganizationsAction } from '@opensrp/team-management';
+import { removeAssignmentsAction } from '@opensrp-web/team-assignment';
+import { Organization, removeOrganizationsAction } from '@opensrp-web/team-management';
 import lang from '../../../lang';
 import { Dictionary } from '@onaio/utils';
 import MockDate from 'mockdate';

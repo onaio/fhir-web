@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import { mount, shallow } from 'enzyme';
 import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';

@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/notifications",
+  "name": "@opensrp-web/notifications",
   "version": "0.0.5",
   "description": "Utility functions for dispaying OpenSRP web notifications",
   "main": "dist/index.js",

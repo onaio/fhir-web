@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Row, PageHeader, Col, Button } from 'antd';
-import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
+import {
+  createChangeHandler,
+  getQueryParams,
+  SearchForm,
+  TableLayout,
+} from '@opensrp-web/react-utils';
 import {
   TreeNode,
   fetchTree,
@@ -14,7 +19,7 @@ import {
   LocationUnit,
   getLocationsBySearch,
   getTreesByIds,
-} from '@opensrp/location-management';
+} from '@opensrp-web/location-management';
 import { connect } from 'react-redux';
 import {
   ServicePointsLoading,
@@ -25,7 +30,7 @@ import {
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, useHandleBrokenPage } from '@opensrp-web/react-utils';
 import { Helmet } from 'react-helmet';
 import {
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
@@ -35,7 +40,7 @@ import {
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
-import { sendErrorNotification } from '@opensrp/notifications';
+import { sendErrorNotification } from '@opensrp-web/notifications';
 import { loadCount } from '../../helpers/dataLoaders';
 
 /** make sure locations and hierarchy reducer is registered */

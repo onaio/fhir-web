@@ -1,18 +1,18 @@
 import flushPromises from 'flush-promises';
-import * as serverLogout from '@opensrp/server-logout';
+import * as serverLogout from '@opensrp-web/server-logout';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { CustomLogout } from '..';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
-import { store } from '@opensrp/store';
-import * as notifications from '@opensrp/notifications';
+import { store } from '@opensrp-web/store';
+import * as notifications from '@opensrp-web/notifications';
 import { act } from 'react-dom/test-utils';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
 jest.mock('../../../configs/env');

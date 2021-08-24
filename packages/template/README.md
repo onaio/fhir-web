@@ -5,17 +5,17 @@
 ## Installation
 
 ```sh
-yarn add @opensrp/template
+yarn add @opensrp-web/template
 ```
 
-<!-- 
+<!--
 Include further installation instructions, for instance if the package requires for the user
 to manually add css.
 -->
 
 ## Usage
 
-<!-- 
+<!--
 
 ### Props/ Configuration
 
@@ -29,7 +29,7 @@ When the table is rendered, you can click anywhere on a row to drill down to the
 
 ### Code examples
 
-<!-- 
+<!--
 
 A single simple, minimal, working snippet for each use-case that the package supports
 

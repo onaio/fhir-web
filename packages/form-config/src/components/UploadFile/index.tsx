@@ -12,9 +12,9 @@ import {
   getManifestFilesById,
   filesReducerName,
   submitUploadForm,
-} from '@opensrp/form-config-core';
+} from '@opensrp-web/form-config-core';
 import { Dictionary } from '@onaio/utils';
-import { GetAccessTokenType } from '@opensrp/server-service';
+import { GetAccessTokenType } from '@opensrp-web/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import lang from '../../lang';
 

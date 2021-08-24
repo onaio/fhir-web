@@ -6,15 +6,15 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
-import { store } from '@opensrp/store';
+import { store } from '@opensrp-web/store';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { filesReducer, fetchManifestFiles, filesReducerName } from '@opensrp/form-config-core';
+import { filesReducer, fetchManifestFiles, filesReducerName } from '@opensrp-web/form-config-core';
 import { fixManifestFiles } from '../../../helpers/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
-import * as notifications from '@opensrp/notifications';
-import { OpenSRPService } from '@opensrp/server-service';
+import * as notifications from '@opensrp-web/notifications';
+import { OpenSRPService } from '@opensrp-web/server-service';
 import lang from '../../../lang';
 
 /** register the reducers */
@@ -24,14 +24,14 @@ const history = createBrowserHistory();
 
 const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
-jest.mock('@opensrp/notifications', () => ({
+jest.mock('@opensrp-web/notifications', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/notifications')),
 }));
 
-jest.mock('@opensrp/server-service', () => ({
+jest.mock('@opensrp-web/server-service', () => ({
   __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/server-service')),
+  ...Object.assign({}, jest.requireActual('@opensrp-web/server-service')),
 }));
 
 const props = {

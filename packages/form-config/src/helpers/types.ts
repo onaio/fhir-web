@@ -1,4 +1,4 @@
-import { getFetchOptions } from '@opensrp/server-service';
+import { getFetchOptions } from '@opensrp-web/server-service';
 import { ToastOptions } from 'react-toastify';
 import { DrillDownTableProps } from '@onaio/drill-down-table';
 

@@ -5,14 +5,14 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Upload, Space, Button } from 'antd';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { postProduct, putProduct } from '../..//helpers/dataLoaders';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp-web/notifications';
 import * as Yup from 'yup';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang, { Lang } from '../../lang';
-import { HTTPError } from '@opensrp/server-service';
-import { fetchProtectedImage } from '@opensrp/react-utils';
+import { HTTPError } from '@opensrp-web/server-service';
+import { fetchProtectedImage } from '@opensrp-web/react-utils';
 
 /** type describing the fields in the product catalogue form */
 export interface ProductFormFields {

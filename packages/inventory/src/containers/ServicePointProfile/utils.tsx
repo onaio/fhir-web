@@ -1,4 +1,4 @@
-import { LocationUnit, TreeNode } from '@opensrp/location-management';
+import { LocationUnit, TreeNode } from '@opensrp-web/location-management';
 import { Geometry } from 'geojson';
 
 /** geographic location interface */

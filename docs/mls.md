@@ -9,9 +9,9 @@ OpenSRP Web supports multi-language using [react.i18next](https://react.i18next.
 
 **Package's MLS contract**:
 
-- Packages here-in are configured by using the `setAllConfigs` or `setConfig` methods in `@opensrp/pkg-config`.
+- Packages here-in are configured by using the `setAllConfigs` or `setConfig` methods in `@opensrp-web/pkg-config`.
 - They also get the `18next`-`i18n` instance from the configs, to use MLS, you will need to add an initialized `i18next` instance to the configs.
-- For the i18n configuration to work right of the bat, it needs to be dispatched to the configs before any code in the packages is run(i.e. before actually importing the packages themselves, that is of-course exempting the `@opensrp/pkg-config`)
+- For the i18n configuration to work right of the bat, it needs to be dispatched to the configs before any code in the packages is run(i.e. before actually importing the packages themselves, that is of-course exempting the `@opensrp-web/pkg-config`)
 - Packages will have the locales needed. Where the locales are missing or not what you want; you could load your own resource files into the configured `i18n` instance that you pass to the configs
 
 **Configuration**
@@ -21,7 +21,7 @@ Opensrp-web packages uses 2 configuration options to fully configure MLS i.e. `c
 The default language is english. To set a different language, configure the config option `languageCode` with values of the ISO code of the language you want to use e.g
 
 ```tsx
-import { setConfig } from `@opensrp/pkg-config`;
+import { setConfig } from `@opensrp-web/pkg-config`;
 
 setConfig('languageCode', 'fr');
 ```
@@ -127,7 +127,7 @@ To configure MLS at the package level:
 
 ```tsx
 import i18n from 'i18next';
-import { loadLanguageResources } from '@opensrp/pkg-config';
+import { loadLanguageResources } from '@opensrp-web/pkg-config';
 
 // Swahili configuration
 const coreSwJson = require('../locales/core/sw.json');
@@ -193,7 +193,7 @@ Before:
 
 ```tsx
 import i18n from 'i18next';
-import { loadLanguageResources } from '@opensrp/pkg-config';
+import { loadLanguageResources } from '@opensrp-web/pkg-config';
 
 // Swahili configuration
 const coreSwJson = require('../locales/core/sw.json');
@@ -214,7 +214,7 @@ After:
 
 ```tsx
 import i18n from 'i18next';
-import { loadLanguageResources } from '@opensrp/pkg-config';
+import { loadLanguageResources } from '@opensrp-web/pkg-config';
 
 // Swahili configuration
 const coreSwJson = require('../locales/core/sw.json');
@@ -268,7 +268,7 @@ The translations for the project will be created in `src/locales/foo/`
 8. Configure the config option `projectLanguageCode`
 
 ```tsx
-import { setAllConfigs } from '@opensrp/pkg-config';
+import { setAllConfigs } from '@opensrp-web/pkg-config';
 
 setAllConfigs({ projectLanguageCode: 'foo' });
 ```
