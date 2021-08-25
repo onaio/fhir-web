@@ -8,18 +8,17 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
 import lang from '../../lang';
 import {
-  FHIR_PRACTITIONER_ROLE,
-  FHIR_PRACTITIONERS,
-  ROUTE_PARAM_PRACTITIONER_ROLE_ID,
   FHIR_ORGANIZATIONS,
+  ROUTE_PARAM_ORG_AFFILIATION_ID,
+  FHIR_ORG_AFFILIATION,
+  FHIR_LOCATION,
 } from '../../constants';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { PractitionerRoleForm, FormFields } from './Form';
-import { getPatientName } from './utils';
 
 // Interface for route params
 interface RouteParams {
-  practitionerRoleId: string;
+  orgAffiliationId: string;
 }
 
 /** props for editing a user view */
@@ -40,28 +39,28 @@ export const defaultInitialValues: FormFields = {
   uuid: '',
   id: '',
   active: true,
-  practitionersId: '',
+  locationsId: [],
   orgsId: '',
 };
 /**
  *
- * @param props - CreateEditUser component props
+ * @param props - CreateEditOrganizationAffiliation component props
  */
 
-const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
+const CreateEditOrganizationAffiliation: React.FC<CreateEditPractitionerRoleProps> = (
   props: CreateEditPractitionerRoleProps
 ) => {
   const { fhirBaseURL } = props;
-  const practitionerRoleId = props.match.params[ROUTE_PARAM_PRACTITIONER_ROLE_ID];
-  const singlePractitionerRole = useQuery(
-    `${FHIR_PRACTITIONER_ROLE}/${practitionerRoleId}`,
+  const orgAffiliationId = props.match.params[ROUTE_PARAM_ORG_AFFILIATION_ID];
+  const singleOrgAffiliation = useQuery(
+    `${FHIR_ORG_AFFILIATION}/${orgAffiliationId}`,
     async () =>
-      practitionerRoleId
-        ? FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONER_ROLE}/${practitionerRoleId}`)
+      orgAffiliationId
+        ? FHIR.client(fhirBaseURL).request(`${FHIR_ORG_AFFILIATION}/${orgAffiliationId}`)
         : undefined,
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: IfhirR4.IPractitionerRole) => res,
+      select: (res: IfhirR4.IOrganizationAffiliation) => res,
     }
   );
 
@@ -74,41 +73,39 @@ const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
     }
   );
 
-  const fhirPractitioners = useQuery(
-    FHIR_PRACTITIONERS,
-    async () => FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONERS}/_search?_count=${1000}`),
+  const fhirLocations = useQuery(
+    FHIR_ORG_AFFILIATION,
+    async () => FHIR.client(fhirBaseURL).request(`${FHIR_LOCATION}/_search?_count=${1000}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: IfhirR4.IBundle) => res,
     }
   );
 
-  if (
-    singlePractitionerRole.isLoading ||
-    fhirOrganizations.isLoading ||
-    fhirPractitioners.isLoading
-  ) {
+  if (singleOrgAffiliation.isLoading || fhirOrganizations.isLoading || fhirLocations.isLoading) {
     return <Spin size="large" />;
   }
 
-  const buildInitialValues = singlePractitionerRole.data
+  const buildInitialValues = singleOrgAffiliation.data
     ? {
-        uuid: (singlePractitionerRole.data?.identifier as Dictionary[])[0].value as string,
-        id: singlePractitionerRole.data.id,
-        active: singlePractitionerRole.data.active ?? true,
-        practitionersId: singlePractitionerRole.data.practitioner?.reference?.split('/')[1] ?? '',
-        orgsId: singlePractitionerRole.data.organization?.reference?.split('/')[1] ?? '',
+        uuid: (singleOrgAffiliation.data?.identifier as Dictionary[])[0].value as string,
+        id: singleOrgAffiliation.data.id,
+        active: singleOrgAffiliation.data.active ?? true,
+        locationsId: singleOrgAffiliation.data.location?.map(
+          (l: Dictionary) => l.reference.split('/')[1]
+        ),
+        orgsId: singleOrgAffiliation.data.organization?.reference?.split('/')[1] ?? '',
       }
     : defaultInitialValues;
 
   const careTeamFormProps = {
     fhirBaseURL,
     initialValues: buildInitialValues,
-    practitioners:
-      fhirPractitioners.data?.entry?.map((e: Dictionary) => {
+    locations:
+      fhirLocations.data?.entry?.map((e: Dictionary) => {
         return {
           id: e.resource.id,
-          name: getPatientName(e.resource),
+          name: e.resource?.name as string,
         };
       }) ?? [],
     organizations:
@@ -127,6 +124,6 @@ const CreateEditPractitionerRole: React.FC<CreateEditPractitionerRoleProps> = (
   );
 };
 
-CreateEditPractitionerRole.defaultProps = defaultEditPractitionerRoleProps;
+CreateEditOrganizationAffiliation.defaultProps = defaultEditPractitionerRoleProps;
 
-export { CreateEditPractitionerRole };
+export { CreateEditOrganizationAffiliation };
