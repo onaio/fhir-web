@@ -60,8 +60,8 @@ export const TeamsList: React.FC = () => {
 
       <PaginateData<Organization>
         queryid="testing"
-        currentPage={{ pram: '_count', defaultValue: 1 }}
-        pageSize={{ pram: '_getpagesoffset', defaultValue: 5 }}
+        currentPage={1}
+        pageSize={5}
         queryFn={(page, size) =>
           serve.request(
             `Organization?_count=${size}&_getpagesoffset=${(page - 1) * size}&_format=json`
