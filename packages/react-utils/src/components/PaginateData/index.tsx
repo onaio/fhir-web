@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Dictionary } from '@onaio/utils';
 import { InfiniteData, useInfiniteQuery } from 'react-query';
-import { TableProps } from '@opensrp/react-utils';
+import { TableProps } from '../TableLayout';
 
 const defaultcurrentPage = 1;
 const defaultpageSize = 5;
-type DataRecord<T> = Dictionary<T>;
 
-interface Props<T> {
+interface PaginateData<T> {
   onSuccess?: (response: T[]) => void;
   onError?: (error: unknown) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSelect?: (response?: any) => T[];
   queryFn: (currentPage: number, pageSize: number) => Promise<T[]>;
   queryid: string;
@@ -24,7 +24,13 @@ interface Props<T> {
   ) => JSX.Element;
 }
 
-export function PaginateData<T extends object = Dictionary>(props: Props<T>) {
+/**
+ * Loads Data in Paginated format
+ *
+ * @param {PaginateData} props - component props
+ * @returns {Element} - component
+ */
+export function PaginateData<T extends object = Dictionary>(props: PaginateData<T>) {
   const { total, onError, queryFn, queryid, onSuccess, onSelect, children } = props;
 
   const [{ currentPage, pageSize, prevdata }, setTableprops] = useState<{
@@ -44,15 +50,22 @@ export function PaginateData<T extends object = Dictionary>(props: Props<T>) {
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchOnMount: false,
-      onSuccess: (resp) => onSuccess && onSuccess(convertToDataRecord(resp)[currentPage]),
+      onSuccess: (resp) =>
+        onSuccess ? onSuccess(convertToDataRecord(resp)[currentPage]) : undefined,
       onError: onError,
     }
   );
 
-  function convertToDataRecord(infdata: InfiniteData<T[]>): DataRecord<T[]> {
-    return infdata?.pages.reduce((acc: DataRecord<T[]>, data, index) => {
-      const page = (infdata.pageParams[index] as number) ?? defaultcurrentPage;
-      return { ...acc, [page]: data } as DataRecord<T[]>;
+  /**
+   * Converts Data recieved from query to Dictionary of Data
+   *
+   * @param {InfiniteData} infdata - data from query
+   * @returns {Dictionary} - converted Dictionary of Data
+   */
+  function convertToDataRecord(infdata: InfiniteData<T[]>): Dictionary<T[]> {
+    return infdata.pages.reduce((acc: Dictionary<T[]>, data, index) => {
+      const page = (infdata.pageParams[index] as number | undefined) ?? defaultcurrentPage;
+      return { ...acc, [page]: data } as Dictionary<T[]>;
     }, {});
   }
 
@@ -60,16 +73,21 @@ export function PaginateData<T extends object = Dictionary>(props: Props<T>) {
 
   const fetchPage = useCallback(
     (page = currentPage) => {
-      if (!query.isFetchingNextPage) query.fetchNextPage({ pageParam: page, throwOnError: true });
+      if (!query.isFetchingNextPage)
+        query.fetchNextPage({ pageParam: page, throwOnError: true }).catch(onError);
     },
-    [query, currentPage]
+    [currentPage, query, onError]
   );
 
   useEffect(() => {
     if (data[currentPage] === undefined) fetchPage();
   }, [currentPage, data, fetchPage]);
 
-  const tabledata = useMemo(() => data[currentPage] ?? prevdata, [currentPage, data, prevdata]);
+  const tabledata = useMemo(() => (data[currentPage] as T[] | undefined) ?? prevdata, [
+    currentPage,
+    data,
+    prevdata,
+  ]);
 
   return children({
     datasource: onSelect ? onSelect(tabledata) : tabledata,
