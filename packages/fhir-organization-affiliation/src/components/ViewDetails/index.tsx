@@ -6,8 +6,8 @@ import { useQuery } from 'react-query';
 import { Resource404, BrokenPage } from '@opensrp/react-utils';
 import FHIR from 'fhirclient';
 import lang from '../../lang';
-import { FHIR_PRACTITIONER_ROLE, URL_PRACTITIONER_ROLE } from '../../constants';
-import { getPatientName } from '../CreateEditPractitionerRole/utils';
+import { FHIR_ORG_AFFILIATION, URL_ORG_AFFILIATION } from '../../constants';
+import { getPatientName } from '../CreateEditOrganizationAffiliation/utils';
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -29,7 +29,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
     queryKey: [`PractitionerRole/${practitionerRoleId}`],
     queryFn: () =>
       practitionerRoleId
-        ? FHIR.client(fhirBaseURL).request(`${FHIR_PRACTITIONER_ROLE}/${practitionerRoleId}`)
+        ? FHIR.client(fhirBaseURL).request(`${FHIR_ORG_AFFILIATION}/${practitionerRoleId}`)
         : undefined,
     select: (res) => res,
   });
@@ -67,7 +67,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(URL_PRACTITIONER_ROLE)}
+          onClick={() => history.push(URL_ORG_AFFILIATION)}
         />
       </div>
       {isLoading ? (

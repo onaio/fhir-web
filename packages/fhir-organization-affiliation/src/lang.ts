@@ -14,16 +14,16 @@ function fill() {
   lang.ERROR_OCCURRED = i18n.t(`An error occurred`, { ns: namespace });
 
   // Messages
-  lang.PRACTITIONER_ROLE_UPDATE_SUCCESS = i18n.t(`Successfully Updated Practitioner Role`, {
+  lang.ORG_AFFILIATION_UPDATE_SUCCESS = i18n.t(`Successfully Updated Organization Affiliation`, {
     ns: namespace,
   });
-  lang.PRACTITIONER_ROLE_ADD_SUCCESS = i18n.t(`Successfully Added Practitioner Role`, {
+  lang.ORG_AFFILIATION_ADD_SUCCESS = i18n.t(`Successfully Added Organization Affiliation`, {
     ns: namespace,
   });
-  lang.PRACTITIONER_ROLE_DELETE_SUCCESS = i18n.t(`Successfully Deleted Practitioner Role`, {
+  lang.ORG_AFFILIATION_DELETE_SUCCESS = i18n.t(`Successfully Deleted Organization Affiliation`, {
     ns: namespace,
   });
-  lang.CONFIRM_DELETE = i18n.t(`Are you sure you want to delete this Practitioner Role?`, {
+  lang.CONFIRM_DELETE = i18n.t(`Are you sure you want to delete this Organization Affiliation?`, {
     ns: namespace,
   });
   lang.YES = i18n.t(`Yes`, { ns: namespace });
@@ -32,24 +32,24 @@ function fill() {
   // Rendered text
   lang.STATUS = i18n.t(`Status`, { ns: namespace });
   lang.NAME = i18n.t(`Name`, { ns: namespace });
-  lang.PRACTITIONER_NAME = i18n.t(`Practitioner Name`, { ns: namespace });
+  lang.LOCATION_NAME = i18n.t(`Practitioner Name`, { ns: namespace });
   lang.ORGANIZATION_NAME = i18n.t(`Organization Name`, { ns: namespace });
   lang.SAVING = i18n.t(`Saving`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
   lang.ACTIVE = i18n.t(`Active`, { ns: namespace });
   lang.INACTIVE = i18n.t(`Inactive`, { ns: namespace });
   lang.CANCEL = i18n.t(`Cancel`, { ns: namespace });
-  lang.EDIT_PRACTITIONER_ROLE = i18n.t(`Edit Practitioner Role`, { ns: namespace });
-  lang.CREATE_PRACTITIONER_ROLE = i18n.t(`Create Practitioner Role`, { ns: namespace });
+  lang.EDIT_ORG_AFFILIATION = i18n.t(`Edit Organization Affiliation`, { ns: namespace });
+  lang.CREATE_ORG_AFFILIATION = i18n.t(`Create Organization Affiliation`, { ns: namespace });
   lang.EDIT = i18n.t(`Edit`, { ns: namespace });
   lang.CREATE = i18n.t(`Create`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
-  lang.TEAMS = i18n.t(`Practitioner Roles`, { ns: namespace });
+  lang.ORGANIZATION_AFFILIATION = i18n.t(`Practitioner Roles`, { ns: namespace });
   lang.SEARCH = i18n.t(`Search`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
-  lang.PRACTITIONER_ROLE_PAGE_HEADER = i18n.t(`FHIR Practitioner Role`, { ns: namespace });
+  lang.ORG_AFFILIATION_PAGE_HEADER = i18n.t(`FHIR Organization Affiliation`, { ns: namespace });
   lang.ORGANIZATION = i18n.t(`Organization`, { ns: namespace });
-  lang.PRACTITIONER = i18n.t(`Practitioner`, { ns: namespace });
+  lang.LOCATION = i18n.t(`Practitioner`, { ns: namespace });
 }
 
 // run it initial

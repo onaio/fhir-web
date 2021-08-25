@@ -4,7 +4,7 @@ import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import lang from '../../lang';
 import { submitForm } from './utils';
-import { URL_PRACTITIONER_ROLE } from '../../constants';
+import { URL_ORG_AFFILIATION } from '../../constants';
 
 export interface Fields {
   id: string;
@@ -15,14 +15,14 @@ export interface FormFields {
   uuid: string | undefined;
   id: string | undefined;
   active: boolean;
-  practitionersId?: string;
+  locationsId?: string[];
   orgsId?: string;
 }
 
 export interface PractitionerRoleFormProps {
   initialValues: FormFields;
   fhirBaseURL: string;
-  practitioners: Fields[];
+  locations: Fields[];
   organizations: Fields[];
 }
 
@@ -73,8 +73,8 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
     <Row className="layout-content practitioner-role">
       <h5 className="mb-3 header-title">
         {props.initialValues?.id
-          ? `${lang.EDIT_PRACTITIONER_ROLE} | ${initialValues.id}`
-          : lang.CREATE_PRACTITIONER_ROLE}
+          ? `${lang.EDIT_ORG_AFFILIATION} | ${initialValues.id}`
+          : lang.CREATE_ORG_AFFILIATION}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <Form
@@ -87,7 +87,7 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
               { ...initialValues, ...values },
               fhirBaseURL,
               props.organizations,
-              props.practitioners,
+              props.locations,
               props.initialValues?.id,
               props.initialValues?.uuid
             ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
@@ -106,13 +106,13 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
             </Radio.Group>
           </Form.Item>
           <Form.Item
-            name="practitionersId"
-            id="practitionersId"
-            label={lang.PRACTITIONER}
+            name="locationsId"
+            id="locationsId"
+            label={lang.LOCATION}
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
             <Select placeholder={lang.PARTICIPANTS}>
-              {props.practitioners.map((practitioner: Fields) => (
+              {props.locations.map((practitioner: Fields) => (
                 <Select.Option key={practitioner.id} value={practitioner.id}>
                   {practitioner.name}
                 </Select.Option>
@@ -138,7 +138,7 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
               {isSubmitting ? lang.SAVING : lang.SAVE}
             </Button>
             <Button
-              onClick={() => history.push(URL_PRACTITIONER_ROLE)}
+              onClick={() => history.push(URL_ORG_AFFILIATION)}
               className="cancel-practitioner-role"
             >
               {lang.CANCEL}

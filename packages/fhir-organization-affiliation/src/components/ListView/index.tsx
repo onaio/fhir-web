@@ -23,11 +23,11 @@ import { createChangeHandler, getQueryParams, SearchForm, BrokenPage } from '@op
 import lang from '../../lang';
 import {
   SEARCH_QUERY_PARAM,
-  FHIR_PRACTITIONER_ROLE,
-  URL_EDIT_PRACTITIONER_ROLE,
-  URL_PRACTITIONER_ROLE,
-  URL_CREATE_PRACTITIONER_ROLE,
-  ROUTE_PARAM_PRACTITIONER_ROLE_ID,
+  FHIR_ORG_AFFILIATION,
+  URL_EDIT_ORG_AFFILIATION,
+  URL_ORG_AFFILIATION,
+  URL_CREATE_ORG_AFFILIATION,
+  ROUTE_PARAM_ORG_AFFILIATION_ID,
 } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
@@ -35,7 +35,7 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 
 // route params for user group pages
 interface RouteParams {
-  practitionerRoleId: string | undefined;
+  orgAffiliationId: string | undefined;
 }
 
 interface TableData {
@@ -43,12 +43,12 @@ interface TableData {
   id: string;
   active?: boolean;
   orgName: string;
-  practitionerName: string;
+  locationName: string;
 }
 
 interface Props {
   fhirBaseURL: string;
-  PractitionerRolePageSize: number;
+  OrgAffiliationPageSize: number;
 }
 
 export interface PaginationProps {
@@ -59,63 +59,63 @@ export interface PaginationProps {
 /** default component props */
 const defaultProps = {
   fhirBaseURL: '',
-  PractitionerRolePageSize: 5,
+  OrgAffiliationPageSize: 5,
 };
 
-export type PractitionerRoleListPropTypes = Props & RouteComponentProps<RouteParams>;
+export type OrgAffiliationListPropTypes = Props & RouteComponentProps<RouteParams>;
 
-export const fetchPractitionerRoles = async (
+export const fetchOrgAffiliations = async (
   fhirBaseURL: string,
   pageSize: number,
   pageOffset: number,
   setPayloadCount: (count: number) => void
 ): Promise<IfhirR4.IBundle> => {
   return await FHIR.client(fhirBaseURL)
-    .request(`${FHIR_PRACTITIONER_ROLE}/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}`)
+    .request(`${FHIR_ORG_AFFILIATION}/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}`)
     .then((res: IfhirR4.IBundle) => {
       setPayloadCount(res.total as number);
       return res;
     });
 };
 
-export const deletePractitionerRole = async (fhirBaseURL: string, id: string): Promise<void> => {
+export const deleteOrgAffiliation = async (fhirBaseURL: string, id: string): Promise<void> => {
   return await FHIR.client(fhirBaseURL)
-    .delete(`${FHIR_PRACTITIONER_ROLE}/${id}`)
-    .then(() => sendSuccessNotification(lang.PRACTITIONER_ROLE_DELETE_SUCCESS))
+    .delete(`${FHIR_ORG_AFFILIATION}/${id}`)
+    .then(() => sendSuccessNotification(lang.ORG_AFFILIATION_DELETE_SUCCESS))
     .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
 };
 
-export const usePractitionerRolesHook = (
+export const useOrgAffiliationHook = (
   fhirBaseURL: string,
   pageSize: number,
   pageOffset: number,
   setPayloadCount: (count: number) => void
 ) => {
-  return useQuery([FHIR_PRACTITIONER_ROLE, pageOffset], () =>
-    fetchPractitionerRoles(fhirBaseURL, pageSize, pageOffset, setPayloadCount)
+  return useQuery([FHIR_ORG_AFFILIATION, pageOffset], () =>
+    fetchOrgAffiliations(fhirBaseURL, pageSize, pageOffset, setPayloadCount)
   );
 };
 
-/** Function which shows the list of all roles and their details
+/** Function which shows the list of all assignments and their details
  *
- * @param {Object} props - UserRolesList component props
- * @returns {Function} returns User Roles list display
+ * @param {Object} props - OrgAffiliationList component props
+ * @returns {Function} returns Org affiliation list display
  */
-export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
-  props: PractitionerRoleListPropTypes
+export const OrgAffiliationList: React.FC<OrgAffiliationListPropTypes> = (
+  props: OrgAffiliationListPropTypes
 ) => {
-  const { fhirBaseURL, PractitionerRolePageSize } = props;
+  const { fhirBaseURL, OrgAffiliationPageSize } = props;
   const history = useHistory();
-  const PractitionerRoleId = props.match.params[ROUTE_PARAM_PRACTITIONER_ROLE_ID] ?? '';
+  const PractitionerRoleId = props.match.params[ROUTE_PARAM_ORG_AFFILIATION_ID] ?? '';
 
   const [payloadCount, setPayloadCount] = React.useState<number>(0);
   const [paginationProps, setPaginationProps] = React.useState<PaginationProps>({
     currentPage: 1,
-    pageSize: PractitionerRolePageSize,
+    pageSize: OrgAffiliationPageSize,
   });
   const { currentPage, pageSize } = paginationProps;
   const pageOffset = (currentPage - 1) * pageSize;
-  const { data, isLoading, error, refetch } = usePractitionerRolesHook(
+  const { data, isLoading, error, refetch } = useOrgAffiliationHook(
     fhirBaseURL,
     pageSize as number,
     pageOffset,
@@ -139,16 +139,16 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
       id: datum.resource.id,
       status: datum.resource.active.toString(),
       orgName: datum.resource.organization?.display,
-      practitionerName: datum.resource.practitioner?.display,
+      locationName: datum.resource.location?.display,
     };
   });
 
   const columns = [
     {
-      title: lang.PRACTITIONER_NAME,
+      title: lang.LOCATION_NAME,
       dataIndex: 'practitionerName',
       editable: true,
-      sorter: (a: TableData, b: TableData) => a.practitionerName.localeCompare(b.practitionerName),
+      sorter: (a: TableData, b: TableData) => a.locationName.localeCompare(b.locationName),
     },
     {
       title: lang.ORGANIZATION_NAME,
@@ -168,7 +168,7 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${URL_EDIT_PRACTITIONER_ROLE}/${record.id.toString()}`}>
+          <Link to={`${URL_EDIT_ORG_AFFILIATION}/${record.id.toString()}`}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
@@ -183,7 +183,7 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
                     okText={lang.YES}
                     cancelText={lang.NO}
                     onConfirm={async () => {
-                      await deletePractitionerRole(fhirBaseURL, record.id);
+                      await deleteOrgAffiliation(fhirBaseURL, record.id);
                       await refetch();
                     }}
                   >
@@ -195,7 +195,7 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
                 <Menu.Item
                   className="viewdetails"
                   onClick={() => {
-                    history.push(`${URL_PRACTITIONER_ROLE}/${record.id}`);
+                    history.push(`${URL_ORG_AFFILIATION}/${record.id}`);
                   }}
                 >
                   View Details
@@ -216,17 +216,17 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
   return (
     <div className="content-section">
       <Helmet>
-        <title>{lang.PRACTITIONER_ROLE_PAGE_HEADER}</title>
+        <title>{lang.ORG_AFFILIATION_PAGE_HEADER}</title>
       </Helmet>
-      <PageHeader title={lang.PRACTITIONER_ROLE_PAGE_HEADER} className="page-header" />
+      <PageHeader title={lang.ORG_AFFILIATION_PAGE_HEADER} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to={URL_CREATE_PRACTITIONER_ROLE}>
+            <Link to={URL_CREATE_ORG_AFFILIATION}>
               <Button type="primary">
                 <PlusOutlined />
-                {lang.CREATE_PRACTITIONER_ROLE}
+                {lang.CREATE_ORG_AFFILIATION}
               </Button>
             </Link>
           </div>
@@ -240,7 +240,7 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
               onChange: (page: number, pageSize: number | undefined) => {
                 setPaginationProps({
                   currentPage: page,
-                  pageSize: pageSize ?? PractitionerRolePageSize,
+                  pageSize: pageSize ?? OrgAffiliationPageSize,
                 });
               },
               current: currentPage,
@@ -249,12 +249,12 @@ export const PractitionerRoleList: React.FC<PractitionerRoleListPropTypes> = (
             }}
           />
         </Col>
-        <ViewDetails practitionerRoleId={PractitionerRoleId} fhirBaseURL={fhirBaseURL} />
+        {/* <ViewDetails practitionerRoleId={PractitionerRoleId} fhirBaseURL={fhirBaseURL} /> */}
       </Row>
     </div>
   );
 };
 
-PractitionerRoleList.defaultProps = defaultProps;
+OrgAffiliationList.defaultProps = defaultProps;
 
-export default PractitionerRoleList;
+export default OrgAffiliationList;

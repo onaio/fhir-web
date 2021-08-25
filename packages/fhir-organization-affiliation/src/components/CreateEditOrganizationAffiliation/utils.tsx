@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import FHIR from 'fhirclient';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import lang from '../../lang';
-import { URL_PRACTITIONER_ROLE } from '../../constants';
+import { URL_ORG_AFFILIATION } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { FormFields, Fields } from './Form';
@@ -16,13 +16,9 @@ export const submitForm = async (
   id?: string,
   uuid?: string
 ): Promise<void> => {
-  const currentOrg = orgs.find((org) => org.id === values.orgsId);
-  const currentPractitioner = practitioners.find(
-    (practitioner) => practitioner.id === values.practitionersId
-  );
   const practitionerRoleId = uuid ? uuid : v4();
-  const payload: Omit<IfhirR4.IPractitionerRole, 'meta'> = {
-    resourceType: 'PractitionerRole',
+  const payload: Omit<IfhirR4.IOrganizationAffiliation, 'meta'> = {
+    resourceType: 'OrganizationAffiliation',
     identifier: [
       {
         use: 'official',
@@ -34,29 +30,26 @@ export const submitForm = async (
     organization: values.orgsId
       ? {
           reference: `Organization/${values.orgsId}`,
-          display: currentOrg?.name,
         }
       : undefined,
-    practitioner: values.practitionersId
-      ? {
-          reference: `Practitioner/${values.practitionersId}`,
-          display: currentPractitioner?.name,
-        }
-      : undefined,
+    location:
+      values.locationsId?.map((id) => ({
+        reference: `Location/${id}`,
+      })) ?? [],
   };
   const serve = FHIR.client(fhirBaseURL);
   if (id) {
     await serve
       .update(payload)
-      .then(() => sendSuccessNotification(lang.PRACTITIONER_ROLE_UPDATE_SUCCESS))
+      .then(() => sendSuccessNotification(lang.ORG_AFFILIATION_UPDATE_SUCCESS))
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   } else {
     await serve
       .create(payload)
-      .then(() => sendSuccessNotification(lang.PRACTITIONER_ROLE_ADD_SUCCESS))
+      .then(() => sendSuccessNotification(lang.ORG_AFFILIATION_ADD_SUCCESS))
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }
-  history.push(URL_PRACTITIONER_ROLE);
+  history.push(URL_ORG_AFFILIATION);
 };
 
 /** Util function to build out patient or practitioner name
