@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Column, Require, TableLayout, TableProps } from '@opensrp/react-utils';
+import { Column, FHIRResponse, Require, TableLayout } from '@opensrp/react-utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 
 /** interface for Objects */
 import React, { useEffect, useRef } from 'react';
 import FHIR from 'fhirclient';
-import { FHIRResponse } from '@opensrp/react-utils';
 import { PaginateData } from '.';
-import { Spin } from 'antd';
 
 export interface Organization extends Require<IfhirR4.IOrganization, 'id' | 'active' | 'name'> {
   resourceType: 'Organization';
@@ -61,17 +59,18 @@ export const TeamsList: React.FC = () => {
       <h5 className="mb-3">TEAMS</h5>
 
       <PaginateData<Organization>
-        currentPage={{ pram: '_count', defaultValue: 0 }}
+        queryid="testing"
+        currentPage={{ pram: '_count', defaultValue: 1 }}
         pageSize={{ pram: '_getpagesoffset', defaultValue: 5 }}
         queryFn={(page, size) =>
           serve.request(
-            `Organization?_count=${size.value}&_getpagesoffset=${
-              (page.value - 1) * size.value
-            }&_format=json`
+            `Organization?_count=${size}&_getpagesoffset=${(page - 1) * size}&_format=json`
           )
         }
-        total={(data: FHIRResponse<Organization>) => data.total}
-        OnSelect={(data: FHIRResponse<Organization>) => data.entry.map((e) => e.resource)}
+        total={(data) => ((data as unknown) as FHIRResponse<Organization>)?.total}
+        onSelect={(data: FHIRResponse<Organization> | []) =>
+          !Array.isArray(data) ? data.entry.map((e) => e.resource) : data
+        }
       >
         {(props) => (
           <TableLayout<Organization>

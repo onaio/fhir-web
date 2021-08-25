@@ -1,83 +1,104 @@
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Dictionary } from '@onaio/utils';
-import { useQuery } from 'react-query';
-import { TableLayout, TableProps } from '@opensrp/react-utils';
-import { useTraceUpdate } from './Table';
+import { useInfiniteQuery } from 'react-query';
+import { TableProps } from '@opensrp/react-utils';
 
-type pram = {
-  defaultValue?: number;
-  pram: string;
-};
-
-type pram1 = {
-  value: number;
-  pram: string;
-};
+const defaultcurrentPage = 1;
+const defaultpageSize = 5;
+type DataRecord<T> = Dictionary<T>;
 
 interface Props<T> {
-  onSuccess?: (response: T[]) => any;
-  OnError?: (error: unknown) => void;
-  OnSelect?: (response?: any) => T[];
-  queryFn: (currentPage: pram1, pageSize: pram1) => Promise<T[]>;
+  onSuccess?: (response: DataRecord<T[]>) => void;
+  onError?: (error: unknown) => void;
+  onSelect?: (response?: any) => T[];
+  queryFn: (currentPage: number, pageSize: number) => Promise<T[]>;
   url?: string;
-  queryid?: string;
-  currentPage: pram;
-  pageSize: pram;
-  total?: number | ((data: any) => number);
-  children: (props: TableProps<T>) => JSX.Element;
+  queryid: string;
+  currentPage: { defaultValue?: number; pram: string } | number;
+  pageSize: { defaultValue?: number; pram: string } | number;
+  total?: number | ((data: T[]) => number);
+  children: (
+    props: TableProps<T> & {
+      fetchNextPage: Function;
+      fetchPreviousPage: Function;
+    }
+  ) => JSX.Element;
 }
 
-/** Table Layout Component used to render the table with default Settings
- *
- * @param props - Table settings
- * @returns - the component
- */
 export function PaginateData<T extends object = Dictionary>(props: Props<T>) {
   const {
     // url,
     total,
-    OnError,
-    // currentPage = { pram: '_count', defaultValue: 0 },
+    onError,
     queryFn,
     queryid,
-    // pageSize = { pram: '_getpagesoffset', defaultValue: 5 },
     onSuccess,
-    OnSelect,
+    onSelect,
     children,
   } = props;
 
-  const [{ currentPage, pageSize }, setTableprops] = useState<{
-    currentPage: pram1;
-    pageSize: pram1;
+  const [{ currentPage, pageSize, prevdata }, setTableprops] = useState<{
+    currentPage: number;
+    pageSize: number;
+    prevdata: T[];
   }>({
-    currentPage: { ...props.currentPage, value: props.currentPage.defaultValue ?? 0 },
-    pageSize: { ...props.pageSize, value: props.pageSize.defaultValue ?? 5 },
+    currentPage:
+      typeof props.currentPage === 'number'
+        ? props.currentPage
+        : typeof props.currentPage === 'object'
+        ? props.currentPage.defaultValue ?? defaultcurrentPage
+        : defaultcurrentPage,
+    pageSize:
+      typeof props.pageSize === 'number'
+        ? props.pageSize
+        : typeof props.pageSize === 'object'
+        ? props.pageSize.defaultValue ?? defaultpageSize
+        : defaultpageSize,
+    prevdata: [],
   });
 
-  const query = useQuery(
-    [queryid, currentPage.value, pageSize.value],
-    () => queryFn(currentPage, pageSize),
+  const query = useInfiniteQuery(
+    [queryid, pageSize],
+    async ({ pageParam = currentPage }) => await queryFn(pageParam, pageSize),
     {
-      keepPreviousData: true,
-      onError: OnError,
-      onSuccess: onSuccess,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      onSuccess: (resp) => onSuccess && onSuccess((resp as unknown) as DataRecord<T[]>),
+      onError: onError,
     }
   );
 
-  const selecteddata = OnSelect && query.data ? OnSelect(query.data) : query.data;
+  const data = query.data
+    ? query.data?.pages.reduce((acc: DataRecord<T[]>, data, index) => {
+        const page = (query.data.pageParams[index] as number) ?? defaultcurrentPage;
+        return { ...acc, [page]: data } as DataRecord<T[]>;
+      }, {})
+    : {};
+
+  const fetchPage = useCallback(
+    (page = currentPage) => {
+      if (!query.isFetchingNextPage) query.fetchNextPage({ pageParam: page, throwOnError: true });
+    },
+    [query, currentPage]
+  );
+
+  useEffect(() => {
+    if (data[currentPage] === undefined) fetchPage();
+  }, [currentPage, data, fetchPage]);
+
+  const tabledata = useMemo(() => data[currentPage] ?? prevdata, [currentPage, data, prevdata]);
 
   return children({
-    datasource: selecteddata ?? [],
+    datasource: onSelect ? onSelect(tabledata) : tabledata,
     loading: query.isFetching,
+    fetchNextPage: () => fetchPage(currentPage + 1),
+    fetchPreviousPage: () => fetchPage(currentPage - 1),
     pagination: {
-      total: typeof total === 'function' ? (query.data ? total(query.data) : undefined) : total,
-      current: currentPage.value,
-      onChange: (page, pagesize) => {
-        setTableprops({
-          currentPage: { ...currentPage, value: page },
-          pageSize: { ...pageSize, value: pagesize ?? pageSize.value },
-        });
-      },
+      total: typeof total === 'function' ? total(tabledata) : total,
+      current: currentPage,
+      onChange: (page, pagesize) =>
+        setTableprops({ currentPage: page, pageSize: pagesize ?? pageSize, prevdata: tabledata }),
     },
   });
 }
