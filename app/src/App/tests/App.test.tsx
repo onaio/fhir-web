@@ -85,6 +85,9 @@ describe('App - unauthenticated', () => {
       },
       match: {
         params: { id: 'OpenSRP' },
+        isExact: true,
+        path: '/',
+        url: '/',
       },
     };
     const wrapper = mount(

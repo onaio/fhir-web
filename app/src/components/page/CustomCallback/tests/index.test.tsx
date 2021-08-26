@@ -212,6 +212,9 @@ describe('src/components/page/CustomCallback.UnsuccessfulLogin', () => {
       },
       match: {
         params: { id: 'OpenSRP' },
+        isExact: true,
+        path: '/',
+        url: '/',
       },
     };
     const wrapper = mount(
