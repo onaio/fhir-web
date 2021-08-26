@@ -2,9 +2,13 @@
 
 exports[`Inventory bulk upload renders correctly: start upload page 1`] = `"Add inventory via CSVUse a CSV file to add service point inventoryYou’ll get a chance to review before committing inventory updates.Select CSV file"`;
 
+exports[`Inventory bulk upload shows post confirmation error card: post confirmation error page 1`] = `"Add inventory via CSVProcessing error: inventory items failed to be added0 inventory items failed to be added from “”. To add items, follow these steps: Extract the rows listed below from \\"\\"Paste the rows into a new CSV fileUpload the CSV fileInventory items not listed below were successfully added to theService point inventory.Caution: do not re-upload the successful items or duplicates will be created.Inventory items from “” that were not addedRow numberErrorsNo Data"`;
+
 exports[`Inventory bulk upload shows post confirmation success card: post confirmation success page 1`] = `"Add inventory via CSV“” inventory items successfully added0 inventory items added to Service point inventory. Inventory may take a few minutes to appear.Upload another file"`;
 
 exports[`Inventory bulk upload shows post confirmation upload card: post confirmation upload page 1`] = `"Add inventory via CSVInventory is being added to service points…Inventory may take a few minutes to appear."`;
+
+exports[`Inventory bulk upload shows pre confirmation error page: pre confirmation error page 1`] = `"Add inventory via CSVUse a CSV file to add service point inventoryplease fix the errors listed below, then retry csv uploadRow numberErrorsNo DataRetry"`;
 
 exports[`Inventory bulk upload shows pre confirmation success page: pre confirmation success page 1`] = `"Add inventory via CSV“” ready0 inventory items will be added to service points. Do you wish to proceed?Proceed with adding inventoryCancel"`;
 
