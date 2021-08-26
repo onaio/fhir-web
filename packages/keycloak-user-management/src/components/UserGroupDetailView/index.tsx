@@ -7,7 +7,7 @@ import { sendErrorNotification } from '@opensrp-web/notifications';
 import { Button } from 'antd';
 import { URL_USER_EDIT, URL_USER_GROUPS } from '../../constants';
 import { UserGroupMembers } from '../UserGroupsList';
-import { KeycloakUserGroup } from 'keycloak-user-management/src/ducks/userGroups';
+import { KeycloakUserGroup } from '../../ducks/userGroups';
 import { Link } from 'react-router-dom';
 import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
 import lang from '../../lang';
