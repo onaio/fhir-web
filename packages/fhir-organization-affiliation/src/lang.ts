@@ -32,7 +32,7 @@ function fill() {
   // Rendered text
   lang.STATUS = i18n.t(`Status`, { ns: namespace });
   lang.NAME = i18n.t(`Name`, { ns: namespace });
-  lang.LOCATION_NAME = i18n.t(`Practitioner Name`, { ns: namespace });
+  lang.LOCATION_NAME = i18n.t(`Location Name`, { ns: namespace });
   lang.ORGANIZATION_NAME = i18n.t(`Organization Name`, { ns: namespace });
   lang.SAVING = i18n.t(`Saving`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
@@ -44,12 +44,12 @@ function fill() {
   lang.EDIT = i18n.t(`Edit`, { ns: namespace });
   lang.CREATE = i18n.t(`Create`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
-  lang.ORGANIZATION_AFFILIATION = i18n.t(`Practitioner Roles`, { ns: namespace });
+  lang.ORGANIZATION_AFFILIATION = i18n.t(`Organization Affiliation`, { ns: namespace });
   lang.SEARCH = i18n.t(`Search`, { ns: namespace });
   lang.IDENTIFIER = i18n.t(`Identifier`, { ns: namespace });
   lang.ORG_AFFILIATION_PAGE_HEADER = i18n.t(`FHIR Organization Affiliation`, { ns: namespace });
   lang.ORGANIZATION = i18n.t(`Organization`, { ns: namespace });
-  lang.LOCATION = i18n.t(`Practitioner`, { ns: namespace });
+  lang.LOCATION = i18n.t(`Location`, { ns: namespace });
 }
 
 // run it initial

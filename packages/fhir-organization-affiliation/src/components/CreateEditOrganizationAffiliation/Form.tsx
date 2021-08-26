@@ -111,7 +111,7 @@ const PractitionerRoleForm: React.FC<PractitionerRoleFormProps> = (
             label={lang.LOCATION}
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
-            <Select placeholder={lang.PARTICIPANTS}>
+            <Select placeholder={lang.PARTICIPANTS} mode="multiple" allowClear>
               {props.locations.map((practitioner: Fields) => (
                 <Select.Option key={practitioner.id} value={practitioner.id}>
                   {practitioner.name}
