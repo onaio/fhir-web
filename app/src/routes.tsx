@@ -21,6 +21,7 @@ import {
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
+  ENABLE_FHIR_ORG_AFFILIATION,
 } from './configs/env';
 
 import {
@@ -35,6 +36,7 @@ import {
   URL_DOWNLOAD_CLIENT_DATA,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_ORG_AFFILIATION,
 } from './constants';
 import lang, { TFunction } from './lang';
 
@@ -158,6 +160,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.PRODUCT_CATALOGUE &&
             isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
           url: CATALOGUE_LIST_VIEW_URL,
+        },
+        {
+          title: langObj.ORG_AFFILIATION,
+          key: 'org-affiliation',
+          enabled:
+            ENABLE_FHIR_ORG_AFFILIATION &&
+            roles &&
+            activeRoles.ORG_AFFILIATION &&
+            isAuthorized(roles, activeRoles.ORG_AFFILIATION.split(',')),
+          url: URL_ORG_AFFILIATION,
         },
         {
           title: langObj.TEAMS,
