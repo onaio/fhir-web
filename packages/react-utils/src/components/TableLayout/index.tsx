@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Table as AntTable } from 'antd';
 import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
@@ -41,7 +41,9 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
+export function TableLayout<T extends object & { key?: string | number } = Dictionary>(
+  props: TableProps<T>
+) {
   const {
     id,
     columns,
@@ -66,14 +68,17 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   };
   const tablesState = getConfig('tablespref') ?? {};
 
-  if (columns && actions) {
-    const actionsColumn: Column<T> = {
-      key: TABLE_ACTIONS_KEY as TKey<T>,
-      title: lang.ACTIONS,
-      ...actions,
-    };
-    columns.push(actionsColumn);
-  }
+  // Appends action column in the table column array
+  const tablecolumn = useMemo(() => {
+    if (columns && actions) {
+      const actionsColumn: Column<T> = {
+        key: TABLE_ACTIONS_KEY as TKey<T>,
+        title: lang.ACTIONS,
+        ...actions,
+      };
+      return [...columns, actionsColumn];
+    } else return columns;
+  }, [columns, actions]);
 
   const [tableState, setTableState] = useState<TableState>(
     id && tablesState[id] !== undefined ? tablesState[id] : {}
@@ -114,7 +119,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   }
 
   return (
-    <AntTable<T> dataSource={datasource} columns={columns} {...tableprops}>
+    <AntTable<T> dataSource={datasource} columns={tablecolumn} {...tableprops}>
       {children}
     </AntTable>
   );
