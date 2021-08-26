@@ -12,10 +12,11 @@ export const submitForm = async (
   values: FormFields,
   fhirBaseURL: string,
   orgs: Fields[],
-  practitioners: Fields[],
+  locations: Fields[],
   id?: string,
   uuid?: string
 ): Promise<void> => {
+  const currentOrg = orgs.find((org) => org.id === values.orgsId);
   const practitionerRoleId = uuid ? uuid : v4();
   const payload: Omit<IfhirR4.IOrganizationAffiliation, 'meta'> = {
     resourceType: 'OrganizationAffiliation',
@@ -30,11 +31,13 @@ export const submitForm = async (
     organization: values.orgsId
       ? {
           reference: `Organization/${values.orgsId}`,
+          display: currentOrg?.name,
         }
       : undefined,
     location:
       values.locationsId?.map((id) => ({
         reference: `Location/${id}`,
+        display: locations.find((loc) => loc.id === id)?.name,
       })) ?? [],
   };
   const serve = FHIR.client(fhirBaseURL);

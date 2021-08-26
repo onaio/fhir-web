@@ -146,7 +146,7 @@ export const OrgAffiliationList: React.FC<OrgAffiliationListPropTypes> = (
   const columns = [
     {
       title: lang.LOCATION_NAME,
-      dataIndex: 'practitionerName',
+      dataIndex: 'locationName',
       editable: true,
       sorter: (a: TableData, b: TableData) => a.locationName.localeCompare(b.locationName),
     },
