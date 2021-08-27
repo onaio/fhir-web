@@ -106,7 +106,7 @@ export const OrgAffiliationList: React.FC<OrgAffiliationListPropTypes> = (
 ) => {
   const { fhirBaseURL, OrgAffiliationPageSize } = props;
   const history = useHistory();
-  const PractitionerRoleId = props.match.params[ROUTE_PARAM_ORG_AFFILIATION_ID] ?? '';
+  const OrgAffiliationId = props.match.params[ROUTE_PARAM_ORG_AFFILIATION_ID] ?? '';
 
   const [payloadCount, setPayloadCount] = React.useState<number>(0);
   const [paginationProps, setPaginationProps] = React.useState<PaginationProps>({
@@ -249,7 +249,7 @@ export const OrgAffiliationList: React.FC<OrgAffiliationListPropTypes> = (
             }}
           />
         </Col>
-        {/* <ViewDetails practitionerRoleId={PractitionerRoleId} fhirBaseURL={fhirBaseURL} /> */}
+        <ViewDetails orgAffiliationId={OrgAffiliationId} fhirBaseURL={fhirBaseURL} />
       </Row>
     </div>
   );
