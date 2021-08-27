@@ -16,7 +16,7 @@ import reducer, {
 } from '../../ducks/location-unit-groups';
 import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../constants';
 import lang from '../../lang';
-import Table, { TableData } from './Table';
+import Table from './Table';
 import './LocationUnitGroupList.css';
 import { Link } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -30,7 +30,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   const [detail, setDetail] = useState<LocationUnitGroupDetailProps | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState('');
-  const [filter, setfilterData] = useState<TableData[] | null>(null);
+  const [filter, setfilterData] = useState<LocationUnitGroup[] | null>(null);
   const { opensrpBaseURL } = props;
 
   useEffect(() => {
@@ -46,19 +46,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
     }
   });
 
-  const tableData: TableData[] = [];
-
-  if (locationsArray.length) {
-    locationsArray.forEach((location: LocationUnitGroup, i: number) => {
-      tableData.push({
-        key: i.toString(),
-        id: location.id,
-        name: location.name,
-        active: location.active,
-        description: location.description,
-      });
-    });
-  }
+  const tableData: LocationUnitGroup[] = locationsArray;
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.target.value;
@@ -66,7 +54,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
     const filteredData = tableData.filter((entry: { name: string }) =>
       entry.name.toLowerCase().includes(currentValue.toLowerCase())
     );
-    setfilterData(filteredData as TableData[]);
+    setfilterData(filteredData as LocationUnitGroup[]);
   };
 
   if (isLoading)
@@ -111,7 +99,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
           <div className="bg-white p-3">
             <Table
               opensrpBaseURL={opensrpBaseURL}
-              data={value.length < 1 ? tableData : (filter as TableData[])}
+              data={value.length < 1 ? tableData : (filter as LocationUnitGroup[])}
               onViewDetails={(e: LocationUnitGroupDetailProps) => setDetail(e)}
             />
           </div>

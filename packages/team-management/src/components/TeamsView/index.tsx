@@ -17,7 +17,7 @@ import {
   reducerName,
 } from '../../ducks/organizations';
 import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
-import Table, { TableData } from './Table';
+import Table from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
@@ -30,14 +30,14 @@ reducerRegistry.register(reducerName, reducer);
 /**
  * Function to load selected Team for details
  *
- * @param {TableData} row data selected from the table
+ * @param {Organization} row data selected from the table
  * @param {string} opensrpBaseURL - base url
  * @param {Function} setDetail funtion to set detail to state
  * @param {Function} setPractitionersList funtion to set detail to state
  * @param {Lang} langObj - the translation object lookup
  */
 export const loadSingleTeam = (
-  row: TableData,
+  row: Organization,
   opensrpBaseURL: string,
   setDetail: (isLoading: string | Organization) => void,
   setPractitionersList: (isLoading: string | Practitioner[]) => void,
@@ -74,7 +74,7 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
   const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState('');
-  const [filter, setfilterData] = useState<TableData[] | null>(null);
+  const [filter, setfilterData] = useState<Organization[] | null>(null);
   const { opensrpBaseURL } = props;
   useEffect(() => {
     if (isLoading) {
@@ -89,20 +89,6 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
     }
   });
 
-  const tableData: TableData[] = [];
-
-  if (teamsArray.length) {
-    teamsArray.forEach((team: Organization, i: number) => {
-      tableData.push({
-        key: i.toString(),
-        id: team.id,
-        name: team.name,
-        active: team.active,
-        identifier: team.identifier,
-      });
-    });
-  }
-
   /**
    * Returns filted list of teams
    *
@@ -113,10 +99,10 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
   const onChange = (e: { target: { value: string } }) => {
     const currentValue = e.target.value;
     setValue(currentValue);
-    const filteredData = tableData.filter((entry: { name: string }) =>
+    const filteredData = teamsArray.filter((entry: { name: string }) =>
       entry.name.toLowerCase().includes(currentValue.toLowerCase())
     );
-    setfilterData(filteredData as TableData[]);
+    setfilterData(filteredData as Organization[]);
   };
 
   if (isLoading) return <Spin size="large" />;
@@ -150,7 +136,7 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
           </div>
           <div className="bg-white">
             <Table
-              data={value.length < 1 ? tableData : (filter as TableData[])}
+              data={value.length < 1 ? teamsArray : (filter as Organization[])}
               onViewDetails={loadSingleTeam}
               opensrpBaseURL={opensrpBaseURL}
               setPractitionersList={
