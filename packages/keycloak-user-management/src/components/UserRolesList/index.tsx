@@ -19,7 +19,7 @@ import {
 } from '../../ducks/userRoles';
 import lang from '../../lang';
 import { SEARCH_QUERY_PARAM } from '../../constants';
-import { KeycloakUserRole, makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
+import { makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
 import { fetchAllRoles } from './utils';
 
 /** Register reducer */
@@ -74,18 +74,6 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
   };
 
-  const tableData: TableData[] = getUserRolesList.map(
-    (userRole: KeycloakUserRole, index: number) => {
-      return {
-        key: `${index}`,
-        id: userRole.id,
-        name: userRole.name,
-        composite: userRole.composite.toString(),
-        description: userRole.description,
-      };
-    }
-  );
-
   const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
@@ -95,6 +83,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     {
       title: lang.COMPOSITE,
       dataIndex: 'composite',
+      render: (value: boolean) => value.toString(),
     },
     {
       title: lang.DESCRIPTION,
@@ -116,7 +105,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
           <TableLayout
             id="UserRolesList"
             persistState={true}
-            datasource={tableData}
+            datasource={getUserRolesList}
             columns={columns}
           />
         </Col>
