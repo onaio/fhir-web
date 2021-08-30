@@ -2,9 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Dictionary } from '@onaio/utils';
 import { InfiniteData, useInfiniteQuery } from 'react-query';
 import { TableProps } from '../TableLayout';
-
-const defaultcurrentPage = 1;
-const defaultpageSize = 5;
+import { TABLE_PAGE, TABLE_PAGE_SIZE } from 'react-utils/src/constants';
 
 type Data<T> = { data: T; total?: number };
 type DataRecord<T> = Dictionary<Data<T>>;
@@ -41,8 +39,8 @@ export function PaginateData<T extends object = Dictionary>(props: PaginateData<
     pageSize: number;
     prevdata: Data<T[]>;
   }>({
-    currentPage: props.currentPage ?? defaultcurrentPage,
-    pageSize: props.pageSize ?? defaultpageSize,
+    currentPage: props.currentPage ?? TABLE_PAGE,
+    pageSize: props.pageSize ?? TABLE_PAGE_SIZE,
     prevdata: { data: [], total: undefined },
   });
 
@@ -73,7 +71,7 @@ export function PaginateData<T extends object = Dictionary>(props: PaginateData<
     infdata: InfiniteData<{ data: DataRecord<T[]>; total: number | undefined }>
   ): DataRecord<T[]> {
     return infdata.pages.reduce((acc: DataRecord<T[]>, data, index) => {
-      const page = (infdata.pageParams[index] as number | undefined) ?? defaultcurrentPage;
+      const page = (infdata.pageParams[index] as number | undefined) ?? TABLE_PAGE;
       return { ...acc, [page]: data } as DataRecord<T[]>;
     }, {});
   }
