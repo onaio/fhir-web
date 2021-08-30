@@ -21,6 +21,7 @@ import {
   columnsFactory,
   getNodePath,
   ActionsColumnCustomRender,
+  TableData,
 } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
@@ -31,7 +32,6 @@ import {
   LOCATIONS_GET_ALL_SYNC_ENDPOINT,
   INVENTORY_ADD_SERVICE_POINT,
   SEARCH_QUERY_PARAM,
-  TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
@@ -142,10 +142,10 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   }
 
   const pageTitle = `${lang.SERVICE_POINT_INVENTORY} (${structures.length})`;
-  // add a key prop to the array data to be consumed by the table
-  const datasource = structures.map((location) => {
+
+  const datasource: TableData[] = structures.map((location) => {
     const locationToDisplay = {
-      key: `${TableColumnsNamespace}-${location.id}`,
+      key: location.id,
       type: location.properties.type as string,
       serviceName: location.properties.name,
       location: getNodePath(location, trees),
