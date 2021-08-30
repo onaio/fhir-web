@@ -9,7 +9,6 @@ import { getConfig, setConfig } from '@opensrp/pkg-config';
 interface TableData {
   geographicLevel: number;
   id: string;
-  key: string;
   name: string;
 }
 
@@ -45,7 +44,6 @@ describe('Table Layout', () => {
   for (let i = 1; i < 20; i++) {
     tableData.push({
       id: i.toString(),
-      key: i.toString(),
       name: `Edrward ${i}`,
       geographicLevel: i,
     });
