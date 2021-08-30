@@ -34,7 +34,7 @@ interface PaginateData<T> {
 export function PaginateData<T extends object = Dictionary>(props: PaginateData<T>) {
   const { total, onError, queryFn, queryid, onSuccess, onSelect, children } = props;
 
-  const [{ currentPage, pageSize, prevdata }, setTableprops] = useState<{
+  const [{ currentPage, pageSize, prevdata }, setProps] = useState<{
     currentPage: number;
     pageSize: number;
     prevdata: Data<T[]>;
@@ -104,7 +104,7 @@ export function PaginateData<T extends object = Dictionary>(props: PaginateData<
       total: tabledata.total,
       current: currentPage,
       onChange: (page, pagesize) =>
-        setTableprops({ currentPage: page, pageSize: pagesize ?? pageSize, prevdata: tabledata }),
+        setProps({ currentPage: page, pageSize: pagesize ?? pageSize, prevdata: tabledata }),
     },
   });
 }
