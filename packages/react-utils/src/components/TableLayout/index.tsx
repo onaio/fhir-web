@@ -20,6 +20,7 @@ export interface Column<T> extends ColumnType<T>, Dictionary {
 
 interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
+  dataKeyAccessor?: keyof T;
   columns?: Column<T>[];
   actions?: Action<T>;
 }
@@ -51,6 +52,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
     children,
     persistState,
     actions,
+    dataKeyAccessor,
     pagination,
     ...restprops
   } = props;
@@ -102,6 +104,14 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
       }),
   };
 
+  // auto append key into data if not provided
+  const data: T[] = useMemo(() => {
+    return datasource.map((e, index) => ({
+      ...e,
+      key: e.key ?? dataKeyAccessor ? e[dataKeyAccessor as keyof T] : index,
+    }));
+  }, [dataKeyAccessor, datasource]);
+
   /** Table Layout Component used to render the table with default Settings
    *
    * @param page - the current viewing Page number
@@ -119,7 +129,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
   }
 
   return (
-    <AntTable<T> dataSource={datasource} columns={tablecolumn} {...tableprops}>
+    <AntTable<T> dataSource={data} columns={tablecolumn} {...tableprops}>
       {children}
     </AntTable>
   );
