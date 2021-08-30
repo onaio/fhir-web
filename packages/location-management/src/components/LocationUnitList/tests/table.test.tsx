@@ -11,8 +11,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   for (let i = 1; i < 5; i++) {
     tableData.push({
       id: i.toString(),
-      key: i.toString(),
-      name: `Edrward ${i}`,
+      label: `Edrward ${i}`,
       geographicLevel: i,
     });
   }
@@ -76,40 +75,6 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     const firstAction = wrapper.find('.Actions').first();
     firstAction.find('button').first().simulate('click');
-  });
-
-  it('Test Name Sorting functionality', () => {
-    const wrapper = mount(
-      <Router history={history}>
-        <Table data={tableData} />
-      </Router>
-    );
-
-    const heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(3);
-    heading.find('th').at(0).children().simulate('click');
-    heading.find('th').at(0).children().simulate('click');
-
-    const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe('4');
-    expect(body.children().last().prop('rowKey')).toBe('1');
-  });
-
-  it('Test Level Sorting functionality', () => {
-    const wrapper = mount(
-      <Router history={history}>
-        <Table data={tableData} />
-      </Router>
-    );
-
-    const heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(3);
-    heading.find('th').at(1).children().simulate('click');
-    heading.find('th').at(1).children().simulate('click');
-
-    const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe('4');
-    expect(body.children().last().prop('rowKey')).toBe('1');
   });
 
   it('Should show table pagination options', () => {
