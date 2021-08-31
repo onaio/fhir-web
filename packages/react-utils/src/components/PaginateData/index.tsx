@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Dictionary } from '@onaio/utils';
 import { InfiniteData, useInfiniteQuery } from 'react-query';
 import { TableProps } from '../TableLayout';
-import { TABLE_PAGE, TABLE_PAGE_SIZE } from 'react-utils/src/constants';
+import { TABLE_PAGE, TABLE_PAGE_SIZE } from '../../constants';
 
 type Data<T> = { data: T; total?: number };
 type DataRecord<T> = Dictionary<Data<T>>;
