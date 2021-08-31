@@ -2,29 +2,73 @@ import React from 'react';
 import { DocumentReferenceDetails } from '../index';
 import docResources from './docReference.json';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { mount } from 'enzyme';
+import '@testing-library/jest-dom';
+import { act } from 'react-dom/test-utils';
+import toJson from 'enzyme-to-json';
+import { mountWithProviders } from '../../helpers/testUtils';
+import fhir from 'fhirclient';
 
-test('documentDetails works correctly', async () => {
-  const wrapper = mount(
-    <DocumentReferenceDetails
-      documentResources={(docResources as unknown) as IfhirR4.IDocumentReference[]}
-    />
-  );
+describe('DocumentReference', () => {
+  test('documentDetails works correctly', async () => {
+    window.URL.createObjectURL = jest.fn(() => 'urlObject');
+    window.URL.revokeObjectURL = jest.fn();
+    const mockBaseUrl = 'http://example.com';
+    const wrapper = mountWithProviders(
+      <DocumentReferenceDetails
+        fhirBaseApiUrl={mockBaseUrl}
+        documentResources={([docResources] as unknown) as IfhirR4.IDocumentReference[]}
+      />
+    );
 
-  expect(wrapper.find('.documentResource-container')).toHaveLength(1);
-  expect(wrapper.find('.documentResource-card')).toHaveLength(4);
+    const mockPdfBlob = new Blob(['some text'], { type: 'application/pdf' });
 
-  wrapper.find('.documentResource-card img').forEach((img) => {
-    expect(img.props().src).toMatch(/data:image\/png;base64, .*/);
+    fhir.client = () =>
+      ({
+        request: async () => new Response(mockPdfBlob, { status: 200 }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    expect(wrapper.find('.doc-reference')).toHaveLength(1);
+    const firstCollapseHeader = wrapper.find('.ant-collapse-header');
+    expect(firstCollapseHeader).toHaveLength(1);
+    expect(firstCollapseHeader.text()).toEqual('Physical  current');
+
+    // click on header
+    firstCollapseHeader.simulate('click');
+
+    await act(async () => {
+      await new Promise((r) => setImmediate(r));
+      wrapper.update();
+    });
+
+    // values
+    const valuesShown = wrapper.find('.fhir-ui__Value');
+    expect(valuesShown).toHaveLength(7);
+    valuesShown.forEach((valueComp) => {
+      expect(toJson(valueComp)).toMatchSnapshot();
+    });
+
+    // lets look at the contents table
+    wrapper.find('.doc-resource__content_table tr').forEach((tr) => {
+      expect(tr.text()).toMatchSnapshot('table tr');
+    });
+
+    await act(async () => {
+      await new Promise((r) => setImmediate(r));
+      wrapper.update();
+    });
+
+    // focument Download link
+    const linkTd = wrapper
+      .find('.doc-resource__content_table tr')
+      .at(1)
+      .find('td')
+      .last()
+      .find('a');
+
+    expect(toJson(linkTd)).toMatchSnapshot();
+
+    expect(linkTd.props().href).toEqual('urlObject');
+
+    wrapper.unmount();
   });
-
-  // div#1080 does not work
-  const cardWithPdf = wrapper.find("div[id='1080']");
-  expect(cardWithPdf.find('a').props().href).toMatch(/data:application\/pdf;base64,.*/);
-  expect(cardWithPdf.find('a').props().download).toEqual('1080.pdf');
-
-  const cardWithoutPdf = wrapper.find("div[id='1015']");
-  expect(cardWithoutPdf.find('a')).toHaveLength(0);
-
-  wrapper.unmount();
 });
