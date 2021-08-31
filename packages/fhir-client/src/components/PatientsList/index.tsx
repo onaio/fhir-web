@@ -29,6 +29,7 @@ interface TableData {
 
 interface Props {
   fhirBaseURL: string;
+  sortFields: string[];
 }
 
 export interface PaginationProps {
@@ -48,13 +49,14 @@ export const fetchPatients = async (
   pageSize: number,
   pageOffset: number,
   searchParam: string | undefined,
+  sortFields: string[] | undefined,
   setUsersCountCallback: (count: number) => void
 ) => {
   return await FHIR.client(fhirBaseURL)
     .request({
-      url: `Patient/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}${
-        searchParam ? '&name=' + searchParam : ''
-      }`,
+      url: `Patient/_search?_count=${pageSize}${
+        sortFields ? '&_sort=' + sortFields.join() : ''
+      }&_getpagesoffset=${pageOffset}${searchParam ? '&name=' + searchParam : ''}`,
     })
     .then((res: fhirclient.FHIR.Bundle) => {
       setUsersCountCallback(res.total as number);
@@ -68,7 +70,7 @@ export const fetchPatients = async (
  * @returns {Function} returns patients list display
  */
 const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListTypes) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, sortFields } = props;
   const [usersCount, setUsersCount] = React.useState<number>(0);
   const [pageProps, setPageProps] = React.useState<PaginationProps>({
     currentPage: 1,
@@ -85,6 +87,7 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
         pageSize as number,
         pageOffset,
         searchParam as string,
+        sortFields,
         setUsersCount
       ),
     { refetchOnWindowFocus: false }

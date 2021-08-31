@@ -28,6 +28,7 @@ import {
   USER_FORM_HIDDEN_FIELDS,
   USER_FORM_RENDER_FIELDS,
   PAGINATION_SIZE,
+  FHIR_PATIENT_SORT_FIELDS,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -164,4 +165,8 @@ export const heatlhcareProps = {
 
 export const groupProps = {
   fhirBaseURL: FHIR_API_BASE_URL,
+};
+
+export const patientProps = {
+  sortFields: FHIR_PATIENT_SORT_FIELDS,
 };

@@ -156,6 +156,7 @@ import {
   heatlhcareProps,
   groupProps,
   teamManagementProps,
+  patientProps,
 } from './utils';
 import './App.css';
 import {
@@ -271,6 +272,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={'/admin/patients'}
+              {...patientProps}
               component={PatientsList}
             />
             <PrivateComponent
