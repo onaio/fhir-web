@@ -13,17 +13,6 @@
   color: #777;
 }
 
-.documentResource-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.documentResource-card {
-  width: 30%;
-  margin: 5px !important;
-  min-width: 240px;
-}
-
 .patient-details-banner * {
   background: #f5f5f5 !important;
 }
@@ -60,4 +49,63 @@
   flex-direction: row;
   width: 100%;
   padding-bottom: 15px;
+}
+
+.fhir-ui__Value {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.fhir-ui__Value :not(.fhir-ui__Value-label) {
+  word-break: break-all;
+}
+
+.fhir-ui__Value-label {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #6c757d;
+  margin: 0 10px 0 0;
+}
+
+.fhir-ui__ValueSection {
+  overflow: auto;
+}
+
+.fhir-ui__ValueSection-label {
+  /* margin-top: 5px; */
+  font-size: 1.1em;
+  color: #6c757d;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.fhir-ui__ValueSection-body {
+  margin: 0 2em;
+}
+
+.doc-reference {
+  margin: 10px;
+}
+
+.doc-resource__content-table-action {
+  width: 33%;
+}
+
+.doc-resource__content-table-action img {
+  max-width: 250px;
+}
+
+.doc-resource__content_table td,
+.doc-resource__content_table th {
+  vertical-align: middle !important;
+  padding: 8px;
+}
+
+.doc-resource__title {
+  font-size: 1.5em;
+}
+
+.disabled-link {
+  pointer-events: none;
+  color: grey;
 }
