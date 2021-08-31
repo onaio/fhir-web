@@ -200,3 +200,8 @@ export const USER_FORM_RENDER_FIELDS = setEnv('REACT_APP_USER_FORM_RENDER_FIELDS
 export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000));
 
 export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));
+
+export const FHIR_PATIENT_SORT_FIELDS = setEnv(
+  'REACT_APP_FHIR_PATIENT_SORT_FIELDS',
+  '-_lastUpdated'
+).split(',');
