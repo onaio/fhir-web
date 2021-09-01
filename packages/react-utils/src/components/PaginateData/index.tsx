@@ -4,19 +4,19 @@ import { InfiniteData, useInfiniteQuery } from 'react-query';
 import { TableProps } from '../TableLayout';
 import { TABLE_PAGE, TABLE_PAGE_SIZE } from '../../constants';
 
-type Data<T> = { data: T; total?: number };
-type DataRecord<T> = Dictionary<Data<T>>;
+type PaginatedData<T> = { data: T; total?: number };
+type DataDictionary<T> = Dictionary<PaginatedData<T>>;
 
 interface PaginateData<T> {
-  onSuccess?: (response: Data<T[]>) => void;
+  onSuccess?: (response: PaginatedData<T[]>) => void;
   onError?: (error: unknown) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSelect?: (response?: any) => T[];
-  queryFn: (currentPage: number, pageSize: number) => Promise<DataRecord<T[]>>;
+  queryFn: (currentPage: number, pageSize: number) => Promise<DataDictionary<T[]>>;
   queryid: string;
   currentPage?: number;
   pageSize?: number;
-  total?: number | ((data: DataRecord<T[]>) => Promise<number> | number);
+  total?: number | ((data: DataDictionary<T[]>) => Promise<number> | number);
   children: (
     props: TableProps<T> & {
       fetchNextPage: Function;
@@ -37,7 +37,7 @@ export function PaginateData<T extends object = Dictionary>(props: PaginateData<
   const [{ currentPage, pageSize, prevdata }, setProps] = useState<{
     currentPage: number;
     pageSize: number;
-    prevdata: Data<T[]>;
+    prevdata: PaginatedData<T[]>;
   }>({
     currentPage: props.currentPage ?? TABLE_PAGE,
     pageSize: props.pageSize ?? TABLE_PAGE_SIZE,
@@ -68,11 +68,11 @@ export function PaginateData<T extends object = Dictionary>(props: PaginateData<
    * @returns {Dictionary} - converted Dictionary of Data
    */
   function convertToDataRecord(
-    infdata: InfiniteData<{ data: DataRecord<T[]>; total: number | undefined }>
-  ): DataRecord<T[]> {
-    return infdata.pages.reduce((acc: DataRecord<T[]>, data, index) => {
+    infdata: InfiniteData<{ data: DataDictionary<T[]>; total: number | undefined }>
+  ): DataDictionary<T[]> {
+    return infdata.pages.reduce((acc: DataDictionary<T[]>, data, index) => {
       const page = (infdata.pageParams[index] as number | undefined) ?? TABLE_PAGE;
-      return { ...acc, [page]: data } as DataRecord<T[]>;
+      return { ...acc, [page]: data } as DataDictionary<T[]>;
     }, {});
   }
 
@@ -90,8 +90,8 @@ export function PaginateData<T extends object = Dictionary>(props: PaginateData<
     if (data[currentPage] === undefined) fetchPage();
   }, [currentPage, data, fetchPage]);
 
-  const tabledata: Data<T[]> = useMemo(
-    () => (data[currentPage] as Data<T[]> | undefined) ?? prevdata,
+  const tabledata: PaginatedData<T[]> = useMemo(
+    () => (data[currentPage] as PaginatedData<T[]> | undefined) ?? prevdata,
     [currentPage, data, prevdata]
   );
 
