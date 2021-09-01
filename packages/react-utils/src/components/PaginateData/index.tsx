@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Dictionary } from '@onaio/utils';
 import { InfiniteData, useInfiniteQuery } from 'react-query';
+import { UseInfiniteQueryOptions } from 'react-query/react';
 import { TableProps } from '../TableLayout';
 import { TABLE_PAGE, TABLE_PAGE_SIZE } from '../../constants';
 
@@ -12,6 +13,7 @@ interface PaginateData<T, resp = T[]> {
   onError?: (error: unknown) => void;
   onSelect?: (response: resp) => T[];
   queryFn: (currentPage: number, pageSize: number) => Promise<resp>;
+  queryOptions?: UseInfiniteQueryOptions<PaginatedData<resp>>;
   queryid: string;
   currentPage?: number;
   pageSize?: number;
@@ -33,7 +35,7 @@ interface PaginateData<T, resp = T[]> {
 export function PaginateData<T extends object = Dictionary, Resp = T[]>(
   props: PaginateData<T, Resp>
 ) {
-  const { total, onError, queryFn, queryid, onSuccess, onSelect, children } = props;
+  const { total, onError, queryFn, queryid, onSuccess, onSelect, children, queryOptions } = props;
 
   const [{ currentPage, pageSize, prevdata }, setProps] = useState<{
     currentPage: number;
@@ -53,11 +55,9 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
       return { data: data, total: totalval };
     },
     {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
       onSuccess: (resp) => onSuccess?.(convertToDataRecord(resp)[currentPage]) ?? undefined,
       onError: onError,
+      ...queryOptions,
     }
   );
 
