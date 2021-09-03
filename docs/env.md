@@ -256,3 +256,9 @@ Below is a list of currently supported environment variables:
   - A comma separated list of sort fields for the FHIR patient resource
   - **Optional**(`strng`)
   - default: `"-_lastUpdated,status"`
+
+- **REACT_APP_FHIR_PATIENT_BUNDLE_SIZE**
+
+  - Default FHIR patient resource bundle size
+  - **Optional**(`strng`)
+  - default: 5000

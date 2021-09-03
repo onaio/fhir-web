@@ -33,6 +33,7 @@ interface ResourceTypeMap {
 /** props for editing a user view */
 export interface PatientDetailProps {
   fhirBaseURL: string;
+  patientBundleSize: number;
 }
 
 /** type intersection for all types that pertain to the props */
@@ -41,6 +42,7 @@ export type PatientDetailPropTypes = PatientDetailProps & RouteComponentProps<Ro
 /** default props for editing patient component */
 export const defaultEditPatientProps: PatientDetailProps = {
   fhirBaseURL: '',
+  patientBundleSize: 1000,
 };
 
 /** Component which shows FHIR resource details of a single patient
@@ -49,13 +51,12 @@ export const defaultEditPatientProps: PatientDetailProps = {
  * @returns {React.FC} returns patient resources display
  */
 const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPropTypes) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, patientBundleSize } = props;
   const [resourceType, setResourceType] = React.useState<string>('Patient');
   const patientId = props.match.params['patientId'];
-
   const { error, data, isLoading } = useQuery('fetchPatient', async () => {
     return await FHIR.client(fhirBaseURL)
-      .request(`Patient/${patientId}/$everything?_count=5000`)
+      .request(`Patient/${patientId}/$everything?_count=${patientBundleSize}`)
       .then((res: fhirclient.FHIR.Bundle) => {
         return res;
       })
