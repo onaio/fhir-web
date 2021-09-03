@@ -1,0 +1,61 @@
+{
+  "name": "fhirform",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^4.6.2",
+    "@rjsf/antd": "^3.0.0",
+    "@rjsf/core": "^3.0.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "antd": "^4.16.8",
+    "dayjs": "^1.10.6",
+    "fhirformjs": "file:../fhirformjs",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-jsonschema-form": "^1.8.1",
+    "react-scripts": "4.0.3",
+    "typescript": "^4.1.2",
+    "uniforms": "^3.5.1",
+    "uniforms-antd": "^3.5.1",
+    "uniforms-bridge-json-schema": "^3.5.1",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules":{
+      "no-fallthrough": 0
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@smile-cdr/fhirts": "^1.2.7",
+    "@types/react-jsonschema-form": "^1.7.6"
+  }
+}

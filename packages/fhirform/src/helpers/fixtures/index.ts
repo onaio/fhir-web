@@ -1,0 +1,1413 @@
+export const sampleCovidQRModel = {
+  item: [
+    {
+      item: [
+        {
+          answer: [{ valueString: "" }],
+          linkId: "/G1/Q1",
+          text: "Facility ID",
+        },
+        {
+          answer: [{ valueString: "" }],
+          linkId: "/G1/Q2",
+          text: "Summary Census #ID",
+        },
+        {
+          answer: [{ valueDate: "" }],
+          linkId: "/G1/Q3",
+          text: "Effective Date",
+        },
+      ],
+      linkId: "/G1",
+      text: "Facility MetaData",
+    },
+    {
+      item: [
+        {
+          answer: [{ valueString: "" }],
+          linkId: "/G2/D1",
+          text: "Does your organization consider that it has a critical staffing shortage in this group today? (Check appropriate box if answer is Yes)",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G2/Q1",
+          text: "Environmental services",
+        },
+        { answer: [{ valueBoolean: "" }], linkId: "/G2/Q2", text: "Nurses" },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G2/Q3",
+          text: "Respiratory therapists",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G2/Q4",
+          text: "Pharmacists and pharmacy techs",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G2/Q5",
+          text: "Physicians",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G2/Q6",
+          text: "Other licensed independent practitioners",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G2/Q7",
+          text: "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G2/Q8",
+          text: "Other HCP†",
+        },
+      ],
+      linkId: "/G2",
+      text: "Critical Staffing Shortage Today",
+    },
+    {
+      item: [
+        {
+          answer: [{ valueString: "" }],
+          linkId: "/G3/D1",
+          text: "Does your organization consider that it has a critical staffing shortage in this group within one week? (Check appropriate box if answer is Yes)",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G3/Q1",
+          text: "Environmental services",
+        },
+        { answer: [{ valueBoolean: "" }], linkId: "/G3/Q2", text: "Nurses" },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G3/Q3",
+          text: "Respiratory therapists",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G3/Q4",
+          text: "Pharmacists and pharmacy techs",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G3/Q5",
+          text: "Physicians",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G3/Q6",
+          text: "Other licensed independent practitioners",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G3/Q7",
+          text: "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+        },
+        {
+          answer: [{ valueBoolean: "" }],
+          linkId: "/G3/Q8",
+          text: "Other HCP†",
+        },
+      ],
+      linkId: "/G3",
+      text: "Critical Staffing Shortage Within One Week",
+    },
+  ],
+  resourceType: "QuestionnaireResponse",
+  status: "in-progress",
+};
+
+export const linItemMap = {
+  "/G1": {
+    type: "group",
+    code: [{ code: "G1", display: "Facility MetaData", system: "Custom" }],
+    required: false,
+    linkId: "/G1",
+    text: "Facility MetaData",
+    item: [
+      {
+        type: "string",
+        code: [{ code: "Q1", display: "Facility ID", system: "Custom" }],
+        required: true,
+        linkId: "/G1/Q1",
+        text: "Facility ID",
+        prefix: "1",
+        item: [
+          {
+            text: "The NHSN-assigned facility ID will be autoentered by the computer.",
+            type: "display",
+            linkId: "/G1/Q1-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "string",
+        code: [{ code: "Q2", display: "Summary Census #ID", system: "Custom" }],
+        required: true,
+        linkId: "/G1/Q2",
+        text: "Summary Census #ID",
+        prefix: "2",
+        readOnly: true,
+        initial: [{ valueString: "(Auto-generated by the computer)" }],
+        item: [
+          {
+            text: "Auto-generated by the computer.",
+            type: "display",
+            linkId: "/G1/Q2-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "date",
+        code: [{ code: "Q3", display: "Effective Date", system: "Custom" }],
+        required: true,
+        linkId: "/G1/Q3",
+        text: "Effective Date",
+        prefix: "3",
+        item: [
+          {
+            text: "Required. Select the date for which the recorded data was collected for the following questions.",
+            type: "display",
+            linkId: "/G1/Q3-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "/G1/Q1": {
+    type: "string",
+    code: [{ code: "Q1", display: "Facility ID", system: "Custom" }],
+    required: true,
+    linkId: "/G1/Q1",
+    text: "Facility ID",
+    prefix: "1",
+    item: [
+      {
+        text: "The NHSN-assigned facility ID will be autoentered by the computer.",
+        type: "display",
+        linkId: "/G1/Q1-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G1/Q1-help": {
+    text: "The NHSN-assigned facility ID will be autoentered by the computer.",
+    type: "display",
+    linkId: "/G1/Q1-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G1/Q2": {
+    type: "string",
+    code: [{ code: "Q2", display: "Summary Census #ID", system: "Custom" }],
+    required: true,
+    linkId: "/G1/Q2",
+    text: "Summary Census #ID",
+    prefix: "2",
+    readOnly: true,
+    initial: [{ valueString: "(Auto-generated by the computer)" }],
+    item: [
+      {
+        text: "Auto-generated by the computer.",
+        type: "display",
+        linkId: "/G1/Q2-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G1/Q2-help": {
+    text: "Auto-generated by the computer.",
+    type: "display",
+    linkId: "/G1/Q2-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G1/Q3": {
+    type: "date",
+    code: [{ code: "Q3", display: "Effective Date", system: "Custom" }],
+    required: true,
+    linkId: "/G1/Q3",
+    text: "Effective Date",
+    prefix: "3",
+    item: [
+      {
+        text: "Required. Select the date for which the recorded data was collected for the following questions.",
+        type: "display",
+        linkId: "/G1/Q3-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G1/Q3-help": {
+    text: "Required. Select the date for which the recorded data was collected for the following questions.",
+    type: "display",
+    linkId: "/G1/Q3-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G2": {
+    type: "group",
+    code: [
+      {
+        code: "G2",
+        display: "Critical Staffing Shortage Today",
+        system: "Custom",
+      },
+    ],
+    required: false,
+    linkId: "/G2",
+    text: "Critical Staffing Shortage Today",
+    prefix: "2",
+    item: [
+      {
+        type: "display",
+        required: false,
+        linkId: "/G2/D1",
+        text: "Does your organization consider that it has a critical staffing shortage in this group today? (Check appropriate box if answer is Yes)",
+      },
+      {
+        type: "boolean",
+        code: [
+          { code: "Q1", display: "Environmental services", system: "Custom" },
+        ],
+        required: false,
+        linkId: "/G2/Q1",
+        text: "Environmental services",
+        prefix: "1",
+      },
+      {
+        type: "boolean",
+        code: [{ code: "Q2", display: "Nurses", system: "Custom" }],
+        required: false,
+        linkId: "/G2/Q2",
+        text: "Nurses",
+        prefix: "2",
+        item: [
+          {
+            text: "registered nurses and licensed practical nurses",
+            type: "display",
+            linkId: "/G2/Q2-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "boolean",
+        code: [
+          { code: "Q3", display: "Respiratory therapists", system: "Custom" },
+        ],
+        required: false,
+        linkId: "/G2/Q3",
+        text: "Respiratory therapists",
+        prefix: "3",
+      },
+      {
+        type: "boolean",
+        code: [
+          {
+            code: "Q4",
+            display: "Pharmacists and pharmacy techs",
+            system: "Custom",
+          },
+        ],
+        required: false,
+        linkId: "/G2/Q4",
+        text: "Pharmacists and pharmacy techs",
+        prefix: "4",
+      },
+      {
+        type: "boolean",
+        code: [{ code: "Q5", display: "Physicians", system: "Custom" }],
+        required: false,
+        linkId: "/G2/Q5",
+        text: "Physicians",
+        prefix: "5",
+        item: [
+          {
+            text: "attending physicians, fellows",
+            type: "display",
+            linkId: "/G2/Q5-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "boolean",
+        code: [
+          {
+            code: "Q6",
+            display: "Other licensed independent practitioners",
+            system: "Custom",
+          },
+        ],
+        required: false,
+        linkId: "/G2/Q6",
+        text: "Other licensed independent practitioners",
+        prefix: "6",
+        item: [
+          {
+            text: "advanced practice nurses, physician assistants",
+            type: "display",
+            linkId: "/G2/Q6-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "boolean",
+        code: [
+          {
+            code: "Q7",
+            display:
+              "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+            system: "Custom",
+          },
+        ],
+        required: false,
+        linkId: "/G2/Q7",
+        text: "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+        prefix: "7",
+        item: [
+          {
+            text: "Includes “per diems,” “travelers,” retired, or other seasonal or intermittently contracted persons",
+            type: "display",
+            linkId: "/G2/Q7-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "boolean",
+        code: [{ code: "Q8", display: "Other HCP†", system: "Custom" }],
+        required: false,
+        linkId: "/G2/Q8",
+        text: "Other HCP†",
+        prefix: "8",
+        item: [
+          {
+            text: "Persons who work in the facility, regardless of clinical responsibility or patient contact not included in categories above. †Healthcare Personnel (HCP) is the plural of healthcare worker",
+            type: "display",
+            linkId: "/G2/Q8-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "/G2/D1": {
+    type: "display",
+    required: false,
+    linkId: "/G2/D1",
+    text: "Does your organization consider that it has a critical staffing shortage in this group today? (Check appropriate box if answer is Yes)",
+  },
+  "/G2/Q1": {
+    type: "boolean",
+    code: [{ code: "Q1", display: "Environmental services", system: "Custom" }],
+    required: false,
+    linkId: "/G2/Q1",
+    text: "Environmental services",
+    prefix: "1",
+  },
+  "/G2/Q2": {
+    type: "boolean",
+    code: [{ code: "Q2", display: "Nurses", system: "Custom" }],
+    required: false,
+    linkId: "/G2/Q2",
+    text: "Nurses",
+    prefix: "2",
+    item: [
+      {
+        text: "registered nurses and licensed practical nurses",
+        type: "display",
+        linkId: "/G2/Q2-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G2/Q2-help": {
+    text: "registered nurses and licensed practical nurses",
+    type: "display",
+    linkId: "/G2/Q2-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G2/Q3": {
+    type: "boolean",
+    code: [{ code: "Q3", display: "Respiratory therapists", system: "Custom" }],
+    required: false,
+    linkId: "/G2/Q3",
+    text: "Respiratory therapists",
+    prefix: "3",
+  },
+  "/G2/Q4": {
+    type: "boolean",
+    code: [
+      {
+        code: "Q4",
+        display: "Pharmacists and pharmacy techs",
+        system: "Custom",
+      },
+    ],
+    required: false,
+    linkId: "/G2/Q4",
+    text: "Pharmacists and pharmacy techs",
+    prefix: "4",
+  },
+  "/G2/Q5": {
+    type: "boolean",
+    code: [{ code: "Q5", display: "Physicians", system: "Custom" }],
+    required: false,
+    linkId: "/G2/Q5",
+    text: "Physicians",
+    prefix: "5",
+    item: [
+      {
+        text: "attending physicians, fellows",
+        type: "display",
+        linkId: "/G2/Q5-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G2/Q5-help": {
+    text: "attending physicians, fellows",
+    type: "display",
+    linkId: "/G2/Q5-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G2/Q6": {
+    type: "boolean",
+    code: [
+      {
+        code: "Q6",
+        display: "Other licensed independent practitioners",
+        system: "Custom",
+      },
+    ],
+    required: false,
+    linkId: "/G2/Q6",
+    text: "Other licensed independent practitioners",
+    prefix: "6",
+    item: [
+      {
+        text: "advanced practice nurses, physician assistants",
+        type: "display",
+        linkId: "/G2/Q6-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G2/Q6-help": {
+    text: "advanced practice nurses, physician assistants",
+    type: "display",
+    linkId: "/G2/Q6-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G2/Q7": {
+    type: "boolean",
+    code: [
+      {
+        code: "Q7",
+        display:
+          "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+        system: "Custom",
+      },
+    ],
+    required: false,
+    linkId: "/G2/Q7",
+    text: "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+    prefix: "7",
+    item: [
+      {
+        text: "Includes “per diems,” “travelers,” retired, or other seasonal or intermittently contracted persons",
+        type: "display",
+        linkId: "/G2/Q7-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G2/Q7-help": {
+    text: "Includes “per diems,” “travelers,” retired, or other seasonal or intermittently contracted persons",
+    type: "display",
+    linkId: "/G2/Q7-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G2/Q8": {
+    type: "boolean",
+    code: [{ code: "Q8", display: "Other HCP†", system: "Custom" }],
+    required: false,
+    linkId: "/G2/Q8",
+    text: "Other HCP†",
+    prefix: "8",
+    item: [
+      {
+        text: "Persons who work in the facility, regardless of clinical responsibility or patient contact not included in categories above. †Healthcare Personnel (HCP) is the plural of healthcare worker",
+        type: "display",
+        linkId: "/G2/Q8-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G2/Q8-help": {
+    text: "Persons who work in the facility, regardless of clinical responsibility or patient contact not included in categories above. †Healthcare Personnel (HCP) is the plural of healthcare worker",
+    type: "display",
+    linkId: "/G2/Q8-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G3": {
+    type: "group",
+    code: [
+      {
+        code: "G3",
+        display: "Critical Staffing Shortage Within One Week",
+        system: "Custom",
+      },
+    ],
+    required: false,
+    linkId: "/G3",
+    text: "Critical Staffing Shortage Within One Week",
+    prefix: "3",
+    item: [
+      {
+        type: "display",
+        required: false,
+        linkId: "/G3/D1",
+        text: "Does your organization consider that it has a critical staffing shortage in this group within one week? (Check appropriate box if answer is Yes)",
+      },
+      {
+        type: "boolean",
+        code: [
+          { code: "Q1", display: "Environmental services", system: "Custom" },
+        ],
+        required: false,
+        linkId: "/G3/Q1",
+        text: "Environmental services",
+        prefix: "1",
+      },
+      {
+        type: "boolean",
+        code: [{ code: "Q2", display: "Nurses", system: "Custom" }],
+        required: false,
+        linkId: "/G3/Q2",
+        text: "Nurses",
+        prefix: "2",
+        item: [
+          {
+            text: "registered nurses and licensed practical nurses",
+            type: "display",
+            linkId: "/G3/Q2-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "boolean",
+        code: [
+          { code: "Q3", display: "Respiratory therapists", system: "Custom" },
+        ],
+        required: false,
+        linkId: "/G3/Q3",
+        text: "Respiratory therapists",
+        prefix: "3",
+      },
+      {
+        type: "boolean",
+        code: [
+          {
+            code: "Q4",
+            display: "Pharmacists and pharmacy techs",
+            system: "Custom",
+          },
+        ],
+        required: false,
+        linkId: "/G3/Q4",
+        text: "Pharmacists and pharmacy techs",
+        prefix: "4",
+      },
+      {
+        type: "boolean",
+        code: [{ code: "Q5", display: "Physicians", system: "Custom" }],
+        required: false,
+        linkId: "/G3/Q5",
+        text: "Physicians",
+        prefix: "5",
+        item: [
+          {
+            text: "attending physicians, fellows",
+            type: "display",
+            linkId: "/G3/Q5-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "boolean",
+        code: [
+          {
+            code: "Q6",
+            display: "Other licensed independent practitioners",
+            system: "Custom",
+          },
+        ],
+        required: false,
+        linkId: "/G3/Q6",
+        text: "Other licensed independent practitioners",
+        prefix: "6",
+        item: [
+          {
+            text: "advanced practice nurses, physician assistants",
+            type: "display",
+            linkId: "/G3/Q6-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "boolean",
+        code: [
+          {
+            code: "Q7",
+            display:
+              "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+            system: "Custom",
+          },
+        ],
+        required: false,
+        linkId: "/G3/Q7",
+        text: "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+        prefix: "7",
+        item: [
+          {
+            text: "Includes “per diems,” “travelers,” retired, or other seasonal or intermittently contracted persons",
+            type: "display",
+            linkId: "/G3/Q7-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "boolean",
+        code: [{ code: "Q8", display: "Other HCP†", system: "Custom" }],
+        required: false,
+        linkId: "/G3/Q8",
+        text: "Other HCP†",
+        prefix: "8",
+        item: [
+          {
+            text: "Persons who work in the facility, regardless of clinical responsibility or patient contact not included in categories above. †Healthcare Personnel (HCP) is the plural of healthcare worker",
+            type: "display",
+            linkId: "/G3/Q8-help",
+            extension: [
+              {
+                url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                valueCodeableConcept: {
+                  text: "Help-Button",
+                  coding: [
+                    {
+                      code: "help",
+                      display: "Help-Button",
+                      system: "http://hl7.org/fhir/questionnaire-item-control",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "/G3/D1": {
+    type: "display",
+    required: false,
+    linkId: "/G3/D1",
+    text: "Does your organization consider that it has a critical staffing shortage in this group within one week? (Check appropriate box if answer is Yes)",
+  },
+  "/G3/Q1": {
+    type: "boolean",
+    code: [{ code: "Q1", display: "Environmental services", system: "Custom" }],
+    required: false,
+    linkId: "/G3/Q1",
+    text: "Environmental services",
+    prefix: "1",
+  },
+  "/G3/Q2": {
+    type: "boolean",
+    code: [{ code: "Q2", display: "Nurses", system: "Custom" }],
+    required: false,
+    linkId: "/G3/Q2",
+    text: "Nurses",
+    prefix: "2",
+    item: [
+      {
+        text: "registered nurses and licensed practical nurses",
+        type: "display",
+        linkId: "/G3/Q2-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G3/Q2-help": {
+    text: "registered nurses and licensed practical nurses",
+    type: "display",
+    linkId: "/G3/Q2-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G3/Q3": {
+    type: "boolean",
+    code: [{ code: "Q3", display: "Respiratory therapists", system: "Custom" }],
+    required: false,
+    linkId: "/G3/Q3",
+    text: "Respiratory therapists",
+    prefix: "3",
+  },
+  "/G3/Q4": {
+    type: "boolean",
+    code: [
+      {
+        code: "Q4",
+        display: "Pharmacists and pharmacy techs",
+        system: "Custom",
+      },
+    ],
+    required: false,
+    linkId: "/G3/Q4",
+    text: "Pharmacists and pharmacy techs",
+    prefix: "4",
+  },
+  "/G3/Q5": {
+    type: "boolean",
+    code: [{ code: "Q5", display: "Physicians", system: "Custom" }],
+    required: false,
+    linkId: "/G3/Q5",
+    text: "Physicians",
+    prefix: "5",
+    item: [
+      {
+        text: "attending physicians, fellows",
+        type: "display",
+        linkId: "/G3/Q5-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G3/Q5-help": {
+    text: "attending physicians, fellows",
+    type: "display",
+    linkId: "/G3/Q5-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G3/Q6": {
+    type: "boolean",
+    code: [
+      {
+        code: "Q6",
+        display: "Other licensed independent practitioners",
+        system: "Custom",
+      },
+    ],
+    required: false,
+    linkId: "/G3/Q6",
+    text: "Other licensed independent practitioners",
+    prefix: "6",
+    item: [
+      {
+        text: "advanced practice nurses, physician assistants",
+        type: "display",
+        linkId: "/G3/Q6-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G3/Q6-help": {
+    text: "advanced practice nurses, physician assistants",
+    type: "display",
+    linkId: "/G3/Q6-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G3/Q7": {
+    type: "boolean",
+    code: [
+      {
+        code: "Q7",
+        display:
+          "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+        system: "Custom",
+      },
+    ],
+    required: false,
+    linkId: "/G3/Q7",
+    text: "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+    prefix: "7",
+    item: [
+      {
+        text: "Includes “per diems,” “travelers,” retired, or other seasonal or intermittently contracted persons",
+        type: "display",
+        linkId: "/G3/Q7-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G3/Q7-help": {
+    text: "Includes “per diems,” “travelers,” retired, or other seasonal or intermittently contracted persons",
+    type: "display",
+    linkId: "/G3/Q7-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+  "/G3/Q8": {
+    type: "boolean",
+    code: [{ code: "Q8", display: "Other HCP†", system: "Custom" }],
+    required: false,
+    linkId: "/G3/Q8",
+    text: "Other HCP†",
+    prefix: "8",
+    item: [
+      {
+        text: "Persons who work in the facility, regardless of clinical responsibility or patient contact not included in categories above. †Healthcare Personnel (HCP) is the plural of healthcare worker",
+        type: "display",
+        linkId: "/G3/Q8-help",
+        extension: [
+          {
+            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+            valueCodeableConcept: {
+              text: "Help-Button",
+              coding: [
+                {
+                  code: "help",
+                  display: "Help-Button",
+                  system: "http://hl7.org/fhir/questionnaire-item-control",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "/G3/Q8-help": {
+    text: "Persons who work in the facility, regardless of clinical responsibility or patient contact not included in categories above. †Healthcare Personnel (HCP) is the plural of healthcare worker",
+    type: "display",
+    linkId: "/G3/Q8-help",
+    extension: [
+      {
+        url: "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        valueCodeableConcept: {
+          text: "Help-Button",
+          coding: [
+            {
+              code: "help",
+              display: "Help-Button",
+              system: "http://hl7.org/fhir/questionnaire-item-control",
+            },
+          ],
+        },
+      },
+    ],
+  },
+};

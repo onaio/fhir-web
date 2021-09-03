@@ -1,0 +1,103 @@
+{
+    "type": "object",
+    "title": "Random title",
+    "properties": {
+        "/G1": {
+            "properties": {
+                "/G1/Q1": {
+                    "type": "string",
+                    "title": "Facility ID"
+                },
+                "/G1/Q2": {
+                    "type": "string",
+                    "title": "Summary Census #ID"
+                },
+                "/G1/Q3": {
+                    "type": "string",
+                    "title": "Effective Date"
+                }
+            }
+        },
+        "/G2": {
+            "properties": {
+                "/G2/D1": {
+                    "type": "string",
+                    "title": "Does your organization consider that it has a critical staffing shortage in this group today? (Check appropriate box if answer is Yes)"
+                },
+                "/G2/Q1": {
+                    "type": "boolean",
+                    "title": "Environmental services"
+                },
+                "/G2/Q2": {
+                    "type": "boolean",
+                    "title": "Nurses"
+                },
+                "/G2/Q3": {
+                    "type": "boolean",
+                    "title": "Respiratory therapists"
+                },
+                "/G2/Q4": {
+                    "type": "boolean",
+                    "title": "Pharmacists and pharmacy techs"
+                },
+                "/G2/Q5": {
+                    "type": "boolean",
+                    "title": "Physicians"
+                },
+                "/G2/Q6": {
+                    "type": "boolean",
+                    "title": "Other licensed independent practitioners"
+                },
+                "/G2/Q7": {
+                    "type": "boolean",
+                    "title": "Temporary physicians, nurses, respiratory therapists, and pharmacists"
+                },
+                "/G2/Q8": {
+                    "type": "boolean",
+                    "title": "Other HCP†"
+                }
+            }
+        },
+        "/G3": {
+            "properties": {
+                "/G3/D1": {
+                    "type": "string",
+                    "title": "Does your organization consider that it has a critical staffing shortage in this group within one week? (Check appropriate box if answer is Yes)"
+                },
+                "/G3/Q1": {
+                    "type": "boolean",
+                    "title": "Environmental services"
+                },
+                "/G3/Q2": {
+                    "type": "boolean",
+                    "title": "Nurses"
+                },
+                "/G3/Q3": {
+                    "type": "boolean",
+                    "title": "Respiratory therapists"
+                },
+                "/G3/Q4": {
+                    "type": "boolean",
+                    "title": "Pharmacists and pharmacy techs"
+                },
+                "/G3/Q5": {
+                    "type": "boolean",
+                    "title": "Physicians"
+                },
+                "/G3/Q6": {
+                    "type": "boolean",
+                    "title": "Other licensed independent practitioners"
+                },
+                "/G3/Q7": {
+                    "type": "boolean",
+                    "title": "Temporary physicians, nurses, respiratory therapists, and pharmacists"
+                },
+                "/G3/Q8": {
+                    "type": "boolean",
+                    "title": "Other HCP†"
+                }
+            }
+        }
+    },
+    "required": []
+}

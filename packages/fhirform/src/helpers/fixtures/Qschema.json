@@ -1,0 +1,342 @@
+{
+    "model": {
+        "resourceType": "QuestionnaireResponse",
+        "item": [
+            {
+                "linkId": "/G1/Q1",
+                "text": "Facility ID",
+                "answer": [
+                    {
+                        "valueString": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G1/Q2",
+                "text": "Summary Census #ID",
+                "answer": [
+                    {
+                        "valueString": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G1/Q3",
+                "text": "Effective Date",
+                "answer": [
+                    {
+                        "valueDate": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/D1",
+                "text": "Does your organization consider that it has a critical staffing shortage in this group today? (Check appropriate box if answer is Yes)",
+                "answer": [
+                    {
+                        "valueString": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/Q1",
+                "text": "Environmental services",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/Q2",
+                "text": "Nurses",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/Q3",
+                "text": "Respiratory therapists",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/Q4",
+                "text": "Pharmacists and pharmacy techs",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/Q5",
+                "text": "Physicians",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/Q6",
+                "text": "Other licensed independent practitioners",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/Q7",
+                "text": "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G2/Q8",
+                "text": "Other HCP†",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/D1",
+                "text": "Does your organization consider that it has a critical staffing shortage in this group within one week? (Check appropriate box if answer is Yes)",
+                "answer": [
+                    {
+                        "valueString": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/Q1",
+                "text": "Environmental services",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/Q2",
+                "text": "Nurses",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/Q3",
+                "text": "Respiratory therapists",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/Q4",
+                "text": "Pharmacists and pharmacy techs",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/Q5",
+                "text": "Physicians",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/Q6",
+                "text": "Other licensed independent practitioners",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/Q7",
+                "text": "Temporary physicians, nurses, respiratory therapists, and pharmacists",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            },
+            {
+                "linkId": "/G3/Q8",
+                "text": "Other HCP†",
+                "answer": [
+                    {
+                        "valueBoolean": ""
+                    }
+                ]
+            }
+        ],
+        "status": "in-progress"
+    },
+    "schema": {
+        "type": "object",
+        "properties": {
+            "/G1": {
+                "type": "object",
+                "title": "Facility MetaData",
+                "properties": {
+                    "/G1/Q1": {
+                        "type": "string",
+                        "title": "Facility ID"
+                    },
+                    "/G1/Q2": {
+                        "type": "string",
+                        "title": "Summary Census #ID"
+                    },
+                    "/G1/Q3": {
+                        "type": "string",
+                        "title": "Effective Date",
+                        "format": "date"
+                    }
+                },
+                "required": [
+                    "/G1/Q1",
+                    "/G1/Q2",
+                    "/G1/Q3"
+                ]
+            },
+            "/G2": {
+                "type": "object",
+                "title": "Critical Staffing Shortage Today",
+                "properties": {
+                    "/G2/D1": {
+                        "type": "string",
+                        "title": "Does your organization consider that it has a critical staffing shortage in this group today? (Check appropriate box if answer is Yes)"
+                    },
+                    "/G2/Q1": {
+                        "type": "boolean",
+                        "title": "Environmental services"
+                    },
+                    "/G2/Q2": {
+                        "type": "boolean",
+                        "title": "Nurses"
+                    },
+                    "/G2/Q3": {
+                        "type": "boolean",
+                        "title": "Respiratory therapists"
+                    },
+                    "/G2/Q4": {
+                        "type": "boolean",
+                        "title": "Pharmacists and pharmacy techs"
+                    },
+                    "/G2/Q5": {
+                        "type": "boolean",
+                        "title": "Physicians"
+                    },
+                    "/G2/Q6": {
+                        "type": "boolean",
+                        "title": "Other licensed independent practitioners"
+                    },
+                    "/G2/Q7": {
+                        "type": "boolean",
+                        "title": "Temporary physicians, nurses, respiratory therapists, and pharmacists"
+                    },
+                    "/G2/Q8": {
+                        "type": "boolean",
+                        "title": "Other HCP†"
+                    }
+                }
+            },
+            "/G3": {
+                "type": "object",
+                "title": "Critical Staffing Shortage Within One Week",
+                "properties": {
+                    "/G3/D1": {
+                        "type": "string",
+                        "title": "Does your organization consider that it has a critical staffing shortage in this group within one week? (Check appropriate box if answer is Yes)"
+                    },
+                    "/G3/Q1": {
+                        "type": "boolean",
+                        "title": "Environmental services"
+                    },
+                    "/G3/Q2": {
+                        "type": "boolean",
+                        "title": "Nurses"
+                    },
+                    "/G3/Q3": {
+                        "type": "boolean",
+                        "title": "Respiratory therapists"
+                    },
+                    "/G3/Q4": {
+                        "type": "boolean",
+                        "title": "Pharmacists and pharmacy techs"
+                    },
+                    "/G3/Q5": {
+                        "type": "boolean",
+                        "title": "Physicians"
+                    },
+                    "/G3/Q6": {
+                        "type": "boolean",
+                        "title": "Other licensed independent practitioners"
+                    },
+                    "/G3/Q7": {
+                        "type": "boolean",
+                        "title": "Temporary physicians, nurses, respiratory therapists, and pharmacists"
+                    },
+                    "/G3/Q8": {
+                        "type": "boolean",
+                        "title": "Other HCP†"
+                    }
+                }
+            }
+        },
+        "required": []
+    },
+    "uiSchema": {
+        "/G1": {
+            "/G1/Q1": {},
+            "/G1/Q2": {},
+            "/G1/Q3": {
+                "ui:widget": "datetime"
+            }
+        },
+        "/G2": {
+            "/G2/D1": {},
+            "/G2/Q1": {},
+            "/G2/Q2": {},
+            "/G2/Q3": {},
+            "/G2/Q4": {},
+            "/G2/Q5": {},
+            "/G2/Q6": {},
+            "/G2/Q7": {},
+            "/G2/Q8": {}
+        },
+        "/G3": {
+            "/G3/D1": {},
+            "/G3/Q1": {},
+            "/G3/Q2": {},
+            "/G3/Q3": {},
+            "/G3/Q4": {},
+            "/G3/Q5": {},
+            "/G3/Q6": {},
+            "/G3/Q7": {},
+            "/G3/Q8": {}
+        }
+    }
+}

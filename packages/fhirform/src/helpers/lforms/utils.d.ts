@@ -1,0 +1,1 @@
+export type Dictionary<TValue = any> = Record<String, TValue>;
