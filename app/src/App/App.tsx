@@ -281,6 +281,7 @@ const App: React.FC = () => {
               exact
               path={`${'/admin/patients'}/:${'patientId'}`}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              {...patientProps}
               component={ConnectedPatientDetails}
             />
             <PrivateComponent

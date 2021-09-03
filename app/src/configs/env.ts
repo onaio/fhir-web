@@ -182,7 +182,7 @@ export const ENABLE_FHIR = setEnv('REACT_APP_ENABLE_FHIR', 'false') === 'true';
 
 export const FHIR_API_BASE_URL = setEnv(
   'REACT_APP_FHIR_API_BASE_URL',
-  'https://fhir.labs.smartregister.org/fhir'
+  'https://fhir-auth.labs.smartregister.org/fhir'
 );
 
 export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
@@ -205,3 +205,5 @@ export const FHIR_PATIENT_SORT_FIELDS = setEnv(
   'REACT_APP_FHIR_PATIENT_SORT_FIELDS',
   '-_lastUpdated'
 ).split(',');
+
+export const FHIR_PATIENT_BUNDLE_SIZE = Number(setEnv('REACT_APP_FHIR_PATIENT_BUNDLE_SIZE', 5000));

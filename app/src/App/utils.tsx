@@ -29,6 +29,7 @@ import {
   USER_FORM_RENDER_FIELDS,
   PAGINATION_SIZE,
   FHIR_PATIENT_SORT_FIELDS,
+  FHIR_PATIENT_BUNDLE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -169,4 +170,5 @@ export const groupProps = {
 
 export const patientProps = {
   sortFields: FHIR_PATIENT_SORT_FIELDS,
+  patientBundleSize: FHIR_PATIENT_BUNDLE_SIZE,
 };
