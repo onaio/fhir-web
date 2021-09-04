@@ -18,6 +18,6 @@ export interface Practitioner extends Require<IfhirR4.IPractitioner, 'id' | 'act
 
 export interface PractitionerRole extends Require<IfhirR4.IPractitionerRole, 'id' | 'active'> {
   resourceType: 'PractitionerRole';
-  practitioner: Require<Reference, 'reference'>; // reference have the "Practitioner/" then append the practitoner uuid
-  organization: Require<Reference, 'reference'>; // reference have he "Organization/" then append the practitoner uuid
+  practitioner: Require<Reference, 'reference' | 'display'>; // reference have the "Practitioner/" then append the practitoner uuid
+  organization: Require<Reference, 'reference' | 'display'>; // reference have he "Organization/" then append the practitoner uuid
 }
