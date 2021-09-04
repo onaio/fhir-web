@@ -8,11 +8,6 @@ import Table, { TableData } from '../Table';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 
-jest.mock('@opensrp/store', () => ({
-  __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/store')),
-}));
-
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
