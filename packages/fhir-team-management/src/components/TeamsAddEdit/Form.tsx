@@ -249,7 +249,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           placeholder={lang.SELECT_PRACTITIONER}
           options={getPractitionersOptions(props.allPractitioner)}
           filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
-        ></Select>
+        />
       </AntdForm.Item>
 
       <AntdForm.Item {...offsetLayout}>
