@@ -51,7 +51,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
           team: team,
           active: team.active,
           name: team.name,
-          practitioners: team.practitioners.map((prac) => prac.id),
+          practitioners: team.practitionerInfo.map((prac) => prac.id),
         });
       })
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));

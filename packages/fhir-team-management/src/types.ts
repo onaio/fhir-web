@@ -9,7 +9,7 @@ export interface Organization extends Require<IfhirR4.IOrganization, 'id' | 'act
 }
 
 export type OrganizationDetail = Organization & {
-  practitioners: Practitioner[];
+  practitionerInfo: { name: string; id: string }[];
 };
 
 export interface Practitioner extends Require<IfhirR4.IPractitioner, 'id' | 'active' | 'name'> {

@@ -9,8 +9,7 @@ export interface TeamsDetailProps extends OrganizationDetail {
 }
 
 const TeamsDetail = (props: TeamsDetailProps) => {
-  const { name, active, id, practitioners } = props;
-  const filteredPractitioners = practitioners.filter((prac) => prac.active);
+  const { name, active, id, practitionerInfo } = props;
 
   return (
     <div className="p-4 bg-white">
@@ -38,15 +37,12 @@ const TeamsDetail = (props: TeamsDetailProps) => {
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.TEAM_MEMBERS}</div>
-        {filteredPractitioners.length ? (
-          filteredPractitioners.map((prac) => {
-            const name = prac.name.find((e) => e.use === 'official')?.given;
-            return (
-              <div key={prac.id} className="mb-0">
-                {name?.reduce((fullname, name) => `${fullname} ${name}`)}
-              </div>
-            );
-          })
+        {practitionerInfo.length ? (
+          practitionerInfo.map((prac) => (
+            <div key={prac.id} className="mb-0">
+              {prac.name}
+            </div>
+          ))
         ) : (
           <div className="no-team-members">{lang.NO_TEAM_MEMBERS}</div>
         )}
