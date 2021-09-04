@@ -71,14 +71,14 @@ export async function onSubmit(
   const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
   const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
-  await SetPractitioners(fhirbaseURL, team.id, toAdd, toRem, practitioner, allPractitionerRole);
+  await SetPractitioners(fhirbaseURL, team, toAdd, toRem, practitioner, allPractitionerRole);
 }
 
 /**
  * handle Practitioners
  *
  * @param {string} fhirbaseURL - base url
- * @param {string} teamId id of the team
+ * @param {Organization} team Oganization to be used to Practitioner
  * @param {string[]} toAdd list of practitioner uuid to add
  * @param {string[]} toRemove list of practitioner uuid to remove
  * @param {Practitioner[]} practitioner list of practitioner to refer to when adding or removing
@@ -86,7 +86,7 @@ export async function onSubmit(
  */
 async function SetPractitioners(
   fhirbaseURL: string,
-  teamId: string,
+  team: Organization,
   toAdd: string[],
   toRemove: string[],
   practitioner: Practitioner[],
@@ -100,7 +100,7 @@ async function SetPractitioners(
     .map((id) =>
       practitionerrole?.find(
         (role) =>
-          role.organization.reference === `Organization/${teamId}` &&
+          role.organization.reference === `Organization/${team.id}` &&
           role.practitioner.reference === `Practitioner/${id}`
       )
     )
@@ -116,13 +116,16 @@ async function SetPractitioners(
 
   const addpromises = toAddPractitioner.map((prac) => {
     const id = v4();
+    const pracname = prac.name
+      .find((e) => e.use === 'official')
+      ?.given?.reduce((fullname, name) => `${fullname} ${name}`, '');
     const payload: Omit<PractitionerRole, 'meta'> = {
       resourceType: 'PractitionerRole',
       active: true,
       id: id,
       identifier: [{ use: 'official', value: id }],
-      practitioner: { reference: `Practitioner/${prac.id}` },
-      organization: { reference: `Organization/${teamId}` },
+      practitioner: { display: pracname ?? '', reference: `Practitioner/${prac.id}` },
+      organization: { display: team.name, reference: `Organization/${team.id}` },
     };
     return serve.create(payload);
   });
