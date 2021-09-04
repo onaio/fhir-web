@@ -1,6 +1,6 @@
 import FHIR from 'fhirclient';
-import { Organization, PractitionerRole, OrganizationDetail, Practitioner } from '.';
-import { PRACTITIONERROLE_GET, PRACTITIONER_GET } from './constants';
+import { Organization, PractitionerRole, OrganizationDetail } from '.';
+import { PRACTITIONERROLE_GET } from './constants';
 import { FHIRResponse } from '@opensrp/react-utils';
 
 /**
@@ -25,15 +25,12 @@ export async function loadTeamPractitioner(props: {
       .request(PRACTITIONERROLE_GET)
       .then((res: FHIRResponse<PractitionerRole>) => res.entry.map((e) => e.resource)));
 
-  const practitionerrolesassignedref = AllRoles.filter(
+  const practitionerAssigned = AllRoles.filter(
     (role) => role.organization.reference === `Organization/${team.id}`
-  ).map((role) => role.practitioner.reference.split('/')[1]);
+  ).map((role) => ({
+    id: role.practitioner.reference.split('/')[1],
+    name: role.practitioner.display,
+  }));
 
-  const practitionerAssignedPromise = practitionerrolesassignedref.map((id) =>
-    serve.request(`${PRACTITIONER_GET}${id}`).then((res: Practitioner) => res)
-  );
-
-  const practitionerAssigned = await Promise.all(practitionerAssignedPromise);
-
-  return { ...team, practitioners: practitionerAssigned };
+  return { ...team, practitionerInfo: practitionerAssigned };
 }
