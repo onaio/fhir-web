@@ -58,7 +58,7 @@ export const createOrEditPractitioners = async (
     .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
     .then(() => sendSuccessNotification(successMessage));
 
-  if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${payload.identifier}`);
+  if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${payload.userId}`);
 };
 
 /**

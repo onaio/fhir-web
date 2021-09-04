@@ -55,7 +55,6 @@ const assignmentsSelector = getAssignmentsArrayByPlanId();
 
 export interface TableData {
   id: string;
-  key: string;
   locationName: string;
   existingAssignments: Assignment[];
   setExistingAssignments: (assignments: Assignment[]) => void;
@@ -196,7 +195,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     return null;
   }
 
-  const tableData = dataSource.map((datum: ParsedHierarchyNode, i: number) => {
+  const tableData = dataSource.map((datum: ParsedHierarchyNode) => {
     const jurisdictionAssignments = assignmentsList.filter(
       (assignment) => assignment.jurisdiction === datum.id
     );
@@ -210,7 +209,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
     return {
       id: datum.id,
-      key: i.toString(),
       locationName: datum.label,
       existingAssignments: jurisdictionAssignments,
       setExistingAssignments,
