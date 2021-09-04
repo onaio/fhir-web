@@ -177,7 +177,10 @@ export const Form: React.FC<Props> = (props: Props) => {
    */
   const getPractitionersOptions = (practitioners: Practitioner[]): SelectOption[] =>
     practitioners.map((practitioner) => ({
-      label: practitioner.name[0].given?.reduce((fullname, name) => `${fullname} ${name}`) ?? '',
+      label:
+        practitioner.name
+          .find((e) => e.use === 'official')
+          ?.given?.reduce((fullname, name) => `${fullname} ${name}`) ?? '',
       value: practitioner.id,
     }));
 
