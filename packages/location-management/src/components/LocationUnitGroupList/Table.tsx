@@ -9,12 +9,8 @@ import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 
-export interface TableData extends LocationUnitGroup {
-  key: string;
-}
-
 export interface Props {
-  data: TableData[];
+  data: LocationUnitGroup[];
   opensrpBaseURL: string;
   onViewDetails?: (locationUnit: LocationUnitGroupDetailProps) => void;
 }
@@ -45,11 +41,11 @@ const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails, opensrpBaseURL } = props;
   const data = props.data.sort((a, b) => a.name.localeCompare(b.name)); // sorts the data by name  before populating in the table
 
-  const columns: Column<TableData>[] = [
+  const columns: Column<LocationUnitGroup>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      sorter: (a: LocationUnitGroup, b: LocationUnitGroup) => a.name.localeCompare(b.name),
     },
   ];
 

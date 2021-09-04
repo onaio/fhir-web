@@ -8,7 +8,6 @@ import { Column } from '@opensrp/react-utils';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
-  key: string;
   type: string;
   serviceName: string;
   location: string;
