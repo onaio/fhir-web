@@ -122,44 +122,4 @@ describe('components/TeamsAddEdit', () => {
       ['An error occurred'],
     ]);
   });
-
-  it('show error message when cant team details', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
-
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
-          if (url === 'Organization/212') return Promise.resolve(team212);
-          else if (url === 'Practitioner/') return Promise.resolve(practitioner);
-          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
-          else if (url === 'Practitioner/116') return Promise.reject('Mock Api Fail');
-          else if (url === 'Practitioner/102') return Promise.reject('Mock Api Fail');
-        }),
-      }))
-    );
-
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
-        <QueryClientProvider client={queryClient}>
-          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={TeamsAddEdit} />
-        </QueryClientProvider>
-      </MemoryRouter>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(notificationErrorMock.mock.calls).toMatchObject([
-      ['An error occurred'],
-      ['An error occurred'],
-      ['An error occurred'],
-    ]);
-  });
 });
