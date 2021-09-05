@@ -501,112 +501,33 @@ export const team212: Organization = {
 
 export const practitionerrole: FHIRResponse<PractitionerRole> = {
   resourceType: 'Bundle',
-  id: '832151c3-89e7-4394-a4da-0995565c0ca6',
+  id: '3b2e3407-4b10-45da-800b-5c971acd7b65',
   meta: {
-    lastUpdated: '2021-07-19T18:15:15.779+00:00',
+    lastUpdated: '2021-09-05T17:11:53.975+00:00',
   },
   type: 'searchset',
-  total: 19,
+  total: 21,
   link: [
     {
       relation: 'self',
-      url: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/?_format=json',
+      url: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole?_format=json',
+    },
+    {
+      relation: 'next',
+      url:
+        'http://fhir.labs.smartregister.org/fhir?_getpages=3b2e3407-4b10-45da-800b-5c971acd7b65&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
     },
   ],
   entry: [
-    {
-      fullUrl: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/107',
-      resource: {
-        resourceType: 'PractitionerRole',
-        id: '107',
-        meta: {
-          versionId: '1',
-          lastUpdated: '2021-04-07T13:41:53.034+00:00',
-          source: '#2ffb1e701f60af7e',
-        },
-        identifier: [
-          {
-            use: 'official',
-            value: '21230054-8887-448d-8b7c-531e7705a1ba',
-          },
-        ],
-        active: true,
-        practitioner: {
-          reference: 'Practitioner/026467d1-5cf7-45ec-82d2-4a467b524278',
-        },
-        organization: {
-          reference: 'Organization/29943902-3552-4ab2-8b85-0f664c83dd34',
-        },
-      },
-      search: {
-        mode: 'match',
-      },
-    },
-    {
-      fullUrl: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/309',
-      resource: {
-        resourceType: 'PractitionerRole',
-        id: '309',
-        meta: {
-          versionId: '1',
-          lastUpdated: '2021-05-27T09:03:22.875+00:00',
-          source: '#7e6cdc068e46d563',
-        },
-        identifier: [
-          {
-            use: 'official',
-            value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
-          },
-        ],
-        active: true,
-        practitioner: {
-          reference: 'Practitioner/103',
-        },
-        organization: {
-          reference: 'Organization/105',
-        },
-      },
-      search: {
-        mode: 'match',
-      },
-    },
-    {
-      fullUrl: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/387',
-      resource: {
-        resourceType: 'PractitionerRole',
-        id: '387',
-        meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-25T21:04:17.270+00:00',
-          source: '#ac72fd35d6ce05a0',
-        },
-        identifier: [
-          {
-            use: 'official',
-            value: 'b040d53f-7292-4fc4-bd00-579a97f5ea4a',
-          },
-        ],
-        active: true,
-        practitioner: {
-          reference: 'Practitioner/115',
-        },
-        organization: {
-          reference: 'Organization/105',
-        },
-      },
-      search: {
-        mode: 'match',
-      },
-    },
     {
       fullUrl: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/388',
       resource: {
         resourceType: 'PractitionerRole',
         id: '388',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-25T21:05:40.900+00:00',
-          source: '#065dbd988df196e7',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:18:24.126+00:00',
+          source: '#1e274683ed9d3c54',
         },
         identifier: [
           {
@@ -617,9 +538,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/206',
+          display: 'Allay Allan',
         },
         organization: {
           reference: 'Organization/105',
+          display: 'OpenSRP web Test Organisation',
         },
       },
       search: {
@@ -632,9 +555,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '391',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-25T21:06:18.108+00:00',
-          source: '#33cb6e4022f02efa',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:18:33.314+00:00',
+          source: '#d3ad0359f7651e97',
         },
         identifier: [
           {
@@ -645,9 +568,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/126',
+          display: 'John Ceno',
         },
         organization: {
           reference: 'Organization/105',
+          display: 'OpenSRP web Test Organisation',
         },
       },
       search: {
@@ -660,9 +585,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '393',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-25T21:06:18.109+00:00',
-          source: '#f6ae20040ee42931',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:18:39.144+00:00',
+          source: '#3019671b288e3bc0',
         },
         identifier: [
           {
@@ -673,9 +598,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/206',
+          display: 'Allay Allan',
         },
         organization: {
           reference: 'Organization/105',
+          display: 'OpenSRP web Test Organisation',
         },
       },
       search: {
@@ -688,9 +615,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '392',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-25T21:06:18.109+00:00',
-          source: '#8b4fcbdeb49b72bb',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:18:48.115+00:00',
+          source: '#1543381bed80d1f5',
         },
         identifier: [
           {
@@ -701,9 +628,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/213',
+          display: 'Bobi mapesa',
         },
         organization: {
           reference: 'Organization/105',
+          display: 'OpenSRP web Test Organisation',
         },
       },
       search: {
@@ -716,9 +645,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '412',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-28T23:52:10.373+00:00',
-          source: '#3f84f22c5ce49dfe',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:18:54.766+00:00',
+          source: '#c09ac5a3043c47ab',
         },
         identifier: [
           {
@@ -729,9 +658,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/102',
+          display: 'Ward N Williams MD',
         },
         organization: {
           reference: 'Organization/a741cd5e-5737-4731-908b-957afa91878d',
+          display: 'Test Team One',
         },
       },
       search: {
@@ -744,9 +675,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '413',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-28T23:52:10.373+00:00',
-          source: '#da9c390d3e87da43',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:19:03.815+00:00',
+          source: '#54cbd1e0a3378d3e',
         },
         identifier: [
           {
@@ -757,9 +688,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/114',
+          display: 'test fhir',
         },
         organization: {
           reference: 'Organization/a741cd5e-5737-4731-908b-957afa91878d',
+          display: 'Test Team One',
         },
       },
       search: {
@@ -772,9 +705,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '414',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-28T23:53:57.591+00:00',
-          source: '#55c543428ac42a1d',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:19:43.867+00:00',
+          source: '#6ddde1522d12cec6',
         },
         identifier: [
           {
@@ -785,9 +718,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/102',
+          display: 'Ward N Williams MD',
         },
         organization: {
           reference: 'Organization/a741cd5e-5737-4731-908b-957afa91878d',
+          display: 'Test Team One',
         },
       },
       search: {
@@ -800,9 +735,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '415',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-28T23:54:32.915+00:00',
-          source: '#c324bd58a2e35b02',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:19:53.293+00:00',
+          source: '#ee299ae4a21a3b4c',
         },
         identifier: [
           {
@@ -813,9 +748,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/114',
+          display: 'test fhir',
         },
         organization: {
           reference: 'Organization/a741cd5e-5737-4731-908b-957afa91878d',
+          display: 'Test Team One',
         },
       },
       search: {
@@ -828,9 +765,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '416',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-28T23:54:32.915+00:00',
-          source: '#bbd96e13962b81ff',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:20:01.403+00:00',
+          source: '#6db00cf57b8b772d',
         },
         identifier: [
           {
@@ -841,9 +778,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/102',
+          display: 'Ward N Williams MD',
         },
         organization: {
           reference: 'Organization/a741cd5e-5737-4731-908b-957afa91878d',
+          display: 'Test Team One',
         },
       },
       search: {
@@ -856,9 +795,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '417',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-28T23:55:36.764+00:00',
-          source: '#c8cafb1d55393296',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:20:10.718+00:00',
+          source: '#40ecdafea8c266be',
         },
         identifier: [
           {
@@ -869,9 +808,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/102',
+          display: 'Ward N Williams MD',
         },
         organization: {
           reference: 'Organization/a741cd5e-5737-4731-908b-957afa91878d',
+          display: 'Test Team One',
         },
       },
       search: {
@@ -884,9 +825,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '418',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-28T23:55:36.765+00:00',
-          source: '#d5ce6a9c9c66aa7d',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:20:23.529+00:00',
+          source: '#9ee11f46d8324bcf',
         },
         identifier: [
           {
@@ -897,9 +838,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/114',
+          display: 'test fhir',
         },
         organization: {
           reference: 'Organization/a741cd5e-5737-4731-908b-957afa91878d',
+          display: 'Test Team One',
         },
       },
       search: {
@@ -912,9 +855,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '422',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-29T02:17:12.558+00:00',
-          source: '#7ff46991498b6e87',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:20:33.529+00:00',
+          source: '#dd4f7611d54c9713',
         },
         identifier: [
           {
@@ -925,9 +868,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/116',
+          display: 'test fhir',
         },
         organization: {
           reference: 'Organization/212',
+          display: 'My Team',
         },
       },
       search: {
@@ -940,9 +885,9 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         resourceType: 'PractitionerRole',
         id: '423',
         meta: {
-          versionId: '1',
-          lastUpdated: '2021-06-29T02:17:12.558+00:00',
-          source: '#9a9e55877d4296e8',
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:20:42.950+00:00',
+          source: '#f5bd2462e6f8f45c',
         },
         identifier: [
           {
@@ -953,9 +898,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/102',
+          display: 'Ward N Williams MD',
         },
         organization: {
           reference: 'Organization/212',
+          display: 'My Team',
         },
       },
       search: {
@@ -975,9 +922,11 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         active: true,
         practitioner: {
           reference: 'Practitioner/431',
+          display: 'Mary Anne',
         },
         organization: {
           reference: 'Organization/428',
+          display: 'UNICEF',
         },
         code: [
           {
@@ -1011,6 +960,7 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         },
         organization: {
           reference: 'Organization/428',
+          display: 'UNICEF',
         },
         code: [
           {
@@ -1044,6 +994,7 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
         },
         organization: {
           reference: 'Organization/428',
+          display: 'UNICEF',
         },
         code: [
           {
@@ -1055,6 +1006,126 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
             ],
           },
         ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/309',
+      resource: {
+        resourceType: 'PractitionerRole',
+        id: '309',
+        meta: {
+          versionId: '3',
+          lastUpdated: '2021-08-16T13:22:01.775+00:00',
+          source: '#6caf3bc312e145d4',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
+          },
+        ],
+        active: true,
+        practitioner: {
+          reference: 'Practitioner/114',
+          display: 'test fhir',
+        },
+        organization: {
+          reference: 'Organization/105',
+          display: 'OpenSRP web Test Organisation',
+        },
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/978',
+      resource: {
+        resourceType: 'PractitionerRole',
+        id: '978',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-08-17T07:09:50.803+00:00',
+          source: '#a3cca37f4a94709f',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '23',
+          },
+        ],
+        active: true,
+        practitioner: {
+          reference: 'Practitioner/970',
+          display: 'Dr Adam Careful',
+        },
+        organization: {
+          reference: 'Organization/977',
+          display: 'Health Level Seven International',
+        },
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/387',
+      resource: {
+        resourceType: 'PractitionerRole',
+        id: '387',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-08-16T13:15:58.767+00:00',
+          source: '#beb3540eb1adc4e6',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'b040d53f-7292-4fc4-bd00-579a97f5ea4a',
+          },
+        ],
+        active: true,
+        practitioner: {
+          reference: 'Practitioner/115',
+          display: 'OpenSRP web Test Organisation',
+        },
+        organization: {
+          reference: 'Organization/105',
+          display: 'test fhir',
+        },
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/PractitionerRole/1383',
+      resource: {
+        resourceType: 'PractitionerRole',
+        id: '1383',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-08-16T13:26:42.588+00:00',
+          source: '#7c6e82252a797c58',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'f83d4c57-7dbd-4285-b681-0693281cff3e',
+          },
+        ],
+        active: true,
+        practitioner: {
+          reference: 'Practitioner/437',
+          display: 'Benjamin Mwalimu',
+        },
+        organization: {
+          reference: 'Organization/205',
+          display: 'test 345',
+        },
       },
       search: {
         mode: 'match',
@@ -2101,108 +2172,14 @@ export const teamsdetail: TeamsDetailProps = {
     versionId: '3',
   },
   name: 'My Team',
-  practitioners: [
+  practitionerInfo: [
     {
-      active: true,
       id: '116',
-      identifier: [
-        {
-          use: 'secondary',
-          value: 'a9d5934b-6a04-41a4-a4da-0bcd5fe162cd',
-        },
-      ],
-      meta: {
-        lastUpdated: '2021-04-13T13:37:07.748+00:00',
-        source: '#e1b88aa8694170cb',
-        versionId: '1',
-      },
-      name: [
-        {
-          family: 'fhir',
-          given: ['test'],
-          use: 'official',
-        },
-      ],
-      resourceType: 'Practitioner',
-      telecom: [
-        {
-          system: 'email',
-          value: 'test_fhir@test.com',
-        },
-      ],
+      name: 'test fhir',
     },
     {
-      active: true,
-      address: [
-        {
-          city: 'Tulsa',
-          country: 'USA',
-          line: ['27 South Ave'],
-          postalCode: '74126',
-          state: 'OK',
-          use: 'home',
-        },
-      ],
-      birthDate: '1996-11-22',
-      gender: 'female',
       id: '102',
-      identifier: [
-        {
-          system: 'http://hl7.org/fhir/sid/us-ssn',
-          type: {
-            coding: [
-              {
-                code: 'SB',
-                display: 'Social Beneficiary Identifier',
-                system: 'http://hl7.org/fhir/identifier-type',
-              },
-            ],
-            text: 'US Social Security Number',
-          },
-          use: 'official',
-          value: '000-00-0002',
-        },
-      ],
-      meta: {
-        lastUpdated: '2021-04-06T14:20:36.221+00:00',
-        source: '#06ab911873541fd2',
-        tag: [
-          {
-            code: 'smart-7-2017',
-            system: 'https://smarthealthit.org/tags',
-          },
-        ],
-        versionId: '1',
-      },
-      name: [
-        {
-          family: 'Williams',
-          given: ['Ward', 'N'],
-          suffix: ['MD'],
-          use: 'official',
-        },
-      ],
-      resourceType: 'Practitioner',
-      telecom: [
-        {
-          system: 'phone',
-          use: 'home',
-          value: '800-651-2242',
-        },
-        {
-          system: 'phone',
-          use: 'mobile',
-          value: '800-471-8810',
-        },
-        {
-          system: 'email',
-          value: 'susan.williams@example.com',
-        },
-      ],
-      text: {
-        div: '<div xmlns="http://www.w3.org/1999/xhtml">Ward Williams</div>',
-        status: 'generated',
-      },
+      name: 'Ward N Williams MD',
     },
   ],
   resourceType: 'Organization',
