@@ -12,6 +12,8 @@ assignees: ''
 
 ## Who is the technical lead on this project?
 
+## How urgent is this deployment i.e HIGH (Needs to be worked on now), MEDIUM (Will be urgent in the next 3 - 7 days), LOW (can wait for the next 7 -14 days)
+
 ## Do we have any deadlines tied to this deployment?
 
 ## Please provide us with the following information
