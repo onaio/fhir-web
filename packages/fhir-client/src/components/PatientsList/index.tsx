@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import FHIR from 'fhirclient';
+import { handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 import { BrokenPage, createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { getPatientName } from './utils';
@@ -52,11 +53,15 @@ export const fetchPatients = async (
   sortFields: string[] | undefined,
   setUsersCountCallback: (count: number) => void
 ) => {
+  const token = await handleSessionOrTokenExpiry();
   return await FHIR.client(fhirBaseURL)
     .request({
       url: `Patient/_search?_count=${pageSize}${
         sortFields ? '&_sort=' + sortFields.join() : ''
       }&_getpagesoffset=${pageOffset}${searchParam ? '&name=' + searchParam : ''}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
     .then((res: fhirclient.FHIR.Bundle) => {
       setUsersCountCallback(res.total as number);
@@ -102,7 +107,7 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
   if (isFetching) return <Spin size="large" />;
 
   if (error) {
-    return <BrokenPage errorMessage={`${error}`} />;
+    return <BrokenPage errorMessage={'An error occured'} />;
   }
 
   const tableData: TableData[] | undefined =
