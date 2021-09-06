@@ -90,7 +90,7 @@ export const useCareTeamsHook = (
   setPayloadCount: (count: number) => void
 ) => {
   return useQuery(
-    FHIR_CARE_TEAM,
+    [FHIR_CARE_TEAM, pageOffset],
     () => fetchCareTeams(fhirBaseURL, pageSize, pageOffset, setPayloadCount),
     {
       refetchOnWindowFocus: false,
