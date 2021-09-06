@@ -79,10 +79,6 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     }
   );
 
-  if (singleCareTeam.isLoading || fhirGroups.isLoading || fhirPractitioners.isLoading) {
-    return <Spin size="large" />;
-  }
-
   const buildInitialValues = singleCareTeam.data
     ? {
         uuid: (singleCareTeam.data?.identifier as Dictionary[])[0].value as string,
@@ -112,6 +108,10 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
         name: e.resource?.name as string,
       })) ?? [],
   };
+
+  if (!buildInitialValues.id) {
+    return <Spin size="large" />;
+  }
 
   return (
     <Row>
