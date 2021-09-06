@@ -59,15 +59,6 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     { label: 'Inactive', value: 'inactive' },
   ];
 
-  /** Update form initial values when initialValues prop changes, without this
-   * the form fields initial values will not change if props.initiaValues is updated
-   * **/
-  React.useEffect(() => {
-    form.setFieldsValue({
-      ...(initialValues as FormFields),
-    });
-  }, [form, initialValues]);
-
   return (
     <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
