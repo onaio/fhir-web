@@ -32,8 +32,8 @@ export interface FormField {
 
 interface Props {
   fhirbaseURL: string;
-  allPractitioner: Practitioner[];
-  allPractitionerRole?: PractitionerRole[];
+  Practitioners: Practitioner[];
+  PractitionerRoles?: PractitionerRole[];
   initialValue?: FormField;
 }
 
@@ -43,15 +43,15 @@ interface Props {
  * @param {string} fhirbaseURL - base url
  * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
- * @param {Practitioner} practitioner list of practitioner to refer to when adding or removing
- * @param {PractitionerRole} allPractitionerRole list of practitionerRole to remove or add
+ * @param {Practitioner} practitioners list of practitioner to refer to when adding or removing
+ * @param {PractitionerRole} PractitionerRoles list of practitionerRole to remove or add
  */
 export async function onSubmit(
   fhirbaseURL: string,
   initialValue: FormField,
   values: FormField,
-  practitioner: Practitioner[],
-  allPractitionerRole?: PractitionerRole[]
+  practitioners: Practitioner[],
+  PractitionerRoles?: PractitionerRole[]
 ) {
   const officialidentifier = initialValue.team
     ? initialValue.team.identifier?.find((e) => e.use === 'official')?.value
@@ -71,7 +71,7 @@ export async function onSubmit(
   const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
   const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
-  await SetPractitioners(fhirbaseURL, team, toAdd, toRem, practitioner, allPractitionerRole);
+  await SetPractitioners(fhirbaseURL, team, toAdd, toRem, practitioners, PractitionerRoles);
 }
 
 /**
@@ -155,7 +155,7 @@ export async function setTeam(fhirbaseURL: string, payload: Omit<Organization, '
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { allPractitioner, allPractitionerRole, fhirbaseURL } = props;
+  const { Practitioners, PractitionerRoles, fhirbaseURL } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const initialValue = props.initialValue ?? {
     active: true,
@@ -201,7 +201,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       {...layout}
       onFinish={(values) => {
         setIsSubmitting(true);
-        onSubmit(fhirbaseURL, initialValue, values, allPractitioner, allPractitionerRole)
+        onSubmit(fhirbaseURL, initialValue, values, Practitioners, PractitionerRoles)
           .then(() => {
             queryClient
               .invalidateQueries(TEAMS_GET)
@@ -247,7 +247,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           mode="multiple"
           optionFilterProp="label"
           placeholder={lang.SELECT_PRACTITIONER}
-          options={getPractitionersOptions(props.allPractitioner)}
+          options={getPractitionersOptions(props.Practitioners)}
           filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
         />
       </AntdForm.Item>

@@ -23,7 +23,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
-  const allPractitioner = useQuery(PRACTITIONER_GET, () => serve.request(PRACTITIONER_GET), {
+  const Practitioners = useQuery(PRACTITIONER_GET, () => serve.request(PRACTITIONER_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res: FHIRResponse<Practitioner>) => res.entry.map((e) => e.resource),
   });
@@ -44,7 +44,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     loadTeamPractitioner({
       team: team.data,
       fhirBaseURL: fhirBaseURL,
-      AllPractitionerRoles: AllRoles.data,
+      PractitionerRoles: AllRoles.data,
     })
       .then((team) => {
         setInitialValue({
@@ -57,7 +57,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }
 
-  if (!allPractitioner.data || (params.id && (!initialValue || !AllRoles.data)))
+  if (!Practitioners.data || (params.id && (!initialValue || !AllRoles.data)))
     return <Spin size={'large'} />;
 
   return (
@@ -74,8 +74,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
         <Form
           fhirbaseURL={fhirBaseURL}
           initialValue={initialValue}
-          allPractitioner={allPractitioner.data}
-          allPractitionerRole={AllRoles.data ? AllRoles.data : undefined}
+          Practitioners={Practitioners.data}
+          PractitionerRoles={AllRoles.data ? AllRoles.data : undefined}
         />
       </div>
     </section>
