@@ -24,7 +24,7 @@ const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 
 export interface FormField {
-  team?: OrganizationDetail;
+  team: OrganizationDetail;
   name: string;
   active: boolean;
   practitioners: string[];
@@ -34,7 +34,7 @@ interface Props {
   fhirbaseURL: string;
   Practitioners: Practitioner[];
   PractitionerRoles?: PractitionerRole[];
-  initialValue?: FormField;
+  initialValue?: Partial<FormField>;
 }
 
 /**
@@ -48,7 +48,7 @@ interface Props {
  */
 export async function onSubmit(
   fhirbaseURL: string,
-  initialValue: FormField,
+  initialValue: Partial<FormField>,
   values: FormField,
   practitioners: Practitioner[],
   PractitionerRoles?: PractitionerRole[]
@@ -68,10 +68,10 @@ export async function onSubmit(
   const team = await setTeam(fhirbaseURL, payload);
 
   // Filter and seperate the practitioners uuid
-  const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
-  const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
+  const toAdd = values.practitioners.filter((val) => !initialValue?.practitioners?.includes(val));
+  const toRem = initialValue?.practitioners?.filter((val) => !values.practitioners.includes(val));
 
-  await SetPractitioners(fhirbaseURL, team, toAdd, toRem, practitioners, PractitionerRoles);
+  await SetPractitioners(fhirbaseURL, team, toAdd, toRem ?? [], practitioners, PractitionerRoles);
 }
 
 /**
@@ -197,7 +197,6 @@ export const Form: React.FC<Props> = (props: Props) => {
 
   return (
     <AntdForm
-      requiredMark={false}
       {...layout}
       onFinish={(values) => {
         setIsSubmitting(true);
@@ -225,22 +224,23 @@ export const Form: React.FC<Props> = (props: Props) => {
       <AntdForm.Item name="uuid" label={lang.TEAM_NAME} hidden={true}>
         <Input />
       </AntdForm.Item>
-
-      <AntdForm.Item name="name" label={lang.TEAM_NAME}>
+      <AntdForm.Item
+        name="name"
+        rules={[{ required: true, message: lang.REQUIRED_FIELD }]}
+        label={lang.TEAM_NAME}
+      >
         <Input placeholder={lang.ENTER_TEAM_NAME} />
       </AntdForm.Item>
-
       <AntdForm.Item name="active" label={lang.STATUS}>
         <Radio.Group>
           <Radio value={true}>{lang.ACTIVE}</Radio>
           <Radio value={false}>{lang.INACTIVE}</Radio>
         </Radio.Group>
       </AntdForm.Item>
-
       <AntdForm.Item
         name="practitioners"
         label={lang.TEAM_MEMBERS}
-        tooltip={lang.TIP_REQUIRED_FIELD}
+        rules={[{ required: true, message: lang.REQUIRED_FIELD }]}
       >
         <Select
           allowClear
@@ -251,7 +251,6 @@ export const Form: React.FC<Props> = (props: Props) => {
           filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
         />
       </AntdForm.Item>
-
       <AntdForm.Item {...offsetLayout}>
         <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
           {isSubmitting ? lang.SAVING : lang.SAVE}

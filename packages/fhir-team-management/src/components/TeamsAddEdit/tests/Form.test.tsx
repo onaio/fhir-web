@@ -27,7 +27,7 @@ jest.mock('@opensrp/notifications', () => ({
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 
-const FormintialValue: FormField = {
+const FormintialValue: Partial<FormField> = {
   active: true,
   name: '',
   practitioners: [],
