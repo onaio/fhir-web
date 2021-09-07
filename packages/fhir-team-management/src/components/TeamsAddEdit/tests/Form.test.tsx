@@ -148,10 +148,11 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(thenfn).toBeCalled();
     expect(catchfn).not.toBeCalled();
-    expect(mockSuccessNotification).toHaveBeenCalledWith([
-      ['Successfully Added Teams'],
-      ['Successfully Assigned Practitioners'],
-    ]);
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Added Teams');
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
+      2,
+      'Successfully Assigned Practitioners'
+    );
   });
 
   it('Edit Team', async () => {
@@ -174,10 +175,11 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(thenfn).toBeCalled();
     expect(catchfn).not.toBeCalled();
-    expect(mockSuccessNotification).toHaveBeenCalledWith([
-      ['Successfully Added Teams'],
-      ['Successfully Assigned Practitioners'],
-    ]);
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Updated Teams');
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
+      2,
+      'Successfully Assigned Practitioners'
+    );
   });
 
   it('test call onsubmit', async () => {
@@ -207,10 +209,11 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(mockSuccessNotification).toHaveBeenCalledWith([
-      ['Successfully Added Teams'],
-      ['Successfully Assigned Practitioners'],
-    ]);
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Added Teams');
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
+      2,
+      'Successfully Assigned Practitioners'
+    );
   });
 
   it('fail and test call onsubmit', async () => {
@@ -278,12 +281,14 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(mockSuccessNotification).toHaveBeenCalledWith([
-      ['Successfully Added Teams'],
-      ['Successfully Assigned Practitioners'],
-    ]);
-  });
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Added Teams');
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
+      2,
+      'Successfully Assigned Practitioners'
+    );
 
+    // expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+  });
   it('select search filter works', async () => {
     const queryClient = new QueryClient();
     const wrapper = mount(
