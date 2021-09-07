@@ -13,6 +13,7 @@ import {
   practitionerrole,
   practitioner,
   team212,
+  teamsdetail,
 } from '../../../tests/fixtures';
 import Form, { FormField, onSubmit } from '../Form';
 import * as fhirCient from 'fhirclient';
@@ -33,19 +34,7 @@ const FormintialValue: FormField = {
 };
 
 const TeamValue: FormField = {
-  team: {
-    resourceType: 'Organization',
-    id: '212',
-    meta: {
-      versionId: '3',
-      lastUpdated: '2021-06-29T02:17:11.870+00:00',
-      source: '#4f714be1049b0986',
-    },
-    identifier: [{ use: 'official', value: '212' }],
-    active: false,
-    name: 'My Team',
-    practitioners: practitioner.entry.map((e) => e.resource),
-  },
+  team: teamsdetail,
   active: false,
   name: 'My Team',
   practitioners: ['116', '102'],
@@ -87,8 +76,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            allPractitioner={practitioner.entry.map((e) => e.resource)}
-            allPractitionerRole={practitionerrole.entry.map((e) => e.resource)}
+            Practitioners={practitioner.entry.map((e) => e.resource)}
+            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
           />
         </QueryClientProvider>
       </Router>
@@ -104,8 +93,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            allPractitioner={practitioner.entry.map((e) => e.resource)}
-            allPractitionerRole={practitionerrole.entry.map((e) => e.resource)}
+            Practitioners={practitioner.entry.map((e) => e.resource)}
+            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
             initialValue={TeamValue}
           />
         </QueryClientProvider>
@@ -124,8 +113,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            allPractitioner={practitioner.entry.map((e) => e.resource)}
-            allPractitionerRole={practitionerrole.entry.map((e) => e.resource)}
+            Practitioners={practitioner.entry.map((e) => e.resource)}
+            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
             initialValue={TeamValue}
           />
         </QueryClientProvider>
@@ -205,8 +194,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            allPractitioner={practitioner.entry.map((e) => e.resource)}
-            allPractitionerRole={practitionerrole.entry.map((e) => e.resource)}
+            Practitioners={practitioner.entry.map((e) => e.resource)}
+            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
             initialValue={FormintialValue}
           />
         </QueryClientProvider>
@@ -248,8 +237,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            allPractitioner={practitioner.entry.map((e) => e.resource)}
-            allPractitionerRole={practitionerrole.entry.map((e) => e.resource)}
+            Practitioners={practitioner.entry.map((e) => e.resource)}
+            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
             initialValue={FormintialValue}
           />
         </QueryClientProvider>
@@ -281,8 +270,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            allPractitioner={practitioner.entry.map((e) => e.resource)}
-            allPractitionerRole={practitionerrole.entry.map((e) => e.resource)}
+            Practitioners={practitioner.entry.map((e) => e.resource)}
+            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
             initialValue={FormintialValue}
           />
         </QueryClientProvider>
@@ -311,8 +300,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            allPractitioner={practitioner.entry.map((e) => e.resource)}
-            allPractitionerRole={practitionerrole.entry.map((e) => e.resource)}
+            Practitioners={practitioner.entry.map((e) => e.resource)}
+            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
             initialValue={TeamValue}
           />
         </QueryClientProvider>
