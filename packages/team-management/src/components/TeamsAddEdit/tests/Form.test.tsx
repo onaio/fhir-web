@@ -22,7 +22,7 @@ jest.mock('uuid', () => {
 
   return {
     __esModule: true,
-    ...jest.requireActual('uuid'),
+    ...Object.assign({}, jest.requireActual('uuid')),
     v4,
   };
 });
