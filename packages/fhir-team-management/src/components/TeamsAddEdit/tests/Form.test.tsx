@@ -260,10 +260,6 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       defaultOptions: { queries: { retry: false } },
     });
     const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-    // const mockinvalidateQueries = jest.fn(() => {
-    //   console.warn('ASd');
-    //   Promise.reject('Mock Api Fail');
-    // });
 
     const wrapper = mount(
       <Router history={history}>
