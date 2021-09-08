@@ -109,6 +109,15 @@ describe('components/CreateEditCareTeam', () => {
       },
     };
 
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockResolvedValueOnce(fixtures.careTeam1),
+        };
+      })
+    );
+
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={testQueryClient}>

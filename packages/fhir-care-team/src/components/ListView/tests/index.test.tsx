@@ -141,8 +141,12 @@ describe('Patients list view', () => {
     wrapper.find('thead tr th').first().simulate('click');
 
     // look for pagination
-    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"1235 / pageGo to"`);
+    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"125 / pageGo to"`);
     wrapper.find('.ant-pagination-item-2').simulate('click');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
     expect(wrapper.text()).toMatchSnapshot();
 
     wrapper.unmount();
