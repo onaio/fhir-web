@@ -1,0 +1,55 @@
+name: General OpenSRP web Bug Report.
+description: Use this to Report a bug experienced on an OpenSRP web instance.
+title: '[Bug Report]: '
+labels: [Bug Report]
+body:
+ - type: markdown
+   attributes:
+     value: |
+       Thanks for taking the time to fill out this bug report!
+ - type: input
+   id: bug_project
+   attributes:
+     label: Affected Project
+     description: In what project deployment did you experience the bug?
+     placeholder: ZEIR, WHO ANC,
+   validations:
+     required: true
+ - type: textarea
+   id: bug_replicate
+   attributes:
+     label: How to replicate
+     description: How do we replicate the bug?
+     placeholder: The teams views details button is broken
+   validations:
+       required: true
+ - type: textarea
+   id: bug_acceptance_criteria
+   attributes:
+     label: Feature Use Case
+     description: How is the feature with the bug expected to work?
+     placeholder: The teams view details button should open the view deatils section
+   validations:
+     required: true
+ - type: input
+   id: project_contact
+   attributes:
+     label: Project Contact
+     description: Who is project contact person?
+     placeholder: John Doe
+   validations:
+     required: false
+ - type: textarea
+   id: bug_extra_info
+   attributes:
+     label: Relevant Information
+     description: Please share any other relevant information about the bug or project.
+   validations:
+     required: false
+ - type: markdown
+   attributes:
+     value: |
+       Remember
+
+       1. To alert the team in the [#opensrp-web](https://onaio.slack.com/archives/C01R82Y9N58) channel.
+       2. To follow up on delivery. You're in-charge.

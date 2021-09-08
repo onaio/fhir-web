@@ -8,14 +8,6 @@ body:
      value: |
        Thanks for taking the time to fill out this new feature request!
  - type: textarea
-   id: project
-   attributes:
-     label: Project Details
-     description: What project requires this feature?
-     placeholder: ZEIR or WHO ANC
-   validations:
-       required: true
- - type: textarea
    id: use_case
    attributes:
      label: Feature Use Case
@@ -36,9 +28,9 @@ body:
    attributes:
      label: Project Contact
      description: Who is project contact person?
-     placeholder: Benjamin
+     placeholder: John Doe
    validations:
-     required: true
+     required: false
  - type: textarea
    id: extra_info
    attributes:
