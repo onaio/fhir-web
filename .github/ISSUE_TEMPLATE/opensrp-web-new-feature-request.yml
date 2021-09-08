@@ -48,9 +48,9 @@ body:
    validations:
      required: false
  - type: markdown
-   value: "Remember!"
- - type: markdown
    attributes:
-    value: |
-     1. To alert the team in the [#opensrp-web](https://onaio.slack.com/archives/C01R82Y9N58) channel.
-     2. To follow up on delivery. You're in-charge.
+     value: |
+       Remember
+
+       1. To alert the team in the [#opensrp-web](https://onaio.slack.com/archives/C01R82Y9N58) channel.
+       2. To follow up on delivery. You're in-charge.
