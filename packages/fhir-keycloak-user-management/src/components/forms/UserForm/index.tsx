@@ -74,6 +74,29 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     form.setFieldsValue(initialValues);
   }, [form, initialValues]);
 
+  // get the status of user at mount
+  const [userEnabled, setUserEnabled] = useState<boolean>(initialValues.enabled ?? false);
+
+  // if user is disabled also disable practitioner
+  // else show default practitioner value
+  useEffect(() => {
+    if (!userEnabled) {
+      form.setFields([
+        {
+          name: 'active',
+          value: false,
+        },
+      ]);
+    } else {
+      form.setFields([
+        {
+          name: 'active',
+          value: initialValues.active,
+        },
+      ]);
+    }
+  }, [form, initialValues, userEnabled]);
+
   return (
     <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
@@ -126,13 +149,24 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
           <Form.Item id="enabled" name="enabled" label={lang.ENABLE_USER}>
-            <Radio.Group options={status} name="enabled"></Radio.Group>
+            <Radio.Group
+              options={status}
+              name="enabled"
+              // watch user's status
+              onChange={(e) => setUserEnabled(e.target.value)}
+            ></Radio.Group>
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item id="practitionerToggle" name="active" label={lang.MARK_AS_PRACTITIONER}>
               <Radio.Group name="active">
                 {status.map((e) => (
-                  <Radio name="active" key={e.label} value={e.value}>
+                  <Radio
+                    name="active"
+                    key={e.label}
+                    value={e.value}
+                    // disable field if user is disabled
+                    disabled={!userEnabled}
+                  >
                     {e.label}
                   </Radio>
                 ))}
