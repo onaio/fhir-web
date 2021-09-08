@@ -6,7 +6,7 @@ body:
  - type: markdown
    attributes:
      value: |
-       Thanks for taking the time to fill out this bug report!
+       Thanks for taking the time to fill out this deployment support request!
  - type: input
    id: deployment_project
    attributes:
@@ -98,16 +98,16 @@ body:
        Default functionality
 
        1. Location management
-         1. Creating, editing, viewing & deletion of location units
-         2. Creating, editing, viewing & deletion of locations unit group
+           1. Creating, editing, viewing & deletion of location units
+           2. Creating, editing, viewing & deletion of locations unit group
        2. User management
-         1. Creating, editing, viewing of users
-         2. Creating, editing, viewing of user groups
-         3. Viewing user roles
+           1. Creating, editing, viewing of users
+           2. Creating, editing, viewing of user groups
+           3. Viewing user roles
        3. Team management
-         1. Creating, editing, viewing of teams
-         2. Assigning team members to teams
-         3. Assigning teams to locations
+           1. Creating, editing, viewing of teams
+           2. Assigning team members to teams
+           3. Assigning teams to locations
  - type: markdown
    attributes:
      value: |
