@@ -27,26 +27,26 @@ body:
    id: acceptance_criteria
    attributes:
      label: Acceptance criteria
-      description: What is the acceptance criteria for this feature?
-      placeholder: Team assignments should be shown on the user details page.
-    validations:
-      required: true
+     description: What is the acceptance criteria for this feature?
+     placeholder: Team assignments should be shown on the user details page.
+   validations:
+     required: true
  - type: input
-    id: project_contact
-    attributes:
-      label: Project Contact
-      description: Who is project contact person?
-      placeholder: Benjamin
-    validations:
-      required: true
+   id: project_contact
+   attributes:
+     label: Project Contact
+     description: Who is project contact person?
+     placeholder: Benjamin
+   validations:
+     required: true
  - type: textarea
    id: extra_info
-    attributes:
-      label: Relevant Information
-      description: Please share any other relevant information about the feature request or project.
-      placeholder:
-    validations:
-      required: false
+   attributes:
+     label: Relevant Information
+     description: Please share any other relevant information about the feature request or project.
+     placeholder:
+   validations:
+     required: false
  - type: markdown
    value: "Remember!"
  - type: markdown
