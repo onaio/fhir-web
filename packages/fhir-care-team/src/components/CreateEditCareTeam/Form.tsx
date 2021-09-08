@@ -77,6 +77,8 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             submitForm(
               { ...initialValues, ...values },
               fhirBaseURL,
+              props.groups,
+              props.practitioners,
               props.initialValues?.id,
               props.initialValues?.uuid
             ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
