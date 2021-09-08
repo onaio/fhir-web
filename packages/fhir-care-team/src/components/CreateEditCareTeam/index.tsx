@@ -109,7 +109,11 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
       })) ?? [],
   };
 
-  if (!buildInitialValues.id) {
+  if (
+    fhirPractitioners.isLoading ||
+    fhirGroups.isLoading ||
+    (careTeamId && !buildInitialValues.id)
+  ) {
     return <Spin size="large" />;
   }
 

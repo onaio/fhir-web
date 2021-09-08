@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Patients list view renders correctly 1`] = `"FHIR Care TeamCreate Care TeamNameActionsCare Team OneEditCare Team ThreeEditCare Team FiveEdittest 33EditCare Team SixEdit1235 / pageGo to"`;
+exports[`Patients list view renders correctly 1`] = `"FHIR Care TeamCreate Care TeamNameActionsCare Team OneEditCare Team ThreeEditCare Team FiveEdittest 33EditCare Team SixEdit125 / pageGo to"`;
 
-exports[`Patients list view renders correctly 3`] = `"FHIR Care TeamCreate Care TeamNameActionsCare Team FourEdit1235 / pageGo to"`;
+exports[`Patients list view renders correctly 3`] = `"FHIR Care TeamCreate Care TeamNameActionsCare Team FourEdit125 / pageGo to"`;
 
 exports[`Patients list view renders correctly: sorted table rows by name - ascending 0 1`] = `"NameActions"`;
 
