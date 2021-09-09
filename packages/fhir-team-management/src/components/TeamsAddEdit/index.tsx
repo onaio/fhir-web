@@ -10,7 +10,7 @@ import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
 import { FHIRResponse } from '@opensrp/react-utils';
-import { loadTeamPractitioner } from '../../utils';
+import { loadTeamPractitionerInfo } from '../../utils';
 
 export interface Props {
   fhirBaseURL: string;
@@ -41,17 +41,15 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   });
 
   if (params.id && team.data && AllRoles.data && !initialValue) {
-    loadTeamPractitioner({
+    loadTeamPractitionerInfo({
       team: team.data,
       fhirBaseURL: fhirBaseURL,
       PractitionerRoles: AllRoles.data,
     })
-      .then((team) => {
+      .then(({ practitionerInfo, ...team }) => {
         setInitialValue({
-          team: team,
-          active: team.active,
-          name: team.name,
-          practitioners: team.practitionerInfo.map((prac) => prac.id),
+          ...team,
+          practitioners: practitionerInfo.map((prac) => prac.id),
         });
       })
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
@@ -73,9 +71,9 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       <div className="bg-white p-5">
         <Form
           fhirbaseURL={fhirBaseURL}
-          initialValue={initialValue}
-          Practitioners={Practitioners.data}
-          PractitionerRoles={AllRoles.data ? AllRoles.data : undefined}
+          value={initialValue}
+          practitioners={Practitioners.data}
+          practitionerRoles={AllRoles.data ? AllRoles.data : undefined}
         />
       </div>
     </section>

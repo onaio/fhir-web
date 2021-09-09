@@ -16,7 +16,7 @@ import lang from '../../lang';
 import { useQuery } from 'react-query';
 import FHIR from 'fhirclient';
 import { FHIRResponse } from '@opensrp/react-utils';
-import { loadTeamPractitioner } from '../../utils';
+import { loadTeamPractitionerInfo } from '../../utils';
 
 interface Props {
   fhirBaseURL: string;
@@ -95,7 +95,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
               fhirBaseURL={fhirBaseURL}
               onViewDetails={(prams) => {
                 setDetail('loading');
-                loadTeamPractitioner(prams)
+                loadTeamPractitionerInfo(prams)
                   .then((team) => setDetail(team))
                   .catch(() => {
                     sendErrorNotification(lang.ERROR_OCCURRED);
