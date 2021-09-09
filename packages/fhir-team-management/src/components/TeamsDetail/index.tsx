@@ -9,14 +9,14 @@ export interface TeamsDetailProps extends OrganizationDetail {
 }
 
 const TeamsDetail = (props: TeamsDetailProps) => {
-  const { name, active, id, practitionerInfo } = props;
+  const { name, active, id, practitionerInfo, onClose } = props;
 
   return (
     <div className="p-4 bg-white">
       <Button
         shape="circle"
         onClick={() => {
-          if (props.onClose) props.onClose();
+          if (onClose) onClose();
           else throw new Error('No OnClose Function Specified');
         }}
         className="float-right close-btn"
