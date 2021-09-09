@@ -198,7 +198,7 @@ Below is a list of currently supported environment variables:
 
   - Allows filtering root locations by parentId when set to true
   - **Optional**(_string_)
-  - default: `"false"`
+  - default: `"true"`
 
 - **REACT_APP_KEYCLOAK_USERS_PAGE_SIZE**
 
