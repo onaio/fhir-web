@@ -8,7 +8,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Organization, OrganizationDetail } from '../../types';
 import { TEAMS_GET, URL_ADD_TEAM } from '../../constants';
-import Table, { TableData } from './Table';
+import Table from './Table';
 import './TeamsList.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
@@ -32,17 +32,17 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
   const serve = FHIR.client(fhirBaseURL);
 
   const [detail, setDetail] = useState<OrganizationDetail | 'loading' | null>(null);
-  const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
+  const [filterData, setfilterData] = useState<{ search?: string; data?: Organization[] }>({});
 
   const teams = useQuery(TEAMS_GET, () => serve.request(TEAMS_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res: FHIRResponse<Organization>) => res.entry.map((e) => e.resource),
   });
 
-  const tableData: TableData[] = useMemo(() => {
+  const tableData: Organization[] = useMemo(() => {
     if (teams.data) {
       return teams.data.map((team, i) => {
-        return { ...team, key: i.toString() } as TableData;
+        return { ...team, key: i.toString() } as Organization;
       });
     } else return [];
   }, [teams.data]);
