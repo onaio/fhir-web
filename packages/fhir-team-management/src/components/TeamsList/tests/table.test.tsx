@@ -4,9 +4,10 @@ import { mount } from 'enzyme';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { team } from '../../../tests/fixtures';
-import Table, { TableData } from '../Table';
+import Table from '../Table';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
+import { Organization } from '../../../types';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -15,10 +16,7 @@ jest.mock('@opensrp/notifications', () => ({
 
 const history = createBrowserHistory();
 const fhirBaseURL = 'https://fhirBaseURL.com';
-const data: TableData[] = team.entry.map((e, i) => ({
-  ...e.resource,
-  key: i,
-}));
+const data: Organization[] = team.entry.map((e) => e.resource);
 
 describe('components/TeamsList/table.tsx', () => {
   it('renders without crashing', () => {
@@ -50,21 +48,28 @@ describe('components/TeamsList/table.tsx', () => {
     wrapper.unmount();
   });
 
-  it('Test Name Sorting functionality', () => {
+  it('Test Name Sorting functionality', async () => {
     const wrapper = mount(
       <Router history={history}>
         <Table fhirBaseURL={fhirBaseURL} data={data} />
       </Router>
     );
 
-    const heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(3);
-    heading.find('th').at(0).children().simulate('click');
-    heading.find('th').at(0).children().simulate('click');
+    const rowKeys = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
+    expect(rowKeys).toMatchObject([0, 1, 2, 3, 4]);
 
-    const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe(11);
-    expect(body.children().last().prop('rowKey')).toBe(9);
+    // trigger sort on second column (first name)
+    const sorter = wrapper.find('th.ant-table-column-has-sorters').at(0);
+    sorter.simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // get newly ordered tr keys
+    const rowKeys2 = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
+    expect(rowKeys2).toMatchObject([13, 14, 15, 16, 17]);
   });
 
   it('Should show table pagination options', () => {
