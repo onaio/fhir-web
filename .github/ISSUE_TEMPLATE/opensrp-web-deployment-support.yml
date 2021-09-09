@@ -16,7 +16,7 @@ body:
        2. Created the Keycloak Realm required for the deployment.
        3. Added the keycloak client to be used for this deployment.
        4. Created a realm user (realm admin user is prefered). We will use this user to login to the web instance after deployment.
-       5. Added the following items & credentials to onas passowrd manager.
+       5. Added the following items & credentials to onas password manager.
           1. Client secret
           2. Client id
           3. User sign in credentials i.e username & password.
