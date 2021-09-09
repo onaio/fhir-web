@@ -11,7 +11,7 @@ import { FHIRResponse } from '@opensrp/react-utils';
  * @param {string} props.fhirBaseURL base url to use for data loading
  * @param {PractitionerRole[]} props.PractitionerRoles All practioner roles to use for data mapiing
  */
-export async function loadTeamPractitioner(props: {
+export async function loadTeamPractitionerInfo(props: {
   team: Organization;
   fhirBaseURL: string;
   PractitionerRoles?: PractitionerRole[];

@@ -13,28 +13,26 @@ import {
   sendInfoNotification,
   sendErrorNotification,
 } from '@opensrp/notifications';
-import { Organization, OrganizationDetail, Practitioner, PractitionerRole } from '../../types';
+import { Organization, Practitioner, PractitionerRole } from '../../types';
 import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
 import FHIR from 'fhirclient';
 import { SelectProps } from 'antd/lib/select';
+import { Require } from 'react-utils/dist/types';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
 
-export interface FormField {
-  team: OrganizationDetail;
-  name: string;
-  active: boolean;
+export interface FormField extends Partial<Organization> {
   practitioners: string[];
 }
 
 interface Props {
   fhirbaseURL: string;
-  Practitioners: Practitioner[];
-  PractitionerRoles?: PractitionerRole[];
-  initialValue?: Partial<FormField>;
+  practitioners: Practitioner[];
+  practitionerRoles?: PractitionerRole[];
+  value?: Partial<FormField>;
 }
 
 /**
@@ -49,17 +47,16 @@ interface Props {
 export async function onSubmit(
   fhirbaseURL: string,
   initialValue: Partial<FormField>,
-  values: FormField,
+  values: Require<FormField, 'active' | 'name'>,
   practitioners: Practitioner[],
   PractitionerRoles?: PractitionerRole[]
 ) {
-  const officialidentifier = initialValue.team
-    ? initialValue.team.identifier?.find((e) => e.use === 'official')?.value
-    : v4();
+  const officialidentifier =
+    initialValue.identifier?.find((e) => e.use === 'official')?.value ?? v4();
 
   const payload: Organization = {
     resourceType: 'Organization',
-    id: initialValue.team ? initialValue.team.id : '',
+    id: initialValue.id ?? '',
     active: values.active,
     identifier: [{ use: 'official', value: officialidentifier }],
     name: values.name,
@@ -155,9 +152,9 @@ export async function setTeam(fhirbaseURL: string, payload: Omit<Organization, '
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { Practitioners, PractitionerRoles, fhirbaseURL } = props;
+  const { practitioners: Practitioners, practitionerRoles: PractitionerRoles, fhirbaseURL } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue = props.initialValue ?? {
+  const initialValue = props.value ?? {
     active: true,
     name: '',
     practitioners: [],
@@ -212,7 +209,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               .invalidateQueries(PRACTITIONER_GET)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
-              .invalidateQueries([TEAMS_GET, initialValue.team?.id])
+              .invalidateQueries([TEAMS_GET, initialValue?.id])
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             history.goBack();
           })
@@ -247,7 +244,7 @@ export const Form: React.FC<Props> = (props: Props) => {
           mode="multiple"
           optionFilterProp="label"
           placeholder={lang.SELECT_PRACTITIONER}
-          options={getPractitionersOptions(props.Practitioners)}
+          options={getPractitionersOptions(props.practitioners)}
           filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
         />
       </AntdForm.Item>

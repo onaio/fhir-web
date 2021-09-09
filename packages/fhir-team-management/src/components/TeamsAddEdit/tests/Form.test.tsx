@@ -24,19 +24,35 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
+jest.mock('antd', () => {
+  const antd = jest.requireActual('antd');
+
+  /* eslint-disable react/prop-types */
+  const select = ({ children, onChange, id }) => (
+    <select onChange={(e) => onChange(e.target.value)} id={id}>
+      {children}
+    </select>
+  );
+
+  const Option = ({ children, ...otherProps }) => {
+    return <option {...otherProps}>{children}</option>;
+  };
+  /* eslint-disable react/prop-types */
+
+  select.Option = Option;
+
+  return {
+    __esModule: true,
+    ...antd,
+    Select: select,
+  };
+});
+
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 
-const FormintialValue: Partial<FormField> = {
-  active: true,
-  name: '',
-  practitioners: [],
-};
-
 const TeamValue: FormField = {
-  team: teamsdetail,
-  active: false,
-  name: 'My Team',
+  ...teamsdetail,
   practitioners: ['116', '102'],
 };
 
@@ -76,8 +92,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            Practitioners={practitioner.entry.map((e) => e.resource)}
-            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            practitioners={practitioner.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
           />
         </QueryClientProvider>
       </Router>
@@ -88,20 +104,21 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
   it('renders without crashing with id', () => {
     const queryClient = new QueryClient();
+
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            Practitioners={practitioner.entry.map((e) => e.resource)}
-            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
-            initialValue={TeamValue}
+            practitioners={practitioner.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            value={TeamValue}
           />
         </QueryClientProvider>
       </Router>
     );
 
-    expect(wrapper.find('Form').prop('initialValue')).toMatchObject(TeamValue);
+    expect(wrapper.find('Form').prop('value')).toMatchObject(TeamValue);
     expect(wrapper.find('form')).toHaveLength(1);
   });
 
@@ -113,9 +130,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            Practitioners={practitioner.entry.map((e) => e.resource)}
-            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
-            initialValue={TeamValue}
+            practitioners={practitioner.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            value={TeamValue}
           />
         </QueryClientProvider>
       </Router>
@@ -134,7 +151,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     onSubmit(
       fhirBaseURL,
-      FormintialValue,
+      {},
       TeamValue,
       practitioner.entry.map((e) => e.resource),
       practitionerrole.entry.map((e) => e.resource)
@@ -182,7 +199,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     );
   });
 
-  it('test call onsubmit', async () => {
+  it('test call onsubmit with correct values', async () => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
@@ -194,15 +211,25 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            Practitioners={practitioner.entry.map((e) => e.resource)}
-            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
-            initialValue={FormintialValue}
+            practitioners={practitioner.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
           />
         </QueryClientProvider>
       </Router>
     );
 
     expect(wrapper.find('form')).toHaveLength(1);
+    wrapper.find('input#name').simulate('change', {
+      target: { value: 'my name' },
+    });
+
+    wrapper
+      .find('select#practitioners')
+      .last()
+      .simulate('change', {
+        target: { value: teamsdetail.practitionerInfo.map((e) => e.id) },
+      });
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -237,9 +264,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            Practitioners={practitioner.entry.map((e) => e.resource)}
-            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
-            initialValue={FormintialValue}
+            practitioners={practitioner.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            value={TeamValue}
           />
         </QueryClientProvider>
       </Router>
@@ -266,9 +293,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         <QueryClientProvider client={queryClient}>
           <Form
             fhirbaseURL={fhirBaseURL}
-            Practitioners={practitioner.entry.map((e) => e.resource)}
-            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
-            initialValue={FormintialValue}
+            practitioners={practitioner.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            value={TeamValue}
           />
         </QueryClientProvider>
       </Router>
@@ -281,67 +308,12 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Added Teams');
+    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Updated Teams');
     expect(mockSuccessNotification).toHaveBeenNthCalledWith(
       2,
       'Successfully Assigned Practitioners'
     );
 
     // expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
-  });
-  it('select search filter works', async () => {
-    const queryClient = new QueryClient();
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirbaseURL={fhirBaseURL}
-            Practitioners={practitioner.entry.map((e) => e.resource)}
-            PractitionerRoles={practitionerrole.entry.map((e) => e.resource)}
-            initialValue={TeamValue}
-          />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    // find antd Select with id 'practitioners' in the 'Form' component
-    const practitionersSelect = wrapper.find('Select#practitioners');
-
-    // simulate click on select - to show dropdown items
-    practitionersSelect.find('.ant-select-selector').simulate('mousedown');
-    wrapper.update();
-
-    // find antd select options
-    const selectOptions = wrapper.find('.ant-select-item-option-content');
-
-    // expect all groups options
-    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([
-      'Ward N',
-      'Ward N',
-      'Ward N',
-      'test',
-      'test',
-      'test',
-      'test',
-      'test',
-      'test',
-      'test',
-      'test',
-      'test',
-    ]);
-
-    // find search input field
-    const inputField = practitionersSelect.find('input#practitioners');
-    // simulate change (type search phrase)
-    inputField.simulate('change', { target: { value: 'ward' } });
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // expect to see only 3 filtered options
-    const selectOptions2 = wrapper.find('.ant-select-item-option-content');
-    expect(selectOptions2.map((opt) => opt.text())).toStrictEqual(['Ward N', 'Ward N', 'Ward N']);
   });
 });
