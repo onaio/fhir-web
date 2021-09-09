@@ -66,7 +66,7 @@ body:
    attributes:
      label: Provide the Keycloak Realm
      description: Please provide the keycloak Realm to use?
-     placeholder: https://keycloak.labs.smartregister.org/
+     placeholder: opensrp-web-stage
    validations:
      required: true
  - type: input
