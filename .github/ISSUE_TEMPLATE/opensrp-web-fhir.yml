@@ -1,0 +1,52 @@
+name: General OpenSRP web FHIR.
+description: Use this to Create issues the are FHIR related.
+title: '[FHIR Road Map]: '
+labels: [FHIR compatibility]
+body:
+ - type: markdown
+   attributes:
+     value: |
+       Thanks for taking the time to fill out this bug report!
+ - type: textarea
+   id: issue_context
+   attributes:
+     label: Issue Context?
+     description: Please provide some context on the issue/feature.
+   validations:
+     required: true
+ - type: textarea
+   id: issue_implemetation
+   attributes:
+     label: Issue Implemetation details?
+     description: Please write up the implementation details of the issue/feature.
+   validations:
+     required: true
+ - type: textarea
+   id: issue_acceptance
+   attributes:
+     label: Issue Acceptance criteria?
+     description: Please provide an acceptance criteria on the issue/feature?.
+   validations:
+     required: true
+ - type: textarea
+   id: issue_fhir_resources
+   attributes:
+     label: FHIR resources to be used?
+     description: Please provide a list of FHIR resources to be used for this issue/feature.
+   validations:
+     required: false
+ - type: textarea
+   id: extra_info
+   attributes:
+     label: Relevant Information
+     description: Please share any other relevant information about the feature request or project.
+     placeholder:
+   validations:
+     required: false
+ - type: markdown
+   attributes:
+     value: |
+       Remember
+
+       1. To alert the team in the [#opensrp-web](https://onaio.slack.com/archives/C01R82Y9N58) channel.
+       2. To follow up on delivery. You're in-charge.
