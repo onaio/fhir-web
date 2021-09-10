@@ -25,7 +25,7 @@ describe('components/TeamsList/table.tsx', () => {
         <Table fhirBaseURL={fhirBaseURL} data={data} />
       </Router>
     );
-    expect(wrapper.props().children.props.children).toMatchSnapshot('Table');
+    expect(wrapper.find('table')).toHaveLength(1);
   });
 
   it('Test Table View Detail', async () => {
