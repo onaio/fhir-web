@@ -18,7 +18,14 @@ interface PaginateData<T, resp = T[]> {
   currentPage?: number;
   pageSize?: number;
   queryPram?: Dictionary;
-  total?: number | ((data: resp) => Promise<number> | number);
+  total?:
+    | number
+    | ((
+        data: resp,
+        page: number,
+        pageSize: number,
+        queryString?: string
+      ) => Promise<number> | number);
   children: (
     props: TableProps<T> & {
       fetchNextPage: Function;
@@ -68,7 +75,8 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
           ''
         );
       const data = await queryFn(pageParam, pageSize, queryString);
-      const totalval = typeof total === 'function' ? await total(data) : total;
+      const totalval =
+        typeof total === 'function' ? await total(data, currentPage, pageSize, queryString) : total;
       return { data, total: totalval, queryPram };
     },
     {
