@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { Row, Col, Button, Space } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { Spin } from 'antd';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
+import {
+  createChangeHandler,
+  getQueryParams,
+  SearchForm,
+  TableLayout,
+  PaginateData,
+} from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -27,7 +32,6 @@ import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PaginationProps } from 'antd/lib/pagination';
 import { TableActions } from './TableActions';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -73,57 +77,27 @@ const UserList = (props: UserListTypes): JSX.Element => {
     usersPageSize,
   } = props;
 
-  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [usersCount, setUsersCount] = React.useState<number>(0);
-  const [page, setPage] = React.useState<Pick<PaginationProps, 'current' | 'pageSize'>>({
-    current: 1,
-    pageSize: usersPageSize,
-  });
-
-  const isLoadingCallback = (isLoading: boolean) => {
-    setIsLoading(isLoading);
-  };
   const history = useHistory();
 
   const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
 
-  React.useEffect(() => {
-    const { current, pageSize } = page;
-    let filterParams: Dictionary = {
-      first: (current ?? 1) * (pageSize ?? usersPageSize) - (pageSize ?? usersPageSize),
-      max: pageSize ?? usersPageSize,
-    };
-    if (searchParam) {
-      filterParams = {
-        ...filterParams,
-        first: 0,
-        search: searchParam,
-      };
-    }
-    const usersCountService = new serviceClass(`${KEYCLOAK_URL_USERS_COUNT}`, keycloakBaseURL);
-    const usersCountPromise = usersCountService.list().then((res: number) => {
-      setUsersCount(res);
-    });
+  /**
+   * Function to fetch Users
+   *
+   * @param {number} page - current Page number in Table
+   * @param {number} pageSize - Page Size of the table
+   * @returns {Promise<KeycloakUser[]>} Return data Fetched from server
+   */
+  async function FetchData(page: number, pageSize: number): Promise<KeycloakUser[]> {
+    let filterParams: Dictionary = { first: page * pageSize - pageSize, max: pageSize };
+    if (searchParam) filterParams = { ...filterParams, first: 0, search: searchParam };
     const usersService = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
-    const usersListPromise = usersService
-      .list(filterParams as Dictionary)
-      .then((res: KeycloakUser[]) => {
-        fetchKeycloakUsersCreator(res, true);
-      });
-
-    Promise.all([usersCountPromise, usersListPromise])
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
-      .finally(() => setIsLoading(false));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParam, JSON.stringify(page)]);
-
-  if (isLoading) {
-    return <Spin size="large" />;
+    const res: KeycloakUser[] = await usersService.list(filterParams as Dictionary);
+    fetchKeycloakUsersCreator(res, true);
+    return keycloakUsers;
   }
 
-  const tableData: KeycloakUser[] = keycloakUsers;
+  // React.useEffect(() => {}, [searchParam]);
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
@@ -151,38 +125,44 @@ const UserList = (props: UserListTypes): JSX.Element => {
             </Space>
           </div>
           <Space>
-            <TableLayout
-              columns={getTableColumns(sortedInfo)}
-              datasource={tableData}
-              dataKeyAccessor="id"
-              pagination={{
-                current: page.current,
-                pageSize: page.pageSize,
-                total: isSearchActive ? keycloakUsers.length : usersCount,
+            <PaginateData<KeycloakUser>
+              queryFn={FetchData}
+              onError={() => sendErrorNotification(lang.ERROR_OCCURED)}
+              queryPram={{ searchParam }}
+              queryid="Users"
+              total={() => {
+                if (isSearchActive) return keycloakUsers.length;
+
+                const usersCountService = new serviceClass(
+                  `${KEYCLOAK_URL_USERS_COUNT}`,
+                  keycloakBaseURL
+                );
+                return usersCountService.list() as Promise<number>;
               }}
-              onChange={(pagination, __, sorter) => {
-                setPage({
-                  current: pagination.current ?? 1,
-                  pageSize: pagination.pageSize ?? usersPageSize,
-                });
-                setSortedInfo(sorter);
-              }}
-              actions={{
-                title: 'Actions',
-                // eslint-disable-next-line react/display-name
-                render: (_: string, record) => {
-                  const tableActionsProps = {
-                    removeKeycloakUsersCreator,
-                    keycloakBaseURL,
-                    opensrpBaseURL,
-                    isLoadingCallback,
-                    record,
-                    extraData,
-                  };
-                  return <TableActions {...tableActionsProps} />;
-                },
-              }}
-            />
+            >
+              {(props) => (
+                <TableLayout
+                  {...props}
+                  pagination={{ ...props.pagination, pageSize: usersPageSize }}
+                  columns={getTableColumns()}
+                  dataKeyAccessor="id"
+                  actions={{
+                    title: 'Actions',
+                    // eslint-disable-next-line react/display-name
+                    render: (_, record) => {
+                      const tableActionsProps = {
+                        removeKeycloakUsersCreator,
+                        keycloakBaseURL,
+                        opensrpBaseURL,
+                        record,
+                        extraData,
+                      };
+                      return <TableActions {...tableActionsProps} />;
+                    },
+                  }}
+                />
+              )}
+            </PaginateData>
           </Space>
         </Col>
       </Row>
