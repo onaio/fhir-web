@@ -33,7 +33,7 @@ import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 
-// route params for user group pages
+// route params for care team pages
 interface RouteParams {
   careTeamId: string | undefined;
 }

@@ -234,6 +234,12 @@ Below is a list of currently supported environment variables:
   - default: `"false"`
 
 - **REACT_APP_DEFAULTS_TABLE_PAGE_SIZE**
+
   - Default number of rows per table page
   - default: 5
   - `Enum: 5, 10, 20 , 50, 100
+
+- **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
+  - Default FHIR resource page count
+  - **Required**
+  - default: 500
