@@ -9,7 +9,7 @@ import * as notifications from '@opensrp/notifications';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
-  ...jest.requireActual('@opensrp/notifications'),
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
 describe('components/UserList/utils/deleteUser', () => {
