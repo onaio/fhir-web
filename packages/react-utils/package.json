@@ -42,7 +42,8 @@
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/server-service": "^0.0.17",
-    "antd": "^4.6.3"
+    "antd": "^4.6.3",
+    "react-query": "^3.15.1"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
