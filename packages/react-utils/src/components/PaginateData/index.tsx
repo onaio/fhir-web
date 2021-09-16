@@ -104,7 +104,7 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
 
   const fetchPage = useCallback(
     (page = currentPage) => {
-      if (!query.isFetchingNextPage)
+      if (!query.isFetchingNextPage && !query.isFetching && !query.isError)
         query.fetchNextPage({ pageParam: page, throwOnError: true }).catch(onError);
     },
     [currentPage, query, onError]
