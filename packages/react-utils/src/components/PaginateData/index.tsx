@@ -110,7 +110,8 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
     [currentPage, query, onError]
   );
 
-  useEffect(() => setProps((prev) => ({ ...prev, currentPage: 1 })), [queryPram]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setProps((prev) => ({ ...prev, currentPage: 1 })), [JSON.stringify(queryPram)]);
 
   useEffect(() => {
     if (data[currentPage] === undefined) fetchPage();
