@@ -9,6 +9,7 @@ import lang, { Lang } from '../../lang';
  *
  * @param {Function} removeKeycloakUsersCreator - remove users action creator
  * @param {string} keycloakBaseURL - keycloak API base URL
+ * @param {string} fhirBaseURL - opensrp API base URL
  * @param {Function} isLoadingCallback - callback function that sets loading state
  * @param {Dictionary} extraData - user profile extra data
  * @param {Dictionary} sortedInfo - applied sort
@@ -18,6 +19,7 @@ import lang, { Lang } from '../../lang';
 export const getTableColumns = (
   removeKeycloakUsersCreator: typeof removeKeycloakUsers,
   keycloakBaseURL: string,
+  fhirBaseURL: string,
   isLoadingCallback: (loading: boolean) => void,
   extraData: Dictionary,
   sortedInfo?: Dictionary,
@@ -59,6 +61,7 @@ export const getTableColumns = (
       const tableActionsProps = {
         removeKeycloakUsersCreator,
         keycloakBaseURL,
+        fhirBaseURL,
         isLoadingCallback,
         record,
         extraData,

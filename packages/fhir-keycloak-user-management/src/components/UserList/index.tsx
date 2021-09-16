@@ -35,6 +35,7 @@ export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakUsers: KeycloakUser[];
   keycloakBaseURL: string;
+  fhirBaseURL: string;
   extraData: Dictionary;
 }
 
@@ -45,6 +46,7 @@ export const defaultProps = {
   removeKeycloakUsersCreator: removeKeycloakUsers,
   keycloakUsers: [],
   keycloakBaseURL: '',
+  fhirBaseURL: '',
   extraData: {},
 };
 
@@ -69,6 +71,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     removeKeycloakUsersCreator,
     keycloakUsers,
     keycloakBaseURL,
+    fhirBaseURL,
     extraData,
   } = props;
 
@@ -141,6 +144,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 columns={getTableColumns(
                   removeKeycloakUsersCreator,
                   keycloakBaseURL,
+                  fhirBaseURL,
                   isLoadingCallback,
                   extraData,
                   sortedInfo
