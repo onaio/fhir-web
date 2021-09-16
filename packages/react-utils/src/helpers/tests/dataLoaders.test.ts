@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { fetchProtectedImage, handleSessionOrTokenExpiry, OpenSRPService } from '../dataLoaders';
+import {
+  fetchProtectedImage,
+  handleSessionOrTokenExpiry,
+  OpenSRPService,
+  FHIRService,
+} from '../dataLoaders';
 import fetch from 'jest-fetch-mock';
 import MockDate from 'mockdate';
 import * as opensrpService from '@opensrp/server-service';
@@ -160,5 +165,38 @@ describe('dataLoaders/OpenSRPService', () => {
     //check redirection action
     expect(pushMock).toHaveBeenCalledWith('/someUrl');
     MockDate.reset();
+  });
+});
+
+describe('dataloaders/FHIRService', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    fetch.resetMocks();
+    jest.restoreAllMocks();
+  });
+
+  it('FHIRService works correctly', async () => {
+    const serve = await FHIRService('https://test.fhir.com');
+    expect(serve.getState()).toEqual({
+      serverUrl: 'https://test.fhir.com',
+      tokenResponse: { access_token: 'hunter2' },
+    });
+    // test correct auth headers are being created
+    expect(serve.getAuthorizationHeader()).toEqual('Bearer hunter2');
   });
 });
