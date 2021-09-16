@@ -80,6 +80,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
   const history = useHistory();
 
   const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
+  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
 
   /**
    * Function to fetch Users
@@ -144,8 +145,9 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 <TableLayout
                   {...props}
                   pagination={{ ...props.pagination, pageSize: usersPageSize }}
-                  columns={getTableColumns()}
+                  columns={getTableColumns(sortedInfo)}
                   dataKeyAccessor="id"
+                  onChange={(_, __, sorter) => setSortedInfo(sorter)}
                   actions={{
                     title: 'Actions',
                     // eslint-disable-next-line react/display-name
