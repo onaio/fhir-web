@@ -33,6 +33,12 @@ function fill() {
   lang.PRACTITIONER_UPDATED_SUCCESSFULLY = i18n.t(`Practitioner updated successfully`, {
     ns: namespace,
   });
+  lang.PRACTITIONER_DEACTIVATED_SUCCESSFULLY = i18n.t(`Practitioner deactivated successfully`, {
+    ns: namespace,
+  });
+  lang.PRACTITIONER_UNASSIGNED_SUCCESSFULLY = i18n.t(`Practitioner unassigned successfully`, {
+    ns: namespace,
+  });
   lang.ROLES_UPDATED_SUCCESSFULLY = i18n.t(`Role Mappings Updated Successfully`, { ns: namespace });
   lang.REALM_ROLES = i18n.t(`Realm Roles`, { ns: namespace });
   lang.AVAILABLE_ROLES = i18n.t(`Available Roles`, { ns: namespace });
