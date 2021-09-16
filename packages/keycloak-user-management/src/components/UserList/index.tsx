@@ -19,7 +19,6 @@ import {
   removeKeycloakUsers,
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
-  makeKeycloakUsersSelector,
 } from '../../ducks/user';
 import {
   URL_USER_CREATE,
@@ -35,9 +34,6 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { TableActions } from './TableActions';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
-
-// Define selector instance
-const usersSelector = makeKeycloakUsersSelector();
 
 /** interface for component props */
 export interface Props {
@@ -70,7 +66,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
     serviceClass,
     fetchKeycloakUsersCreator,
     removeKeycloakUsersCreator,
-    keycloakUsers,
     keycloakBaseURL,
     opensrpBaseURL,
     extraData,
@@ -87,18 +82,21 @@ const UserList = (props: UserListTypes): JSX.Element => {
    *
    * @param {number} page - current Page number in Table
    * @param {number} pageSize - Page Size of the table
+   * @param {string|undefined} searchquery - searchquery generated from Paginated data
    * @returns {Promise<KeycloakUser[]>} Return data Fetched from server
    */
-  async function FetchData(page: number, pageSize: number): Promise<KeycloakUser[]> {
+  async function FetchData(
+    page: number,
+    pageSize: number,
+    searchquery?: string
+  ): Promise<KeycloakUser[]> {
     let filterParams: Dictionary = { first: page * pageSize - pageSize, max: pageSize };
-    if (searchParam) filterParams = { ...filterParams, first: 0, search: searchParam };
+    if (searchquery) filterParams = { ...filterParams, first: 0, search: searchParam };
     const usersService = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
-    const res: KeycloakUser[] = await usersService.list(filterParams as Dictionary);
-    fetchKeycloakUsersCreator(res, true);
+    const keycloakUsers: KeycloakUser[] = await usersService.list(filterParams as Dictionary);
+    fetchKeycloakUsersCreator(keycloakUsers, true);
     return keycloakUsers;
   }
-
-  // React.useEffect(() => {}, [searchParam]);
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
@@ -132,14 +130,14 @@ const UserList = (props: UserListTypes): JSX.Element => {
               queryPram={{ searchParam }}
               pageSize={usersPageSize}
               queryid="Users"
-              total={() => {
-                if (isSearchActive) return keycloakUsers.length;
+              total={(data) => {
+                if (isSearchActive) return data.length;
 
                 const usersCountService = new serviceClass(
                   `${KEYCLOAK_URL_USERS_COUNT}`,
                   keycloakBaseURL
                 );
-                return usersCountService.list() as Promise<number>;
+                return usersCountService.list();
               }}
             >
               {(tableProps) => (
@@ -177,15 +175,13 @@ export { UserList };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
-  keycloakUsers: KeycloakUser[];
   extraData: Dictionary;
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
-  const keycloakUsers = usersSelector(state, {});
   const extraData = getExtraData(state);
-  return { keycloakUsers, extraData };
+  return { extraData };
 };
 
 /** map props to action creators */
