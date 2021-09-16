@@ -130,6 +130,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               queryFn={FetchData}
               onError={() => sendErrorNotification(lang.ERROR_OCCURED)}
               queryPram={{ searchParam }}
+              pageSize={usersPageSize}
               queryid="Users"
               total={() => {
                 if (isSearchActive) return keycloakUsers.length;
@@ -141,10 +142,9 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 return usersCountService.list() as Promise<number>;
               }}
             >
-              {(props) => (
+              {(tableProps) => (
                 <TableLayout
-                  {...props}
-                  pagination={{ ...props.pagination, pageSize: usersPageSize }}
+                  {...tableProps}
                   columns={getTableColumns(sortedInfo)}
                   dataKeyAccessor="id"
                   onChange={(_, __, sorter) => setSortedInfo(sorter)}
