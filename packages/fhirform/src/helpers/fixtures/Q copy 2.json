@@ -1,0 +1,239 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "1082",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2021-08-11T08:26:30.346+00:00",
+    "source": "#qQXzu6QPG0hxZKLs"
+  },
+  "extension": [ {
+    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-targetStructureMap",
+    "valueCanonical": "https://fhir.labs.smartregister.org/StructureMap/383"
+  } ],
+  "status": "active",
+  "subjectType": [ "Patient" ],
+  "date": "2020-11-18T07:24:47.111Z",
+  "item": [ {
+    "linkId": "PR",
+    "text": "Client Info",
+    "_text": {
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+        "extension": [ {
+          "url": "lang",
+          "valueCode": "sw"
+        }, {
+          "url": "content",
+          "valueString": "Maelezo ya mteja"
+        } ]
+      } ]
+    },
+    "type": "group",
+    "item": [ {
+      "linkId": "PR-name",
+      "type": "group",
+      "item": [ {
+        "linkId": "PR-name-given",
+        "text": "First Name",
+        "_text": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [ {
+              "url": "lang",
+              "valueCode": "sw"
+            }, {
+              "url": "content",
+              "valueString": "Jina la kwanza"
+            } ]
+          } ]
+        },
+        "type": "string",
+        "required": true
+      }, {
+        "linkId": "PR-name-family",
+        "text": "Family Name",
+        "_text": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [ {
+              "url": "lang",
+              "valueCode": "sw"
+            }, {
+              "url": "content",
+              "valueString": "Jina la ukoo"
+            } ]
+          } ]
+        },
+        "type": "string",
+        "required": true
+      } ]
+    }, {
+      "linkId": "patient-0-birth-date",
+      "text": "Date of Birth",
+      "_text": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/translation",
+          "extension": [ {
+            "url": "lang",
+            "valueCode": "sw"
+          }, {
+            "url": "content",
+            "valueString": "Tarehe ya kuzaliwa"
+          } ]
+        } ]
+      },
+      "type": "date",
+      "required": true
+    }, {
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://hl7.org/fhir/questionnaire-item-control",
+            "code": "radio-button",
+            "display": "Radio Button"
+          } ],
+          "text": "A control where choices are listed with a button beside them. The button can be toggled to select or de-select a given choice. Selecting one item deselects all others."
+        }
+      }, {
+        "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-choiceOrientation",
+        "valueCode": "horizontal"
+      } ],
+      "linkId": "patient-0-gender",
+      "text": "Gender",
+      "type": "choice",
+      "answerOption": [ {
+        "valueCoding": {
+          "code": "female",
+          "display": "Female"
+        }
+      }, {
+        "valueCoding": {
+          "code": "male",
+          "display": "Male"
+        }
+      } ],
+      "initial": [ {
+        "valueCoding": {
+          "code": "female",
+          "display": "Female"
+        }
+      } ]
+    }, {
+      "linkId": "PR-telecom",
+      "type": "group",
+      "item": [ {
+        "linkId": "PR-telecom-system",
+        "text": "system",
+        "type": "string",
+        "enableWhen": [ {
+          "question": "patient-0-gender",
+          "operator": "=",
+          "answerString": "ok"
+        } ],
+        "initial": [ {
+          "valueString": "phone"
+        } ]
+      }, {
+        "linkId": "PR-telecom-value",
+        "text": "Phone Number",
+        "_text": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [ {
+              "url": "lang",
+              "valueCode": "sw"
+            }, {
+              "url": "content",
+              "valueString": "Nambari ya simu"
+            } ]
+          } ]
+        },
+        "type": "string",
+        "required": true
+      } ]
+    }, {
+      "linkId": "PR-address",
+      "type": "group",
+      "item": [ {
+        "linkId": "PR-address-city",
+        "text": "City",
+        "_text": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [ {
+              "url": "lang",
+              "valueCode": "sw"
+            }, {
+              "url": "content",
+              "valueString": "Mji"
+            } ]
+          } ]
+        },
+        "type": "string"
+      }, {
+        "linkId": "PR-address-country",
+        "text": "Country",
+        "_text": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [ {
+              "url": "lang",
+              "valueCode": "sw"
+            }, {
+              "url": "content",
+              "valueString": "Nchi"
+            } ]
+          } ]
+        },
+        "type": "string"
+      } ]
+    }, {
+      "linkId": "PR-active",
+      "text": "Is Active?",
+      "_text": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/translation",
+          "extension": [ {
+            "url": "lang",
+            "valueCode": "sw"
+          }, {
+            "url": "content",
+            "valueString": "Inatumika?"
+          } ]
+        } ]
+      },
+      "type": "boolean"
+    } ]
+  }, {
+    "linkId": "RP",
+    "text": "Related person",
+    "type": "group",
+    "item": [ {
+      "linkId": "RP-family-name",
+      "text": "Family name",
+      "type": "text",
+      "required": true
+    }, {
+      "linkId": "RP-first-name",
+      "text": "First name",
+      "type": "text",
+      "required": true
+    }, {
+      "linkId": "RP-relationship",
+      "text": "Relationship to patient",
+      "type": "text",
+      "required": true,
+      "answerValueSet": "http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype"
+    }, {
+      "linkId": "RP-contact-1",
+      "text": "Phone number",
+      "type": "text",
+      "required": true
+    }, {
+      "linkId": "RP-contact-alternate",
+      "text": "Alternative phone number",
+      "type": "text"
+    } ]
+  } ]
+}

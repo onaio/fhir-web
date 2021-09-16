@@ -34,9 +34,9 @@
           }
         ],
         "required": false,
+        "repeats": true,
         "linkId": "/G1",
         "text": "Facility MetaData",
-        "repeats": true,
         "item": [
           {
             "type": "string",

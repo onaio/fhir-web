@@ -303,23 +303,21 @@ function processQuestionnaireItem(qItem, containedVS, linkIdItemMap): any {
   
   processRestrictions(targetItem, qItem);
   
-  // self._processDataControl(targetItem, qItem);
-  
-  // processDisplayControl(targetItem, qItem);
+  processDisplayControl(targetItem, qItem);
 
   // processUnitList(targetItem, qItem);
 
-  // self._processAnswers(targetItem, qItem, containedVS);
+  // _processAnswers(targetItem, qItem, containedVS);
 
-  // self._processDefaultAnswer(targetItem, qItem);
+  // _processDefaultAnswer(targetItem, qItem);
 
-  // self._processExternallyDefined(targetItem, qItem);
+  // _processExternallyDefined(targetItem, qItem);
 
-  // self._processTerminologyServer(targetItem, qItem);
+  // _processTerminologyServer(targetItem, qItem);
 
-  // self._processSkipLogic(targetItem, qItem, linkIdItemMap);
+  targetItem = {...targetItem, ...processSkipLogic( qItem, linkIdItemMap)}
 
-  // self._processExtensions(targetItem, qItem);
+  processExtensions(targetItem, qItem);
 
   copyFields(qItem, targetItem, itemLevelIgnoredFields);
 
@@ -329,6 +327,46 @@ function processQuestionnaireItem(qItem, containedVS, linkIdItemMap): any {
 
   return targetItem;
 }
+
+ /**
+   *  Copy extensions that haven't been handled before.
+   *
+   * @param schemaItem the LForms node being populated with data
+   * @param qItem the Questionnaire (item) node being imported
+   */
+
+
+  const extensionHandlers = {};
+
+  extensionHandlers[fhirExtMaxSize] = function (extension, item) {
+    item.maxAttachmentSize = extension.valueDecimal || extension.valueInteger; // not sure why it is decimal
+  };
+
+  extensionHandlers[fhirExtMimeType] = function (extension, item) {
+    item.allowedAttachmentTypes || (item.allowedAttachmentTypes = []);
+    item.allowedAttachmentTypes.push(extension.valueCode);
+  };
+  const fhirExtUrlDataControl = "http://lhcforms.nlm.nih.gov/fhirExt/dataControl";
+
+  const handledExtensionSet = new Set([fhirExtUrlCardinalityMin, fhirExtUrlCardinalityMax, fhirExtUrlItemControl, fhirExtUrlUnit, fhirExtUrlUnitOption, fhirExtUrlOptionPrefix, fhirExtUrlMinValue, fhirExtUrlMaxValue, fhirExtUrlMinLength, fhirExtUrlRegex, fhirExtUrlAnswerRepeats, fhirExtUrlExternallyDefined, argonautExtUrlExtensionScore, fhirExtUrlHidden, fhirExtTerminologyServer, fhirExtUrlDataControl, fhirExtChoiceOrientation]); // Simple functions for mapping extensions to properties in the internal structure.
+
+  function processExtensions(schemaItem, qItem) {
+    var extensions: any = [];
+
+    if (Array.isArray(qItem.extension)) {
+      for (var i = 0; i < qItem.extension.length; i++) {
+        var ext = qItem.extension[i];
+        var extHandler = extensionHandlers[ext.url];
+        if (extHandler) extHandler(ext, schemaItem);else if (!handledExtensionSet.has(qItem.extension[i].url)) {
+          extensions.push(qItem.extension[i]);
+        }
+      }
+    }
+
+    if (extensions.length > 0) {
+      schemaItem.extension = extensions;
+    }
+  };
 
 
 
@@ -622,31 +660,20 @@ function processDisplayControl(schema, qItem) {
 
   if (itemControlType) {
     var displayControl: any = {};
+    displayControl = {
+      code: itemControlType.valueCodeableConcept.coding[0].code,
+      answerLayout: {}
+    }
 
     switch (itemControlType.valueCodeableConcept.coding[0].code) {
       case "Lookup": // backward-compatibility with old export
-
       case "Combo-box": // backward-compatibility with old export
-
       case "autocomplete":
-        schema.isSearchAutocomplete = true;
-      // continue to drop-down case
-
       case "drop-down":
-        displayControl.answerLayout = {
-          type: "COMBO_BOX",
-        };
-        break;
-
       case "Checkbox": // backward-compatibility with old export
-
       case "check-box":
       case "Radio": // backward-compatibility with old export
-
       case "radio-button":
-        displayControl.answerLayout = {
-          type: "RADIO_CHECKBOX",
-        };
         var answerChoiceOrientation = findObjectInArray(
           qItem.extension,
           "url",
@@ -660,26 +687,21 @@ function processDisplayControl(schema, qItem) {
             displayControl.answerLayout.columns = "0";
           }
         }
-
         break;
 
       case "Table": // backward-compatibility with old export
-
       case "gtable":
         // Not in STU3, but we'll accept it
         if (schema.dataType === "SECTION") {
           displayControl.questionLayout = "horizontal";
         }
-
         break;
-
+      
       case "Matrix": // backward-compatibility with old export
-
       case "table":
         if (schema.dataType === "SECTION") {
           displayControl.questionLayout = "matrix";
         }
-
         break;
 
       default:
@@ -980,15 +1002,15 @@ function getFHIRValueWithPrefixKey(obj, keyRegex) {
   //     for (var i = 0; i < qItem.answerOption.length; i++) {
   //       var answer = {};
   //       var option = qItem.answerOption[i];
-  //       var label = LForms.Util.findObjectInArray(option.extension, 'url', self.fhirExtUrlOptionPrefix);
+  //       var label = LForms.Util.findObjectInArray(option.extension, 'url', fhirExtUrlOptionPrefix);
 
   //       if (label) {
   //         answer.label = label.valueString;
   //       }
 
-  //       var score = LForms.Util.findObjectInArray(option.extension, 'url', self.fhirExtUrlOptionScore); // Look for argonaut extension.
+  //       var score = LForms.Util.findObjectInArray(option.extension, 'url', fhirExtUrlOptionScore); // Look for argonaut extension.
 
-  //       score = !score ? LForms.Util.findObjectInArray(option.extension, 'url', self.argonautExtUrlExtensionScore) : score;
+  //       score = !score ? LForms.Util.findObjectInArray(option.extension, 'url', argonautExtUrlExtensionScore) : score;
 
   //       if (score) {
   //         answer.score = score.valueDecimal.toString();
@@ -1090,3 +1112,61 @@ function processFHIRQuestionAndAnswerCardinality(lfItem, qItem) {
        else{return singleSchema}
      }
    }
+
+
+
+     /**
+   * Parse questionnaire object for skip logic information
+   *
+   * @param lfItem {object} - LForms item object to assign the skip logic
+   * @param qItem {object} - Questionnaire item object
+   * @param linkIdItemMap - Map of items from link ID to item from the imported resource.
+   * @private
+   */
+
+
+  function processSkipLogic(qItem, linkIdItemMap) {
+    const schema: any = {};
+    if (qItem.enableWhen) {
+      schema.skipLogic = {
+        conditions: [],
+        action: 'show'
+      };
+
+      for (var i = 0; i < qItem.enableWhen.length; i++) {
+        // var dataType = getDataType(linkIdItemMap[qItem.enableWhen[i].question]).type;
+
+        var condition = {
+          source: qItem.enableWhen[i].question,
+          trigger: {}
+        };
+
+        var answer = getFHIRValueWithPrefixKey(qItem.enableWhen[i], /^answer/);
+
+        var opMapping = qItem.enableWhen[i].operator;
+
+        if (!opMapping) {
+          throw new Error('Unable to map FHIR enableWhen operator: ' + qItem.enableWhen[i].operator);
+        }
+
+        // if (opMapping === 'exists') {
+        //   condition.trigger.exists = answer; // boolean value here regardless of data type
+        // } else if (dataType === 'CWE' || dataType === 'CNE') {
+        //   condition.trigger[opMapping] = self._copyTriggerCoding(answer, null, false);
+        // } else if (dataType === 'QTY') {
+        //   condition.trigger[opMapping] = answer.value;
+        // } else {
+        //   condition.trigger[opMapping] = answer;
+        // }
+
+        condition.trigger[opMapping] = answer;
+
+        schema.skipLogic.conditions.push(condition);
+      }
+
+      if (qItem.enableBehavior) {
+        schema.skipLogic.logic = qItem.enableBehavior.toUpperCase();
+      }
+    }
+    return schema
+  };

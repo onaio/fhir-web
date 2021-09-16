@@ -1,26 +1,19 @@
-import {isEmpty, transform} from 'lodash';
+import {isEmpty, transform, get} from 'lodash';
 
 
-/**
- * The best way to standardize how we later receive the form data is to flatten the object by 
- * linkIds
- * @param formData - nested map
- * */
-export const flattenObjsByLinkIds = (schema, formData: any) => {
-  // find all linkIds from schema in a flattened array
-  const allLinkIds = [];
-  const {properties} = schema;
-  function linkIdsGetter() => {
-    Object.values(properties).forEach(value => {
-      if(value.)
-    })
+function processQuestionResponse(itemSchema, formData){
+  if(typeof formData[itemSchema.linkId] === 'undefined'){
+    return undefined
   }
-
-  const target = {};
-  // lets assume this is already done.
-
-} 
-
+  if(itemSchema.type === 'boolean'){
+    return processBooleanItemSchema(itemSchema, formData);
+  }
+  if(itemSchema.type === 'number'){
+    return processIntegerItemSchema(itemSchema, formData);
+  }
+   return processStringItemSchema(itemSchema,formData);
+ }
+ 
 /**
 * Convert LForms captured data to FHIR SDC QuestionnaireResponse
 * @param lfData a LForms form object
@@ -31,10 +24,10 @@ export const flattenObjsByLinkIds = (schema, formData: any) => {
 *  resource when applicable.
 * @returns {{}}
 */
-export function convertLFormsToQuestionnaireResponse(schema, formData, noExtensions, subject) {
+export function convertLFormsToQuestionnaireResponse(schema, formData, noExtensions=true, ) {
  var target = {};
  // merge formData with schema to mergedSchema
- const mergedSchema = schema
+ const mergedSchema = schema      
  
  if (schema) {
 //    var source = lfData.getFormData(true,true,true);
@@ -58,9 +51,16 @@ export function convertLFormsToQuestionnaireResponse(schema, formData, noExtensi
   if(properties){
     rtn.item = [];
     Object.values(properties).forEach(itemSchema => {
-      rtn.item.push(processItemSchema(itemSchema, formData))
+      console.log('PROCESSED', processItemSchema(itemSchema, formData))
+      const processed = processItemSchema(itemSchema, formData)
+      if(Array.isArray(processed)){
+        rtn.item = [...rtn.item, ...processed];
+      }else rtn.item.push(processItemSchema(itemSchema, formData))
     })
   }
+
+  return {...target, ...rtn}
+  
  }
 
  function processItemSchema(itemSchema, formData) 
@@ -74,22 +74,29 @@ export function convertLFormsToQuestionnaireResponse(schema, formData, noExtensi
     rtn.item = Object.values(properties).map((childQuestion) => processItemSchema(childQuestion, formData))
    }
    else if(itemSchema.type === "array"){
-    const {items, linkId} = itemSchema;
-    const responses = formData[linkId];
-    rtn.item = [];
-    for (let i = 0; i <= responses.length; i++ ){
-      rtn.item.push(processItemSchema(items, formData))
-    }
+     rtn = [];
+     if(itemSchema.dataType === 'CNE' || itemSchema.dataType === 'CWE'){
+       rtn.push(processQuestionResponse(itemSchema, formData))
+     }
+     else{
+       // http://community.fhir.org/t/questionnaire-repeating-groups-what-is-the-correct-format/2276
+      const {items, linkId} = itemSchema;
+      const responses = formData[linkId] ?? [];
+      console.log('===>', items, linkId, responses, rtn, itemSchema, responses.length);
+      for (let i = 0; i < responses.length; i++ ){
+        rtn.push(processItemSchema(items, formData))
+      }
+     }
 
    }else{
-     rtn.item = [processQuestionResponse(itemSchema, formData)]
+     const itemResponse = processQuestionResponse(itemSchema, formData);
+     if(itemResponse)
+      rtn.item = [itemResponse]
    }
    return rtn;
  }
 
- function processQuestionResponse(itemSchema, formData){
-   return processStringItemSchema(itemSchema,formData);
- }
+
 
  // FHIR doesn't allow null values, strip them out.
     pruneNulls(target);
@@ -111,6 +118,7 @@ function getItemLevelFields(itemSchema){
 
 
 function processStringItemSchema(itemSchema, formData){
+
   return {
     ...getItemLevelFields(itemSchema),
     answer:[
@@ -638,3 +646,104 @@ function setResponseFormLevelFields(target, schema, noExtensions) {
 
 
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+/**
+* Convert LForms captured data to FHIR SDC QuestionnaireResponse
+* @param lfData a LForms form object
+* @param noExtensions a flag that a standard FHIR Questionnaire is to be created without any extensions.
+*  The default is false.
+* @param subject A local FHIR resource that is the subject of the output resource.
+*  If provided, a reference to this resource will be added to the output FHIR
+*  resource when applicable.
+* @returns {{}}
+*/
+export function createQuestionnaireResponse(schema, formData, noExtensions=true, ) {
+  var target = {};
+  // merge formData with schema to mergedSchema
+  const mergedSchema = schema      
+  
+  if (schema) {
+ //    var source = lfData.getFormData(true,true,true);
+ //    console.log('SOURCE@ ===>', source)
+ //    this._processRepeatingItemValues(source);
+ 
+ 
+ 
+    setResponseFormLevelFields(target, mergedSchema, noExtensions);
+ 
+   //  if (mergedSchema.items && Array.isArray(mergedSchema.items)) {
+   //    var tmp = processResponseItem(mergedSchema, true);
+   //    if(tmp && tmp.item && tmp.item.length) {
+   //      target.item = tmp.item;
+   //    }
+   //  }
+ 
+   // invariant -  first level itemSchema will be always an object.
+   const {properties} = schema;
+   const rtn = {} as any;
+ 
+   if(properties){
+     rtn.item = [];
+     Object.values(properties).forEach((itemSchema: any) => {
+       const processed = processISchema(itemSchema, formData ?? {}, itemSchema.linkId)
+       if(typeof processed !== 'undefined'){
+         if(Array.isArray(processed)){
+  
+           rtn.item = [...rtn.item, ...processed];
+         }else rtn.item.push(processed)
+       }
+     })
+   }
+ 
+   return {...target, ...rtn}
+   
+  }}
+
+  function processISchema(itemSchema, formData, key?: string){
+    // item schema can either be question, group or an array
+    // lets handle group
+    // TODO : defensive programming
+    const formDataOfInterest = key ? formData[key]: formData;
+    if(!formDataOfInterest){
+      return
+    }
+    let rtn: any = getItemLevelFields(itemSchema)
+     if(itemSchema.type === 'object'){
+       const {properties} = itemSchema;
+       rtn.item = Object.values(properties).map((childQuestion) => processISchema(childQuestion, formDataOfInterest)).filter(x => !!x)
+      }
+      else if(itemSchema.type === "array"){
+       rtn = [];
+       if(itemSchema.dataType === 'CNE' || itemSchema.dataType === 'CWE'){
+         const processedItemResponse = processQuestionResponse(itemSchema, formData);
+         if(processedItemResponse){
+
+           rtn.push(processQuestionResponse(itemSchema, formData))
+         }
+         else return undefined
+       }
+       else{
+         // http://community.fhir.org/t/questionnaire-repeating-groups-what-is-the-correct-format/2276
+        const {items} = itemSchema;
+        const responses = formDataOfInterest ?? [];
+        // console.log('===>', items, linkId, responses, rtn, itemSchema, responses.length);
+        for (let i = 0; i < responses.length; i++ ){
+          const processedItemResponse = processISchema(items, formDataOfInterest,  i.toString());
+          if(processedItemResponse){
+
+            rtn.push(processISchema(items, formDataOfInterest,  i.toString()))
+          }else return
+        }
+       }
+  
+     }else{
+       const itemResponse = processQuestionResponse(itemSchema, formDataOfInterest);
+       if(itemResponse)
+        return itemResponse
+        else return undefined
+     }
+     return rtn;
+   }
