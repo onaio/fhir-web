@@ -24,6 +24,7 @@ import { keycloakUsersArray, keycloakUsersArray1 } from '../../forms/UserForm/te
 import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -79,9 +80,10 @@ describe('components/UserList', () => {
   it('renders users table without crashing', () => {
     shallow(<UserList {...locationProps} />);
   });
+
   it('works correctly with store', async () => {
-    fetch.once(JSON.stringify(4));
-    fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
     const props = {
       ...locationProps,
       extraData: {
@@ -94,11 +96,14 @@ describe('components/UserList', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       usersPageSize: 20,
     };
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -113,8 +118,8 @@ describe('components/UserList', () => {
   });
 
   it('renders user list correctly', async () => {
-    fetch.once(JSON.stringify(4));
-    fetch.once(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
     const props = {
       ...locationProps,
       extraData: {
@@ -127,11 +132,15 @@ describe('components/UserList', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       usersPageSize: 20,
     };
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
     // Loader should be displayed
@@ -144,9 +153,9 @@ describe('components/UserList', () => {
     // Loader should be hiddern
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
 
-    expect(fetch.mock.calls).toEqual([
+    expect(fetch.mock.calls).toMatchObject([
       [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/count',
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?first=0&max=20',
         {
           headers: {
             accept: 'application/json',
@@ -157,7 +166,7 @@ describe('components/UserList', () => {
         },
       ],
       [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?first=0&max=20',
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/count',
         {
           headers: {
             accept: 'application/json',
@@ -180,8 +189,8 @@ describe('components/UserList', () => {
   });
 
   it('search works correctly', async () => {
-    fetch.once(JSON.stringify(4));
-    fetch.once(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
     const props = {
       ...locationProps,
       location: {
@@ -198,11 +207,15 @@ describe('components/UserList', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       usersPageSize: 20,
     };
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -218,18 +231,7 @@ describe('components/UserList', () => {
     });
     await flushPromises();
     wrapper.update();
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/count',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer simple-token',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
+    expect(fetch.mock.calls).toMatchObject([
       [
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?first=0&max=20&search=opensrp',
         {
@@ -245,8 +247,12 @@ describe('components/UserList', () => {
   });
 
   it('pagination works', async () => {
-    fetch.once(JSON.stringify(7));
-    fetch.once(JSON.stringify([...keycloakUsersArray, ...keycloakUsersArray1]));
+    const data = [...keycloakUsersArray, ...keycloakUsersArray1];
+    fetch.mockResponseOnce(JSON.stringify(data.slice(0, 5)));
+    fetch.mockResponseOnce(JSON.stringify(7));
+    fetch.mockResponseOnce(JSON.stringify(data.slice(5, 10)));
+    fetch.mockResponseOnce(JSON.stringify(7));
+
     const props = {
       ...locationProps,
       extraData: {
@@ -259,11 +265,14 @@ describe('components/UserList', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       usersPageSize: 5,
     };
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -284,8 +293,8 @@ describe('components/UserList', () => {
 
   it('redirects to new user form', async () => {
     const historyPushMock = jest.spyOn(history, 'push');
-    fetch.once(JSON.stringify(4));
-    fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
     const props = {
       ...locationProps,
       extraData: {
@@ -298,11 +307,14 @@ describe('components/UserList', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       usersPageSize: 20,
     };
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -317,7 +329,7 @@ describe('components/UserList', () => {
 
   it('handles user list fetch failure', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    fetch.mockReject(() => Promise.reject('API is down'));
+
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const props = {
       ...locationProps,
@@ -330,11 +342,14 @@ describe('components/UserList', () => {
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     };
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -360,8 +375,8 @@ describe('components/UserList', () => {
   });
 
   it('sorting works', async () => {
-    fetch.once(JSON.stringify(4));
-    fetch.once(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
     const props = {
       ...locationProps,
       extraData: {
@@ -374,11 +389,14 @@ describe('components/UserList', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       usersPageSize: 20,
     };
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
