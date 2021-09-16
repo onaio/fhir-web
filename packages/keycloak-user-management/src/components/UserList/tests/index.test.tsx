@@ -224,13 +224,19 @@ describe('components/UserList', () => {
       wrapper.update();
     });
 
-    const search = wrapper.find('.search-input-wrapper');
-    // fireEvent.change(search, { target: { value: 'opensrp' } });
+    // const search = wrapper.find('.search-input-wrapper').find('.ant-input');
+    const search = wrapper.find('input').first();
     await act(async () => {
-      search.find('.ant-input').simulate('change', { target: { value: 'test' } });
+      search.simulate('change', { target: { value: 'test' } });
+      wrapper.update();
     });
-    await flushPromises();
-    wrapper.update();
+
+    await act(async () => {
+      await new Promise((res) => setTimeout(res, 2000));
+      wrapper.update();
+    });
+
+    expect(history.location.search).toEqual('?searchQuery=test');
     expect(fetch.mock.calls).toMatchObject([
       [
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?first=0&max=20&search=opensrp',

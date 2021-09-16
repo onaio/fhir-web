@@ -98,11 +98,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
     return keycloakUsers;
   }
 
-  const searchFormProps = {
-    defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
-    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
-  };
-
   const isSearchActive = searchParam && searchParam.length;
 
   return (
@@ -111,7 +106,11 @@ const UserList = (props: UserListTypes): JSX.Element => {
       <Row className="list-view">
         <Col className="main-content" span={24}>
           <div className="main-content__header">
-            <SearchForm {...searchFormProps} size={'middle'} />
+            <SearchForm
+              defaultValue={getQueryParams(props.location)[SEARCH_QUERY_PARAM]}
+              onChange={createChangeHandler(SEARCH_QUERY_PARAM, props)}
+              size={'middle'}
+            />
             <Space style={{ marginBottom: 16, float: 'right' }}>
               <Button
                 type="primary"
