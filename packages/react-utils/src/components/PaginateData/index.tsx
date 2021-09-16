@@ -127,6 +127,7 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
     fetchNextPage: () => fetchPage(currentPage + 1),
     fetchPreviousPage: () => fetchPage(currentPage - 1),
     pagination: {
+      pageSize,
       total: tabledata.total,
       current: currentPage,
       onChange: (page, pagesize) =>
