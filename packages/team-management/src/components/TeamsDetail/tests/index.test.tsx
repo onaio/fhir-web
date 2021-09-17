@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import TeamsDetail, { Props } from '..';
+import TeamsDetail, { TeamsDetailProps } from '..';
 
 describe('components/TeamsDetail', () => {
-  const props: Props = {
+  const props: TeamsDetailProps = {
     active: true,
     id: 1,
     identifier: 'fcc19470-d599-11e9-bb65-2a2ae2dbcce4',
@@ -33,17 +33,28 @@ describe('components/TeamsDetail', () => {
         username: 'prac_2',
       },
     ],
+    assignedLocations: [
+      {
+        id: '1',
+        name: 'test',
+      },
+      {
+        id: '2',
+        name: 'test2',
+      },
+    ],
   };
 
   it('renders without crashing', () => {
     const wrapper = mount(<TeamsDetail {...props} />);
     const content = wrapper.find('div.p-4.bg-white');
     expect(content.find('Button').props()).toMatchSnapshot('close button');
-    expect(content.find('div.mb-4.small')).toHaveLength(4);
+    expect(content.find('div.mb-4.small')).toHaveLength(5);
     expect(wrapper.text()).toMatchSnapshot('team name');
     expect(wrapper.text()).toMatchSnapshot('status');
     expect(wrapper.text()).toMatchSnapshot('identifier');
     expect(wrapper.text()).toMatchSnapshot('team members');
+    expect(wrapper.text()).toMatchSnapshot('Assigned Locations');
   });
 
   it('removes it self on close', () => {
@@ -52,6 +63,7 @@ describe('components/TeamsDetail', () => {
     wrapper.find('button').simulate('click');
     expect(wrapper).toHaveLength(0);
   });
+
   it('doesnt close if onClose prop is not set', () => {
     const wrapper = mount(<TeamsDetail {...props} />);
     expect(wrapper.children()).toHaveLength(1);
@@ -62,5 +74,12 @@ describe('components/TeamsDetail', () => {
   it('show no team members if doesnt have team members', () => {
     const wrapper = mount(<TeamsDetail {...props} teamMembers={[]} />);
     expect(wrapper.find('.no-team-members').text()).toEqual('No team members');
+  });
+
+  it('show no assigned locations if team not assigned to any location', () => {
+    const wrapper = mount(<TeamsDetail {...props} assignedLocations={[]} />);
+    expect(wrapper.find('.no-assigned-locations').text()).toMatchInlineSnapshot(
+      `"This team is not assigned to any Location"`
+    );
   });
 });
