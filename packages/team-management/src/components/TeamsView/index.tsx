@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
+import TeamsDetail from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/react-utils';
@@ -16,12 +16,18 @@ import {
   Organization,
   reducerName,
 } from '../../ducks/organizations';
-import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
+import {
+  TEAMS_GET,
+  TEAM_PRACTITIONERS,
+  URL_ADD_TEAM,
+  ASSIGNED_LOCATIONS_AND_PLANS,
+} from '../../constants';
 import Table from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
+import { RawAssignment } from '@opensrp/team-assignment';
 import lang, { Lang } from '../../lang';
 
 /** Register reducer */
@@ -53,6 +59,37 @@ export const loadSingleTeam = (
     .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
 };
 
+export const populateTeamDetails = (
+  row: Organization,
+  opensrpBaseURL: string,
+  setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
+  setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
+  setAssignedLocations: React.Dispatch<React.SetStateAction<RawAssignment[]>>,
+  langObj: Lang = lang
+): void => {
+  // get team members (practitioners) assigned to the team
+  const getPractitioners = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
+
+  // get locations assigned to the team
+  const getAssignedLocations = new OpenSRPService(
+    TEAMS_GET + ASSIGNED_LOCATIONS_AND_PLANS + row.identifier,
+    opensrpBaseURL
+  );
+
+  Promise.all([
+    getPractitioners.list() as Promise<Practitioner[]>,
+    getAssignedLocations.list() as Promise<RawAssignment[]>,
+  ])
+    .then(([practitioners, RawAssignment]) => {
+      setPractitionersList(practitioners);
+      setAssignedLocations(RawAssignment);
+    })
+    .catch((_: Error) => {
+      sendErrorNotification(langObj.ERROR_OCCURRED);
+    })
+    .finally(() => setDetail(row));
+};
+
 interface Props {
   opensrpBaseURL: string;
 }
@@ -70,8 +107,9 @@ const defaultProps = {
 export const TeamsView: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const teamsArray = useSelector((state) => getOrganizationsArray(state));
-  const [detail, setDetail] = useState<TeamsDetailProps | null>(null);
+  const [detail, setDetail] = useState<Organization | null>(null);
   const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
+  const [RawAssignment, setAssignedLocations] = useState<RawAssignment[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState('');
   const [filter, setfilterData] = useState<Organization[] | null>(null);
@@ -137,12 +175,11 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
           <div className="bg-white">
             <Table
               data={value.length < 1 ? teamsArray : (filter as Organization[])}
-              onViewDetails={loadSingleTeam}
+              onViewDetails={populateTeamDetails}
               opensrpBaseURL={opensrpBaseURL}
-              setPractitionersList={
-                setPractitionersList as (isLoading: string | Practitioner[]) => void
-              }
-              setDetail={setDetail as (isLoading: string | Organization) => void}
+              setPractitionersList={setPractitionersList}
+              setAssignedLocations={setAssignedLocations}
+              setDetail={setDetail}
             />
           </div>
         </Col>
@@ -152,11 +189,10 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
               onClose={() => setDetail(null)}
               {...detail}
               teamMembers={practitionersList}
+              assignedLocations={RawAssignment}
             />
           </Col>
-        ) : (
-          ''
-        )}
+        ) : null}
       </Row>
     </section>
   );
