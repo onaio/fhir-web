@@ -8,15 +8,11 @@ import lang from '../../lang';
 export interface TeamsDetailProps extends Organization {
   onClose?: Function;
   teamMembers: Practitioner[];
-  active: boolean;
-  id: number;
-  identifier: string;
-  name: string;
-  partOf?: number;
+  assignedLocations: AssignedLocations[];
 }
 
 const TeamsDetail = (props: TeamsDetailProps) => {
-  const { name, active, identifier, teamMembers } = props;
+  const { name, active, identifier, teamMembers, assignedLocations } = props;
   return (
     <div className="p-4 bg-white">
       <Button
@@ -46,6 +42,16 @@ const TeamsDetail = (props: TeamsDetailProps) => {
           )
         ) : (
           <p className="no-team-members">{lang.NO_TEAM_MEMBERS}</p>
+        )}
+      </div>
+      <div className="mb-4 small">
+        <p className="mb-0 font-weight-bold">{lang.ASSIGNED_LOCATIONS}</p>
+        {assignedLocations.length ? (
+          assignedLocations.map((location) => (
+            <p key={location.id} className="mb-0">{`${location.name}`}</p>
+          ))
+        ) : (
+          <p className="no-assigned-locations">{lang.NO_ASSIGNED_LOCATIONS}</p>
         )}
       </div>
     </div>
