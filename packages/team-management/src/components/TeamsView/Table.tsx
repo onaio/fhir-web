@@ -5,7 +5,7 @@ import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
-import { RawAssignment } from '@opensrp/team-assignment';
+import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import lang from '../../lang';
 
@@ -14,13 +14,13 @@ export interface Props {
   opensrpBaseURL: string;
   setDetail: React.Dispatch<React.SetStateAction<Organization | null>>;
   setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>;
-  setAssignedLocations: React.Dispatch<React.SetStateAction<RawAssignment[]>>;
+  setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>;
   onViewDetails?: (
     row: Organization,
     opensrpBaseURL: string,
     setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
     setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
-    setAssignedLocations: React.Dispatch<React.SetStateAction<RawAssignment[]>>
+    setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>
   ) => void;
 }
 

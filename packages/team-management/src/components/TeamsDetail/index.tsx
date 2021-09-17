@@ -4,11 +4,12 @@ import { Button } from 'antd';
 import { Organization } from '../../ducks/organizations';
 import { Practitioner } from '../../ducks/practitioners';
 import lang from '../../lang';
+import { OpenSRPJurisdiction } from '@opensrp/location-management';
 
 export interface TeamsDetailProps extends Organization {
   onClose?: Function;
   teamMembers: Practitioner[];
-  assignedLocations: AssignedLocations[];
+  assignedLocations: OpenSRPJurisdiction[];
 }
 
 const TeamsDetail = (props: TeamsDetailProps) => {
@@ -48,7 +49,7 @@ const TeamsDetail = (props: TeamsDetailProps) => {
         <p className="mb-0 font-weight-bold">{lang.ASSIGNED_LOCATIONS}</p>
         {assignedLocations.length ? (
           assignedLocations.map((location) => (
-            <p key={location.id} className="mb-0">{`${location.name}`}</p>
+            <p key={location.id} className="mb-0">{`${location.properties.name}`}</p>
           ))
         ) : (
           <p className="no-assigned-locations">{lang.NO_ASSIGNED_LOCATIONS}</p>
