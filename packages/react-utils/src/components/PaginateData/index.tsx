@@ -12,7 +12,7 @@ interface PaginateData<T, resp = T[]> {
   onSuccess?: (response: PaginatedData<resp>) => void;
   onError?: (error: unknown) => void;
   onSelect?: (response: resp) => T[];
-  queryFn: (currentPage: number, pageSize: number, queryString?: string) => Promise<resp>;
+  queryFn: (currentPage: number, pageSize: number, queryString?: string) => Promise<resp> | resp;
   queryOptions?: UseInfiniteQueryOptions<PaginatedData<resp>>;
   queryid: string;
   currentPage?: number;
