@@ -8,7 +8,7 @@ import { TABLE_PAGE, TABLE_PAGE_SIZE } from '../../constants';
 export type PaginatedData<T> = { data: T; total?: number; queryPram?: Dictionary };
 export type DataDictionary<T> = Dictionary<PaginatedData<T>>;
 
-interface PaginateData<T, resp = T[]> {
+export interface PaginateData<T, resp = T[]> {
   onSuccess?: (response: PaginatedData<resp>) => void;
   onError?: (error: unknown) => void;
   onSelect?: (response: resp) => T[];
