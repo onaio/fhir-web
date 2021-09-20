@@ -35,12 +35,28 @@ describe('components/TeamsDetail', () => {
     ],
     assignedLocations: [
       {
-        id: '1',
-        name: 'test',
+        type: 'Feature',
+        id: 'id-1',
+        properties: {
+          status: 'Active',
+          parentId: 'parent-id-1',
+          name: 'Location 1',
+          geographicLevel: 1,
+          version: 0,
+        },
+        serverVersion: 0,
       },
       {
-        id: '2',
-        name: 'test2',
+        type: 'Feature',
+        id: 'id-2',
+        properties: {
+          status: 'Active',
+          parentId: 'parent-id-2',
+          name: 'Location 2',
+          geographicLevel: 2,
+          version: 0,
+        },
+        serverVersion: 1,
       },
     ],
   };
@@ -80,6 +96,13 @@ describe('components/TeamsDetail', () => {
     const wrapper = mount(<TeamsDetail {...props} assignedLocations={[]} />);
     expect(wrapper.find('.no-assigned-locations').text()).toMatchInlineSnapshot(
       `"This team is not assigned to any Location"`
+    );
+  });
+
+  it('shows assigned locations', () => {
+    const wrapper = mount(<TeamsDetail {...props} />);
+    expect(wrapper.find('div.mb-4.small').at(4).text()).toMatchInlineSnapshot(
+      `"Assigned LocationsLocation 1Location 2"`
     );
   });
 });
