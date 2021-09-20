@@ -71,7 +71,7 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
       const queryString =
         queryPram &&
         Object.entries(queryPram).reduce(
-          (acc, [key, val]) => acc + (val || val === 0 ? `&${key}=${val}` : ''),
+          (acc, [key, val]) => acc + (val !== '' && val !== undefined ? `&${key}=${val}` : ''),
           ''
         );
       const data = await queryFn(pageParam, pageSize, queryString);
