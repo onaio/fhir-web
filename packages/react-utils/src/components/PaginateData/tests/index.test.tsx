@@ -1,6 +1,6 @@
 //* eslint-disable @typescript-eslint/no-explicit-any */
 import { mount } from 'enzyme';
-import React from 'react';
+import React, { useState } from 'react';
 import { PaginateData } from '..';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { act } from 'react-dom/test-utils';
@@ -231,5 +231,60 @@ describe('components/PaginateData', () => {
     });
 
     expect(mockqueryfn).toHaveBeenLastCalledWith(2, 5, undefined);
+  });
+
+  it('page reset to 1 after query changes', async () => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const mockqueryfn = jest.fn((page: number, pagesize: number) => {
+      const start = (page - 1) * pagesize;
+      const resp = data.slice(start, start + pagesize);
+      return Promise.resolve(resp);
+    });
+
+    const MockView: React.FC = () => {
+      const [inputVal, setInputVal] = useState('');
+      return (
+        <div>
+          <input type="text" onChange={({ target: { value } }) => setInputVal(value)} />
+          <PaginateData
+            queryFn={mockqueryfn}
+            currentPage={2}
+            queryid="id"
+            queryPram={{ searchPram: inputVal }}
+          >
+            {(data) => <MockComponent {...data} />}
+          </PaginateData>
+        </div>
+      );
+    };
+
+    const wrapper = mount(
+      <QueryClientProvider client={queryClient}>
+        <MockView />
+      </QueryClientProvider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    wrapper.find('#page-3').simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    wrapper.find('input').simulate('change', { target: { value: 'testname' } });
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(mockqueryfn).nthCalledWith(1, 2, 5, '');
+    expect(mockqueryfn).nthCalledWith(2, 3, 5, '');
+    expect(mockqueryfn).nthCalledWith(3, 1, 5, '&searchPram=testname');
   });
 });
