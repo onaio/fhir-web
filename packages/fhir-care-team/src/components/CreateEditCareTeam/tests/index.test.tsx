@@ -5,14 +5,15 @@ import { history } from '@onaio/connected-reducer-registry';
 import { Router } from 'react-router';
 import * as reactQuery from 'react-query';
 import * as fixtures from './fixtures';
-import * as fhirCient from 'fhirclient';
 import flushPromises from 'flush-promises';
 import { createTestQueryClient } from '../../ListView/tests/utils';
 import * as notifications from '@opensrp/notifications';
 import { defaultInitialValues, CreateEditCareTeam } from '..';
-import toJson from 'enzyme-to-json';
 import lang from '../../../lang';
-import * as indexFunctions from '../';
+import { Dictionary } from '@onaio/utils';
+import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
+import { getPatientName } from '../utils';
+import * as functions from '..';
 
 const { QueryClientProvider } = reactQuery;
 
@@ -61,14 +62,20 @@ describe('components/CreateEditCareTeam', () => {
   });
 
   it('renders correctly', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValueOnce(fixtures.careTeam1),
-        };
-      })
-    );
+    // mock react query return value
+    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.careTeam1,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.groups,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.practitionerBundle,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
 
     const wrapper = mount(
       <Router history={history}>
@@ -78,13 +85,10 @@ describe('components/CreateEditCareTeam', () => {
       </Router>
     );
 
-    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
-
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-
-    wrapper.update();
 
     const row = wrapper.find('Row').at(0);
 
@@ -112,14 +116,20 @@ describe('components/CreateEditCareTeam', () => {
       resourcePageSize: 500,
     };
 
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValueOnce(fixtures.careTeam1),
-        };
-      })
-    );
+    // mock react query return value
+    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
+    reactQueryMock.mockReturnValueOnce({
+      data: undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.groups,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.practitionerBundle,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
 
     const wrapper = mount(
       <Router history={history}>
@@ -131,9 +141,8 @@ describe('components/CreateEditCareTeam', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-
-    wrapper.update();
 
     const row = wrapper.find('Row').at(0);
 
@@ -143,14 +152,21 @@ describe('components/CreateEditCareTeam', () => {
   });
 
   it('fetches care team if page is refreshed', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValue(fixtures.careTeam1),
-        };
-      })
-    );
+    // mock react query return value
+    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.careTeam1,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.groups,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.practitionerBundle,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={testQueryClient}>
@@ -161,12 +177,10 @@ describe('components/CreateEditCareTeam', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
 
-    wrapper.update();
-
     // check if form initial values are set
-
     expect(wrapper.find('CareTeamForm').props().initialValues).toEqual({
       groupsId: '306',
       id: '308',
@@ -182,14 +196,8 @@ describe('components/CreateEditCareTeam', () => {
   it('handles error if fetch fails when page reloads', async () => {
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockRejectedValue('Failed'),
-        };
-      })
-    );
+    const mockFetchFailure = jest.spyOn(functions, 'fetchPractitionersRecursively');
+    mockFetchFailure.mockRejectedValueOnce('rejected');
 
     const wrapper = mount(
       <Router history={history}>
@@ -209,19 +217,32 @@ describe('components/CreateEditCareTeam', () => {
   });
 
   it('does not show inactive practitioners', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValueOnce(fixtures.careTeam1),
-        };
-      })
+    // mock react query return value
+    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.careTeam1,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.groups,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    reactQueryMock.mockReturnValueOnce({
+      data: fixtures.practitionerBundle,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    // get list of all inactive practitioners
+    const inactivePractitioners = fixtures.practitionerBundle.flatMap((e: Dictionary) =>
+      (e.resource as Practitioner).active === false ? [getPatientName(e.resource)] : []
     );
 
-    // mock practitioners fetch function
-    jest
-      .spyOn(indexFunctions, 'fetchPractitionersRecursively')
-      .mockResolvedValue(fixtures.practitionerBundle);
+    expect(inactivePractitioners).toStrictEqual([
+      'Allay Allan',
+      'brian krebs',
+      'marcus brownlee',
+      'julian assange',
+    ]);
 
     const wrapper = mount(
       <Router history={history}>
@@ -252,7 +273,22 @@ describe('components/CreateEditCareTeam', () => {
     // find antd select options
     const selectOptions = practitionersSelect2.find('.ant-select-item-option-content');
 
-    // expect all practitioner options
-    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([]);
+    // expect all practitioners (except inactive ones)
+    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([
+      'Ward N Williams MD',
+      'Ward N Williams MD',
+      'Ward N Williams MD',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+    ]);
+
+    wrapper.unmount();
   });
 });
