@@ -58,7 +58,7 @@ export const populateTeamDetails = (
 
   // get raw team assignments (list of jurisdiction and organization id's)
   const getRawTeamAssignments = new OpenSRPService(
-    TEAMS_GET + ASSIGNED_LOCATIONS_AND_PLANS + row.identifier,
+    `${TEAMS_GET}${ASSIGNED_LOCATIONS_AND_PLANS}${row.identifier}`,
     opensrpBaseURL
   );
 
