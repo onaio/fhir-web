@@ -5,7 +5,7 @@ import { UseInfiniteQueryOptions } from 'react-query/react';
 import { TableProps } from '../TableLayout';
 import { TABLE_PAGE, TABLE_PAGE_SIZE } from '../../constants';
 
-export type PaginatedData<T> = { data: T; total?: number; queryPram?: Dictionary };
+export type PaginatedData<T> = { data: T; total?: number };
 export type DataDictionary<T> = Dictionary<PaginatedData<T>>;
 
 export interface PaginateData<T, resp = T[]> {
@@ -43,26 +43,18 @@ export interface PaginateData<T, resp = T[]> {
 export function PaginateData<T extends object = Dictionary, Resp = T[]>(
   props: PaginateData<T, Resp>
 ) {
-  const {
-    total,
-    onError,
-    queryFn,
-    queryid,
-    onSuccess,
-    onSelect,
-    children,
-    queryOptions,
-    queryPram,
-  } = props;
+  const { total, onError, queryFn, queryid, onSuccess, onSelect, children, queryOptions } = props;
 
-  const [{ currentPage, pageSize, prevdata }, setProps] = useState<{
+  const [{ currentPage, pageSize, prevdata, queryPram }, setProps] = useState<{
     currentPage: number;
     pageSize: number;
     prevdata: PaginatedData<Resp>;
+    queryPram?: Dictionary;
   }>({
     currentPage: props.currentPage ?? TABLE_PAGE,
     pageSize: props.pageSize ?? TABLE_PAGE_SIZE,
-    prevdata: { data: ([] as unknown) as Resp, total: undefined, queryPram: props.queryPram },
+    prevdata: { data: ([] as unknown) as Resp, total: undefined },
+    queryPram: props.queryPram,
   });
 
   const query = useInfiniteQuery(
@@ -77,7 +69,7 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
       const data = await queryFn(pageParam, pageSize, queryString);
       const totalval =
         typeof total === 'function' ? await total(data, currentPage, pageSize, queryString) : total;
-      return { data, total: totalval, queryPram };
+      return { data, total: totalval };
     },
     {
       onSuccess: (resp) => onSuccess?.(convertToDataRecord(resp)[currentPage]) ?? undefined,
@@ -111,9 +103,10 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
   );
 
   useEffect(() => {
-    if (queryPram) setProps((prev) => ({ ...prev, currentPage: 1 }));
+    if (queryPram !== props.queryPram)
+      setProps((prev) => ({ ...prev, currentPage: 1, queryPram: props.queryPram }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(queryPram)]);
+  }, [JSON.stringify(props.queryPram)]);
 
   useEffect(() => {
     if (data[currentPage] === undefined) fetchPage();
@@ -134,7 +127,12 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
       total: tabledata.total,
       current: currentPage,
       onChange: (page, pagesize) =>
-        setProps({ currentPage: page, pageSize: pagesize ?? pageSize, prevdata: tabledata }),
+        setProps((prev) => ({
+          ...prev,
+          currentPage: page,
+          pageSize: pagesize ?? pageSize,
+          prevdata: tabledata,
+        })),
     },
   });
 }
