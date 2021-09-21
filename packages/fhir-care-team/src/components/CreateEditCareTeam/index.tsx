@@ -17,6 +17,7 @@ import { IfhirR4 } from '@smile-cdr/fhirts';
 import { CareTeamForm, FormFields } from './Form';
 import { getPatientName } from './utils';
 import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
+import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
 
 // Interface for route params
 interface RouteParams {
@@ -129,13 +130,18 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
   const careTeamFormProps = {
     fhirBaseURL,
     initialValues: buildInitialValues,
+    // filter for only active practitioners
     practitioners:
-      fhirPractitioners.data?.map((e: Dictionary) => {
-        return {
-          id: e.resource.id,
-          name: getPatientName(e.resource),
-        };
-      }) ?? [],
+      fhirPractitioners.data?.flatMap((e: Dictionary) =>
+        (e.resource as Practitioner).active
+          ? [
+              {
+                id: e.resource.id,
+                name: getPatientName(e.resource),
+              },
+            ]
+          : []
+      ) ?? [],
     groups:
       fhirGroups.data?.entry?.map((e: Dictionary) => ({
         id: e.resource?.id,
