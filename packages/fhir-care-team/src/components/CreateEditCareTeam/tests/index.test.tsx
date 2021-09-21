@@ -12,6 +12,7 @@ import * as notifications from '@opensrp/notifications';
 import { defaultInitialValues, CreateEditCareTeam } from '..';
 import toJson from 'enzyme-to-json';
 import lang from '../../../lang';
+import * as indexFunctions from '../';
 
 const { QueryClientProvider } = reactQuery;
 
@@ -40,6 +41,7 @@ describe('components/CreateEditCareTeam', () => {
       path: `/CareTeam/edit/:careTeamId`,
       url: `/CareTeam/edit/${fixtures.careTeam1.id}`,
     },
+    resourcePageSize: 500,
   };
 
   beforeEach(() => {
@@ -107,6 +109,7 @@ describe('components/CreateEditCareTeam', () => {
         path: `/CareTeam/new`,
         url: `/CareTeam/new`,
       },
+      resourcePageSize: 500,
     };
 
     const fhir = jest.spyOn(fhirCient, 'client');
@@ -203,5 +206,53 @@ describe('components/CreateEditCareTeam', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
     wrapper.unmount();
+  });
+
+  it('does not show inactive practitioners', async () => {
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockResolvedValueOnce(fixtures.careTeam1),
+        };
+      })
+    );
+
+    // mock practitioners fetch function
+    jest
+      .spyOn(indexFunctions, 'fetchPractitionersRecursively')
+      .mockResolvedValue(fixtures.practitionerBundle);
+
+    const wrapper = mount(
+      <Router history={history}>
+        <QueryClientProvider client={testQueryClient}>
+          <CreateEditCareTeam {...props} />
+        </QueryClientProvider>
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find antd Select with id 'practitionersId' in the component
+    const practitionersSelect = wrapper.find('CareTeamForm').find('Select#practitionersId');
+
+    // simulate click on select - to show dropdown items
+    practitionersSelect.find('.ant-select-selector').simulate('mousedown');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // expect to see all options (practitioners)
+    const practitionersSelect2 = wrapper.find('CareTeamForm').find('Select#practitionersId');
+    // find antd select options
+    const selectOptions = practitionersSelect2.find('.ant-select-item-option-content');
+
+    // expect all practitioner options
+    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([]);
   });
 });
