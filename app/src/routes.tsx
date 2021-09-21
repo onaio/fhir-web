@@ -35,6 +35,7 @@ import {
   URL_DOWNLOAD_CLIENT_DATA,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_ADMIN,
 } from './constants';
 import lang, { TFunction } from './lang';
 
@@ -117,35 +118,53 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
     },
     {
       otherProps: { icon: <DashboardOutlined /> },
-      title: langObj.ADMIN,
-      key: 'admin',
+      title: langObj.ADMINISTRATION,
+      key: 'administration',
       enabled: true,
-      url: '/admin',
+      url: URL_ADMIN,
       children: [
         {
-          title: langObj.USERS,
-          key: 'users',
+          title: langObj.USER_MANAGEMENT,
+          key: 'user-management',
           enabled: roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
           children: [
-            { title: langObj.USER_MANAGEMENT, key: 'user', url: URL_USER },
+            { title: langObj.USERS, key: 'users', url: URL_USER },
             { title: langObj.USER_GROUPS, key: 'user-groups', url: URL_USER_GROUPS },
             { title: langObj.USER_ROLES, key: 'user-roles', url: URL_USER_ROLES },
           ],
         },
         {
-          title: langObj.LOCATIONS,
-          key: 'location',
+          title: langObj.LOCATION_MANAGEMENT,
+          key: 'location-management',
           enabled:
             ENABLE_LOCATIONS &&
             roles &&
             activeRoles.LOCATIONS &&
             isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
           children: [
-            { title: langObj.LOCATION_UNIT, url: URL_LOCATION_UNIT, key: 'location-unit' },
+            { title: langObj.LOCATION_UNITS, url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
               title: langObj.LOCATION_UNIT_GROUP,
               url: URL_LOCATION_UNIT_GROUP,
               key: 'location-group',
+            },
+          ],
+        },
+        {
+          title: langObj.TEAM_MANAGEMENT,
+          key: 'team-management',
+          enabled:
+            ENABLE_TEAMS &&
+            roles &&
+            activeRoles.TEAMS &&
+            isAuthorized(roles, activeRoles.TEAMS.split(',')),
+          children: [
+            { title: langObj.TEAMS, url: URL_TEAMS, key: 'TEAMS' },
+            {
+              title: langObj.TEAM_ASSIGNMENT,
+              url: URL_TEAM_ASSIGNMENT,
+              key: 'team-assignment',
+              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
         },
@@ -159,24 +178,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
           url: CATALOGUE_LIST_VIEW_URL,
         },
-        {
-          title: langObj.TEAMS,
-          key: 'teams',
-          enabled:
-            ENABLE_TEAMS &&
-            roles &&
-            activeRoles.TEAMS &&
-            isAuthorized(roles, activeRoles.TEAMS.split(',')),
-          children: [
-            { title: langObj.TEAMS, url: URL_TEAMS, key: 'teams-list' },
-            {
-              title: langObj.TEAM_ASSIGNMENT,
-              url: URL_TEAM_ASSIGNMENT,
-              key: 'team-assignment',
-              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
-            },
-          ],
-        },
+
         {
           title: langObj.FORM_CONFIGURATION,
           key: 'form-config',
