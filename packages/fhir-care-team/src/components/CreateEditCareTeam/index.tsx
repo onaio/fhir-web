@@ -63,7 +63,7 @@ export const fetchPractitionersRecursively = async (
       );
       allData.push(...(data.entry as BundleEntry[]));
       if (data.entry) {
-        offsetStart = (offsetStart + data.entry.length) as number;
+        offsetStart = offsetStart + (data.entry.length as number);
       }
     } while (offsetStart < careTeamsCount);
   }
