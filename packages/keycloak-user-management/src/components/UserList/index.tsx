@@ -95,11 +95,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       max: pageSize ?? usersPageSize,
     };
     if (searchParam) {
-      filterParams = {
-        ...filterParams,
-        first: 0,
-        search: searchParam,
-      };
+      filterParams = { search: searchParam };
     }
     const usersCountService = new serviceClass(`${KEYCLOAK_URL_USERS_COUNT}`, keycloakBaseURL);
     const usersCountPromise = usersCountService.list().then((res: number) => {
