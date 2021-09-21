@@ -231,7 +231,7 @@ describe('components/UserList', () => {
         },
       ],
       [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?first=0&max=20&search=opensrp',
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?search=opensrp',
         {
           headers: {
             accept: 'application/json',
