@@ -230,6 +230,7 @@ describe('components/Antd/DraftFileList', () => {
         isDraft: false,
         isJsonValidator: false,
         jursdiction: '',
+        key: 0,
         label: 'test publish',
         module: '',
         version: '1.0.27',
