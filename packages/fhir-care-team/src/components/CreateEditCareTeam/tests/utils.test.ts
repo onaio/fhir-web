@@ -1,4 +1,4 @@
-import { submitForm } from '../utils';
+import { getPatientName, submitForm } from '../utils';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import * as fhirCient from 'fhirclient';
@@ -19,6 +19,16 @@ jest.mock('uuid', () => {
 });
 
 describe('forms/utils/submitForm', () => {
+  const practitioners = fixtures.practitioners.entry.map((prac) => ({
+    name: getPatientName(prac.resource),
+    id: prac.resource.id,
+  }));
+
+  const groups = fixtures.groups.entry.map((group) => ({
+    name: group.resource.name,
+    id: group.resource.id,
+  }));
+
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -39,7 +49,7 @@ describe('forms/utils/submitForm', () => {
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, '', '').catch(jest.fn());
+    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, '', '').catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -61,7 +71,9 @@ describe('forms/utils/submitForm', () => {
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, '', '').catch(mockErrorCallback);
+    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, '', '').catch(
+      mockErrorCallback
+    );
 
     await act(async () => {
       await flushPromises();
@@ -82,7 +94,7 @@ describe('forms/utils/submitForm', () => {
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, '308', id).catch(jest.fn());
+    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, '308', id).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -105,7 +117,7 @@ describe('forms/utils/submitForm', () => {
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, '', '').catch(jest.fn());
+    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, '', '').catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -126,7 +138,7 @@ describe('forms/utils/submitForm', () => {
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, '308', id).catch(jest.fn());
+    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, '308', id).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();

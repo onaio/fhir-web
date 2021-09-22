@@ -30,6 +30,7 @@ import {
   PAGINATION_SIZE,
   FHIR_PATIENT_SORT_FIELDS,
   FHIR_PATIENT_BUNDLE_SIZE,
+  FHIR_RESOURCES_PAGE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -171,4 +172,8 @@ export const groupProps = {
 export const patientProps = {
   sortFields: FHIR_PATIENT_SORT_FIELDS,
   patientBundleSize: FHIR_PATIENT_BUNDLE_SIZE,
+};
+
+export const careTeamProps = {
+  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
 };

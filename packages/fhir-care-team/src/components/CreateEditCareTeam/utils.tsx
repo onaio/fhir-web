@@ -1,43 +1,51 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import FHIR from 'fhirclient';
+import { FHIRService } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import lang from '../../lang';
-import { URL_CARE_TEAM } from '../../constants';
+import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { FormFields } from './Form';
+import { Fields, FormFields } from './Form';
 
 export const submitForm = async (
   values: FormFields,
   fhirBaseURL: string,
+  groups: Fields[],
+  practitioners: Fields[],
   id?: string,
   uuid?: string
 ): Promise<void> => {
+  const singleGroup = groups.find((group) => group.id === values.groupsId);
   const careTeamId = uuid ? uuid : v4();
   const payload: Omit<IfhirR4.ICareTeam, 'meta'> = {
-    resourceType: 'CareTeam',
+    resourceType: FHIR_CARE_TEAM,
     identifier: [
       {
         use: 'official',
-        value: careTeamId,
+        value: careTeamId, // uuid
       },
     ],
-    id: id,
+    id: id, // human readable id
     name: values.name,
     status: values.status as IfhirR4.CareTeam.StatusEnum,
-    subject: {
-      reference: `Group/${values.groupsId}`,
-    },
-    participant: values.practitionersId?.map((id) => {
-      return {
-        member: {
-          reference: `Practitioner/${id}`,
-        },
-      };
-    }),
+    subject: values.groupsId
+      ? {
+          reference: `Group/${values.groupsId}`,
+          display: singleGroup?.name,
+        }
+      : undefined,
+    participant:
+      values.practitionersId?.map((id) => {
+        return {
+          member: {
+            reference: `Practitioner/${id}`,
+            display: practitioners.find((practitioner) => practitioner.id === id)?.name,
+          },
+        };
+      }) ?? [],
   };
-  const serve = FHIR.client(fhirBaseURL);
+  const serve = await FHIRService(fhirBaseURL);
   if (id) {
     await serve
       .update(payload)

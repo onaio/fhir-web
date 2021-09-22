@@ -16,6 +16,12 @@ function fill() {
   // Messages
   lang.CARE_TEAMS_UPDATE_SUCCESS = i18n.t(`Successfully Updated Care Teams`, { ns: namespace });
   lang.CARE_TEAMS_ADD_SUCCESS = i18n.t(`Successfully Added Care Teams`, { ns: namespace });
+  lang.CARE_TEAM_DELETE_SUCCESS = i18n.t(`Successfully Deleted Care Team`, { ns: namespace });
+  lang.CONFIRM_DELETE = i18n.t(`Are you sure you want to delete this Care Team?`, {
+    ns: namespace,
+  });
+  lang.YES = i18n.t(`Yes`, { ns: namespace });
+  lang.NO = i18n.t(`No`, { ns: namespace });
 
   // Rendered text
   lang.STATUS = i18n.t(`Status`, { ns: namespace });

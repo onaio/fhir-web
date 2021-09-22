@@ -262,3 +262,8 @@ Below is a list of currently supported environment variables:
   - Default FHIR patient resource bundle size
   - **Optional**(`strng`)
   - default: 5000
+
+- **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
+  - Default FHIR resource page count
+  - **Required**
+  - default: 500

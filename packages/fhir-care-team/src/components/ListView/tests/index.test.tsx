@@ -1,13 +1,15 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { CareTeamList, useCareTeamsHook } from '..';
+import { CareTeamList, deleteCareTeam, useCareTeamsHook } from '..';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
+import nock from 'nock';
 import flushPromises from 'flush-promises';
 import * as reactQuery from 'react-query';
 import { renderHook } from '@testing-library/react-hooks';
 import { waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
+import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
 import { careTeams } from './fixtures';
 import { mount, shallow } from 'enzyme';
@@ -15,6 +17,7 @@ import * as fhirCient from 'fhirclient';
 import toJson from 'enzyme-to-json';
 import { URL_CARE_TEAM } from '../../../constants';
 import { createWrapper, renderWithClient } from './utils';
+import Client from 'fhirclient/lib/Client';
 
 const { QueryClient, QueryClientProvider } = reactQuery;
 
@@ -29,6 +32,7 @@ const history = createBrowserHistory();
 
 const careTeamProps = {
   history,
+  careTeamPageSize: 5,
   location: {
     hash: '',
     pathname: `${URL_CARE_TEAM}`,
@@ -37,13 +41,17 @@ const careTeamProps = {
   },
   match: {
     isExact: true,
-    params: { careTeamId: '' },
+    params: { careTeamId: undefined },
     path: `${URL_CARE_TEAM}`,
     url: `${URL_CARE_TEAM}`,
   },
 };
 
 describe('Patients list view', () => {
+  beforeAll(() => {
+    nock('https://r4.smarthealthit.org').get('/CareTeam').reply(200, careTeams);
+  });
+
   afterEach(() => {
     jest.resetAllMocks();
     jest.clearAllMocks();
@@ -61,11 +69,24 @@ describe('Patients list view', () => {
   });
 
   it('renders correctly', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = new Client({} as any, {
+      serverUrl: 'https://r4.smarthealthit.org/',
+    });
+
+    const result = await client.request({
+      includeResponse: true,
+      url: 'CareTeam',
+    });
+
+    // expect(result.body).toEqual('');
+
     const fhir = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest.fn();
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValueOnce(careTeams),
+          request: requestMock.mockResolvedValue(result.body),
         };
       })
     );
@@ -78,6 +99,7 @@ describe('Patients list view', () => {
         </Router>
       </Provider>
     );
+
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
@@ -85,6 +107,7 @@ describe('Patients list view', () => {
       wrapper.update();
     });
 
+    expect(requestMock.mock.calls).toEqual([['CareTeam/_search?_count=5&_getpagesoffset=0']]);
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     expect(wrapper.text()).toMatchSnapshot();
 
@@ -116,6 +139,15 @@ describe('Patients list view', () => {
     // cancel sort
     // click on sort to change the order (descending)
     wrapper.find('thead tr th').first().simulate('click');
+
+    // look for pagination
+    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"125 / pageGo to"`);
+    wrapper.find('.ant-pagination-item-2').simulate('click');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.text()).toMatchSnapshot();
 
     wrapper.unmount();
   });
@@ -168,6 +200,73 @@ describe('Patients list view', () => {
     );
     await waitFor(() => result.getByText(/Care Team One/));
   });
+
+  it('successfully deletes care team', async () => {
+    const fhir = jest.spyOn(fhirCient, 'client');
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockResolvedValueOnce(careTeams),
+          delete: jest.fn().mockResolvedValue('Success'),
+        };
+      })
+    );
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+    wrapper.find('.more-options').at(0).simulate('click');
+    wrapper.update();
+    wrapper.find('Button').at(2).simulate('click');
+    expect(wrapper.find('Button').at(2).text()).toEqual('Delete');
+    wrapper.update();
+    // check pop up text
+    expect(wrapper.find('.ant-popover-content').at(0).text()).toMatchInlineSnapshot(
+      `"Are you sure you want to delete this Care Team?NoYes"`
+    );
+    const popconfirm = wrapper.find('.ant-popover-content').at(0);
+    popconfirm.find('Button').at(1).simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+
+    expect(notificationSuccessMock.mock.calls).toEqual([['Successfully Deleted Care Team']]);
+  });
+
+  it('handles failed care team deletion', async () => {
+    const notificationErrorsMock = jest.spyOn(notifications, 'sendErrorNotification');
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          delete: jest.fn().mockRejectedValue('Failed'),
+        };
+      })
+    );
+    await deleteCareTeam('https://r4.smarthealthit.org/', '308');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(notificationErrorsMock.mock.calls).toEqual([['An error occurred']]);
+  });
 });
 
 describe('hooks', () => {
@@ -178,7 +277,7 @@ describe('hooks', () => {
     jest.resetModules();
   });
 
-  it('successful query hook', async () => {
+  it('successful fetchCareTeams query hook', async () => {
     const fhir = jest.spyOn(fhirCient, 'client');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
@@ -188,7 +287,7 @@ describe('hooks', () => {
       })
     );
     const { result, waitFor } = renderHook(
-      () => useCareTeamsHook('https://r4.smarthealthit.org/'),
+      () => useCareTeamsHook('https://r4.smarthealthit.org/', 20, 0, jest.fn()),
       {
         wrapper: createWrapper(),
       }
@@ -209,6 +308,7 @@ describe('hooks', () => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any)
     );
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -218,6 +318,7 @@ describe('hooks', () => {
         </Router>
       </Provider>
     );
+
     await act(async () => {
       await flushPromises();
     });
