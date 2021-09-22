@@ -358,4 +358,62 @@ describe('components/UserList', () => {
     );
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
+
+  it('sorting works', async () => {
+    fetch.once(JSON.stringify(4));
+    fetch.once(JSON.stringify(keycloakUsersArray));
+    const props = {
+      ...locationProps,
+      extraData: {
+        user_id: fixtures.keycloakUser.id,
+      },
+      fetchKeycloakUsersCreator: fetchKeycloakUsers,
+      removeKeycloakUsersCreator: removeKeycloakUsers,
+      serviceClass: KeycloakService,
+      keycloakBaseURL:
+        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      usersPageSize: 20,
+    };
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <Router history={history}>
+          <ConnectedUserList {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // get ordered tr keys
+    const rowKeys = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
+    expect(rowKeys).toMatchObject([
+      '97f36061-52fb-4474-88f2-fd286311ff1d',
+      '80385001-f385-42ec-8edf-8591dc181a54',
+      '520b579e-70e9-4ae9-b1f8-0775c605b8d2',
+      'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    ]);
+
+    // trigger sort on second column (first name)
+    const sorter = wrapper.find('th.ant-table-column-has-sorters').at(1);
+    sorter.simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // get newly ordered tr keys
+    const rowKeys2 = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
+    expect(rowKeys2).toMatchObject([
+      '80385001-f385-42ec-8edf-8591dc181a54',
+      '520b579e-70e9-4ae9-b1f8-0775c605b8d2',
+      'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+      '97f36061-52fb-4474-88f2-fd286311ff1d',
+    ]);
+
+    wrapper.unmount();
+  });
 });

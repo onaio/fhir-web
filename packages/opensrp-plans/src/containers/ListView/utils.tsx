@@ -2,7 +2,7 @@ import React from 'react';
 import { Spin, Alert } from 'antd';
 import { TableColumnsNamespace, URL_MISSIONS } from '../../constants';
 import { Link } from 'react-router-dom';
-import { PlanDefinition } from '@opensrp/plan-form-core';
+import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import moment from 'moment';
 import { Dictionary } from '@onaio/utils';
 import lang from '../../lang';
@@ -84,14 +84,18 @@ export const PlansLoading = () => {
  * @param langObj - dictionary representing lang object
  */
 export const pageTitleBuilder = (
-  status?: string,
+  status?: PlanStatus,
   appendMissions = true,
   langObj: Dictionary<string> = lang
 ) => {
+  const stringByStatus = {
+    [PlanStatus.DRAFT]: langObj.DRAFT,
+    [PlanStatus.RETIRED]: langObj.RETIRED,
+    [PlanStatus.ACTIVE]: langObj.ACTIVE,
+    [PlanStatus.COMPLETE]: langObj.COMPLETE,
+  };
   if (status) {
-    return `${status.charAt(0).toUpperCase()}${status.slice(1)}${
-      appendMissions ? ` ${langObj.MISSIONS}` : ''
-    }`;
+    return `${stringByStatus[status]}${appendMissions ? ` ${langObj.MISSIONS}` : ''}`;
   }
   return '';
 };

@@ -12,6 +12,7 @@ import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { getColumns, pageTitleBuilder } from '../utils';
 import lang from '../../../lang';
+import { PlanStatus } from '@opensrp/plan-form-core';
 
 const columns = getColumns(lang);
 
@@ -343,9 +344,9 @@ describe('List view Page', () => {
 
   // test pageTitleBuilder
 
-  expect(pageTitleBuilder('active')).toEqual('Active Missions');
-  expect(pageTitleBuilder('draft')).toEqual('Draft Missions');
-  expect(pageTitleBuilder('complete')).toEqual('Complete Missions');
-  expect(pageTitleBuilder('retired')).toEqual('Retired Missions');
+  expect(pageTitleBuilder(PlanStatus.ACTIVE)).toEqual('Active Missions');
+  expect(pageTitleBuilder(PlanStatus.DRAFT)).toEqual('Draft Missions');
+  expect(pageTitleBuilder(PlanStatus.COMPLETE)).toEqual('Complete Missions');
+  expect(pageTitleBuilder(PlanStatus.RETIRED)).toEqual('Retired Missions');
   expect(pageTitleBuilder()).toEqual('');
 });

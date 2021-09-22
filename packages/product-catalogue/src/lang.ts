@@ -55,6 +55,7 @@ function fill() {
   });
   lang.SUBMIT = i18n.t(`Submit`, { ns: namespace });
   lang.VIEW_DETAILS = i18n.t(`View details`, { ns: namespace });
+  lang.UPLOAD = i18n.t(`Upload`, { ns: namespace });
 
   // Errors
   lang.ERROR_IMAGE_LOAD = i18n.t(`Image could not be loaded`, { ns: namespace });
