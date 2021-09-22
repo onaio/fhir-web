@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { FHIRService } from '@opensrp/react-utils';
 import { Col, Row, Spin } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import FHIR from 'fhirclient';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { UserForm, FormFields } from '../forms/UserForm';
 import { ROUTE_PARAM_USER_ID, KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS } from '../../constants';
@@ -73,6 +73,20 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
 
+  const fetchPractitioner = useCallback(async () => {
+    const serve = await FHIRService(fhirBaseURL);
+    await serve.request(`Practitioner?identifier=${userId}`).then((response: fhirR4.Bundle) => {
+      const getPractitionerEntry = (response.entry as fhirR4.BundleEntry[])[0];
+      const getPractitionerResource = getPractitionerEntry.resource as fhirR4.Practitioner;
+      setInitialValues((prevState) => ({
+        ...prevState,
+        active: getPractitionerResource.active,
+        practitioner: getPractitionerResource,
+      }));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
   useEffect(() => {
     if (keycloakUser) {
       /** only update the object diff */
@@ -138,22 +152,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   useEffect(() => {
     if (userId) {
       setPractitionerLoading(true);
-      const serve = FHIR.client(fhirBaseURL);
-      serve
-        .request(`Practitioner?identifier=${userId}`)
-        .then((response: fhirR4.Bundle) => {
-          const getPractitionerEntry = (response.entry as fhirR4.BundleEntry[])[0];
-          const getPractitionerResource = getPractitionerEntry.resource as fhirR4.Practitioner;
-          setInitialValues((prevState) => ({
-            ...prevState,
-            active: getPractitionerResource.active,
-            practitioner: getPractitionerResource,
-          }));
-        })
+      fetchPractitioner()
         .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
         .finally(() => setPractitionerLoading(false));
     }
-  }, [userId, fhirBaseURL]);
+  }, [userId, fhirBaseURL, fetchPractitioner]);
 
   if (
     userGroupsLoading ||
