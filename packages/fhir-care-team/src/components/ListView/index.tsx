@@ -16,9 +16,9 @@ import {
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import FHIR from 'fhirclient';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { useQuery } from 'react-query';
+import { FHIRService } from '@opensrp/react-utils';
 import { createChangeHandler, getQueryParams, SearchForm, BrokenPage } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
@@ -68,7 +68,8 @@ export const fetchCareTeams = async (
   pageOffset: number,
   setPayloadCount: (count: number) => void
 ): Promise<IfhirR4.IBundle> => {
-  return await FHIR.client(fhirBaseURL)
+  const serve = await FHIRService(fhirBaseURL);
+  return serve
     .request(`${FHIR_CARE_TEAM}/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}`)
     .then((res: IfhirR4.IBundle) => {
       setPayloadCount(res.total as number);
@@ -77,7 +78,8 @@ export const fetchCareTeams = async (
 };
 
 export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<void> => {
-  return await FHIR.client(fhirBaseURL)
+  const serve = await FHIRService(fhirBaseURL);
+  return serve
     .delete(`${FHIR_CARE_TEAM}/${id}`)
     .then(() => sendSuccessNotification(lang.CARE_TEAM_DELETE_SUCCESS))
     .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
