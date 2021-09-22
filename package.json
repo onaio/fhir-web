@@ -10,8 +10,7 @@
     "lerna:publish": "yarn install && yarn run lerna:prepublish && lerna publish from-package --ignore-scripts --ignore-prepublish",
     "test": "TZ='UTC' jest",
     "test:watch": "TZ='UTC' jest --watch",
-    "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0",
-    "lint-snap": "eslint {packages,app}/**/*.snap"
+    "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0"
   },
   "jest": {
     "setupFiles": [
