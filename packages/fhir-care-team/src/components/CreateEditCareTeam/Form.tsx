@@ -59,6 +59,14 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     { label: 'Inactive', value: 'inactive' },
   ];
 
+  interface Option {
+    children: string;
+  }
+
+  // search for occurrence of substring (search term) in select options
+  const filterFunction = (input: string, option: unknown): boolean =>
+    (option as Option).children.toLocaleLowerCase().includes(input.toLocaleLowerCase());
+
   return (
     <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
@@ -110,7 +118,14 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             label={lang.PARTICIPANTS}
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
-            <Select placeholder={lang.PARTICIPANTS} allowClear mode="multiple">
+            <Select
+              placeholder={lang.PARTICIPANTS}
+              allowClear
+              mode="multiple"
+              showSearch
+              optionFilterProp="children"
+              filterOption={filterFunction}
+            >
               {props.practitioners.map((practitioner: Fields) => (
                 <Select.Option key={practitioner.id} value={practitioner.id}>
                   {practitioner.name}
