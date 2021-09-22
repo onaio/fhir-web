@@ -7,12 +7,12 @@ import {
 } from '@opensrp/pkg-config';
 import {
   BACKEND_ACTIVE,
-  DEFAULTS_TABLE_PAGE_SIZE,
   KEYCLOAK_API_BASE_URL,
   LANGUAGE_CODE,
   OPENSRP_API_BASE_URL,
   PROJECT_LANGUAGE_CODE,
   FHIR_API_BASE_URL,
+  DEFAULTS_TABLE_PAGE_SIZE,
 } from './configs/env';
 import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from './constants';
 import i18n from './mls';
