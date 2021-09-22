@@ -1,11 +1,11 @@
 import React from 'react';
 import { Col, Row } from 'antd';
 import { useQuery } from 'react-query';
-import FHIR from 'fhirclient';
 import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
+import { FHIRService } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
@@ -39,11 +39,10 @@ export const defaultEditCareTeamsProps: EditCareTeamProps = {
 };
 
 export const fetchPractitionersCount = async (fhirBaseURL: string): Promise<number> => {
-  return await FHIR.client(fhirBaseURL)
-    .request(`${FHIR_PRACTITIONERS}`)
-    .then((res: IfhirR4.IBundle) => {
-      return res.total as number;
-    });
+  const serve = await FHIRService(fhirBaseURL);
+  return serve.request(`${FHIR_PRACTITIONERS}`).then((res: IfhirR4.IBundle) => {
+    return res.total as number;
+  });
 };
 
 export const fetchPractitionersRecursively = async (
@@ -55,9 +54,10 @@ export const fetchPractitionersRecursively = async (
   let offsetStart: number = pageOffset;
   const careTeamsCount = await fetchPractitionersCount(fhirBaseURL);
   const allData: BundleEntry[] = [];
+  const serve = await FHIRService(fhirBaseURL);
   if (typeof pageSize !== 'undefined') {
     do {
-      data = await FHIR.client(fhirBaseURL).request(
+      data = await serve.request(
         `${FHIR_PRACTITIONERS}/_search?_count=${pageSize}&_getpagesoffset=${offsetStart}`
       );
       allData.push(...(data.entry as BundleEntry[]));
@@ -88,7 +88,9 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
   const singleCareTeam = useQuery(
     `${FHIR_CARE_TEAM}/${careTeamId}`,
     async () =>
-      careTeamId ? FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`) : undefined,
+      careTeamId
+        ? (await FHIRService(fhirBaseURL)).request(`${FHIR_CARE_TEAM}/${careTeamId}`)
+        : undefined,
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: IfhirR4.ICareTeam) => res,
@@ -97,7 +99,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
 
   const fhirGroups = useQuery(
     FHIR_GROUPS,
-    async () => FHIR.client(fhirBaseURL).request(FHIR_GROUPS),
+    async () => (await FHIRService(fhirBaseURL)).request(FHIR_GROUPS),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res: IfhirR4.IBundle) => res,
