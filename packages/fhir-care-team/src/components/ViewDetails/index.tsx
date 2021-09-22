@@ -5,8 +5,7 @@ import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { useQuery, useQueries } from 'react-query';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { Resource404, BrokenPage } from '@opensrp/react-utils';
-import FHIR from 'fhirclient';
+import { Resource404, BrokenPage, FHIRService } from '@opensrp/react-utils';
 import lang from '../../lang';
 import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { getPatientName } from '../CreateEditCareTeam/utils';
@@ -29,8 +28,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: [`CareTeam/${careTeamId}`],
-    queryFn: () =>
-      careTeamId ? FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`) : undefined,
+    queryFn: async () =>
+      careTeamId
+        ? (await FHIRService(fhirBaseURL)).request(`${FHIR_CARE_TEAM}/${careTeamId}`)
+        : undefined,
     select: (res) => res,
   });
 
@@ -39,7 +40,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
       ? data.participant.map((p: { member: { reference: string } }) => {
           return {
             queryKey: [FHIR_CARE_TEAM, p.member.reference],
-            queryFn: () => FHIR.client(fhirBaseURL).request(p.member.reference),
+            queryFn: async () => (await FHIRService(fhirBaseURL)).request(p.member.reference),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res: IfhirR4.IPractitioner) => res,
           };
@@ -49,9 +50,9 @@ const ViewDetails = (props: ViewDetailsProps) => {
 
   const subject = useQuery({
     queryKey: [`CareTeam/${data && data.subject && data.subject.reference}`],
-    queryFn: () =>
+    queryFn: async () =>
       data && data.subject && data.subject.reference
-        ? FHIR.client(fhirBaseURL).request(data.subject.reference)
+        ? (await FHIRService(fhirBaseURL)).request(data.subject.reference)
         : undefined,
     select: (res) => res,
   });
