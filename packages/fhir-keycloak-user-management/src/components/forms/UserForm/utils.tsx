@@ -1,10 +1,10 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { Dispatch, SetStateAction } from 'react';
 import { get } from 'lodash';
+import { FHIRService } from '@opensrp/react-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { KeycloakUser, UserAction, UserGroup } from '../../../ducks/user';
-import FHIR from 'fhirclient';
 import { v4 } from 'uuid';
 import {
   KEYCLOAK_URL_USERS,
@@ -74,7 +74,7 @@ export const createOrEditPractitioners = async (
     ],
   };
 
-  const fhirServe = FHIR.client(fhirBaseURL);
+  const fhirServe = await FHIRService(fhirBaseURL);
   fhirServe[requestType](practitionerValues)
     .then((_) => sendSuccessNotification(successMessage))
     .catch((_) => sendErrorNotification(langObj.ERROR_OCCURED));
