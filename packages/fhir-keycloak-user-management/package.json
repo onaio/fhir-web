@@ -27,6 +27,9 @@
     "dist",
     "locales"
   ],
+  "config": {
+    "folderName": "fhir-keycloak-user-management"
+  },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "i18next": "^19.8.4",
