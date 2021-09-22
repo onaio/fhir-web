@@ -49,4 +49,8 @@ window._env_ = {
   REACT_APP_ENABLE_FHIR_TEAMS: "{{ getv "/react/app/enable/fhir/teams" "false" }}",
   REACT_APP_ENABLE_FHIR_PATIENTS: "{{ getv "/react/app/enable/fhir/patients" "false" }}",
   REACT_APP_ENABLE_FHIR: "{{ getv "/react/app/enable/fhir" "false" }}",
+  REACT_APP_PAGINATION_SIZE" "{{ getv "/react/app/pagination/size" "1000" }}",
+  REACT_APP_FHIR_PATIENT_SORT_FIELDS" "{{ getv "/react/app/fhir/patient/sort/fields" "-_lastUpdated" }}",
+  REACT_APP_FHIR_PATIENT_BUNDLE_SIZE" "{{ getv "/react/app/fhir/patient/bundle/size" "5000" }}",
+  REACT_APP_FHIR_RESOURCES_PAGE_SIZE" "{{ getv "/react/app/resources/page/size" "500" }}",
 };
