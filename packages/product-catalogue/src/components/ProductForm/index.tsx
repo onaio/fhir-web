@@ -131,7 +131,7 @@ const ProductForm = (props: ProductFormProps) => {
   const uploadButton = (
     <div className="upload-button">
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>{lang.UPLOAD}</div>
     </div>
   );
 

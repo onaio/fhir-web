@@ -61,12 +61,6 @@ export interface UserGroupMembers {
   username: string;
 }
 
-interface TableData {
-  key: number | string;
-  id: string | undefined;
-  name: string;
-}
-
 interface Props {
   keycloakBaseURL: string;
 }
@@ -114,17 +108,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
   };
 
-  const tableData: TableData[] = getUserGroupsList.map(
-    (userGroup: KeycloakUserGroup, index: number) => {
-      return {
-        key: `${index}`,
-        id: userGroup.id,
-        name: userGroup.name,
-      };
-    }
-  );
-
-  const columns: Column<TableData>[] = [
+  const columns: Column<KeycloakUserGroup>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
@@ -152,7 +136,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
           <TableLayout
             id="UserGroupsList"
             persistState={true}
-            datasource={tableData}
+            datasource={getUserGroupsList}
             columns={columns}
             actions={{
               title: lang.ACTIONS,
