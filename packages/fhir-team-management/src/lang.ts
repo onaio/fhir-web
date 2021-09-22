@@ -7,9 +7,6 @@ const lang: Lang = {};
 
 /** recompute values */
 function fill() {
-  // Tooltips
-  lang.TIP_REQUIRED_FIELD = i18n.t(`This is a required field`, { ns: namespace });
-
   // Errors
   lang.ERROR_OCCURRED = i18n.t(`An error occurred`, { ns: namespace });
 
@@ -22,6 +19,7 @@ function fill() {
   lang.MSG_TEAMS_ADD_SUCCESS = i18n.t(`Successfully Added Teams`, { ns: namespace });
 
   // Rendered text
+  lang.REQUIRED_FIELD = i18n.t(`This is a required field`, { ns: namespace });
   lang.ENTER_TEAM_NAME = i18n.t(`Enter a team name`, { ns: namespace });
   lang.TEAM_NAME = i18n.t(`Team Name`, { ns: namespace });
   lang.STATUS = i18n.t(`Status`, { ns: namespace });

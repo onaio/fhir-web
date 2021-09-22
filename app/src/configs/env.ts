@@ -69,9 +69,10 @@ export const DATE_FORMAT = setEnv('REACT_APP_DATE_FORMAT', 'yyyy-MM-DD');
 
 export const DEFAULT_TIME = setEnv('REACT_APP_DEFAULT_TIME', 'T00:00:00+00:00');
 
-export const DEFAULT_PLAN_DURATION_DAYS = setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20);
+export const DEFAULT_PLAN_DURATION_DAYS = Number(
+  setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20)
+);
 
-/** Activate teams menu */
 export const ENABLE_FHIR_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
 
 /** Default plan id */

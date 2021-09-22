@@ -33,14 +33,13 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
-    "fhirclient": "2.3.11",
     "react-query": "^3.5.0",
     "antd": "4.6.3",
     "lodash": "^4.17.15",
     "@onaio/utils": "0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.10",
+    "@opensrp/react-utils": "^0.0.11",
     "react-i18next": "^11.8.10"
   },
   "peerDependencies": {

@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import FHIR from 'fhirclient';
 import get from 'lodash/get';
-import { BrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { fhirclient } from 'fhirclient/lib/types';
 import { getPatientName, getPath, buildObservationValueString } from '../PatientsList/utils';
@@ -55,8 +55,14 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   const [resourceType, setResourceType] = React.useState<string>('Patient');
   const patientId = props.match.params['patientId'];
   const { error, data, isLoading } = useQuery('fetchPatient', async () => {
+    const token = await handleSessionOrTokenExpiry();
     return await FHIR.client(fhirBaseURL)
-      .request(`Patient/${patientId}/$everything?_count=${patientBundleSize}`)
+      .request({
+        url: `Patient/${patientId}/$everything?_count=${patientBundleSize}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res: fhirclient.FHIR.Bundle) => {
         return res;
       })

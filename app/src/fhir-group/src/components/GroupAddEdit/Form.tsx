@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
+import { FHIRService } from '@opensrp/react-utils';
 import { GROUP_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { Groups } from '../../types';
 import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
-import FHIR from 'fhirclient';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -49,7 +49,7 @@ export async function onSubmit(
     name: values.name,
   };
 
-  const serve = FHIR.client(fhirBaseURL);
+  const serve = await FHIRService(fhirBaseURL);
   if (initialValue.id) {
     await serve.update(payload);
     sendSuccessNotification(lang.MSG_GROUPS_UPDATE_SUCCESS);

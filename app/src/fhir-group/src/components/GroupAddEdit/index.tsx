@@ -7,8 +7,8 @@ import { GROUP_GET } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
-import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
+import { FHIRService } from '@opensrp/react-utils';
 
 export interface Props {
   fhirBaseURL: string;
@@ -17,15 +17,18 @@ export interface Props {
 export const GroupAddEdit: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
 
-  const serve = FHIR.client(fhirBaseURL);
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
-  const group = useQuery([GROUP_GET, params.id], () => serve.request(GROUP_GET + params.id), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: Groups) => res,
-    enabled: params.id !== undefined,
-  });
+  const group = useQuery(
+    [GROUP_GET, params.id],
+    async () => (await FHIRService(fhirBaseURL)).request(GROUP_GET + params.id),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: Groups) => res,
+      enabled: params.id !== undefined,
+    }
+  );
 
   if (params.id && group.data && !initialValue) {
     const { data } = group;

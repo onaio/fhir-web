@@ -3,6 +3,7 @@ import React, { ChangeEvent, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { FHIRService } from '@opensrp/react-utils';
 import HealthCaresDetail from '../HealthCareDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -14,7 +15,6 @@ import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import FHIR from 'fhirclient';
 import { FHIRResponse, ProcessFHIRResponse } from '../../fhirutils';
 import { loadHealthcareDetails } from '../../utils';
 
@@ -30,15 +30,17 @@ interface Props {
 export const HealthCareList: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
 
-  const serve = FHIR.client(fhirBaseURL);
-
   const [detail, setDetail] = useState<HealthcareServiceDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
 
-  const healthcare = useQuery(HEALTHCARES_GET, () => serve.request(HEALTHCARES_GET), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<HealthcareService>) => ProcessFHIRResponse(res),
-  });
+  const healthcare = useQuery(
+    HEALTHCARES_GET,
+    async () => (await FHIRService(fhirBaseURL)).request(HEALTHCARES_GET),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: FHIRResponse<HealthcareService>) => ProcessFHIRResponse(res),
+    }
+  );
 
   const tableData: TableData[] = useMemo(() => {
     if (healthcare.data) {
