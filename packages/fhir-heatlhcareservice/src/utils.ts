@@ -1,4 +1,4 @@
-import FHIR from 'fhirclient';
+import { FHIRService } from '@opensrp/react-utils';
 import { HealthcareService, HealthcareServiceDetail } from '.';
 import { ORGANIZATION_GET } from './constants';
 import { FhirObject, ProcessFHIRObject } from './fhirutils';
@@ -14,7 +14,7 @@ export async function loadHealthcareDetails(
   fhirBaseURL: string,
   healthcareservice: HealthcareService
 ): Promise<HealthcareServiceDetail> {
-  const serve = FHIR.client(fhirBaseURL);
+  const serve = await FHIRService(fhirBaseURL);
 
   const orgid = healthcareservice.providedBy?.reference?.split('/')[1];
 

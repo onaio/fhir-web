@@ -2740,21 +2740,6 @@
   dependencies:
     antd "^4.6.3"
 
-"@opensrp/react-utils@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.10.tgz#94cd8dec89d63ec970661d0dd4b3e761efbb7685"
-  integrity sha512-RI2NAa1yPU0ayFjvtTLYn/sKK/9/NrKUeAGh0kbYNDkFwstCvxrXkBZORiv+sy0kpIkBjVBmtAM2mfjxsLxqIw==
-  dependencies:
-    "@onaio/connected-private-route" "^0.0.11"
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.1"
-    "@onaio/session-reducer" "^0.0.12"
-    "@onaio/utils" "^0.0.1"
-    "@opensrp/notifications" "^0.0.5"
-    "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/server-service" "^0.0.17"
-    antd "^4.6.3"
-
 "@opensrp/reducer-factory@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.9.tgz#4dbe60dcb18cf4e744319647256bd83d9b4583ad"
@@ -3435,6 +3420,11 @@
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.0.tgz#215c231dff736d5ba92410e6d602050cce7e273f"
   integrity sha512-eQ9qFW/fhfGJF8WKHGEHZEyVWfZxrT+6CLIJGBcZPfxUh/+BnEj+UCGYMlr9qZuX/2AltsvwrGqp0LhEW8D0zQ==
+
+"@types/uuid@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.1.tgz#1a32969cf8f0364b3d8c8af9cc3555b7805df14f"
+  integrity sha512-Y2mHTRAbqfFkpjldbkHGY8JIzRN6XqYRliG8/24FcHm2D2PwW24fl5xMRTVGdrb7iMrwCaIEbLWerGIkXuFWVg==
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -7976,7 +7966,7 @@ fhirclient@2.3.11:
     cross-fetch "^3.0.5"
     debug "^4.1.1"
 
-fhirclient@^2.3.11, fhirclient@^2.4.0:
+fhirclient@2.4.0, fhirclient@^2.3.11, fhirclient@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/fhirclient/-/fhirclient-2.4.0.tgz#1cdd92a2d6616020fc2edc6015286715bf28be08"
   integrity sha512-j5+u2A+vYHeYyS1vxwEAGikjUCFyqXOwsrh6nhgXlVLxd1brtqRAS3PK6rTtp6UPtWfh17352DWcpZJE/2PgzA==

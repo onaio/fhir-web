@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
+import { FHIRService } from '@opensrp/react-utils';
 import { v4 } from 'uuid';
 import { HEALTHCARES_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
@@ -9,7 +10,6 @@ import { FhirObject } from '../../fhirutils';
 import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
-import FHIR from 'fhirclient';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -57,7 +57,7 @@ export async function onSubmit(
     name: values.name,
   };
 
-  const serve = FHIR.client(fhirBaseURL);
+  const serve = await FHIRService(fhirBaseURL);
   if (id) {
     await serve.update(payload);
     sendSuccessNotification(lang.MSG_HEALTHCARES_UPDATE_SUCCESS);

@@ -3,11 +3,11 @@ import { Helmet } from 'react-helmet';
 import { HealthcareService, Organization } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
+import { FHIRService } from '@opensrp/react-utils';
 import { HEALTHCARES_GET, ORGANIZATION_GET } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
-import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
 import { FhirObject, FHIRResponse, ProcessFHIRObject, ProcessFHIRResponse } from '../../fhirutils';
 
@@ -23,13 +23,12 @@ export const defaultProps = {
 export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
 
-  const serve = FHIR.client(fhirBaseURL);
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
   const Healthcares = useQuery(
     [HEALTHCARES_GET, params.id],
-    () => serve.request(`${HEALTHCARES_GET}${params.id}`),
+    async () => (await FHIRService(fhirBaseURL)).request(`${HEALTHCARES_GET}${params.id}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res: FhirObject<HealthcareService>) => ProcessFHIRObject(res),
@@ -37,10 +36,14 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const organizations = useQuery([ORGANIZATION_GET], () => serve.request(ORGANIZATION_GET), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Organization>) => ProcessFHIRResponse(res),
-  });
+  const organizations = useQuery(
+    [ORGANIZATION_GET],
+    async () => (await FHIRService(fhirBaseURL)).request(ORGANIZATION_GET),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: FHIRResponse<Organization>) => ProcessFHIRResponse(res),
+    }
+  );
 
   if (params.id && Healthcares.data && !initialValue) {
     const healthcares = Healthcares.data;

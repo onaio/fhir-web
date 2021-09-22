@@ -8,18 +8,17 @@ import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Organization, OrganizationDetail } from '../../types';
 import { TEAMS_GET, URL_ADD_TEAM } from '../../constants';
-import Table, { TableData } from './Table';
+import Table from './Table';
 import './TeamsList.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import FHIR from 'fhirclient';
-import { FHIRResponse, ProcessFHIRResponse } from '../../fhirutils';
-import { loadTeamDetails } from '../../utils';
+import { FHIRResponse, FHIRService } from '@opensrp/react-utils';
+import { loadTeamPractitionerInfo } from '../../utils';
 
 interface Props {
-  fhirbaseURL: string;
+  fhirBaseURL: string;
 }
 
 /** Function which shows the list of all teams and there details
@@ -28,21 +27,24 @@ interface Props {
  * @returns {Function} returns team display
  */
 export const TeamsList: React.FC<Props> = (props: Props) => {
-  const { fhirbaseURL } = props;
-  const serve = FHIR.client(fhirbaseURL);
+  const { fhirBaseURL } = props;
 
   const [detail, setDetail] = useState<OrganizationDetail | 'loading' | null>(null);
-  const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
+  const [filterData, setfilterData] = useState<{ search?: string; data?: Organization[] }>({});
 
-  const teams = useQuery(TEAMS_GET, () => serve.request(TEAMS_GET), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Organization>) => ProcessFHIRResponse(res),
-  });
+  const teams = useQuery(
+    TEAMS_GET,
+    async () => (await FHIRService(fhirBaseURL)).request(TEAMS_GET),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: FHIRResponse<Organization>) => res.entry.map((e) => e.resource),
+    }
+  );
 
-  const tableData: TableData[] = useMemo(() => {
+  const tableData: Organization[] = useMemo(() => {
     if (teams.data) {
       return teams.data.map((team, i) => {
-        return { ...team, key: i.toString() } as TableData;
+        return { ...team, key: i.toString() } as Organization;
       });
     } else return [];
   }, [teams.data]);
@@ -81,7 +83,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
               />
             </h5>
             <div>
-              <Link to={URL_ADD_TEAM}>
+              <Link className="create" to={URL_ADD_TEAM}>
                 <Button type="primary">
                   <PlusOutlined />
                   {lang.CREATE_TEAM}
@@ -92,10 +94,10 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
           <div className="bg-white">
             <Table
               data={filterData.search && filterData.data?.length ? filterData.data : tableData}
-              fhirbaseURL={fhirbaseURL}
+              fhirBaseURL={fhirBaseURL}
               onViewDetails={(prams) => {
                 setDetail('loading');
-                loadTeamDetails(prams)
+                loadTeamPractitionerInfo(prams)
                   .then((team) => setDetail(team))
                   .catch(() => {
                     sendErrorNotification(lang.ERROR_OCCURRED);

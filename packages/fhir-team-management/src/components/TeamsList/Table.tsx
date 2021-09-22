@@ -6,32 +6,33 @@ import { URL_EDIT_TEAM } from '../../constants';
 import { Organization } from '../../types';
 import { Column, TableLayout } from '@opensrp/react-utils';
 
-export interface TableData extends Organization {
-  key: string;
-}
-
 export interface Props {
-  data: TableData[];
-  fhirbaseURL: string;
-  onViewDetails?: (param: { team: TableData; fhirbaseURL: string }) => void;
+  data: Organization[];
+  fhirBaseURL: string;
+  onViewDetails?: (param: { team: Organization; fhirBaseURL: string }) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails, fhirbaseURL } = props;
+  const { onViewDetails, fhirBaseURL } = props;
 
-  const columns: Column<TableData>[] = [
+  const columns: Column<Organization>[] = [
     {
       title: 'Name',
       dataIndex: 'name',
-      editable: true,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      sorter: (a: Organization, b: Organization) => a.name.localeCompare(b.name),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'active',
+      // eslint-disable-next-line react/display-name
+      render: (value) => <div>{value ? 'Active' : 'Inactive'}</div>,
     },
     {
       title: 'Actions',
       width: '10%',
 
       // eslint-disable-next-line react/display-name
-      render: (_: unknown, record: TableData) => (
+      render: (_: unknown, record: Organization) => (
         <span className="d-flex justify-content-end align-items-center">
           <Link to={URL_EDIT_TEAM + record.id.toString()}>
             <Button type="link" className="m-0 p-1">
@@ -41,12 +42,10 @@ const Table: React.FC<Props> = (props: Props) => {
           <Divider type="vertical" />
           <Dropdown
             overlay={
-              <Menu className="menu">
+              <Menu>
                 <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    if (onViewDetails) onViewDetails({ team: record, fhirbaseURL });
-                  }}
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                  onClick={() => onViewDetails && onViewDetails({ team: record, fhirBaseURL })}
                 >
                   View Details
                 </Menu.Item>
@@ -56,7 +55,7 @@ const Table: React.FC<Props> = (props: Props) => {
             arrow
             trigger={['click']}
           >
-            <MoreOutlined className="more-options" />
+            <MoreOutlined />
           </Dropdown>
         </span>
       ),

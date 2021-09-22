@@ -121,7 +121,7 @@ import { HealthCareList, HealthCareAddEdit } from '@opensrp/fhir-heatlhcareservi
 import {
   TeamsList as FhirTeamsView,
   TeamsAddEdit as FhirTeamsAddEdit,
-} from '../fhir-team-management/src';
+} from '@opensrp/fhir-team-management';
 import {
   LocationUnitList,
   LocationUnitGroupAddEdit,
@@ -307,7 +307,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS}
-              {...BaseProps}
+              {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsView : TeamsView}
             />
             <PrivateComponent

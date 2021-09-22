@@ -6,6 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import GroupDetails from '../GroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { FHIRService } from '@opensrp/react-utils';
 import { Groups, GroupDetail } from '../../types';
 import { GROUP_GET, URL_ADD_GROUP } from '../../constants';
 import Table, { TableData } from './Table';
@@ -14,7 +15,6 @@ import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import FHIR from 'fhirclient';
 import { FHIRResponse } from '../../fhirutils';
 import { loadGroupDetails } from '../../utils';
 
@@ -30,15 +30,17 @@ interface Props {
 export const GroupList: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
 
-  const serve = FHIR.client(fhirBaseURL);
-
   const [detail, setDetail] = useState<GroupDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: TableData[] }>({});
 
-  const healthcare = useQuery(GROUP_GET, () => serve.request(GROUP_GET), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Groups>) => res.entry.map((e) => e.resource),
-  });
+  const healthcare = useQuery(
+    GROUP_GET,
+    async () => (await FHIRService(fhirBaseURL)).request(GROUP_GET),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: FHIRResponse<Groups>) => res.entry.map((e) => e.resource),
+    }
+  );
 
   const tableData: TableData[] = useMemo(() => {
     if (healthcare.data) {
