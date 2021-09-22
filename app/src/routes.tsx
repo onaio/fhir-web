@@ -169,7 +169,11 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: langObj.CARE_TEAM,
           key: 'fhir-care-team',
-          enabled: ENABLE_FHIR_CARE_TEAM,
+          enabled:
+            ENABLE_FHIR_CARE_TEAM &&
+            roles &&
+            activeRoles.CARE_TEAM &&
+            isAuthorized(roles, activeRoles.CARE_TEAM.split(',')),
           url: URL_FHIR_CARE_TEAM,
         },
         {

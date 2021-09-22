@@ -5,7 +5,7 @@ export const careTeams = {
     lastUpdated: '2021-06-16T16:41:07.075+00:00',
   },
   type: 'searchset',
-  total: 12,
+  total: 6,
   link: [
     {
       relation: 'self',

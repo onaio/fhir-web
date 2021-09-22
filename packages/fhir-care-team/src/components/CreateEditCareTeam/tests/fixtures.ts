@@ -723,8 +723,9 @@ export const practitioners = {
         name: [
           {
             use: 'official',
-            family: 'Ceno',
+            family: ['Ceno'],
             given: ['John'],
+            prefix: 'Mr.',
           },
         ],
         telecom: [
@@ -760,6 +761,7 @@ export const practitioners = {
             use: 'official',
             family: 'Allan',
             given: ['Allay'],
+            prefix: ['Mr.'],
           },
         ],
         telecom: [
@@ -806,6 +808,86 @@ export const practitioners = {
       search: {
         mode: 'match',
       },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Practitioner/206',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '206',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-09-14T07:37:31.213+00:00',
+          source: '#74cc383a67268f33',
+        },
+        identifier: [
+          { use: 'official', value: 'c1d36d9a-b771-410b-959e-af2c04d132a2' },
+          { use: 'secondary' },
+        ],
+        active: false,
+        name: [{ use: 'official', family: 'Allan', given: ['Allay'] }],
+        telecom: [{ system: 'email' }],
+      },
+      search: { mode: 'match' },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Practitioner/1988',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '1988',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-09-16T13:28:50.134+00:00',
+          source: '#5ab4c59e210fe45f',
+        },
+        identifier: [
+          { use: 'official', value: '688345ca-bf56-4553-8f31-6aa3e56c0df1' },
+          { use: 'secondary', value: '1c227957-9cac-4aed-bd01-a951435c2bf4' },
+        ],
+        active: false,
+        name: [{ use: 'official', family: 'krebs', given: ['brian'] }],
+        telecom: [{ system: 'email', value: 'krebs@brian.com' }],
+      },
+      search: { mode: 'match' },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Practitioner/1989',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '1989',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-09-16T14:45:41.554+00:00',
+          source: '#b4922a78fcc7a1fc',
+        },
+        identifier: [
+          { use: 'official', value: 'df469f1a-4b37-46b2-9d1c-0ca01dda51cd' },
+          { use: 'secondary', value: '15d2429b-6149-4dec-a141-a4a988c17d08' },
+        ],
+        active: false,
+        name: [{ use: 'official', family: 'brownlee', given: ['marcus'] }],
+        telecom: [{ system: 'email', value: 'brownlee@test.com' }],
+      },
+      search: { mode: 'match' },
+    },
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Practitioner/2084',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '2084',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-09-20T13:23:30.732+00:00',
+          source: '#e7acc7cc8d4f976d',
+        },
+        identifier: [
+          { use: 'official', value: '023172ed-eec1-4ecf-8992-ea587998ba71' },
+          { use: 'secondary', value: 'e9890810-95ce-40af-9299-659eddc2742b' },
+        ],
+        active: false,
+        name: [{ use: 'official', family: 'assange', given: ['julian'] }],
+        telecom: [{ system: 'email', value: 'assange@julian.com' }],
+      },
+      search: { mode: 'match' },
     },
   ],
 };
@@ -929,3 +1011,5 @@ export const formValues = {
   practitionersId: ['103'],
   groupsId: '329',
 };
+
+export const practitionerBundle = practitioners.entry;

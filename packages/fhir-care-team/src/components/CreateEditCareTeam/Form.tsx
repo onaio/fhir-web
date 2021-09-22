@@ -59,14 +59,13 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     { label: 'Inactive', value: 'inactive' },
   ];
 
-  /** Update form initial values when initialValues prop changes, without this
-   * the form fields initial values will not change if props.initiaValues is updated
-   * **/
-  React.useEffect(() => {
-    form.setFieldsValue({
-      ...(initialValues as FormFields),
-    });
-  }, [form, initialValues]);
+  interface Option {
+    children: string;
+  }
+
+  // search for occurrence of substring (search term) in select options
+  const filterFunction = (input: string, option: unknown): boolean =>
+    (option as Option).children.toLocaleLowerCase().includes(input.toLocaleLowerCase());
 
   return (
     <Row className="layout-content user-group">
@@ -86,6 +85,8 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             submitForm(
               { ...initialValues, ...values },
               fhirBaseURL,
+              props.groups,
+              props.practitioners,
               props.initialValues?.id,
               props.initialValues?.uuid
             ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
@@ -117,7 +118,14 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             label={lang.PARTICIPANTS}
             tooltip={lang.TIP_REQUIRED_FIELD}
           >
-            <Select placeholder={lang.PARTICIPANTS} allowClear mode="multiple">
+            <Select
+              placeholder={lang.PARTICIPANTS}
+              allowClear
+              mode="multiple"
+              showSearch
+              optionFilterProp="children"
+              filterOption={filterFunction}
+            >
               {props.practitioners.map((practitioner: Fields) => (
                 <Select.Option key={practitioner.id} value={practitioner.id}>
                   {practitioner.name}
@@ -143,7 +151,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             <Button type="primary" htmlType="submit" className="create-group">
               {isSubmitting ? lang.SAVING : lang.SAVE}
             </Button>
-            <Button onClick={() => history.push(URL_CARE_TEAM)} className="cancel-group">
+            <Button onClick={() => history.push(URL_CARE_TEAM)} className="cancel-care-team">
               {lang.CANCEL}
             </Button>
           </Form.Item>

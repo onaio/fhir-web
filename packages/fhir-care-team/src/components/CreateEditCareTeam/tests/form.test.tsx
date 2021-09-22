@@ -1,12 +1,16 @@
+import React from 'react';
 import { mount, shallow } from 'enzyme';
 import flushPromises from 'flush-promises';
-import React from 'react';
+import nock from 'nock';
+import { history } from '@onaio/connected-reducer-registry';
 import * as fhirCient from 'fhirclient';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
+import { Router } from 'react-router';
 import { defaultInitialValues } from '..';
 import { CareTeamForm } from '../Form';
 import { getPatientName } from '../utils';
+import Client from 'fhirclient/lib/Client';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -81,13 +85,45 @@ describe('components/forms/CreateTeamForm', () => {
   });
 
   it('adds new care team successfully', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
+    nock('https://fhir.smarthealthit.org/')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .post('/CareTeam', (body: any) => {
+        expect(body).toMatchObject({
+          id: '308',
+          identifier: [{ use: 'official', value: '93bc9c3d-6321-41b0-9b93-1275d7114e22' }],
+          meta: {
+            lastUpdated: '2021-06-18T06:07:29.649+00:00',
+            source: '#9bf085bac3f61473',
+            versionId: '4',
+          },
+          name: 'Care Team One',
+          participant: [
+            { member: { reference: 'Practitioner/206' } },
+            { member: { reference: 'Practitioner/103' } },
+          ],
+          resourceType: 'CareTeam',
+          status: 'active',
+          subject: { reference: 'Group/306' },
+        });
+        return true;
+      })
+      .reply(200, 'CareTeam created successfully');
+
     const wrapper = mount(<CareTeamForm {...props} />);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = new Client({} as any, {
+      serverUrl: 'https://fhir.smarthealthit.org/',
+    });
+
+    const result = await client.create(fixtures.careTeam1);
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
+
+    // ensure the post is made against the correct resource endpoint
+    expect(result.url).toEqual('https://fhir.smarthealthit.org/CareTeam');
 
     // set team name
     const nameInput = wrapper.find('input#name');
@@ -114,14 +150,16 @@ describe('components/forms/CreateTeamForm', () => {
         target: { value: ['Group A'] },
       });
     wrapper.find('form').simulate('submit');
+
     await act(async () => {
       await flushPromises();
     });
+
     wrapper.update();
+
     expect(wrapper.find('form').text()).toMatchInlineSnapshot(
-      `"UUIDNameStatusActiveInactiveParticipantWard N Williams MDWard N Williams MDWard N Williams MDtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirJohn CenoAllay AllanBobi mapesaSubjectSavingCancel"`
+      `"UUIDNameStatusActiveInactiveParticipantWard N Williams MDWard N Williams MDWard N Williams MDtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirMr. John CenoMr. Allay AllanBobi mapesaAllay Allanbrian krebsmarcus brownleejulian assangeSubjectSavingCancel"`
     );
-    expect(fhir).toHaveBeenCalled();
     wrapper.unmount();
   });
 
@@ -191,5 +229,24 @@ describe('components/forms/CreateTeamForm', () => {
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
+  });
+
+  it('cancel button returns user to list view', async () => {
+    const historyPushMock = jest.spyOn(history, 'push');
+    const wrapper = mount(
+      <Router history={history}>
+        <CareTeamForm {...props} />
+      </Router>
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    wrapper.update();
+    wrapper.find('.cancel-care-team').at(1).simulate('click');
+    wrapper.update();
+    expect(historyPushMock).toHaveBeenCalledTimes(1);
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/CareTeams');
   });
 });
