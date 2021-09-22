@@ -132,7 +132,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
   const careTeamFormProps = {
     fhirBaseURL,
     initialValues: buildInitialValues,
-    // filter for only active practitioners
+    // filter for only active practitioners and map output to object with id and name
     practitioners:
       fhirPractitioners.data?.flatMap((e: Dictionary) =>
         (e.resource as Practitioner).active
