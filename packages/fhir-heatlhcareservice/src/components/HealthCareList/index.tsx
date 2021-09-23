@@ -14,9 +14,8 @@ import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import FHIR from 'fhirclient';
 import { loadHealthcareOrganization } from '../../utils';
-import { FHIRResponse } from 'react-utils';
+import { FHIRResponse, FHIRService } from 'react-utils';
 
 interface Props {
   fhirBaseURL: string;
@@ -30,12 +29,12 @@ interface Props {
 export const HealthCareList: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
 
-  const serve = FHIR.client(fhirBaseURL);
+  const serve = FHIRService(fhirBaseURL);
 
   const [detail, setDetail] = useState<HealthcareServiceDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: HealthcareService[] }>({});
 
-  const healthcare = useQuery(HEALTHCARES_GET, () => serve.request(HEALTHCARES_GET), {
+  const healthcare = useQuery(HEALTHCARES_GET, async () => (await serve).request(HEALTHCARES_GET), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res: FHIRResponse<HealthcareService>) => res.entry.map((e) => e.resource),
   });
