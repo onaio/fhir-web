@@ -1,4 +1,4 @@
-import { FHIRService } from 'react-utils/dist/types';
+import { FHIRService } from '@opensrp/react-utils';
 import { HealthcareService, HealthcareServiceDetail } from '.';
 import { ORGANIZATION_GET } from './constants';
 import { Organization } from './types';
