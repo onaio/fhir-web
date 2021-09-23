@@ -7,9 +7,8 @@ import { PRACTITIONERROLE_GET, PRACTITIONER_GET, TEAMS_GET } from '../../constan
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
-import FHIR from 'fhirclient';
 import { useQuery } from 'react-query';
-import { FHIRResponse } from '@opensrp/react-utils';
+import { FHIRResponse, FHIRService } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
 
 export interface Props {
@@ -19,26 +18,38 @@ export interface Props {
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
 
-  const serve = FHIR.client(fhirBaseURL);
+  const serve = FHIRService(fhirBaseURL);
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
-  const Practitioners = useQuery(PRACTITIONER_GET, () => serve.request(PRACTITIONER_GET), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Practitioner>) => res.entry.map((e) => e.resource),
-  });
+  const Practitioners = useQuery(
+    PRACTITIONER_GET,
+    async () => (await serve).request(PRACTITIONER_GET),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: FHIRResponse<Practitioner>) => res.entry.map((e) => e.resource),
+    }
+  );
 
-  const team = useQuery([TEAMS_GET, params.id], () => serve.request(`${TEAMS_GET}${params.id}`), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: Organization) => res,
-    enabled: params.id !== undefined,
-  });
+  const team = useQuery(
+    [TEAMS_GET, params.id],
+    async () => (await serve).request(`${TEAMS_GET}${params.id}`),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: Organization) => res,
+      enabled: params.id !== undefined,
+    }
+  );
 
-  const AllRoles = useQuery(PRACTITIONERROLE_GET, () => serve.request(PRACTITIONERROLE_GET), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<PractitionerRole>) => res.entry.map((e) => e.resource),
-    enabled: params.id !== undefined,
-  });
+  const AllRoles = useQuery(
+    PRACTITIONERROLE_GET,
+    async () => (await serve).request(PRACTITIONERROLE_GET),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res: FHIRResponse<PractitionerRole>) => res.entry.map((e) => e.resource),
+      enabled: params.id !== undefined,
+    }
+  );
 
   if (params.id && team.data && AllRoles.data && !initialValue) {
     loadTeamPractitionerInfo({

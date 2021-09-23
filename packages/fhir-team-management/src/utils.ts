@@ -1,7 +1,6 @@
-import FHIR from 'fhirclient';
 import { Organization, PractitionerRole, OrganizationDetail } from '.';
 import { PRACTITIONERROLE_GET } from './constants';
-import { FHIRResponse } from '@opensrp/react-utils';
+import { FHIRResponse, FHIRService } from '@opensrp/react-utils';
 
 /**
  * Function to load selected Team for details
@@ -17,7 +16,7 @@ export async function loadTeamPractitionerInfo(props: {
   PractitionerRoles?: PractitionerRole[];
 }): Promise<OrganizationDetail> {
   const { fhirBaseURL, team } = props;
-  const serve = FHIR.client(fhirBaseURL);
+  const serve = await FHIRService(fhirBaseURL);
 
   const AllRoles: PractitionerRole[] =
     props.PractitionerRoles ??
