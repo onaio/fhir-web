@@ -18,7 +18,7 @@ import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
 import { SelectProps } from 'antd/lib/select';
-import { FHIRService, Require } from 'react-utils/dist/types';
+import { FHIRService, Require } from '@opensrp/react-utils';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
