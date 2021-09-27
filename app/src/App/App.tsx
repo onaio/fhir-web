@@ -45,7 +45,7 @@ import {
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
-  URL_HEALTHCARE,
+  URL_HEALTHCARESERVICES,
   URL_HEALTHCARE_ADD,
   URL_HEALTHCARE_EDIT,
 } from '../constants';
@@ -742,7 +742,7 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.HEATLH_CARE && activeRoles.HEATLH_CARE.split(',')}
-              path={URL_HEALTHCARE}
+              path={URL_HEALTHCARESERVICES}
               {...heatlhcareProps}
               component={HealthCareList}
             />

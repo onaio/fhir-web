@@ -39,7 +39,7 @@ export function lang(t: TFunction) {
     ADMIN: t(`Admin`, { ns: namespace }),
     MISSIONS: t(`Missions`, { ns: namespace }),
     WELCOME_TO_OPENSRP: t(`Welcome to OpenSRP`, { ns: namespace }),
-    HEALTHCARE: t(`Health Care`, { ns: namespace }),
+    HEALTHCARESERVICES_MANAGEMENT: t(`Health Care Services Management`, { ns: namespace }),
     INVENTORY: t(`Inventory`, { ns: namespace }),
     SERVICE_POINT_INVENTORY: t(`Service point inventory`, { ns: namespace }),
     ADD_INVENTORY_VIA_CSV: t(`Add inventory via CSV`, { ns: namespace }),
