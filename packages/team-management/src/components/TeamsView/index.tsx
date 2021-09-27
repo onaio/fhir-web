@@ -51,8 +51,6 @@ export const populateTeamDetails = (
   setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>,
   langObj: Lang = lang
 ) => {
-  setDetail(row);
-
   // get team members (practitioners) assigned to a team
   const getPractitioners = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
 
