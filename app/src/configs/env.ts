@@ -37,9 +37,7 @@ export const ENABLE_HEALTHCARE = setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE', 'fal
 
 /** Activate the plans menu */
 export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') === 'true';
-export const OPENSRP_OAUTH_SCOPES = setEnv('REACT_APP_OPENSRP_OAUTH_SCOPES', 'read,write').split(
-  ','
-);
+export const OPENSRP_OAUTH_SCOPES = setEnv('REACT_APP_OPENSRP_OAUTH_SCOPES', 'profile').split(',');
 
 export const DEFAULT_ACTIVITY_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS', 7)
@@ -163,7 +161,7 @@ export const SUPPORTED_LANGUAGES = setEnv('REACT_APP_SUPPORTED_LANGUAGES', '').s
 export const ENABLE_LANGUAGE_SWITCHER =
   setEnv('REACT_APP_ENABLE_LANGUAGE_SWITCHER', 'false') === 'true';
 
-export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'false') === 'true';
+export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'true') === 'true';
 
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
