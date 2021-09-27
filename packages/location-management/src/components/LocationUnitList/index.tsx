@@ -37,7 +37,7 @@ reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer)
 
 interface Props {
   opensrpBaseURL: string;
-  filterByParentId: boolean;
+  filterByParentId?: boolean;
 }
 
 export interface AntTreeProps {
@@ -68,25 +68,6 @@ export async function loadSingleLocation(
       setDetail(res);
     })
     .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
-}
-
-/** Parse the hierarchy node into table data
- *
- * @param {Array<ParsedHierarchyNode>} hierarchy - hierarchy node to be parsed
- * @returns {Array<TableData>} array of table data
- */
-export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
-  const data: TableData[] = [];
-
-  hierarchy.forEach((location, i: number) => {
-    data.push({
-      id: location.id,
-      key: i.toString(),
-      name: location.label,
-      geographicLevel: location.node.attributes.geographicLevel,
-    });
-  });
-  return data;
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
@@ -130,9 +111,18 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         : [...treeData];
 
       const sorteddata = childrendata.sort((a, b) => a.title.localeCompare(b.title));
-      const data: TableData[] = parseTableData(
-        titledata ? [...[titledata], ...sorteddata] : sorteddata
-      );
+      const hierarchy: ParsedHierarchyNode[] = titledata
+        ? [...[titledata], ...sorteddata]
+        : sorteddata;
+
+      const data: TableData[] = hierarchy.map((location) => {
+        return {
+          label: location.label,
+          id: location.id,
+          geographicLevel: location.node.attributes.geographicLevel,
+        };
+      });
+
       setTableData(data);
     }
   }, [treeDataQuery, currentClickedNode]);
@@ -157,7 +147,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h6 className="mt-4">{currentClickedNode ? tableData[0].name : lang.LOCATION_UNIT}</h6>
+            <h6 className="mt-4">{currentClickedNode ? tableData[0].label : lang.LOCATION_UNIT}</h6>
             <div>
               <Link
                 to={(location) => {

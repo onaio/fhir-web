@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Table as AntTable } from 'antd';
 import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
@@ -20,6 +20,7 @@ export interface Column<T> extends ColumnType<T>, Dictionary {
 
 interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
+  dataKeyAccessor?: keyof T;
   columns?: Column<T>[];
   actions?: Action<T>;
 }
@@ -41,7 +42,9 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
+export function TableLayout<T extends object & { key?: string | number } = Dictionary>(
+  props: TableProps<T>
+) {
   const {
     id,
     columns,
@@ -49,6 +52,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
     children,
     persistState,
     actions,
+    dataKeyAccessor,
     pagination,
     ...restprops
   } = props;
@@ -97,6 +101,14 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
       }),
   };
 
+  // auto append key into data if not provided
+  const data: T[] = useMemo(() => {
+    return datasource.map((e, index) => ({
+      ...e,
+      key: e.key ?? dataKeyAccessor ? e[dataKeyAccessor as keyof T] : index,
+    }));
+  }, [dataKeyAccessor, datasource]);
+
   /** Table Layout Component used to render the table with default Settings
    *
    * @param page - the current viewing Page number
@@ -114,7 +126,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   }
 
   return (
-    <AntTable<T> dataSource={datasource} columns={columns} {...tableprops}>
+    <AntTable<T> dataSource={data} columns={columns} {...tableprops}>
       {children}
     </AntTable>
   );
