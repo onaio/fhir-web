@@ -12,7 +12,7 @@ import { Dictionary } from '@onaio/utils';
 import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
 import { getAllConfigs } from '@opensrp/pkg-config';
 import lang, { Lang } from '../lang';
-import Client from 'fhirclient/lib/Client';
+import FHIR from 'fhirclient';
 
 const configs = getAllConfigs();
 
@@ -96,12 +96,6 @@ export const fetchProtectedImage = async (imageURL: string) => {
 
 export const FHIRService = async (fhirBaseURL: string) => {
   const token = await handleSessionOrTokenExpiry();
-  const serve = new Client({} as never, {
-    serverUrl: fhirBaseURL,
-    tokenResponse: {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      access_token: token,
-    },
-  });
+  const serve = FHIR.client({ serverUrl: fhirBaseURL, tokenResponse: { access_token: token } });
   return serve;
 };
