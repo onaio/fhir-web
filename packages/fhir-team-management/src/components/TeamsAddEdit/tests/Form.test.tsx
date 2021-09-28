@@ -18,6 +18,9 @@ import {
 import Form, { FormField, onSubmit } from '../Form';
 import * as fhirCient from 'fhirclient';
 import * as notifications from '@opensrp/notifications';
+import { authenticateUser } from '@onaio/session-reducer';
+import { store } from '@opensrp/store';
+import { Require } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -51,12 +54,27 @@ jest.mock('antd', () => {
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 
-const TeamValue: FormField = {
+const TeamValue: Require<FormField, 'active' | 'name'> = {
   ...teamsdetail,
   practitioners: ['116', '102'],
 };
 
 describe('Team-management/TeamsAddEdit/Form', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({

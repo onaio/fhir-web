@@ -10,6 +10,8 @@ import * as notifications from '@opensrp/notifications';
 import TeamsList from '..';
 import { team, practitioner102, practitioner116, practitionerrole } from '../../../tests/fixtures';
 import * as fhirCient from 'fhirclient';
+import { authenticateUser } from '@onaio/session-reducer';
+import { store } from '@opensrp/store';
 
 const history = createBrowserHistory();
 
@@ -21,6 +23,21 @@ jest.mock('@opensrp/notifications', () => ({
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 describe('components/TeamsList', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({

@@ -17,6 +17,8 @@ import {
   team212,
 } from '../../../tests/fixtures';
 import * as fhirCient from 'fhirclient';
+import { authenticateUser } from '@onaio/session-reducer';
+import { store } from '@opensrp/store';
 
 const history = createBrowserHistory();
 
@@ -29,6 +31,21 @@ const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 
 describe('components/TeamsAddEdit', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
@@ -77,7 +94,10 @@ describe('components/TeamsAddEdit', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
         <QueryClientProvider client={queryClient}>
-          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={TeamsAddEdit} />
+          <Route
+            path="/:id"
+            render={(props) => <TeamsAddEdit {...props} fhirBaseURL={fhirBaseURL} />}
+          />
         </QueryClientProvider>
       </MemoryRouter>
     );
@@ -106,7 +126,10 @@ describe('components/TeamsAddEdit', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
         <QueryClientProvider client={queryClient}>
-          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={TeamsAddEdit} />
+          <Route
+            path="/:id"
+            render={(props) => <TeamsAddEdit {...props} fhirBaseURL={fhirBaseURL} />}
+          />
         </QueryClientProvider>
       </MemoryRouter>
     );

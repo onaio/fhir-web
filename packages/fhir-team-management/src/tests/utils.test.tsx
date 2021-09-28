@@ -2,6 +2,8 @@
 import { team, practitioner102, practitioner116, practitionerrole, teamsdetail } from './fixtures';
 import * as fhirCient from 'fhirclient';
 import { loadTeamPractitionerInfo } from '../utils';
+import { authenticateUser } from '@onaio/session-reducer';
+import { store } from '@opensrp/store';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -24,6 +26,21 @@ fhir.mockImplementation(
 );
 
 describe('utils', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   it('test loadTeamPractitionerInfo load the correct data', async () => {
     const result = await loadTeamPractitionerInfo({
       fhirBaseURL: fhirBaseURL,
