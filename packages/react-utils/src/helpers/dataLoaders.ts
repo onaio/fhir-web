@@ -4,7 +4,10 @@ import {
   OpenSRPService as GenericOpenSRPService,
   OPENSRP_API_BASE_URL,
   customFetch,
+  URLParams,
+  GetAccessTokenType,
 } from '@opensrp/server-service';
+import queryString from 'querystring';
 import { history } from '@onaio/connected-reducer-registry';
 import { refreshToken } from '@onaio/gatekeeper';
 import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
@@ -12,7 +15,8 @@ import { Dictionary } from '@onaio/utils';
 import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
 import { getAllConfigs } from '@opensrp/pkg-config';
 import lang, { Lang } from '../lang';
-import Client from 'fhirclient/lib/Client';
+import FHIR from 'fhirclient';
+import { fhirclient } from 'fhirclient/lib/types';
 
 const configs = getAllConfigs();
 
@@ -30,6 +34,86 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
     fetchOptions: typeof getFetchOptions = getFetchOptions
   ) {
     super(handleSessionOrTokenExpiry, baseURL, endpoint, fetchOptions);
+  }
+}
+
+/** A generic FHIR service class
+ *
+ * Sample usage:
+ * -------------
+ * const serve = new FHIRServiceClass('<base url>', '<resource type>');
+ *
+ * **To list all entries of a resource (GET request)**: serve.list()
+ *
+ * **To get one resource record**: service.read('<object id>')
+ *
+ * **To create a new resource**: service.create(payload)
+ *
+ * **To update a resource record**: service.update(payload)
+ */
+export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
+  public accessTokenOrCallBack: GetAccessTokenType | string;
+  public baseURL: string;
+  public resourceType: string;
+
+  /**
+   * Constructor method
+   *
+   * @param {string} baseURL - the base FHIR URL
+   * @param {string} resourceType - FHIR resource type string
+   */
+  constructor(baseURL: string, resourceType: string) {
+    this.accessTokenOrCallBack = handleSessionOrTokenExpiry;
+    this.baseURL = baseURL;
+    this.resourceType = resourceType;
+  }
+
+  public buildQueryParams(params: URLParams | null) {
+    if (params) {
+      return `${this.resourceType}/_search?${decodeURIComponent(queryString.stringify(params))}`;
+    }
+    return this.resourceType;
+  }
+
+  private buildState(accessToken: string) {
+    return {
+      serverUrl: this.baseURL,
+      tokenResponse: {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        access_token: accessToken,
+      },
+    };
+  }
+
+  public async create(payload: T) {
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+    const serve = FHIR.client(this.buildState(accessToken));
+    return serve.create(payload);
+  }
+
+  public async update(payload: T) {
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+    const serve = FHIR.client(this.buildState(accessToken));
+    return serve.update(payload);
+  }
+
+  public async list(params: URLParams | null = null) {
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+    const queryStr = this.buildQueryParams(params);
+    const serve = FHIR.client(this.buildState(accessToken));
+    return serve.request(queryStr);
+  }
+
+  public async read(id: string) {
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+    const serve = FHIR.client(this.buildState(accessToken));
+    return serve.request(`${this.resourceType}/${id}`);
+  }
+
+  public async delete(id: string) {
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+    const serve = FHIR.client(this.buildState(accessToken));
+    return serve.delete(`${this.resourceType}/${id}`);
   }
 }
 
@@ -73,35 +157,4 @@ export const fetchProtectedImage = async (imageURL: string) => {
   }
 
   return null;
-};
-
-/**
- * Higher order function that creates the FHIR Client instance and passes token
- * to request header
- *
- * Usage
- * -----------
- * const serve = await FHIRService("fhir base url")
- *
- * **To make a GET request: serve.request('fhir-resource-type')
- *
- * **To make a POST request: serve.create('fhir-resource-payload')
- *
- * **To make a PUT request: serve.update('fhir-resource-payload')
- *
- * **To DELETE a resource: serve.delete('<fhir-resource-type>/<id>')
- *
- * @param {string} fhirBaseURL - FHIR base URL
- */
-
-export const FHIRService = async (fhirBaseURL: string) => {
-  const token = await handleSessionOrTokenExpiry();
-  const serve = new Client({} as never, {
-    serverUrl: fhirBaseURL,
-    tokenResponse: {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      access_token: token,
-    },
-  });
-  return serve;
 };
