@@ -96,6 +96,7 @@ export const fetchProtectedImage = async (imageURL: string) => {
 
 export const FHIRService = async (fhirBaseURL: string) => {
   const token = await handleSessionOrTokenExpiry();
+  // eslint-disable-next-line @typescript-eslint/camelcase
   const serve = FHIR.client({ serverUrl: fhirBaseURL, tokenResponse: { access_token: token } });
   return serve;
 };
