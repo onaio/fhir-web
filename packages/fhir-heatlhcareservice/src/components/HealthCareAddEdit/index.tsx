@@ -8,7 +8,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRResponse, FHIRService } from 'react-utils';
+import { FHIRServiceClass } from 'react-utils';
 
 export interface Props {
   fhirBaseURL: string;
@@ -22,13 +22,17 @@ export const defaultProps = {
 export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
 
-  const serve = FHIRService(fhirBaseURL);
+  const healthcareserviceAPI = new FHIRServiceClass<HealthcareService>(
+    fhirBaseURL,
+    'HealthcareService'
+  );
+  const organizationAPI = new FHIRServiceClass<Organization>(fhirBaseURL, 'HealthcareService');
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
   const Healthcares = useQuery(
     [HEALTHCARES_GET, params.id],
-    async () => (await serve).request(`${HEALTHCARES_GET}${params.id}`),
+    async () => healthcareserviceAPI.read(`${params.id}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res: HealthcareService) => res,
@@ -36,14 +40,10 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const organizations = useQuery(
-    ORGANIZATION_GET,
-    async () => (await serve).request(ORGANIZATION_GET),
-    {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: FHIRResponse<Organization>) => res.entry.map((e) => e.resource),
-    }
-  );
+  const organizations = useQuery(ORGANIZATION_GET, async () => organizationAPI.list(), {
+    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+    select: (res) => res.entry.map((e) => e.resource),
+  });
 
   if (params.id && Healthcares.data && !initialValue) {
     const healthcares = Healthcares.data;

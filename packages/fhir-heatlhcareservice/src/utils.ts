@@ -1,6 +1,5 @@
-import { FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { HealthcareService, HealthcareServiceDetail } from '.';
-import { ORGANIZATION_GET } from './constants';
 import { Organization } from './types';
 
 /**
@@ -13,13 +12,11 @@ export async function loadHealthcareOrganization(
   fhirBaseURL: string,
   healthcareservice: HealthcareService
 ): Promise<HealthcareServiceDetail> {
-  const serve = await FHIRService(fhirBaseURL);
+  const serve = new FHIRServiceClass<Organization>(fhirBaseURL, 'Organization');
 
   const orgid = healthcareservice.providedBy?.reference?.split('/')[1];
 
-  const organization = orgid
-    ? await serve.request(ORGANIZATION_GET + orgid).then((res: Organization) => res)
-    : undefined;
+  const organization = orgid ? await serve.read(orgid) : undefined;
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return { ...healthcareservice, ...(organization && { organization: organization }) };

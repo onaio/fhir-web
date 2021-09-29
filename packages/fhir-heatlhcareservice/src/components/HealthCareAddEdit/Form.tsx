@@ -8,7 +8,7 @@ import { HealthcareService, Organization } from '../../types';
 import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
-import { FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -46,7 +46,7 @@ export async function onSubmit(fhirBaseURL: string, values: FormField) {
     name: values.name,
   };
 
-  const serve = await FHIRService(fhirBaseURL);
+  const serve = new FHIRServiceClass<HealthcareService>(fhirBaseURL, 'HealthcareService');
   if (values.id) {
     await serve.update(payload);
     sendSuccessNotification(lang.MSG_HEALTHCARES_UPDATE_SUCCESS);
