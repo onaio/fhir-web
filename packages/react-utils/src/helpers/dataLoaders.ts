@@ -110,7 +110,7 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
   public async read(id: string) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request(`${this.resourceType}/${id}`);
+    return serve.request<T>(`${this.resourceType}/${id}`);
   }
 
   public async delete(id: string) {
