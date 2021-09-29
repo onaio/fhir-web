@@ -18,7 +18,7 @@ import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
 import { SelectProps } from 'antd/lib/select';
-import { FHIRService, Require } from '@opensrp/react-utils';
+import { FHIRServiceClass, Require } from '@opensrp/react-utils';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -89,7 +89,7 @@ async function SetPractitioners(
   practitionerrole?: PractitionerRole[]
 ) {
   sendInfoNotification(lang.MSG_ASSIGN_PRACTITIONERS);
-  const serve = await FHIRService(fhirbaseURL);
+  const serve = new FHIRServiceClass(fhirbaseURL, 'PractitionerRole');
 
   // Api Call to delete practitioners
   const toremoveroles = toRemove
@@ -137,7 +137,7 @@ async function SetPractitioners(
  * @param {Organization} payload payload To send
  */
 export async function setTeam(fhirbaseURL: string, payload: Omit<Organization, 'meta'>) {
-  const serve = await FHIRService(fhirbaseURL);
+  const serve = new FHIRServiceClass<Organization>(fhirbaseURL, 'Organization');
   if (payload.id) {
     const resp: Organization = await serve.update(payload);
     sendSuccessNotification(lang.MSG_TEAMS_UPDATE_SUCCESS);
