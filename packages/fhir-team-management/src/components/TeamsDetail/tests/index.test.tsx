@@ -27,8 +27,8 @@ fhir.mockImplementation(
   jest.fn().mockImplementation(() => {
     return {
       request: jest.fn((url) => {
-        if (url === 'Organization/') return Promise.resolve(team);
-        else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+        if (url === 'Organization') return Promise.resolve(team);
+        else if (url === 'PractitionerRole') return Promise.resolve(practitionerrole);
         else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
         else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
         else {

@@ -31,10 +31,10 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization') return Promise.resolve(team);
           if (url === 'Organization/212') return Promise.resolve(team212);
-          else if (url === 'Practitioner/') return Promise.resolve(practitioner);
-          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+          else if (url === 'Practitioner') return Promise.resolve(practitioner);
+          else if (url === 'PractitionerRole') return Promise.resolve(practitionerrole);
           else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
           else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
           else if (url === 'Practitioner/104') return Promise.resolve(practitioner104);

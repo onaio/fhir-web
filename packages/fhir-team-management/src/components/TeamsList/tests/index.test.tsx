@@ -42,8 +42,8 @@ describe('components/TeamsList', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
-          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+          if (url === 'Organization') return Promise.resolve(team);
+          else if (url === 'PractitionerRole') return Promise.resolve(practitionerrole);
           else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
           else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
           else {
@@ -60,7 +60,9 @@ describe('components/TeamsList', () => {
   });
 
   it('renders correctly', async () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
     const wrapper = mount(
       <Router history={history}>
@@ -80,7 +82,9 @@ describe('components/TeamsList', () => {
   });
 
   it('Search works correctly', async () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
     const wrapper = mount(
       <Router history={history}>
@@ -133,7 +137,9 @@ describe('components/TeamsList', () => {
   });
 
   it('Test Open Table View Detail', async () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
     const wrapper = mount(
       <Router history={history}>
@@ -162,7 +168,9 @@ describe('components/TeamsList', () => {
   });
 
   it('Test Close Table View Detail', async () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
     const wrapper = mount(
       <Router history={history}>
@@ -207,7 +215,7 @@ describe('components/TeamsList', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization') return Promise.resolve(team);
           else return Promise.reject('Mock Api Fail');
         }),
       }))
