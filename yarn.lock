@@ -3013,6 +3013,11 @@
   dependencies:
     type-detect "4.0.8"
 
+"@smile-cdr/fhirts@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@smile-cdr/fhirts/-/fhirts-1.2.5.tgz#e0e335b8407889d966723f212698260e7770f7c2"
+  integrity sha512-q+Q/qLswFmE3ZaGlHgO1xTibptS2gOvp3/SS8lGno3unF3Gu1+vJahan1RU/b8WL1ziUXC9Vl3fSpdsR62SqGA==
+
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-4.2.0.tgz#dadcb6218503532d6884b210e7f3c502caaa44b1"
