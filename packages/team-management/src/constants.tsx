@@ -18,3 +18,5 @@ export const TEAMS_GET = 'organization/';
 export const TEAMS_PUT = 'organization/';
 export const TEAMS_POST = 'organization';
 export const TEAM_PRACTITIONERS = 'organization/practitioner/';
+
+export const ASSIGNED_LOCATIONS_AND_PLANS = 'assignedLocationsAndPlans/';
