@@ -17,6 +17,7 @@ import { getAllConfigs } from '@opensrp/pkg-config';
 import lang, { Lang } from '../lang';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
+import { FHIRResponse } from '..';
 
 const configs = getAllConfigs();
 
@@ -103,7 +104,7 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const queryStr = this.buildQueryParams(params);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T[]>(queryStr);
+    return serve.request<FHIRResponse<T>>(queryStr);
   }
 
   public async read(id: string) {
