@@ -8,7 +8,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass } from 'react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 
 export interface Props {
   fhirBaseURL: string;
