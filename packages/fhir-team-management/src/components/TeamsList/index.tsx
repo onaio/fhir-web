@@ -14,7 +14,7 @@ import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRResponse, FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
 
 interface Props {
@@ -35,7 +35,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
 
   const teams = useQuery(TEAMS_GET, async () => serve.list(), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<Organization>) => res.entry.map((e) => e.resource),
+    select: (res) => res.entry.map((e) => e.resource),
   });
 
   const tableData: Organization[] = useMemo(() => {

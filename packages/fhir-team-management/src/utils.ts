@@ -1,5 +1,5 @@
 import { Organization, PractitionerRole, OrganizationDetail } from '.';
-import { FHIRResponse, FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 
 /**
  * Function to load selected Team for details
@@ -18,10 +18,7 @@ export async function loadTeamPractitionerInfo(props: {
   const serve = new FHIRServiceClass<PractitionerRole>(fhirBaseURL, 'PractitionerRole');
 
   const AllRoles: PractitionerRole[] =
-    props.PractitionerRoles ??
-    (await serve
-      .list()
-      .then((res: FHIRResponse<PractitionerRole>) => res.entry.map((e) => e.resource)));
+    props.PractitionerRoles ?? (await serve.list().then((res) => res.entry.map((e) => e.resource)));
 
   const practitionerAssigned = AllRoles.filter(
     (role) => role.organization.reference === `Organization/${team.id}`
