@@ -50,6 +50,8 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
  * **To create a new resource**: service.create(payload)
  *
  * **To update a resource record**: service.update(payload)
+ *
+ * **To delete a resource entry**: service.delete(<id>)
  */
 export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
   public accessTokenOrCallBack: GetAccessTokenType | string;
