@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { authenticateUser } from '@onaio/session-reducer';
 import { CareTeamList, deleteCareTeam, useCareTeamsHook } from '..';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
@@ -49,6 +50,18 @@ const careTeamProps = {
 
 describe('Patients list view', () => {
   beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
     nock('https://r4.smarthealthit.org').get('/CareTeam').reply(200, careTeams);
   });
 

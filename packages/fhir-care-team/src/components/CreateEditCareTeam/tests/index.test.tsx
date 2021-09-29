@@ -1,6 +1,8 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 import { history } from '@onaio/connected-reducer-registry';
 import { Router } from 'react-router';
 import * as reactQuery from 'react-query';
@@ -44,6 +46,21 @@ describe('components/CreateEditCareTeam', () => {
     },
     resourcePageSize: 500,
   };
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();
