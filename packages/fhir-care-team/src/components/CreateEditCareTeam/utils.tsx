@@ -1,6 +1,6 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import lang from '../../lang';
 import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
@@ -45,7 +45,7 @@ export const submitForm = async (
         };
       }) ?? [],
   };
-  const serve = await FHIRService(fhirBaseURL);
+  const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
   if (id) {
     await serve
       .update(payload)
