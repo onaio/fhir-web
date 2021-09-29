@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import { loadHealthcareOrganization } from '../../utils';
-import { FHIRResponse, FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 
 interface Props {
   fhirBaseURL: string;
@@ -29,14 +29,14 @@ interface Props {
 export const HealthCareList: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
 
-  const serve = FHIRService(fhirBaseURL);
+  const serve = new FHIRServiceClass<HealthcareService>(fhirBaseURL, 'HealthcareService');
 
   const [detail, setDetail] = useState<HealthcareServiceDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: HealthcareService[] }>({});
 
-  const healthcare = useQuery(HEALTHCARES_GET, async () => (await serve).request(HEALTHCARES_GET), {
+  const healthcare = useQuery(HEALTHCARES_GET, async () => serve.list(), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: FHIRResponse<HealthcareService>) => res.entry.map((e) => e.resource),
+    select: (res) => res.entry.map((e) => e.resource),
   });
 
   const tableData: HealthcareService[] = useMemo(() => {
