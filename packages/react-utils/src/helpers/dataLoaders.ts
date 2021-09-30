@@ -17,6 +17,7 @@ import { getAllConfigs } from '@opensrp/pkg-config';
 import lang, { Lang } from '../lang';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
+import { FHIRResponse } from '..';
 
 const configs = getAllConfigs();
 
@@ -90,26 +91,26 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
   public async create(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.create(payload);
+    return serve.create<T>(payload);
   }
 
   public async update(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.update(payload);
+    return serve.update<T>(payload);
   }
 
   public async list(params: URLParams | null = null) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const queryStr = this.buildQueryParams(params);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request(queryStr);
+    return serve.request<FHIRResponse<T>>(queryStr);
   }
 
   public async read(id: string) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request(`${this.resourceType}/${id}`);
+    return serve.request<T>(`${this.resourceType}/${id}`);
   }
 
   public async delete(id: string) {
