@@ -16,6 +16,8 @@ import {
   healthcareservice,
 } from '../../../tests/fixtures';
 import * as fhirCient from 'fhirclient';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 const history = createBrowserHistory();
 
@@ -27,13 +29,28 @@ jest.mock('@opensrp/notifications', () => ({
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 describe('components/TeamsList', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization') return Promise.resolve(team);
           if (url === 'Organization/366') return Promise.resolve(team366);
-          else if (url === 'HealthcareService/') return Promise.resolve(healthcareservice);
+          else if (url === 'HealthcareService') return Promise.resolve(healthcareservice);
           else if (url === 'HealthcareService/323') return Promise.resolve(healthcareservice323);
           else if (url === 'HealthcareService/313') return Promise.resolve(healthcareservice313);
           else {
@@ -196,7 +213,7 @@ describe('components/TeamsList', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'HealthcareService/') return Promise.resolve(healthcareservice);
+          if (url === 'HealthcareService') return Promise.resolve(healthcareservice);
           else return Promise.reject('Mock Api Fail');
         }),
       }))

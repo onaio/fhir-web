@@ -15,6 +15,8 @@ import {
 import Form, { FormField, onSubmit } from '../Form';
 import * as fhirCient from 'fhirclient';
 import * as notifications from '@opensrp/notifications';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -40,13 +42,28 @@ const healthcareserviceValue: FormField = {
 };
 
 describe('Team-management/TeamsAddEdit/Form', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization') return Promise.resolve(team);
           if (url === 'Organization/366') return Promise.resolve(team366);
-          else if (url === 'HealthcareService/') return Promise.resolve(healthcareservice);
+          else if (url === 'HealthcareService') return Promise.resolve(healthcareservice);
           else if (url === 'HealthcareService/323') return Promise.resolve(healthcareservice323);
           else if (url === 'HealthcareService/313') return Promise.resolve(healthcareservice313);
           else {
@@ -127,8 +144,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(thenfn).toBeCalled();
     expect(catchfn).not.toBeCalled();
+    expect(thenfn).toBeCalled();
     expect(mockSuccessNotification).toBeCalledWith('Successfully Added Healthcares');
   });
 
@@ -148,8 +165,8 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(thenfn).toBeCalled();
     expect(catchfn).not.toBeCalled();
+    expect(thenfn).toBeCalled();
     expect(mockSuccessNotification).toBeCalledWith('Successfully Updated Healthcares');
   });
 
