@@ -8,6 +8,8 @@ import Table from '../Table';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { HealthcareService } from '../../../types';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -21,6 +23,21 @@ const data: HealthcareService[] = healthcareservice.entry.map((e, i) => ({
 }));
 
 describe('components/TeamsList/table.tsx', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   it('renders without crashing', () => {
     const wrapper = mount(
       <Router history={history}>
