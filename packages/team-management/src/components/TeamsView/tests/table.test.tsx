@@ -6,9 +6,10 @@ import { history } from '@onaio/connected-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
 import React from 'react';
 import { Provider } from 'react-redux';
-import Table, { TableData } from '../Table';
+import Table from '../Table';
 import { Router } from 'react-router';
 import { opensrpBaseURL } from '../../TeamsAddEdit/tests/fixtures';
+import { Organization } from '../../../ducks/organizations';
 
 describe('components/TeamsView/table', () => {
   beforeAll(() => {
@@ -25,10 +26,9 @@ describe('components/TeamsView/table', () => {
     });
     store.dispatch(authenticateUser(authenticated, user, extraData));
   });
-  const tableData: TableData[] = [];
+  const tableData: Organization[] = [];
   for (let i = 1; i < 5; i++) {
     tableData.push({
-      key: i.toString(),
       id: i,
       name: `Edrward ${i}`,
       active: i % 2 === 0,
@@ -73,30 +73,6 @@ describe('components/TeamsView/table', () => {
     wrapper.update();
     expect(onViewDetails).toBeCalled();
     wrapper.unmount();
-  });
-
-  it('Test Name Sorting functionality', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Table
-            setPractitionersList={() => jest.fn()}
-            setDetail={() => jest.fn()}
-            opensrpBaseURL={opensrpBaseURL}
-            data={tableData}
-          />
-        </Router>
-      </Provider>
-    );
-
-    const heading = wrapper.find('thead');
-    expect(heading.find('th')).toHaveLength(2);
-    heading.find('th').at(0).children().simulate('click');
-    heading.find('th').at(0).children().simulate('click');
-
-    const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe('4');
-    expect(body.children().last().prop('rowKey')).toBe('1');
   });
 
   it('Should show table pagination options', () => {

@@ -5,34 +5,34 @@ import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
+import { OpenSRPJurisdiction } from '@opensrp-web/location-management';
 import { Column, TableLayout } from '@opensrp-web/react-utils';
 import lang from '../../lang';
 
-export interface TableData extends Organization {
-  key: string;
-}
-
 export interface Props {
-  data: TableData[];
+  data: Organization[];
   opensrpBaseURL: string;
-  setDetail: (isLoading: string | Organization) => void;
-  setPractitionersList: (isLoading: string | Practitioner[]) => void;
+  setDetail: React.Dispatch<React.SetStateAction<Organization | null>>;
+  setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>;
+  setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>;
   onViewDetails?: (
-    row: TableData,
+    row: Organization,
     opensrpBaseURL: string,
-    setDetail: (isLoading: string | Organization) => void,
-    setPractitionersList: (isLoading: string | Practitioner[]) => void
+    setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
+    setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
+    setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>
   ) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { setDetail, onViewDetails, setPractitionersList, opensrpBaseURL } = props;
+  const { setDetail, onViewDetails, setPractitionersList, setAssignedLocations, opensrpBaseURL } =
+    props;
 
-  const columns: Column<TableData>[] = [
+  const columns: Column<Organization>[] = [
     {
       title: lang.NAME,
       dataIndex: 'name',
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      sorter: (a: Organization, b: Organization) => a.name.localeCompare(b.name),
     },
   ];
 
@@ -45,7 +45,7 @@ const Table: React.FC<Props> = (props: Props) => {
       actions={{
         width: '10%',
         // eslint-disable-next-line react/display-name
-        render: (_: unknown, record: TableData) => (
+        render: (_: unknown, record: Organization) => (
           <span className="d-flex justify-content-end align-items-center">
             <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
               <Button type="link" className="m-0 p-1">
@@ -60,7 +60,13 @@ const Table: React.FC<Props> = (props: Props) => {
                     className="viewdetails"
                     onClick={() => {
                       if (onViewDetails) {
-                        onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
+                        onViewDetails(
+                          record,
+                          opensrpBaseURL,
+                          setDetail,
+                          setPractitionersList,
+                          setAssignedLocations
+                        );
                       }
                     }}
                   >

@@ -9,7 +9,6 @@ import { getConfig, setConfig } from '@opensrp-web/pkg-config';
 interface TableData {
   geographicLevel: number;
   id: string;
-  key: string;
   name: string;
 }
 
@@ -45,7 +44,6 @@ describe('Table Layout', () => {
   for (let i = 1; i < 20; i++) {
     tableData.push({
       id: i.toString(),
-      key: i.toString(),
       name: `Edrward ${i}`,
       geographicLevel: i,
     });
@@ -57,7 +55,7 @@ describe('Table Layout', () => {
     );
 
     expect(wrapper.find('Table').first().prop('dataSource')).toMatchObject(tableData);
-    expect(wrapper.find('Table').first().prop('columns')).toMatchObject(columns);
+    expect(wrapper.find('Table').first().prop('columns')).toMatchObject([...columns, actions]); // column passed to table should contain column as well as actions
   });
 
   it('Must have default settings applied', () => {

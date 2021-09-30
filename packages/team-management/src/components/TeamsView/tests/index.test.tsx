@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { history } from '@onaio/connected-reducer-registry';
 import { Router } from 'react-router';
 import React from 'react';
-import TeamsView, { defaultProps, loadSingleTeam } from '..';
+import TeamsView, { populateTeamDetails } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
@@ -14,6 +14,10 @@ import { notification } from 'antd';
 import lang from '../../../lang';
 
 describe('components/TeamsView', () => {
+  const defaultProps = {
+    opensrpBaseURL: '',
+  };
+
   beforeEach(() => {
     fetch.mockClear();
   });
@@ -61,21 +65,21 @@ describe('components/TeamsView', () => {
     await act(async () => {
       wrapper.update();
     });
-    expect(input.instance().value).toEqual('Sample');
+    expect(wrapper.find('input').first().props().value).toEqual('Sample');
     wrapper.unmount();
   });
 
   it('renders fetched data correctly', async () => {
     fetch.once(JSON.stringify(teamMember));
-    loadSingleTeam(
+    populateTeamDetails(
       {
-        key: 'key',
         id: 1,
         name: 'name',
         active: true,
         identifier: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
       },
       '',
+      jest.fn(),
       jest.fn(),
       jest.fn()
     );
@@ -96,15 +100,15 @@ describe('components/TeamsView', () => {
   it('test error thrown if API is down', async () => {
     const mockNotificationError = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject('API is down'));
-    loadSingleTeam(
+    populateTeamDetails(
       {
-        key: 'key',
         id: 1,
         name: 'name',
         active: true,
         identifier: '258b4dec-79d3-546d-9c5c-f172aa7e03b0',
       },
       '',
+      jest.fn(),
       jest.fn(),
       jest.fn()
     );

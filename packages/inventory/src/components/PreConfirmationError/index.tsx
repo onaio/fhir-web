@@ -43,12 +43,7 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
     />
   );
 
-  const datasource: TableData[] = errorObj?.errors.map((error) => {
-    return {
-      ...error,
-      key: error.row,
-    };
-  }) as TableData[];
+  const datasource: TableData[] = errorObj?.errors ?? [];
 
   return (
     <Card title={cardTitle} className="full-page-card">
@@ -58,6 +53,7 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
       </p>
       <TableLayout
         id="InventoryPreConfirmationError"
+        dataKeyAccessor="row"
         persistState={true}
         columns={columns}
         datasource={datasource}

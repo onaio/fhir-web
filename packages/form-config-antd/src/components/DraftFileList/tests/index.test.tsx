@@ -230,6 +230,7 @@ describe('components/Antd/DraftFileList', () => {
         isDraft: false,
         isJsonValidator: false,
         jursdiction: '',
+        key: 0,
         label: 'test publish',
         module: '',
         version: '1.0.27',
@@ -277,8 +278,7 @@ describe('components/Antd/DraftFileList', () => {
     const postData = {
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
-      body:
-        '{"json":"{\\"forms_version\\":\\"1.0.27\\",\\"identifiers\\":[\\"reveal-test-file.json\\",\\"test-form-1.json\\"]}"}',
+      body: '{"json":"{\\"forms_version\\":\\"1.0.27\\",\\"identifiers\\":[\\"reveal-test-file.json\\",\\"test-form-1.json\\"]}"}',
       headers: {
         accept: 'application/json',
         authorization: 'Bearer hunter2',

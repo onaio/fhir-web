@@ -4,17 +4,16 @@ import { Popconfirm, Divider, Dropdown, Menu, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
-import { removeKeycloakUsers } from '../../../ducks/user';
+import { KeycloakUser, removeKeycloakUsers } from '../../../ducks/user';
 import { URL_USER_CREDENTIALS, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import lang from '../../../lang';
-import { TableData } from '..';
 
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakBaseURL: string;
   opensrpBaseURL: string;
-  record: TableData;
+  record: KeycloakUser;
   isLoadingCallback: (loading: boolean) => void;
   extraData: Dictionary;
 }

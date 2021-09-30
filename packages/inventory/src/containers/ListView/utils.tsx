@@ -8,7 +8,6 @@ import { Column } from '@opensrp-web/react-utils';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
-  key: string;
   type: string;
   serviceName: string;
   location: string;
@@ -79,6 +78,9 @@ export const columnsFactory = (langObj: Lang = lang) => {
 export const ServicePointsLoading = ({
   message = lang.FETCHING_LOCATIONS,
   description = lang.FETCHING_LOCATIONS_DESCRIPTION,
+}: {
+  message?: string;
+  description?: string;
 }) => {
   return (
     <Spin tip={lang.LOADING_ELLIPSIS}>

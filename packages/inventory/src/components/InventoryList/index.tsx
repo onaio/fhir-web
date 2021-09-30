@@ -8,7 +8,6 @@ import {
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
   URL_INVENTORY_ADD,
   URL_INVENTORY_EDIT,
-  TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
@@ -82,12 +81,10 @@ const InventoryList = (props: InventoryListProps) => {
     return <Alert message={lang.ERROR_GETTING_INVENTORIES} type="error" />;
   }
 
-  // add a key prop to the array data to be consumed by the table
   const datasource = inventoriesArray.map((item) => {
     const deliveryDate = format(new Date(item.deliveryDate), 'MMM dd, yyyy');
     const accountabilityEndDate = format(new Date(item.accountabilityEndDate), 'MMM dd, yyyy');
     const inventoryToDisplay = {
-      key: `${TableColumnsNamespace}-${item._id}`,
       ...item,
       deliveryDate,
       accountabilityEndDate,
@@ -108,6 +105,7 @@ const InventoryList = (props: InventoryListProps) => {
             </Link>
           </div>
           <TableLayout
+            dataKeyAccessor="_id"
             id="InventoryList"
             persistState={true}
             className="custom-table"

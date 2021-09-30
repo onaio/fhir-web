@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import lang from '../../lang';
 import { Column, TableLayout } from '@opensrp-web/react-utils';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 
-export interface TableData {
+export interface TableData extends Pick<ParsedHierarchyNode, 'id' | 'label'> {
   geographicLevel: number;
-  id: string;
-  key: string;
-  name: string;
 }
 
 export interface Props {
@@ -22,8 +20,8 @@ const Table: React.FC<Props> = (props: Props) => {
   const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
-      dataIndex: 'name',
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      dataIndex: 'label',
+      sorter: (a, b) => a.label.localeCompare(b.label),
     },
     {
       title: lang.LEVEL,
@@ -42,7 +40,7 @@ const Table: React.FC<Props> = (props: Props) => {
         title: lang.ACTIONS,
         width: '10%',
         // eslint-disable-next-line react/display-name
-        render: (value: boolean, record) => (
+        render: (_: boolean, record) => (
           <span className="d-flex justify-content-end align-items-center Actions">
             <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
               <Button type="link" className="m-0 p-1">
