@@ -11,6 +11,7 @@ import { authenticateUser, updateExtraData } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import * as registry from '@onaio/connected-reducer-registry';
 import flushPromises from 'flush-promises';
+import { fhirR4 } from '@smile-cdr/fhirts';
 
 const {
   fetchProtectedImage,
@@ -196,13 +197,13 @@ describe('dataloaders/FHIRService', () => {
   });
 
   it('FHIRServiceClass constructor works correctly 2', async () => {
-    const fhir = new FHIRServiceClass('https://test.fhir.org', 'CareTeam');
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
     expect(fhir.baseURL).toEqual('https://test.fhir.org');
     expect(fhir.resourceType).toEqual('CareTeam');
   });
 
   it('buildQueryParams works', async () => {
-    const fhir = new FHIRServiceClass('https://test.fhir.org', 'CareTeam');
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
     expect(fhir.buildQueryParams(null)).toEqual('CareTeam');
     expect(fhir.buildQueryParams({ _count: '500', _getpagesoffset: '50' })).toEqual(
       'CareTeam/_search?_count=500&_getpagesoffset=50'
@@ -219,11 +220,13 @@ describe('dataloaders/FHIRService', () => {
         };
       })
     );
-    const fhir = new FHIRServiceClass('https://test.fhir.org', 'CareTeam');
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
     const result = await fhir.list();
     await flushPromises();
     expect(requestMock.mock.calls).toEqual([['CareTeam']]);
     expect(result).toEqual(fixtures.careTeams);
+    // make sure every item of fhirlist returns the CareTeam
+    expect(result.entry.every((e) => e.resource.resourceType === 'CareTeam')).toBeTruthy();
   });
 
   it('FHIRServiceClass list method works with params', async () => {
@@ -236,12 +239,14 @@ describe('dataloaders/FHIRService', () => {
         };
       })
     );
-    const fhir = new FHIRServiceClass('https://test.fhir.org', 'CareTeam');
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
     // without url params
     const result = await fhir.list({ _count: '100' });
     await flushPromises();
     expect(requestMock.mock.calls).toEqual([['CareTeam/_search?_count=100']]);
     expect(result).toEqual(fixtures.careTeams);
+    // make sure every item of fhirlist returns the CareTeam
+    expect(result.entry.every((e) => e.resource.resourceType === 'CareTeam')).toBeTruthy();
   });
 
   it('FHIRServiceClass read method works', async () => {
@@ -254,7 +259,7 @@ describe('dataloaders/FHIRService', () => {
         };
       })
     );
-    const fhir = new FHIRServiceClass('https://test.fhir.org', 'CareTeam');
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
     const result = await fhir.read('308');
     await flushPromises();
     expect(result).toEqual(fixtures.careTeam1);
@@ -266,12 +271,12 @@ describe('dataloaders/FHIRService', () => {
     fhirMock.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          update: updateMock.mockResolvedValue('Success'),
+          update: updateMock.mockResolvedValue(fixtures.careTeam1),
         };
       })
     );
-    const fhir = new FHIRServiceClass('https://test.fhir.org', 'CareTeam');
-    const result = await fhir.update(fixtures.careTeam1);
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    const result = await fhir.update({ ...fixtures.careTeam1, name: 'New Name' });
     await flushPromises();
     expect(updateMock.mock.calls).toEqual([
       [
@@ -283,7 +288,7 @@ describe('dataloaders/FHIRService', () => {
             source: '#9bf085bac3f61473',
             versionId: '4',
           },
-          name: 'Care Team One',
+          name: 'New Name',
           participant: [
             { member: { reference: 'Practitioner/206' } },
             { member: { reference: 'Practitioner/103' } },
@@ -294,7 +299,7 @@ describe('dataloaders/FHIRService', () => {
         },
       ],
     ]);
-    expect(result).toEqual('Success');
+    expect(result).toEqual(fixtures.careTeam1);
   });
 
   it('FHIRServiceClass create method works', async () => {
@@ -303,14 +308,14 @@ describe('dataloaders/FHIRService', () => {
     fhirMock.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          create: createMock.mockResolvedValue('Success'),
+          create: createMock.mockResolvedValue(fixtures.careTeam1),
         };
       })
     );
-    const fhir = new FHIRServiceClass('https://test.fhir.org', 'CareTeam');
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
     const result = await fhir.create(fixtures.careTeam1);
     await flushPromises();
-    expect(result).toEqual('Success');
+    expect(result).toEqual(fixtures.careTeam1);
   });
 
   it('FHIRServiceClass delete method works', async () => {
@@ -323,7 +328,7 @@ describe('dataloaders/FHIRService', () => {
         };
       })
     );
-    const fhir = new FHIRServiceClass('https://test.fhir.org', 'CareTeam');
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
     const result = await fhir.delete('308');
     await flushPromises();
     expect(result).toEqual('Success');
