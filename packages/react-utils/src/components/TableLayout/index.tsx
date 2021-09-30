@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Table as AntTable } from 'antd';
 import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
 import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS, TABLE_ACTIONS_KEY } from '../../constants';
 import { getConfig, TableState, setConfig } from '@opensrp/pkg-config';
 import { Optional } from '../../helpers/utils';
+import lang from '../../lang';
 
 // Options Must be of any Data type as the Data could be any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,17 +18,9 @@ export interface Column<T> extends ColumnType<T>, Dictionary {
   key?: TKey<T>;
 }
 
-export const defaults: Options = {
-  pagination: {
-    showQuickJumper: true,
-    showSizeChanger: true,
-    defaultPageSize: TABLE_PAGE_SIZE,
-    pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
-  },
-};
-
 interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
+  dataKeyAccessor?: keyof T;
   columns?: Column<T>[];
   actions?: Action<T>;
 }
@@ -49,16 +42,38 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
-  const { id, columns, datasource, children, persistState, actions, ...restprops } = props;
+export function TableLayout<T extends object & { key?: string | number } = Dictionary>(
+  props: TableProps<T>
+) {
+  const {
+    id,
+    columns,
+    datasource,
+    children,
+    persistState,
+    actions,
+    dataKeyAccessor,
+    pagination,
+    ...restprops
+  } = props;
 
-  const options: Options = { ...defaults, ...restprops };
+  const paginationDefaults = {
+    showQuickJumper: true,
+    showSizeChanger: true,
+    defaultPageSize: getConfig('defaultTablesPageSize') ?? TABLE_PAGE_SIZE,
+    pageSizeOptions: TABLE_PAGE_SIZE_OPTIONS,
+  };
+
+  const options: Options = {
+    pagination: pagination === false ? false : { ...paginationDefaults, ...pagination },
+    ...restprops,
+  };
   const tablesState = getConfig('tablespref') ?? {};
 
   if (columns && actions) {
     const actionsColumn: Column<T> = {
       key: TABLE_ACTIONS_KEY as TKey<T>,
-      title: 'Actions',
+      title: lang.ACTIONS,
       ...actions,
     };
     columns.push(actionsColumn);
@@ -86,6 +101,14 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
       }),
   };
 
+  // auto append key into data if not provided
+  const data: T[] = useMemo(() => {
+    return datasource.map((e, index) => ({
+      ...e,
+      key: e.key ?? dataKeyAccessor ? e[dataKeyAccessor as keyof T] : index,
+    }));
+  }, [dataKeyAccessor, datasource]);
+
   /** Table Layout Component used to render the table with default Settings
    *
    * @param page - the current viewing Page number
@@ -103,7 +126,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   }
 
   return (
-    <AntTable<T> dataSource={datasource} columns={columns} {...tableprops}>
+    <AntTable<T> dataSource={data} columns={columns} {...tableprops}>
       {children}
     </AntTable>
   );

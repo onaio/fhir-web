@@ -30,6 +30,20 @@ exports[`location-management/src/components/LocationUnitDetail renders without c
     </p>
   </div>
   <div
+    className="mb-4 small mt-4"
+  >
+    <p
+      className="mb-0 font-weight-bold"
+    >
+      Identifier
+    </p>
+    <p
+      className="mb-0 loc-desc"
+    >
+      6y66ggde
+    </p>
+  </div>
+  <div
     className="mb-4 small"
   >
     <p

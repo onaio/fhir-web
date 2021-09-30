@@ -5,13 +5,7 @@ import { Spin } from 'antd';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import {
-  createChangeHandler,
-  defaults,
-  getQueryParams,
-  SearchForm,
-  TableLayout,
-} from '@opensrp/react-utils';
+import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -64,16 +58,6 @@ export const defaultProps = {
   extraData: {},
   usersPageSize: 20,
 };
-
-export interface TableData {
-  key: number | string;
-  id: string;
-  username: string | undefined;
-  email: string | undefined;
-  firstName: string | undefined;
-  lastName: string | undefined;
-  enabled: string | undefined;
-}
 
 export type UserListTypes = Props & RouteComponentProps;
 
@@ -139,17 +123,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     return <Spin size="large" />;
   }
 
-  const tableData: TableData[] = keycloakUsers.map((user: KeycloakUser, index: number) => {
-    return {
-      key: `${index}`,
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      enabled: user.enabled ? 'Enabled' : 'Disabled',
-    };
-  });
+  const tableData: KeycloakUser[] = keycloakUsers;
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
@@ -180,8 +154,8 @@ const UserList = (props: UserListTypes): JSX.Element => {
             <TableLayout
               columns={getTableColumns(sortedInfo)}
               datasource={tableData}
+              dataKeyAccessor="id"
               pagination={{
-                ...defaults.pagination,
                 current: page.current,
                 pageSize: page.pageSize,
                 total: isSearchActive ? keycloakUsers.length : usersCount,
@@ -192,7 +166,6 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   pageSize: pagination.pageSize ?? usersPageSize,
                 });
                 setSortedInfo(sorter);
-                setIsLoading(true);
               }}
               actions={{
                 title: 'Actions',

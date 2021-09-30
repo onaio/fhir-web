@@ -78,7 +78,7 @@ describe('helpers/utils', () => {
   });
   it('tests BuildDownloadUrl', () => {
     expect(BuildDownloadUrl(OPENSRP_API_BASE_URL, '123')).toEqual(
-      'https://opensrp-stage.smartregister.org/opensrp/rest/event/export-data?eventTypes=flag_problem,service_point_check,looks_good,record_gps,fix_problem&planIdentifier=123'
+      'https://opensrp-stage.smartregister.org/opensrp/rest/event/export-data?eventTypes=flag_problem,service_point_check,looks_good,record_gps&planIdentifier=123'
     );
   });
 });

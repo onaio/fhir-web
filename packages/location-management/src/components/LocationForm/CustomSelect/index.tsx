@@ -47,6 +47,10 @@ const defaultServiceTypeProps = {
   loadData: () => Promise.resolve(),
   getOptions: () => [],
   getSelectedFullData,
+  showSearch: true,
+  filterOption: (inputValue: string, option?: OptionData) => {
+    return !!option?.label?.toString().toLowerCase().includes(inputValue.toLowerCase());
+  },
 };
 
 /** custom select,  gets options from the api
