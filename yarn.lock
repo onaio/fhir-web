@@ -2728,21 +2728,6 @@
   dependencies:
     antd "^4.6.3"
 
-"@opensrp/react-utils@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.10.tgz#94cd8dec89d63ec970661d0dd4b3e761efbb7685"
-  integrity sha512-RI2NAa1yPU0ayFjvtTLYn/sKK/9/NrKUeAGh0kbYNDkFwstCvxrXkBZORiv+sy0kpIkBjVBmtAM2mfjxsLxqIw==
-  dependencies:
-    "@onaio/connected-private-route" "^0.0.11"
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.1"
-    "@onaio/session-reducer" "^0.0.12"
-    "@onaio/utils" "^0.0.1"
-    "@opensrp/notifications" "^0.0.5"
-    "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/server-service" "^0.0.17"
-    antd "^4.6.3"
-
 "@opensrp/react-utils@^0.0.12":
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.12.tgz#5903e2eb5ec8cc946f611b5db0d18667c0b0aa56"

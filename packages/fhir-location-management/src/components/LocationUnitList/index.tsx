@@ -7,8 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import FHIR from 'fhirclient';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService, FHIRServiceClass } from '@opensrp/react-utils';
 import {
   LocationUnit,
   locationUnitsReducer,
@@ -73,6 +72,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detailId, setDetailId] = useState<string>();
   const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
+  const serve = new FHIRServiceClass(fhirBaseURL, 'Location');
 
   const locationUnits = useQuery(
     LOCATION_UNIT_FIND_BY_PROPERTIES,
@@ -83,21 +83,17 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const fhirLocationUnits = useQuery(
-    'Locations',
-    () => FHIR.client(fhirBaseURL).request('Location'),
-    {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: IfhirR4.IBundle) => res.entry,
-    }
-  );
+  const fhirLocationUnits = useQuery('Locations', async () => serve.list(), {
+    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+    select: (res) => res.entry,
+  });
 
   const fhirLocationDetail = useQuery(
     `Location/${detailId}`,
-    async () => (detailId ? FHIR.client(fhirBaseURL).request(`Location/${detailId}`) : undefined),
+    async () => (detailId ? serve.read(detailId) : undefined),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: IfhirR4.IBundle) => res,
+      select: (res) => res,
     }
   );
 
@@ -139,6 +135,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   }, [treeDataQuery, currentClickedNode]);
 
   if (
+    !fhirLocationUnits.isFetched ||
     tableData.length === 0 ||
     treeData.length === 0 ||
     !locationUnits.data ||
