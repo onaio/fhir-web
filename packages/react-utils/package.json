@@ -54,6 +54,7 @@
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
+    "@smile-cdr/fhirts": "1.2.5",
     "nock": "^13.0.6"
   },
   "author": "OpenSRP Engineering",

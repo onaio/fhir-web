@@ -1,3 +1,5 @@
+import { fhirR4 } from '@smile-cdr/fhirts';
+
 /* eslint-disable @typescript-eslint/camelcase */
 export const userAuthData = {
   roles: ['ROLE_OPENMRS'],
@@ -279,7 +281,7 @@ export const careTeams = {
   ],
 };
 
-export const careTeam1 = {
+export const careTeam1: fhirR4.CareTeam = {
   resourceType: 'CareTeam',
   id: '308',
   meta: {

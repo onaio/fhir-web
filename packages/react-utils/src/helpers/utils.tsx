@@ -1,3 +1,4 @@
+import { Meta } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/meta';
 import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
 
@@ -16,3 +17,18 @@ export const loadLanguageResources = (i18n: i18nInstance | undefined, resources:
     });
   });
 };
+
+/** interface for FHIR response */
+export interface FHIRResponse<T> {
+  resourceType: string;
+  id: string;
+  meta?: Meta;
+  type: string;
+  total: number;
+  link: { relation: string; url: string }[];
+  entry: {
+    fullUrl: string;
+    resource: T;
+    search: { mode: string };
+  }[];
+}
