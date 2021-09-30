@@ -50,9 +50,7 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
     />
   );
 
-  const datasource: TableData[] = errorObj?.errors.map((error) => {
-    return { ...error, key: error.row };
-  }) as TableData[];
+  const datasource: TableData[] = errorObj?.errors ?? [];
 
   const rowsProcessed = Number(errorObj?.rowsProcessed ?? '0');
   const totalRows = Number(errorObj?.rowsNumber ?? '0');
@@ -77,6 +75,7 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
       <p>{format(lang.INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED, filename)}</p>
       <TableLayout
         id="InventoryPostConfirmationError"
+        dataKeyAccessor="row"
         persistState={true}
         columns={columns}
         datasource={datasource}

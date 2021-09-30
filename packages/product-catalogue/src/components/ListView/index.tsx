@@ -19,7 +19,7 @@ import {
 } from '../../ducks/productCatalogue';
 import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { CATALOGUE_CREATE_VIEW_URL, RouteParams, TableColumnsNamespace } from '../../constants';
+import { CATALOGUE_CREATE_VIEW_URL, RouteParams } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
@@ -73,14 +73,6 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   }
 
   const pageTitle = `${lang.PRODUCT_CATALOGUE} (${data.length})`;
-  // add a key prop to the array data to be consumed by the table
-  const datasource = data.map((singleObject) => {
-    const prodWithKey = {
-      ...singleObject,
-      key: `${TableColumnsNamespace}-${singleObject.uniqueId}`,
-    };
-    return prodWithKey;
-  });
 
   return (
     <div className="content-section product-catalogue">
@@ -97,8 +89,9 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
           </div>
           <TableLayout
             id="ProductCatalogueList"
+            dataKeyAccessor="uniqueId"
             persistState={true}
-            datasource={datasource}
+            datasource={data}
             columns={columns}
             actions={{
               title: lang.ACTIONS_TH,

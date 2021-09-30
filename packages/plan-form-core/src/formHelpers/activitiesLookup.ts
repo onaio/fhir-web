@@ -19,8 +19,6 @@ import {
   MDA_POINT_ADVERSE_EFFECTS_CODE,
   PRODUCT_CHECK_ACTIVITY_CODE,
   PRODUCT_CHECK_CODE,
-  FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
-  FIX_PRODUCT_PROBLEMS_CODE,
   RECORD_GPS_ACTIVITY_CODE,
   RECORD_GPS_CODE,
   SERVICE_POINT_CHECK_ACTIVITY_CODE,
@@ -70,8 +68,6 @@ import {
   MDA_POINT_DISPENSE_COLLECTION_GOAL,
   PRODUCT_CHECK_ACTIVITY_DESCRIPTION,
   PRODUCT_CHECK_GOAL_MEASURE,
-  FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION,
-  FIX_PRODUCT_PROBLEM_GOAL_MEASURE,
   RECORD_GPS_ACTIVITY_DESCRIPTION,
   RECORD_GPS_GOAL_MEASURE,
   SERVICE_POINT_CHECK_ACTIVITY_DESCRIPTION,
@@ -85,7 +81,6 @@ import {
   COMPLETE_FIX_PROBLEM_TASK,
   COMPLETE_FLAG_PROBLEM_TITLE,
   COMPLETE_FLAG_PROBLEM_DESCRIPTION,
-  FIX_PRODUCT_PROBLEM_ACTIVITY,
   RECORD_GPS_ACTIVITY,
   RECORD_GPS_GOAL_DESCRIPTION,
   COMPLETE_RECORD_GPS_DESCRIPTION,
@@ -1090,6 +1085,14 @@ export const planActivities: PlanActivities = {
             expression: '$this.is(FHIR.Bundle)',
           },
         },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Product is active',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+        },
       ],
       dynamicValue: [
         {
@@ -1334,63 +1337,6 @@ export const planActivities: PlanActivities = {
       ],
     },
   },
-  [FIX_PRODUCT_PROBLEM_ACTIVITY_CODE]: {
-    action: {
-      identifier: '',
-      prefix: 14, // TODO :what does prefix mean
-      title: FIX_PRODUCT_PROBLEM_ACTIVITY,
-      description: FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION,
-      code: FIX_PRODUCT_PROBLEMS_CODE,
-      timingPeriod: {
-        end: '',
-        start: '',
-      },
-      reason: ROUTINE,
-      goalId: FIX_PRODUCT_PROBLEMS_CODE,
-      subjectCodableConcept: {
-        text: 'Device',
-      },
-      trigger: [
-        {
-          type: NAMED_EVENT_TRIGGER_TYPE,
-          name: 'event-submission',
-          expression: {
-            description: 'Trigger when a Fix Product event is submitted',
-            expression: "questionnaire = 'flag_problem'",
-          },
-        },
-      ],
-      condition: [
-        {
-          kind: APPLICABILITY_CONDITION_KIND,
-          expression: {
-            description: 'Product exists',
-            expression: '$this.is(FHIR.QuestionnaireResponse)',
-          },
-        },
-      ],
-      definitionUri: 'fix_problem.json',
-      type: CREATE_TYPE,
-    },
-    goal: {
-      description: FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION,
-      id: FIX_PRODUCT_PROBLEMS_CODE,
-      priority: MEDIUM_PRIORITY,
-      target: [
-        {
-          measure: FIX_PRODUCT_PROBLEM_GOAL_MEASURE,
-          detail: {
-            detailQuantity: {
-              comparator: '>',
-              unit: GoalUnit.PERCENT,
-              value: 100,
-            },
-          },
-          due: '',
-        },
-      ],
-    },
-  },
   [RECORD_GPS_ACTIVITY_CODE]: {
     action: {
       identifier: '',
@@ -1427,6 +1373,14 @@ export const planActivities: PlanActivities = {
           expression: {
             description: 'Check if service point has stock',
             expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
           },
         },
       ],
@@ -1559,6 +1513,14 @@ export const planActivities: PlanActivities = {
           expression: {
             description: 'Check if service point has stock',
             expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
           },
         },
       ],

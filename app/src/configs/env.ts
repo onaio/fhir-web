@@ -33,9 +33,7 @@ export const ENABLE_TEAMS = setEnv('REACT_APP_ENABLE_TEAMS', 'false') === 'true'
 
 /** Activate the plans menu */
 export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') === 'true';
-export const OPENSRP_OAUTH_SCOPES = setEnv('REACT_APP_OPENSRP_OAUTH_SCOPES', 'read,write').split(
-  ','
-);
+export const OPENSRP_OAUTH_SCOPES = setEnv('REACT_APP_OPENSRP_OAUTH_SCOPES', 'profile').split(',');
 
 export const DEFAULT_ACTIVITY_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS', 7)
@@ -183,3 +181,5 @@ export const USER_FORM_HIDDEN_FIELDS = setEnv('REACT_APP_USER_FORM_HIDDEN_FIELDS
 export const USER_FORM_RENDER_FIELDS = setEnv('REACT_APP_USER_FORM_RENDER_FIELDS', '').split(',');
 
 export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000));
+
+export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));

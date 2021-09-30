@@ -133,7 +133,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
         {
-          title: 'Locations',
+          title: langObj.LOCATIONS,
           key: 'location',
           enabled:
             ENABLE_LOCATIONS &&

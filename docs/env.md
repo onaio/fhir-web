@@ -28,7 +28,7 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/auth`
 
-- **REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE**
+- **REACT_APP_OPENSRP_OAUTH_STATE**
 
   - Defines the app oauth2 state to use
   - **Required**
@@ -192,13 +192,13 @@ Below is a list of currently supported environment variables:
 
   - Sets the oauth app permission scopes.
   - **Required**(`string`)
-  - default: `read,write`
+  - default: `profile`
 
 - **REACT_APP_FILTER_BY_PARENT_ID**
 
   - Allows filtering root locations by parentId when set to true
   - **Optional**(_string_)
-  - default: `"false"`
+  - default: `"true"`
 
 - **REACT_APP_KEYCLOAK_USERS_PAGE_SIZE**
 
@@ -228,6 +228,12 @@ Below is a list of currently supported environment variables:
   - default: `''`
 
 - **REACT_APP_ENABLE_FHIR_LOCATIONS**
+
   - Enables FHIR location management module
   - **Optional**(_string_)
   - default: `"false"`
+
+- **REACT_APP_DEFAULTS_TABLE_PAGE_SIZE**
+  - Default number of rows per table page
+  - default: 5
+  - `Enum: 5, 10, 20 , 50, 100`
