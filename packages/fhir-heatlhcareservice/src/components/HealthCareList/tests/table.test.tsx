@@ -80,8 +80,8 @@ describe('components/TeamsList/table.tsx', () => {
     heading.find('th').at(0).children().simulate('click');
 
     const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe(0);
-    expect(body.children().last().prop('rowKey')).toBe(1);
+    expect(body.children().at(2).prop('rowKey')).toBe('360');
+    expect(body.children().last().prop('rowKey')).toBe('313');
   });
 
   it('Test Active Sorting functionality', () => {
@@ -97,8 +97,8 @@ describe('components/TeamsList/table.tsx', () => {
     heading.find('th').at(1).children().simulate('click');
 
     const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe(2);
-    expect(body.children().last().prop('rowKey')).toBe(4);
+    expect(body.children().at(2).prop('rowKey')).toBe('313');
+    expect(body.children().last().prop('rowKey')).toBe('424');
   });
 
   it('Test Last Updated Sorting functionality', () => {
@@ -114,8 +114,8 @@ describe('components/TeamsList/table.tsx', () => {
     heading.find('th').at(2).children().simulate('click');
 
     const body = wrapper.find('tbody');
-    expect(body.children().first().prop('rowKey')).toBe(0);
-    expect(body.children().last().prop('rowKey')).toBe(1);
+    expect(body.children().at(2).prop('rowKey')).toBe('360');
+    expect(body.children().last().prop('rowKey')).toBe('313');
   });
 
   it('Should show table pagination options', () => {
