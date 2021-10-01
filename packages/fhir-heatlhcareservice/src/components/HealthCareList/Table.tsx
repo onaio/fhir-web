@@ -45,6 +45,7 @@ const Table: React.FC<Props> = (props: Props) => {
     <TableLayout
       datasource={props.data}
       columns={columns}
+      dataKeyAccessor="id"
       actions={{
         width: '10%',
 
