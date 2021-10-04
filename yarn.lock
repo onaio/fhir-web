@@ -2703,11 +2703,44 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
+"@opensrp/location-management@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@opensrp/location-management/-/location-management-0.0.15.tgz#17e1a1097e03aa5548242662b23cf05706d6ab20"
+  integrity sha512-P2XAZhcghXqfUH3tal3nysQuYupPe5m3RuaPkmMIrgMajn+/DByAv24AAXuukYobbK0t4l+FqFDp7IHTX7cFwg==
+  dependencies:
+    "@onaio/session-reducer" "0.0.12"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.4"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/react-utils" "^0.0.12"
+    "@opensrp/reducer-factory" "^0.0.13"
+    "@opensrp/server-service" "^0.0.16"
+    cycle "^1.0.3"
+    fast_array_intersect "^1.1.0"
+    react-i18next "^11.8.10"
+    tree-model "^1.0.7"
+    uuid "^8.3.1"
+
 "@opensrp/notifications@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.4.tgz#c97b991ed7f820f1b6d2b9d447ec9169772c29ab"
   integrity sha512-7Gv+7x9OMc8nlAGnxid3fapU4vnpF4Dei64xZdxyWDvKRXVDzuP9a58E1UvDyfqTh/7F20YB9/f2YXutDVQprw==
   dependencies:
+    antd "^4.6.3"
+
+"@opensrp/react-utils@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.12.tgz#5903e2eb5ec8cc946f611b5db0d18667c0b0aa56"
+  integrity sha512-/1BuD3t07i4Ab9afzGkqe+EOgAP2mGz1BhUqGNnazx3+gfXESpCCjEsela84RNuiByyJZkJLPvxJ8KlChRQM7g==
+  dependencies:
+    "@onaio/connected-private-route" "^0.0.11"
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.1"
+    "@onaio/session-reducer" "^0.0.12"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.5"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/server-service" "^0.0.17"
     antd "^4.6.3"
 
 "@opensrp/reducer-factory@^0.0.9":
@@ -2738,6 +2771,39 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
+
+"@opensrp/team-assignment@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@opensrp/team-assignment/-/team-assignment-0.0.6.tgz#a60d60143fdcb9a85868e3f8736f431bfd6249c1"
+  integrity sha512-+cXmkI6c1/X/TTwnjaCzvDJq/S481V2M5M56hh3q24q1oK3l17QUW8KkbMrJW9dkx5zeCtVQO76BfcDpp/MPOQ==
+  dependencies:
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/location-management" "^0.0.15"
+    "@opensrp/notifications" "^0.0.5"
+    "@opensrp/react-utils" "^0.0.12"
+    "@opensrp/reducer-factory" "^0.0.13"
+    "@opensrp/server-service" "^0.0.17"
+    "@opensrp/team-management" "^0.0.9"
+    antd "^4.6.3"
+    formik "^2.1.5"
+    formik-antd "2.0.1"
+    react-helmet "^6.1.0"
+    yup "^0.29.3"
+
+"@opensrp/team-management@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@opensrp/team-management/-/team-management-0.0.9.tgz#f51550bd8b71d59e50db5aeebe0aee0bedd0284b"
+  integrity sha512-iq9UrbrkyWeS6nrBzq0VrzbJ3djw71b+vdjuMxeZkCtdSlKOqfUOIkU2acJWm8riAkx+XmfJO/uLQnaGswMuUA==
+  dependencies:
+    "@opensrp/notifications" "^0.0.4"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/react-utils" "^0.0.12"
+    "@opensrp/reducer-factory" "^0.0.13"
+    "@opensrp/server-service" "^0.0.16"
+    i18next "^19.8.4"
+    react-i18next "^11.8.10"
+    uuid "^8.3.1"
 
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
@@ -2829,6 +2895,11 @@
   integrity sha512-892K+kWUUi3cl+LlqEWIDrhvLgdL79tECi8JZUyq6IviKy/DNhuzCRlbHUjxK89f4ypPMMaFnFuR9Ie6DoIMsw==
   dependencies:
     type-detect "4.0.8"
+
+"@smile-cdr/fhirts@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@smile-cdr/fhirts/-/fhirts-1.2.5.tgz#e0e335b8407889d966723f212698260e7770f7c2"
+  integrity sha512-q+Q/qLswFmE3ZaGlHgO1xTibptS2gOvp3/SS8lGno3unF3Gu1+vJahan1RU/b8WL1ziUXC9Vl3fSpdsR62SqGA==
 
 "@smile-cdr/fhirts@^1.2.5":
   version "1.2.6"
