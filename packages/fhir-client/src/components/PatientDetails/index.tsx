@@ -294,6 +294,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
               >
                 {resourceType === 'DocumentReference' ? (
                   <DocumentReferenceDetails
+                    fhirBaseApiUrl={fhirBaseURL}
                     documentResources={
                       resourceTypeMap[resourceType].data as IfhirR4.IDocumentReference[]
                     }
