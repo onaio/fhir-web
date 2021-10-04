@@ -5,11 +5,11 @@ import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { useQuery, useQueries } from 'react-query';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { Resource404, BrokenPage } from '@opensrp/react-utils';
-import FHIR from 'fhirclient';
+import { Resource404, BrokenPage, FHIRServiceClass } from '@opensrp/react-utils';
 import lang from '../../lang';
 import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { getPatientName } from '../CreateEditCareTeam/utils';
+import { FHIR_GROUPS, FHIR_PRACTITIONERS } from '../../constants';
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -30,7 +30,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const { data, isLoading, error } = useQuery({
     queryKey: [`CareTeam/${careTeamId}`],
     queryFn: () =>
-      careTeamId ? FHIR.client(fhirBaseURL).request(`${FHIR_CARE_TEAM}/${careTeamId}`) : undefined,
+      careTeamId ? new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId) : undefined,
     select: (res) => res,
   });
 
@@ -39,7 +39,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
       ? data.participant.map((p: { member: { reference: string } }) => {
           return {
             queryKey: [FHIR_CARE_TEAM, p.member.reference],
-            queryFn: () => FHIR.client(fhirBaseURL).request(p.member.reference),
+            queryFn: () =>
+              new FHIRServiceClass(fhirBaseURL, FHIR_PRACTITIONERS).read(
+                p.member.reference.split('/')[1]
+              ),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res: IfhirR4.IPractitioner) => res,
           };
@@ -51,7 +54,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
     queryKey: [`CareTeam/${data && data.subject && data.subject.reference}`],
     queryFn: () =>
       data && data.subject && data.subject.reference
-        ? FHIR.client(fhirBaseURL).request(data.subject.reference)
+        ? new FHIRServiceClass(fhirBaseURL, FHIR_GROUPS).read(data.subject.reference.split('/')[1])
         : undefined,
     select: (res) => res,
   });

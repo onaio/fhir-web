@@ -2,6 +2,8 @@ import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { store } from '@opensrp/store';
+import nock from 'nock';
+import * as fhirCient from 'fhirclient';
 import { authenticateUser } from '@onaio/session-reducer';
 import { history } from '@onaio/connected-reducer-registry';
 import { Router } from 'react-router';
@@ -15,7 +17,6 @@ import lang from '../../../lang';
 import { Dictionary } from '@onaio/utils';
 import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
 import { getPatientName } from '../utils';
-import * as functions from '..';
 
 const { QueryClientProvider } = reactQuery;
 
@@ -60,6 +61,7 @@ describe('components/CreateEditCareTeam', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
+    nock('https://r4.smarthealthit.org').get('/CareTeam/308').reply(200, fixtures.careTeam1);
   });
 
   beforeEach(() => {
@@ -90,7 +92,7 @@ describe('components/CreateEditCareTeam', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitionerBundle,
+      data: fixtures.practitioners,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
@@ -144,7 +146,7 @@ describe('components/CreateEditCareTeam', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitionerBundle,
+      data: fixtures.practitioners,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
@@ -180,7 +182,7 @@ describe('components/CreateEditCareTeam', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitionerBundle,
+      data: fixtures.practitioners,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
@@ -211,10 +213,15 @@ describe('components/CreateEditCareTeam', () => {
   });
 
   it('handles error if fetch fails when page reloads', async () => {
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockRejectedValue('API Failed'),
+        };
+      })
+    );
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-
-    const mockFetchFailure = jest.spyOn(functions, 'fetchPractitionersRecursively');
-    mockFetchFailure.mockRejectedValueOnce('rejected');
 
     const wrapper = mount(
       <Router history={history}>
@@ -245,7 +252,7 @@ describe('components/CreateEditCareTeam', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitionerBundle,
+      data: fixtures.practitioners,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
