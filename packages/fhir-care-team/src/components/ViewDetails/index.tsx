@@ -88,19 +88,19 @@ const ViewDetails = (props: ViewDetailsProps) => {
             {lang.NAME}
           </Text>
           <Text type="secondary" className="display-block">
-            {data.name}
+            {data?.name}
           </Text>
           <Text strong={true} className="display-block">
             {lang.IDENTIFIER}
           </Text>
           <Text type="secondary" className="display-block">
-            {data.identifier[0].value}
+            {data?.identifier[0].value}
           </Text>
           <Text strong={true} className="display-block">
             {lang.STATUS}
           </Text>
           <Text type="secondary" className="display-block">
-            {data.status}
+            {data?.status}
           </Text>
           {subject.data && subject.data.name ? (
             <>

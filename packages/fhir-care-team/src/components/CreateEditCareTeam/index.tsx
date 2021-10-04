@@ -13,7 +13,6 @@ import {
   FHIR_PRACTITIONERS,
   ROUTE_PARAM_CARE_TEAM_ID,
 } from '../../constants';
-import { IfhirR4 } from '@smile-cdr/fhirts';
 import { CareTeamForm, FormFields } from './Form';
 import { getPatientName } from './utils';
 import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
@@ -61,13 +60,10 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
 
   const singleCareTeam = useQuery(
     [FHIR_CARE_TEAM, careTeamId],
-    async () =>
-      careTeamId
-        ? await new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId)
-        : undefined,
+    async () => await new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: IfhirR4.ICareTeam) => res,
+      select: (res) => res,
     }
   );
 
@@ -76,7 +72,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     async () => await new FHIRServiceClass(fhirBaseURL, FHIR_GROUPS).list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: IfhirR4.IBundle) => res,
+      select: (res) => res,
     }
   );
 
@@ -85,7 +81,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     async () => await new FHIRServiceClass(fhirBaseURL, FHIR_PRACTITIONERS).list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: IfhirR4.IBundle) => res,
+      select: (res) => res,
     }
   );
 

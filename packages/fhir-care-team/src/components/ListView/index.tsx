@@ -16,7 +16,6 @@ import {
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { IfhirR4 } from '@smile-cdr/fhirts';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { createChangeHandler, getQueryParams, SearchForm, BrokenPage } from '@opensrp/react-utils';
@@ -67,13 +66,13 @@ export const fetchCareTeams = async (
   pageSize: number,
   pageOffset: number,
   setPayloadCount: (count: number) => void
-): Promise<IfhirR4.IBundle> => {
+) => {
   const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
   const params = {
     _count: pageSize,
     _getpagesoffset: pageOffset,
   };
-  return serve.list(params).then((res: IfhirR4.IBundle) => {
+  return serve.list(params).then((res) => {
     setPayloadCount(res.total as number);
     return res;
   });
