@@ -82,19 +82,14 @@ describe('components/CreateEditCareTeam', () => {
 
   it('renders correctly', async () => {
     // mock react query return value
-    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.careTeam1,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.groups,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitioners,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+    const fhir = jest.spyOn(fhirCient, 'client');
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: jest.fn().mockResolvedValue(fixtures.careTeam1),
+        };
+      })
+    );
 
     const wrapper = mount(
       <Router history={history}>

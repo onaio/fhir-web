@@ -55,7 +55,7 @@ describe('Table Layout', () => {
     );
 
     expect(wrapper.find('Table').first().prop('dataSource')).toMatchObject(tableData);
-    expect(wrapper.find('Table').first().prop('columns')).toMatchObject(columns);
+    expect(wrapper.find('Table').first().prop('columns')).toMatchObject([...columns, actions]); // column passed to table should contain column as well as actions
   });
 
   it('Must have default settings applied', () => {

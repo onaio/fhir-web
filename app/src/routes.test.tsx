@@ -197,8 +197,8 @@ describe('routes', () => {
           {
             children: [
               {
-                key: 'user',
-                title: 'User Management',
+                key: 'users',
+                title: 'Users',
                 url: '/admin/users',
               },
               {
@@ -213,14 +213,14 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'users',
-            title: 'Users',
+            key: 'user-management',
+            title: 'User Management',
           },
           {
             children: [
               {
                 key: 'location-unit',
-                title: 'Location unit',
+                title: 'Location units',
                 url: '/admin/location/unit',
               },
               {
@@ -230,19 +230,13 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'location',
-            title: 'Locations',
-          },
-          {
-            enabled: true,
-            key: 'product-catalogue',
-            title: 'Product Catalogue',
-            url: '/admin/product-catalogue',
+            key: 'location-management',
+            title: 'Location Management',
           },
           {
             children: [
               {
-                key: 'teams-list',
+                key: 'TEAMS',
                 title: 'Teams',
                 url: '/admin/teams',
               },
@@ -254,8 +248,14 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'teams',
-            title: 'Teams',
+            key: 'team-management',
+            title: 'Team Management',
+          },
+          {
+            enabled: true,
+            key: 'product-catalogue',
+            title: 'Product Catalogue',
+            url: '/admin/product-catalogue',
           },
           {
             children: [
@@ -281,11 +281,11 @@ describe('routes', () => {
           },
         ],
         enabled: true,
-        key: 'admin',
+        key: 'administration',
         otherProps: {
           icon: <DashboardOutlined />,
         },
-        title: 'Admin',
+        title: 'Administration',
         url: '/admin',
       },
     ]);
