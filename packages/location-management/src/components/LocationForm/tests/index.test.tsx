@@ -163,7 +163,9 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // not required for core
-    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(`"Type"`);
+    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(
+      `"TypeSelect the service point type"`
+    );
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
 
@@ -266,7 +268,7 @@ describe('LocationForm', () => {
 
     // service types is required for eusm
     expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(
-      `"TypeService types is required"`
+      `"TypeSelect the service point typeService types is required"`
     );
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);

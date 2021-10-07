@@ -69,7 +69,7 @@ export const defaultFormField: LocationFormFields = {
   name: '',
   status: LocationUnitStatus.ACTIVE,
   isJurisdiction: true,
-  serviceType: '',
+  serviceType: undefined,
   locationTags: [],
   externalId: '',
   extraFields: [],
