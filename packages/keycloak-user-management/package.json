@@ -62,6 +62,7 @@
     "lodash": "^4.17.20",
     "react-i18next": "^11.8.10",
     "uuid": "^8.3.1",
+    "react-query": "^3.15.1",
     "yup": "^0.29.3"
   },
   "devDependencies": {
