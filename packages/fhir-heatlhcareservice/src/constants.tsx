@@ -13,3 +13,5 @@ export const HEALTHCARES_POST = 'HealthcareService/';
 // Healthcares
 //
 export const ORGANIZATION_GET = 'Organization/';
+
+export const FHIR_RESOURCES_PAGE_SIZE = 500;
