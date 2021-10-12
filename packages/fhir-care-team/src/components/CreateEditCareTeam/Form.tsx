@@ -89,7 +89,9 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
               props.practitioners,
               props.initialValues?.id,
               props.initialValues?.uuid
-            ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+            )
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+              .finally(() => setIsSubmitting(false));
           }}
         >
           <Form.Item id={'uuid'} hidden={true} name={'uuid'} label={'UUID'}>
