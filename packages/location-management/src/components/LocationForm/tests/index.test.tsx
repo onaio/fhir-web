@@ -726,4 +726,81 @@ describe('LocationForm', () => {
     ]);
     wrapper.unmount();
   });
+
+  it('issue 850 - form re renders invalidates and clears filled in values', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const MockComponent = () => {
+      const [counter, setCounter] = React.useState<number>(0);
+      const props = {
+        initialValues: { ...getLocationFormFields(), latitude: undefined, longitude: undefined },
+        filterByParentId: false,
+        successURLGenerator: () => '/',
+        hidden: [],
+        disabled: [],
+        onCancel: () => void 0,
+        username: '',
+        opensrpBaseURL: 'http://example.com',
+        afterSubmit: () => {
+          return;
+        },
+      };
+
+      return (
+        <>
+          <button id="render" onClick={() => setCounter(counter + 1)}></button>
+          <LocationForm {...props} />
+        </>
+      );
+    };
+
+    fetch.mockResponse(JSON.stringify([]));
+
+    const wrapper = mount(
+      <Router history={history}>
+        <MockComponent />
+      </Router>,
+      { attachTo: div }
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    let formValues = formInstance.getFieldsValue();
+    expect(formValues.latitude).toBeUndefined();
+    expect(formValues.longitude).toBeUndefined();
+
+    wrapper.find('FormItem#latitude input').simulate('change', {
+      target: { value: '34.56' },
+    });
+
+    wrapper.find('FormItem#longitude input').simulate('change', {
+      target: { value: '19.56' },
+    });
+
+    wrapper.update();
+
+    // expect that the above data is recorded by form.
+    formValues = formInstance.getFieldsValue();
+    expect(formValues.latitude).toEqual('34.56');
+    expect(formValues.longitude).toEqual('19.56');
+
+    // force a rerender that reloads initial values in form
+    wrapper.find('#render').simulate('click');
+    wrapper.update();
+
+    // see if the values that were field above persisted,
+    // the before behavior is that the below fields would have taken their initialValues which is undefined
+    formValues = formInstance.getFieldsValue();
+    expect(formValues.latitude).toEqual('34.56');
+    expect(formValues.longitude).toEqual('19.56');
+
+    wrapper.unmount();
+  });
 });
