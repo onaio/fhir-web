@@ -18,7 +18,6 @@ import { Practitioner } from '@opensrp/team-management';
  * @param {string} keycloakBaseURL - keycloak api base URL
  * @param opensrpBaseURL - opensrp api base url
  * @param {string} userId - id of user to be deleted
- * @param {Function} isLoadingCallback - callback function that sets loading state
  * @param {Lang} langObj - lang
  * @returns {void}
  */
@@ -27,12 +26,8 @@ export const deleteUser = async (
   keycloakBaseURL: string,
   opensrpBaseURL: string,
   userId: string,
-  isLoadingCallback: (loading: boolean) => void,
   langObj: Lang = lang
 ) => {
-  // start loader
-  isLoadingCallback(true);
-
   // get tied practitioner from base user Id
   const practitioner = await getPractitionerByUserId(
     OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
@@ -41,7 +36,6 @@ export const deleteUser = async (
   ).catch(() => {
     sendErrorNotification(langObj.ERROR_OCCURED);
     // stop loader
-    isLoadingCallback(false);
     return undefined;
   });
 
@@ -69,10 +63,6 @@ export const deleteUser = async (
     })
     .catch((_: Error) => {
       sendErrorNotification(langObj.ERROR_OCCURED);
-    })
-    .finally(() => {
-      // stop loader
-      isLoadingCallback(false);
     });
 };
 
