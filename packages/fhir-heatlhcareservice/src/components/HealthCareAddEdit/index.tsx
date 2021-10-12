@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { HealthcareService, Organization } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import { HEALTHCARES_GET, ORGANIZATION_GET } from '../../constants';
+import { FHIR_RESOURCES_PAGE_SIZE, HEALTHCARES_GET, ORGANIZATION_GET } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
@@ -21,6 +21,10 @@ export const defaultProps = {
 
 export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
+  const fhirParams = {
+    _count: FHIR_RESOURCES_PAGE_SIZE,
+    _getpagesoffset: 0,
+  };
 
   const healthcareserviceAPI = new FHIRServiceClass<HealthcareService>(
     fhirBaseURL,
@@ -40,7 +44,7 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const organizations = useQuery(ORGANIZATION_GET, async () => organizationAPI.list(), {
+  const organizations = useQuery(ORGANIZATION_GET, async () => organizationAPI.list(fhirParams), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res) => res.entry.map((e) => e.resource),
   });
