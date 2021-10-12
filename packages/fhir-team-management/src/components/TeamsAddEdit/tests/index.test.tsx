@@ -50,10 +50,13 @@ describe('components/TeamsAddEdit', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization') return Promise.resolve(team);
+          if (url === 'Organization/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(team);
           if (url === 'Organization/212') return Promise.resolve(team212);
-          else if (url === 'Practitioner') return Promise.resolve(practitioner);
-          else if (url === 'PractitionerRole') return Promise.resolve(practitionerrole);
+          else if (url === 'Practitioner/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(practitioner);
+          else if (url === 'PractitionerRole/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(practitionerrole);
           else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
           else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
           else {
