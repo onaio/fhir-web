@@ -7,7 +7,7 @@ import TeamsDetail from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Organization, OrganizationDetail } from '../../types';
-import { TEAMS_GET, URL_ADD_TEAM } from '../../constants';
+import { FHIR_RESOURCES_PAGE_SIZE, TEAMS_GET, URL_ADD_TEAM } from '../../constants';
 import Table from './Table';
 import './TeamsList.css';
 import { Spin } from 'antd';
@@ -29,11 +29,14 @@ interface Props {
 export const TeamsList: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
   const serve = new FHIRServiceClass<Organization>(fhirBaseURL, 'Organization');
-
+  const fhirParams = {
+    _count: FHIR_RESOURCES_PAGE_SIZE,
+    _getpagesoffset: 0,
+  };
   const [detail, setDetail] = useState<OrganizationDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: Organization[] }>({});
 
-  const teams = useQuery(TEAMS_GET, async () => serve.list(), {
+  const teams = useQuery(TEAMS_GET, async () => serve.list(fhirParams), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res) => res.entry.map((e) => e.resource),
   });

@@ -3,7 +3,12 @@ import { Helmet } from 'react-helmet';
 import { Organization, Practitioner, PractitionerRole } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import { PRACTITIONERROLE_GET, PRACTITIONER_GET, TEAMS_GET } from '../../constants';
+import {
+  FHIR_RESOURCES_PAGE_SIZE,
+  PRACTITIONERROLE_GET,
+  PRACTITIONER_GET,
+  TEAMS_GET,
+} from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
@@ -17,6 +22,10 @@ export interface Props {
 
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
+  const fhirParams = {
+    _count: FHIR_RESOURCES_PAGE_SIZE,
+    _getpagesoffset: 0,
+  };
 
   const practitionerAPI = new FHIRServiceClass<Practitioner>(fhirBaseURL, 'Practitioner');
   const organizationAPI = new FHIRServiceClass<Organization>(fhirBaseURL, 'Organization');
@@ -27,7 +36,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
-  const Practitioners = useQuery(PRACTITIONER_GET, async () => practitionerAPI.list(), {
+  const Practitioners = useQuery(PRACTITIONER_GET, async () => practitionerAPI.list(fhirParams), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res) => res.entry.map((e) => e.resource),
   });
@@ -38,11 +47,15 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     enabled: params.id !== undefined,
   });
 
-  const AllRoles = useQuery(PRACTITIONERROLE_GET, async () => practitionerroleAPI.list(), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res) => res.entry.map((e) => e.resource),
-    enabled: params.id !== undefined,
-  });
+  const AllRoles = useQuery(
+    PRACTITIONERROLE_GET,
+    async () => practitionerroleAPI.list(fhirParams),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res) => res.entry.map((e) => e.resource),
+      enabled: params.id !== undefined,
+    }
+  );
 
   if (params.id && team.data && AllRoles.data && !initialValue) {
     loadTeamPractitionerInfo({

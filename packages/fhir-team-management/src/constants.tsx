@@ -24,3 +24,5 @@ export const PRACTITIONER_DEL = 'Practitioner/';
 export const TEAMS_GET = 'Organization/';
 export const TEAMS_PUT = 'Organization/';
 export const TEAMS_POST = 'Organization/';
+
+export const FHIR_RESOURCES_PAGE_SIZE = 500;

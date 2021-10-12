@@ -1,5 +1,6 @@
 import { Organization, PractitionerRole, OrganizationDetail } from '.';
 import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIR_RESOURCES_PAGE_SIZE } from './constants';
 
 /**
  * Function to load selected Team for details
@@ -16,9 +17,14 @@ export async function loadTeamPractitionerInfo(props: {
 }): Promise<OrganizationDetail> {
   const { fhirBaseURL, team } = props;
   const serve = new FHIRServiceClass<PractitionerRole>(fhirBaseURL, 'PractitionerRole');
+  const fhirParams = {
+    _count: FHIR_RESOURCES_PAGE_SIZE,
+    _getpagesoffset: 0,
+  };
 
   const AllRoles: PractitionerRole[] =
-    props.PractitionerRoles ?? (await serve.list().then((res) => res.entry.map((e) => e.resource)));
+    props.PractitionerRoles ??
+    (await serve.list(fhirParams).then((res) => res.entry.map((e) => e.resource)));
 
   const practitionerAssigned = AllRoles.filter(
     (role) => role.organization.reference === `Organization/${team.id}`
