@@ -1,0 +1,81 @@
+name: Build and publish opensrp web
+on: workflow_dispatch
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: checkout with tags
+        uses: actions/checkout@v2
+        with:
+          # pulls all comits (needed for lerna / semantic release to correctly)
+          fetch-depth: "0"
+        # puls all tags (needed for lerna/ semantic release to correctly version)
+      - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+          cache-dependency-path: "**/yarn.lock"
+          registry-url: 'https://registry.npmjs.org'
+          scope: opensrp
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.YARN_TOKEN }}
+      - run: |
+          yarn install --frozen-lockfile
+          yarn lerna:prepublish
+      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Set outputs
+        id: shortSha
+        run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+      - name: Checkout to new publishing branch
+        run: |
+          git checkout -b publish-${{ steps.shortSha.outputs.short_sha }}
+          git branch -v
+          git push origin publish-${{ steps.shortSha.outputs.short_sha }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Authenticate to NPMJS
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+          npm config set scope "@opensrp"
+          npm config list
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - name: Version up commit
+        run: |
+          # have to manually cleanup any this branch if no changes are to be added to repo. 
+          yarn lerna version --include-merged-tags --conventional-commits --create-release github --include-merged-tags -y
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish packages
+        run: yarn lerna publish from-package --ignore-scripts --ignore-prepublish -y --no-verify-access
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        id: cpr
+        with:
+          source_branch: publish-${{ steps.shortSha.outputs.short_sha }}
+          destination_branch: "master"
+          pr_title: "[GH Actions] Publish packages"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: lerna-debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          retention-days: 1
+          name: lerna-debug
+          path: |
+            lerna-debug.log
+            lerna-error.log
+      - name: Remove publish branch
+        if: steps.cpr.outputs.has_changed_files == "false"
+        run: git push origin --delete publish-${{ steps.shortSha.outputs.short_sha }}
