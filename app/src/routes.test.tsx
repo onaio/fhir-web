@@ -234,6 +234,12 @@ describe('routes', () => {
             title: 'Location Management',
           },
           {
+            enabled: true,
+            key: 'product-catalogue',
+            title: 'Product Catalogue',
+            url: '/admin/product-catalogue',
+          },
+          {
             children: [
               {
                 key: 'TEAMS',
