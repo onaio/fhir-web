@@ -30,7 +30,11 @@ import {
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
-import { generateJurisdictionTree, getBaseTreeNode } from '../../ducks/locationHierarchy/utils';
+import {
+  generateFHIRLocationTree,
+  generateJurisdictionTree,
+  getBaseTreeNode,
+} from '../../ducks/locationHierarchy/utils';
 import './LocationUnitList.css';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -55,13 +59,11 @@ export interface AntTreeProps {
  */
 export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
   const data: TableData[] = [];
-
   hierarchy.forEach((location, i: number) => {
     data.push({
       id: location.id,
       key: i.toString(),
       name: location.label,
-      geographicLevel: location.node.attributes.geographicLevel,
     });
   });
   return data;
@@ -73,6 +75,10 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const [detailId, setDetailId] = useState<string>();
   const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
   const serve = new FHIRServiceClass(fhirBaseURL, 'Location');
+
+  const hierarchyParams = {
+    identifier: 'eff94f33-c356-4634-8795-d52340706ba9',
+  };
 
   const locationUnits = useQuery(
     LOCATION_UNIT_FIND_BY_PROPERTIES,
@@ -109,11 +115,22 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
             onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
+            select: (res) => {
+              return generateJurisdictionTree(res as RawOpenSRPHierarchy).model;
+            },
           };
         })
       : []
   ) as UseQueryResult<ParsedHierarchyNode>[];
+
+  const treeDataQuery2 = useQuery(
+    'LocationHierarchy',
+    async () => new FHIRServiceClass(fhirBaseURL, 'LocationHierarchy').list(hierarchyParams),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res) => generateFHIRLocationTree(res.entry as any).model,
+    }
+  );
 
   const treeData = treeDataQuery
     .map((query) => query.data)
@@ -135,6 +152,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   }, [treeDataQuery, currentClickedNode]);
 
   if (
+    !treeDataQuery2.data ||
     !fhirLocationUnits.isFetched ||
     tableData.length === 0 ||
     treeData.length === 0 ||
@@ -151,7 +169,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={treeData} OnItemClick={(node) => setCurrentClickedNode(node)} />
+          <Tree data={[treeDataQuery2.data]} OnItemClick={(node) => setCurrentClickedNode(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">

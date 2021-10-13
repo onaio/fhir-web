@@ -9,10 +9,31 @@ import { cloneDeep } from 'lodash';
 import cycle from 'cycle';
 import TreeModel from 'tree-model';
 import { OpenSRPService } from '@opensrp/react-utils';
+import { IfhirR4 } from '@smile-cdr/fhirts';
 import { LocationUnit } from '../../ducks/location-units';
 import { LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
 
 const { getFilterParams } = OpenSRPService;
+
+export interface FHIRTreeNode {
+  children?: FHIRTreeNode[];
+  label: string;
+  node: IfhirR4.ILocation;
+  nodeId: string;
+}
+export interface FHIRLocationHierarchy {
+  fullUrl: string;
+  resource: {
+    LocationHierarchyTree: {
+      locationsHierarchy: {
+        listOfNodes: {
+          treeNodeId: string;
+          treeNode: FHIRTreeNode[];
+        };
+      };
+    };
+  };
+}
 
 /** Parse the raw child hierarchy node map
  *
@@ -35,6 +56,26 @@ const parseChildren = (rawNodeMap: RawHierarchyNodeMap, parent: string) => {
   });
 };
 
+/** Parse the raw child hierarchy node map
+ *
+ * @param {RawHierarchyNodeMap} rawNodeMap - Object of raw hierarchy nodes
+ * @param {string} parent - node parent id
+ * @returns {Array<ParsedHierarchyNode>} Array of Parsed hierarchy nodes
+ */
+const parseFHIRChildren = (rawNodeMap: any, parent: string) => {
+  return rawNodeMap.map((child: any) => {
+    const childId = child.childId.split('/')[1];
+    const parsedNode = {
+      ...child,
+      title: child.treeNode.label,
+      key: `${childId}-${parent}`,
+      id: childId,
+      children: child.treeNode.children ? parseFHIRChildren(child.treeNode.children, parent) : [],
+    };
+    return parsedNode;
+  });
+};
+
 /** parses the raw opensrp hierarchy to a hierarchy that we can quickly build
  * our tree model from.
  *
@@ -48,7 +89,7 @@ const parseHierarchy = (raw: RawOpenSRPHierarchy) => {
   // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
   const { map } = rawClone.locationsHierarchy;
   // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
-  const rawNode: RawHierarchyNode = Object.entries(map).map(([_key, value]) => value)[0];
+  const rawNode: RawHierarchyNode = Object.entries(map).map(([_, value]) => value)[0];
   const parsedNode: ParsedHierarchyNode = {
     ...rawNode,
     title: rawNode.label,
@@ -68,6 +109,33 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
   const tree = new TreeModel();
   const hierarchy = parseHierarchy(apiResponse);
   const root = tree.parse<ParsedHierarchyNode>(hierarchy);
+  return root;
+};
+
+export const parseFHIRHierarchy = (fhirTree: FHIRLocationHierarchy[]) => {
+  const rawClone: FHIRLocationHierarchy = cloneDeep(fhirTree[0]);
+
+  // // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
+  const { locationsHierarchy } = rawClone.resource.LocationHierarchyTree;
+  const { listOfNodes } = locationsHierarchy;
+  // // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
+  const rawNode = listOfNodes.treeNode[0];
+  console.log('raw node??', rawNode);
+  const nodeId = rawNode.nodeId.split('/')[1];
+  const parsedNode = {
+    ...rawNode,
+    title: rawNode.label,
+    key: nodeId,
+    id: nodeId,
+    children: rawNode.children ? parseFHIRChildren(rawNode.children, nodeId) : [],
+  };
+  return parsedNode;
+};
+
+export const generateFHIRLocationTree = (apiRes: FHIRLocationHierarchy[]) => {
+  const tree = new TreeModel();
+  const hierarchy = parseFHIRHierarchy(apiRes);
+  const root = tree.parse<ParsedHierarchyNode>(hierarchy as any);
   return root;
 };
 
