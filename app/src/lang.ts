@@ -43,6 +43,7 @@ export function lang(t: TFunction) {
     INVENTORY: t(`Inventory`, { ns: namespace }),
     SERVICE_POINT_INVENTORY: t(`Service point inventory`, { ns: namespace }),
     ADD_INVENTORY_VIA_CSV: t(`Add inventory via CSV`, { ns: namespace }),
+    CARE_TEAM: t(`Care Team`, { ns: namespace }),
   };
 }
 
