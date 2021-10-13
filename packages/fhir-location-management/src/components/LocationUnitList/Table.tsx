@@ -6,7 +6,7 @@ import lang from '../../lang';
 import { Column, TableLayout } from '@opensrp/react-utils';
 
 export interface TableData {
-  geographicLevel: number;
+  geographicLevel?: number;
   id: string;
   key: string;
   name: string;
