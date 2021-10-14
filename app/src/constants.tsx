@@ -31,6 +31,7 @@ export const URL_JSON_VALIDATOR_LIST = `${URL_ADMIN}/form-config/json-validators
 export const URL_DRAFT_FILE_LIST = `${URL_ADMIN}/form-config/drafts`;
 export const URL_UPLOAD_DRAFT_FILE = `${URL_ADMIN}/form-config/drafts/upload`;
 export const URL_MANIFEST_RELEASE_LIST = `${URL_ADMIN}/form-config/releases`;
+export const URL_FHIR_CARE_TEAM = `${URL_ADMIN}/CareTeams`;
 export const URL_DOWNLOAD_CLIENT_DATA = '/card-support/download-client-data';
 export const URL_HEALTHCARESERVICES = `/healthcare`;
 export const URL_HEALTHCARE_ADD = `${URL_HEALTHCARESERVICES}/add`;

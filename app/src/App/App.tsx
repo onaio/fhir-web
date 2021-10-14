@@ -48,6 +48,7 @@ import {
   URL_HEALTHCARESERVICES,
   URL_HEALTHCARE_ADD,
   URL_HEALTHCARE_EDIT,
+  URL_FHIR_CARE_TEAM,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -88,6 +89,14 @@ import {
   URL_USER_CREDENTIALS,
   CreateEditUserGroup,
 } from '@opensrp/user-management';
+import {
+  CareTeamList,
+  ROUTE_PARAM_CARE_TEAM_ID,
+  CreateEditCareTeam,
+  URL_CREATE_CARE_TEAM,
+  URL_EDIT_CARE_TEAM,
+  URL_CARE_TEAM,
+} from '@opensrp/fhir-care-team';
 import { TeamAssignmentView } from '@opensrp/team-assignment';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
@@ -135,6 +144,7 @@ import {
   createEditUserProps,
   heatlhcareProps,
   teamManagementProps,
+  careTeamProps,
 } from './utils';
 import './App.css';
 import {
@@ -265,6 +275,40 @@ const App: React.FC = () => {
               exact
               path={URL_TEAMS}
               component={TeamsView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_FHIR_CARE_TEAM}
+              component={CareTeamList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={`${URL_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
+              component={CareTeamList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={`${URL_EDIT_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
+              {...careTeamProps}
+              component={CreateEditCareTeam}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_CREATE_CARE_TEAM}
+              {...careTeamProps}
+              component={CreateEditCareTeam}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
