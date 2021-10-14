@@ -36,7 +36,7 @@
     "@opensrp/team-assignment": "^0.0.5",
     "@opensrp/team-management": "^0.0.8",
     "@opensrp/user-management": "^0.1.18",
-    "@opensrp/fhir-heatlhcareservice": "file:../packages/fhir-heatlhcareservice",
+    "@opensrp/fhir-health-care-service": "file:../packages/fhir-health-care-service",
     "@sentry/react": "^5.27.4",
     "antd": "^4.6.3",
     "bootstrap": "^4.5.2",

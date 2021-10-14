@@ -101,7 +101,7 @@ import {
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
-import { HealthCareList, HealthCareAddEdit } from '@opensrp/fhir-heatlhcareservice';
+import { HealthCareList, HealthCareAddEdit } from '@opensrp/fhir-health-care-service';
 import {
   LocationUnitList,
   LocationUnitGroupAddEdit,

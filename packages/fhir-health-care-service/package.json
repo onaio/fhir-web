@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/fhir-heatlhcareservice",
+  "name": "@opensrp/fhir-health-care-service",
   "version": "0.0.5",
   "description": "Team management components for opensrp web",
   "main": "dist/index.js",
