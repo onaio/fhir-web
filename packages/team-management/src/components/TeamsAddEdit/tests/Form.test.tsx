@@ -22,7 +22,7 @@ jest.mock('uuid', () => {
 
   return {
     __esModule: true,
-    ...jest.requireActual('uuid'),
+    ...Object.assign({}, jest.requireActual('uuid')),
     v4,
   };
 });
@@ -76,7 +76,7 @@ jest.mock('antd', () => {
   return { ...antd, Select };
 });
 
-describe('Team-management/TeamsAddEdit/Form', () => {
+describe('HealthCareAddEdit/Form', () => {
   const members = [
     {
       identifier: '3',

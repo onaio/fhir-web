@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
-import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
 import {
   HEALTHCARES_GET,
@@ -28,6 +27,8 @@ interface Props {
   fhirBaseURL: string;
   initialValue?: FormField;
   organizations: Organization[];
+  onCancel?: () => void;
+  onSuccess?: () => void;
 }
 
 /**
@@ -65,7 +66,7 @@ export async function onSubmit(fhirBaseURL: string, values: FormField) {
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { fhirBaseURL, organizations } = props;
+  const { fhirBaseURL, organizations, onCancel, onSuccess } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const initialValue: FormField = props.initialValue ?? {
     active: true,
@@ -91,7 +92,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             queryClient
               .invalidateQueries([HEALTHCARES_GET, initialValue?.id])
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-            history.goBack();
+            if (onSuccess) onSuccess();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
           .finally(() => setIsSubmitting(false));
@@ -131,7 +132,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
           {isSubmitting ? lang.SAVING : lang.SAVE}
         </Button>
-        <Button id="cancel" onClick={() => history.goBack()} type="dashed">
+        <Button id="cancel" onClick={onCancel} type="dashed">
           {lang.CANCEL}
         </Button>
       </AntdForm.Item>

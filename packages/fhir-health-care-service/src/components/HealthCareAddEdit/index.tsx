@@ -13,6 +13,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
+import { history } from '@onaio/connected-reducer-registry';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 
 export interface Props {
@@ -81,6 +82,8 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
           fhirBaseURL={fhirBaseURL}
           initialValue={initialValue}
           organizations={organizations.data}
+          onCancel={() => history.back()}
+          onSuccess={() => history.back()}
         />
       </div>
     </section>
