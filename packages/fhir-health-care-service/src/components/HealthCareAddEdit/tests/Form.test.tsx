@@ -41,7 +41,7 @@ const healthcareserviceValue: FormField = {
   identifier: [{ use: 'official', value: '12312421' }],
 };
 
-describe('Team-management/TeamsAddEdit/Form', () => {
+describe('components/HealthCareAddEdit/Form', () => {
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -116,7 +116,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
   });
 
   it('Cancel button', () => {
-    const historyback = jest.spyOn(history, 'goBack');
+    const goBackFN = jest.fn();
     const queryClient = new QueryClient();
     const wrapper = mount(
       <Router history={history}>
@@ -125,6 +125,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
             fhirBaseURL={fhirBaseURL}
             organizations={team.entry.map((e) => e.resource)}
             initialValue={healthcareserviceValue}
+            onCancel={goBackFN}
           />
         </QueryClientProvider>
       </Router>
@@ -132,7 +133,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(wrapper.find('form')).toHaveLength(1);
     wrapper.find('button#cancel').simulate('click');
-    expect(historyback).toBeCalled();
+    expect(goBackFN).toBeCalled();
   });
 
   it('Create Team', async () => {
