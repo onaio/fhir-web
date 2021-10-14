@@ -238,38 +238,4 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
-
-  it('fail Invalidate Query After Submit', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-    // const mockinvalidateQueries = jest.fn(() => {
-    //   console.warn('ASd');
-    //   Promise.reject('Mock Api Fail');
-    // });
-
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            organizations={team.entry.map((e) => e.resource)}
-            initialValue={FormintialValue}
-          />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    expect(wrapper.find('form')).toHaveLength(1);
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(mockSuccessNotification).toBeCalledWith('Successfully Added Healthcares');
-
-    // expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
-  });
 });
