@@ -299,39 +299,4 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
-
-  it('fail Invalidate Query After Submit', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirbaseURL={fhirBaseURL}
-            practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
-            value={TeamValue}
-          />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    expect(wrapper.find('form')).toHaveLength(1);
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Updated Teams');
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
-      2,
-      'Successfully Assigned Practitioners'
-    );
-
-    // expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
-  });
 });
