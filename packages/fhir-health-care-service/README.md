@@ -6,5 +6,5 @@ This package has components for creating, editing, viewing or deleting a team.
 
 ```sh
 
-yarn add @opensrp/fhir-heatlhcareservice
+yarn add @opensrp/fhir-health-care-service
 ```
