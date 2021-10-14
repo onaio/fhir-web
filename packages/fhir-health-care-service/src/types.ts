@@ -1,7 +1,7 @@
 /** Organizations redux module */
 import { Require } from '@opensrp/react-utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { HEALTH_CARE_SERVICE_RESOURCE_TYPE } from './constants';
+import { HEALTH_CARE_SERVICE_RESOURCE_TYPE, ORGANIZATION_RESOURCE_TYPE } from './constants';
 
 /** interface for Objects */
 
@@ -14,5 +14,5 @@ export type HealthcareServiceDetail = HealthcareService & { organization?: Organ
 
 /** interface for Objects */
 export interface Organization extends Require<IfhirR4.IOrganization, 'id' | 'active' | 'name'> {
-  resourceType: 'Organization';
+  resourceType: typeof ORGANIZATION_RESOURCE_TYPE;
 }
