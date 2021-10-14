@@ -82,8 +82,8 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
           fhirBaseURL={fhirBaseURL}
           initialValue={initialValue}
           organizations={organizations.data}
-          onCancel={() => history.back()}
-          onSuccess={() => history.back()}
+          onCancel={() => history.goBack()}
+          onSuccess={() => history.goBack()}
         />
       </div>
     </section>
