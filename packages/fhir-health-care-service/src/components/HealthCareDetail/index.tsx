@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { HealthcareServiceDetail } from '../../types';
@@ -10,13 +10,6 @@ export interface HealthCareDetailProps extends HealthcareServiceDetail {
 
 const HealthcareDetails = (props: HealthCareDetailProps) => {
   const { extraDetails, comment, meta, name, active, id, organization } = props;
-
-  const lastUpdated = useMemo(() => {
-    if (meta?.lastUpdated) {
-      const date = new Date(meta.lastUpdated);
-      return <div>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</div>;
-    }
-  }, [meta]);
 
   return (
     <div className="p-4 bg-white">
@@ -41,7 +34,9 @@ const HealthcareDetails = (props: HealthCareDetailProps) => {
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.LAST_UPDATED_DATE}</div>
-        <div className="mb-0">{lastUpdated}</div>
+        <div className="mb-0">
+          <div>{meta?.lastUpdated ? new Date(meta.lastUpdated).toLocaleDateString() : ''}</div>
+        </div>
       </div>
       <div className="mb-4 small">
         <div className="mb-0 font-weight-bold">{lang.ORGANIZATION}</div>

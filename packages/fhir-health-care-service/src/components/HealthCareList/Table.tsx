@@ -32,12 +32,10 @@ const Table: React.FC<Props> = (props: Props) => {
       title: 'Last Updated',
       dataIndex: 'meta',
       sorter: (a, b) => a.name.localeCompare(b.name),
-      render: (value: Meta) => {
-        if (value.lastUpdated) {
-          const date = new Date(value.lastUpdated);
-          return <div>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</div>;
-        }
-      },
+      // eslint-disable-next-line react/display-name
+      render: (value: Meta) => (
+        <div>{value.lastUpdated ? new Date(value.lastUpdated).toLocaleDateString() : ''}</div>
+      ),
     },
   ];
 
