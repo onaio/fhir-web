@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { HEALTHCARES_GET, ORGANIZATION_GET } from '../../constants';
+import {
+  HEALTHCARES_GET,
+  HEALTH_CARE_SERVICE_RESOURCE_TYPE,
+  ORGANIZATION_GET,
+} from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService, Organization } from '../../types';
 import { useQueryClient } from 'react-query';
@@ -36,7 +40,7 @@ export async function onSubmit(fhirBaseURL: string, values: FormField) {
   const identifier = values.id ? values.identifier?.find((e) => e.use === 'official')?.value : v4();
 
   const payload: Omit<HealthcareService, 'meta'> = {
-    resourceType: 'HealthcareService',
+    resourceType: HEALTH_CARE_SERVICE_RESOURCE_TYPE,
     id: values.id ? values.id : '',
     active: values.active,
     identifier: [{ use: 'official', value: identifier }],
@@ -46,7 +50,10 @@ export async function onSubmit(fhirBaseURL: string, values: FormField) {
     name: values.name,
   };
 
-  const serve = new FHIRServiceClass<HealthcareService>(fhirBaseURL, 'HealthcareService');
+  const serve = new FHIRServiceClass<HealthcareService>(
+    fhirBaseURL,
+    HEALTH_CARE_SERVICE_RESOURCE_TYPE
+  );
   if (values.id) {
     await serve.update(payload);
     sendSuccessNotification(lang.MSG_HEALTHCARES_UPDATE_SUCCESS);

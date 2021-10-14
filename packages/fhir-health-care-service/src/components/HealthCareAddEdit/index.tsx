@@ -3,7 +3,12 @@ import { Helmet } from 'react-helmet';
 import { HealthcareService, Organization } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import { FHIR_RESOURCES_PAGE_SIZE, HEALTHCARES_GET, ORGANIZATION_GET } from '../../constants';
+import {
+  FHIR_RESOURCES_PAGE_SIZE,
+  HEALTHCARES_GET,
+  HEALTH_CARE_SERVICE_RESOURCE_TYPE,
+  ORGANIZATION_GET,
+} from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
@@ -28,9 +33,12 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
 
   const healthcareserviceAPI = new FHIRServiceClass<HealthcareService>(
     fhirBaseURL,
-    'HealthcareService'
+    HEALTH_CARE_SERVICE_RESOURCE_TYPE
   );
-  const organizationAPI = new FHIRServiceClass<Organization>(fhirBaseURL, 'HealthcareService');
+  const organizationAPI = new FHIRServiceClass<Organization>(
+    fhirBaseURL,
+    HEALTH_CARE_SERVICE_RESOURCE_TYPE
+  );
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 

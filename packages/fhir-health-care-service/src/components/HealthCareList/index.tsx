@@ -7,7 +7,12 @@ import HealthCaresDetail from '../HealthCareDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService, HealthcareServiceDetail } from '../../types';
-import { FHIR_RESOURCES_PAGE_SIZE, HEALTHCARES_GET, URL_ADD_HEALTHCARE } from '../../constants';
+import {
+  FHIR_RESOURCES_PAGE_SIZE,
+  HEALTHCARES_GET,
+  HEALTH_CARE_SERVICE_RESOURCE_TYPE,
+  URL_ADD_HEALTHCARE,
+} from '../../constants';
 import Table from './Table';
 import './index.css';
 import { Spin } from 'antd';
@@ -32,7 +37,10 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
     _count: FHIR_RESOURCES_PAGE_SIZE,
     _getpagesoffset: 0,
   };
-  const serve = new FHIRServiceClass<HealthcareService>(fhirBaseURL, 'HealthcareService');
+  const serve = new FHIRServiceClass<HealthcareService>(
+    fhirBaseURL,
+    HEALTH_CARE_SERVICE_RESOURCE_TYPE
+  );
 
   const [detail, setDetail] = useState<HealthcareServiceDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: HealthcareService[] }>({});
