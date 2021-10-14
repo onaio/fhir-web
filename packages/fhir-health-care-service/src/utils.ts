@@ -1,5 +1,6 @@
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { HealthcareService, HealthcareServiceDetail } from '.';
+import { ORGANIZATION_RESOURCE_TYPE } from './constants';
 import { Organization } from './types';
 
 /**
@@ -12,7 +13,7 @@ export async function loadHealthcareOrganization(
   fhirBaseURL: string,
   healthcareservice: HealthcareService
 ): Promise<HealthcareServiceDetail> {
-  const serve = new FHIRServiceClass<Organization>(fhirBaseURL, 'Organization');
+  const serve = new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE);
 
   const orgid = healthcareservice.providedBy?.reference?.split('/')[1];
 
