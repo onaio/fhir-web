@@ -17,6 +17,8 @@ import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/l
 import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
+import { FHIRServiceClass } from '@opensrp/react-utils';
+import { useQueryClient } from 'react-query';
 
 const { Item: FormItem } = Form;
 
@@ -103,6 +105,7 @@ const LocationForm = (props: LocationFormProps) => {
     disabledTreeNodesCallback,
     filterByParentId,
     fhirBaseURL,
+    afterSubmit,
   } = props;
   const isEditMode = !!initialValues?.id;
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
@@ -111,6 +114,7 @@ const LocationForm = (props: LocationFormProps) => {
   const [selectedParentNode, setSelectedParentNode] = useState<TreeNode>();
   const [generatedPayload, setGeneratedPayload] = useState<LocationUnit>();
   const history = useHistory();
+  const queryClient = useQueryClient();
   const validationRules = validationRulesFactory(lang);
 
   const isHidden = (fieldName: string) => hidden.includes(fieldName);
@@ -128,7 +132,7 @@ const LocationForm = (props: LocationFormProps) => {
 
   // value options for isJurisdiction questions
   const locationCategoryOptions = [
-    { label: lang.LOCATION_STRUCTURE_LABEL, value: false },
+    { label: lang.LOCATION_BUILDING_LABEL, value: false },
     { label: lang.LOCATION_JURISDICTION_LABEL, value: true },
   ];
   /** if plan is updated or saved redirect to plans page */
@@ -150,25 +154,34 @@ const LocationForm = (props: LocationFormProps) => {
         onValuesChange={geoFieldsChangeHandler}
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={async (values) => {
-          const payload = generateLocationUnit(
+          const payload = await generateLocationUnit(
             values as any,
-            get(initialValues, 'identifier.0.value')
+            get(initialValues, 'identifier.0.value'),
+            fhirBaseURL
           );
 
           const successMessage = isEditMode
             ? lang.SUCCESSFULLY_UPDATED_LOCATION
             : lang.SUCCESSFULLY_CREATED_LOCATION;
-          const serve = FHIR.client(fhirBaseURL);
+          const serve = new FHIRServiceClass(fhirBaseURL, 'Location');
           if (initialValues?.id) {
             await serve
               .update(payload)
-              .then(() => sendSuccessNotification(successMessage))
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+              .then(() => {
+                afterSubmit(payload as any);
+                sendSuccessNotification(successMessage);
+              })
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
+              .finally(() => queryClient.invalidateQueries());
           } else {
             await serve
               .create(payload)
-              .then(() => sendSuccessNotification(successMessage))
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+              .then(() => {
+                afterSubmit(payload as any);
+                sendSuccessNotification(successMessage);
+              })
+              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
+              .finally(() => queryClient.invalidateQueries());
           }
           history.push(URL_LOCATION_UNIT);
         }}
@@ -190,6 +203,7 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.parentId}
           >
             <CustomTreeSelect
+              fhirBaseURL={fhirBaseURL}
               baseURL={opensrpBaseURL}
               filterByParentId={filterByParentId}
               disabled={disabled.includes('parentId')}
@@ -230,7 +244,6 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             id="alias"
-            rules={validationRules.alias}
             hidden={isHidden('alias')}
             name="alias"
             label={lang.ALIAS}

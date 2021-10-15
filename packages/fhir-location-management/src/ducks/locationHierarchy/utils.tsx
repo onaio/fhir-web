@@ -18,7 +18,12 @@ const { getFilterParams } = OpenSRPService;
 export interface FHIRTreeNode {
   children?: FHIRTreeNode[];
   label: string;
+  title: string;
+  id: string;
   node: IfhirR4.ILocation;
+  treeNode?: {
+    node: IfhirR4.ILocation;
+  };
   nodeId: string;
 }
 export interface FHIRLocationHierarchy {
@@ -112,15 +117,15 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
   return root;
 };
 
-export const parseFHIRHierarchy = (fhirTree: FHIRLocationHierarchy[]) => {
-  const rawClone: FHIRLocationHierarchy = cloneDeep(fhirTree[0]);
+export const parseFHIRHierarchy = (fhirTree: FHIRLocationHierarchy) => {
+  const rawClone: FHIRLocationHierarchy = cloneDeep(fhirTree);
 
   // // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
   const { locationsHierarchy } = rawClone.resource.LocationHierarchyTree;
   const { listOfNodes } = locationsHierarchy;
   // // !IMPORTANT ASSUMPTION : locationsTreeClone has a single object under map, i.e there is only one root jurisdiction
   const rawNode = listOfNodes.treeNode[0];
-  console.log('raw node??', rawNode);
+
   const nodeId = rawNode.nodeId.split('/')[1];
   const parsedNode = {
     ...rawNode,
@@ -132,7 +137,7 @@ export const parseFHIRHierarchy = (fhirTree: FHIRLocationHierarchy[]) => {
   return parsedNode;
 };
 
-export const generateFHIRLocationTree = (apiRes: FHIRLocationHierarchy[]) => {
+export const generateFHIRLocationTree = (apiRes: FHIRLocationHierarchy) => {
   const tree = new TreeModel();
   const hierarchy = parseFHIRHierarchy(apiRes);
   const root = tree.parse<ParsedHierarchyNode>(hierarchy as any);

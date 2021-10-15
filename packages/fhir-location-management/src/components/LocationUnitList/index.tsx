@@ -7,18 +7,10 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { OpenSRPService, FHIRServiceClass } from '@opensrp/react-utils';
-import {
-  LocationUnit,
-  locationUnitsReducer,
-  locationUnitsReducerName,
-} from '../../ducks/location-units';
-import {
-  LOCATION_HIERARCHY,
-  LOCATION_UNIT_FIND_BY_PROPERTIES,
-  URL_LOCATION_UNIT_ADD,
-} from '../../constants';
-import { useQuery, useQueries, UseQueryResult } from 'react-query';
+import { FHIRServiceClass } from '@opensrp/react-utils';
+import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/location-units';
+import { URL_LOCATION_UNIT_ADD } from '../../constants';
+import { useQuery } from 'react-query';
 import lang from '../../lang';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import Table, { TableData } from './Table';
@@ -29,12 +21,8 @@ import {
   reducer as locationHierarchyReducer,
   reducerName as locationHierarchyReducerName,
 } from '../../ducks/location-hierarchy';
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
-import {
-  generateFHIRLocationTree,
-  generateJurisdictionTree,
-  getBaseTreeNode,
-} from '../../ducks/locationHierarchy/utils';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { FHIRTreeNode, generateFHIRLocationTree } from '../../ducks/locationHierarchy/utils';
 import './LocationUnitList.css';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -57,42 +45,34 @@ export interface AntTreeProps {
  * @param {Array<ParsedHierarchyNode>} hierarchy - hierarchy node to be parsed
  * @returns {Array<TableData>} array of table data
  */
-export function parseTableData(hierarchy: ParsedHierarchyNode[]) {
+export function parseTableData(hierarchy: FHIRTreeNode[]) {
   const data: TableData[] = [];
   hierarchy.forEach((location, i: number) => {
     data.push({
       id: location.id,
       key: i.toString(),
-      name: location.label,
+      name: location.label || location.title,
+      partOf: location.treeNode?.node?.partOf?.display ?? '-',
+      description: location.node?.description || location.treeNode?.node.description,
+      status: location.node?.status || location.treeNode?.node.status,
+      physicalType:
+        get(location.node, 'physicalType.coding.0.display') ||
+        get(location.treeNode?.node, 'physicalType.coding.0.display'),
     });
   });
   return data;
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
-  const { opensrpBaseURL, filterByParentId, fhirBaseURL } = props;
+  const { fhirBaseURL } = props;
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detailId, setDetailId] = useState<string>();
-  const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
+  const [currentClickedNode, setCurrentClickedNode] = useState<FHIRTreeNode | null>(null);
   const serve = new FHIRServiceClass(fhirBaseURL, 'Location');
 
   const hierarchyParams = {
     identifier: 'eff94f33-c356-4634-8795-d52340706ba9',
   };
-
-  const locationUnits = useQuery(
-    LOCATION_UNIT_FIND_BY_PROPERTIES,
-    () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
-    {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: LocationUnit[]) => res,
-    }
-  );
-
-  const fhirLocationUnits = useQuery('Locations', async () => serve.list(), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res) => res.entry,
-  });
 
   const fhirLocationDetail = useQuery(
     `Location/${detailId}`,
@@ -103,46 +83,23 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const data = fhirLocationUnits.data?.map((d) => {
-    return { ...d.resource, physicalType: get(d, 'resource.physicalType.coding.0.display') };
-  });
-
-  const treeDataQuery = useQueries(
-    locationUnits.data
-      ? locationUnits.data.map((location) => {
-          return {
-            queryKey: [LOCATION_HIERARCHY, location.id],
-            queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res) => {
-              return generateJurisdictionTree(res as RawOpenSRPHierarchy).model;
-            },
-          };
-        })
-      : []
-  ) as UseQueryResult<ParsedHierarchyNode>[];
-
-  const treeDataQuery2 = useQuery(
+  const treeDataQuery = useQuery(
     'LocationHierarchy',
     async () => new FHIRServiceClass(fhirBaseURL, 'LocationHierarchy').list(hierarchyParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res) => generateFHIRLocationTree(res.entry as any).model,
+      select: (res) =>
+        res.entry.map((singleEntry) => generateFHIRLocationTree(singleEntry as any).model),
+      refetchOnWindowFocus: false,
     }
   );
 
-  const treeData = treeDataQuery
-    .map((query) => query.data)
-    .filter((e) => e !== undefined) as ParsedHierarchyNode[];
-
   useDeepCompareEffect(() => {
-    if (treeData.length) {
+    if (treeDataQuery.isFetched) {
       const titledata = currentClickedNode ?? null;
-      const childrendata: ParsedHierarchyNode[] = currentClickedNode
+      const childrendata: FHIRTreeNode[] = currentClickedNode
         ? [...(currentClickedNode.children ?? [])]
-        : [...treeData];
-
+        : [...(treeDataQuery.data as any)];
       const sorteddata = childrendata.sort((a, b) => a.title.localeCompare(b.title));
       const data: TableData[] = parseTableData(
         titledata ? [...[titledata], ...sorteddata] : sorteddata
@@ -151,14 +108,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     }
   }, [treeDataQuery, currentClickedNode]);
 
-  if (
-    !treeDataQuery2.data ||
-    !fhirLocationUnits.isFetched ||
-    tableData.length === 0 ||
-    treeData.length === 0 ||
-    !locationUnits.data ||
-    treeData.length !== locationUnits.data.length
-  )
+  if (!treeDataQuery.data || !tableData.length || treeDataQuery.isFetching)
     return <Spin size={'large'} />;
 
   return (
@@ -169,7 +119,10 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={[treeDataQuery2.data]} OnItemClick={(node) => setCurrentClickedNode(node)} />
+          <Tree
+            data={treeDataQuery.data}
+            OnItemClick={(node) => setCurrentClickedNode(node as any)}
+          />
         </Col>
         <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
@@ -191,7 +144,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
           </div>
           <div className="bg-white p-3">
             <Table
-              data={data as any}
+              data={tableData}
               onViewDetails={async (row) => {
                 setDetailId(row.id);
               }}

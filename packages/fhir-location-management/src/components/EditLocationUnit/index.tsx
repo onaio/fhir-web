@@ -21,8 +21,9 @@ import lang from '../../lang';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService, FHIRServiceClass } from '@opensrp/react-utils';
 import {
+  generateFHIRLocationTree,
   generateJurisdictionTree,
   getBaseTreeNode,
   getHierarchyNode,
@@ -84,6 +85,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   const [isJurisdiction, setIsJurisdiction] = useState<boolean>(true);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const user = useSelector((state) => getUser(state));
+  const serve = new FHIRServiceClass(fhirBaseURL, 'Location');
 
   // location being edited id
   const { id: locId } = props.match.params;
@@ -95,6 +97,10 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     return locationsSelector(state, filters);
   })[0] as LocationUnit | undefined;
   const [loading, setLoading] = useState<boolean>(true);
+
+  const hierarchyParams = {
+    identifier: 'eff94f33-c356-4634-8795-d52340706ba9',
+  };
 
   React.useEffect(() => {
     // get location; we are making 2 calls to know if location is a jurisdiction or a structure
@@ -148,50 +154,24 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locId]);
 
-  const locationUnits = useQuery(
-    LOCATION_UNIT_FIND_BY_PROPERTIES,
-    () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
+  const singleLocation = useQuery(`Locations/${locId}`, () => serve.read(locId), {
+    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+    select: (res) => res,
+  });
+
+  // const parentLocation = useQuery(['Location', singleLocation.data], () => serve.read());
+
+  const treeDataQuery = useQuery(
+    'LocationHierarchy',
+    async () => new FHIRServiceClass(fhirBaseURL, 'LocationHierarchy').list(hierarchyParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: LocationUnit[]) => res,
+      select: (res) =>
+        res.entry.map((singleEntry) => generateFHIRLocationTree(singleEntry as any).model),
     }
   );
 
-  const treeDataQuery = useQueries(
-    locationUnits.data && locationUnits.data.length
-      ? locationUnits.data.map((location) => {
-          return {
-            queryKey: [LOCATION_HIERARCHY, location.id],
-            queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
-          };
-        })
-      : []
-  ) as UseQueryResult<ParsedHierarchyNode>[];
-
-  const singleLocation = useQuery(
-    `Locations/${locId}`,
-    () => FHIR.client(fhirBaseURL).request(`Location/${locId}`),
-    {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: IfhirR4.ILocation) => res,
-    }
-  );
-
-  console.log('single loc??', singleLocation.data);
-  const treeData = treeDataQuery
-    .map((query) => query.data)
-    .filter((e) => e !== undefined) as ParsedHierarchyNode[];
-
-  if (
-    loading ||
-    treeData.length === 0 ||
-    !locationUnits.data ||
-    treeData.length !== locationUnits.data.length
-  )
-    return <Spin size="large"></Spin>;
+  if (treeDataQuery?.data?.length === 0 || !singleLocation.data) return <Spin size="large"></Spin>;
 
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;
@@ -221,7 +201,9 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       const parentid = payload.parentId;
       // if the location unit is changed inside some parent id
       if (parentid) {
-        const grandparenthierarchy = treeData.find((tree) => getHierarchyNode(tree, parentid));
+        const grandparenthierarchy = treeDataQuery.data?.find((tree) =>
+          getHierarchyNode(tree, parentid)
+        );
         if (grandparenthierarchy && grandparenthierarchy.id)
           queryClient
             .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy.id])

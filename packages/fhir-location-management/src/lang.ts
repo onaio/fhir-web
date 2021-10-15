@@ -64,7 +64,7 @@ function fill() {
   lang.LOCATION_ACTIVE_STATUS_LABEL = i18n.t(`Active`, { ns: namespace });
   lang.LOCATION_INACTIVE_STATUS_LABEL = i18n.t(`Inactive`, { ns: namespace });
   lang.LOCATION_JURISDICTION_LABEL = i18n.t(`Jurisdiction`, { ns: namespace });
-  lang.LOCATION_STRUCTURE_LABEL = i18n.t(`Structure`, { ns: namespace });
+  lang.LOCATION_BUILDING_LABEL = i18n.t(`Building`, { ns: namespace });
   lang.INSTANCE_LABEL = i18n.t(`Instance`, { ns: namespace });
   lang.ID_LABEL = i18n.t(`Id`, { ns: namespace });
   lang.USERNAME_LABEL = i18n.t(`username`, { ns: namespace });
