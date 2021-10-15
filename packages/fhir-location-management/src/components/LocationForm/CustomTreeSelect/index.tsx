@@ -21,6 +21,7 @@ export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
   baseURL: string;
   fhirBaseURL: string;
   filterByParentId?: boolean;
+  fhirRootLocationIdentifier: string;
   fullDataCallback?: (node?: TreeNode) => void;
   disabledTreeNodesCallback?: (node: TreeNode) => boolean;
 }
@@ -40,6 +41,7 @@ const CustomTreeSelect = (props: CustomTreeSelectProps) => {
     value,
     fullDataCallback,
     disabledTreeNodesCallback,
+    fhirRootLocationIdentifier,
     filterByParentId,
     ...restProps
   } = props;
@@ -49,7 +51,7 @@ const CustomTreeSelect = (props: CustomTreeSelectProps) => {
   const [trees, updateTrees] = useState<TreeNode[]>([]);
 
   const hierarchyParams = {
-    identifier: 'eff94f33-c356-4634-8795-d52340706ba9',
+    identifier: fhirRootLocationIdentifier,
   };
 
   useEffect(() => {
