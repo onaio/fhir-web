@@ -1,5 +1,6 @@
 import { Dictionary } from '@onaio/utils';
 import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
@@ -77,14 +78,17 @@ export const defaultFormField: LocationFormFields = {
  * @param isJurisdiction - whether location is jurisdiction or structure
  */
 export const getLocationFormFields = (
-  location?: LocationUnit,
+  location?: any,
   instance: FormInstances = FormInstances.CORE,
   isJurisdiction = true
 ): LocationFormFields => {
   const commonValues = { instance, isJurisdiction: location?.isJurisdiction ?? isJurisdiction };
   if (!location) return { ...defaultFormField, ...commonValues };
 
-  return location as any;
+  return {
+    ...location,
+    parentId: location?.partOf?.reference.split('/')[1],
+  } as any;
 };
 
 /** removes empty undefined and null objects before they payload is sent to server
@@ -107,13 +111,24 @@ export function removeEmptykeys(obj: Dictionary) {
  * @param formValues - values from the form
  * @param uuid - location official identifier
  * @param nameOfUser - the name of the user
+ * @param fhirBaseURL - fhir base url
  * @param selectedTags - the selected location tags
  * @param parentNode - selected node to be the parent node
  */
-export const generateLocationUnit = (formValues: any, uuid: string) => {
-  const { id, name, status, description, alias } = formValues;
+export const generateLocationUnit = async (formValues: any, uuid: string, fhirBaseURL: string) => {
+  const { id, name, status, description, alias, parentId } = formValues;
 
   const thisLocationsId = uuid ? uuid : v4();
+
+  const parsedParentId = parentId && parentId.split('-')[0];
+
+  let parentLocObject;
+
+  const serve = new FHIRServiceClass(fhirBaseURL, 'Location');
+
+  if (parsedParentId) {
+    parentLocObject = await serve.read(parsedParentId);
+  }
 
   const payload = {
     resourceType: 'Location',
@@ -122,7 +137,12 @@ export const generateLocationUnit = (formValues: any, uuid: string) => {
     name,
     alias,
     description,
-    partOf: '',
+    partOf: parsedParentId
+      ? {
+          reference: `Location/${parsedParentId}`,
+          display: parentLocObject ? parentLocObject.name : name,
+        }
+      : '',
     identifier: [
       {
         use: 'official',
@@ -325,7 +345,7 @@ export const treeToOptions = (
   const recurseCreateOptions = (node: TreeNode) => {
     const optionValue: Dictionary = {
       value: node.model.id,
-      title: node.model.label,
+      title: node.model.title,
       ...(parentIdDisabledCallback ? { disabled: parentIdDisabledCallback(node) } : {}),
     };
     if (node.hasChildren()) {

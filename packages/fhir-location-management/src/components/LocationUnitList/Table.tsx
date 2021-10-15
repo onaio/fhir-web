@@ -13,6 +13,7 @@ export interface TableData {
   description?: string;
   status?: string;
   physicalType?: string;
+  partOf?: string;
 }
 
 export interface Props {
@@ -31,6 +32,10 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       title: lang.DESCRIPTION,
       dataIndex: 'description',
+    },
+    {
+      title: 'Parent',
+      dataIndex: 'partOf',
     },
     {
       title: lang.PHYSICAL_TYPE,

@@ -5,15 +5,21 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import React from 'react';
 import { TreeNode } from '../../../ducks/locationHierarchy/types';
 import { LocationUnit } from '../../../ducks/location-units';
-import { generateJurisdictionTree } from '../../../ducks/locationHierarchy/utils';
+import {
+  generateFHIRLocationTree,
+  generateJurisdictionTree,
+} from '../../../ducks/locationHierarchy/utils';
 import { TreeSelect } from 'antd';
 import { TreeSelectProps } from 'antd/lib/tree-select/';
 import { LabelValueType, DataNode } from 'rc-tree-select/lib/interface';
 import { treeToOptions } from '../utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
+import { useQuery } from 'react-query';
 
 /** props for service types select component */
 export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
   baseURL: string;
+  fhirBaseURL: string;
   filterByParentId?: boolean;
   fullDataCallback?: (node?: TreeNode) => void;
   disabledTreeNodesCallback?: (node: TreeNode) => boolean;
@@ -30,6 +36,7 @@ const defaultProps = {
 const CustomTreeSelect = (props: CustomTreeSelectProps) => {
   const {
     baseURL,
+    fhirBaseURL,
     value,
     fullDataCallback,
     disabledTreeNodesCallback,
@@ -40,6 +47,10 @@ const CustomTreeSelect = (props: CustomTreeSelectProps) => {
   const [loadingTrees, setLoadingTrees] = useState(true);
   const [rootLocations, setRootLocations] = useState<LocationUnit[]>([]);
   const [trees, updateTrees] = useState<TreeNode[]>([]);
+
+  const hierarchyParams = {
+    identifier: 'eff94f33-c356-4634-8795-d52340706ba9',
+  };
 
   useEffect(() => {
     loadJurisdictions(undefined, baseURL, undefined, undefined, undefined, filterByParentId)
@@ -88,7 +99,16 @@ const CustomTreeSelect = (props: CustomTreeSelectProps) => {
     fullDataCallback?.(node);
   }, [fullDataCallback, trees, value]);
 
-  const selectOptions = treeToOptions(trees, disabledTreeNodesCallback);
+  const { data } = useQuery(
+    'LocationHierarchy',
+    async () => new FHIRServiceClass(fhirBaseURL, 'LocationHierarchy').list(hierarchyParams),
+    {
+      onError: () => sendErrorNotification('Error'),
+      select: (res) => res.entry.map((singleEntry) => generateFHIRLocationTree(singleEntry as any)),
+    }
+  );
+
+  const selectOptions = treeToOptions(data as any, disabledTreeNodesCallback);
 
   const treeSelectProps: TreeSelectProps<DataNode> = {
     ...restProps,

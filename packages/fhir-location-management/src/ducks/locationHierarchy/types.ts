@@ -7,17 +7,19 @@ export interface HierarchyNodeAttributes {
   structureCount?: number;
 }
 
+export interface Node {
+  locationId: string;
+  name: string;
+  parentLocation?: { locationId: string; voided: boolean };
+  attributes: HierarchyNodeAttributes;
+  voided: boolean;
+}
+
 /** Generic type to create types for a single node where children prop is generic */
 export interface HierarchyNode<TChild> {
   id: string;
   label: string;
-  node: {
-    locationId: string;
-    name: string;
-    parentLocation?: { locationId: string; voided: boolean };
-    attributes: HierarchyNodeAttributes;
-    voided: boolean;
-  };
+  node: Node;
   children?: TChild;
   parent?: string;
 }
