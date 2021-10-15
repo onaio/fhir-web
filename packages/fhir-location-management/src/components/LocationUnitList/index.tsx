@@ -32,6 +32,7 @@ interface Props {
   opensrpBaseURL: string;
   fhirBaseURL: string;
   filterByParentId: boolean;
+  fhirRootLocationIdentifier: string;
 }
 
 export interface AntTreeProps {
@@ -64,14 +65,14 @@ export function parseTableData(hierarchy: FHIRTreeNode[]) {
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, fhirRootLocationIdentifier } = props;
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detailId, setDetailId] = useState<string>();
   const [currentClickedNode, setCurrentClickedNode] = useState<FHIRTreeNode | null>(null);
   const serve = new FHIRServiceClass(fhirBaseURL, 'Location');
 
   const hierarchyParams = {
-    identifier: 'eff94f33-c356-4634-8795-d52340706ba9',
+    identifier: fhirRootLocationIdentifier,
   };
 
   const fhirLocationDetail = useQuery(

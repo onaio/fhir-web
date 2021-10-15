@@ -1,7 +1,7 @@
 import { getUser } from '@onaio/session-reducer';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import React from 'react';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
@@ -12,14 +12,14 @@ import lang from '../../lang';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 import { LocationUnit } from '../../ducks/location-units';
 import {
-  generateJurisdictionTree,
+  generateFHIRLocationTree,
   getBaseTreeNode,
   getHierarchyNode,
 } from '../../ducks/locationHierarchy/utils';
-import { useQuery, useQueryClient, useQueries, UseQueryResult } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { LOCATION_HIERARCHY, LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 
 /** full props for the new location component */
 export interface NewLocationUnitProps
@@ -31,6 +31,7 @@ export interface NewLocationUnitProps
   opensrpBaseURL: string;
   fhirBaseURL: string;
   instance: FormInstances;
+  fhirRootLocationIdentifier: string;
   filterByParentId?: boolean;
   processInitialValues?: (formFields: LocationFormFields) => LocationFormFields;
   cancelURLGenerator: () => string;
@@ -44,6 +45,7 @@ const defaultNewLocationUnitProps = {
   instance: FormInstances.CORE,
   hidden: [],
   disabled: [],
+  fhirRootLocationIdentifier: '',
   successURLGenerator: () => '',
   cancelURLGenerator: () => '',
 };
@@ -60,6 +62,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     opensrpBaseURL,
     fhirBaseURL,
     filterByParentId,
+    fhirRootLocationIdentifier,
     successURLGenerator,
     cancelURLGenerator,
     processInitialValues,
@@ -82,35 +85,23 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     ? processInitialValues(firstInitialValues)
     : firstInitialValues;
 
-  const locationUnits = useQuery(
-    LOCATION_UNIT_FIND_BY_PROPERTIES,
-    () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
+  const hierarchyParams = {
+    identifier: fhirRootLocationIdentifier,
+  };
+
+  const treeDataQuery = useQuery(
+    'LocationHierarchy',
+    async () => new FHIRServiceClass(fhirBaseURL, 'LocationHierarchy').list(hierarchyParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: LocationUnit[]) => res,
+      select: (res) =>
+        res.entry.map((singleEntry) => generateFHIRLocationTree(singleEntry as any).model),
     }
   );
 
-  const treeDataQuery = useQueries(
-    locationUnits.data
-      ? locationUnits.data.map((location) => {
-          return {
-            queryKey: [LOCATION_HIERARCHY, location.id],
-            queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
-          };
-        })
-      : []
-  ) as UseQueryResult<ParsedHierarchyNode>[];
+  const treeData = treeDataQuery.data as ParsedHierarchyNode[];
 
-  const treeData = treeDataQuery
-    .map((query) => query.data)
-    .filter((e) => e !== undefined) as ParsedHierarchyNode[];
-
-  if (treeData.length === 0 || !locationUnits.data || treeData.length !== locationUnits.data.length)
-    return <Spin size="large"></Spin>;
+  if (!treeData || treeData.length === 0) return <Spin size="large"></Spin>;
 
   const locationFormProps: LocationFormProps = {
     initialValues: initialValues,
@@ -121,6 +112,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     opensrpBaseURL,
     fhirBaseURL,
     filterByParentId,
+    fhirRootLocationIdentifier,
     username: user.username,
     afterSubmit: (payload) => {
       const parentid = payload.parentId;

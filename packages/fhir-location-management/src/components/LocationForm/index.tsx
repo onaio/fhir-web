@@ -34,6 +34,7 @@ export interface LocationFormProps
   onCancel: () => void;
   username: string;
   filterByParentId?: boolean;
+  fhirRootLocationIdentifier: string;
   afterSubmit: (payload: LocationUnit) => void;
 }
 
@@ -103,6 +104,7 @@ const LocationForm = (props: LocationFormProps) => {
     disabled,
     hidden,
     disabledTreeNodesCallback,
+    fhirRootLocationIdentifier,
     filterByParentId,
     fhirBaseURL,
     afterSubmit,
@@ -211,6 +213,7 @@ const LocationForm = (props: LocationFormProps) => {
               placeholder={lang.PARENT_ID_SELECT_PLACEHOLDER}
               fullDataCallback={setSelectedParentNode}
               disabledTreeNodesCallback={disabledTreeNodesCallback}
+              fhirRootLocationIdentifier={fhirRootLocationIdentifier}
             />
           </FormItem>
 

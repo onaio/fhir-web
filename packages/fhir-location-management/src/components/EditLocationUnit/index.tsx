@@ -47,6 +47,7 @@ export interface EditLocationUnitProps
     RouteComponentProps<LocationRouteProps> {
   fhirBaseURL: string;
   opensrpBaseURL: string;
+  fhirRootLocationIdentifier: string;
   instance: FormInstances;
   filterByParentId?: boolean;
   cancelURLGenerator: (data: LocationUnit) => string;
@@ -55,6 +56,7 @@ export interface EditLocationUnitProps
 const defaultEditLocationUnitProps = {
   redirectAfterAction: '',
   filterByParentId: false,
+  fhirRootLocationIdentifier: '',
   opensrpBaseURL: OPENSRP_API_BASE_URL,
   instance: FormInstances.CORE,
   hidden: [],
@@ -74,6 +76,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     disabled,
     opensrpBaseURL,
     filterByParentId,
+    fhirRootLocationIdentifier,
     cancelURLGenerator,
     successURLGenerator,
     disabledTreeNodesCallback,
@@ -99,7 +102,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const hierarchyParams = {
-    identifier: 'eff94f33-c356-4634-8795-d52340706ba9',
+    identifier: fhirRootLocationIdentifier,
   };
 
   React.useEffect(() => {
@@ -196,6 +199,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     opensrpBaseURL,
     fhirBaseURL,
     filterByParentId,
+    fhirRootLocationIdentifier,
     username: user.username,
     afterSubmit: (payload) => {
       const parentid = payload.parentId;
