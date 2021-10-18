@@ -196,7 +196,7 @@ export const expectedFormFields: LocationFormFields = {
   isJurisdiction: true,
   locationTags: [],
   name: '',
-  serviceType: '',
+  serviceType: undefined,
   status: 'Active' as LocationUnitStatus,
   username: '',
 };

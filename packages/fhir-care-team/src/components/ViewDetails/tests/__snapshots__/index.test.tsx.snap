@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`View Care Team Details detail view without careTeamId: Should be null 1`] = `null`;
+
+exports[`View Care Team Details works correctly: nominal display 1`] = `"NameCare Team OneIdentifier93bc9c3d-6321-41b0-9b93-1275d7114e22StatusactiveSubjectCare Team OneParticipant"`;
+
+exports[`View Care Team Details works correctly: space element 1`] = `
+Object {
+  "children": Array [
+    <Text
+      className="display-block"
+      strong={true}
+    >
+      Name
+    </Text>,
+    <Text
+      className="display-block"
+      type="secondary"
+    >
+      Care Team One
+    </Text>,
+    <Text
+      className="display-block"
+      strong={true}
+    >
+      Identifier
+    </Text>,
+    <Text
+      className="display-block"
+      type="secondary"
+    >
+      93bc9c3d-6321-41b0-9b93-1275d7114e22
+    </Text>,
+    <Text
+      className="display-block"
+      strong={true}
+    >
+      Status
+    </Text>,
+    <Text
+      className="display-block"
+      type="secondary"
+    >
+      active
+    </Text>,
+    <React.Fragment>
+      <Text
+        className="display-block"
+        strong={true}
+      >
+        Subject
+      </Text>
+      <Text
+        className="display-block"
+        type="secondary"
+      >
+        Care Team One
+      </Text>
+    </React.Fragment>,
+    <Text
+      className="display-block"
+      strong={true}
+    >
+      Participant
+    </Text>,
+    Array [
+      <React.Fragment>
+        <Text
+          className="display-block"
+          type="secondary"
+        >
+          
+        </Text>
+      </React.Fragment>,
+      <React.Fragment>
+        <Text
+          className="display-block"
+          type="secondary"
+        >
+          
+        </Text>
+      </React.Fragment>,
+    ],
+  ],
+  "direction": "vertical",
+}
+`;

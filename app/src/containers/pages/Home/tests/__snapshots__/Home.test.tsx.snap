@@ -130,7 +130,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page: H
                         <span
                           key=".0"
                         >
-                          Users
+                          User Management
                         </span>
                       </button>
                     </Wave>

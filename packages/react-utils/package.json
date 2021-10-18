@@ -43,6 +43,7 @@
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/server-service": "^0.0.17",
     "antd": "^4.6.3",
+    "react-query": "^3.15.1",
     "fhirclient": "^2.4.0"
   },
   "peerDependencies": {
@@ -52,6 +53,10 @@
     "react-redux": "^7.2.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@smile-cdr/fhirts": "1.2.5",
+    "nock": "^13.0.6"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
