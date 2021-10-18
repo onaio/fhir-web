@@ -8,6 +8,7 @@ export const URL_USER_GROUP_EDIT = `${URL_ADMIN}/users/group/edit`;
 export const URL_USER_CREATE = URL_ADMIN + '/users/new';
 export const URL_USER_GROUP_CREATE = `${URL_ADMIN}/users/group/new`;
 export const URL_USER_CREDENTIALS = URL_ADMIN + '/users/credentials';
+export const ORGANIZATION_BY_PRACTITIONER = 'organization/by-practitioner';
 
 // Route params
 export const ROUTE_PARAM_USER_ID = 'userId';
