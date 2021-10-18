@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/forms/CreateTeamForm renders correctly 1`] = `"Create Care TeamUUIDNameStatusActiveInactiveParticipantWard N Williams MDWard N Williams MDWard N Williams MDtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirMr. John CenoMr. Allay AllanBobi mapesaAllay Allanbrian krebsmarcus brownleejulian assangeSubjectSaveCancel"`;

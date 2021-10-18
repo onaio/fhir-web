@@ -14,7 +14,6 @@ export interface Props {
   keycloakBaseURL: string;
   opensrpBaseURL: string;
   record: KeycloakUser;
-  isLoadingCallback: (loading: boolean) => void;
   extraData: Dictionary;
 }
 
@@ -25,14 +24,7 @@ export interface Props {
  * @returns {Element} - actions
  */
 const TableActions = (props: Props): JSX.Element => {
-  const {
-    record,
-    removeKeycloakUsersCreator,
-    keycloakBaseURL,
-    opensrpBaseURL,
-    isLoadingCallback,
-    extraData,
-  } = props;
+  const { record, removeKeycloakUsersCreator, keycloakBaseURL, opensrpBaseURL, extraData } = props;
   const { user_id } = extraData;
   const menu = (
     <Menu>
@@ -42,13 +34,7 @@ const TableActions = (props: Props): JSX.Element => {
           okText="Yes"
           cancelText="No"
           onConfirm={() =>
-            deleteUser(
-              removeKeycloakUsersCreator,
-              keycloakBaseURL,
-              opensrpBaseURL,
-              record.id,
-              isLoadingCallback
-            )
+            deleteUser(removeKeycloakUsersCreator, keycloakBaseURL, opensrpBaseURL, record.id)
           }
         >
           {user_id &&

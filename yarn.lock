@@ -2703,11 +2703,44 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
+"@opensrp/location-management@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@opensrp/location-management/-/location-management-0.0.15.tgz#17e1a1097e03aa5548242662b23cf05706d6ab20"
+  integrity sha512-P2XAZhcghXqfUH3tal3nysQuYupPe5m3RuaPkmMIrgMajn+/DByAv24AAXuukYobbK0t4l+FqFDp7IHTX7cFwg==
+  dependencies:
+    "@onaio/session-reducer" "0.0.12"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.4"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/react-utils" "^0.0.12"
+    "@opensrp/reducer-factory" "^0.0.13"
+    "@opensrp/server-service" "^0.0.16"
+    cycle "^1.0.3"
+    fast_array_intersect "^1.1.0"
+    react-i18next "^11.8.10"
+    tree-model "^1.0.7"
+    uuid "^8.3.1"
+
 "@opensrp/notifications@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.4.tgz#c97b991ed7f820f1b6d2b9d447ec9169772c29ab"
   integrity sha512-7Gv+7x9OMc8nlAGnxid3fapU4vnpF4Dei64xZdxyWDvKRXVDzuP9a58E1UvDyfqTh/7F20YB9/f2YXutDVQprw==
   dependencies:
+    antd "^4.6.3"
+
+"@opensrp/react-utils@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.12.tgz#5903e2eb5ec8cc946f611b5db0d18667c0b0aa56"
+  integrity sha512-/1BuD3t07i4Ab9afzGkqe+EOgAP2mGz1BhUqGNnazx3+gfXESpCCjEsela84RNuiByyJZkJLPvxJ8KlChRQM7g==
+  dependencies:
+    "@onaio/connected-private-route" "^0.0.11"
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.1"
+    "@onaio/session-reducer" "^0.0.12"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.5"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/server-service" "^0.0.17"
     antd "^4.6.3"
 
 "@opensrp/reducer-factory@^0.0.9":
@@ -2738,6 +2771,39 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
+
+"@opensrp/team-assignment@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@opensrp/team-assignment/-/team-assignment-0.0.6.tgz#a60d60143fdcb9a85868e3f8736f431bfd6249c1"
+  integrity sha512-+cXmkI6c1/X/TTwnjaCzvDJq/S481V2M5M56hh3q24q1oK3l17QUW8KkbMrJW9dkx5zeCtVQO76BfcDpp/MPOQ==
+  dependencies:
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/location-management" "^0.0.15"
+    "@opensrp/notifications" "^0.0.5"
+    "@opensrp/react-utils" "^0.0.12"
+    "@opensrp/reducer-factory" "^0.0.13"
+    "@opensrp/server-service" "^0.0.17"
+    "@opensrp/team-management" "^0.0.9"
+    antd "^4.6.3"
+    formik "^2.1.5"
+    formik-antd "2.0.1"
+    react-helmet "^6.1.0"
+    yup "^0.29.3"
+
+"@opensrp/team-management@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@opensrp/team-management/-/team-management-0.0.9.tgz#f51550bd8b71d59e50db5aeebe0aee0bedd0284b"
+  integrity sha512-iq9UrbrkyWeS6nrBzq0VrzbJ3djw71b+vdjuMxeZkCtdSlKOqfUOIkU2acJWm8riAkx+XmfJO/uLQnaGswMuUA==
+  dependencies:
+    "@opensrp/notifications" "^0.0.4"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/react-utils" "^0.0.12"
+    "@opensrp/reducer-factory" "^0.0.13"
+    "@opensrp/server-service" "^0.0.16"
+    i18next "^19.8.4"
+    react-i18next "^11.8.10"
+    uuid "^8.3.1"
 
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
@@ -2829,6 +2895,16 @@
   integrity sha512-892K+kWUUi3cl+LlqEWIDrhvLgdL79tECi8JZUyq6IviKy/DNhuzCRlbHUjxK89f4ypPMMaFnFuR9Ie6DoIMsw==
   dependencies:
     type-detect "4.0.8"
+
+"@smile-cdr/fhirts@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@smile-cdr/fhirts/-/fhirts-1.2.5.tgz#e0e335b8407889d966723f212698260e7770f7c2"
+  integrity sha512-q+Q/qLswFmE3ZaGlHgO1xTibptS2gOvp3/SS8lGno3unF3Gu1+vJahan1RU/b8WL1ziUXC9Vl3fSpdsR62SqGA==
+
+"@smile-cdr/fhirts@^1.2.5":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@smile-cdr/fhirts/-/fhirts-1.2.6.tgz#614446ce5ed9f9fdd3ed4e953a547c78aedfb884"
+  integrity sha512-9BWMDhQf2lIhzFcIkbwpUnntALoWSLXdCsvkHylfMC4nPSux7Ud1Ybeu9xSUYvEEyzPHBZahUEx/S6fGhE4Elw==
 
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
@@ -2967,6 +3043,17 @@
     css.escape "^1.5.1"
     lodash "^4.17.15"
     redent "^3.0.0"
+
+"@testing-library/react-hooks@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-hooks/-/react-hooks-7.0.0.tgz#dd6d37a7e018f147a3b9153137f10e013be8472b"
+  integrity sha512-WFBGH8DWdIGGBHt6PBtQPe2v4Kbj9vQ1sQ9qLBTmwn1PNggngint4MTE/IiWCYhPbyTW3oc/7X62DObMn/AjQQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@types/react" ">=16.9.0"
+    "@types/react-dom" ">=16.9.0"
+    "@types/react-test-renderer" ">=16.9.0"
+    react-error-boundary "^3.1.0"
 
 "@testing-library/react@^11.0.4":
   version "11.2.2"
@@ -3215,6 +3302,13 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
 
+"@types/react-dom@>=16.9.0":
+  version "17.0.8"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.8.tgz#3180de6d79bf53762001ad854e3ce49f36dd71fc"
+  integrity sha512-0ohAiJAx1DAUEcY9UopnfwCE9sSMDGnY/oXjWMax6g3RpzmTt2GMyMVAXcbn0mo8XAff0SbQJl2/SBU+hjSZ1A==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.9.8":
   version "16.9.10"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.10.tgz#4485b0bec3d41f856181b717f45fd7831101156f"
@@ -3263,12 +3357,28 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-test-renderer@>=16.9.0":
+  version "17.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-17.0.1.tgz#3120f7d1c157fba9df0118dae20cb0297ee0e06b"
+  integrity sha512-3Fi2O6Zzq/f3QR9dRnlnHso9bMl7weKCviFmfF6B4LS1Uat6Hkm15k0ZAQuDz+UBq6B3+g+NM6IT2nr5QgPzCw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*":
   version "17.0.0"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.0.tgz#5af3eb7fad2807092f0046a1302b7823e27919b8"
   integrity sha512-aj/L7RIMsRlWML3YB6KZiXB3fV2t41+5RBGYF8z+tAKU43Px8C3cYUZsDvf1/+Bm4FK21QWBrDutu8ZJ/70qOw==
   dependencies:
     "@types/prop-types" "*"
+    csstype "^3.0.2"
+
+"@types/react@>=16.9.0":
+  version "17.0.11"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.11.tgz#67fcd0ddbf5a0b083a0f94e926c7d63f3b836451"
+  integrity sha512-yFRQbD+whVonItSk7ZzP/L+gPTJVBkL/7shLEF+i9GC/1cV3JmUxEQz6+9ylhUpWSDuqo1N9qEvqS6vTj4USUA==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
     csstype "^3.0.2"
 
 "@types/react@^16", "@types/react@^16.9.49":
@@ -5867,9 +5977,9 @@ core-js@^3.5.0:
   integrity sha512-NwS7fI5M5B85EwpWuIwJN4i/fbisQUwLwiSNUWeXlkAZ0sbBjLEvLvFLf1uzAUV66PcEPt4xCGCmOZSxVf3xzA==
 
 core-js@^3.6.5:
-  version "3.17.3"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.17.3.tgz#8e8bd20e91df9951e903cabe91f9af4a0895bc1e"
-  integrity sha512-lyvajs+wd8N1hXfzob1LdOCCHFU4bGMbqqmLn1Q4QlCpDqWPpGf+p0nj+LNrvDDG33j0hZXw2nsvvVpHysxyNw==
+  version "3.15.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.15.1.tgz#6c08ab88abdf56545045ccf5fd81f47f407e7f1a"
+  integrity sha512-h8VbZYnc9pDzueiS2610IULDkpFFPunHwIpl8yRwFahAEEdSpHlTy3h3z3rKq5h11CaUdBEeRViu9AYvbxiMeg==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -7825,7 +7935,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-fhirclient@^2.4.0:
+fhirclient@^2.3.11, fhirclient@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/fhirclient/-/fhirclient-2.4.0.tgz#1cdd92a2d6616020fc2edc6015286715bf28be08"
   integrity sha512-j5+u2A+vYHeYyS1vxwEAGikjUCFyqXOwsrh6nhgXlVLxd1brtqRAS3PK6rTtp6UPtWfh17352DWcpZJE/2PgzA==
@@ -14541,6 +14651,13 @@ react-dom@^16.13.1:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.19.1"
+
+react-error-boundary@^3.1.0:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-3.1.3.tgz#276bfa05de8ac17b863587c9e0647522c25e2a0b"
+  integrity sha512-A+F9HHy9fvt9t8SNDlonq01prnU8AmkjvGKV4kk8seB9kU3xMEO8J/PQlLVmoOIDODl5U2kufSBs4vrWIqhsAA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
 
 react-error-overlay@^6.0.7:
   version "6.0.8"

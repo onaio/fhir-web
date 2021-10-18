@@ -1,4 +1,3 @@
-import { PaginationProps } from 'antd/lib/pagination';
 import { mount } from 'enzyme';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
@@ -55,7 +54,7 @@ describe('Table Layout', () => {
     );
 
     expect(wrapper.find('Table').first().prop('dataSource')).toMatchObject(tableData);
-    expect(wrapper.find('Table').first().prop('columns')).toMatchObject(columns);
+    expect(wrapper.find('Table').first().prop('columns')).toMatchObject([...columns, actions]); // column passed to table should contain column as well as actions
   });
 
   it('Must have default settings applied', () => {
@@ -78,30 +77,6 @@ describe('Table Layout', () => {
     );
 
     expect(wrapper.find('Table').first().prop('pagination')).toBe(false);
-  });
-
-  it('Add event to pagination change only when presist state', () => {
-    const wrapper = mount(
-      <TableLayout datasource={tableData} columns={columns} actions={actions} />
-    );
-
-    expect(
-      (wrapper.find('Table').first().prop('pagination') as PaginationProps).onChange
-    ).toBeFalsy();
-
-    const wrapper1 = mount(
-      <TableLayout
-        datasource={tableData}
-        id="TestTable"
-        persistState={true}
-        columns={columns}
-        actions={actions}
-      />
-    );
-
-    expect(
-      (wrapper1.find('Table').first().prop('pagination') as PaginationProps).onChange
-    ).toBeTruthy();
   });
 
   it('Get and Save Value to pkg-config', async () => {
