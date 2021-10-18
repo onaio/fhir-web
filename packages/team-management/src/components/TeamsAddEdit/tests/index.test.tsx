@@ -358,7 +358,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(wrapper.text()).toMatchInlineSnapshot(
       // eslint-disable-next-line no-irregular-whitespace
-      `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersanon opsprac twoBenjamin Mulyungitest admin SaveCancel"`
+      `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersanon ops (anon-ops)prac two (prac2)Benjamin Mulyungi (mwalimu)test admin (admin-2) SaveCancel"`
     );
     // trigger team member change
     (wrapper.find('Select').props() as Dictionary).onChange(
@@ -368,7 +368,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     wrapper.update();
     expect(wrapper.text()).toMatchInlineSnapshot(
       // eslint-disable-next-line no-irregular-whitespace
-      `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersprac two SaveCancel"`
+      `"Edit Team | Test Test TeamTeam NameStatusActiveInactiveTeam Membersprac two (prac2) SaveCancel"`
     );
     wrapper.unmount();
   });
@@ -401,9 +401,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     // filter practitioners against inactive users
     const filteredPractitioners = practitioners.filter((practitioner) => practitioner.active);
-    // only return the names
+    // only return the names (and username)
     const filteredPractitionerNames = filteredPractitioners.map(
-      (practitioner) => practitioner.name
+      (practitioner) => `${practitioner.name} (${practitioner.username})`
     );
 
     // expect antd select options text to equal practitioners filtered for only active users
@@ -413,10 +413,10 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     const defaultPractitioners = practitionersSelect.find('.ant-select-selection-item-content');
     // expect them to match default active practitioners
     expect(defaultPractitioners.map((opt) => opt.text())).toStrictEqual([
-      'anon ops',
-      'prac two',
-      'Benjamin Mulyungi',
-      'test admin',
+      'anon ops (anon-ops)',
+      'prac two (prac2)',
+      'Benjamin Mulyungi (mwalimu)',
+      'test admin (admin-2)',
     ]);
   });
 
@@ -460,8 +460,8 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     //  should be equal to array of all active elements in the subset
     expect(options.map((opt) => opt.text())).toMatchInlineSnapshot(`
       Array [
-        "Benjamin Mulyungi",
-        "test admin",
+        "Benjamin Mulyungi (mwalimu)",
+        "test admin (admin-2)",
       ]
     `);
 
@@ -479,9 +479,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     // expect all active options - except those who are team members elsewhere (practitioners[0])
     expect(selectOptions.map((opt) => opt.text())).toMatchInlineSnapshot(`
       Array [
-        "Benjamin Mulyungi",
-        "test admin",
-        "prac two",
+        "Benjamin Mulyungi (mwalimu)",
+        "test admin (admin-2)",
+        "prac two (prac2)",
       ]
     `);
   });
@@ -543,10 +543,10 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     // find antd select options
     const selectOptions = practitionersSelect2.find('.ant-select-item-option-content');
 
-    // remove inactive users and only return the names
+    // remove inactive users and only return the names (and usernames)
     const filteredPractitioners = practitioners
       .filter((practitioner) => practitioner.active)
-      .map((practitioner) => practitioner.name);
+      .map((practitioner) => `${practitioner.name} (${practitioner.username})`);
 
     // expect antd select option text to equal all practitioners (except those who are inactive)
     expect(selectOptions.map((opt) => opt.text())).toStrictEqual(filteredPractitioners);
@@ -592,10 +592,10 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     // expect all team options
     expect(selectOptions.map((opt) => opt.text())).toStrictEqual([
-      'anon ops',
-      'prac two',
-      'Benjamin Mulyungi',
-      'test admin',
+      'anon ops (anon-ops)',
+      'prac two (prac2)',
+      'Benjamin Mulyungi (mwalimu)',
+      'test admin (admin-2)',
     ]);
 
     // find search input field
@@ -613,7 +613,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     const selectOptions2 = practitionersSelect3.find('.ant-select-item-option-content');
     expect(selectOptions2.map((opt) => opt.text())).toMatchInlineSnapshot(`
       Array [
-        "anon ops",
+        "anon ops (anon-ops)",
       ]
     `);
   });
