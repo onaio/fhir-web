@@ -51,7 +51,7 @@ export async function onSubmit(
   PractitionerRoles?: PractitionerRole[]
 ) {
   const officialidentifier =
-    initialValue.identifier?.find((e) => e.use === 'official')?.value ?? v4();
+    initialValue.identifier?.find((identifier) => identifier.use === 'official')?.value ?? v4();
 
   const payload: Organization = {
     resourceType: 'Organization',
