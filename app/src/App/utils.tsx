@@ -28,6 +28,7 @@ import {
   USER_FORM_HIDDEN_FIELDS,
   USER_FORM_RENDER_FIELDS,
   PAGINATION_SIZE,
+  FHIR_RESOURCES_PAGE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -157,4 +158,8 @@ export const createEditUserProps = {
   // that is closer to the code.
   userFormHiddenFields: USER_FORM_HIDDEN_FIELDS,
   userFormRenderFields: USER_FORM_RENDER_FIELDS,
+};
+
+export const careTeamProps = {
+  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
 };
