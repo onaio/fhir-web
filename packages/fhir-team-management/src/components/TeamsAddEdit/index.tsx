@@ -5,9 +5,9 @@ import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import {
   FHIR_RESOURCES_PAGE_SIZE,
-  PRACTITIONERROLE_GET,
-  PRACTITIONER_GET,
-  TEAMS_GET,
+  PRACTITIONERROLE_ENDPOINT,
+  PRACTITIONER_ENDPOINT,
+  TEAM_ENDPOINT,
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
@@ -36,19 +36,27 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
-  const Practitioners = useQuery(PRACTITIONER_GET, async () => practitionerAPI.list(fhirParams), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res) => res.entry.map((e) => e.resource),
-  });
+  const Practitioners = useQuery(
+    PRACTITIONER_ENDPOINT,
+    async () => practitionerAPI.list(fhirParams),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res) => res.entry.map((e) => e.resource),
+    }
+  );
 
-  const team = useQuery([TEAMS_GET, params.id], async () => organizationAPI.read(`${params.id}`), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res) => res,
-    enabled: params.id !== undefined,
-  });
+  const team = useQuery(
+    [TEAM_ENDPOINT, params.id],
+    async () => organizationAPI.read(`${params.id}`),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res) => res,
+      enabled: params.id !== undefined,
+    }
+  );
 
   const AllRoles = useQuery(
-    PRACTITIONERROLE_GET,
+    PRACTITIONERROLE_ENDPOINT,
     async () => practitionerroleAPI.list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),

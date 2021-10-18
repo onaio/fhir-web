@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import {
-  TEAMS_GET,
-  PRACTITIONERROLE_DEL,
-  PRACTITIONERROLE_GET,
-  PRACTITIONER_GET,
-} from '../../constants';
+import { TEAM_ENDPOINT, PRACTITIONERROLE_ENDPOINT, PRACTITIONER_ENDPOINT } from '../../constants';
 import {
   sendSuccessNotification,
   sendInfoNotification,
@@ -104,7 +99,9 @@ async function SetPractitioners(
     .filter((e) => !!e)
     .map((role) => role?.id);
 
-  const rempromises = toremoveroles.map((roles) => serve.delete(`${PRACTITIONERROLE_DEL}${roles}`));
+  const rempromises = toremoveroles.map((roles) =>
+    serve.delete(`${PRACTITIONERROLE_ENDPOINT}${roles}`)
+  );
   await Promise.all(rempromises);
 
   // Api Call to add practitioners
@@ -199,16 +196,16 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(fhirbaseURL, initialValue, values, Practitioners, PractitionerRoles)
           .then(() => {
             queryClient
-              .invalidateQueries(TEAMS_GET)
+              .invalidateQueries(TEAM_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
-              .invalidateQueries(PRACTITIONERROLE_GET)
+              .invalidateQueries(PRACTITIONERROLE_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
-              .invalidateQueries(PRACTITIONER_GET)
+              .invalidateQueries(PRACTITIONER_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
-              .invalidateQueries([TEAMS_GET, initialValue?.id])
+              .invalidateQueries([TEAM_ENDPOINT, initialValue?.id])
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             history.goBack();
           })
