@@ -91,7 +91,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     searchquery?: string
   ): Promise<KeycloakUser[]> {
     let filterParams: Dictionary = { first: page * pageSize - pageSize, max: pageSize };
-    if (searchquery) filterParams = { ...filterParams, first: 0, search: searchParam };
+    if (searchquery) filterParams = { search: searchParam };
     const usersService = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
     const keycloakUsers: KeycloakUser[] = await usersService.list(filterParams as Dictionary);
     fetchKeycloakUsersCreator(keycloakUsers, true);
