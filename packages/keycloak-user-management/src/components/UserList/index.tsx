@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Button, Space } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Store } from 'redux';
@@ -10,6 +10,7 @@ import {
   SearchForm,
   TableLayout,
   PaginateData,
+  OpenSRPService,
 } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
@@ -19,12 +20,15 @@ import {
   removeKeycloakUsers,
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
+  Practitioner,
 } from '../../ducks/user';
 import {
   URL_USER_CREATE,
   KEYCLOAK_URL_USERS,
   KEYCLOAK_URL_USERS_COUNT,
   SEARCH_QUERY_PARAM,
+  OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
+  ORGANIZATION_BY_PRACTITIONER,
 } from '../../constants';
 import lang from '../../lang';
 import { getTableColumns } from './utils';
@@ -32,6 +36,8 @@ import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { TableActions } from './TableActions';
+import { UserDetails, UserDetailType } from '../UserDetails';
+import { Organization } from '@opensrp/team-management';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -75,7 +81,9 @@ const UserList = (props: UserListTypes): JSX.Element => {
   const history = useHistory();
 
   const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
-  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
+  const [sortedInfo, setSortedInfo] = useState<Dictionary>();
+  const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
+  const [openDetails, setOpenDetails] = useState<boolean>(false);
 
   /**
    * Function to fetch Users
@@ -100,11 +108,80 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   const isSearchActive = searchParam && searchParam.length;
 
+  // fetch practitioner tied to keycloak user
+  const fetchPractitioner = async (userId: string) => {
+    const serve = new OpenSRPService(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, opensrpBaseURL);
+    try {
+      const practitioner: Practitioner | undefined = await serve.read(userId);
+      return practitioner;
+    } catch (error) {
+      sendErrorNotification(lang.ERROR_OCCURED);
+      return undefined;
+    }
+  };
+
+  // fetch teams (organizations) a practitioner is assigned to
+  const fetchAssignedTeams = async (practitionerId: string) => {
+    const serve = new OpenSRPService(ORGANIZATION_BY_PRACTITIONER, opensrpBaseURL);
+    try {
+      const organizations: Organization[] = await serve.read(practitionerId);
+      // endpoint returns empty object instead of array on failure
+      const response = Array.isArray(organizations) ? organizations : [];
+      return response;
+    } catch (error) {
+      sendErrorNotification(lang.ERROR_OCCURED);
+      return [];
+    }
+  };
+
+  // Callback function that populates the user details section from table row data (keycloak user)
+  const setDetailsCallback = async (keycloakUser: KeycloakUser) => {
+    // show spinner between evaluations without closing modal
+    onCloseCallback();
+
+    // open details section
+    setOpenDetails(true);
+
+    // fetch practitioner
+    fetchPractitioner(keycloakUser.id)
+      .then((practitioner: Practitioner | undefined) => {
+        if (practitioner) {
+          // fetch assigned teams
+          fetchAssignedTeams(practitioner.identifier)
+            .then((assignedTeams: Organization[]) => {
+              setUserDetails({
+                keycloakUser: keycloakUser,
+                practitioner: practitioner,
+                assignedTeams: assignedTeams,
+              });
+            })
+            .catch(() => {
+              sendErrorNotification(lang.ERROR_OCCURED);
+            });
+        } else {
+          setUserDetails({
+            keycloakUser: keycloakUser,
+            practitioner: practitioner,
+            assignedTeams: [],
+          });
+        }
+      })
+      .catch(() => {
+        sendErrorNotification(lang.ERROR_OCCURED);
+      });
+  };
+
+  // reset values and close modal
+  const onCloseCallback = () => {
+    setUserDetails(null);
+    setOpenDetails(false);
+  };
+
   return (
     <section className="layout-content">
       <h5 className="mb-3">{lang.USER_MANAGEMENT_PAGE_HEADER}</h5>
       <Row className="list-view">
-        <Col className="main-content" span={24}>
+        <Col className="main-content" span={openDetails ? 19 : 24}>
           <div className="main-content__header">
             <SearchForm
               defaultValue={getQueryParams(props.location)[SEARCH_QUERY_PARAM]}
@@ -155,6 +232,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                         opensrpBaseURL,
                         record,
                         extraData,
+                        setDetailsCallback,
                       };
                       return <TableActions {...tableActionsProps} />;
                     },
@@ -164,6 +242,11 @@ const UserList = (props: UserListTypes): JSX.Element => {
             </PaginateData>
           </Space>
         </Col>
+        {openDetails ? (
+          <Col className="pl-3" span={5}>
+            <UserDetails onClose={() => onCloseCallback()} {...userDetails} />
+          </Col>
+        ) : null}
       </Row>
     </section>
   );
