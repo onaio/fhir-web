@@ -4,22 +4,13 @@ exports[`location-management/src/components/LocationUnitList location unit table
 Object {
   "data": Array [
     Object {
-      "geographicLevel": 0,
-      "id": "b652b2f4-a95d-489b-9e28-4629746db96a",
+      "description": "This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.",
+      "id": "2252",
       "key": "0",
-      "name": "Kenya",
-    },
-    Object {
-      "geographicLevel": 0,
-      "id": "6bf9c085-350b-4bb2-990f-80dc2caafb33",
-      "key": "1",
-      "name": "Malawi",
-    },
-    Object {
-      "geographicLevel": 0,
-      "id": "a26ca9c8-1441-495a-83b6-bb5df7698996",
-      "key": "2",
-      "name": "Tunisia",
+      "name": "Root FHIR Location",
+      "partOf": "-",
+      "physicalType": "Jurisdiction",
+      "status": "active",
     },
   ],
   "onViewDetails": [Function],

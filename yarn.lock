@@ -7935,16 +7935,6 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-fhirclient@2.3.11:
-  version "2.3.11"
-  resolved "https://registry.yarnpkg.com/fhirclient/-/fhirclient-2.3.11.tgz#daff5f605007d163a74cd7cd65130f0a60cef534"
-  integrity sha512-pBEcAJlMLeqrnDEYPDTV+BGooYIzwj0vsIjR7ppFF2qSHXEijgQ6IgyKkUB3EnnR4/UP91pCicjrnM/qFGV/2Q==
-  dependencies:
-    abortcontroller-polyfill "^1.5.0"
-    core-js "^3.6.5"
-    cross-fetch "^3.0.5"
-    debug "^4.1.1"
-
 fhirclient@^2.3.11, fhirclient@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/fhirclient/-/fhirclient-2.4.0.tgz#1cdd92a2d6616020fc2edc6015286715bf28be08"

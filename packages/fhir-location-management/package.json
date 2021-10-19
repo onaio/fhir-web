@@ -44,7 +44,6 @@
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
     "@smile-cdr/fhirts": "1.2.5",
-    "fhirclient": "2.3.11",
     "cycle": "^1.0.3",
     "fast_array_intersect": "^1.1.0",
     "react-i18next": "^11.8.10",
@@ -55,6 +54,7 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@types/geojson": "^7946.0.7",
     "@types/uuid": "8.3.0",
+    "fhirclient": "^2.4.0",
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {

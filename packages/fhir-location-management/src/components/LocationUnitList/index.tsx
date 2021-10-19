@@ -7,7 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/location-units';
 import { URL_LOCATION_UNIT_ADD } from '../../constants';
 import { useQuery } from 'react-query';
@@ -31,7 +31,6 @@ reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer)
 interface Props {
   opensrpBaseURL: string;
   fhirBaseURL: string;
-  filterByParentId: boolean;
   fhirRootLocationIdentifier: string;
 }
 
@@ -79,7 +78,6 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     `Location/${detailId}`,
     async () => (detailId ? serve.read(detailId) : undefined),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res) => res,
     }
   );
@@ -88,7 +86,6 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     'LocationHierarchy',
     async () => new FHIRServiceClass(fhirBaseURL, 'LocationHierarchy').list(hierarchyParams),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res) =>
         res.entry.map((singleEntry) => generateFHIRLocationTree(singleEntry as any).model),
       refetchOnWindowFocus: false,
@@ -111,6 +108,10 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
 
   if (!treeDataQuery.data || !tableData.length || treeDataQuery.isFetching)
     return <Spin size={'large'} />;
+
+  if (treeDataQuery.error || fhirLocationDetail.error) {
+    return <BrokenPage errorMessage={`${lang.ERROR_OCCURED}`} />;
+  }
 
   return (
     <section className="layout-content">
