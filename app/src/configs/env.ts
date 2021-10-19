@@ -15,6 +15,7 @@ const defaultRoles = {
   TEAMS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
 export const OPENSRP_ROLES =
@@ -140,6 +141,9 @@ export const DISABLE_LOGIN_PROTECTION =
 export const ENABLE_PRODUCT_CATALOGUE =
   setEnv('REACT_APP_ENABLE_PRODUCT_CATALOGUE', 'false') === 'true';
 
+/** Activate the FHIR Care Team menu */
+export const ENABLE_FHIR_CARE_TEAM = setEnv('REACT_APP_ENABLE_FHIR_CARE_TEAM', 'false') === 'true';
+
 /** Activate form configuration */
 export const ENABLE_FORM_CONFIGURATION =
   setEnv('REACT_APP_ENABLE_FORM_CONFIGURATION', 'false') === 'true';
@@ -188,3 +192,4 @@ export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
   'REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER',
   'eff94f33-c356-4634-8795-d52340706ba9'
 );
+export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
