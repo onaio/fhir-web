@@ -1270,4 +1270,342 @@ export const rawHierarchy: RawOpenSRPHierarchy[] = [
   },
 ];
 
+export const fhirHierarchy = {
+  resourceType: 'Bundle',
+  id: '79202ca7-f148-47c2-b5bf-4a406b540495',
+  meta: {
+    lastUpdated: '2021-10-19T09:24:35.933+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url:
+        'http://fhir.labs.smartregister.org/fhir/LocationHierarchy?_format=json&identifier=eff94f33-c356-4634-8795-d52340706ba9',
+    },
+  ],
+  entry: [
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/LocationHierarchy/Location Resource : 2252',
+      resource: {
+        resourceType: 'LocationHierarchy',
+        id: 'Location Resource : 2252',
+        meta: {
+          profile: ['http://hl7.org/fhir/profiles/custom-resource'],
+        },
+        LocationHierarchyTree: {
+          locationsHierarchy: {
+            listOfNodes: {
+              treeNodeId: 'Location/2252',
+              treeNode: [
+                {
+                  nodeId: 'Location/2252',
+                  label: 'Root FHIR Location',
+                  node: {
+                    resourceType: 'Location',
+                    id: '2252',
+                    meta: {
+                      versionId: '3',
+                      lastUpdated: '2021-10-14T13:10:14.524+00:00',
+                      source: '#5887f723a045b500',
+                    },
+                    identifier: [
+                      {
+                        use: 'official',
+                        value: 'eff94f33-c356-4634-8795-d52340706ba9',
+                      },
+                    ],
+                    status: 'active',
+                    name: 'Root FHIR Location',
+                    alias: ['Root Location'],
+                    description:
+                      'This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.',
+                    physicalType: {
+                      coding: [
+                        {
+                          system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
+                          code: 'jdn',
+                          display: 'Jurisdiction',
+                        },
+                      ],
+                    },
+                  },
+                  children: [
+                    {
+                      childId: 'Location/303',
+                      treeNode: {
+                        nodeId: 'Location/303',
+                        label: 'Ona Office Sub Location',
+                        node: {
+                          resourceType: 'Location',
+                          id: '303',
+                          meta: {
+                            versionId: '4',
+                            lastUpdated: '2021-10-14T13:12:22.740+00:00',
+                            source: '#13bbc7f09daa1751',
+                          },
+                          identifier: [
+                            {
+                              use: 'official',
+                              value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
+                            },
+                          ],
+                          status: 'active',
+                          name: 'Ona Office Sub Location',
+                          alias: ['ona office'],
+                          description: 'The Sub location',
+                          physicalType: {
+                            coding: [
+                              {
+                                system:
+                                  'http://terminology.hl7.org/CodeSystem/location-physical-type',
+                                code: 'jdn',
+                                display: 'Jurisdiction',
+                              },
+                            ],
+                          },
+                          partOf: {
+                            reference: 'Location/2252',
+                            display: 'Root FHIR Location',
+                          },
+                        },
+                        parent: 'Location/2252',
+                        children: [
+                          {
+                            childId: 'Location/971',
+                            treeNode: {
+                              nodeId: 'Location/971',
+                              label: 'Arundel mobile clinic',
+                              node: {
+                                resourceType: 'Location',
+                                id: '971',
+                                meta: {
+                                  versionId: '14',
+                                  lastUpdated: '2021-10-15T06:55:14.763+00:00',
+                                  source: '#824ac068fc0cc017',
+                                },
+                                identifier: [
+                                  {
+                                    use: 'official',
+                                    value: '0f184aac-83e7-498e-8232-5c8b360ad97b',
+                                  },
+                                ],
+                                status: 'active',
+                                name: 'Arundel mobile clinic',
+                                alias: ['Part of'],
+                                description: 'Vaccination Site',
+                                physicalType: {
+                                  coding: [
+                                    {
+                                      system:
+                                        'http://terminology.hl7.org/CodeSystem/location-physical-type',
+                                      code: 'jdn',
+                                      display: 'Jurisdiction',
+                                    },
+                                  ],
+                                },
+                                partOf: {
+                                  reference: 'Location/303',
+                                  display: 'Ona Office Sub Location',
+                                },
+                              },
+                              parent: 'Location/303',
+                            },
+                          },
+                          {
+                            childId: 'Location/3453',
+                            treeNode: {
+                              nodeId: 'Location/3453',
+                              label: 'Part Of Sub Location',
+                              node: {
+                                resourceType: 'Location',
+                                id: '3453',
+                                meta: {
+                                  versionId: '2',
+                                  lastUpdated: '2021-10-14T13:12:50.738+00:00',
+                                  source: '#ee7f951054c1498e',
+                                },
+                                identifier: [
+                                  {
+                                    use: 'official',
+                                    value: 'c3ff106e-91cb-4346-b45f-d7ad5346af5a',
+                                  },
+                                ],
+                                status: 'active',
+                                name: 'Part Of Sub Location',
+                                alias: ['part off'],
+                                description: 'Testing the part of ',
+                                physicalType: {
+                                  coding: [
+                                    {
+                                      system:
+                                        'http://terminology.hl7.org/CodeSystem/location-physical-type',
+                                      code: 'jdn',
+                                      display: 'Jurisdiction',
+                                    },
+                                  ],
+                                },
+                                partOf: {
+                                  reference: 'Location/303',
+                                  display: 'Ona Office Sub Location',
+                                },
+                              },
+                              parent: 'Location/303',
+                              children: [
+                                {
+                                  childId: 'Location/3590',
+                                  treeNode: {
+                                    nodeId: 'Location/3590',
+                                    label: 'Test Loc 113',
+                                    node: {
+                                      resourceType: 'Location',
+                                      id: '3590',
+                                      meta: {
+                                        versionId: '1',
+                                        lastUpdated: '2021-10-15T09:59:46.554+00:00',
+                                        source: '#bc4c70fa7e68ac36',
+                                      },
+                                      identifier: [
+                                        {
+                                          use: 'official',
+                                          value: '9f7f985b-8226-4971-ae67-c3ef241cbe01',
+                                        },
+                                      ],
+                                      status: 'active',
+                                      name: 'Test Loc 113',
+                                      alias: ['113'],
+                                      description: 'Desc',
+                                      physicalType: {
+                                        coding: [
+                                          {
+                                            system:
+                                              'http://terminology.hl7.org/CodeSystem/location-physical-type',
+                                            code: 'jdn',
+                                            display: 'Jurisdiction',
+                                          },
+                                        ],
+                                      },
+                                      partOf: {
+                                        reference: 'Location/3453',
+                                        display: 'Part Of Sub Location',
+                                      },
+                                    },
+                                    parent: 'Location/3453',
+                                  },
+                                },
+                                {
+                                  childId: 'Location/739',
+                                  treeNode: {
+                                    nodeId: 'Location/739',
+                                    label: 'Test Loc 1145',
+                                    node: {
+                                      resourceType: 'Location',
+                                      id: '739',
+                                      meta: {
+                                        versionId: '19',
+                                        lastUpdated: '2021-10-15T12:09:59.809+00:00',
+                                        source: '#68c24697322968a2',
+                                      },
+                                      identifier: [
+                                        {
+                                          use: 'official',
+                                          value: '2829f50c-9189-43ee-8def-a775437c2f0b',
+                                        },
+                                      ],
+                                      status: 'active',
+                                      name: 'Test Loc 1145',
+                                      alias: ['ona officee'],
+                                      description: 'This is a test',
+                                      physicalType: {
+                                        coding: [
+                                          {
+                                            system:
+                                              'http://terminology.hl7.org/CodeSystem/location-physical-type',
+                                            code: 'jdn',
+                                            display: 'Jurisdiction',
+                                          },
+                                        ],
+                                      },
+                                      partOf: {
+                                        reference: 'Location/3453',
+                                        display: 'Part Of Sub Location',
+                                      },
+                                    },
+                                    parent: 'Location/3453',
+                                  },
+                                },
+                                {
+                                  childId: 'Location/3464',
+                                  treeNode: {
+                                    nodeId: 'Location/3464',
+                                    label: 'MOH HQ 1',
+                                    node: {
+                                      resourceType: 'Location',
+                                      id: '3464',
+                                      meta: {
+                                        versionId: '6',
+                                        lastUpdated: '2021-10-18T06:12:30.028+00:00',
+                                        source: '#ab2dcd70fdef5e64',
+                                      },
+                                      identifier: [
+                                        {
+                                          use: 'official',
+                                          value: 'f725bbe8-989d-4dd9-8346-d9630e813660',
+                                        },
+                                      ],
+                                      status: 'active',
+                                      name: 'MOH HQ 1',
+                                      alias: ['mohh'],
+                                      description: 'HL7 Headquarters',
+                                      physicalType: {
+                                        coding: [
+                                          {
+                                            system:
+                                              'http://terminology.hl7.org/CodeSystem/location-physical-type',
+                                            code: 'jdn',
+                                            display: 'Jurisdiction',
+                                          },
+                                        ],
+                                      },
+                                      partOf: {
+                                        reference: 'Location/3453',
+                                        display: 'Part Of Sub Location',
+                                      },
+                                    },
+                                    parent: 'Location/3453',
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            parentChildren: [
+              {
+                identifier: 'Location/2252',
+                childIdentifiers: ['Location/303'],
+              },
+              {
+                identifier: 'Location/303',
+                childIdentifiers: ['Location/971', 'Location/3453'],
+              },
+              {
+                identifier: 'Location/3453',
+                childIdentifiers: ['Location/3590', 'Location/739', 'Location/3464'],
+              },
+            ],
+          },
+        },
+        locationId: '2252',
+      },
+    },
+  ],
+};
+
 export const parsedTreeNode: TreeNode[] = rawHierarchy.map((e) => generateJurisdictionTree(e));
