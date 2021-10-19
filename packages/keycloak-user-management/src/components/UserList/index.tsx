@@ -125,9 +125,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     const serve = new OpenSRPService(ORGANIZATION_BY_PRACTITIONER, opensrpBaseURL);
     try {
       const organizations: Organization[] = await serve.read(practitionerId);
-      // endpoint returns empty object instead of array on failure
-      const response = Array.isArray(organizations) ? organizations : [];
-      return response;
+      return organizations;
     } catch (error) {
       sendErrorNotification(lang.ERROR_OCCURED);
       return [];
