@@ -230,7 +230,13 @@ Below is a list of currently supported environment variables:
 - **REACT_APP_ENABLE_FHIR_LOCATIONS**
 
   - Enables FHIR location management module
-  - **Optional**(_string_)
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_FHIR_CARE_TEAM**
+
+  - Enables the FHIR Care Team module
+  - **Optional**(`boolean`)
   - default: `"false"`
 
 - **REACT_APP_DEFAULTS_TABLE_PAGE_SIZE**
@@ -242,4 +248,9 @@ Below is a list of currently supported environment variables:
 - **REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER**
 
   - FHIR Hierarchy root location UUID
+  - **Optional**_(`string`)_
+
+- **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
+  - Default FHIR resource page count
   - **Required**
+  - default: 500
