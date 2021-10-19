@@ -62,4 +62,10 @@ describe('components/TeamsDetail', () => {
     const wrapper = mount(<UserDetails {...newProps} />);
     expect(wrapper.find('.ant-spin').exists()).toBeTruthy();
   });
+  it('removes it self on close', () => {
+    const wrapper = mount(<UserDetails {...props} onClose={() => wrapper.unmount()} />);
+    expect(wrapper.children()).toHaveLength(1);
+    wrapper.find('Button.close-btn').simulate('click');
+    expect(wrapper).toHaveLength(0);
+  });
 });
