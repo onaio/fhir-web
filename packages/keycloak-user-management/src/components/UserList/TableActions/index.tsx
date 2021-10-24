@@ -15,6 +15,7 @@ export interface Props {
   opensrpBaseURL: string;
   record: KeycloakUser;
   extraData: Dictionary;
+  setDetailsCallback: (keycloakUser: KeycloakUser) => void;
 }
 
 /**
@@ -24,7 +25,14 @@ export interface Props {
  * @returns {Element} - actions
  */
 const TableActions = (props: Props): JSX.Element => {
-  const { record, removeKeycloakUsersCreator, keycloakBaseURL, opensrpBaseURL, extraData } = props;
+  const {
+    record,
+    removeKeycloakUsersCreator,
+    keycloakBaseURL,
+    opensrpBaseURL,
+    extraData,
+    setDetailsCallback,
+  } = props;
   const { user_id } = extraData;
   const menu = (
     <Menu>
@@ -51,6 +59,15 @@ const TableActions = (props: Props): JSX.Element => {
             <Button type="link">Credentials</Button>
           </Link>
         }
+      </Menu.Item>
+      <Menu.Item
+        className="viewDetails"
+        style={{
+          textAlign: 'center',
+        }}
+        onClick={() => setDetailsCallback(record)}
+      >
+        {lang.VIEW_DETAILS}
       </Menu.Item>
     </Menu>
   );

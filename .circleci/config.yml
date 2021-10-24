@@ -44,7 +44,7 @@ jobs:
 
       - run:
           name: Run test with coverage
-          command: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles
+          command: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles --maxWorkers=2
 
       - run:
           name: upload coverage to coveralls
