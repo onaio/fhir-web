@@ -31,6 +31,17 @@ exports[`components/UserList/TableActions hides delete element if entry is logge
       </Button>
     </Link>
   </MenuItem>
+  <MenuItem
+    className="viewDetails"
+    onClick={[Function]}
+    style={
+      Object {
+        "textAlign": "center",
+      }
+    }
+  >
+    View Details
+  </MenuItem>
 </Menu>
 `;
 
@@ -114,6 +125,17 @@ Object {
         </Button>
       </Link>
     </MenuItem>
+    <MenuItem
+      className="viewDetails"
+      onClick={[Function]}
+      style={
+        Object {
+          "textAlign": "center",
+        }
+      }
+    >
+      View Details
+    </MenuItem>
   </Menu>,
 }
 `;
@@ -171,6 +193,17 @@ exports[`components/UserList/TableActions shows delete element if entry is not l
         Credentials
       </Button>
     </Link>
+  </MenuItem>
+  <MenuItem
+    className="viewDetails"
+    onClick={[Function]}
+    style={
+      Object {
+        "textAlign": "center",
+      }
+    }
+  >
+    View Details
   </MenuItem>
 </Menu>
 `;

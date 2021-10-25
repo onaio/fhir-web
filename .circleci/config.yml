@@ -10,17 +10,7 @@ jobs:
       - image: circleci/node:14.9.0
 
         environment:
-          SKIP_PREFLIGHT_CHECK: "true"
-          REACT_APP_WEBSITE_NAME: "OpenSRP-web"
-          REACT_APP_DOMAIN_NAME: "http://localhost:3000"
-          REACT_APP_OPENSRP_ACCESS_TOKEN_URL: "https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/token"
-          REACT_APP_OPENSRP_AUTHORIZATION_URL: "https://keycloak-stage.smartregister.org/auth/realms/reveal-stage/protocol/openid-connect/auth"
-          REACT_APP_OPENSRP_OAUTH_STATE: "opensrp"
-          REACT_APP_OPENSRP_CLIENT_ID: "reveal-stage-server"
-          REACT_APP_ENABLE_OPENSRP_OAUTH: "true"
-          REACT_APP_OPENSRP_API_BASE_URL: "https://reveal-stage.smartregister.org/opensrp/rest/"
-          REACT_APP_OPENSRP_USER_URL: "https://reveal-stage.smartregister.org/opensrp/user-details"
-          REACT_APP_DISABLE_LOGIN_PROTECTION: "false"
+          SKIP_PREFLIGHT_CHECK: 'true'
 
     working_directory: ~/web
 
@@ -54,7 +44,7 @@ jobs:
 
       - run:
           name: Run test with coverage
-          command: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles
+          command: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles --maxWorkers=2
 
       - run:
           name: upload coverage to coveralls
