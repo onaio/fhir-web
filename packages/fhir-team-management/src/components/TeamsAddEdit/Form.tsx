@@ -210,9 +210,6 @@ export const Form: React.FC<Props> = (props: Props) => {
             queryClient
               .invalidateQueries(PRACTITIONER_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-            queryClient
-              .invalidateQueries([ORGANIZATION_ENDPOINT, initialValue?.id])
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             history.goBack();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
