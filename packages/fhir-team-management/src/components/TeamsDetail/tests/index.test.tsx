@@ -75,7 +75,7 @@ describe('components/TeamsDetail', () => {
     console.error = jest.fn();
     const wrapper = mount(
       <Router history={history}>
-        <TeamsDetail {...teamsdetail} practitioners={[]} active={true} />
+        <TeamsDetail {...teamsdetail} practitionerInfo={[]} active={true} />
       </Router>
     );
 
