@@ -7,7 +7,10 @@ import {
   FHIR_RESOURCES_PAGE_SIZE,
   PRACTITIONERROLE_ENDPOINT,
   PRACTITIONER_ENDPOINT,
-  TEAM_ENDPOINT,
+  ORGANIZATION_ENDPOINT,
+  ORGANIZATION_RESOURCE_TYPE,
+  PRACTITIONER_RESOURCE_TYPE,
+  PRACTITIONERROLE_RESOURCE_TYPE,
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
@@ -27,11 +30,17 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     _getpagesoffset: 0,
   };
 
-  const practitionerAPI = new FHIRServiceClass<Practitioner>(fhirBaseURL, 'Practitioner');
-  const organizationAPI = new FHIRServiceClass<Organization>(fhirBaseURL, 'Organization');
+  const practitionerAPI = new FHIRServiceClass<Practitioner>(
+    fhirBaseURL,
+    PRACTITIONER_RESOURCE_TYPE
+  );
+  const organizationAPI = new FHIRServiceClass<Organization>(
+    fhirBaseURL,
+    ORGANIZATION_RESOURCE_TYPE
+  );
   const practitionerroleAPI = new FHIRServiceClass<PractitionerRole>(
     fhirBaseURL,
-    'PractitionerRole'
+    PRACTITIONERROLE_RESOURCE_TYPE
   );
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
@@ -46,7 +55,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   );
 
   const team = useQuery(
-    [TEAM_ENDPOINT, params.id],
+    [ORGANIZATION_ENDPOINT, params.id],
     async () => organizationAPI.read(`${params.id}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),

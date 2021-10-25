@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { TEAM_ENDPOINT, PRACTITIONERROLE_ENDPOINT, PRACTITIONER_ENDPOINT } from '../../constants';
+import {
+  ORGANIZATION_ENDPOINT,
+  PRACTITIONERROLE_ENDPOINT,
+  PRACTITIONER_ENDPOINT,
+  ORGANIZATION_RESOURCE_TYPE,
+  PRACTITIONERROLE_RESOURCE_TYPE,
+} from '../../constants';
 import {
   sendSuccessNotification,
   sendInfoNotification,
@@ -49,7 +55,7 @@ export async function onSubmit(
     initialValue.identifier?.find((identifier) => identifier.use === 'official')?.value ?? v4();
 
   const payload: Organization = {
-    resourceType: 'Organization',
+    resourceType: ORGANIZATION_RESOURCE_TYPE,
     id: initialValue.id ?? '',
     active: values.active,
     identifier: [{ use: 'official', value: officialidentifier }],
@@ -113,7 +119,7 @@ async function SetPractitioners(
       .find((e) => e.use === 'official')
       ?.given?.reduce((fullname, name) => `${fullname} ${name}`, '');
     const payload: Omit<PractitionerRole, 'meta'> = {
-      resourceType: 'PractitionerRole',
+      resourceType: PRACTITIONERROLE_RESOURCE_TYPE,
       active: true,
       id: id,
       identifier: [{ use: 'official', value: id }],
@@ -134,7 +140,7 @@ async function SetPractitioners(
  * @param {Organization} payload payload To send
  */
 export async function setTeam(fhirbaseURL: string, payload: Omit<Organization, 'meta'>) {
-  const serve = new FHIRServiceClass<Organization>(fhirbaseURL, 'Organization');
+  const serve = new FHIRServiceClass<Organization>(fhirbaseURL, ORGANIZATION_RESOURCE_TYPE);
   if (payload.id) {
     const resp: Organization = await serve.update(payload);
     sendSuccessNotification(lang.MSG_TEAMS_UPDATE_SUCCESS);
@@ -196,7 +202,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(fhirbaseURL, initialValue, values, Practitioners, PractitionerRoles)
           .then(() => {
             queryClient
-              .invalidateQueries(TEAM_ENDPOINT)
+              .invalidateQueries(ORGANIZATION_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
               .invalidateQueries(PRACTITIONERROLE_ENDPOINT)
@@ -205,7 +211,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               .invalidateQueries(PRACTITIONER_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
-              .invalidateQueries([TEAM_ENDPOINT, initialValue?.id])
+              .invalidateQueries([ORGANIZATION_ENDPOINT, initialValue?.id])
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             history.goBack();
           })
