@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { team, practitioner102, practitioner116, practitionerrole, teamsdetail } from './fixtures';
+import { team, practitioner102, practitioner116, practitionerRole, teamsDetail } from './fixtures';
 import * as fhirCient from 'fhirclient';
 import { loadTeamPractitionerInfo } from '../utils';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -19,7 +19,7 @@ fhir.mockImplementation(
         if (url === 'Organization/_search?_count=500&_getpagesoffset=0')
           return Promise.resolve(team);
         else if (url === 'PractitionerRole/_search?_count=500&_getpagesoffset=0')
-          return Promise.resolve(practitionerrole);
+          return Promise.resolve(practitionerRole);
         else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
         else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
       }),
@@ -49,6 +49,6 @@ describe('utils', () => {
       team: team.entry[0].resource,
     });
 
-    expect(result).toMatchObject(teamsdetail);
+    expect(result).toMatchObject(teamsDetail);
   });
 });

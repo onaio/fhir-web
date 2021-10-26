@@ -12,7 +12,7 @@ import {
   team,
   practitioner102,
   practitioner116,
-  practitionerrole,
+  practitionerRole,
   practitioner,
   team212,
 } from '../../../tests/fixtures';
@@ -56,7 +56,7 @@ describe('components/TeamsAddEdit', () => {
           else if (url === 'Practitioner/_search?_count=500&_getpagesoffset=0')
             return Promise.resolve(practitioner);
           else if (url === 'PractitionerRole/_search?_count=500&_getpagesoffset=0')
-            return Promise.resolve(practitionerrole);
+            return Promise.resolve(practitionerRole);
           else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
           else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
           else {

@@ -499,7 +499,7 @@ export const team212: Organization = {
   name: 'My Team',
 };
 
-export const practitionerrole: FHIRResponse<PractitionerRole> = {
+export const practitionerRole: FHIRResponse<PractitionerRole> = {
   resourceType: 'Bundle',
   id: '3b2e3407-4b10-45da-800b-5c971acd7b65',
   meta: {
@@ -2157,7 +2157,7 @@ export const practitioner104: Practitioner = {
   birthDate: '1996-11-22',
 };
 
-export const teamsdetail: TeamsDetailProps = {
+export const teamsDetail: TeamsDetailProps = {
   active: false,
   id: '212',
   identifier: [

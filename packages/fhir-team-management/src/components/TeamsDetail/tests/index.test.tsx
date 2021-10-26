@@ -10,8 +10,8 @@ import {
   team,
   practitioner102,
   practitioner116,
-  practitionerrole,
-  teamsdetail,
+  practitionerRole,
+  teamsDetail,
 } from '../../../tests/fixtures';
 import * as fhirCient from 'fhirclient';
 
@@ -28,7 +28,7 @@ fhir.mockImplementation(
     return {
       request: jest.fn((url) => {
         if (url === 'Organization') return Promise.resolve(team);
-        else if (url === 'PractitionerRole') return Promise.resolve(practitionerrole);
+        else if (url === 'PractitionerRole') return Promise.resolve(practitionerRole);
         else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
         else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
         else {
@@ -44,7 +44,7 @@ describe('components/TeamsDetail', () => {
   it('renders correctly', async () => {
     const wrapper = mount(
       <Router history={history}>
-        <TeamsDetail {...teamsdetail} />
+        <TeamsDetail {...teamsDetail} />
       </Router>
     );
 
@@ -55,7 +55,7 @@ describe('components/TeamsDetail', () => {
     const mockclose = jest.fn();
     const wrapper = mount(
       <Router history={history}>
-        <TeamsDetail {...teamsdetail} onClose={mockclose} />
+        <TeamsDetail {...teamsDetail} onClose={mockclose} />
       </Router>
     );
 
@@ -75,7 +75,7 @@ describe('components/TeamsDetail', () => {
     console.error = jest.fn();
     const wrapper = mount(
       <Router history={history}>
-        <TeamsDetail {...teamsdetail} practitionerInfo={[]} active={true} />
+        <TeamsDetail {...teamsDetail} practitionerInfo={[]} active={true} />
       </Router>
     );
 

@@ -45,7 +45,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
-  const Practitioners = useQuery(
+  const practitioners = useQuery(
     PRACTITIONER_ENDPOINT,
     async () => practitionerAPI.list(fhirParams),
     {
@@ -64,7 +64,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const AllRoles = useQuery(
+  const allRoles = useQuery(
     PRACTITIONERROLE_ENDPOINT,
     async () => practitionerroleAPI.list(fhirParams),
     {
@@ -74,22 +74,22 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     }
   );
 
-  if (params.id && team.data && AllRoles.data && !initialValue) {
+  if (params.id && team.data && allRoles.data && !initialValue) {
     loadTeamPractitionerInfo({
       team: team.data,
       fhirBaseURL: fhirBaseURL,
-      PractitionerRoles: AllRoles.data,
+      PractitionerRoles: allRoles.data,
     })
       .then(({ practitionerInfo, ...team }) => {
         setInitialValue({
           ...team,
-          practitioners: practitionerInfo.map((prac) => prac.id),
+          practitioners: practitionerInfo.map((practitioner) => practitioner.id),
         });
       })
       .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
   }
 
-  if (!Practitioners.data || (params.id && (!initialValue || !AllRoles.data)))
+  if (!practitioners.data || (params.id && (!initialValue || !allRoles.data)))
     return <Spin size={'large'} />;
 
   return (
@@ -104,10 +104,10 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
       <div className="bg-white p-5">
         <Form
-          fhirbaseURL={fhirBaseURL}
+          fhirBaseURL={fhirBaseURL}
           value={initialValue}
-          practitioners={Practitioners.data}
-          practitionerRoles={AllRoles.data ? AllRoles.data : undefined}
+          practitioners={practitioners.data}
+          practitionerRoles={allRoles.data ? allRoles.data : undefined}
         />
       </div>
     </section>
