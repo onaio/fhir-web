@@ -1,4 +1,5 @@
 export const baseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+export const fhirBaseURL = 'https://fhir.labs.smartregister.org/fhir';
 export const ACTIVE = 'Active';
 export const SETTINGS_CONFIGURATION_TYPE = 'SettingConfiguration';
 

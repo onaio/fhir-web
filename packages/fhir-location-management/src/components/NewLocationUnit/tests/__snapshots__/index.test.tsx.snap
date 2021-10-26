@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NewLocationUnit renders correctly when location is jurisdiction: form rendered 1`] = `"InstanceIdusernameParentSelect the parent locationNameStatusActiveInactiveLocation categoryService pointJurisdictionTypeExternal IDGeometryLatitudeLongitudeUnit group Enter a location group nameSaveCancel"`;
+exports[`NewLocationUnit renders correctly for create location unit: form rendered 1`] = `"IdPart OfNameDescriptionAliasStatusActiveInactivePhysical TypeBuildingJurisdictionSaveCancel"`;

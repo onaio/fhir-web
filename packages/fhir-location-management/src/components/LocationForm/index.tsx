@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
 import { Form, Input, Space, Button, Radio } from 'antd';
 import { useHistory } from 'react-router';
-import FHIR from 'fhirclient';
 import { get } from 'lodash';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { Redirect } from 'react-router';
 import {
   defaultFormField,
   generateLocationUnit,
-  handleGeoFieldsChangeFactory,
   LocationFormFields,
   validationRulesFactory,
 } from './utils';
 import { baseURL, URL_LOCATION_UNIT } from '../../constants';
-import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
+import { LocationUnit, LocationUnitStatus } from '../../ducks/location-units';
 import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
-import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { useQueryClient } from 'react-query';
+import { IfhirR4 } from '@smile-cdr/fhirts';
 
 const { Item: FormItem } = Form;
 
@@ -35,7 +32,7 @@ export interface LocationFormProps
   username: string;
   filterByParentId?: boolean;
   fhirRootLocationIdentifier: string;
-  afterSubmit: (payload: LocationUnit) => void;
+  afterSubmit: (payload: IfhirR4.ILocation & { parentId: string }) => void;
 }
 
 const defaultProps = {
@@ -99,7 +96,6 @@ const tailLayout = {
 const LocationForm = (props: LocationFormProps) => {
   const {
     initialValues,
-    successURLGenerator,
     opensrpBaseURL,
     disabled,
     hidden,
@@ -110,11 +106,7 @@ const LocationForm = (props: LocationFormProps) => {
     afterSubmit,
   } = props;
   const isEditMode = !!initialValues?.id;
-  const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
-  const [selectedLocationTags, setLocationTags] = useState<LocationUnitTag[]>([]);
-  const [selectedParentNode, setSelectedParentNode] = useState<TreeNode>();
-  const [generatedPayload, setGeneratedPayload] = useState<LocationUnit>();
   const history = useHistory();
   const queryClient = useQueryClient();
   const validationRules = validationRulesFactory(lang);
@@ -137,13 +129,6 @@ const LocationForm = (props: LocationFormProps) => {
     { label: lang.LOCATION_BUILDING_LABEL, value: false },
     { label: lang.LOCATION_JURISDICTION_LABEL, value: true },
   ];
-  /** if plan is updated or saved redirect to plans page */
-  if (areWeDoneHere) {
-    const redirectAfterAction = successURLGenerator(generatedPayload as LocationUnit);
-    return <Redirect to={redirectAfterAction} />;
-  }
-
-  const geoFieldsChangeHandler = handleGeoFieldsChangeFactory(form);
 
   return (
     <div className="location-form form-container">
@@ -153,11 +138,11 @@ const LocationForm = (props: LocationFormProps) => {
         name="location-form"
         scrollToFirstError
         initialValues={initialValues}
-        onValuesChange={geoFieldsChangeHandler}
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={async (values) => {
+          setSubmitting(true);
           const payload = await generateLocationUnit(
-            values as any,
+            values,
             get(initialValues, 'identifier.0.value'),
             fhirBaseURL
           );
@@ -170,30 +155,30 @@ const LocationForm = (props: LocationFormProps) => {
             await serve
               .update(payload)
               .then(() => {
-                afterSubmit(payload as any);
+                afterSubmit(payload as IfhirR4.ILocation & { parentId: string });
                 sendSuccessNotification(successMessage);
               })
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
-              .finally(() => queryClient.invalidateQueries());
+              .finally(async () => {
+                await queryClient.invalidateQueries();
+              });
           } else {
             await serve
               .create(payload)
               .then(() => {
-                afterSubmit(payload as any);
+                afterSubmit(payload as IfhirR4.ILocation & { parentId: string });
                 sendSuccessNotification(successMessage);
               })
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
-              .finally(() => queryClient.invalidateQueries());
+              .finally(async () => {
+                setSubmitting(false);
+              });
           }
           history.push(URL_LOCATION_UNIT);
         }}
       >
         <>
           <FormItem name="id" label={lang.ID_LABEL} rules={validationRules.id} hidden id="id">
-            <Input disabled></Input>
-          </FormItem>
-
-          <FormItem name="username" label={lang.USERNAME_LABEL} hidden id="username">
             <Input disabled></Input>
           </FormItem>
 
@@ -211,12 +196,10 @@ const LocationForm = (props: LocationFormProps) => {
               disabled={disabled.includes('parentId')}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder={lang.PARENT_ID_SELECT_PLACEHOLDER}
-              fullDataCallback={setSelectedParentNode}
               disabledTreeNodesCallback={disabledTreeNodesCallback}
               fhirRootLocationIdentifier={fhirRootLocationIdentifier}
             />
           </FormItem>
-
           <FormItem
             id="name"
             rules={validationRules.name}
@@ -262,7 +245,13 @@ const LocationForm = (props: LocationFormProps) => {
             label={lang.STATUS_LABEL}
             name="status"
           >
-            <Radio.Group options={status}></Radio.Group>
+            <Radio.Group name="active">
+              {status.map((e) => (
+                <Radio name="status" key={e.label} value={e.value}>
+                  {e.label}
+                </Radio>
+              ))}
+            </Radio.Group>
           </FormItem>
 
           <FormItem

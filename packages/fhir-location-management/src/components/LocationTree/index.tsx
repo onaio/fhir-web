@@ -1,34 +1,28 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import {
-  getLocationTreeState,
-  reducerName,
-  setLocationTreeState,
-  reducer,
-} from '../../ducks/location-hierarchy';
+import { getLocationTreeState, reducerName, reducer } from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitList';
 import './tree.css';
-import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
+import { ParsedFHIRHierarchyNode, ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 import { getHierarchyNodeFromArray } from '../../ducks/locationHierarchy/utils';
 import lang from '../../lang';
 import { Key } from 'rc-tree/lib/interface';
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
-  data: ParsedHierarchyNode[];
-  OnItemClick: (item: ParsedHierarchyNode) => void;
+  data: ParsedFHIRHierarchyNode[];
+  OnItemClick: (item: ParsedFHIRHierarchyNode) => void;
 }
 
 export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const { data, OnItemClick } = props;
-  const dispatch = useDispatch();
 
   const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
-  const filterData: ParsedHierarchyNode[] = [];
+  const filterData: ParsedFHIRHierarchyNode[] = [];
   const locationTreeState = useSelector((state) => getLocationTreeState(state));
 
   /**
@@ -45,12 +39,6 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       )
       .filter((item, i, self) => item && self.indexOf(item) === i);
     setExpandedKeys(expandedKeys as string[]);
-    dispatch(
-      setLocationTreeState({
-        keys: expandedKeys as React.Key[],
-        node: locationTreeState?.node as ParsedHierarchyNode,
-      })
-    );
   }
 
   useEffect(() => {
@@ -69,14 +57,14 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    *
    * @param {string} key the key to find parent of
    * @param {string} parentId the id of current node
-   * @param {Array<ParsedHierarchyNode>} tree the orignal tree
+   * @param {Array<ParsedFHIRHierarchyNode>} tree the orignal tree
    * @returns {string} - returns parent key
    */
-  function getParentKey(key: string, parentId: string, tree: ParsedHierarchyNode[]): string {
+  function getParentKey(key: string, parentId: string, tree: ParsedFHIRHierarchyNode[]): string {
     let nodeKey = '';
     tree.forEach((node) => {
       if (node.children) {
-        if (node.children.some((item: ParsedHierarchyNode) => item.parent === parentId)) {
+        if (node.children.some((item: ParsedFHIRHierarchyNode) => item.parent === parentId)) {
           nodeKey = node.key;
         } else if (getParentKey(key, parentId, node.children))
           return getParentKey(key, parentId, node.children);
@@ -119,7 +107,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @returns {object} - returns obj with title, key and children
    */
   const buildTreeData = React.useCallback(
-    (data: ParsedHierarchyNode[]): AntTreeProps[] => {
+    (data: ParsedFHIRHierarchyNode[]): AntTreeProps[] => {
       return data.map((item) => {
         const index = item.title.toLowerCase().indexOf(searchValue.toLowerCase());
         const beforeStr = item.title.toLowerCase().substr(0, index);
@@ -156,7 +144,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param {Array<ParsedHierarchyNode>} data the tree data to preprocess
    */
   const generateFilterData = React.useCallback(
-    (data: ParsedHierarchyNode[]) => {
+    (data: ParsedFHIRHierarchyNode[]) => {
       data.forEach((node) => {
         filterData.push({ ...node });
         if (node.children) {
@@ -184,14 +172,13 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       <AntTree
         onClick={(_, antTreeNode) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const node = (antTreeNode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
+          const node = (antTreeNode as any).data as ParsedFHIRHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
           OnItemClick(node);
           const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
           const index = expandedKeys.indexOf(node.key);
           if (index > -1) {
             allExpandedKeys.splice(index, 1);
           }
-          dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
           onExpand(allExpandedKeys);
         }}
         selectedKeys={[locationTreeState?.keys[locationTreeState.keys.length - 1]] as React.Key[]}
