@@ -9,13 +9,13 @@ export interface HealthCareDetailProps extends HealthcareServiceDetail {
 }
 
 const HealthcareDetails = (props: HealthCareDetailProps) => {
-  const { extraDetails, comment, meta, name, active, id, organization } = props;
+  const { extraDetails, comment, meta, name, active, id, organization, onClose } = props;
 
   return (
     <div className="p-4 bg-white">
       <Button
         shape="circle"
-        onClick={() => (props.onClose ? props.onClose() : '')}
+        onClick={() => onClose?.()}
         className="float-right close-btn"
         type="text"
         icon={<CloseOutlined />}
