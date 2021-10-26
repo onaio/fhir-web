@@ -7,9 +7,9 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import {
   team,
-  healthcareservice,
-  healthcareservice313,
-  healthcareservice323,
+  healthcareService,
+  healthcareService313,
+  healthcareService323,
   team366,
 } from '../../../tests/fixtures';
 import Form, { FormField, onSubmit } from '../Form';
@@ -26,14 +26,14 @@ jest.mock('@opensrp/notifications', () => ({
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 
-const FormintialValue: FormField = {
+const FormIntialValue: FormField = {
   active: true,
   name: '',
   comment: '',
   extraDetails: '',
 };
 
-const healthcareserviceValue: FormField = {
+const healthcareServiceValue: FormField = {
   comment: 'test comment',
   extraDetails: 'test extra comment',
   active: false,
@@ -65,9 +65,9 @@ describe('components/HealthCareAddEdit/Form', () => {
             return Promise.resolve(team);
           if (url === 'Organization/366') return Promise.resolve(team366);
           else if (url === 'HealthcareService/_search?_count=500&_getpagesoffset=0')
-            return Promise.resolve(healthcareservice);
-          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareservice323);
-          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareservice313);
+            return Promise.resolve(healthcareService);
+          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
+          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
           else {
             // eslint-disable-next-line no-console
             console.error('response not found', url);
@@ -105,13 +105,13 @@ describe('components/HealthCareAddEdit/Form', () => {
           <Form
             fhirBaseURL={fhirBaseURL}
             organizations={team.entry.map((e) => e.resource)}
-            initialValue={healthcareserviceValue}
+            initialValue={healthcareServiceValue}
           />
         </QueryClientProvider>
       </Router>
     );
 
-    expect(wrapper.find('Form').prop('initialValue')).toMatchObject(healthcareserviceValue);
+    expect(wrapper.find('Form').prop('initialValue')).toMatchObject(healthcareServiceValue);
     expect(wrapper.find('form')).toHaveLength(1);
   });
 
@@ -124,7 +124,7 @@ describe('components/HealthCareAddEdit/Form', () => {
           <Form
             fhirBaseURL={fhirBaseURL}
             organizations={team.entry.map((e) => e.resource)}
-            initialValue={healthcareserviceValue}
+            initialValue={healthcareServiceValue}
             onCancel={goBackFN}
           />
         </QueryClientProvider>
@@ -141,7 +141,7 @@ describe('components/HealthCareAddEdit/Form', () => {
     const thenfn = jest.fn();
     const catchfn = jest.fn();
 
-    onSubmit(fhirBaseURL, healthcareserviceValue).then(thenfn).catch(catchfn);
+    onSubmit(fhirBaseURL, healthcareServiceValue).then(thenfn).catch(catchfn);
 
     await act(async () => {
       await flushPromises();
@@ -157,7 +157,7 @@ describe('components/HealthCareAddEdit/Form', () => {
     const thenfn = jest.fn();
     const catchfn = jest.fn();
     onSubmit(fhirBaseURL, {
-      ...healthcareserviceValue,
+      ...healthcareServiceValue,
       name: 'new name',
       id: '12312',
     })
@@ -186,7 +186,7 @@ describe('components/HealthCareAddEdit/Form', () => {
           <Form
             fhirBaseURL={fhirBaseURL}
             organizations={team.entry.map((e) => e.resource)}
-            initialValue={FormintialValue}
+            initialValue={FormIntialValue}
           />
         </QueryClientProvider>
       </Router>
@@ -224,7 +224,7 @@ describe('components/HealthCareAddEdit/Form', () => {
           <Form
             fhirBaseURL={fhirBaseURL}
             organizations={team.entry.map((e) => e.resource)}
-            initialValue={FormintialValue}
+            initialValue={FormIntialValue}
           />
         </QueryClientProvider>
       </Router>

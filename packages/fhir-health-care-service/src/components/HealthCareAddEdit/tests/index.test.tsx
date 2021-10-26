@@ -11,9 +11,9 @@ import HealthCareAddEdit from '..';
 import {
   team,
   team366,
-  healthcareservice,
-  healthcareservice323,
-  healthcareservice313,
+  healthcareService,
+  healthcareService323,
+  healthcareService313,
 } from '../../../tests/fixtures';
 import * as fhirCient from 'fhirclient';
 import { store } from '@opensrp/store';
@@ -53,9 +53,9 @@ describe('components/TeamsAddEdit', () => {
             return Promise.resolve(team);
           if (url === 'Organization/366') return Promise.resolve(team366);
           else if (url === 'HealthcareService/_search?_count=500&_getpagesoffset=0')
-            return Promise.resolve(healthcareservice);
-          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareservice323);
-          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareservice313);
+            return Promise.resolve(healthcareService);
+          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
+          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
           else {
             // eslint-disable-next-line no-console
             console.error('response not found', url);
@@ -153,9 +153,9 @@ describe('components/TeamsAddEdit', () => {
             return Promise.resolve(team);
           if (url === 'Organization/366') return Promise.resolve(team366);
           else if (url === 'HealthcareService/_search?_count=500&_getpagesoffset=0')
-            return Promise.resolve(healthcareservice);
-          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareservice323);
-          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareservice313);
+            return Promise.resolve(healthcareService);
+          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
+          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
           else {
             // eslint-disable-next-line no-console
             console.error('response not found', url);

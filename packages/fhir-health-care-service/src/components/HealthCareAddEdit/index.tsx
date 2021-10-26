@@ -32,7 +32,7 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     _getpagesoffset: 0,
   };
 
-  const healthcareserviceAPI = new FHIRServiceClass<HealthcareService>(
+  const healthcareServiceAPI = new FHIRServiceClass<HealthcareService>(
     fhirBaseURL,
     HEALTH_CARE_SERVICE_RESOURCE_TYPE
   );
@@ -43,9 +43,9 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
 
-  const Healthcares = useQuery(
+  const healthcares = useQuery(
     [HEALTHCARES_GET, params.id],
-    async () => healthcareserviceAPI.read(`${params.id}`),
+    async () => healthcareServiceAPI.read(`${params.id}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res: HealthcareService) => res,
@@ -58,9 +58,8 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     select: (res) => res.entry.map((e) => e.resource),
   });
 
-  if (params.id && Healthcares.data && !initialValue) {
-    const healthcares = Healthcares.data;
-    setInitialValue({ comment: '', extraDetails: '', ...healthcares });
+  if (params.id && healthcares.data && !initialValue) {
+    setInitialValue({ comment: '', extraDetails: '', ...healthcares.data });
   }
 
   if (!organizations.data || (params.id && !initialValue)) return <Spin size={'large'} />;

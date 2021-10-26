@@ -8,11 +8,11 @@ import { act } from 'react-dom/test-utils';
 import HealthcareDetails from '..';
 import {
   team,
-  healthcareservice,
-  healthcareservice313,
-  healthcareservice323,
+  healthcareService,
+  healthcareService313,
+  healthcareService323,
   team366,
-  healthcaredetail,
+  healthcareDetail,
 } from '../../../tests/fixtures';
 import * as fhirCient from 'fhirclient';
 
@@ -30,9 +30,9 @@ fhir.mockImplementation(
       if (url === 'Organization/_search?_count=500&_getpagesoffset=0') return Promise.resolve(team);
       if (url === 'Organization/366') return Promise.resolve(team366);
       else if (url === 'HealthcareService/_search?_count=500&_getpagesoffset=0')
-        return Promise.resolve(healthcareservice);
-      else if (url === 'HealthcareService/323') return Promise.resolve(healthcareservice323);
-      else if (url === 'HealthcareService/313') return Promise.resolve(healthcareservice313);
+        return Promise.resolve(healthcareService);
+      else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
+      else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
       else {
         // eslint-disable-next-line no-console
         console.error('response not found', url);
@@ -45,7 +45,7 @@ describe('components/TeamsDetail', () => {
   it('renders correctly', async () => {
     const wrapper = mount(
       <Router history={history}>
-        <HealthcareDetails {...healthcaredetail} />
+        <HealthcareDetails {...healthcareDetail} />
       </Router>
     );
 
@@ -53,16 +53,16 @@ describe('components/TeamsDetail', () => {
   });
 
   it('close button works correctly', async () => {
-    const mockclose = jest.fn();
+    const mockClose = jest.fn();
     const wrapper = mount(
       <Router history={history}>
         <HealthcareDetails
-          {...healthcaredetail}
+          {...healthcareDetail}
           active={false}
           organization={undefined}
           comment={undefined}
           extraDetails={undefined}
-          onClose={mockclose}
+          onClose={mockClose}
           meta={undefined}
         />
       </Router>
@@ -74,17 +74,17 @@ describe('components/TeamsDetail', () => {
       wrapper.update();
     });
 
-    expect(mockclose).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it('cover close button without button function', async () => {
     // eslint-disable-next-line no-console
-    const globalerr = console.error;
+    const globalErr = console.error;
     // eslint-disable-next-line no-console
     console.error = jest.fn();
     const wrapper = mount(
       <Router history={history}>
-        <HealthcareDetails {...healthcaredetail} active={true} />
+        <HealthcareDetails {...healthcareDetail} active={true} />
       </Router>
     );
 
@@ -99,6 +99,6 @@ describe('components/TeamsDetail', () => {
     }
 
     // eslint-disable-next-line no-console
-    console.error = globalerr;
+    console.error = globalErr;
   });
 });
