@@ -206,7 +206,7 @@ describe('components/UserList', () => {
     expect(history.location.search).toEqual('?searchQuery=test');
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://some-keycloak.server/auth/admin/realms/opensrp-web-stage/users?search=opensrp',
+        'https://some-keycloak.server/auth/admin/some-realm/users?search=opensrp',
         {
           headers: {
             accept: 'application/json',
