@@ -89,7 +89,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             queryClient
               .invalidateQueries(HEALTHCARES_GET)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-            if (onSuccess) onSuccess();
+            onSuccess?.();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
           .finally(() => setIsSubmitting(false));
