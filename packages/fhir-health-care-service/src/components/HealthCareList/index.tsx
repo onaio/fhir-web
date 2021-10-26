@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import React, { ChangeEvent, useMemo, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -50,14 +50,6 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
     select: (res) => res.entry.map((e) => e.resource),
   });
 
-  const tableData: HealthcareService[] = useMemo(() => {
-    if (healthcare.data) {
-      return healthcare.data.map((healthcare, i) => {
-        return { ...healthcare, key: i.toString() } as HealthcareService;
-      });
-    } else return [];
-  }, [healthcare.data]);
-
   /**
    * Returns filted list of healthcares
    *
@@ -65,13 +57,13 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
    */
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.target.value;
-    const filteredData = tableData.filter((row) =>
+    const filteredData = healthcare.data?.filter((row) =>
       row.name.toLowerCase().includes(currentValue.toLowerCase())
     );
     setfilterData({ search: currentValue, data: filteredData });
   };
 
-  if (!tableData.length) return <Spin size="large" />;
+  if (!healthcare.data?.length) return <Spin size="large" />;
 
   return (
     <section className="layout-content">
@@ -102,7 +94,9 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
           </div>
           <div className="bg-white">
             <Table
-              data={filterData.search && filterData.data?.length ? filterData.data : tableData}
+              data={
+                filterData.search && filterData.data?.length ? filterData.data : healthcare.data
+              }
               onViewDetails={(datum) => {
                 setDetail('loading');
                 loadHealthcareOrganization(fhirBaseURL, datum)
