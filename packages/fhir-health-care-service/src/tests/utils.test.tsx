@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {
   team,
-  healthcareservice313,
-  healthcareservice,
-  healthcareservice323,
+  healthcareService313,
+  healthcareService,
+  healthcareService323,
   team366,
   team319,
 } from './fixtures';
@@ -26,9 +26,9 @@ fhir.mockImplementation(
       if (url === 'Organization/319') return Promise.resolve(team319);
       if (url === 'Organization/366') return Promise.resolve(team366);
       else if (url === 'HealthcareService/_search?_count=500&_getpagesoffset=0')
-        return Promise.resolve(healthcareservice);
-      else if (url === 'HealthcareService/323') return Promise.resolve(healthcareservice323);
-      else if (url === 'HealthcareService/313') return Promise.resolve(healthcareservice313);
+        return Promise.resolve(healthcareService);
+      else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
+      else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
       else {
         // eslint-disable-next-line no-console
         console.error('response not found', url);
@@ -54,7 +54,7 @@ describe('utils', () => {
   });
 
   it('test loadTeamPractitioner load the correct data', async () => {
-    const result = await loadHealthcareOrganization(fhirBaseURL, healthcareservice313);
+    const result = await loadHealthcareOrganization(fhirBaseURL, healthcareService313);
 
     expect(result).toMatchObject({
       resourceType: 'HealthcareService',
@@ -92,7 +92,7 @@ describe('utils', () => {
 
   it('test loadTeamPractitioner load data even if the organiztion is not present', async () => {
     const result = await loadHealthcareOrganization(fhirBaseURL, {
-      ...healthcareservice313,
+      ...healthcareService313,
       providedBy: undefined,
     });
 
