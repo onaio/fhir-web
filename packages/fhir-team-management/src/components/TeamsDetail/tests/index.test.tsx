@@ -67,29 +67,4 @@ describe('components/TeamsDetail', () => {
 
     expect(mockclose).toHaveBeenCalled();
   });
-
-  it('cover close button without button function', async () => {
-    // eslint-disable-next-line no-console
-    const globalerr = console.error;
-    // eslint-disable-next-line no-console
-    console.error = jest.fn();
-    const wrapper = mount(
-      <Router history={history}>
-        <TeamsDetail {...teamsDetail} practitionerInfo={[]} active={true} />
-      </Router>
-    );
-
-    try {
-      wrapper.find('.close-btn').first().simulate('click');
-      await flushPromises();
-      wrapper.update();
-    } catch (e) {
-      expect(e.message).toBe('No OnClose Function Specified');
-      // eslint-disable-next-line no-console
-      expect(console.error).toBeCalledTimes(1);
-    }
-
-    // eslint-disable-next-line no-console
-    console.error = globalerr;
-  });
 });
