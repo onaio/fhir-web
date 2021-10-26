@@ -89,9 +89,6 @@ export const Form: React.FC<Props> = (props: Props) => {
             queryClient
               .invalidateQueries(HEALTHCARES_GET)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-            queryClient
-              .invalidateQueries([HEALTHCARES_GET, initialValue?.id])
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             if (onSuccess) onSuccess();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
