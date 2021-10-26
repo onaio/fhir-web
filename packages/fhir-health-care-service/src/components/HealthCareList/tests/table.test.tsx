@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { healthcareservice } from '../../../tests/fixtures';
+import { healthcareService } from '../../../tests/fixtures';
 import Table from '../Table';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
@@ -17,7 +17,7 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 const history = createBrowserHistory();
-const data: HealthcareService[] = healthcareservice.entry.map((e, i) => ({
+const data: HealthcareService[] = healthcareService.entry.map((e, i) => ({
   ...e.resource,
   key: i,
 }));
