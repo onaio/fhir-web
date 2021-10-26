@@ -90,7 +90,7 @@ async function SetPractitioners(
   practitionerrole?: PractitionerRole[]
 ) {
   sendInfoNotification(lang.MSG_ASSIGN_PRACTITIONERS);
-  const serve = new FHIRServiceClass(fhirbaseURL, 'PractitionerRole');
+  const serve = new FHIRServiceClass(fhirbaseURL, PRACTITIONERROLE_RESOURCE_TYPE);
 
   // Api Call to delete practitioners
   const toremoveroles = toRemove
