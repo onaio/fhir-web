@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import {
-  ParsedHierarchyNode,
-  RawOpenSRPHierarchy,
-  TreeNode,
-} from '../../../ducks/locationHierarchy/types';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../../ducks/locationHierarchy/types';
 import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
-import { generateJurisdictionTree } from '../../../ducks/locationHierarchy/utils';
 
 export const locationUnitgroups: LocationUnitGroup[] = [
   { id: 2, active: false, name: 'Sample 2', description: 'Sample description 2' },
@@ -1607,5 +1602,3 @@ export const fhirHierarchy = {
     },
   ],
 };
-
-export const parsedTreeNode: TreeNode[] = rawHierarchy.map((e) => generateJurisdictionTree(e));

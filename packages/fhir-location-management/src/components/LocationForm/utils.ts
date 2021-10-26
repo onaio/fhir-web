@@ -1,5 +1,5 @@
 import { Dictionary } from '@onaio/utils';
-import { LocationUnit, LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
+import { LocationUnitStatus, LocationUnitTag } from '../../ducks/location-units';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../ducks/locationHierarchy/types';
@@ -7,9 +7,9 @@ import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
 import { Geometry, Point } from 'geojson';
 import lang, { Lang } from '../../lang';
-import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import { GetSelectedFullData } from './CustomSelect';
 import { uniqBy } from 'lodash';
+import { IfhirR4 } from '@smile-cdr/fhirts';
 
 export enum FormInstances {
   CORE = 'core',
@@ -20,20 +20,13 @@ export type ExtraFields = Dictionary;
 
 /** describes known fields that the form will have */
 export interface LocationFormFields {
-  instance?: FormInstances;
   id?: string;
   name: string;
   status: LocationUnitStatus;
   parentId?: string;
-  externalId?: string;
-  locationTags?: number[];
-  geometry?: string;
+  description?: string;
+  alias?: string;
   isJurisdiction: boolean;
-  serviceType?: string;
-  extraFields: ExtraFields[];
-  username?: string;
-  latitude?: string;
-  longitude?: string;
 }
 
 interface BaseSetting {
@@ -60,35 +53,29 @@ export interface ServiceTypeSetting extends BaseSetting {
 }
 
 export const defaultFormField: LocationFormFields = {
-  instance: FormInstances.CORE,
+  id: '',
   name: '',
+  parentId: '',
   status: LocationUnitStatus.ACTIVE,
   isJurisdiction: true,
-  serviceType: '',
-  locationTags: [],
-  externalId: '',
-  extraFields: [],
-  username: '',
+  description: '',
+  alias: '',
 };
 
 /** helps compute the default values of the location form field values
  *
  * @param location - the location unit
- * @param instance - the form instance
  * @param isJurisdiction - whether location is jurisdiction or structure
  */
 export const getLocationFormFields = (
-  location?: any,
-  instance: FormInstances = FormInstances.CORE,
+  location?: IfhirR4.ILocation,
   isJurisdiction = true
 ): LocationFormFields => {
-  const commonValues = { instance, isJurisdiction: location?.isJurisdiction ?? isJurisdiction };
-  if (!location) return { ...defaultFormField, ...commonValues };
-
   return {
     ...location,
-    parentId: location?.partOf?.reference.split('/')[1],
-  } as any;
+    isJurisdiction: isJurisdiction,
+    parentId: location?.partOf?.reference?.split('/')[1],
+  } as LocationFormFields;
 };
 
 /** removes empty undefined and null objects before they payload is sent to server
@@ -110,13 +97,14 @@ export function removeEmptykeys(obj: Dictionary) {
  *
  * @param formValues - values from the form
  * @param uuid - location official identifier
- * @param nameOfUser - the name of the user
  * @param fhirBaseURL - fhir base url
- * @param selectedTags - the selected location tags
- * @param parentNode - selected node to be the parent node
  */
-export const generateLocationUnit = async (formValues: any, uuid: string, fhirBaseURL: string) => {
-  const { id, name, status, description, alias, parentId } = formValues;
+export const generateLocationUnit = async (
+  formValues: LocationFormFields,
+  uuid: string,
+  fhirBaseURL: string
+) => {
+  const { id, name, status, description, alias, parentId, isJurisdiction } = formValues;
 
   const thisLocationsId = uuid ? uuid : v4();
 
@@ -153,8 +141,8 @@ export const generateLocationUnit = async (formValues: any, uuid: string, fhirBa
       coding: [
         {
           system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
-          code: 'jdn',
-          display: 'Jurisdiction',
+          code: isJurisdiction ? 'jdn' : 'bu',
+          display: isJurisdiction ? 'Jurisdiction' : 'Building',
         },
       ],
     },
@@ -387,66 +375,4 @@ export const getPointCoordinates = (geoText: string) => {
   const latitude = lat ? String(lat) : undefined;
 
   return { longitude, latitude };
-};
-
-/** handles form values change , creates a values change handler that listens for
- * changes to geometry, latitude and longitude and syncs changes across the 3 fields
- *
- * @param form - the form instance
- */
-export const handleGeoFieldsChangeFactory = (form: FormInstance) => {
-  return (changedValues: Partial<LocationFormFields>, allValues: LocationFormFields) => {
-    /** location fields that could possible change */
-    const { geometry, latitude, longitude } = changedValues;
-    if (geometry !== undefined) {
-      // means geometry changed
-      const { longitude, latitude } = getPointCoordinates(geometry);
-      form.setFieldsValue({
-        longitude,
-        latitude,
-      });
-    }
-
-    const { geometry: existingGeo, latitude: existingLat, longitude: ExistingLng } = allValues;
-    let currentGeoJson;
-    try {
-      currentGeoJson = JSON.parse(existingGeo ?? '{}');
-    } catch (err) {
-      currentGeoJson = {};
-    }
-
-    if (latitude !== undefined) {
-      // means latitude changed
-      const isPoint = cordIsPoint(currentGeoJson);
-      const parsedLatitude = Number(latitude);
-      if (isPoint) {
-        const currentGeometry = { ...currentGeoJson };
-        currentGeometry.coordinates[1] = parsedLatitude;
-        form.setFieldsValue({
-          geometry: JSON.stringify(currentGeometry),
-        });
-      } else {
-        form.setFieldsValue({
-          geometry: JSON.stringify({ type: 'Point', coordinates: [ExistingLng, parsedLatitude] }),
-        });
-      }
-    }
-
-    if (longitude !== undefined) {
-      // means longitude changed
-      const isPoint = cordIsPoint(currentGeoJson);
-      const parsedLongitude = Number(longitude);
-      if (isPoint) {
-        const currentGeometry = { ...currentGeoJson };
-        currentGeometry.coordinates[0] = Number(longitude);
-        form.setFieldsValue({
-          geometry: JSON.stringify(currentGeometry),
-        });
-      } else {
-        form.setFieldsValue({
-          geometry: JSON.stringify({ type: 'Point', coordinates: [parsedLongitude, existingLat] }),
-        });
-      }
-    }
-  };
 };

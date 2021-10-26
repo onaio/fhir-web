@@ -1,10 +1,26 @@
 import { Dictionary } from '@onaio/utils';
 import TreeModel from 'tree-model';
+import { IfhirR4 } from '@smile-cdr/fhirts';
 
 /** describes a node's attribute field */
 export interface HierarchyNodeAttributes {
   geographicLevel: number;
   structureCount?: number;
+}
+
+export interface FHIRTreeNode<TChild> {
+  children?: TChild;
+  label: string;
+  title: string;
+  id: string;
+  childId: string;
+  node: IfhirR4.ILocation;
+  treeNode?: {
+    node: IfhirR4.ILocation;
+    children?: TChild;
+    label: string;
+  };
+  nodeId: string;
 }
 
 export interface Node {
@@ -30,10 +46,16 @@ export interface HierarchyNode<TChild> {
 export interface AddedFields {
   title: string;
   key: string;
+  parent: string;
+  parentId: string;
 }
 
 /** single node description after coming in from the api */
-export type RawHierarchyNode = HierarchyNode<RawHierarchyNodeMap>;
+export type RawHierarchyNode = HierarchyNode<RawFHIRHierarchyNodeMap>;
+
+export type RawFHIRHierarchyNode = FHIRTreeNode<RawFHIRHierarchyNodeMap>;
+
+export type ParsedFHIRHierarchyNode = FHIRTreeNode<ParsedFHIRHierarchyNode[]> & AddedFields;
 
 /** single node description after our initial custom parsing in preparation of
  * building the tree model
@@ -43,14 +65,14 @@ export type ParsedHierarchyNode = HierarchyNode<ParsedHierarchyNode[]> & AddedFi
 /** in the opensrp api hierarchy response, the raw hierarchy will be key'd
  * by the node's id
  */
-export interface RawHierarchyNodeMap {
-  [id: string]: RawHierarchyNode;
+export interface RawFHIRHierarchyNodeMap {
+  [id: string]: RawFHIRHierarchyNode;
 }
 
 /** describes the full api Response (raw opensrp hierarchy) */
 export interface RawOpenSRPHierarchy {
   locationsHierarchy: {
-    map: RawHierarchyNodeMap;
+    map: RawFHIRHierarchyNodeMap;
     parentChildren: Dictionary<string[]>;
   };
 }

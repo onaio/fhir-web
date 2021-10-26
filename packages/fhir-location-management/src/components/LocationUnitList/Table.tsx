@@ -7,7 +7,6 @@ import lang from '../../lang';
 import { Column, TableLayout } from '@opensrp/react-utils';
 
 export interface TableData {
-  geographicLevel?: number;
   id: string;
   key: string;
   name: string;
@@ -58,7 +57,7 @@ const Table: React.FC<Props> = (props: Props) => {
         title: lang.ACTIONS,
         width: '10%',
         // eslint-disable-next-line react/display-name
-        render: (value: boolean, record) => (
+        render: (_: boolean, record) => (
           <span className="d-flex justify-content-end align-items-center Actions">
             <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
               <Button type="link" className="m-0 p-1">
@@ -69,14 +68,13 @@ const Table: React.FC<Props> = (props: Props) => {
             <Dropdown
               overlay={
                 <Menu className="menu">
-                  <Menu.Item></Menu.Item>
                   <Menu.Item
                     className="viewdetails"
                     onClick={() => {
                       if (onViewDetails) onViewDetails(record);
                     }}
                   >
-                    View Details
+                    {lang.VIEW_DETAILS}
                   </Menu.Item>
                 </Menu>
               }

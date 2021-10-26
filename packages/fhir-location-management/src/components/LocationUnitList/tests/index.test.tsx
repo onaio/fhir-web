@@ -5,7 +5,6 @@ import { mount, shallow } from 'enzyme';
 import * as fhirCient from 'fhirclient';
 import * as reactQuery from 'react-query';
 import { history } from '@onaio/connected-reducer-registry';
-import * as notifications from '@opensrp/notifications';
 import { Router } from 'react-router';
 import LocationUnitList from '..';
 import flushPromises from 'flush-promises';
@@ -239,7 +238,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     });
     wrapper.update();
     /** error view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorAn error occurredGo backGo home"`);
     wrapper.unmount();
   });
 });
