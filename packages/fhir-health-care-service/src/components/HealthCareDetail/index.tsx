@@ -3,6 +3,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { HealthcareServiceDetail } from '../../types';
 import lang from '../../lang';
+import { Dictionary } from 'lodash';
 
 export interface HealthCareDetailProps extends HealthcareServiceDetail {
   onClose?: Function;
@@ -11,6 +12,17 @@ export interface HealthCareDetailProps extends HealthcareServiceDetail {
 const HealthcareDetails = (props: HealthCareDetailProps) => {
   const { extraDetails, comment, meta, name, active, id, organization, onClose } = props;
 
+  const detail: Dictionary<string | number | JSX.Element[]> = {
+    [lang.HEALTHCARE_NAME]: name,
+    [lang.STATUS]: active ? lang.ACTIVE : lang.INACTIVE,
+    [lang.IDENTIFIER]: id,
+    [lang.LAST_UPDATED_DATE]: meta?.lastUpdated
+      ? new Date(meta.lastUpdated).toLocaleDateString()
+      : '',
+    [lang.ORGANIZATION]: organization ? organization.name : lang.NOORGANIZATION,
+    [lang.COMMENT]: comment ?? lang.NOCOMMENT,
+    [lang.EXTRADETAILS]: extraDetails ?? lang.NO_EXTRADETAILS,
+  };
   return (
     <div className="p-4 bg-white">
       <Button
@@ -20,36 +32,13 @@ const HealthcareDetails = (props: HealthCareDetailProps) => {
         type="text"
         icon={<CloseOutlined />}
       />
-      <div className="mb-4 small mt-4">
-        <div className="mb-0 font-weight-bold">{lang.HEALTHCARE_NAME}</div>
-        <div className="mb-0">{name}</div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.STATUS}</div>
-        <div className="mb-0">{active ? lang.ACTIVE : lang.INACTIVE}</div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.IDENTIFIER}</div>
-        <div className="mb-0">{id}</div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.LAST_UPDATED_DATE}</div>
-        <div className="mb-0">
-          <div>{meta?.lastUpdated ? new Date(meta.lastUpdated).toLocaleDateString() : ''}</div>
+
+      {Object.entries(detail).map(([name, value], index) => (
+        <div key={index} className="mb-4 small mt-4">
+          <div className="mb-0 font-weight-bold">{name}</div>
+          <div className="mb-0">{value}</div>
         </div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.ORGANIZATION}</div>
-        <div className="mb-0">{organization ? organization.name : lang.NOORGANIZATION}</div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.COMMENT}</div>
-        <div className="mb-0">{comment ? comment : lang.NOCOMMENT}</div>
-      </div>
-      <div className="mb-4 small">
-        <div className="mb-0 font-weight-bold">{lang.EXTRADETAILS}</div>
-        <div className="mb-0">{extraDetails ? extraDetails : lang.NO_EXTRADETAILS}</div>
-      </div>
+      ))}
     </div>
   );
 };
