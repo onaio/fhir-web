@@ -206,7 +206,11 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: langObj.HEALTHCARESERVICES_MANAGEMENT,
           key: 'healthcare',
           url: URL_HEALTHCARESERVICES,
-          enabled: ENABLE_HEALTHCARESERVICES,
+          enabled:
+            ENABLE_HEALTHCARESERVICES &&
+            roles &&
+            activeRoles.HEALTHCARE &&
+            isAuthorized(roles, activeRoles.HEALTHCARE.split(',')),
         },
         {
           title: langObj.FORM_CONFIGURATION,
