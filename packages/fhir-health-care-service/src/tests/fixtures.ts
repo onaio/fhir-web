@@ -517,7 +517,7 @@ export const team366: Organization = {
   name: 'Test Team 5',
 };
 
-export const healthcareservice: FHIRResponse<HealthcareService> = {
+export const healthcareService: FHIRResponse<HealthcareService> = {
   resourceType: 'Bundle',
   id: '8d41a54c-3c06-4beb-8249-d41cacfd9468',
   meta: {
@@ -673,7 +673,7 @@ export const healthcareservice: FHIRResponse<HealthcareService> = {
   ],
 };
 
-export const healthcareservice323: HealthcareService = {
+export const healthcareService323: HealthcareService = {
   resourceType: 'HealthcareService',
   id: '323',
   meta: {
@@ -696,7 +696,7 @@ export const healthcareservice323: HealthcareService = {
   extraDetails: 'test',
 };
 
-export const healthcareservice313: HealthcareService = {
+export const healthcareService313: HealthcareService = {
   resourceType: 'HealthcareService',
   id: '313',
   meta: {
@@ -719,7 +719,7 @@ export const healthcareservice313: HealthcareService = {
   extraDetails: 'ANC Service',
 };
 
-export const healthcaredetail: HealthCareDetailProps = {
+export const healthcareDetail: HealthCareDetailProps = {
   resourceType: 'HealthcareService',
   id: '313',
   meta: {
