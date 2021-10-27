@@ -21,3 +21,6 @@ export const TEAMS_POST = 'organization';
 export const TEAM_PRACTITIONERS = 'organization/practitioner/';
 
 export const ASSIGNED_LOCATIONS_AND_PLANS = 'assignedLocationsAndPlans/';
+
+// Query patams
+export const SEARCH_QUERY_PARAM = 'searchQuery';
