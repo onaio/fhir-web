@@ -19,6 +19,7 @@ import {
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
   DEFAULT_HOME_MODE,
+  ENABLE_FHIR_TEAMS_MODULE,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -111,6 +112,10 @@ import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import { HealthCareList, HealthCareAddEdit } from '@opensrp/fhir-health-care-service';
+import {
+  TeamsList as FhirTeamsView,
+  TeamsAddEdit as FhirTeamsAddEdit,
+} from '@opensrp/fhir-team-management';
 import {
   LocationUnitList,
   LocationUnitGroupAddEdit,
@@ -274,7 +279,8 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS}
-              component={TeamsView}
+              {...teamManagementProps}
+              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsView : TeamsView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -592,7 +598,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS_ADD}
-              component={TeamsAddEdit}
+              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
               {...teamManagementProps}
             />
             <PrivateComponent
@@ -601,8 +607,8 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={`${URL_TEAMS_EDIT}/:id`}
-              component={TeamsAddEdit}
               {...teamManagementProps}
+              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

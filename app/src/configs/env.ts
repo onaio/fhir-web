@@ -70,6 +70,8 @@ export const DEFAULT_PLAN_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20)
 );
 
+export const ENABLE_FHIR_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
+
 /** Default plan id */
 export const DEFAULT_PLAN_ID = setEnv(
   'REACT_APP_DEFAULT_PLAN_ID',
@@ -181,7 +183,7 @@ export const FHIR_API_BASE_URL = setEnv(
 export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
 
 export const DISABLE_TEAM_MEMBER_REASSIGNMENT =
-  setEnv('REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT', 'false') === 'true';
+  setEnv('REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT', 'true') === 'true';
 
 export const USER_FORM_HIDDEN_FIELDS = setEnv('REACT_APP_USER_FORM_HIDDEN_FIELDS', '').split(',');
 
