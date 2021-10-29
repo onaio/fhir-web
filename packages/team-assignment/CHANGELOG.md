@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @opensrp/team-assignment
 
-
-
-
-
 ## [0.0.4](https://github.com/opensrp/web/compare/@opensrp/team-assignment@0.0.3...@opensrp/team-assignment@0.0.4) (2021-06-17)
 
 **Note:** Version bump only for package @opensrp/team-assignment
