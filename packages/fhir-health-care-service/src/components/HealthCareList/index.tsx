@@ -23,7 +23,7 @@ import { FHIRServiceClass } from '@opensrp/react-utils';
 
 interface Props {
   fhirBaseURL: string;
-  resourcePageSize: number;
+  resourcePageSize?: number;
 }
 
 /** Function which shows the list of all healthcares and there details

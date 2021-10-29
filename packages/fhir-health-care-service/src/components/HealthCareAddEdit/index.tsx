@@ -14,7 +14,7 @@ import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-manageme
 
 export interface Props {
   fhirBaseURL: string;
-  resourcePageSize: number;
+  resourcePageSize?: number;
 }
 
 /** default component props */
