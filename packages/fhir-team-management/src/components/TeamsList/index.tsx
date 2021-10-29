@@ -7,12 +7,7 @@ import TeamsDetail from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Organization, OrganizationDetail } from '../../types';
-import {
-  FHIR_RESOURCES_PAGE_SIZE,
-  ORGANIZATION_ENDPOINT,
-  ORGANIZATION_RESOURCE_TYPE,
-  URL_ADD_TEAM,
-} from '../../constants';
+import { ORGANIZATION_ENDPOINT, ORGANIZATION_RESOURCE_TYPE, URL_ADD_TEAM } from '../../constants';
 import Table from './Table';
 import './TeamsList.css';
 import { Spin } from 'antd';
@@ -24,6 +19,7 @@ import { loadTeamPractitionerInfo } from '../../utils';
 
 interface Props {
   fhirBaseURL: string;
+  resourcePageSize: number;
 }
 
 /** Function which shows the list of all teams and there details
@@ -32,10 +28,10 @@ interface Props {
  * @returns {Function} returns team display
  */
 export const TeamsList: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, resourcePageSize = 20 } = props;
   const serve = new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE);
   const fhirParams = {
-    _count: FHIR_RESOURCES_PAGE_SIZE,
+    _count: resourcePageSize,
     _getpagesoffset: 0,
   };
   const [detail, setDetail] = useState<OrganizationDetail | 'loading' | null>(null);
@@ -99,10 +95,14 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
           <div className="bg-white">
             <Table
               data={filterData.search && filterData.data?.length ? filterData.data : tableData}
-              fhirBaseURL={fhirBaseURL}
-              onViewDetails={(prams) => {
+              onViewDetails={(team) => {
                 setDetail('loading');
-                loadTeamPractitionerInfo(prams)
+                loadTeamPractitionerInfo({
+                  team,
+                  fhirBaseURL,
+                  PractitionerRoles: undefined,
+                  resourcePageSize,
+                })
                   .then((team) => setDetail(team))
                   .catch(() => {
                     sendErrorNotification(lang.ERROR_OCCURRED);

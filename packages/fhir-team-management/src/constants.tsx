@@ -21,5 +21,3 @@ export const PRACTITIONER_ENDPOINT = 'Practitioner/';
 //
 export const ORGANIZATION_RESOURCE_TYPE = 'Organization';
 export const ORGANIZATION_ENDPOINT = 'Organization/';
-
-export const FHIR_RESOURCES_PAGE_SIZE = 500;

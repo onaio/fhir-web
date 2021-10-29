@@ -4,7 +4,6 @@ import { Organization, Practitioner, PractitionerRole } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import {
-  FHIR_RESOURCES_PAGE_SIZE,
   PRACTITIONERROLE_ENDPOINT,
   PRACTITIONER_ENDPOINT,
   ORGANIZATION_ENDPOINT,
@@ -21,12 +20,13 @@ import { loadTeamPractitionerInfo } from '../../utils';
 
 export interface Props {
   fhirBaseURL: string;
+  resourcePageSize: number;
 }
 
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, resourcePageSize = 20 } = props;
   const fhirParams = {
-    _count: FHIR_RESOURCES_PAGE_SIZE,
+    _count: resourcePageSize,
     _getpagesoffset: 0,
   };
 
@@ -79,6 +79,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       team: team.data,
       fhirBaseURL: fhirBaseURL,
       PractitionerRoles: allRoles.data,
+      resourcePageSize: 500,
     })
       .then(({ practitionerInfo, ...team }) => {
         setInitialValue({

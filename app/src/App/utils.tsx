@@ -44,6 +44,7 @@ export const teamManagementProps = {
   ...BaseProps,
   disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
   paginationSize: PAGINATION_SIZE,
+  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
 };
 
 export const locationUnitProps = {

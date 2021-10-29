@@ -8,12 +8,11 @@ import { Column, TableLayout } from '@opensrp/react-utils';
 
 export interface Props {
   data: Organization[];
-  fhirBaseURL: string;
-  onViewDetails?: (param: { team: Organization; fhirBaseURL: string }) => void;
+  onViewDetails?: (team: Organization) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails, fhirBaseURL } = props;
+  const { onViewDetails } = props;
 
   const columns: Column<Organization>[] = [
     {
@@ -45,7 +44,7 @@ const Table: React.FC<Props> = (props: Props) => {
               <Menu>
                 <Menu.Item
                   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  onClick={() => onViewDetails && onViewDetails({ team: record, fhirBaseURL })}
+                  onClick={() => onViewDetails && onViewDetails(record)}
                 >
                   View Details
                 </Menu.Item>
