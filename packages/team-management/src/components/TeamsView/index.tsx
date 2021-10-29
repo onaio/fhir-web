@@ -160,7 +160,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
     let filterParams: Dictionary = { pageNumber: page, pageSize: pageSize };
     if (searchquery) filterParams = { name: searchParam };
     const teamsService = new OpenSRPService(
-      searchquery ? 'organization/search' : TEAMS_GET,
+      searchquery ? 'organization/search' : 'organization',
       opensrpBaseURL
     );
     const response: Organization[] = await teamsService.list(filterParams as Dictionary);
