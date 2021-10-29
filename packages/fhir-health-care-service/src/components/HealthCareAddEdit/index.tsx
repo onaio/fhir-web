@@ -3,11 +3,7 @@ import { Helmet } from 'react-helmet';
 import { HealthcareService } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import {
-  FHIR_RESOURCES_PAGE_SIZE,
-  HEALTHCARES_ENDPOINT,
-  HEALTH_CARE_SERVICE_RESOURCE_TYPE,
-} from '../../constants';
+import { HEALTHCARES_ENDPOINT, HEALTH_CARE_SERVICE_RESOURCE_TYPE } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
@@ -18,6 +14,7 @@ import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-manageme
 
 export interface Props {
   fhirBaseURL: string;
+  resourcePageSize: number;
 }
 
 /** default component props */
@@ -26,9 +23,9 @@ export const defaultProps = {
 };
 
 export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, resourcePageSize = 20 } = props;
   const fhirParams = {
-    _count: FHIR_RESOURCES_PAGE_SIZE,
+    _count: resourcePageSize,
     _getpagesoffset: 0,
   };
 

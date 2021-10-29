@@ -7,5 +7,3 @@ export const URL_EDIT_HEALTHCARE = 'healthcare/edit/';
 //
 export const HEALTH_CARE_SERVICE_RESOURCE_TYPE = 'HealthcareService';
 export const HEALTHCARES_ENDPOINT = 'HealthcareService/';
-
-export const FHIR_RESOURCES_PAGE_SIZE = 500;
