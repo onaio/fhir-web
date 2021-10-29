@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @opensrp/user-management
 
-
-
-
-
 ## [0.1.17](https://github.com/OpenSRP/web/compare/@opensrp/user-management@0.1.16...@opensrp/user-management@0.1.17) (2021-06-21)
 
 **Note:** Version bump only for package @opensrp/user-management

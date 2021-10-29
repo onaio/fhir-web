@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @opensrp/form-config
 
-
-
-
-
 ## [0.0.11](https://github.com/opensrp/opensrp-web/compare/@opensrp/form-config@0.0.10...@opensrp/form-config@0.0.11) (2021-02-24)
 
 **Note:** Version bump only for package @opensrp/form-config
