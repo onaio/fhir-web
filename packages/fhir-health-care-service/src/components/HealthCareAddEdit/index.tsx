@@ -5,7 +5,7 @@ import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import {
   FHIR_RESOURCES_PAGE_SIZE,
-  HEALTHCARES_GET,
+  HEALTHCARES_ENDPOINT,
   HEALTH_CARE_SERVICE_RESOURCE_TYPE,
   ORGANIZATION_GET,
 } from '../../constants';
@@ -44,7 +44,7 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
   const [initialValue, setInitialValue] = useState<FormField>();
 
   const healthcares = useQuery(
-    [HEALTHCARES_GET, params.id],
+    [HEALTHCARES_ENDPOINT, params.id],
     async () => healthcareServiceAPI.read(`${params.id}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
