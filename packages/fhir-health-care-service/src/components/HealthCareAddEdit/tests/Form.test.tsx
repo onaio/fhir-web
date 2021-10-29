@@ -61,10 +61,10 @@ describe('components/HealthCareAddEdit/Form', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/_search?_count=500&_getpagesoffset=0')
+          if (url === 'Organization/_search?_count=20&_getpagesoffset=0')
             return Promise.resolve(team);
           if (url === 'Organization/366') return Promise.resolve(team366);
-          else if (url === 'HealthcareService/_search?_count=500&_getpagesoffset=0')
+          else if (url === 'HealthcareService/_search?_count=20&_getpagesoffset=0')
             return Promise.resolve(healthcareService);
           else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
           else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
