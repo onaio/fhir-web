@@ -25,7 +25,7 @@ interface RouteParams {
 /** props for editing a user view */
 export interface EditCareTeamProps {
   fhirBaseURL: string;
-  resourcePageSize: number;
+  resourcePageSize?: number;
 }
 
 /** type intersection for all types that pertain to the props */
