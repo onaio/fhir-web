@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { HealthcareService, Organization } from '../../types';
+import { HealthcareService } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import {
   FHIR_RESOURCES_PAGE_SIZE,
   HEALTHCARES_ENDPOINT,
   HEALTH_CARE_SERVICE_RESOURCE_TYPE,
-  ORGANIZATION_GET,
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
@@ -15,6 +14,7 @@ import lang from '../../lang';
 import { useQuery } from 'react-query';
 import { history } from '@onaio/connected-reducer-registry';
 import { FHIRServiceClass } from '@opensrp/react-utils';
+import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-management';
 
 export interface Props {
   fhirBaseURL: string;
@@ -53,10 +53,14 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const organizations = useQuery(ORGANIZATION_GET, async () => organizationAPI.list(fhirParams), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res) => res.entry.map((e) => e.resource),
-  });
+  const organizations = useQuery(
+    ORGANIZATION_ENDPOINT,
+    async () => organizationAPI.list(fhirParams),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res) => res.entry.map((e) => e.resource),
+    }
+  );
 
   if (params.id && healthcares.data && !initialValue) {
     setInitialValue({ comment: '', extraDetails: '', ...healthcares.data });

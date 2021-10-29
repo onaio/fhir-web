@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/fhir-health-care-service",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "Team management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@types/antd": "^1.0.0",
+    "@opensrp/fhir-team-management": "file:../fhir-team-management",
     "i18next-parser": "^3.5.0",
     "@types/uuid": "8.3.1",
     "@smile-cdr/fhirts": "1.2.5"
