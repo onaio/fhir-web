@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @opensrp/error-boundary-fallback
 
-
-
-
-
 ## 0.0.4 (2021-02-24)
 
 **Note:** Version bump only for package @opensrp/error-boundary-fallback

@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @opensrp/plans
 
-
-
-
-
 ## [0.0.8](https://github.com/opensrp/web/compare/@opensrp/plans@0.0.7...@opensrp/plans@0.0.8) (2021-06-17)
 
 **Note:** Version bump only for package @opensrp/plans
