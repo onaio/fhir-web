@@ -1,37 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/TeamsView/table renders without crashing: Table 1`] = `
-<Table
-  data={
-    Array [
-      Object {
-        "active": false,
-        "id": 1,
-        "identifier": "mock 1",
-        "name": "Edrward 1",
+<Router
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "pathname": "/",
+        "search": "",
       },
-      Object {
-        "active": true,
-        "id": 2,
-        "identifier": "mock 2",
-        "name": "Edrward 2",
-      },
-      Object {
-        "active": false,
-        "id": 3,
-        "identifier": "mock 3",
-        "name": "Edrward 3",
-      },
-      Object {
-        "active": true,
-        "id": 4,
-        "identifier": "mock 4",
-        "name": "Edrward 4",
-      },
-    ]
+      "push": [Function],
+      "replace": [Function],
+    }
   }
-  opensrpBaseURL="https://some.opensrp.url/"
-  setDetail={[Function]}
-  setPractitionersList={[Function]}
-/>
+>
+  <Table
+    fetchTeams={[Function]}
+    opensrpBaseURL="https://some.opensrp.url/"
+    searchParam=""
+    setAssignedLocations={[Function]}
+    setDetail={[Function]}
+    setPractitionersList={[Function]}
+  />
+</Router>
 `;

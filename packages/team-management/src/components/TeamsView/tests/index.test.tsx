@@ -2,6 +2,7 @@ import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import { mount, shallow } from 'enzyme';
 import { history } from '@onaio/connected-reducer-registry';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
 import React from 'react';
 import TeamsView, { populateTeamDetails } from '..';
@@ -9,17 +10,33 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { authenticateUser } from '@onaio/session-reducer';
-import { org1, teamMember } from '../../../ducks/tests/fixtures';
+import { org1, org1Assignment, org2, org3, teamMember } from '../../../ducks/tests/fixtures';
 import { notification } from 'antd';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import lang from '../../../lang';
 
 describe('components/TeamsView', () => {
-  const defaultProps = {
-    opensrpBaseURL: '',
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const teamViewProps = {
+    opensrpBaseURL: OPENSRP_API_BASE_URL,
+    history,
+    location: {
+      hash: '',
+      pathname: `/admin/teams`,
+      search: '',
+      state: {},
+    },
+    match: {
+      isExact: true,
+      params: {},
+      path: `/admin/teams`,
+      url: `/admin/teams`,
+    },
   };
 
   beforeEach(() => {
     fetch.mockClear();
+    jest.clearAllMocks();
   });
 
   beforeAll(() => {
@@ -39,9 +56,11 @@ describe('components/TeamsView', () => {
 
   it('renders without crashing', async () => {
     shallow(
-      <Router history={history}>
-        <TeamsView {...defaultProps} />
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Router history={history}>
+          <TeamsView {...teamViewProps} />
+        </Router>
+      </QueryClientProvider>
     );
   });
 
@@ -49,9 +68,11 @@ describe('components/TeamsView', () => {
     fetch.mockResponse(JSON.stringify([org1]));
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
-          <TeamsView {...defaultProps} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <TeamsView {...teamViewProps} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -59,6 +80,30 @@ describe('components/TeamsView', () => {
       await flushPromises();
       wrapper.update();
     });
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization?pageNumber=1&pageSize=5',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/count',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
     // test search input works
     const input = wrapper.find('input').first();
     input.simulate('change', { target: { value: 'Sample' } });
@@ -85,9 +130,11 @@ describe('components/TeamsView', () => {
     );
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
-          <TeamsView {...defaultProps} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <TeamsView {...teamViewProps} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
     await act(async () => {
@@ -112,11 +159,13 @@ describe('components/TeamsView', () => {
       jest.fn(),
       jest.fn()
     );
-    mount(
+    const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
-          <TeamsView {...defaultProps} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <TeamsView {...teamViewProps} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -128,5 +177,144 @@ describe('components/TeamsView', () => {
       description: undefined,
       message: lang.ERROR_OCCURRED,
     });
+    wrapper.unmount();
+  });
+
+  it('search works correctly', async () => {
+    fetch.mockResponseOnce(JSON.stringify([org1, org3]));
+
+    const newProps = {
+      ...teamViewProps,
+      location: {
+        ...teamViewProps.location,
+        search: '?searchQuery=test',
+      },
+    };
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <TeamsView {...newProps} />
+          </Router>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // const search = wrapper.find('.search-input-wrapper').find('.ant-input');
+    const search = wrapper.find('input').first();
+    await act(async () => {
+      search.simulate('change', { target: { value: 'luang' } });
+      wrapper.update();
+    });
+
+    await act(async () => {
+      await new Promise((res) => setTimeout(res, 2000));
+      wrapper.update();
+    });
+
+    expect(history.location.search).toEqual('?searchQuery=luang');
+    expect(fetch.mock.calls).toEqual([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/search?name=test',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+    wrapper.unmount();
+  });
+
+  it('team details view render correctly', async () => {
+    fetch.mockResponseOnce(JSON.stringify([org1, org3]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <TeamsView {...teamViewProps} />
+          </Router>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find view details button
+    const dropdown = wrapper.find('Dropdown').at(0);
+    dropdown.simulate('click');
+    wrapper.update();
+
+    fetch.mockResponseOnce(JSON.stringify(org1Assignment));
+    fetch.mockResponseOnce(JSON.stringify([]));
+
+    wrapper.find('.viewdetails').at(0).simulate('click');
+    wrapper.update();
+
+    // click view details
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find the user details
+    expect(wrapper.find('#name').text()).toEqual('The Luang');
+    expect(wrapper.find('#status').text()).toEqual('true');
+    expect(wrapper.find('#identifier').text()).toEqual('fcc19470-d599-11e9-bb65-2a2ae2dbcce4');
+    expect(wrapper.find('#teamMember').text()).toEqual('julian kipembe');
+    wrapper.unmount();
+  });
+
+  it('sorting works', async () => {
+    fetch.mockResponse(JSON.stringify([org1, org2]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <TeamsView {...teamViewProps} />
+          </Router>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // Default order
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('The Luang');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual('Demo Team');
+
+    // Ascending
+    wrapper.find('thead th').at(0).simulate('click');
+    wrapper.update();
+
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Demo Team');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual('The Luang');
+
+    // descending
+    wrapper.find('thead th').at(0).simulate('click');
+    wrapper.update();
+
+    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('The Luang');
+    expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual('Demo Team');
+
+    wrapper.unmount();
   });
 });
