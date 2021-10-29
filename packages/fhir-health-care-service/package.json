@@ -13,8 +13,8 @@
   "repository": "https://github.com/OpenSRP/web/",
   "scripts": {
     "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && yarn test packages/fhir-heatlhcareservice --verbose --collectCoverage=true -u && cd packages/fhir-heatlhcareservice",
-    "test:watch": "cd ../../ && yarn test packages/fhir-heatlhcareservice --verbose --watch && cd packages/fhir-heatlhcareservice",
+    "test": "cd ../../ && yarn test packages/fhir-health-care-service --verbose --collectCoverage=true -u && cd packages/fhir-health-care-service",
+    "test:watch": "cd ../../ && yarn test packages/fhir-health-care-service --verbose --watch && cd packages/fhir-health-care-service",
     "tsc": "tsc",
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
