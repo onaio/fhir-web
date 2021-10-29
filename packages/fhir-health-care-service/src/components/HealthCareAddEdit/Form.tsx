@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { v4 } from 'uuid';
 import {
-  HEALTHCARES_GET,
+  HEALTHCARES_ENDPOINT,
   HEALTH_CARE_SERVICE_RESOURCE_TYPE,
   ORGANIZATION_GET,
 } from '../../constants';
@@ -87,7 +87,7 @@ export const Form: React.FC<Props> = (props: Props) => {
               .invalidateQueries(ORGANIZATION_GET)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
-              .invalidateQueries(HEALTHCARES_GET)
+              .invalidateQueries(HEALTHCARES_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             onSuccess?.();
           })

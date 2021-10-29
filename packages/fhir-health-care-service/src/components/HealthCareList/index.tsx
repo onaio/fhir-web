@@ -9,7 +9,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService, HealthcareServiceDetail } from '../../types';
 import {
   FHIR_RESOURCES_PAGE_SIZE,
-  HEALTHCARES_GET,
+  HEALTHCARES_ENDPOINT,
   HEALTH_CARE_SERVICE_RESOURCE_TYPE,
   URL_ADD_HEALTHCARE,
 } from '../../constants';
@@ -45,7 +45,7 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
   const [detail, setDetail] = useState<HealthcareServiceDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: HealthcareService[] }>({});
 
-  const healthcare = useQuery(HEALTHCARES_GET, async () => serve.list(fhirParams), {
+  const healthcare = useQuery(HEALTHCARES_ENDPOINT, async () => serve.list(fhirParams), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res) => res.entry.map((e) => e.resource),
   });
