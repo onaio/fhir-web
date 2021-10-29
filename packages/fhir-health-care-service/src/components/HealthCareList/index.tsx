@@ -8,7 +8,6 @@ import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService, HealthcareServiceDetail } from '../../types';
 import {
-  FHIR_RESOURCES_PAGE_SIZE,
   HEALTHCARES_ENDPOINT,
   HEALTH_CARE_SERVICE_RESOURCE_TYPE,
   URL_ADD_HEALTHCARE,
@@ -24,6 +23,7 @@ import { FHIRServiceClass } from '@opensrp/react-utils';
 
 interface Props {
   fhirBaseURL: string;
+  resourcePageSize: number;
 }
 
 /** Function which shows the list of all healthcares and there details
@@ -32,9 +32,9 @@ interface Props {
  * @returns {Function} returns healthcare display
  */
 export const HealthCareList: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, resourcePageSize = 20 } = props;
   const fhirParams = {
-    _count: FHIR_RESOURCES_PAGE_SIZE,
+    _count: resourcePageSize,
     _getpagesoffset: 0,
   };
   const serve = new FHIRServiceClass<HealthcareService>(

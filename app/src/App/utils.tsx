@@ -162,6 +162,7 @@ export const createEditUserProps = {
 
 export const heatlhcareProps = {
   ...BaseProps,
+  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
 };
 export const careTeamProps = {
   ...BaseProps,
