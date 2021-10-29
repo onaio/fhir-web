@@ -2703,6 +2703,15 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
+"@opensrp/fhir-health-care-service@file:packages/fhir-health-care-service":
+  version "0.0.5"
+  dependencies:
+    "@opensrp/notifications" "^0.0.5"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/react-utils" "^0.0.11"
+    react-i18next "^11.8.10"
+    uuid "^8.3.1"
+
 "@opensrp/location-management@^0.0.15":
   version "0.0.15"
   resolved "https://registry.yarnpkg.com/@opensrp/location-management/-/location-management-0.0.15.tgz#17e1a1097e03aa5548242662b23cf05706d6ab20"
@@ -3456,6 +3465,11 @@
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.0.tgz#215c231dff736d5ba92410e6d602050cce7e273f"
   integrity sha512-eQ9qFW/fhfGJF8WKHGEHZEyVWfZxrT+6CLIJGBcZPfxUh/+BnEj+UCGYMlr9qZuX/2AltsvwrGqp0LhEW8D0zQ==
+
+"@types/uuid@8.3.1":
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.1.tgz#1a32969cf8f0364b3d8c8af9cc3555b7805df14f"
+  integrity sha512-Y2mHTRAbqfFkpjldbkHGY8JIzRN6XqYRliG8/24FcHm2D2PwW24fl5xMRTVGdrb7iMrwCaIEbLWerGIkXuFWVg==
 
 "@types/yargs-parser@*":
   version "15.0.0"

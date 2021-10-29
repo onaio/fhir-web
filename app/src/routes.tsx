@@ -209,8 +209,8 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           enabled:
             ENABLE_HEALTHCARESERVICES &&
             roles &&
-            activeRoles.HEALTHCARE &&
-            isAuthorized(roles, activeRoles.HEALTHCARE.split(',')),
+            activeRoles.HEALTH_CARE &&
+            isAuthorized(roles, activeRoles.HEALTH_CARE.split(',')),
         },
         {
           title: langObj.FORM_CONFIGURATION,
