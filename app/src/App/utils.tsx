@@ -24,7 +24,6 @@ import {
   FHIR_API_BASE_URL,
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
-  FHIR_API_BASE_URL,
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
   USER_FORM_HIDDEN_FIELDS,
   USER_FORM_RENDER_FIELDS,
@@ -163,7 +162,6 @@ export const createEditUserProps = {
 
 export const heatlhcareProps = {
   ...BaseProps,
-  fhirBaseURL: FHIR_API_BASE_URL,
 };
 export const careTeamProps = {
   ...BaseProps,
