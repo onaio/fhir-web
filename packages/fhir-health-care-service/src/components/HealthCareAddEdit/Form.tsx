@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { v4 } from 'uuid';
-import {
-  HEALTHCARES_ENDPOINT,
-  HEALTH_CARE_SERVICE_RESOURCE_TYPE,
-  ORGANIZATION_GET,
-} from '../../constants';
+import { HEALTHCARES_ENDPOINT, HEALTH_CARE_SERVICE_RESOURCE_TYPE } from '../../constants';
+import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-management';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
-import { HealthcareService, Organization } from '../../types';
+import { HealthcareService } from '../../types';
 import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
@@ -84,7 +81,7 @@ export const Form: React.FC<Props> = (props: Props) => {
         onSubmit(fhirBaseURL, values)
           .then(() => {
             queryClient
-              .invalidateQueries(ORGANIZATION_GET)
+              .invalidateQueries(ORGANIZATION_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
               .invalidateQueries(HEALTHCARES_ENDPOINT)
