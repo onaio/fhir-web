@@ -210,13 +210,12 @@ describe('LocationForm', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('FormItem#longitude').text()).toMatchInlineSnapshot(
-      `"LongitudeOnly decimal values allowed"`
-    );
-
-    expect(wrapper.find('FormItem#latitude').text()).toMatchInlineSnapshot(
-      `"LatitudeOnly decimal values allowed"`
-    );
+    expect(wrapper.find('FormItemInput#longitude').prop('errors')).toEqual([
+      'Only decimal values allowed',
+    ]);
+    expect(wrapper.find('FormItemInput#latitude').prop('errors')).toEqual([
+      'Only decimal values allowed',
+    ]);
 
     wrapper.unmount();
   });

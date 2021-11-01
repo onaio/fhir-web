@@ -92,6 +92,13 @@ describe('reducers/assignments', () => {
     const assignments = getAssByPlanId(store.getState(), { planId: fixtures.assignment1.plan });
     expect(assignments).toHaveLength(1);
   });
+
+  it('should handle null assignment.toDate', () => {
+    const assignment = { ...fixtures.assignment1, toDate: null };
+    store.dispatch(fetchAssignments([assignment]));
+    const planAssignments = getAssByPlanId(store.getState(), { planId: 'alpha' });
+    expect(planAssignments).toHaveLength(1);
+  });
 });
 
 describe('utils', () => {

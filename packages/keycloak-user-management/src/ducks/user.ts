@@ -38,7 +38,8 @@ export interface UserAction {
 }
 
 export interface UserAttributes {
-  contact: string[];
+  // while these may be adhoc and arbitrary it carries with it serious back and cross compatibility issues, these should not be modified lightly
+  contact?: string[];
 }
 
 /** Interface for user json object */
