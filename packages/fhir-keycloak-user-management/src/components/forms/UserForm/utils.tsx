@@ -1,11 +1,10 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { Dispatch, SetStateAction } from 'react';
-import { get } from 'lodash';
 import { FHIRService } from '@opensrp/react-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { KeycloakUser, UserAction, UserGroup } from '../../../ducks/user';
-import { fhirR4 } from '@smile-cdr/fhirts';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { v4 } from 'uuid';
 import {
   KEYCLOAK_URL_USERS,
@@ -43,7 +42,7 @@ export const createOrEditPractitioners = async (
   let requestType: 'update' | 'create' = 'create';
   let successMessage: string = langObj.PRACTITIONER_CREATED_SUCCESSFULLY;
   // inherits values from tied keycloak user
-  let practitionerValues: Omit<fhirR4.Practitioner, 'meta'> = {
+  let practitionerValues: IPractitioner = {
     resourceType: 'Practitioner',
     id: undefined,
     identifier: [
@@ -73,7 +72,7 @@ export const createOrEditPractitioners = async (
   };
 
   // if practitioner exists re-initialize as update practitioner
-  // use keycloak values - to update practitioner when base user values change
+  // use keycloak values - to update practitioner when base keycloak user values change
   if (values.practitioner) {
     requestType = 'update';
     successMessage = langObj.PRACTITIONER_UPDATED_SUCCESSFULLY;
@@ -83,11 +82,11 @@ export const createOrEditPractitioners = async (
       identifier: [
         {
           use: 'official',
-          value: get(values.practitioner, 'identifier.0.value'),
+          value: values.practitioner.identifier?.[0].value,
         },
         {
           use: 'secondary',
-          value: get(values.practitioner, 'identifier.1.value'),
+          value: values.practitioner.identifier?.[1].value,
         },
       ],
       // if the base keycloak user is disabled, also disable the tied opensrp practitioner

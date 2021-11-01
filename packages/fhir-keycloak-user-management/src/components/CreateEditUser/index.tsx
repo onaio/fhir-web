@@ -17,11 +17,12 @@ import {
   makeKeycloakUsersSelector,
   KeycloakUser,
   UserGroup,
-  Practitioner,
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { getExtraData } from '@onaio/session-reducer';
-import { fhirR4 } from '@smile-cdr/fhirts';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -75,9 +76,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
 
   const fetchPractitioner = useCallback(async () => {
     const serve = await FHIRService(fhirBaseURL);
-    await serve.request(`Practitioner?identifier=${userId}`).then((response: fhirR4.Bundle) => {
-      const getPractitionerEntry = (response.entry as fhirR4.BundleEntry[])[0];
-      const getPractitionerResource = getPractitionerEntry.resource as fhirR4.Practitioner;
+    await serve.request(`Practitioner?identifier=${userId}`).then((response: IBundle) => {
+      const getPractitionerEntry = (response.entry as BundleEntry[])[0];
+      const getPractitionerResource = getPractitionerEntry.resource as IPractitioner;
       setInitialValues((prevState) => ({
         ...prevState,
         active: getPractitionerResource.active,

@@ -4,13 +4,12 @@ import { removeKeycloakUsers } from '../../../ducks/user';
 import { KEYCLOAK_URL_USERS } from '../../../constants';
 import lang, { Lang } from '../../../lang';
 import FHIR from 'fhirclient';
-import { Practitioner as BasePractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
-import { PractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitionerRole';
-import { Bundle } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundle';
-import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
 
-type Practitioner = Omit<BasePractitioner, 'meta'>;
 /**
  * Delete keycloak user and practitioner
  *
@@ -75,7 +74,7 @@ export const deleteUser = async (
 async function getPractitionersByUserId(userId: string, fhirBaseURL: string) {
   const serve = FHIR.client(fhirBaseURL);
   // search practitioners with keycloak userID as identifier
-  const bundle: Bundle = await serve.request(`Practitioner/_search?identifier=${userId}`);
+  const bundle: IBundle = await serve.request(`Practitioner/_search?identifier=${userId}`);
   // ideal server returns only one result but possible to have multiple
   return bundle.entry ? bundle.entry : [];
 }
@@ -98,7 +97,7 @@ async function unassignAndDeactivatePractitioners(
 
   for (const practitionerBundle of practitionersBundle) {
     // get practitioner from search result (BundleEntry array)
-    const practitioner = practitionerBundle.resource as Practitioner;
+    const practitioner = practitionerBundle.resource as Omit<IPractitioner, 'meta'>;
 
     // deactivate practitioner
     const deactivatePractitionerPromise = FhirClient.update({
@@ -108,15 +107,15 @@ async function unassignAndDeactivatePractitioners(
     deactivatePractitionerPromises.push(deactivatePractitionerPromise);
 
     // get practitioner roles tied to a practitioner
-    const bundle: Bundle = await FhirClient.request(
+    const bundle: IBundle = await FhirClient.request(
       `PractitionerRole/_search?practitioner=${practitioner.id}`
     );
 
     if (bundle.entry) {
       for (const practitionerRoleBundle of bundle.entry) {
-        const practitionerRole = practitionerRoleBundle.resource as PractitionerRole;
+        const practitionerRole = practitionerRoleBundle.resource as IPractitionerRole;
         // delete practitioner role
-        const deletePractitionerRolePromise = FhirClient.delete<Resource>(
+        const deletePractitionerRolePromise = FhirClient.delete<IResource>(
           `PractitionerRole/${practitionerRole.id}`
         );
         deletePractitionerRolePromises.push(deletePractitionerRolePromise);
